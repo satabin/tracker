@@ -1,0 +1,7 @@
+tracker (0.5.2+debian-1) unstable; urgency=low
+
+  * Initial release. Closes: #387110
+  * Rebuild upstream tarball without debian/ directory.
+
+ -- Michael Biebl <biebl@debian.org>  Tue, 28 Nov 2006 20:35:52 +0100
+

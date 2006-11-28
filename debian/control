@@ -1,0 +1,81 @@
+Source: tracker
+Section: utils
+Priority: optional
+Maintainer: Michael Biebl <biebl@debian.org>
+Build-Depends: cdbs, debhelper (>= 5.0.0), autotools-dev, dpkg-dev (>= 1.13.19), libxml-parser-perl, libglib2.0-dev (>= 2.12.0), libpango1.0-dev (>= 1.0.0), libgmime-2.0-2-dev (>= 2.1.0), libdbus-1-dev (>= 0.50), libdbus-glib-1-dev (>= 0.50), libgstreamer0.10-dev (>= 0.10.0), libsqlite3-dev, libpoppler-dev (>= 0.4.5), libpoppler-glib-dev (>= 0.4.5), libgsf-1-dev (>= 1.13), libexif-dev (>= 0.6), libpng12-dev (>= 1.2), libgtk2.0-dev (>= 2.8.0), libgnome2-dev (>= 2.14.0), libgnomeui-dev (>= 2.14.0), libgnomevfs2-dev (>= 2.8.4), libgnome-desktop-dev (>= 2.10)
+Standards-Version: 3.7.2
+
+Package: tracker
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, shared-mime-info
+Recommends: tracker-utils, tracker-search-tool, wv, poppler-utils, unzip, xsltproc, w3m, evince, imagemagick
+Description: metadata database, indexer and search tool
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+ .
+  Homepage: http://www.gnome.org/~jamiemcc/tracker/
+
+Package: libtrackerclient0
+Architecture: any
+Section: libs
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: metadata database, indexer and search tool - library
+ This package contains the library that is used by applications to access
+ the Tracker daemon.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+ .
+  Homepage: http://www.gnome.org/~jamiemcc/tracker/
+
+Package: libtrackerclient-dev
+Architecture: any
+Section: libdevel
+Depends: libtrackerclient0 (= ${binary:Version})
+Description: metadata database, indexer and search tool - development files
+ This package contains the static libraries and header files needed to link
+ applications with libtrackerclient.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+ .
+  Homepage: http://www.gnome.org/~jamiemcc/tracker/
+
+Package: tracker-utils
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, tracker (= ${binary:Version})
+Description: metadata database, indexer and search tool - commandline tools
+ Included utilities for Tracker:
+  * tracker-files: get files based on a ServiceType (Documents, Music, Images,
+    Videos, Text, Development, Other), or on specified mime types.
+  * tracker-meta-folder: get metadata for files in a folder.
+  * tracker-query: this reads from STDIN an RDF Query that specifies the search
+    criteria for various fields. It prints to STDOUT all matching files. Some
+    examples are included in this package.
+  * tracker-search: this perfoms a google like search using SEARCHTERM to
+    retrieve all matching files where SEARCHTERM appears in any searchable
+    metadata.
+  * tracker-stats: retreive some statistics.
+  * tracker-tag: tool to manage tags on files.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+ .
+  Homepage: http://www.gnome.org/~jamiemcc/tracker/
+
+Package: tracker-search-tool
+Architecture: any
+Section: gnome
+Depends: ${shlibs:Depends}, ${misc:Depends}, tracker (= ${binary:Version})
+Description: metadata database, indexer and search tool - Gnome frontend
+ This package provides a graphical Tracker search tool for Gnome.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+ .
+  Homepage: http://www.gnome.org/~jamiemcc/tracker/

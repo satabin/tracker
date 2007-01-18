@@ -304,7 +304,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-INCLUDES = $(GLIB2_CFLAGS) $(CFLAGS) -g		\
+INCLUDES = $(GLIB2_CFLAGS)			\
 	$(POPPLER_GLIB_CFLAGS)			\
 	$(LIBPNG_CFLAGS)			\
 	$(LIBEXIF_CFLAGS)			\

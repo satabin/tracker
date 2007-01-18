@@ -7,14 +7,15 @@ Standards-Version: 3.7.2
 
 Package: tracker
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, shared-mime-info
-Recommends: tracker-utils, tracker-search-tool, wv, poppler-utils, unzip, xsltproc, w3m, evince, imagemagick
+Depends: ${shlibs:Depends}, ${misc:Depends}, shared-mime-info, dbus
+Recommends: tracker-utils, tracker-search-tool, unzip, wv, poppler-utils | xpdf-utils, xsltproc, w3m, o3read
+Suggests: imagemagick, evince
 Description: metadata database, indexer and search tool
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
  .
-  Homepage: http://www.gnome.org/~jamiemcc/tracker/
+  Homepage: http://www.tracker-project.org
 
 Package: libtrackerclient0
 Architecture: any
@@ -28,12 +29,12 @@ Description: metadata database, indexer and search tool - library
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
  .
-  Homepage: http://www.gnome.org/~jamiemcc/tracker/
+  Homepage: http://www.tracker-project.org
 
 Package: libtrackerclient-dev
 Architecture: any
 Section: libdevel
-Depends: libtrackerclient0 (= ${binary:Version})
+Depends: libtrackerclient0 (= ${binary:Version}), libglib2.0-dev, libdbus-1-dev, libdbus-glib-1-dev
 Description: metadata database, indexer and search tool - development files
  This package contains the static libraries and header files needed to link
  applications with libtrackerclient.
@@ -42,7 +43,7 @@ Description: metadata database, indexer and search tool - development files
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
  .
-  Homepage: http://www.gnome.org/~jamiemcc/tracker/
+  Homepage: http://www.tracker-project.org
 
 Package: tracker-utils
 Architecture: any
@@ -65,7 +66,7 @@ Description: metadata database, indexer and search tool - commandline tools
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
  .
-  Homepage: http://www.gnome.org/~jamiemcc/tracker/
+  Homepage: http://www.tracker-project.org
 
 Package: tracker-search-tool
 Architecture: any
@@ -78,4 +79,4 @@ Description: metadata database, indexer and search tool - Gnome frontend
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
  .
-  Homepage: http://www.gnome.org/~jamiemcc/tracker/
+  Homepage: http://www.tracker-project.org

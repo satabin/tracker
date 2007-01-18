@@ -1,3 +1,22 @@
+/* Tracker Extract - extracts embedded metadata from files
+ * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
+ */
+
 
 #include "config.h"
 
@@ -34,13 +53,13 @@ void tracker_extract_pdf (gchar *filename, GHashTable *metadata)
 		NULL);
 
 	if (title && strlen (title))
-		g_hash_table_insert (metadata, g_strdup ("Doc.Title"), g_strdup (title));
+		g_hash_table_insert (metadata, g_strdup ("Doc:Title"), g_strdup (title));
 	if (author && strlen (author))
-		g_hash_table_insert (metadata, g_strdup ("Doc.Author"), g_strdup (author));
+		g_hash_table_insert (metadata, g_strdup ("Doc:Author"), g_strdup (author));
 	if (subject && strlen (subject))
-		g_hash_table_insert (metadata, g_strdup ("Doc.Subject"), g_strdup (subject));
+		g_hash_table_insert (metadata, g_strdup ("Doc:Subject"), g_strdup (subject));
 	if (keywords && strlen (keywords))
-		g_hash_table_insert (metadata, g_strdup ("Doc.Keywords"), g_strdup (keywords));
+		g_hash_table_insert (metadata, g_strdup ("Doc:Keywords"), g_strdup (keywords));
 
 
 #if 0
@@ -49,7 +68,7 @@ void tracker_extract_pdf (gchar *filename, GHashTable *metadata)
 		g_time_val_to_iso8601 (creation_date_val));
 #endif
 
-	g_hash_table_insert (metadata, g_strdup ("Doc.PageCount"),
+	g_hash_table_insert (metadata, g_strdup ("Doc:PageCount"),
 		g_strdup_printf ("%d", poppler_document_get_n_pages (document)));
 
 	g_free (title);

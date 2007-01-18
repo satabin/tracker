@@ -1,20 +1,20 @@
-/* Tracker - Inotify interface
- * Copyright (C) 2005, Mr Jamie McCracken
+/* Tracker - indexer and metadata database engine
+ * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
+ * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
  */
 
 #include <stdlib.h>
@@ -199,9 +199,9 @@ process_event (const char *uri, gboolean is_dir, TrackerChangeAction action, gui
 				/* update db so that fileID reflects new uri */
 				tracker_db_update_file_move (main_thread_db_con, moved_from_info->file_id, path, name, moved_from_info->indextime);
 
-				/* update File.Path and File.Filename metadata */
-				tracker_db_set_metadata (main_thread_db_con, "Files", str_file_id, "File.Path", path, TRUE, TRUE, TRUE);
-				tracker_db_set_metadata (main_thread_db_con, "Files", str_file_id, "File.Name", name, TRUE, TRUE, TRUE);
+				/* update File:Path and File:Filename metadata */
+				tracker_db_set_metadata (main_thread_db_con, "Files", str_file_id, "File:Path", path, TRUE, TRUE, TRUE);
+				tracker_db_set_metadata (main_thread_db_con, "Files", str_file_id, "File:Name", name, TRUE, TRUE, TRUE);
 
 				g_free (str_file_id);
 				g_free (name);
@@ -228,7 +228,7 @@ process_event (const char *uri, gboolean is_dir, TrackerChangeAction action, gui
 						tracker_add_poll_dir (moved_to_info->uri);
 					}
 
-					/* update all changed File.Path metadata */
+					/* update all changed File:Path metadata */
 					tracker_exec_proc (main_thread_db_con, "UpdateFileMovePath", 2, moved_to_info->uri, moved_from_info->uri);
 
 
@@ -266,7 +266,7 @@ process_event (const char *uri, gboolean is_dir, TrackerChangeAction action, gui
 
 							tracker_log ("moving subfolder %s to %s", dir_name, new_path);
 
-							/* update all changed File.Path metadata for all files in this subfolder*/
+							/* update all changed File:Path metadata for all files in this subfolder*/
 							tracker_exec_proc (main_thread_db_con, "UpdateFileMovePath", 2, new_path, dir_name);
 
 							/* update all subfolders and contained files to new path */
@@ -523,7 +523,7 @@ process_inotify_events (void)
 
 
 		if (!tracker_ignore_file (file_utf8_uri)) {
-			process_event (str, tracker_is_directory (file_utf8_uri), action_type, cookie);
+			process_event (str, tracker_is_directory (str), action_type, cookie);
 
 		}
 

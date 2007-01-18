@@ -1,21 +1,20 @@
-/* Tracker
- * utility routines
- * Copyright (C) 2005, Mr Jamie McCracken
+/* Tracker - indexer and metadata database engine
+ * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the free Software Foundation; either
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
+ * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the
- * free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
  */
 
 #include <sys/types.h>
@@ -665,6 +664,81 @@ tracker_str_in_array (const char *str, char **array)
 
 
 char *
+tracker_escape_metadata (const char *str)
+{
+	char *st = g_strdup (str);
+
+	return	g_strdelimit (st, ";", ',');
+}
+
+
+char *
+tracker_unescape_metadata (const char *str)
+{
+/*	char *delimiter[2];
+
+	delmiter[0] = 30;
+	delimiter[1] = NULL;
+
+	return	g_strdup (g_strdelimit (str, ";", delimiter));
+*/
+return NULL;
+}
+
+
+void
+tracker_remove_dirs (const char *root_dir)
+{
+	GQueue *dirs;
+	GSList *dirs_to_remove;
+
+	dirs = g_queue_new ();
+
+	g_queue_push_tail (dirs, g_strdup (root_dir));
+
+	dirs_to_remove = NULL;
+
+	while (!g_queue_is_empty (dirs)) {
+		char *dir;
+		GDir *dirp;
+
+		dir = g_queue_pop_head (dirs);
+
+		dirs_to_remove = g_slist_prepend (dirs_to_remove, dir);
+
+		if ((dirp = g_dir_open (dir, 0, NULL))) {
+			const char *file;
+
+			while ((file = g_dir_read_name (dirp))) {
+				char *full_filename;
+
+				full_filename = g_build_filename (dir, file, NULL);
+
+				if (g_file_test (full_filename, G_FILE_TEST_IS_DIR)) {
+					g_queue_push_tail (dirs, full_filename);
+				} else {
+					g_unlink (full_filename);
+					g_free (full_filename);
+				}
+			}
+
+			g_dir_close (dirp);
+		}
+	}
+
+	g_queue_free (dirs);
+
+	/* remove directories (now they are empty) */
+	g_slist_foreach (dirs_to_remove, (GFunc) g_rmdir, NULL);
+
+	g_slist_foreach (dirs_to_remove, (GFunc) g_free, NULL);
+
+	g_slist_free (dirs_to_remove);
+}
+
+
+
+char *
 tracker_format_search_terms (const char *str, gboolean *do_bool_search)
 {
 	char *def_prefix;
@@ -1152,7 +1226,56 @@ is_text_file (const char *uri)
 		return FALSE;
 	}
 
-	result = TRUE;
+	result = FALSE;
+
+	/* use file command if available to check the uri is of type text */
+
+	char *argv[3];
+	char *value = NULL;
+
+	argv[0] = g_strdup ("file");
+	argv[1] = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
+	argv[2] = NULL;
+
+	if (!argv[1]) {
+		tracker_log ("******ERROR**** uri or mime could not be converted to locale format");
+		g_free (argv[0]);
+		return FALSE;
+
+	} else {
+
+		if (g_spawn_sync (NULL,
+				  argv,
+				  NULL,
+				  G_SPAWN_SEARCH_PATH | G_SPAWN_STDERR_TO_DEV_NULL,
+				  NULL,
+				  NULL,
+				  &value,
+				  NULL,
+				  NULL,
+				  NULL)) {
+
+			g_debug ("uri %s is identified as %s", uri, value);
+
+			if (strstr (value, "text")) {
+				result = TRUE; 
+				g_debug ("uri %s is a text file", uri);
+			}
+
+			if (value) {
+				g_free (value);
+			}
+		} else {
+			result = TRUE;
+		}
+	}
+
+	g_free (argv[0]);
+	g_free (argv[1]);
+
+	if (!result) {
+		return FALSE;
+	}
 
 	bytes_read = 0;
 	total_bytes_read = 0;
@@ -1876,9 +1999,6 @@ tracker_load_config_file ()
 
 	if (g_key_file_has_key (key_file, "Indexing", "EnableThumbnails", NULL)) {
 		tracker->enable_thumbnails = g_key_file_get_boolean (key_file, "Indexing", "EnableThumbnails", NULL);
-
-		/* temporarily disable thumb generation as it is not compliant with fdo spec */
-		tracker->enable_thumbnails = FALSE;
 	}
 
 	values =  g_key_file_get_string_list (key_file,
@@ -2395,7 +2515,7 @@ pointer_from_offset_skipping_decomp (const gchar *str, gint offset)
 }
 
 static const char *
-g_utf8_strcasestr (const gchar *haystack, gchar **needles)
+g_utf8_strcasestr_array (const gchar *haystack, gchar **needles)
 {
 	gsize needle_len;
 	gsize haystack_len;
@@ -2522,6 +2642,24 @@ get_word_break (const char *a)
 }
 
 
+static gboolean
+is_word_break (const char a) 
+{
+	const char *breaks = "\t\n\v\f\r !\"#$%&'()*/<=>?[\\]^`{|}~+,.:;@\"[]";
+	int i;
+
+	for (i=0; breaks[i]; i++) {
+		if (a == breaks[i]) {
+			return TRUE;
+		}
+
+	}
+
+	return FALSE;
+
+}
+
+
 static char *
 highlight_terms (const char *str, char **terms)
 {
@@ -2550,7 +2688,7 @@ highlight_terms (const char *str, char **terms)
 
 		const char *ptxt = txt;
 	
-		while ((ptr = g_utf8_strcasestr  (ptxt, single_term))) {
+		while ((ptr = g_utf8_strcasestr_array  (ptxt, single_term))) {
 			char *pre_snip, *term;
 				
 			pre_snip = g_strndup (ptxt, (ptr - ptxt));
@@ -2583,46 +2721,87 @@ highlight_terms (const char *str, char **terms)
 }
 
 
+
+
 char *
 tracker_get_snippet (const char *txt, char **terms, int length)
 {
 
 	const char *ptr = NULL, *end_ptr,  *tmp;
-	int before_length, i;
+	int i, txt_len;
+
+	
 
 	if (!txt || !terms) {
 		return NULL;
 	}
 
+	txt_len = strlen (txt);
 
-	ptr = g_utf8_strcasestr (txt, terms);
+	ptr = g_utf8_strcasestr_array (txt, terms);
 
 	if (ptr) {
 		tmp = ptr;
 
 		i = 0;
-		while ((ptr-- > txt) && (i < length)) {
+
+		/* get snippet before  the matching term */
+		while ((ptr = g_utf8_prev_char (ptr)) && (ptr >= txt) && (i < length)) {
 
 			if (*ptr == '\n') {
 				break;
 			}
 			i++;
 		}
-		ptr = g_utf8_next_char (ptr);
+
+		/* try to start beginning of snippet on a word break */
+		if ((*ptr != '\n') && (ptr > txt)) {
+			i=0;
+			while (!is_word_break (*ptr) && (i<(length/2))) {
+				ptr = g_utf8_next_char (ptr);
+				i++;
+			}
+
+		} 
 		
-		before_length = i;
+		ptr = g_utf8_next_char (ptr);
+
+
+		if (!ptr || ptr < txt) {
+			return NULL;
+		}
+
 
 		end_ptr = tmp;
 		i = 0;
-		while ((end_ptr) && (end_ptr+1) && (i < length)) {
+	
+		/* get snippet after match */
+		while ((end_ptr = g_utf8_next_char (end_ptr)) && (end_ptr <= txt_len + txt) && (i < length)) {
 			i++;
-			end_ptr++;	
 			if (*end_ptr == '\n') {
 				break;
 			}
 		}
 
-		
+		while (end_ptr > txt_len + txt) {
+			end_ptr = g_utf8_prev_char (end_ptr);
+		}
+
+		/* try to end snippet on a word break */
+		if ((*end_ptr != '\n') && (end_ptr < txt_len + txt)) {
+			i=0;
+			while (!is_word_break (*end_ptr) && (i<(length/2))) {
+				end_ptr = g_utf8_prev_char (end_ptr);
+				i++;
+			}
+			
+
+		} 
+
+		if (!end_ptr || !ptr) {
+			return NULL;
+		}
+
 		char *snip, *esc_snip,  *highlight_snip;
 
 		snip = g_strndup (ptr,  end_ptr - ptr);
@@ -2642,16 +2821,20 @@ tracker_get_snippet (const char *txt, char **terms, int length)
 
 	ptr = txt;
 	i = 0;
-	while (*ptr++ && (i < length)) {
+	while ((ptr = g_utf8_next_char (ptr)) && (ptr <= txt_len + txt) && (i < length)) {
 		i++;	
 		if (*ptr == '\n') {
 			break;
 		}
-		
-	}
-	if (ptr +1) {
-		ptr = g_utf8_next_char (ptr);
 	}
 
-	return g_strndup (txt, ptr - txt);
+	if (ptr > txt_len + txt) {
+		ptr = g_utf8_prev_char (ptr);
+	}
+
+	if (ptr) {
+		return g_strndup (txt, ptr - txt);
+	} else {
+		return NULL;
+	}
 }

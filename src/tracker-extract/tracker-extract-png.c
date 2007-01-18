@@ -1,3 +1,22 @@
+/* Tracker Extract - extracts embedded metadata from files
+ * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
+ */
+
 
 #include "config.h"
 
@@ -11,15 +30,15 @@ static struct {
 	char *name;
 	char *type;
 } tagmap[] = {
-	{ "Author" , "Image.Creator"},
-	{ "Creator" , "Image.Creator"},
-   	{ "Description" , "Image.Description"},
-   	{ "Comment", "Image.Comments"},
-   	{ "Copyright", "Image.Copyright"},
-   	{ "Creation Time", "Image.Date"},
-   	{ "Title", "Image.Title"},
-   	{ "Software", "Image.Software"},
-   	{ "Disclaimer", "Image.License"},
+	{ "Author" , "Image:Creator"},
+	{ "Creator" , "Image:Creator"},
+   	{ "Description" , "Image:Description"},
+   	{ "Comment", "Image:Comments"},
+   	{ "Copyright", "File:Copyright"},
+   	{ "Creation Time", "Image:Date"},
+   	{ "Title", "Image:Title"},
+   	{ "Software", "Image:Software"},
+   	{ "Disclaimer", "File:License"},
 	{ NULL, NULL},
 };
 
@@ -56,9 +75,9 @@ tracker_extract_png (gchar *filename, GHashTable *metadata)
 		/* read header bits */
 		if (png_get_IHDR (png_ptr, info_ptr, &width, &height, &bit_depth,
 		                 &color_type, &interlace_type, &compression_type, &filter_type)) {
-			g_hash_table_insert (metadata, g_strdup ("Image.Width"),
+			g_hash_table_insert (metadata, g_strdup ("Image:Width"),
 			                     g_strdup_printf ("%ld", width));
-			g_hash_table_insert (metadata, g_strdup ("Image.Height"),
+			g_hash_table_insert (metadata, g_strdup ("Image:Height"),
 			                     g_strdup_printf ("%ld", height));
 		}
 

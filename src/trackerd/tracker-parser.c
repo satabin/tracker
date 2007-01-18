@@ -1,21 +1,20 @@
-/* Tracker
- * utility routines
- * Copyright (C) 2005, Mr Jamie McCracken
+/* Tracker - indexer and metadata database engine
+ * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the free Software Foundation; either
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
+ * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the
- * free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
  */
 
 #include <string.h>
@@ -66,14 +65,44 @@ delimit_utf8_string (const gchar *str)
 	return g_string_free (strs, FALSE);
 }
 
+/* check word either contains at least one alpha char or is a number of at least 5 consecutive digits (we want to index meaningful numbers only like telephone no.s, bank accounts, ISBN etc) */
+static gboolean 
+numbered_word_is_valid (const char *word)
+{
+	const char *p;
+	gunichar   c;
+	int i = 0;
 
-/* check word starts with alpha char or underscore */
+	for (p = word; *p; p = g_utf8_next_char (p)) {
+
+		i++;
+
+		c = g_utf8_get_char (p);
+
+		if (g_unichar_isalpha (c) ) {
+			return TRUE;
+		}
+
+		if (!g_unichar_isdigit (c) ) {
+			return FALSE;
+		}	
+	}
+
+	return (i > 4);
+
+}
+
+/* check word starts with alphanumeric char or underscore and only numbers of 5 or more digits are indexed */
 static gboolean
 word_is_valid (const char *word)
 {
 	gunichar c;
 
 	c = g_utf8_get_char (word);
+
+	if (g_unichar_isalnum (c)) {
+		return numbered_word_is_valid (word);
+	} 
 
 	return (g_unichar_isalpha (c) || word[0] == '_');
 }
@@ -177,8 +206,7 @@ tracker_parse_text (GHashTable *word_table, const char *text, int weight)
 	char	   *delimit_text;
 	char	   **words;
 
-	g_return_val_if_fail (text, NULL);
-
+	if (!text) return g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
 	if (!word_table) {	
 		word_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);

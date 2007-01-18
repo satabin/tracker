@@ -114,9 +114,6 @@
 /* Define ioprio support */
 #undef IOPRIO_SUPPORT
 
-/* is debugging enabled? */
-#undef LIBINOTIFY_DEBUG
-
 /* Name of package */
 #undef PACKAGE
 

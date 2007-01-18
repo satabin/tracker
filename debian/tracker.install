@@ -1,9 +1,10 @@
 debian/tmp/usr/bin/htmless
-debian/tmp/usr/bin/o3totxt
 debian/tmp/usr/bin/trackerd
+debian/tmp/usr/bin/tracker-thumbnailer
 debian/tmp/usr/bin/tracker-extract
 debian/tmp/usr/share/dbus-1/services/
 debian/tmp/usr/share/tracker/
 debian/tmp/usr/share/locale/
-trackerd.desktop etc/xdg/autostart/
-trackerd-kde.desktop usr/share/autostart/
+debian/tmp/usr/lib/tracker/
+debian/tmp/etc/xdg/autostart/trackerd.desktop
+debian/tmp/etc/xdg/autostart/trackerd.desktop usr/share/autostart/

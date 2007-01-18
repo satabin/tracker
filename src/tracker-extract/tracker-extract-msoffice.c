@@ -2,22 +2,21 @@
  * Copyright (C) 2006, Edward Duffy (eduffy@gmail.com)
  * Copyright (C) 2006, Laurent Aguerreche (laurent.aguerreche@free.fr)
  *
- * This library is free software; you can redistribute it and/or
+ * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
  */
-
 #include "config.h"
 
 #ifdef HAVE_LIBGSF
@@ -91,31 +90,31 @@ metadata_cb (gpointer key, gpointer value, gpointer user_data)
 	val = gsf_doc_prop_get_val (property);
 
 	if (strcmp (name, "dc:title") == 0) {
-		add_gvalue_in_hash_table (metadata, "Doc.Title", val);
+		add_gvalue_in_hash_table (metadata, "Doc:Title", val);
 	}
 	else if (strcmp (name, "dc:subject") == 0) {
-		add_gvalue_in_hash_table (metadata, "Doc.Subject", val);
+		add_gvalue_in_hash_table (metadata, "Doc:Subject", val);
 	}
 	else if (strcmp (name, "dc:creator") == 0) {
-		add_gvalue_in_hash_table (metadata, "Doc.Author", val);
+		add_gvalue_in_hash_table (metadata, "Doc:Author", val);
 	}
 	else if (strcmp (name, "dc:keywords") == 0) {
-		add_gvalue_in_hash_table (metadata, "Doc.Keywords", val);
+		add_gvalue_in_hash_table (metadata, "Doc:Keywords", val);
 	}
 	else if (strcmp (name, "dc:description") == 0) {
-		add_gvalue_in_hash_table (metadata, "Doc.Comment", val);
+		add_gvalue_in_hash_table (metadata, "Doc:Comments", val);
 	}
 	else if (strcmp (name, "gsf:page-count") == 0) {
-		add_gvalue_in_hash_table (metadata, "Doc.PageCount", val);
+		add_gvalue_in_hash_table (metadata, "Doc:PageCount", val);
 	}
 	else if (strcmp (name, "gsf:word-count") == 0) {
-		add_gvalue_in_hash_table (metadata, "Doc.WordCount", val);
+		add_gvalue_in_hash_table (metadata, "Doc:WordCount", val);
 	}
 	else if (strcmp (name, "meta:creation-date") == 0) {
-		add_gvalue_in_hash_table (metadata, "Doc.Created", val);
+		add_gvalue_in_hash_table (metadata, "Doc:Created", val);
 	}
 	else if (strcmp (name, "meta:generator") == 0) {
-		add_gvalue_in_hash_table (metadata, "File.Other", val);
+		add_gvalue_in_hash_table (metadata, "File:Other", val);
 	}
 }
 

@@ -55,6 +55,8 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	uninstall-recursive
 ETAGS = etags
 CTAGS = ctags
+DIST_SUBDIRS = libstemmer sqlite3 text-filters trackerd libtracker \
+	tracker-extract tracker-thumbnailer tracker-search-tool
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
@@ -270,12 +272,9 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-@HAVE_GNOME_FALSE@tracker_gui_dir = 
 @HAVE_GNOME_TRUE@tracker_gui_dir = tracker-search-tool
 @USING_EXTERNAL_SQLITE_FALSE@sqlite_dir = sqlite3
-@USING_EXTERNAL_SQLITE_TRUE@sqlite_dir = 
-SUBDIRS = libstemmer $(sqlite_dir) text-filters trackerd libtracker tracker-extract $(tracker_gui_dir)
-DIST_SUBDIRS = libstemmer $(sqlite_dir) text-filters trackerd libtracker tracker-extract $(tracker_gui_dir)
+SUBDIRS = libstemmer $(sqlite_dir) text-filters trackerd libtracker tracker-extract tracker-thumbnailer $(tracker_gui_dir)
 all: all-recursive
 
 .SUFFIXES:

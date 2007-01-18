@@ -1,7 +1,10 @@
-tracker (0.5.2+debian-1) unstable; urgency=low
+tracker (0.5.3-1) unstable; urgency=low
 
   * Initial release. Closes: #387110
-  * Rebuild upstream tarball without debian/ directory.
+    Based on work by Laurent Aguerreche and Jamie McCracken.
+  * Build against system sqlite library.
+  * Do not ship the internal o3totxt utility but rather add a
+    Recommends: o3read.
+  * Write missing man pages.
 
- -- Michael Biebl <biebl@debian.org>  Tue, 28 Nov 2006 20:35:52 +0100
-
+ -- Michael Biebl <biebl@debian.org>  Fri, 19 Jan 2007 00:29:39 +0100

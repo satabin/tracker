@@ -341,15 +341,14 @@ target_alias = @target_alias@
 INCLUDES = \
 	-DDATADIR=\""$(datadir)"\"	\
 	$(GLIB2_CFLAGS)			\
-	$(DBUS_CFLAGS)			\
-	$(CFLAGS) 			\
-	-g
+	$(DBUS_CFLAGS)			
 
 lib_LTLIBRARIES = libtrackerclient.la
 libtrackerclient_la_LIBADD = $(GLIB2_LIBS) 	\
 	    	       $(DBUS_LIBS)
 
 libtrackerclient_la_SOURCES = tracker.c
+libtrackerclient_la_LDFLAGS = -version-info 0:0:0
 include_HEADERS = tracker.h tracker-client.h		
 tracker_search_SOURCES = tracker-search.c
 tracker_search_LDADD = $(GLIB2_LIBS) 	\
@@ -690,8 +689,6 @@ info-am:
 install-data-am: install-includeHEADERS
 
 install-exec-am: install-binPROGRAMS install-libLTLIBRARIES
-	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) install-exec-hook
 
 install-info: install-info-am
 
@@ -726,19 +723,15 @@ uninstall-am: uninstall-binPROGRAMS uninstall-includeHEADERS \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-binPROGRAMS \
 	install-data install-data-am install-exec install-exec-am \
-	install-exec-hook install-includeHEADERS install-info \
-	install-info-am install-libLTLIBRARIES install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-binPROGRAMS uninstall-includeHEADERS \
-	uninstall-info-am uninstall-libLTLIBRARIES
+	install-includeHEADERS install-info install-info-am \
+	install-libLTLIBRARIES install-man install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags uninstall uninstall-am uninstall-binPROGRAMS \
+	uninstall-includeHEADERS uninstall-info-am \
+	uninstall-libLTLIBRARIES
 
-
-install-exec-hook:
-	cd $(DESTDIR)/$(libdir) && rm -f libtracker.so && ln -s libtrackerclient.so libtracker.so
-	cd $(DESTDIR)/$(libdir) && rm -f libtracker.so.0 && ln -s libtrackerclient.so.0 libtracker.so.0
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

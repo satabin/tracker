@@ -1,49 +1,23 @@
 SUBDIRS = data src filters thumbnailers docs po
 
 pkgconfigdir = $(libdir)/pkgconfig
+xdgconfigdir = $(sysconfdir)/xdg/autostart
 pkgconfig_DATA = tracker.pc
-
-debian_files = \
-	debian/changelog \
-	debian/compat \
-	debian/control \
-	debian/copyright \
-	debian/libtrackerclient0-dev.docs \
-	debian/libtrackerclient0-dev.install \
-	debian/libtrackerclient0-dev.links \
-	debian/libtrackerclient0-dev.linda-overrides \
-	debian/libtrackerclient0.docs \
-	debian/libtrackerclient0.install \
-	debian/libtrackerclient0.links \
-	debian/libtrackerclient0.linda-overrides \
-	debian/tracker-data.docs \
-	debian/tracker-data.install \
-	debian/tracker-data.linda-overrides \
-	debian/tracker.docs \
-	debian/tracker.install \
-	debian/tracker.manpages \
-	debian/tracker-utils.docs \
-	debian/tracker-utils.examples \
-	debian/tracker-utils.install \
-	debian/tracker-utils.linda-overrides \
-	debian/tracker-utils.manpages \
-	debian/tracker-gnome-search-tool.install \
-	debian/tracker-gnome-search-tool.docs \
-	debian/tracker-gnome-search-tool.linda-overrides \
-	debian/rules
+xdgconfig_DATA = trackerd.desktop
 
 EXTRA_DIST = \
-	$(pkgconfig_DATA) \
+	$(xdgconfig_DATA) \
 	AUTHORS NEWS INSTALL COPYING README \
 	ChangeLog \
 	configure.in \
-	rdf-query-examples/*.rdf \
-	trackerd.desktop \
-	trackerd-kde.desktop \
+	rdf-query-examples/80s-music.rdf \
+	rdf-query-examples/90s-music.rdf \
+	rdf-query-examples/all-documents.rdf \
+	rdf-query-examples/big-documents.rdf \
+	rdf-query-examples/wallpapers.rdf \
 	intltool-extract.in \
 	intltool-merge.in \
-	intltool-update.in \
-	$(debian_files)
+	intltool-update.in 
 
 DISTCLEANFILES = \
 	intltool-extract \

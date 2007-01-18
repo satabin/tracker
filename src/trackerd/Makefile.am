@@ -9,6 +9,7 @@ endif
 
 INCLUDES =				\
 	-DDATADIR=\""$(datadir)"\"	\
+	-DLIBDIR=\""$(libdir)"\"	\
 	-D_XOPEN_SOURCE_EXTENDED=1	\
 	-D_GNU_SOURCE=1			\
 	-D__EXTENSIONS__=1		\
@@ -18,16 +19,14 @@ INCLUDES =				\
 	-DPIC=1				\
 	-D_REENTRANT=1			\
 	-DNDEBUG 			\
-	-DHAVE_MMAP			\
 	$(GLIB2_CFLAGS)			\
 	$(PANGO_CFLAGS)			\
 	$(GMIME_CFLAGS)			\
 	$(FAM_CFLAGS)			\
 	$(DBUS_CFLAGS)			\
 	$(additional_flags)		\
-	$(CFLAGS) 			\
-	-I$(top_builddir)/src/libstemmer \
-	-g 
+	-I$(top_builddir)/src/libstemmer 
+
 
 if HAVE_INOTIFY
 inotify_sources = \

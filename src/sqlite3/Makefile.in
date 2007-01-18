@@ -288,16 +288,13 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 INCLUDES = \
-	$(CFLAGS) 			\
 	 -DOS_UNIX=1			\
 	 -DHAVE_USLEEP=1 		\
 	 -DHAVE_FDATASYNC=1 		\
 	 -DNDEBUG			\
 	 -DTHREADSAFE=1			\
 	 -DSQLITE_THREAD_OVERRIDE_LOCK=-1	\
-	 -DSQLITE_OMIT_CURSOR 		\
-	-static				\
-	-g
+	 -DSQLITE_OMIT_CURSOR 		
 
 noinst_LTLIBRARIES = libsqlite-private.la
 libsqlite_private_la_LIBADD = -lpthread

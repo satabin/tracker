@@ -107,6 +107,12 @@ src/tracker-search-tool/sexy-icon-* (inlined copy of libsexy)
 Copyright (C) 2004-2006 Christian Hammond
 License: LGPL v2 or later
 
+===============================================================================
+python/deskbar-handler/tracker-handler.py
+
+Copyright (c) 2006 Mikkel Kamstrup
+License: GPL v2 or later
+
 
 
 On Debian systems, the complete text of the GNU Lesser General

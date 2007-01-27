@@ -100,7 +100,8 @@ word_is_valid (const char *word)
 
 	c = g_utf8_get_char (word);
 
-	if (g_unichar_isalnum (c)) {
+	if (tracker->index_numbers && g_unichar_isalnum (c)) {
+		
 		return numbered_word_is_valid (word);
 	} 
 
@@ -147,7 +148,7 @@ tracker_parse_text_into_array (const char *text)
 	int count;
 	GString *str;
 
-	table = tracker_parse_text (NULL, text, 1);
+	table = tracker_parse_text (NULL, text, 1, TRUE);
 
 	if (!table || g_hash_table_size (table) == 0) {
 		return NULL;
@@ -198,113 +199,173 @@ update_word_count (GHashTable *word_table, const char *word, int weight)
 }
 
 
-
-GHashTable *
-tracker_parse_text (GHashTable *word_table, const char *text, int weight)
+static inline gboolean
+valid_char (const unsigned char c)
 {
+	return ((c > 96 && c < 123) || (c > 64 && c < 91) || (c > 47 && c < 58) || (c == '_') || (c == '-') || (c > 127));
+}
 
-	char	   *delimit_text;
-	char	   **words;
 
-	if (!text) return g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-	if (!word_table) {	
-		word_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+static char *
+process_word (const char *index_word) 
+{
+	char *word, *s;
+	int word_len;
+
+	/* ignore all words less than min word length unless pango delimited as it may be CJK language */
+	word_len = g_utf8_strlen (index_word, -1);
+	if (!tracker->use_pango_word_break && (word_len < tracker->min_word_length)) {
+		return NULL;
 	}
 
-	delimit_text = (char *) text;
+	/* remove words that dont contain at least one alpha char */
+	if (!word_is_valid (index_word)) {
+		return NULL;
+	}
 
+
+	/* normalize word */
+	s = g_utf8_casefold (index_word, -1);
+	word = g_utf8_normalize (s, -1, G_NORMALIZE_NFD);
+	g_free (s);
+	
+	if (!word || word[0] == '\0') {
+		return NULL;
+	}
+
+	/* ignore all stop words */
+	if (tracker->stop_words) {
+		if (g_hash_table_lookup (tracker->stop_words, word)) {
+			g_free (word);
+			return NULL;
+		}
+	}
+
+	/* truncate words more than max word length in bytes */
+	if (word_len > tracker->max_word_length) {
+
+		word_len = tracker->max_word_length -1;
+
+		word[word_len] = '\0';
+
+		while (word_len != 0) {
+
+			word_len--;
+	
+			if ((word_len > 0) && (word_len  <= tracker->max_word_length) && (g_utf8_validate (word, word_len, NULL))) {
+				word[word_len-1] = '\0';
+				break;
+			}
+		}
+	
+		if (!word) {
+			return NULL;
+		}
+	}
+
+	/* stem words if word only contains alpha chars */
+	if (tracker->stemmer && tracker->use_stemmer && word_is_alpha (word)) {
+		char *aword;
+
+		aword = tracker_stem (word);
+
+		g_free (word);
+		word = aword;
+	}
+
+	return word;
+	
+}
+
+
+GHashTable *
+tracker_parse_text (GHashTable *word_table, const char *text, int weight, gboolean filter_words)
+{
+	char *delimit_text;
+	int  i, j, total_words;
+	char 	*start;
+
+	total_words = 0;
+
+	if (!text) {
+		return g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+	}
+
+	if (!word_table) {
+		word_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+	} else {
+		total_words = g_hash_table_size (word_table);
+	}
 
 	if (tracker->use_pango_word_break) {
-	  	delimit_text = delimit_utf8_string (text);
+		delimit_text = delimit_utf8_string (text);
+	} else {
+		delimit_text = (char *) text;
 	}
 
 	/* break text into words */
+	start = NULL;
+	i=0;
+	j=0;
+	
+	while (TRUE) {
+	
+		if (text[i] && valid_char (text[i])) {	
+			if (!start) {
+				start = (char *)(text + i);
+				j = i;
+			} 
+			i++;
+			continue;
+		} else { 
 
-	words = g_strsplit_set (delimit_text, "\t\n\v\f\r !\"#$%&'()*/<=>?[\\]^`{|}~+,.:;@\"[]" , -1);
-
-	if (words) {
-		char **p;
-
-		for (p = words; *p; p++) {
-			char *word;
-			int  word_len;
-
-			/* remove words that dont contain at least one alpha char */
-			if (!word_is_valid (*p)) {
+			if (!start) {
+				if (!text[i]) {
+					break;
+				}
+				i++;
 				continue;
-			}
+			} else {
 
-			/* ignore all words less than min word length unless pango delimited as it may be CJK language */
-			word_len = g_utf8_strlen (*p, -1);
-			if (!tracker->use_pango_word_break && (word_len < tracker->min_word_length)) {
-				continue;
-			}
+				/* we have a word */
+				char *word, *index_word;
 
+				word = g_strndup (start, i-j);
 
-			/* normalize word */			
-			char *s2;
-			s2 = g_utf8_casefold (*p, -1);
-			word = g_utf8_normalize (s2, -1, G_NORMALIZE_NFD);
-			g_free (s2);
-			
-			word_len = strlen (word);
-
-			if (!word || (word_len == 0)) {
-				continue;
-			}
-
-			/* ignore all stop words */
-			if (tracker->stop_words) {
-				if (g_hash_table_lookup (tracker->stop_words, word)) {
+				if (filter_words) {
+					index_word = process_word (word);
 					g_free (word);
+				} else {
+					index_word = word;
+				}
+
+				if (!index_word) {
+					start = NULL;
 					continue;
 				}
-			}
+				total_words++;
 
-
-
-			/* truncate words more than max word length in bytes */
-			if (word_len > tracker->max_word_length) {
-
-				word_len = tracker->max_word_length -1;
-
-				word[word_len] = '\0';
-
-				while (word_len != 0) {
-
-					word_len--;
-
-					if ((word_len > 0) && (word_len  <= tracker->max_word_length) && (g_utf8_validate (word, word_len, NULL))) {
-						word[word_len-1] = '\0';
-						break;
-					}
+				if (total_words < 10000) {
+					update_word_count (word_table, index_word, weight);
+				} else {
+					//tracker_log ("Number of unique words in this indexable content exceeds 10,000 - cropping index..."); 
+					g_free (index_word);
+					break;
 				}
 
-				if (!word) {
-					continue;
+				g_free (index_word);
+
+				if (!text[i]) {
+					break;
+				} else {
+					start = NULL;
 				}
+
+				
 			}
-
-			/* stem words if word only contains alpha chars */
-			if (tracker->stemmer && tracker->use_stemmer && word_is_alpha (word)) {
-				char *aword;
-
-				aword = tracker_stem (word);
-
-				//g_print ("stemmed %s to %s\n", word, aword);
-				g_free (word);
-				word = aword;
-
-			
-			}
-
-			update_word_count (word_table, word, weight);
-			g_free (word);
 
 		}
-
-		g_strfreev  (words);
 	}
 
 	if (tracker->use_pango_word_break) {

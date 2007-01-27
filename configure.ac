@@ -3,14 +3,12 @@
 # This file is part of Tracker.
 
 AC_PREREQ(2.57)
-AC_INIT([tracker],[0.5.3],[tracker-list@gnome.org])
+AC_INIT([tracker],[0.5.4],[tracker-list@gnome.org])
 
 AC_CONFIG_SRCDIR([src/trackerd/trackerd.c])
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+AM_INIT_AUTOMAKE([dist-bzip2])
 
-AC_SUBST(PACKAGE_URL, [http://www.gnome.org/~jamiemcc/tracker/])
-
-AM_CONFIG_HEADER(config.h)
+AC_SUBST(PACKAGE_URL, [http://www.tracker-project.org])
 
 CFLAGS="$CFLAGS"
 
@@ -18,11 +16,19 @@ CFLAGS="$CFLAGS"
 AC_PROG_CC
 AC_HEADER_STDC
 
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([fcntl.h sitdlib.h string.h sys/time.h unistd.h linux/unistd.h zlib.h])
+AC_CHECK_HEADERS([fcntl.h sitdlib.h string.h sys/time.h unistd.h linux/unistd.h])
+
+AC_CHECK_HEADER([zlib.h],
+                [],
+                [AC_MSG_ERROR([You must have zlib.h and zlib installed])])
+
+AC_CHECK_HEADER([magic.h],
+                [],
+                [AC_MSG_ERROR([You must have magic.h and libmagic installed])])
 
 # Checks for functions
 AC_CHECK_FUNCS([getline])
@@ -63,9 +69,47 @@ AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 
 # Check for libpng 1.2 or higher
-PKG_CHECK_MODULES(LIBPNG, [libpng >= 1.2])
+PKG_CHECK_MODULES(LIBPNG, [ libpng >= 1.2 ])
 AC_SUBST(LIBPNG_CFLAGS)
 AC_SUBST(LIBPNG_LIBS)
+
+####################################################################
+# DBus Service
+####################################################################
+
+dnl DBus services dir
+AC_ARG_WITH([session_bus_services_dir],
+            AC_HELP_STRING([--with-session-bus-services-dir], [Path to DBus services directory]))
+
+if test "x$with_session_bus_services_dir" = "x" ; then
+   services_dir="`pkg-config --variable session_bus_services_dir dbus-1`"
+else
+   services_dir="$with_session_bus_services_dir"
+fi
+
+DBUS_SERVICES_DIR="$services_dir"
+AC_SUBST(DBUS_SERVICES_DIR)
+
+
+####################################################################
+# Deskbar Applet Handler
+####################################################################
+
+AC_ARG_WITH([deskbar_applet_handler_dir],
+            AC_HELP_STRING([--with-deskbar-applet-handler-dir], [Path to Deskbar handler directory]))
+
+if test "x$with_deskbar_applet_handler_dir" = "x" ; then
+   handler_dir="`pkg-config --variable handlersdir deskbar-applet`"
+else
+   handler_dir="$with_deskbar_applet_handler_dir"
+fi
+
+
+
+DESKBAR_HANDLER_DIR="$handler_dir"
+AC_SUBST(DESKBAR_HANDLER_DIR)
+
+
 
 ####################################################################
 # Compiler warning checks
@@ -89,10 +133,9 @@ fi
 ####################################################################
 
 
-AC_ARG_ENABLE(debug_code, 
-	AC_HELP_STRING(
-		[--enable-debug-code],
-		[build with debug symbols]),[enable_debug_code=yes],[enable_debug_code=no])
+AC_ARG_ENABLE([debug_code],
+              AC_HELP_STRING([--enable-debug-code], [build with debug symbols]),,
+              [enable_debug_code=no])
 
 if test "x$enable_debug_code" = "xyes"; then
 	CFLAGS="-g $CFLAGS"
@@ -102,7 +145,7 @@ fi
 # gettext/intltool support 
 ####################################################################
 
-ALL_LINGUAS="de es fi fr it sv"
+ALL_LINGUAS="ar de en_GB es et fi fr gl it nb sl sv"
 AC_SUBST(ALL_LINGUAS)
 
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
@@ -214,22 +257,12 @@ else
 	AM_CONDITIONAL(USING_GSTREAMER, false)
 fi
 
-AM_CONDITIONAL(BUILD_TEST, false)
-AC_ARG_ENABLE(test, AC_HELP_STRING([--enable-test],[build test suite]),
-			 [
-				AM_CONDITIONAL(BUILD_TEST, true)
-				AC_DEFINE(BUILD_TEST, [], [Define if we are building test stuff])
-			 ]
-	 	)
 
 ####################################################################
-# Optional database/indexer component checks
+# External SQLite check
 ####################################################################
-
 
 SQLITE_REQUIRED=3.2
-AC_DEFINE(USING_SQLITE, [], [Define if we are using sqlite])
-AM_CONDITIONAL(USING_SQLITE, true)
 
 AC_ARG_ENABLE(external_sqlite, 
 	AC_HELP_STRING(
@@ -237,17 +270,18 @@ AC_ARG_ENABLE(external_sqlite,
 		[build using system's sqlite which must be a threadsafe version]),,
 	[enable_external_sqlite=no])
 
-if test "x$enable_external_sqlite" = "xyes"; 
-then
-	
-	# Check for SQLite3
+if test "x$enable_external_sqlite" = "xyes"; then
 	PKG_CHECK_MODULES(SQLITE3, [ sqlite3 >= $SQLITE_REQUIRED ])
-	AC_SUBST(SQLITE3_CFLAGS)
-	AC_SUBST(SQLITE3_LIBS)
 	AM_CONDITIONAL(USING_EXTERNAL_SQLITE, true)
 else
+	SQLITE3_CFLAGS="-I\$(top_srcdir)/src/sqlite3"
+	SQLITE3_LIBS="\$(top_builddir)/src/sqlite3/libsqlite-private.la"
 	AM_CONDITIONAL(USING_EXTERNAL_SQLITE, false)
 fi		
+
+AC_SUBST(SQLITE3_CFLAGS)
+AC_SUBST(SQLITE3_LIBS)
+
 
 ###############################################################################
 # Check for file monitor backends
@@ -435,27 +469,6 @@ fi
 AM_CONDITIONAL(HAVE_POPPLER_GLIB, test "$have_poppler" = "yes")
 test "$have_poppler" = "yes" && AC_DEFINE(HAVE_POPPLER, [], [Define if we have poppler])
 
-
-##################################################################
-# check for libpng
-##################################################################
-
-LIBPNG_REQUIRED=1.2
-
-AC_ARG_ENABLE(png, AC_HELP_STRING([--disable-png],[Disable PNG data extractor]),,[enable_png=yes])
-if test "x$enable_png" = "xyes"; then
-	PKG_CHECK_MODULES(LIBPNG, [
-		libpng >= $LIBPNG_REQUIRED],
-		[have_libpng=yes] , [have_libpng=no])
-	AC_SUBST(LIBPNG_CFLAGS)
-	AC_SUBST(LIBPNG_LIBS)
-else
-	have_libpng="no (disabled)"
-fi
-AM_CONDITIONAL(HAVE_LIBPNG, test "$have_libpng" = "yes")
-test "$have_libpng" = "yes" && AC_DEFINE(HAVE_LIBPNG, [], [Define if we have libpng])
-
-
 ##################################################################
 # check for libexif
 ##################################################################
@@ -540,8 +553,11 @@ AC_CONFIG_FILES([
 	src/trackerd/Makefile
 	src/libtracker/Makefile
 	src/tracker-search-tool/Makefile
+	src/xdgmime/Makefile
 	po/Makefile.in
 ])
+
+AC_CONFIG_HEADERS([config.h])
 
 AC_OUTPUT
 
@@ -562,7 +578,7 @@ Tracker-$VERSION:
 Metadata extractors:
 
 	pdf:					$have_poppler
-	png:					$have_libpng
+	png:					yes
 	exif (jpeg):				$have_libexif
 	gsf:					$have_libgsf
 	video files:				$videos_are_handled ($videos_handler)

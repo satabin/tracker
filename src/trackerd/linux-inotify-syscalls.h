@@ -15,7 +15,7 @@
  *   License along with this library; if not, write to the Free Software
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110
  *
- *   $Id: linux-inotify-syscalls.h,v 1.1 2006/02/27 00:31:36 jamiemcc Exp $
+ *   $Id: linux-inotify-syscalls.h 13 2006-02-27 00:31:36Z jamiemcc $
  */
 
 #ifndef _linux_inotify_syscalls_h_

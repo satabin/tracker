@@ -1,7 +1,4 @@
-/* config.h.in.  Generated from configure.in by autoheader.  */
-
-/* Define if we are building test stuff */
-#undef BUILD_TEST
+/* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
@@ -54,9 +51,6 @@
 /* Define if we have libgsf */
 #undef HAVE_LIBGSF
 
-/* Define if we have libpng */
-#undef HAVE_LIBPNG
-
 /* Define if we have Libxine */
 #undef HAVE_LIBXINE
 
@@ -108,9 +102,6 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
-/* Define to 1 if you have the <zlib.h> header file. */
-#undef HAVE_ZLIB_H
-
 /* Define ioprio support */
 #undef IOPRIO_SUPPORT
 
@@ -140,9 +131,6 @@
 
 /* Define that Tracker will try to use external video players */
 #undef USING_EXTERNAL_VIDEO_PLAYER
-
-/* Define if we are using sqlite */
-#undef USING_SQLITE
 
 /* Version number of package */
 #undef VERSION

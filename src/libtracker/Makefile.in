@@ -43,10 +43,10 @@ bin_PROGRAMS = tracker-search$(EXEEXT) tracker-query$(EXEEXT) \
 	tracker-tag$(EXEEXT) tracker-files$(EXEEXT)
 subdir = src/libtracker
 DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in
+	$(srcdir)/Makefile.in COPYING.LIB
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -73,33 +73,32 @@ am_tracker_files_OBJECTS = tracker-files.$(OBJEXT)
 tracker_files_OBJECTS = $(am_tracker_files_OBJECTS)
 tracker_files_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libtracker/libtrackerclient.la
+	libtrackerclient.la
 am_tracker_meta_folder_OBJECTS =  \
 	tracker-get-meta-for-folder.$(OBJEXT)
 tracker_meta_folder_OBJECTS = $(am_tracker_meta_folder_OBJECTS)
 tracker_meta_folder_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libtracker/libtrackerclient.la
+	libtrackerclient.la
 am_tracker_query_OBJECTS = tracker-query.$(OBJEXT)
 tracker_query_OBJECTS = $(am_tracker_query_OBJECTS)
 tracker_query_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libtracker/libtrackerclient.la
+	libtrackerclient.la
 am_tracker_search_OBJECTS = tracker-search.$(OBJEXT)
 tracker_search_OBJECTS = $(am_tracker_search_OBJECTS)
 tracker_search_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libtracker/libtrackerclient.la
+	libtrackerclient.la
 am_tracker_stats_OBJECTS = tracker-stats.$(OBJEXT)
 tracker_stats_OBJECTS = $(am_tracker_stats_OBJECTS)
 tracker_stats_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libtracker/libtrackerclient.la
+	libtrackerclient.la
 am_tracker_tag_OBJECTS = tracker-tag.$(OBJEXT)
 tracker_tag_OBJECTS = $(am_tracker_tag_OBJECTS)
 tracker_tag_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libtracker/libtrackerclient.la
+	$(am__DEPENDENCIES_1) libtrackerclient.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -135,8 +134,6 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BUILD_TEST_FALSE = @BUILD_TEST_FALSE@
-BUILD_TEST_TRUE = @BUILD_TEST_TRUE@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -152,8 +149,10 @@ CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
 DBUS_CFLAGS = @DBUS_CFLAGS@
 DBUS_LIBS = @DBUS_LIBS@
+DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -197,8 +196,6 @@ HAVE_LIBEXIF_FALSE = @HAVE_LIBEXIF_FALSE@
 HAVE_LIBEXIF_TRUE = @HAVE_LIBEXIF_TRUE@
 HAVE_LIBGSF_FALSE = @HAVE_LIBGSF_FALSE@
 HAVE_LIBGSF_TRUE = @HAVE_LIBGSF_TRUE@
-HAVE_LIBPNG_FALSE = @HAVE_LIBPNG_FALSE@
-HAVE_LIBPNG_TRUE = @HAVE_LIBPNG_TRUE@
 HAVE_POPPLER_GLIB_FALSE = @HAVE_POPPLER_GLIB_FALSE@
 HAVE_POPPLER_GLIB_TRUE = @HAVE_POPPLER_GLIB_TRUE@
 HAVE_RECENT_GLIB_FALSE = @HAVE_RECENT_GLIB_FALSE@
@@ -283,8 +280,6 @@ USING_GSTREAMER_FALSE = @USING_GSTREAMER_FALSE@
 USING_GSTREAMER_TRUE = @USING_GSTREAMER_TRUE@
 USING_LIBXINE_FALSE = @USING_LIBXINE_FALSE@
 USING_LIBXINE_TRUE = @USING_LIBXINE_TRUE@
-USING_SQLITE_FALSE = @USING_SQLITE_FALSE@
-USING_SQLITE_TRUE = @USING_SQLITE_TRUE@
 VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
@@ -354,37 +349,37 @@ tracker_search_SOURCES = tracker-search.c
 tracker_search_LDADD = $(GLIB2_LIBS) 	\
 		 	$(DBUS_LIBS)	\
 		 	$(GOBJECT_LIBS)	\
-			$(top_builddir)/src/libtracker/libtrackerclient.la
+			libtrackerclient.la
 
 tracker_query_SOURCES = tracker-query.c
 tracker_query_LDADD = $(GLIB2_LIBS) 	\
 		 	$(DBUS_LIBS)	\
 		 	$(GOBJECT_LIBS)	\
-			$(top_builddir)/src/libtracker/libtrackerclient.la
+			libtrackerclient.la
 
 tracker_meta_folder_SOURCES = tracker-get-meta-for-folder.c
 tracker_meta_folder_LDADD = $(GLIB2_LIBS) 	\
 		 		$(DBUS_LIBS)	\
 		 		$(GOBJECT_LIBS)	\
-				$(top_builddir)/src/libtracker/libtrackerclient.la
+				libtrackerclient.la
 
 tracker_stats_SOURCES = tracker-stats.c
 tracker_stats_LDADD = $(GLIB2_LIBS) 	\
 		 	$(DBUS_LIBS)	\
 		 	$(GOBJECT_LIBS)	\
-			$(top_builddir)/src/libtracker/libtrackerclient.la
+			libtrackerclient.la
 
 tracker_tag_SOURCES = tracker-tag.c
 tracker_tag_LDADD = $(GLIB2_LIBS) 	\
 		 	$(DBUS_LIBS)	\
 		 	$(GOBJECT_LIBS)	\
-			$(top_builddir)/src/libtracker/libtrackerclient.la
+			libtrackerclient.la
 
 tracker_files_SOURCES = tracker-files.c
 tracker_files_LDADD = $(GLIB2_LIBS) 	\
 		 	$(DBUS_LIBS)	\
 		 	$(GOBJECT_LIBS)	\
-			$(top_builddir)/src/libtracker/libtrackerclient.la
+			libtrackerclient.la
 
 all: all-am
 

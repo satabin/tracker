@@ -4,7 +4,7 @@ CREATE TABLE Options (
 	OptionValue	Text COLLATE NOCASE
 );
 
-insert Into Options (OptionKey, OptionValue) values ('DBVersion', '13');
+insert Into Options (OptionKey, OptionValue) values ('DBVersion', '15');
 insert Into Options (OptionKey, OptionValue) values ('Sequence', '0');
 insert Into Options (OptionKey, OptionValue) values ('UpdateCount', '0');
 
@@ -87,7 +87,7 @@ CREATE TABLE  Services
 	IsWatchedDirectory	Integer default 0,
     	IsLink        		Integer default 0,
 	IsVfs			Integer default 0,
-	AuxilaryID		Integer default -1,	 /* link to Volumes table for files, link to mbox table for emails*/
+	AuxilaryID		Integer, /* link to Volumes table for files, link to mbox table for emails*/
 	IndexTime  		Integer, /* should equal st_mtime for file if up-to-date */
 	Offset			Integer, /* last used disk offset for indexable files that always grow (like chat logs) or email offset */
 
@@ -143,7 +143,7 @@ CREATE TABLE  ServiceMetaData
 	ID			Integer primary key AUTOINCREMENT not null,
 	ServiceID		Integer not null,
 	MetaDataID 		Integer  not null,
-	MetaDataValue     	Text, 
+	MetaDataValue     	Text COLLATE UTF8, 
 	EmbeddedFlag		Integer default 0,
 	DeleteFlag		Integer default 0
 
@@ -159,7 +159,7 @@ CREATE TABLE  ServiceKeywordMetaData
 	ID			Integer primary key AUTOINCREMENT not null,
 	ServiceID		Integer not null,
 	MetaDataID 		Integer  not null,
-	MetaDataValue		Text,
+	MetaDataValue		Text COLLATE UTF8, 
 	EmbeddedFlag		Integer default 0,
 	DeleteFlag		Integer default 0
 	
@@ -207,7 +207,7 @@ CREATE TABLE  MetaDataTypes
 (
 	ID	 		Integer primary key AUTOINCREMENT not null,
 	MetaName		Text  not null  COLLATE NOCASE, 
-	DataTypeID		Integer  not null, /* 0=full text indexable string, 1= non-indexable string, 2=numeric, 3=datetime, 4=Blob, 5=keyword */
+	DataTypeID		Integer  not null, /* 0=indexable string, 1= non-indexable string, 2=numeric, 3=datetime, 4=Blob, 5=keyword */
 	MultipleValues		Integer default 1, /* 0= type cannot have multiple values per entity, 1= type can have more than 1 value per entity */
 	Weight			Integer  default 1 not null,  /* weight of metdata type in ranking */
 
@@ -388,6 +388,7 @@ insert Into MetaDataChildren (MetaDataID, ChildID) select P.ID, C.ID from MetaDa
 insert Into MetaDataChildren (MetaDataID, ChildID) select P.ID, C.ID from MetaDataTypes P, MetaDataTypes C where P.MetaName = 'DC:Description' and C.MetaName = 'Video:Comments';
 
 /* email metadata */
+insert Into MetaDataTypes (MetaName, DatatypeID, MultipleValues, Weight) values  ('Email:Body', 0, 0, 1);
 insert Into MetaDataTypes (MetaName, DatatypeID, MultipleValues, Weight) values  ('Email:Date', 3, 0, 0);
 insert Into MetaDataTypes (MetaName, DatatypeID, MultipleValues, Weight) values  ('Email:Sender', 0, 0, 35);
 insert Into MetaDataTypes (MetaName, DatatypeID, MultipleValues, Weight) values  ('Email:SentTo', 0, 1, 25);
@@ -416,7 +417,9 @@ CREATE TABLE MBoxes
 	LastUri		text,
 	MessageCount 	Integer,
 	MBoxSize	Integer,
-	Mtime		Integer
+	Mtime		Integer,
+
+	unique (Path)
 );
 
 
@@ -539,7 +542,4 @@ CREATE TABLE  VFolders
 
 );
 
-
- 
-
-
+ANALYZE;

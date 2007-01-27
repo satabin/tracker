@@ -116,7 +116,7 @@ tracker_dbus_method_files_exists (DBusRec *rec)
 		}
 
 		if (file_valid) {
-			tracker_db_create_service (db_con, path, name, service, mime, fsize, FALSE, FALSE, 0, 0);
+			tracker_db_create_service (db_con, path, name, service, mime, fsize, FALSE, FALSE, 0, 0, -1);
 		}
 
 		file_id = tracker_db_get_file_id (db_con, uri);
@@ -220,7 +220,7 @@ tracker_dbus_method_files_create (DBusRec *rec)
 		path = tracker_get_vfs_path (uri);
 	}
 
-	tracker_db_create_service (db_con, path, name, service, mime, size, is_dir,  FALSE, 0, mtime);
+	tracker_db_create_service (db_con, path, name, service, mime, size, is_dir,  FALSE, 0, mtime, -1);
 
 	file_id = tracker_db_get_file_id (db_con, uri);
 	str_file_id = tracker_uint_to_str (file_id);
@@ -918,7 +918,7 @@ tracker_dbus_method_files_get_metadata_for_files_in_folder (DBusRec *rec)
 
 	str = g_string_free (sql, FALSE);
 
-	g_debug (str);
+	tracker_debug (str);
 
 	res = tracker_exec_sql_ignore_nulls (db_con, str);
 

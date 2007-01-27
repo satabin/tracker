@@ -1,0 +1,12 @@
+diff -Nur tracker-0.5.4/python/deskbar-handler/tracker-handler.py tracker-0.5.4.new/python/deskbar-handler/tracker-handler.py
+--- tracker-0.5.4/python/deskbar-handler/tracker-handler.py	2007-01-27 16:53:49.000000000 +0200
++++ tracker-0.5.4.new/python/deskbar-handler/tracker-handler.py	2007-01-27 16:56:31.000000000 +0200
+@@ -18,7 +18,7 @@
+ from deskbar.Match import Match
+ 
+ #Edit this var for change the numer of output results
+-MAX_RESULTS = 2
++MAX_RESULTS = 10
+ 
+ def _check_requirements ():
+ 	try:

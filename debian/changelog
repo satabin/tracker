@@ -1,3 +1,31 @@
+tracker (0.5.4-1) unstable; urgency=low
+
+  [ Johan Kiviniemi ]
+  * New upstream release.
+    - Also contains a plugin for deskbar-applet.
+      The new binary package is called libdeskbar-tracker.
+      Use python-central to create the package.
+  * Added debian/watch.
+  * debian/copyright:
+    - Mention the deskbar plugin.
+  * debian/patches/10-deskbar_plugin_hashbang.patch:
+    - Remove the #! line from the deskbar plugin.
+  * debian/patches/20-trackerd_manpage.patch:
+    - Fix markup.
+    - Replace $Home with $HOME.
+  * debian/patches/30-deskbar_plugin_max_results.patch:
+    - Increase the maximum number of listed results from 2 to 10.
+  * debian/control:
+    - Add Recommends: untex to tracker and Recommends: xdg-utils to
+      tracker-search-tool.
+    - Add libmagic-dev as new build depencency.  
+
+  [ Michael Biebl ]
+  * Review Johan's work and upload to unstable.
+    Thanks a lot, Johan!
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 27 Jan 2007 18:13:51 +0100
+
 tracker (0.5.3-1) unstable; urgency=low
 
   * Initial release. Closes: #387110

@@ -780,9 +780,9 @@ build_sql (ParserData *data)
 		int cvalue;
 
 		bvalue = tracker_format_date (avalue);
-		g_debug (bvalue);
+		tracker_debug (bvalue);
 		cvalue = tracker_str_to_date (bvalue);
-		g_debug ("%d", cvalue);
+		tracker_debug ("%d", cvalue);
 		value = tracker_int_to_str (cvalue);
 		g_free (bvalue);
 	} else {
@@ -849,9 +849,9 @@ build_sql (ParserData *data)
 			sub = strchr (data->current_value, '*');
 
 			if (sub) {
-				g_string_append_printf (str, " (%s glob '*%s') ", field_data->meta_field, data->current_value);
+				g_string_append_printf (str, " (%s like '%s%s%s') ", field_data->meta_field, "%", data->current_value, "%");
 			} else {
-				g_string_append_printf (str, " (%s glob  '*%s*') ", field_data->meta_field, data->current_value);
+				g_string_append_printf (str, " (%s like '%s%s%s') ", field_data->meta_field, "%", data->current_value, "%");
 			}
 
 			break;
@@ -861,9 +861,9 @@ build_sql (ParserData *data)
 			sub = strchr (data->current_value, '*');
 
 			if (sub) {
-				g_string_append_printf (str, " (%s glob '%s') ", field_data->meta_field, data->current_value);
+				g_string_append_printf (str, " (%s like '%s') ", field_data->meta_field, data->current_value);
 			} else {
-				g_string_append_printf (str, " (%s glob '%s*') ", field_data->meta_field, data->current_value);
+				g_string_append_printf (str, " (%s like '%s%s') ", field_data->meta_field, data->current_value, "%");
 			}
 			
 			break;
@@ -1181,7 +1181,7 @@ tracker_rdf_query_to_sql (DBConnection *db_con, const char *query, const char *s
 
 	data.sql_from = g_string_new ("");
 
-	g_debug ("search term is %s", search_text);
+	tracker_debug ("search term is %s", search_text);
 
 
 	if (search_text && (strlen (search_text) > 0)) {

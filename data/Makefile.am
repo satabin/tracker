@@ -3,13 +3,10 @@ SUBDIRS = languages
 configdir = $(datadir)/tracker
 
 config_DATA =   tracker-introspect.xml \
-		mysql-tracker.sql \
 		sqlite-tracker.sql \
-		mysql-stored-procs.sql \
-		sqlite-stored-procs.sql \
-		mysql-system.sql
+		sqlite-stored-procs.sql
 
-servicedir       = $(prefix)/share/dbus-1/services
+servicedir       = $(DBUS_SERVICES_DIR)
 service_in_files = tracker.service.in
 service_DATA     = tracker.service
 

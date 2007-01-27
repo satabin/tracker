@@ -39,7 +39,7 @@ subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -55,8 +55,9 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	uninstall-recursive
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = libstemmer sqlite3 text-filters trackerd libtracker \
-	tracker-extract tracker-thumbnailer tracker-search-tool
+DIST_SUBDIRS = libstemmer xdgmime sqlite3 text-filters trackerd \
+	libtracker tracker-extract tracker-thumbnailer \
+	tracker-search-tool
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
@@ -69,8 +70,6 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BUILD_TEST_FALSE = @BUILD_TEST_FALSE@
-BUILD_TEST_TRUE = @BUILD_TEST_TRUE@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -86,8 +85,10 @@ CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
 DBUS_CFLAGS = @DBUS_CFLAGS@
 DBUS_LIBS = @DBUS_LIBS@
+DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -131,8 +132,6 @@ HAVE_LIBEXIF_FALSE = @HAVE_LIBEXIF_FALSE@
 HAVE_LIBEXIF_TRUE = @HAVE_LIBEXIF_TRUE@
 HAVE_LIBGSF_FALSE = @HAVE_LIBGSF_FALSE@
 HAVE_LIBGSF_TRUE = @HAVE_LIBGSF_TRUE@
-HAVE_LIBPNG_FALSE = @HAVE_LIBPNG_FALSE@
-HAVE_LIBPNG_TRUE = @HAVE_LIBPNG_TRUE@
 HAVE_POPPLER_GLIB_FALSE = @HAVE_POPPLER_GLIB_FALSE@
 HAVE_POPPLER_GLIB_TRUE = @HAVE_POPPLER_GLIB_TRUE@
 HAVE_RECENT_GLIB_FALSE = @HAVE_RECENT_GLIB_FALSE@
@@ -217,8 +216,6 @@ USING_GSTREAMER_FALSE = @USING_GSTREAMER_FALSE@
 USING_GSTREAMER_TRUE = @USING_GSTREAMER_TRUE@
 USING_LIBXINE_FALSE = @USING_LIBXINE_FALSE@
 USING_LIBXINE_TRUE = @USING_LIBXINE_TRUE@
-USING_SQLITE_FALSE = @USING_SQLITE_FALSE@
-USING_SQLITE_TRUE = @USING_SQLITE_TRUE@
 VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
@@ -274,7 +271,7 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 @HAVE_GNOME_TRUE@tracker_gui_dir = tracker-search-tool
 @USING_EXTERNAL_SQLITE_FALSE@sqlite_dir = sqlite3
-SUBDIRS = libstemmer $(sqlite_dir) text-filters trackerd libtracker tracker-extract tracker-thumbnailer $(tracker_gui_dir)
+SUBDIRS = libstemmer xdgmime $(sqlite_dir) text-filters trackerd libtracker tracker-extract tracker-thumbnailer $(tracker_gui_dir)
 all: all-recursive
 
 .SUFFIXES:

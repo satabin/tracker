@@ -1,0 +1,8 @@
+diff -Nur tracker-0.5.4/python/deskbar-handler/tracker-handler.py tracker-0.5.4.new/python/deskbar-handler/tracker-handler.py
+--- tracker-0.5.4/python/deskbar-handler/tracker-handler.py	2007-01-25 14:47:08.000000000 +0200
++++ tracker-0.5.4.new/python/deskbar-handler/tracker-handler.py	2007-01-27 12:37:06.000000000 +0200
+@@ -1,4 +1,3 @@
+-#!/usr/bin/env python
+ #    This handler was originaly created by Mikkel Kamstrup and finaly
+ #    new version it's writed by Eugenio Cutolo(eulin)
+ #

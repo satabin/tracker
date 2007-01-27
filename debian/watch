@@ -1,0 +1,5 @@
+version=3
+
+# Probably going to be tracker-project.org in the future.
+http://www.gnome.org/projects/tracker/download.html \
+  .*/tracker-(.*)\.tar\.gz

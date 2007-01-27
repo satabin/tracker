@@ -27,11 +27,15 @@
 #include <glib/gprintf.h>
 #include <glib/gprintf.h>
 #include <glib/gstdio.h>
+#include <sys/resource.h>
 #include <zlib.h>
-
+#include <magic.h>
 #include "tracker-dbus.h"
 #include "tracker-utils.h"
-#include "xdgmime.h"
+#include "tracker-indexer.h"
+#include "../xdgmime/xdgmime.h"
+
+
 
 
 extern Tracker	*tracker;
@@ -629,18 +633,39 @@ tracker_date_to_str (gint32 date_time)
 	}
 }
 
-char *
-tracker_uint_to_str (int i)
-{
-	return g_strdup_printf ("%u", i);
-}
 
 char *
-tracker_int_to_str (int i)
+tracker_int_to_str (gint i)
 {
 	return g_strdup_printf ("%d", i);
 }
 
+
+char *
+tracker_uint_to_str (guint i)
+{
+	return g_strdup_printf ("%u", i);
+}
+
+
+gboolean
+tracker_str_to_uint (const char *s, guint *ret)
+{
+	unsigned long int n;
+
+	g_return_val_if_fail (s, FALSE);
+
+	n = strtoul (s, NULL, 10);
+
+	if (n > G_MAXUINT) {
+		*ret = 0;
+		return FALSE;
+
+	} else {
+		*ret = (guint) n;
+		return TRUE;
+	}
+}
 
 
 int
@@ -660,6 +685,20 @@ tracker_str_in_array (const char *str, char **array)
 	}
 
 	return -1;
+}
+
+
+char *
+tracker_get_radix_by_suffix (const char *str, const char *suffix)
+{
+	g_return_val_if_fail (str, NULL);
+	g_return_val_if_fail (suffix, NULL);
+
+	if (g_str_has_suffix (str, suffix)) {
+		return g_strndup (str, g_strrstr (str, suffix) - str);
+	} else {
+		return NULL;
+	}
 }
 
 
@@ -831,13 +870,13 @@ tracker_file_is_no_watched (const char* uri)
 
 		/* check if equal or a prefix with an appended '/' */
 		if (strcmp (uri, compare_uri) == 0) {
-			g_debug ("blocking watch of %s", uri); 
+			tracker_debug ("blocking watch of %s", uri); 
 			return TRUE;
 		}
 
 		char *prefix = g_strconcat (compare_uri, G_DIR_SEPARATOR_S, NULL);
 		if (g_str_has_prefix (uri, prefix)) {
-			g_debug ("blocking prefix watch of %s", uri); 
+			tracker_debug ("blocking prefix watch of %s", uri); 
 			return TRUE;
 		}
 
@@ -923,6 +962,7 @@ tracker_create_file_info (const char *uri, TrackerChangeAction action, int count
 	info->mtime = 0;
 	info->atime = 0;
 	info->indextime = 0;
+	info->offset = 0;
 
 	info->is_new = TRUE;
 	info->service_type_id = -1;
@@ -1030,6 +1070,7 @@ tracker_get_pending_file_info (guint32 file_id, const char *uri, const char *mim
 	info->mtime = 0;
 	info->atime = 0;
 	info->indextime = 0;
+	info->offset = 0;
 
 	info->service_type_id = -1;
 	info->is_new = TRUE;
@@ -1162,6 +1203,49 @@ tracker_get_file_info (FileInfo *info)
 	return info;
 }
 
+void
+tracker_add_service_path (const char *service, const char *path)
+{
+
+	if (!service || !path || !tracker_file_is_valid (path)) {
+		return;
+	}
+
+	char *dir_path = g_strdup (path);
+	char *service_type = g_strdup (service);
+
+	tracker->service_directory_list = g_slist_prepend (tracker->service_directory_list, dir_path);
+
+	g_hash_table_insert (tracker->service_directory_table, dir_path, service_type);
+	
+}
+
+
+
+
+char *
+tracker_get_service_for_uri (const char *uri)
+{
+	GSList *tmp;
+
+	/* check service dir list to see if a prefix */
+	for (tmp = tracker->service_directory_list; tmp; tmp = tmp->next) {
+		char *prefix;
+
+		prefix = (char *) tmp->data;
+		if (g_str_has_prefix (uri, prefix)) {	
+			return g_strdup (g_hash_table_lookup (tracker->service_directory_table, prefix));
+		}
+	}
+
+	if (g_str_has_prefix (uri, g_get_tmp_dir ())) {
+		return NULL;
+	}
+
+	return g_strdup ("Files");
+
+}
+
 
 gboolean
 tracker_file_is_valid (const char *uri)
@@ -1173,6 +1257,7 @@ tracker_file_is_valid (const char *uri)
 
 	if (!uri_in_locale) {
 		tracker_log ("******ERROR**** uri could not be converted to locale format");
+		g_free (uri_in_locale);
 		return FALSE;
 	}
 
@@ -1206,180 +1291,25 @@ tracker_file_is_indexable (const char *uri)
 
 	convert_ok = (!S_ISDIR (finfo.st_mode) && S_ISREG (finfo.st_mode));
 
-	if (convert_ok) g_debug ("file %s is indexable", uri);
+	if (convert_ok) tracker_debug ("file %s is indexable", uri);
 
 	return convert_ok;
 }
 
 
 
-static gboolean
-is_text_file (const char *uri)
-{
-	FILE 	 *file;
-	char 	 *uri_in_locale;
-	char	 buffer[65565];
-	gsize 	 bytes_read, total_bytes_read;
-	gboolean result;
-
-	if (!tracker_file_is_indexable (uri)) {
-		return FALSE;
-	}
-
-	result = FALSE;
-
-	/* use file command if available to check the uri is of type text */
-
-	char *argv[3];
-	char *value = NULL;
-
-	argv[0] = g_strdup ("file");
-	argv[1] = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
-	argv[2] = NULL;
-
-	if (!argv[1]) {
-		tracker_log ("******ERROR**** uri or mime could not be converted to locale format");
-		g_free (argv[0]);
-		return FALSE;
-
-	} else {
-
-		if (g_spawn_sync (NULL,
-				  argv,
-				  NULL,
-				  G_SPAWN_SEARCH_PATH | G_SPAWN_STDERR_TO_DEV_NULL,
-				  NULL,
-				  NULL,
-				  &value,
-				  NULL,
-				  NULL,
-				  NULL)) {
-
-			g_debug ("uri %s is identified as %s", uri, value);
-
-			if (strstr (value, "text")) {
-				result = TRUE; 
-				g_debug ("uri %s is a text file", uri);
-			}
-
-			if (value) {
-				g_free (value);
-			}
-		} else {
-			result = TRUE;
-		}
-	}
-
-	g_free (argv[0]);
-	g_free (argv[1]);
-
-	if (!result) {
-		return FALSE;
-	}
-
-	bytes_read = 0;
-	total_bytes_read = 0;
-
-	uri_in_locale = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
-
-	if (!uri_in_locale) {
-		tracker_log ("******ERROR**** uri could not be converted to locale format");
-		return FALSE;
-	}
-
-	file = g_fopen (uri_in_locale, "r");
-
-	g_free (uri_in_locale);
-
-	if (!file) {
- 		return FALSE;
-	}
-
-	while (fgets (buffer, 65536, file)) {
-
-		bytes_read = strlen (buffer);
-		total_bytes_read += bytes_read;
-	
-		/* if text is too small skip line */
-		if (bytes_read < 3) {
-			continue;
-		}
-
-		if (!g_utf8_validate (buffer, bytes_read, NULL)) {
-
-			GError *err = NULL;
-			char *value = NULL;
-			gsize bytes_converted = 0;
-
-			g_debug ("%s is not a text file with valid utf-8. Tryiong to convert from locale...", uri);
-
-			value = g_locale_to_utf8 (buffer, bytes_read, NULL, NULL, &err);
-
-			if (value) {
-				bytes_converted = strlen (value);
-
-				if ((bytes_converted < 3) || (bytes_converted < bytes_read)) {
-					result = FALSE;
-					g_free (value);
-					break;
-				} 
-
-				g_free (value);
-
-			} else {
-				result = FALSE;
-				break;
-			}
-
-			if (err) {
-				g_error_free (err);
-				result = FALSE;
-				break;
-			}
-
-			g_debug ("****************************** %s is a text file for current locale ***************************", uri);
-			
-			
-		} 
-		
-			
-		
-		/* check first 4kb only */
-		if (total_bytes_read > 4096) {
-			break;
-		}
-
-	}
-
-	fclose (file);
-
-	if (result) {
-		if (total_bytes_read < 3) {
-			result = FALSE;
-		}
-
-	} else {
-		g_debug ("%s is not a text file", uri);
-	}
-
-	return result;
-
-}
-
-
-
-
-
-
 
 char *
-tracker_get_mime_type (const char* uri)
+tracker_get_mime_type (const char *uri)
 {
 	struct stat finfo;
 	char	    *uri_in_locale;
 	const char  *result;
+	char *mime;
+	int i;
 
 	if (!tracker_file_is_valid (uri)) {
+		tracker_log ("Warning file %s is no longer valid", uri);
 		return g_strdup ("unknown");
 	}
 
@@ -1387,12 +1317,10 @@ tracker_get_mime_type (const char* uri)
 
 	if (!uri_in_locale) {
 		tracker_log ("******ERROR**** uri could not be converted to locale format");
-		return FALSE;
+		return g_strdup ("unknown");
 	}
 
 	g_lstat (uri_in_locale, &finfo);
-
-	g_free (uri_in_locale);
 
 	if (S_ISLNK (finfo.st_mode) && S_ISDIR (finfo.st_mode)) {
 		return g_strdup ("symlink");
@@ -1400,15 +1328,28 @@ tracker_get_mime_type (const char* uri)
 
 	result = xdg_mime_get_mime_type_for_file (uri, NULL);
 
-	if (result != NULL && result != XDG_MIME_TYPE_UNKNOWN) {
-		return g_strdup (result);
-	} else {
-		if (is_text_file (uri)) {
-			return g_strdup ("text/plain");
+	if (!result || (result == XDG_MIME_TYPE_UNKNOWN)) {
+
+		result =  magic_file (tracker->magic, uri_in_locale);
+
+		for (i=0; result[i]; i++) {
+			if (result[i] == ';') {
+				break;
+			}
 		}
+
+		if (result) {
+			mime = g_strndup (result, i);
+		} else {
+			mime = g_strdup ("unknown");
+		}
+	} else {
+		mime = g_strdup (result);
 	}
 
-	return g_strdup ("unknown");
+	g_free (uri_in_locale);
+
+	return mime;
 }
 
 
@@ -1893,6 +1834,8 @@ tracker_load_config_file ()
 					 "# Set to false to prevent watching of any kind\n",
 					 "EnableWatching=true\n\n",
 					 "[Indexing]\n",
+					 "# Throttles the indexing process. Allowable values are 0-20. higher values decrease indexing speed\n",
+					 "Throttle=0\n",
 					 "# Disables the indexing process\n",
 					 "EnableIndexing=true\n",
 					 "# Enables indexing of a file's text contents\n",
@@ -1943,9 +1886,6 @@ tracker_load_config_file ()
 	g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, NULL);
 
 	/* general options */
-	if (g_key_file_has_key (key_file, "General", "EnableDebugLogging", NULL)) {
-		tracker->enable_debug = g_key_file_get_boolean (key_file, "General", "EnableDebugLogging", NULL);
-	}
 
 	if (g_key_file_has_key (key_file, "General", "PollInterval", NULL)) {
 		tracker->poll_interval = g_key_file_get_integer (key_file, "General", "PollInterval", NULL);
@@ -1988,6 +1928,12 @@ tracker_load_config_file ()
 
 
 	/* Indexing options */
+
+	if (g_key_file_has_key (key_file, "Indexing", "Throttle", NULL)) {
+		tracker->throttle = g_key_file_get_integer (key_file, "Indexing", "Throttle", NULL);
+	} else {
+		tracker->throttle = 0;
+	}
 
 	if (g_key_file_has_key (key_file, "Indexing", "EnableIndexing", NULL)) {
 		tracker->enable_indexing = g_key_file_get_boolean (key_file, "Indexing", "EnableIndexing", NULL);
@@ -2178,6 +2124,22 @@ tracker_is_dir_polled (const char *dir)
 
 
 void
+tracker_throttle (int multiplier)
+{
+	if (tracker->throttle == 0) {
+		return;
+	}
+
+	int throttle;
+
+	throttle = tracker->throttle * multiplier;
+
+	if (throttle > 0) {
+		g_usleep (throttle);
+	}
+}
+
+void
 tracker_notify_file_data_available (void)
 {
 	if (!tracker->is_running) {
@@ -2263,7 +2225,7 @@ tracker_notify_meta_data_available (void)
 
 		g_thread_yield ();
 		g_usleep (10);
-		g_debug ("in check phase");
+		tracker_debug ("in check phase");
 	}
 }
 
@@ -2838,3 +2800,291 @@ tracker_get_snippet (const char *txt, char **terms, int length)
 		return NULL;
 	}
 }
+
+
+static gint
+prepend_key_pointer (gpointer         key,
+		     gpointer         value,
+		     gpointer         data)
+{
+  	GSList **plist = data;
+  	*plist = g_slist_prepend (*plist, key);
+  	return 1;
+}
+
+
+static GSList * 
+g_hash_table_key_slist (GHashTable *table)
+{
+  	GSList *rv = NULL;
+  	g_hash_table_foreach (table, (GHFunc) prepend_key_pointer, &rv);
+  	return rv;
+}
+
+
+static gint
+sort_func (char *a, char *b)
+{
+	GSList *lista, *listb;
+
+	lista = g_hash_table_lookup (tracker->cached_table, a);
+	listb = g_hash_table_lookup (tracker->cached_table, b);
+	
+	return (g_slist_length (lista) - g_slist_length (listb));
+}
+
+
+static void
+flush_list (GSList *list, const char *word)
+{
+	WordDetails *word_details, *wd;
+	int i, count;
+	GSList *l;
+
+	count = g_slist_length (list);
+
+//	tracker_log ("flushing 	word %s with count %d", word, count);
+
+	word_details = g_malloc (sizeof (WordDetails) * count);
+
+	i = 0;
+	for (l=list; (l && i<count); l=l->next) {
+		
+		wd = l->data;
+		word_details[i].id = wd->id;
+		word_details[i].amalgamated = wd->amalgamated;
+		i++;
+		g_slice_free (WordDetails, wd);
+		
+		
+	}
+
+	g_slist_free (list);
+
+	tracker_indexer_append_word_chunk (tracker->file_indexer, word, word_details, count);
+
+	g_free (word_details);
+	
+	tracker->update_count++;
+	tracker->word_detail_count -= count;
+	tracker->word_count--;
+
+}
+
+
+static inline gboolean
+is_min_flush_done ()
+{
+	return (tracker->word_detail_count <= tracker->word_detail_min) && (tracker->word_count <= tracker->word_count_min);
+
+}
+
+static void 
+delete_word_detail (WordDetails *wd)
+{
+	g_slice_free (WordDetails, wd);
+
+}
+
+void
+tracker_flush_rare_words ()
+{
+	
+	GSList *list, *l, *l2;
+
+	tracker_debug ("flushing rare words");
+
+	list = g_hash_table_key_slist (tracker->cached_table);
+
+	list = g_slist_sort (list, (GCompareFunc) sort_func);
+
+	for (l = list; (l && !is_min_flush_done ()); l=l->next) {
+		char *word = l->data;		
+
+		l2 = g_hash_table_lookup (tracker->cached_table, word);
+
+		flush_list (l2, word);	
+
+		g_hash_table_remove (tracker->cached_table, word);	
+
+	}
+
+	g_slist_free (list);
+
+}
+
+
+static gint
+flush_all (gpointer         key,
+	   gpointer         value,
+	   gpointer         data)
+{
+	
+	flush_list (value, key);
+	
+  	return 1;
+}
+
+
+void
+tracker_flush_all_words ()
+{
+	tracker_log ("flushing all words");
+	
+	g_hash_table_foreach (tracker->cached_table, (GHFunc) flush_all, NULL);
+
+	g_hash_table_destroy (tracker->cached_table);
+
+	tracker->cached_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);	
+
+	tracker->word_detail_count = 0;
+	tracker->word_count = 0;
+
+}
+
+
+void
+tracker_child_cb (gpointer user_data)
+{
+	struct 	rlimit mem_limit, cpu_limit;
+	int	timeout = GPOINTER_TO_INT (user_data);
+
+	/* set cpu limit */
+	getrlimit (RLIMIT_CPU, &cpu_limit);
+	cpu_limit.rlim_cur = timeout;
+	cpu_limit.rlim_max = timeout+1;
+
+	if (setrlimit (RLIMIT_CPU, &cpu_limit) != 0) {
+		tracker_log ("Error trying to set resource limit for cpu");
+	}
+
+	/* Set memory usage to max limit (128MB) */
+	getrlimit (RLIMIT_AS, &mem_limit);
+ 	mem_limit.rlim_cur = 128*1024*1024;
+	if (setrlimit (RLIMIT_AS, &mem_limit) != 0) {
+		tracker_log ("Error trying to set resource limit for memory usage");
+	}
+
+	
+}
+
+
+gboolean
+tracker_spawn (char **argv, int timeout, char **stdout, int *exit_status)
+{
+	GSpawnFlags flags;
+
+	if (!stdout) {
+		flags = G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL |  G_SPAWN_STDERR_TO_DEV_NULL;
+	} else {
+		flags = G_SPAWN_SEARCH_PATH | G_SPAWN_STDERR_TO_DEV_NULL;
+	}
+
+	return g_spawn_sync (NULL,
+			  argv,
+			  NULL,
+			  flags,
+			  tracker_child_cb,
+			  GINT_TO_POINTER (timeout),
+			  stdout,
+			  NULL,
+			  exit_status,
+			  NULL);
+
+}
+
+
+static void
+output_log (int verbosity, const char *message)
+{
+	FILE		*fd;
+	time_t		now;
+	char		buffer1[64], buffer2[20];
+	char		*output;
+	struct tm	*loctime;
+	GTimeVal	start;
+
+
+	if (tracker->verbosity < verbosity) {
+		return;
+	}
+
+	if (message) {
+		g_print ("%s\n", message);
+	}
+
+	/* ensure file logging is thread safe */
+	g_mutex_lock (tracker->log_access_mutex);
+
+	fd = g_fopen (tracker->log_file, "a");
+
+	if (!fd) {
+		g_mutex_unlock (tracker->log_access_mutex);
+		g_warning ("could not open %s", tracker->log_file);
+		return;
+	}
+
+	g_get_current_time (&start);
+
+	now = time ((time_t *) NULL);
+
+	loctime = localtime (&now);
+
+	strftime (buffer1, 64, "%d %b %Y, %H:%M:%S:", loctime);
+
+	g_sprintf (buffer2, "%ld", start.tv_usec / 1000);
+
+	output = g_strconcat (buffer1, buffer2, " - ", message, NULL);
+
+	g_fprintf (fd, "%s\n", output);
+
+	g_free (output);
+
+	fclose (fd);
+
+	g_mutex_unlock (tracker->log_access_mutex);
+}
+
+
+void 		
+tracker_log 	(const char *message, ...)
+{
+	va_list		args;
+	char 		*msg;
+
+  	va_start (args, message);
+  	msg = g_strdup_vprintf (message, args);
+  	va_end (args);
+
+	output_log (0, msg);
+	g_free (msg);
+}
+
+void		
+tracker_info	(const char *message, ...)
+{
+	va_list		args;
+	char 		*msg;
+
+  	va_start (args, message);
+  	msg = g_strdup_vprintf (message, args);
+  	va_end (args);
+
+	output_log (1, msg);
+	g_free (msg);
+}
+
+void
+tracker_debug 	(const char *message, ...)
+{
+	va_list		args;
+	char 		*msg;
+
+  	va_start (args, message);
+  	msg = g_strdup_vprintf (message, args);
+  	va_end (args);
+
+	output_log (2, msg);
+	g_free (msg);
+}
+

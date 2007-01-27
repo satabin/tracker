@@ -36,6 +36,7 @@ extern char *tracker_actions[];
 
 
 #include <glib.h>
+#include <magic.h>
 #include "depot.h"
 #include "curia.h"
 
@@ -54,8 +55,8 @@ typedef struct {
 #define FILE_SCHEDULE_PERIOD		300
 
 #define TRACKER_DB_VERSION_REQUIRED	13
-#define TRACKER_VERSION			"0.5.3"
-#define TRACKER_VERSION_INT		503
+#define TRACKER_VERSION			"0.5.4"
+#define TRACKER_VERSION_INT		504
 
 /* default performance options */
 #define MAX_INDEX_TEXT_LENGTH		1048576
@@ -70,9 +71,6 @@ typedef struct {
 #define INDEX_BUCKET_RATIO 		1	 /* desired ratio of unused buckets to have (range 0 to 4)*/
 #define INDEX_PADDING	 		2
 
-/* just for now, make tracker_log actually call g_message */
-#define tracker_log g_message
-
 typedef struct {                         /* type of structure for an element of search result */
 	guint32 	id;              /* Service ID number of the document */
 	int 		amalgamated;     /* amalgamation of service_type and score of the word in the document's metadata */
@@ -83,7 +81,6 @@ typedef struct {
 	int	 	id;              /* word ID of the cached word */
 	int 		count;     	 /* cummulative count of the cached word */
 } CacheWord;
-
 
 typedef struct {
 
@@ -100,6 +97,12 @@ typedef struct {
 	guint32		watch_limit;
 	guint32		poll_interval;
 
+	/* controls how much to output to screen/log file */
+	int		verbosity;
+
+	
+	magic_t 	magic;
+
 	/* data directories */
 	char 		*data_dir;
 	char		*backup_dir;
@@ -110,6 +113,10 @@ typedef struct {
 	int		max_process_queue_size;
 	int		max_extract_queue_size;
 	int		optimization_count;   /* no of updates or inserts to be performed before optimizing hashtable */
+	int		throttle;
+	int		default_throttle;
+	int		battery_throttle;
+	gboolean	use_extra_memory;
 
 	/* indexing options */
 	int	 	max_index_bucket_count;
@@ -128,8 +135,20 @@ typedef struct {
 	GHashTable	*stop_words;	  	/* table of stop words that are to be ignored by the parser */
 	gboolean	use_pango_word_break;
 
+	gboolean	index_numbers;
+
 	gboolean	first_time_index;
+	gboolean	first_flush;
 	gboolean	do_optimize;
+
+	
+
+	/* service/mime directory table - this is used to either store the service name or a pseudo mime type for all files under a certain directory root 
+	 * pseduo mime types always start with "service/" followed by a unique name all in lowercase - EG "service/tomboy" 
+	 * if the directory root represents a built in service which is handled by tracker then it will simply contain the service name - EG "Emails", "Conversations" etc 
+	*/
+	GHashTable	*service_directory_table;
+	GSList		*service_directory_list;
 
 	/* email config options */
 	gboolean	index_evolution_emails;
@@ -141,13 +160,6 @@ typedef struct {
 	gboolean	use_nfs_safe_locking; /* use safer but much slower external lock file when users home dir is on an nfs systems */
 
 
-	/* debug option for more verbose (but slower) logging */
-	gboolean	enable_debug;
-
-	gboolean	turbo;
-	gboolean	slow;
-	gboolean	use_extra_memory;
-
 	/* application run time values */
 	gboolean	is_indexing;
 	gboolean	in_flush;
@@ -155,16 +167,19 @@ typedef struct {
 	int		index_counter;
 	int		update_count;
 
-	/* use these to control how many common words are cached and flushed to qdbm when indexing finishes */
-	int		cache_word_limit;
-	int		cache_word_min;
-	int		number_of_cached_words;
-	GHashTable	*cached_word_table;
-	GMutex		*cached_word_table_mutex;
+
+	/* cache words before saving to word index */
+	GHashTable	*cached_table;
+	GMutex		*cache_table_mutex;
+	int		word_detail_limit;
+	int		word_detail_count;
+	int		word_detail_min;
+	int		word_count;
+	int		word_count_limit;
+	int		word_count_min;
 	int		flush_count;
-	int		min_flush;
-	int		flush_by_file;
-	
+
+
 
 	GSList 		*poll_list;
 	
@@ -175,9 +190,8 @@ typedef struct {
  	GMutex 		*scheduler_mutex;
 
  	gboolean 	is_running;
+	gboolean	is_dir_scan;
 	GMainLoop 	*loop;
-
-	
 
 	Indexer		*file_indexer;
 
@@ -187,6 +201,7 @@ typedef struct {
 	GAsyncQueue 	*file_process_queue;
 	GAsyncQueue 	*file_metadata_queue;
 	GAsyncQueue 	*user_request_queue;
+	GAsyncQueue 	*dir_queue;
 
 	GMutex		*files_check_mutex;
 	GMutex		*metadata_check_mutex;
@@ -313,6 +328,7 @@ typedef struct {
 	gint32			mtime;
 	gint32			atime;
 	gint32			indextime;
+	gint32			offset;
 
 	/* options */
 	char			*move_from_uri;
@@ -325,6 +341,11 @@ typedef struct {
 
 } FileInfo;
 
+void 		tracker_log 	(const char *message, ...);
+void		tracker_info	(const char *message, ...);
+void		tracker_debug 	(const char *message, ...);
+
+
 int		tracker_get_id_for_service 		(const char *service);
 const char *	tracker_get_service_by_id 		(int service_type_id);
 
@@ -332,12 +353,15 @@ GSList *	tracker_array_to_list 			(char **array);
 char **		tracker_make_array_null_terminated 	(char **array, int length);
 
 void		tracker_free_array 		(char **array, int row_count);
-char *		tracker_int_to_str		(int i);
-char *		tracker_uint_to_str		(int i);
+char *		tracker_int_to_str		(gint i);
+char *		tracker_uint_to_str		(guint i);
+gboolean	tracker_str_to_uint		(const char *s, guint *ret);
 char *		tracker_format_date 		(const char *time_string);
 time_t		tracker_str_to_date 		(const char *time_string);
 char *		tracker_date_to_str 		(gint32 date_time);
 int		tracker_str_in_array 		(const char *str, char **array);
+
+char *		tracker_get_radix_by_suffix	(const char *str, const char *suffix);
 
 char *		tracker_escape_metadata 	(const char *str);
 char *		tracker_unescape_metadata 	(const char *str);
@@ -349,6 +373,9 @@ gboolean	tracker_is_supported_lang 	(const char *lang);
 void		tracker_set_language		(const char *language, gboolean create_stemmer);
 
 gint32		tracker_get_file_mtime 		(const char *uri);
+
+void		tracker_add_service_path 	(const char *service, const char *path);
+char *		tracker_get_service_for_uri 	(const char *uri);
 
 FileInfo *	tracker_create_file_info 	(const char *uri, TrackerChangeAction action, int counter, WatchTypes watch);
 FileInfo * 	tracker_get_file_info  	 	(FileInfo *info);
@@ -390,6 +417,11 @@ void		tracker_add_poll_dir 		(const char *dir);
 void		tracker_remove_poll_dir 	(const char *dir);
 gboolean	tracker_is_dir_polled 		(const char *dir);
 
+void		tracker_throttle 		(int multiplier);
+
+void		tracker_flush_all_words 	();
+void		tracker_flush_rare_words 	();
+
 void		tracker_notify_file_data_available 	(void);
 void		tracker_notify_meta_data_available 	(void);
 void		tracker_notify_request_data_available 	(void);
@@ -402,5 +434,7 @@ char *		tracker_uncompress 		(const char *ptr, int size, int *uncompressed_size)
 
 char *		tracker_get_snippet 		(const char *txt, char **terms, int length);
 
+gboolean	tracker_spawn 			(char **argv, int timeout, char **stdout, int *exit_status);
+void		tracker_child_cb 		(gpointer user_data);
 
 #endif

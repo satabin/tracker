@@ -11,4 +11,4 @@ DEB_CONFIGURE_EXTRA_FLAGS = \
 DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,--as-needed"
 
 binary-install/libdeskbar-tracker::
-	dh_pycentral -p$(cdbs_curpkg)
+	dh_pycentral -p$(cdbs_curpkg) /usr/lib/deskbar-applet/handlers/

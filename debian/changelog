@@ -1,3 +1,11 @@
+tracker (0.5.4-3) unstable; urgency=medium
+
+  * debian/patches/40-inotify_syscalls.patch
+    - Add missing inotify syscall numbers for mips, hppa and m68k.
+      Fixes a FTBFS on these architectures, so priority medium.
+
+ -- Michael Biebl <biebl@debian.org>  Tue, 20 Feb 2007 23:43:36 +0100
+
 tracker (0.5.4-2) unstable; urgency=low
 
   * debian/control

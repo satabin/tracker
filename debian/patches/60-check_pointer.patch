@@ -1,0 +1,13 @@
+Index: src/tracker-extract/tracker-extract.c
+===================================================================
+--- src/tracker-extract/tracker-extract.c	(Revision 486)
++++ src/tracker-extract/tracker-extract.c	(Arbeitskopie)
+@@ -241,7 +241,7 @@
+ {
+ 	char *value;
+ 
+-	g_return_if_fail (pkey || pvalue);
++	g_return_if_fail (pkey && pvalue);
+ 
+ 	value = g_locale_to_utf8 ((char *) pvalue, -1, NULL, NULL, NULL);
+ 

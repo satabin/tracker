@@ -1,3 +1,12 @@
+tracker (0.5.4-4) unstable; urgency=low
+
+  * debian/patches/50-expand_pathname.patch
+    - Expand relative paths passed to tracker-thumbnailer. Closes: #411904
+  * debian/patches/60-check_pointer.patch
+    - Check pointer before passing it to g_locale_to_utf8().
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 21 Feb 2007 00:00:25 +0100
+
 tracker (0.5.4-3) unstable; urgency=medium
 
   * debian/patches/40-inotify_syscalls.patch

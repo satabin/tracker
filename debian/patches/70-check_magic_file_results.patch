@@ -1,0 +1,28 @@
+diff --git a/src/trackerd/tracker-utils.c b/src/trackerd/tracker-utils.c
+index 007a124..3dc0bee 100644
+--- a/src/trackerd/tracker-utils.c
++++ b/src/trackerd/tracker-utils.c
+@@ -1332,15 +1332,18 @@ tracker_get_mime_type (const char *uri)
+ 
+ 		result =  magic_file (tracker->magic, uri_in_locale);
+ 
+-		for (i=0; result[i]; i++) {
+-			if (result[i] == ';') {
+-				break;
+-			}
+-		}
+ 
+ 		if (result) {
++			for (i=0; result[i]; i++) {
++				if (result[i] == ';') {
++					break;
++				}
++			}
+ 			mime = g_strndup (result, i);
+ 		} else {
++			tracker_log ("magic_file error for <%s>: %s\n",
++				uri_in_locale,
++				magic_error (tracker->magic));
+ 			mime = g_strdup ("unknown");
+ 		}
+ 	} else {

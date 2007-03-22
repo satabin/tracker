@@ -1,3 +1,11 @@
+tracker (0.5.4-5) unstable; urgency=low
+
+  * debian/patches/70-check-magic-file-results.patch
+    - Check the return results of magic_file. Closes: #414444
+      Thanks to Sam Morris for the patch.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 22 Mar 2007 18:23:50 +0100
+
 tracker (0.5.4-4) unstable; urgency=low
 
   * debian/patches/50-expand_pathname.patch

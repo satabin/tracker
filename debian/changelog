@@ -1,3 +1,10 @@
+tracker (0.5.4-6) unstable; urgency=low
+
+  * Rebuild against poppler 0.5.4. Closes: #427815
+  * Don't install htmless binary and manpage anymore. The html filter now uses w3m.
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 06 Jun 2007 22:39:00 +0200
+
 tracker (0.5.4-5) unstable; urgency=low
 
   * debian/patches/70-check-magic-file-results.patch

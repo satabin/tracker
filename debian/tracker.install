@@ -1,4 +1,3 @@
-debian/tmp/usr/bin/htmless
 debian/tmp/usr/bin/trackerd
 debian/tmp/usr/bin/tracker-thumbnailer
 debian/tmp/usr/bin/tracker-extract

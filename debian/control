@@ -75,8 +75,8 @@ Architecture: any
 Section: gnome
 Depends: ${shlibs:Depends}, ${misc:Depends}, tracker (= ${binary:Version})
 Recommends: xdg-utils
-Description: metadata database, indexer and search tool - Gnome frontend
- This package provides a graphical Tracker search tool for Gnome.
+Description: metadata database, indexer and search tool - GNOME frontend
+ This package provides a graphical Tracker search tool for GNOME.
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,

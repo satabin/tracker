@@ -19,6 +19,7 @@
 
 #include "tracker.h"
 #include <string.h>
+
 #define TRACKER_SERVICE                 "org.freedesktop.Tracker"
 #define TRACKER_OBJECT			"/org/freedesktop/tracker"
 #define TRACKER_INTERFACE		"org.freedesktop.Tracker"
@@ -66,6 +67,38 @@ typedef struct {
 } VoidCallBackStruct;
 
 
+char *tracker_service_types[] = {
+"Files",
+"Folders",
+"Documents",
+"Images",
+"Music",
+"Videos",
+"Text",
+"Development",
+"Other",
+"VFS",
+"VFSFolders",
+"VFSDocuments",
+"VFSImages",
+"VFSMusic",
+"VFSVideos",
+"VFSText",
+"VFSDevelopment",
+"VFSOther",
+"Conversations",
+"Playlists",
+"Applications",
+"Contacts",
+"Emails",
+"EmailAttachments",
+"Appointments",
+"Tasks",
+"Bookmarks",
+"History",
+"Projects",
+NULL
+};
 
 
 
@@ -78,37 +111,33 @@ char *metadata_types[] = {
 	"blob"
 };
 
-char *service_types[] = {
-"Files",
-"Folders",
-"Documents",
-"Images",
-"Music",
-"Videos",
-"Text Files",
-"Development Files",
-"Other Files",
-"VFS Files",
-"VFS Folders",
-"VFS Documents",
-"VFS Images",
-"VFS Music",
-"VFS Videos",
-"VFS Text Files",
-"VFS Development Files",
-"VFS Other Files",
-"Conversations",
-"Playlists",
-"Applications",
-"Contacts",
-"Emails",
-"EmailAttachments",
-"Appointments",
-"Tasks",
-"Bookmarks",
-"History",
-"Projects"
-};
+
+ServiceType 
+tracker_service_name_to_type (const char *service)
+{
+
+	char **st;
+	int i = 0;
+
+	for (st=tracker_service_types; *st; st++) {
+
+		if (g_ascii_strcasecmp (service, *st) == 0) {
+			return i;
+		}
+
+		i++;
+	}
+
+	return SERVICE_OTHER_FILES;
+}
+
+
+char *
+tracker_type_to_service_name (ServiceType s)
+{
+	return g_strdup (tracker_service_types[s]);
+}
+
 
 
 static void
@@ -323,7 +352,13 @@ tracker_get_version (TrackerClient *client, GError **error)
 	return version;
 }	
 
-
+char *
+tracker_get_status (TrackerClient *client, GError **error)
+{
+	char *status ;
+	org_freedesktop_Tracker_get_status (client->proxy, &status, &*error);
+	return status;
+}	
 
 
 GHashTable *	
@@ -361,7 +396,7 @@ char **
 tracker_metadata_get (TrackerClient *client, ServiceType service, const char *id, char **keys, GError **error) 
 {
 	char **array = NULL;
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	if (!org_freedesktop_Tracker_Metadata_get  (client->proxy_metadata, service_str, id, (const char **)keys, &array, &*error)) {
 		return NULL;
@@ -374,7 +409,7 @@ tracker_metadata_get (TrackerClient *client, ServiceType service, const char *id
 void
 tracker_metadata_set (TrackerClient *client, ServiceType service, const char *id, char **keys, char **values, GError **error) 
 {
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	org_freedesktop_Tracker_Metadata_set  (client->proxy_metadata, service_str, id, (const char **)keys, (const char **)values, &*error);
 
@@ -455,7 +490,7 @@ GPtrArray *
 tracker_keywords_get_list (TrackerClient *client, ServiceType service, GError **error)
 {
 	GPtrArray *table;
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	if (!org_freedesktop_Tracker_Keywords_get_list (client->proxy_keywords,service_str, &table, &*error)) {
 		return NULL;
@@ -471,7 +506,7 @@ char **
 tracker_keywords_get (TrackerClient *client, ServiceType service, const char *id, GError **error)
 {
 	char **array = NULL;
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	if (!org_freedesktop_Tracker_Keywords_get (client->proxy_keywords, service_str, id, &array, &*error)) {
 		return NULL;
@@ -485,7 +520,7 @@ tracker_keywords_get (TrackerClient *client, ServiceType service, const char *id
 void
 tracker_keywords_add (TrackerClient *client, ServiceType service, const char *id, char **values, GError **error)
 {
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 	org_freedesktop_Tracker_Keywords_add (client->proxy_keywords, service_str, id, (const char **)values, &*error);
 }
 
@@ -494,7 +529,7 @@ tracker_keywords_add (TrackerClient *client, ServiceType service, const char *id
 void		
 tracker_keywords_remove (TrackerClient *client, ServiceType service, const char *id, char **values, GError **error)
 {
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	org_freedesktop_Tracker_Keywords_remove (client->proxy_keywords, service_str, id, (const char **)values, &*error);
 }
@@ -504,7 +539,7 @@ tracker_keywords_remove (TrackerClient *client, ServiceType service, const char 
 void		
 tracker_keywords_remove_all (TrackerClient *client, ServiceType service, const char *id, GError **error)
 {
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	org_freedesktop_Tracker_Keywords_remove_all (client->proxy_keywords, service_str, id, &*error);
 }
@@ -514,7 +549,7 @@ char **
 tracker_keywords_search	(TrackerClient *client, int live_query_id, ServiceType service, char **keywords, int offset, int max_hits, GError **error)
 {
 	char **array = NULL;
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	if (!org_freedesktop_Tracker_Keywords_search (client->proxy_keywords, live_query_id, service_str, (const char **)keywords, offset, max_hits, &array, &*error)) {
 		return NULL;
@@ -525,11 +560,25 @@ tracker_keywords_search	(TrackerClient *client, int live_query_id, ServiceType s
 }
 
 
+GPtrArray *
+tracker_search_get_hit_count_all (TrackerClient *client, const char *search_text, GError **error)
+{
+
+	GPtrArray *array;
+
+	if (!org_freedesktop_Tracker_Search_get_hit_count_all (client->proxy_search, search_text, &array, &*error)) {
+		return NULL;
+	}
+
+	return array;
+
+}
+
 char **		
 tracker_search_text (TrackerClient *client, int live_query_id, ServiceType service, const char *search_text, int offset, int max_hits, GError **error)
 {
 	char **array = NULL;
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	if (!org_freedesktop_Tracker_Search_text (client->proxy_search, live_query_id, service_str, search_text,  offset, max_hits, &array, &*error)) {
 		return NULL;
@@ -542,7 +591,7 @@ GPtrArray *
 tracker_search_text_detailed (TrackerClient *client, int live_query_id, ServiceType service, const char *search_text, int offset, int max_hits, GError **error)
 {
 	GPtrArray *array;
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	if (!org_freedesktop_Tracker_Search_text_detailed (client->proxy_search, live_query_id, service_str, search_text,  offset, max_hits, &array, &*error)) {
 		return NULL;
@@ -555,7 +604,7 @@ char *
 tracker_search_get_snippet (TrackerClient *client, ServiceType service, const char *uri, const char *search_text, GError **error)
 {
 	char *result;
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	if (!org_freedesktop_Tracker_Search_get_snippet (client->proxy_search, service_str, uri, search_text, &result, &*error)) {
 		return NULL;
@@ -572,7 +621,7 @@ char **
 tracker_search_metadata	(TrackerClient *client, ServiceType service, const char *field, const char* search_text, int offset, int max_hits, GError **error)
 {
 	char **array = NULL;
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	if (!org_freedesktop_Tracker_Search_metadata (client->proxy_search, service_str, field, search_text,  offset, max_hits, &array, &*error)) {
 		return NULL;
@@ -587,7 +636,7 @@ GPtrArray *
 tracker_search_query (TrackerClient *client, int live_query_id, ServiceType service, char **fields, const char *search_text, const char *keywords, const char *query, int offset, int max_hits, gboolean sort_by_service, GError **error)
 {
 	GPtrArray *table;
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	if (!org_freedesktop_Tracker_Search_query (client->proxy_search, live_query_id, service_str, (const char **)fields, search_text, keywords, query,  sort_by_service, offset, max_hits , &table, &*error)) {
 		return NULL;
@@ -596,6 +645,15 @@ tracker_search_query (TrackerClient *client, int live_query_id, ServiceType serv
 	return table;
 }
 
+char *
+tracker_search_suggest (TrackerClient *client, const char *search_term, int maxdist, GError **error)
+{
+	gchar *result;
+	if (org_freedesktop_Tracker_Search_suggest (client->proxy_search, search_term, maxdist, &result, &*error)) {
+		return result;
+	}
+	return NULL;
+}
 
 
 
@@ -646,7 +704,7 @@ char **
 tracker_files_get_by_service_type (TrackerClient *client,  int live_query_id, ServiceType service, int offset, int max_hits, GError **error)
 {
 	char **array = NULL;
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	if (!org_freedesktop_Tracker_Files_get_by_service_type (client->proxy_files, live_query_id, service_str, offset, max_hits, &array, &*error)) {
 		return NULL;
@@ -794,6 +852,20 @@ tracker_get_version_async (TrackerClient *client, TrackerIntReply callback, gpoi
 
 }	
 
+void
+tracker_get_status_async (TrackerClient *client, TrackerStringReply callback, gpointer user_data) 
+{
+ 
+	StringCallBackStruct *callback_struct;
+ 
+	callback_struct = g_new (StringCallBackStruct, 1);
+	callback_struct->callback = callback;
+	callback_struct->data = user_data;
+ 
+	client->last_pending_call = org_freedesktop_Tracker_get_status_async (client->proxy, tracker_string_reply, callback_struct);
+
+}
+
 
 
 
@@ -834,7 +906,7 @@ tracker_metadata_get_async (TrackerClient *client, ServiceType service, const ch
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Metadata_get_async (client->proxy_metadata, service_str, id, (const char**)keys, tracker_array_reply, callback_struct);
 	
@@ -852,7 +924,7 @@ tracker_metadata_set_async (TrackerClient *client, ServiceType service, const ch
 	callback_struct->data = user_data;
 
 
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Metadata_set_async  (client->proxy_metadata, service_str, id, (const char **)keys, (const char **)values, tracker_void_reply, callback_struct);
 
@@ -941,7 +1013,7 @@ tracker_keywords_get_list_async (TrackerClient *client, ServiceType service, Tra
 	callback_struct->data = user_data;
 
 
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Keywords_get_list_async (client->proxy_keywords, service_str, tracker_GPtrArray_reply, callback_struct);
 
@@ -959,7 +1031,7 @@ tracker_keywords_get_async (TrackerClient *client, ServiceType service, const ch
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Keywords_get_async (client->proxy_keywords, service_str, id, tracker_array_reply, callback_struct);
 	
@@ -977,7 +1049,7 @@ tracker_keywords_add_async (TrackerClient *client, ServiceType service, const ch
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 	client->last_pending_call = org_freedesktop_Tracker_Keywords_add_async (client->proxy_keywords, service_str, id, (const char **)values, tracker_void_reply, callback_struct);
 }
 
@@ -993,7 +1065,7 @@ tracker_keywords_remove_async (TrackerClient *client, ServiceType service, const
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Keywords_remove_async (client->proxy_keywords, service_str, id, (const char **)values, tracker_void_reply, callback_struct);
 }
@@ -1010,7 +1082,7 @@ tracker_keywords_remove_all_async (TrackerClient *client, ServiceType service, c
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Keywords_remove_all_async (client->proxy_keywords, service_str, id, tracker_void_reply, callback_struct);
 }
@@ -1026,12 +1098,29 @@ tracker_keywords_search_async	(TrackerClient *client, int live_query_id, Service
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Keywords_search_async (client->proxy_keywords, live_query_id, service_str, (const char **)keywords, offset, max_hits, tracker_array_reply, callback_struct);
 
 }
 
+
+
+
+void
+tracker_search_text_get_hit_count_all_async (TrackerClient *client, const char *search_text, TrackerGPtrArrayReply callback, gpointer user_data)
+{
+
+	GPtrArrayCallBackStruct *callback_struct;
+
+	callback_struct = g_new (GPtrArrayCallBackStruct, 1);
+	callback_struct->callback = callback;
+	callback_struct->data = user_data;
+	
+	client->last_pending_call = org_freedesktop_Tracker_Search_get_hit_count_all_async (client->proxy_search, search_text, tracker_GPtrArray_reply, callback_struct);
+	
+
+}
 
 void	
 tracker_search_text_async (TrackerClient *client, int live_query_id, ServiceType service, const char *search_text, int offset, int max_hits, TrackerArrayReply callback, gpointer user_data)
@@ -1043,7 +1132,7 @@ tracker_search_text_async (TrackerClient *client, int live_query_id, ServiceType
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 	
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Search_text_async (client->proxy_search, live_query_id, service_str, search_text, offset, max_hits, tracker_array_reply, callback_struct);
 	
@@ -1060,7 +1149,7 @@ tracker_search_text_detailed_async (TrackerClient *client, int live_query_id, Se
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 	
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Search_text_detailed_async (client->proxy_search, live_query_id, service_str, search_text, offset, max_hits, tracker_GPtrArray_reply, callback_struct);
 	
@@ -1076,7 +1165,7 @@ tracker_search_get_snippet_async (TrackerClient *client, ServiceType service, co
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 	
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Search_get_snippet_async (client->proxy_search, service_str, uri, search_text, tracker_string_reply, callback_struct);	
 
@@ -1093,7 +1182,7 @@ tracker_search_metadata_async	(TrackerClient *client, ServiceType service, const
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	org_freedesktop_Tracker_Search_metadata_async (client->proxy_search, service_str, field, search_text,  offset, max_hits,  tracker_array_reply, callback_struct);
 	
@@ -1108,13 +1197,26 @@ tracker_search_query_async (TrackerClient *client, int live_query_id, ServiceTyp
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 	
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Search_query_async (client->proxy_search, live_query_id, service_str, (const char **)fields, search_text, keywords, query, sort_by_service, offset, max_hits,  tracker_GPtrArray_reply, callback_struct);
 	
 }
 
 
+void
+tracker_search_suggest_async (TrackerClient *client, const char *search_text, int maxdist, TrackerStringReply callback, gpointer user_data)
+{
+
+	StringCallBackStruct *callback_struct;
+
+	callback_struct = g_new (StringCallBackStruct, 1);
+	callback_struct->callback = callback;
+	callback_struct->data = user_data;
+	
+	client->last_pending_call = org_freedesktop_Tracker_Search_suggest_async (client->proxy_search, search_text, maxdist,  tracker_string_reply, callback_struct);
+	
+}
 
 
 void		
@@ -1185,7 +1287,7 @@ tracker_files_get_by_service_type_async (TrackerClient *client,  int live_query_
 	callback_struct->callback = callback;
 	callback_struct->data = user_data;
 	
-	char *service_str = service_types[service];
+	char *service_str = tracker_service_types[service];
 
 	client->last_pending_call = org_freedesktop_Tracker_Files_get_by_service_type_async (client->proxy_files, live_query_id, service_str, offset, max_hits,  tracker_array_reply, callback_struct);
 }
@@ -1264,12 +1366,12 @@ tracker_search_metadata_by_text_async (TrackerClient *client, const char *query,
 	char *metadata;
 	char *keywords[2];
  
-	if(strstr(query, ":") > 0){
-		metadata = strtok (query, ":");
+	if (strchr (query, ':') != NULL) {
+		metadata = strtok ((char *)query, ":");
 		if(strcoll(metadata,"tag") == 0){
 			keywords[0] = strtok (NULL, ":");
 			keywords[1] = NULL;
-			client->last_pending_call = org_freedesktop_Tracker_Keywords_search_async (client->proxy_keywords, -1, "Files",keywords, 0, 512, tracker_array_reply, callback_struct);
+			client->last_pending_call = org_freedesktop_Tracker_Keywords_search_async (client->proxy_keywords, -1, "Files", (const char **)keywords, 0, 512, tracker_array_reply, callback_struct);
 		}
 	}else{
 		client->last_pending_call = org_freedesktop_Tracker_Search_text_async (client->proxy_search, -1, "Files", query,  0, 512, tracker_array_reply, callback_struct);

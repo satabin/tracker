@@ -1,3 +1,5 @@
 debian/tmp/usr/bin/tracker-search-tool
 debian/tmp/usr/share/applications/
-debian/tmp/usr/share/pixmaps/tracker/
+debian/tmp/usr/share/tracker/icons/thumbnail_frame.png
+debian/tmp/usr/bin/tracker-preferences
+debian/tmp/usr/share/tracker/tracker-preferences.glade

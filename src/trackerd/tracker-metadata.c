@@ -83,7 +83,8 @@ char *doc_mime_types[] = {
 			  "application/x-killustrator",
 			  "application/x-kivio",
 			  "application/x-kontour",
-			  "application/x-wpg"
+			  "application/x-wpg",
+			  "application/rdf+xml"
 };
 
 
@@ -202,16 +203,16 @@ tracker_get_service_type_for_mime (const char *mime)
 				if (g_str_has_prefix (mime, "video")) {
 					return g_strdup ("Videos");
 				} else {
-					return g_strdup ("Other Files");
+					return g_strdup ("Other");
 				}
 				break;
 
 			case NO_METADATA:
-				return g_strdup ("Other Files");
+				return g_strdup ("Other");
 				break;
 
 			case TEXT_METADATA:
-				return g_strdup ("Text Files");
+				return g_strdup ("Text");
 				break;
 
 			case DOC_METADATA:
@@ -231,7 +232,7 @@ tracker_get_service_type_for_mime (const char *mime)
 				break;
 
 			case DEVEL_METADATA:
-				return g_strdup ("Development Files");
+				return g_strdup ("Development");
 				break;
 	}
 
@@ -253,7 +254,7 @@ tracker_metadata_get_text_file (const char *uri, const char *mime)
 
 	if (ftype == TEXT_METADATA || ftype == DEVEL_METADATA) {
 
-		return g_strdup (uri);
+		return g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
 
 	} else {
 		char *tmp;
@@ -289,7 +290,7 @@ tracker_metadata_get_text_file (const char *uri, const char *mime)
 		g_free (text_filter_file);
 
 		if (!argv[1]) {
-			tracker_log ("******ERROR**** uri could not be converted to locale format");
+			tracker_error ("ERROR: uri could not be converted to locale format");
 			g_free (argv[0]);
 			g_free (argv[2]);
 			return NULL;
@@ -381,7 +382,7 @@ tracker_metadata_get_embedded (const char *uri, const char *mime, GHashTable *ta
 		argv[3] = NULL;
 
 		if (!argv[1] || !argv[2]) {
-			tracker_log ("******ERROR**** uri or mime could not be converted to locale format");
+			tracker_error ("ERROR: uri or mime could not be converted to locale format");
 
 			g_free (argv[0]);
 
@@ -444,10 +445,10 @@ tracker_metadata_get_embedded (const char *uri, const char *mime, GHashTable *ta
 										if ((length > 0) && (length >= strlen (meta_value))) {
 
 											tracker_debug ("%s = %s", meta_name, utf_value);
-											g_hash_table_insert (table, g_strdup (meta_name), g_strdup (utf_value));
+											tracker_add_metadata_to_table  (table, g_strdup (meta_name), utf_value);
+										} else {
+											g_free (utf_value);
 										}
-
-										g_free (utf_value);
 									}
 								}
 
@@ -474,3 +475,6 @@ tracker_metadata_get_embedded (const char *uri, const char *mime, GHashTable *ta
 		}
 	}
 }
+
+
+

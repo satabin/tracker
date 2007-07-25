@@ -61,21 +61,13 @@ Copyright (C) 2002-2005  Ulric Eriksson <ulric@siag.nu>
 License: GPL v2 or later
 
 ===============================================================================
-src/text-filters/html_converter/* (inlined copy of htmless)
-
-Copyright (C) 1995-1999. Stephen M. Orth <sorth@oz.net>
-License: GPL v2 or later
-
-===============================================================================
 src/trackerd/xdgmime* (inlined copy of xdgmime)
 
 Copyright (C) 2004  Red Hat, Inc
 License: Academic Free License version 2.0 or LGPL v2 or later
 
 ===============================================================================
-src/trackerd/curia.* (inlined copy of QDBM)
-src/trackerd/depot.*
-src/trackerd/myconf.*
+src/qdbm/* (inlined copy of QDBM)
 
 Copyright (C) 2000-2006 Mikio Hirabayashi
 License: LGPL v2.1 or later

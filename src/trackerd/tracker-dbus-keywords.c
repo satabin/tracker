@@ -116,6 +116,8 @@ tracker_dbus_method_keywords_get_list (DBusRec *rec)
 		return;
 	}
 
+	db_con = tracker_db_get_service_connection (db_con, service);
+
 	res = tracker_db_get_keyword_list (db_con, service);
 
 	tracker_dbus_reply_with_query_result (rec, res);
@@ -163,19 +165,23 @@ tracker_dbus_method_keywords_get (DBusRec *rec)
 		return;
 	}
 
-	if (!uri || strlen (uri) == 0) {
+	if (tracker_is_empty_string (uri)) {
 		tracker_set_error (rec, "Uri is invalid");
 		return;
 	}
 
+	db_con = tracker_db_get_service_connection (db_con, service);	
+
 	id = tracker_db_get_id (db_con, service, uri);
 
 	if (!id) {
-		tracker_set_error (rec, "Entity %s not found in database", uri);
+		tracker_set_error (rec, "[keywords_get] Entity %s not found in database", uri);
 		return;
 	}
 
-	res = tracker_db_get_metadata_values (db_con, service, id, "DC:Keywords");
+	
+
+	res = tracker_db_get_metadata (db_con, service, id, "User:Keywords");
 
 	g_free (id);
 
@@ -240,11 +246,12 @@ tracker_dbus_method_keywords_add (DBusRec *rec)
 		return;
 	}
 
-	if (!uri || strlen (uri) == 0) {
+	if (tracker_is_empty_string (uri)) {
 		tracker_set_error (rec, "URI is invalid");
 		return;
 	}
 
+	db_con = tracker_db_get_service_connection (db_con, service);
 	id = tracker_db_get_id (db_con, service, uri);
 
 	if (!id) {
@@ -254,16 +261,10 @@ tracker_dbus_method_keywords_add (DBusRec *rec)
 
 		
 	if (array && (row_count > 0)) {
-		int i;
-
-		for (i = 0; i < row_count; i++) {
-			if (array[i]) {
-				tracker_db_set_metadata (db_con, service, id, "DC:Keywords", array[i], TRUE, TRUE, FALSE);
-			}
-		}
+		tracker_db_set_metadata (db_con, service, id, "User:Keywords", array, row_count);
 	}
 
-	dbus_free_string_array(array);
+	dbus_free_string_array (array);
 
 	tracker_log ("adding keywords to %s with id %s", uri, id);
 
@@ -318,10 +319,12 @@ tracker_dbus_method_keywords_remove (DBusRec *rec)
 		return;
 	}
 
-	if (!uri || strlen (uri) == 0) {
+	if (tracker_is_empty_string (uri)) {
 		tracker_set_error (rec, "ID is invalid");
 		return;
 	}
+
+	db_con = tracker_db_get_service_connection (db_con, service);
 
 	id = tracker_db_get_id (db_con, service, uri);
 
@@ -336,7 +339,7 @@ tracker_dbus_method_keywords_remove (DBusRec *rec)
 		for (i = 0; i < row_count; i++) {
 			if (array[i]) {
 				tracker_log ("deleting keyword %s from %s with ID %s", array[i], uri, id);
-				tracker_db_delete_metadata_value (db_con, service, id, "DC:Keywords", array[i], FALSE);
+				tracker_db_delete_metadata_value (db_con, service, id, "User:Keywords", array[i]);
 			}
 		}
 	}
@@ -389,11 +392,12 @@ tracker_dbus_method_keywords_remove_all (DBusRec *rec)
 		return;
 	}
 
-	if (!uri || strlen (uri) == 0) {
+	if (tracker_is_empty_string (uri)) {
 		tracker_set_error (rec, "URI is invalid");
 		return;
 	}
 
+	db_con = tracker_db_get_service_connection (db_con, service);
 	id = tracker_db_get_id (db_con, service, uri);
 
 	if (!id) {
@@ -401,7 +405,7 @@ tracker_dbus_method_keywords_remove_all (DBusRec *rec)
 		return;
 	}
 
-	tracker_db_delete_metadata (db_con, service, id, "DC:Keywords", TRUE);
+	tracker_db_delete_metadata (db_con, service, id, "User:Keywords", TRUE);
 	
 	g_free (id);
 	
@@ -470,6 +474,8 @@ tracker_dbus_method_keywords_search (DBusRec *rec)
 		return;
 	}
 
+	db_con = tracker_db_get_service_connection (db_con, service);
+
 	str_words = g_string_new ("");
 	g_string_append_printf (str_words, "'%s'", array[0]);
 
@@ -485,7 +491,7 @@ tracker_dbus_method_keywords_search (DBusRec *rec)
 
 	str_select = g_string_append (str_select, "' || S.Name as EntityName from Services S, ServiceKeywordMetaData M ");
 
-	char *related_metadata = tracker_get_related_metadata_names (db_con, "DC:Keywords");
+	char *related_metadata = tracker_get_related_metadata_names (db_con, "User:Keywords");
 
 	str_where = g_string_new ("");
 
@@ -510,7 +516,7 @@ tracker_dbus_method_keywords_search (DBusRec *rec)
 	str_max = tracker_int_to_str (smax);
 
 
-	g_string_append_printf (str_where, "  and  (S.ServiceTypeID between %s and %s) ", str_min, str_max);
+	g_string_append_printf (str_where, "  and  (S.ServiceTypeID in (select TypeId from ServiceTypes where TypeName = '%s' or Parent = '%s')) ", service, service);
 
 
 	g_free (str_min);

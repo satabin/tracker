@@ -1,22 +1,15 @@
 INCLUDES =				\
 	-DDATADIR=\""$(datadir)"\"	\
 	-DLIBDIR=\""$(libdir)"\"	\
-	-D_XOPEN_SOURCE_EXTENDED=1	\
-	-D_GNU_SOURCE=1			\
-	-D__EXTENSIONS__=1		\
-	-D_HPUX_SOURCE=1		\
-	-D_POSIX_MAPPED_FILES=1		\
-	-D_POSIX_SYNCHRONIZED_IO=1	\
-	-DPIC=1				\
-	-D_REENTRANT=1			\
-	-DNDEBUG 			\
-	-DMYNOMMAP			\
+	-DTRACKER_LOCALEDIR=\""$(localedir)"\" \
 	$(GLIB2_CFLAGS)			\
 	$(PANGO_CFLAGS)			\
 	$(GMIME_CFLAGS)			\
 	$(FAM_CFLAGS)			\
 	$(DBUS_CFLAGS)			\
-	$(SQLITE3_CFLAGS)
+	$(SQLITE3_CFLAGS)		\
+	$(QDBM_CFLAGS)			\
+	$(UNAC_CFLAGS)		
 
 
 if HAVE_INOTIFY
@@ -28,7 +21,7 @@ else
 if HAVE_FAM
 fam_sources =				\
 	tracker-fam.c			\
-	tracker-fam.h
+	tracker-fam.h 
 endif
 endif
 
@@ -43,41 +36,16 @@ db_sources =				\
 	tracker-db-email.c		\
 	tracker-db-email.h
 
-qdbm_sources =				\
-	depot.c				\
-	depot.h				\
-	curia.c				\
-	curia.h				\
-	myconf.h			\
-	myconf.c
 
 bin_PROGRAMS = trackerd
-
-TESTS = test-tracker-indexer
-
-check_PROGRAMS = $(TESTS)
-
-test_tracker_indexer_SOURCES =		\
-	tracker-indexer.c		\
-	test-tracker-indexer.c		\
-	tracker-utils.c			\
-	tracker-utils.h			\
-	$(qdbm_sources)
-
-test_tracker_indexer_LDADD = 		\
-	$(GLIB2_LIBS)			\
-	$(GTHREAD_LIBS)			\
-	-lz				\
-	-lmagic				\
-	$(top_builddir)/src/libstemmer/libstemmer-private.la \
-	$(top_builddir)/src/xdgmime/libxdgmime.la
 
 trackerd_SOURCES =			\
 	trackerd.c			\
 	$(inotify_sources)		\
 	$(fam_sources)			\
-	$(qdbm_sources)			\
 	$(db_sources)			\
+	tracker-apps.c			\
+	tracker-apps.h			\
 	tracker-db.c			\
 	tracker-db.h			\
 	tracker-dbus.c			\
@@ -121,8 +89,10 @@ trackerd_LDADD =			\
 	$(PANGO_LIBS)			\
 	$(GMIME_LIBS)			\
 	$(SQLITE3_LIBS)			\
+	$(QDBM_LIBS)			\
+	$(UNAC_LIBS)			\
 	$(GTHREAD_LIBS)			\
 	-lz				\
-	-lmagic				\
+	-lm				\
 	$(top_builddir)/src/libstemmer/libstemmer-private.la \
 	$(top_builddir)/src/xdgmime/libxdgmime.la

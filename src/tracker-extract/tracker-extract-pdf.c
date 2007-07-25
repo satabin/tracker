@@ -1,3 +1,4 @@
+/* vim: set noet ts=8 sw=8 sts=0: */
 /* Tracker Extract - extracts embedded metadata from files
  * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
  *
@@ -26,14 +27,17 @@
 #include <string.h>
 #include <glib.h>
 
+#include "tracker-extract.h"
+
 void tracker_extract_pdf (gchar *filename, GHashTable *metadata)
 {
 	PopplerDocument *document;
 	gchar           *tmp;
-	gchar           *title;
-	gchar           *author;
-	gchar           *subject;
-	gchar           *keywords;
+	gchar           *title = NULL;
+	gchar           *author = NULL;
+	gchar           *subject = NULL;
+	gchar           *keywords = NULL;
+	gchar           *metadata_xml = NULL;
 	GTime            creation_date;
 	GError          *error = NULL;
 
@@ -51,6 +55,10 @@ void tracker_extract_pdf (gchar *filename, GHashTable *metadata)
 		"keywords", &keywords,
 		"creation-date", &creation_date,
 		NULL);
+
+	/* metadata property not present in older poppler versions */
+	if(g_object_class_find_property(G_OBJECT_GET_CLASS(document), "metadata"))
+		g_object_get(document, "metadata", &metadata_xml, NULL);
 
 	if (title && strlen (title))
 		g_hash_table_insert (metadata, g_strdup ("Doc:Title"), g_strdup (title));
@@ -71,10 +79,15 @@ void tracker_extract_pdf (gchar *filename, GHashTable *metadata)
 	g_hash_table_insert (metadata, g_strdup ("Doc:PageCount"),
 		g_strdup_printf ("%d", poppler_document_get_n_pages (document)));
 
+	if ( metadata_xml ) {
+		tracker_read_xmp (metadata_xml,strlen(metadata_xml),metadata);
+	}
+
 	g_free (title);
 	g_free (author);
 	g_free (subject);
 	g_free (keywords);
+	g_free (metadata_xml);
 	g_object_unref (document);
 }
 

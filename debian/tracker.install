@@ -2,8 +2,12 @@ debian/tmp/usr/bin/trackerd
 debian/tmp/usr/bin/tracker-thumbnailer
 debian/tmp/usr/bin/tracker-extract
 debian/tmp/usr/share/dbus-1/services/
-debian/tmp/usr/share/tracker/
+debian/tmp/usr/share/tracker/*.xml
+debian/tmp/usr/share/tracker/*.sql
+debian/tmp/usr/share/tracker/languages/
+debian/tmp/usr/share/tracker/services/
 debian/tmp/usr/share/locale/
+debian/tmp/usr/share/icons/
 debian/tmp/usr/lib/tracker/
 debian/tmp/etc/xdg/autostart/trackerd.desktop
 debian/tmp/etc/xdg/autostart/trackerd.desktop usr/share/autostart/

@@ -2,8 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 # This file is part of Tracker.
 
-AC_PREREQ(2.57)
-AC_INIT([tracker],[0.5.4],[tracker-list@gnome.org])
+AC_PREREQ(2.59c)
+AC_INIT([tracker],[0.6.0],[tracker-list@gnome.org])
 
 AC_CONFIG_SRCDIR([src/trackerd/trackerd.c])
 AM_INIT_AUTOMAKE([dist-bzip2])
@@ -14,28 +14,23 @@ CFLAGS="$CFLAGS"
 
 # Checks for programs.
 AC_PROG_CC
-AC_HEADER_STDC
-
+AC_PROG_LN_S
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
 AC_PROG_LIBTOOL
 
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([fcntl.h sitdlib.h string.h sys/time.h unistd.h linux/unistd.h])
 
-AC_CHECK_HEADER([zlib.h],
-                [],
-                [AC_MSG_ERROR([You must have zlib.h and zlib installed])])
-
-AC_CHECK_HEADER([magic.h],
-                [],
-                [AC_MSG_ERROR([You must have magic.h and libmagic installed])])
+AC_CHECK_HEADER([zlib.h], [], [AC_MSG_ERROR([You must have zlib.h and zlib installed])])
 
 # Checks for functions
 AC_CHECK_FUNCS([getline])
 
 dnl Library Checks
 DBUS_REQUIRED=0.60
-GLIB_REQUIRED=2.9.1
+GLIB_REQUIRED=2.10.0
 PANGO_REQUIRED=1.0.0
 GMIME_REQUIRED=2.1.0
 
@@ -95,6 +90,12 @@ AC_SUBST(DBUS_SERVICES_DIR)
 # Deskbar Applet Handler
 ####################################################################
 
+AC_ARG_ENABLE([deskbar_applet],
+              AC_HELP_STRING([--enable-deskbar-applet], [Enable support for deskbar applet]),,
+              [enable_deskbar_applet=no])
+
+AM_CONDITIONAL(USING_DESKBAR_APPLET, test "x$enable_deskbar_applet" != "xno")
+
 AC_ARG_WITH([deskbar_applet_handler_dir],
             AC_HELP_STRING([--with-deskbar-applet-handler-dir], [Path to Deskbar handler directory]))
 
@@ -104,12 +105,8 @@ else
    handler_dir="$with_deskbar_applet_handler_dir"
 fi
 
-
-
 DESKBAR_HANDLER_DIR="$handler_dir"
 AC_SUBST(DESKBAR_HANDLER_DIR)
-
-
 
 ####################################################################
 # Compiler warning checks
@@ -118,14 +115,17 @@ AC_ARG_ENABLE(warnings,
               AC_HELP_STRING([--disable-warnings], [disable GCC warnings]),,
               [enable_warnings=yes])
 
-if test "x$enable_warnings" = "xyes"; then
-   CFLAGS="\
-   -Wall \
-   -Wchar-subscripts \
-   -Wnested-externs \
-   -Wpointer-arith \
-   -Wsign-compare \
-   $CFLAGS"
+dnl Only use -Wall if we have gcc
+if test "x$GCC" = "xyes"; then
+  if test "x$enable_warnings" = "xyes"; then
+     CFLAGS="\
+     -Wall \
+     -Wchar-subscripts \
+     -Wnested-externs \
+     -Wpointer-arith \
+     -Wsign-compare \
+     $CFLAGS"
+  fi
 fi
 
 ####################################################################
@@ -145,36 +145,19 @@ fi
 # gettext/intltool support 
 ####################################################################
 
-ALL_LINGUAS="ar de en_GB es et fi fr gl it nb sl sv"
-AC_SUBST(ALL_LINGUAS)
-
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",
                    [The gettext translation domain])
 
 AM_GLIB_GNU_GETTEXT
-AC_PROG_INTLTOOL([0.22])
-
-# The following lines replace AM_GLIB_DEFINE_LOCALEDIR(TRACKER_LOCALEDIR)
-# due to the bug with autoconf 2.60
-
-dnl Set TRACKER_LOCALEDIR in config.h.
-if test "x${prefix}" = "xNONE";
-then
-	TRACKER_LOCALEDIR="${ac_default_prefix}/${DATADIRNAME}/locale"
-else
-	TRACKER_LOCALEDIR="${prefix}/${DATADIRNAME}/locale"
-fi
-
-AC_DEFINE_UNQUOTED(TRACKER_LOCALEDIR, "$TRACKER_LOCALEDIR",
-		[The directory in which locale data will be stored])
-
-# end of AM_GLIB_DEFINE_LOCALEDIR(TRACKER_LOCALEDIR) replacement
+IT_PROG_INTLTOOL([0.35.0])
 
 ####################################################################
 # check for newer glib (>= 2.12.0) for g_option_context_set_summary ()
 # availability
+# used as well in tracker-configuration.c and tracker-metadata-tile.c
+# for other methods availability
 ####################################################################
 RECENT_GLIB=2.12.0
 
@@ -186,6 +169,27 @@ if test "$have_recent_glib" = "yes" ; then
 fi
 
 AM_CONDITIONAL(HAVE_RECENT_GLIB, test "$have_recent_glib" = "yes")
+
+
+##################################################################
+# check for libxml2
+##################################################################
+  
+LIBXML2_REQUIRED=0.6
+
+AC_ARG_ENABLE(libxml2, AC_HELP_STRING([--disable-libxml2],[Disable HTML/XML extractors (full-text will still be available)]),,[enable_libxml2=yes])
+if test "x$enable_libxml2" = "xyes"; then
+	PKG_CHECK_MODULES(LIBXML2, [
+		libxml-2.0 >= $LIBXML2_REQUIRED],
+		[have_libxml2=yes] , [have_libxml2=no])
+	AC_SUBST(LIBXML2_CFLAGS)
+	AC_SUBST(LIBXML2_LIBS)
+else
+	have_libxml2="no (disabled)"
+fi
+AM_CONDITIONAL(HAVE_LIBXML2, test "$have_libxml2" = "yes")
+test "$have_libxml2" = "yes" && AC_DEFINE(HAVE_LIBXML2, [], [Define if we have libxml2])
+
 
 ####################################################################
 # check for GStreamer or Xine. Otherwise, call an external video
@@ -281,6 +285,31 @@ fi
 
 AC_SUBST(SQLITE3_CFLAGS)
 AC_SUBST(SQLITE3_LIBS)
+
+
+####################################################################
+# External QDBM check
+####################################################################
+
+QDBM_REQUIRED=1.8
+
+AC_ARG_ENABLE(external_qdbm, 
+	AC_HELP_STRING(
+		[--enable-external-qdbm],
+		[build using system's qdbm]),,
+	[enable_external_qdbm=no])
+
+if test "x$enable_external_qdbm" = "xyes"; then
+	PKG_CHECK_MODULES(QDBM, [ qdbm >= $QDBM_REQUIRED ])
+	AM_CONDITIONAL(USING_EXTERNAL_QDBM, true)
+else
+	QDBM_CFLAGS="-I\$(top_srcdir)/src/qdbm"
+	QDBM_LIBS="\$(top_builddir)/src/qdbm/libqdbm-private.la"
+	AM_CONDITIONAL(USING_EXTERNAL_QDBM, false)
+fi		
+
+AC_SUBST(QDBM_CFLAGS)
+AC_SUBST(QDBM_LIBS)
 
 
 ###############################################################################
@@ -400,6 +429,61 @@ elif test "$primary_backend" = "fam"; then
 	AC_SUBST(FAM_LIBS)
 fi
 
+
+##################################################################
+# Enable building libtracker-gtk?
+##################################################################
+LIBTRACKERGTK_GTK_REQUIRED=2.8.20
+
+
+AC_ARG_ENABLE([libtrackergtk], AC_HELP_STRING([--disable-libtrackergtk], [Disable libtrackergtk]),,[enable_libtrackergtk=yes])
+if test "x$enable_libtrackergtk" != "xno" ; then
+
+   	libtrackergtk_modules="\
+        	glib-2.0    >=  $GLIB_REQUIRED, \
+        	gtk+-2.0    >=  $LIBTRACKERGTK_GTK_REQUIRED, \
+        	dbus-1      >=  $DBUS_REQUIRED, \
+        	dbus-glib-1 >=  $DBUS_REQUIRED"
+
+	PKG_CHECK_MODULES(LIBTRACKERGTK, [$libtrackergtk_modules],[enable_libtrackergtk=yes] , [enable_libtrackergtk=no])
+
+    	AC_SUBST([LIBTRACKERGTK_CFLAGS])
+    	AC_SUBST([LIBTRACKERGTK_LIBS])
+else
+	enable-libtrackergtk="no (disabled)"
+fi
+
+AM_CONDITIONAL(ENABLE_LIBTRACKERGTK, test "$enable-libtrackergtk" != "no")
+
+
+
+
+##################################################################
+# Enable UNAC support?
+##################################################################
+
+
+AC_ARG_ENABLE([unac], AC_HELP_STRING([--disable-unac], [Disable unac accent stripper support]),,[enable_unac=yes])
+
+if test "x$enable_unac" != "xno" ; then
+
+  	PKG_CHECK_MODULES(UNAC, [unac >= 1.0.0],[enable_unac=yes] , [enable_unac=no])
+
+    	AC_SUBST([UNAC_CFLAGS])
+    	AC_SUBST([UNAC_LIBS])
+	
+else
+	enable-unac="no (disabled)"
+fi
+
+if test "$enable_unac" = "yes"; then
+	AC_DEFINE(HAVE_UNAC, [], [Define if we have unac lib])
+fi
+AM_CONDITIONAL(ENABLE_UNAC, test "$enable-unac" != "no")
+
+
+
+
 ##################################################################
 # check for GNOME/GTK dependencies to build tracker search tool (Gnome client)
 ##################################################################
@@ -440,10 +524,55 @@ if test "x$enable_gui" = "xyes"; then
 else
 	have_gnome="no (disabled)"
 fi
+
+
+# do not build if libtracker-gtk is not being built
+if test "x$enable_libtrackergtk" = "yes"; then
+	have_gnome="no (disabled as libtracker-gtk is not being built)"	
+fi
+
 AM_CONDITIONAL(HAVE_GNOME, test "$have_gnome" = "yes")
 if test "$have_gnome" = "yes"; then
    GNOME_COMMON_INIT
 fi
+
+
+##################################################################
+# Checks for tracker-preferences
+##################################################################
+
+PREFERENCES_GLADE_REQUIRED=2.5
+PREFERENCES_GTK_REQUIRED=2.8.0
+
+AC_ARG_ENABLE([preferences],
+              AC_HELP_STRING([--disable-preferences], [Disable the preferences dialog]),,
+              [enable_preferences=yes])
+
+if test "x$enable_preferences" != "xno" ; then
+
+   	PKG_CHECK_MODULES(GLIB2, [ glib-2.0 >= $PREFERENCES_GLIB_REQUIRED ],[enable_preference=yes] , [enable_preference=no])
+   	AC_SUBST([GLIB2_CFLAGS])
+   	AC_SUBST([GLIB2_LIBS])
+
+	if test "$enable_preferences" = "yes"; then 
+		PKG_CHECK_MODULES(GTK2, [ gtk+-2.0 >= $PREFERENCES_GTK_REQUIRED ],[enable_preference=yes] , [enable_preference=no])
+		AC_SUBST([GTK2_CFLAGS])
+   		AC_SUBST([GTK2_LIBS])
+	fi
+
+	if test "$enable_preferences" = "yes"; then 
+
+	   	PKG_CHECK_MODULES(LIBGLADE, [ libglade-2.0 >= $PREFERENCES_GLADE_REQUIRED ], [enable_preferences=yes], [enable_preferences=no])
+		AC_SUBST([LIBGLADE_CFLAGS])
+   		AC_SUBST([LIBGLADE_LIBS])
+	fi
+else
+	enable-preferences="no (disabled)"
+fi
+
+AM_CONDITIONAL(ENABLE_PREFERENCES, test "$enable_preferences" != "no")
+
+
 
 
 ##################################################################
@@ -530,12 +659,41 @@ AC_MSG_RESULT([$ioprio_support])
 
 #####################################################
 
+##################################################################
+# check for exempi
+##################################################################
+
+EXEMPI_REQUIRED=1.99.2
+
+AC_ARG_ENABLE(xmp, AC_HELP_STRING([--disable-xmp], [Disable XMP extraction]),,[enable_xmp=yes])
+if test "x$enable_xmp" = "xyes"; then
+	PKG_CHECK_MODULES(EXEMPI,[
+		exempi-2.0 >= $EXEMPI_REQUIRED],
+		[have_exempi=yes] , [have_exempi=no])
+	AC_SUBST(EXEMPI_CFLAGS)
+	AC_SUBST(EXEMPI_LIBS)
+else
+	have_exempi="no (disabled)"
+fi
+AM_CONDITIONAL(HAVE_EXEMPI, test "$have_exempi" = "yes")
+test "$have_exempi" = "yes" && AC_DEFINE(HAVE_EXEMPI, [], [Define if we have exempi])
+
 AC_CONFIG_FILES([
 	Makefile
 	tracker.pc
+	trackerd.desktop.in
+	libtracker-gtk.pc
 	docs/Makefile
 	data/Makefile
 	data/languages/Makefile
+	data/icons/Makefile
+	data/icons/16x16/Makefile
+	data/icons/22x22/Makefile
+	data/icons/24x24/Makefile
+	data/icons/32x32/Makefile
+	data/icons/48x48/Makefile
+	data/icons/scalable/Makefile
+	data/services/Makefile
 	filters/Makefile
 	filters/application/Makefile
 	filters/text/Makefile
@@ -545,16 +703,22 @@ AC_CONFIG_FILES([
 	src/Makefile
 	src/libstemmer/Makefile
 	src/sqlite3/Makefile
+	src/qdbm/Makefile
 	src/text-filters/Makefile
-	src/text-filters/html_converter/Makefile
 	src/text-filters/ooo_converter/Makefile
 	src/tracker-extract/Makefile
 	src/tracker-thumbnailer/Makefile
 	src/trackerd/Makefile
 	src/libtracker/Makefile
+	src/libtracker-gtk/Makefile
 	src/tracker-search-tool/Makefile
+	src/tracker-search-tool/tracker-search-tool.desktop.in
+	src/tracker-preferences/Makefile
+	src/tracker-preferences/tracker-preferences.desktop.in	
 	src/xdgmime/Makefile
 	po/Makefile.in
+	python/Makefile
+	python/deskbar-handler/Makefile
 ])
 
 AC_CONFIG_HEADERS([config.h])
@@ -573,15 +737,21 @@ Tracker-$VERSION:
 	file monitor backend to be used:	$primary_backend
 	inotify header location:		$inotify_header
 	ioprio support:				$ioprio_support
+	unac accent stripper support:		$enable_unac
+	deskbar-applet support:			$enable_deskbar_applet
 	build search tool (GNOME):		$have_gnome
+	build preferences ui:			$enable_preferences
+	build libtracker-gtk:			$enable_libtrackergtk
 
 Metadata extractors:
 
 	pdf:					$have_poppler
 	png:					yes
 	exif (jpeg):				$have_libexif
-	gsf:					$have_libgsf
+	ms and openoffice (gsf):		$have_libgsf
 	video files:				$videos_are_handled ($videos_handler)
+	xml/html formats:			$have_libxml2
+	embedded/sidecar xmp:			$have_exempi
 
 "
 if test "x$enable_external_sqlite" = "xyes"; then

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-#    This handler was originaly created by Mikkel Kamstrup and finaly
-#    new version it's writed by Eugenio Cutolo(eulin)
+# -*- coding: utf-8 -*-
+#    This handler was originaly created by Mikkel Kamstrup (c) 2006 and updated by Eugenio Cutolo (eulin)
 #
-#    This program can be distributed under the terms of the GNU GPL.
+#    This program can be distributed under the terms of the GNU GPL version 2 or later.
 #    See the file COPYING.
 #
 
@@ -10,7 +10,7 @@ import gnome
 import gobject
 from gettext import gettext as _
 
-import re,urllib
+import re, cgi
 import os.path
 import dbus
 
@@ -19,7 +19,7 @@ from deskbar.Handler import SignallingHandler
 from deskbar.Match import Match
 
 #Edit this var for change the numer of output results
-MAX_RESULTS = 2
+MAX_RESULTS = 10
 
 def _check_requirements ():
 	try:
@@ -27,6 +27,15 @@ def _check_requirements ():
 		try :
 			if getattr(dbus, 'version', (0,0,0)) >= (0,41,0):
 				import dbus.glib
+			
+			# Check that Tracker can be started via dbus activation, we will have trouble if it's not
+			bus = dbus.SessionBus()
+			proxy_obj = bus.get_object('org.freedesktop.DBus', '/org/freedesktop/DBus')
+			dbus_iface = dbus.Interface(proxy_obj, 'org.freedesktop.DBus')
+			activatables = dbus_iface.ListActivatableNames()
+			if not "org.freedesktop.Tracker" in activatables:
+				return (deskbar.Handler.HANDLER_IS_NOT_APPLICABLE, "Tracker is not activatable via dbus", None)	
+				
 		except:
 			return (deskbar.Handler.HANDLER_IS_NOT_APPLICABLE, "Python dbus.glib bindings not found.", None)
 		return (deskbar.Handler.HANDLER_IS_HAPPY, None, None)
@@ -66,15 +75,16 @@ TYPES = {
 		"description": (_("See  conversations %s") % "<i>%(publisher)s</i>" ) + "\n<b>%(base)s</b>",
 		"category": "conversations",
 		},
-	"Emails"	: {
-		"description": (_("See  mail %s") % "<i>%(publisher)s</i>" ) + "\n<b>%(base)s</b>",
+	"Email"	: {
+		"description": (_("Email from %s") % "<i>%(publisher)s</i>" ) + "\n<b>%(title)s</b>",
 		"category": "emails",
+		"action" : "evolution %(uri)s",
+		"icon" : "stock_mail",
 		},
 	"Music"	: {
-		"description": _("Listen music %s\nin %s")	% ("<b>%(base)s</b>", "<i>%(dir)s</i>"),
+		"description": _("Listen to music %s\nin %s")	% ("<b>%(base)s</b>", "<i>%(dir)s</i>"),
 		"category": "music",
-		},
-	
+		},	
 	"Documents" 	: {
 		"description": _("See document %s\nin %s")	% ("<b>%(base)s</b>", "<i>%(dir)s</i>"),
 		"category": "documents",
@@ -128,7 +138,7 @@ class TrackerSearchHandler(deskbar.Handler.Handler):
 class TrackerMoreMatch (Match):
 	def __init__(self, backend, qstring, category="files", **args):
 		Match.__init__(self, backend, **args)
-		self._icon = deskbar.Utils.load_icon("stock-find")
+		self._icon = deskbar.Utils.load_icon("tracker")
 		self.qstring = qstring
 		self.category = category
 
@@ -147,14 +157,25 @@ class TrackerMoreMatch (Match):
 class TrackerLiveFileMatch (Match):
 	def __init__(self, handler,result=None, **args):
 		Match.__init__ (self, handler,name=result["name"], **args)
-		self._icon = deskbar.Utils.load_icon_for_file(result['uri'])
+
 		self.result = result
 		self.fullpath = result['uri']
 		self.init_names()
+		
+		self.result["base"] = self.base
+		self.result["dir"] = self.dir
+		
+		# Set the match icon
+		try:
+			self._icon = deskbar.Utils.load_icon(TYPES[result['type']]["icon"])
+		except:
+			self._icon = deskbar.Utils.load_icon_for_file(result['uri'])
+		
+		print result
 
 	def get_name(self, text=None):
 		try:
-			return {"base": self.base,"dir": self.dir}
+			return self.result
 		except:
 			pass
 
@@ -171,8 +192,23 @@ class TrackerLiveFileMatch (Match):
 			pass
 
 	def action(self, text=None):
-		print "Opening Tracker hit:", self.result['uri']
-		gnome.url_show ("file://"+urllib.quote(self.result['uri']))
+		if TYPES[self.result["type"]].has_key("action"):
+			cmd = TYPES[self.result["type"]]["action"]
+			cmd = map(lambda arg : arg % self.result, cmd.split()) # we need this to handle spaces correctly
+			print "Opening Tracker hit with command:", cmd
+			try:
+				# deskbar >= 2.17
+				deskbar.Utils.spawn_async(cmd)
+			except AttributeError:
+				# deskbar <= 2.16
+				gobject.spawn_async(args, flags=gobject.SPAWN_SEARCH_PATH)
+		else:
+			try:
+				# deskbar >= 2.17
+				deskbar.Utils.url_show ("file://"+cgi.escape(self.result['uri']))
+			except AttributeError:
+				gnome.url_show("file://"+cgi.escape(self.result['uri']))
+			print "Opening Tracker hit:", self.result['uri']
 		
 	def get_category (self):
 		try:
@@ -197,7 +233,7 @@ class TrackerLiveFileMatch (Match):
 
 class TrackerLiveSearchHandler(SignallingHandler):
 	def __init__(self):
-		SignallingHandler.__init__(self, "stock_file")
+		SignallingHandler.__init__(self, "tracker")
 		bus = dbus.SessionBus()
 		self.tracker = bus.get_object('org.freedesktop.Tracker','/org/freedesktop/tracker')
 		self.search_iface = dbus.Interface(self.tracker, 'org.freedesktop.Tracker.Search')
@@ -208,11 +244,11 @@ class TrackerLiveSearchHandler(SignallingHandler):
 	def recieve_hits (self, qstring, hits, max):
 		matches = []
 		self.results = {}
-		print hits
+		
 		for info in hits:
 			output = {} 
 			output['name'] = os.path.basename(info[0])
-			output['uri'] = info[0] 
+			output['uri'] = str(cgi.escape(info[0]))
 			output['type'] = info[1]
 			if TYPES.has_key(output['type']) == 0:
 				output['type'] = "Other Files"	
@@ -220,6 +256,11 @@ class TrackerLiveSearchHandler(SignallingHandler):
 				self.results[output['type']].append(output)
 			except:
 				self.results[output['type']] = [output]
+			
+			if output["type"] == "Email":
+				output["title"] = cgi.escape(info[3])
+				output["publisher"] = cgi.escape(info[4])
+			
 		for key in self.results.keys():
 				for res in self.results[key][0:MAX_RESULTS]:
 					matches.append(TrackerLiveFileMatch(self,res))
@@ -233,12 +274,13 @@ class TrackerLiveSearchHandler(SignallingHandler):
 				
 	def query (self, qstring, max):
 		if qstring.count("tag:") == 0: 
-			self.search_iface.TextDetailed (-1, "Files", qstring, 0,100, reply_handler=lambda hits : self.recieve_hits(qstring, hits, max), error_handler=self.recieve_error)
+			self.search_iface.TextDetailed (-1, "Files", qstring, 0,10, reply_handler=lambda hits : self.recieve_hits(qstring, hits, max), error_handler=self.recieve_error)
+			self.search_iface.TextDetailed (-1, "Emails", qstring, 0,10, reply_handler=lambda hits : self.recieve_hits(qstring, hits, max), error_handler=self.recieve_error)
 			print "Tracker query:", qstring
 		else:
 			if self.tracker.GetVersion() == 502:
 				self.search_iface.Query(-1,"Files",["File.Format"],"",qstring.replace("tag:",""),"",False,0,100, reply_handler=lambda hits : self.recieve_hits(qstring, hits, max), error_handler=self.recieve_error)
 			elif self.tracker.GetVersion() == 503:
-				self.search_iface.Query(-1,"Files",["File.Mime"],"",qstring.replace("tag:",""),"",False,0,100, reply_handler=lambda hits : self.recieve_hits(qstring, hits, max), error_handler=self.recieve_error)
+				self.search_iface.Query(-1,"Files",["File:Mime"],"",qstring.replace("tag:",""),"",False,0,100, reply_handler=lambda hits : self.recieve_hits(qstring, hits, max), error_handler=self.recieve_error)
 			print "Tracker tag query:", qstring.replace("tag:","")
 

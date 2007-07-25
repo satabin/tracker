@@ -1,5 +1,6 @@
 INCLUDES =				\
 	-DDATADIR=\""$(datadir)"\"	\
+	-DTRACKER_LOCALEDIR=\""$(localedir)"\" \
 	$(GLIB2_CFLAGS)			\
 	$(DBUS_CFLAGS)			
 
@@ -13,7 +14,7 @@ libtrackerclient_la_LDFLAGS = -version-info 0:0:0
 
 include_HEADERS = tracker.h tracker-client.h		
 
-bin_PROGRAMS = tracker-search tracker-query tracker-meta-folder tracker-stats tracker-tag tracker-files
+bin_PROGRAMS = tracker-search tracker-query tracker-meta-folder tracker-stats tracker-tag tracker-files tracker-status
 
 tracker_search_SOURCES = tracker-search.c
 
@@ -42,6 +43,14 @@ tracker_stats_LDADD = 	$(GLIB2_LIBS) 	\
 		 	$(DBUS_LIBS)	\
 		 	$(GOBJECT_LIBS)	\
 			libtrackerclient.la
+
+tracker_status_SOURCES = tracker-status.c
+
+tracker_status_LDADD =   $(GLIB2_LIBS)   \
+                       $(DBUS_LIBS)    \
+                       $(GOBJECT_LIBS) \
+                       libtrackerclient.la
+
 
 tracker_tag_SOURCES = tracker-tag.c
 

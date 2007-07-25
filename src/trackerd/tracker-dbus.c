@@ -36,7 +36,6 @@ static DBusObjectPathVTable tracker_vtable = {
 	NULL
 };
 
-
 DBusConnection *
 tracker_dbus_init (void)
 {
@@ -48,7 +47,7 @@ tracker_dbus_init (void)
 	connection = dbus_bus_get (DBUS_BUS_SESSION, &error);
 
 	if ((connection == NULL) || dbus_error_is_set (&error)) {
-		tracker_log ("tracker_dbus_init() could not get the session bus");
+		tracker_error ("ERROR: tracker_dbus_init() could not get the session bus");
 		connection = NULL;
 		goto out;
 	}
@@ -57,7 +56,7 @@ tracker_dbus_init (void)
 
 	if (!dbus_connection_register_object_path (connection, TRACKER_OBJECT, &tracker_vtable, NULL)) {
 
-		tracker_log ("could not register D-BUS handlers");
+		tracker_error ("ERROR: could not register D-BUS handlers");
 		connection = NULL;
 		goto out;
 	}
@@ -67,7 +66,7 @@ tracker_dbus_init (void)
 	dbus_bus_request_name (connection, TRACKER_SERVICE, 0, &error);
 
 	if (dbus_error_is_set (&error)) {
-		tracker_log ("could not acquire service name due to '%s'", error.message);
+		tracker_error ("ERROR: could not acquire service name due to '%s'", error.message);
 		connection = NULL;
 		goto out;
 	}
@@ -145,6 +144,11 @@ message_func (DBusConnection *conn,
 		dbus_message_ref (message);
 		rec->action = DBUS_ACTION_GET_VERSION;
 
+
+        } else if (dbus_message_is_method_call (message, TRACKER_INTERFACE, TRACKER_METHOD_GET_STATUS)) {
+
+                dbus_message_ref (message);
+                rec->action = DBUS_ACTION_GET_STATUS;
 
 
 	} else if (dbus_message_is_method_call (message, TRACKER_INTERFACE_METADATA, TRACKER_METHOD_METADATA_GET)) {
@@ -232,6 +236,18 @@ message_func (DBusConnection *conn,
 
 
 
+	} else if (dbus_message_is_method_call (message, TRACKER_INTERFACE_SEARCH, TRACKER_METHOD_SEARCH_GET_HIT_COUNT)) {
+
+		dbus_message_ref (message);
+		rec->action = DBUS_ACTION_SEARCH_GET_HIT_COUNT;
+
+
+	} else if (dbus_message_is_method_call (message, TRACKER_INTERFACE_SEARCH, TRACKER_METHOD_SEARCH_GET_HIT_COUNT_ALL)) {
+
+		dbus_message_ref (message);
+		rec->action = DBUS_ACTION_SEARCH_GET_HIT_COUNT_ALL;
+
+
 	} else if (dbus_message_is_method_call (message, TRACKER_INTERFACE_SEARCH, TRACKER_METHOD_SEARCH_TEXT)) {
 
 		dbus_message_ref (message);
@@ -276,6 +292,13 @@ message_func (DBusConnection *conn,
 
 		dbus_message_ref (message);
 		rec->action = DBUS_ACTION_SEARCH_QUERY;
+
+
+
+	} else if (dbus_message_is_method_call (message, TRACKER_INTERFACE_SEARCH, TRACKER_METHOD_SEARCH_SUGGEST)) {
+
+		dbus_message_ref (message);
+		rec->action = DBUS_ACTION_SEARCH_SUGGEST;
 
 
 

@@ -15,6 +15,9 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
+/* Define if we have exempi */
+#undef HAVE_EXEMPI
+
 /* Define if we have FAM */
 #undef HAVE_FAM
 
@@ -53,6 +56,9 @@
 
 /* Define if we have Libxine */
 #undef HAVE_LIBXINE
+
+/* Define if we have libxml2 */
+#undef HAVE_LIBXML2
 
 /* Define to 1 if you have the <linux/inotify.h> header file. */
 #undef HAVE_LINUX_INOTIFY_H
@@ -99,6 +105,9 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
+/* Define if we have unac lib */
+#undef HAVE_UNAC
+
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
@@ -125,9 +134,6 @@
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
-
-/* The directory in which locale data will be stored */
-#undef TRACKER_LOCALEDIR
 
 /* Define that Tracker will try to use external video players */
 #undef USING_EXTERNAL_VIDEO_PLAYER

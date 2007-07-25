@@ -1,7 +1,52 @@
+tracker (0.6.0-1) unstable; urgency=low
+
+  * New upstream release.
+    - Uses XDG directories to store the settings, cache, database and log 
+      files. Closes: #414860
+    - Fixes the crash of the deskbar applet at session start. Closes: #434078 
+    - Does not fall back to polling when the inotify limit is exceeded.
+      Closes: #412089
+    - Correctly uses xdg-open to open the search results with the preferred
+      application. This requires the xdg-utils package to be installed, which
+      is a Recommends of tracker-search-tool. Closes: 415705
+  * Removed debian/man/ as the man pages are now shipped upstream. 
+    Update tracker.manpages, tracker-search-tool.manpages and 
+    tracker-utils.manpages accordingly.
+  * Removed patches that were applied upstream or are now obsolete
+    - debian/patches/20-trackerd_manpage.patch
+    - debian/patches/30-deskbar_plugin_max_results.patch
+    - debian/patches/40-inotify_syscalls.patch
+    - debian/patches/50-expand_pathname.patch
+    - debian/patches/60-check_pointer.patch
+    - debian/patches/70-check_magic_file_results.patch
+  * debian/copyright
+    - The htmless sources are not shipped anymore and the qdbm sources are now
+      in a separate subdirectory. Update the copyright file accordingly.
+  * debian/libtracker-gtk-dev.install, debian/libtracker-gtk0.install
+    - Added. libtracker-gtk is a new library that provides handy GTK+ widgets
+      for applications that use tracker.
+  * debian/control
+    - Drop libmagic-dev from Build-Depends, add libunac1-dev and libqdbm-dev.
+    - Add djvulibre-bin and gnumeric to Suggests. They are used as external
+      filters for indexing djvu, csv and spreadsheet documents.
+    - Add binary packages libtracker-gtk0 and libtracker-gtk-dev.
+    - Update the long description of tracker-utils and include the new tool
+      "tracker-status".
+    - Add binary package tracker-dbg which provides the debugging symbols of
+      trackerd and its utilities. Closes: #412140
+  * debian/rules
+    - Make sure we link against the system qdbm library.
+    - Enable the support for libunac.
+    - Explicitly enable the compilation of the GUI, the preferences applet
+      and libtracker-gtk.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 26 Jul 2007 01:13:37 +0200
+
 tracker (0.5.4-6) unstable; urgency=low
 
   * Rebuild against poppler 0.5.4. Closes: #427815
-  * Don't install htmless binary and manpage anymore. The html filter now uses w3m.
+  * Don't install htmless binary and man page anymore. 
+    The html filter now uses w3m.
 
  -- Michael Biebl <biebl@debian.org>  Wed, 06 Jun 2007 22:39:00 +0200
 

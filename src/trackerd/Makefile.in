@@ -37,7 +37,6 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = trackerd$(EXEEXT)
-check_PROGRAMS = $(am__EXEEXT_1)
 subdir = src/trackerd
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -50,44 +49,33 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
-am__EXEEXT_1 = test-tracker-indexer$(EXEEXT)
 PROGRAMS = $(bin_PROGRAMS)
-am__objects_1 = depot.$(OBJEXT) curia.$(OBJEXT) myconf.$(OBJEXT)
-am_test_tracker_indexer_OBJECTS = tracker-indexer.$(OBJEXT) \
-	test-tracker-indexer.$(OBJEXT) tracker-utils.$(OBJEXT) \
-	$(am__objects_1)
-test_tracker_indexer_OBJECTS = $(am_test_tracker_indexer_OBJECTS)
-am__DEPENDENCIES_1 =
-test_tracker_indexer_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libstemmer/libstemmer-private.la \
-	$(top_builddir)/src/xdgmime/libxdgmime.la
 am__trackerd_SOURCES_DIST = trackerd.c linux-inotify-syscalls.h \
 	tracker-inotify.c tracker-inotify.h tracker-fam.c \
-	tracker-fam.h depot.c depot.h curia.c curia.h myconf.h \
-	myconf.c tracker-indexer.c tracker-indexer.h tracker-parser.c \
-	tracker-parser.h tracker-db-sqlite.c tracker-db-sqlite.h \
-	tracker-db-email.c tracker-db-email.h tracker-db.c \
-	tracker-db.h tracker-dbus.c tracker-dbus.h \
-	tracker-dbus-files.c tracker-dbus-files.h \
-	tracker-dbus-methods.c tracker-dbus-methods.h \
-	tracker-dbus-metadata.c tracker-dbus-metadata.h \
-	tracker-dbus-keywords.c tracker-dbus-keywords.h \
-	tracker-dbus-search.c tracker-dbus-search.h tracker-email.c \
-	tracker-email.h tracker-email-utils.c tracker-email-utils.h \
+	tracker-fam.h tracker-indexer.c tracker-indexer.h \
+	tracker-parser.c tracker-parser.h tracker-db-sqlite.c \
+	tracker-db-sqlite.h tracker-db-email.c tracker-db-email.h \
+	tracker-apps.c tracker-apps.h tracker-db.c tracker-db.h \
+	tracker-dbus.c tracker-dbus.h tracker-dbus-files.c \
+	tracker-dbus-files.h tracker-dbus-methods.c \
+	tracker-dbus-methods.h tracker-dbus-metadata.c \
+	tracker-dbus-metadata.h tracker-dbus-keywords.c \
+	tracker-dbus-keywords.h tracker-dbus-search.c \
+	tracker-dbus-search.h tracker-email.c tracker-email.h \
+	tracker-email-utils.c tracker-email-utils.h \
 	tracker-email-evolution.c tracker-email-evolution.h \
 	tracker-email-thunderbird.c tracker-email-thunderbird.h \
 	tracker-email-kmail.c tracker-email-kmail.h tracker-metadata.c \
 	tracker-metadata.h tracker-rdf-query.c tracker-rdf-query.h \
 	tracker-stemmer.c tracker-stemmer.h tracker-utils.c \
 	tracker-utils.h tracker-ioprio.c tracker-ioprio.h
-@HAVE_INOTIFY_TRUE@am__objects_2 = tracker-inotify.$(OBJEXT)
-@HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@am__objects_3 =  \
+@HAVE_INOTIFY_TRUE@am__objects_1 = tracker-inotify.$(OBJEXT)
+@HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@am__objects_2 =  \
 @HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@	tracker-fam.$(OBJEXT)
-am__objects_4 = tracker-indexer.$(OBJEXT) tracker-parser.$(OBJEXT) \
+am__objects_3 = tracker-indexer.$(OBJEXT) tracker-parser.$(OBJEXT) \
 	tracker-db-sqlite.$(OBJEXT) tracker-db-email.$(OBJEXT)
-am_trackerd_OBJECTS = trackerd.$(OBJEXT) $(am__objects_2) \
-	$(am__objects_3) $(am__objects_1) $(am__objects_4) \
+am_trackerd_OBJECTS = trackerd.$(OBJEXT) $(am__objects_1) \
+	$(am__objects_2) $(am__objects_3) tracker-apps.$(OBJEXT) \
 	tracker-db.$(OBJEXT) tracker-dbus.$(OBJEXT) \
 	tracker-dbus-files.$(OBJEXT) tracker-dbus-methods.$(OBJEXT) \
 	tracker-dbus-metadata.$(OBJEXT) \
@@ -99,7 +87,9 @@ am_trackerd_OBJECTS = trackerd.$(OBJEXT) $(am__objects_2) \
 	tracker-rdf-query.$(OBJEXT) tracker-stemmer.$(OBJEXT) \
 	tracker-utils.$(OBJEXT) tracker-ioprio.$(OBJEXT)
 trackerd_OBJECTS = $(am_trackerd_OBJECTS)
+am__DEPENDENCIES_1 =
 trackerd_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) \
@@ -116,9 +106,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(test_tracker_indexer_SOURCES) $(trackerd_SOURCES)
-DIST_SOURCES = $(test_tracker_indexer_SOURCES) \
-	$(am__trackerd_SOURCES_DIST)
+SOURCES = $(trackerd_SOURCES)
+DIST_SOURCES = $(am__trackerd_SOURCES_DIST)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -157,7 +146,15 @@ ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
+ENABLE_LIBTRACKERGTK_FALSE = @ENABLE_LIBTRACKERGTK_FALSE@
+ENABLE_LIBTRACKERGTK_TRUE = @ENABLE_LIBTRACKERGTK_TRUE@
+ENABLE_PREFERENCES_FALSE = @ENABLE_PREFERENCES_FALSE@
+ENABLE_PREFERENCES_TRUE = @ENABLE_PREFERENCES_TRUE@
+ENABLE_UNAC_FALSE = @ENABLE_UNAC_FALSE@
+ENABLE_UNAC_TRUE = @ENABLE_UNAC_TRUE@
 EXEEXT = @EXEEXT@
+EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
+EXEMPI_LIBS = @EXEMPI_LIBS@
 F77 = @F77@
 FAM_LIBS = @FAM_LIBS@
 FFLAGS = @FFLAGS@
@@ -183,6 +180,10 @@ GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
+GTK2_CFLAGS = @GTK2_CFLAGS@
+GTK2_LIBS = @GTK2_LIBS@
+HAVE_EXEMPI_FALSE = @HAVE_EXEMPI_FALSE@
+HAVE_EXEMPI_TRUE = @HAVE_EXEMPI_TRUE@
 HAVE_FAM_FALSE = @HAVE_FAM_FALSE@
 HAVE_FAM_TRUE = @HAVE_FAM_TRUE@
 HAVE_GNOME_FALSE = @HAVE_GNOME_FALSE@
@@ -195,6 +196,8 @@ HAVE_LIBEXIF_FALSE = @HAVE_LIBEXIF_FALSE@
 HAVE_LIBEXIF_TRUE = @HAVE_LIBEXIF_TRUE@
 HAVE_LIBGSF_FALSE = @HAVE_LIBGSF_FALSE@
 HAVE_LIBGSF_TRUE = @HAVE_LIBGSF_TRUE@
+HAVE_LIBXML2_FALSE = @HAVE_LIBXML2_FALSE@
+HAVE_LIBXML2_TRUE = @HAVE_LIBXML2_TRUE@
 HAVE_POPPLER_GLIB_FALSE = @HAVE_POPPLER_GLIB_FALSE@
 HAVE_POPPLER_GLIB_TRUE = @HAVE_POPPLER_GLIB_TRUE@
 HAVE_RECENT_GLIB_FALSE = @HAVE_RECENT_GLIB_FALSE@
@@ -234,6 +237,8 @@ INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
+LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
+LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -241,11 +246,16 @@ LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIBTRACKERGTK_CFLAGS = @LIBTRACKERGTK_CFLAGS@
+LIBTRACKERGTK_LIBS = @LIBTRACKERGTK_LIBS@
+LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
+LIBXML2_LIBS = @LIBXML2_LIBS@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
@@ -264,13 +274,21 @@ POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
+QDBM_CFLAGS = @QDBM_CFLAGS@
+QDBM_LIBS = @QDBM_LIBS@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
 SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
+UNAC_CFLAGS = @UNAC_CFLAGS@
+UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
+USING_DESKBAR_APPLET_FALSE = @USING_DESKBAR_APPLET_FALSE@
+USING_DESKBAR_APPLET_TRUE = @USING_DESKBAR_APPLET_TRUE@
+USING_EXTERNAL_QDBM_FALSE = @USING_EXTERNAL_QDBM_FALSE@
+USING_EXTERNAL_QDBM_TRUE = @USING_EXTERNAL_QDBM_TRUE@
 USING_EXTERNAL_SQLITE_FALSE = @USING_EXTERNAL_SQLITE_FALSE@
 USING_EXTERNAL_SQLITE_TRUE = @USING_EXTERNAL_SQLITE_TRUE@
 USING_EXTERNAL_VIDEO_PLAYER_FALSE = @USING_EXTERNAL_VIDEO_PLAYER_FALSE@
@@ -335,22 +353,15 @@ target_alias = @target_alias@
 INCLUDES = \
 	-DDATADIR=\""$(datadir)"\"	\
 	-DLIBDIR=\""$(libdir)"\"	\
-	-D_XOPEN_SOURCE_EXTENDED=1	\
-	-D_GNU_SOURCE=1			\
-	-D__EXTENSIONS__=1		\
-	-D_HPUX_SOURCE=1		\
-	-D_POSIX_MAPPED_FILES=1		\
-	-D_POSIX_SYNCHRONIZED_IO=1	\
-	-DPIC=1				\
-	-D_REENTRANT=1			\
-	-DNDEBUG 			\
-	-DMYNOMMAP			\
+	-DTRACKER_LOCALEDIR=\""$(localedir)"\" \
 	$(GLIB2_CFLAGS)			\
 	$(PANGO_CFLAGS)			\
 	$(GMIME_CFLAGS)			\
 	$(FAM_CFLAGS)			\
 	$(DBUS_CFLAGS)			\
-	$(SQLITE3_CFLAGS)
+	$(SQLITE3_CFLAGS)		\
+	$(QDBM_CFLAGS)			\
+	$(UNAC_CFLAGS)		
 
 @HAVE_INOTIFY_TRUE@inotify_sources = \
 @HAVE_INOTIFY_TRUE@	linux-inotify-syscalls.h	\
@@ -359,7 +370,7 @@ INCLUDES = \
 
 @HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@fam_sources = \
 @HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@	tracker-fam.c			\
-@HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@	tracker-fam.h
+@HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@	tracker-fam.h 
 
 db_sources = \
 	tracker-indexer.c		\
@@ -371,36 +382,13 @@ db_sources = \
 	tracker-db-email.c		\
 	tracker-db-email.h
 
-qdbm_sources = \
-	depot.c				\
-	depot.h				\
-	curia.c				\
-	curia.h				\
-	myconf.h			\
-	myconf.c
-
-TESTS = test-tracker-indexer
-test_tracker_indexer_SOURCES = \
-	tracker-indexer.c		\
-	test-tracker-indexer.c		\
-	tracker-utils.c			\
-	tracker-utils.h			\
-	$(qdbm_sources)
-
-test_tracker_indexer_LDADD = \
-	$(GLIB2_LIBS)			\
-	$(GTHREAD_LIBS)			\
-	-lz				\
-	-lmagic				\
-	$(top_builddir)/src/libstemmer/libstemmer-private.la \
-	$(top_builddir)/src/xdgmime/libxdgmime.la
-
 trackerd_SOURCES = \
 	trackerd.c			\
 	$(inotify_sources)		\
 	$(fam_sources)			\
-	$(qdbm_sources)			\
 	$(db_sources)			\
+	tracker-apps.c			\
+	tracker-apps.h			\
 	tracker-db.c			\
 	tracker-db.h			\
 	tracker-dbus.c			\
@@ -443,9 +431,11 @@ trackerd_LDADD = \
 	$(PANGO_LIBS)			\
 	$(GMIME_LIBS)			\
 	$(SQLITE3_LIBS)			\
+	$(QDBM_LIBS)			\
+	$(UNAC_LIBS)			\
 	$(GTHREAD_LIBS)			\
 	-lz				\
-	-lmagic				\
+	-lm				\
 	$(top_builddir)/src/libstemmer/libstemmer-private.la \
 	$(top_builddir)/src/xdgmime/libxdgmime.la
 
@@ -510,16 +500,6 @@ clean-binPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
-
-clean-checkPROGRAMS:
-	@list='$(check_PROGRAMS)'; for p in $$list; do \
-	  f=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
-	  echo " rm -f $$p $$f"; \
-	  rm -f $$p $$f ; \
-	done
-test-tracker-indexer$(EXEEXT): $(test_tracker_indexer_OBJECTS) $(test_tracker_indexer_DEPENDENCIES) 
-	@rm -f test-tracker-indexer$(EXEEXT)
-	$(LINK) $(test_tracker_indexer_LDFLAGS) $(test_tracker_indexer_OBJECTS) $(test_tracker_indexer_LDADD) $(LIBS)
 trackerd$(EXEEXT): $(trackerd_OBJECTS) $(trackerd_DEPENDENCIES) 
 	@rm -f trackerd$(EXEEXT)
 	$(LINK) $(trackerd_LDFLAGS) $(trackerd_OBJECTS) $(trackerd_LDADD) $(LIBS)
@@ -530,10 +510,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/curia.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/depot.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myconf.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-tracker-indexer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-apps.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-email.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-sqlite.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db.Po@am__quote@
@@ -638,79 +615,6 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
-check-TESTS: $(TESTS)
-	@failed=0; all=0; xfail=0; xpass=0; skip=0; \
-	srcdir=$(srcdir); export srcdir; \
-	list='$(TESTS)'; \
-	if test -n "$$list"; then \
-	  for tst in $$list; do \
-	    if test -f ./$$tst; then dir=./; \
-	    elif test -f $$tst; then dir=; \
-	    else dir="$(srcdir)/"; fi; \
-	    if $(TESTS_ENVIRONMENT) $${dir}$$tst; then \
-	      all=`expr $$all + 1`; \
-	      case " $(XFAIL_TESTS) " in \
-	      *" $$tst "*) \
-		xpass=`expr $$xpass + 1`; \
-		failed=`expr $$failed + 1`; \
-		echo "XPASS: $$tst"; \
-	      ;; \
-	      *) \
-		echo "PASS: $$tst"; \
-	      ;; \
-	      esac; \
-	    elif test $$? -ne 77; then \
-	      all=`expr $$all + 1`; \
-	      case " $(XFAIL_TESTS) " in \
-	      *" $$tst "*) \
-		xfail=`expr $$xfail + 1`; \
-		echo "XFAIL: $$tst"; \
-	      ;; \
-	      *) \
-		failed=`expr $$failed + 1`; \
-		echo "FAIL: $$tst"; \
-	      ;; \
-	      esac; \
-	    else \
-	      skip=`expr $$skip + 1`; \
-	      echo "SKIP: $$tst"; \
-	    fi; \
-	  done; \
-	  if test "$$failed" -eq 0; then \
-	    if test "$$xfail" -eq 0; then \
-	      banner="All $$all tests passed"; \
-	    else \
-	      banner="All $$all tests behaved as expected ($$xfail expected failures)"; \
-	    fi; \
-	  else \
-	    if test "$$xpass" -eq 0; then \
-	      banner="$$failed of $$all tests failed"; \
-	    else \
-	      banner="$$failed of $$all tests did not behave as expected ($$xpass unexpected passes)"; \
-	    fi; \
-	  fi; \
-	  dashes="$$banner"; \
-	  skipped=""; \
-	  if test "$$skip" -ne 0; then \
-	    skipped="($$skip tests were not run)"; \
-	    test `echo "$$skipped" | wc -c` -le `echo "$$banner" | wc -c` || \
-	      dashes="$$skipped"; \
-	  fi; \
-	  report=""; \
-	  if test "$$failed" -ne 0 && test -n "$(PACKAGE_BUGREPORT)"; then \
-	    report="Please report to $(PACKAGE_BUGREPORT)"; \
-	    test `echo "$$report" | wc -c` -le `echo "$$banner" | wc -c` || \
-	      dashes="$$report"; \
-	  fi; \
-	  dashes=`echo "$$dashes" | sed s/./=/g`; \
-	  echo "$$dashes"; \
-	  echo "$$banner"; \
-	  test -z "$$skipped" || echo "$$skipped"; \
-	  test -z "$$report" || echo "$$report"; \
-	  echo "$$dashes"; \
-	  test "$$failed" -eq 0; \
-	else :; fi
-
 distdir: $(DISTFILES)
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
@@ -739,8 +643,6 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-	$(MAKE) $(AM_MAKEFLAGS) $(check_PROGRAMS)
-	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
 check: check-am
 all-am: Makefile $(PROGRAMS)
 installdirs:
@@ -773,8 +675,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-checkPROGRAMS clean-generic \
-	clean-libtool mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -822,9 +723,8 @@ ps-am:
 
 uninstall-am: uninstall-binPROGRAMS uninstall-info-am
 
-.PHONY: CTAGS GTAGS all all-am check check-TESTS check-am clean \
-	clean-binPROGRAMS clean-checkPROGRAMS clean-generic \
-	clean-libtool ctags distclean distclean-compile \
+.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
+	clean-generic clean-libtool ctags distclean distclean-compile \
 	distclean-generic distclean-libtool distclean-tags distdir dvi \
 	dvi-am html html-am info info-am install install-am \
 	install-binPROGRAMS install-data install-data-am install-exec \

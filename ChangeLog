@@ -1,7 +1,90 @@
+
+2007-08-07 Jamie McCracken <jamiemcc at gnome org>
+
+	* Fixed memory leaks
+	* Fixed crasher due to non valid utf-8 creeping through emails
+
+
+
+2007-08-07 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Remove some warnings at building of tracker-extract
+	* Adds more recognized date formats for Postscript files in tracker-extract
+	* Code cleanups in tracker-extract
+
+
+2007-08-07 Michael Biebl  <mbiebl at gmail com>
+	
+	* Generate the D-Bus client-side bindings automatically from the
+	introspection XML file
+
+
+
+2007-08-06 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Adds copyright headers in tracker-preferences' files
+	* Remove some code duplications in tracker-configuration.c
+	* Code cleanups in tracker-preferences
+
+
+2007-08-05  Marko Anastasov  <marko@marko.anastasov.name>
+
+	* Implemented tracker_dbus_method_search_get_hit_count.
+
+
+2007-08-04 Patch from Marcus Fritzsch <fritschy at googlemail com>
+	
+	* fixed crasher in email indexing when parsing mimes
+	* updated applet
+	* added tracker-preferences man page
+
+
+2007-08-04 Patch from Anders Rune Jensen <anders@iola.dk>
+	
+	* Made tracker compilable on windows
+
+
+2007-08-02 Patch from Marcus Fritzsch <fritschy at googlemail com>
+	
+	* Made generic error display window
+	* fixed crasher in tsts - added check for error when calculating hit count
+
+
+2007-07-29 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Makes tracker-extract to export dates only in ISO-8601 format
+	* Fixed dates for emails
+	* cosmetic changes
+
+
+2007-07-29 Patch from Marcus Fritzsch <fritschy at googlemail com>
+	
+	* Removed small chunk of whitespace from being parsed into indexer
+
+
+2007-07-26 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Fixed printing of date for audio files in TST
+
+	
+2007-07-25 Patch from Jerry Tan <Jerry.Tan@Sun.COM>
+
+	* updated applet to 0.6.0 settings
+	* fixed crasher and made read tags case insensitive for html extractor
+
+
+2007-07-25 Jamie McCracken <jamiemcc at gnome org>
+
+	* Based on patch by Marcus Fritzsch <fritschy@googlemail.com>
+	* Fixed crawled directory indexing when they are not a subset of watched directories
+	* Removed forced indexing of home dir when no watch dirs specified (home is default in cfg file)
+
+
 2007-07-24 Michael Biebl <mbiebl at gmail com>
 
 	* Include the deskbar-applet plugin on make dist
 	* Show if deskbar-applet support is enabled in the ./configure summary
+
 
 2007-07-18 Patch from Jerry Tan <Jerry.Tan@Sun.COM>
 

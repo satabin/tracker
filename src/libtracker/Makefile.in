@@ -275,6 +275,8 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 OBJEXT = @OBJEXT@
+OS_WIN32_FALSE = @OS_WIN32_FALSE@
+OS_WIN32_TRUE = @OS_WIN32_TRUE@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -369,11 +371,12 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 INCLUDES = \
-	-DDATADIR=\""$(datadir)"\"	\
+	-DTRACKER_DATADIR=\""$(datadir)"\"	\
 	-DTRACKER_LOCALEDIR=\""$(localedir)"\" \
 	$(GLIB2_CFLAGS)			\
 	$(DBUS_CFLAGS)			
 
+BUILT_SOURCES = tracker-client.h
 lib_LTLIBRARIES = libtrackerclient.la
 libtrackerclient_la_LIBADD = $(GLIB2_LIBS) 	\
 	    	       $(DBUS_LIBS)
@@ -423,7 +426,9 @@ tracker_files_LDADD = $(GLIB2_LIBS) 	\
 		 	$(GOBJECT_LIBS)	\
 			libtrackerclient.la
 
-all: all-am
+CLEANFILES = $(BUILT_SOURCES)
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
@@ -674,7 +679,8 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-check: check-am
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(HEADERS)
 install-binPROGRAMS: install-libLTLIBRARIES
 
@@ -682,7 +688,8 @@ installdirs:
 	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(includedir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
-install: install-am
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -699,6 +706,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -706,6 +714,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
@@ -773,6 +782,9 @@ uninstall-am: uninstall-binPROGRAMS uninstall-includeHEADERS \
 	uninstall-includeHEADERS uninstall-info-am \
 	uninstall-libLTLIBRARIES
 
+
+tracker-client.h: $(top_srcdir)/data/tracker-introspect.xml Makefile.am
+	dbus-binding-tool --prefix=client_object --mode=glib-client --output=tracker-client.h $(top_srcdir)/data/tracker-introspect.xml
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

@@ -1,8 +1,10 @@
 INCLUDES =				\
-	-DDATADIR=\""$(datadir)"\"	\
+	-DTRACKER_DATADIR=\""$(datadir)"\"	\
 	-DTRACKER_LOCALEDIR=\""$(localedir)"\" \
 	$(GLIB2_CFLAGS)			\
 	$(DBUS_CFLAGS)			
+
+BUILT_SOURCES = tracker-client.h
 
 lib_LTLIBRARIES = libtrackerclient.la
 
@@ -11,6 +13,9 @@ libtrackerclient_la_LIBADD = $(GLIB2_LIBS) 	\
 
 libtrackerclient_la_SOURCES = tracker.c
 libtrackerclient_la_LDFLAGS = -version-info 0:0:0
+
+tracker-client.h: $(top_srcdir)/data/tracker-introspect.xml Makefile.am
+	dbus-binding-tool --prefix=client_object --mode=glib-client --output=tracker-client.h $(top_srcdir)/data/tracker-introspect.xml
 
 include_HEADERS = tracker.h tracker-client.h		
 
@@ -66,3 +71,4 @@ tracker_files_LDADD = 	$(GLIB2_LIBS) 	\
 		 	$(GOBJECT_LIBS)	\
 			libtrackerclient.la
  
+CLEANFILES = $(BUILT_SOURCES)

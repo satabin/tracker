@@ -21,36 +21,73 @@
 
 #ifdef HAVE_LIBEXIF
 
-#include <libexif/exif-data.h>
+#include "tracker-extract.h"
 #include <stdio.h>
 #include <string.h>
 #include <glib.h>
+#include <libexif/exif-data.h>
 
-static gchar *fix_focal_length (gchar *fl)
+
+static gchar *
+date_to_iso8160 (gchar *exif_date)
+{
+        /* ex; date "2007:04:15 15:35:58"
+           To
+           ex. "2007-04-15T17:35:58+0200 where +0200 is localtime
+        */
+
+        gsize len = strlen (exif_date);
+        guint i;
+
+        /* We transform "2007:04:15 15:35:58" into  "2007 04 15 15:35:58" */
+        for (i = 0; i < len && i < 10; i++) {
+                if (exif_date[i] == ':') {
+                        exif_date[i] = ' ';
+                }
+        }
+
+        steps steps_to_do[] = {
+                YEAR, MONTH, DAY, TIME, LAST_STEP
+        };
+
+        return tracker_generic_date_extractor (exif_date, steps_to_do);
+}
+
+
+static gchar *
+fix_focal_length (gchar *fl)
 {
 	return g_strndup (fl, (strstr (fl, "mm") - fl));
 }
 
-static gchar *fix_flash (gchar *flash)
+
+static gchar *
+fix_flash (gchar *flash)
 {
-	if (g_str_has_prefix (flash, "No"))
-		return g_strdup ("0");
-	else
+        if (g_str_has_prefix (flash, "No")) {
+                return g_strdup ("0");
+        } else {
 		return g_strdup ("1");
+        }
 }
 
-static gchar *fix_fnumber (gchar *fn)
+
+static gchar *
+fix_fnumber (gchar *fn)
 {
 	if (fn && fn[0] == 'F') {
 		fn[0] = ' ';
-	}
-	else if (fn && fn[0] == 'f' && fn[1] == '/') {
+
+	} else if (fn && fn[0] == 'f' && fn[1] == '/') {
 		fn[0] = ' ', fn[1] = ' ';
 	}
+
 	return fn;
 }
 
-static gchar *fix_exposure_time (gchar *et)
+
+static gchar *
+fix_exposure_time (gchar *et)
 {
 	gchar *sep = strchr (et, '/');
 
@@ -65,16 +102,20 @@ static gchar *fix_exposure_time (gchar *et)
 			return g_strdup (str_value);
 		}
 	}
+
 	return et;
 }
 
-typedef gchar *(*PostProcessor)(gchar *);
+
+typedef gchar * (*PostProcessor) (gchar *);
+
 
 typedef struct {
-	ExifTag        tag;
+	ExifTag       tag;
 	gchar         *name;
-	PostProcessor  post;
+	PostProcessor post;
 } TagType;
+
 
 TagType tags[] = {
 	{ EXIF_TAG_PIXEL_Y_DIMENSION, "Image:Height", NULL },
@@ -82,7 +123,7 @@ TagType tags[] = {
 	{ EXIF_TAG_RELATED_IMAGE_WIDTH, "Image:Width", NULL },
 	{ EXIF_TAG_DOCUMENT_NAME, "Image:Title", NULL },
 	/* { -1, "Image:Album", NULL }, */
-	{ EXIF_TAG_DATE_TIME, "Image:Date", NULL },
+	{ EXIF_TAG_DATE_TIME, "Image:Date", date_to_iso8160 },
 	/* { -1, "Image:Keywords", NULL }, */
 	{ EXIF_TAG_ARTIST, "Image:Creator", NULL },
 	{ EXIF_TAG_USER_COMMENT, "Image:Comments", NULL },
@@ -103,25 +144,30 @@ TagType tags[] = {
 	{ -1, NULL, NULL }
 };
 
+
 void
 tracker_extract_exif (gchar *filename, GHashTable *metadata)
 {
-	ExifData    *exif;
-	ExifEntry   *entry;
-	char         buffer[1024];
-	TagType     *p;
+	ExifData *exif;
+	TagType  *p;
 
 	exif = exif_data_new_from_file (filename);
+
 	for (p = tags; p->name; ++p) {
-		entry = exif_data_get_entry (exif, p->tag);
+                ExifEntry *entry = exif_data_get_entry (exif, p->tag);
+
 		if (entry) {
+                        gchar buffer[1024];
+
 			exif_entry_get_value (entry, buffer, 1024);
-			if (p->post)
+
+			if (p->post) {
 				g_hash_table_insert (metadata, g_strdup (p->name),
-				                     g_strdup ((*p->post)(buffer)));
-			else
+				                     g_strdup ((*p->post) (buffer)));
+                        } else {
 				g_hash_table_insert (metadata, g_strdup (p->name),
 				                     g_strdup (buffer));
+                        }
 		}
 	}
 }

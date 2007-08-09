@@ -5,7 +5,7 @@ include /usr/share/cdbs/1/class/gnome.mk
 include /usr/share/cdbs/1/rules/utils.mk
 include /usr/share/cdbs/1/rules/simple-patchsys.mk
 
-DEB_CONFIGURE_EXTRA_FLAGS = \
+DEB_CONFIGURE_EXTRA_FLAGS := \
 	--enable-external-sqlite \
 	--enable-external-qdbm \
 	--enable-unac \
@@ -16,6 +16,9 @@ DEB_CONFIGURE_EXTRA_FLAGS = \
 	--enable-libtrackergtk
 
 DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,--as-needed"
+
+# Enforce tight shlibs dependencies
+DEB_DH_MAKESHLIBS_ARGS_ALL := -V
 
 binary-install/libdeskbar-tracker::
 	dh_pycentral -p$(cdbs_curpkg) /usr/lib/deskbar-applet/handlers/

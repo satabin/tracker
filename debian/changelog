@@ -1,3 +1,18 @@
+tracker (0.6.1-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/patches/10-deskbar_plugin_hashbang.patch
+    - Removed, merged upstream.
+  * debian/patches/10-function_prototypes.patch
+    - Add missing function prototype definitions. Closes: #435774
+  * debian/rules
+    - Generate tight shlibs dependencies by passing -V to dh_makeshlibs.
+      Closes: #435840
+  * debian/tracker-search-tool.manpages
+    - Install tracker-preferences man page.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 09 Aug 2007 18:32:11 +0200
+
 tracker (0.6.0-1) unstable; urgency=low
 
   * New upstream release.

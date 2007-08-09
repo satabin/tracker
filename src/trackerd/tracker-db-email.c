@@ -405,13 +405,38 @@ get_attachment_service_name (MailApplication app)
 	
 }
 
+static inline char *
+get_utf8 (const char *str)
+{
+
+	if (!str) return NULL;
+
+	int len = strlen (str);
+
+	if (!g_utf8_validate (str, len, NULL)) {
+
+		char *value;
+
+		value = g_locale_to_utf8 (str, len, NULL, NULL, NULL);
+
+		if (value) {
+			return value;
+		}
+
+	} else {
+		return g_strdup (str);
+	}
+
+	return NULL;
+
+}
 
 gboolean
 tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 {
-       	int	mbox_id, type_id, id, i, len;
-	char    *service, *attachment_service, *mime;
-	char 	*array[255];
+       	gint  mbox_id, type_id, id, i, len;
+	gchar *service, *attachment_service, *mime;
+	gchar *array[255];
 
         #define LIMIT_ARRAY_LENGTH(len) ((len) > 255 ? 255 : (len))
 
@@ -451,6 +476,8 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 
 		return TRUE;
 	}
+
+        mbox_id = -1; /* to have a default value */
 
 	if (mm->parent_mail_file) {
 		
@@ -502,9 +529,9 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 	tracker_free_file_info (info);
 
 	if (id != 0) {
-		GHashTable      *index_table;
-		char		*str_id, *str_date;
-		GSList          *tmp;
+		GHashTable *index_table;
+		gchar	   *str_id, *str_date;
+		GSList     *tmp;
 
 		tracker_db_start_transaction (db_con);
 
@@ -512,11 +539,16 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 
 		index_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 		str_id = tracker_int_to_str (id);
-		str_date = tracker_int_to_str (mm->date);
-
-
+                str_date = tracker_date_to_str (mm->date);
+ 
 		if (mm->body) {
-			tracker_db_insert_single_embedded_metadata (db_con, service, str_id, "Email:Body", mm->body, index_table);
+			char *value = get_utf8 (mm->body);
+
+			if (value) {
+				tracker_db_insert_single_embedded_metadata (db_con, service, str_id, "Email:Body", value, index_table);
+				g_free (value);
+			}
+			
 		}
 
 		if (str_date) {
@@ -524,11 +556,21 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 		}
 
 		if (mm->from) {
-			tracker_db_insert_single_embedded_metadata (db_con, service, str_id, "Email:Sender", mm->from, index_table);
+			char *value = get_utf8 (mm->from);
+			
+			if (value) {
+				tracker_db_insert_single_embedded_metadata (db_con, service, str_id, "Email:Sender", value, index_table);
+				g_free (value);
+			}
 		}
 
 		if (mm->subject) {
-			tracker_db_insert_single_embedded_metadata (db_con, service, str_id, "Email:Subject", mm->subject, index_table);
+			char *value = get_utf8 (mm->subject);
+
+			if (value) {
+				tracker_db_insert_single_embedded_metadata (db_con, service, str_id, "Email:Subject", value, index_table);
+				g_free (value);
+			}
 		}
 
 		g_free (str_date);

@@ -3,7 +3,7 @@
 # This file is part of Tracker.
 
 AC_PREREQ(2.59c)
-AC_INIT([tracker],[0.6.1],[tracker-list@gnome.org])
+AC_INIT([tracker],[0.6.2],[tracker-list@gnome.org])
 
 AC_CONFIG_SRCDIR([src/trackerd/trackerd.c])
 AM_INIT_AUTOMAKE([dist-bzip2])
@@ -87,26 +87,56 @@ AC_SUBST(DBUS_SERVICES_DIR)
 
 
 ####################################################################
-# Deskbar Applet Handler
+# Deskbar Applet Handler/Module
 ####################################################################
 
 AC_ARG_ENABLE([deskbar_applet],
-              AC_HELP_STRING([--enable-deskbar-applet], [Enable support for deskbar applet]),,
-              [enable_deskbar_applet=no])
+              AC_HELP_STRING([--enable-deskbar-applet=ARG], [Enable support for deskbar applet (handler, module, auto)]),,
+              [enable_deskbar_applet=auto])
 
-AM_CONDITIONAL(USING_DESKBAR_APPLET, test "x$enable_deskbar_applet" != "xno")
+if test "x$enable_deskbar_applet" = "xauto" ; then
+	if pkg-config --atleast-version=2.19 deskbar-applet ; then
+		enable_deskbar_applet="module"
+	elif pkg-config --atleast-version=2.16 deskbar-applet ; then
+		enable_deskbar_applet="handler"
+	else
+		enable_deskbar_applet="no"
+	fi
+fi
 
-AC_ARG_WITH([deskbar_applet_handler_dir],
-            AC_HELP_STRING([--with-deskbar-applet-handler-dir], [Path to Deskbar handler directory]))
+AM_CONDITIONAL(USING_DESKBAR_HANDLER, test "x$enable_deskbar_applet" = "xhandler")
+AM_CONDITIONAL(USING_DESKBAR_MODULE, test "x$enable_deskbar_applet" = "xmodule")
 
-if test "x$with_deskbar_applet_handler_dir" = "x" ; then
-   handler_dir="`pkg-config --variable handlersdir deskbar-applet`"
-else
-   handler_dir="$with_deskbar_applet_handler_dir"
+AC_ARG_WITH([deskbar_applet_dir],
+            AC_HELP_STRING([--with-deskbar-applet-dir], [Path to Deskbar handler/module directory]))
+
+if test "x$enable_deskbar_applet" = "xhandler" ; then
+	if test "x$with_deskbar_applet_dir" = "x" ; then
+		handler_dir="`pkg-config --variable handlersdir deskbar-applet`"
+	else
+		handler_dir="$with_deskbar_applet_dir"
+	fi
+	if test "x$handler_dir" = "x" ; then
+		handler_dir="\$(exec_prefix)/lib/deskbar-applet/handlers"
+	fi
 fi
 
 DESKBAR_HANDLER_DIR="$handler_dir"
 AC_SUBST(DESKBAR_HANDLER_DIR)
+
+if test "x$enable_deskbar_applet" = "xmodule" ; then
+	if test "x$with_deskbar_applet_dir" = "x" ; then
+		module_dir="`pkg-config --variable modulesdir deskbar-applet`"
+	else
+		module_dir="$with_deskbar_applet_dir"
+	fi
+	if test "x$module_dir" = "x" ; then
+		module_dir="\$(exec_prefix)/lib/deskbar-applet/modules"
+	fi
+fi
+
+DESKBAR_MODULE_DIR="$module_dir"
+AC_SUBST(DESKBAR_MODULE_DIR)
 
 ####################################################################
 # Compiler warning checks
@@ -284,53 +314,16 @@ if test "$native_win32" = "yes" ; then
 fi
 
 ####################################################################
-# External SQLite check
+#  SQLite check
 ####################################################################
 
-SQLITE_REQUIRED=3.2
+SQLITE_REQUIRED=3.4
 
-AC_ARG_ENABLE(external_sqlite, 
-	AC_HELP_STRING(
-		[--enable-external-sqlite],
-		[build using system's sqlite which must be a threadsafe version]),,
-	[enable_external_sqlite=no])
-
-if test "x$enable_external_sqlite" = "xyes"; then
-	PKG_CHECK_MODULES(SQLITE3, [ sqlite3 >= $SQLITE_REQUIRED ])
-	AM_CONDITIONAL(USING_EXTERNAL_SQLITE, true)
-else
-	SQLITE3_CFLAGS="-I\$(top_srcdir)/src/sqlite3"
-	SQLITE3_LIBS="\$(top_builddir)/src/sqlite3/libsqlite-private.la"
-	AM_CONDITIONAL(USING_EXTERNAL_SQLITE, false)
-fi		
+PKG_CHECK_MODULES(SQLITE3, [ sqlite3 >= $SQLITE_REQUIRED ])
 
 AC_SUBST(SQLITE3_CFLAGS)
 AC_SUBST(SQLITE3_LIBS)
 
-
-####################################################################
-# External QDBM check
-####################################################################
-
-QDBM_REQUIRED=1.8
-
-AC_ARG_ENABLE(external_qdbm, 
-	AC_HELP_STRING(
-		[--enable-external-qdbm],
-		[build using system's qdbm]),,
-	[enable_external_qdbm=no])
-
-if test "x$enable_external_qdbm" = "xyes"; then
-	PKG_CHECK_MODULES(QDBM, [ qdbm >= $QDBM_REQUIRED ])
-	AM_CONDITIONAL(USING_EXTERNAL_QDBM, true)
-else
-	QDBM_CFLAGS="-I\$(top_srcdir)/src/qdbm"
-	QDBM_LIBS="\$(top_builddir)/src/qdbm/libqdbm-private.la"
-	AM_CONDITIONAL(USING_EXTERNAL_QDBM, false)
-fi		
-
-AC_SUBST(QDBM_CFLAGS)
-AC_SUBST(QDBM_LIBS)
 
 
 ###############################################################################
@@ -524,7 +517,7 @@ LIBGNOMEUI_REQUIRED=2.13.7
 LIBGLADE_REQUIRED=2.5.0
 GNOMEVFS_REQUIRED=2.8.4
 
-AC_ARG_ENABLE(gui, AC_HELP_STRING([--disable-gui], [Disable building of the gnome-search-tool]),,[enable_gui=yes])
+AC_ARG_ENABLE(gui, AC_HELP_STRING([--disable-gui], [Disable building of the tracker-search-tool]),,[enable_gui=yes])
 if test "x$enable_gui" = "xyes"; then
 	PKG_CHECK_MODULES(GNOME_UTILS, [
         	gtk+-2.0 >= $GTK_REQUIRED
@@ -731,8 +724,6 @@ AC_CONFIG_FILES([
 	thumbnailers/image/Makefile
 	src/Makefile
 	src/libstemmer/Makefile
-	src/sqlite3/Makefile
-	src/qdbm/Makefile
 	src/text-filters/Makefile
 	src/text-filters/ooo_converter/Makefile
 	src/tracker-extract/Makefile
@@ -762,7 +753,6 @@ Tracker-$VERSION:
 	compiler:				${CC}
 	enable gcc warnings:			$enable_warnings
 	build with debug symbols:		$enable_debug_code
-	database engine:			SQLite
 	file monitor backend to be used:	$primary_backend
 	inotify header location:		$inotify_header
 	ioprio support:				$ioprio_support
@@ -784,9 +774,7 @@ Metadata extractors:
 	embedded/sidecar xmp:			$have_exempi
 
 "
-if test "x$enable_external_sqlite" = "xyes"; then
+
 echo "
-****WARNING**** : you have chosen to use an external version of SQLite instead of the in-built threadsafe one. 
-You must make sure a version of SQLite compiled with --enable-threadsafe is available otherwise expect pain!
+****WARNING**** : You must make sure a version of SQLite compiled with --enable-threadsafe is available otherwise expect pain!
 "
-fi

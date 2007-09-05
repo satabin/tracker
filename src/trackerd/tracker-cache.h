@@ -1,5 +1,6 @@
-/* Tracker - indexer and metadata database engine
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+/* Tracker
+ * routines for cacheing 
+ * Copyright (C) 2007, Jamie McCracken 
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -17,23 +18,27 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#include <stdlib.h> 
-#include <string.h> 
-#include <glib.h> 
-#include "tracker-stemmer.h"
-#include "tracker-utils.h"
+#ifndef _TRACKER_CACHE_H_
+#define _TRACKER_CACHE_H_
 
-extern Tracker *tracker;
+#include "tracker-db-sqlite.h"
 
 
-gchar *
-tracker_stem (const gchar *word, gint word_length)
+typedef struct
 {
-	gchar *stem_word;
-	
-	g_mutex_lock (tracker->stemmer_mutex);
-	stem_word = (gchar *) sb_stemmer_stem (tracker->stemmer, (guchar *) word, word_length);
-	g_mutex_unlock (tracker->stemmer_mutex);
+	GSList 	*new_file_list;
+	int	new_file_count;
+	GSList 	*new_email_list;
+	int	new_email_count;
+	GSList 	*update_file_list;
 
-	return g_strdup (stem_word);
-}
+} Cache;
+
+
+void		tracker_cache_add 		(const char *word, guint32 service_id, int service_type, int score, gboolean is_new);
+void		tracker_flush_all_words 	(DBConnection *db_con);
+void		tracker_cache_flush 		(DBConnection *db_con);
+
+
+
+#endif

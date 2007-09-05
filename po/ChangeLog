@@ -1,3 +1,60 @@
+2007-09-03  Duarte Loreto <happyguy_pt@hotmail.com>
+
+	* pt.po: Updated Portuguese translation by Nicolau Gonçalves
+	<excentriko@gmail.com>.
+
+2007-08-29  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2007-08-24  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation
+
+2007-08-23  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation.
+
+2007-08-20  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-08-19  Artur Flinta  <aflinta@svn.gnome.org>
+
+	* pl.po: Updated Polish translation by GNOME PL Team.
+
+2007-08-19  Michael Biebl <mbiebl@gmail.com>
+
+	gettext support in deskbar-applet has been fixed:
+
+	* POTFILES.skip: Remove tracker-handler.py
+	* POTFILES.in: Add tracker-handler.py and new file tracker-module.py
+
+2007-08-13  Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* fr.po: Updated French translation.
+
+2007-08-12  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: ACTUALLY added Lithuanian translation this time.
+	* LINGUAS: Returned back 'lt'.
+
+2007-08-11  Jamie McCracken <jamiemcc st gnome.org>
+
+	* removed lt from LINGUAS as lt.po is missing from svn and breaks compile
+
+2007-08-11  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation by Timo Jyrinki.
+
+2007-08-10  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Added Lithuanian translation.
+	* LINGUAS: Added 'lt'.
+
+2007-08-07 Roel Huybrechts <roelhuybrechts@skynet.be>
+	* nl.po: Added Dutch translation
+
 2007-07-25  Jorge Gonzalez <jorgegonz@svn.gnome.org>
 
         * es.po: Updated Spanish translation

@@ -26,8 +26,8 @@
 
 
 #ifdef HAVE_INOTIFY_LINUX
-#   include <linux/inotify.h>
-#   include "linux-inotify-syscalls.h"
+#include <linux/inotify.h>
+#include "linux-inotify-syscalls.h"
 #else
 #   include <sys/inotify.h>
 #endif

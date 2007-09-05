@@ -1,3 +1,23 @@
+tracker (0.6.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/patches/10-function_prototypes.patch
+    - Removed, merged upstream.
+  * debian/patches/01-version_fix.patch
+    - Fix the version number shown at trackerd start.
+  * debian/control
+    - Drop Build-Depends on libqdbm-dev. Tracker now uses sqlite3 for all of
+      its databases.
+    - Bump Build-Depends on libsqlite3-dev to >= 3.4 as the new sqlite based
+      indexer requires the incremental blob I/0 feature of sqlite 3.4.
+  * debian/rules
+    - Add --enable-deskbar-applet=handler to DEB_CONFIGURE_EXTRA_FLAGS.
+      deskbar-applet in unstable still uses the "old-style" handler interface.
+    - Drop --enable-external-sqlite and --enable-external-qdbm from
+      DEB_CONFIGURE_EXTRA_FLAGS. These configure options are now obsolete.
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 05 Sep 2007 22:30:28 +0200
+
 tracker (0.6.1-1) unstable; urgency=low
 
   * New upstream release.

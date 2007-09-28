@@ -3,7 +3,7 @@
 # This file is part of Tracker.
 
 AC_PREREQ(2.59c)
-AC_INIT([tracker],[0.6.2],[tracker-list@gnome.org])
+AC_INIT([tracker],[0.6.3],[tracker-list@gnome.org])
 
 AC_CONFIG_SRCDIR([src/trackerd/trackerd.c])
 AM_INIT_AUTOMAKE([dist-bzip2])
@@ -25,7 +25,13 @@ AC_CHECK_HEADERS([fcntl.h sitdlib.h string.h sys/time.h unistd.h linux/unistd.h]
 
 AC_CHECK_HEADER([zlib.h], [], [AC_MSG_ERROR([You must have zlib.h and zlib installed])])
 
+dnl can posix_fadvise be used
+AC_CHECK_DECLS(posix_fadvise, [], [], [
+#define _XOPEN_SOURCE 600
+#include <fcntl.h>])
+
 # Checks for functions
+AC_CHECK_FUNCS([posix_fadvise])
 AC_CHECK_FUNCS([getline])
 
 dnl Library Checks
@@ -199,6 +205,33 @@ if test "$have_recent_glib" = "yes" ; then
 fi
 
 AM_CONDITIONAL(HAVE_RECENT_GLIB, test "$have_recent_glib" = "yes")
+
+
+
+####################################################################
+# External QDBM check
+####################################################################
+
+QDBM_REQUIRED=1.8
+
+AC_ARG_ENABLE(external_qdbm, 
+	AC_HELP_STRING(
+		[--enable-external-qdbm],
+		[build using system's qdbm]),,
+	[enable_external_qdbm=no])
+
+if test "x$enable_external_qdbm" = "xyes"; then
+	PKG_CHECK_MODULES(QDBM, [ qdbm >= $QDBM_REQUIRED ])
+	AM_CONDITIONAL(USING_EXTERNAL_QDBM, true)
+else
+	QDBM_CFLAGS="-I\$(top_srcdir)/src/qdbm"
+	QDBM_LIBS="\$(top_builddir)/src/qdbm/libqdbm-private.la"
+	AM_CONDITIONAL(USING_EXTERNAL_QDBM, false)
+fi		
+
+AC_SUBST(QDBM_CFLAGS)
+AC_SUBST(QDBM_LIBS)
+
 
 
 ##################################################################
@@ -594,9 +627,6 @@ fi
 
 AM_CONDITIONAL(ENABLE_PREFERENCES, test "$enable_preferences" != "no")
 
-
-
-
 ##################################################################
 # check for poppler's glib bingings
 ##################################################################
@@ -724,6 +754,7 @@ AC_CONFIG_FILES([
 	thumbnailers/image/Makefile
 	src/Makefile
 	src/libstemmer/Makefile
+	src/qdbm/Makefile
 	src/text-filters/Makefile
 	src/text-filters/ooo_converter/Makefile
 	src/tracker-extract/Makefile

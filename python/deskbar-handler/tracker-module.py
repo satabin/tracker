@@ -1,8 +1,11 @@
+# This deskbar module was ported from deskbar <= 2.18 handler by Marcus Fritzsch
+
 import gnome
 import gobject
 import re
 import sys
 import urllib
+import string
 import time
 import cgi
 import os.path
@@ -72,7 +75,7 @@ class TrackerSearchToolHandler(deskbar.interfaces.Module):
 			'icon': deskbar.core.Utils.load_icon ('tracker'),
 			'name': _('Tracker Search'),
 			'description': _('Search with Tracker Search Tool'),
-			'version': '0.6.2',
+			'version': '0.6.3',
 	}
 
 	def __init__(self):
@@ -103,7 +106,12 @@ TYPES = {
 	'Emails': {
 		'description': (_('Email from %s') % '<i>%(publisher)s</i>' ) + '\n<b>%(title)s</b>',
 		'category': 'emails',
-		'action' : 'evolution %(uri)s',
+		'action': { # more actions for different MUAs
+			'key': 'mua', # see TrackerLiveSearchAction.action for a demo
+			'Evolution':          'evolution %(uri)s',
+			'Thunderbird/Email':  'thunderbird -viewbeagle %(uri)s',
+			'KMail':              'kmail --view %(uri)s',
+		},
 	},
 
 	'Music': {
@@ -177,11 +185,11 @@ class TrackerLiveSearchMatch (deskbar.interfaces.Match):
 						pass # some icons cannot be loaded... (e.g. for non existent file or illegal URI)
 
 		self.add_action (TrackerLiveSearchAction (result, desktop))
-		
+
 		# Add extra default actions where it makes sense
 		if not result['type'] in ["Emails", "Applications", "GaimConversations"]:
 			self.add_all_actions (get_actions_for_uri(result['uri']))
-	
+
 	def get_name (self, text = None):
 		return self.result ['name']
 
@@ -210,7 +218,7 @@ class TrackerLiveSearchAction (deskbar.interfaces.Action):
 		self.name = result['name']
 		self.desktop = desktop
 		self.result = result
-		self.init_names (result['unquoted_uri'])
+		self.init_names (result['uri'])
 
 	def get_name(self, text=None):
 		return self.result
@@ -229,7 +237,15 @@ class TrackerLiveSearchAction (deskbar.interfaces.Action):
 
 	def activate (self, text=None):
 		if TYPES[self.result['type']].has_key('action'):
-			cmd = TYPES[self.result['type']]['action']
+			if isinstance (TYPES[self.result['type']]['action'], dict):
+				try:
+					key = TYPES[self.result['type']]['action']['key']
+					cmd = TYPES[self.result['type']]['action'][self.result[key]]
+				except:
+					print >> sys.stderr, "Unknown action for URI %s (Error: %s)" % (self.result['uri'], sys.exc_info()[1])
+					return
+			else:
+				cmd = TYPES[self.result['type']]['action']
 			cmd = map(lambda arg : arg % self.result, cmd.split()) # we need this to handle spaces correctly
 
 			print 'Opening Tracker hit with command:', cmd
@@ -238,8 +254,8 @@ class TrackerLiveSearchAction (deskbar.interfaces.Action):
 			if self.desktop:
 				self.desktop.launch ([])
 			else:
-				deskbar.core.Utils.url_show ('file://'+urllib.quote (self.result['uri']))
-			print 'Opening Tracker hit:', urllib.quote (self.result['uri'])
+				deskbar.core.Utils.url_show ('file://'+url_quote (self.result['uri'], ';?:@&=+$,./'))
+			print 'Opening Tracker hit:', url_quote (self.result['uri'], ';?:@&=+$,./')
 
 	def init_names (self, fullpath):
 		dirname, filename = os.path.split(fullpath)
@@ -263,7 +279,7 @@ class TrackerLiveSearchHandler(deskbar.interfaces.Module):
 			'icon': deskbar.core.Utils.load_icon ('tracker'),
 			'name': _('Tracker Live Search'),
 			'description': _('Search with Tracker, as you type'),
-			'version': '0.6.2',
+			'version': '0.6.3',
 			'categories': {
 			'develop': {
 				'name': _('Development Files'),
@@ -309,11 +325,11 @@ class TrackerLiveSearchHandler(deskbar.interfaces.Module):
 		# initing on search request, see self.query
 		self.tracker = self.search_iface = self.keywords_iface = self.files_iface = None
 		self.conv_re = re.compile (r'^.*?/logs/([^/]+)/([^/]+)/([^/]+)/(.+?)\.(:?txt|html)$') # all, proto, account, to-whom, time
-		self.have_tst = is_program_in_path ('tracker-search-tool')
 
 	def handle_email_hits (self, info, output):
 		output['title'] = info[3]
 		output['publisher'] = info[4]
+		output['mua'] = info[2]
 
 	def handle_conversation_hits (self, info, output):
 		output ['uri'] = info [0]
@@ -365,8 +381,8 @@ class TrackerLiveSearchHandler(deskbar.interfaces.Module):
 
 			info = [str (i) for i in info]
 
-			output['unquoted_uri'] = output['uri'] = info[0]
-			output['name'] = os.path.basename(output['unquoted_uri'])
+			output['uri'] = info[0]
+			output['name'] = os.path.basename(output['uri'])
 			output['type'] = info[1]
 
 			if not TYPES.has_key(output['type']):
@@ -417,8 +433,6 @@ class TrackerLiveSearchHandler(deskbar.interfaces.Module):
 					reply_handler = lambda hits: self.recieve_hits(qstring, hits, max),
 					error_handler = self.recieve_error)
 		print 'Tracker query:', qstring
-		if self.have_tst:
-			self._emit_query_ready (qstring, [TrackerSearchToolMatch (name=qstring, priority=self.get_priority ())])
 
 
 
@@ -445,3 +459,7 @@ def time_from_purple_log (instr):
 	except:
 		print >> sys.stderr, '*** time parsing for purple chat log failed: %s' % sys.exc_info ()[1]
 	return instr
+
+def url_quote (instr, safe = '/'):
+	"""A unicode capable quote, see http://bugs.python.org/issue1712522"""
+	return ''.join (map (lambda x: x in (safe+string.letters+string.digits) and x or ('%%%02X' % ord(x)), instr.encode ('utf-8')))

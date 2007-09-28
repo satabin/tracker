@@ -18,9 +18,14 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <fcntl.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <time.h>
 #include <glib/gstdio.h>
 
@@ -44,7 +49,7 @@ extern Tracker *tracker;
 
 
 //static void	mh_watch_mail_messages_in_dir	(DBConnection *db_con, const gchar *dir_path);
-static GMimeStream *new_gmime_stream_from_file	(const gchar *path, const gchar *mode, off_t start, off_t end);
+static GMimeStream *new_gmime_stream_from_file	(const gchar *path, gint flags, off_t start, off_t end);
 
 static GSList *	add_gmime_references		(GSList *list, GMimeMessage *message, const gchar *header);
 static GSList *	add_recipients			(GSList *list, GMimeMessage *message, const gchar *type);
@@ -95,8 +100,6 @@ email_parse_and_save_mail_message (DBConnection *db_con, MailApplication mail_ap
 
 	tracker_db_email_save_email (db_con, mail_msg);
 
-	//email_index_each_email_attachment (db_con, mail_msg);
-
 	email_free_mail_message (mail_msg);
 
 	return TRUE;
@@ -109,9 +112,12 @@ email_parse_mail_file_and_save_new_emails (DBConnection *db_con, MailApplication
                                            MakeURIHelperFct uri_helper, gpointer make_uri_user_data,
                                            MailStore *store)
 {
-	MailFile	*mf;
-	MailMessage	*mail_msg;
-	int 		indexed = 0, junk = 0, deleted = 0;
+	MailFile    *mf;
+	MailMessage *mail_msg;
+	gint        indexed = 0, junk = 0, deleted = 0;
+
+
+	if (!tracker->is_running) return FALSE; 
 
 	g_return_val_if_fail (db_con, FALSE);
 	g_return_val_if_fail (path, FALSE);
@@ -119,8 +125,7 @@ email_parse_mail_file_and_save_new_emails (DBConnection *db_con, MailApplication
 
 	mf = email_open_mail_file_at_offset (mail_app, path, store->offset, TRUE);
 
-	while ((mail_msg = email_mail_file_parse_next (mf,
-                                                       read_mail_helper, read_mail_user_data))) {
+	while ((mail_msg = email_mail_file_parse_next (mf, read_mail_helper, read_mail_user_data))) {
 
 		if (!tracker->is_running) {
 			email_free_mail_message (mail_msg);
@@ -156,27 +161,49 @@ email_parse_mail_file_and_save_new_emails (DBConnection *db_con, MailApplication
 
 		email_free_mail_message (mail_msg);
 
-		tracker->index_count++;
+		LoopEvent event = tracker_cache_event_check (db_con->data, TRUE);
 
-		if (tracker->verbosity == 1 && (tracker->index_count == 100  || (tracker->index_count >= 500 && tracker->index_count%500 == 0))) {
-			tracker_log ("indexing #%d - Emails in %s", tracker->index_count, path);
-		}
+		if (event==EVENT_SHUTDOWN || event==EVENT_DISABLE) {
 
-		if (tracker->grace_period > 1) {
-			tracker_log ("pausing indexing while non-tracker disk I/O is taking place");
-			g_usleep (1000 * 1000);
-			tracker->grace_period--;
-			if (tracker->grace_period > 2) tracker->grace_period = 2;
-			continue;
-		}
+			tracker_db_end_index_transaction (db_con->data);
+			tracker_cache_flush_all (FALSE);
 
+			break;						
 
+		} else if (event == EVENT_CACHE_FLUSHED) {
+			
+			tracker_db_end_index_transaction (db_con->data);
+			tracker_db_start_index_transaction (db_con->data);		
+
+		}				
+
+		if (tracker_db_regulate_transactions (db_con->data, 500)) {
+
+			if (tracker->verbosity == 1) {
+				tracker_log ("indexing #%d - Emails in %s", tracker->index_count, path);
+			}
+
+			if (tracker->index_count % 2500 == 0) {
+				tracker_db_end_index_transaction (db_con->data);
+				tracker_db_refresh_all (db_con->data);
+//				tracker_db_refresh_email (db_con);
+				tracker_db_start_index_transaction (db_con->data);
+			}
+
+			
+		}	
+
+		
+
+		
 	}
 
 	email_free_mail_file (mf);
 
 	if (indexed > 0) {
-		tracker_info ("Indexed %d emails in email store %s and ignored %d junk and %d deleted emails", indexed, path, junk, deleted);
+		tracker_info ("Indexed %d emails in email store %s and ignored %d junk and %d deleted emails",
+                              indexed, path, junk, deleted);
+
 		return TRUE;
 	}
 
@@ -287,7 +314,11 @@ email_open_mail_file_at_offset (MailApplication mail_app, const gchar *path, off
 
 	g_return_val_if_fail (path, NULL);
 
-	stream = new_gmime_stream_from_file (path, "r", offset, -1);
+#if defined(__linux__)
+	stream = new_gmime_stream_from_file (path, (O_RDONLY | O_NOATIME) , offset, -1);
+#else
+	stream = new_gmime_stream_from_file (path, O_RDONLY , offset, -1);
+#endif
 
 	if (!stream) {
 		return NULL;
@@ -778,8 +809,12 @@ email_decode_mail_attachment_to_file (const gchar *src, const gchar *dst, MimeEn
 	g_return_val_if_fail (src, FALSE);
 	g_return_val_if_fail (dst, FALSE);
 
-	stream_src = new_gmime_stream_from_file (src, "r", 0, -1);
-	stream_dst = new_gmime_stream_from_file (dst, "w", 0, -1);
+#if defined(__linux__)
+	stream_src = new_gmime_stream_from_file (src, (O_RDONLY | O_NOATIME), 0, -1);
+#else
+	stream_src = new_gmime_stream_from_file (src, O_RDONLY, 0, -1);
+#endif
+	stream_dst = new_gmime_stream_from_file (dst, (O_CREAT | O_TRUNC | O_WRONLY), 0, -1);
 
 	if (!stream_src || !stream_dst) {
 		if (stream_src) {
@@ -883,14 +918,13 @@ email_decode_mail_attachment_to_file (const gchar *src, const gchar *dst, MimeEn
 
 
 static GMimeStream *
-new_gmime_stream_from_file (const gchar *path, const gchar *mode, off_t start, off_t end)
+new_gmime_stream_from_file (const gchar *path, gint flags, off_t start, off_t end)
 {
 	gchar       *path_in_locale;
-	FILE        *f;
+	gint        fd;
 	GMimeStream *stream;
 
 	g_return_val_if_fail (path, NULL);
-	g_return_val_if_fail (mode, NULL);
 
 	path_in_locale = g_filename_from_utf8 (path, -1, NULL, NULL, NULL);
 
@@ -900,18 +934,18 @@ new_gmime_stream_from_file (const gchar *path, const gchar *mode, off_t start, o
 		return NULL;
 	}
 
-	f = g_fopen (path_in_locale, mode);
+	fd = g_open (path_in_locale, flags, (S_IRUSR | S_IWUSR));
 
 	g_free (path_in_locale);
 
-	if (!f) {
+	if (fd == -1) {
 		return NULL;
 	}
 
-	stream = g_mime_stream_file_new_with_bounds (f, start, end);
+	stream = g_mime_stream_fs_new_with_bounds (fd, start, end);
 
 	if (!stream) {
-		fclose (f);
+		close (fd);
 		return NULL;
 	}
 
@@ -1031,7 +1065,7 @@ find_attachment (GMimeObject *obj, gpointer data)
 		/* convert attachment filename from utf-8 to filesystem charset */
 		gchar *locale_uri = g_filename_from_utf8 (attachment_uri, -1, NULL, NULL, NULL);
 
-		fd = g_open (locale_uri, O_CREAT | O_WRONLY, 0666);
+		fd = g_open (locale_uri, (O_CREAT | O_TRUNC | O_WRONLY), 0666);
 
 		if (fd == -1) {
 			tracker_error ("ERROR: failed to save attachment %s", locale_uri);

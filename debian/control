@@ -3,9 +3,10 @@ Section: utils
 Priority: optional
 Maintainer: Michael Biebl <biebl@debian.org>
 XS-Python-Version: all
-Build-Depends: cdbs, debhelper (>= 5.0.0), autotools-dev, libxml-parser-perl, libglib2.0-dev (>= 2.12.0), libpango1.0-dev (>= 1.0.0), libgmime-2.0-2-dev (>= 2.1.0), libdbus-1-dev (>= 0.60), libdbus-glib-1-dev (>= 0.60), libgstreamer0.10-dev (>= 0.10.0), libsqlite3-dev (>= 3.4), libpoppler-dev (>= 0.4.5), libpoppler-glib-dev (>= 0.4.5), libgsf-1-dev (>= 1.13), libexif-dev (>= 0.6), libpng12-dev (>= 1.2), libgtk2.0-dev (>= 2.8.0), libgnome2-dev (>= 2.14.0), libgnomeui-dev (>= 2.14.0), libgnomevfs2-dev (>= 2.8.4), libgnome-desktop-dev (>= 2.10), zlib1g-dev, libunac1-dev
+Build-Depends: cdbs, debhelper (>= 5.0.0), autotools-dev, libxml-parser-perl, libglib2.0-dev (>= 2.12.0), libpango1.0-dev (>= 1.0.0), libgmime-2.0-2-dev (>= 2.1.0), libdbus-1-dev (>= 0.60), libdbus-glib-1-dev (>= 0.60), libgstreamer0.10-dev (>= 0.10.0), libsqlite3-dev (>= 3.4), libpoppler-dev (>= 0.4.5), libpoppler-glib-dev (>= 0.4.5), libgsf-1-dev (>= 1.13), libexif-dev (>= 0.6), libpng12-dev (>= 1.2), libgtk2.0-dev (>= 2.8.0), libgnome2-dev (>= 2.14.0), libgnomeui-dev (>= 2.14.0), libgnomevfs2-dev (>= 2.8.4), libgnome-desktop-dev (>= 2.10), zlib1g-dev, libunac1-dev, libqdbm-dev, libexempi-dev (>= 1.99.2)
 Build-Depends-Indep: python-central (>= 0.5)
 Standards-Version: 3.7.2
+Homepage: http://www.tracker-project.org
 
 Package: tracker
 Architecture: any
@@ -16,8 +17,6 @@ Description: metadata database, indexer and search tool
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
- .
-  Homepage: http://www.tracker-project.org
 
 Package: libtrackerclient0
 Architecture: any
@@ -30,8 +29,6 @@ Description: metadata database, indexer and search tool - library
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
- .
-  Homepage: http://www.tracker-project.org
 
 Package: libtrackerclient-dev
 Architecture: any
@@ -44,8 +41,6 @@ Description: metadata database, indexer and search tool - development files
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
- .
-  Homepage: http://www.tracker-project.org
 
 Package: libtracker-gtk0
 Architecture: any
@@ -54,8 +49,6 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: GTK+ widgets for apps that use tracker
  This library provides handy GTK+ widgets which allows applications to 
  easily make use of tracker. 
- .
-  Homepage: http://www.tracker-project.org
 
 Package: libtracker-gtk-dev
 Architecture: any
@@ -67,8 +60,6 @@ Description: GTK+ widgets for apps that use tracker - development files
  .
  libtracker-gtk provides handy GTK+ widgets which allows applications to 
  easily make use of tracker. 
- .
-  Homepage: http://www.tracker-project.org
 
 Package: tracker-utils
 Architecture: any
@@ -90,8 +81,6 @@ Description: metadata database, indexer and search tool - commandline tools
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
- .
-  Homepage: http://www.tracker-project.org
 
 Package: tracker-search-tool
 Architecture: any
@@ -104,8 +93,6 @@ Description: metadata database, indexer and search tool - GNOME frontend
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
- .
-  Homepage: http://www.tracker-project.org
 
 Package: libdeskbar-tracker
 Architecture: all
@@ -118,8 +105,6 @@ Description: metadata database, indexer and search tool - deskbar-applet plugin
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
- .
-  Homepage: http://www.tracker-project.org
 
 Package: tracker-dbg
 Architecture: any
@@ -128,5 +113,3 @@ Depends: ${shlibs:Depends}
 Description: metadata database, indexer and search tool - debugging symbols
  This package includes the debugging symbols useful for debugging tracker and 
  its utilities
- .
-  Homepage: http://www.tracker-project.org

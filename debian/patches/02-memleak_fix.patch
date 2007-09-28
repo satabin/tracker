@@ -1,0 +1,12 @@
+Index: src/trackerd/tracker-utils.c
+===================================================================
+--- src/trackerd/tracker-utils.c	(Revision 869)
++++ src/trackerd/tracker-utils.c	(Revision 882)
+@@ -1967,6 +1967,7 @@
+ 			}
+ 
+ 			if (filter_prefix && !g_str_has_prefix (str, filter_prefix)) {
++				g_free (str);
+ 				continue;
+ 			}
+ 

@@ -1,3 +1,25 @@
+tracker (0.6.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/patches/01-version_fix.patch
+    - Removed, merged upstream.
+  * debian/patches/02-getenv.patch
+    - Removed, merged upstream.
+  * debian/patches/03-system_ioprio.patch
+    - Removed, fixed upstream.
+  * debian/control
+    - Build-Depend on libqdbm-dev (again); qdbm proved to be a lot faster and
+      less ressource hungy for the index databases than sqlite3.
+    - Enable XMP support by adding a Build-Depends on libexempi-dev.
+    - Use the new "Homepage:" field to specify the upstream URL.
+  * debian/rules
+    - Build against the system qdbm libray.
+    - Pass "-Wl,-Bsymbolic" to LDFLAGS. This will avoid namespace conflicts
+      which can lead to all kinds of subtle bugs in clients that load
+      libtrackerclient via dlopen. Closes: #443824
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 28 Sep 2007 11:25:49 +0200
+
 tracker (0.6.2-2) unstable; urgency=low
 
   * debian/patches/02-getenv.patch

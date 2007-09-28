@@ -18,14 +18,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
+#include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <glib/gstdio.h>
 
 #include "tracker-email-evolution.h"
 #include "tracker-email-utils.h"
 #include "tracker-db-email.h"
+#include "tracker-cache.h"
 
 #ifdef HAVE_INOTIFY
 #   include "tracker-inotify.h"
@@ -648,21 +656,19 @@ check_summary_file (DBConnection *db_con, const gchar *filename, MailStore *stor
 
 				if (scan_summary_for_junk (summary, &uid, store->type)) {
 					if (uid > 0) {
+						gchar *uri, *str_uid;
 
-						if (!tracker_db_email_lookup_junk (db_con, mbox_id, uid)) {
-							gchar *uri, *str_uid;
+						str_uid = tracker_uint_to_str (uid);
 
-							str_uid = tracker_uint_to_str (uid);
+						tracker_db_email_insert_junk (db_con, path, uid);
 
-							tracker_db_email_insert_junk (db_con, path, uid);
+						uri = g_strconcat (store->uri_prefix, str_uid, NULL);
 
-							uri = g_strconcat (store->uri_prefix, str_uid, NULL);
+						tracker_db_email_delete_email (db_con, uri);
 
-							tracker_db_email_delete_email (db_con, uri);
-
-							g_free (uri);
-							g_free (str_uid);
-						}
+						g_free (uri);
+						g_free (str_uid);
+						
 					}
 				} else {
 					tracker_error ("ERROR: whilst scanning summary file");
@@ -1204,6 +1210,8 @@ index_mail_messages_by_summary_file (DBConnection                 *db_con,
 {
 	SummaryFile *summary = NULL;
 
+	if (!tracker->is_running || !tracker->enable_indexing) return; 
+
 	if (open_summary_file (summary_file_path, &summary)) {
 		SummaryFileHeader *header;
 		gint32            mail_count, junk_count, delete_count;
@@ -1350,11 +1358,43 @@ index_mail_messages_by_summary_file (DBConnection                 *db_con,
 
 				email_free_mail_file (mail_msg->parent_mail_file);
 				email_free_mail_message (mail_msg);
+
+				LoopEvent event = tracker_cache_event_check (db_con->data, TRUE);
+
+				if (event==EVENT_SHUTDOWN || event==EVENT_DISABLE) {
+
+					tracker_db_end_index_transaction (db_con->data);
+					tracker_cache_flush_all (FALSE);
+
+					break;						
+
+				} else if (event == EVENT_CACHE_FLUSHED) {
+					tracker_db_end_index_transaction (db_con->data);
+					tracker_db_refresh_email (db_con);
+					tracker_db_start_index_transaction (db_con->data);		
+
+				}		
+
+				if (tracker_db_regulate_transactions (db_con->data, 200)) {
+					if (tracker->verbosity == 1) {
+						tracker_log ("indexing #%d - Emails in %s", tracker->index_count, dir);
+					}
+
+					if (tracker->index_count % 1000 == 0) {
+						tracker_db_end_index_transaction (db_con->data);
+						tracker_db_refresh_all (db_con->data);
+						tracker_db_start_index_transaction (db_con->data);
+					}
+								
+				}
+
+			
 			}
 
 			tracker_log ("No. of new emails indexed in summary file %s is %d, %d junk, %d deleted", dir, mail_count, junk_count, delete_count);
 
 			tracker_db_email_set_message_counts (db_con, dir, store->mail_count, store->junk_count, store->delete_count);
+			
 
 		} else {
 			/* schedule check for junk */
@@ -1416,6 +1456,7 @@ load_uri_and_status_of_mbox_mail_message (GMimeMessage *g_m_message, MailMessage
 static gboolean
 open_summary_file (const gchar *path, SummaryFile **summary)
 {
+        gint fd;
         FILE *f;
 
 	g_return_val_if_fail (path, FALSE);
@@ -1429,8 +1470,15 @@ open_summary_file (const gchar *path, SummaryFile **summary)
                 *summary = NULL;
 	}
 
-        f = g_fopen (path, "rb");
+	fd = tracker_file_open (path, TRUE);
+
+        if (fd == -1) {
+        	return FALSE;
+        }
+
+        f = fdopen (fd, "r");
         if (!f) {
+                tracker_file_close (fd, TRUE);
                 return FALSE;
         }
 
@@ -2404,8 +2452,11 @@ add_persons_from_internet_address_list_string_parsing (GSList *list, const gchar
 
 		mp = email_allocate_mail_person ();
 
-		mp->name = g_strdup (addrs_list->address->name);
-		mp->addr = g_strdup (addrs_list->address->value.addr);
+		mp->addr = g_strdup (tmp->address->value.addr);
+		if(tmp->address->name)
+                	mp->name = g_strdup (tmp->address->name);
+		else
+			mp->name = g_strdup (tmp->address->value.addr);
 
 		list = g_slist_prepend (list, mp);
 	}
@@ -2618,7 +2669,7 @@ decode_gint32 (FILE *f, gint32 *dest)
 {
 	guint32 save;
 
-	if (!f) return;
+	if (!f) return FALSE;
 
 	if (fread (&save, sizeof (save), 1, f) == 1) {
 		*dest = g_ntohl (save);
@@ -2648,14 +2699,14 @@ skip_guint32_decoding (FILE *f)
 static inline gboolean
 skip_time_t_decoding (FILE *f)
 {
-	return fseek (f, sizeof (time_t), SEEK_CUR) > 0;
+	return fseek (f, sizeof (time_t), SEEK_CUR) == 0;
 }
 
 
 static inline gboolean
 skip_off_t_decoding (FILE *f)
 {
-	return fseek (f, sizeof (off_t), SEEK_CUR) > 0;
+	return fseek (f, sizeof (off_t), SEEK_CUR) == 0;
 }
 
 
@@ -2669,7 +2720,7 @@ skip_string_decoding (FILE *f)
 	}
 
 	if (fseek (f, len - 1, SEEK_CUR) != 0) {
-		tracker_error ("ERROR: seek failed for string with length %d with error code %d", len-1, errno);
+		tracker_error ("ERROR: seek failed for string with length %d with error code %d", len - 1, errno);
 		return FALSE;
 	}
 
@@ -2691,6 +2742,5 @@ skip_token_decoding (FILE *f)
 	}
 
 	len -= 32;
-
-	return fseek (f, len, SEEK_CUR) >= 0;
+        return fseek (f, len, SEEK_CUR) == 0;
 }

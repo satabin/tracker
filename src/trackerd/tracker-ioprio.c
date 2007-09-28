@@ -34,6 +34,7 @@
 
 #include "tracker-ioprio.h"
 
+#ifndef __NR_ioprio_set
 
 #if defined(__i386__)
 #define __NR_ioprio_set         289
@@ -69,6 +70,7 @@
 #error "Unsupported architecture!"
 #endif
 
+#endif
 
 enum {
 	IOPRIO_CLASS_NONE,
@@ -124,6 +126,7 @@ ioprio (void)
 	tracker_log ("Setting ioprio...");
 
 	if (set_io_priority_idle () == -1) {
+		g_print ("Could not set idle IO priority...attempting best effort 7 priority\n");
 		if (set_io_priority_best_effort (7) == -1) {
 			tracker_error ("ERROR: ioprio_set failed");
 		}

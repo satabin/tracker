@@ -19,11 +19,11 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#include <stdlib.h>
 #include <string.h>
 #include <glib/gstdio.h>
 
 #include "tracker-db-email.h"
-#include "tracker-cache.h"
 
 
 static gint
@@ -108,7 +108,10 @@ tracker_db_email_insert_junk (DBConnection *db_con, const gchar *mbox_uri, guint
 	gchar *str_mbox_id = tracker_int_to_str (mbox_id);
 	gchar *str_uid = tracker_uint_to_str (uid);
 
-	tracker_exec_proc (db_con, "InsertJunk", 2, str_uid, str_mbox_id);
+	if (!tracker_db_email_lookup_junk (db_con, str_mbox_id, uid)) {
+
+		tracker_exec_proc (db_con, "InsertJunk", 2, str_uid, str_mbox_id);
+	}
 
 	g_free (str_uid);	
 	g_free (str_mbox_id);
@@ -390,6 +393,8 @@ get_service_name (MailApplication app)
                return g_strdup ("KMailEmails");
        } else if (app == MAIL_APP_THUNDERBIRD) {
                return g_strdup ("ThunderbirdEmails");
+       } else if (app == MAIL_APP_THUNDERBIRD_FEED) {
+               return g_strdup ("ThunderbirdEmails");
        } else {
                return g_strdup ("OtherEmails");
        }
@@ -405,6 +410,8 @@ get_mime (MailApplication app)
                return g_strdup ("KMail/Email");
        } else if (app == MAIL_APP_THUNDERBIRD) {
                return g_strdup ("Thunderbird/Email");
+       } else if (app == MAIL_APP_THUNDERBIRD_FEED) {
+               return g_strdup ("Thunderbird/Feed");
        } else {
                return g_strdup ("Other/Email");
        }
@@ -427,12 +434,18 @@ get_attachment_service_name (MailApplication app)
 
 
 gboolean
+tracker_db_email_is_up_to_date (DBConnection *db_con, const gchar *uri, guint32 *id)
+{
+        return tracker_db_is_file_up_to_date (db_con->emails, uri, id);
+}
+
+
+gboolean
 tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 {
        	gint  mbox_id, type_id, id, len;
 	gchar *service, *attachment_service, *mime;
 	gchar *array[255];
-	
 
         #define LIMIT_ARRAY_LENGTH(len) ((len) > 255 ? 255 : (len))
 
@@ -444,6 +457,11 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 		return FALSE;
 	}
 
+	if (!mm->subject) {
+		tracker_log ("WARNING: email with uri: %s has no subject",mm->uri);
+		mm->subject = g_strdup("");
+	}
+        
 	if (mm->parent_mail_file && !mm->parent_mail_file->path) {
 		tracker_error ("ERROR: badly formatted email - abandoning index");
 		return FALSE;
@@ -510,6 +528,7 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 	info->mime = mime;
 	info->offset = mm->offset;
 	info->aux_id = mbox_id;
+        info->mtime = mm->mtime;
 
 	id = tracker_db_create_service (db_con->index, service, info);
 
@@ -520,7 +539,6 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 		gchar	   *str_id, *str_date;
 		GSList     *tmp;
 
-		tracker_db_start_transaction (db_con->index);
 
 		tracker_info ("saving email service %d with uri \"%s\" and subject \"%s\" from \"%s\"", type_id, mm->uri, mm->subject, mm->from);
 
@@ -534,8 +552,7 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 			if (value) {
 				tracker_db_insert_single_embedded_metadata (db_con->index, service, str_id, "Email:Body", value, index_table);
 				g_free (value);
-			}
-			
+			}			
 		}
 
 		if (str_date) {
@@ -647,15 +664,15 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 			}
 		}
 
-		tracker_db_end_transaction (db_con->index);
-
 		tracker_db_update_indexes_for_new_service (id, type_id, index_table);
 
 		tracker_word_table_free (index_table);
 
-		tracker_cache_flush (db_con->data);
 
 		g_free (str_id);
+
+                #undef LIMIT_ARRAY_LENGTH
+
 
 		/* index attachments */
 		for (tmp = mm->attachments; tmp; tmp = tmp->next) {

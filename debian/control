@@ -97,7 +97,7 @@ Description: metadata database, indexer and search tool - GNOME frontend
 Package: libdeskbar-tracker
 Architecture: all
 XB-Python-Version: ${python:Versions}
-Depends: ${misc:Depends}, ${python:Depends}, python-dbus (>= 0.41), python-gnome2, python-gobject | python-gtk2 (<< 2.10), deskbar-applet, tracker
+Depends: ${misc:Depends}, ${python:Depends}, python-dbus (>= 0.41), python-gnome2, python-gobject | python-gtk2 (<< 2.10), deskbar-applet (>= 2.20.0), tracker
 Recommends: tracker-search-tool
 Description: metadata database, indexer and search tool - deskbar-applet plugin
  This package provides a deskbar-applet plugin for Tracker.

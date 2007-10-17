@@ -1,3 +1,17 @@
+tracker (0.6.3-2) unstable; urgency=low
+
+  * Enable the new-style module for deskbar-applet. Closes: #445588
+  * debian/rules
+    - Pass "--enable-deskbar-applet=module" to DEB_CONFIGURE_EXTRA_FLAGS.
+  * debian/control
+    - Make the dependency on deskbar-applet versioned as the new-style module
+      only works with deskbar-applet >= 2.20.0.
+  * debian/libdeskbar-tracker.install
+    - The new-style deskbar-applet modules are installed to a different path,
+      update the install file accordingly.
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 17 Oct 2007 20:37:07 +0200
+
 tracker (0.6.3-1) unstable; urgency=low
 
   * New upstream release.

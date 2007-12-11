@@ -48,7 +48,7 @@ extern char *tracker_actions[];
 
 #define TRACKER_DB_VERSION_REQUIRED	13
 #define TRACKER_VERSION			VERSION
-#define TRACKER_VERSION_INT		603
+#define TRACKER_VERSION_INT		604
 
 /* default performance options */
 #define MAX_INDEX_TEXT_LENGTH		1048576
@@ -193,19 +193,28 @@ typedef enum {
 	EVENT_NOTHING,
 	EVENT_SHUTDOWN,
 	EVENT_DISABLE,
+	EVENT_PAUSE,
 	EVENT_CACHE_FLUSHED
 } LoopEvent;
 
 typedef struct {
 
+	gboolean	readonly;
+
 	TrackerStatus	status;
 	int		pid;
+
+	gpointer	dbus_con;
+	gpointer	hal_con;
+
+	gboolean	reindex;
 
 	/* config options */
 	GSList 		*watch_directory_roots_list;
 	GSList 		*crawl_directory_list;
 	GSList 		*no_watch_directory_list;
-	GSList		*no_index_file_types;
+	GSList		*no_index_file_types_list;
+	GSList		*ignore_pattern_list;
 
 	gboolean	enable_indexing;
 	gboolean	enable_watching; /* can disable all forms of directory watching */
@@ -214,9 +223,7 @@ typedef struct {
 
 	guint32		watch_limit;
 
-	gboolean	shutdown;
-	gboolean	paused;
-	gboolean	battery_paused;
+
 
 	/* controls how much to output to screen/log file */
 	int		verbosity;
@@ -241,26 +248,34 @@ typedef struct {
 	int		optimization_count;   /* no of updates or inserts to be performed before optimizing hashtable */
 	int		throttle;
 	int		default_throttle;
-	int		battery_throttle;
 	gboolean	use_extra_memory;
 	int		initial_sleep;
 	int		max_words_to_index;
 	int 		memory_limit;
-	gboolean	battery_checking;
+	gboolean	fast_merges;
+
+	/* HAL battery */
+	char		*battery_udi;
+	gboolean	index_on_battery;
+	gboolean	initial_index_on_battery;
+
+	/* pause/shutdown vars */
+	gboolean	shutdown;
+	gboolean	pause_manual;
+	gboolean	pause_battery;
+	gboolean	pause_io;
+	gint		low_diskspace_limit;
 
 	/* indexing options */
-
-	/* indexing options */
-	int	 	max_index_bucket_count;
-	int	 	index_bucket_ratio; /* 0 = 50%, 1 = 100%, 2 = 200%, 3 = 300%, 4+ = 400% */
-	int		min_index_bucket_count;
-	int		index_divisions;
-	int 		padding; /* values 1-8 */
+	gint            max_index_bucket_count;
+	gint            min_index_bucket_count;
+	gint            index_bucket_ratio; /* 0 = 50%, 1 = 100%, 2 = 200%, 3 = 300%, 4+ = 400% */
+	gint            index_divisions;
+	gint            padding; /* values 1-8 */
 
 	gpointer	file_index;
 	gpointer	file_update_index;
 	gpointer	email_index;
-
 
 	guint32		merge_limit; 		/* size of index in MBs when merging is triggered -1 == no merging*/
 	gboolean	active_file_merge;
@@ -282,7 +297,16 @@ typedef struct {
 	gboolean	first_time_index;
 	gboolean	first_flush;
 	gboolean	do_optimize;
+	
+	time_t		index_time_start;
+	int		folders_count;
+	int		folders_processed;
+	int		mbox_count;
+	int		mbox_processed;
 
+
+	const char	*current_uri;
+	
 	gboolean	skip_mount_points;	/* should tracker descend into mounted directories? see Tracker.root_directory_devices */
 	GSList *	root_directory_devices;
 
@@ -292,9 +316,6 @@ typedef struct {
 	gboolean	request_waiting;
 
 	char *		xesam_dir;
-
-	/* battery and ac power status file */
-	char		*battery_state_file;
 
 	/* service directory table - this is used to store a ServiceInfo struct for a directory path - used for determining which service a uri belongs to for things like files, emails, conversations etc*/
 	GHashTable	*service_directory_table;
@@ -320,6 +341,7 @@ typedef struct {
 	/* application run time values */
 	gboolean	is_indexing;
 	gboolean	in_flush;
+	gboolean	in_merge;
 	int		index_count;
 	int		index_counter;
 	int		update_count;
@@ -476,7 +498,7 @@ typedef struct {
 	gint32                  offset;
 
 	/* options */
-	char			*move_from_uri;
+	char			*moved_to_uri;
 	gboolean		extract_embedded;
 	gboolean		extract_contents;
 	gboolean		extract_thumbs;
@@ -614,10 +636,6 @@ void		tracker_free_metadata_field 	(FieldData *field_data);
 
 gboolean	tracker_unlink 			(const char *uri);
 
-char *		tracker_get_battery_state_file 	();
-gboolean	tracker_using_battery 		(void);
-
-
 int 		tracker_get_memory_usage 	(void);
 
 guint32		tracker_file_size 		(const char *name);
@@ -625,5 +643,13 @@ int		tracker_file_open 		(const char *file_name, gboolean readahead);
 void		tracker_file_close 		(int fd, gboolean no_longer_needed);
 
 void		tracker_add_io_grace 		(const char *uri);
+
+char *		tracker_get_status 		(void);
+
+gboolean	tracker_do_cleanup 		(const gchar *sig_msg);
+
+gboolean	tracker_pause_on_battery 	(void);
+gboolean	tracker_low_diskspace		(void);
+gboolean	tracker_pause			(void);
 
 #endif

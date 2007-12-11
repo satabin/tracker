@@ -50,41 +50,41 @@ CONFIG_CLEAN_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
-am__trackerd_SOURCES_DIST = trackerd.c linux-inotify-syscalls.h \
-	tracker-inotify.c tracker-inotify.h tracker-fam.c \
-	tracker-fam.h tracker-win-fs-changes.c \
-	tracker-win-fs-changes.h tracker-os-dependant-win.c \
-	tracker-os-dependant-unix.c tracker-indexer.c \
-	tracker-indexer.h tracker-cache.c tracker-cache.h \
-	tracker-parser.c tracker-parser.h tracker-db-sqlite.c \
-	tracker-db-sqlite.h tracker-db-email.c tracker-db-email.h \
-	tracker-apps.c tracker-apps.h tracker-db.c tracker-db.h \
-	tracker-dbus.c tracker-dbus.h tracker-dbus-files.c \
-	tracker-dbus-files.h tracker-dbus-methods.c \
-	tracker-dbus-methods.h tracker-dbus-metadata.c \
-	tracker-dbus-metadata.h tracker-dbus-keywords.c \
-	tracker-dbus-keywords.h tracker-dbus-search.c \
-	tracker-dbus-search.h tracker-email.c tracker-email.h \
-	tracker-email-utils.c tracker-email-utils.h \
+am__trackerd_SOURCES_DIST = trackerd.c tracker-poll.c \
+	tracker-win-fs-changes.c tracker-fam.c \
+	linux-inotify-syscalls.h tracker-inotify.c \
+	tracker-os-dependant-win.c tracker-os-dependant-unix.c \
+	tracker-indexer.c tracker-indexer.h tracker-cache.c \
+	tracker-cache.h tracker-parser.c tracker-parser.h \
+	tracker-db-sqlite.c tracker-db-sqlite.h tracker-db-email.c \
+	tracker-db-email.h tracker-apps.c tracker-apps.h tracker-db.c \
+	tracker-db.h tracker-dbus.c tracker-dbus.h \
+	tracker-dbus-files.c tracker-dbus-files.h \
+	tracker-dbus-methods.c tracker-dbus-methods.h \
+	tracker-dbus-metadata.c tracker-dbus-metadata.h \
+	tracker-dbus-keywords.c tracker-dbus-keywords.h \
+	tracker-dbus-search.c tracker-dbus-search.h tracker-email.c \
+	tracker-email.h tracker-email-utils.c tracker-email-utils.h \
 	tracker-email-evolution.c tracker-email-evolution.h \
 	tracker-email-thunderbird.c tracker-email-thunderbird.h \
 	tracker-email-kmail.c tracker-email-kmail.h tracker-metadata.c \
 	tracker-metadata.h tracker-rdf-query.c tracker-rdf-query.h \
 	tracker-stemmer.c tracker-stemmer.h tracker-utils.c \
 	tracker-utils.h tracker-ioprio.c tracker-ioprio.h \
-	tracker-os-dependant.h
-@HAVE_INOTIFY_TRUE@am__objects_1 = tracker-inotify.$(OBJEXT)
-@HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@am__objects_2 =  \
+	tracker-os-dependant.h tracker-watch.h
+@HAVE_FAM_FALSE@@HAVE_INOTIFY_FALSE@@OS_WIN32_FALSE@am__objects_1 = tracker-poll.$(OBJEXT)
+@HAVE_FAM_FALSE@@HAVE_INOTIFY_FALSE@@OS_WIN32_TRUE@am__objects_1 = tracker-win-fs-changes.$(OBJEXT)
+@HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@am__objects_1 =  \
 @HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@	tracker-fam.$(OBJEXT)
-@OS_WIN32_TRUE@am__objects_3 = tracker-win-fs-changes.$(OBJEXT) \
-@OS_WIN32_TRUE@	tracker-os-dependant-win.$(OBJEXT)
-@OS_WIN32_FALSE@am__objects_4 = tracker-os-dependant-unix.$(OBJEXT)
-am__objects_5 = tracker-indexer.$(OBJEXT) tracker-cache.$(OBJEXT) \
+@HAVE_INOTIFY_TRUE@am__objects_1 = tracker-inotify.$(OBJEXT)
+@OS_WIN32_TRUE@am__objects_2 = tracker-os-dependant-win.$(OBJEXT)
+@OS_WIN32_FALSE@am__objects_3 = tracker-os-dependant-unix.$(OBJEXT)
+am__objects_4 = tracker-indexer.$(OBJEXT) tracker-cache.$(OBJEXT) \
 	tracker-parser.$(OBJEXT) tracker-db-sqlite.$(OBJEXT) \
 	tracker-db-email.$(OBJEXT)
 am_trackerd_OBJECTS = trackerd.$(OBJEXT) $(am__objects_1) \
 	$(am__objects_2) $(am__objects_3) $(am__objects_4) \
-	$(am__objects_5) tracker-apps.$(OBJEXT) tracker-db.$(OBJEXT) \
+	tracker-apps.$(OBJEXT) tracker-db.$(OBJEXT) \
 	tracker-dbus.$(OBJEXT) tracker-dbus-files.$(OBJEXT) \
 	tracker-dbus-methods.$(OBJEXT) tracker-dbus-metadata.$(OBJEXT) \
 	tracker-dbus-keywords.$(OBJEXT) tracker-dbus-search.$(OBJEXT) \
@@ -100,7 +100,7 @@ trackerd_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(top_builddir)/src/libstemmer/libstemmer-private.la \
 	$(top_builddir)/src/xdgmime/libxdgmime.la \
 	$(am__DEPENDENCIES_1)
@@ -160,6 +160,8 @@ ENABLE_LIBTRACKERGTK_FALSE = @ENABLE_LIBTRACKERGTK_FALSE@
 ENABLE_LIBTRACKERGTK_TRUE = @ENABLE_LIBTRACKERGTK_TRUE@
 ENABLE_PREFERENCES_FALSE = @ENABLE_PREFERENCES_FALSE@
 ENABLE_PREFERENCES_TRUE = @ENABLE_PREFERENCES_TRUE@
+ENABLE_TRACKERAPPLET_FALSE = @ENABLE_TRACKERAPPLET_FALSE@
+ENABLE_TRACKERAPPLET_TRUE = @ENABLE_TRACKERAPPLET_TRUE@
 ENABLE_UNAC_FALSE = @ENABLE_UNAC_FALSE@
 ENABLE_UNAC_TRUE = @ENABLE_UNAC_TRUE@
 EXEEXT = @EXEEXT@
@@ -192,6 +194,8 @@ GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
 GTK2_CFLAGS = @GTK2_CFLAGS@
 GTK2_LIBS = @GTK2_LIBS@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
 HAVE_EXEMPI_FALSE = @HAVE_EXEMPI_FALSE@
 HAVE_EXEMPI_TRUE = @HAVE_EXEMPI_TRUE@
 HAVE_FAM_FALSE = @HAVE_FAM_FALSE@
@@ -294,6 +298,8 @@ SHELL = @SHELL@
 SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
 SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
+TRACKERAPPLET_CFLAGS = @TRACKERAPPLET_CFLAGS@
+TRACKERAPPLET_LIBS = @TRACKERAPPLET_LIBS@
 UNAC_CFLAGS = @UNAC_CFLAGS@
 UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
@@ -369,29 +375,22 @@ INCLUDES = \
 	$(GLIB2_CFLAGS)			\
 	$(PANGO_CFLAGS)			\
 	$(GMIME_CFLAGS)			\
+	$(HAL_CFLAGS)			\
 	$(FAM_CFLAGS)			\
 	$(DBUS_CFLAGS)			\
 	$(SQLITE3_CFLAGS)		\
 	$(QDBM_CFLAGS)			\
 	$(UNAC_CFLAGS)		
 
-@HAVE_INOTIFY_TRUE@inotify_sources = \
+@HAVE_FAM_FALSE@@HAVE_INOTIFY_FALSE@@OS_WIN32_FALSE@watch_sources = tracker-poll.c
+@HAVE_FAM_FALSE@@HAVE_INOTIFY_FALSE@@OS_WIN32_TRUE@watch_sources = tracker-win-fs-changes.c
+@HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@watch_sources = tracker-fam.c
+@HAVE_INOTIFY_TRUE@watch_sources = \
 @HAVE_INOTIFY_TRUE@	linux-inotify-syscalls.h	\
-@HAVE_INOTIFY_TRUE@	tracker-inotify.c		\
-@HAVE_INOTIFY_TRUE@	tracker-inotify.h
+@HAVE_INOTIFY_TRUE@	tracker-inotify.c
 
-@HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@fam_sources = \
-@HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@	tracker-fam.c			\
-@HAVE_FAM_TRUE@@HAVE_INOTIFY_FALSE@	tracker-fam.h 
-
-@OS_WIN32_TRUE@win_sources = \
-@OS_WIN32_TRUE@	tracker-win-fs-changes.c	\
-@OS_WIN32_TRUE@	tracker-win-fs-changes.h	\
-@OS_WIN32_TRUE@	tracker-os-dependant-win.c
-
-@OS_WIN32_FALSE@unix_sources = \
-@OS_WIN32_FALSE@	tracker-os-dependant-unix.c
-
+@OS_WIN32_TRUE@win_sources = tracker-os-dependant-win.c
+@OS_WIN32_FALSE@unix_sources = tracker-os-dependant-unix.c
 db_sources = \
 	tracker-indexer.c		\
 	tracker-indexer.h		\
@@ -406,8 +405,7 @@ db_sources = \
 
 trackerd_SOURCES = \
 	trackerd.c			\
-	$(inotify_sources)		\
-	$(fam_sources)			\
+	$(watch_sources)		\
 	$(win_sources)			\
 	$(unix_sources)			\
 	$(db_sources)			\
@@ -447,7 +445,8 @@ trackerd_SOURCES = \
 	tracker-utils.h			\
 	tracker-ioprio.c		\
 	tracker-ioprio.h		\
-	tracker-os-dependant.h
+	tracker-os-dependant.h		\
+	tracker-watch.h
 
 @OS_WIN32_TRUE@trackerd_win_libs = -lws2_32 -lkernel32
 trackerd_LDADD = \
@@ -456,6 +455,7 @@ trackerd_LDADD = \
 	$(DBUS_LIBS)			\
 	$(PANGO_LIBS)			\
 	$(GMIME_LIBS)			\
+	$(HAL_LIBS)			\
 	$(SQLITE3_LIBS)			\
 	$(QDBM_LIBS)			\
 	$(UNAC_LIBS)			\
@@ -561,6 +561,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-os-dependant-unix.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-os-dependant-win.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-parser.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-poll.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-rdf-query.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-stemmer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Po@am__quote@

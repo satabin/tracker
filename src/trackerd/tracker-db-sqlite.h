@@ -122,9 +122,9 @@ void		tracker_db_update_differential_index		(DBConnection *db_con,GHashTable *ol
 void		tracker_db_update_index_file_contents 		(DBConnection *blob_db_con, GHashTable *index_table);
 int		tracker_db_flush_words_to_qdbm 			(DBConnection *db_con, int limit);
 
-void		tracker_db_release_memory 	();
+void		tracker_db_release_memory       (void);
 
-void		tracker_db_set_default_pragmas (DBConnection *db_con);
+void		tracker_db_set_default_pragmas  (DBConnection *db_con);
 
 void		tracker_db_fsync 		(DBConnection *db_con, gboolean enable);
 
@@ -166,7 +166,7 @@ void		tracker_db_move_file 		(DBConnection *db_con, const char *moved_from_uri, 
 void		tracker_db_move_directory 	(DBConnection *db_con, const char *moved_from_uri, const char *moved_to_uri);
 
 guint32		tracker_db_get_file_id		(DBConnection *db_con, const char *uri);
-void		tracker_db_insert_pending_file	(DBConnection *db_con, guint32 file_id, const char *uri, const char *mime, int counter, TrackerChangeAction action, gboolean is_directory, gboolean is_new, int service_type_id);
+void		tracker_db_insert_pending_file	(DBConnection *db_con, guint32 file_id, const char *uri, const char *moved_to_uri, const char *mime, int counter, TrackerChangeAction action, gboolean is_directory, gboolean is_new, int service_type_id);
 
 gboolean	tracker_db_has_pending_files	(DBConnection *db_con);
 gboolean	tracker_db_has_pending_metadata	(DBConnection *db_con);
@@ -216,15 +216,18 @@ char *		tracker_db_get_display_field 		(FieldDef *def);
 
 void		tracker_db_delete_service 		(DBConnection *db_con, guint32 id, const char *uri);
 
-gboolean 	tracker_add_watch_dir 			(const char *dir, DBConnection *db_con);
-void     	tracker_remove_watch_dir 		(const char *dir, gboolean delete_subdirs, DBConnection *db_con);
-gboolean 	tracker_is_directory_watched 		(const char *dir, DBConnection *db_con);
-int		tracker_count_watch_dirs 		(void);
-
 FieldData *	tracker_db_get_metadata_field 		(DBConnection *db_con, const char *service, const char *field_name, int field_count, gboolean is_select, gboolean is_condition);
 
 void		tracker_db_start_index_transaction 	(DBConnection *db_con);
 void		tracker_db_end_index_transaction 	(DBConnection *db_con);
 gboolean	tracker_db_regulate_transactions 	(DBConnection *db_con, int interval);
+
+
+char *	tracker_db_get_option_string 	(DBConnection *db_con, const char *option);
+void	tracker_db_set_option_string 	(DBConnection *db_con, const char *option, const char *value);
+int	tracker_db_get_option_int	(DBConnection *db_con, const char *option);
+void	tracker_db_set_option_int 	(DBConnection *db_con, const char *option, int value);
+
+gboolean	tracker_db_integrity_check 	(DBConnection *db_con);
 
 #endif

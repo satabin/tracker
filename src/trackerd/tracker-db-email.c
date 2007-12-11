@@ -26,6 +26,8 @@
 #include "tracker-db-email.h"
 
 
+#define MAX_ADDRESSES 255
+
 static gint
 tracker_db_email_get_mbox_offset (DBConnection *db_con, const gchar *mbox_uri)
 {
@@ -440,16 +442,27 @@ tracker_db_email_is_up_to_date (DBConnection *db_con, const gchar *uri, guint32 
 }
 
 
+
+static inline int
+limit_address_count (int len)
+{
+	if (len > MAX_ADDRESSES) {
+		return MAX_ADDRESSES;
+	}
+
+	return len;
+
+}
+
+
 gboolean
 tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 {
        	gint  mbox_id, type_id, id, len;
 	gchar *service, *attachment_service, *mime;
-	gchar *array[255];
+	gchar *array[MAX_ADDRESSES];
 
-        #define LIMIT_ARRAY_LENGTH(len) ((len) > 255 ? 255 : (len))
-
-	g_return_val_if_fail (db_con, FALSE);
+     	g_return_val_if_fail (db_con, FALSE);
 	g_return_val_if_fail (mm, FALSE);
 
 	if (!mm->uri) {
@@ -513,7 +526,7 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
                 attachment_service = g_strdup ("EvolutionAttachments");
 
 	}
-	
+
 	type_id = tracker_get_id_for_service (service);
 	if (type_id == -1) {
 		tracker_error ("ERROR: service %s not found", service);
@@ -580,7 +593,7 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 		g_free (str_date);
 
 		len = g_slist_length (mm->to);
-                len = LIMIT_ARRAY_LENGTH (len);
+                len = limit_address_count (len);
 		if (len > 0) {
                         gint i;
 			array[len] = NULL;
@@ -590,11 +603,15 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 				GString *gstr = g_string_new ("");
 
 				if (mp->addr) {
-					g_string_append_printf (gstr, "%s ", mp->addr);
+					gchar *value = get_utf8 (mp->addr);
+					g_string_append_printf (gstr, "%s ", value);
+					g_free (value);
 				}
-	
+
 				if (mp->name) {
-					g_string_append (gstr, mp->name);
+					gchar *value = get_utf8 (mp->name);
+					g_string_append (gstr, value);
+					g_free (value);
 				}
 
 				array[i] = g_string_free (gstr, FALSE);
@@ -610,7 +627,7 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 		}
 
 		len = g_slist_length (mm->cc);
-                len = LIMIT_ARRAY_LENGTH (len);
+                len = limit_address_count (len);
 		if (len > 0) {
                         gint i;
 			array[len] = NULL;
@@ -620,11 +637,15 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 				GString *gstr = g_string_new ("");
 
 				if (mp->addr) {
-					g_string_append_printf (gstr, "%s ", mp->addr);
+					gchar *value = get_utf8 (mp->addr);
+					g_string_append_printf (gstr, "%s ", value);
+					g_free (value);
 				}
 	
 				if (mp->name) {
-					g_string_append (gstr, mp->name);
+					gchar *value = get_utf8 (mp->name);
+					g_string_append_printf (gstr, "%s ", value);
+					g_free (value);
 				}
 
 				array[i] = g_string_free (gstr, FALSE);
@@ -640,7 +661,7 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 		}
 
 		len = g_slist_length (mm->attachments);
-                len = LIMIT_ARRAY_LENGTH (len);
+                len = limit_address_count (len);
 		if (len > 0) {
                         gint i;
 			array[len] = NULL;
@@ -651,8 +672,8 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 				if (!ma->attachment_name) {
 					continue;
 				}
-
-				array[i] = g_strdup (ma->attachment_name);
+				gchar *value = get_utf8 (ma->attachment_name);
+				array[i] = value;
 			}
 
 			if (i > 0) {
@@ -671,9 +692,7 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 
 		g_free (str_id);
 
-                #undef LIMIT_ARRAY_LENGTH
-
-
+               
 		/* index attachments */
 		for (tmp = mm->attachments; tmp; tmp = tmp->next) {
 			MailAttachment *ma = tmp->data;
@@ -722,6 +741,16 @@ tracker_db_email_save_email (DBConnection *db_con, MailMessage *mm)
 }
 
 
+gboolean
+tracker_db_email_is_saved_email_file (DBConnection *db_con, const gchar *uri)
+{
+        g_return_val_if_fail (db_con, FALSE);
+        g_return_val_if_fail (uri, FALSE);
+
+        return tracker_db_get_file_id (db_con, uri) != 0 ;
+}
+
+
 void
 tracker_db_email_update_email (DBConnection *db_con, MailMessage *mm)
 {
@@ -734,26 +763,27 @@ tracker_db_email_update_email (DBConnection *db_con, MailMessage *mm)
 }
 
 
-void
+gboolean
 tracker_db_email_delete_emails_of_mbox (DBConnection *db_con, const gchar *mbox_file_path)
 {
-	g_return_if_fail (db_con);
-	g_return_if_fail (mbox_file_path);
+        g_return_val_if_fail (db_con, FALSE);
+        g_return_val_if_fail (mbox_file_path, FALSE);
 
 	/* FIXME: add code... */
+        return TRUE;
 }
 
 
-void
+gboolean
 tracker_db_email_delete_email (DBConnection *db_con, const gchar *uri)
 {
-	g_return_if_fail (db_con);
-	g_return_if_fail (uri);
+        g_return_val_if_fail (db_con, FALSE);
+        g_return_val_if_fail (uri, FALSE);
 
 	gchar *id = tracker_db_get_id (db_con, "Emails", uri);
 
 	if (!id) {
-		return;
+		return FALSE;
 	}
 
 	tracker_info ("deleting email %s", uri);
@@ -761,6 +791,8 @@ tracker_db_email_delete_email (DBConnection *db_con, const gchar *uri)
 	tracker_db_delete_directory (db_con, atoi (id), uri);
 
 	g_free (id);
+
+        return TRUE;
 }
 
 

@@ -19,7 +19,7 @@ GetApplicationByID  SELECT DISTINCT (S.Path || '/' || S.Name) as uri, 'Applicati
 
 GetFileMTime SELECT M.MetaDataValue  FROM Services F inner join ServiceNumericMetaData M on F.ID = M.ServiceID WHERE F.Path = ? and F.Name = ? and M.MetaDataID = (select ID From MetaDataTypes where MetaName ='File:Modified');
 
-GetServices SELECT TypeName, TypeClass, Description  FROM ServiceTypes WHERE MainService = ? ORDER BY TypeID;
+GetServices SELECT TypeName, Description, Parent  FROM ServiceTypes ORDER BY TypeID;
 GetAllServices SELECT TypeID, TypeName, Parent, Enabled, Embedded, HasMetadata, HasFullText, HasThumbs, ContentMetadata, Database, ShowServiceFiles, ShowServiceDirectories, KeyMetadata1, KeyMetadata2, KeyMetadata3, KeyMetadata4, KeyMetadata5, KeyMetadata6, KeyMetadata7, KeyMetadata8, KeyMetadata9, KeyMetadata10, KeyMetadata11  FROM ServiceTypes;
 
 GetNewID SELECT OptionValue FROM Options WHERE OptionKey = 'Sequence';
@@ -101,7 +101,7 @@ GetMetadataTypesLike SELECT ID, MetaName, DataTypeID, DisplayName, Description, 
 GetWriteableMetadataTypes SELECT ID, MetaName, DataTypeID, DisplayName, Description, Enabled, UIVisible, FieldName, Weight, Embedded, MultipleValues, Delimited, Filtered, Abstract FROM MetaDataTypes where Embedded = 0;
 GetWriteableMetadataTypesLike SELECT ID, MetaName, DataTypeID, DisplayName, Description, Enabled, UIVisible, FieldName, Weight, Embedded, MultipleValues, Delimited, Filtered, Abstract FROM MetaDataTypes WHERE MetaName glob ? and  Embedded = 0;
 
-InsertMetaDataChildren INSERT INTO  MetaDataChildren (MetadataID, ChildID) VALUES (?,(select ID from MetaDataTypes where MetaName = ?));
+InsertMetaDataChildren INSERT INTO  MetaDataChildren (ChildID,MetadataID) VALUES (?,(select ID from MetaDataTypes where MetaName = ?));
 GetMetadataAliases SELECT distinct M.MetaName, M.ID from MetaDataTypes M, MetaDataChildren C where M.ID = C.ChildID and C.MetaDataID = ?; 
 GetMetadataAliasesForName SELECT distinct M.MetaName, M.ID from MetaDataTypes M, MetaDataChildren C where M.ID = C.ChildID and C.MetaDataID = (select ID from MetaDataTypes where MetaName = ?) union select M.MetaName, M.ID from MetaDataTypes M where M.MetaName = ?; 
 

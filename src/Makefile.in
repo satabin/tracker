@@ -57,7 +57,7 @@ ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = libstemmer xdgmime qdbm text-filters trackerd \
 	libtracker tracker-extract tracker-thumbnailer libtracker-gtk \
-	tracker-search-tool tracker-preferences
+	tracker-search-tool tracker-applet tracker-preferences
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
@@ -99,6 +99,8 @@ ENABLE_LIBTRACKERGTK_FALSE = @ENABLE_LIBTRACKERGTK_FALSE@
 ENABLE_LIBTRACKERGTK_TRUE = @ENABLE_LIBTRACKERGTK_TRUE@
 ENABLE_PREFERENCES_FALSE = @ENABLE_PREFERENCES_FALSE@
 ENABLE_PREFERENCES_TRUE = @ENABLE_PREFERENCES_TRUE@
+ENABLE_TRACKERAPPLET_FALSE = @ENABLE_TRACKERAPPLET_FALSE@
+ENABLE_TRACKERAPPLET_TRUE = @ENABLE_TRACKERAPPLET_TRUE@
 ENABLE_UNAC_FALSE = @ENABLE_UNAC_FALSE@
 ENABLE_UNAC_TRUE = @ENABLE_UNAC_TRUE@
 EXEEXT = @EXEEXT@
@@ -131,6 +133,8 @@ GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
 GTK2_CFLAGS = @GTK2_CFLAGS@
 GTK2_LIBS = @GTK2_LIBS@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
 HAVE_EXEMPI_FALSE = @HAVE_EXEMPI_FALSE@
 HAVE_EXEMPI_TRUE = @HAVE_EXEMPI_TRUE@
 HAVE_FAM_FALSE = @HAVE_FAM_FALSE@
@@ -233,6 +237,8 @@ SHELL = @SHELL@
 SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
 SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
+TRACKERAPPLET_CFLAGS = @TRACKERAPPLET_CFLAGS@
+TRACKERAPPLET_LIBS = @TRACKERAPPLET_LIBS@
 UNAC_CFLAGS = @UNAC_CFLAGS@
 UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
@@ -305,7 +311,8 @@ target_alias = @target_alias@
 @USING_EXTERNAL_QDBM_FALSE@qdbm_dir = qdbm
 @ENABLE_PREFERENCES_TRUE@tracker_preferences_dir = tracker-preferences
 @ENABLE_LIBTRACKERGTK_TRUE@libtrackergtk_dir = libtracker-gtk
-SUBDIRS = libstemmer xdgmime $(qdbm_dir) text-filters trackerd libtracker tracker-extract tracker-thumbnailer $(libtrackergtk_dir) $(tracker_gui_dir) $(tracker_preferences_dir)
+@ENABLE_TRACKERAPPLET_TRUE@trackerapplet_dir = tracker-applet
+SUBDIRS = libstemmer xdgmime $(qdbm_dir) text-filters trackerd libtracker tracker-extract tracker-thumbnailer $(libtrackergtk_dir) $(tracker_gui_dir) $(trackerapplet_dir) $(tracker_preferences_dir)
 all: all-recursive
 
 .SUFFIXES:

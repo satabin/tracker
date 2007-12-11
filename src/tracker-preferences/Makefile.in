@@ -63,7 +63,8 @@ am_tracker_preferences_OBJECTS = tracker-configuration.$(OBJEXT) \
 tracker_preferences_OBJECTS = $(am_tracker_preferences_OBJECTS)
 am__DEPENDENCIES_1 =
 tracker_preferences_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(top_builddir)/src/libtracker/libtrackerclient.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -130,6 +131,8 @@ ENABLE_LIBTRACKERGTK_FALSE = @ENABLE_LIBTRACKERGTK_FALSE@
 ENABLE_LIBTRACKERGTK_TRUE = @ENABLE_LIBTRACKERGTK_TRUE@
 ENABLE_PREFERENCES_FALSE = @ENABLE_PREFERENCES_FALSE@
 ENABLE_PREFERENCES_TRUE = @ENABLE_PREFERENCES_TRUE@
+ENABLE_TRACKERAPPLET_FALSE = @ENABLE_TRACKERAPPLET_FALSE@
+ENABLE_TRACKERAPPLET_TRUE = @ENABLE_TRACKERAPPLET_TRUE@
 ENABLE_UNAC_FALSE = @ENABLE_UNAC_FALSE@
 ENABLE_UNAC_TRUE = @ENABLE_UNAC_TRUE@
 EXEEXT = @EXEEXT@
@@ -162,6 +165,8 @@ GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
 GTK2_CFLAGS = @GTK2_CFLAGS@
 GTK2_LIBS = @GTK2_LIBS@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
 HAVE_EXEMPI_FALSE = @HAVE_EXEMPI_FALSE@
 HAVE_EXEMPI_TRUE = @HAVE_EXEMPI_TRUE@
 HAVE_FAM_FALSE = @HAVE_FAM_FALSE@
@@ -264,6 +269,8 @@ SHELL = @SHELL@
 SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
 SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
+TRACKERAPPLET_CFLAGS = @TRACKERAPPLET_CFLAGS@
+TRACKERAPPLET_LIBS = @TRACKERAPPLET_LIBS@
 UNAC_CFLAGS = @UNAC_CFLAGS@
 UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
@@ -346,9 +353,12 @@ noinst_HEADERS = tracker-configuration.h \
 
 INCLUDES = -DTRACKER_DATADIR=\""$(datadir)/tracker"\" \
 		-DTRACKER_LOCALEDIR=\""$(localedir)"\" \
+		-DTRACKER_BINDIR=\""$(bindir)"\" \
 		$(GLIB_CFLAGS) \
 		$(GTK2_CFLAGS) \
 		$(LIBGLADE_CFLAGS) \
+		$(DBUS_CFLAGS) \
+		-I$(top_srcdir)/src/libtracker \
 		$(NULL)
 
 tracker_preferences_SOURCES = tracker-configuration.c \
@@ -361,11 +371,12 @@ tracker_preferences_SOURCES = tracker-configuration.c \
 tracker_preferences_LDADD = $(GLIB_LIBS) \
 			    $(GTK2_LIBS) \
 			    $(LIBGLADE_LIBS) \
+				$(DBUS_LIBS) \
+				$(top_builddir)/src/libtracker/libtrackerclient.la \
 			    $(NULL)
 
 EXTRA_DIST = $(pkgdata_DATA)
 CLEANFILES = $(desktop_DATA)
-MAINTAINERCLEANFILES = Makefile.in
 all: all-am
 
 .SUFFIXES:
@@ -617,7 +628,6 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am

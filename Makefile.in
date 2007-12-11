@@ -127,6 +127,8 @@ ENABLE_LIBTRACKERGTK_FALSE = @ENABLE_LIBTRACKERGTK_FALSE@
 ENABLE_LIBTRACKERGTK_TRUE = @ENABLE_LIBTRACKERGTK_TRUE@
 ENABLE_PREFERENCES_FALSE = @ENABLE_PREFERENCES_FALSE@
 ENABLE_PREFERENCES_TRUE = @ENABLE_PREFERENCES_TRUE@
+ENABLE_TRACKERAPPLET_FALSE = @ENABLE_TRACKERAPPLET_FALSE@
+ENABLE_TRACKERAPPLET_TRUE = @ENABLE_TRACKERAPPLET_TRUE@
 ENABLE_UNAC_FALSE = @ENABLE_UNAC_FALSE@
 ENABLE_UNAC_TRUE = @ENABLE_UNAC_TRUE@
 EXEEXT = @EXEEXT@
@@ -159,6 +161,8 @@ GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
 GTK2_CFLAGS = @GTK2_CFLAGS@
 GTK2_LIBS = @GTK2_LIBS@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
 HAVE_EXEMPI_FALSE = @HAVE_EXEMPI_FALSE@
 HAVE_EXEMPI_TRUE = @HAVE_EXEMPI_TRUE@
 HAVE_FAM_FALSE = @HAVE_FAM_FALSE@
@@ -261,6 +265,8 @@ SHELL = @SHELL@
 SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
 SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
+TRACKERAPPLET_CFLAGS = @TRACKERAPPLET_CFLAGS@
+TRACKERAPPLET_LIBS = @TRACKERAPPLET_LIBS@
 UNAC_CFLAGS = @UNAC_CFLAGS@
 UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
@@ -595,7 +601,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/. $(distdir)/po $(distdir)/rdf-query-examples $(distdir)/src/tracker-preferences $(distdir)/src/tracker-search-tool
+	$(mkdir_p) $(distdir)/. $(distdir)/po $(distdir)/rdf-query-examples $(distdir)/src/tracker-applet $(distdir)/src/tracker-preferences $(distdir)/src/tracker-search-tool
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

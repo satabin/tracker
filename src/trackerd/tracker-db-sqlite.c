@@ -41,6 +41,7 @@
 #include "tracker-cache.h"
 #include "tracker-metadata.h"
 #include "tracker-utils.h"
+#include "tracker-watch.h"
 
 #include "config.h"
 
@@ -586,7 +587,8 @@ close_db (DBConnection *db_con)
 	if (sqlite3_close (db_con->db) != SQLITE_OK) {
 		tracker_error ("ERROR: database close operation failed for thread %s due to %s", db_con->thread, sqlite3_errmsg (db_con->db));
 	} else {
-		tracker_debug ("Database closed for thread %s", db_con->thread);
+		if (db_con->thread)
+			tracker_debug ("Database closed for thread %s", db_con->thread);
 	}
 
 
@@ -662,7 +664,7 @@ open_user_db (const char *name, gboolean *create_table)
 
 	g_free (dbname);
 
-	sqlite3_busy_timeout (db, 10000);
+	sqlite3_busy_timeout (db, 10000000);
 
 	return db;
 
@@ -695,7 +697,7 @@ open_db (const char *name, gboolean *create_table)
 
 	g_free (dbname);
 
-	sqlite3_busy_timeout (db, 10000);
+	sqlite3_busy_timeout (db, 10000000);
 
 	return db;
 
@@ -720,6 +722,8 @@ set_params (DBConnection *db_con, int cache_size, gboolean add_functions)
 	}
 
 	tracker_db_exec_no_reply (db_con, prag);
+
+	sqlite3_busy_timeout (db_con->db, 10000000);
 
 	g_free (prag);
 
@@ -1025,7 +1029,7 @@ tracker_db_connect (void)
 	db_con->db_type = DB_DATA;
 	db_con->db_category = DB_CATEGORY_FILES;
 
-	sqlite3_busy_timeout (db_con->db, 10000);
+	sqlite3_busy_timeout (db_con->db, 10000000);
 
 	db_con->data = db_con;
 
@@ -1039,13 +1043,10 @@ tracker_db_connect (void)
 		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 16");
 	}
 
-	
-
 	/* create user defined utf-8 collation sequence */
 	if (SQLITE_OK != sqlite3_create_collation (db_con->db, "UTF8", SQLITE_UTF8, 0, &sqlite3_utf8_collation)) {
 		tracker_error ("ERROR: collation sequence failed due to %s", sqlite3_errmsg (db_con->db));
 	}
-	
 
 	/* create user defined functions that can be used in sql */
 	if (SQLITE_OK != sqlite3_create_function (db_con->db, "FormatDate", 1, SQLITE_ANY, NULL, &sqlite3_date_to_str, NULL, NULL)) {
@@ -1085,7 +1086,10 @@ tracker_db_connect (void)
 
 
 	tracker_db_attach_db (db_con, "common");
+	tracker_db_attach_db (db_con, "cache");
 
+	db_con->cache = db_con;
+	db_con->common = db_con;
 
 	db_con->thread = NULL;
 
@@ -1338,7 +1342,7 @@ tracker_db_connect_cache (void)
 	db_con->db_type = DB_CACHE;
 	db_con->cache = db_con;
 
-	sqlite3_busy_timeout (db_con->db, 10000);
+	sqlite3_busy_timeout (db_con->db, 10000000);
 
 	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
@@ -1395,7 +1399,7 @@ tracker_db_connect_emails (void)
 
 	db_con->emails = db_con;
 
-	sqlite3_busy_timeout (db_con->db, 10000);
+	sqlite3_busy_timeout (db_con->db, 10000000);
 
 	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
@@ -1601,7 +1605,7 @@ tracker_db_exec_no_reply (DBConnection *db_con, const char *query)
 		busy_count++;
 
 		if (msg) {
-			g_free (msg);
+			sqlite3_free (msg);
 			msg = NULL;
 		}
 
@@ -1626,7 +1630,7 @@ tracker_db_exec_no_reply (DBConnection *db_con, const char *query)
 
 		if (msg) {
 			tracker_error ("WARNING: sql query %s failed because %s", query, msg);	
-			g_free (msg);
+			sqlite3_free (msg);
 		} else {
 			tracker_error ("WARNING: sql query %s failed with code %d", query, rc);	
 		}
@@ -1645,7 +1649,7 @@ exec_sql (DBConnection *db_con, const char *query, gboolean ignore_nulls)
 {
 	char **array, **result;
 	int  cols, rows;
-	char *msg;
+	char *msg = NULL;
 	int  i, busy_count, totalrows, k;
 
 	g_return_val_if_fail (query, NULL);
@@ -1659,59 +1663,61 @@ exec_sql (DBConnection *db_con, const char *query, gboolean ignore_nulls)
 
 	busy_count = 0;
 
-	lock_connection (db_con);
-
-	i = sqlite3_get_table (db_con->db, query, &array, &rows, &cols, &msg);
-
-	unlock_connection (db_con);
+	i = SQLITE_BUSY;
 
 	while (i == SQLITE_BUSY) {
 
-		
-		if (array) {
-			sqlite3_free_table (array);
-			array = NULL;
-		}
-
-		if (msg) {
-			g_free (msg);
-			msg = NULL;
-		}
-
-		busy_count++;
-
-		if (busy_count > 10000) {
-			tracker_error ("ERROR: excessive busy count in query %s and thread %s", query, db_con->thread);
-			busy_count =0;
-		}
-
-		if (busy_count > 50) {
-			g_usleep (g_random_int_range (1000, busy_count * 200));
-		} else {
-			g_usleep (100);
-		}
-
 		lock_connection (db_con);
-
+	
 		i = sqlite3_get_table (db_con->db, query, &array, &rows, &cols, &msg);
 
 		unlock_connection (db_con);
+
+		if (i == SQLITE_BUSY) {
+		
+			if (array) {
+				sqlite3_free_table (array);
+				array = NULL;
+			}
+
+			if (msg) {
+				sqlite3_free (msg);
+				msg = NULL;
+			}
+		
+
+			busy_count++;
+
+			if (busy_count > 10000) {
+				tracker_error ("ERROR: excessive busy count in query %s and thread %s", query, db_con->thread);
+				busy_count = 0;
+			}
+
+			if (busy_count > 50) {
+				g_usleep (g_random_int_range (1000, busy_count * 200));
+			} else {
+				g_usleep (100);
+			}
+	
+		}
 	}
 
 	if (i != SQLITE_OK) {
 		unlock_db ();
 		tracker_error ("ERROR: query %s failed with error: %s", query, msg);
-		g_free (msg);
+		sqlite3_free (msg);
 		return NULL;
 	}
 
 	unlock_db ();
 
 	if (msg) {
-		g_free (msg);
+		sqlite3_free (msg);
 	}
 
 	if (!array || rows == 0 || cols == 0) {
+
+		if (array) sqlite3_free_table (array);
 		return NULL;
 	}
 
@@ -1749,7 +1755,7 @@ exec_sql (DBConnection *db_con, const char *query, gboolean ignore_nulls)
 }
 
 void
-tracker_db_release_memory ()
+tracker_db_release_memory (void)
 {
 
 }
@@ -1772,28 +1778,18 @@ tracker_exec_sql_ignore_nulls (DBConnection *db_con, const char *query)
 char *
 tracker_escape_string (const char *in)
 {
-	return sqlite3_mprintf ("%q", in);
 
-/*
-	GString *gs;
 
-	if (!in) {
-		return NULL;
-	}
+	char *str = sqlite3_mprintf ("%q", in);
 
-	gs = g_string_new ("");
+	/* copy this as sqlite3_free needs to be called to prevent invalid delete error */
+	char *str2 = g_strdup (str);
 
-	for(; *in; in++) {
+	sqlite3_free (str);
 
-		if (*in == '\'') {
-			g_string_append (gs, "'\\''");
-		} else {
-			g_string_append_c (gs, *in);
-		}
-	}
+	return str2;
 
-	return g_string_free (gs, FALSE);
-*/
+
 }
 
 
@@ -1918,9 +1914,9 @@ tracker_exec_proc (DBConnection *db_con, const char *procedure, int param_count,
 			unlock_connection (db_con);
 			busy_count++;
 
-			if (busy_count > 1000) {
+			if (busy_count > 100000) {
 				tracker_error ("ERROR: excessive busy count in query %s and thread %s", procedure, db_con->thread);
-				exit (1);
+				busy_count = 0;
 			}
 
 			if (busy_count > 50) {
@@ -1972,6 +1968,17 @@ tracker_exec_proc (DBConnection *db_con, const char *procedure, int param_count,
 	if (rc != SQLITE_DONE) {
 		tracker_error ("ERROR: execution of prepared query %s failed due to %s with return code %d", procedure, sqlite3_errmsg (db_con->db), rc);
 		db_con->in_error = TRUE;
+
+		if (rc == SQLITE_CORRUPT) {
+			tracker->reindex = TRUE;
+
+			g_timeout_add_full (G_PRIORITY_LOW,
+			     		    1,
+		 	    		    (GSourceFunc) tracker_do_cleanup,
+			     		    NULL, NULL
+			   		    );
+			return NULL;
+		}
 
 	}
 
@@ -2070,9 +2077,9 @@ tracker_exec_proc_no_reply (DBConnection *db_con, const char *procedure, int par
 			unlock_connection (db_con);
 			busy_count++;
 
-			if (busy_count > 1000) {
+			if (busy_count > 100000) {
 				tracker_error ("ERROR: excessive busy count in query %s and thread %s", procedure, db_con->thread);
-				exit (1);
+				busy_count = 0;
 			}
 
 			if (busy_count > 50) {
@@ -2167,9 +2174,9 @@ tracker_exec_proc_ignore_nulls (DBConnection *db_con, const char *procedure, int
 			unlock_connection (db_con);
 			busy_count++;
 
-			if (busy_count > 1000) {
+			if (busy_count > 1000000) {
 				tracker_error ("ERROR: excessive busy count in query %s and thread %s", procedure, db_con->thread);
-				exit (1);
+				busy_count = 0;
 			}
 
 			if (busy_count > 50) {
@@ -2561,9 +2568,9 @@ tracker_db_get_file_contents_words (DBConnection *db_con, guint32 id, GHashTable
 			unlock_connection (db_con);
 			busy_count++;
 
-			if (busy_count > 1000) {
+			if (busy_count > 1000000) {
 				tracker_error ("ERROR: excessive busy count in query %s and thread %s", "save file contents", db_con->thread);
-				exit (1);
+				busy_count = 0;
 			}
 
 			if (busy_count > 50) {
@@ -2647,8 +2654,8 @@ tracker_db_get_indexable_content_words (DBConnection *db_con, guint32 id, GHashT
 
 		for (k = 0; (row = tracker_db_get_row (res, k)); k++) {
 
-			if (row[0] && row[1]) {
-				table = tracker_parse_text_fast (table, row[0], atoi (row[1]));
+			if (row[0] && row[1] && row[2] && row[3]) {
+				table = tracker_parse_text (table, row[0], atoi (row[1]), !strcmp (row[2], "1"), !strcmp (row[3], "1"));
 			}
 		}
 
@@ -2663,7 +2670,6 @@ tracker_db_get_indexable_content_words (DBConnection *db_con, guint32 id, GHashT
 static void
 save_full_text_bytes (DBConnection *blob_db_con, const char *str_file_id, GByteArray *byte_array)
 {
-	char		*value;
 	sqlite3_stmt 	*stmt;
 	int		busy_count;
 	int		rc;
@@ -2688,10 +2694,6 @@ save_full_text_bytes (DBConnection *blob_db_con, const char *str_file_id, GByteA
 	while (TRUE) {
 
 		if (!lock_db ()) {
-			
-			if (value) {
-				g_free (value);
-			}
 
 			unlock_connection (blob_db_con);
 
@@ -3062,6 +3064,12 @@ tracker_db_check_tables (DBConnection *db_con)
 }
 
 
+static void
+delete_dud (SearchWord *search_word, SearchQuery *query)
+{
+	tracker_remove_dud_hits (query->indexer, search_word->word, query->duds);
+}
+
 
 
 char ***
@@ -3260,6 +3268,11 @@ tracker_db_search_text (DBConnection *db_con, const char *service, const char *s
 			}
 
 			tracker_db_free_result (res);
+
+		} else {
+			tracker_log ("dud hit for search detected");
+			/* add to dud list */
+			query->duds = g_slist_prepend (query->duds, hit);
 		}
 
 	}
@@ -3268,6 +3281,11 @@ tracker_db_search_text (DBConnection *db_con, const char *service, const char *s
 		tracker_db_end_transaction (db_con);
 	} else {
 		result[count] = NULL;
+	}
+
+	/* delete duds */
+	if (query->duds) {
+		g_slist_foreach (query->words, (GFunc) delete_dud, query);
 	}
 
 	tracker_free_query (query);
@@ -3601,7 +3619,7 @@ tracker_db_insert_embedded_metadata (DBConnection *db_con, const gchar *service,
                                 }
 
 				if (table) {
-					gchar *mvalue = tracker_parse_text_to_string (values[i], FALSE, FALSE);
+					gchar *mvalue = tracker_parse_text_to_string (values[i], FALSE, FALSE, FALSE);
 
 					table = tracker_parse_text_fast (table, mvalue, def->weight);
 
@@ -3622,7 +3640,7 @@ tracker_db_insert_embedded_metadata (DBConnection *db_con, const gchar *service,
                                         continue;
                                 }
 
-				mvalue = tracker_parse_text_to_string (values[i], def->filtered, def->delimited);
+				mvalue = tracker_parse_text_to_string (values[i], def->filtered, def->filtered, def->delimited);
 
 				if (table) {
 					table = tracker_parse_text_fast (table, mvalue, def->weight);
@@ -3670,7 +3688,7 @@ tracker_db_insert_embedded_metadata (DBConnection *db_con, const gchar *service,
                                         continue;
                                 }
 
-				gchar *mvalue = tracker_parse_text_to_string (values[i], def->filtered, def->delimited);
+				gchar *mvalue = tracker_parse_text_to_string (values[i], def->filtered,  def->filtered, def->delimited);
 
 				tracker_exec_proc (db_con, "SetMetadata", 4, id, def->id, mvalue, values[i]);
 
@@ -3754,7 +3772,7 @@ static char *
 get_backup_id (DBConnection *db_con, const char *id)
 {
 	char *backup_id = NULL;
-	DBConnection *db_common = db_con->common;
+	DBConnection *db_common = db_con;
 
 	char ***res = tracker_exec_proc (db_common, "GetBackupServiceByID", 1, id);
 
@@ -3933,7 +3951,7 @@ tracker_db_set_metadata (DBConnection *db_con, const char *service, const char *
 				}
 
 
-				char *mvalue = tracker_parse_text_to_string (values[i], def->filtered, def->delimited);
+				char *mvalue = tracker_parse_text_to_string (values[i], def->filtered,  def->filtered, def->delimited);
 
 				tracker_exec_proc (db_con, "SetMetadata", 4, id, def->id, mvalue, values[i]); 
 
@@ -3966,7 +3984,7 @@ tracker_db_set_metadata (DBConnection *db_con, const char *service, const char *
 					backup_non_embedded_metadata (db_con, id, def->id, values[i]);
 				}
 
-				char *mvalue = tracker_parse_text_to_string (values[i], def->filtered, def->delimited);
+				char *mvalue = tracker_parse_text_to_string (values[i], def->filtered,  def->filtered, def->delimited);
 
 				tracker_exec_proc (db_con, "SetMetadata", 4, id, def->id, mvalue, values[i]);
 
@@ -4187,7 +4205,7 @@ tracker_db_delete_metadata_value (DBConnection *db_con, const char *service, con
 
 		case DATA_INDEX:
 		case DATA_STRING:
-			mvalue = tracker_parse_text_to_string (value, def->filtered, def->delimited);
+			mvalue = tracker_parse_text_to_string (value, def->filtered,  def->filtered, def->delimited);
 			tracker_exec_proc (db_con, "DeleteMetadataValue", 3, id, def->id, mvalue); 
 			g_free (mvalue);
 			break;
@@ -4350,7 +4368,7 @@ tracker_db_delete_metadata (DBConnection *db_con, const char *service, const cha
 			break;						
 
 		default:
-			tracker_error ("ERROR: metadata could not be deleted as this operation is not suppprted by type %d for metadata %s", def->type, key);
+			tracker_error ("ERROR: metadata could not be deleted as this operation is not supported by type %d for metadata %s", def->type, key);
 			break;
 
 	}
@@ -4431,18 +4449,25 @@ tracker_db_create_service (DBConnection *db_con, const char *service, FileInfo *
 
 	service_type_id = tracker_get_id_for_service (service);
 
-	if (info->mime)
+	if (info->mime) {
 		tracker_debug ("service id for %s is %d and sid is %s with mime %s", service, service_type_id, sid, info->mime);
-	else
+	} else {
 		tracker_debug ("service id for %s is %d and sid is %s", service, service_type_id, sid);
+        }
 
 	str_service_type_id = tracker_int_to_str (service_type_id);
 
 	str_aux = tracker_int_to_str (info->aux_id);
 
 	if (service_type_id != -1) {
-		tracker_exec_proc (db_con, "CreateService", 11, sid, path, name, str_service_type_id, info->mime, str_filesize,
+              //  gchar *apath = tracker_escape_string (path);
+             //   gchar *aname = tracker_escape_string (name);
+
+		tracker_exec_proc (db_con, "CreateService", 11, sid, path, name,
+                                   str_service_type_id, info->mime, str_filesize,
                                    str_is_dir, str_is_link, str_offset, str_mtime, str_aux);
+              //  g_free (apath);
+             //   g_free (aname);
 
 		if (db_con->in_error) {
 			tracker_error ("ERROR: CreateService uri is %s/%s", path, name);
@@ -5421,15 +5446,13 @@ void
 tracker_db_move_file (DBConnection *db_con, const char *moved_from_uri, const char *moved_to_uri)
 {
 
-	tracker_debug ("Moving file %s to %s", moved_from_uri, moved_to_uri);
-
-	tracker_db_start_transaction (db_con);
+	tracker_log ("Moving file %s to %s", moved_from_uri, moved_to_uri);
 
 	/* if orig file not in DB, treat it as a create action */
 	guint32 id = tracker_db_get_file_id (db_con, moved_from_uri);
 	if (id == 0) {
 		tracker_debug ("WARNING: original file %s not found in DB", moved_from_uri);
-		tracker_db_insert_pending_file (db_con, id, moved_to_uri, "unknown", 0, TRACKER_ACTION_FILE_CREATED, FALSE, TRUE, -1);
+		tracker_db_insert_pending_file (db_con, id, moved_to_uri,  NULL, "unknown", 0, TRACKER_ACTION_WRITABLE_FILE_CLOSED, FALSE, TRUE, -1);
 		tracker_db_end_transaction (db_con);
 		return;
 	}
@@ -5456,11 +5479,6 @@ tracker_db_move_file (DBConnection *db_con, const char *moved_from_uri, const ch
 
 	/* update backup service if necessary */
 	tracker_exec_proc (db_con->common, "UpdateBackupService", 4, path, name, old_path, old_name);
-	
-
-	tracker_db_end_transaction (db_con);
-
-	tracker_notify_file_data_available ();
 
 	g_free (str_file_id);
 	g_free (name);
@@ -5689,7 +5707,7 @@ update_index_data (gpointer key,
 
 	if (score == 0) return;
 
-	//tracker_debug ("updating index for word %s with score %d", word, score);
+	tracker_debug ("updating index for word %s with score %d", word, score);
 	
 	tracker_cache_add (word, info->service_id, info->service_type_id, score, FALSE);
 
@@ -6292,9 +6310,9 @@ char *
 tracker_db_get_option_string (DBConnection *db_con, const char *option)
 {
 
-	char *value;
+	char *value = "";
 
-	gchar ***res = tracker_exec_proc (db_con, "GetOption", 1, option);
+	gchar ***res = tracker_exec_proc (db_con->common, "GetOption", 1, option);
 
 	if (res) {
 		if (res[0] && res[0][0]) {
@@ -6310,7 +6328,7 @@ tracker_db_get_option_string (DBConnection *db_con, const char *option)
 void
 tracker_db_set_option_string (DBConnection *db_con, const char *option, const char *value)
 {
-	tracker_exec_proc (db_con, "SetOption", 2, value, option);
+	tracker_exec_proc (db_con->common, "SetOption", 2, value, option);
 }
 
 
@@ -6318,9 +6336,9 @@ int
 tracker_db_get_option_int (DBConnection *db_con, const char *option)
 {
 
-	int value;
+	int value = 0;
 
-	gchar ***res = tracker_exec_proc (db_con, "GetOption", 1, option);
+	gchar ***res = tracker_exec_proc (db_con->common, "GetOption", 1, option);
 
 	if (res) {
 		if (res[0] && res[0][0]) {
@@ -6338,7 +6356,7 @@ tracker_db_set_option_int (DBConnection *db_con, const char *option, int value)
 {
 	char *str_value = tracker_int_to_str (value);
 
-	tracker_exec_proc (db_con, "SetOption", 2, str_value, option);
+	tracker_exec_proc (db_con->common, "SetOption", 2, str_value, option);
 		
 	g_free (str_value);
 }
@@ -6348,7 +6366,7 @@ gboolean
 tracker_db_regulate_transactions (DBConnection *db_con, int interval)
 {
 	tracker->index_count++;
-			
+	
 	if ((tracker->index_count == 1 || tracker->index_count == interval  || (tracker->index_count >= interval && tracker->index_count % interval == 0))) {
 			
 		if (tracker->index_count > 1) {
@@ -6363,5 +6381,26 @@ tracker_db_regulate_transactions (DBConnection *db_con, int interval)
 
 	return FALSE;
 
+}
+
+gboolean
+tracker_db_integrity_check (DBConnection *db_con)
+{
+	gboolean integrity_check = TRUE;
+
+	char ***res = tracker_exec_sql (db_con, "pragma integrity_check;");
+
+	if (!res) {
+		integrity_check = FALSE;
+	} else {
+
+		char **row = tracker_db_get_row (res, 0);
+
+		if (row && row[0]) {
+			integrity_check = (strcasecmp (row[0], "ok") == 0);
+		}
+	}
+
+	return integrity_check;
 }
 

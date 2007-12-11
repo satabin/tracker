@@ -3,7 +3,7 @@
 # This file is part of Tracker.
 
 AC_PREREQ(2.59c)
-AC_INIT([tracker],[0.6.3],[tracker-list@gnome.org])
+AC_INIT([tracker],[0.6.4],[tracker-list@gnome.org])
 
 AC_CONFIG_SRCDIR([src/trackerd/trackerd.c])
 AM_INIT_AUTOMAKE([dist-bzip2])
@@ -137,7 +137,7 @@ if test "x$enable_deskbar_applet" = "xmodule" ; then
 		module_dir="$with_deskbar_applet_dir"
 	fi
 	if test "x$module_dir" = "x" ; then
-		module_dir="\$(exec_prefix)/lib/deskbar-applet/modules"
+		module_dir="\$(exec_prefix)/lib/deskbar-applet/modules-2.20-compatible"
 	fi
 fi
 
@@ -250,9 +250,29 @@ if test "x$enable_libxml2" = "xyes"; then
 else
 	have_libxml2="no (disabled)"
 fi
-AM_CONDITIONAL(HAVE_LIBXML2, test "$have_libxml2" = "yes")
-test "$have_libxml2" = "yes" && AC_DEFINE(HAVE_LIBXML2, [], [Define if we have libxml2])
 
+if test "x$have_libxml2" = "xyes"; then
+	AC_DEFINE(HAVE_LIBXML2, [], [Define if we have libxml2])
+fi
+
+AM_CONDITIONAL(HAVE_LIBXML2, test "x$have_libxml2" = "xyes")
+
+##################################################################
+# check for HAL
+##################################################################
+  
+AC_ARG_ENABLE(hal, AC_HELP_STRING([--disable-hal],[Disable HAL support for ac power detection]),,[enable_hal=yes])
+if test "x$enable_hal" = "xyes"; then
+	PKG_CHECK_MODULES(HAL, [hal >= 0.5], [have_hal=yes] , [have_hal=no])
+	AC_SUBST(HAL_CFLAGS)
+	AC_SUBST(HAL_LIBS)
+else
+	have_hal="no (disabled)"
+fi
+
+if test "x$have_hal" = "xyes"; then
+	AC_DEFINE(HAVE_HAL, [], [Define if we have HAL])
+fi
 
 ####################################################################
 # check for GStreamer or Xine. Otherwise, call an external video
@@ -504,13 +524,43 @@ if test "x$enable_libtrackergtk" != "xno" ; then
 
     	AC_SUBST([LIBTRACKERGTK_CFLAGS])
     	AC_SUBST([LIBTRACKERGTK_LIBS])
+
+	
 else
-	enable-libtrackergtk="no (disabled)"
+	enable_libtrackergtk="no (disabled)"
 fi
 
-AM_CONDITIONAL(ENABLE_LIBTRACKERGTK, test "$enable-libtrackergtk" != "no")
+AM_CONDITIONAL(ENABLE_LIBTRACKERGTK, test "$enable_libtrackergtk" = "yes")
 
 
+##################################################################
+# Enable building tracker-applet notification icon?
+##################################################################
+LIBNOTIFY_GTK2_REQUIRED=2.10
+LIBNOTIFY_GLIB_REQUIRED=2.10
+LIBNOTIFY_REQUIRED=0.4.3
+
+AC_ARG_ENABLE([trackerapplet], AC_HELP_STRING([--disable-trackerapplet], [Disable trackerapplet]),,[enable_trackerapplet=yes])
+if test "x$enable_trackerapplet" != "xno" ; then
+
+   	trackerapplet_modules="\
+        	glib-2.0    >=  $LIBNOTIFY_GLIB_REQUIRED, \
+        	gtk+-2.0    >=  $LIBNOTIFY_GTK2_REQUIRED, \
+        	dbus-1      >=  $DBUS_REQUIRED, \
+        	dbus-glib-1 >=  $DBUS_REQUIRED, \
+		libnotify   >=  $LIBNOTIFY_REQUIRED"
+
+	PKG_CHECK_MODULES(TRACKERAPPLET, [$trackerapplet_modules],[enable_trackerapplet=yes] , [enable_trackerapplet=no])
+
+    	AC_SUBST([TRACKERAPPLET_CFLAGS])
+    	AC_SUBST([TRACKERAPPLET_LIBS])
+
+	
+else
+	enable_trackerapplet="no (disabled)"
+fi
+
+AM_CONDITIONAL(ENABLE_TRACKERAPPLET, test "$enable_trackerapplet" = "yes")
 
 
 ##################################################################
@@ -528,13 +578,13 @@ if test "x$enable_unac" != "xno" ; then
     	AC_SUBST([UNAC_LIBS])
 	
 else
-	enable-unac="no (disabled)"
+	enable_unac="no (disabled)"
 fi
 
 if test "$enable_unac" = "yes"; then
 	AC_DEFINE(HAVE_UNAC, [], [Define if we have unac lib])
 fi
-AM_CONDITIONAL(ENABLE_UNAC, test "$enable-unac" != "no")
+AM_CONDITIONAL(ENABLE_UNAC, test "$enable_unac" = "yes")
 
 
 
@@ -547,7 +597,6 @@ GTK_REQUIRED=2.8.0
 LIBGNOME_DESKTOP_REQUIRED=2.9.91
 LIBGNOME_REQUIRED=2.13.2
 LIBGNOMEUI_REQUIRED=2.13.7
-LIBGLADE_REQUIRED=2.5.0
 GNOMEVFS_REQUIRED=2.8.4
 
 AC_ARG_ENABLE(gui, AC_HELP_STRING([--disable-gui], [Disable building of the tracker-search-tool]),,[enable_gui=yes])
@@ -582,7 +631,7 @@ fi
 
 
 # do not build if libtracker-gtk is not being built
-if test "x$enable_libtrackergtk" = "yes"; then
+if test "x$enable_libtrackergtk" != "xyes"; then
 	have_gnome="no (disabled as libtracker-gtk is not being built)"	
 fi
 
@@ -622,10 +671,10 @@ if test "x$enable_preferences" != "xno" ; then
    		AC_SUBST([LIBGLADE_LIBS])
 	fi
 else
-	enable-preferences="no (disabled)"
+	enable_preferences="no (disabled)"
 fi
 
-AM_CONDITIONAL(ENABLE_PREFERENCES, test "$enable_preferences" != "no")
+AM_CONDITIONAL(ENABLE_PREFERENCES, test "$enable_preferences" = "yes")
 
 ##################################################################
 # check for poppler's glib bingings
@@ -762,6 +811,8 @@ AC_CONFIG_FILES([
 	src/trackerd/Makefile
 	src/libtracker/Makefile
 	src/libtracker-gtk/Makefile
+	src/tracker-applet/Makefile
+	src/tracker-applet/tracker-applet.desktop.in
 	src/tracker-search-tool/Makefile
 	src/tracker-search-tool/tracker-search-tool.desktop.in
 	src/tracker-preferences/Makefile
@@ -788,11 +839,13 @@ Tracker-$VERSION:
 	inotify header location:		$inotify_header
 	ioprio support:				$ioprio_support
 	Win32:					$native_win32
+	HAL (battery detection) support:	$have_hal
 	unac accent stripper support:		$enable_unac
 	deskbar-applet support:			$enable_deskbar_applet
 	build search tool (GNOME):		$have_gnome
 	build preferences ui:			$enable_preferences
 	build libtracker-gtk:			$enable_libtrackergtk
+	tracker applet notification icon:	$enable_trackerapplet
 
 Metadata extractors:
 

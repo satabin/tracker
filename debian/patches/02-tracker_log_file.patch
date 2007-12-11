@@ -1,0 +1,47 @@
+Index: src/trackerd/trackerd.c
+===================================================================
+--- src/trackerd/trackerd.c	(Revision 1073)
++++ src/trackerd/trackerd.c	(Revision 1074)
+@@ -2486,12 +2486,6 @@
+ 
+  	tracker->is_running = FALSE;
+ 
+-	tracker->log_file = g_build_filename (tracker->root_dir, "tracker.log", NULL);
+-
+-	tracker->dbus_con = tracker_dbus_init ();
+-	
+-	add_local_dbus_connection_monitoring (tracker->dbus_con);
+-
+ 	/* Make a temporary directory for Tracker into g_get_tmp_dir() directory */
+ 	gchar *tmp_dir;
+ 
+@@ -2505,6 +2499,18 @@
+ 	tracker->config_dir = g_strdup (g_get_user_config_dir ());
+ 	tracker->user_data_dir = g_build_filename (tracker->root_dir, "data", NULL);
+ 
++	tracker->log_file = g_build_filename (tracker->root_dir, "tracker.log", NULL);
++
++	/* reset log file */
++	tracker_unlink (tracker->log_file);
++
++	tracker_log ("starting log");
++
++	tracker->dbus_con = tracker_dbus_init ();
++	
++	add_local_dbus_connection_monitoring (tracker->dbus_con);
++
++
+ 	g_free (tmp_dir);
+ 
+ 	/* remove an existing one */
+@@ -2636,9 +2642,7 @@
+ 	ioprio ();
+ #endif
+ 
+-	/* reset log file */
+-	tracker_unlink (tracker->log_file);
+-
++	
+ 	/* deal with config options with defaults, config file and option params */
+ 	set_defaults ();
+ 

@@ -1,8 +1,36 @@
-tracker (0.6.3-4) UNRELEASED; urgency=low
+tracker (0.6.4-1) unstable; urgency=low
 
-  * NOT RELEASED YET
+  * New upstream release.
+    - Check for dbus errors in tracker-status. Closes: #445499
+    - Fix memory leaks in trackerd. Closes: #451216
+    - Check for changed/removed files on startup and correctly handle
+      NoWatchDirectories. Closes: #412116
+  * debian/control
+    - Bump Standards-Version to 3.7.3. No further changes required.
+    - Add Build-Depends on libnotify-dev (>= 0.4.3) and raise Build-Depends on
+      libgtk2.0-dev (>= 2.10.0). Required for compiling tracker-applet.
+    - Add Build-Depends on libhal-dev (>= 0.5). Required for battery status
+      detection support.
+  * debian/patches/01-stemming_languages.patch
+    - Removed, merged upstream.
+  * debian/patches/02-memleak_fix.patch
+    - Removed, merged upstream.
+  * debian/patches/01-libtracker_gtk_missing_libs.patch
+    - libtracker-gtk uses symbols from libtrackerclient, so make sure we link
+      against it.
+  * debian/patches/02-tracker_log_file.patch
+    - Pull tracker log file fix from svn (r1074).
+  * debian/rules
+    - Pass --enable-trackerapplet to DEB_CONFIGURE_EXTRA_FLAGS. This enables
+      the compilation of tracker-applet, an application for the GNOME
+      notification area which shows the status of the trackerd daemon and
+      allows to quickly access the most frequently used actions.
+  * debian/tracker-search-tool.manpages
+    - Install the tracker-applet man page.
+  * debian/tracker-search-tool.install
+    - Install the tracker-applet binary and its autostart desktop file.
 
- -- Michael Biebl <biebl@debian.org>  Thu, 18 Oct 2007 17:10:41 +0200
+ -- Michael Biebl <biebl@debian.org>  Tue, 11 Dec 2007 20:22:15 +0100
 
 tracker (0.6.3-3) unstable; urgency=low
 

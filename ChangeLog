@@ -1,3 +1,360 @@
+2007-12-09 Jamie McCracken <jamiemcc at gnome org>
+
+	* Increased startup sleep for applet to prevent race condition
+	* Made applet handle trackerd being stopped gracefully
+	* Fixed GetHitCount service type
+	* updated hit counts when duds are present in TST
+
+
+
+2007-12-09 Jamie McCracken <jamiemcc at gnome org>
+
+	* Strengthed indeing of emails (utf-8 check on addresses)
+	* Stop indexing if index or db is too large (>2GB)
+	* Fixed notification of tag delete so index is updated
+	* set low disk space to 1% by default
+	* added kill timeout if not shutdown cleanly within 20 secs
+
+
+2007-12-03 Marcus Fritzsch <m at fritschy dot de>
+
+	* python/deskbar-handler/tracer-module.py
+	  Even more defensively programmed add_all_actions () to get
+	  around *older* deskbar releases (prior rev 1701). Another
+	  fix to gnome bug #474131
+
+
+2007-11-30 Jerry Tan <jerry.tan@sun.com>
+        fix gnome bug 495528, disable Save Result As when search type like email, applications 
+        * src/tracker-search-tool/tracker-search-tool.c
+
+
+2007-11-28 Jerry Tan <jerry.tan@sun.com>
+        implement the feature to set ignore filename pattern.
+        * src/trackerd/tracker-utils.h
+        * src/trackerd/tracker-utils.c
+        * src/trackerd/trackerd.c
+ 
+
+2007-11-26 Marcus Fritzsch <m at fritschy dot de>
+
+	* pause on low disk space support
+	* unified pause call: tracker_pause ()
+	* added config option LowDiskSpaceLimit=int - set to < zero to
+	  disable, default is 5 (for default cfg) and as default value
+	  if not in cfg.
+
+
+2007-11-25 Halton Huo   <Halton.Huo@Sun.COM>
+
+	Fix several problems for trackerd reload when changing preferences
+	through t-p:
+	1. Check/uncheck evolution email(maybe more) does not make
+	   trackerd restart
+	2. Trackerd restart will report another trackerd is running.
+	3. Key for BatteryIndex BatteryIndexInitial and FastMerges does
+	   not initialized t-p GUI.
+	* src/tracker-preferences/Makefile.am: Add TRACKER_BINDIR
+	* src/tracker-preferences/tracker-preferences.c:
+	(spin_value_changed_cb), (check_toggled_cb), (setup_page_general),
+	(setup_page_performance), (setup_page_files), (name_owner_changed),
+	(cmdClose_Clicked):
+	* src/trackerd/tracker-dbus-methods.c:
+	(tracker_dbus_method_set_bool_option): Add some bool option here.
+	(tracker_dbus_method_set_int_option): Add some int option here.
+
+
+2007-11-24 Michael Biebl <mbiebl at gmail com>
+
+	* filters/*/*_filter:
+	Fix the shell scripts for the external filters
+	- Use mktemp to create safe temp files.
+	- Make all scripts respect the TMPDIR environment variable.
+	- Remove unnecessary output to stdout.
+	- Change the working directory of the msword filter before calling
+	  wvText to avoid creating temporary files in $HOME.
+
+
+2007-11-23  Saleem Abdulrasool  <compnerd@compnerd.org>
+
+	* src/tracker-preferences/tracker-preferences.glade:
+	Add accessibility tags for lists in tracker-preferences (bug #495201).  Patch
+	from Patrick Wade.  Also add accessibility tags for throttling (bug #195188),
+	patch again by Patrick Wade.
+
+
+2007-11-19 Marcus Fritzsch <m at fritschy dot de>
+
+	* python/deskbar-handler/tracker-{handler,module}.py
+	  Fixed KMail identifier to the correct value
+	* Updated docs/trackerd.1 and docs/tracker.cfg.5
+
+
+2007-11-18 Jamie McCracken <jamiemcc at gnome org>
+
+	* Added Get Hit Count call to libtracker
+	* Fixed GetServices call
+	* Added KeywordAdded and KeywordRemoved signals
+
+
+2007-11-18 Laurent Aguerreche <laurent.aguerreche at free fr>
+
+	* Read some keys from tracker.cfg file:
+	  - BatteryIndexInitial, BatteryIndexInitial,
+	  - MaxBucketCount, MinBucketCount, BucketRatio, Divisions
+	  - Padding (but not used anywhere in tracker's code...)
+
+
+2007-11-17 Jamie McCracken <jamiemcc at gnome org>
+
+	* implemented power management options
+	* fixed bug with embedded Auth in IMAP URI
+
+
+2007-11-16 Marcus Fritzsch <m at fritschy dot de>
+
+	* python/deskbar-handler/tracker-module.py
+	  fixed URI quoting issues reported as bug #495512
+	* src/trackerd/tracker-dbus-search.c
+	  additional error check, fixes bug #495810
+
+
+2007-11-13 Jamie McCracken <jamiemcc at gnome org>
+
+	* Added confirmation dialog to prefs when it needs to be restarted or reindexed
+	* fixed error msg when stopwords are passed for searching
+
+
+2007-11-11 Patch from	Tshepang Lekhonkhobe <tshepang@gmail.com>
+
+	* updated README file
+	* fix for configure.ac (libglade not needed for tst)
+
+
+2007-11-11 Patch from Wendy Hu <Huiwe.Hu@Sun.COM>
+
+	* extract keywords from html
+	* fix metadata child relationships
+
+
+2007-11-11 Jamie McCracken <jamiemcc at gnome org>
+
+	* Added more widgets to tracker-preferences for power management and fast index merges
+	* Made throttle and most of the checkboxes change settings in trackerd in real time (without needing to restart trackerd)
+	* Fixed deletion of entries
+
+
+2007-11-09 Saleem Abdulrasool  <compnerd@compnerd.org>
+
+	* src/tracker-preferences/tracker-configuration.c:
+	(_g_utf8_make_valid), (g_key_file_parse_value_as_double),
+	(g_key_file_get_double), (g_key_file_set_double),
+	(g_key_file_get_double_list), (g_key_file_set_double_list),
+	(get_default_language_code), (create_config_file),
+	(tracker_configuration_init), (tracker_configuration_get_list),
+	(string_replace), (_write), (_set_string), (_get_string_list),
+	(_set_string_list):
+	* src/tracker-preferences/tracker-configuration.h:
+	* src/tracker-preferences/tracker-preferences-main.c: (main):
+	* src/tracker-preferences/tracker-preferences-utils.h:
+	* src/tracker-preferences/tracker-preferences.c:
+	(tracker_preferences_init), (setup_page_general),
+	(setup_page_performance), (setup_page_files), (setup_page_emails),
+	(name_owner_changed), (if_trackerd_start), (cmdClose_Clicked),
+	(cmdAddCrawledPath_Clicked), (cmdAddIndexPath_Clicked),
+	(append_item_to_list), (treeview_get_values), (populate_list):
+	* src/tracker-preferences/tracker-preferences.glade:
+	* src/tracker-preferences/tracker-preferences.h:
+
+	Run indent on the configuration tool, and fix the init to hide the help
+	button properly.  Edit the preferences layout slightly to arrange the
+	tabs in order of usefulness and simplify the email tab.
+
+
+2007-11-06 Saleem Abdulrasool  <compnerd@compnerd.org>
+
+	* src/tracker-applet/tracker-applet-private.h:
+	* src/tracker-applet/tracker-applet.c: (tray_icon_class_init),
+	(tray_icon_set_tooltip):
+	* src/tracker-applet/tracker-applet.h:
+
+	Drop set_tooltip, there is no reason for this to be a virtual function.
+
+
+2007-11-05 Laurent Aguerreche <laurent.aguerreche at free fr>
+
+	* Fix infinite loops while indexing in directories containing a single quote in their name
+	* Fix "merging of indexes" messages which appear again, and again, and again, etc.
+
+
+2007-11-04 Patch from Halton Huo   <Halton.Huo@Sun.COM>
+
+	* Added shutdown and restart of trackerd to refresh config settings to tracker-preferences
+
+
+2007-11-03 Jamie McCracken <jamiemcc at gnome org>
+
+	* made corruption scan active only if trackerd was not cleanly shutdown
+	* also repair qdbm index files
+	* mutex safeguards around cache
+	* allow readonly mode for trackerd when another process is present but on another machine (NFS)
+	* bomb out trackerd if not primary owner of tracker dbus name
+	* made use of sqlite3_free where needed to by sqlite 3.5
+
+
+2007-10-31  Saleem Abdulrasool  <compnerd@compnerd.org>
+	Patch from Bruce Cowan <bugs@bcowan.fastmail.co.uk>
+	Fix spelling error 'occured' -> 'occurred'.  Bug #481651.
+
+	* src/libtracker/tracker-files.c: (main):
+	* src/libtracker/tracker-get-meta-for-folder.c: (main):
+	* src/libtracker/tracker-query.c: (main):
+	* src/libtracker/tracker-stats.c: (main):
+	* src/tracker-search-tool/tracker-search-tool.c:
+	(display_error_dialog):
+
+
+2007-10-31 Michael Biebl <mbiebl at gmail com>
+
+	* Merge tracker-inotify.h, tracker-fam.h and tracker-win-fs-changes.h
+	into a single file called tracker-watch.h.
+	* Remove redundant declarations of the tracker watch functions from
+	tracker-db-sqlite.h.
+	* Extract the poll implementation of the watch functions from
+	trackerd.c into a new file called tracker-poll.c.
+	* Update files to #include "tracker-watch.h".
+	* Update Makefile.am to build the correct file monitoring backend.
+	Drop removed files like tracker-inotify.h, tracker-fam.h, 
+	tracker-win-fs-changes.h and add tracker-watch.h to trackerd_SOURCES.
+
+
+2007-10-31 Michal Pryc <michal dot pryc at sun dot com>
+
+	* extensions/thunderbird-extension/content/trackerMailWindow.xul:
+	Fixes opening proper mail within Thunderbird.
+	* extensions/thunderbird-extension/tracker.xpi: new xpi with the applied patch.
+
+
+2007-10-31  Patch from	Tshepang Lekhonkhobe <tshepang@gmail.com>
+
+	* updated README file
+
+
+2007-10-31 Patch from Thiago Marcos P. Santos <tmpsantos@gmail.com>
+	
+	* escape string in sql fix
+
+
+2007-10-29 Jamie McCracken <jamiemcc at gnome org>
+
+	* Check sqlite dbs for corruption on startup and force reindex if necessary
+	* mem leak fix
+	* improve debug of index creation failure
+	* Fixed emails not being indexed if index has been stopped prior to completion of first run
+	* reduce inotify max watch count by 500 to leave some spare for other apps
+	* made sure only regular files get indexed
+	* check dir is not watched before attmpting to watch it again
+	* fixed hang when a directory is moved or renamed while indexing is going on
+
+
+2007-10-20  Marcus Fritzsch <m at fritschy dot de>
+
+	* tracker-extract, added support for application/x-gzpostscript files
+
+2007-10-19  Marcus Fritzsch <m at fritschy dot de>
+
+	* deskbar handlers, Fixed gnome bugs #487444, #486733
+	* added some more exception catchers, in general where actions
+	  are executed
+
+2007-10-15 Patch from Halton Huo   <Halton.Huo@Sun.COM>
+
+	* fixed crasher on solaris
+
+2007-10-09  Luca Ferretti  <elle.uca@libero.it>
+
+	* src/tracker-applet/tracker-applet.c: (create_context_menu):
+	Mark strings in rigth click menu translatable and fix
+	capitalization and ellipsizing as per GNOME HIG.
+
+2007-10-09 Jamie McCracken <jamiemcc at gnome org>
+
+	* Fixed deletions of words from index
+
+
+2007-10-08 Jamie McCracken <jamiemcc at gnome org>
+
+	* Fixed applet so that progress and pause options work
+	* Implemented fast_merges option
+	* Fixes to remove dud hits so a research corrects wrong hit counts
+	* Cause tracker to die and delete indexes when corruption is detected
+	* Check for overlapping watch dirs
+	* Correct email folders count in applet progress
+	* TST - display warning when searching while indexing
+	* TST - ellipsize first column in search results
+
+
+2007-10-07  Luca Ferretti  <elle.uca@libero.it>
+
+	* src/tracker-preferences/tracker-preferences.desktop.in.in:
+	Change the name of capplet launcher, to remove "Preferences"
+
+2007-10-06 Jamie McCracken <jamiemcc at gnome org>
+
+	* Renamed and rephrased tracker-applet source
+	* Removed unneeded stuff and merged source files in the applet
+	* Made the applet statistics window live and self updating every 2 seconds
+	* Integrated signal handlers for state changed, progress and IndexFinsihed into applet
+	* Made more translatable strings in applet
+
+
+2007-10-04 Jamie McCracken <jamiemcc at gnome org>
+
+	* Added in_merge to StateChangeSignal
+	* Fixed crasher when merging indexes
+
+
+2007-10-01 Jamie McCracken <jamiemcc at gnome org>
+
+	* Made battery and pause checks tickless
+	* Added signals for index progress ans state changes
+	* added dbus methods for setting options and shutdown/reindex
+	* renamed tracker-monitor to tracker-applet
+
+
+2007-10-01 Laurent Aguerreche <laurent.aguerreche at free fr>
+
+	* Make index statistic window a little bit sexier
+
+
+2007-09-30 Laurent Aguerreche <laurent.aguerreche at free fr>
+
+	* Cleanups for KMail and Thunderbird code
+	* KMail emails are indexed but not removed when user move one to trash
+
+
+2007-09-29 Patch from Wendy Hu
+
+	* Fixed missing category from tst search
+
+
+2007-09-27 Mikkel Kamstrup Erlandsen   <mikkel.kamstrup@gmail.com>
+
+	* Richer display of hits in deskbar module
+	  This was intended all along, but broke with DBA 2.20.
+
+
+2007-09-27 Jamie McCracken <jamiemcc at gnome org>
+
+	* Added intial tracker-monitor notification applet
+	* fixed excessive busy count issue
+
+
+2007-09-25 Patch from Halton Huo   <Halton.Huo@Sun.COM>
+
+	* Enable search of words beginning with a number
+
+
 2007-09-24 Laurent Aguerreche <laurent.aguerreche at free fr>
 
 	* KMail emails are not indexed twice anymore because date of indexing is now checked...

@@ -1,3 +1,25 @@
+tracker (0.6.4-2) unstable; urgency=low
+
+  * Merge a few patches from the Ubuntu package.
+    - debian/patches/03_no_initial_index_in_battery.patch:
+      + Do not run the initial index if running on battery.
+        Patch taken from upstream SVN, revision 1075:
+        http://svn.gnome.org/viewvc/tracker?view=revision&revision=1075
+    - debian/patches/04_fix_crash_index_name_is_null.patch:
+      + Fix a crash when index name is null during merging.
+        Patch taken from upstream SVN, revision 1076:
+        http://svn.gnome.org/viewvc/tracker?view=revision&revision=1076
+    - debian/patches/05_typo_audio_track_peak_gain_tag.patch:
+      + Fix a typo in a tag metadata.
+        Patch taken from upstream SVN, revision 1077:
+        http://svn.gnome.org/viewvc/tracker?view=revision&revision=1077
+    - debian/patches/06_trackerd_infinite_loop.patch:
+      + Fix an infinite loop in trackerd if a second instance is launched.
+        Closes:#460176. Patch taken from upstream SVN, revision 1079:
+        http://svn.gnome.org/viewvc/tracker?view=revision&revision=1079
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 25 Jan 2008 06:43:19 +0100
+
 tracker (0.6.4-1) unstable; urgency=low
 
   * New upstream release.

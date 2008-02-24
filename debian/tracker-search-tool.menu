@@ -1,0 +1,5 @@
+?package(tracker-search-tool):\
+	needs="X11"\
+	section="Applications/File Management"\
+	title="Tracker Search Tool"\
+	command="/usr/bin/tracker-search-tool"

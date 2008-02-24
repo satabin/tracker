@@ -1,3 +1,17 @@
+tracker (0.6.4-3) unstable; urgency=low
+
+  * debian/control
+    - Replace Build-Depends python-central with python-support.
+    - Remove X[BS]-Python-Version fields.
+  * debian/rules
+    - Add call to dh_pysupport passing it the path of the deskbar-applet
+      modules directory.
+    - Remove dh_pycentral.
+  * debian/tracker-search-tool.menu
+    - Add a menu file for tracker-search-tool. Closes: #438959
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 24 Feb 2008 02:36:23 +0100
+
 tracker (0.6.4-2) unstable; urgency=low
 
   * Merge a few patches from the Ubuntu package.

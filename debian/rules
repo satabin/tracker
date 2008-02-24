@@ -20,4 +20,4 @@ LDFLAGS += -Wl,--as-needed -Wl,-Bsymbolic
 DEB_DH_MAKESHLIBS_ARGS_ALL := -V
 
 binary-install/libdeskbar-tracker::
-	dh_pycentral -p$(cdbs_curpkg)
+	dh_pysupport -p$(cdbs_curpkg) /usr/lib/deskbar-applet/modules-2.20-compatible/

@@ -1,3 +1,23 @@
+tracker (0.6.5-1) unstable; urgency=low
+
+  * New upstream release.
+    - Merge messsage notifications have been removed. Closes: #463519
+  * Removed patches that were merged upstream
+    - debian/patches/01-libtracker_gtk_missing_libs.patch
+    - debian/patches/02-tracker_log_file.patch
+    - debian/patches/03_no_initial_index_in_battery.patch
+    - debian/patches/04_fix_crash_index_name_is_null.patch
+    - debian/patches/05_typo_audio_track_peak_gain_tag.patch
+    - debian/patches/06_trackerd_infinite_loop.patch
+  * debian/rules
+    - Exclude /usr/lib/tracker/extract-modules/ from dh_makeshlibs.
+  * debian/tracker.install
+    - Install *.so files from /usr/lib/tracker/extract-modules/.
+  * debian/tracker-search-tool.install
+    - Install /usr/share/tracker/tracker-applet-prefs.glade.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 28 Feb 2008 07:14:18 +0100
+
 tracker (0.6.4-3) unstable; urgency=low
 
   * debian/control

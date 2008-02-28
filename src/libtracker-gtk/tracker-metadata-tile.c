@@ -299,6 +299,25 @@ enum {
 	EMAIL_N_KEYS
 };
 
+static char *webhistory_keys[] =
+{
+        "Doc:URL",
+        "Doc:Title",
+        "File:Size",
+        "File:Mime",
+        "Doc:Keywords",
+        NULL
+};
+
+enum { 
+        WEBHISTORY_URL,
+        WEBHISTORY_TITLE,
+        WEBHISTORY_SIZE,
+        WEBHISTORY_MIME,
+        WEBHISTORY_KEYWORDS,
+        WEBHISTORY_N_KEYS
+}; 
+
 
 static char *app_keys[] =
 {
@@ -783,6 +802,39 @@ _tile_tracker_populate_documents (char **array, GError *error, TrackerMetadataTi
 }
 
 
+/*populates the metadata tile for a web history url */
+static void
+_tile_tracker_populate_webhistory(char **array, GError *error, TrackerMetadataTile *tile )
+{
+        if (error) {
+                g_print ("METADATA_TILE_ERROR : %s", error->message);
+                g_clear_error (&error);
+                gtk_widget_hide (GTK_WIDGET(tile));
+                return;
+        }
+
+        TrackerMetadataTilePrivate *priv;
+
+        priv = TRACKER_METADATA_TILE_GET_PRIVATE (tile);
+
+        /* create title */
+        _property_to_label ( priv->title, array[WEBHISTORY_URL] , "<span size='large'><b>%s</b></span>");
+
+        /* then set the remaining properties */
+        _property_to_label ( priv->info1, array[WEBHISTORY_TITLE] , _("Subject : <b>%s</b>"));
+        _property_to_label ( priv->info2, array[WEBHISTORY_KEYWORDS] , "Keywords: <b>%s</b>");
+
+        tracker_metadata_tile_show (tile);
+        g_strfreev (array);
+
+        _show_labels (tile, FALSE);
+        gtk_widget_show (priv->info1);
+        gtk_widget_show (priv->info2);
+
+}
+
+
+
 /* UTILILTY FUNCTIONS FOR CONVERSIONS */
 
 /* Converts bitrate to kbs */
@@ -799,6 +851,7 @@ _bitrate_to_label (GtkWidget *label, const char *prop, const char *string)
 	format = g_strdup_printf ("%d", size);
 	temp = g_strdup_printf (string, format);
 	gtk_label_set_markup (GTK_LABEL (label), temp);
+	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 
 	g_free (temp);
 	g_free (format);	
@@ -825,6 +878,7 @@ _seconds_to_label (GtkWidget *label, const char *prop, const char *string)
 
 	temp = g_strdup_printf (string, format);
 	gtk_label_set_markup (GTK_LABEL (label), temp);
+	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 
 	g_free (temp);
 	g_free (format);	
@@ -843,6 +897,7 @@ _dimensions_to_label (GtkWidget *label, const char *width, const char *height, c
 	
 	temp = g_strdup_printf (string, w, h);
 	gtk_label_set_markup (GTK_LABEL (label), temp);
+	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 
 	g_free (temp);
 }
@@ -886,6 +941,7 @@ _size_to_label (GtkWidget *label, const char *prop, const char *string)
 	
 	temp = g_strdup_printf (string, format);
 	gtk_label_set_markup (GTK_LABEL (label), temp);
+	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 
 	g_free (format);
 	g_free (temp);
@@ -908,6 +964,7 @@ _int_to_label (GtkWidget *label, const char *prop, const char *string)
 		temp = g_strdup_printf (string, _("Unknown"));
 	}
 	gtk_label_set_markup (GTK_LABEL (label), temp);
+	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 	
 	g_free (temp);
 	g_free (format);	
@@ -975,6 +1032,7 @@ _date_to_label (GtkWidget *label, const char *iso, const char *string)
 	}
 
 	gtk_label_set_markup (GTK_LABEL (label), temp);
+	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 	g_free (temp);
 }
 
@@ -997,6 +1055,7 @@ _year_to_label (GtkWidget *label, const char *iso, const char *string)
 	}
 
 	gtk_label_set_markup (GTK_LABEL (label), temp);
+	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 	g_free (temp);
 }
 
@@ -1010,11 +1069,13 @@ _property_to_label (GtkWidget *label, const char *prop, const char *string)
 		temp = g_strdup_printf (string, temp2);
 		g_free (temp2);
 		gtk_label_set_markup (GTK_LABEL (label), temp);
+		gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 		g_free (temp);
 	} else {
 		char * temp;
 		temp = g_strdup_printf (string, _("Unknown"));
 		gtk_label_set_markup (GTK_LABEL (label), temp);
+		gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 		g_free (temp);
 	}
 }
@@ -1082,6 +1143,14 @@ tracker_metadata_tile_set_uri (TrackerMetadataTile *tile, const gchar *uri,
 					    (TrackerArrayReply)_tile_tracker_populate_documents, 
 					    (gpointer)tile);
 		break;
+
+        case SERVICE_WEBHISTORY:
+              
+                tracker_metadata_get_async (priv->client, SERVICE_WEBHISTORY,
+                                            uri, webhistory_keys,
+                                            (TrackerArrayReply)_tile_tracker_populate_webhistory,
+                                            (gpointer)tile);
+                break;
 
 
         case SERVICE_IMAGES:

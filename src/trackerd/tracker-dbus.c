@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include "tracker-dbus.h"
 #include "tracker-utils.h"
+#include "tracker-watch.h"
 
 extern Tracker *tracker;
 
@@ -123,6 +124,7 @@ tracker_dbus_send_index_status_change_signal ()
  			<arg type="b" name="is_manual_paused" />
                         <arg type="b" name="is_battery_paused" />
                         <arg type="b" name="is_io_paused" />
+                        <arg type="b" name="is_indexing_enabled" />
 		</signal>
 	*/
 
@@ -135,6 +137,7 @@ tracker_dbus_send_index_status_change_signal ()
 				  DBUS_TYPE_BOOLEAN, &tracker->pause_manual,
 				  DBUS_TYPE_BOOLEAN, &battery_pause,
 				  DBUS_TYPE_BOOLEAN, &tracker->pause_io,
+				  DBUS_TYPE_BOOLEAN, &tracker->enable_indexing,
 				  DBUS_TYPE_INVALID);
 
 	g_free (status);
@@ -170,7 +173,14 @@ tracker_dbus_send_index_progress_signal (const char *service, const char *uri)
 	if (strcmp (service, "Emails") == 0) {
 		count = tracker->mbox_count;
 		processed = tracker->mbox_processed;
+		
+	} else if (strcmp (service, "Merging") == 0) {
+	
+		count = tracker->merge_count;
+		processed = tracker->merge_processed;
+	
 	} else {
+	
 		count = tracker->folders_count;
 		processed = tracker->folders_processed;
 	}
@@ -276,6 +286,44 @@ message_func (DBusConnection *conn,
 
 		return DBUS_HANDLER_RESULT_HANDLED;
 	}
+
+	/* process shutdown calls in this thread */
+	if (dbus_message_is_method_call (message, TRACKER_INTERFACE, TRACKER_METHOD_SHUTDOWN)) {
+	
+		DBusMessage 	*reply;
+		DBusError   	dbus_error;
+		gboolean 	reindex = FALSE;
+	
+		if (!dbus_message_get_args (message, NULL, DBUS_TYPE_BOOLEAN, &reindex, DBUS_TYPE_INVALID)) {
+			//tracker_set_error (rec, "DBusError: %s;%s", dbus_error.name, dbus_error.message);
+			dbus_error_free (&dbus_error);
+			return 0;
+		}
+
+		tracker_log ("attempting restart");
+
+		tracker->reindex = reindex;
+		
+		tracker->is_running = FALSE;
+		tracker_end_watching ();
+
+		g_timeout_add_full (G_PRIORITY_LOW,
+		     		    1,
+	 	    		    (GSourceFunc) tracker_do_cleanup,
+		     		    g_strdup ("dbus shutdown"), NULL
+		   		    );
+
+
+		reply = dbus_message_new_method_return (message);
+
+		dbus_connection_send (conn, reply, NULL);
+
+		dbus_message_unref (reply);
+	
+		return DBUS_HANDLER_RESULT_HANDLED;
+	
+	}
+	
 
 
 	if (dbus_message_is_method_call (message, TRACKER_INTERFACE, TRACKER_METHOD_PING)) {

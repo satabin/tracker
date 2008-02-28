@@ -188,8 +188,7 @@ sqlite3_get_service_name (sqlite3_context *context, int argc, sqlite3_value **ar
 			char *output;
 
 			output = tracker_get_service_by_id (sqlite3_value_int (argv[0]));
-			sqlite3_result_text (context, output, strlen (output), NULL);
-
+			sqlite3_result_text (context, output, strlen (output), g_free);
 		}
 	}
 }
@@ -762,7 +761,7 @@ open_common_db (DBConnection *db_con)
 
 	db_con->db = open_user_db ("common.db", &create);
 
-	set_params (db_con, 16, FALSE);
+	set_params (db_con, 32, FALSE);
 
 }
 
@@ -871,7 +870,7 @@ tracker_db_connect_all (gboolean indexer_process)
 	emails_db_con->word_index = email_word_index_db_con;
 	emails_db_con->index = emails_db_con;
 	emails_db_con->cache = db_con->cache;
-
+	
 	return db_con;
 
 }
@@ -989,7 +988,7 @@ tracker_db_end_index_transaction (DBConnection *db_con)
 void
 tracker_db_set_default_pragmas (DBConnection *db_con)
 {
-	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = OFF;");
+	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = NORMAL;");
 
 	tracker_db_exec_no_reply (db_con, "PRAGMA count_changes = 0;");
 
@@ -1115,7 +1114,7 @@ open_file_db (DBConnection *db_con)
 
 	db_con->db = open_db ("file-meta.db", &create);	
 
-	set_params (db_con, 128, TRUE);
+	set_params (db_con, 512, TRUE);
 }
 
 DBConnection *
@@ -1144,7 +1143,7 @@ open_email_db (DBConnection *db_con)
 
 	db_con->db = open_db ("email-meta.db", &create);	
 
-	set_params (db_con, 128, TRUE);
+	set_params (db_con, 512, TRUE);
 }
 
 DBConnection *
@@ -1175,7 +1174,7 @@ open_file_content_db (DBConnection *db_con)
 
 	db_con->db = open_db ("file-contents.db", &create);	
 
-	set_params (db_con, 256, FALSE);
+	set_params (db_con, 1024, FALSE);
 
 	if (create) {
 		tracker_db_exec_no_reply (db_con, "CREATE TABLE ServiceContents (ServiceID Int not null, MetadataID Int not null, Content Text, primary key (ServiceID, MetadataID))");
@@ -1214,7 +1213,7 @@ open_email_content_db (DBConnection *db_con)
 
 	db_con->db = open_db ("email-contents.db", &create);	
 
-	set_params (db_con, 256, FALSE);
+	set_params (db_con, 512, FALSE);
 
 	if (create) {
 		tracker_db_exec_no_reply (db_con, "CREATE TABLE ServiceContents (ServiceID Int not null, MetadataID Int not null, Content Text, primary key (ServiceID, MetadataID))");
@@ -1846,13 +1845,11 @@ get_prepared_query (DBConnection *db_con, const char *procedure)
 char ***
 tracker_exec_proc (DBConnection *db_con, const char *procedure, int param_count, ...)
 {
+	GPtrArray    *res;
 	va_list      args;
-	int 	     i, busy_count, cols, row;
+	int 	     i, busy_count, cols;
 	sqlite3_stmt *stmt;
-	char 	     **res;
-	GSList	     *result;
 	int	     rc;
-	const GSList *tmp;
 
 	stmt = get_prepared_query (db_con, procedure);
 
@@ -1883,12 +1880,10 @@ tracker_exec_proc (DBConnection *db_con, const char *procedure, int param_count,
 	va_end (args);
 
 	cols = sqlite3_column_count (stmt);
+	res = g_ptr_array_sized_new (100);
 
 	busy_count = 0;
-	row = 0;
 
-	result = NULL;
-	
 	lock_connection (db_con);
 	while (TRUE) {
 
@@ -1906,10 +1901,7 @@ tracker_exec_proc (DBConnection *db_con, const char *procedure, int param_count,
 			unlock_db ();
 			db_con->in_error = TRUE;
 			break;
-		}
-		
-
-		if (rc == SQLITE_BUSY) {
+		} else if (rc == SQLITE_BUSY) {
 			unlock_db ();
 			unlock_connection (db_con);
 			busy_count++;
@@ -1926,14 +1918,10 @@ tracker_exec_proc (DBConnection *db_con, const char *procedure, int param_count,
 			}
 
 			lock_connection (db_con);
-			continue;
-		}
-
-		if (rc == SQLITE_ROW) {
+		} else if (rc == SQLITE_ROW) {
 			char **new_row;
 
 			new_row = g_new0 (char *, cols+1);
-			new_row[cols] = NULL;
 
 			unlock_db ();
 			
@@ -1951,16 +1939,15 @@ tracker_exec_proc (DBConnection *db_con, const char *procedure, int param_count,
 				}
 			}
 
-			if (new_row && new_row[0]) {
-				result = g_slist_prepend (result, new_row);
-				row++;
+			if (new_row[0]) {
+				g_ptr_array_add (res, new_row);
+			} else {
+				g_strfreev (new_row);
 			}
-
-			continue;
+		} else {
+			unlock_db ();
+			break;
 		}
-
-		unlock_db ();
-		break;
 	}
 
 	unlock_connection (db_con);
@@ -1982,29 +1969,14 @@ tracker_exec_proc (DBConnection *db_con, const char *procedure, int param_count,
 
 	}
 
-	if (!result || (row == 0)) {
+	if (res->len == 0) {
+		g_ptr_array_free (res, TRUE);
 		return NULL;
 	}
 
-	result = g_slist_reverse (result);
+	g_ptr_array_add (res, NULL);
 
-	res = g_new0 (char *, row+1);
-	res[row] = NULL;
-
-	tmp = result;
-
-	for (i = 0; i < row; i++) {
-		if (tmp) {
-			res[i] = tmp->data;
-			tmp = tmp->next;
-		} else {
-			tracker_error ("WARNING: exec proc has a dud entry");
-		}
-	}
-
-	g_slist_free (result);
-
-	return (char ***) res;
+	return (char ***) g_ptr_array_free (res, FALSE);
 }
 
 
@@ -2115,12 +2087,10 @@ char ***
 tracker_exec_proc_ignore_nulls (DBConnection *db_con, const char *procedure, int param_count, ...)
 {
 	va_list      args;
-	int 	     i, busy_count, cols, row;
+	GPtrArray    *res;
+	int 	     i, busy_count, cols;
 	sqlite3_stmt *stmt;
-	char 	     **res;
-	GSList	     *result;
 	int	     rc;
-	const GSList *tmp;
 
 	stmt = get_prepared_query (db_con, procedure);
 
@@ -2150,13 +2120,11 @@ tracker_exec_proc_ignore_nulls (DBConnection *db_con, const char *procedure, int
 
 	va_end (args);
 
+	res = g_ptr_array_sized_new (100);
 	cols = sqlite3_column_count (stmt);
 
 	busy_count = 0;
-	row = 0;
 
-	result = NULL;
-	
 	lock_connection (db_con);
 	while (TRUE) {
 
@@ -2186,14 +2154,10 @@ tracker_exec_proc_ignore_nulls (DBConnection *db_con, const char *procedure, int
 			}
 
 			lock_connection (db_con);
-			continue;
-		}
-
-		if (rc == SQLITE_ROW) {
+		} else if (rc == SQLITE_ROW) {
 			char **new_row;
 
 			new_row = g_new0 (char *, cols+1);
-			new_row[cols] = NULL;
 
 			unlock_db ();
 			
@@ -2210,16 +2174,15 @@ tracker_exec_proc_ignore_nulls (DBConnection *db_con, const char *procedure, int
 				}
 			}
 
-			if (new_row && new_row[0]) {
-				result = g_slist_prepend (result, new_row);
-				row++;
+			if (new_row[0]) {
+				g_ptr_array_add (res, new_row);
+			} else {
+				g_strfreev (new_row);
 			}
-
-			continue;
+		} else {
+			unlock_db ();
+			break;
 		}
-
-		unlock_db ();
-		break;
 	}
 
 	unlock_connection (db_con);
@@ -2228,29 +2191,14 @@ tracker_exec_proc_ignore_nulls (DBConnection *db_con, const char *procedure, int
 		tracker_error ("ERROR: prepared query %s failed due to %s", procedure, sqlite3_errmsg (db_con->db));
 	}
 
-	if (!result || (row == 0)) {
+	if (res->len == 0) {
+		g_ptr_array_free (res, TRUE);
 		return NULL;
 	}
 
-	result = g_slist_reverse (result);
+	g_ptr_array_add (res, NULL);
 
-	res = g_new0 (char *, row+1);
-	res[row] = NULL;
-
-	tmp = result;
-
-	for (i = 0; i < row; i++) {
-		if (tmp) {
-			res[i] = tmp->data;
-			tmp = tmp->next;
-		} else {
-			tracker_error ("WARNING: exec proc has a dud entry");
-		}
-	}
-
-	g_slist_free (result);
-
-	return (char ***) res;
+	return (char ***) g_ptr_array_free (res, FALSE);
 }
 
 
@@ -3075,12 +3023,13 @@ delete_dud (SearchWord *search_word, SearchQuery *query)
 char ***
 tracker_db_search_text (DBConnection *db_con, const char *service, const char *search_string, int offset, int limit, gboolean save_results, gboolean detailed)
 {
-	char 		**result, **array;
+	char 		***result, **array;
 	GSList 		*hit_list;
 	int 		count;
 	const GSList	*tmp;
 	gboolean	detailed_emails = FALSE, detailed_apps = FALSE;
 	int		service_array[255];
+	const gchar     *procedure;
 
 	array = tracker_parse_text_into_array (search_string);
 
@@ -3131,7 +3080,7 @@ tracker_db_search_text (DBConnection *db_con, const char *service, const char *s
 
 		if (count > limit) count = limit;
 
-		result = g_new (char *, count + 1);
+		result = g_new (char **, count + 1);
 	} else {
 		tracker_db_start_transaction (db_con);
 		tracker_exec_proc (db_con, "DeleteSearchResults1", 0);
@@ -3166,23 +3115,20 @@ tracker_db_search_text (DBConnection *db_con, const char *service, const char *s
 		}
 
 		if (detailed) {
-
 			if (strcmp (service, "Emails") == 0) {
 				detailed_emails = TRUE;
-				res = tracker_exec_proc_ignore_nulls (db_con, "GetEmailByID", 1, str_id);
-
+				procedure = "GetEmailByID";
 			} else if (strcmp (service, "Applications") == 0) {
 				detailed_apps = TRUE;
-				res = tracker_exec_proc_ignore_nulls (db_con, "GetApplicationByID", 1, str_id);
-
+				procedure = "GetApplicationByID";
 			} else {
-				res = tracker_exec_proc_ignore_nulls (db_con, "GetFileByID2", 1, str_id);
+				procedure = "GetFileByID2";
 			}
-
 		} else {
-			res = tracker_exec_proc_ignore_nulls (db_con, "GetFileByID", 1, str_id);
+			procedure = "GetFileByID";
 		}
 
+		res = tracker_exec_proc_ignore_nulls (db_con, procedure, 1, str_id);
 		g_free (str_id);
 
 		if (res) {
@@ -3191,84 +3137,21 @@ tracker_db_search_text (DBConnection *db_con, const char *service, const char *s
 				char **row = NULL;
 
 				if (detailed) {
-
-					if (detailed_emails) {
-						row = g_new0 (char *, 6);
-
-						row[0] = g_strdup (res[0][0]);
-						row[1] = g_strdup (res[0][1]);
-						row[2] = NULL;
-						row[3] = NULL;
-						row[4] = NULL;
-						row[5] = NULL;
-
-						if (res[0][2]) {
-							row[2] = g_strdup (res[0][2]);						
-							if (res[0][3]) {
-								row[3] = g_strdup (res[0][3]);	
-								if (res[0][4]) {
-									row[4] = g_strdup (res[0][4]);						
-								}	
-							}
-							
-
-							 
-						}					
-						
-
-					} else if (detailed_apps) {
-						row = g_new0 (char *, 7);
-
-						row[0] = g_strdup (res[0][0]);
-						row[1] = g_strdup (res[0][1]);
-						row[2] = g_strdup (res[0][2]);
-						row[3] = NULL;
-						row[4] = NULL;
-						row[5] = NULL;
-						row[6] = NULL;
-
-						if (res[0][3]) {
-							row[3] = g_strdup (res[0][3]);							
-							if (res[0][4]) {
-								row[4] = g_strdup (res[0][4]);	
-								if (res[0][5]) {
-									row[5] = g_strdup (res[0][5]);						
-								}	
-							}
-							
-
-							 
-						}			
-
-
-					} else {
-
-						if (res[0][2] && g_file_test (res[0][0], G_FILE_TEST_EXISTS)) {
-
-							row = g_new (char *, 4);
-
-							row[0] = g_strdup (res[0][0]);
-							row[1] = g_strdup (res[0][1]);
-							row[2] = g_strdup (res[0][2]);
-							row[3] = NULL;
-						}
+					if (detailed_emails || detailed_apps)
+						row = res[0];
+					else {
+						if (res[0][2] && g_file_test (res[0][0], G_FILE_TEST_EXISTS))
+							row = res[0];
 					}
-
 				} else {
-
-					row = g_new (char *, 3);
-
-					row[0] = g_strdup (res[0][0]);
-					row[1] = g_strdup (res[0][1]);
-					row[2] = NULL;
+					row = res[0];
 				}
 				
-				result[count] = (char *) row;
+				result[count] = row;
 				count++;
 			}
 
-			tracker_db_free_result (res);
-
+			g_free (res);
 		} else {
 			tracker_log ("dud hit for search detected");
 			/* add to dud list */
@@ -5942,6 +5825,13 @@ tracker_db_get_static_data (DBConnection *db_con)
 
 		}		
 		tracker_db_free_result (res);
+		
+		/* check for web history */
+		if (!g_hash_table_lookup (tracker->service_table, "Webhistory")) {
+			tracker_log ("Adding missing Webhistory service");
+			tracker_exec_proc (db_con, "InsertServiceType", 1, "Webhistory");	
+		}
+		
 	}
 
 }
@@ -6016,7 +5906,6 @@ tracker_db_metadata_is_child (DBConnection *db_con, const char *child, const cha
 	return FALSE;
 
 }
-
 
 
 gboolean

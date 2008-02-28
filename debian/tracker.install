@@ -8,6 +8,8 @@ debian/tmp/usr/share/tracker/languages/
 debian/tmp/usr/share/tracker/services/
 debian/tmp/usr/share/locale/
 debian/tmp/usr/share/icons/
-debian/tmp/usr/lib/tracker/
+debian/tmp/usr/lib/tracker/filters/
+debian/tmp/usr/lib/tracker/thumbnailers/
+debian/tmp/usr/lib/tracker/extract-modules/*.so
 debian/tmp/etc/xdg/autostart/trackerd.desktop
 debian/tmp/etc/xdg/autostart/trackerd.desktop usr/share/autostart/

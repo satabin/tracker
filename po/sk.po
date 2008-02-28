@@ -1,29 +1,28 @@
-# French translation of Tracker
-# Copyright (C) 2006-2008, Free Software Foundation, Inc
+# translation of sk.po to Slovak
+# Slovak translation of Tracker
+# Copyright (C) 2006, 2007, Free Software Foundation, Inc
 # This file is distributed under the same license as the tracker package.
-#
-# Laurent Aguerreche <laurent.aguerreche@free.fr>, 2006.
-# Claude Paroz <claude@2xlibre.net>, 2007.
-# Robert-André Mauchin <zebob.m@pengzone.org>, 2007.
+# Pavol Klacansky <pavolzetor@gmail.com>, 2008.
+# 
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: tracker.HEAD\n"
+"Project-Id-Version: tracker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-26 22:32+0100\n"
-"PO-Revision-Date: 2008-01-26 22:35+0100\n"
-"Last-Translator: Robert-André Mauchin <zebob.m@pengzone.org>\n"
-"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"POT-Creation-Date: 2008-02-05 09:34+0100\n"
+"PO-Revision-Date: 2008-02-04 16:41+0100\n"
+"Last-Translator: Pavol Klacansky <pavolzetor@gmail.com>\n"
+"Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural= ( n != 1 );\n"
+"Plural-Forms: nplurals=3; plural= (n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
 
 #: ../python/deskbar-handler/tracker-handler.py:36
 #: ../python/deskbar-handler/tracker-module.py:100
 #, python-format
 msgid "Launch %s (%s)"
-msgstr "Lancer %s (%s)"
+msgstr "Spustiť %s (%s)"
 
 #: ../python/deskbar-handler/tracker-handler.py:41
 #: ../python/deskbar-handler/tracker-module.py:105
@@ -33,15 +32,15 @@ msgid ""
 "%s %s\n"
 "from %s"
 msgstr ""
-"Voir la conversation %s\n"
+"Sledovať rozhovor %s\n"
 "%s %s\n"
-"de %s"
+"od %s"
 
 #: ../python/deskbar-handler/tracker-handler.py:47
 #: ../python/deskbar-handler/tracker-module.py:110
 #, python-format
 msgid "Email from %s"
-msgstr "Courriel de %s"
+msgstr "E-mail od %s"
 
 #: ../python/deskbar-handler/tracker-handler.py:59
 #: ../python/deskbar-handler/tracker-module.py:121
@@ -50,8 +49,8 @@ msgid ""
 "Listen to music %s\n"
 "in %s"
 msgstr ""
-"Écouter la musique %s\n"
-"dans %s"
+"Počúvať hudbu %s\n"
+"pomocou programu %s"
 
 #: ../python/deskbar-handler/tracker-handler.py:64
 #: ../python/deskbar-handler/tracker-module.py:127
@@ -60,8 +59,8 @@ msgid ""
 "See document %s\n"
 "in %s"
 msgstr ""
-"Consulter le document %s\n"
-"dans %s"
+"Prezrieť dokument %s\n"
+"pomocou programu %s"
 
 #: ../python/deskbar-handler/tracker-handler.py:69
 #: ../python/deskbar-handler/tracker-handler.py:86
@@ -75,8 +74,8 @@ msgid ""
 "Open file %s\n"
 "in %s"
 msgstr ""
-"Ouvrir le fichier %s\n"
-"dans %s"
+"Otvoriť súbor %s\n"
+"pomocou programu %s"
 
 #: ../python/deskbar-handler/tracker-handler.py:74
 #: ../python/deskbar-handler/tracker-module.py:137
@@ -85,8 +84,8 @@ msgid ""
 "View image %s\n"
 "in %s"
 msgstr ""
-"Afficher l'image %s\n"
-"dans %s"
+"Prezrieť obrázok %s\n"
+"pomocou programu %s"
 
 #: ../python/deskbar-handler/tracker-handler.py:80
 #: ../python/deskbar-handler/tracker-module.py:143
@@ -95,8 +94,8 @@ msgid ""
 "Watch video  %s\n"
 "in %s"
 msgstr ""
-"Regarder la vidéo %s\n"
-"dans %s"
+"Sledovať video  %s\n"
+"pomocou programu %s"
 
 #: ../python/deskbar-handler/tracker-handler.py:91
 #: ../python/deskbar-handler/tracker-module.py:149
@@ -105,150 +104,150 @@ msgid ""
 "Open folder %s\n"
 "%s"
 msgstr ""
-"O_uvrir le dossier %s\n"
+"Otvoriť priečinok %s\n"
 "%s"
 
 #: ../python/deskbar-handler/tracker-handler.py:209
 #: ../python/deskbar-handler/tracker-module.py:350
 msgid "with"
-msgstr "avec"
+msgstr "s"
 
 #: ../python/deskbar-handler/tracker-handler.py:217
 #: ../python/deskbar-handler/tracker-module.py:358
 msgid "in channel"
-msgstr "dans le canal"
+msgstr "v kanáli"
 
 #: ../python/deskbar-handler/tracker-handler.py:384
 msgid "Search all of your documents, <b>as you type</b>"
-msgstr "Recherche tous vos documents, <b>durant la saisie</b>"
+msgstr "Hľadajte vo svojich dokumentoch, <b>hneď ako píšete</>"
 
 #: ../python/deskbar-handler/tracker-handler.py:388
 #: ../python/deskbar-handler/tracker-module.py:294
 msgid "Development Files"
-msgstr "Développement"
+msgstr "Vývojové súbory"
 
 #: ../python/deskbar-handler/tracker-handler.py:391
 #: ../python/deskbar-handler/tracker-module.py:297
 #: ../src/tracker-search-tool/tracker-search-tool.c:141
 msgid "Music"
-msgstr "Musique"
+msgstr "Hudba"
 
 #: ../python/deskbar-handler/tracker-handler.py:394
 #: ../python/deskbar-handler/tracker-module.py:300
 #: ../src/tracker-search-tool/tracker-search-tool.c:140
 msgid "Images"
-msgstr "Images"
+msgstr "Obrázky"
 
 #: ../python/deskbar-handler/tracker-handler.py:397
 #: ../python/deskbar-handler/tracker-module.py:303
 #: ../src/tracker-search-tool/tracker-search-tool.c:142
 msgid "Videos"
-msgstr "Vidéos"
+msgstr "Videá"
 
 #: ../python/deskbar-handler/tracker-handler-static.py:37
 #: ../python/deskbar-handler/tracker-module.py:65
 #: ../python/deskbar-handler/tracker-module.py:159
 #, python-format
 msgid "Search for %s with Tracker Search Tool"
-msgstr "Chercher %s avec l'outil de recherche Tracker"
+msgstr "Hľadať %s s nástrojom na hľadanie Tracker"
 
 #: ../python/deskbar-handler/tracker-handler-static.py:68
 msgid "Search all of your documents with Tracker Search Tool"
-msgstr "Chercher dans tous les documents avec l'outil de recherche Tracker"
+msgstr "Hľadať všetky vaše dokumenty nástrojom na hľadanie Tracker"
 
 #: ../python/deskbar-handler/tracker-module.py:79
 msgid "Tracker Search"
-msgstr "Recherche Tracker"
+msgstr "Hľadanie Tracker"
 
 #: ../python/deskbar-handler/tracker-module.py:80
 msgid "Search with Tracker Search Tool"
-msgstr "Chercher avec l'outil de recherche Tracker"
+msgstr "Hľadať s nástrojom na hľadanie Tracker"
 
 #: ../python/deskbar-handler/tracker-module.py:289
 msgid "Tracker Live Search"
-msgstr "Recherche dynamique Tracker"
+msgstr "Živé hľadanie Tracker"
 
 #: ../python/deskbar-handler/tracker-module.py:290
 msgid "Search with Tracker, as you type"
-msgstr "Recherche avec Tracker, durant la saisie"
+msgstr "Hľadať s Tracker, to čo napíšete"
 
 #. then set the remaining properties
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:453
 #, c-format
 msgid "Path : <b>%s</b>"
-msgstr "Chemin : <b>%s</b>"
+msgstr "Cesta : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:454
 #, c-format
 msgid "Modified : <b>%s</b>"
-msgstr "Modifié le : <b>%s</b>"
+msgstr "Zmenený : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:455
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:641
 #, c-format
 msgid "Size : <b>%s</b>"
-msgstr "Taille : <b>%s</b>"
+msgstr "Veľkosť : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:456
 #, c-format
 msgid "Accessed : <b>%s</b>"
-msgstr "Accédé le : <b>%s</b>"
+msgstr "Použitý : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:457
 #, c-format
 msgid "Mime : <b>%s</b>"
-msgstr "Mime : <b>%s</b>"
+msgstr "Mime : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:509
 #, c-format
 msgid "Sender : <b>%s</b>"
-msgstr "Expéditeur : <b>%s</b>"
+msgstr "Odosielateľ : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:510
 #, c-format
 msgid "Date : <b>%s</b>"
-msgstr "Date : <b>%s</b>"
+msgstr "Dátum : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:550
 #, c-format
 msgid "Comment : <b>%s</b>"
-msgstr "Commentaires : <b>%s</b>"
+msgstr "Komentár : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:551
 #, c-format
 msgid "Categories : <b>%s</b>"
-msgstr "Catégories : <b>%s</b>"
+msgstr "Kategórie : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:637
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:742
 #, c-format
 msgid "Duration : <b>%s</b>"
-msgstr "Durée : <b>%s</b>"
+msgstr "Trvanie : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:638
 #, c-format
 msgid "Genre : <b>%s</b>"
-msgstr "Genre : <b>%s</b>"
+msgstr "Žáner : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:639
 #, c-format
 msgid "Bitrate : <b>%s Kbs</b>"
-msgstr "Débit : <b>%s Kbs</b>"
+msgstr "Bitová rýchlosť : <b>%s Kb/s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:640
 #, c-format
 msgid "Year : <b>%s</b>"
-msgstr "Année : <b>%s</b>"
+msgstr "Rok : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:642
 #, c-format
 msgid "Codec : <b>%s</b>"
-msgstr "Codec : <b>%s</b>"
+msgstr "Kodek : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:683
 #, c-format
 msgid " taken with a <span size='large'><i>%s</i></span>"
-msgstr " prise avec un <span size='large'><i>%s</i></span>"
+msgstr " vytvorený pomocou <span size='large'><i>%s</i></span>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:688
 #, c-format
@@ -260,123 +259,123 @@ msgstr " <span size='large'><i>%s</i></span>"
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:740
 #, c-format
 msgid "Dimensions : <b>%d x %d</b>"
-msgstr "Dimensions : <b>%d x %d</b>"
+msgstr "Rozmery : <b>%d x %d</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:709
 #, c-format
 msgid "Date Taken : <b>%s</b>"
-msgstr "Prise le : <b>%s</b>"
+msgstr "Dátum vytvorenia : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:710
 #, c-format
 msgid "Orientation : <b>%s</b>"
-msgstr "Orientation : <b>%s</b>"
+msgstr "Orientácia : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:711
 #, c-format
 msgid "Flash : <b>%s</b>"
-msgstr "Flash : <b>%s</b>"
+msgstr "Flash : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:712
 #, c-format
 msgid "Focal Length : <b>%s</b>"
-msgstr "Focale : <b>%s</b>"
+msgstr ""
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:713
 #, c-format
 msgid "Exposure Time : <b>%s</b>"
-msgstr "Temps d'exposition : <b>%s</b>"
+msgstr ""
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:741
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:774
 #, c-format
 msgid "Author : <b>%s</b>"
-msgstr "Auteur : <b>%s</b>"
+msgstr "Autor : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:743
 #, c-format
 msgid "Bitrate : <b>%s</b>"
-msgstr "Débit : <b>%s</b>"
+msgstr "Bitová rýchlosť : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:744
 #, c-format
 msgid "Encoded In : <b>%s</b>"
-msgstr "Codée en : <b>%s</b>"
+msgstr "Kódované v : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:745
 #, c-format
 msgid "Framerate : <b>%s</b>"
-msgstr "Fréquence d'images : <b>%s</b>"
+msgstr "Počet obrázkov za sekundu : <b>%s</b>"
 
 #. then set the remaining properties
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:773
 #, c-format
 msgid "Subject : <b>%s</b>"
-msgstr "Sujet : <b>%s</b>"
+msgstr "Predmet : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:775
 #, c-format
 msgid "Page Count : <b>%s</b>"
-msgstr "Nombre de pages : <b>%s</b>"
+msgstr "Počet strán : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:776
 #, c-format
 msgid "Word Count : <b>%s</b>"
-msgstr "Nombre de mots : <b>%s</b>"
+msgstr "Počet slov : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:777
 #, c-format
 msgid "Created : <b>%s</b>"
-msgstr "Créé le : <b>%s</b>"
+msgstr "Vytvorený : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:778
 #, c-format
 msgid "Comments : <b>%s</b>"
-msgstr "Commentaires : <b>%s</b>"
+msgstr "Komentáre : <b>%s</b>"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:862
 #, c-format
 msgid "%.1f KB"
-msgstr "%.1f Kio"
+msgstr "%.1f KB"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:866
 #, c-format
 msgid "%.1f MB"
-msgstr "%.1f Mio"
+msgstr "%.1f MB"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:870
 #, c-format
 msgid "%.1f GB"
-msgstr "%.1f Gio"
+msgstr "%.1f GB"
 
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:908
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:974
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:996
 #: ../src/libtracker-gtk/tracker-metadata-tile.c:1016
 msgid "Unknown"
-msgstr "Inconnu"
+msgstr "Neznámy"
 
 #: ../src/libtracker-gtk/tracker-tag-bar.c:249
 msgid "Type tags you want to add here, separated by commas"
-msgstr "Saisissez ici les étiquettes de votre choix, séparées par des virgules"
+msgstr "Zadajte značky, ktoré chcete sem pridať, oddeľujú sa čiarkami"
 
 #: ../src/libtracker-gtk/tracker-tag-bar.c:359
 msgid "Tags :"
-msgstr "Étiquettes :"
+msgstr "Značky :"
 
 #. Search For Tag
 #: ../src/libtracker-gtk/tracker-tag-bar.c:381
 msgid "_Search For Tag"
-msgstr "_Rechercher des étiquettes"
+msgstr "_Hľadať značku"
 
 #. Remove Tag
 #: ../src/libtracker-gtk/tracker-tag-bar.c:393
 msgid "_Remove Tag"
-msgstr "_Supprimer une étiquette"
+msgstr "O_dstrániť značku"
 
 #: ../src/libtracker/tracker-search.c:34
 msgid "Limit the number of results showed to N"
-msgstr "Limite le nombre de résultats affichés à N"
+msgstr "Obmedzenie počtu zobrazených výsledkov do N"
 
 #: ../src/libtracker/tracker-search.c:34
 msgid "N"
@@ -384,22 +383,22 @@ msgstr "N"
 
 #: ../src/libtracker/tracker-search.c:35
 msgid "Search for a specific service"
-msgstr "Recherche un service spécifique"
+msgstr "Hľadať konkrétnu službu"
 
 #: ../src/libtracker/tracker-search.c:35
 #: ../src/tracker-search-tool/tracker-search-tool.c:65
 msgid "SERVICE"
-msgstr "SERVICE"
+msgstr "SLUŽBA"
 
 #: ../src/libtracker/tracker-search.c:36
 msgid "Show more detailed results with service and mime type as well"
-msgstr "Affiche des résultats plus détaillés, dont le service et le type MIME"
+msgstr "Zobraziť podrobnosti výsledkov pomocou služby a mime typ tiež"
 
 #. Translators: this messagge will apper immediately after the
 #. usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>
 #: ../src/libtracker/tracker-search.c:89
 msgid "TERM... - search files for certain terms"
-msgstr "TERME... - recherche des fichiers contenant certains termes"
+msgstr ""
 
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
@@ -408,42 +407,39 @@ msgid ""
 "Specifying more then one term, will be showed items containing ALL the "
 "specified terms (term1 AND term2 - logical conjunction)"
 msgstr ""
-"L'indication de plusieurs termes n'affichera que les éléments contenant TOUS "
-"les termes indiqués (terme1 ET terme2, conjonction logique)"
 
 #: ../src/libtracker/tracker-search.c:97
 msgid "The list of recognized services is:"
-msgstr "La liste des services connus est :"
+msgstr ""
 
 #: ../src/libtracker/tracker-search.c:114
 #: ../src/libtracker/tracker-search.c:122 ../src/libtracker/tracker-stats.c:82
 #: ../src/libtracker/tracker-tag.c:115 ../src/libtracker/tracker-tag.c:123
 #, c-format
 msgid "Try \"%s --help\" for more information."
-msgstr "Essayez « %s --help » pour plus d'informations."
+msgstr "Skúste \"%s --help\" pre viac informácií."
 
 #: ../src/libtracker/tracker-search.c:120
 #, c-format
 msgid "%s: missing search terms"
-msgstr "%s : termes à rechercher manquants"
+msgstr ""
 
 #: ../src/libtracker/tracker-search.c:133 ../src/libtracker/tracker-stats.c:90
 #: ../src/libtracker/tracker-status.c:46 ../src/libtracker/tracker-tag.c:132
 #, c-format
 msgid "%s: no connection to tracker daemon"
-msgstr "%s : aucune connexion au démon Tracker"
+msgstr "%s: žiadne pripojenie k tracker démonovi"
 
 #: ../src/libtracker/tracker-search.c:135 ../src/libtracker/tracker-stats.c:92
 #: ../src/libtracker/tracker-status.c:48 ../src/libtracker/tracker-tag.c:134
 #, c-format
 msgid "Ensure \"trackerd\" is running before launch this command."
 msgstr ""
-"Assurez-vous que « trackerd » est lancé avant de saisir cette commande."
 
 #: ../src/libtracker/tracker-search.c:147
 #, c-format
 msgid "Service not recognized, searching in Other Files...\n"
-msgstr "Service non connu, recherche comme « autre » fichier...\n"
+msgstr ""
 
 #: ../src/libtracker/tracker-search.c:164
 #: ../src/libtracker/tracker-status.c:56 ../src/libtracker/tracker-tag.c:180
@@ -451,296 +447,289 @@ msgstr "Service non connu, recherche comme « autre » fichier...\n"
 #: ../src/libtracker/tracker-tag.c:233 ../src/libtracker/tracker-tag.c:283
 #, c-format
 msgid "%s: internal tracker error: %s"
-msgstr "%s : erreur interne de Tracker : %s"
+msgstr ""
 
 #. FIXME!! coreutilus don't print anything on no-results
 #: ../src/libtracker/tracker-search.c:173 ../src/libtracker/tracker-tag.c:268
 #, c-format
 msgid "No results found matching your query"
-msgstr "Aucun résultat ne correspond à votre requête"
+msgstr ""
 
 #. Translators: this messagge will apper immediately after the
 #. usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>
 #: ../src/libtracker/tracker-stats.c:73
 msgid " - show number of indexed files for each service"
-msgstr " - affiche le nombre de fichiers indexés pour chaque service"
+msgstr " - zobraziť počet zaindexovaných súborov pre každú službu"
 
 #: ../src/libtracker/tracker-stats.c:108
 msgid "fetching index stats"
-msgstr "récupération des statistiques d'indexation"
+msgstr ""
 
 #: ../src/libtracker/tracker-tag.c:41
 msgid "Add specified tag to a file"
-msgstr "Ajoute l'étiquette indiquée à un fichier"
+msgstr "Pridať označenú značku do súboru"
 
 #: ../src/libtracker/tracker-tag.c:41 ../src/libtracker/tracker-tag.c:42
 #: ../src/libtracker/tracker-tag.c:45 ../src/libtracker/tracker-tag.c:92
 msgid "TAG"
-msgstr "ÉTIQUETTE"
+msgstr "ZNAČKA"
 
 #: ../src/libtracker/tracker-tag.c:42
 msgid "Remove specified tag from a file"
-msgstr "Enlève l'étiquette indiquée d'un fichier"
+msgstr "Odstrániť označenú značku zo súboru"
 
 #: ../src/libtracker/tracker-tag.c:43
 msgid "Remove all tags from a file"
-msgstr "Enlève toutes les étiquettes d'un fichier"
+msgstr "Odstrániť všetky značky zo súboru"
 
 #: ../src/libtracker/tracker-tag.c:44
 msgid "List all defined tags"
-msgstr "Liste toutes les étiquettes définies"
+msgstr ""
 
 #: ../src/libtracker/tracker-tag.c:45
 msgid "Search for files with specified tag"
-msgstr "Recherche des fichiers avec l'étiquette indiquée"
+msgstr "Hľadať súbory s označenou zadanou"
 
 #: ../src/libtracker/tracker-tag.c:46
 msgid "FILE..."
-msgstr "FICHIER..."
+msgstr "SÚBOR..."
 
 #. Translators: this messagge will apper immediately after the
 #. usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>
 #: ../src/libtracker/tracker-tag.c:90
 msgid "FILE... - manipulate tags on files"
-msgstr "FICHIER... - manipule les étiquettes des fichiers"
+msgstr ""
 
 #: ../src/libtracker/tracker-tag.c:99
 msgid ""
 "To add, remove, or search for multiple tags at the same time, join multiple "
 "options like:"
 msgstr ""
-"Pour ajouter, supprimer ou rechercher plusieurs étiquettes simultanément, "
-"combinez plusieurs options comme ceci :"
+"Pre pridanie, odstránenie, alebo hľadanie početných značiek v tomto čase, "
+"pripojiť početné voľby ako:"
 
 #: ../src/libtracker/tracker-tag.c:121
 #, c-format
 msgid "%s: invalid arguments"
-msgstr "%s : paramètres non valides"
+msgstr "%s: nesprávne parametre"
 
 #: ../src/libtracker/tracker-tag.c:148
 #, c-format
 msgid "%s: file %s not found"
-msgstr "%s : fichier %s non trouvé"
+msgstr "%s: súbor %s nebol nájdený"
 
 #: ../src/trackerd/trackerd.c:146
 msgid "Directory to exclude from indexing"
-msgstr "Répertoire à exclure de l'indexation"
+msgstr ""
 
 #: ../src/trackerd/trackerd.c:146 ../src/trackerd/trackerd.c:147
 #: ../src/trackerd/trackerd.c:148
 msgid "/PATH/DIR"
-msgstr "/CHEMIN/RÉPERTOIRE"
+msgstr "/CESTA/ADRESÁR"
 
 #: ../src/trackerd/trackerd.c:147
 msgid "Directory to include in indexing"
-msgstr "Répertoire à inclure dans l'indexation"
+msgstr ""
 
 #: ../src/trackerd/trackerd.c:148
 msgid "Directory to crawl for indexing at start up only"
-msgstr "Répertoire à indexer uniquement au démarrage"
+msgstr ""
 
 #: ../src/trackerd/trackerd.c:149
 msgid "Disable any indexing or watching taking place"
-msgstr "Désactive toute indexation ou surveillance"
+msgstr ""
 
 #: ../src/trackerd/trackerd.c:150
 msgid ""
 "Value that controls the level of logging. Valid values are 0 (displays/logs "
 "only errors), 1 (minimal), 2 (detailed), and 3 (debug)"
 msgstr ""
-"Valeur contrôlant le niveau de journalisation. Les valeurs possibles sont 0 "
-"(seulement les erreurs), 1 (minimum), 2 (détaillé) et 3 (débogage)"
 
 #: ../src/trackerd/trackerd.c:150 ../src/trackerd/trackerd.c:151
 msgid "VALUE"
-msgstr "VALEUR"
+msgstr "HODNOTA"
 
 #: ../src/trackerd/trackerd.c:151
 msgid ""
 "Value to use for throttling indexing. Value must be in range 0-99 (default "
 "0) with lower values increasing indexing speed"
 msgstr ""
-"Valeur utilisée pour contrôler l'indexation. La valeur est comprise dans "
-"l'intervalle 0-99 (0 par défaut), les valeurs basses augmentant la rapidité "
-"d'indexation"
+"Hodnota na použitie pre obmedzenie indexovania. Hodnota musí byť v rozsahu 0-"
+"99 (štandartne 0), s nižšími hodnotami sa zvyšuje rýchlosť indexovania"
 
 #: ../src/trackerd/trackerd.c:152
 msgid "Minimizes the use of memory but may slow indexing down"
-msgstr "Réduit l'utilisation de la mémoire, mais peut ralentir l'indexation"
+msgstr "Minimalizuje využitie pamäte, ale môže spomaliť indexovanie"
 
 #: ../src/trackerd/trackerd.c:153
 msgid "Initial sleep time, just before indexing, in seconds"
-msgstr "Temps de veille initial (en secondes) avant de commencer l'indexation"
+msgstr ""
 
 #: ../src/trackerd/trackerd.c:154
 msgid ""
 "Language to use for stemmer and stop words list (ISO 639-1 2 characters code)"
 msgstr ""
-"Langue à utiliser pour la liste des mots non significatifs et des radicaux "
-"(code de deux caractères ISO 639-1)"
 
 #: ../src/trackerd/trackerd.c:154
 msgid "LANG"
-msgstr "LANGUE"
+msgstr "JAZYK"
 
 #: ../src/trackerd/trackerd.c:155
 msgid "Force a re-index of all content"
-msgstr "Force une réindexation de tout le contenu"
+msgstr "Vynútiť preindexovanie všetkého obsahu"
 
 #: ../src/trackerd/trackerd.c:156
 msgid "Make tracker errors fatal"
-msgstr "Rendre fatales les erreurs de tracker"
+msgstr "Urobiť chybu programu tracker nenapraviteľnou"
 
 #. Translators: this messagge will apper immediately after the
 #. usage string - Usage: COMMAND <THIS_MESSAGE>
-#: ../src/trackerd/trackerd.c:2439
+#: ../src/trackerd/trackerd.c:2441
 msgid "- start the tracker daemon"
-msgstr "- démarre le démon tracker"
+msgstr "- spustiť tracker démona"
 
-#: ../src/trackerd/trackerd.c:2440 ../src/trackerd/trackerd.c:2441
+#: ../src/trackerd/trackerd.c:2442 ../src/trackerd/trackerd.c:2443
 msgid "DIRECTORY"
-msgstr "RÉPERTOIRE"
+msgstr "PRIEČINOK"
 
-#: ../src/trackerd/trackerd.c:2448
+#: ../src/trackerd/trackerd.c:2450
 msgid ""
 "To include or exclude multiple directories at the same time, join multiple "
 "options like:"
 msgstr ""
-"Pour inclure ou exclure plusieurs répertoires simultanément, combinez "
-"plusieurs options comme ceci :"
 
 #: ../src/tracker-applet/tracker-applet.desktop.in.in.h:1
 msgid "Control and monitor the Tracker search and indexing service"
-msgstr "Contrôle et surveille le service de recherche et d'indexation Tracker"
+msgstr "Ovládať a sledovať službu Tracker na hľadanie a indexovanie"
 
 #: ../src/tracker-applet/tracker-applet.desktop.in.in.h:2
 msgid "Tracker Applet"
-msgstr "Applet Tracker"
+msgstr "Tracker applet"
 
 #: ../src/tracker-applet/tracker-applet.c:203
 msgid "_Pause Indexing"
-msgstr "Sus_pendre l'indexation"
+msgstr "P_ozastaviť indexovanie"
 
 #: ../src/tracker-applet/tracker-applet.c:211
 msgid "_Search..."
-msgstr "R_echercher..."
+msgstr "_Hľadať..."
 
 #: ../src/tracker-applet/tracker-applet.c:217
 msgid "Pre_ferences"
-msgstr "Pré_férences"
+msgstr "_Predvoľby"
 
 #: ../src/tracker-applet/tracker-applet.c:223
 msgid "S_tatistics"
-msgstr "_Statistiques"
+msgstr "Š_tatistiky"
 
 #: ../src/tracker-applet/tracker-applet.c:232
 msgid "_Quit"
-msgstr "_Quitter"
+msgstr "_Koniec"
 
 #. search entry row
 #: ../src/tracker-applet/tracker-applet.c:417
 msgid "Search:"
-msgstr "Recherche :"
+msgstr "Hľadať:"
 
 #. status row
 #: ../src/tracker-applet/tracker-applet.c:437
 msgid "Status:"
-msgstr "État :"
+msgstr "Stav:"
 
 #. File progress row
 #: ../src/tracker-applet/tracker-applet.c:457
 msgid "Progress:"
-msgstr "Avancement :"
+msgstr "Priebeh:"
 
 #: ../src/tracker-applet/tracker-applet.c:1016
 msgid "Statistics"
-msgstr "Statistiques"
+msgstr "Štatistiky"
 
 #: ../src/tracker-applet/tracker-applet.c:1037
 msgid "<span weight=\"bold\" size=\"larger\">Index statistics</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Statistiques d'indexation</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Štatistiky indexovania</span>"
 
 #. set translatable strings here
 #: ../src/tracker-applet/tracker-applet.c:1127
 #: ../src/tracker-preferences/tracker-preferences.glade.h:39
 msgid "Files"
-msgstr "Fichiers"
+msgstr "Súbory"
 
 #: ../src/tracker-applet/tracker-applet.c:1128
 msgid "folders"
-msgstr "dossiers"
+msgstr "priečinkov"
 
 #: ../src/tracker-applet/tracker-applet.c:1130
 #: ../src/tracker-search-tool/tracker-search-tool.c:136
 msgid "Emails"
-msgstr "Courriels"
+msgstr "E-maily"
 
 #: ../src/tracker-applet/tracker-applet.c:1132
 msgid "mail boxes"
-msgstr "boîtes aux lettres"
+msgstr "mailových priečinkov"
 
 #: ../src/tracker-applet/tracker-applet.c:1134
 msgid "Indexing in progress"
-msgstr "Indexation en cours"
+msgstr "Indexovanie prebieha"
 
 #: ../src/tracker-applet/tracker-applet.c:1135
 msgid "Indexing completed"
-msgstr "Indexation terminée"
+msgstr "Indexovanie dokončené"
 
 #: ../src/tracker-applet/tracker-applet.c:1136
 msgid "Indexes are being merged"
-msgstr "La fusion des index est en cours"
+msgstr "Indexy sú spájané"
 
 #: ../src/tracker-applet/tracker-applet.c:1138
 msgid "Paused by user"
-msgstr "Suspendu par l'utilisateur"
+msgstr "Pozastavené používateľom"
 
 #: ../src/tracker-applet/tracker-applet.c:1139
 msgid "Paused while on battery power"
-msgstr "Suspendu durant l'alimentation sur batterie"
+msgstr "Pozastaviť, keď je napájaný s batérie"
 
 #: ../src/tracker-applet/tracker-applet.c:1140
 msgid "Paused temporarily"
-msgstr "Suspendu temporairement"
+msgstr "Dočasne pozastavené"
 
 #: ../src/tracker-applet/tracker-applet.c:1142
 msgid ""
 "Your computer is about to be indexed so you can perform fast searches of "
 "your files and emails"
 msgstr ""
-"Votre ordinateur est sur le point de procéder à l'indexation de son contenu "
-"afin que vous puissiez rechercher rapidement des fichiers et des courriels"
+"Váš počítač je dookola indexovaný, takže môžete vykonávať rýchlejšie "
+"hľadania vo vašich súboroch a e-mailoch."
 
 #: ../src/tracker-applet/tracker-applet.c:1143
 msgid ""
 "You can pause indexing at any time and configure index settings by right "
 "clicking here"
 msgstr ""
-"Vous pouvez suspendre l'indexation à tout moment et configurer les "
-"paramètres d'indexation en cliquant ici avec le bouton droit"
+"Môžete pozastaviť indexovanie v akomkoľvek čase a konfigurovať nastavenia "
+"indexovania, pravým kliknutím sem"
 
 #: ../src/tracker-applet/tracker-applet.c:1145
 msgid "Tracker has finished indexing your system"
-msgstr "Tracker a terminé d'indexer le contenu de votre système"
+msgstr "Tracker dokončil indexovanie vášho systému"
 
 #: ../src/tracker-applet/tracker-applet.c:1146
 #, c-format
 msgid " in %d hours and %d minutes"
-msgstr " en %d heures et %d minutes"
+msgstr " za %d hodín a %d minút"
 
 #: ../src/tracker-applet/tracker-applet.c:1147
 #, c-format
 msgid " in %d minutes and %d seconds"
-msgstr " en %d minutes et %d secondes"
+msgstr " za %d minút a %d sekúnd"
 
 #: ../src/tracker-applet/tracker-applet.c:1148
 #, c-format
 msgid " in %d seconds"
-msgstr " en %d secondes"
+msgstr " za %d sekúnd"
 
 #: ../src/tracker-applet/tracker-applet.c:1149
 msgid "You can now perform searches by clicking here"
-msgstr "Vous pouvez maintenant effectuer des recherches en cliquant ici"
+msgstr "Teraz môžete vykonať hľadania kliknutím sem"
 
 #: ../src/tracker-applet/tracker-applet.c:1151
 msgid ""
@@ -749,152 +738,163 @@ msgid ""
 "\n"
 "You can pause this by right clicking here"
 msgstr ""
-"Tracker fusionne actuellement des index, ce qui peut ralentir le "
-"fonctionnement de votre système pendant quelques minutes.\n"
+"Tracker práve triedi indexy, môže to znížiť výkon systému na pár minút\n"
 "\n"
-"Vous pouvez mettre en pause cette opération en cliquant ici avec le bouton "
-"droit."
+"Môžete to pozastaviť kliknutím sem pravým tlačidlom"
 
 #: ../src/tracker-applet/tracker-applet.c:1153 ../trackerd.desktop.in.in.h:2
 msgid "Tracker search and indexing service"
-msgstr "Service de recherche et d'indexation Tracker"
+msgstr "Služba Tracker na hľadanie a indexovanie"
 
 #: ../src/tracker-applet/tracker-applet.c:1155
 msgid "Files:"
-msgstr "Fichiers :"
+msgstr "Súbory:"
 
 #: ../src/tracker-applet/tracker-applet.c:1156
 msgid "    Folders:"
-msgstr "    Dossiers :"
+msgstr "    Priečinky:"
 
 #: ../src/tracker-applet/tracker-applet.c:1157
 msgid "    Documents:"
-msgstr "    Documents :"
+msgstr "    Dokumenty:"
 
 #: ../src/tracker-applet/tracker-applet.c:1158
 msgid "    Images:"
-msgstr "    Images :"
+msgstr "    Obrázky:"
 
 #: ../src/tracker-applet/tracker-applet.c:1159
 msgid "    Music:"
-msgstr "    Musique :"
+msgstr "    Hudba:"
 
 #: ../src/tracker-applet/tracker-applet.c:1160
 msgid "    Videos:"
-msgstr "    Vidéos :"
+msgstr "    Videá:"
 
 #: ../src/tracker-applet/tracker-applet.c:1161
 msgid "    Text:"
-msgstr "    Texte :"
+msgstr "    Texty:"
 
 #: ../src/tracker-applet/tracker-applet.c:1162
 msgid "    Development:"
-msgstr "    Développement :"
+msgstr "    Vyvíjanie:"
 
 #: ../src/tracker-applet/tracker-applet.c:1163
 msgid "    Other:"
-msgstr "    Autre :"
+msgstr "    Iné:"
 
 #: ../src/tracker-applet/tracker-applet.c:1164
 msgid "Applications:"
-msgstr "Applications :"
+msgstr "Aplikácie:"
 
 #: ../src/tracker-applet/tracker-applet.c:1165
 msgid "Conversations:"
-msgstr "Conversations :"
+msgstr "Rozhovory:"
 
 #: ../src/tracker-applet/tracker-applet.c:1166
 msgid "Emails:"
-msgstr "Courriels :"
-
-#: ../src/tracker-preferences/tracker-preferences.c:897
-msgid ""
-"Your system must be re-indexed for your changes to take effect. Re-index now?"
-msgstr ""
-"Votre système doit être réindexé pour que vos modifications prennent effet. "
-"Souhaitez-vous effectuer cette opération maintenant ?"
+msgstr "E-maily:"
 
 #: ../src/tracker-preferences/tracker-preferences.c:899
+msgid "Data must be reindexed"
+msgstr "Dáta musia byť preindexované"
+
+#: ../src/tracker-preferences/tracker-preferences.c:900
 msgid ""
-"Tracker indexer needs to be restarted for your changes to take effect. "
-"Restart now?"
+"In order for your changes to take effect, Tracker must reindex your files. "
+"Click the Reindex button to start reindexing now, otherwise this action will "
+"be performed the next time the Tracker daemon is restarted."
 msgstr ""
-"L'indexeur de Tracker doit être redémarré pour que vos modifications "
-"prennent effet. Souhaitez-vous redémarrer maintenant ?"
+
+#: ../src/tracker-preferences/tracker-preferences.c:907
+msgid "_Reindex"
+msgstr "P_reindexovať"
+
+#: ../src/tracker-preferences/tracker-preferences.c:910
+msgid "Tracker daemon must be restarted"
+msgstr "Démon programu Tracker musí byť reštartovaný"
+
+#: ../src/tracker-preferences/tracker-preferences.c:912
+msgid ""
+"In order for your changes to take effect, the Tracker daemon has to be "
+"restarted. Click the Restart button to restart the daemon now."
+msgstr ""
+
+#: ../src/tracker-preferences/tracker-preferences.c:917
+msgid "_Restart"
+msgstr "_Reštartovať"
 
 #: ../src/tracker-preferences/tracker-preferences.desktop.in.in.h:1
 msgid "Configure file indexing with Tracker"
-msgstr "Configurer l'indexation des fichiers avec Tracker"
+msgstr "Nastavovať súbor indexovania s Tracker"
 
 #: ../src/tracker-preferences/tracker-preferences.desktop.in.in.h:2
 msgid "Search and Indexing"
-msgstr "Recherche et indexation"
+msgstr "Hľadanie a indexovanie"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:1
 msgid "<b>Crawled Directories</b>"
-msgstr "<b>Répertoires indexés</b>"
+msgstr "<b>Pomalé priečinky</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:2
 msgid "<b>Ignored File Patterns</b>"
-msgstr "<b>Motifs de fichiers ignorés</b>"
+msgstr "<b>Ignorované vzory súborov</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:3
 msgid "<b>Ignored Paths</b>"
-msgstr "<b>Chemins ignorés</b>"
+msgstr "<b>Ignorované cesty</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:4
 msgid "<b>Index Merging</b>"
-msgstr "<b>Fusion d'index</b>"
+msgstr "<b>Triedenie indexu</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:5
 msgid "<b>Indexing Limits (per file)</b>"
-msgstr "<b>Limites d'indexation (par fichier)</b>"
+msgstr "<b>Obmedzenie indexovania (na súbor)</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:6
 msgid "<b>Indexing Options</b>"
-msgstr "<b>Options d'indexation</b>"
+msgstr "<b>Nastavenie indexovania</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:7
 msgid "<b>Indexing</b>"
-msgstr "<b>Indexation</b>"
+msgstr "<b>Indexovanie</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:8
 msgid "<b>Power management</b>"
-msgstr "<b>Gestion de l'énergie</b>"
+msgstr "<b>Správa napájania</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:9
 msgid "<b>Resource Usage</b>"
-msgstr "<b>Utilisation des ressources</b>"
+msgstr "<b>Používanie zdroja</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:10
 msgid "<b>Startup</b>"
-msgstr "<b>Démarrage</b>"
+msgstr "<b>Po spustení</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:11
 msgid "<b>Stemming</b>"
-msgstr "<b>Indexation par radicaux</b>"
+msgstr "<b>Hľadať slová podľa pôvodu</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:12
 msgid "<b>Throttling</b>"
-msgstr "<b>Limitation</b>"
+msgstr "<b>Regulovanie</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:13
 msgid "<b>Watch Directories</b>"
-msgstr "<b>Répertoires surveillés</b>"
+msgstr "<b>Sledované priečinky</b>"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:14
 msgid "Additional mbox style mailboxes to index:"
-msgstr "Boîtes aux lettres mbox supplémentaires à indexer :"
+msgstr "Ďalšie mailové priečinky v štýle mbox na indexovanie:"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:15
 msgid "Additional paths to index and watch:"
-msgstr "Chemins supplémentaires à indexer et surveiller :"
+msgstr "Ďalšie cesty na indexovanie a sledovanie:"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:16
 msgid "Additional paths to index on startup (but not watch for updates):"
 msgstr ""
-"Chemins supplémentaires à indexer au démarrage (mais sans surveillance "
-"ensuite) :"
+"Ďalšie cesty na indexovanie pri štarte (ale nebudú skontrolované zmeny):"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:17
 msgid ""
@@ -911,424 +911,421 @@ msgid ""
 "Spanish\n"
 "Swedish"
 msgstr ""
-"danois\n"
-"néerlandais\n"
-"anglais\n"
-"finlandais\n"
-"français\n"
-"allemand\n"
-"italien\n"
-"norvégien\n"
-"portugais\n"
-"russe\n"
-"espagnol\n"
-"suédois"
+"Dánčina\n"
+"Holandština\n"
+"Angličtina\n"
+"Fínština\n"
+"Francúzština\n"
+"Nemčina\n"
+"Taliančina\n"
+"Nórčtina\n"
+"Portugalština\n"
+"Ruština\n"
+"Španielčina\n"
+"Švédština"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:29
 msgid "Disable all Indexing when on battery"
-msgstr "Désactiver toute indexation si sur batterie"
+msgstr "Zakázať všetko indexovanie, keď ide z batérie."
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:30
 msgid "Disable initial index sweep when on battery"
-msgstr "Désactiver la construction initiale des index si sur batterie"
+msgstr "Zakázať počiatočné zhrnutie indexu, keď ide z batérie."
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:31
 msgid "Email"
-msgstr "Courriels"
+msgstr "E-mail"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:32
 msgid "Enable _Evolution email indexing"
-msgstr "Activer l'indexation du courriel _Evolution"
+msgstr "Povoliť indexovanie e-mailov v programe _Evolution"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:33
 msgid "Enable _KMail email indexing"
-msgstr "Activer l'indexation du courriel _KMail"
+msgstr "Povoliť indexovanie e-mailov v programe _KMail"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:34
 msgid "Enable _Thunderbird email indexing"
-msgstr "Activer l'indexation du courriel _Thunderbird"
+msgstr "Povoliť indexovanie e-mailov v programe _Thunderbird"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:35
 msgid "Enable _watching"
-msgstr "Activer la surv_eillance"
+msgstr "Povoliť _sledovanie"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:36
 msgid "Enable i_ndexing"
-msgstr "Activer l'_indexation"
+msgstr "Povoliť i_ndexovanie"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:37
 msgid "Faster"
-msgstr "Plus rapide"
+msgstr "Rýchlejšie"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:38
 msgid "File patterns to ignore during indexing:"
-msgstr "Motifs de fichiers à ignorer durant l'indexation :"
+msgstr "Vzory súborov, ktoré budú ignorované počas indexovania:"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:40
 msgid "General"
-msgstr "Général"
+msgstr "Všeobecné"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:41
 msgid "Generate thum_bnails"
-msgstr "Générer des _vignettes"
+msgstr "Generovať ná_hľady"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:42
 msgid "Ignored Files"
-msgstr "Fichiers ignorés"
+msgstr "Ignorované súbory"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:43
 msgid "Index _delay: "
-msgstr "_Délai avant indexation :"
+msgstr "Oneskorenie in_dexovania: "
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:44
 msgid "Index _file contents"
-msgstr "Indexer le contenu des _fichiers"
+msgstr "In_dexovať obsah súboru"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:45
 msgid "Index _mounted directories"
-msgstr "Indexer les dossiers _montés"
+msgstr "Indexovať p_ripojené priečinky"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:46
 msgid "Index and watch my home _directory"
-msgstr "Indexer et surveiller mon _dossier personnel"
+msgstr "Indexovať a sledovať môj do_movský priečinok"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:47
 msgid "Indexing speed:"
-msgstr "Vitesse d'indexation :"
+msgstr "Rýchlosť indexovania:"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:48
 msgid "Maximum _amount of text to index:"
-msgstr "Qu_antité maximale de texte à indexer :"
+msgstr "M_aximálna veľkosť textu na indexovanie:"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:49
 msgid "Maximum number of unique _words to index:"
-msgstr "Nombre maximum de m_ots uniques à indexer :"
+msgstr "Maximálny počet jedinečných s_lov na indexovanie:"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:50
 msgid "Path roots to be ignored during indexing:"
-msgstr "Chemins racines à ignorer durant l'indexation :"
+msgstr "Korene ciest, ktoré budú ignorované počas indexovania:"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:51
 msgid "Perform fast index merges (may affect system performance)"
-msgstr ""
-"Effectuer des fusions d'index rapides (peut ralentir les performances "
-"générales)"
+msgstr "Vykonávať rýchle triedenie indexov (môže ovplyvniť výkon systému)"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:52
 msgid "Performance"
-msgstr "Performances"
+msgstr "Výkon"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:53
 msgid "Slower"
-msgstr "Plus lent"
+msgstr "Pomalšie"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:54
 msgid "Tracker Preferences"
-msgstr "Préférences de Tracker"
+msgstr "Predvoľby Tracker"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:55
 msgid "_Language:"
-msgstr "_Langue :"
+msgstr "_Jazyk:"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:56
 msgid "_Minimize memory usage (slower indexing)"
-msgstr "Réduit l'utilisation de _mémoire mais ralentit l'indexation"
+msgstr "_Minimalizovať používanie pamäte (pomalšie indexovanie)"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:57
 msgid "_Use additional memory for faster indexing"
-msgstr "_Utilise de la mémoire additionnelle pour une indexation plus rapide"
+msgstr "Po_užiť ďalšiu pamäť pre rýchlejšie indexovanie"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:58
 msgid "kB"
-msgstr "kio"
+msgstr "kB"
 
 #: ../src/tracker-preferences/tracker-preferences.glade.h:59
 msgid "seconds"
-msgstr "Secondes"
+msgstr "sekúnd"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:65
 msgid "Search from a specific service"
-msgstr "Recherche à partir d'un service spécifique"
+msgstr "Hľadať s určenou službou"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:137
 msgid "All Files"
-msgstr "Tous les fichiers"
+msgstr "Všetky súbory"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:138
 msgid "Folders"
-msgstr "Dossiers"
+msgstr "Priečinky"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:139
 msgid "Documents"
-msgstr "Documents"
+msgstr "Dokumenty"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:143
 #: ../src/tracker-search-tool/tracker-search-tool.c:1222
 msgid "Text"
-msgstr "Texte"
+msgstr "Text"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:144
 msgid "Development"
-msgstr "Développement"
+msgstr "Vyvíjanie"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:145
 msgid "Chat Logs"
-msgstr "Journaux de conversations"
+msgstr "Záznamy rozhovorov"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:146
 msgid "Applications"
-msgstr "Applications"
+msgstr "Aplikácie"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:206
 msgid "_Open"
-msgstr "_Ouvrir"
+msgstr "_Otvoriť"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:207
 msgid "O_pen Folder"
-msgstr "O_uvrir le dossier"
+msgstr "O_tvoriť priečinok"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:208
 msgid "Mo_ve to Trash"
-msgstr "_Mettre à la corbeille"
+msgstr "Presunúť do _koša"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:209
 msgid "_Save Results As..."
-msgstr "_Enregistrer les résultats sous..."
+msgstr "_Uložiť výsledky ako..."
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:253
 #, c-format
 msgid "Character set conversion failed for \"%s\""
-msgstr "La conversion du jeu de caractères pour « %s » a échoué"
+msgstr ""
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:280
 msgid "The following error has occurred :"
-msgstr "L'erreur suivante est survenue :"
+msgstr "Vyskytla sa nasledujúca chyba :"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:284
 msgid "Error"
-msgstr "Erreur"
+msgstr "Chyba"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:659
 msgid "Did you mean"
-msgstr "Pensiez-vous à"
+msgstr "Mysleli ste"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:690
 msgid "Your search returned no results."
-msgstr "Votre recherche n'a donné aucun résultat."
+msgstr "Hľadanie nevrátilo žiadne výsledky."
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:705
 msgid "Tracker Search Tool-"
-msgstr "Outil de recherche Tracker - "
+msgstr "Hľadanie Tracker-"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:866
 #: ../src/tracker-search-tool/tracker-search-tool.c:2252
 #: ../src/tracker-search-tool/tracker-search-tool.desktop.in.in.h:2
 msgid "Tracker Search Tool"
-msgstr "Outil de recherche Tracker"
+msgstr "Hľadanie Tracker"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:1056
 msgid "Search _results: "
-msgstr "_Résultats de la recherche : "
+msgstr "_Výsledky hľadania: "
 
 #. Translators: this will appears as "Search results: no search performed"
 #: ../src/tracker-search-tool/tracker-search-tool.c:1062
 msgid "no search performed"
-msgstr "aucune recherche effectuée"
+msgstr "nevykonalo sa žiadne hľadanie"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:1116
 #: ../src/tracker-search-tool/tracker-search-tool.c:1276
 msgid "List View"
-msgstr "Vue en liste"
+msgstr "Zobraziť zoznam"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:1188
 msgid "Icon"
-msgstr "Icône"
+msgstr "Ikona"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:1200
 msgid "Name"
-msgstr "Nom"
+msgstr "Názov"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:1294
 msgid "_Categories"
-msgstr "_Catégories"
+msgstr "_Kategórie"
 
 #. Translators: this will appear like "Search results: 5 - 10 of 30 items"
 #: ../src/tracker-search-tool/tracker-search-tool.c:1574
 #, c-format
 msgid "%d - %d of %d items"
-msgstr "%d - %d sur %d éléments"
+msgstr "%d - %d z %d položiek"
 
 #. Translators: this will appear like "Search results: 7 items"
 #: ../src/tracker-search-tool/tracker-search-tool.c:1577
 #, c-format
 msgid "%d item"
 msgid_plural "%d items"
-msgstr[0] "%d élément"
-msgstr[1] "%d éléments"
+msgstr[0] "%d položiek"
+msgstr[1] "%d položka"
+msgstr[2] "%d položky"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:1625
 #: ../src/tracker-search-tool/tracker-search-tool.c:1820
 msgid "Could not connect to search service as it may be busy"
-msgstr ""
-"Impossible de se connecter au service de recherche, il est peut-être occupé"
+msgstr "Nemohol sa pripojiť k službe hľadania, môže byť zaneprázdnená"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:2020
 msgid "_Search:"
-msgstr "R_echerche :"
+msgstr "_Hľadať:"
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:2034
 msgid "Tracker is still indexing so not all search results are available yet"
 msgstr ""
-"Tracker est toujours en cours d'indexation, il se peut donc que certains "
-"résultats de recherche ne soient pas encore disponibles."
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:2047
 #: ../src/tracker-search-tool/tracker-search-tool.c:2048
 msgid "Enter a search term with multiple words seperated with spaces."
 msgstr ""
-"Saisissez plusieurs termes à rechercher en les séparant par des espaces."
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:2048
 msgid "search_entry"
-msgstr "zone_de_recherche"
+msgstr ""
 
 #: ../src/tracker-search-tool/tracker-search-tool.c:2094
 msgid "Click to perform a search."
-msgstr "Cliquez pour effectuer une recherche."
+msgstr "Kliknite pre ukutočnenie hľadania."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:131
 msgid "Could not open help document."
-msgstr "Impossible d'ouvrir l'aide."
+msgstr "Nemohol byť otvorený dokument pomocníka."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:326
 #, c-format
 msgid "Are you sure you want to open %d document?"
 msgid_plural "Are you sure you want to open %d documents?"
-msgstr[0] "Êtes-vous certain de vouloir ouvrir %d document ?"
-msgstr[1] "Êtes-vous certain de vouloir ouvrir %d documents ?"
+msgstr[0] "Ste si istý, že chcete otvoriť %d dokumentov?"
+msgstr[1] "Ste si istý, že chcete otvoriť %d dokument?"
+msgstr[2] "Ste si istý, že chcete otvoriť %d dokumenty?"
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:331
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:687
 #, c-format
 msgid "This will open %d separate window."
 msgid_plural "This will open %d separate windows."
-msgstr[0] "Cela ouvrira %d fenêtre séparée."
-msgstr[1] "Cela ouvrira %d fenêtres séparées."
+msgstr[0] "Toto otvorí %d samostatných okien."
+msgstr[1] "Toto otvorí %d samostatné okno."
+msgstr[2] "Toto otvorí %d samostatné okná."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:371
 #, c-format
 msgid "Could not open document \"%s\"."
-msgstr "Impossible d'ouvrir le document « %s »."
+msgstr "Nemohol byť otvorený dokument \"%s\"."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:400
 #, c-format
 msgid "Could not open folder \"%s\"."
-msgstr "Impossible d'ouvrir le dossier « %s »."
+msgstr "Nemohol byť otvorený priečinok \"%s\"."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:408
 msgid "The nautilus file manager is not running."
-msgstr "Le gestionnaire de fichiers Nautilus n'est pas lancé."
+msgstr "Správca súborov nautilus nejde."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:626
 msgid "Application could not be opened"
-msgstr "L'application n'a pas pu être lancée"
+msgstr "Aplikácia nemohla byť otvorená"
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:641
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:961
 msgid "The document does not exist."
-msgstr "Le document n'existe pas."
+msgstr "Dokument neexistuje."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:657
 msgid "There is no installed viewer capable of displaying the document."
-msgstr "Aucun programme installé n'est capable d'afficher le document."
+msgstr ""
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:682
 #, c-format
 msgid "Are you sure you want to open %d folder?"
 msgid_plural "Are you sure you want to open %d folders?"
-msgstr[0] "Êtes-vous certain de vouloir ouvrir %d dossier ?"
-msgstr[1] "Êtes-vous certain de vouloir ouvrir %d dossiers ?"
+msgstr[0] "Ste si istý, že chcete otvoriť %d priečinkov?"
+msgstr[1] "Ste si istý, že chcete otvoriť %d priečinok?"
+msgstr[2] "Ste si istý, že chcete otvoriť %d priečinky?"
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:786
 #, c-format
 msgid "Could not move \"%s\" to trash."
-msgstr "Impossible de mettre « %s » à la corbeille."
+msgstr "\"%s\" nemohol byť presunutý do koša."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:817
 #, c-format
 msgid "Do you want to delete \"%s\" permanently?"
-msgstr "Voulez-vous supprimer définitivement « %s » ?"
+msgstr "Naozaj chcete úplne odstrániť \"%s\"?"
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:820
 #, c-format
 msgid "Trash is unavailable.  Could not move \"%s\" to the trash."
-msgstr ""
-"La corbeille est inaccessible. Impossible de mettre « %s » à la corbeille."
+msgstr "Kôš je nedostupný.  \"%s\" nemohol byť presunutý do koša."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:859
 #, c-format
 msgid "Could not delete \"%s\"."
-msgstr "Impossible de supprimer « %s »."
+msgstr "Nemohlo byť odstránené \"%s\"."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:983
 #, c-format
 msgid "Moving \"%s\" failed: %s."
-msgstr "Le déplacement de « %s » a échoué : %s."
+msgstr "Presúvanie \"%s\" zlyhalo: %s."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1017
 #, c-format
 msgid "Deleting \"%s\" failed: %s."
-msgstr "La suppression de « %s » a échoué : %s."
+msgstr "Odstraňovanie \"%s\" zlyhalo: %s."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1303
 msgid "Activate to view this email"
-msgstr "Cliquez pour voir ce courriel"
+msgstr "Aktivovať zobrazenie tohto e-mailu"
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1479
 msgid "Save Search Results As..."
-msgstr "Enregistrer les résultats de recherche sous..."
+msgstr "Uložiť výsledky hľadania ako..."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1514
 msgid "Could not save document."
-msgstr "Impossible d'enregistrer le document."
+msgstr "Dokument nemohol byť uložený."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1515
 msgid "You did not select a document name."
-msgstr "Vous n'avez pas indiqué de nom pour le document."
+msgstr "Nevybrali se názov dokumentu."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1545
 #, c-format
 msgid "Could not save \"%s\" document to \"%s\"."
-msgstr "Impossible d'enregistrer le document « %s » dans « %s »."
+msgstr "Nemohol byť uložený dokument \"%s\" do \"%s\"."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1579
 #, c-format
 msgid "The document \"%s\" already exists.  Would you like to replace it?"
-msgstr "Le document « %s » existe déjà. Souhaitez-vous le remplacer ?"
+msgstr "Dokument \"%s\" už existuje.  Prajete si ho nahradiť?"
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1583
 msgid "If you replace an existing file, its contents will be overwritten."
-msgstr "Si vous remplacez un document existant, son contenu sera écrasé."
+msgstr "Ak nahradíte existujúci súbor, jeho obsah bude prepísaný."
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1598
 msgid "_Replace"
-msgstr "_Remplacer"
+msgstr "Nah_radiť"
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1648
 msgid "The document name you selected is a folder."
-msgstr "Le nom de document que vous avez choisi est un dossier."
+msgstr ""
 
 #: ../src/tracker-search-tool/tracker-search-tool-callbacks.c:1697
 msgid "You may not have write permissions to the document."
-msgstr "Il se peut que vous n'ayez pas les droits d'écriture sur le document."
+msgstr "Nemáte oprávnenie na zapisovanie do dokumentu."
 
 #: ../src/tracker-search-tool/tracker-search-tool.desktop.in.in.h:1
 msgid ""
 "Locate documents and folders on this computer by name or content using "
 "Tracker"
 msgstr ""
-"Rechercher des documents/dossiers sur cet ordinateur selon leur nom ou "
-"contenu"
+"Vyhľadávať dokumenty a priečinky v tomto počítači, podľa názvu alebo obsahu, "
+"použitím Tracker"
 
 #: ../src/tracker-search-tool/tracker-search-tool-support.c:72
 #, c-format
@@ -1336,7 +1333,7 @@ msgid ""
 "GConf error:\n"
 "  %s"
 msgstr ""
-"Erreur GConf :\n"
+"Chyba GConf:\n"
 "  %s"
 
 #. Translators:  Below are the strings displayed in the 'Date Modified'
@@ -1346,26 +1343,39 @@ msgstr ""
 #. with '%-H' and remove the '%p'.  (See bugzilla report #120434.)
 #: ../src/tracker-search-tool/tracker-search-tool-support.c:674
 msgid "today at %-I:%M %p"
-msgstr "aujourd'hui à %-H:%M"
+msgstr "dnes o %-I:%M %p"
 
 #: ../src/tracker-search-tool/tracker-search-tool-support.c:676
 msgid "yesterday at %-I:%M %p"
-msgstr "hier à %-H:%M"
+msgstr "včera o %-I:%M %p"
 
 #: ../src/tracker-search-tool/tracker-search-tool-support.c:678
 #: ../src/tracker-search-tool/tracker-search-tool-support.c:680
 msgid "%A, %B %-d %Y at %-I:%M:%S %p"
-msgstr "%A %-d %B %Y à %-H:%M:%S"
+msgstr "%A, %B %-d %Y v %-I:%M:%S %p"
 
 #: ../src/tracker-search-tool/tracker-search-tool-support.c:860
 msgid "link (broken)"
-msgstr "lien (brisé)"
+msgstr "odkaz (pokazený)"
 
 #: ../src/tracker-search-tool/tracker-search-tool-support.c:864
 #, c-format
 msgid "link to %s"
-msgstr "lien vers %s"
+msgstr "odkaz na %s"
 
 #: ../trackerd.desktop.in.in.h:1
 msgid "Tracker"
 msgstr "Tracker"
+
+#~ msgid ""
+#~ "Your system must be re-indexed for your changes to take effect. Re-index "
+#~ "now?"
+#~ msgstr ""
+#~ "Systém musí byť preindexovaný, aby boli použité zmeny. Preindexovať teraz?"
+
+#~ msgid ""
+#~ "Tracker indexer needs to be restarted for your changes to take effect. "
+#~ "Restart now?"
+#~ msgstr ""
+#~ "Treba reštartovať Tracker indexovač, aby boli použité zmeny. Reštartovať "
+#~ "teraz?"

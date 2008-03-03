@@ -436,6 +436,12 @@ tracker_indexer_apply_changes (Indexer *dest, Indexer *src,  gboolean update)
 
 	dpiterinit (src->word_index);
 	
+	tracker->in_merge = TRUE;
+	tracker->merge_count = 1;
+	tracker->merge_processed = 0;
+	tracker_dbus_send_index_progress_signal ("Merging", "");
+	
+	
 	while ((str = dpiternext (src->word_index, NULL))) {
 		
 		i++;
@@ -479,8 +485,38 @@ tracker_indexer_apply_changes (Indexer *dest, Indexer *src,  gboolean update)
 	if (update) {
 		tracker->file_update_index = tracker_indexer_open ("file-update-index.db");
 	}
+	
+	tracker->in_merge = FALSE;
+	tracker->merge_count = 1;
+	tracker->merge_processed = 1;
+	tracker_dbus_send_index_progress_signal ("Merging", "");
 
 }
+
+gboolean
+tracker_indexer_has_tmp_merge_files (IndexType type)
+{
+	GSList *files = NULL;
+	gboolean result = FALSE;
+
+
+	if (type == INDEX_TYPE_FILES) {
+		files =  tracker_get_files_with_prefix (tracker->data_dir, "file-index.tmp.");
+	} else {
+		files =  tracker_get_files_with_prefix (tracker->data_dir, "email-index.tmp.");
+	}
+
+	result = (files != NULL);
+
+	if (result) {
+		g_slist_foreach (files, (GFunc) g_free, NULL);
+		g_slist_free (files);
+	}
+
+	return result;
+
+}
+
 
 
 gboolean
@@ -561,6 +597,8 @@ tracker_indexer_merge_indexes (IndexType type)
 	const char *prefix;
 	gint       i = 0, index_count, interval = 5000;
 	gboolean   final_exists;
+
+	if (tracker->shutdown) return;
 
 	if (type == INDEX_TYPE_FILES) {
 
@@ -688,6 +726,8 @@ tracker_indexer_merge_indexes (IndexType type)
 
 				if (i > 101 && (i % 100 == 0)) {
 					if (!tracker_cache_process_events (NULL, FALSE)) {
+						tracker->status = STATUS_SHUTDOWN;
+						tracker_dbus_send_index_status_change_signal ();
 						return;	
 					}
 				}
@@ -790,10 +830,11 @@ tracker_indexer_merge_indexes (IndexType type)
 	
 	g_slist_free (index_list);
 
-	tracker_dbus_send_index_status_change_signal ();
+	
 
  end_of_merging:
 	tracker->in_merge = FALSE;
+	tracker_dbus_send_index_status_change_signal ();
 	
 }
 

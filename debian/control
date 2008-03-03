@@ -2,15 +2,56 @@ Source: tracker
 Section: utils
 Priority: optional
 Maintainer: Michael Biebl <biebl@debian.org>
-Build-Depends: cdbs, debhelper (>= 5.0.0), autotools-dev, libxml-parser-perl, libglib2.0-dev (>= 2.12.0), libpango1.0-dev (>= 1.0.0), libgmime-2.0-2-dev (>= 2.1.0), libdbus-1-dev (>= 0.60), libdbus-glib-1-dev (>= 0.60), libgstreamer0.10-dev (>= 0.10.0), libsqlite3-dev (>= 3.4), libpoppler-dev (>= 0.4.5), libpoppler-glib-dev (>= 0.4.5), libgsf-1-dev (>= 1.13), libexif-dev (>= 0.6), libpng12-dev (>= 1.2), libgtk2.0-dev (>= 2.10.0), libgnome2-dev (>= 2.14.0), libgnomeui-dev (>= 2.14.0), libgnomevfs2-dev (>= 2.8.4), libgnome-desktop-dev (>= 2.10), zlib1g-dev, libunac1-dev, libqdbm-dev (>= 1.8), libexempi-dev (>= 1.99.2), libnotify-dev (>= 0.4.3), libhal-dev (>= 0.5), python-support (>= 0.6)
+Build-Depends: cdbs,
+               debhelper (>= 5.0.0),
+               autotools-dev,
+               libxml-parser-perl,
+               libglib2.0-dev (>= 2.12.0),
+               libpango1.0-dev (>= 1.0.0),
+               libgmime-2.0-2-dev (>= 2.1.0),
+               libdbus-1-dev (>= 0.60),
+               libdbus-glib-1-dev (>= 0.60),
+               libgstreamer0.10-dev (>= 0.10.0),
+               libsqlite3-dev (>= 3.4),
+               libpoppler-dev (>= 0.4.5),
+               libpoppler-glib-dev (>= 0.4.5),
+               libgsf-1-dev (>= 1.13),
+               libexif-dev (>= 0.6),
+               libpng12-dev (>= 1.2),
+               libgtk2.0-dev (>= 2.10.0),
+               libgnome2-dev (>= 2.14.0),
+               libgnomeui-dev (>= 2.14.0),
+               libgnomevfs2-dev (>= 2.8.4),
+               libgnome-desktop-dev (>= 2.10),
+               zlib1g-dev,
+               libunac1-dev,
+               libqdbm-dev (>= 1.8),
+               libexempi-dev (>= 1.99.2),
+               libnotify-dev (>= 0.4.3),
+               libhal-dev (>= 0.5),
+               python-support (>= 0.6)
 Standards-Version: 3.7.3
 Homepage: http://www.tracker-project.org/
 
 Package: tracker
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, shared-mime-info, dbus
-Recommends: tracker-utils, tracker-search-tool, unzip, wv, poppler-utils | xpdf-utils, xsltproc, w3m, o3read, untex
-Suggests: imagemagick, evince, djvulibre-bin, gnumeric
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         shared-mime-info,
+         dbus
+Recommends: tracker-utils,
+            tracker-search-tool,
+            unzip,
+            wv,
+            poppler-utils | xpdf-utils,
+            xsltproc,
+            w3m,
+            o3read,
+            untex
+Suggests: imagemagick,
+          evince,
+          djvulibre-bin,
+          gnumeric
 Description: metadata database, indexer and search tool
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
@@ -19,7 +60,8 @@ Description: metadata database, indexer and search tool
 Package: libtrackerclient0
 Architecture: any
 Section: libs
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
 Description: metadata database, indexer and search tool - library
  This package contains the library that is used by applications to access
  the Tracker daemon.
@@ -31,7 +73,10 @@ Description: metadata database, indexer and search tool - library
 Package: libtrackerclient-dev
 Architecture: any
 Section: libdevel
-Depends: libtrackerclient0 (= ${binary:Version}), libglib2.0-dev, libdbus-1-dev, libdbus-glib-1-dev
+Depends: libtrackerclient0 (= ${binary:Version}),
+         libglib2.0-dev,
+         libdbus-1-dev,
+         libdbus-glib-1-dev
 Description: metadata database, indexer and search tool - development files
  This package contains the static libraries and header files needed to link
  applications with libtrackerclient.
@@ -43,7 +88,8 @@ Description: metadata database, indexer and search tool - development files
 Package: libtracker-gtk0
 Architecture: any
 Section: libs
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
 Description: GTK+ widgets for apps that use tracker
  This library provides handy GTK+ widgets which allows applications to 
  easily make use of tracker. 
@@ -51,7 +97,10 @@ Description: GTK+ widgets for apps that use tracker
 Package: libtracker-gtk-dev
 Architecture: any
 Section: libdevel
-Depends: libtracker-gtk0 (= ${binary:Version}), libtrackerclient-dev, libgtk2.0-dev, libglib2.0-dev
+Depends: libtracker-gtk0 (= ${binary:Version}),
+         libtrackerclient-dev,
+         libgtk2.0-dev,
+         libglib2.0-dev
 Description: GTK+ widgets for apps that use tracker - development files
  This package contains the static libraries and header files needed to link
  applications with libtracker-gtk.
@@ -61,7 +110,9 @@ Description: GTK+ widgets for apps that use tracker - development files
 
 Package: tracker-utils
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, tracker (= ${binary:Version})
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         tracker (= ${binary:Version})
 Description: metadata database, indexer and search tool - commandline tools
  Included utilities for Tracker:
   * tracker-files: get files based on a ServiceType or on specified mime types.
@@ -83,7 +134,9 @@ Description: metadata database, indexer and search tool - commandline tools
 Package: tracker-search-tool
 Architecture: any
 Section: gnome
-Depends: ${shlibs:Depends}, ${misc:Depends}, tracker (= ${binary:Version})
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         tracker (= ${binary:Version})
 Recommends: xdg-utils
 Description: metadata database, indexer and search tool - GNOME frontend
  This package provides a graphical Tracker search tool for GNOME.
@@ -94,7 +147,13 @@ Description: metadata database, indexer and search tool - GNOME frontend
 
 Package: libdeskbar-tracker
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-dbus (>= 0.41), python-gnome2, python-gobject | python-gtk2 (<< 2.10), deskbar-applet (>= 2.20.0), tracker
+Depends: ${misc:Depends},
+         ${python:Depends},
+         python-dbus (>= 0.41),
+         python-gnome2,
+         python-gobject | python-gtk2 (<< 2.10),
+         deskbar-applet (>= 2.20.0),
+         tracker
 Recommends: tracker-search-tool
 Description: metadata database, indexer and search tool - deskbar-applet plugin
  This package provides a deskbar-applet plugin for Tracker.

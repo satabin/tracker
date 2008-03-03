@@ -123,6 +123,7 @@ typedef struct _TrayIconPrivate
 	gboolean		animated_timer_active;
 	gboolean		is_watching_events;
 	gboolean		email_indexing;
+	gboolean		indexer_stopped;
 		
 	/* status hints */
 	int			folders_indexed;
@@ -298,6 +299,10 @@ set_status_hint (TrayIcon *icon)
 
 	}
 	
+	
+	if (priv->index_state == INDEX_MERGING) {
+		g_string_append_printf (hint, " %d/%d indexes being merged", priv->folders_indexed, priv->folders_total);	
+	}
 
 	tray_icon_set_tooltip (icon, hint->str);
 	
@@ -312,7 +317,7 @@ can_auto_pause (TrayIcon *icon)
 
 	TrayIconPrivate *priv = TRAY_ICON_GET_PRIVATE (icon);
 	
-	if (priv->user_pause || priv->pause_state == PAUSE_BATTERY) return FALSE;
+	if (priv->user_pause || priv->pause_state == PAUSE_BATTERY || priv->disabled || priv->indexer_stopped) return FALSE;
 	
 
 	switch (priv->auto_pause_setting) {
@@ -338,11 +343,15 @@ auto_pause_timeout (TrayIcon *icon)
 	TrayIconPrivate *priv = TRAY_ICON_GET_PRIVATE (icon);
 		
 	time_t t = time (NULL);
+	
+	if (priv->indexer_stopped) return FALSE;
 			
 	if ((t >= (priv->auto_pause_last_time_event + 2))) {
 		set_auto_pause (icon, FALSE);
 		return FALSE;
 	}
+	
+	dbus_g_proxy_begin_call (priv->tracker->proxy, "PromptIndexSignals", NULL, NULL, NULL, G_TYPE_INVALID);
 
         return TRUE;
 }
@@ -400,7 +409,7 @@ set_auto_pause (TrayIcon *icon, gboolean pause)
 	} else {
 	
 		priv->auto_pause_timer_active = FALSE;
-	
+		priv->auto_pause = FALSE;	
 		
 		tracker_set_bool_option	(priv->tracker, "Pause", FALSE, &error);
 		
@@ -845,11 +854,32 @@ static gboolean
 set_icon (TrayIconPrivate *priv)
 {
 	
+	if (!priv->user_pause) {
+	
+		if (priv->index_state == INDEX_IDLE) {
+	
+			priv->animated = FALSE;
+			priv->animated_timer_active = FALSE;
+			
+		 	if (priv->index_icon != ICON_DEFAULT) {
+				priv->index_icon = ICON_DEFAULT;
+				set_tracker_icon (priv);
+			}
+			
+			return FALSE;
+		}
+	
+	} 
+	
+	
 	if (priv->user_pause || priv->auto_pause || priv->pause_state != PAUSE_NONE) {
+	
+	
 		if (priv->index_icon != ICON_PAUSED) {
 			priv->index_icon = ICON_PAUSED;
 			set_tracker_icon (priv);		
 		}
+		
 		priv->animated = FALSE;
 		priv->animated_timer_active = FALSE;
 		return FALSE;
@@ -872,12 +902,6 @@ set_icon (TrayIconPrivate *priv)
 	}
 
 	
-	if (priv->index_icon != ICON_DEFAULT) {
-		priv->index_icon = ICON_DEFAULT;
-		priv->animated = FALSE;
-		priv->animated_timer_active = FALSE;
-		set_tracker_icon (priv);
-	}
 	
 	return FALSE;
 
@@ -917,12 +941,14 @@ static void
 index_state_changed (DBusGProxy *proxy, const gchar *state, gboolean initial_index, gboolean in_merge, gboolean is_manual_paused, gboolean is_battery_paused, gboolean is_io_paused, gboolean is_indexing_enabled, TrayIcon *icon)
 {
 
-	
-
 	if (!state) return;
+
+	
 
 	TrayIconPrivate *priv = TRAY_ICON_GET_PRIVATE (icon);
 	gboolean paused = FALSE;
+	
+	priv->indexer_stopped = FALSE;	
 	
 	if (!is_indexing_enabled) {
 		priv->disabled = TRUE;
@@ -1054,7 +1080,7 @@ init_settings (TrayIcon *icon)
 	priv->initial_index_msg_shown = FALSE;
 	priv->stat_window_active = FALSE;
 	priv->stat_request_pending = FALSE;
-	
+	priv->indexer_stopped = FALSE;
 	
 	set_tracker_icon (priv);
 }
@@ -1075,6 +1101,7 @@ name_owner_changed (DBusGProxy * proxy, const gchar * name,
 		index_state_changed (proxy, "Idle", FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, data);
 		init_settings (data);
 		gtk_status_icon_set_visible (priv->icon, FALSE);
+		priv->indexer_stopped = TRUE;
 		g_print ("tracker has exited (reindex = %d)\n", priv->reindex);
 
 		

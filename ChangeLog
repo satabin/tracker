@@ -1,3 +1,18 @@
+2008-03-02 Jamie McCracken <jamiemcc at gnome org>
+
+	* Lots of minor tweaks
+	* make  aplet prefs more hig compliant
+	
+
+2008-02-27 Jamie McCracken <jamiemcc at gnome org>
+
+	* stopped applet respawn of trackerd (via dbus activation unpause method) when killed whilst smart paused 
+	* Made progress/animation of email indexing in step
+	* Added index merging progress to tooltip
+	* Fixed clean exiting of trackerd when paused and in index merge state
+	* Fixed final index replacing main index at startup if no tmp merge indexes exist
+
+
 2008-02-27 Jamie McCracken <jamiemcc at gnome org>
 
 	* fixed applet

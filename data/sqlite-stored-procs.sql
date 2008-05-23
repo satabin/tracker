@@ -32,7 +32,7 @@ UpdateNewID UPDATE Options set OptionValue = ? WHERE OptionKey = 'Sequence';
 GetUpdateCount SELECT OptionValue FROM Options WHERE OptionKey = 'UpdateCount';
 SetUpdateCount UPDATE Options set OptionValue = ?  WHERE OptionKey = 'UpdateCount';
 
-CreateService INSERT INTO Services (ID, Path, Name, ServiceTypeID, Mime, Size, IsDirectory, IsLink, Offset, IndexTime) VALUES (?,?,?,?,?,?,?,?,?,?); 
+CreateService INSERT INTO Services (ID, Path, Name, ServiceTypeID, Mime, Size, IsDirectory, IsLink, Offset, IndexTime, AuxilaryID) VALUES (?,?,?,?,?,?,?,?,?,?,?); 
 
 DeleteService1 	DELETE FROM Services WHERE ID = ?;
 DeleteService2 	DELETE FROM ServiceMetaData WHERE ServiceID = ?;
@@ -59,7 +59,7 @@ SelectFileSubFolders SELECT ID, Path, Name, IsDirectory FROM Services WHERE (Pat
 
 SelectSubFileIDs SELECT ID FROM Services WHERE (Path = ?  or Path glob ?);
 
-UpdateFile UPDATE Services SET IndexTime = ? WHERE ID = ?; 
+UpdateFile UPDATE Services SET ServiceTypeID=?, Path=?, Name=?, Mime=?, Size=?, IndexTime =?, Offset=? WHERE ID = ?; 
 
 UpdateFileMove 	UPDATE Services SET Path = ?, Name = ?, IndexTime = ? WHERE ID = ?;
 
@@ -86,7 +86,7 @@ DeleteDirectory5 DELETE FROM ServiceMetaDataDisplay  WHERE ServiceID  in (select
 DeleteDirectory6 DELETE FROM ServiceNumericMetaData  WHERE ServiceID  in (select ID FROM Services F where (F.Path = ?) OR (F.Path glob ?));
 DeleteDirectory7 DELETE FROM ServiceBlobMetaData  WHERE ServiceID  in (select ID FROM Services F where (F.Path = ?) OR (F.Path glob ?));
 DeleteDirectory8 DELETE FROM ServiceMetaDataDisplay  WHERE ServiceID  in (select ID FROM Services F where (F.Path = ?) OR (F.Path glob ?));
-DeleteDirectory9 DELETE FROM ServiceWords  WHERE ServiceID  in (select ID FROM Services F where (F.Path = ?) OR (F.Path glob ?));
+
 
 SaveFileContents REPLACE into ServiceContents (ServiceID, Content, ContainsWordScores) values (?,?,?);
 DeleteFileContents DELETE FROM ServiceContents where ServiceID = ?;
@@ -173,7 +173,7 @@ DeleteWord delete from Words where WordID = ?;
 InsertWord insert into Words (Word, WordCount) Values (?,1);
 UpdateWordCount update Words set WordCount = ? where WordID = ?;
 GetWordsTop select distinct WordID, Word from Words where WordCount > 0 order by WordCount asc limit ?;
-GetWords select distinct W.WordID, W.Word from Words W where exists (select 1 from ServiceWords S where S.WordID = W.WordID);
+GetWords select distinct W.WordID, W.Word from Words W where exists (select 1 from ServiceWords S where S.WordID = W.WordID limit 1);
 GetWordCount select count(*) from Words W where WordCount > 0;
 
 InsertServiceWord insert into  ServiceWords (WordID, ServiceID, ServiceType, score) values (?,?,?,?);
@@ -184,4 +184,18 @@ GetServiceWord select ServiceID, ServiceType, Score from ServiceWords where Word
 ServiceCached select 1 from ServiceWords where ServiceID = ? and WordID = (select WordID from Words where Word = ?);
 GetServiceWordCount select count(*) from ServiceWords where WordID = ?;
 
-GetStats select 'Total files indexed', 	count(*) as n from Services where ServiceTypeID between 0 and 8 union select T.TypeName, count(*) as n from Services S, ServiceTypes T where S.ServiceTypeID = T.TypeID group by T.TypeName order by 2; 
+GetMBoxDetails select Type, Offset, LastUri, MessageCount, MBoxSize, Mtime from MBoxes where path = ?;
+GetMboxID select ID from MBoxes where path = ?;
+InsertMboxDetails insert into MBoxes (Path, Type, Offset, LastUri, MessageCount, MBoxSize, Mtime) values (?,?,0,NULL,0,0,0);
+UpdateMboxDetails update MBoxes set Offset = ?, LastUri = ?, MessageCount = ?, MBoxSize = ?, Mtime =? where Path = ?;
+GetMboxCount select count(*) from services where AuxiliaryID = (select ID FROM MBoxes where Path = ?) and ServiceTypeID = (select TypeID from ServiceTypes where TypeName = 'Emails');
+
+DeleteMbox1 DELETE FROM ServiceMetaData  WHERE ServiceID  in (select ID FROM Services F where F.AuxiliaryID = ? AND F.ServiceTypeID in (select TypeID from ServiceTypes where TypeName in ('Emails', 'EmailAttachments')));
+DeleteMbox2 DELETE FROM ServiceKeywordMetaData  WHERE ServiceID in (select ID FROM Services F where F.AuxiliaryID = ? AND F.ServiceTypeID in (select TypeID from ServiceTypes where TypeName in ('Emails', 'EmailAttachments')));
+DeleteMbox3 DELETE FROM ServiceMetaDataDisplay  WHERE ServiceID  in (select ID FROM Services F where F.AuxiliaryID = ? AND F.ServiceTypeID in (select TypeID from ServiceTypes where TypeName in ('Emails', 'EmailAttachments')));
+DeleteMbox4 DELETE FROM ServiceNumericMetaData  WHERE ServiceID  in (select ID FROM Services F where F.AuxiliaryID = ? AND F.ServiceTypeID in (select TypeID from ServiceTypes where TypeName in ('Emails', 'EmailAttachments')));
+DeleteMbox5 DELETE FROM ServiceMetaDataDisplay  WHERE ServiceID  in (select ID FROM Services F where F.AuxiliaryID = ? AND F.ServiceTypeID in (select TypeID from ServiceTypes where TypeName in ('Emails', 'EmailAttachments')));
+DeleteMbox6 DELETE FROM ServiceWords  WHERE ServiceID  in (select ID FROM Services F where F.AuxiliaryID = ? AND F.ServiceTypeID in (select TypeID from ServiceTypes where TypeName in ('Emails', 'EmailAttachments')));
+DeleteMbox7 DELETE FROM Services WHERE F.AuxiliaryID = ? AND ServiceTypeID in (select TypeID from ServiceTypes where TypeName in ('Emails', 'EmailAttachments'));
+
+GetStats select 'Total entities indexed', count(*) as n from Services  union select T.TypeName, count(*) as n from Services S, ServiceTypes T where S.ServiceTypeID = T.TypeID group by T.TypeName order by 2; 

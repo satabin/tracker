@@ -1,3 +1,90 @@
+2007-01-24  Luca Ferretti  <elle.uca@libero.it>
+
+	* POTFILES.in:
+	* POTFILES.skip: Move some files to ignore to .skip
+	Patch from Michael Biebl.
+
+2007-01-24  Priit Laes  <plaes@svn.gnome.org>
+
+	* et.po: Updated Estonian translation by Ivar Smolin <okul@linux.ee>.
+
+2007-01-23  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation
+
+2007-01-23  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-01-22  Luca Ferretti  <elle.uca@libero.it>
+
+	* POTFILES.in: add src/libtracker/tracker-stats.c
+
+2007-01-21  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* nb.po: Updated Norwegian bokmål translation.
+
+2007-01-17  Daniel Nylander <po@danielnylander.se> 
+
+	* sv.po: Updated Swedish translation.
+
+2007-01-15  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Djihed Afifi.
+
+2007-01-13  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation.
+
+2007-01-13  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Khaled Hosny.
+
+2007-01-12  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	* POTFILES.in: Added 5 missing files.
+
+2007-01-09  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	* gl.po: Updated Galician Translation.
+
+2007-01-08  Priit Laes  <plaes@svn.gnome.org>
+
+	* et.po: Updated Estonian translation by Ivar Smolin.
+
+2007-01-07  Priit Laes  <plaes@svn.gnome.org>
+
+	* et.po: New Estonian translation by Ivar Smolin.
+
+2007-01-6  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Khaled Hosny.
+
+2007-01-05  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation
+
+2007-01-02  Matic Zgur <mr.zgur@gmail.com>
+
+	* sl.po: Added Slovenian translation.
+
+2007-01-01  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Added English (British) translation
+
+2006-12-29  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Updated Finnish translation.
+
+2006-12-28  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2006-12-26  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
 2006-12-19  Francisco Javier F. Serrador  <serrador@openshine.com>
 
 	* es.po: Added Spanish translation.

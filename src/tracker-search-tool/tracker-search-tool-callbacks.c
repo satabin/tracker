@@ -571,10 +571,11 @@ open_folder_cb (GtkAction * action,
 
 		folder_locale = g_filename_from_utf8 (folder_utf8, -1, NULL, NULL, NULL);
 
-		if (open_file_with_nautilus (gsearch->window, folder_locale) == FALSE) {
+		if (open_file_with_xdg_open (gsearch->window, folder_locale) == FALSE) {
+			if (open_file_with_nautilus (gsearch->window, folder_locale) == FALSE) {
 
-			display_dialog_could_not_open_folder (gsearch->window, folder_utf8);
-
+				display_dialog_could_not_open_folder (gsearch->window, folder_utf8);
+			}
 			g_list_foreach (list, (GFunc) gtk_tree_path_free, NULL);
 			g_list_free (list);
 			g_free (folder_locale);
@@ -804,11 +805,13 @@ move_to_trash_cb (GtkAction * action,
 			GnomeVFSResult result;
 			gchar * destination;
 			gchar * basename;
+			gchar * source_uri;;
 
+			source_uri = g_filename_to_uri (locale_filename, NULL, NULL);
 			basename = g_locale_from_utf8 (utf8_basename, -1, NULL, NULL, NULL);
 			destination = g_build_filename (trash_path, basename, NULL);
 
-			result = gnome_vfs_move (locale_filename, destination, TRUE);
+			result = gnome_vfs_move (source_uri, destination, TRUE);
 			gtk_tree_selection_unselect_iter (GTK_TREE_SELECTION (gsearch->search_results_selection), &iter);
 
 			if (result == GNOME_VFS_OK) {
@@ -826,6 +829,7 @@ move_to_trash_cb (GtkAction * action,
  				                                        message);
 				g_free (message);
 			}
+			g_free (source_uri);
 			g_free (basename);
 			g_free (destination);
 		}

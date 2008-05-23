@@ -1,3 +1,175 @@
+2007-01-25  Jamie McCracken <jamiemcc at gnome org>
+
+	* fixed update of embedded keywords
+	* added deskbar handler to tarball and installation
+	* updated man page for trackerd
+
+2007-01-24 Patch from Michael Biebl <mbiebl at gmail com>
+
+	* converted xdgmime to private lib
+
+2007-01-24  Jamie McCracken <jamiemcc at gnome org>
+
+	* Added magic.h to check_headers in configure.ac
+	* Created tracker_info and tracker_debug and replaced all the g_log functions that were polluting xsession-errors
+
+
+2007-01-23  Jamie McCracken <jamiemcc at gnome org>
+
+	* Improved message display
+	* Made sure all external stuff is fully protected from excessive memory/cpu
+	* Repaired mplayer backend and make it used when gstreamer returns nothing
+	* Added libmagic for extra mime checks
+
+
+2007-01-22 Patch from Michael Biebl <mbiebl at gmail com>
+
+	* Fix to get test suite built
+
+
+2007-01-22  Luca Ferretti  <elle.uca@libero.it>
+
+	* src/libtracker/tracker-stats.c:
+	
+	Port tracker-stats to GOption and mark translatable strings.
+	Fix bug 397940.
+
+2007-01-21 Patch from Daniel Fullmer <cgibreak at gmail com>
+	
+	* fix for parallel make
+
+2007-01-21 Patch from Michael Biebl <mbiebl at gmail com>
+
+	* Updated License info
+	* added LGPL Copying.Lib to libtracker
+
+
+2007-01-21  Jamie McCracken <jamiemcc at gnome org>
+
+	* Completed optimisation of indexing
+	* Added a verbosity command line param
+	* Made sure all indeixng occurs under a single transaction
+	* removed superflous code
+	
+
+2007-01-21  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.ac: Added nb to ALL_LINGUAS.
+
+
+2007-01-19  Jamie McCracken <jamiemcc at gnome org>
+
+	* changed mmap back to shared as optimisation would destroy the index
+	* made indexing super fast
+	* smoothed out indexing so that it (virtually) never slows the system down
+	* made default full throttle (turbo) 
+	* Added new high speed index flusher
+	* Improved word descriminator
+
+
+2007-01-14  Jamie McCracken <jamiemcc at gnome org>
+
+	* added throttling param to control speed of indexing (--throttle)
+	* adjusted default throttling so that cpu ~50% during heavy indexin
+	* throttled tracker daemon at strategic points
+	* removed erroneous cache word deletion when delete_directry
+	* removed problem statement that was somehow deleting the cache db
+	* Improved word breaker and fixed index roots not being indexed
+	* changed shared mmap to private for qdbm to work on FUSE
+
+
+2007-01-12 Patch from Michael Biebl <mbiebl at gmail com>
+
+	* Fixed make distcheck
+	* added bzip2 build
+	* fix for configure.in -> configure.ac move
+
+
+2007-01-12  Jamie McCracken <jamiemcc at gnome org>
+
+	* Sped up word breaker and made it use less memory
+	* Fixed bug where root dirs were not getting indexed properly
+	* Added some sleeping to reduce stress on machine when heavily indexing
+
+
+2007-01-11  Patch from Saleem Abdulrasool <compnerd at gentoo org>
+
+	* Detect dbus service directory
+
+2007-01-11 Patch from Michael Biebl <mbiebl at gmail com>
+
+	* based on patch from Saleem Abdulrasool <compnerd at gentoo org>
+	* removed mysql files
+	* cleaned up build for sqlite
+
+2007-01-10  B Berteh <berteh at hotmail com>
+
+	* added README for deskbar handler and nautilus tags
+	* remove temporary included image files left by wvText
+
+2007-01-10  Jamie McCracken <jamiemcc at gnome org>
+
+	* Merged all extraction into one thread to lessen queueing overhead
+	* disabled some code in the emails section
+	* added some more email db support routines
+	* improved support for email attachments indexing
+
+2007-01-10  Patch from Saleem Abdulrasool <compnerd at gentoo org>
+
+	* Build fixes
+	* fixed build of test suite
+	* fixed --enable-debug-code configure arg
+	* made libpng a mandatory dependency
+	* added check for thumbnail directory and create it if necessary
+
+2007-01-09  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	* configure.in: Added 'gl' to ALL_LINGUAS.
+
+2007-01-07  Tshepang Lekhonkhobe <tshepang@gmail.com>
+
+	* README: Ensured all lines over 79 colums were reduced for readability
+	* README: Added xdg-utils, libpng, libexif, and libgsf as dependencies
+   	* t-s-t: Added xdg-open to 'Open Folder' with a fallback to gnome-open
+
+2007-01-07  Priit Laes  <plaes@svn.gnome.org>
+
+    * configure.in: Added 'et' (Estonian) to LINGUAS.
+
+
+2007-01-03  Tshepang Lekhonkhobe <tshepang@gmail.com>
+
+	* Added a note on the reason why SQLite is statically-linked
+
+2007-01-03 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* improved email support
+	* added imap support
+	* linked in db email support
+
+2007-01-02  Jamie McCracken <jamiemcc at gnome org>
+
+	* Added new crawler to speed up indexing
+
+
+2007-01-02  Matic Zgur <mr.zgur@gmail.com>
+
+	* configure.in: Added sl to ALL_LINGUAS.
+
+
+2007-01-01  Patch from Bjoern Gruening <bjoern at gruenings eu>
+
+	* Added tex filter support
+
+2007-01-01  Jamie McCracken <jamiemcc at gnome org>
+
+	* Added db support for emails
+	* added indexing support for emails
+	* optimised metadata insertion
+	
+2007-01-01  David Lodge <dave@cirt.net>
+
+	* configure.in: Added en_GB
 
 2006-12-23  Jamie McCracken <jamiemcc at gnome org>
 

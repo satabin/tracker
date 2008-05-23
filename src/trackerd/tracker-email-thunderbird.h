@@ -1,6 +1,6 @@
 /* Tracker
- * mbox routines
- * Copyright (C) 2006, Laurent Aguerreche
+ * routines for emails with Thunderbird
+ * Copyright (C) 2006, Laurent Aguerreche (laurent.aguerreche@free.fr)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -18,34 +18,29 @@
  * Boston, MA  02110-1301, USA.
  */
 
-
-#ifndef _TRACKER_MBOX_KMAIL_H_
-#define _TRACKER_MBOX_KMAIL_H_
+#ifndef _TRACKER_MBOX_THUNDERBIRD_H_
+#define _TRACKER_MBOX_THUNDERBIRD_H_
 
 #include <glib.h>
 #include <gmime/gmime.h>
 
-#include "tracker-mbox.h"
+#include "tracker-email-utils.h"
 
 #include "config.h"
 
-#ifdef USING_SQLITE
-#   include "tracker-db-sqlite.h"
-#else
-#   include "tracker-db-mysql.h"
-#endif
+#include "tracker-db-sqlite.h"
 
 
 /*
- * These functions are supposed to be used only with tracker-mbox.c
+ * These functions are supposed to be used only with tracker-email.c
  *
  */
 
-void		init_kmail_mboxes_module	(void);
-void		finalize_kmail_mboxes_module	(void);
-GSList *	watch_emails_of_kmail		(DBConnection *db_con);
-void		get_status_of_kmail_email	(GMimeMessage *g_m_message, MailMessage *msg);
-void		get_uri_of_kmail_email		(GMimeMessage *g_m_message, MailMessage *msg);
-gboolean	is_in_a_kmail_mail_dir		(const char *uri);
+gboolean	thunderbird_init_module		(void);
+gboolean	thunderbird_module_is_running	(void);
+gboolean	thunderbird_finalize_module	(void);
+void		thunderbird_watch_emails	(DBConnection *db_con);
+gboolean	thunderbird_file_is_interesting	(DBConnection *db_con, FileInfo *info);
+void		thunderbird_index_file		(DBConnection *db_con, FileInfo *info);
 
 #endif

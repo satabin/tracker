@@ -1,3 +1,115 @@
+2007-09-04 Jamie McCracken <jamiemcc at gnome org>
+
+	* removed qdbm completly
+	* replaced with sqlite indexer
+	* split up files/emails into separate dbs (meta, content and index)
+	* tuned caching
+	* tuned indexer to pause when non-tracker disk activity is detected
+	* made email indexing 5x faster and lessened iowait times
+	* Improved parser
+	* Fixed restore of user metadata on reindex (keywords are auto-restored)
+	* added source code reserved words to english stopwords
+	* added english stopwords on top of non-english stopword lists
+
+
+2007-09-03 Mikkel Kamstrup Erlandsen <mikkel.kamstrup@mail.com>
+	
+	* python/deskbar-handler/tracker-module.py
+	  Add additional standard actions
+
+2007-09-03 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Work on KMail support
+	* Support of MBox files seems to work well. So indexing works when MBox
+	  storage is used with local emails (= sent + POP3 emails) and IMAP emails
+	  (but not cached-IMAP emails since they are always stored in a maildir
+	  hierarchy)
+	* Still issues with mails in maildir directories (trackerd try to index those
+	  emails twice!)
+	* Indexing of KMail emails is still turned off
+
+
+2007-09-03 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Make TST able to open KMail emails
+
+
+2007-08-19 Patch from Marcus Fritzsch <fritschy at googlemail com>
+	
+	* Added option to skip mounted directories when indexing
+	* added safeguards to html and imagemagick extractors to prevent crashers
+	* added safeguard to app indexing
+
+
+2007-08-19 Michael Biebl <mbiebl at gmail com>
+
+	* Fixed gettext support in deskbar-applet plugin
+	* Update autofoo to automatically install the correct version of the
+	  deskbar-applet plugin.
+	  Can be overriden with --enable-deskbar-applet=(handler|module)
+	  "handler" is for deskbar-applet < 2.19
+	  "module" is for deskbar-applet >= 2.19
+
+
+2007-08-19 Patch from Marcus Fritzsch <fritschy at googlemail com>
+
+	* Reorganization of tracker-handler.py
+	* Added support for GaimConversations and Applications
+	* Fixed gnome bugs: #403752, #359307
+	* Fixed ubuntu bugs: #131247, #130889
+	* New deskbar-applet 2.19 module tracker-module.py, fixes ubuntu bug #132921
+	* Fixed emails categorization
+	* Better display of GaimConversations hits
+
+
+2007-08-13 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Fix bug #131842 from Ubuntu
+
+	
+2007-08-13 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Replace "g_slist_length(list)>0" with "list!=NULL" to check
+	whether a list is empty or not in trackerd.c
+	* Cosmetic changes in trackerd.c
+
+
+2007-08-12 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Escape filenames containing character "'" to make xdg_open()
+	working with them
+
+
+2007-08-11 Jamie McCracken <jamiemcc at gnome org>
+
+	* Put back alarm call to tracker spawn as safeguard
+
+
+2007-08-10 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Fixed bug #465176 (IMAP e-mail indexing does not work after first
+	crawl)
+	* Code cleanups in tracker-db-email.{h,c}
+
+
+2007-08-09 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Remove an error message while loading file sqlite-stored-procs.sql
+	due to bad checking of returned value of fgets()
+
+
+2007-08-09 Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* Close feature request #397210 (Desensitize Find button when search
+	entry is empty)
+	* Remove warnings at building time in TST
+	* Code cleanups in TST
+
+
+2007-08-09 Michael Biebl <mbiebl at gmail com>
+
+	* Add missing function prototype definitions
+
 
 2007-08-07 Jamie McCracken <jamiemcc at gnome org>
 
@@ -5,19 +117,18 @@
 	* Fixed crasher due to non valid utf-8 creeping through emails
 
 
-
 2007-08-07 Laurent Aguerreche <laurent.aguerreche@free.fr>
 
 	* Remove some warnings at building of tracker-extract
-	* Adds more recognized date formats for Postscript files in tracker-extract
+	* Adds more recognized date formats for Postscript files in
+	tracker-extract
 	* Code cleanups in tracker-extract
 
 
-2007-08-07 Michael Biebl  <mbiebl at gmail com>
+2007-08-07 Michael Biebl <mbiebl at gmail com>
 	
 	* Generate the D-Bus client-side bindings automatically from the
 	introspection XML file
-
 
 
 2007-08-06 Laurent Aguerreche <laurent.aguerreche@free.fr>

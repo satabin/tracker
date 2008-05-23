@@ -55,8 +55,8 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	uninstall-recursive
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = libstemmer xdgmime sqlite3 qdbm text-filters trackerd \
-	libtracker tracker-extract tracker-thumbnailer libtracker-gtk \
+DIST_SUBDIRS = libstemmer xdgmime text-filters trackerd libtracker \
+	tracker-extract tracker-thumbnailer libtracker-gtk \
 	tracker-search-tool tracker-preferences
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
@@ -89,6 +89,7 @@ DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
+DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -224,8 +225,6 @@ POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-QDBM_CFLAGS = @QDBM_CFLAGS@
-QDBM_LIBS = @QDBM_LIBS@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -235,12 +234,10 @@ STRIP = @STRIP@
 UNAC_CFLAGS = @UNAC_CFLAGS@
 UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
-USING_DESKBAR_APPLET_FALSE = @USING_DESKBAR_APPLET_FALSE@
-USING_DESKBAR_APPLET_TRUE = @USING_DESKBAR_APPLET_TRUE@
-USING_EXTERNAL_QDBM_FALSE = @USING_EXTERNAL_QDBM_FALSE@
-USING_EXTERNAL_QDBM_TRUE = @USING_EXTERNAL_QDBM_TRUE@
-USING_EXTERNAL_SQLITE_FALSE = @USING_EXTERNAL_SQLITE_FALSE@
-USING_EXTERNAL_SQLITE_TRUE = @USING_EXTERNAL_SQLITE_TRUE@
+USING_DESKBAR_HANDLER_FALSE = @USING_DESKBAR_HANDLER_FALSE@
+USING_DESKBAR_HANDLER_TRUE = @USING_DESKBAR_HANDLER_TRUE@
+USING_DESKBAR_MODULE_FALSE = @USING_DESKBAR_MODULE_FALSE@
+USING_DESKBAR_MODULE_TRUE = @USING_DESKBAR_MODULE_TRUE@
 USING_EXTERNAL_VIDEO_PLAYER_FALSE = @USING_EXTERNAL_VIDEO_PLAYER_FALSE@
 USING_EXTERNAL_VIDEO_PLAYER_TRUE = @USING_EXTERNAL_VIDEO_PLAYER_TRUE@
 USING_GSTREAMER_FALSE = @USING_GSTREAMER_FALSE@
@@ -301,11 +298,9 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 @HAVE_GNOME_TRUE@tracker_gui_dir = tracker-search-tool
-@USING_EXTERNAL_SQLITE_FALSE@sqlite_dir = sqlite3
-@USING_EXTERNAL_QDBM_FALSE@qdbm_dir = qdbm
 @ENABLE_PREFERENCES_TRUE@tracker_preferences_dir = tracker-preferences
 @ENABLE_LIBTRACKERGTK_TRUE@libtrackergtk_dir = libtracker-gtk
-SUBDIRS = libstemmer xdgmime $(sqlite_dir) $(qdbm_dir) text-filters trackerd libtracker tracker-extract tracker-thumbnailer $(libtrackergtk_dir) $(tracker_gui_dir) $(tracker_preferences_dir)
+SUBDIRS = libstemmer xdgmime text-filters trackerd libtracker tracker-extract tracker-thumbnailer $(libtrackergtk_dir) $(tracker_gui_dir) $(tracker_preferences_dir)
 all: all-recursive
 
 .SUFFIXES:

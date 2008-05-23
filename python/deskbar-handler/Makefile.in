@@ -54,9 +54,10 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(handlerdir)"
+am__installdirs = "$(DESTDIR)$(handlerdir)" "$(DESTDIR)$(moduledir)"
 handlerDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(handler_DATA)
+moduleDATA_INSTALL = $(INSTALL_DATA)
+DATA = $(handler_DATA) $(module_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
@@ -88,6 +89,7 @@ DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
+DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -223,8 +225,6 @@ POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-QDBM_CFLAGS = @QDBM_CFLAGS@
-QDBM_LIBS = @QDBM_LIBS@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -234,12 +234,10 @@ STRIP = @STRIP@
 UNAC_CFLAGS = @UNAC_CFLAGS@
 UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
-USING_DESKBAR_APPLET_FALSE = @USING_DESKBAR_APPLET_FALSE@
-USING_DESKBAR_APPLET_TRUE = @USING_DESKBAR_APPLET_TRUE@
-USING_EXTERNAL_QDBM_FALSE = @USING_EXTERNAL_QDBM_FALSE@
-USING_EXTERNAL_QDBM_TRUE = @USING_EXTERNAL_QDBM_TRUE@
-USING_EXTERNAL_SQLITE_FALSE = @USING_EXTERNAL_SQLITE_FALSE@
-USING_EXTERNAL_SQLITE_TRUE = @USING_EXTERNAL_SQLITE_TRUE@
+USING_DESKBAR_HANDLER_FALSE = @USING_DESKBAR_HANDLER_FALSE@
+USING_DESKBAR_HANDLER_TRUE = @USING_DESKBAR_HANDLER_TRUE@
+USING_DESKBAR_MODULE_FALSE = @USING_DESKBAR_MODULE_FALSE@
+USING_DESKBAR_MODULE_TRUE = @USING_DESKBAR_MODULE_TRUE@
 USING_EXTERNAL_VIDEO_PLAYER_FALSE = @USING_EXTERNAL_VIDEO_PLAYER_FALSE@
 USING_EXTERNAL_VIDEO_PLAYER_TRUE = @USING_EXTERNAL_VIDEO_PLAYER_TRUE@
 USING_GSTREAMER_FALSE = @USING_GSTREAMER_FALSE@
@@ -299,10 +297,13 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-handlerdir = $(DESKBAR_HANDLER_DIR)
-handler_DATA = tracker-handler.py 
+@USING_DESKBAR_HANDLER_TRUE@handlerdir = $(DESKBAR_HANDLER_DIR)
+@USING_DESKBAR_HANDLER_TRUE@handler_DATA = tracker-handler.py 
+@USING_DESKBAR_MODULE_TRUE@moduledir = $(DESKBAR_MODULE_DIR)
+@USING_DESKBAR_MODULE_TRUE@module_DATA = tracker-module.py
 EXTRA_DIST = \
-	$(handler_DATA) \
+	tracker-handler.py \
+	tracker-module.py \
 	README
 
 all: all-am
@@ -364,6 +365,23 @@ uninstall-handlerDATA:
 	  echo " rm -f '$(DESTDIR)$(handlerdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(handlerdir)/$$f"; \
 	done
+install-moduleDATA: $(module_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(moduledir)" || $(mkdir_p) "$(DESTDIR)$(moduledir)"
+	@list='$(module_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(moduleDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(moduledir)/$$f'"; \
+	  $(moduleDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(moduledir)/$$f"; \
+	done
+
+uninstall-moduleDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(module_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(moduledir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(moduledir)/$$f"; \
+	done
 tags: TAGS
 TAGS:
 
@@ -402,7 +420,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(handlerdir)"; do \
+	for dir in "$(DESTDIR)$(handlerdir)" "$(DESTDIR)$(moduledir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -447,7 +465,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-handlerDATA
+install-data-am: install-handlerDATA install-moduleDATA
 
 install-exec-am:
 
@@ -473,17 +491,19 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-handlerDATA uninstall-info-am
+uninstall-am: uninstall-handlerDATA uninstall-info-am \
+	uninstall-moduleDATA
 
 .PHONY: all all-am check check-am clean clean-generic clean-libtool \
 	distclean distclean-generic distclean-libtool distdir dvi \
 	dvi-am html html-am info info-am install install-am \
 	install-data install-data-am install-exec install-exec-am \
 	install-handlerDATA install-info install-info-am install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	uninstall uninstall-am uninstall-handlerDATA uninstall-info-am
+	install-moduleDATA install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
+	ps ps-am uninstall uninstall-am uninstall-handlerDATA \
+	uninstall-info-am uninstall-moduleDATA
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -1,0 +1,907 @@
+2006-11-20  Luca Ferretti  <elle.uca@libero.i>
+
+	* configure.in: Add a check for glib >= 2.12.0 and
+	define HAVE_RECENT_GLIB.
+
+	* src/libtracker/tracker-tag.c: Use g_option_context_set_summary
+	only if HAVE_RECENT_GLIB is defined.
+
+2006-11-20  Jamie McCracken <jamiemcc at gnome org>
+
+	* updateded desktop files
+	* fixed t-s-t to let back/forward buttons to remain sensitive if applicable
+	* fixed resizing of columns in t-s-t
+	* improved snippet generation
+	* made snippet call async in t-s-t
+	* made use of tracker's mime instead of slower Gnome-vfs mime detection in t-s-t
+
+2006-11-19  Jamie McCracken <jamiemcc at gnome org>
+
+	* fixed snippets so that multiple terms are highlighted
+	* used a copied version of function g_utf8_strcasestr from gtksourceview to provide caseless utf-8 searching
+	* used utf-8 casefold and normalization in parser
+	* tidied up t-s-t
+	* made font colour of snippet much clearer
+	* made snippets wrap around when resizing t-s-t
+	* added icon to both t-s-t and desktop file
+	* reduced sqlite cache usage
+	
+
+2006-11-18  Jamie McCracken <jamiemcc at gnome org>
+
+	* Limited tracker-extracts memory usage using setrlimit
+	* prevents unreasonable memory usage (especially mistaken treatment of large binary files as video files) 
+	* fixed rdf bug where a search term without a query could not be executed
+
+2006-11-18 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* added more tmeplate filters
+	* improved use of tmp directory for temporary stuff
+
+
+2006-11-16 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* added missing OOO templates to our filters
+
+
+2006-11-16 Eugenio <me at eugesoftware com>
+	
+	* added fuse based trackerdfs to our python tools
+
+
+2006-11-16 Edward Duffy <eduffy at gmail com>
+	
+	* added timeout to all external processes used by tracker
+
+
+2006-11-16  Luca Ferretti  <elle.uca@libero.it>
+
+	* src/libtracker/tracker-tag.c:
+	Add l10n/i18n support, changing some messages for a better
+	translation experience.
+
+2006-11-15 Edward Duffy <eduffy at gmail com>
+	
+	* added xdg-open to t-s-t with fallback to gnome-open
+
+2006-11-15 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* added desktop files to debs
+
+2006-11-15  Luca Ferretti  <elle.uca@libero.it> 	 
+  	 
+         * */.cvsignore: Add cvs ingore files.
+
+2006-11-12 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* changed html filter to use w3m
+
+2006-11-12 Gergan Penkov <gergan at gmail com>
+
+	* fixed dbus warning
+
+2006-11-12 Edward Duffy <eduffy at gmail com>
+	
+	* added abiword and xml text filters
+
+2006-11-12  Deji Akingunola <dakingun gmail com>
+
+	* added tracker.spec file
+	* added trackerd.desktop file
+
+2006-11-12  Jamie McCracken <jamiemcc at gnome org>
+
+	* fixed fam backend
+
+2006-11-11  Jamie McCracken <jamiemcc at gnome org>
+
+	* fixed bug in rdf query so that non file objects are supported by default
+	* fixed gstreamer extractor to time out after a few seconds (this prevents it hanging with some movie files)
+	
+
+2006-11-10 Edward Duffy <eduffy at gmail com>
+	
+	* Downgraded libpoppler requirements
+
+
+2006-11-10  Deji Akingunola <dakingun gmail com>
+	
+	* added .desktop file for tracker-search-tool
+
+2006-11-10  Luca Ferretti  <elle.uca@libero.it>
+
+	* configure.in:
+	Replace AM_GLIB_DEFINE_LOCALEDIR with a custom test and AC_DEFINE
+	due to the bug #343825 (glib vs. autoconf >= 2.60). See also
+	http://lists.debian.org/debian-gtk-gnome/2006/06/msg00001.html
+	(from Laurent Aguerreche)	
+
+2006-11-10  Luca Ferretti  <elle.uca@libero.it>
+
+	* debian/tracker-dev.docs:
+	* debian/tracker-dev.install:
+	Removed from cvs (from Laurent Aguerreche)
+
+2006-11-09  Luca Ferretti  <elle.uca@libero.it>
+
+	* src/libtracker/tracker-search.c:
+	Restore #include <locale.h> (maybe needed on some systems) and
+	move setlocale() before *textdomain() (from Laurent Aguerreche)
+
+2006-11-09  Luca Ferretti  <elle.uca@libero.it>
+
+	* Makefile.am:
+	* debian/tracker-utils.manpages:
+	* dedian/tracker.manpages:
+	Add missing manpages for deb packages which have to be
+	distributed by "make dist" (patch by Laurent Aguerreche)
+
+2006-11-09  Hendrik Richter  <hendrikr@gnome.org>
+
+	* configure.in: Added "de" to ALL_LINGUAS
+
+2006-11-09  Luca Ferretti  <elle.uca@libero.it>
+
+	* src/libtracker/tracker-search.c:
+	Restore "setlocale" call. Now localization should work at runtime
+	for this tool (by Laurent Aguerreche)
+
+2006-11-09  Luca Ferretti  <elle uca libero it>
+
+	* fixed "make dist" for intltool-* stuff (by Laurent Aguerreche)
+
+2006-11-07 Luca Ferretti <elle uca libero it>
+
+	* added internationlisation support to tracker and t-s-t
+
+2006-11-07 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* fixed bad comment tag in mplayer extractor
+
+
+2006-11-07  Julien <julienc psychologie-fr org>
+
+	* fixed bug in tracker-query so that service types are enabled
+
+
+
+2006-11-07  Jamie McCracken <jamiemcc at gnome org>
+
+	* fixed bug in plain text sniffer
+
+
+
+2006-11-05 <tpgww@onepost.net>
+
+	* cleanups to remove compiler warnings
+
+2006-11-05 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* improved use of tmp directory
+	* added gstreamer based extractor for audio and video tags
+	* cleaned up other extractors
+
+
+2006-11-01  Jamie McCracken <jamiemcc at gnome org>
+
+	* emebedded sqlite with threadsafe mode enabled
+	* inlined sqlite code and made it a prvate non-installable lib which is statically linked in
+	* fixed initilaisations of vars in mp3-extract to prevent segfaults
+
+
+2006-11-01  Luca Ferretti  <elle uca at libero it>
+
+	* fixed build (Makefile, not MakeFile)
+
+2006-10-30 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* fixed and cleaned debian build 
+	* fixed build of man pages
+
+
+2006-10-30 Samuel Cormier-Iijima <sciyoshi at gmail com>
+
+	* created python based notification applet for tracker
+
+
+2006-10-29 Bastien Nocera <hadess hadess net>
+
+	* totem parsing speedup
+
+
+2006-10-29 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Updated debian build 
+	* cleaned up process
+	* added new package for tracker-search-tool
+
+
+2006-10-29 Jamie McCracken <jamiemcc at gnome org>
+
+	* fixed tag error when setting a new tag on a file
+
+
+2006-10-29 Eskil Bylund <eskil at letterboxes org>
+
+	* fixed window sizing of tracker-search-tool
+	* added buttonbox for prev/next buttons in t-s-t
+
+2006-10-29 Ulrik Mikaelsson <ulrik mikaelsson gmail com>
+
+	* fixed leak in GetMetadataForFilesInFolder
+	* fixed field checking in GetMetadataForFilesInFolder
+	* added dbus argument error handling 
+	* fixed issue with tracker-tag not reporting file not found
+	* added comamnd line args to t-s-t
+
+
+2006-10-29 tobutaz <tobutaz gmail com>
+
+	* imporved ioprio detection and operation
+
+
+2006-10-29 Mikkel Kamstrup Erlandsen <mikkel kamstrup gmail com>
+
+	* added grey lettering for snippet
+
+
+2006-10-29 Baptiste Mille-Mathias <baptiste.millemathias gmail com>
+	
+	* added initial manpages for the tracker command line tools
+
+
+2006-10-22 Richard Quirk <quirky@zoom.co.uk>
+
+	* fixed potential crasher in tracker_db_search_text
+
+2006-10-22 Jamie McCracken <jamiemcc at gnome org>
+
+	* updated debian folder and files to build debs
+	* fixed tracker.pc to use libtrackerclient
+	* fixed bug where data flushing to qdbm could end up in an infinite loop
+
+
+2006-10-22 Eskil Bylund <eskil at letterboxes org>
+
+	* build fix for make dist
+	* fix for tracker-search-tool's handling of filenames by escaping them 
+
+
+2006-10-16 Jamie McCracken <jamiemcc at gnome org>
+
+	* Fixed gui
+	* added buttons
+	* cleaned up code
+	* created dbus methods to get snippets
+
+
+2006-10-17 Edward Duffy <eduffy at gmail com>
+	
+	* Made a totem extractor
+	* Fix for pdf extractor
+
+
+
+2006-10-16 Jamie McCracken <jamiemcc at gnome org>
+
+	* Added optional periodic fsync and fast mode to make tracker more background friendly
+	* Added intermediate temp storage of words so that most common words are applied at the end to prevent fragmentation
+	* Added sheduling
+	* Made sure tracker daemon is now really smooth
+	* fixed a few leaks
+
+2006-10-16 Edward Duffy <eduffy at gmail com>
+	
+	* Made an mplayer extractor
+	* Fix for potential crasher in tracker-extract
+	* Fix for autotools
+
+
+2006-10-11 Jamie McCracken <jamiemcc at gnome org>
+
+	* Fixed crasher by applying a mutex to guard non-threadsafe stemmer
+
+
+2006-10-12 Marcus Fritzsch <fritschy at googlemail com>
+	
+	* Patch to make sure ignore dirs argument is treated as an array
+
+
+2006-10-11 Jamie McCracken <jamiemcc at gnome org>
+
+	* Created command line options for trackerd
+	* Created more extensive options for tuning performance/memory and disk space usage - new config file format
+	* Removed LibExtractor dependency
+	* created new mp3 extractor for id3 id3v21, id3v22, id3v23 and id3v24
+	* added snowball stemmers (as a static library)
+	* added multi language stopword files
+	* added support for determining which language to use by default based on locale
+	* made sure only lstat is used to prevent symlink directories from being followed
+
+2006-10-11 Jedy Wang <Jedy Wang at Sun COM>
+	
+	* Patch to improve compilation on Solaris
+
+
+2006-10-08 Jamie McCracken <jamiemcc at gnome org>
+
+	* Created tracker-search-tool (based on gnome-search-tool)
+	* Bug fix for handling uri's without a leading backslash in indexing
+	* tuned indexer
+	
+
+
+2006-10-07 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Made Thunderbird backend aware of vfolders
+
+
+2006-10-05 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Email uri fixes
+
+
+2006-10-05 Jamie McCracken <jamiemcc at gnome org>
+
+	* blocked extraction of non-regular files
+
+
+2006-10-05 Marcus Fritzsch <fritschy at googlemail com>
+	
+	* Patch to make sure NULL is returned if no date is available in tracker_db_get_field_def 
+
+
+2006-10-03 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Cleaned up tracker-db-sqlite source
+	* Fixed potential crasher where g_free was being used on a g_lice allocation
+
+2006-10-03 Jamie McCracken <jamiemcc at gnome org>
+
+	* fixed retrieval of metadata types
+	* fixed Metadata.Get method
+	* fixed Files.GetByMimeType
+	* added python stuff to repository 
+	* added lyrics.py ripped from rhythmbox and modded by Samuel Cormier-Iijima
+	* added nautilus tag tabs written by Edward Duffy
+
+
+2006-10-03 Edward Duffy <eduffy at gmail com>
+	
+	* added libgsf extractor for ms office files
+	* added open document thumbnailers
+	* fix for sqlite sql
+	* fixed auto tagging
+
+
+2006-10-03 Anders Aagaard <aagaande at gmail com>
+	
+	* added ionice support
+
+
+2006-10-02 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Force email body to return plain text instead of html
+	* Fixed signedness warnings in xdgmime
+
+
+2006-10-02 Jamie McCracken <jamiemcc at gnome org>
+
+	* restructured database for email support
+	* Fixed RDF Query to work with sqlite
+	* Added sqlite sql functions (display of dates)
+	* Added keywords support to rdf query
+	* Changed most of the a{sv} dbus methods to aas
+	* Modified command line tools to use aas
+	* removed redundant dbus methods and parameters
+
+
+2006-10-01 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Added Kmail email support
+	* Added fixes for sqlite 
+
+
+2006-10-01 Jamie McCracken <jamiemcc at gnome org>
+
+	* restructured database
+	* Used Curia instead of Depot for inverted index as its more scalable
+	* Fixed issues with new indexer
+	* Fixed keywords to update indexer properly
+	* Fixed keyword search and list methods
+	* Added auto tag support for Doc.Keywords and Image.Keywords (based on patch by Edward Duffy)
+	* Auto optimize index after first run and automatically after user settable no of updates
+
+
+2006-09-27 Edward Duffy <eduffy at gmail com>
+	
+	* made internal extractors external and intgrated into tracker-extract
+	* added extractors for images
+
+2006-09-27 Jamie McCracken <jamiemcc at gnome org>
+
+	* fix bug with search text (correct no of results now returned)
+	* got search mime , search location and search mime location working
+	* replaced bzip compression with zlib
+	
+
+
+2006-09-26 Samuel Cormier-Iijima <sciyoshi at gmail com>
+	
+	* Added #ifdefs to make libpoppler usage optional
+
+
+2006-09-26 Jamie McCracken <jamiemcc at gnome org>
+
+	* fix bug with get_metadata routine expecting metadata name and not metadata id
+	
+
+2006-09-25 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Integrated new indexer and parser into tracker/sqlite
+	* Added support for insert, update and delete
+	* performs differential indexing for updates
+	* got tracker-search to function with it
+
+2006-09-25 Edward Duffy <eduffy at gmail com>
+	
+	* added internal extractors for pdf, OpenDocument, Abiword and Postscript
+
+2006-09-25 Fabien VALLON <fabien at sonappart net>
+	
+	* Did an initial ogg extractor 
+
+2006-09-25 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Added thunderbird email support
+	* Added fixes for detecting deleted and junk emails in Evolution mail parser
+
+2006-09-21 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Added detection of deleted and junk messages to email indexing
+
+
+2006-09-21 Edward Duffy <eduffy at gmail com>
+	
+	* added jpeg and png thumbnailers
+
+
+2006-09-21 Samuel Cormier-Iijima <sciyoshi at gmail com>
+	
+	* Inotify patch to clean up code
+	* Also made sure inotify timeout for file move detection is removed when no moved files are pending (this prevents tracker from peridoically waking up)
+	* added g_message support for logging messages
+
+2006-09-21 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Added initial email indexing support
+	* Added indexing of evolution emails
+	* Added indexing of email attachments
+
+
+2006-09-21 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Created Test suite for new indexer
+	* fixed bugs in indexer
+
+
+2006-09-19 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Finished tracker's new indexer
+
+
+2006-09-19 Fabien VALLON <fabien at sonappart net>
+	
+	* Added retrieval of tracke number to tracker-extract
+
+
+2006-09-18 Samuel Cormier-Iijima <sciyoshi at gmail com>
+	
+	* Added search by service option to tracker-search
+
+
+2006-09-17 Samuel Cormier-Iijima <sciyoshi at gmail com>
+	
+	* Added Goption and limit option to tracker-search 
+
+
+2006-09-16 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Fixed erroneous rdf query where returned values were null
+
+
+2006-09-16 Samuel Cormier-Iijima <sciyoshi at gmail com>
+	
+	* Patch to fix sqlite sql
+	* Patch to fix race condition in request thread
+
+
+2006-09-16 Jamie McCracken <jamiemcc at gnome org>
+	
+	* More work on tracker-indexer
+
+
+
+2006-09-12 Samuel Cormier-Iijima <sciyoshi at gmail com>
+	
+	* Patch to fix segfault when retrieveing metadata
+	* Patch to use g_slice_new0 instead of g_slice_new
+
+
+
+2006-09-11 Samuel Cormier-Iijima <sciyoshi at gmail com>
+	
+	* Patch to fix sending of null values on Dbus
+	* Also fix for erroneous g_free on a g_slice allocation
+
+
+2006-09-13 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Tidied up tracker-GUI
+	* Inline libsexy widget
+	* extended parser to support line by line indexing
+	* added more functionality to new indexer
+
+
+2006-09-13 Edward Duffy <eduffy at gmail com>
+	
+	* Enhanced tracker GUI
+	* fixed display of sexy icon entry
+
+
+2006-09-13 Jaime Frutos Morales <acidborg at gmail com>
+	
+	* Patch to add skeleton for tracker GUI
+
+
+2006-09-11 Samuel Cormier-Iijima <sciyoshi at gmail com>
+	
+	* Patch to add Goption support for tracker-tag
+
+
+2006-09-11 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Added option to disable thumbnail generation
+
+
+2006-09-11 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Added bug fixes to sqlite functionality
+
+
+
+2006-09-10 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Added rough sqlite support
+
+
+2006-09-10 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Fixed symlink problem 
+	* More code cleanup
+
+
+2006-09-07 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Handled Dbus Connection shutdown gracefully
+	* tracker deamon now shuts down smoothly when dbus session bus is stopped
+	* Big code cleanup
+
+
+2006-09-06 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Finishsed db abstractions
+	* Added initial sqlite support
+
+
+2006-09-02 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Fix for Rdf-query parser to allow "contains" function to be called more easily 
+
+
+2006-09-02 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Added locale handling for non utf-8 files
+	* Made sure all filenames passed to posix system calls are translated to user's locale
+	* made sure all results are displayed in user's locale
+	* cleaned up code
+
+
+2006-09-02 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Added more abstractions for db calls
+
+2006-08-25 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Improved thread synchronisation speed
+	* Fixed potential deadlock as pointed out by Laurent Aguerreche <laurent aguerreche at free fr>
+	* Improved exiting
+
+2006-08-21 Gergan Penkov <gergan at gmail com>
+	
+	* Fix sql for an SP
+
+2006-08-21 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Improved thread synchronisation using G_COND and g_cond_signal and g_cond_wait
+	* Eliminated redundant mutexes (file available/metadata available)
+	* Restructured threads to be more efficient 
+	* Added two phase program halt so that stuff ends gracefully and all threads are exited smoothly
+
+
+2006-08-21 Laurent Aguerreche <laurent aguerreche at free fr>
+		
+	* Patch to fix signal handling amongst threads
+	* Jamie McCracken heavily modified this patch to make sure it avoids deadlocks and race conditions
+
+
+2006-08-19 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Patch to fix debain build 
+	* split up tracker into several debs
+	* Fixed make dist in autofoo
+
+
+2006-08-19 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Abstracted all mysql specific stuff into tracker-db-mysql
+	* Paved the way to support alternative backends like sqlite/qdbm
+
+
+2006-08-13 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Added new tracker-file-convert to convert text file into list of unique words with associated counts
+	* Added support for stemming
+	* Added new parsing word breaker
+	* Added experimental (but currently disabled) qdbm indexing (tracker-indexer c)
+
+
+2006-08-13 Marcus Fritzsch <fritschy at googlemail com>
+	
+	* Patch to make sure a dbus reply is sent if the rdf query string is NULL or erroneous
+
+
+2006-08-03 Marcus Fritzsch <fritschy at googlemail com>
+	
+	* Patch to make sure query is not null in tracker_exec_sql
+
+
+2006-08-03 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Added new Dbus methods for File Exists and File GetServiceType
+
+
+2006-08-02 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Added new command line tool tracker-files
+
+
+2006-08-02 Edward Duffy <eduffy at gmail com>
+	
+	* Patch for small fix to XdgMime
+
+
+
+2006-08-02 Jedy Wang <Jedy Wang at Sun COM>
+	
+	* Patch to add build instructions for Solaris to README file
+
+
+
+2006-08-02 Laurent Aguerreche <laurent aguerreche at free fr>
+	
+	* Patch to fix sql
+
+
+2006-08-01 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Added offset parameter to search methods
+
+
+
+2006-07-31 Jedy Wang <Jedy Wang at Sun COM>
+	
+	* Patch to improve compilation on Solaris
+
+
+
+2006-07-31 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Added realpath for file parameters in command line tools
+	* Improved search terms to *and* them by default
+	* added support for OR in search terms
+	* added support for excluding a search term
+	* added bugfixed XDGMIME from Beagle to prevent crashes
+
+
+2006-07-30 Marcus Fritzsch <fritschy at googlemail com>
+	
+	* Patch to make build more debian friendly
+
+
+2006-07-30 Jedy Wang <Jedy Wang at Sun COM>
+	
+	* Patch to fix crasher on solaris
+
+
+
+2006-07-30 Christoph Laimburg <christoph laimburg at rolmail net>
+	
+	* Patch to replace deprecated dbus call (dbus_connection_disconnect)
+
+
+2006-07-30 Samuel Cormier-Iijima <sciyoshi at gmail com>
+	
+	* Patch to add RegExp rdf query extension support
+
+
+2006-07-30 Samuel Cormier-Iijima <sciyoshi at gmail com>
+	
+	* Modified patch to make no watch directories parameter functional
+	
+
+
+2006-07-30 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Added new command line tools (tracker-tag)
+	* Fixed bugs in tracker-search methods
+	* Fixed bugs in tracker-query
+
+
+2006-07-25 Jamie McCracken <jamiemcc at gnome org>
+	
+	* Sorted out libtracker
+	* updated to reflect new dbus interfaces
+	* Added new command line tools
+
+
+2006-07-22  Jamie McCracken <jamiemcc at gnome org>
+	
+	* Created new dbus interface for Search and Files
+	* Added new methods to create richer dbus functionality
+	* Ported over existing metadata methods to new interface
+
+
+2006-07-18  Jamie McCracken <jamiemcc at gnome org>
+	
+	* Created new dbus interface for Keywords
+	* Added new methods for adding, removing and searching keywords
+
+
+2006-07-11  Jamie McCracken <jamiemcc at gnome org>
+	
+	* Created new dbus interface for Metadata
+	* Added new methods for registering and querying metadata types
+	* Ported over existing metadata methods to new interface
+
+
+
+2006-06-30  Jamie McCracken <jamiemcc at gnome org>
+	
+	* Added New Dbus Interface Methods
+	* Added GetStats, GetServices and GetVersion
+
+
+
+2006-06-12  Jamie McCracken <jamiemcc at gnome org>
+	
+	* Reworked rdf query functionality
+	* Optimised it for performamce
+	* Added new extensions for Contains and StartsWith
+
+
+
+2006-05-17  Gergan Penkov <gpp666_999 at yahoo de>
+	
+	* Fix for conifgure in (added ssl linking due to bug in mysql)
+
+
+2006-05-14  Jamie McCracken <jamiemcc at gnome org>
+
+	* Improved metadata support for Exif fields
+	* Created new stats for indexed files
+	* Created new file orientated services
+
+2006-05-07  Jamie McCracken <jamiemcc at gnome org>
+
+	* Fixed crasher in date parser
+	* Improved UTF-8 conversion of metadata
+	* Improved Inotify header checks (now looks for sys/inotify h as well as linux/inotify h)
+	* Fixed build issues on FC5
+
+
+2006-05-05  Jamie McCracken <jamiemcc at gnome org>
+
+	* Hugely optimised indexing when many files are waiting to be indexed
+	* Mass queueing of files no longer blocks the main thread
+	* Fixed minor memory leak in new date parser
+
+
+2006-05-01  Jamie McCracken <jamiemcc at gnome org>
+
+	* Migrated embedded database to mysql 5
+	* Removed all parameterized queries and replaced with stored procedures
+	* New stored procedures to encapsulate DB functionality and remove most DB logic from application
+	* Simplified C code when interfacing with DB
+	* Added support for parsing dates in various formats including conversion to/from ISO 8601 format
+	* Fixed MsWord filter to prevent looping (WvText causes inotify to report file write change causing endless looping)
+	* Redesigned DB structure to be more generic and service orientated
+	* Added support for service types (first class objects) to DB
+	* Renamed tables to be more service orientated
+	* Added DB versioning data to DB so future DB changes can be implemented painlessly (and without requiring a rebuild of all indexed data)
+
+
+2006-04-22  Dan Nicolaescu <dann at ics uci edu>
+
+	* Patch to fix correct use of argv
+	* Ensure correct message printed if wrong no of arguments supplied
+
+
+2006-04-22  Dan Nicolaescu <dann at ics uci edu>
+
+	* Patch to fix build for Fedora Core 5
+
+
+2006-04-22  Nate Nielsen  <nielsen at memberwewbs com>
+
+	* Fix compile warnings, crasher 
+
+
+2006-03-28  Jamie McCracken <jamiemcc at gnome org>
+
+	* Redesigned Dbus Interface to be more generic and cleaned up code
+	* Corrected search results of hyphenated search terms
+	* Added support for maximum hit count to search queries
+	* Added optional support for sorting search results by relevance score
+
+2006-03-12  Jamie McCracken <jamiemcc at gnome org>
+
+	* Updated to latest XDGMime
+	* Fixed bugs with filename metadata type not being updated in a file move operation
+	* Improved speed of some intoify operations
+
+
+
+2006-02-27  Jamie McCracken <jamiemcc at gnome org>
+
+	* Added inotify support
+	* Optimised inotify move support
+	* Improved Build system
+	* Can use an external libextractor if found during compilation
+	* Fixed some leaks
+	* Fixed threading issues with new inotify backend
+
+
+2006-01-14  Jamie McCracken <jamiemcc at gnome org>
+
+	* Updated libtracker to be more usable especially for Nautilus search
+
+
+2006-01-11  Jamie McCracken <jamiemcc at gnome org>
+
+	* Improved file change handling by creating a pending file
+	  queue and a pending File Database table  This allows changes 
+	  awaiting processing by the tracker daemon to be handled much
+	  more efficiently with respect to memory usage 
+
+
+2006-01-06  Jamie McCracken <jamiemcc at gnome org>
+
+	* Added fallback polling mechanism to trackerd c  This kicks
+	  in if iNotify/FAM is not available (IE if home directory
+	  is on an NFS mount) or if iNotify/FAM watch limits have
+	  been exceeded 
+
+
+2005-12-13  Jamie McCracken <jamiemcc at gnome org>
+
+	* Imported initial version of Tracker into CVS
+
+
+2005-09-15 Jamie McCracken <jamiemcc at gnome org>
+
+	* Tracker Project started
+
+
+
+

@@ -1,0 +1,12 @@
+1) Trackerd options
+
+5) email db
+6) dbus methodds for Search : EmailsDetailed, GetHitCountByService, FilesDetailed update search and rdf query
+GetSnippet
+
+
+
+7) GUI - get basic working
+config gui
+
+inline qdbm

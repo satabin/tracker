@@ -30,6 +30,7 @@ extern char *service_metadata_join_names[];
 
 extern char *tracker_actions[];
 
+#include <time.h>
 #include <glib.h>
 #include <depot.h>
 #include <curia.h>
@@ -43,7 +44,7 @@ extern char *tracker_actions[];
 #define FILE_SCHEDULE_PERIOD		300
 
 #define TRACKER_DB_VERSION_REQUIRED	13
-#define TRACKER_VERSION			"0.6.0"
+#define TRACKER_VERSION			"0.6.1"
 #define TRACKER_VERSION_INT		600
 
 /* default performance options */
@@ -60,8 +61,6 @@ extern char *tracker_actions[];
 #define INDEX_BUCKET_RATIO		1	 /* desired ratio of unused buckets to have (range 0 to 4)*/
 #define INDEX_PADDING	 		2
 
-#define MAX_MEM 128
-#define MAX_MEM_AMD64 512
 
 typedef struct {
 	CURIA  *word_index;	/* file hashtable handle for the word -> {serviceID, MetadataID, ServiceTypeID, Score}  */
@@ -121,6 +120,7 @@ typedef enum {
 	INDEX_CONVERSATIONS,	
 	INDEX_EMAILS,
 	INDEX_FILES,
+	INDEX_CRAWL_FILES,
 	INDEX_EXTERNAL,
 	INDEX_FINISHED
 } IndexStatus;
@@ -466,12 +466,13 @@ void		tracker_free_strs_in_array 		(char **array);
 
 void		tracker_free_array 		(char **array, int row_count);
 gboolean        tracker_is_empty_string         (const char *s);
-char *		tracker_int_to_str		(gint i);
-char *		tracker_uint_to_str		(guint i);
+gchar *         tracker_long_to_str             (glong i);
+gchar *		tracker_int_to_str		(gint i);
+gchar *		tracker_uint_to_str		(guint i);
 gboolean	tracker_str_to_uint		(const char *s, guint *ret);
 char *		tracker_format_date 		(const char *time_string);
 time_t		tracker_str_to_date 		(const char *time_string);
-char *		tracker_date_to_str 		(gint32 date_time);
+char *		tracker_date_to_str 		(time_t date_time);
 int		tracker_str_in_array 		(const char *str, char **array);
 
 char *		tracker_get_radix_by_suffix	(const char *str, const char *suffix);
@@ -552,7 +553,6 @@ char *		tracker_uncompress 		(const char *ptr, int size, int *uncompressed_size)
 char *		tracker_get_snippet 		(const char *txt, char **terms, int length);
 
 gboolean	tracker_spawn 			(char **argv, int timeout, char **tmp_stdout, int *exit_status);
-void		tracker_child_cb 		(gpointer user_data);
 
 char*	 	tracker_string_replace 		(const char *haystack, char *needle, char *replacement);
 

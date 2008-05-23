@@ -17,24 +17,32 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#include "config.h"
+
 #include <sys/types.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <time.h>
 #include <limits.h>
 #include <glib/gprintf.h>
-#include <glib/gprintf.h>
 #include <glib/gstdio.h>
-#include <sys/resource.h>
 #include <zlib.h>
 #include "tracker-dbus.h"
 #include "tracker-utils.h"
 #include "tracker-indexer.h"
 #include "tracker-stemmer.h"
 #include "../xdgmime/xdgmime.h"
+
+#include "tracker-os-dependant.h"
+  
+#ifdef OS_WIN32
+#include <conio.h>
+#include "mingw-compat.h"
+#else
+#include <sys/resource.h>
+#endif
 
 extern Tracker	*tracker;
 
@@ -331,7 +339,7 @@ tracker_format_date (const char *timestamp)
 		return NULL;
 	}
 
-	/* check for year only dates (EG ID3 music tags might have Auido.ReleaseDate as 4 digit year) */
+	/* check for year only dates (EG ID3 music tags might have Audio.ReleaseDate as 4 digit year) */
 
 	if (len == 4) {
 		if (is_int (timestamp)) {
@@ -680,19 +688,13 @@ tracker_str_to_date (const char *timestamp)
 	struct tm	tm;
 	long		val;
 	time_t		tt;
-	gboolean	has_time_zone;
 
-	has_time_zone = FALSE;
-
-	if (!timestamp) {
-		return -1;
-	}
+        g_return_val_if_fail (timestamp, -1);
 
 	/* we should have a valid iso 8601 date in format YYYY-MM-DDThh:mm:ss with optional TZ*/
+        g_return_val_if_fail (is_valid_8601_datetime (timestamp), -1);
 
-	if (!is_valid_8601_datetime (timestamp)) {
-		return -1;
-	}
+        memset (&tm, 0, sizeof (struct tm));
 
 	val = strtoul (timestamp, (char **)&timestamp, 10);
 
@@ -701,11 +703,9 @@ tracker_str_to_date (const char *timestamp)
 		tm.tm_year = val - 1900;
 		timestamp++;
 		tm.tm_mon = strtoul (timestamp, (char **)&timestamp, 10) -1;
-
 		if (*timestamp++ != '-') {
 			return -1;
 		}
-
 		tm.tm_mday = strtoul (timestamp, (char **)&timestamp, 10);
 	}
 
@@ -722,47 +722,62 @@ tracker_str_to_date (const char *timestamp)
 		timestamp++;
 		tm.tm_min = strtoul (timestamp, (char **)&timestamp, 10);
 		if (*timestamp++ != ':') {
-
 			return -1;
 		}
 		tm.tm_sec = strtoul (timestamp, (char **)&timestamp, 10);
 	}
 
 	tt = mktime (&tm);
+        /* mktime() always assumes that "tm" is in locale time but
+           we want to keep control on time, so we go to UTC */
+        tt -= timezone;
 
 	if (*timestamp == '+' || *timestamp == '-') {
-		int sign, num_length;
+		int sign;
 
-		has_time_zone = TRUE;
+		sign = (*timestamp++ == '+') ? -1 : 1;
 
-		sign = (*timestamp == '+') ? -1 : 1;
+                /* we have format hh:mm or hhmm */
 
-		num_length = (int) timestamp + 1;
+                /* now, we are reading hours */
+                if (timestamp[0] && timestamp[1]) {
+                        if (g_ascii_isdigit (timestamp[0]) && g_ascii_isdigit (timestamp[1])) {
+                                gchar buff[3];
 
-		val = strtoul (timestamp +1, (char **)&timestamp, 10);
+                                buff[0] = timestamp[0];
+                                buff[1] = timestamp[1];
+                                buff[2] = '\0';
 
-		num_length = (int) (timestamp - num_length);
+                                val = strtoul (buff, NULL, 10);
+                                tt += sign * (3600 * val);
+                                timestamp += 2;
+                        }
 
-		if (*timestamp == ':' || *timestamp == '\'') {
-			val = 3600 * val + (60 * strtoul (timestamp + 1, NULL, 10));
-		} else {
-			if (num_length == 4) {
-				val = (3600 * (val / 100)) + (60 * (val % 100));
-			} else if (num_length == 2) {
-				val = 3600 * val;
-			}
-		}
-		tt += sign * val;
+                        if (*timestamp == ':' || *timestamp == '\'') {
+                                timestamp++;
+                        }
+                }
+
+                /* now, we are reading minutes */
+                if (timestamp[0] && timestamp[1]) {
+                        if (g_ascii_isdigit (timestamp[0]) && g_ascii_isdigit (timestamp[1])) {
+                                gchar buff[3];
+
+                                buff[0] = timestamp[0];
+                                buff[1] = timestamp[1];
+                                buff[2] = '\0';
+
+                                val = strtoul (buff, NULL, 10);
+                                tt += sign * (60 * val);
+                                timestamp += 2;
+                        }
+                }
 	} else {
+                /*
 		if (*timestamp == 'Z') {
-			/* no need to do anything if utc */
-			has_time_zone = TRUE;
+			// no need to do anything if already utc
 		}
-	}
-
-	/* make datetime reflect user's timezone if no explicit timezone present */
-	if (!has_time_zone) {
-		tt += timezone;
+                */
 	}
 
 	return tt;
@@ -770,28 +785,21 @@ tracker_str_to_date (const char *timestamp)
 
 
 char *
-tracker_date_to_str (gint32 date_time)
+tracker_date_to_str (time_t date_time)
 {
 	char  		buffer[30];
-	time_t 		time_stamp;
 	struct tm 	loctime;
 	size_t		count;
 
 	memset (buffer, '\0', sizeof (buffer));
 	memset (&loctime, 0, sizeof (struct tm));
 
-	time_stamp = (time_t) date_time;
-
-	localtime_r (&time_stamp, &loctime);
+	localtime_r (&date_time, &loctime);
 
 	/* output is ISO 8160 format : "YYYY-MM-DDThh:mm:ss+zz:zz" */
 	count = strftime (buffer, sizeof (buffer), "%FT%T%z", &loctime);
 
-	if (count > 0) {
-		return g_strdup (buffer);
-	} else {
-		return NULL;
-	}
+        return (count > 0) ? g_strdup (buffer) : NULL;
 }
 
 
@@ -802,14 +810,21 @@ tracker_is_empty_string (const char *s)
 }
 
 
-char *
+gchar *
+tracker_long_to_str (glong i)
+{
+        return g_strdup_printf ("%ld", i);
+}
+
+
+gchar *
 tracker_int_to_str (gint i)
 {
 	return g_strdup_printf ("%d", i);
 }
 
 
-char *
+gchar *
 tracker_uint_to_str (guint i)
 {
 	return g_strdup_printf ("%u", i);
@@ -1056,7 +1071,7 @@ tracker_file_is_no_watched (const char* uri)
 {
 	GSList *lst;
 
-	if (!uri || uri[0] != '/') {
+	if (!tracker_check_uri (uri)) {
 		return TRUE;
 	}
 
@@ -1106,6 +1121,10 @@ tracker_file_is_crawled (const char* uri)
 	GSList *lst;
 
 	if (!tracker->crawl_directory_list) {
+		return FALSE;
+	}
+
+	if (!uri || uri[0] != '/') {
 		return FALSE;
 	}
 
@@ -1356,8 +1375,7 @@ FileInfo *
 tracker_get_file_info (FileInfo *info)
 {
 	struct stat     finfo;
-	char   		*uri_in_locale, *str;
-	int    		n, bit;
+	char   		*str, *uri_in_locale;
 
 	if (!info || !info->uri) {
 		return info;
@@ -1405,39 +1423,8 @@ tracker_get_file_info (FileInfo *info)
 		}
 	}
 
-	/* create permissions string */
-	str = g_strdup ("?rwxrwxrwx");
-
-	switch (finfo.st_mode & S_IFMT) {
-		case S_IFSOCK: str[0] = 's'; break;
-		case S_IFIFO: str[0] = 'p'; break;
-		case S_IFLNK: str[0] = 'l'; break;
-		case S_IFCHR: str[0] = 'c'; break;
-		case S_IFBLK: str[0] = 'b'; break;
-		case S_IFDIR: str[0] = 'd'; break;
-		case S_IFREG: str[0] = '-'; break;
-	}
-
-	for (bit = 0400, n = 1 ; bit ; bit >>= 1, ++n) {
-		if (!(finfo.st_mode & bit)) {
-			str[n] = '-';
-		}
-	}
-
-	if (finfo.st_mode & S_ISUID) {
-		str[3] = (finfo.st_mode & S_IXUSR) ? 's' : 'S';
-	}
-
-	if (finfo.st_mode & S_ISGID) {
-		str[6] = (finfo.st_mode & S_IXGRP) ? 's' : 'S';
-	}
-
-	if (finfo.st_mode & S_ISVTX) {
-		str[9] = (finfo.st_mode & S_IXOTH) ? 't' : 'T';
-	}
-
 	g_free (info->permissions);
-	info->permissions = str;
+	info->permissions = tracker_create_permission_string (finfo);
 
 	info->mtime =  finfo.st_mtime;
 	info->atime =  finfo.st_atime;
@@ -1677,6 +1664,7 @@ tracker_get_mime_type (const char *uri)
 	g_lstat (uri_in_locale, &finfo);
 
 	if (S_ISLNK (finfo.st_mode) && S_ISDIR (finfo.st_mode)) {
+	        g_free (uri_in_locale);
 		return g_strdup ("symlink");
 	}
 
@@ -2224,7 +2212,7 @@ tracker_set_language (const char *language, gboolean create_stemmer)
 	char *stopword_path, *stopword_file;
 	char *stopwords;
 
-	stopword_path = g_build_filename (DATADIR, "tracker", "languages", "stopwords", NULL);
+	stopword_path = g_build_filename (TRACKER_DATADIR, "tracker", "languages", "stopwords", NULL);
 	stopword_file = g_strconcat (stopword_path, ".", language, NULL);
 	g_free (stopword_path);
 
@@ -3383,83 +3371,6 @@ tracker_check_flush (void)
 }
 
 
-gboolean
-set_memory_rlimits (void)
-{
-	struct	rlimit rl;
-	gboolean fail = FALSE;
-
-	/* We want to limit the max virtual memory
-	 * most extractors use mmap() so only virtual memory can be effectively limited */
-#ifdef __x86_64__
-	/* many extractors on AMD64 require 512M of virtual memory, so we limit heap too */
-	getrlimit (RLIMIT_AS, &rl);
-	rl.rlim_cur = MAX_MEM_AMD64*1024*1024;
-	fail |= setrlimit (RLIMIT_AS, &rl);
-
-	getrlimit (RLIMIT_DATA, &rl);
-	rl.rlim_cur = MAX_MEM*1024*1024;
-	fail |= setrlimit (RLIMIT_DATA, &rl);
-#else
-	/* on other architectures, 128M of virtual memory seems to be enough */
-	getrlimit (RLIMIT_AS, &rl);
-	rl.rlim_cur = MAX_MEM*1024*1024;
-	fail |= setrlimit (RLIMIT_AS, &rl);
-#endif
-
-	if (fail) {
-		g_printerr ("Error trying to set memory limit\n");
-	}
-
-	return !fail;
-}
-
-
-
-void
-tracker_child_cb (gpointer user_data)
-{
-	struct 	rlimit mem_limit, cpu_limit;
-	int	timeout = GPOINTER_TO_INT (user_data);
-
-	/* set cpu limit */
-	getrlimit (RLIMIT_CPU, &cpu_limit);
-	cpu_limit.rlim_cur = timeout;
-	cpu_limit.rlim_max = timeout+1;
-
-	if (setrlimit (RLIMIT_CPU, &cpu_limit) != 0) {
-		tracker_error ("ERROR: trying to set resource limit for cpu");
-	}
-
-	set_memory_rlimits();
-
-	/* Set child's niceness to 19 */
-	nice (19);
-}
-
-
-gboolean
-tracker_spawn (char **argv, int timeout, char **tmp_stdout, int *exit_status)
-{
-	GSpawnFlags flags;
-
-	if (!tmp_stdout) {
-		flags = G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL |  G_SPAWN_STDERR_TO_DEV_NULL;
-	} else {
-		flags = G_SPAWN_SEARCH_PATH | G_SPAWN_STDERR_TO_DEV_NULL;
-	}
-
-	return g_spawn_sync (NULL,
-			  argv,
-			  NULL,
-			  flags,
-			  tracker_child_cb,
-			  GINT_TO_POINTER (timeout),
-			  tmp_stdout,
-			  NULL,
-			  exit_status,
-			  NULL);
-}
 
 
 static inline void

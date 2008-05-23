@@ -17,15 +17,23 @@
  * Boston, MA  02110-1301, USA.
  */
  
+#include "config.h"
+
+#ifdef IOPRIO_SUPPORT
+
 #include <stdio.h>
 #include <errno.h>
 #include <glib/gstdio.h>
 #include <tracker-utils.h>
 #include <sys/syscall.h>
 #include <unistd.h>
+
+#ifdef HAVE_LINUX_UNISTD_H
+#include <linux/unistd.h>
+#endif
+
 #include "tracker-ioprio.h"
 
-#ifdef IOPRIO_SUPPORT
 
 enum {
 	IOPRIO_CLASS_NONE,
@@ -34,31 +42,33 @@ enum {
 	IOPRIO_CLASS_IDLE,
 };
 
+
 enum {
 	IOPRIO_WHO_PROCESS = 1,
 	IOPRIO_WHO_PGRP,
 	IOPRIO_WHO_USER,
 };
 
-#define IOPRIO_CLASS_SHIFT	13
 
-static inline int ioprio_set (int which, int who, int ioprio)
+#define IOPRIO_CLASS_SHIFT  13
+
+
+static inline int
+ioprio_set (int which, int who, int ioprio_val)
 {
-	return syscall (__NR_ioprio_set, which, who, ioprio);
+	return syscall (__NR_ioprio_set, which, who, ioprio_val);
 }
 
-static inline int ioprio_get (int which, int who)
-{
-	return syscall (__NR_ioprio_get, which, who);
-}
 
-void ioprio()
+void
+ioprio (void)
 {
 	int ioprio = 7, ioprio_class = IOPRIO_CLASS_BE;
+
 	tracker_log ("Setting ioprio best effort.");
-	
-	if (ioprio_set(IOPRIO_WHO_PROCESS,0,ioprio | ioprio_class << IOPRIO_CLASS_SHIFT) == -1) {
-		perror ("ioprio_set returns error.");
+
+	if (ioprio_set (IOPRIO_WHO_PROCESS, 0, ioprio | ioprio_class << IOPRIO_CLASS_SHIFT) == -1) {
+		tracker_error ("ERROR: ioprio_set failed");
 	}
 }
 

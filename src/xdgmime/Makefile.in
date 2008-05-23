@@ -48,8 +48,15 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libxdgmime_la_LIBADD =
-am_libxdgmime_la_OBJECTS = xdgmime.lo xdgmimealias.lo xdgmimecache.lo \
-	xdgmimeglob.lo xdgmimeint.lo xdgmimemagic.lo xdgmimeparent.lo
+am__libxdgmime_la_SOURCES_DIST = fnmatch.c fnmatch.h safe-ctype.c \
+	safe-ctype.h xdgmime.c xdgmime.h xdgmimealias.c xdgmimealias.h \
+	xdgmimecache.c xdgmimecache.h xdgmimeglob.c xdgmimeglob.h \
+	xdgmimeint.c xdgmimeint.h xdgmimemagic.c xdgmimemagic.h \
+	xdgmimeparent.c xdgmimeparent.h
+@OS_WIN32_TRUE@am__objects_1 = fnmatch.lo safe-ctype.lo
+am_libxdgmime_la_OBJECTS = $(am__objects_1) xdgmime.lo xdgmimealias.lo \
+	xdgmimecache.lo xdgmimeglob.lo xdgmimeint.lo xdgmimemagic.lo \
+	xdgmimeparent.lo
 libxdgmime_la_OBJECTS = $(am_libxdgmime_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -63,7 +70,7 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(libxdgmime_la_SOURCES)
-DIST_SOURCES = $(libxdgmime_la_SOURCES)
+DIST_SOURCES = $(am__libxdgmime_la_SOURCES_DIST)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -213,6 +220,8 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 OBJEXT = @OBJEXT@
+OS_WIN32_FALSE = @OS_WIN32_FALSE@
+OS_WIN32_TRUE = @OS_WIN32_TRUE@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -307,7 +316,13 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 noinst_LTLIBRARIES = libxdgmime.la
+@OS_WIN32_TRUE@xdgmime_win_sources = fnmatch.c \
+@OS_WIN32_TRUE@		   fnmatch.h \
+@OS_WIN32_TRUE@		   safe-ctype.c \
+@OS_WIN32_TRUE@		   safe-ctype.h
+
 libxdgmime_la_SOURCES = \
+	$(xdgmime_win_sources)  \
 	xdgmime.c 	\
 	xdgmime.h	\
 	xdgmimealias.c	\
@@ -374,6 +389,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fnmatch.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/safe-ctype.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xdgmime.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xdgmimealias.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xdgmimecache.Plo@am__quote@

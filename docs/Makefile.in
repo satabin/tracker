@@ -201,6 +201,8 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 OBJEXT = @OBJEXT@
+OS_WIN32_FALSE = @OS_WIN32_FALSE@
+OS_WIN32_TRUE = @OS_WIN32_TRUE@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -294,7 +296,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-@HAVE_GNOME_TRUE@tst = tracker-search-tool.1
+@HAVE_GNOME_TRUE@tst = tracker-search-tool.1 tracker-preferences.1
 man_MANS = tracker-extract.1 tracker-files.1 tracker-meta-folder.1 tracker-query.1 tracker-search.1 tracker-stats.1 trackerd.1 \
 	tracker-thumbnailer.1 tracker-tag.1 tracker-status.1 tracker.cfg.5 tracker-services.7 $(tst)
 

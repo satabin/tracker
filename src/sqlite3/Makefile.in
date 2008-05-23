@@ -219,6 +219,8 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 OBJEXT = @OBJEXT@
+OS_WIN32_FALSE = @OS_WIN32_FALSE@
+OS_WIN32_TRUE = @OS_WIN32_TRUE@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -312,8 +314,12 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+@OS_WIN32_FALSE@SQLITE_OS = -DOS_UNIX=1
+@OS_WIN32_TRUE@SQLITE_OS = -DOS_WIN=1
+@OS_WIN32_FALSE@libsqlite_private_la_LIBADD = -lpthread
+@OS_WIN32_TRUE@libsqlite_private_la_LIBADD = -lpthreadGC2
 INCLUDES = \
-	 -DOS_UNIX=1			\
+	 $(SQLITE_OS)			\
 	 -DHAVE_USLEEP=1 		\
 	 -DHAVE_FDATASYNC=1 		\
 	 -DNDEBUG			\
@@ -322,7 +328,6 @@ INCLUDES = \
 	 -DSQLITE_OMIT_CURSOR 		
 
 noinst_LTLIBRARIES = libsqlite-private.la
-libsqlite_private_la_LIBADD = -lpthread
 libsqlite_private_la_SOURCES = \
 	sqlite3.h \
 	sqlite3ext.h \

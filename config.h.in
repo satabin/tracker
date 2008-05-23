@@ -114,6 +114,9 @@
 /* Define ioprio support */
 #undef IOPRIO_SUPPORT
 
+/* Define if we are on win32 */
+#undef OS_WIN32
+
 /* Name of package */
 #undef PACKAGE
 

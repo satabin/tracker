@@ -333,11 +333,54 @@ tracker_die ()
 }
 
 
+void
+free_file_change (FileChange **user_data)
+{
+	FileChange *change = *user_data;
+	g_free (change->uri);
+	change->uri = NULL;
+	change = NULL;
+}
+
+static void
+free_file_change_queue (gpointer data, gpointer user_data)
+{
+	FileChange *change = (FileChange *)data;
+	free_file_change (&change);
+}
+
+
+static void
+reset_blacklist_file (char *uri)
+{
+
+	char *parent = g_path_get_dirname (uri);
+	if (!parent) return;
+
+	char *parent_name = g_path_get_basename (parent);
+	if (!parent_name) return;
+	
+	char *parent_path = g_path_get_dirname (parent);
+	if (!parent_path) return;	
+	
+	tracker_log ("resetting black list file %s", uri);
+	
+	/* reset mtime on parent folder of all outstanding black list files so they get indexed when next restarted */
+	tracker_exec_proc (main_thread_db_con, "UpdateFileMTime", 3, "0", parent_path, parent_name);
+	
+	g_free (parent);
+	g_free (parent_name);
+	g_free (parent_path);		 
+	 
+	
+}
 
 gboolean
 tracker_do_cleanup (const gchar *sig_msg)
 {
 	tracker->status = STATUS_SHUTDOWN;
+
+	tracker_log ("shutdown mode entered");
 
 	if (tracker->log_file && sig_msg) {
 		tracker_log ("Received signal '%s' so now shutting down", sig_msg);
@@ -415,6 +458,10 @@ tracker_do_cleanup (const gchar *sig_msg)
 
 	/* reset integrity status as threads have closed cleanly */
 	tracker_db_set_option_int (main_thread_db_con, "IntegrityCheck", 0);
+	
+	
+	/* reset black list files */
+	g_slist_foreach (tracker->tmp_black_list, (GFunc) reset_blacklist_file, NULL);
 
 	tracker_db_close (main_thread_db_con);
 
@@ -434,6 +481,14 @@ tracker_do_cleanup (const gchar *sig_msg)
 	/* remove sys tmp directory */
 	if (tracker->sys_tmp_root_dir) {
 		tracker_remove_dirs (tracker->sys_tmp_root_dir);
+	}
+
+	/* remove file change queue */
+	if (tracker->file_change_queue) {
+		g_queue_foreach (tracker->file_change_queue,
+				 free_file_change_queue, NULL);
+		g_queue_free (tracker->file_change_queue);
+		tracker->file_change_queue = NULL;
 	}
 
 	g_main_loop_quit (tracker->loop);
@@ -618,18 +673,12 @@ watch_dir (const gchar* dir, DBConnection *db_con)
 static void
 signal_handler (gint signo)
 {
-	if (!tracker->is_running) {
-		return;
-	}
-
 	static gboolean in_loop = FALSE;
 
-  	/* avoid re-entrant signals handler calls */
-	if (in_loop && signo != SIGSEGV) {
-		return;
+  	/* die if we get re-entrant signals handler calls */
+	if (in_loop) {
+		exit (EXIT_FAILURE);
 	}
-
-  	in_loop = TRUE;
 
   	switch (signo) {
 
@@ -646,6 +695,8 @@ signal_handler (gint signo)
 		case SIGTERM:
 		case SIGINT:
 
+		  	in_loop = TRUE;
+
 			tracker->is_running = FALSE;
 			tracker_end_watching ();
 
@@ -660,8 +711,7 @@ signal_handler (gint signo)
 			if (tracker->log_file && g_strsignal (signo)) {
 	   			tracker_log ("Received signal %s ", g_strsignal (signo));
 			}
-			in_loop = FALSE;
-    			break;
+			break;
   	}
 }
 
@@ -918,6 +968,9 @@ index_entity (DBConnection *db_con, FileInfo *info)
 
 	} else if (strcmp (service_info, "Files") == 0) {
 		tracker_db_index_file (db_con, info, NULL, NULL);
+
+        } else if (strcmp (service_info, "WebHistory") ==0 ) {
+                tracker_db_index_webhistory (db_con, info);
 
 	} else if (g_str_has_suffix (service_info, "Conversations")) {
 		tracker_db_index_conversation (db_con, info);
@@ -1243,7 +1296,28 @@ process_files_thread (void)
 							break;
 
 
-						
+					        case INDEX_WEBHISTORY: {
+
+                                                                gchar *firefox_dir;
+                                                                GSList *list = NULL;
+                                                                firefox_dir = g_build_filename(g_get_home_dir(),".xesam/Firefox/ToIndex",NULL);
+                                                                if (tracker_file_is_valid(firefox_dir)) {
+                                                                     list = g_slist_prepend( NULL, firefox_dir);
+ 
+                                                                     tracker_log("Starting firefox web history indexing...");
+                                                                     tracker_add_service_path("WebHistory",firefox_dir);
+
+							             tracker_db_start_transaction (db_con->cache);		
+                                                                     tracker_add_root_directories(list);
+                                                                     process_directory_list(db_con,list, TRUE);
+                                                                     tracker_db_end_transaction (db_con->cache);
+                                                                     g_slist_free(list);
+                                         
+                                                                 }
+                                                        	g_free(firefox_dir);
+                                                        }
+                                                        break;
+
 						case INDEX_EXTERNAL:
 							break;
 
@@ -1462,6 +1536,9 @@ process_files_thread (void)
 
 		tracker_debug ("processing %s with action %s and counter %d ", info->uri, tracker_actions[info->action], info->counter);
 
+		/* preprocess ambiguous actions when we need to work out if its a file or a directory that the action relates to */
+		verify_action (info);
+
 		if (info->action != TRACKER_ACTION_DELETE &&
 		    info->action != TRACKER_ACTION_DIRECTORY_DELETED && info->action != TRACKER_ACTION_FILE_DELETED) {
 
@@ -1509,9 +1586,6 @@ process_files_thread (void)
 			
 
 		}	
-
-		/* preprocess ambiguous actions when we need to work out if its a file or a directory that the action relates to */
-		verify_action (info);
 
 		
 
@@ -1600,7 +1674,7 @@ process_files_thread (void)
 		if (need_index) {
 					
 
-			if (tracker_db_regulate_transactions (db_con, 100)) {
+			if (tracker_db_regulate_transactions (db_con, 250)) {
 				if (tracker->verbosity == 1) {
 					tracker_log ("indexing #%d - %s", tracker->index_count, info->uri);
 				}
@@ -1741,6 +1815,7 @@ process_user_request_queue_thread (void)
                                 break;
 
                         case DBUS_ACTION_SHUTDOWN:
+                                           	
 
 				tracker_dbus_method_shutdown (rec);
 
@@ -2088,6 +2163,8 @@ set_defaults (void)
 
 	tracker->index_status = INDEX_CONFIG;
 
+	tracker->black_list_timer_active = FALSE;	
+
 	tracker->pause_manual = FALSE;
 	tracker->pause_battery = FALSE;
 	tracker->pause_io = FALSE;
@@ -2126,6 +2203,8 @@ set_defaults (void)
 	tracker->index_kmail_emails = TRUE;
 
 	tracker->use_extra_memory = TRUE;
+
+	tracker->thread_stack_size = 0;
 
 	tracker->throttle = 0;
 	tracker->initial_sleep = 45;
@@ -2422,6 +2501,14 @@ main (gint argc, gchar *argv[])
 	if (!g_thread_supported ())
 		g_thread_init (NULL);
 
+	dbus_g_thread_init ();
+
+	tracker = g_new0 (Tracker, 1);
+
+	tracker->dbus_con = tracker_dbus_init ();
+	
+	add_local_dbus_connection_monitoring (tracker->dbus_con);
+
 	setlocale (LC_ALL, "");
 
 	bindtextdomain (GETTEXT_PACKAGE, TRACKER_LOCALEDIR);
@@ -2478,19 +2565,13 @@ main (gint argc, gchar *argv[])
 	sigaction (SIGINT,  &act, NULL);
 #endif
 
-	dbus_g_thread_init ();
+	
 
-	tracker = g_new0 (Tracker, 1);
+	
 
 	tracker->status = STATUS_INIT;
 
  	tracker->is_running = FALSE;
-
-	tracker->log_file = g_build_filename (tracker->root_dir, "tracker.log", NULL);
-
-	tracker->dbus_con = tracker_dbus_init ();
-	
-	add_local_dbus_connection_monitoring (tracker->dbus_con);
 
 	/* Make a temporary directory for Tracker into g_get_tmp_dir() directory */
 	gchar *tmp_dir;
@@ -2504,6 +2585,16 @@ main (gint argc, gchar *argv[])
 	tracker->data_dir = g_build_filename (g_get_user_cache_dir (), "tracker", NULL);
 	tracker->config_dir = g_strdup (g_get_user_config_dir ());
 	tracker->user_data_dir = g_build_filename (tracker->root_dir, "data", NULL);
+
+	tracker->log_file = g_build_filename (tracker->root_dir, "tracker.log", NULL);
+
+	/* reset log file */
+	tracker_unlink (tracker->log_file);
+
+	tracker_log ("starting log");
+
+	
+
 
 	g_free (tmp_dir);
 
@@ -2636,9 +2727,7 @@ main (gint argc, gchar *argv[])
 	ioprio ();
 #endif
 
-	/* reset log file */
-	tracker_unlink (tracker->log_file);
-
+	
 	/* deal with config options with defaults, config file and option params */
 	set_defaults ();
 
@@ -2739,6 +2828,9 @@ main (gint argc, gchar *argv[])
 
 		tracker_log ("performing integrity check as trackerd was not shutdown cleanly");
 
+
+/*		turn off corruption check as it can hog cpu for long time 
+
 		if (!tracker_db_integrity_check (db_con) || !tracker_indexer_repair ("file-index.db") || !tracker_indexer_repair ("email-index.db")) {
 			tracker_error ("db or index corruption detected - prepare for reindex...");
 			tracker_db_close (db_con);	
@@ -2750,8 +2842,9 @@ main (gint argc, gchar *argv[])
 			db_con->thread = "main";
 
 		}
-
+*/
 	} 
+
 	
 	if (!tracker->readonly) {
 		tracker_db_set_option_int (db_con, "IntegrityCheck", 1);
@@ -2808,7 +2901,8 @@ main (gint argc, gchar *argv[])
 	/* this var is used to tell the threads when to quit */
 	tracker->is_running = TRUE;
 
-	tracker->user_request_thread = g_thread_create ((GThreadFunc) process_user_request_queue_thread, NULL, FALSE, NULL);
+	tracker->user_request_thread = g_thread_create_full ((GThreadFunc) process_user_request_queue_thread, NULL, 
+								tracker->thread_stack_size, FALSE, FALSE, G_THREAD_PRIORITY_NORMAL,  NULL);
 
 	
 
@@ -2820,7 +2914,8 @@ main (gint argc, gchar *argv[])
 			exit (1);
 		}
 
-		tracker->file_process_thread =  g_thread_create ((GThreadFunc) process_files_thread, NULL, FALSE, NULL);
+		tracker->file_process_thread =  g_thread_create_full ((GThreadFunc) process_files_thread, NULL, tracker->thread_stack_size, 
+									FALSE, FALSE, G_THREAD_PRIORITY_NORMAL, NULL);
 	}
 	
 	g_main_loop_run (tracker->loop);

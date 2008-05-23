@@ -126,12 +126,12 @@ static char *search_service_types[] = {
 "Appointments",
 "Tasks",
 "Bookmarks",
-"History",
+"WebHistory",
 "Projects",
 NULL
 };
 
-static service_info_t services[12] = {
+static service_info_t services[13] = {
 
         { "Emails",        N_("Emails"),       "stock_mail",               NULL, SERVICE_EMAILS,            NULL, FALSE, 0, 0},
         { "Files",         N_("All Files"),    "system-file-manager",      NULL, SERVICE_FILES,             NULL, FALSE, 0, 0},
@@ -144,6 +144,7 @@ static service_info_t services[12] = {
         { "Development",   N_("Development"),  "applications-development", NULL, SERVICE_DEVELOPMENT_FILES, NULL, FALSE, 0, 0},
         { "Conversations", N_("Chat Logs"),    "stock_help-chat",          NULL, SERVICE_CONVERSATIONS,     NULL, FALSE, 0, 0},
         { "Applications",  N_("Applications"), "system-run",               NULL, SERVICE_APPLICATIONS,      NULL, FALSE, 0, 0},
+        { "WebHistory",    N_("WebHistory"),    "text-html",               NULL, SERVICE_WEBHISTORY,        NULL, FALSE, 0, 0},
         { NULL,            NULL,               NULL,                       NULL, -1,                        NULL, FALSE, 0, 0},
 };
 
@@ -1060,6 +1061,13 @@ create_search_results_section (GSearchWindow * gsearch)
 
 	/* Translators: this will appears as "Search results: no search performed" */
 	gsearch->count_label = gtk_label_new (_("no search performed"));
+	gtk_label_set_selectable (GTK_LABEL (gsearch->count_label), TRUE);
+	tracker_set_atk_relationship(gsearch->count_label,
+                                     ATK_RELATION_LABELLED_BY,
+                                     label);
+	tracker_set_atk_relationship(label, ATK_RELATION_LABEL_FOR,
+                                     gsearch->count_label);
+
 	gtk_box_pack_start (GTK_BOX (label_box), gsearch->count_label, FALSE, TRUE, 0);
 
 	button_next = gtk_button_new();
@@ -1094,7 +1102,6 @@ create_search_results_section (GSearchWindow * gsearch)
 	gtk_widget_set_sensitive (gsearch->back_button, FALSE);
 
 	gsearch->files_found_label = gtk_label_new (NULL);
-	gtk_label_set_selectable (GTK_LABEL (gsearch->files_found_label), TRUE);
 	gtk_box_pack_start (GTK_BOX (label_box), gsearch->files_found_label, FALSE, FALSE, 0);
 
 	window = gtk_scrolled_window_new (NULL, NULL);
@@ -1545,7 +1552,7 @@ populate_hit_counts (gpointer value,
 
 		if (type != -1) {
 			for (service = services; service->service; ++service) {
-				if (service->service_type == (guint32) type) {
+				if (strcmp(service->service,meta[0]) == 0) {
 					service->hit_count = atoi (meta[1]);
 					break;
 				}
@@ -1942,6 +1949,7 @@ gsearch_app_create (GSearchWindow * gsearch)
 	g_hash_table_insert (gsearch->category_table, g_strdup ("Development"), &services[8]);
 	g_hash_table_insert (gsearch->category_table, g_strdup ("Conversations"), &services[9]);
 	g_hash_table_insert (gsearch->category_table, g_strdup ("Applications"), &services[10]);
+	g_hash_table_insert (gsearch->category_table, g_strdup ("WebHistory"), &services[11]);
 	//g_hash_table_insert (gsearch->category_table, g_strdup ("EmailAttachments"), &services[11]);
 	
 	gsearch->category_store = gtk_list_store_new (NUM_CATEGORY_COLUMNS, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING);
@@ -2032,6 +2040,7 @@ gsearch_app_create (GSearchWindow * gsearch)
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
 
 	gsearch->warning_label = gtk_label_new (_("Tracker is still indexing so not all search results are available yet"));
+	gtk_label_set_selectable (GTK_LABEL (gsearch->warning_label), TRUE);
 	gtk_label_set_justify (GTK_LABEL (gsearch->warning_label), GTK_JUSTIFY_LEFT);
 	g_object_set (G_OBJECT (gsearch->warning_label), "xalign", 0.0, NULL);
 	gtk_table_attach (GTK_TABLE (gsearch->name_and_folder_table), gsearch->warning_label, 0, 2, 1, 2, GTK_FILL, 0, 6, 1);
@@ -2261,7 +2270,7 @@ main (gint argc,
 
 	tracker_search_ui_manager (gsearch);
 
-	gtk_window_set_icon_name (GTK_WINDOW (gsearch->window), "gnome-searchtool");
+	gtk_window_set_icon_name (GTK_WINDOW (gsearch->window), "system-search");
 
 	gtk_window_set_default_icon_name ("tracker");
 

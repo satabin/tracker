@@ -472,12 +472,23 @@ tracker_dbus_method_set_bool_option (DBusRec *rec)
 
 	if (strcasecmp (option, "Pause") == 0) {
 		tracker->pause_manual = value;
+		
+		if (value) {
+			tracker_log ("trackerd is paused by user");
+		} else {
+			tracker_log ("trackerd is unpaused by user");
+		}
+		
+		
 	} else if (strcasecmp (option, "FastMerges") == 0) {
 		tracker->fast_merges = value;
 		tracker_log ("fast merges set to %d", value);
 	} else if (strcasecmp (option, "EnableIndexing") == 0) {
 		tracker->enable_indexing = value;
 		tracker_log ("Enable indexing set to %d", value);
+		tracker_dbus_send_index_status_change_signal ();
+
+
 	} else if (strcasecmp (option, "EnableWatching") == 0) {
 		tracker->enable_watching = value;
 		tracker_log ("Enable Watching set to %d", value);
@@ -585,6 +596,8 @@ tracker_dbus_method_shutdown (DBusRec *rec)
 		dbus_error_free (&dbus_error);
 		return;
 	}
+
+	tracker_log ("attempting restart");
 
 	tracker->reindex = reindex;
 

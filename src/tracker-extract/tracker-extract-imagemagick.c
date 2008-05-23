@@ -25,9 +25,11 @@
 #include <glib.h>
 
 #include "tracker-extract.h"
+#include "tracker-xmp.h"
 
-void
-tracker_extract_imagemagick (gchar *filename, GHashTable *metadata)
+
+static void
+tracker_extract_imagemagick (const gchar *filename, GHashTable *metadata)
 {
 	gchar *argv[6];
 	gchar *identify;
@@ -65,6 +67,10 @@ tracker_extract_imagemagick (gchar *filename, GHashTable *metadata)
 
 #ifdef HAVE_EXEMPI
 
+	/* convert is buggy atm so disable temporarily */
+
+	return;
+
 	gchar *xmp;
 
 	argv[0] = g_strdup ("convert");
@@ -78,4 +84,17 @@ tracker_extract_imagemagick (gchar *filename, GHashTable *metadata)
 		}
 	}
 #endif
+}
+
+
+TrackerExtractorData data[] = {
+	{ "image/*", tracker_extract_imagemagick },
+	{ NULL, NULL }
+};
+
+
+TrackerExtractorData *
+tracker_get_extractor_data (void)
+{
+	return data;
 }

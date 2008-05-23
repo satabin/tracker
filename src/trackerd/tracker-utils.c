@@ -65,7 +65,7 @@ char *tracker_actions[] = {
 		"TRACKER_ACTION_DIRECTORY_REFRESH", "TRACKER_ACTION_EXTRACT_METADATA",
 		NULL};
 
-char *ignore_suffix[] = {"~", ".o", ".la", ".lo", ".loT", ".in", ".csproj", ".m4", ".rej", ".gmo", ".orig", ".pc", ".omf", ".aux", ".tmp", ".po", NULL};
+char *ignore_suffix[] = {"~", ".o", ".la", ".lo", ".loT", ".in", ".csproj", ".m4", ".rej", ".gmo", ".orig", ".pc", ".omf", ".aux", ".tmp", ".po", ".vmdk",".vmx",".vmxf",".vmsd",".nvram", ".part",  NULL};
 char *ignore_prefix[] = {"autom4te", "conftest.", "confstat", "config.", NULL};
 char *ignore_name[] = {"po", "CVS", "aclocal", "Makefile", "CVS", "SCCS", "ltmain.sh","libtool", "config.status", "conftest", "confdefs.h", NULL};
 
@@ -817,7 +817,7 @@ tracker_date_to_str (time_t date_time)
 }
 
 
-gboolean
+inline gboolean
 tracker_is_empty_string (const char *s)
 {
 	return s == NULL || s[0] == '\0';
@@ -1789,6 +1789,13 @@ tracker_get_mime_type (const char *uri)
 		return g_strdup ("symlink");
 	}
 
+
+	/* handle iso files as they can be mistaken for video files */
+	
+	if (g_str_has_suffix (uri, ".iso")) {
+		return g_strdup ("application/x-cd-image");
+	}
+
 	result = xdg_mime_get_mime_type_for_file (uri, NULL);
 
 	if (!result || (result == XDG_MIME_TYPE_UNKNOWN)) {
@@ -2169,18 +2176,16 @@ tracker_filename_array_to_list (char **array)
 static GSList *
 array_to_list (char **array)
 {
-	GSList  *list;
+	GSList  *list = NULL;
 	int	i;
-
-	list = NULL;
 
 	for (i = 0; array[i] != NULL; i++) {
                 if (!tracker_is_empty_string (array[i])) {
-			list = g_slist_prepend (list, g_strdup (array[i]));
+			list = g_slist_prepend (list, array[i]);
 		}
 	}
 
-	g_strfreev (array);
+	g_free (array);
 
 	return list;
 }
@@ -2295,6 +2300,22 @@ tracker_ignore_file (const char *uri)
                        }
                }
 	}
+	
+	/* test tmp black list */
+	GSList *lst;
+	for (lst = tracker->tmp_black_list; lst; lst = lst->next) {
+
+		
+                char *compare_uri = lst->data;
+
+		if (!compare_uri) continue;
+
+		if (strcmp (uri, compare_uri) == 0) {
+			g_free (name);
+			return TRUE;
+		}
+	}
+	
 
 	g_free (name);
 	return FALSE;
@@ -2552,7 +2573,7 @@ tracker_load_config_file (void)
                                          "# Disable all indexing when on battery\n",
                                          "BatteryIndex=true\n",
                                          "# Disable initial index sweep when on battery\n",
-                                         "BatteryIndexInitial=true\n",
+                                         "BatteryIndexInitial=false\n",
 					 "# Pause indexer when disk space gets below equal/below this value, in %% of the $HOME filesystem. Set it to a value smaller then zero to disable pausing at all.\n",
 					 "LowDiskSpaceLimit=1\n\n",
 					 "[Emails]\n",
@@ -2575,6 +2596,8 @@ tracker_load_config_file (void)
 					 "BucketRatio=1\n",
 					 "# Alters how much padding is used to prevent index relocations. Higher values improve indexing speed but waste more disk space. Value should be in range (1..8)\n",
 					 "Padding=2\n",
+					 "# Sets stack size of trackerd threads in bytes. The default on Linux is 8Mb (0 will use the system default).\n",
+					 "ThreadStackSize=0\n",
 					 NULL);
 
 		g_file_set_contents (filename, contents, strlen (contents), NULL);
@@ -2786,6 +2809,10 @@ tracker_load_config_file (void)
 
 	if (g_key_file_has_key (key_file, "Performance", "Padding", NULL)) {
 		tracker->padding = g_key_file_get_integer (key_file, "Performance", "Padding", NULL);
+	}
+
+	if (g_key_file_has_key (key_file, "Performance", "ThreadStackSize", NULL)) {
+		tracker->thread_stack_size = g_key_file_get_integer (key_file, "Performance", "ThreadStackSize", NULL);
 	}
 
 	g_free (filename);
@@ -3491,10 +3518,12 @@ output_log (const char *message)
 	/* logging is thread safe */
 	static size_t   log_size = 0;
 
-	if (! message)
+	if (!message)
 		return;
 
 	g_print ("%s\n", message);
+
+	if (!tracker->log_file) return;
 
 	/* ensure file logging is thread safe */
 	g_mutex_lock (tracker->log_access_mutex);
@@ -3867,7 +3896,7 @@ tracker_low_diskspace (void)
 		return FALSE;
 	}
 
-	if ((st.f_bavail * 100 / st.f_blocks) <= tracker->low_diskspace_limit) {
+	if (((long long) st.f_bavail * 100 / st.f_blocks) <= tracker->low_diskspace_limit) {
 		tracker_error ("Disk space is low!");
 		return TRUE;
 	}

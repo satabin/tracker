@@ -54,6 +54,7 @@
 #include <glib.h>
 #include <gst/gst.h>
 
+#include "tracker-extract.h"
 
 typedef struct {
 	GstElement	*playbin;
@@ -496,7 +497,7 @@ extract_metadata (MetadataExtractor *extractor, GHashTable *metadata)
 		add_uint_gst_tag (metadata, "Audio:DiscNo", extractor->tagcache, GST_TAG_ALBUM_VOLUME_NUMBER);
 		add_string_gst_tag (metadata, "Audio:Performer", extractor->tagcache, GST_TAG_PERFORMER);
 		add_double_gst_tag (metadata, "Audio:TrackGain", extractor->tagcache, GST_TAG_TRACK_GAIN);
-		add_double_gst_tag (metadata, "Audio:TrackPeakGain", extractor->tagcache, GST_TAG_TRACK_PEAK);
+		add_double_gst_tag (metadata, "Audio:PeakTrackGain", extractor->tagcache, GST_TAG_TRACK_PEAK);
 		add_double_gst_tag (metadata, "Audio:AlbumGain", extractor->tagcache, GST_TAG_ALBUM_GAIN);
 		add_double_gst_tag (metadata, "Audio:AlbumPeakGain", extractor->tagcache, GST_TAG_ALBUM_PEAK);
 		add_year_of_gdate_gst_tag (metadata, "Audio:ReleaseDate", extractor->tagcache, GST_TAG_DATE);
@@ -652,8 +653,8 @@ poll_for_state_change (MetadataExtractor *extractor, GstState state)
 }
 
 
-void
-tracker_extract_gstreamer (gchar *uri, GHashTable *metadata)
+static void
+tracker_extract_gstreamer (const gchar *uri, GHashTable *metadata)
 {
 	MetadataExtractor *extractor;
 	gchar		  *mrl;
@@ -719,4 +720,18 @@ tracker_extract_gstreamer (gchar *uri, GHashTable *metadata)
 	gst_object_unref (GST_OBJECT (extractor->playbin));
 
 	g_slice_free (MetadataExtractor, extractor);
+}
+
+
+TrackerExtractorData data[] = {
+	{ "audio/*", tracker_extract_gstreamer },
+	{ "video/*", tracker_extract_gstreamer },
+	{ NULL, NULL }
+};
+
+
+TrackerExtractorData *
+tracker_get_extractor_data (void)
+{
+	return data;
 }

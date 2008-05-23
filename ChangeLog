@@ -1,3 +1,202 @@
+2008-02-27 Jamie McCracken <jamiemcc at gnome org>
+
+	* fixed applet
+	* added pref screen for applet
+	* aded reindex option to applet
+	* fixed bugs in blacklists
+
+2008-02-26 Carlos Garnacho  <carlos@imendio.com>
+
+	* src/trackerd/tracker-db-sqlite.c (sqlite3_get_service_name):
+	* src/trackerd/tracker-dbus-metadata.c
+	(tracker_dbus_method_metadata_set) (tracker_dbus_method_metadata_get):
+	* src/trackerd/tracker-dbus-search.c
+	(tracker_dbus_method_search_get_hit_count_all)
+	(tracker_dbus_method_search_text_detailed): Plug some leaks. Fixes
+	#518882.
+
+2008-02-25 Carlos Garnacho  <carlos@imendio.com>
+
+	* src/trackerd/tracker-db-sqlite.c (tracker_exec_proc)
+	(tracker_exec_proc_ignore_nulls): Plug 2 memleaks introduced
+	by the switch to GPtrArray.
+
+2008-02-25 Jerry Tan <jerry.tan@sun.com>
+        * add firefox extension for web history indexing
+
+2008-02-24 Jamie McCracken <jamiemcc at gnome org>
+
+	* added tmp black list of frequently changing files
+
+2007-02-24 patches from Jerry Tan <jerry.tan@sun.com>
+	
+	* added web history
+	
+
+2008-02-22  Luca Ferretti  <elle.uca@libero.it>
+
+	* src/tracker-applet/tracker-applet.c: (set_status_hint),
+	(create_context_menu):
+	More strings for translation and fix capitalization.
+
+
+2008-02-21 Jamie McCracken <jamiemcc at gnome org>
+
+	* Updated applet
+	* removed popup window and replaced with tooltip to indicate status/progress
+	* added smart pause by tracking X events for mouse and keyboard 
+	* added more options to not show animation and hide icon
+
+2008-02-17  Saleem Abdulrasool  <compnerd@compnerd.org>
+
+	* src/tracker-applet/tracker-applet.c: (set_progress),
+	(index_finished), (index_state_changed), (tray_icon_show_message),
+	(main):
+	Inline translatable strings and fix some whitespace issues
+
+2008-02-16  Jaap Haitsma  <jaap@haitsma.org>
+
+	* src/tracker-applet/tracker-applet.c: (create_context_menu),
+	(statistics_menu_activated), (open_uri), (about_url_hook),
+	(about_email_hook), (about_menu_activated), (main):
+	Add about dialog to applet. Fixes bug #507339
+
+2008-02-14  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/trackerd/tracker-metadata.c (tracker_metadata_get_embedded):
+	Rewrite function so it's less indented, and copies a bit less memory
+	around. Bug #513688.
+
+2008-02-14  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/trackerd/tracker-db-sqlite.c (tracker_exec_proc): Store directly
+	results in a GPtrArray. Bug #513691.
+
+2008-02-14  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/trackerd/tracker-db-sqlite.h:
+	* src/trackerd/tracker-utils.h: Pack booleans in guints to make most
+	used structs smaller. Bug #513692.
+
+2008-02-08  Rich Burridge <rich.burridge@sun.com>
+
+	* src/libtracker-gtk/tracker-utils.h:
+	  src/libtracker-gtk/tracker-utils.c:
+	  src/libtracker-gtk/tracker-tag-bar.c:
+          Fix for bug #494892 - Label for/labeled by relation missing for 
+          add tag button.
+
+	* src/libtracker-gtk/tracker-metadata-tile.c:
+	  From Wendy Hu <Huiwe.Hu@sun.com>
+	  Fix for bug #494907 – Labels should be set as focusable.
+
+        * src/tracker-search-tool/tracker-search-tool.c:
+          From Patrick Wade <patrick.wade@sun.com>
+          Fix for bug #495205 – Warning message label should be accessible
+          to at-tools.
+
+        * src/tracker-search-tool/tracker-search-tool-support.c:
+          src/tracker-search-tool/tracker-search-tool-support.h:
+          src/tracker-search-tool/tracker-search-tool.c:
+          Fix for bug #494878 – Search hit number can not be reported by Orca.
+
+2008-02-05  Rich Burridge <rich.burridge@sun.com>
+
+        * src/tracker-preferences/tracker-preferences.glade:
+          Fix for bug #503215 – The time unit is not reported by default.
+
+2008-02-03 Patch from Carlos Garnacho  <carlos@imendio.com>
+
+	* GNOME Bug #509601: make tracker-extract more modular using dynamically loaded libraries
+	
+2008-01-30 Luca Ferretti  <elle.uca@libero.it>
+
+	* src/tracker-preferences/tracker-preferences.c:
+	(tracker_preferences_cmd_apply):
+	Fix my bad English, courtesy of A. Walton and Michael Biebl.
+
+2008-01-30 Luca Ferretti  <elle.uca@libero.it>
+
+	* src/tracker-preferences/tracker-preferences.c:
+	(tracker_preferences_cmd_apply):
+	HIGfication of reindex/restart alerts.
+
+2008-01-29 Carlos Garnacho  <carlos@imendio.com>
+
+	* src/trackerd/tracker-db-sqlite.c (tracker_db_search_text): Avoid
+	doing too many relocations of data in memory. Bug #511781.
+	* src/trackerd/tracker-utils.c (array_to_list): Same here.
+
+2008-01-28  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/trackerd/tracker-db-sqlite.c (tracker_exec_proc_ignore_nulls):
+	Store directly results in a GPtrArray. Bug #511788
+
+2008-01-27 Patches from from Thiago Marcos P. Santos <tmpsantos@gmail.com>
+
+	* Fixed missing gobject ldadd in libtracker
+	* Made thread stack size configurable
+
+2008-01-23 Halton Huo   <Halton.Huo@Sun.COM>
+
+	Implement explicit apply for t-p.
+	* src/tracker-preferences/tracker-preferences.c:
+	* src/tracker-preferences/tracker-preferences.glade:
+
+2008-01-21 Halton Huo   <Halton.Huo@Sun.COM>
+
+	* src/trackerd/trackerd.c: (process_files_thread):
+	  Refresh index when deleting files
+
+2008-01-17 Michal Pryc <michal dot pryc at sun dot com>
+
+	* Patch from Mathieu Dimanche <mdimanche at free dot fr>
+	Fixed character encoding problems between Thunderbird
+	and trackerd, a.k.a. UTF-8 encoded TMS files
+
+2008-01-11 Laurent Aguerreche <laurent.aguerreche at free fr>
+
+	* Patch from Dan Bryant <dan.bryant at jhuapl edu>
+	Implements access to imap accounts with MD5-DIGEST authentication
+
+
+2008-01-05 Jaap Haitsma  <jaap@haitsma.org>
+
+	* src/tracker-preferences/tracker-preferences.c:
+	Change CamelCase function name to lowercase seperated by _
+
+
+2008-01-05 Jaap Haitsma  <jaap@haitsma.org>
+
+	* src/tracker-applet/tracker-applet.c:
+	* src/tracker-applet/tracker-applet.h:
+	Add license file to top of file
+
+
+2008-01-05 Jaap Haitsma  <jaap@haitsma.org>
+
+	* src/tracker-applet/Makefile.am:
+	* src/tracker-applet/tracker-applet-private.h:
+	* src/tracker-applet/tracker-applet.c:
+	* src/tracker-preferences/Makefile.am:
+	* src/tracker-preferences/tracker-configuration-private.h:
+	* src/tracker-preferences/tracker-configuration.c:
+	* src/tracker-preferences/tracker-preferences-private.h:
+	* src/tracker-preferences/tracker-preferences.c:
+	Remove *-private.h files. Just put these declarations in the
+	respective *.c files
+
+
+2007-12-13 Jamie McCracken <jamiemcc at gnome org>
+
+	* Fixed issue with log file being null
+	* Fixed typo of metadata name Audio:PeakTrackGain in the gstreamer extractor
+	* fix for crasher where index name is null during merging
+	* make initial indexing on battery off by default
+	* Fixed prevention of multiple instances of trackerd causing infinite loop and 100% cpu
+	* Fixed reentrant signals to prevent loops by dying quickly
+
+
 2007-12-09 Jamie McCracken <jamiemcc at gnome org>
 
 	* Increased startup sleep for applet to prevent race condition

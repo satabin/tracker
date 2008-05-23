@@ -34,6 +34,16 @@ typedef enum {
 } MailApplication;
 
 
+
+typedef enum {
+	MAIL_TYPE_MBOX,
+	MAIL_TYPE_IMAP,
+	MAIL_TYPE_IMAP4,
+	MAIL_TYPE_MAILDIR,
+	MAIL_TYPE_MH
+} MailType;
+
+
 typedef struct {
 	char *name;
 	char *addr;
@@ -41,9 +51,20 @@ typedef struct {
 
 
 typedef struct {
+	int		offset;
+	int		mail_count;
+	int		junk_count;
+	int		delete_count;
+	char 		*uri_prefix;	
+	MailType	type;
+} MailStore;
+
+
+typedef struct {
 	char		*path;
 	MailApplication	mail_app;
 	GMimeParser	*parser;
+	GMimeStream	*stream;
 	guint64		next_email_offset;
 } MailFile;
 
@@ -55,8 +76,29 @@ typedef struct {
 } MailAttachment;
 
 
+typedef enum {
+	MIME_ENCODING_UNKNOWN,
+	MIME_ENCODING_7BIT,
+	MIME_ENCODING_8BIT,
+	MIME_ENCODING_BINARY,
+	MIME_ENCODING_BASE64,
+	MIME_ENCODING_QUOTEDPRINTABLE,
+	MIME_ENCODING_UUENCODE
+} MimeEncoding;
+
+
+typedef struct {
+	gchar		*type;
+	gchar		*subtype;
+	gchar		*name;
+	MimeEncoding	encoding;
+} MimeInfos;
+
+
 typedef struct {
 	MailFile	*parent_mail_file;
+	int		id;
+	gboolean	is_mbox;
 	char		*path;
 	char		*uri;			/* uri to pass to a mail client to open it at mail message */
 	guint64		offset;			/* start address of the email */
@@ -74,19 +116,21 @@ typedef struct {
 	char		*subject;
 	char		*content_type;		/* text/plain or text/html etc. */
 	char		*body;
-	char		*path_to_attachments;
 	GSList		*attachments;		/* names of attachments */
+	MailStore	*store;
+	
 } MailMessage;
 
 
-void		email_set_root_path_for_attachments		(const char *path);
-const char *	email_get_root_path_for_attachments		(void);
-void		email_free_root_path_for_attachments		(void);
+
+
+void		email_watch_directory				(const gchar *dir, const gchar *service);
+void		email_watch_directories				(const GSList *dirs, const gchar *service);
 
 typedef void (* LoadHelperFct) (GMimeMessage *g_m_message, MailMessage *msg);
 
 gboolean	email_parse_and_save_mail_message		(DBConnection *db_con, MailApplication mail_app, const char *path, LoadHelperFct load_helper);
-gboolean	email_parse_mail_file_and_save_new_emails	(DBConnection *db_con, MailApplication mail_app, const char *path, LoadHelperFct load_helper);
+gboolean	email_parse_mail_file_and_save_new_emails	(DBConnection *db_con, MailApplication mail_app, const char *path, LoadHelperFct load_helper, MailStore *store);
 
 gboolean	email_mh_is_in_a_mh_dir				(const char *path);
 void		email_mh_watch_mail_messages			(DBConnection *db_con, const char *path);
@@ -97,6 +141,9 @@ void		email_maildir_watch_mail_messages		(DBConnection *db_con, const char *path
 MailPerson *	email_allocate_mail_person			(void);
 void		email_free_mail_person				(MailPerson *mp);
 
+MailAttachment*	email_allocate_mail_attachment			(void);
+void		email_free_mail_attachment			(MailAttachment *ma);
+
 MailMessage *	email_allocate_mail_message			(void);
 void		email_free_mail_message				(MailMessage *msg);
 
@@ -106,6 +153,14 @@ MailMessage *	email_mail_file_parse_next			(MailFile *mf, LoadHelperFct load_hel
 
 MailMessage *	email_parse_mail_message_by_path		(MailApplication mail_app, const char *path, LoadHelperFct load_helper);
 
+MimeInfos *	email_allocate_mime_infos			(void);
+void		email_free_mime_infos				(MimeInfos *infos);
+MimeInfos *	email_get_mime_infos_from_mime_file		(const gchar *mime_file);
+
 void		email_index_each_email_attachment		(DBConnection *db_con, const MailMessage *msg);
+gboolean	email_add_saved_mail_attachment_to_mail_message	(MailMessage *mail_msg, MailAttachment *ma);
+
+gchar *         email_make_tmp_name_for_mail_attachment         (const gchar *filename);
+gboolean	email_decode_mail_attachment_to_file		(const gchar *src, const gchar *dst, MimeEncoding encoding);
 
 #endif

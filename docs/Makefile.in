@@ -48,7 +48,10 @@ CONFIG_CLEAN_FILES =
 SOURCES =
 DIST_SOURCES =
 man1dir = $(mandir)/man1
-am__installdirs = "$(DESTDIR)$(man1dir)"
+am__installdirs = "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(man5dir)" \
+	"$(DESTDIR)$(man7dir)"
+man5dir = $(mandir)/man5
+man7dir = $(mandir)/man7
 NROFF = nroff
 MANS = $(man_MANS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -87,7 +90,15 @@ ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
+ENABLE_LIBTRACKERGTK_FALSE = @ENABLE_LIBTRACKERGTK_FALSE@
+ENABLE_LIBTRACKERGTK_TRUE = @ENABLE_LIBTRACKERGTK_TRUE@
+ENABLE_PREFERENCES_FALSE = @ENABLE_PREFERENCES_FALSE@
+ENABLE_PREFERENCES_TRUE = @ENABLE_PREFERENCES_TRUE@
+ENABLE_UNAC_FALSE = @ENABLE_UNAC_FALSE@
+ENABLE_UNAC_TRUE = @ENABLE_UNAC_TRUE@
 EXEEXT = @EXEEXT@
+EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
+EXEMPI_LIBS = @EXEMPI_LIBS@
 F77 = @F77@
 FAM_LIBS = @FAM_LIBS@
 FFLAGS = @FFLAGS@
@@ -113,6 +124,10 @@ GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
+GTK2_CFLAGS = @GTK2_CFLAGS@
+GTK2_LIBS = @GTK2_LIBS@
+HAVE_EXEMPI_FALSE = @HAVE_EXEMPI_FALSE@
+HAVE_EXEMPI_TRUE = @HAVE_EXEMPI_TRUE@
 HAVE_FAM_FALSE = @HAVE_FAM_FALSE@
 HAVE_FAM_TRUE = @HAVE_FAM_TRUE@
 HAVE_GNOME_FALSE = @HAVE_GNOME_FALSE@
@@ -125,6 +140,8 @@ HAVE_LIBEXIF_FALSE = @HAVE_LIBEXIF_FALSE@
 HAVE_LIBEXIF_TRUE = @HAVE_LIBEXIF_TRUE@
 HAVE_LIBGSF_FALSE = @HAVE_LIBGSF_FALSE@
 HAVE_LIBGSF_TRUE = @HAVE_LIBGSF_TRUE@
+HAVE_LIBXML2_FALSE = @HAVE_LIBXML2_FALSE@
+HAVE_LIBXML2_TRUE = @HAVE_LIBXML2_TRUE@
 HAVE_POPPLER_GLIB_FALSE = @HAVE_POPPLER_GLIB_FALSE@
 HAVE_POPPLER_GLIB_TRUE = @HAVE_POPPLER_GLIB_TRUE@
 HAVE_RECENT_GLIB_FALSE = @HAVE_RECENT_GLIB_FALSE@
@@ -164,6 +181,8 @@ INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
+LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
+LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -171,11 +190,16 @@ LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIBTRACKERGTK_CFLAGS = @LIBTRACKERGTK_CFLAGS@
+LIBTRACKERGTK_LIBS = @LIBTRACKERGTK_LIBS@
+LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
+LIBXML2_LIBS = @LIBXML2_LIBS@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
@@ -194,13 +218,21 @@ POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
+QDBM_CFLAGS = @QDBM_CFLAGS@
+QDBM_LIBS = @QDBM_LIBS@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
 SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
+UNAC_CFLAGS = @UNAC_CFLAGS@
+UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
+USING_DESKBAR_APPLET_FALSE = @USING_DESKBAR_APPLET_FALSE@
+USING_DESKBAR_APPLET_TRUE = @USING_DESKBAR_APPLET_TRUE@
+USING_EXTERNAL_QDBM_FALSE = @USING_EXTERNAL_QDBM_FALSE@
+USING_EXTERNAL_QDBM_TRUE = @USING_EXTERNAL_QDBM_TRUE@
 USING_EXTERNAL_SQLITE_FALSE = @USING_EXTERNAL_SQLITE_FALSE@
 USING_EXTERNAL_SQLITE_TRUE = @USING_EXTERNAL_SQLITE_TRUE@
 USING_EXTERNAL_VIDEO_PLAYER_FALSE = @USING_EXTERNAL_VIDEO_PLAYER_FALSE@
@@ -262,7 +294,10 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-man_MANS = tracker-extract.1 tracker-files.1 tracker-meta-folder.1 tracker-query.1 tracker-search.1 tracker-stats.1 trackerd.1
+@HAVE_GNOME_TRUE@tst = tracker-search-tool.1
+man_MANS = tracker-extract.1 tracker-files.1 tracker-meta-folder.1 tracker-query.1 tracker-search.1 tracker-stats.1 trackerd.1 \
+	tracker-thumbnailer.1 tracker-tag.1 tracker-status.1 tracker.cfg.5 tracker-services.7 $(tst)
+
 EXTRA_DIST = $(man_MANS)
 all: all-am
 
@@ -351,6 +386,96 @@ uninstall-man1:
 	  echo " rm -f '$(DESTDIR)$(man1dir)/$$inst'"; \
 	  rm -f "$(DESTDIR)$(man1dir)/$$inst"; \
 	done
+install-man5: $(man5_MANS) $(man_MANS)
+	@$(NORMAL_INSTALL)
+	test -z "$(man5dir)" || $(mkdir_p) "$(DESTDIR)$(man5dir)"
+	@list='$(man5_MANS) $(dist_man5_MANS) $(nodist_man5_MANS)'; \
+	l2='$(man_MANS) $(dist_man_MANS) $(nodist_man_MANS)'; \
+	for i in $$l2; do \
+	  case "$$i" in \
+	    *.5*) list="$$list $$i" ;; \
+	  esac; \
+	done; \
+	for i in $$list; do \
+	  if test -f $(srcdir)/$$i; then file=$(srcdir)/$$i; \
+	  else file=$$i; fi; \
+	  ext=`echo $$i | sed -e 's/^.*\\.//'`; \
+	  case "$$ext" in \
+	    5*) ;; \
+	    *) ext='5' ;; \
+	  esac; \
+	  inst=`echo $$i | sed -e 's/\\.[0-9a-z]*$$//'`; \
+	  inst=`echo $$inst | sed -e 's/^.*\///'`; \
+	  inst=`echo $$inst | sed '$(transform)'`.$$ext; \
+	  echo " $(INSTALL_DATA) '$$file' '$(DESTDIR)$(man5dir)/$$inst'"; \
+	  $(INSTALL_DATA) "$$file" "$(DESTDIR)$(man5dir)/$$inst"; \
+	done
+uninstall-man5:
+	@$(NORMAL_UNINSTALL)
+	@list='$(man5_MANS) $(dist_man5_MANS) $(nodist_man5_MANS)'; \
+	l2='$(man_MANS) $(dist_man_MANS) $(nodist_man_MANS)'; \
+	for i in $$l2; do \
+	  case "$$i" in \
+	    *.5*) list="$$list $$i" ;; \
+	  esac; \
+	done; \
+	for i in $$list; do \
+	  ext=`echo $$i | sed -e 's/^.*\\.//'`; \
+	  case "$$ext" in \
+	    5*) ;; \
+	    *) ext='5' ;; \
+	  esac; \
+	  inst=`echo $$i | sed -e 's/\\.[0-9a-z]*$$//'`; \
+	  inst=`echo $$inst | sed -e 's/^.*\///'`; \
+	  inst=`echo $$inst | sed '$(transform)'`.$$ext; \
+	  echo " rm -f '$(DESTDIR)$(man5dir)/$$inst'"; \
+	  rm -f "$(DESTDIR)$(man5dir)/$$inst"; \
+	done
+install-man7: $(man7_MANS) $(man_MANS)
+	@$(NORMAL_INSTALL)
+	test -z "$(man7dir)" || $(mkdir_p) "$(DESTDIR)$(man7dir)"
+	@list='$(man7_MANS) $(dist_man7_MANS) $(nodist_man7_MANS)'; \
+	l2='$(man_MANS) $(dist_man_MANS) $(nodist_man_MANS)'; \
+	for i in $$l2; do \
+	  case "$$i" in \
+	    *.7*) list="$$list $$i" ;; \
+	  esac; \
+	done; \
+	for i in $$list; do \
+	  if test -f $(srcdir)/$$i; then file=$(srcdir)/$$i; \
+	  else file=$$i; fi; \
+	  ext=`echo $$i | sed -e 's/^.*\\.//'`; \
+	  case "$$ext" in \
+	    7*) ;; \
+	    *) ext='7' ;; \
+	  esac; \
+	  inst=`echo $$i | sed -e 's/\\.[0-9a-z]*$$//'`; \
+	  inst=`echo $$inst | sed -e 's/^.*\///'`; \
+	  inst=`echo $$inst | sed '$(transform)'`.$$ext; \
+	  echo " $(INSTALL_DATA) '$$file' '$(DESTDIR)$(man7dir)/$$inst'"; \
+	  $(INSTALL_DATA) "$$file" "$(DESTDIR)$(man7dir)/$$inst"; \
+	done
+uninstall-man7:
+	@$(NORMAL_UNINSTALL)
+	@list='$(man7_MANS) $(dist_man7_MANS) $(nodist_man7_MANS)'; \
+	l2='$(man_MANS) $(dist_man_MANS) $(nodist_man_MANS)'; \
+	for i in $$l2; do \
+	  case "$$i" in \
+	    *.7*) list="$$list $$i" ;; \
+	  esac; \
+	done; \
+	for i in $$list; do \
+	  ext=`echo $$i | sed -e 's/^.*\\.//'`; \
+	  case "$$ext" in \
+	    7*) ;; \
+	    *) ext='7' ;; \
+	  esac; \
+	  inst=`echo $$i | sed -e 's/\\.[0-9a-z]*$$//'`; \
+	  inst=`echo $$inst | sed -e 's/^.*\///'`; \
+	  inst=`echo $$inst | sed '$(transform)'`.$$ext; \
+	  echo " rm -f '$(DESTDIR)$(man7dir)/$$inst'"; \
+	  rm -f "$(DESTDIR)$(man7dir)/$$inst"; \
+	done
 tags: TAGS
 TAGS:
 
@@ -389,7 +514,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(MANS)
 installdirs:
-	for dir in "$(DESTDIR)$(man1dir)"; do \
+	for dir in "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(man5dir)" "$(DESTDIR)$(man7dir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -440,7 +565,7 @@ install-exec-am:
 
 install-info: install-info-am
 
-install-man: install-man1
+install-man: install-man1 install-man5 install-man7
 
 installcheck-am:
 
@@ -462,18 +587,19 @@ ps-am:
 
 uninstall-am: uninstall-info-am uninstall-man
 
-uninstall-man: uninstall-man1
+uninstall-man: uninstall-man1 uninstall-man5 uninstall-man7
 
 .PHONY: all all-am check check-am clean clean-generic clean-libtool \
 	distclean distclean-generic distclean-libtool distdir dvi \
 	dvi-am html html-am info info-am install install-am \
 	install-data install-data-am install-exec install-exec-am \
 	install-info install-info-am install-man install-man1 \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	uninstall uninstall-am uninstall-info-am uninstall-man \
-	uninstall-man1
+	install-man5 install-man7 install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-info-am uninstall-man uninstall-man1 uninstall-man5 \
+	uninstall-man7
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

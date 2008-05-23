@@ -1,3 +1,176 @@
+2007-07-24  Michael Biebl <mbiebl@gmail.com>
+
+	* POTFILES.in: Add src/libtracker/tracker-status.c.
+	* POTFILES.skip: Add missing line feed at the end of the file.
+
+2007-07-24  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation.
+
+2007-07-24  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-07-23  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation
+
+2007-07-21  Michael Biebl <mbiebl@gmail.com>
+
+	* de.po: Updated German translation.
+
+2007-07-20  Duarte Loreto <happyguy_pt@hotmail.com>
+
+	* pt.po: Added Portuguese translation by Nicolau Gonçalves
+	<excentriko@gmail.com>.
+	* LINGUAS: Added Portuguese (pt) to the list.
+
+2007-07-19  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation.
+
+2007-07-19  Laurent Aguerreche <laurent.aguerreche@free.fr>
+
+	* fr.po: Updated french translation based on work
+	by Jeff <web.kiddo@free.fr>
+
+2007-07-15  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation
+
+2007-07-10  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation
+
+2007-07-04  Pema Geyleg <pema.geyleg@gmail.com>
+
+	* dz.po: Updated dzongkha translation
+
+2007-07-03  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation
+
+2007-07-03  Luca Ferretti  <elle.uca@libero.it>
+
+	* POTFILES.in:
+	* POTFILES.skip:
+
+	Updated to reflect changes to .desktop files
+
+2007-07-02  Luca Ferretti  <elle.uca@libero.it>
+
+	* POTFILES.in:
+	* POTFILES.skip:
+
+	New files for tracked.desktop localization
+
+2007-07-02  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation.
+
+2007-06-07  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation 
+
+2007-06-04  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-06-01  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-05-26  Claude Paroz  <claude@2xlibre.net>
+
+	* fr.po: Updated French translation.
+
+2007-05-22  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation
+
+2007-05-16  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated British English translation
+
+2007-05-12  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-05-06  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation
+
+2007-05-2  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Djihed Afifi.
+
+2007-04-15  Claude Paroz  <claude@2xlibre.net>
+
+	* fr.po: Updated French translation.
+
+2007-04-15  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Khaled Hosny.
+
+2007-04-14  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by Khaled Hosny.
+
+2007-04-06  Jovan Naumovski  <jovan@lugola.net>
+
+	* mk.po: Added Macedonian translation.
+
+2007-04-02  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Gil Forcada <gilforcada@guifi.net>.
+
+2007-03-28  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	* gl.po: Updated Galician Translation.
+
+2007-03-22  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Gil Forcada <gilforcada@guifi.net>.
+
+2007-03-15 Pema Geyleg  <pema.geyleg@gmail.com>
+
+	* dz.po: Added dzongkha Translation
+
+2007-03-14  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation
+
+2007-03-12  David Lodge <dave@cirt.net>
+
+	* en_GB.po: Updated English (British) translation
+
+2007-03-07  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation.
+
+2007-03-07  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Added Catalan translation by
+	Gil Forcada <gilforcada@guifi.net>.
+
+2007-02-26  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation.
+
+2007-02-25  Matic Zgur  <mr.zgur@gmail.com>
+
+	* sl.po: Updated Slovenian translation.
+
+2007-01-27  Vasiliy Faronov <qvvx@yandex.ru>
+
+	* ru.po: Added Russian translation.
+
+2007-01-27  Priit Laes  <plaes@svn.gnome.org>
+
+	* et.po: Updated Estonian translation by Ivar Smolin <okul@linux.ee>.
+
 2007-01-24  Luca Ferretti  <elle.uca@libero.it>
 
 	* POTFILES.in:

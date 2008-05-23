@@ -36,6 +36,10 @@ extern "C" {
 #pragma }
 #endif
 
+
+void
+tracker_update_metadata_tile (GSearchWindow *gsearch);
+
 void
 die_cb (GnomeClient * client,
         gpointer data);
@@ -176,6 +180,10 @@ gboolean
 window_state_event_cb (GtkWidget * widget,
                        GdkEventWindowState * event,
                        gpointer data);
+
+void
+suggest_search_cb	(GtkWidget *widget,
+			 gpointer data);
 
 #ifdef __cplusplus
 }

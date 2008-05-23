@@ -28,13 +28,27 @@
 #ifndef _GSEARCHTOOL_H_
 #define _GSEARCHTOOL_H_
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #pragma }
 #endif
 
+
+
 #include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
+
+#include <libgnomevfs/gnome-vfs-mime.h>
+#include <libgnomevfs/gnome-vfs-ops.h>
+#include <libgnomevfs/gnome-vfs-utils.h>
+
+#include <libgnomeui/libgnomeui.h>
+
+#include "../libtracker/tracker.h"
 
 #define MAX_SEARCH_RESULTS 10
 
@@ -47,10 +61,11 @@ extern "C" {
 
 #define TRACKER_SEARCH_TOOL_ICON "tracker-searchtool"
 
-#define DEFAULT_WINDOW_WIDTH   500
-#define DEFAULT_WINDOW_HEIGHT  450
+#define DEFAULT_WINDOW_WIDTH   700
+#define DEFAULT_WINDOW_HEIGHT  580
 #define WINDOW_HEIGHT_STEP      35
 #define NUM_VISIBLE_COLUMNS      5
+#define DEFAULT_SEPARATOR_POSITION 170
 
 typedef enum {
 	STOPPED,
@@ -62,15 +77,39 @@ typedef enum {
 
 typedef enum {
 	COLUMN_ICON,
+	COLUMN_URI,
 	COLUMN_NAME,
 	COLUMN_PATH,
-	COLUMN_SERVICE,
 	COLUMN_SNIPPET,
+	COLUMN_MIME,
+	COLUMN_EXEC,
 	COLUMN_TYPE,
-	COLUMN_MONITOR,
 	COLUMN_NO_FILES_FOUND,
 	NUM_COLUMNS
 } GSearchResultColumns;
+
+
+
+typedef enum {
+	CATEGORY_ICON_NAME,
+	CATEGORY_TITLE,	
+	CATEGORY_SERVICE,
+	NUM_CATEGORY_COLUMNS
+} CategoryColumns;
+
+
+typedef struct {
+	gchar        	*service;
+	char		*display_name;
+	gchar        	*icon_name;
+	GdkPixbuf	*pixbuf;
+	ServiceType   	service_type;
+	GtkListStore	*store;
+	gboolean	has_hits;
+	int		hit_count;
+	int		offset;
+} service_info_t;
+
 
 typedef struct _GSearchWindow GSearchWindow;
 typedef struct _GSearchWindowClass GSearchWindowClass;
@@ -89,11 +128,33 @@ struct _GSearchWindow {
 	gboolean                is_window_maximized;
 	gboolean                is_window_accessible;
 
+	gboolean		page_setup_mode;
+
+	GtkWidget		*pane;
+	GQueue			*snippet_queue;
+
+	GHashTable		*category_table;
+
+	/* sidebar category list */
+	GtkWidget 		*category_list;
+	GtkListStore		*category_store;
+	GtkTreeSelection        *category_selection;
+	GtkTreeIter             category_iter;
+	GtkCellRenderer         *category_name_cell_renderer;
+
+	GdkPixbuf		*email_pixbuf;
+	int			current_page;
+	int			type;
+	int			old_type;
+	service_info_t  	*current_service;
+	
+	GtkWidget		*metatile;
+	GtkWidget		*no_results;
+	GtkWidget		*initial_label;
+	GtkWidget		*count_label;
+	GtkWidget		*message_box;
+
 	GtkWidget             * search_entry;
-	int			offset;
-	int			hit_count;
-	GtkWidget	      * combo;
-	GtkListStore  	      * combo_model;
 	GtkWidget             * look_in_folder_button;
 	GtkWidget             * name_and_folder_table;
 	GtkWidget             * find_button;
@@ -120,7 +181,6 @@ struct _GSearchWindow {
 	GtkTreeSelection      * search_results_selection;
 	GtkTreeIter             search_results_iter;
 	GtkTreePath           * search_results_hover_path;
-	GHashTable            * search_results_filename_hash_table;
 	GHashTable            * search_results_pixbuf_hash_table;
 	gchar                 * search_results_date_format_string;
 	GnomeThumbnailFactory * thumbnail_factory;

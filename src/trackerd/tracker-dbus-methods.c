@@ -43,10 +43,10 @@ tracker_set_error (DBusRec 	  *rec,
 					msg);
 
 	if (reply == NULL || !dbus_connection_send (rec->connection, reply, NULL)) {
-		tracker_log ("Warning - out of memory");
+		tracker_error ("WARNING: out of memory");
 	}
 
-	tracker_log ("The following error has happened : %s", msg);
+	tracker_error ("ERROR: %s", msg);
 	g_free (msg);
 
 	dbus_message_unref (reply);
@@ -59,7 +59,7 @@ tracker_get_metadata (DBConnection *db_con, const char *service, const char *id,
 	char ***res;
 	char *value;
 
-	g_return_val_if_fail (db_con && id && (strlen (id) > 0), NULL);
+	g_return_val_if_fail (db_con && !tracker_is_empty_string (id), NULL);
 
 	value = g_strdup (" ");
 
@@ -81,13 +81,13 @@ tracker_get_metadata (DBConnection *db_con, const char *service, const char *id,
 			}
 
 		} else {
-			tracker_log ("result set is empty");
+			tracker_log ("Result set is empty");
 		}
 
 		tracker_db_free_result (res);
 	}
 
-	tracker_log ("metadata %s is %s", key, value);
+	tracker_log ("Metadata %s is %s", key, value);
 
 	return value;
 }
@@ -98,70 +98,48 @@ tracker_get_file_id (DBConnection *db_con, const char *uri, gboolean create_reco
 {
 	int id;
 
-	g_return_val_if_fail (db_con && uri && (strlen(uri) > 0), 0);
+	g_return_val_if_fail (db_con && !tracker_is_empty_string (uri), 0);
 
 	id = tracker_db_get_file_id (db_con, uri);
 
 	if (id == 0 && create_record) {
 		char	    *uri_in_locale;
-		struct stat finfo;
-		int	    result;
 
 		uri_in_locale = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
 
 		if (!uri_in_locale) {
-			tracker_log ("******ERROR**** info->uri could not be converted to locale format");
+			tracker_error ("ERROR: info->uri could not be converted to locale format");
 			return 0;
 		}
 
 		/* file not found in DB - so we must insert a new file record */
 
-		if (uri[0] == G_DIR_SEPARATOR && (g_lstat (uri_in_locale, &finfo) != -1)) {
-			char	 *path, *name, *mime, *service_name;
-			gboolean is_dir, is_link;
-			gint32	 mtime;
+		
+		char *str_file_id, *service;
+		FileInfo *info;
+	
+		info = NULL;
+		service = NULL;
+		str_file_id = NULL;
 
-			name = g_path_get_basename (uri);
-			path = g_path_get_dirname (uri);
+		info = tracker_create_file_info (uri_in_locale, 1, 0, 0);
 
-			is_dir = S_ISDIR (finfo.st_mode);
-
-			is_link = S_ISLNK (finfo.st_mode);
-
-			mime = tracker_get_mime_type (uri);
-
-			service_name = tracker_get_service_type_for_mime (mime);
-
-			mtime = finfo.st_mtime;
-
-			tracker_db_create_service (db_con, path, name, service_name, mime, is_dir, is_link, FALSE, 0, mtime, -1);
-
-			g_free (path);
-			g_free (name);
-			g_free (service_name);
-			g_free (mime);
-
-			result = tracker_db_get_file_id (db_con, uri);
-
+		if (!tracker_file_is_valid (uri_in_locale)) {
+			info->mime = g_strdup ("unknown");
+			service = g_strdup ("Files");
 		} else {
-			char *path, *name;
-
-			/* we assume its a non-local vfs so dont care about whether its a dir or a link */
-
-			name = tracker_get_vfs_name (uri);
-			path = tracker_get_vfs_path (uri);
-
-			tracker_db_create_service (db_con, path, name, "VFS Files", "unknown", FALSE, FALSE, FALSE, 0, 0, -1);
-
-			g_free (path);
-			g_free (name);
-
-			result = tracker_db_get_file_id (db_con, uri);
+			info->mime = tracker_get_mime_type (uri_in_locale);
+			service = tracker_get_service_type_for_mime (info->mime);
+			info = tracker_get_file_info (info);
 		}
+
+		id = tracker_db_create_service (db_con, "Files", info);
+		tracker_free_file_info (info);
+		g_free (service);
 
 		g_free (uri_in_locale);
 
-		id = result;
+		
 	}
 
 	return id;
@@ -204,7 +182,7 @@ tracker_dbus_reply_with_query_result (DBusRec *rec, char ***res)
 		for (values = row; *values; values++) {
 			char *value;
 
-			if (strlen (*values) > 0) {
+			if (!tracker_is_empty_string (*values)) {
 				value = *values;
 				//tracker_log (value);
 			} else {
@@ -286,7 +264,7 @@ tracker_add_query_result_to_dict (char ***res, DBusMessageIter *iter_dict)
 			for (i = 1; i < field_count; i++) {
 				char *value;
 
-				if (row[i] && (strlen (row[i]) > 0)) {
+				if (!tracker_is_empty_string (row[i])) {
 					value = g_strdup (row[i]);
 					} else {
 					/* dbus does not like NULLs */
@@ -306,7 +284,7 @@ tracker_add_query_result_to_dict (char ***res, DBusMessageIter *iter_dict)
 		}
 
 	} else {
-		tracker_log ("result set is empty");
+		tracker_log ("Result set is empty");
 	}
 }
 

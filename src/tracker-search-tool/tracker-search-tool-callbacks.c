@@ -48,8 +48,11 @@
 #include "tracker-search-tool.h"
 #include "tracker-search-tool-callbacks.h"
 #include "tracker-search-tool-support.h"
+#include "../libtracker-gtk/tracker-metadata-tile.h"
 
 #define SILENT_WINDOW_OPEN_LIMIT 5
+#define METADATA_IMAGE_WIDTH	128
+#define METADATA_IMAGE_HEIGHT	128
 
 #ifdef HAVE_GETPGID
 extern pid_t getpgid (pid_t);
@@ -66,6 +69,8 @@ store_window_state_and_geometry (GSearchWindow *gsearch)
 		                   gsearch->window_height);
 	tracker_search_gconf_set_boolean ("/apps/tracker-search-tool/default_window_maximized",
 	                               gsearch->is_window_maximized);
+	tracker_set_stored_separator_position (gtk_paned_get_position (GTK_PANED (gsearch->pane)));
+	
 }
 
 static void
@@ -363,7 +368,12 @@ display_dialog_could_not_open_folder (GtkWidget * window,
 void
 select_changed_cb (GtkTreeSelection *treeselection, gpointer user_data) 
 {
+
 	GSearchWindow *gsearch = user_data;
+	tracker_update_metadata_tile (gsearch);
+
+#if 0
+
 	GtkTreeModel * model;
 	GtkTreeIter iter;
 	char *name, *path;
@@ -387,10 +397,120 @@ select_changed_cb (GtkTreeSelection *treeselection, gpointer user_data)
 
 	g_free (name);
 	
+#endif
+}
+
+GdkPixbuf *
+tracker_get_large_icon (const gchar *local_uri, gboolean is_local_file, GSearchWindow *gsearch)
+{
+	gchar *icon_name = NULL;
+	gchar *thumb_name = NULL;
+	GdkPixbuf *temp = NULL;
+
+
+	if (is_local_file) {
+		gchar *uri = gnome_vfs_get_uri_from_local_path (local_uri);
+	
+		thumb_name = gnome_thumbnail_path_for_uri (uri, GNOME_THUMBNAIL_SIZE_NORMAL);
+
+		g_free (uri);
+	}
+
+	
+	
+
+	if (!thumb_name) {
+
+		icon_name = gnome_icon_lookup_sync  (gtk_icon_theme_get_default(),
+                                             	gsearch->thumbnail_factory,
+                                             	local_uri,
+                                             	NULL,
+                                             	GNOME_ICON_LOOKUP_FLAGS_SHOW_SMALL_IMAGES_AS_THEMSELVES | GNOME_ICON_LOOKUP_FLAGS_ALLOW_SVG_AS_THEMSELVES,
+                                             	0);                                       
+
+		temp = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
+                                         icon_name,
+                                         METADATA_IMAGE_HEIGHT,
+                                         GTK_ICON_LOOKUP_FORCE_SVG,
+                                         NULL);
+	
+		g_free (icon_name);
+
+		
+	
+		return temp;
+
+
+	}
+
+	temp = gdk_pixbuf_new_from_file_at_scale (thumb_name, METADATA_IMAGE_WIDTH, METADATA_IMAGE_HEIGHT, TRUE, NULL);
+
+	g_free (thumb_name);
+
+	return temp;
 
 }
 
 
+void
+tracker_update_metadata_tile (GSearchWindow *gsearch)
+{
+	GtkTreeModel * model;
+	GList * list;
+	guint index;
+	ServiceType type;
+
+	if (gtk_tree_selection_count_selected_rows (GTK_TREE_SELECTION (gsearch->search_results_selection)) != 1) {
+		tracker_metadata_tile_set_uri (TRACKER_METADATA_TILE (gsearch->metatile), NULL, 0, NULL, NULL);		
+		//gtk_widget_hide (gsearch->metatile);
+		return;
+	}
+
+	list = gtk_tree_selection_get_selected_rows (GTK_TREE_SELECTION (gsearch->search_results_selection),
+						     &model);
+	for (index = 0; index < g_list_length (list); index++) {
+
+		gboolean no_files_found = FALSE;
+		gchar *uri = NULL;
+		gchar *mime = NULL;
+		GdkPixbuf *pixbuf = NULL;
+		GtkTreeIter iter;
+
+		gtk_tree_model_get_iter (GTK_TREE_MODEL (gsearch->search_results_list_store), &iter,
+		                         g_list_nth (list, index)->data);
+
+		gtk_tree_model_get (GTK_TREE_MODEL (gsearch->search_results_list_store), &iter,
+                                    COLUMN_ICON, &pixbuf,
+    		                    COLUMN_URI, &uri,
+ 			            COLUMN_MIME, &mime,
+				    COLUMN_TYPE, &type,
+		                    COLUMN_NO_FILES_FOUND, &no_files_found,
+		                    -1);
+
+
+		/* get large icon for documents, images and videos only */
+		GdkPixbuf *large_icon = NULL;
+		if (type == SERVICE_DOCUMENTS || type == SERVICE_IMAGES || type == SERVICE_VIDEOS) {
+			large_icon = tracker_get_large_icon (uri, (gsearch->type < 10), gsearch);
+		}
+
+
+		if (large_icon) {
+			tracker_metadata_tile_set_uri (TRACKER_METADATA_TILE (gsearch->metatile), uri, type, mime, large_icon);
+			g_object_unref (G_OBJECT (large_icon));
+		} else {
+			tracker_metadata_tile_set_uri (TRACKER_METADATA_TILE (gsearch->metatile), uri, type, mime, pixbuf);
+		}
+		
+
+                g_free (uri);
+		g_free (mime);
+
+
+	}
+	g_list_foreach (list, (GFunc) gtk_tree_path_free, NULL);
+	g_list_free (list);
+}
 
 void
 open_file_cb (GtkAction * action,
@@ -400,6 +520,7 @@ open_file_cb (GtkAction * action,
 	GtkTreeModel * model;
 	GList * list;
 	guint index;
+	char *exec = NULL;
 
 	if (gtk_tree_selection_count_selected_rows (GTK_TREE_SELECTION (gsearch->search_results_selection)) == 0) {
 		return;
@@ -423,59 +544,76 @@ open_file_cb (GtkAction * action,
 	for (index = 0; index < g_list_length (list); index++) {
 
 		gboolean no_files_found = FALSE;
-		gchar * utf8_name;
-		gchar * utf8_path;
+		gchar * uri;
 		GtkTreeIter iter;
 
 		gtk_tree_model_get_iter (GTK_TREE_MODEL (gsearch->search_results_list_store), &iter,
 		                         g_list_nth (list, index)->data);
 
 		gtk_tree_model_get (GTK_TREE_MODEL (gsearch->search_results_list_store), &iter,
-    		                    COLUMN_NAME, &utf8_name,
-		                    COLUMN_PATH, &utf8_path,
+    		                    COLUMN_URI, &uri,
+				    COLUMN_EXEC, &exec,
 		                    COLUMN_NO_FILES_FOUND, &no_files_found,
 		                    -1);
 
-		g_print ("opening %s/%s\n", utf8_path, utf8_name);
 
-		if (!no_files_found) {
+		if (gsearch->type == SERVICE_EMAILS) {
+			exec = g_strdup_printf ("evolution \"%s\"", uri);
+			g_spawn_command_line_async (exec, NULL);
+			g_free (exec);
+
+
+		} else if (gsearch->type == SERVICE_APPLICATIONS) {
+			if (exec) {
+
+				char *my_exec = tracker_string_replace (exec, "%U", NULL);
+				g_spawn_command_line_async (my_exec, NULL);
+				g_free (my_exec);
+				g_free (exec);
+			} else {
+				display_dialog_could_not_open_file (gsearch->window, uri, _("Application could not be opened"));
+			}
+
+		} else {
+
+
 			gchar * file;
 			gchar * locale_file;
 
-			file = g_build_filename (utf8_path, utf8_name, NULL);
+			file = uri;
 			locale_file = g_locale_from_utf8 (file, -1, NULL, NULL, NULL);
 
 			if (!g_file_test (locale_file, G_FILE_TEST_EXISTS)) {
 				gtk_tree_selection_unselect_iter (GTK_TREE_SELECTION (gsearch->search_results_selection),
 				                                  &iter);
-				display_dialog_could_not_open_file (gsearch->window, utf8_name,
+				display_dialog_could_not_open_file (gsearch->window, uri,
 				                                    _("The document does not exist."));
 
-			}
-			else if (open_file_with_application (gsearch->window, locale_file) == FALSE) {
+			} else if (open_file_with_xdg_open (gsearch->window, locale_file) == FALSE) {
 
-				if (launch_file (locale_file) == FALSE) {
+				if (open_file_with_application (gsearch->window, locale_file) == FALSE) {
 
-					if (g_file_test (locale_file, G_FILE_TEST_IS_DIR)) {
+					if (launch_file (locale_file) == FALSE) {
 
-						if (open_file_with_xdg_open (gsearch->window, locale_file) == FALSE) {
+						if (g_file_test (locale_file, G_FILE_TEST_IS_DIR)) {
+
 							if (open_file_with_nautilus (gsearch->window, locale_file) == FALSE) {
-								display_dialog_could_not_open_folder (gsearch->window, utf8_name);
+								display_dialog_could_not_open_folder (gsearch->window, uri);
 							}
-						}
-					}
-					else {
-						display_dialog_could_not_open_file (gsearch->window, utf8_name,
+
+
+						} else {
+							display_dialog_could_not_open_file (gsearch->window, uri,
 						                                    _("There is no installed viewer capable "
 						                                      "of displaying the document."));
+						}
 					}
 				}
 			}
-			g_free (file);
 			g_free (locale_file);
 		}
-		g_free (utf8_name);
-		g_free (utf8_path);
+		g_free (uri);
+
 	}
 	g_list_foreach (list, (GFunc) gtk_tree_path_free, NULL);
 	g_list_free (list);
@@ -589,32 +727,7 @@ open_folder_cb (GtkAction * action,
 	g_list_free (list);
 }
 
-void
-file_changed_cb (GnomeVFSMonitorHandle * handle,
-                 const gchar * monitor_uri,
-                 const gchar * info_uri,
-                 GnomeVFSMonitorEventType event_type,
-                 gpointer data)
-{
-	GSearchMonitor * monitor = data;
-	GSearchWindow * gsearch = monitor->gsearch;
-	GtkTreeModel * model;
-	GtkTreePath * path;
-	GtkTreeIter iter;
 
-	switch (event_type) {
-	case GNOME_VFS_MONITOR_EVENT_DELETED:
-		path = gtk_tree_row_reference_get_path (monitor->reference);
-		model = gtk_tree_row_reference_get_model (monitor->reference);
-		gtk_tree_model_get_iter (model, &iter, path);
-		tree_model_iter_free_monitor (model, NULL, &iter, NULL);
-		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-		update_search_counts (gsearch);
-		break;
-	default:
-		break;
-	}
-}
 
 static void
 display_dialog_could_not_move_to_trash (GtkWidget * window,
@@ -815,8 +928,7 @@ move_to_trash_cb (GtkAction * action,
 			gtk_tree_selection_unselect_iter (GTK_TREE_SELECTION (gsearch->search_results_selection), &iter);
 
 			if (result == GNOME_VFS_OK) {
-				tree_model_iter_free_monitor (GTK_TREE_MODEL (gsearch->search_results_list_store),
-							      NULL, &iter, NULL);
+	
 				gtk_list_store_remove (GTK_LIST_STORE (gsearch->search_results_list_store), &iter);
 			}
 			else {
@@ -850,8 +962,7 @@ move_to_trash_cb (GtkAction * action,
 				}
 
 				if (result == GNOME_VFS_OK) {
-					tree_model_iter_free_monitor (GTK_TREE_MODEL (gsearch->search_results_list_store),
-								      NULL, &iter, NULL);
+					
 					gtk_list_store_remove (GTK_LIST_STORE (gsearch->search_results_list_store), &iter);
 				}
 				else {
@@ -941,29 +1052,6 @@ file_button_release_event_cb (GtkWidget * widget,
 		return FALSE;
 	}
 
-	if (event->button == 1 || event->button == 2) {
-		GtkTreePath *path;
-
-		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (gsearch->search_results_tree_view), event->x, event->y,
-		                                   &path, NULL, NULL, NULL)) {
-			if ((event->state & GDK_SHIFT_MASK) || (event->state & GDK_CONTROL_MASK)) {
-				if (row_selected_by_button_press_event) {
-					gtk_tree_selection_select_path (gtk_tree_view_get_selection (GTK_TREE_VIEW(gsearch->search_results_tree_view)), path);
-				}
-				else {
-					gtk_tree_selection_unselect_path (gtk_tree_view_get_selection (GTK_TREE_VIEW(gsearch->search_results_tree_view)), path);
-				}
-			}
-			else {
-				if (gsearch->is_search_results_single_click_to_activate == FALSE) {
-					gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW(gsearch->search_results_tree_view)));
-				}
-				gtk_tree_selection_select_path (gtk_tree_view_get_selection (GTK_TREE_VIEW(gsearch->search_results_tree_view)), path);
-			}
-		}
-		gtk_tree_path_free (path);
-	}
-
 	if (gtk_tree_selection_count_selected_rows (GTK_TREE_SELECTION (gsearch->search_results_selection)) == 0) {
 		return FALSE;
 	}
@@ -996,6 +1084,7 @@ file_button_release_event_cb (GtkWidget * widget,
 			}
 		}
 	}
+
 	return FALSE;
 }
 
@@ -1150,6 +1239,39 @@ drag_begin_file_cb (GtkWidget * widget,
 	}
 }
 
+/* Make a desktop file in /tmp witch points to this email*/
+static gchar*
+make_email_desktop_file (const gchar *utf8_uri, const gchar *utf8_name)
+{
+	GnomeDesktopItem *item = NULL;
+	gchar *exec_string = NULL;
+	gchar *save_uri = NULL;
+        time_t seconds;
+
+	item = gnome_desktop_item_new ();
+	
+	exec_string = g_strdup_printf ("evolution \"%s\"",utf8_uri);
+	
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_ENCODING, "UTF-8");
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_NAME, utf8_name);
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_COMMENT, _("Activate to view this email"));
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_EXEC, exec_string);
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_ICON, "email");	
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_TERMINAL, "false");
+	gnome_desktop_item_set_string (item, GNOME_DESKTOP_ITEM_TYPE, "Application");
+	
+	seconds = time (NULL);
+	save_uri = g_strdup_printf ("/tmp/tracker-email-shortcut-file%d.desktop", (int)seconds);
+	gnome_desktop_item_save (item,
+				 save_uri,
+                                 TRUE,
+                                 NULL);
+	
+	g_free (exec_string);
+	
+	return save_uri;
+}
+
 void
 drag_file_cb  (GtkWidget * widget,
                GdkDragContext * context,
@@ -1177,6 +1299,7 @@ drag_file_cb  (GtkWidget * widget,
 		gboolean no_files_found = FALSE;
 		gchar * utf8_name;
 		gchar * utf8_path;
+		gchar * utf8_uri;
 		gchar * file;
 
 		gtk_tree_model_get_iter (GTK_TREE_MODEL (gsearch->search_results_list_store), &iter,
@@ -1185,13 +1308,15 @@ drag_file_cb  (GtkWidget * widget,
 		gtk_tree_model_get (GTK_TREE_MODEL (gsearch->search_results_list_store), &iter,
 		                    COLUMN_NAME, &utf8_name,
 		                    COLUMN_PATH, &utf8_path,
+		                    COLUMN_URI, &utf8_uri,
 		                    COLUMN_NO_FILES_FOUND, &no_files_found,
 		                    -1);
 
 		file = g_build_filename (utf8_path, utf8_name, NULL);
 
 		if (!no_files_found) {
-			gchar * tmp_uri = g_filename_to_uri (file, NULL, NULL);
+			gchar * tmp_uri = NULL;
+			tmp_uri = g_filename_to_uri (file, NULL, NULL);
 
 			if (uri_list == NULL) {
 				uri_list = g_strdup (tmp_uri);
@@ -1199,11 +1324,22 @@ drag_file_cb  (GtkWidget * widget,
 			else {
 				uri_list = g_strconcat (uri_list, "\n", tmp_uri, NULL);
 			}
-			gtk_selection_data_set (selection_data,
+			if (gsearch->type < 10) {
+				gtk_selection_data_set (selection_data,
+				                        selection_data->target,
+				                        8,
+				                        (guchar *) uri_list,
+			        	                strlen (uri_list));
+			} else {
+				gchar *desktop_uri;
+				desktop_uri = make_email_desktop_file (utf8_uri, utf8_name);
+				gtk_selection_data_set (selection_data,
 			                        selection_data->target,
 			                        8,
-			                        (guchar *) uri_list,
-			                        strlen (uri_list));
+			                        (guchar *) desktop_uri,
+			                        strlen (desktop_uri));
+				        g_free (desktop_uri);			
+			}
 			g_free (tmp_uri);
 		}
 		else {
@@ -1211,6 +1347,7 @@ drag_file_cb  (GtkWidget * widget,
 		}
 		g_free (utf8_name);
 		g_free (utf8_path);
+		g_free (utf8_uri);
 		g_free (file);
 	}
 	g_list_foreach (list, (GFunc) gtk_tree_path_free, NULL);
@@ -1308,6 +1445,9 @@ show_file_selector_cb (GtkAction * action,
 	if (gsearch->save_results_as_default_filename != NULL) {
 		gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (file_chooser),
 		                               gsearch->save_results_as_default_filename);
+	} else {
+		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (file_chooser),
+		                               g_get_home_dir());
 	}
 
 	g_signal_connect (G_OBJECT (file_chooser), "response",
@@ -1649,3 +1789,18 @@ window_state_event_cb (GtkWidget * widget,
 	}
 	return FALSE;
 }
+
+void
+suggest_search_cb	(GtkWidget *widget,
+			 gpointer data)
+{
+	GSearchWindow	*gsearch = data;
+	gchar		*suggest;
+
+	suggest = g_object_get_data (G_OBJECT (widget), "suggestion");
+	
+	gtk_entry_set_text (GTK_ENTRY (gsearch->search_entry), suggest);
+	gtk_button_clicked (GTK_BUTTON (gsearch->find_button));
+
+}
+

@@ -19,6 +19,7 @@
 
 #include "config.h"
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <glib.h>
@@ -31,20 +32,44 @@ tracker_extract_imagemagick (gchar *filename, GHashTable *metadata)
 	gchar         *argv[6];
 	gchar         *identify;
 	gchar        **lines;
+	gint           exit_status;
+
+	/* imagemagick crashes trying to extract from xcf files */
+	if (g_str_has_suffix (filename, ".xcf")) {
+		return;
+	}
 
 	argv[0] = g_strdup ("identify");
 	argv[1] = g_strdup ("-format");
 	argv[2] = g_strdup ("%w;\\n%h;\\n%c;\\n");
-	argv[3] = g_strdup ("-ping");
-	argv[4] = g_strdup (filename);
+	if (g_str_has_suffix (filename, ".xcf")) {
+		argv[3] = g_strdup (filename);
+		argv[4] = NULL;
+	}
+	else {
+		argv[3] = g_strdup ("-ping");
+		argv[4] = g_strdup (filename);
+	}
 	argv[5] = NULL;
 
-	if (tracker_spawn (argv, 10, &identify, NULL)) {
+	if (tracker_spawn (argv, 10, &identify, &exit_status)) {
+		if (exit_status == EXIT_SUCCESS) {
+			lines = g_strsplit (identify, ";\n", 4);
+			g_hash_table_insert (metadata, g_strdup ("Image:Width"), g_strdup (lines[0]));
+			g_hash_table_insert (metadata, g_strdup ("Image:Height"), g_strdup (lines[1]));
+			g_hash_table_insert (metadata, g_strdup ("Image:Comments"), g_strdup (g_strescape (lines[2], "")));
+		}
+	}
 
-		lines = g_strsplit (identify, ";\n", 4);
-		g_hash_table_insert (metadata, g_strdup ("Image:Width"), g_strdup (lines[0]));
-		g_hash_table_insert (metadata, g_strdup ("Image:Height"), g_strdup (lines[1]));
-		g_hash_table_insert (metadata, g_strdup ("Image:Comments"), g_strdup (g_strescape (lines[2], "")));
+	gchar         *xmp;
+	argv[0] = g_strdup ("convert");
+	argv[1] = g_strdup (filename);
+	argv[2] = g_strdup ("xmp:-");
+	argv[3] = NULL;
+
+	if (tracker_spawn (argv, 10, &xmp, &exit_status)) {
+		if (exit_status == EXIT_SUCCESS) {
+			tracker_read_xmp (xmp, strlen (xmp), metadata);
+		}
 	}
 }
-

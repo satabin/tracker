@@ -24,35 +24,19 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <time.h>
+#include <limits.h>
 #include <glib/gprintf.h>
 #include <glib/gprintf.h>
 #include <glib/gstdio.h>
 #include <sys/resource.h>
 #include <zlib.h>
-#include <magic.h>
 #include "tracker-dbus.h"
 #include "tracker-utils.h"
 #include "tracker-indexer.h"
+#include "tracker-stemmer.h"
 #include "../xdgmime/xdgmime.h"
 
-
-
-
 extern Tracker	*tracker;
-
-char *implemented_services[] = {"Files", "Folders", "Documents", "Images", "Music", "Videos", "Text Files", "Development Files", "Other Files",
-				"VFS Files", "VFS Folders", "VFS Documents", "VFS Images", "VFS Music", "VFS Videos", "VFS Text Files", "VFS Development Files", "VFS Other Files",
-				NULL};
-
-char *file_service_array[] =   {"Files", "Folders", "Documents", "Images", "Music", "Videos", "Text Files", "Development Files", "Other Files",
-				"VFS Files", "VFS Folders", "VFS Documents", "VFS Images", "VFS Music", "VFS Videos", "VFS Text Files", "VFS Development Files", "VFS Other Files",
-				NULL};
-
-char *service_index_array[] = {	"Files", "Folders", "Documents", "Images", "Music", "Videos", "Text Files", "Development Files", "Other Files",
-				"VFS Files", "VFS Folders", "VFS Documents", "VFS Images", "VFS Music", "VFS Videos", "VFS Text Files", "VFS Development Files", "VFS Other Files",
-				"Conversations", "Playlists", "Applications", "Contacts", "Emails", "EmailAttachments", "Notes", "Appointments",
-				"Tasks", "Bookmarks", "History", "Projects", NULL};
-
 
 char *tracker_actions[] = {
 		"TRACKER_ACTION_IGNORE", "TRACKER_ACTION_CHECK", "TRACKER_ACTION_DELETE", "TRACKER_ACTION_DELETE_SELF", "TRACKER_ACTION_CREATE","TRACKER_ACTION_MOVED_FROM",
@@ -65,6 +49,7 @@ char *tracker_actions[] = {
 
 #define ZLIBBUFSIZ 8196
 
+
 static int info_allocated = 0;
 static int info_deallocated = 0;
 
@@ -74,24 +59,199 @@ static const char *months[] = {
 	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
 
+
 static const char imonths[] = {
 	'1', '2', '3', '4', '5',
 	'6', '7', '8', '9', '0', '1', '2'
 };
 
 
-const char *
+static Matches tmap[] = {
+		{"da", "danish"},
+		{"nl", "dutch"},
+		{"en", "english"},
+ 		{"fi", "finnish"},
+		{"fr", "french"},
+		{"de", "german"},
+		{"it", "italian"},
+		{"nb", "norwegian"},
+		{"pt", "portuguese"},
+		{"ru", "russian"},
+		{"es", "spanish"},
+		{"sv", "swedish"},
+		{NULL, NULL},
+};
+
+
+char *
 tracker_get_service_by_id (int service_type_id)
 {
-	return service_index_array[service_type_id];
+	char *str_id;
+	ServiceDef *def;
+
+	str_id  = tracker_int_to_str (service_type_id);
+	def = g_hash_table_lookup (tracker->service_id_table, str_id);
+	g_free (str_id);
+
+	if (!def) {
+		tracker_log ("WARNING: no service found for id %d", service_type_id);
+		return NULL;
+	}
+
+	return g_strdup (def->name);
 }
+
+
+char *
+tracker_get_parent_service_by_id (int service_type_id)
+{
+	char *str_id = tracker_int_to_str (service_type_id);
+	ServiceDef *def = g_hash_table_lookup (tracker->service_id_table, str_id);
+
+	g_free (str_id);
+
+	if (!def) {
+		return NULL;
+	}
+
+	return g_strdup (def->parent);
+}
+
+
+int
+tracker_get_parent_id_for_service_id (int service_type_id)
+{
+	char *str_id = tracker_int_to_str (service_type_id);
+	ServiceDef *def = g_hash_table_lookup (tracker->service_id_table, str_id);
+
+	g_free (str_id);
+
+	if (!def) {
+		return -1;
+	}
+
+	char *name = g_utf8_strdown (def->parent, -1);
+
+	ServiceDef *def2 = g_hash_table_lookup (tracker->service_table, name);
+
+	g_free (name);
+
+	if (!def2) {
+		return -1;
+	}
+
+	return  def2->id;
+}
+
 
 int
 tracker_get_id_for_service (const char *service)
 {
-	return tracker_str_in_array (service, service_index_array);
+	char *name = g_utf8_strdown (service, -1);
+
+	ServiceDef *def = g_hash_table_lookup (tracker->service_table, name);
+
+	g_free (name);
+
+	if (!def) {
+		return -1;
+	}
+
+	return def->id;
 }
 
+
+int
+tracker_get_id_for_parent_service (const char *service)
+{
+	char *name = g_utf8_strdown (service, -1);
+
+	ServiceDef *def = g_hash_table_lookup (tracker->service_table, name);
+
+	g_free (name);
+
+	if (!def) {
+		return -1;
+	}
+
+	return tracker_get_id_for_service (def->parent);
+}
+
+
+char *
+tracker_get_parent_service (const char *service)
+{
+	char *name = g_utf8_strdown (service, -1);
+
+	ServiceDef *def = g_hash_table_lookup (tracker->service_table, name);
+
+	g_free (name);
+
+	if (!def) {
+		return NULL;
+	}
+
+	if (def->parent) {
+		return g_strdup (def->parent);
+	}
+
+	return NULL;
+}
+
+
+ServiceDef *
+tracker_get_service (const char *service)
+{
+	char *name = g_utf8_strdown (service, -1);
+
+	ServiceDef *def = g_hash_table_lookup (tracker->service_table, name);
+
+	g_free (name);
+
+	return def;
+}
+
+
+DBTypes
+tracker_get_db_for_service (const char *service)
+{
+	char *name = g_utf8_strdown (service, -1);
+
+	if (g_str_has_prefix (name, "emails") || g_str_has_prefix (name, "attachments")) {
+		g_free (name);
+		return DB_EMAIL;
+	}
+
+	int id = tracker_get_id_for_parent_service (name);
+	char *str_id = tracker_int_to_str (id);
+
+//	ServiceDef *def = g_hash_table_lookup (tracker->service_id_table, str_id);
+	g_free (str_id);
+
+	g_free (name);
+
+//	if (!def) {
+		return DB_DATA;
+
+//	return def->database;
+}
+
+
+gboolean
+tracker_is_service_embedded (const char *service)
+{
+	char *name = g_utf8_strdown (service, -1);
+
+	ServiceDef *def = g_hash_table_lookup (tracker->service_table, name);
+
+	g_free (name);
+
+	if (!def) {
+		return FALSE;
+	}
+
+	return def->embedded;
+}
 
 
 char **
@@ -147,6 +307,7 @@ parse_month (const char *month)
 		if (!strncmp (month, months[i], 3))
 			return i;
 	}
+
 	return -1;
 }
 
@@ -549,7 +710,7 @@ tracker_str_to_date (const char *timestamp)
 	}
 
 	if (*timestamp++ != 'T') {
-		tracker_log ("date validation failed for %s st %c", timestamp, *timestamp);
+		tracker_error ("ERROR: date validation failed for %s st %c", timestamp, *timestamp);
 		return -1;
 	}
 
@@ -634,6 +795,13 @@ tracker_date_to_str (gint32 date_time)
 }
 
 
+gboolean
+tracker_is_empty_string (const char *s)
+{
+	return s == NULL || s[0] == '\0';
+}
+
+
 char *
 tracker_int_to_str (gint i)
 {
@@ -677,7 +845,6 @@ tracker_str_in_array (const char *str, char **array)
 	i = 0;
 
 	for (st = array; *st; st++) {
-
 		if (strcasecmp (*st, str) == 0) {
 			return i;
 		}
@@ -703,26 +870,47 @@ tracker_get_radix_by_suffix (const char *str, const char *suffix)
 
 
 char *
-tracker_escape_metadata (const char *str)
+tracker_escape_metadata (const char *in)
 {
-	char *st = g_strdup (str);
+	if (!in) {
+		return NULL;
+	}
 
-	return	g_strdelimit (st, ";", ',');
+	GString *gs = g_string_new ("");
+
+	for(; *in; in++) {
+		if (*in == '|') {
+			g_string_append_c (gs, 30);
+		} else {
+			g_string_append_c (gs, *in);
+		}
+	}
+
+	return g_string_free (gs, FALSE);
 }
+
 
 
 char *
-tracker_unescape_metadata (const char *str)
+tracker_unescape_metadata (const char *in)
 {
-/*	char *delimiter[2];
+	if (!in) {
+		return NULL;
+	}
 
-	delmiter[0] = 30;
-	delimiter[1] = NULL;
+	GString *gs = g_string_new ("");
 
-	return	g_strdup (g_strdelimit (str, ";", delimiter));
-*/
-return NULL;
+	for(; *in; in++) {
+		if (*in == 30) {
+			g_string_append_c (gs, '|');
+		} else {
+			g_string_append_c (gs, *in);
+		}
+	}
+
+	return g_string_free (gs, FALSE);
 }
+
 
 
 void
@@ -844,48 +1032,100 @@ tracker_format_search_terms (const char *str, gboolean *do_bool_search)
 
 
 void
-tracker_print_object_allocations ()
+tracker_print_object_allocations (void)
 {
-	tracker_log ("total allocations = %d, total deallocations = %d", info_allocated, info_deallocated);
+	tracker_log ("Total allocations = %d, total deallocations = %d", info_allocated, info_deallocated);
+}
+
+
+static inline gboolean
+is_in_path (const char *uri, const char *path)
+{
+	char *tmp = g_strconcat (path, G_DIR_SEPARATOR_S, NULL);
+
+	gboolean result = g_str_has_prefix (uri, tmp);
+
+	g_free (tmp);
+
+	return result;
 }
 
 
 gboolean
 tracker_file_is_no_watched (const char* uri)
 {
-
-	if (!tracker->no_watch_directory_list) {
-		return FALSE;
-	}
+	GSList *lst;
 
 	if (!uri || uri[0] != '/') {
 		return TRUE;
 	}
 
-	char *compare_uri;
-	GSList *l;
-	for (l=tracker->no_watch_directory_list; l; l=l->next) {
+	if (is_in_path (uri, g_get_tmp_dir ())) {
+		return TRUE;
+	}
 
-		compare_uri = (char *) l->data;
+	if (is_in_path (uri, "/proc")) {
+		return TRUE;
+	}
+
+	if (is_in_path (uri, "/dev")) {
+		return TRUE;
+	}
+
+	if (is_in_path (uri, "/tmp")) {
+		return TRUE;
+	}
+
+	if (!tracker->no_watch_directory_list) {
+		return FALSE;
+	}
+
+	for (lst = tracker->no_watch_directory_list; lst; lst = lst->next) {
+
+                char *compare_uri = lst->data;
 
 		/* check if equal or a prefix with an appended '/' */
 		if (strcmp (uri, compare_uri) == 0) {
-			tracker_debug ("blocking watch of %s", uri); 
+			tracker_debug ("blocking watch of %s", uri);
 			return TRUE;
 		}
 
-		char *prefix = g_strconcat (compare_uri, G_DIR_SEPARATOR_S, NULL);
-		if (g_str_has_prefix (uri, prefix)) {
-			tracker_debug ("blocking prefix watch of %s", uri); 
+		if (is_in_path (uri, compare_uri)) {
+			tracker_debug ("blocking watch of %s", uri);
 			return TRUE;
 		}
-
-		g_free (prefix);
-		
 	}
 
 	return FALSE;
-	
+}
+
+
+gboolean
+tracker_file_is_crawled (const char* uri)
+{
+	GSList *lst;
+
+	if (!tracker->crawl_directory_list) {
+		return FALSE;
+	}
+
+	for (lst = tracker->crawl_directory_list; lst; lst = lst->next) {
+
+		char *compare_uri = lst->data;
+
+		/* check if equal or a prefix with an appended '/' */
+		if (strcmp (uri, compare_uri) == 0) {
+			tracker_debug ("blocking watch of %s", uri);
+			return TRUE;
+		}
+
+		if (is_in_path (uri, compare_uri)) {
+			tracker_debug ("blocking watch of %s", uri);
+			return TRUE;
+		}
+	}
+
+	return FALSE;
 }
 
 
@@ -963,6 +1203,9 @@ tracker_create_file_info (const char *uri, TrackerChangeAction action, int count
 	info->atime = 0;
 	info->indextime = 0;
 	info->offset = 0;
+	info->aux_id = -1;
+
+	info->is_hidden = FALSE;
 
 	info->is_new = TRUE;
 	info->service_type_id = -1;
@@ -1098,7 +1341,7 @@ tracker_get_file_mtime (const char *uri)
 		}
 
 	} else {
-		tracker_log ("******ERROR**** uri could not be converted to locale format");
+		tracker_error ("ERROR: uri could not be converted to locale format");
 
 		return 0;
 	}
@@ -1106,7 +1349,6 @@ tracker_get_file_mtime (const char *uri)
 	g_free (uri_in_locale);
 
 	return (gint32) finfo.st_mtime;
-
 }
 
 
@@ -1131,7 +1373,7 @@ tracker_get_file_info (FileInfo *info)
 		}
 
 	} else {
-		tracker_log ("******ERROR**** info->uri could not be converted to locale format");
+		tracker_error ("ERROR: info->uri could not be converted to locale format");
 
 		return NULL;
 	}
@@ -1203,10 +1445,33 @@ tracker_get_file_info (FileInfo *info)
 	return info;
 }
 
-void
-tracker_add_service_path (const char *service, const char *path)
-{
 
+GSList *
+tracker_get_service_dirs (const char *service)
+{
+	GSList *list = NULL, *tmp;
+
+	if (!service) {
+		return NULL;
+	}
+
+	for (tmp = tracker->service_directory_list; tmp; tmp = tmp->next) {
+
+		char *path = (char *) tmp->data;
+		char *path_service = g_hash_table_lookup (tracker->service_directory_table, path);
+
+		if (strcasecmp (service, path_service) ==0) {
+			list = g_slist_prepend (list, path);
+		}
+	}
+
+	return list;
+}
+
+
+void
+tracker_add_service_path (const char *service,  const char *path)
+{
 	if (!service || !path || !tracker_file_is_valid (path)) {
 		return;
 	}
@@ -1217,10 +1482,7 @@ tracker_add_service_path (const char *service, const char *path)
 	tracker->service_directory_list = g_slist_prepend (tracker->service_directory_list, dir_path);
 
 	g_hash_table_insert (tracker->service_directory_table, dir_path, service_type);
-	
 }
-
-
 
 
 char *
@@ -1233,17 +1495,28 @@ tracker_get_service_for_uri (const char *uri)
 		char *prefix;
 
 		prefix = (char *) tmp->data;
-		if (g_str_has_prefix (uri, prefix)) {	
+		if (prefix && g_str_has_prefix (uri, prefix)) {
 			return g_strdup (g_hash_table_lookup (tracker->service_directory_table, prefix));
 		}
 	}
 
-	if (g_str_has_prefix (uri, g_get_tmp_dir ())) {
-		return NULL;
-	}
-
 	return g_strdup ("Files");
+}
 
+
+gboolean
+tracker_is_service_file (const char *uri)
+{
+	char *service;
+	gboolean result;
+
+	service = tracker_get_service_for_uri (uri);
+
+	result =  (service && strcmp (service, "Files") != 0);
+
+	g_free (service);
+
+	return result;
 }
 
 
@@ -1256,7 +1529,7 @@ tracker_file_is_valid (const char *uri)
 	uri_in_locale = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
 
 	if (!uri_in_locale) {
-		tracker_log ("******ERROR**** uri could not be converted to locale format");
+		tracker_error ("ERROR: uri could not be converted to locale format");
 		g_free (uri_in_locale);
 		return FALSE;
 	}
@@ -1270,7 +1543,6 @@ tracker_file_is_valid (const char *uri)
 }
 
 
-
 gboolean
 tracker_file_is_indexable (const char *uri)
 {
@@ -1281,22 +1553,105 @@ tracker_file_is_indexable (const char *uri)
 	uri_in_locale = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
 
 	if (!uri_in_locale) {
-		tracker_log ("******ERROR**** uri could not be converted to locale format");
+		tracker_error ("ERROR: uri could not be converted to locale format");
 		return FALSE;
 	}
 
 	g_lstat (uri_in_locale, &finfo);
 
-	g_free (uri_in_locale); 
+	g_free (uri_in_locale);
 
 	convert_ok = (!S_ISDIR (finfo.st_mode) && S_ISREG (finfo.st_mode));
 
-	if (convert_ok) tracker_debug ("file %s is indexable", uri);
+	if (convert_ok) {
+		 tracker_debug ("file %s is indexable", uri);
+	} else {
+		 tracker_debug ("file %s is *not* indexable", uri);
+	}
 
 	return convert_ok;
 }
 
 
+static inline gboolean
+is_utf8 (const gchar *buffer, gint buffer_length)
+{
+	gchar *end;
+
+	/* code in this function modified from gnome-vfs */
+
+	if (g_utf8_validate ((gchar *)buffer, buffer_length, (const gchar**)&end)) {
+		return TRUE;
+	} else {
+		/* Check whether the string was truncated in the middle of
+		 * a valid UTF8 char, or if we really have an invalid
+		 * UTF8 string
+     		 */
+		gint remaining_bytes = buffer_length;
+
+		remaining_bytes -= (end-((gchar *)buffer));
+
+		if (remaining_bytes > 4) {
+			return FALSE;
+		}
+
+ 		if (g_utf8_get_char_validated (end, (gsize) remaining_bytes) == (gunichar) -2) {
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+
+static gboolean
+is_text_file (const gchar *uri)
+{
+	gchar 	buffer[1024];
+	FILE 	*f;
+	gint 	buffer_length = 0;
+	GError	*err = NULL;
+
+	f = g_fopen (uri, "r");
+
+	if (!f) {
+		return FALSE;
+	}
+
+	buffer_length = fread (buffer, 1, 1024, f);
+
+	fclose (f);
+
+	if (buffer_length == 0) {
+		return TRUE;
+	}
+
+	/* Don't allow embedded zeros in textfiles. */
+	if (memchr (buffer, 0, buffer_length) != NULL) {
+		return FALSE;
+	}
+
+	if (is_utf8 (buffer, buffer_length)) {
+		return TRUE;
+	} else {
+		gchar *tmp = g_locale_to_utf8 (buffer, buffer_length, NULL, NULL, &err);
+		g_free (tmp);
+
+		if (err) {
+			gboolean result = FALSE;
+
+			if (err->code != G_CONVERT_ERROR_ILLEGAL_SEQUENCE && err->code !=  G_CONVERT_ERROR_FAILED && err->code != G_CONVERT_ERROR_NO_CONVERSION) {
+				result = TRUE;
+			}
+
+			g_error_free (err);
+
+			return result;
+		}
+	}
+
+	return FALSE;
+}
 
 
 char *
@@ -1306,17 +1661,16 @@ tracker_get_mime_type (const char *uri)
 	char	    *uri_in_locale;
 	const char  *result;
 	char *mime;
-	int i;
 
 	if (!tracker_file_is_valid (uri)) {
-		tracker_log ("Warning file %s is no longer valid", uri);
+		tracker_log ("WARNING: file %s is no longer valid", uri);
 		return g_strdup ("unknown");
 	}
 
 	uri_in_locale = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
 
 	if (!uri_in_locale) {
-		tracker_log ("******ERROR**** uri could not be converted to locale format");
+		tracker_error ("ERROR: uri could not be converted to locale format");
 		return g_strdup ("unknown");
 	}
 
@@ -1330,16 +1684,8 @@ tracker_get_mime_type (const char *uri)
 
 	if (!result || (result == XDG_MIME_TYPE_UNKNOWN)) {
 
-		result =  magic_file (tracker->magic, uri_in_locale);
-
-		for (i=0; result[i]; i++) {
-			if (result[i] == ';') {
-				break;
-			}
-		}
-
-		if (result) {
-			mime = g_strndup (result, i);
+		if (is_text_file (uri_in_locale)) {
+			mime = g_strdup ("text/plain");
 		} else {
 			mime = g_strdup ("unknown");
 		}
@@ -1402,7 +1748,7 @@ char *
 tracker_get_vfs_name (const char* uri)
 {
 	if (uri != NULL && strchr (uri, G_DIR_SEPARATOR) != NULL) {
-		char *p, *res, *tmp;
+		char *p, *res, *tmp, *result;
 		int  len;
 
 		len = strlen (uri);
@@ -1424,13 +1770,14 @@ tracker_get_vfs_name (const char* uri)
 		res = p+1;
 
 		if (res && res[0] != '\0') {
-
+			result =  g_strdup (res);
 			g_free (tmp);
 
-			return g_strdup (res);
+			return result;
 		}
 
 		g_free (tmp);
+
 	}
 
 	return g_strdup (" ");
@@ -1451,10 +1798,10 @@ tracker_is_directory (const char *dir)
 
 		g_free (dir_in_locale);
 
-		return S_ISDIR (finfo.st_mode); 
+		return S_ISDIR (finfo.st_mode);
 
 	} else {
-		tracker_log ("******ERROR**** dir could not be converted to locale format");
+		tracker_error ("ERROR: dir could not be converted to locale format");
 	}
 
 	return FALSE;
@@ -1481,8 +1828,9 @@ has_prefix (const char *str1, const char *str2)
 }
 */
 
-GSList *
-tracker_get_files (const char *dir, gboolean dir_only)
+
+static GSList *
+get_files (const char *dir, gboolean dir_only, gboolean skip_ignored_files)
 {
 	GDir	*dirp;
 	GSList	*file_list;
@@ -1491,7 +1839,7 @@ tracker_get_files (const char *dir, gboolean dir_only)
 	dir_in_locale = g_filename_from_utf8 (dir, -1, NULL, NULL, NULL);
 
 	if (!dir_in_locale) {
-		tracker_log ("******ERROR**** dir could not be converted to utf8 format");
+		tracker_error ("ERROR: dir could not be converted to utf8 format");
 		g_free (dir_in_locale);
 		return NULL;
 	}
@@ -1516,13 +1864,17 @@ tracker_get_files (const char *dir, gboolean dir_only)
 				continue;
 			}
 
-			if (tracker_ignore_file (str)) {
+			if (skip_ignored_files && tracker_ignore_file (str)) {
 				g_free (str);
 				continue;
 			}
 
 			mystr = g_build_filename (dir, str, NULL);
 			g_free (str);
+
+ 			if (!tracker_file_is_valid (mystr)) {
+				continue;
+			}
 
 			if (!dir_only || tracker_is_directory (mystr)) {
 
@@ -1552,19 +1904,33 @@ tracker_get_files (const char *dir, gboolean dir_only)
 }
 
 
-void
-tracker_get_dirs (const char *dir, GSList **file_list)
+GSList *
+tracker_get_all_files (const char *dir, gboolean dir_only)
+{
+	return get_files (dir, dir_only, FALSE);
+}
+
+
+GSList *
+tracker_get_files (const char *dir, gboolean dir_only)
+{
+	return get_files (dir, dir_only, TRUE);
+}
+
+
+static void
+get_dirs (const char *dir, GSList **file_list, gboolean skip_ignored_files)
 {
 	GSList *tmp_list;
 
-	if (!dir) {
-		return;
-	}
+	g_return_if_fail (dir);
 
-	tmp_list = tracker_get_files (dir, TRUE);
+	tmp_list = (skip_ignored_files ?
+		    tracker_get_files (dir, TRUE) :
+		    tracker_get_all_files (dir, TRUE));
 
-	if (g_slist_length (tmp_list) > 0) {
-		if (g_slist_length (*file_list) > 0) {
+	if (tmp_list) {			/* check list is not empty */
+		if (*file_list) {	/* check this list too */
 			*file_list = g_slist_concat (*file_list, tmp_list);
 		} else {
 			*file_list = tmp_list;
@@ -1572,6 +1938,101 @@ tracker_get_dirs (const char *dir, GSList **file_list)
 	}
 }
 
+
+void
+tracker_get_dirs (const char *dir, GSList **file_list)
+{
+	get_dirs (dir, file_list, TRUE);
+}
+
+
+void
+tracker_get_all_dirs (const char *dir, GSList **file_list)
+{
+	get_dirs (dir, file_list, FALSE);
+}
+
+
+static GSList *
+check_dir_name (GSList* list, char *input_name)
+{
+	tracker_debug ("checking dir names : %s", input_name);
+
+	int is_converted = FALSE;
+
+	if (input_name[0] == '~') {
+
+		const char* home_dir = g_get_home_dir ();
+
+		if ((home_dir != NULL) && (home_dir[0] != '\0')) {
+
+			int is_separator = FALSE;
+			char *new_name;
+
+			if (input_name[1] == G_DIR_SEPARATOR) {
+				is_separator = TRUE;
+			} else {
+				if (home_dir[strlen (home_dir)-1] == G_DIR_SEPARATOR) {
+					is_separator = TRUE;
+				}
+			}
+
+			new_name = g_strdup_printf ("%s%s%s", home_dir, (is_separator? "" : G_DIR_SEPARATOR_S), &input_name[1]);
+
+			if ((new_name != NULL) && (strlen (new_name) <= PATH_MAX)) {
+
+				char resolved_name[PATH_MAX+2];
+
+				if (realpath (new_name, resolved_name) != NULL) {
+					list = g_slist_prepend (list, g_strdup (resolved_name));
+				} else {
+					list = g_slist_prepend (list, g_strdup (new_name));
+				}
+
+				is_converted = TRUE;
+			}
+
+			if (new_name != NULL) {
+				g_free (new_name);
+			}
+		}
+	}
+
+	if (!is_converted) {
+
+		char resolved_name[PATH_MAX+2];
+
+		if( realpath (input_name, resolved_name) != NULL ) {
+			list = g_slist_prepend (list, g_strdup (resolved_name));
+		} else {
+			list = g_slist_prepend (list, g_strdup (input_name));
+		}
+	}
+
+	tracker_debug ("resolved to %s\n", list->data);
+
+	return list;
+}
+
+
+GSList *
+tracker_filename_array_to_list (char **array)
+{
+	GSList *list;
+	int    i;
+
+	list = NULL;
+
+	for (i = 0; array[i] != NULL; i++) {
+                if (!tracker_is_empty_string (array[i])) {
+			list = check_dir_name (list, array[i]);
+		}
+	}
+
+	g_strfreev (array);
+
+	return list;
+}
 
 
 static GSList *
@@ -1583,7 +2044,7 @@ array_to_list (char **array)
 	list = NULL;
 
 	for (i = 0; array[i] != NULL; i++) {
-		if (strlen (array[i]) > 0) {
+                if (!tracker_is_empty_string (array[i])) {
 			list = g_slist_prepend (list, g_strdup (array[i]));
 		}
 	}
@@ -1594,11 +2055,45 @@ array_to_list (char **array)
 }
 
 
-
 GSList *
 tracker_array_to_list (char **array)
 {
 	return array_to_list (array);
+}
+
+
+char **
+tracker_list_to_array (GSList *list)
+{
+	GSList *tmp;
+	char **array;
+	int i;
+
+	array = g_new0 (char *, g_slist_length (list) + 1);
+
+	i = 0;
+
+	for (tmp = list; tmp; tmp = tmp->next) {
+		if (tmp->data) {
+			array[i] = g_strdup (tmp->data);
+			i++;
+		}
+	}
+
+	array[i] = NULL;
+
+	return array;
+}
+
+
+void
+tracker_free_strs_in_array (char **array)
+{
+	char **a;
+
+	for (a = array; *a; a++) {
+		g_free (*a);
+	}
 }
 
 
@@ -1608,7 +2103,7 @@ tracker_ignore_file (const char *uri)
 	int  i;
 	char *name;
 
-	if (!uri || strlen (uri) == 0) {
+	if (tracker_is_empty_string (uri)) {
 		return TRUE;
 	}
 
@@ -1632,21 +2127,34 @@ tracker_ignore_file (const char *uri)
 	return FALSE;
 }
 
-static Matches tmap[] = {
-		{"da", "danish"},
-		{"nl", "dutch"},
-		{"en", "english"},
- 		{"fi", "finnish"}, 
-		{"fr", "french"}, 
-		{"de", "german"}, 
-		{"it", "italian"}, 
-		{"nb", "norwegian"}, 
-		{"pt", "portuguese"}, 
-		{"ru", "russian"}, 
-		{"es", "spanish"}, 
-		{"sv", "swedish"}, 
-		{NULL, 0},
-};
+char *
+tracker_array_to_str (char **array, int length, char sep)
+{
+	GString *gstr = g_string_new ("");
+	int i;
+
+	for (i=0; i<length; i++) {
+
+		
+
+		if (array[i]) {
+			if (i > 0) g_string_append_c (gstr, sep);
+
+			gstr = g_string_append (gstr, array[i]);
+		} else {
+			break;
+		}
+	}
+
+	return g_string_free (gstr, FALSE);
+
+}
+
+char *
+tracker_get_english_lang_code (void)
+{
+        return g_strdup (tmap[2].lang);
+}
 
 
 gboolean
@@ -1654,7 +2162,7 @@ tracker_is_supported_lang (const char *lang)
 {
 	int i;
 
-	for (i=0; tmap[i].lang; i++) {
+	for (i = 0; tmap[i].lang; i++) {
 		if (g_str_has_prefix (lang, tmap[i].lang)) {
 			return TRUE;
 		}
@@ -1665,73 +2173,49 @@ tracker_is_supported_lang (const char *lang)
 
 
 static char *
-get_default_language_code (gboolean *use_pango)
+get_default_language_code (void)
 {
-	char **langs, **plangs, *result;
-
-	char *pango_langs[] = {"th", "hi", "ko", "km", "ja", "zh", NULL};
-
-	*use_pango = FALSE;
-
+	char **langs, **plangs;
 
 	/* get langauges for user's locale */
 	langs = (char**) g_get_language_names ();
 
-	int i;
-
 	for (plangs = langs; *plangs; plangs++) {
 		if (strlen (*plangs) > 1) {
-			for (i=0; tmap[i].lang; i++) {
+                        int i;
+			for (i = 0; tmap[i].lang; i++) {
 				if (g_str_has_prefix (*plangs, tmap[i].lang)) {
-					result = g_strndup (*plangs, 2);
-					return result;
+					return g_strndup (*plangs, 2);
 				}
-
 			}
 		}
-	}
-
-	/* if its a language that does not have western word breaks then force pango usage */
-	if (langs && langs[0]) {
-		for (i=0; pango_langs[i]; i++) {
-				if (g_str_has_prefix (langs[0], pango_langs[i])) {
-					*use_pango = TRUE;
-					break;
-				}
-
-			}
 	}
 
 	return g_strdup ("en");
-
-
-
 }
 
 
-void		
+void
 tracker_set_language (const char *language, gboolean create_stemmer)
 {
-
-	gboolean use_pango;
-
 	if (!language || strlen (language) < 2) {
-
-		g_free (tracker->language);
-		tracker->language = get_default_language_code (&use_pango);
-		tracker_log ("setting default language code to %s based on user's locale", language);
+                if (tracker->language) {
+                        g_free (tracker->language);
+                }
+		tracker->language = get_default_language_code ();
+		tracker_log ("Setting default language code to %s based on user's locale", language);
 
 	} else {
 		int i;
-		for (i=0; tmap[i].lang; i++) {
-
+		for (i = 0; tmap[i].lang; i++) {
 			if (g_str_has_prefix (language, tmap[i].lang)) {
-				g_free (tracker->language);
-				tracker->language = g_strndup (tmap[i].lang, 2);
+                                if (tracker->language) {
+                                        g_free (tracker->language);
+                                }
+                                tracker->language = g_strdup (tmap[i].lang);
 				break;
 			}
 		}
-
 	}
 
 	/* set stopwords list and create stemmer for language */
@@ -1747,7 +2231,7 @@ tracker_set_language (const char *language, gboolean create_stemmer)
 	if (!g_file_get_contents (stopword_file, &stopwords, NULL, NULL)) {
 		tracker_log ("Warning : Tracker cannot read stopword file %s", stopword_file);
 	} else {
-		
+
 		tracker->stop_words = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
 		char **words = g_strsplit_set (stopwords, "\n" , -1);
@@ -1758,12 +2242,11 @@ tracker_set_language (const char *language, gboolean create_stemmer)
 		}
 
 		g_strfreev (words);
-
 	}
+
 	g_free (stopwords);
 	g_free (stopword_file);
-	
-	
+
 	if (!tracker->use_stemmer || !create_stemmer) {
 		return;
 	}
@@ -1775,8 +2258,8 @@ tracker_set_language (const char *language, gboolean create_stemmer)
 
 	if (language) {
 		int i;
-		
-		for (i=0; tmap[i].lang; i++) {
+
+		for (i = 0; tmap[i].lang; i++) {
 			if ((strcasecmp (tmap[i].lang, language) == 0)) {
 				stem_language = tmap[i].name;
 				break;
@@ -1787,16 +2270,15 @@ tracker_set_language (const char *language, gboolean create_stemmer)
 	tracker->stemmer = sb_stemmer_new (stem_language, NULL);
 
 	if (!tracker->stemmer) {
-		tracker_log ("Warning : No stemmer could be found for language %s", language);
+		tracker_log ("Warning : No stemmer could be found for language %s", stem_language);
 	} else {
-		tracker_log ("Using stemmer for language %s", language);
-	}	
-
+		tracker_log ("Using stemmer for language %s\n", stem_language);
+	}
 }
 
 
 void
-tracker_load_config_file ()
+tracker_load_config_file (void)
 {
 	GKeyFile *key_file;
 	char	 *filename;
@@ -1804,31 +2286,34 @@ tracker_load_config_file ()
 
 	key_file = g_key_file_new ();
 
-	filename = g_build_filename (g_get_home_dir (), ".Tracker", "tracker.cfg", NULL);
+	filename = g_build_filename (tracker->config_dir, "/tracker/tracker.cfg", NULL);
 
 	if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
-		char *contents, *language, *enable_pango, *min_word;
-		gboolean use_pango;
-		
-		language = get_default_language_code (&use_pango);
+                char *tracker_dir = g_build_filename (tracker->config_dir,"/tracker",NULL);
 
-		if (use_pango) {
-			enable_pango = "true";
-			min_word = "1";
-		} else {
-			enable_pango = "false";
-			min_word = "3";
-		}
+                if (!g_file_test (tracker_dir,G_FILE_TEST_EXISTS)) {
+                    g_mkdir_with_parents (tracker_dir,0700);
+                }
 
-		contents  = g_strconcat (						
+		g_free (tracker_dir);
+
+		char *contents, *language;
+
+		language = get_default_language_code ();
+
+		contents  = g_strconcat (
 					 "[General]\n",
-					 "# Set to true to enable more verbose logging in the log file (setting to false will make indexing faster)\n",
-					 "EnableDebugLogging=false\n\n",
-					 "# Poll Interval in seconds - determines how often polling is performed when intoify/fam is not available or watch limit is exceeded\n",
-					 "PollInterval=3600\n\n",
+					 "# Log Verbosity - Valid values are 0 (displays/logs only errors), 1 (minimal), 2 (detailed), and 3 (debug)\n",
+					 "Verbosity=0\n\n",
+					 "# Set the initial sleeping time, in seconds\n",
+					 "InitialSleep=45\n\n",
+					 "# Minimizes the use of memory but may slow indexing down\n", 
+					 "LowMemoryMode=false\n\n",
 					 "[Watches]\n",
 					 "# List of directory roots to index and watch seperated by semicolons\n",
 					 "WatchDirectoryRoots=", g_get_home_dir (), ";\n",
+					 "# List of directory roots to index but not watch (no live updates but are refreshed when trackerd is next restarted) seperated by semicolons\n",
+					 "CrawlDirectory=\n",
 					 "# List of directory roots to not index and not watch seperated by semicolons\n",
 					 "NoWatchDirectory=\n",
 					 "# Set to false to prevent watching of any kind\n",
@@ -1845,30 +2330,26 @@ tracker_load_config_file ()
 					 "# List of partial file patterns (glob) seperated by semicolons that specify files to not index (basic stat info is only indexed for files that match these patterns)\n",
 					 "NoIndexFileTypes=;\n\n",
 					  "# Sets minimum length of words to index\n",
-					 "MinWordLength=", min_word,"\n",
+					 "MinWordLength=3\n",
 					  "# Sets maximum length of words to index (words are cropped if bigger than this)\n",
 					 "MaxWordLength=30\n",
 					  "# Sets the language specific stemmer and stopword list to use \n",
 					  "# Valid values are 'en' (english), 'da' (danish), 'nl' (dutch), 'fi' (finnish), 'fr' (french), 'de' (german), 'it' (italien), 'nb' (norwegian), 'pt' (portugese), 'ru' (russian), 'es' (spanish), 'sv' (swedish)\n",
 					 "Language=", language, "\n",
-					  "# Enables use of language specific stemmer\n",
+					 "# Enables use of language-specific stemmer\n",
 					 "EnableStemmer=true\n",
-					  "# Sets whether to use the slower pango word break algortihm (only set this for CJK languages which dont contain western styke word breaks)\n",
-					 "EnablePangoWordBreaks=", enable_pango, "\n\n",
-					 "[Services]\n",
-					 "IndexEvolutionEmails=false\n",
-					 "IndexThunderbirdEmails=false\n",
-					 "IndexKmailEmails=false\n\n",
 					 "[Emails]\n",
-					 "AdditionalMBoxesToIndex=;\n\n",
+					 "IndexEvolutionEmails=true\n",
 					 "[Performance]\n",
 					 "# Maximum size of text in bytes to index from a file's text contents\n",
 					 "MaxTextToIndex=1048576\n",
+					 "# Maximum number of unique words to index from a file's text contents\n",
+					 "MaxWordsToIndex=10000\n",
 					 "# Specifies the no of entities to index before determining whether to perform index optimization\n",
 					 "OptimizationSweepCount=10000\n",
 					 "# Sets the maximum bucket count for the indexer\n",
 					 "MaxBucketCount=524288\n",
-					 "# Sets the minimum bucket count\n",						
+					 "# Sets the minimum bucket count\n",
 					 "MinBucketCount=65536\n",
 					 "# Sets no. of divisions of the index file\n",
 					 "Dvisions=4\n",
@@ -1887,11 +2368,16 @@ tracker_load_config_file ()
 
 	/* general options */
 
-	if (g_key_file_has_key (key_file, "General", "PollInterval", NULL)) {
-		tracker->poll_interval = g_key_file_get_integer (key_file, "General", "PollInterval", NULL);
+	if (g_key_file_has_key (key_file, "General", "Verbosity", NULL)) {
+		tracker->verbosity = g_key_file_get_integer (key_file, "General", "Verbosity", NULL);
+	}
 
-		
+	if (g_key_file_has_key (key_file, "General", "LowMemoryMode", NULL)) {
+		tracker->use_extra_memory = !g_key_file_get_boolean (key_file, "General", "LowMemoryMode", NULL);
+	}
 
+	if (g_key_file_has_key (key_file, "General", "InitialSleep", NULL)) {
+		tracker->initial_sleep = g_key_file_get_integer (key_file, "General", "InitialSleep", NULL);
 	}
 
 	/* Watch options */
@@ -1903,10 +2389,26 @@ tracker_load_config_file ()
 					      NULL);
 
 	if (values) {
-		tracker->watch_directory_roots_list = array_to_list (values);
+		tracker->watch_directory_roots_list = tracker_filename_array_to_list (values);
 	} else {
 		tracker->watch_directory_roots_list = g_slist_prepend (tracker->watch_directory_roots_list, g_strdup (g_get_home_dir ()));
 	}
+
+
+
+	values =  g_key_file_get_string_list (key_file,
+			       	     	      "Watches",
+				              "CrawlDirectory",
+				              NULL,
+				              NULL);
+
+	if (values) {
+		tracker->crawl_directory_list = tracker_filename_array_to_list (values);
+
+	} else {
+		tracker->crawl_directory_list = NULL;
+	}
+
 
 	values =  g_key_file_get_string_list (key_file,
 			       	     	      "Watches",
@@ -1915,8 +2417,8 @@ tracker_load_config_file ()
 				              NULL);
 
 	if (values) {
-		tracker->no_watch_directory_list = array_to_list (values);
-		
+		tracker->no_watch_directory_list = tracker_filename_array_to_list (values);
+
 	} else {
 		tracker->no_watch_directory_list = NULL;
 	}
@@ -1935,16 +2437,28 @@ tracker_load_config_file ()
 		tracker->throttle = 0;
 	}
 
+	if (g_key_file_has_key (key_file, "Indexing", "BatteryThrottle", NULL)) {
+		tracker->throttle = g_key_file_get_integer (key_file, "Indexing", "BatteryThrottle", NULL);
+	} else {
+		tracker->battery_throttle = 10;
+	}
+
 	if (g_key_file_has_key (key_file, "Indexing", "EnableIndexing", NULL)) {
 		tracker->enable_indexing = g_key_file_get_boolean (key_file, "Indexing", "EnableIndexing", NULL);
+	} else {
+		tracker->enable_indexing = TRUE;
 	}
 
 	if (g_key_file_has_key (key_file, "Indexing", "EnableFileContentIndexing", NULL)) {
 		tracker->enable_content_indexing = g_key_file_get_boolean (key_file, "Indexing", "EnableFileContentIndexing", NULL);
+	} else {
+		tracker->enable_content_indexing = TRUE;
 	}
 
 	if (g_key_file_has_key (key_file, "Indexing", "EnableThumbnails", NULL)) {
 		tracker->enable_thumbnails = g_key_file_get_boolean (key_file, "Indexing", "EnableThumbnails", NULL);
+	} else {
+		tracker->enable_thumbnails = FALSE;
 	}
 
 	values =  g_key_file_get_string_list (key_file,
@@ -1962,53 +2476,38 @@ tracker_load_config_file ()
 
 	if (g_key_file_has_key (key_file, "Indexing", "MinWordLength", NULL)) {
 		tracker->min_word_length = g_key_file_get_integer (key_file, "Indexing", "MinWordLength", NULL);
-
+	} else {
+		tracker->min_word_length = 3;
 	}
 
 	if (g_key_file_has_key (key_file, "Indexing", "MaxWordLength", NULL)) {
 		tracker->max_word_length = g_key_file_get_integer (key_file, "Indexing", "MaxWordLength", NULL);
-
+	} else {
+		tracker->max_word_length = 40;
 	}
 
 	if (g_key_file_has_key (key_file, "Indexing", "EnableStemmer", NULL)) {
 		tracker->use_stemmer = g_key_file_get_boolean (key_file, "Indexing", "EnableStemmer", NULL);
+	} else {
+		tracker->use_stemmer = TRUE;
 	}
 
 	if (g_key_file_has_key (key_file, "Indexing", "Language", NULL)) {
 		tracker->language = g_key_file_get_string (key_file, "Indexing", "Language", NULL);
 	}
 
-	if (g_key_file_has_key (key_file, "Indexing", "EnablePangoWordBreaks", NULL)) {
-		tracker->use_pango_word_break = g_key_file_get_boolean (key_file, "Indexing", "EnablePangoWordBreaks", NULL);
-	}
-	
-	
-	/* Service Options */
 
-	if (g_key_file_has_key (key_file, "Services", "IndexEvolutionEmails", NULL)) {
-		tracker->index_evolution_emails = g_key_file_get_boolean (key_file, "Services", "IndexEvolutionEmails", NULL);
-	}
-
-	if (g_key_file_has_key (key_file, "Services", "IndexThunderbirdEmails", NULL)) {
-		tracker->index_thunderbird_emails = g_key_file_get_boolean (key_file, "Services", "IndexThunderbirdEmails", NULL);
-	}
-
-	if (g_key_file_has_key (key_file, "Services", "IndexKmailEmails", NULL)) {
-		tracker->index_kmail_emails = g_key_file_get_boolean (key_file, "Services", "IndexKmailEmails", NULL);
-	}
 
 	/* Emails config */
-			
+
 	tracker->additional_mboxes_to_index = NULL;
 
-	if (g_key_file_has_key (key_file, "Emails", "AdditionalMBoxesToIndex", NULL)) {
-		char **additional_mboxes;
-
-		additional_mboxes = g_key_file_get_string_list (key_file, "Emails", "AdditionalMBoxesToIndex", NULL, NULL);
-
-		tracker->additional_mboxes_to_index = array_to_list (additional_mboxes);
+	if (g_key_file_has_key (key_file, "Emails", "IndexEvolutionEmails", NULL)) {
+		tracker->index_evolution_emails = g_key_file_get_boolean (key_file, "Emails", "IndexEvolutionEmails", NULL);
+	} else {
+		tracker->index_evolution_emails = TRUE;
 	}
-	
+
 
 	/* Performance options */
 
@@ -2047,79 +2546,14 @@ tracker_load_config_file ()
 
 	}
 
+	if (g_key_file_has_key (key_file, "Performance", "MaxWordsToIndex", NULL)) {
+		tracker->max_words_to_index = g_key_file_get_integer (key_file, "Performance", "MaxWordsToIndex", NULL);
+	}
+
 
 	g_free (filename);
 
 	g_key_file_free (key_file);
-}
-
-
-void
-tracker_remove_poll_dir (const char *dir)
-{
-	GSList *tmp;
-	char   *str1;
-
-	str1 = g_strconcat (dir, G_DIR_SEPARATOR_S, NULL);
-
-	for (tmp = tracker->poll_list; tmp; tmp = tmp->next) {
-		char *str2;
-
-		str2 = tmp->data;
-
-		if (strcmp (dir, str2) == 0) {
-			g_mutex_lock (tracker->poll_access_mutex);
-			tracker->poll_list = g_slist_remove (tracker->poll_list, tmp->data);
-			g_mutex_unlock (tracker->poll_access_mutex);
-			g_free (str2);
-		}
-
-		/* check if subfolder of existing roots */
-
-		if (str2 && g_str_has_prefix (str2, str1)) {
-			g_mutex_lock (tracker->poll_access_mutex);
-			tracker->poll_list = g_slist_remove (tracker->poll_list, tmp->data);
-			g_mutex_unlock (tracker->poll_access_mutex);
-			g_free (str2);
-		}
-	}
-
-	g_free (str1);
-}
-
-
-void
-tracker_add_poll_dir (const char *dir)
-{
-	g_return_if_fail (dir && tracker_is_directory (dir));
-
-	if (!tracker->is_running) {
-		return;
-	}
-
-	g_mutex_lock (tracker->poll_access_mutex);
-	tracker->poll_list = g_slist_prepend (tracker->poll_list, g_strdup (dir));
-	g_mutex_unlock (tracker->poll_access_mutex);
-	tracker_log ("adding %s for polling (poll count is %d)", dir, g_slist_length (tracker->poll_list));
-}
-
-
-gboolean
-tracker_is_dir_polled (const char *dir)
-{
-	GSList *tmp;
-
-	for (tmp = tracker->poll_list; tmp; tmp = tmp->next) {
-		char *str;
-
-		str = (char *) tmp->data;
-
-		if (strcmp (dir, str) == 0) {
-			return TRUE;
-		}
-	}
-
-	return FALSE;
 }
 
 
@@ -2138,6 +2572,7 @@ tracker_throttle (int multiplier)
 		g_usleep (throttle);
 	}
 }
+
 
 void
 tracker_notify_file_data_available (void)
@@ -2265,20 +2700,21 @@ tracker_notify_request_data_available (void)
 	}
 }
 
+
 GTimeVal *
-tracker_timer_start () 
+tracker_timer_start (void)
 {
 	GTimeVal  *before;
 
 	before = g_new0 (GTimeVal, 1);
-	
+
 	g_get_current_time (before);
 
 	return before;
 }
 
 
-void		
+void
 tracker_timer_end (GTimeVal *before, const char *str)
 {
 	GTimeVal  after;
@@ -2286,12 +2722,11 @@ tracker_timer_end (GTimeVal *before, const char *str)
 
 	g_get_current_time (&after);
 
-	elapsed = (1000 * (after.tv_sec - before->tv_sec))  +  ((after.tv_usec - before->tv_usec) / 1000);
+	elapsed = (1000 * (after.tv_sec - before->tv_sec))  +  ((after.tv_usec - before->tv_usec) / 1000.0);
 
 	g_free (before);
 
 	tracker_log ("%s %f ms", str, elapsed);
-
 }
 
 
@@ -2379,9 +2814,9 @@ tracker_uncompress (const char *ptr, int size, int *uncompressed_size)
 	zs.zalloc = Z_NULL;
 	zs.zfree = Z_NULL;
 	zs.opaque = Z_NULL;
-	
+
 	if (inflateInit2 (&zs, 15) != Z_OK) return NULL;
-	
+
 	asiz = size * 2 + 16;
 	if (asiz < ZLIBBUFSIZ) asiz = ZLIBBUFSIZ;
 	if (!(buf = malloc (asiz))) {
@@ -2434,15 +2869,15 @@ tracker_uncompress (const char *ptr, int size, int *uncompressed_size)
 
 
 static inline gboolean
-is_match (const char *a, const char *b) 
+is_match (const char *a, const char *b)
 {
 	int len = strlen (b);
 
 	char *str1 = g_utf8_casefold (a, len);
-        char *str2 = g_utf8_casefold (b, len);                                 
+        char *str2 = g_utf8_casefold (b, len);
 
-	char *normal1 = g_utf8_normalize (str1, -1, G_NORMALIZE_NFD);
-	char *normal2 = g_utf8_normalize (str2, -1, G_NORMALIZE_NFD);
+	char *normal1 = g_utf8_normalize (str1, -1, G_NORMALIZE_NFC);
+	char *normal2 = g_utf8_normalize (str2, -1, G_NORMALIZE_NFC);
 
 	gboolean result = (strcmp (normal1, normal2) == 0);
 
@@ -2455,19 +2890,20 @@ is_match (const char *a, const char *b)
 }
 
 
-
 static const gchar *
 pointer_from_offset_skipping_decomp (const gchar *str, gint offset)
 {
 	gchar *casefold, *normal;
 	const gchar *p, *q;
 
+	g_return_val_if_fail (str != NULL, NULL);
+
 	p = str;
 	while (offset > 0)
 	{
 		q = g_utf8_next_char (p);
 		casefold = g_utf8_casefold (p, q - p);
-		normal = g_utf8_normalize (casefold, -1, G_NORMALIZE_NFD);
+		normal = g_utf8_normalize (casefold, -1, G_NORMALIZE_NFC);
 		offset -= g_utf8_strlen (normal, -1);
 		g_free (casefold);
 		g_free (normal);
@@ -2475,6 +2911,7 @@ pointer_from_offset_skipping_decomp (const gchar *str, gint offset)
 	}
 	return p;
 }
+
 
 static const char *
 g_utf8_strcasestr_array (const gchar *haystack, gchar **needles)
@@ -2491,8 +2928,12 @@ g_utf8_strcasestr_array (const gchar *haystack, gchar **needles)
 	g_return_val_if_fail (haystack != NULL, NULL);
 
 	casefold = g_utf8_casefold (haystack, -1);
-	caseless_haystack = g_utf8_normalize (casefold, -1, G_NORMALIZE_NFD);
+	caseless_haystack = g_utf8_normalize (casefold, -1, G_NORMALIZE_NFC);
 	g_free (casefold);
+
+	if (!caseless_haystack) {
+		return NULL;
+	}
 
 	haystack_len = g_utf8_strlen (caseless_haystack, -1);
 
@@ -2506,7 +2947,7 @@ g_utf8_strcasestr_array (const gchar *haystack, gchar **needles)
 		}
 
 		if (haystack_len < needle_len) {
-			continue;		
+			continue;
 		}
 
 		p = (gchar *) caseless_haystack;
@@ -2535,7 +2976,6 @@ finally_1:
 const char *
 substring_utf8 (const char *a, const char *b)
 {
-
         const char  *ptr, *found_ptr;
 	gunichar c, lower, upper;
 	int len;
@@ -2544,41 +2984,41 @@ substring_utf8 (const char *a, const char *b)
 	len = strlen (b);
 
 	c = g_utf8_get_char (b);
-	
+
 	lower = g_unichar_tolower (c);
 	upper = g_unichar_toupper (c);
 
-	ptr = a;	
+	ptr = a;
 	found_ptr = a;
 
 	/* check lowercase first */
 	while (found_ptr) {
-			
+
 		found_ptr = g_utf8_strchr (ptr, -1, lower);
-				
+
 		if (found_ptr) {
 			ptr = g_utf8_find_next_char (found_ptr, NULL);
 			if (is_match (found_ptr, b)) {
 				got_match = TRUE;
 				break;
-			} 	
-		} else { 
+			}
+		} else {
 			break;
 		}
 	}
-	
+
 	if (!got_match) {
 		ptr = a;
 		found_ptr = a;
 		while (found_ptr) {
-			
+
 			found_ptr = g_utf8_strchr (ptr, -1, upper);
-					
+
 			if (found_ptr) {
 				ptr = g_utf8_find_next_char (found_ptr, NULL);
 				if (is_match (found_ptr, b)) {
 					break;
-				} 	
+				}
 			} else {
 
 			}
@@ -2605,20 +3045,18 @@ get_word_break (const char *a)
 
 
 static gboolean
-is_word_break (const char a) 
+is_word_break (const char a)
 {
 	const char *breaks = "\t\n\v\f\r !\"#$%&'()*/<=>?[\\]^`{|}~+,.:;@\"[]";
 	int i;
 
-	for (i=0; breaks[i]; i++) {
+	for (i = 0; breaks[i]; i++) {
 		if (a == breaks[i]) {
 			return TRUE;
 		}
-
 	}
 
 	return FALSE;
-
 }
 
 
@@ -2634,8 +3072,6 @@ highlight_terms (const char *str, char **terms)
 		return NULL;
 	}
 
-	
-
 	char **array;
 	txt = g_strdup (str);
 
@@ -2645,27 +3081,26 @@ highlight_terms (const char *str, char **terms)
 		single_term = g_new( char *, 2);
 		single_term[0] = g_strdup (*array);
 		single_term[1] = NULL;
-	
+
 		st = g_string_new ("");
 
 		const char *ptxt = txt;
-	
+
 		while ((ptr = g_utf8_strcasestr_array  (ptxt, single_term))) {
 			char *pre_snip, *term;
-				
+
 			pre_snip = g_strndup (ptxt, (ptr - ptxt));
 
 			term_length = get_word_break (ptr);
 
 			term = g_strndup (ptr, term_length);
-		
+
 			ptxt = ptr + term_length;
 
 			g_string_append_printf (st, "%s<b>%s</b>", pre_snip, term);
 
 			g_free (pre_snip);
 			g_free (term);
-
 		}
 
 		if (ptxt) {
@@ -2683,16 +3118,11 @@ highlight_terms (const char *str, char **terms)
 }
 
 
-
-
 char *
 tracker_get_snippet (const char *txt, char **terms, int length)
 {
-
 	const char *ptr = NULL, *end_ptr,  *tmp;
 	int i, txt_len;
-
-	
 
 	if (!txt || !terms) {
 		return NULL;
@@ -2723,20 +3153,17 @@ tracker_get_snippet (const char *txt, char **terms, int length)
 				ptr = g_utf8_next_char (ptr);
 				i++;
 			}
+		}
 
-		} 
-		
 		ptr = g_utf8_next_char (ptr);
-
 
 		if (!ptr || ptr < txt) {
 			return NULL;
 		}
 
-
 		end_ptr = tmp;
 		i = 0;
-	
+
 		/* get snippet after match */
 		while ((end_ptr = g_utf8_next_char (end_ptr)) && (end_ptr <= txt_len + txt) && (i < length)) {
 			i++;
@@ -2756,9 +3183,7 @@ tracker_get_snippet (const char *txt, char **terms, int length)
 				end_ptr = g_utf8_prev_char (end_ptr);
 				i++;
 			}
-			
-
-		} 
+		}
 
 		if (!end_ptr || !ptr) {
 			return NULL;
@@ -2784,7 +3209,7 @@ tracker_get_snippet (const char *txt, char **terms, int length)
 	ptr = txt;
 	i = 0;
 	while ((ptr = g_utf8_next_char (ptr)) && (ptr <= txt_len + txt) && (i < length)) {
-		i++;	
+		i++;
 		if (*ptr == '\n') {
 			break;
 		}
@@ -2795,7 +3220,14 @@ tracker_get_snippet (const char *txt, char **terms, int length)
 	}
 
 	if (ptr) {
-		return g_strndup (txt, ptr - txt);
+		char *snippet = g_strndup (txt, ptr - txt);
+		char *esc_snippet = g_markup_escape_text (snippet, ptr - txt);
+		char *highlight_snip = highlight_terms (esc_snippet, terms);
+
+		g_free (snippet);
+		g_free (esc_snippet);
+
+		return highlight_snip;
 	} else {
 		return NULL;
 	}
@@ -2813,7 +3245,7 @@ prepend_key_pointer (gpointer         key,
 }
 
 
-static GSList * 
+static GSList *
 g_hash_table_key_slist (GHashTable *table)
 {
   	GSList *rv = NULL;
@@ -2829,7 +3261,7 @@ sort_func (char *a, char *b)
 
 	lista = g_hash_table_lookup (tracker->cached_table, a);
 	listb = g_hash_table_lookup (tracker->cached_table, b);
-	
+
 	return (g_slist_length (lista) - g_slist_length (listb));
 }
 
@@ -2839,24 +3271,22 @@ flush_list (GSList *list, const char *word)
 {
 	WordDetails *word_details, *wd;
 	int i, count;
-	GSList *l;
+	GSList *lst;
 
 	count = g_slist_length (list);
 
-//	tracker_log ("flushing 	word %s with count %d", word, count);
+//	tracker_log ("Flushing 	word %s with count %d", word, count);
 
 	word_details = g_malloc (sizeof (WordDetails) * count);
 
 	i = 0;
-	for (l=list; (l && i<count); l=l->next) {
-		
-		wd = l->data;
+	for (lst = list; (lst && i < count); lst = lst->next) {
+
+		wd = lst->data;
 		word_details[i].id = wd->id;
 		word_details[i].amalgamated = wd->amalgamated;
 		i++;
 		g_slice_free (WordDetails, wd);
-		
-		
 	}
 
 	g_slist_free (list);
@@ -2864,33 +3294,32 @@ flush_list (GSList *list, const char *word)
 	tracker_indexer_append_word_chunk (tracker->file_indexer, word, word_details, count);
 
 	g_free (word_details);
-	
+
 	tracker->update_count++;
 	tracker->word_detail_count -= count;
 	tracker->word_count--;
-
 }
 
 
 static inline gboolean
-is_min_flush_done ()
+is_min_flush_done (void)
 {
 	return (tracker->word_detail_count <= tracker->word_detail_min) && (tracker->word_count <= tracker->word_count_min);
-
 }
 
-static void 
+/*
+static void
 delete_word_detail (WordDetails *wd)
 {
 	g_slice_free (WordDetails, wd);
 
 }
+*/
 
 void
-tracker_flush_rare_words ()
+tracker_flush_rare_words (void)
 {
-	
-	GSList *list, *l, *l2;
+	GSList *list, *lst;
 
 	tracker_debug ("flushing rare words");
 
@@ -2898,19 +3327,16 @@ tracker_flush_rare_words ()
 
 	list = g_slist_sort (list, (GCompareFunc) sort_func);
 
-	for (l = list; (l && !is_min_flush_done ()); l=l->next) {
-		char *word = l->data;		
+	for (lst = list; (lst && !is_min_flush_done ()); lst = lst->next) {
+		char *word = lst->data;
+                GSList *lst_tmp = g_hash_table_lookup (tracker->cached_table, word);
 
-		l2 = g_hash_table_lookup (tracker->cached_table, word);
+		flush_list (lst_tmp, word);
 
-		flush_list (l2, word);	
-
-		g_hash_table_remove (tracker->cached_table, word);	
-
+		g_hash_table_remove (tracker->cached_table, word);
 	}
 
 	g_slist_free (list);
-
 }
 
 
@@ -2919,28 +3345,75 @@ flush_all (gpointer         key,
 	   gpointer         value,
 	   gpointer         data)
 {
-	
 	flush_list (value, key);
-	
+
   	return 1;
 }
 
 
 void
-tracker_flush_all_words ()
+tracker_flush_all_words (void)
 {
-	tracker_log ("flushing all words");
-	
+	tracker_log ("Flushing all words");
+
 	g_hash_table_foreach (tracker->cached_table, (GHFunc) flush_all, NULL);
 
 	g_hash_table_destroy (tracker->cached_table);
 
-	tracker->cached_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);	
+	tracker->cached_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
 	tracker->word_detail_count = 0;
 	tracker->word_count = 0;
-
 }
+
+
+void
+tracker_check_flush (void)
+{
+	if (tracker->word_detail_count > tracker->word_detail_limit || tracker->word_count > tracker->word_count_limit) {
+		if (tracker->flush_count < 10) {
+			tracker->flush_count++;
+			tracker_info ("flushing");
+			tracker_flush_rare_words ();
+		} else {
+			tracker->flush_count = 0;
+			tracker_flush_all_words ();
+		}
+	}
+}
+
+
+gboolean
+set_memory_rlimits (void)
+{
+	struct	rlimit rl;
+	gboolean fail = FALSE;
+
+	/* We want to limit the max virtual memory
+	 * most extractors use mmap() so only virtual memory can be effectively limited */
+#ifdef __x86_64__
+	/* many extractors on AMD64 require 512M of virtual memory, so we limit heap too */
+	getrlimit (RLIMIT_AS, &rl);
+	rl.rlim_cur = MAX_MEM_AMD64*1024*1024;
+	fail |= setrlimit (RLIMIT_AS, &rl);
+
+	getrlimit (RLIMIT_DATA, &rl);
+	rl.rlim_cur = MAX_MEM*1024*1024;
+	fail |= setrlimit (RLIMIT_DATA, &rl);
+#else
+	/* on other architectures, 128M of virtual memory seems to be enough */
+	getrlimit (RLIMIT_AS, &rl);
+	rl.rlim_cur = MAX_MEM*1024*1024;
+	fail |= setrlimit (RLIMIT_AS, &rl);
+#endif
+
+	if (fail) {
+		g_printerr ("Error trying to set memory limit\n");
+	}
+
+	return !fail;
+}
+
 
 
 void
@@ -2955,26 +3428,22 @@ tracker_child_cb (gpointer user_data)
 	cpu_limit.rlim_max = timeout+1;
 
 	if (setrlimit (RLIMIT_CPU, &cpu_limit) != 0) {
-		tracker_log ("Error trying to set resource limit for cpu");
+		tracker_error ("ERROR: trying to set resource limit for cpu");
 	}
 
-	/* Set memory usage to max limit (128MB) */
-	getrlimit (RLIMIT_AS, &mem_limit);
- 	mem_limit.rlim_cur = 128*1024*1024;
-	if (setrlimit (RLIMIT_AS, &mem_limit) != 0) {
-		tracker_log ("Error trying to set resource limit for memory usage");
-	}
+	set_memory_rlimits();
 
-	
+	/* Set child's niceness to 19 */
+	nice (19);
 }
 
 
 gboolean
-tracker_spawn (char **argv, int timeout, char **stdout, int *exit_status)
+tracker_spawn (char **argv, int timeout, char **tmp_stdout, int *exit_status)
 {
 	GSpawnFlags flags;
 
-	if (!stdout) {
+	if (!tmp_stdout) {
 		flags = G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL |  G_SPAWN_STDERR_TO_DEV_NULL;
 	} else {
 		flags = G_SPAWN_SEARCH_PATH | G_SPAWN_STDERR_TO_DEV_NULL;
@@ -2986,16 +3455,15 @@ tracker_spawn (char **argv, int timeout, char **stdout, int *exit_status)
 			  flags,
 			  tracker_child_cb,
 			  GINT_TO_POINTER (timeout),
-			  stdout,
+			  tmp_stdout,
 			  NULL,
 			  exit_status,
 			  NULL);
-
 }
 
 
-static void
-output_log (int verbosity, const char *message)
+static inline void
+output_log (const char *message)
 {
 	FILE		*fd;
 	time_t		now;
@@ -3003,11 +3471,6 @@ output_log (int verbosity, const char *message)
 	char		*output;
 	struct tm	*loctime;
 	GTimeVal	start;
-
-
-	if (tracker->verbosity < verbosity) {
-		return;
-	}
 
 	if (message) {
 		g_print ("%s\n", message);
@@ -3032,7 +3495,7 @@ output_log (int verbosity, const char *message)
 
 	strftime (buffer1, 64, "%d %b %Y, %H:%M:%S:", loctime);
 
-	g_sprintf (buffer2, "%ld", start.tv_usec / 1000);
+	g_sprintf (buffer2, "%03ld", start.tv_usec / 1000);
 
 	output = g_strconcat (buffer1, buffer2, " - ", message, NULL);
 
@@ -3046,33 +3509,58 @@ output_log (int verbosity, const char *message)
 }
 
 
-void 		
+void
+tracker_error (const char *message, ...)
+{
+	va_list		args;
+	char 		*msg;
+
+  	va_start (args, message);
+  	msg = g_strdup_vprintf (message, args);
+	va_end (args);
+
+	output_log (msg);
+	g_free (msg);
+}
+
+
+void
 tracker_log 	(const char *message, ...)
 {
 	va_list		args;
 	char 		*msg;
 
+	if (tracker->verbosity < 1) {
+		return;
+	}
+
   	va_start (args, message);
   	msg = g_strdup_vprintf (message, args);
   	va_end (args);
 
-	output_log (0, msg);
+	output_log (msg);
 	g_free (msg);
 }
 
-void		
+
+void
 tracker_info	(const char *message, ...)
 {
 	va_list		args;
 	char 		*msg;
 
+	if (tracker->verbosity < 2) {
+		return;
+	}
+
   	va_start (args, message);
   	msg = g_strdup_vprintf (message, args);
   	va_end (args);
 
-	output_log (1, msg);
+	output_log (msg);
 	g_free (msg);
 }
+
 
 void
 tracker_debug 	(const char *message, ...)
@@ -3080,11 +3568,136 @@ tracker_debug 	(const char *message, ...)
 	va_list		args;
 	char 		*msg;
 
+	if (tracker->verbosity < 3) {
+		return;
+	}
+
   	va_start (args, message);
   	msg = g_strdup_vprintf (message, args);
   	va_end (args);
 
-	output_log (2, msg);
+	output_log (msg);
 	g_free (msg);
 }
 
+
+char *
+tracker_string_replace (const char *haystack, char *needle, char *replacement)
+{
+        GString *str;
+        int pos, needle_len;
+
+	g_return_val_if_fail (haystack && needle, NULL);
+
+	needle_len = strlen (needle);
+
+        str = g_string_new ("");
+
+        for (pos = 0; haystack[pos]; pos++)
+        {
+                if (strncmp (&haystack[pos], needle, needle_len) == 0)
+                {
+			if (replacement) {
+	                        str = g_string_append (str, replacement);
+			}
+
+                        pos += needle_len - 1;
+
+                } else {
+                        str = g_string_append_c (str, haystack[pos]);
+		}
+        }
+
+        return g_string_free (str, FALSE);
+}
+
+
+gboolean
+tracker_using_battery (void)
+{
+	if (!tracker->battery_state_file) {
+		return FALSE;
+	}
+
+	char *txt;
+	gboolean using_battery;
+
+	if (!g_file_get_contents (tracker->battery_state_file, &txt, NULL, NULL)) {
+		return FALSE;
+	} else {
+		using_battery = (strstr (txt, "on-line") == NULL);
+	}
+
+	g_free (txt);
+
+	return using_battery;
+}
+
+
+void
+tracker_add_metadata_to_table (GHashTable *meta_table, const char *key, const char *value)
+{
+	GSList *list;
+	gboolean insert = FALSE;
+
+	list = g_hash_table_lookup (meta_table, (char *) key);
+
+	insert = (!list);
+
+	list = g_slist_prepend (list, (char *) value);
+
+	if (insert) {
+		g_hash_table_insert (meta_table, (char *) key, list);
+	}
+}
+
+
+void
+tracker_free_metadata_field (FieldData *field_data)
+{
+	g_return_if_fail (field_data);
+
+	if (field_data->alias) {
+		g_free (field_data->alias);
+	}
+
+	if (field_data->where_field) {
+		g_free (field_data->where_field);
+	}
+
+	if (field_data->field_name) {
+		g_free (field_data->field_name);
+	}
+
+	if (field_data->select_field) {
+		g_free (field_data->select_field);
+	}
+
+	if (field_data->table_name) {
+		g_free (field_data->table_name);
+	}
+
+	if (field_data->id_field) {
+		g_free (field_data->id_field);
+	}
+
+	g_free (field_data);
+}
+
+
+gboolean
+tracker_unlink (const char *uri)
+{
+	char *locale_uri = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
+
+	if (!g_file_test (locale_uri, G_FILE_TEST_EXISTS)) {						
+				g_free (locale_uri);
+				return FALSE;
+	}
+
+	g_unlink (locale_uri);
+
+	g_free (locale_uri);
+
+	return TRUE;
+}

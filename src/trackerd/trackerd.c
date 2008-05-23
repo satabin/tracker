@@ -61,6 +61,12 @@
 #include "tracker-dbus-files.h"
 #include "tracker-email.h"
 #include  "tracker-indexer.h"
+#include "tracker-apps.h"
+
+typedef struct {
+	char	*uri;
+	int	mtime;
+} IndexDir;
 
 Tracker		       *tracker;
 DBConnection	       *main_thread_db_con;
@@ -101,7 +107,6 @@ static DBusConnection  *main_connection;
  *  asynchronous queue where potentially multiple threads are waiting to process them.
  */
 
-#define FILE_POLL_PERIOD (60 * 60)
 
 char *type_array[] =   {"index", "string", "numeric", "date", NULL};
 
@@ -120,29 +125,36 @@ static void scan_directory (const char *uri, DBConnection *db_con);
  gboolean 	tracker_start_watching 		(void){tracker->watch_limit = 0; return TRUE;}
  void     	tracker_end_watching 		(void){return;}
 
- gboolean 	tracker_add_watch_dir 		(const char *dir, DBConnection *db_con){return FALSE;}
- void     	tracker_remove_watch_dir 	(const char *dir, gboolean delete_subdirs, DBConnection *db_con) {return;}
+ gboolean 	tracker_add_watch_dir 			(const char *dir, DBConnection *db_con){return FALSE;}
+ void     	tracker_remove_watch_dir 		(const char *dir, gboolean delete_subdirs, DBConnection *db_con) {return;}
+ gboolean 	tracker_is_directory_watched 		(const char *dir, DBConnection *db_con) {return FALSE;}
+ int		tracker_count_watch_dirs 		(void) {return 0;}
 
- gboolean 	tracker_is_directory_watched 	(const char *dir, DBConnection *db_con) {return FALSE;}
- int		tracker_count_watch_dirs 	(void) {return 0;}
+
 #endif /* POLL_ONLY */
 
 static char **no_watch_dirs = NULL;
 static char **watch_dirs = NULL;
+static char **crawl_dirs = NULL;
 static char *language = NULL;
 static gboolean disable_indexing = FALSE;
+static gboolean reindex = FALSE;
 static gboolean low_memory, enable_evolution, enable_thunderbird, enable_kmail;
 static int throttle = 0;
 static int verbosity = 0;
+static int initial_sleep = -1; /* >= 0 is valid and will be set */
 
 static GOptionEntry entries[] = {
 	{"exclude-dir", 'e', 0, G_OPTION_ARG_STRING_ARRAY, &no_watch_dirs, N_("Directory to exclude from indexing"), N_("/PATH/DIR")},
 	{"include-dir", 'i', 0, G_OPTION_ARG_STRING_ARRAY, &watch_dirs, N_("Directory to include in indexing"), N_("/PATH/DIR")},
-	{"no-indexing", 0, 0, G_OPTION_ARG_NONE, &disable_indexing, N_("Disable any indexing or watching taking place"), NULL },
-	{"verbosity", 0, 0, G_OPTION_ARG_INT, &verbosity, N_("Value that controls the level of logging. Valid values are 0 (default minimal), 1 (detailed) and 2 (debug)"), N_("value") },
-	{"throttle", 0, 0, G_OPTION_ARG_INT, &throttle, N_("Value to use for throttling indexing. Value must be in range 0-20 (default 0) with lower values increasing indexing speed"), N_("value") },
+	{"crawl-dir", 'c', 0, G_OPTION_ARG_STRING_ARRAY, &crawl_dirs, N_("Directory to crawl for indexing at start up only"), N_("/PATH/DIR")},
+	{"no-indexing", 'n', 0, G_OPTION_ARG_NONE, &disable_indexing, N_("Disable any indexing or watching taking place"), NULL },
+	{"verbosity", 'v', 0, G_OPTION_ARG_INT, &verbosity, N_("Value that controls the level of logging. Valid values are 0 (displays/logs only errors), 1 (minimal), 2 (detailed), and 3 (debug)"), N_("VALUE") },
+	{"throttle", 't', 0, G_OPTION_ARG_INT, &throttle, N_("Value to use for throttling indexing. Value must be in range 0-20 (default 0) with lower values increasing indexing speed"), N_("VALUE") },
 	{"low-memory", 'm', 0, G_OPTION_ARG_NONE, &low_memory, N_("Minimizes the use of memory but may slow indexing down"), NULL },
+	{"initial-sleep", 's', 0, G_OPTION_ARG_INT, &initial_sleep, N_("Initial sleep time, just before indexing, in seconds"), NULL },
 	{"language", 'l', 0, G_OPTION_ARG_STRING, &language, N_("Language to use for stemmer and stop words list (ISO 639-1 2 characters code)"), N_("LANG")},
+	{"reindex", 'R', 0, G_OPTION_ARG_NONE, &reindex, N_("Force a re-index of all content"), NULL },
 	{NULL}
 };
 
@@ -194,7 +206,10 @@ set_update_count (DBConnection *db_con, int count)
 static gboolean
 do_cleanup (const char *sig_msg)
 {
-	if (tracker->log_file) {
+
+	tracker->status = STATUS_SHUTDOWN;
+
+	if (tracker->log_file && sig_msg) {
 		tracker_log ("Received signal '%s' so now shutting down", sig_msg);
 
 		tracker_print_object_allocations ();
@@ -231,9 +246,6 @@ do_cleanup (const char *sig_msg)
 
 	shutdown = TRUE;
 
-	g_mutex_lock (tracker->poll_signal_mutex);
-	g_cond_signal (tracker->poll_thread_signal);
-	g_mutex_unlock (tracker->poll_signal_mutex);
 
 	g_mutex_lock (tracker->request_signal_mutex);
 	g_cond_signal (tracker->request_thread_signal);
@@ -252,7 +264,6 @@ do_cleanup (const char *sig_msg)
 
 	/* wait for threads to exit and unlock check mutexes to prevent any deadlocks*/
 
-	g_mutex_lock (tracker->poll_stopped_mutex);
 
 	g_mutex_unlock (tracker->request_check_mutex);
 	g_mutex_lock (tracker->request_stopped_mutex);
@@ -271,7 +282,7 @@ do_cleanup (const char *sig_msg)
 	tracker_db_finalize ();
 
 	if (tracker->log_file) {
-		tracker_log ("shutting down main thread");
+		tracker_debug ("shutting down main thread");
 	}
 
 	/* remove sys tmp directory */
@@ -287,18 +298,11 @@ do_cleanup (const char *sig_msg)
 }
 
 
+
 static void
-poll_dir (const char *uri, DBConnection *db_con)
+check_dir_for_deletions (DBConnection *db_con, const char *uri)
 {
 	char	**files, **files_p;
-	GSList	*file_list, *tmp;
-
-	DBConnection *blob_db_con = db_con->data;
-
-	if (!tracker->is_running) {
-		return;
-	}
-
 
 	/* check for any deletions*/
 	files = tracker_db_get_files_in_folder (db_con, uri);
@@ -308,16 +312,15 @@ poll_dir (const char *uri, DBConnection *db_con)
 		char	 *str;
 
 		str = *files_p;
-		tracker_log ("polling %s", str);
 
 		if (!tracker_file_is_valid (str)) {
 			info = tracker_create_file_info (str, 1, 0, 0);
 			info = tracker_db_get_file_info (db_con, info);
 
 			if (!info->is_directory) {
-				delete_file (db_con, blob_db_con, info);
+				delete_file (db_con, db_con->blob, info);
 			} else {
-				delete_directory (db_con, blob_db_con, info);
+				delete_directory (db_con, db_con->blob, info);
 			}
 			tracker_free_file_info (info);
 		}
@@ -325,141 +328,6 @@ poll_dir (const char *uri, DBConnection *db_con)
 
 	g_strfreev (files);
 
-
-	/* check for new subfolder additions */
-	file_list = tracker_get_files (uri, TRUE);
-
-	for (tmp = file_list; tmp; tmp = tmp->next) {
-		FileInfo *info;
-		char	 *str;
-
-		if (!tracker->is_running) {
-			g_slist_foreach (file_list, (GFunc) g_free, NULL);
-			g_slist_free (file_list);
-			return;
-		}
-
-		str = (char *) tmp->data;
-
-		info = tracker_create_file_info (str, TRACKER_ACTION_DIRECTORY_CREATED, 0, 0);
-		info = tracker_db_get_file_info (db_con, info);
-
-		if (info->file_id == 0) {
-			tracker_db_insert_pending_file (db_con, info->file_id, info->uri, info->mime, 0, info->action, info->is_directory, TRUE, -1);
-		} else {
-			tracker_free_file_info (info);
-		}
-	}
-
-	g_slist_foreach (file_list, (GFunc) g_free, NULL);
-	g_slist_free (file_list);
-
-
-	/* scan dir for changes in all other files */
-	if (!tracker_file_is_no_watched (uri)) {
-		scan_directory (uri, db_con);
-	} else {
-		tracker_debug ("blocked scan of directory %s as its in the no watch list", uri);
-	}
-}
-
-
-static void
-poll_directories (gpointer db_con)
-{
-	g_return_if_fail (db_con);
-
-	tracker_log ("polling dirs");
-
-	if (g_slist_length (tracker->poll_list) > 0) {
-		g_slist_foreach (tracker->poll_list, (GFunc) poll_dir, db_con);
-	}
-}
-
-
-static void
-poll_files_thread (void)
-{
-	sigset_t     signal_set;
-	DBConnection *db_con;
-	DBConnection *blob_db_con;
-
-        /* block all signals in this thread */
-        sigfillset (&signal_set);
-	pthread_sigmask (SIG_BLOCK, &signal_set, NULL);
-
-	g_mutex_lock (tracker->poll_signal_mutex);
-	g_mutex_lock (tracker->poll_stopped_mutex);
-
-	/* set thread safe DB connection */
-	tracker_db_thread_init ();
-
-	db_con = tracker_db_connect ();
-	blob_db_con = tracker_db_connect_full_text ();
-
-	db_con->data = blob_db_con;
-
-
-	while (TRUE) {
-
-		/* make thread sleep if first part of the shutdown process has been activated */
-		if (!tracker->is_running) {
-
-			tracker_log ("poll thread going to deep sleep...");
-
-			g_cond_wait (tracker->poll_thread_signal, tracker->poll_signal_mutex);
-
-			/* determine if wake up call is new stuff or a shutdown signal */
-			if (!shutdown) {
-				continue;
-			} else {
-				break;
-			}
-		}
-
-		poll_directories (db_con);
-
-		/* sleep until notified again */
-		tracker_debug ("poll thread sleeping");
-		g_cond_wait (tracker->poll_thread_signal, tracker->poll_signal_mutex);
-		tracker_debug ("poll thread awoken");
-
-		/* determine if wake up call is a shutdown signal or a request to poll again */
-		if (!shutdown) {
-			continue;
-		} else {
-			break;
-		}
-	}
-
-	tracker_db_close (db_con);
-	tracker_db_close (blob_db_con);
-	tracker_db_thread_end ();
-
-	tracker_debug ("poll thread has exited successfully");
-
-	g_mutex_unlock (tracker->poll_stopped_mutex);
-}
-
-
-static gboolean
-start_poll (void)
-{
-	if (!tracker->file_poll_thread && g_slist_length (tracker->poll_list) > 0) {
-		tracker->file_poll_thread = g_thread_create ((GThreadFunc) poll_files_thread, NULL, FALSE, NULL);
-		tracker_log ("started polling");
-	} else {
-
-		/* wake up poll thread and start polling */
-		if (tracker->file_poll_thread && g_slist_length (tracker->poll_list) > 0) {
-			if (g_mutex_trylock (tracker->poll_signal_mutex)) {
-				g_cond_signal (tracker->poll_thread_signal);
-				g_mutex_unlock (tracker->poll_signal_mutex);
-			}
-		}
-	}
-
-	return TRUE;
 }
 
 
@@ -469,11 +337,10 @@ schedule_dir_check (const char *uri, DBConnection *db_con)
 	if (!tracker->is_running) {
 		return;
 	}
+
 	g_return_if_fail (uri && (uri[0] == '/'));
 	g_return_if_fail (db_con);
 
-	/* keep mainloop responsive */
-	my_yield ();
 	tracker_db_insert_pending_file (db_con, 0, uri, "unknown", 0, TRACKER_ACTION_DIRECTORY_REFRESH, TRUE, FALSE, -1);
 }
 
@@ -481,7 +348,7 @@ schedule_dir_check (const char *uri, DBConnection *db_con)
 static void
 add_dirs_to_watch_list (GSList *dir_list, gboolean check_dirs, DBConnection *db_con)
 {
-	gboolean start_polling;
+
 
 	if (!tracker->is_running) {
 		return;
@@ -489,7 +356,7 @@ add_dirs_to_watch_list (GSList *dir_list, gboolean check_dirs, DBConnection *db_
 
 	g_return_if_fail (dir_list != NULL);
 
-	start_polling = FALSE;
+
 
 	/* add sub directories breadth first recursively to avoid running out of file handles */
 	while (g_slist_length (dir_list) > 0) {
@@ -497,44 +364,33 @@ add_dirs_to_watch_list (GSList *dir_list, gboolean check_dirs, DBConnection *db_
 
 		file_list = NULL;
 
-		if (!start_polling && ((tracker_count_watch_dirs () + g_slist_length (dir_list)) < tracker->watch_limit)) {
-			GSList *tmp;
+		GSList *tmp;
 
-			for (tmp = dir_list; tmp; tmp = tmp->next) {
-				char *str;
+		for (tmp = dir_list; tmp; tmp = tmp->next) {
+			char *str;
 
-				str = (char *) tmp->data;
+			str = (char *) tmp->data;
 
-				if (!tracker_file_is_no_watched (str)) {
+			if (str && !tracker_file_is_no_watched (str)) {
 
-					/* use polling if FAM or Inotify fails */
-					if (!tracker_add_watch_dir (str, db_con) && tracker_is_directory (str) && !tracker_is_dir_polled (str)) {
-						if (tracker->is_running) {
-							tracker_add_poll_dir (str);
-						}
-					} 
+				tracker->dir_list = g_slist_prepend (tracker->dir_list, g_strdup (str));
 
-				} else {
-					tracker_debug ("blocked directory %s as its in the no watch list", str);
+				if (tracker_file_is_crawled (str) || !tracker->enable_watching) continue;
+
+				if ( ((tracker_count_watch_dirs () + g_slist_length (dir_list)) < tracker->watch_limit)) {
+
+					if (!tracker_add_watch_dir (str, db_con) && tracker_is_directory (str)) {
+						tracker_debug ("Watch failed for %s", str);
+					}
+
 				}
 			}
 
-		} else {
-			g_slist_foreach (dir_list, (GFunc) tracker_add_poll_dir, NULL);
 		}
 
 		g_slist_foreach (dir_list, (GFunc) tracker_get_dirs, &file_list);
-
-		if (check_dirs) {
-			g_slist_foreach (file_list, (GFunc) schedule_dir_check, db_con);
-		}
-
 		g_slist_foreach (dir_list, (GFunc) g_free, NULL);
 		g_slist_free (dir_list);
-
-		if (tracker_count_watch_dirs () > (int) tracker->watch_limit) {
-			start_polling = TRUE;
-		}
 
 		dir_list = file_list;
 	}
@@ -550,13 +406,15 @@ watch_dir (const char* dir, DBConnection *db_con)
 		return TRUE;
 	}
 
-	g_assert (dir);
+	if (!dir) {
+		return FALSE;
+	}
 
 	if (!g_utf8_validate (dir, -1, NULL)) {
 
 		dir_utf8 = g_filename_to_utf8 (dir, -1, NULL,NULL,NULL);
 		if (!dir_utf8) {
-			tracker_log ("******ERROR**** watch_dir could not be converted to utf8 format");
+			tracker_error ("ERROR: watch_dir could not be converted to utf8 format");
 			return FALSE;
 		}
 	} else {
@@ -570,6 +428,10 @@ watch_dir (const char* dir, DBConnection *db_con)
 
 	if (!tracker_is_directory (dir_utf8)) {
 		g_free (dir_utf8);
+		return FALSE;
+	}
+
+	if (tracker_file_is_crawled (dir_utf8)) {
 		return FALSE;
 	}
 
@@ -638,7 +500,7 @@ signal_handler (int signo)
 			break;
 
 		default:
-			if (tracker->log_file) {
+			if (tracker->log_file && g_strsignal (signo)) {
 	   			tracker_log ("Received signal %s ", g_strsignal (signo));
 			}
 			in_loop = FALSE;
@@ -678,8 +540,6 @@ delete_directory (DBConnection *db_con, DBConnection *blob_db_con, FileInfo *inf
 	tracker_db_delete_directory (db_con, blob_db_con, info->file_id, info->uri);
 
 	tracker_remove_watch_dir (info->uri, TRUE, db_con);
-
-	tracker_remove_poll_dir (info->uri);
 
 	tracker_log ("deleting directory %s and subdirs", info->uri);
 }
@@ -723,7 +583,7 @@ queue_file (const char *uri)
 static void
 check_directory (const char *uri)
 {
-	GSList *file_list;
+	GSList *file_list = NULL;
 
 	if (!tracker->is_running) {
 		return;
@@ -732,11 +592,8 @@ check_directory (const char *uri)
 	g_return_if_fail (uri && (uri[0] == '/'));
 	g_return_if_fail (tracker_is_directory (uri));
 
-	/* keep mainloop responsive */
-	my_yield ();
-
 	file_list = tracker_get_files (uri, FALSE);
-	tracker_debug ("checking %s for %d files", uri, g_slist_length(file_list));
+	tracker_debug ("checking %s for %d files", uri, g_slist_length (file_list));
 
 	g_slist_foreach (file_list, (GFunc) queue_file, NULL);
 	g_slist_foreach (file_list, (GFunc) g_free, NULL);
@@ -776,164 +633,6 @@ scan_directory (const char *uri, DBConnection *db_con)
 	tracker_debug ("finished scanning");
 }
 
-
-/*
-static gboolean
-start_watching ()
-{
-	if (!tracker->is_running) {
-		return FALSE;
-	}
-
-	if (!tracker_start_watching ()) {
-		tracker_log ("File monitoring failed to start");
-		do_cleanup ("File watching failure");
-		exit (1);
-	} else {
-
-
-		//tracker_email_watch_emails (main_thread_db_con);
-		
-		g_slist_foreach (tracker->watch_directory_roots_list, (GFunc) watch_dir, main_thread_db_con);
- 		g_slist_foreach (tracker->watch_directory_roots_list, (GFunc) schedule_dir_check, main_thread_db_con);
-
-		tracker_notify_file_data_available ();
-
-	}
-
-	return FALSE;
-}
-*/
-
-/*
-static void
-extract_metadata_thread (void)
-{
-	sigset_t     signal_set;
-	DBConnection *db_con;
-	DBConnection *blob_db_con;
-	DBConnection *cache_db_con;
-
-	sigfillset (&signal_set);
-	sigdelset (&signal_set, SIGALRM);
-	pthread_sigmask (SIG_BLOCK, &signal_set, NULL);
-
-	g_mutex_lock (tracker->metadata_signal_mutex);
-	g_mutex_lock (tracker->metadata_stopped_mutex);
-
-	tracker_db_thread_init ();
-
-	db_con = tracker_db_connect ();
-	blob_db_con = tracker_db_connect_full_text ();
-	cache_db_con = tracker_db_connect_cache ();
-
-	db_con->user_data = cache_db_con;
-	db_con->user_data2 = blob_db_con;
-
-	db_con->thread = "extract";
-
-	tracker_db_prepare_queries (db_con);
-
-	while (TRUE) {
-		FileInfo *info;
-
-
-		if (!tracker->is_running) {
-
-			tracker_debug ("metadata thread going to deep sleep...");
-
-			g_cond_wait (tracker->metadata_thread_signal, tracker->metadata_signal_mutex);
-
-			if (!shutdown) {
-				continue;
-			} else {
-				break;
-			}
-		}
-
-
-		
-		tracker->index_counter++;
-
-		info = g_async_queue_try_pop (tracker->file_metadata_queue);
-
-		if (!info) {
-			char ***res;
-			int  k;
-
-			g_mutex_lock (tracker->metadata_check_mutex);
-
-			if (tracker_db_has_pending_metadata (db_con)) {
-				g_mutex_unlock (tracker->metadata_check_mutex);
-			} else {
-				tracker_debug ("metadata thread sleeping");
-
-				g_cond_wait (tracker->metadata_thread_signal, tracker->metadata_signal_mutex);
-				g_mutex_unlock (tracker->metadata_check_mutex);
-				tracker_debug ("metadata thread awoken");
-
-
-				if (!shutdown) {
-					continue;
-				} else {
-					break;
-				}
-			}
-
-			res = tracker_db_get_pending_metadata (db_con);
-
-			k = 0;
-
-			if (res) {
-				char **row;
-
-				while ((row = tracker_db_get_row (res, k))) {
-					FileInfo *info_tmp;
-
-					if (!tracker->is_running) {
-						break;
-					}
-
-					k++;
-					info_tmp = tracker_create_file_info (row[1], atoi(row[2]), 0, WATCH_OTHER);
-					info_tmp->file_id = atol (row[0]);
-					info_tmp->mime = g_strdup (row[3]);
-					info_tmp->is_new = (strcmp (row[5], "1") == 0);
-					info_tmp->service_type_id =  atoi (row[8]);
-
-					g_async_queue_push (tracker->file_metadata_queue, info_tmp);
-				}
-
-				if (tracker->is_running) {
-					tracker_db_free_result (res);
-				}
-			}
-
-			if (tracker->is_running) {
-				tracker_db_remove_pending_metadata (db_con);
-			}
-
-			continue;
-		}
-
-
-		if (!tracker_file_info_is_valid (info)) {
-			continue;
-		}
-
-		
-	}
-
-	tracker_db_close (db_con);
-	tracker_db_close (blob_db_con);
-	tracker_db_close (cache_db_con);
-	tracker_db_thread_end ();
-
-	tracker_debug ("metadata thread has exited successfully");
-	g_mutex_unlock (tracker->metadata_stopped_mutex);
-}
-
-*/
 
 /* determines whether an action applies to a file or a directory */
 static void
@@ -995,6 +694,111 @@ verify_action (FileInfo *info)
 	}
 }
 
+static void
+index_entity (DBConnection *db_con, FileInfo *info)
+{
+	char  *service_info;
+
+	g_return_if_fail (info->uri);
+	g_return_if_fail (info->uri[0] == '/');
+
+	if (!tracker_file_is_valid (info->uri)) {
+		//tracker_debug ("Warning - file %s in not valid or could not be read - abandoning index on this file", info->uri);
+		return;
+	}
+
+	if (!info->is_directory) {
+		/* sleep to throttle back indexing */
+		tracker_throttle (1000);
+	}
+
+	service_info = tracker_get_service_for_uri (info->uri);
+
+	if (!service_info) {
+		tracker_error ("ERROR: cannot find service for path %s", info->uri);
+		return;
+	}
+
+//	tracker_debug ("indexing %s with service %s", info->uri, service_info);
+
+	char *str = g_utf8_strdown  (service_info, -1);
+
+	ServiceDef *def =  g_hash_table_lookup (tracker->service_table, str);
+
+	g_free (str);
+
+	if (!def) {
+		if (service_info) {
+			tracker_error ("ERROR: unknown service %s", service_info);
+		} else {
+			tracker_error ("ERROR: unknown service");
+		}
+		g_free (service_info);
+		return;
+	}
+
+	if (info->is_directory) {
+		info->is_hidden = !def->show_service_directories;
+		tracker_db_index_file (db_con, info, NULL, NULL);
+		g_free (service_info);
+		return;
+
+	} else {
+		info->is_hidden = !def->show_service_files;
+	}
+
+
+	if (g_str_has_suffix (service_info, "Emails")) {
+
+		if (!tracker_email_index_file (db_con->emails, info, service_info)) {
+
+			g_free (service_info);
+			return;
+		}
+
+
+	} else if (strcmp (service_info, "Files") == 0) {
+		tracker_db_index_file (db_con, info, NULL, NULL);
+
+	} else if (g_str_has_suffix (service_info, "Conversations")) {
+		tracker_db_index_conversation (db_con, info);
+
+	} else if (strcmp (service_info, "Applications") == 0) {
+		tracker_db_index_application (db_con, info);
+
+	} else {
+		tracker_db_index_service (db_con, info, NULL, NULL, NULL, FALSE, TRUE, TRUE, TRUE);
+	}
+
+	g_free (service_info);
+}
+
+
+static inline void
+process_directory_list (DBConnection *db_con, GSList *list, gboolean recurse)
+{
+	tracker->dir_list = NULL;
+
+	if (!list || g_slist_length (list) == 0) {
+		return;
+	}
+
+	g_slist_foreach (list, (GFunc) watch_dir, db_con);
+
+	g_slist_foreach (list, (GFunc) schedule_dir_check, db_con);
+
+	if (recurse && tracker->dir_list) {
+		g_slist_foreach (tracker->dir_list, (GFunc) schedule_dir_check, db_con);
+	}
+
+	if (tracker->dir_list) {
+		g_slist_foreach (tracker->dir_list, (GFunc) g_free, NULL);
+		g_slist_free (tracker->dir_list);
+                tracker->dir_list = NULL;
+	}
+
+}
+
 
 static void
 process_files_thread (void)
@@ -1003,6 +807,10 @@ process_files_thread (void)
 
 	DBConnection *db_con;
 	DBConnection *blob_db_con = NULL;
+	DBConnection *emails_db_con = NULL;
+	DBConnection *common_db_con = NULL;
+	DBConnection *file_index_db_con = NULL;
+	DBConnection *email_index_db_con = NULL;
 
 	GSList	     *moved_from_list; /* list to hold moved_from events whilst waiting for a matching moved_to event */
 	gboolean pushed_events, first_run;
@@ -1019,9 +827,30 @@ process_files_thread (void)
 
 	db_con = tracker_db_connect ();
 	blob_db_con = tracker_db_connect_full_text ();
+	emails_db_con = tracker_db_connect_emails ();
+	common_db_con  = tracker_db_connect_common ();
 
+	file_index_db_con = tracker_db_connect_file_index ();
+	email_index_db_con = tracker_db_connect_file_index ();
+
+	file_index_db_con->common = common_db_con;
+	email_index_db_con->common = common_db_con;
+
+	db_con->index = file_index_db_con;
+	emails_db_con->index = email_index_db_con;
+	emails_db_con->common = common_db_con;
+	db_con->common = common_db_con;
 	db_con->thread = "files";
-	db_con->user_data2 = blob_db_con;
+
+
+	db_con->blob = blob_db_con;
+	db_con->data = db_con;
+	db_con->emails = emails_db_con;
+	emails_db_con->blob = blob_db_con;
+	emails_db_con->data = db_con;
+
+
+	tracker->index_status = INDEX_CONFIG;
 
 	pushed_events = FALSE;
 
@@ -1030,6 +859,7 @@ process_files_thread (void)
 	moved_from_list = NULL;
 
 	tracker_log ("starting indexing...");
+	tracker->status = STATUS_INDEXING;
 
 	while (TRUE) {
 		FileInfo *info;
@@ -1040,30 +870,26 @@ process_files_thread (void)
 		/* make thread sleep if first part of the shutdown process has been activated */
 		if (!tracker->is_running) {
 
-			tracker_debug ("files thread going to deep sleep...");
-
 			g_cond_wait (tracker->file_thread_signal, tracker->files_signal_mutex);
 
 			/* determine if wake up call is new stuff or a shutdown signal */
 			if (!shutdown) {
 				continue;
 			} else {
+
+				if (tracker->dir_list) {
+					g_slist_foreach (tracker->dir_list, (GFunc) g_free, NULL);
+					g_slist_free (tracker->dir_list);
+					tracker->dir_list = NULL;
+				}
 				break;
 			}
 		}
 
-		
-		if (tracker->word_detail_count > tracker->word_detail_limit || tracker->word_count > tracker->word_count_limit) {
-			if (tracker->flush_count < 10) {
-				tracker->flush_count++;
-				tracker_info ("flushing");
-				tracker_flush_rare_words ();
-			} else {
-				tracker->flush_count = 0;
-				tracker_flush_all_words ();
-				
-			}
-		}
+
+		tracker->status = STATUS_WATCHING;
+
+		tracker_check_flush ();
 
 		info = g_async_queue_try_pop (tracker->file_process_queue);
 
@@ -1072,7 +898,6 @@ process_files_thread (void)
 			char ***res;
 			int  k;
 
-			tracker_debug ("Checking for pending files...");
 
 			/* set mutex to indicate we are in "check" state */
 			g_mutex_lock (tracker->files_check_mutex);
@@ -1080,20 +905,19 @@ process_files_thread (void)
 
 			if (tracker_db_has_pending_files (db_con)) {
 				g_mutex_unlock (tracker->files_check_mutex);
+
 			} else {
-				
+
 
 				/* check dir_queue in case there are directories waiting to be indexed */
-				
+
 				if (g_async_queue_length (tracker->dir_queue) > 0) {
 
 					char *uri;
 
 					uri = g_async_queue_try_pop (tracker->dir_queue);
-		
-					if (uri) {
 
-						tracker_debug ("processing queued directory %s - %d items left", uri, g_async_queue_length (tracker->dir_queue));
+					if (uri) {
 
 						check_directory (uri);
 
@@ -1103,35 +927,217 @@ process_files_thread (void)
 
 						continue;
 					}
-				} 
+				}
 
-				
-				/* flush all words if nothing left to do before sleeping */
-				tracker_flush_all_words ();
+				if (tracker->index_status != INDEX_FINISHED) {
+
+					g_mutex_unlock (tracker->files_check_mutex);
+
+					switch (tracker->index_status) {
+
+						case INDEX_CONFIG:
+							tracker_log ("starting config indexing");
+							break;
+
+						case INDEX_APPLICATIONS: {
+								GSList *list;
+
+								tracker_log ("starting application indexing");
+
+								tracker_applications_add_service_directories ();
+
+								list = tracker_get_service_dirs ("Applications");
+
+								process_directory_list (db_con, list, FALSE);
+
+								g_slist_free (list);
+							}
+							break;
+
+
+						case INDEX_CONVERSATIONS: {
+								char *gaim, *purple;
+								gboolean has_logs = FALSE;
+								GSList *list;
+
+								/* sleep for N secs before watching/indexing any of the major services */
+								if (tracker->initial_sleep > 0) {
+									tracker_log ("sleeping for %d secs...", tracker->initial_sleep);
+									g_usleep (tracker->initial_sleep * 1000 * 1000);
+								}
+
+								/* delete all stuff in the no watch dirs */
+
+								if (tracker->no_watch_directory_list) {
+
+									GSList *l;
+
+									tracker_log ("Deleting entities in no watch directories...");
+
+									for (l = tracker->no_watch_directory_list; l; l=l->next) {
+
+										if (l->data) {
+											char *no_watch_uri = (char *) l->data;		
+		
+											guint32 f_id = tracker_db_get_file_id (db_con, no_watch_uri);
+
+											if (f_id > 0) {
+												tracker_db_delete_directory (db_con, db_con->blob, f_id, no_watch_uri);
+											}
+		
+										}
+									}
+								}
+
+
+								gaim = g_build_filename (g_get_home_dir(), ".gaim", "logs", NULL);
+								purple = g_build_filename (g_get_home_dir(), ".purple", "logs", NULL);
+
+								if (tracker_file_is_valid (gaim)) {
+
+									has_logs = TRUE;
+
+									tracker_add_service_path ("GaimConversations", gaim);
+
+									list = g_slist_prepend (NULL, gaim);
+
+								}
+
+								if (tracker_file_is_valid (purple)) {
+
+									has_logs = TRUE;
+
+									tracker_add_service_path ("GaimConversations", purple);
+
+									list = g_slist_prepend (NULL, purple);
+								}
+
+								if (has_logs) {
+									tracker_log ("starting chat log indexing...");
+
+									process_directory_list (db_con, list, TRUE);
+
+									g_slist_free (list);
+
+
+								}
+
+								g_free (gaim);
+								g_free (purple);
+							}
+							break;
+
+
+						case INDEX_EMAILS:  {
+								if (tracker->index_evolution_emails || tracker->index_kmail_emails) {
+
+									tracker_email_add_service_directories (emails_db_con);
+									tracker_log ("starting email indexing...");
+
+									if (tracker->index_evolution_emails) {
+										GSList *list;
+										list = tracker_get_service_dirs ("EvolutionEmails");
+										process_directory_list (db_con, list, TRUE);
+										g_slist_free (list);
+									}
+
+									if (tracker->index_kmail_emails) {
+										GSList *list;
+										list = tracker_get_service_dirs ("KMailEmails");
+										process_directory_list (db_con, list, TRUE);
+										g_slist_free (list);
+									}
+								}
+							}
+							break;
+
+
+						case INDEX_FILES: {
+								tracker_log ("starting file indexing...");
+								tracker->dir_list = NULL;
+
+								g_slist_foreach (tracker->watch_directory_roots_list, (GFunc) watch_dir, db_con);
+
+								g_slist_foreach (tracker->dir_list, (GFunc) schedule_dir_check, db_con);
+
+								if (tracker->dir_list) {
+									g_slist_foreach (tracker->dir_list, (GFunc) g_free, NULL);
+									g_slist_free (tracker->dir_list);
+									tracker->dir_list = NULL;
+								}
+
+								g_slist_foreach (tracker->watch_directory_roots_list, (GFunc) schedule_dir_check, db_con);
+
+								if (tracker->dir_list) {
+									g_slist_foreach (tracker->dir_list, (GFunc) g_free, NULL);
+									g_slist_free (tracker->dir_list);
+									tracker->dir_list = NULL;
+								}
+							}
+							break;
+
+						case INDEX_EXTERNAL:
+							break;
+
+						case INDEX_FINISHED:
+							break;
+
+					}
+
+					tracker->index_status++;
+
+					continue;
+				}
+
+
+				if (g_hash_table_size (tracker->cached_table) != 0) {
+
+					/* flush all words if nothing left to do before sleeping */
+					tracker_flush_all_words ();
+					tracker_log ("Finished indexing. Waiting for new events...");
+				}
+
+
 
 				if (tracker->is_running && (tracker->first_time_index || tracker->do_optimize || (tracker->update_count > tracker->optimization_count))) {
 
+					tracker->status = STATUS_OPTIMIZING;
 					tracker_indexer_optimize (tracker->file_indexer);
 
 					tracker->do_optimize = FALSE;
 					tracker->first_time_index = FALSE;
 					tracker->update_count = 0;
-	
+
+					tracker_log ("updating database stats...please wait...");
+
+					tracker_db_start_transaction (db_con);
+					tracker_db_exec_no_reply (db_con, "ANALYZE");
+					tracker_db_end_transaction (db_con);
+
+					tracker_db_start_transaction (db_con->emails);
+					tracker_db_exec_no_reply (db_con->emails, "ANALYZE");
+					tracker_db_end_transaction (db_con->emails);
+
+					tracker_log ("Finished optimizing. Waiting for new events...");
+
 				}
 
-				tracker_log ("Finished indexing. Waiting for new events...");
+
+
+
 
 				/* we have no stuff to process so sleep until awoken by a new signal */
-				tracker_debug ("File thread sleeping");			
+
+				tracker->status = STATUS_IDLE;
 
 				g_cond_wait (tracker->file_thread_signal, tracker->files_signal_mutex);
 				g_mutex_unlock (tracker->files_check_mutex);
 
-				tracker_debug ("File thread awoken");
+
 
 				/* determine if wake up call is new stuff or a shutdown signal */
 				if (!shutdown) {
-					
+
 				} else {
 					break;
 				}
@@ -1145,6 +1151,8 @@ process_files_thread (void)
 			if (res) {
 				char **row;
 
+				tracker->status = STATUS_PENDING;
+
 				while ((row = tracker_db_get_row (res, k))) {
 					FileInfo	    *info_tmp;
 					TrackerChangeAction tmp_action;
@@ -1157,20 +1165,20 @@ process_files_thread (void)
 
 					tmp_action = atoi(row[2]);
 
-					
 
+/*
 					if (tmp_action != TRACKER_ACTION_CHECK) {
 						tracker_debug ("processing %s with event %s", row[1], tracker_actions[tmp_action]);
 					}
-
+*/
 					info_tmp = tracker_create_file_info (row[1], tmp_action, 0, WATCH_OTHER);
 					g_async_queue_push (tracker->file_process_queue, info_tmp);
 					pushed_events = TRUE;
 				}
 
-				if (tracker->is_running) {
-					tracker_db_free_result (res);
-				}
+
+				tracker_db_free_result (res);
+
 			}
 
 			if (!tracker->is_running) {
@@ -1181,9 +1189,8 @@ process_files_thread (void)
 
 			/* pending files are present but not yet ready as we are waiting til they stabilize so we should sleep for 100ms (only occurs when using FAM or inotify move/create) */
 			if (!pushed_events && (k == 0)) {
-				tracker_debug ("files not ready so sleeping");
 				g_usleep (100000);
-			} 
+			}
 
 
 
@@ -1191,7 +1198,7 @@ process_files_thread (void)
 		}
 
 
-
+		tracker->status = STATUS_INDEXING;
 
 		/* info struct may have been deleted in transit here so check if still valid and intact */
 		if (!tracker_file_info_is_valid (info)) {
@@ -1203,7 +1210,7 @@ process_files_thread (void)
 			continue;
 		}
 
-		
+
 
 		/* get file ID and other interesting fields from Database if not previously fetched or is newly created */
 
@@ -1268,6 +1275,8 @@ process_files_thread (void)
 			}
 		}
 
+
+
 		/* get latest file info from disk */
 		if (info->mtime == 0) {
 			info = tracker_get_file_info (info);
@@ -1280,6 +1289,7 @@ process_files_thread (void)
 		switch (info->action) {
 
 			case TRACKER_ACTION_FILE_CHECK:
+
 
 				break;
 
@@ -1299,22 +1309,28 @@ process_files_thread (void)
 
 				break;
 
-			case TRACKER_ACTION_DIRECTORY_CHECK:
+
+
+			case TRACKER_ACTION_DIRECTORY_REFRESH:
 
 				if (need_index && !tracker_file_is_no_watched (info->uri)) {
-					tracker_debug ("queueing directory %s", info->uri);
 					g_async_queue_push (tracker->dir_queue, g_strdup (info->uri));
 				}
+				need_index = FALSE;
 
 				break;
 
-			case TRACKER_ACTION_DIRECTORY_REFRESH:
-			
+			case TRACKER_ACTION_DIRECTORY_CHECK:
+
 				if (need_index && !tracker_file_is_no_watched (info->uri)) {
-					tracker_debug ("queueing directory %s", info->uri);
 					g_async_queue_push (tracker->dir_queue, g_strdup (info->uri));
-					need_index = FALSE;
+
+					if (info->indextime > 0) {
+						check_dir_for_deletions (db_con, info->uri);
+					}
+
 				}
+
 
 				break;
 
@@ -1324,12 +1340,13 @@ process_files_thread (void)
 				need_index = TRUE;
 				tracker_debug ("processing created directory %s", info->uri);
 
-				/* add to watch folders (including subfolders) */
-				watch_dir (info->uri, db_con);
+
 
 				/* schedule a rescan for all files in folder to avoid race conditions */
 				if (info->action == TRACKER_ACTION_DIRECTORY_CREATED) {
 					if (!tracker_file_is_no_watched (info->uri)) {
+						/* add to watch folders (including subfolders) */
+						watch_dir (info->uri, db_con);
 						scan_directory (info->uri, db_con);
 					} else {
 						tracker_debug ("blocked scan of directory %s as its in the no watch list", info->uri);
@@ -1344,27 +1361,26 @@ process_files_thread (void)
 
 		if (need_index) {
 			tracker->index_count++;
-		
-			if (tracker->verbosity == 0) {
-				if ( (tracker->index_count == 1 || tracker->index_count == 100  || (tracker->index_count >= 500 && tracker->index_count%500 == 0)) && (tracker->verbosity == 0)) {
+
+			if (tracker->verbosity == 1) {
+				if ( (tracker->index_count == 1 || tracker->index_count == 100  || (tracker->index_count >= 500 && tracker->index_count%500 == 0)) && (tracker->verbosity == 1)) {
 					tracker_log ("indexing #%d - %s", tracker->index_count, info->uri);
-				} 
+				}
 			}
-			tracker_db_index_entity (db_con, info);
+			index_entity (db_con, info);
 		}
 
 		tracker_dec_info_ref (info);
 	}
 
 	tracker_db_close (db_con);
-
+	tracker_db_close (emails_db_con);
 	if (blob_db_con) {
 		tracker_db_close (blob_db_con);
 	}
 
 
 	tracker_db_thread_end ();
-	tracker_debug ("files thread has exited successfully");
 	g_mutex_unlock (tracker->files_stopped_mutex);
 }
 
@@ -1374,6 +1390,7 @@ process_user_request_queue_thread (void)
 {
 	sigset_t     signal_set;
 	DBConnection *db_con, *blob_db_con, *cache_db_con;
+	DBConnection *emails_db_con = NULL;
 
         /* block all signals in this thread */
         sigfillset (&signal_set);
@@ -1385,13 +1402,18 @@ process_user_request_queue_thread (void)
 	/* set thread safe DB connection */
 	tracker_db_thread_init ();
 
+	cache_db_con = tracker_db_connect_cache ();
 	db_con = tracker_db_connect ();
 	blob_db_con = tracker_db_connect_full_text ();
-	cache_db_con = tracker_db_connect_cache ();
+	emails_db_con = tracker_db_connect_emails ();
 
 	db_con->thread = "request";
-	db_con->user_data = cache_db_con;
-	db_con->user_data2 = blob_db_con;
+	db_con->cache = cache_db_con;
+	db_con->blob = blob_db_con;
+	db_con->data = db_con;
+	db_con->emails = emails_db_con;
+	emails_db_con->blob = blob_db_con;
+	emails_db_con->data = db_con;
 
 	tracker_db_prepare_queries (db_con);
 
@@ -1401,8 +1423,6 @@ process_user_request_queue_thread (void)
 
 		/* make thread sleep if first part of the shutdown process has been activated */
 		if (!tracker->is_running) {
-
-			tracker_debug ("request thread going to deep sleep...");
 
 			g_cond_wait (tracker->request_thread_signal, tracker->request_signal_mutex);
 
@@ -1420,10 +1440,8 @@ process_user_request_queue_thread (void)
 		rec = g_async_queue_try_pop (tracker->user_request_queue);
 
 		if (!rec) {
-			tracker_debug ("request thread sleeping");
 			g_cond_wait (tracker->request_thread_signal, tracker->request_signal_mutex);
 			g_mutex_unlock (tracker->request_check_mutex);
-			tracker_debug ("request thread awoken");
 
 			/* determine if wake up call is new stuff or a shutdown signal */
 			if (!shutdown) {
@@ -1473,12 +1491,23 @@ process_user_request_queue_thread (void)
 
 				break;
 
+                        case DBUS_ACTION_GET_STATUS:
+
+                                reply = dbus_message_new_method_return (rec->message);
+                                char *tracker_status[] = {"Initializing","Watching","Indexing","Pending","Optimizing","Idle","Shutdown"};
+                         
+                                char* status = tracker_status[tracker->status];
+                                dbus_message_append_args (reply,
+                                                          DBUS_TYPE_STRING, &status,
+                                                          DBUS_TYPE_INVALID);
+                                dbus_connection_send (rec->connection, reply, NULL);
+                                dbus_message_unref (reply);
+                                break;
 
 
 			case DBUS_ACTION_METADATA_GET:
 
 				tracker_dbus_method_metadata_get (rec);
-
 				break;
 
 			case DBUS_ACTION_METADATA_SET:
@@ -1559,6 +1588,18 @@ process_user_request_queue_thread (void)
 
 
 
+			case DBUS_ACTION_SEARCH_GET_HIT_COUNT:
+
+				tracker_dbus_method_search_get_hit_count (rec);
+
+				break;
+
+			case DBUS_ACTION_SEARCH_GET_HIT_COUNT_ALL:
+
+				tracker_dbus_method_search_get_hit_count_all (rec);
+
+				break;
+
 			case DBUS_ACTION_SEARCH_TEXT:
 
 				tracker_dbus_method_search_text (rec);
@@ -1601,6 +1642,13 @@ process_user_request_queue_thread (void)
 			case DBUS_ACTION_SEARCH_QUERY:
 
 				tracker_dbus_method_search_query (rec);
+
+				break;
+
+
+			case DBUS_ACTION_SEARCH_SUGGEST:
+
+				tracker_dbus_method_search_suggest (rec);
 
 				break;
 
@@ -1706,6 +1754,7 @@ process_user_request_queue_thread (void)
 	}
 
 	tracker_db_close (db_con);
+	tracker_db_close (emails_db_con);
 
 	if (blob_db_con) {
 		tracker_db_close (blob_db_con);
@@ -1776,11 +1825,12 @@ add_local_dbus_connection_monitoring (DBusConnection *connection)
 static void
 set_defaults ()
 {
-	tracker->sys_tmp_root_dir = NULL;
+
+	tracker->index_status = INDEX_CONFIG;
 
 	tracker->watch_directory_roots_list = NULL;
 	tracker->no_watch_directory_list = NULL;
-	tracker->poll_list = NULL;
+	tracker->crawl_directory_list = NULL;
 	tracker->use_nfs_safe_locking = FALSE;
 
 	tracker->enable_indexing = TRUE;
@@ -1789,7 +1839,6 @@ set_defaults ()
 	tracker->enable_thumbnails = FALSE;
 
 	tracker->watch_limit = 0;
-	tracker->poll_interval = FILE_POLL_PERIOD;
 	tracker->index_counter = 0;
 	tracker->index_count = 0;
 	tracker->update_count = 0;
@@ -1798,6 +1847,7 @@ set_defaults ()
 	tracker->max_process_queue_size = MAX_PROCESS_QUEUE_SIZE;
 	tracker->max_extract_queue_size = MAX_EXTRACT_QUEUE_SIZE;
 	tracker->optimization_count = OPTIMIZATION_COUNT;
+	tracker->max_words_to_index = MAX_WORDS_TO_INDEX;
 
 	tracker->max_index_bucket_count = MAX_INDEX_BUCKET_COUNT;
 	tracker->min_index_bucket_count = MIN_INDEX_BUCKET_COUNT;
@@ -1807,28 +1857,48 @@ set_defaults ()
 
 	tracker->flush_count = 0;
 
-	tracker->index_evolution_emails = FALSE;
+	tracker->index_evolution_emails = TRUE;
 	tracker->index_thunderbird_emails = FALSE;
 	tracker->index_kmail_emails = FALSE;
 
 	tracker->use_extra_memory = TRUE;
 
 	tracker->throttle = 0;
+	tracker->initial_sleep = 45;
 
 	tracker->min_word_length = 3;
 	tracker->max_word_length = 30;
 	tracker->use_stemmer = TRUE;
-	tracker->language = g_strdup ("en");
+	tracker->language = tracker_get_english_lang_code ();
 	tracker->stop_words = NULL;
-	tracker->use_pango_word_break = FALSE;
+
 	tracker->index_numbers = FALSE;
+	tracker->index_number_min_length = 6;
+	tracker->strip_accents = TRUE;
 
 	tracker->first_flush = TRUE;
 
-	tracker->magic  = magic_open (MAGIC_MIME);
-    	
-	if (magic_load (tracker->magic, 0) == -1 && magic_load (tracker->magic, "magic") == -1) {
-        	tracker_log ("Error: magic_load failure : %s", magic_error (tracker->magic));
+	tracker->services_dir = g_build_filename (DATADIR, "tracker", "services", NULL);
+
+	/* battery and ac power checks */
+	const char *battery_filenames[4] = {
+		"/proc/acpi/ac_adapter/AC/state",
+		"/proc/acpi/ac_adapter/AC0/state",
+		"/proc/acpi/ac_adapter/ADp1/state",
+		"/proc/acpi/ac_adapter/ACAD/state"
+	};
+
+	int i;
+
+	tracker->battery_state_file = NULL;
+
+	for (i=0; i<4; i++) {
+
+		if (g_file_test (battery_filenames[i], G_FILE_TEST_EXISTS)) {
+			tracker->battery_state_file = g_strdup (battery_filenames[i]);
+			break;
+		}
+
 	}
 }
 
@@ -1836,42 +1906,15 @@ set_defaults ()
 static void
 sanity_check_option_values ()
 {
-	/* Make a temporary directory for Tracker into g_get_tmp_dir() directory */
-
-	char *tmp_dir;
-
-	tmp_dir = g_strdup_printf ("Tracker-%s.%u", g_get_user_name (), getpid());
-
-	tracker->sys_tmp_root_dir = g_build_filename (g_get_tmp_dir (), tmp_dir, NULL);
-	tracker->data_dir = g_build_filename (g_get_home_dir (), ".Tracker", "databases", NULL);
-	tracker->backup_dir = g_build_filename (g_get_home_dir (), ".Tracker", "backup", NULL);
-	
-	g_free (tmp_dir);
-
-	/* remove an existing one */
-	if (g_file_test (tracker->sys_tmp_root_dir, G_FILE_TEST_EXISTS)) {
-		tracker_remove_dirs (tracker->sys_tmp_root_dir);
-	}
-
-	if (!g_file_test (tracker->data_dir, G_FILE_TEST_EXISTS)) {
-		g_mkdir_with_parents (tracker->data_dir, 00755);
-	}
-
-	if (!g_file_test (tracker->backup_dir, G_FILE_TEST_EXISTS)) {
-		g_mkdir_with_parents (tracker->backup_dir, 00755);
-	}
-
-	g_mkdir (tracker->sys_tmp_root_dir, 00700);
 
 
-	/* emails not fully working yet so disable them */
-	tracker->index_evolution_emails = FALSE;
+
 	tracker->index_thunderbird_emails = FALSE;
-	tracker->index_kmail_emails = FALSE;
 
 
-	if (tracker->poll_interval < 1000) tracker->poll_interval = 1000;
+
 	if (tracker->max_index_text_length < 0) tracker->max_index_text_length = 0;
+	if (tracker->max_words_to_index < 0) tracker->max_words_to_index = 0;
 	if (tracker->optimization_count < 1000) tracker->optimization_count = 1000;
 	if (tracker->max_index_bucket_count < 1000) tracker->max_index_bucket_count= 1000;
 	if (tracker->min_index_bucket_count < 1000) tracker->min_index_bucket_count= 1000;
@@ -1882,7 +1925,7 @@ sanity_check_option_values ()
 	if (tracker->padding < 0) tracker->padding = 0;
 	if (tracker->padding > 8) tracker->padding = 8;
 
-	if (tracker->min_word_length < 1) tracker->min_word_length = 1;
+	if (tracker->min_word_length < 1) tracker->min_word_length = 3;
 
 	if (!tracker_is_supported_lang (tracker->language)) {
 		tracker_set_language ("en", TRUE);
@@ -1900,24 +1943,27 @@ sanity_check_option_values ()
 		tracker->throttle = 0;
 	}
 
+	if (tracker->initial_sleep > 1000) tracker->initial_sleep = 1000; /* g_usleep (X * 1000 * 1000) */
+
 	char *bools[] = {"no", "yes"};
 
-	tracker_log ("\nTracker configuration options :");
-	tracker_log ("Low memory mode : \t\t\t%s", bools[!tracker->use_extra_memory]);
-	tracker_log ("Indexing enabled : \t\t\t%s", bools[tracker->enable_indexing]);
-	tracker_log ("Watching enabled : \t\t\t%s", bools[tracker->enable_watching]);
-	tracker_log ("File content indexing enabled : \t%s", bools[tracker->enable_content_indexing]);
-	tracker_log ("Thumbnailing enabled : \t\t\t%s", bools[tracker->enable_thumbnails]);
-	tracker_log ("Evolution email indexing enabled : \t%s", bools[tracker->index_evolution_emails]);
-	tracker_log ("Thunderbird email indexing enabled : \t%s", bools[tracker->index_thunderbird_emails]);
-	tracker_log ("K-Mail indexing enabled : \t\t%s\n", bools[tracker->index_kmail_emails]);
+	tracker_log ("Tracker configuration options :");
+	tracker_log ("Verbosity : ........................  %d", tracker->verbosity);
+ 	tracker_log ("Low memory mode : ..................  %s", bools[!tracker->use_extra_memory]);
+ 	tracker_log ("Indexing enabled : .................  %s", bools[tracker->enable_indexing]);
+ 	tracker_log ("Watching enabled : .................  %s", bools[tracker->enable_watching]);
+ 	tracker_log ("File content indexing enabled : ....  %s", bools[tracker->enable_content_indexing]);
+	tracker_log ("Thumbnailing enabled : .............  %s", bools[tracker->enable_thumbnails]);
+ 	tracker_log ("Evolution email indexing enabled : .  %s", bools[tracker->index_evolution_emails]);
+ 	tracker_log ("Thunderbird email indexing enabled :  %s", bools[tracker->index_thunderbird_emails]);
+ 	tracker_log ("K-Mail indexing enabled : ..........  %s\n", bools[tracker->index_kmail_emails]);
 
 	tracker_log ("Tracker indexer parameters :");
-	tracker_log ("Indexer language code : \t\t%s", tracker->language);
-	tracker_log ("Minimum index word length : \t\t%d", tracker->min_word_length);
-	tracker_log ("Maximum index word length : \t\t%d", tracker->max_word_length);
-	tracker_log ("Stemmer enabled : \t\t\t%s", bools[tracker->use_stemmer]);
-	tracker_log ("Using Pango word breaking : \t\t%s\n\n", bools[tracker->use_pango_word_break]);
+	tracker_log ("Indexer language code : ............  %s", tracker->language);
+	tracker_log ("Minimum index word length : ........  %d", tracker->min_word_length);
+	tracker_log ("Maximum index word length : ........  %d", tracker->max_word_length);
+	tracker_log ("Stemmer enabled : ..................  %s", bools[tracker->use_stemmer]);
+
 
 	tracker->word_count = 0;
 	tracker->word_detail_count = 0;
@@ -1926,7 +1972,7 @@ sanity_check_option_values ()
 		tracker->max_process_queue_size = 5000;
 		tracker->max_extract_queue_size = 5000;
 
-		tracker->cached_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);	
+		tracker->cached_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
 		tracker->word_detail_limit = 200000;
 		tracker->word_detail_min = 100000;
@@ -1943,7 +1989,7 @@ sanity_check_option_values ()
 	GSList *l;
 	tracker_log ("Setting watch directory roots to:");
 	for (l = tracker->watch_directory_roots_list; l; l=l->next) {
-		tracker_log ((char *) l->data);
+		if (l->data) tracker_log ((char *) l->data);
 	}
 	tracker_log ("\t");
 
@@ -1951,7 +1997,16 @@ sanity_check_option_values ()
 
 		tracker_log ("Setting no watch directory roots to:");
 		for (l = tracker->no_watch_directory_list; l; l=l->next) {
-			tracker_log ((char *) l->data);
+			if (l->data) tracker_log ((char *) l->data);
+		}
+		tracker_log ("\t");
+	}
+
+	if (tracker->crawl_directory_list) {
+
+		tracker_log ("Setting crawl directory roots to:");
+		for (l = tracker->crawl_directory_list; l; l=l->next) {
+			if (l->data) tracker_log ((char *) l->data);
 		}
 		tracker_log ("\t");
 	}
@@ -1959,12 +2014,20 @@ sanity_check_option_values ()
 
 	if (tracker->verbosity < 0) {
 		tracker->verbosity = 0;
-	} else if (tracker->verbosity > 2) {
-		tracker->verbosity = 2;
+	} else if (tracker->verbosity > 3) {
+		tracker->verbosity = 3;
 	}
+
+	g_print ("throttle level is %d\n", tracker->throttle);
+
+	tracker->metadata_table = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+	tracker->service_table = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+	tracker->service_id_table = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+	tracker->service_directory_table = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+
+
 }
 
-	
 
 int
 main (int argc, char **argv)
@@ -1972,17 +2035,19 @@ main (int argc, char **argv)
 	int 		lfp;
   	struct 		sigaction act;
 	sigset_t 	empty_mask;
-	char 		*prefix, *lock_file, *str, *lock_str, *tracker_data_dir;
+	char 		*lock_file, *str, *lock_str;
 	GOptionContext  *context = NULL;
 	GError          *error = NULL;
 	gchar           *example;
-	gboolean 	need_setup;
+	gboolean 	need_index, need_data;
 	DBConnection 	*db_con;
-	char		***res;
+
+	if (!g_thread_supported ())
+		g_thread_init (NULL);
 
 	setlocale (LC_ALL, "");
 
-	
+
 	bindtextdomain (GETTEXT_PACKAGE, TRACKER_LOCALEDIR);
         bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
         textdomain (GETTEXT_PACKAGE);
@@ -2004,8 +2069,8 @@ main (int argc, char **argv)
         g_option_context_set_summary (context,
                                       g_strconcat(_("To include or exclude multiple directories "
                                                     "at the same time, join multiple options like:"),
- 
-                                                  "\n\n\t", 
+
+                                                  "\n\n\t",
                                                   example, NULL));
 
 #endif /* HAVE_RECENT_GLIB */
@@ -2036,21 +2101,63 @@ main (int argc, char **argv)
 	sigaction (SIGUSR1, &act, NULL);
 	sigaction (SIGINT,  &act, NULL);
 
-	if (!g_thread_supported ()) {
-		g_thread_init (NULL);
-	}
 
-	
 	dbus_g_thread_init ();
 
-	need_setup = FALSE;
+	tracker = g_new0 (Tracker, 1);
+
+	tracker->status = STATUS_INIT;
+
+ 	tracker->is_running = FALSE;
+
+	/* Make a temporary directory for Tracker into g_get_tmp_dir() directory */
+
+	char *tmp_dir;
+
+	tmp_dir = g_strdup_printf ("Tracker-%s.%u", g_get_user_name (), getpid());
+
+	tracker->sys_tmp_root_dir = g_build_filename (g_get_tmp_dir (), tmp_dir, NULL);
+	tracker->root_dir = g_build_filename (g_get_user_data_dir  (), "tracker", NULL);
+	tracker->data_dir = g_build_filename (g_get_user_cache_dir (), "tracker", NULL);
+	tracker->config_dir = g_strdup (g_get_user_config_dir ());
+	tracker->user_data_dir = g_build_filename (tracker->root_dir, "data", NULL);
+
+	g_free (tmp_dir);
+
+
+	/* remove an existing one */
+	if (g_file_test (tracker->sys_tmp_root_dir, G_FILE_TEST_EXISTS)) {
+		tracker_remove_dirs (tracker->sys_tmp_root_dir);
+	}
+
+
+	/* remove old tracker dirs */
+	char *old = g_build_filename (g_get_home_dir (), ".Tracker", NULL);
+
+	if (g_file_test (old ,G_FILE_TEST_EXISTS)) {
+		tracker_remove_dirs (old);
+	}
+
+	g_free (old);
+
+
+	if (!g_file_test (tracker->user_data_dir, G_FILE_TEST_EXISTS)) {
+		g_mkdir_with_parents (tracker->user_data_dir, 00755);
+	}
+
+	if (!g_file_test (tracker->data_dir, G_FILE_TEST_EXISTS)) {
+		g_mkdir_with_parents (tracker->data_dir, 00755);
+	}
+
+        tracker->email_attachements_dir = g_build_filename (tracker->sys_tmp_root_dir, "Attachments", NULL);
+	g_mkdir_with_parents (tracker->email_attachements_dir, 00700);
+	tracker_log ("Made email attachments directory %s\n", tracker->email_attachements_dir);
+
+	need_index = FALSE;
+	need_data = FALSE;
 
 	shutdown = FALSE;
 
-	tracker = g_new (Tracker, 1);
-
- 	tracker->is_running = FALSE;
-	tracker->poll_access_mutex = g_mutex_new ();
 
 	tracker->files_check_mutex = g_mutex_new ();
 	tracker->metadata_check_mutex = g_mutex_new ();
@@ -2059,22 +2166,18 @@ main (int argc, char **argv)
 	tracker->files_stopped_mutex = g_mutex_new ();
 	tracker->metadata_stopped_mutex = g_mutex_new ();
 	tracker->request_stopped_mutex = g_mutex_new ();
-	tracker->poll_stopped_mutex = g_mutex_new ();
 
 	tracker->file_metadata_thread = NULL;
 	tracker->file_process_thread = NULL;
 	tracker->user_request_thread = NULL;;
-	tracker->file_poll_thread = NULL;
 
 	tracker->file_thread_signal = g_cond_new ();
 	tracker->metadata_thread_signal = g_cond_new ();
 	tracker->request_thread_signal = g_cond_new ();
-	tracker->poll_thread_signal = g_cond_new ();
 
 	tracker->metadata_signal_mutex = g_mutex_new ();
 	tracker->files_signal_mutex = g_mutex_new ();
 	tracker->request_signal_mutex = g_mutex_new ();
-	tracker->poll_signal_mutex = g_mutex_new ();
 
 	tracker->log_access_mutex = g_mutex_new ();
 	tracker->scheduler_mutex = g_mutex_new ();
@@ -2086,28 +2189,35 @@ main (int argc, char **argv)
 	tracker->dir_queue = g_async_queue_new ();
 
 
+	if (reindex) {
+		tracker_remove_dirs (tracker->data_dir);
+		g_mkdir_with_parents (tracker->data_dir, 00755);
+	}
+
+
 	/* check user data files */
 
-	need_setup = tracker_db_needs_setup ();
+	need_index = tracker_db_needs_setup ();
+	need_data = tracker_db_needs_data ();
 
 	umask (077);
 
-	prefix = g_build_filename (g_get_home_dir (), ".Tracker", NULL);
 	str = g_strconcat (g_get_user_name (), "_tracker_lock", NULL);
-	tracker->log_file = g_build_filename (prefix, "tracker.log", NULL);
+
+	tracker->log_file = g_build_filename (tracker->root_dir, "tracker.log", NULL);
+
 
 	/* check if setup for NFS usage (and enable atomic NFS safe locking) */
 	//lock_str = tracker_get_config_option ("NFSLocking");
 	lock_str = NULL;
+
+
 	if (lock_str != NULL) {
-		const char *tmp_dir;
 
 		tracker->use_nfs_safe_locking = (strcmp (str, "1") == 0);
 
-		tmp_dir = g_get_tmp_dir ();
-
 		/* place lock file in tmp dir to allow multiple sessions on NFS */
-		lock_file = g_build_filename (tmp_dir, str, NULL);
+		lock_file = g_build_filename (tracker->sys_tmp_root_dir, str, NULL);
 
 		g_free (lock_str);
 
@@ -2116,11 +2226,10 @@ main (int argc, char **argv)
 		tracker->use_nfs_safe_locking = FALSE;
 
 		/* place lock file in home dir to prevent multiple sessions on NFS (as standard locking might be broken on NFS) */
-		lock_file = g_build_filename (prefix, str, NULL);
+		lock_file = g_build_filename (tracker->root_dir, str, NULL);
 	}
 
 
-	g_free (prefix);
 	g_free (str);
 
 	/* prevent muliple instances  */
@@ -2144,9 +2253,8 @@ main (int argc, char **argv)
 #endif
 
 	/* reset log file */
-	if (g_file_test (tracker->log_file, G_FILE_TEST_EXISTS)) {
-		g_unlink (tracker->log_file);
-	}
+	tracker_unlink (tracker->log_file);
+
 
 	/* deal with config options with defaults, config file and option params */
 	set_defaults ();
@@ -2158,11 +2266,15 @@ main (int argc, char **argv)
 	}
 
 	if (no_watch_dirs) {
-		tracker->no_watch_directory_list = tracker_array_to_list (no_watch_dirs);
+		tracker->no_watch_directory_list = tracker_filename_array_to_list (no_watch_dirs);
 	}
 
 	if (watch_dirs) {
-	 	tracker->watch_directory_roots_list = tracker_array_to_list (watch_dirs);
+	 	tracker->watch_directory_roots_list = tracker_filename_array_to_list (watch_dirs);
+	}
+
+	if (crawl_dirs) {
+	 	tracker->crawl_directory_list = tracker_filename_array_to_list (crawl_dirs);
 	}
 
 	if (disable_indexing) {
@@ -2185,113 +2297,75 @@ main (int argc, char **argv)
 		tracker->index_kmail_emails = TRUE;
 	}
 
-	tracker->throttle = throttle;
+	if (throttle != 0) {
+		tracker->throttle = throttle;
+	}
 
 	if (low_memory) {
 		tracker->use_extra_memory = FALSE;
 	}
 
-	tracker->verbosity = verbosity;
+	if (verbosity != 0) {
+		tracker->verbosity = verbosity;
+	}
+
+	if (initial_sleep >= 0) {
+		tracker->initial_sleep = initial_sleep;
+	}
 
 	sanity_check_option_values ();
-
-	tracker_data_dir = g_build_filename (g_get_home_dir (), ".Tracker", "data", NULL);
-
-	if (!tracker_db_initialize (tracker_data_dir)) {
-		tracker_log ("Failed to initialise database engine - exiting...");
-		return 1;
-	}
-
-	g_free (tracker_data_dir);
-
-	/* create database if needed */
-	if (need_setup) {
-		tracker->first_time_index = TRUE;
-		tracker_create_db ();
-	} else {
-		tracker->first_time_index = FALSE;
-	}
 
 	/* set thread safe DB connection */
 	tracker_db_thread_init ();
 
-	db_con = tracker_db_connect ();
-	db_con->thread = "main";
+	if (!tracker_db_initialize (tracker->data_dir)) {
+		tracker_log ("ERROR: failed to initialise database engine - exiting...");
+		return 1;
+	}
 
-	/* initialize other databases */
-	DBConnection *db1, *db2;
-
-	db1 = tracker_db_connect_full_text ();
-	tracker_db_close (db1);
-
-	db2 = tracker_db_connect_cache ();
+	/* create cache db */
+	DBConnection *db2 = tracker_db_connect_cache ();
 	tracker_db_close (db2);
 
-
-	if (tracker_update_db (db_con)) {
-
-		/* refresh connection as DB might have been rebuilt */
-		tracker_db_close (db_con);
-		need_setup = tracker_db_needs_setup ();
-		tracker->first_time_index = TRUE;
+	if (need_data) {
 		tracker_create_db ();
-		db_con = tracker_db_connect ();
-		db_con->thread = "main";
-		tracker_db_load_stored_procs (db_con);
 	}
 
-
-
-	/* clear pending files and watch tables*/
-	tracker_db_clear_temp (db_con);
+	/* create database if needed */
+	if (need_index) {
 
 
 
-	if (!need_setup) {
+		tracker->first_time_index = TRUE;
 
-		tracker_log ("updating database stats...please wait...");
-			
-		tracker_db_start_transaction (db_con);
-		tracker_exec_sql (db_con, "ANALYZE");
-		tracker_db_end_transaction (db_con);
+		/* create files db and emails db */
+		DBConnection *db_con_tmp = tracker_db_connect ();
 
+		/* reset stats for embedded services if they are being reindexed */
+		if (!need_data) {
+			tracker_db_exec_no_reply (db_con_tmp, "update ServiceTypes set TypeCount = 0 where Embedded = 1");
 
-		res = tracker_exec_proc (db_con, "GetStats", 0);
-
-		if (res && res[0] && res[0][0]) {
-			char **row;
-			int  k;
-
-			tracker_log ("-----------------------");
-			tracker_log ("Fetching index stats...");
-
-			k = 0;
-
-			while ((row = tracker_db_get_row (res, k))) {
-
-				k++;
-
-				if (row && row[0] && row[1]) {
-					tracker_log ("%s : %s", row[0], row[1]);
-				
-				}
-			}
-
-			tracker_db_free_result (res);
 		}
-		tracker_log ("-----------------------\n");
+
+		tracker_db_close (db_con_tmp);
+		g_free (db_con_tmp);
+
+		db_con_tmp = tracker_db_connect_emails ();
+		tracker_db_close (db_con_tmp);
+		g_free (db_con_tmp);
+
+	} else {
+		tracker->first_time_index = FALSE;
 	}
 
 
 
-
-	tracker_db_check_tables (db_con);
+	db_con = tracker_db_connect ();
+	db_con->thread = "main";
+	DBConnection *blob_db = tracker_db_connect_full_text ();
+	db_con->blob = blob_db;
 
 	main_thread_db_con = db_con;
-
-	main_thread_cache_con = tracker_db_connect_cache ();
-
-	main_thread_db_con->user_data = main_thread_cache_con;
 
 	tracker->update_count = get_update_count (main_thread_db_con);
 
@@ -2303,73 +2377,35 @@ main (int argc, char **argv)
 		tracker->first_time_index = FALSE;
 		tracker->update_count = 0;
 	}
-	
 
-	tracker->file_scheduler = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+	tracker_db_get_static_data (db_con);
 
 	tracker->file_metadata_queue = g_async_queue_new ();
 	tracker->file_process_queue = g_async_queue_new ();
 	tracker->user_request_queue = g_async_queue_new ();
 
 
-	/* periodically poll directories for changes */
-	g_timeout_add_full (G_PRIORITY_LOW,
-			    tracker->poll_interval * 1000,
-		 	    (GSourceFunc) start_poll,
-			    NULL, NULL
-			    );
-
-
-
   	tracker->loop = g_main_loop_new (NULL, TRUE);
-
-	main_connection = tracker_dbus_init ();
-
-	add_local_dbus_connection_monitoring (main_connection);
 
 
 	/* this var is used to tell the threads when to quit */
 	tracker->is_running = TRUE;
 
-
-	/* schedule the watching of directories so as not to delay start up time*/
-
-
-	if (tracker->enable_indexing) {
-		
-		if (!tracker_start_watching ()) {
-			tracker_log ("File monitoring failed to start");
-			do_cleanup ("File watching failure");
-			exit (1);
-		} else {
-
-
-			//tracker_email_watch_emails (main_thread_db_con);
-		
-			g_slist_foreach (tracker->watch_directory_roots_list, (GFunc) watch_dir, main_thread_db_con);
-	 		g_slist_foreach (tracker->watch_directory_roots_list, (GFunc) schedule_dir_check, main_thread_db_con);
-		
-			tracker->file_process_thread =  g_thread_create ((GThreadFunc) process_files_thread, NULL, FALSE, NULL);
-
-		}
-	}
-
-
-	//tracker->file_metadata_thread = g_thread_create ((GThreadFunc) extract_metadata_thread, NULL, FALSE, NULL);
 	tracker->user_request_thread =  g_thread_create ((GThreadFunc) process_user_request_queue_thread, NULL, FALSE, NULL);
 
+	main_connection = tracker_dbus_init ();
+
+	add_local_dbus_connection_monitoring (main_connection);
+
+	if (!tracker_start_watching ()) {
+		tracker_error ("ERROR: file monitoring failed to start");
+		do_cleanup ("File watching failure");
+		exit (1);
+	}
+
+	tracker->file_process_thread =  g_thread_create ((GThreadFunc) process_files_thread, NULL, FALSE, NULL);
+
 	g_main_loop_run (tracker->loop);
-
-	/* the following should never be reached in practice */
-	tracker_log ("we should never get this message");
-
-	tracker_db_close (db_con);
-
-	tracker_db_thread_end ();
-
-	tracker_dbus_shutdown (main_connection);
-
-	do_cleanup (" ");
 
 	return EXIT_SUCCESS;
 }

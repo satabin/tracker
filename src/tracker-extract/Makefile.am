@@ -5,6 +5,8 @@ INCLUDES = $(GLIB2_CFLAGS)			\
 	$(LIBGSF_CFLAGS)			\
 	$(LIBGSF_CFLAGS)			\
 	$(GSTREAMER_CFLAGS)			\
+	$(LIBXML2_CFLAGS)			\
+	$(EXEMPI_CFLAGS)			\
 	$(XINE_CFLAGS)
 
 bin_PROGRAMS = tracker-extract
@@ -28,11 +30,14 @@ tracker_extract_SOURCES = tracker-extract.c	\
 	tracker-extract-pdf.c			\
 	tracker-extract-abw.c			\
 	tracker-extract-png.c			\
+	tracker-extract-mp3.c			\
 	tracker-extract-exif.c			\
 	tracker-extract-msoffice.c		\
 	tracker-extract-imagemagick.c		\
 	tracker-extract-mplayer.c		\
 	tracker-extract-totem.c			\
+	tracker-extract-html.c			\
+	tracker-extract-xmp.c			\
 	$(video_sources)
 
 tracker_extract_LDADD = $(GLIB2_LIBS)		\
@@ -41,4 +46,6 @@ tracker_extract_LDADD = $(GLIB2_LIBS)		\
 	$(LIBEXIF_LIBS)				\
 	$(LIBGSF_LIBS)				\
 	$(GSTREAMER_LIBS)			\
+	$(EXEMPI_LIBS)				\
+	$(LIBXML2_LIBS)				\
 	$(XINE_LIBS)

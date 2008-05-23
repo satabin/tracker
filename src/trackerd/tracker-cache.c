@@ -22,7 +22,9 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include "tracker-utils.h"
+#include "tracker-dbus.h"
 #include "tracker-cache.h"
+
 
 #define USE_SLICE
 
@@ -134,7 +136,7 @@ flush_all_email_words ( gpointer         key,
 }
 
 void
-tracker_cache_flush_all (gboolean cache_full)
+tracker_cache_flush_all ()
 {
 	IndexConnection index_con;
 	gboolean using_file_tmp = FALSE, using_email_tmp = FALSE;
@@ -164,6 +166,7 @@ tracker_cache_flush_all (gboolean cache_full)
 		
 		if (tracker_indexer_size (tracker->email_index) > 4000000) {
 			index_con.email_index = create_merge_index ("email-index.tmp.");
+			tracker_log ("flushing to %s", dpname (index_con.email_index->word_index));
 			using_email_tmp = TRUE;
 		} else {
 			index_con.email_index = tracker->email_index;
@@ -269,6 +272,7 @@ update_word_table (GHashTable *table, const char *word, WordDetails *word_detail
 void
 tracker_cache_add (const gchar *word, guint32 service_id, gint service_type, gint score, gboolean is_new)
 {
+	static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
 	WordDetails word_details;
 
 	word_details.id = service_id;
@@ -276,6 +280,7 @@ tracker_cache_add (const gchar *word, guint32 service_id, gint service_type, gin
 
 	if (is_new) {
 
+		/* no need to mutex new stuff as only one thread is processing them */
 		if (!is_email (service_type)) {
 			if (update_word_table (tracker->file_word_table, word, &word_details)) tracker->word_count++;
 		} else {
@@ -283,38 +288,64 @@ tracker_cache_add (const gchar *word, guint32 service_id, gint service_type, gin
 		}
 
 	} else {
+		/* we need to mutex this to prevent corruption on multi cpu machines as both index process thread and user request thread (when setting tags/metadata) can call this */
+		g_static_mutex_lock (&mutex);
+		
 		if (update_word_table (tracker->file_update_word_table, word, &word_details)) tracker->word_update_count++;
+
+		g_static_mutex_unlock (&mutex);
 	}
 
 }
 
-LoopEvent
-tracker_cache_event_check (DBConnection *db_con, gboolean check_flush) 
+gboolean
+tracker_cache_process_events (DBConnection *db_con, gboolean check_flush) 
 {
 	gboolean stopped_trans = FALSE;
-
+	
 	while (TRUE) {
 
-		if (!tracker->is_running) return EVENT_SHUTDOWN;
+		gboolean sleep = FALSE;
 
-		if (!tracker->enable_indexing) return EVENT_DISABLE;
-				
-		if (tracker->paused || tracker->battery_paused) {
-			if (tracker->index_status > INDEX_APPLICATIONS) {
-				
-				if (db_con) {
-					tracker_db_end_index_transaction (db_con);
-					stopped_trans = TRUE;
-				}
-
-				g_usleep (1000 * 1000);
-
-				tracker->battery_paused = tracker_using_battery ();
-
-				continue;
-			}
+		if (!tracker->is_running || !tracker->enable_indexing) {
+			if (check_flush) tracker_cache_flush_all ();
+			sleep = TRUE;
 		}
 
+		if (tracker->index_status > INDEX_APPLICATIONS && tracker_pause ()) {
+			if (db_con) {
+				stopped_trans = TRUE;
+			}
+
+			sleep = TRUE;
+		}
+
+		if (sleep) {
+
+			if (db_con) tracker_db_end_index_transaction (db_con);	
+
+			tracker_dbus_send_index_status_change_signal ();
+
+			/* set mutex to indicate we are in "check" state to prevent race conditions from other threads resetting gloabl vars */
+			g_mutex_lock (tracker->files_check_mutex);		
+
+			if ((tracker_pause () || !tracker->is_running || !tracker->enable_indexing) && (!tracker->shutdown))  {
+				g_cond_wait (tracker->file_thread_signal, tracker->files_signal_mutex);
+			}
+
+			g_mutex_unlock (tracker->files_check_mutex);
+
+			/* determine if wake up call is a shutdown signal */
+			if (tracker->shutdown) {
+				if (check_flush) tracker_cache_flush_all ();
+				return FALSE;				
+			} else {
+				tracker_dbus_send_index_status_change_signal ();
+				continue;
+			}
+				
+		}
+		
 		if (tracker->grace_period > 1) {
 
 			tracker_log ("pausing indexing while client requests or external disk I/O are taking place");
@@ -325,6 +356,10 @@ tracker_cache_event_check (DBConnection *db_con, gboolean check_flush)
 				tracker_db_end_index_transaction (db_con);
 				stopped_trans = TRUE;
 			}
+
+			tracker->pause_io = TRUE;
+
+			tracker_dbus_send_index_status_change_signal ();
 		
 			g_usleep (1000 * 1000);
 		
@@ -334,25 +369,32 @@ tracker_cache_event_check (DBConnection *db_con, gboolean check_flush)
 
 			continue;
 
-		} 
+		} else {
+			if (tracker->pause_io) {
+				tracker->pause_io = FALSE;
+				tracker_dbus_send_index_status_change_signal ();
+			}
+		}
 
-		if (cache_needs_flush ()) {
+
+		if (check_flush && cache_needs_flush ()) {
 
 			if (db_con) {
 				tracker_db_end_index_transaction (db_con);
+				tracker_db_refresh_all (db_con->data);
+				stopped_trans = TRUE;
 			}
 
-			tracker_cache_flush_all (TRUE);
+			tracker_cache_flush_all ();
 
-			return EVENT_CACHE_FLUSHED;
 		}
 
 		
 		if (stopped_trans && db_con && !db_con->in_transaction) tracker_db_start_index_transaction (db_con);
 
-		tracker_throttle (1000);
+		tracker_throttle (5000);
 
-		return EVENT_NOTHING;
+		return TRUE;
 
 	}	
 

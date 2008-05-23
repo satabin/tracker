@@ -40,6 +40,9 @@
 /* Define if we have GStreamer */
 #undef HAVE_GSTREAMER
 
+/* Define if we have HAL */
+#undef HAVE_HAL
+
 /* Define if we have inotify */
 #undef HAVE_INOTIFY
 

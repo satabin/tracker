@@ -34,14 +34,8 @@
 #include "tracker-email-utils.h"
 #include "tracker-db-email.h"
 #include "tracker-cache.h"
-
-#ifdef HAVE_INOTIFY
-#   include "tracker-inotify.h"
-#else
-#   ifdef HAVE_FAM
-#      include "tracker-fam.h"
-#   endif
-#endif
+#include "tracker-dbus.h"
+#include "tracker-watch.h"
 
 
 #define EVOLUTION_MAIL_DIR_S ".evolution/mail"
@@ -734,11 +728,17 @@ load_evolution_config (EvolutionConfig **conf)
 						/* Assume url schema is:
 						   imap://foo@imap.free.fr/;etc
 
+						   also can contain foo;auth=DIGEST-MD5@imap.bar.com
+
 						   We try to get "foo@imap.free.fr".
 						*/
 
+						// check for embedded @ and then look for first colon after that
+
+						const char *at = strchr (evo_acc->source_url + 7, '@');
+
 						account_name = g_strndup (evo_acc->source_url + 7,
-									  (strchr (evo_acc->source_url + 7, ';') - 1) - (evo_acc->source_url + 7));
+									  (strchr (at, ';') - 1) - (evo_acc->source_url + 7));
 
 						if (account_name) {
 
@@ -1290,6 +1290,8 @@ index_mail_messages_by_summary_file (DBConnection                 *db_con,
 		tracker_debug ("Number of existing messages in %s are %d, %d junk, %d deleted and header totals are %d, %d, %d", dir,
 				store->mail_count, store->junk_count, store->delete_count, header->saved_count, header->junk_count, header->deleted_count);
 
+		tracker->mbox_count++;
+		tracker_dbus_send_index_progress_signal ("Emails", dir);
 
 		if (header->saved_count > store->mail_count) {
 			/* assume new emails received */
@@ -1303,7 +1305,7 @@ index_mail_messages_by_summary_file (DBConnection                 *db_con,
 					tracker_db_email_free_mail_store (store);
 					free_summary_file (summary);
 					free_summary_file_header (header);
-
+					tracker->mbox_processed++;
 					g_free (dir);
 					return;
 				}
@@ -1325,7 +1327,7 @@ index_mail_messages_by_summary_file (DBConnection                 *db_con,
 					tracker_db_email_free_mail_store (store);
 					free_summary_file (summary);
 					free_summary_file_header (header);
-
+					tracker->mbox_processed++;
 					g_free (dir);
 					return;
 				}
@@ -1359,23 +1361,11 @@ index_mail_messages_by_summary_file (DBConnection                 *db_con,
 				email_free_mail_file (mail_msg->parent_mail_file);
 				email_free_mail_message (mail_msg);
 
-				LoopEvent event = tracker_cache_event_check (db_con->data, TRUE);
+				if (!tracker_cache_process_events (db_con->data, TRUE)) {
+					return;
+				}
 
-				if (event==EVENT_SHUTDOWN || event==EVENT_DISABLE) {
-
-					tracker_db_end_index_transaction (db_con->data);
-					tracker_cache_flush_all (FALSE);
-
-					break;						
-
-				} else if (event == EVENT_CACHE_FLUSHED) {
-					tracker_db_end_index_transaction (db_con->data);
-					tracker_db_refresh_email (db_con);
-					tracker_db_start_index_transaction (db_con->data);		
-
-				}		
-
-				if (tracker_db_regulate_transactions (db_con->data, 200)) {
+				if (tracker_db_regulate_transactions (db_con->data, 100)) {
 					if (tracker->verbosity == 1) {
 						tracker_log ("indexing #%d - Emails in %s", tracker->index_count, dir);
 					}
@@ -1394,12 +1384,14 @@ index_mail_messages_by_summary_file (DBConnection                 *db_con,
 			tracker_log ("No. of new emails indexed in summary file %s is %d, %d junk, %d deleted", dir, mail_count, junk_count, delete_count);
 
 			tracker_db_email_set_message_counts (db_con, dir, store->mail_count, store->junk_count, store->delete_count);
-			
 
 		} else {
 			/* schedule check for junk */
 			tracker_db_email_flag_mbox_junk (db_con, dir);
 		}
+
+		tracker->mbox_processed++;
+		tracker_dbus_send_index_progress_signal ("Emails", dir);
 
 		tracker_db_email_free_mail_store (store);
 		free_summary_file (summary);
@@ -2270,16 +2262,17 @@ static gboolean
 do_save_ondisk_email_message (DBConnection *db_con, MailMessage *mail_msg)
 {
 	g_return_val_if_fail (db_con, FALSE);
+	g_return_val_if_fail (mail_msg, FALSE);
 	g_return_val_if_fail (mail_msg->path, FALSE);
 
 	if (tracker_file_is_indexable (mail_msg->path)) {
 		/* we have downloaded the mail message on disk so we can fully index it. */
-		MailMessage *mail_msg_on_disk;
+		MailMessage *mail_msg_on_disk = NULL;
 
 		mail_msg_on_disk = email_parse_mail_message_by_path (MAIL_APP_EVOLUTION,
                                                                      mail_msg->path, NULL, NULL);
 
-		if (mail_msg_on_disk) {
+		if (mail_msg_on_disk && mail_msg_on_disk->parent_mail_file) {
 
 			mail_msg_on_disk->parent_mail_file->next_email_offset = 0;
 			mail_msg_on_disk->uri = g_strdup (mail_msg->uri);

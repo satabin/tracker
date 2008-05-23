@@ -1,3 +1,165 @@
+2007-12-06  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation.
+
+2007-12-01  Jorge Gonzalez  <jorgegonz@svn.gnome.org> 
+
+        * es.po: Updated Spanish translation
+
+2007-12-01  Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
+
+	* be@latin.po: Updated Belarusian Latin translation.
+
+2007-11-29  Michael Biebl <mbiebl@gmail.com>
+
+	* POTFILES.in: Add src/tracker-preferences/tracker-preferences.c
+
+2007-11-28  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation
+
+2007-11-26  Claude Paroz  <claude@2xlibre.net>
+
+	* fr.po: Updated French translation.
+
+2007-11-15  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-11-13  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation.
+
+2007-11-13  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation
+
+2007-11-12  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-11-11  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation.
+
+2007-11-03  Leonardo Ferreira Fontenelle  <leonardof@svn.gnome.org>
+
+	* pt_BR.po: Brazilian Portuguese translation updated by Pedro de Vaz
+	Mello de Medeiros and Luiz Fernando Armesto.
+
+2007-11-02  Michael Biebl <mbiebl@gmail.com>
+
+	* de.po: Updated German translation.
+	
+2007-10-01  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation
+
+2007-11-01  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-10-31  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Translation updated
+
+2007-10-27  Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
+
+	* be@latin.po: Updated Belarusian Latin translation.
+
+2007-10-24  Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
+
+	* be@latin.po: Added Belarusian Latin translation.
+	* LINGUAS: Added be@latin.
+
+2007-10-22  Gil Forcada  <gforcada@svn.gnome.org>
+
+	* ca.po: Updated Catalan translation.
+
+2007-10-17  Duarte Loreto <happyguy_pt@hotmail.com>
+
+	* pt.po: Updated Portuguese translation by Nicolau Gonçalves
+	<excentriko@gmail.com>.
+
+2007-10-15  Jorge Gonzalez  <jorgegonz@svn.gnome.org> 
+
+        * es.po: Updated Spanish translation.
+
+2007-10-14  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* fr.po: Updated French translation by Robert-André Mauchin and
+	Claude Paroz.
+
+2007-10-13  Laurent Aguerreche <laurent.aguerreche at free fr>
+
+	* fr.po: Updated French translation.
+
+2007-10-12  Michael Biebl <mbiebl@gmail.com>
+
+	* de.po: Updated German translation.
+	
+2007-10-11  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-10-10  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation
+
+2007-10-09  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation
+
+2007-10-09  Luca Ferretti  <elle.uca@libero.it>
+
+	* POTFILES.in: Added tracker-applet.c
+
+2007-10-09  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2007-10-09  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation.
+
+2007-10-08  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation.
+
+2007-10-07  Luca Ferretti  <elle.uca@libero.it>
+
+	* POTFILES.in: removed no loger available tm-tray-icon.c
+	* it.po: Updated Italian translation.
+
+2007-10-07  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+        * es.po: Updated Spanish translation.
+
+2007-10-05  Jonh Wendell  <jwendell@gnome.org>
+
+	* pt_BR.po: Updated Brazilian Portuguese translation, by Luiz Armesto.
+
+2007-10-05  Jonh Wendell  <jwendell@gnome.org>
+
+	* pt_BR.po: Brazilian Portuguese translation, by Luiz Armesto.
+	* LINGUAS: pt_BR added
+
+2007-10-05  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Updated Italian translation
+
+2007-10-02  Michael Biebl <mbiebl@gmail.com>
+
+	* de.po: Updated German translation with kind help of Marcus Fritzsch.
+
+2007-09-25  Gil Forcada  <gforcada@svn.gnome.org>
+
+	* ca.po: Updated Catalan translation.
+
+2007-09-25  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation  
+
 2007-09-25 Laurent Aguerreche <laurent.aguerreche at free fr>
 
 	* fr.po: Updated French translation.

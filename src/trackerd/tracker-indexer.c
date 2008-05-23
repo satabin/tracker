@@ -32,12 +32,14 @@
 #include <sqlite3.h>
 #include <glib.h>
 #include <glib/gstdio.h>
+
 #include "tracker-indexer.h"
 #include "tracker-cache.h"
+#include "tracker-dbus.h"
 
 extern Tracker *tracker;
 
-static inline guint16
+static inline gint16
 get_score (WordDetails *details)
 {
 	unsigned char a[2];
@@ -45,7 +47,7 @@ get_score (WordDetails *details)
 	a[0] = (details->amalgamated >> 16) & 0xFF;
 	a[1] = (details->amalgamated >> 8) & 0xFF;
 
-	return (a[0] << 8) | (a[1]);	
+	return (gint16) (a[0] << 8) | (a[1]);	
 }
 
 
@@ -60,13 +62,13 @@ guint32
 tracker_indexer_calc_amalgamated (gint service, gint score)
 {
 	unsigned char a[4];
-	guint16 score16;
+	gint16 score16;
 	guint8 service_type;
 
-	if (score > 65535) {
-		score16 = 65535;
+	if (score > 30000) {
+		score16 = 30000;
 	} else {
-		score16 = (guint16) score;
+		score16 = (gint16) score;
 	}
 
 	service_type = (guint8) service;
@@ -184,10 +186,25 @@ get_preferred_bucket_count (Indexer *indexer)
 }
 
 
+gboolean
+tracker_indexer_repair (const char *name)
+{
+	gboolean result = TRUE;
+	char *index_name = g_build_filename (tracker->data_dir, name, NULL);
+
+	result =  dprepair (index_name);
+	g_free (index_name);
+
+	return result;
+}
+
+
 static inline DEPOT *
 open_index (const gchar *name)
 {
-	DEPOT *word_index;
+	DEPOT *word_index = NULL;
+
+	if (!name) return NULL;
 
 	tracker_log ("Opening index %s", name);
 
@@ -217,6 +234,8 @@ tracker_indexer_open (const gchar *name)
 	char *word_dir;
 	DEPOT *word_index;
 	Indexer *result;
+
+	if (!name) return NULL;
 
 	word_dir = g_build_filename (tracker->data_dir, name, NULL);
 
@@ -391,11 +410,11 @@ tracker_indexer_apply_changes (Indexer *dest, Indexer *src,  gboolean update)
 	guint32 size = tracker_indexer_size (dest);
 
 	if (size < (10 * 1024 * 1024)) {
-		interval = 10000;
+		interval = 20000;
 	} else if (size < (20 * 1024 * 1024)) {
-		interval = 5000;
+		interval = 10000;
 	} else if (size < (30 * 1024 * 1024)) {
-		interval = 4000;
+		interval = 5000;
 	} else if (size < (100 * 1024 * 1024)) {
 		interval = 3000;
 	} else {
@@ -403,7 +422,7 @@ tracker_indexer_apply_changes (Indexer *dest, Indexer *src,  gboolean update)
 	}
 
 	/* halve the interval value as notebook hard drives are smaller */
-	if (tracker->battery_state_file) interval = interval / 2;
+	if (tracker->battery_udi) interval = interval / 2;
 
 	dpiterinit (src->word_index);
 	
@@ -411,14 +430,14 @@ tracker_indexer_apply_changes (Indexer *dest, Indexer *src,  gboolean update)
 		
 		i++;
 
+		if (i > 1 && (i % 200 == 0)) {
+			if (!tracker_cache_process_events (NULL, FALSE)) {
+				return;	
+			}
+		}
+
 		if (i > 1 && (i % interval == 0)) {
-			dpsync (dest->word_index);
-
-			LoopEvent event = tracker_cache_event_check (NULL, FALSE);
-
-			if (event==EVENT_SHUTDOWN) {
-				return;
-			}	
+			if (!tracker->fast_merges) dpsync (dest->word_index);
 		}
 			
 		bytes = dpgetwb (src->word_index, str, -1, 0, buff_size, buffer);
@@ -484,39 +503,80 @@ tracker_indexer_has_merge_files (IndexType type)
 
 }
 
+static void
+move_index (Indexer *src_index, Indexer *dest_index)
+{
 
+	if (!src_index || !dest_index) {
+		tracker_error ("cannot move indexes");
+		return;
+	}
 
+	/* remove existing main index */
+	g_mutex_lock (dest_index->word_mutex);
+
+	char *fname = dpname (dest_index->word_index);
+
+	dpclose (dest_index->word_index);
+
+	dpremove (fname);
+
+	char *final_name = dpname (src_index->word_index);
+			
+	tracker_indexer_close (src_index);
+		
+	/* rename and reopen final index as main index */
+			
+	rename (final_name, fname);
+
+	dest_index->word_index = open_index (fname);	
+
+	if (!dest_index->word_index) {
+		tracker_error ("index creation failure for %s from %s", fname, final_name);
+	}
+
+	g_free (fname);
+	g_free (final_name);		
+
+	g_mutex_unlock (dest_index->word_mutex);
+
+}
 
 
 void
 tracker_indexer_merge_indexes (IndexType type)
 {
-	GSList *l;
-	Indexer *index, *tmp_index;
-	Indexer *final_index;
-	char *str;
-	GSList *file_list = NULL, *index_list = NULL;
+	GSList     *lst;
+	Indexer    *final_index;
+	GSList     *file_list = NULL, *index_list = NULL;
 	const char *prefix;
-	int i = 0, index_count, interval = 5000;
-	gboolean final_exists;
-	
+	gint       i = 0, index_count, interval = 5000;
+	gboolean   final_exists;
+
 	if (type == INDEX_TYPE_FILES) {
+
+		g_return_if_fail (tracker->file_index);
+
 		prefix = "file-index.tmp.";
+
 		index_list = g_slist_prepend (index_list, tracker->file_index);
 
 		char *tmp = g_build_filename (tracker->data_dir, "file-index-final", NULL);
 
-		final_exists =  g_file_test (tmp, G_FILE_TEST_EXISTS);
+		final_exists = g_file_test (tmp, G_FILE_TEST_EXISTS);
 
 		g_free (tmp);
 
 	} else {
 		prefix = "email-index.tmp.";
+
+		g_return_if_fail (tracker->email_index);
+
 		index_list = g_slist_prepend (index_list, tracker->email_index);
 
 		char *tmp = g_build_filename (tracker->data_dir, "email-index-final", NULL);
 
-		final_exists =  g_file_test (tmp, G_FILE_TEST_EXISTS);
+		final_exists = g_file_test (tmp, G_FILE_TEST_EXISTS);
 
 		g_free (tmp);
 	}
@@ -524,24 +584,30 @@ tracker_indexer_merge_indexes (IndexType type)
 	file_list = tracker_get_files_with_prefix (tracker->data_dir, prefix);
 
 	if (!file_list || !file_list->data) {
-
+		
 		g_slist_free (index_list);
 
 		return;
 
 	} else {
+                GSList *file;
 
-		for (l=file_list; l; l=l->next) {
+		for (file = file_list; file; file = file->next) {
 
-			if (l->data) {
+			if (file->data) {
+				char *name = g_path_get_basename (file->data);
+				if (name) {
 
-				char *name = g_path_get_basename (l->data);
+					if (g_file_test (file->data, G_FILE_TEST_EXISTS)) {
 
-				tmp_index = tracker_indexer_open (name);
+                                                Indexer *tmp_index = tracker_indexer_open (name);
+						if (tmp_index) {
+							index_list = g_slist_prepend (index_list, tmp_index);
+						}
+					}
 
-				g_free (name);
-
-				index_list = g_slist_prepend (index_list, tmp_index);
+					g_free (name);
+				}
 			}
 		}
 
@@ -551,18 +617,21 @@ tracker_indexer_merge_indexes (IndexType type)
 
  	index_count = g_slist_length (index_list);
 
+	if (index_count < 2) {
+
+		g_slist_free (index_list);
+
+		return;
+	}
+
 	tracker_log ("starting merge of %d indexes", index_count);
+	tracker->in_merge = TRUE;
+	
 
 	if (index_count == 2 && !final_exists) {
 
-		GSList *elem;
-		Indexer *index1, *index2;
-
-		elem = g_slist_nth (index_list, 0);
-		index1 = elem->data;
-
-		elem = g_slist_nth (index_list, 1);
-		index2 = elem->data;
+                Indexer *index1 = index_list->data ;
+                Indexer *index2 = index_list->next->data ;
 
 		if (tracker_indexer_size (index1) * 3 < tracker_indexer_size (index2)) {
 
@@ -570,10 +639,11 @@ tracker_indexer_merge_indexes (IndexType type)
 
 			g_slist_free (index_list);
 
-			return;
-
+			goto end_of_merging;
 		}
 	}
+
+	tracker_dbus_send_index_status_change_signal ();
 
 	if (type == INDEX_TYPE_FILES) {
 		final_index = tracker_indexer_open ("file-index-final");
@@ -581,138 +651,122 @@ tracker_indexer_merge_indexes (IndexType type)
 		final_index = tracker_indexer_open ("email-index-final");
 	}
 
-	for (l=index_list; l && l->data; l=l->next) {
-		index = l->data;
+	if (!final_index) {
+		g_slist_free (index_list);
+		tracker_error ("could not open final index - abandoning index merge");
+		goto end_of_merging;
+	}
+
+	for (lst = index_list; lst && lst->data; lst = lst->next) {
+                gchar   *str;
+		Indexer *index = lst->data;
 
 		dpiterinit (index->word_index);
-	
+
 		while ((str = dpiternext (index->word_index, NULL))) {
 
-			char buffer[MAX_HIT_BUFFER];
-			int offset;
-			int sz = sizeof (WordDetails);
-			int buff_size = MAX_HITS_FOR_WORD * sz;
-
-								
+			gchar buffer[MAX_HIT_BUFFER];
+			gint offset;
+			gint sz = sizeof (WordDetails);
+			gint buff_size = MAX_HITS_FOR_WORD * sz;
 
 			if (!has_word (final_index, str)) {
 
 				i++;
 
-				if (i > 1001 && (i % 1000 == 0)) {
-					LoopEvent event = tracker_cache_event_check (NULL, FALSE);
-
-					if (event==EVENT_SHUTDOWN) {
-						return;
+				if (i > 101 && (i % 100 == 0)) {
+					if (!tracker_cache_process_events (NULL, FALSE)) {
+						return;	
 					}
 				}
-				
 
 				if (i > interval && (i % interval == 0)) {
-					dpsync (final_index->word_index);
 
-					guint32 size = tracker_indexer_size (final_index);
+					if (!tracker->fast_merges) {
 
-					if (size < (10 * 1024 * 1024)) {
-						interval = 10000;
-					} else if (size < (20 * 1024 * 1024)) {
-						interval = 5000;
-					} else if (size < (50 * 1024 * 1024)) {
-						interval = 4000;
-					} else if (size < (100 * 1024 * 1024)) {
-						interval = 3000;
-					} else {
-						interval = 2000;
+						dpsync (final_index->word_index);
+
+						guint32 size = tracker_indexer_size (final_index);
+
+						if (size < (10 * 1024 * 1024)) {
+							interval = 10000;
+						} else if (size < (20 * 1024 * 1024)) {
+							interval = 6000;
+						} else if (size < (50 * 1024 * 1024)) {
+							interval = 6000;
+						} else if (size < (100 * 1024 * 1024)) {
+							interval = 4000;
+						} else {
+							interval = 3000;
+						}
+
+						/* halve the interval value as notebook hard drives are smaller */
+						if (tracker->battery_udi) interval = interval / 2;
 					}
-
-					/* halve the interval value as notebook hard drives are smaller */
-					if (tracker->battery_state_file) interval = interval / 2;
 				}
 			
 				offset = dpgetwb (index->word_index, str, -1, 0, buff_size, buffer);
 
-				if (offset < 1) continue;
+				if (offset < 1) {
+                                        continue;
+                                }
 
 				if (offset % sz != 0) {
-					tracker_error ("possible corruption found during merge of word %s - purging word from index", str);
+					tracker_error ("possible corruption found during merge of word %s - purging word from index (it will not be searchable)", str);
 					continue;
 				}
 
 				if (offset > 7 && offset < buff_size) {
-				
-					GSList 	*list;
-					Indexer *tmp_index;
-					int 	tmp_offset;
-					char 	tmp_buffer[MAX_HIT_BUFFER];
 
-					for (list = l->next; list; list=list->next) {
+					GSList *list;
 
-						tmp_index = list->data;
+					for (list = lst->next; list; list = list->next) {
+                                                gchar   tmp_buffer[MAX_HIT_BUFFER];
+						Indexer *tmp_index = list->data;
 
-						if (!tmp_index) continue;
-			
-						tmp_offset = dpgetwb (tmp_index->word_index, str, -1, 0, (buff_size - offset), tmp_buffer);	
-				
+						if (!tmp_index) {
+                                                        continue;
+                                                }
+
+						gint tmp_offset = dpgetwb (tmp_index->word_index, str, -1, 0, (buff_size - offset), tmp_buffer);	
+
 						if (tmp_offset > 0 && (tmp_offset % sz != 0)) {
 							tracker_error ("possible corruption found during merge of word %s - purging word from index", str);
 							continue;
 						}
 
 						if (tmp_offset > 7 && (tmp_offset % sz == 0)) {
-
 							memcpy (buffer + offset, tmp_buffer, tmp_offset);
-
 							offset += tmp_offset;
-
 						}												
 					}
 
-					
 					dpput (final_index->word_index, str, -1, buffer, offset, DP_DOVER);
-
 				}
-
-				
 			}
 
 			g_free (str);
-
 		}
 
 		/* dont free last entry as that is the main index */
-		if (l->next) {
-			tracker_indexer_free (index, TRUE);
+		if (lst->next) {
+
+			if (index != tracker->file_index && index != tracker->email_index) {
+				tracker_indexer_free (index, TRUE);
+			}
+
+
 		} else {
-
-			/* remove existing main index */
-			g_mutex_lock (index->word_mutex);
-
-			char *fname = dpname (index->word_index);
-
-			dpclose (index->word_index);
-
-			dpremove (fname);
-
-			char *final_name = dpname (final_index->word_index);
-			
-			tracker_indexer_close (final_index);
-		
-			/* rename and reopen final index as main index */
-			
-			rename (final_name, fname);
-
-			index->word_index = open_index (fname);	
-
-			g_free (fname);
-			g_free (final_name);		
-
-			g_mutex_unlock (index->word_mutex);
-		}
-		
+			move_index (final_index, index);
+		}		
 	}
-
-		
+	
 	g_slist_free (index_list);
+
+	tracker_dbus_send_index_status_change_signal ();
+
+ end_of_merging:
+	tracker->in_merge = FALSE;
 	
 }
 
@@ -730,6 +784,7 @@ tracker_indexer_append_word_chunk (Indexer *indexer, const gchar *word, WordDeta
         }
 
 	g_return_val_if_fail (indexer, FALSE);
+	g_return_val_if_fail (indexer->word_index, FALSE);
 	g_return_val_if_fail (word, FALSE);
 	g_return_val_if_fail (details, FALSE);
 	g_return_val_if_fail (word_detail_count > 0, FALSE);
@@ -755,6 +810,7 @@ tracker_indexer_append_word (Indexer *indexer, const gchar *word, guint32 id, gi
         }
 
 	g_return_val_if_fail (indexer, FALSE);
+	g_return_val_if_fail (indexer->word_index, FALSE);
         g_return_val_if_fail (word, FALSE);
 
 	WordDetails pair;
@@ -767,7 +823,6 @@ tracker_indexer_append_word (Indexer *indexer, const gchar *word, guint32 id, gi
 
 
 /* append lists of words for a document - returns no. of hits added */
-
 gint
 tracker_indexer_append_word_list (Indexer *indexer, const gchar *word, GSList *list)
 {
@@ -776,6 +831,7 @@ tracker_indexer_append_word_list (Indexer *indexer, const gchar *word, GSList *l
 	GSList *lst;
 
 	g_return_val_if_fail (indexer, 0);
+	g_return_val_if_fail (indexer->word_index, 0);
 	g_return_val_if_fail (word, 0);
 
 	i = 0;
@@ -812,6 +868,7 @@ tracker_indexer_update_word_chunk (Indexer *indexer, const gchar *word, WordDeta
 	GSList *list = NULL;
 
 	g_return_val_if_fail (indexer, FALSE);
+	g_return_val_if_fail (indexer->word_index, FALSE);
 	g_return_val_if_fail (word, FALSE);
 	g_return_val_if_fail (detail_chunk, FALSE);
 	g_return_val_if_fail (word_detail_count > 0, FALSE);
@@ -843,9 +900,13 @@ tracker_indexer_update_word_chunk (Indexer *indexer, const gchar *word, WordDeta
 
 					/* NB the paramter score can be negative */
 					score = get_score (&details[i]) + get_score (word_details);
+					//g_print ("current score for %s is %d and new is %d and final is %d\n", word, get_score (&details[i]), get_score (word_details), score); 
+
 							
 					/* check for deletion */		
 					if (score < 1) {
+
+						//g_print ("deleting word hit %s\n", word);
 						
 						gint k;
 					
@@ -904,6 +965,7 @@ tracker_indexer_update_word_list (Indexer *indexer, const gchar *word, GSList *u
 	GSList *lst;
 
 	g_return_val_if_fail (indexer, 0);
+	g_return_val_if_fail (indexer->word_index, 0);
 	g_return_val_if_fail (word, 0);
 
 	i = 0;
@@ -937,6 +999,7 @@ tracker_remove_dud_hits (Indexer *indexer, const gchar *word, GSList *dud_list)
 	char *tmp;
 
 	g_return_val_if_fail (indexer, FALSE);
+	g_return_val_if_fail (indexer->word_index, FALSE);
 	g_return_val_if_fail (word, FALSE);
 	g_return_val_if_fail (dud_list, FALSE);
 	
@@ -1368,8 +1431,11 @@ tracker_indexer_get_hits (SearchQuery *query)
 	}
 
 	g_return_val_if_fail (query->indexer, FALSE);
-	g_return_val_if_fail (query->words, FALSE);
 	g_return_val_if_fail (query->limit > 0, FALSE);
+
+	if (!query->words) {
+		return TRUE;
+	}
 
 	/* do simple case of only one search word fast */
 	if (!query->words->next) {
@@ -1547,7 +1613,7 @@ tracker_get_hit_counts (SearchQuery *query)
 
 	i = 0;
 
-	for (lst = list; i < len && lst && lst->next; lst = lst->next) {
+	for (lst = list; i < len && lst; lst = lst->next) {
 
 		if (!lst || !lst->data) {
 			tracker_error ("ERROR: in get hit counts");

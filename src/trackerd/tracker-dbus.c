@@ -17,6 +17,8 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#include <string.h>
+#include <stdlib.h>
 #include "tracker-dbus.h"
 #include "tracker-utils.h"
 
@@ -41,42 +43,45 @@ tracker_dbus_init (void)
 {
 	DBusError      error;
 	DBusConnection *connection;
+	int ret;
 
 	dbus_error_init (&error);
 
 	connection = dbus_bus_get (DBUS_BUS_SESSION, &error);
 
 	if ((connection == NULL) || dbus_error_is_set (&error)) {
-		tracker_error ("ERROR: tracker_dbus_init() could not get the session bus");
-		
-		connection = NULL;
-		goto out;
+		if (dbus_error_is_set (&error)) {
+			tracker_error ("DBUS ERROR: %s occurred with message %s", error.name, error.message);
+			dbus_error_free (&error);
+		}
+
+		tracker_error ("ERROR: could not get the dbus session bus - exiting");
+		exit (EXIT_FAILURE);
+
 	}
 
 	dbus_connection_setup_with_g_main (connection, NULL);
 
-	if (!dbus_connection_register_object_path (connection, TRACKER_OBJECT, &tracker_vtable, NULL)) {
-		tracker_error ("ERROR: could not register D-BUS handlers");
-		connection = NULL;
-		goto out;
-	}
-
 	dbus_error_init (&error);
 
-	dbus_bus_request_name (connection, TRACKER_SERVICE, 0, &error);
+	ret = dbus_bus_request_name (connection, TRACKER_SERVICE, DBUS_NAME_FLAG_DO_NOT_QUEUE, &error);
 
 	if (dbus_error_is_set (&error)) {
 		tracker_error ("ERROR: could not acquire service name due to '%s'", error.message);
-		connection = NULL;
-		goto out;
+		exit (EXIT_FAILURE);
 	}
 
-out:
-	if (dbus_error_is_set (&error)) {
-		tracker_error ("DBUS ERROR: %s occurred with message %s", error.name, error.message);
-		dbus_error_free (&error);
+	if (ret != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {
+		tracker_error ("ERROR: trackerd already running on your session dbus - exiting...");
+		exit (EXIT_FAILURE);
 	}
-	
+
+	if (!dbus_connection_register_object_path (connection, TRACKER_OBJECT, &tracker_vtable, NULL)) {
+		tracker_error ("ERROR: could not register D-BUS handlers");
+		connection = NULL;
+	}
+
+
 	if (connection != NULL) {
 		dbus_connection_set_exit_on_disconnect (connection, FALSE);
 	}
@@ -95,6 +100,157 @@ tracker_dbus_shutdown (DBusConnection *conn)
 	dbus_connection_close (conn);
 	dbus_connection_unref (conn);
 }
+
+
+void
+tracker_dbus_send_index_status_change_signal ()
+{
+	DBusMessage *msg;
+	dbus_uint32_t serial = 0;
+	char *status = tracker_get_status ();
+
+	msg = dbus_message_new_signal (TRACKER_OBJECT, TRACKER_INTERFACE, TRACKER_SIGNAL_INDEX_STATUS_CHANGE);
+				
+	if (!msg || !tracker->dbus_con) {
+		return;
+    	}
+
+	/*
+		<signal name="IndexStateChange">
+			<arg type="s" name="state" />
+			<arg type="b" name="initial_index" />
+			<arg type="b" name="in_merge" />
+ 			<arg type="b" name="is_manual_paused" />
+                        <arg type="b" name="is_battery_paused" />
+                        <arg type="b" name="is_io_paused" />
+		</signal>
+	*/
+
+	gboolean battery_pause = tracker_pause_on_battery ();
+
+	dbus_message_append_args (msg, 
+				  DBUS_TYPE_STRING, &status,
+				  DBUS_TYPE_BOOLEAN, &tracker->first_time_index,
+				  DBUS_TYPE_BOOLEAN, &tracker->in_merge,
+				  DBUS_TYPE_BOOLEAN, &tracker->pause_manual,
+				  DBUS_TYPE_BOOLEAN, &battery_pause,
+				  DBUS_TYPE_BOOLEAN, &tracker->pause_io,
+				  DBUS_TYPE_INVALID);
+
+	g_free (status);
+
+	dbus_message_set_no_reply (msg, TRUE);
+
+	if (!dbus_connection_send (tracker->dbus_con, msg, &serial)) {
+		tracker_error ("Raising the index status changed signal failed");
+		return;
+	}
+
+	dbus_connection_flush (tracker->dbus_con);
+
+    	dbus_message_unref (msg);
+  
+
+}
+
+void
+tracker_dbus_send_index_progress_signal (const char *service, const char *uri)
+{
+	DBusMessage *msg;
+	dbus_uint32_t serial = 0;
+	int count, processed;
+
+	msg = dbus_message_new_signal (TRACKER_OBJECT, TRACKER_INTERFACE, TRACKER_SIGNAL_INDEX_PROGRESS);
+				
+	if (!msg || !tracker->dbus_con) {
+		return;
+    	}
+
+
+	if (strcmp (service, "Emails") == 0) {
+		count = tracker->mbox_count;
+		processed = tracker->mbox_processed;
+	} else {
+		count = tracker->folders_count;
+		processed = tracker->folders_processed;
+	}
+
+	
+	/*
+	
+		<signal name="IndexProgress">
+			<arg type="s" name="service"/>
+			<arg type="s" name="current_uri" />
+			<arg type="i" name="index_count"/>
+			<arg type="i" name="folders_processed"/>
+			<arg type="i" name="folders_total"/>
+		</signal>
+	*/
+
+	dbus_message_append_args (msg, 
+				  DBUS_TYPE_STRING, &service,
+				  DBUS_TYPE_STRING, &uri,
+				  DBUS_TYPE_INT32, &tracker->index_count,
+				  DBUS_TYPE_INT32, &processed,
+				  DBUS_TYPE_INT32, &count,	
+				  DBUS_TYPE_INVALID);
+
+	dbus_message_set_no_reply (msg, TRUE);
+
+	if (!dbus_connection_send (tracker->dbus_con, msg, &serial)) {
+		tracker_error ("Raising the index status changed signal failed");
+		return;
+	}
+
+	dbus_connection_flush (tracker->dbus_con);
+
+    	dbus_message_unref (msg);
+  
+
+}
+
+
+
+
+
+
+void
+tracker_dbus_send_index_finished_signal ()
+{
+	DBusMessage *msg;
+	dbus_uint32_t serial = 0;
+	int i =  time (NULL) - tracker->index_time_start;
+
+	msg = dbus_message_new_signal (TRACKER_OBJECT, TRACKER_INTERFACE, TRACKER_SIGNAL_INDEX_FINISHED);
+				
+	if (!msg || !tracker->dbus_con) {
+		return;
+    	}
+
+	/*
+		<signal name="IndexFinished">
+			<arg type="i" name="time_taken"/>
+		</signal>
+	*/
+
+	dbus_message_append_args (msg,
+				  DBUS_TYPE_INT32, &i,
+				  DBUS_TYPE_INVALID);
+
+	dbus_message_set_no_reply (msg, TRUE);
+
+	if (!dbus_connection_send (tracker->dbus_con, msg, &serial)) {
+		tracker_error ("Raising the index status changed signal failed");
+		return;
+	}
+
+	dbus_connection_flush (tracker->dbus_con);
+
+    	dbus_message_unref (msg);
+  
+
+}
+
 
 static void
 unregistered_func (DBusConnection *conn,
@@ -151,6 +307,27 @@ message_func (DBusConnection *conn,
                 dbus_message_ref (message);
                 rec->action = DBUS_ACTION_GET_STATUS;
 
+
+        } else if (dbus_message_is_method_call (message, TRACKER_INTERFACE, TRACKER_METHOD_SET_BOOL_OPTION)) {
+
+                dbus_message_ref (message);
+                rec->action = DBUS_ACTION_SET_BOOL_OPTION;
+
+
+        } else if (dbus_message_is_method_call (message, TRACKER_INTERFACE, TRACKER_METHOD_SET_INT_OPTION)) {
+
+                dbus_message_ref (message);
+                rec->action = DBUS_ACTION_SET_INT_OPTION;
+
+        } else if (dbus_message_is_method_call (message, TRACKER_INTERFACE, TRACKER_METHOD_SHUTDOWN)) {
+
+                dbus_message_ref (message);
+                rec->action = DBUS_ACTION_SHUTDOWN;
+
+        } else if (dbus_message_is_method_call (message, TRACKER_INTERFACE, TRACKER_METHOD_PROMPT_INDEX_SIGNALS)) {
+
+                dbus_message_ref (message);
+                rec->action = DBUS_ACTION_PROMPT_INDEX_SIGNALS;
 
 	} else if (dbus_message_is_method_call (message, TRACKER_INTERFACE_METADATA, TRACKER_METHOD_METADATA_GET)) {
 

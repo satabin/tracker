@@ -66,9 +66,11 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(pkgconfigdir)"
+am__installdirs = "$(DESTDIR)$(pkgconfigdir)" \
+	"$(DESTDIR)$(xdgconfigdir)"
 pkgconfigDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(pkgconfig_DATA)
+xdgconfigDATA_INSTALL = $(INSTALL_DATA)
+DATA = $(pkgconfig_DATA) $(xdgconfig_DATA)
 ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = $(SUBDIRS)
@@ -299,48 +301,22 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 SUBDIRS = data src filters thumbnailers docs po
 pkgconfigdir = $(libdir)/pkgconfig
+xdgconfigdir = $(sysconfdir)/xdg/autostart
 pkgconfig_DATA = tracker.pc
-debian_files = \
-	debian/changelog \
-	debian/compat \
-	debian/control \
-	debian/copyright \
-	debian/libtrackerclient0-dev.docs \
-	debian/libtrackerclient0-dev.install \
-	debian/libtrackerclient0-dev.links \
-	debian/libtrackerclient0-dev.linda-overrides \
-	debian/libtrackerclient0.docs \
-	debian/libtrackerclient0.install \
-	debian/libtrackerclient0.links \
-	debian/libtrackerclient0.linda-overrides \
-	debian/tracker-data.docs \
-	debian/tracker-data.install \
-	debian/tracker-data.linda-overrides \
-	debian/tracker.docs \
-	debian/tracker.install \
-	debian/tracker.manpages \
-	debian/tracker-utils.docs \
-	debian/tracker-utils.examples \
-	debian/tracker-utils.install \
-	debian/tracker-utils.linda-overrides \
-	debian/tracker-utils.manpages \
-	debian/tracker-gnome-search-tool.install \
-	debian/tracker-gnome-search-tool.docs \
-	debian/tracker-gnome-search-tool.linda-overrides \
-	debian/rules
-
+xdgconfig_DATA = trackerd.desktop
 EXTRA_DIST = \
-	$(pkgconfig_DATA) \
+	$(xdgconfig_DATA) \
 	AUTHORS NEWS INSTALL COPYING README \
 	ChangeLog \
 	configure.in \
-	rdf-query-examples/*.rdf \
-	trackerd.desktop \
-	trackerd-kde.desktop \
+	rdf-query-examples/80s-music.rdf \
+	rdf-query-examples/90s-music.rdf \
+	rdf-query-examples/all-documents.rdf \
+	rdf-query-examples/big-documents.rdf \
+	rdf-query-examples/wallpapers.rdf \
 	intltool-extract.in \
 	intltool-merge.in \
-	intltool-update.in \
-	$(debian_files)
+	intltool-update.in 
 
 DISTCLEANFILES = \
 	intltool-extract \
@@ -429,6 +405,23 @@ uninstall-pkgconfigDATA:
 	  f=$(am__strip_dir) \
 	  echo " rm -f '$(DESTDIR)$(pkgconfigdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pkgconfigdir)/$$f"; \
+	done
+install-xdgconfigDATA: $(xdgconfig_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(xdgconfigdir)" || $(mkdir_p) "$(DESTDIR)$(xdgconfigdir)"
+	@list='$(xdgconfig_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(xdgconfigDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(xdgconfigdir)/$$f'"; \
+	  $(xdgconfigDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(xdgconfigdir)/$$f"; \
+	done
+
+uninstall-xdgconfigDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(xdgconfig_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(xdgconfigdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(xdgconfigdir)/$$f"; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -566,7 +559,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/. $(distdir)/debian $(distdir)/po $(distdir)/rdf-query-examples
+	$(mkdir_p) $(distdir)/. $(distdir)/po $(distdir)/rdf-query-examples
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -710,7 +703,7 @@ check: check-recursive
 all-am: Makefile $(DATA) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(pkgconfigdir)"; do \
+	for dir in "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(xdgconfigdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-recursive
@@ -758,7 +751,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-pkgconfigDATA
+install-data-am: install-pkgconfigDATA install-xdgconfigDATA
 
 install-exec-am:
 
@@ -786,7 +779,8 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-pkgconfigDATA
+uninstall-am: uninstall-info-am uninstall-pkgconfigDATA \
+	uninstall-xdgconfigDATA
 
 uninstall-info: uninstall-info-recursive
 
@@ -799,13 +793,13 @@ uninstall-info: uninstall-info-recursive
 	distuninstallcheck dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-exec \
 	install-exec-am install-info install-info-am install-man \
-	install-pkgconfigDATA install-strip installcheck \
-	installcheck-am installdirs installdirs-am maintainer-clean \
-	maintainer-clean-generic maintainer-clean-recursive \
-	mostlyclean mostlyclean-generic mostlyclean-libtool \
-	mostlyclean-recursive pdf pdf-am ps ps-am tags tags-recursive \
-	uninstall uninstall-am uninstall-info-am \
-	uninstall-pkgconfigDATA
+	install-pkgconfigDATA install-strip install-xdgconfigDATA \
+	installcheck installcheck-am installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic \
+	maintainer-clean-recursive mostlyclean mostlyclean-generic \
+	mostlyclean-libtool mostlyclean-recursive pdf pdf-am ps ps-am \
+	tags tags-recursive uninstall uninstall-am uninstall-info-am \
+	uninstall-pkgconfigDATA uninstall-xdgconfigDATA
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

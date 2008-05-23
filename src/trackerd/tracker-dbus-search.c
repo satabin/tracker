@@ -1,4 +1,4 @@
-/* Tracker
+/* Tracker - indexer and metadata database engine
  * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
  *
  * This library is free software; you can redistribute it and/or
@@ -13,8 +13,8 @@
  *
  * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
  */
 
 #include <string.h>
@@ -335,7 +335,7 @@ tracker_dbus_method_search_files_by_text (DBusRec *rec)
 
 /*
 		<!-- searches all file based entities that match the specified search_text.
-		     Returns dict/hashtable with the uri as key and the following fields as the variant part in order: file service category, File.Format, File.Size, File.Rank, File.Modified
+		     Returns dict/hashtable with the uri as key and the following fields as the variant part in order: file service category, File:Format, File:Size, File:Rank, File:Modified
 		     If group_results is True then results are sorted and grouped by service type.
 		     -->
 		<method name="FilesByText">
@@ -436,7 +436,8 @@ tracker_dbus_method_search_metadata (DBusRec *rec)
 		return;
 	}
 
-	res = tracker_db_search_metadata (db_con, service, field, text, offset, limit);
+//	res = tracker_db_search_metadata (db_con, service, field, text, offset, limit);
+	res = NULL;
 
 	array = NULL;
 

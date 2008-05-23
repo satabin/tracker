@@ -286,11 +286,6 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-INCLUDES = \
-	$(CFLAGS) 			\
-	-static				\
-	-g
-
 noinst_LTLIBRARIES = libstemmer-private.la
 libstemmer_private_la_SOURCES = \
 	libstemmer/libstemmer.c \

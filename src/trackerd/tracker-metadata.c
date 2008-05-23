@@ -1,21 +1,20 @@
-/* Tracker
- * metadata routines
- * Copyright (C) 2005, Mr Jamie McCracken
+/* Tracker - indexer and metadata database engine
+ * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
+ * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
  */
 
 #include <unistd.h>
@@ -256,7 +255,7 @@ tracker_metadata_get_text_file (const char *uri, const char *mime)
 	} else {
 		char *tmp;
 
-		tmp = g_strdup (DATADIR "/tracker/filters/");
+		tmp = g_strdup (LIBDIR "/tracker/filters/");
 
 		text_filter_file = g_strconcat (tmp, mime, "_filter", NULL);
 
@@ -331,89 +330,42 @@ tracker_metadata_get_text_file (const char *uri, const char *mime)
 
 
 char *
-tracker_metadata_get_thumbnail (const char *uri, const char *mime, const char *max_size)
+tracker_metadata_get_thumbnail (const char *path, const char *mime, const char *size)
 {
-	char *tmp, *thumbnailer;
+	gchar   *thumbnail;
+	gchar   *argv[5];
+	gint     exit_status;
 
-	tmp = g_strdup (DATADIR "/tracker/thumbnailers/");
+	argv[0] = g_strdup ("tracker-thumbnailer");
+	argv[1] = g_filename_from_utf8 (path, -1, NULL, NULL, NULL);
+	argv[2] = g_strdup (mime);
+	argv[3] = g_strdup (size);
+	argv[4] = NULL;
 
-	thumbnailer = g_strconcat (tmp, mime, "_thumbnailer", NULL);
+	if (!g_spawn_sync (NULL,
+			  argv,
+			  NULL,
+			  G_SPAWN_SEARCH_PATH | G_SPAWN_STDERR_TO_DEV_NULL,
+			  set_child_timeout_cb,
+			  GINT_TO_POINTER (10),
+			  &thumbnail,
+			  NULL,
+			  &exit_status,
+			  NULL)) {
 
-	g_free (tmp);
-
-	if (g_file_test (thumbnailer, G_FILE_TEST_EXISTS)) {
-		char *argv[5];
-		char *tmp_file;
-		int  fd;
-
-		tmp = g_build_filename (g_get_home_dir (), ".Tracker", "thumbs", NULL);
-
-		g_mkdir_with_parents (tmp, 0700);
-
-		tmp_file = g_build_filename (tmp, "thumb_XXXXXX", NULL);
-		g_free (tmp);
-
-
-		fd = g_mkstemp (tmp_file);
-
-		if (fd == -1) {
-			g_warning ("make thumb file %s failed", tmp_file);
-			g_free (thumbnailer);
-			g_free (tmp_file);
-			return NULL;
-		} else {
-			close (fd);
-		}
-
-		argv[0] = g_strdup (thumbnailer);
-		argv[1] = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
-		argv[2] = g_strdup (tmp_file);
-		argv[3] = g_strdup (max_size);
-		argv[4] = NULL;
-
-		if (!argv[1]) {
-			tracker_log ("******ERROR**** uri could not be converted to locale format");
-			g_free (argv[0]);
-			g_free (argv[2]);
-			g_free (argv[3]);
-			return NULL;
-		}
-
-		g_debug ("Extracting thumbnail for %s using %s", argv[1], argv[0] );
-
-		if (g_spawn_sync (NULL,
-				  argv,
-				  NULL,
-				  G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
-				  set_child_timeout_cb,
-				  GINT_TO_POINTER (10),
-				  NULL,
-				  NULL,
-				  NULL,
-				  NULL)) {
-
-			g_free (argv[0]);
-			g_free (argv[1]);
-			g_free (argv[2]);
-			g_free (argv[3]);
-
-			g_free (thumbnailer);
-
-			return tmp_file;
-
-		} else {
-			g_free (tmp_file);
-
-			g_free (argv[0]);
-			g_free (argv[1]);
-			g_free (argv[2]);
-			g_free (argv[3]);
-		}
+		thumbnail = NULL;
 	}
+	if (exit_status != EXIT_SUCCESS)
+		thumbnail = NULL;
+	else
+		tracker_log ("got thumbnail %s", thumbnail);
 
-	g_free (thumbnailer);
+	g_free (argv[0]);
+	g_free (argv[1]);
+	g_free (argv[2]);
+	g_free (argv[3]);
 
-	return NULL;
+	return thumbnail;
 }
 
 

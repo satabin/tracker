@@ -1,3 +1,22 @@
+/* Tracker Extract - extracts embedded metadata from files
+ * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
+ */
+
 #define _GNU_SOURCE
 
 #include <config.h>
@@ -83,29 +102,29 @@ void tracker_extract_ps (gchar *filename, GHashTable *metadata)
 			if (!header_finished
 					&& strncmp (line, "%%Copyright:", 12) == 0) {
 				g_hash_table_insert (metadata,
-					g_strdup ("File.Other"), g_strdup (line+13));
+					g_strdup ("File:Other"), g_strdup (line+13));
 			}
 			else if (!header_finished
 					&& strncmp (line, "%%Title:", 8) == 0) {
 				g_hash_table_insert (metadata,
-					g_strdup ("Doc.Title"), g_strdup (line+9));
+					g_strdup ("Doc:Title"), g_strdup (line+9));
 			}
 			else if (!header_finished
 					&& strncmp (line, "%%Creator:", 10) == 0) {
 				g_hash_table_insert (metadata,
-					g_strdup ("Doc.Author"), g_strdup (line+11));
+					g_strdup ("Doc:Author"), g_strdup (line+11));
 			}
 			else if (!header_finished
 					&& strncmp (line, "%%CreationDate:", 15) == 0) {
 				g_hash_table_insert (metadata,
-					g_strdup ("Doc.Created"), g_strdup (line+16));
+					g_strdup ("Doc:Created"), g_strdup (line+16));
 			}
 			else if (strncmp (line, "%%Pages:", 8) == 0) {
 				if (strcmp (line+9, "(atend)") == 0)
 					pageno_atend = TRUE;
 				else
 					g_hash_table_insert (metadata,
-						g_strdup ("Doc.PageCount"), g_strdup (line+9));
+						g_strdup ("Doc:PageCount"), g_strdup (line+9));
 			}
 			else if (strncmp (line, "%%EndComments", 14) == 0) {
 				header_finished = TRUE;

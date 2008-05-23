@@ -1,3 +1,23 @@
+/* Tracker Extract - extracts embedded metadata from files
+ * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
+ */
+
+
 #include <stdio.h>
 #include <string.h>
 #include <glib.h>
@@ -111,11 +131,11 @@ void start_element_handler (GMarkupParseContext *context,
 		for(a=attribute_names,v=attribute_values; *a; ++a,++v) {
 			if (strcmp (*a, "meta:word-count") == 0) {
 				g_hash_table_insert (metadata,
-					g_strdup("Doc.WordCount"), g_strdup (*v));
+					g_strdup("Doc:WordCount"), g_strdup (*v));
 			}
 			else if (strcmp (*a, "meta:page-count") == 0) {
 				g_hash_table_insert (metadata,
-					g_strdup("Doc.PageCount"), g_strdup (*v));
+					g_strdup("Doc:PageCount"), g_strdup (*v));
 			}
 		}
 		((ODTParseInfo *)user_data)->current = READ_STATS;
@@ -149,33 +169,33 @@ void text_handler (GMarkupParseContext *context,
 
 	switch(((ODTParseInfo *)user_data)->current) {
 		case READ_TITLE:
-			g_hash_table_insert (metadata, g_strdup("Doc.Title"), g_strdup (text));
+			g_hash_table_insert (metadata, g_strdup("Doc:Title"), g_strdup (text));
 			break;
 		case READ_SUBJECT:
-			g_hash_table_insert (metadata, g_strdup("Doc.Subject"), g_strdup (text));
+			g_hash_table_insert (metadata, g_strdup("Doc:Subject"), g_strdup (text));
 			break;
 		case READ_AUTHOR:
-			g_hash_table_insert (metadata, g_strdup("Doc.Author"), g_strdup (text));
+			g_hash_table_insert (metadata, g_strdup("Doc:Author"), g_strdup (text));
 			break;
 		case READ_KEYWORDS: {
 				gchar *keywords;
-				if ((keywords = g_hash_table_lookup (metadata, "Doc.Keywords"))) {
-					g_hash_table_replace (metadata, "Doc.Keywords",
+				if ((keywords = g_hash_table_lookup (metadata, "Doc:Keywords"))) {
+					g_hash_table_replace (metadata, "Doc:Keywords",
 							g_strconcat (keywords, ",", text, NULL));
 				}
 				else {
-					g_hash_table_insert (metadata, g_strdup("Doc.Keywords"), g_strdup (text));
+					g_hash_table_insert (metadata, g_strdup("Doc:Keywords"), g_strdup (text));
 				}
 			}
 			break;
 		case READ_COMMENTS:
-			g_hash_table_insert (metadata, g_strdup("Doc.Comments"), g_strdup (text));
+			g_hash_table_insert (metadata, g_strdup("Doc:Comments"), g_strdup (text));
 			break;
 		case READ_CREATED:
-			g_hash_table_insert (metadata, g_strdup("Doc.Created"), g_strdup (text));
+			g_hash_table_insert (metadata, g_strdup("Doc:Created"), g_strdup (text));
 			break;
 		case READ_FILE_OTHER:
-			g_hash_table_insert (metadata, g_strdup("File.Other"), g_strdup (text));
+			g_hash_table_insert (metadata, g_strdup("File:Other"), g_strdup (text));
 			break;
 
 		default:

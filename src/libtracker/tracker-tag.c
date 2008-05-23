@@ -1,21 +1,20 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/* Tracker Tag
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)	
+/* Tracker - indexer and metadata database engine
+ * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
+ * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA. 
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
  */
 
 #include <config.h>
@@ -37,7 +36,7 @@ static gboolean list = FALSE;
 static GOptionEntry entries[] = {
 	{"add", 'a', 0, G_OPTION_ARG_STRING_ARRAY, &add, N_("Add specified tag to a file"), N_("TAG")},
 	{"remove", 'r', 0, G_OPTION_ARG_STRING_ARRAY, &delete, N_("Remove specified tag from a file"), N_("TAG")},
-	{"remove-all", 'R', 0, G_OPTION_ARG_NONE, &remove_all, N_("Remove all tags from  a file"), NULL},
+	{"remove-all", 'R', 0, G_OPTION_ARG_NONE, &remove_all, N_("Remove all tags from a file"), NULL},
 	{"list", 'l', 0, G_OPTION_ARG_NONE, &list, N_("List all defined tags"), NULL},
 	{"search", 's', 0, G_OPTION_ARG_STRING_ARRAY, &search, N_("Search for files with specified tag"), N_("TAG")},
 	{G_OPTION_REMAINING, 0, G_OPTION_FLAG_FILENAME, G_OPTION_ARG_STRING_ARRAY, &files, N_("FILE..."), NULL},
@@ -107,7 +106,10 @@ main (int argc, char **argv)
 	g_free (example);
 	
 	if (error) {
-		g_printerr ("%s\n", error->message);
+		g_printerr ("%s: %s", argv[0], error->message);
+		g_printerr ("\n");
+		g_printerr (_("Try \"%s --help\" for more information."), argv[0]);
+		g_printerr ("\n");
 		return 1;
 	}
 

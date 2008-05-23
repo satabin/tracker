@@ -1,21 +1,23 @@
-/* Tracker
- * Copyright (C) 2005, Mr Jamie McCracken
+/* Tracker - indexer and metadata database engine
+ * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
+ * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
  */
+
+
 
 
 #ifndef _TRACKER_UTILS_H_
@@ -51,9 +53,9 @@ typedef struct {
 #define FILE_PAUSE_PERIOD		1
 #define FILE_SCHEDULE_PERIOD		300
 
-#define TRACKER_DB_VERSION_REQUIRED	10
-#define TRACKER_VERSION			"0.5.2"
-#define TRACKER_VERSION_INT		502
+#define TRACKER_DB_VERSION_REQUIRED	13
+#define TRACKER_VERSION			"0.5.3"
+#define TRACKER_VERSION_INT		503
 
 /* default performance options */
 #define MAX_INDEX_TEXT_LENGTH		1048576
@@ -97,6 +99,11 @@ typedef struct {
 
 	guint32		watch_limit;
 	guint32		poll_interval;
+
+	/* data directories */
+	char 		*data_dir;
+	char		*backup_dir;
+	char		*sys_tmp_root_dir;
 
 	/* performance and memory usage options */
 	int		max_index_text_length; /* max size of file's text contents to index */
@@ -170,7 +177,7 @@ typedef struct {
  	gboolean 	is_running;
 	GMainLoop 	*loop;
 
-	char		*sys_tmp_root_dir;
+	
 
 	Indexer		*file_indexer;
 
@@ -332,6 +339,10 @@ time_t		tracker_str_to_date 		(const char *time_string);
 char *		tracker_date_to_str 		(gint32 date_time);
 int		tracker_str_in_array 		(const char *str, char **array);
 
+char *		tracker_escape_metadata 	(const char *str);
+char *		tracker_unescape_metadata 	(const char *str);
+
+void		tracker_remove_dirs 		(const char *root_dir);
 char *		tracker_format_search_terms 	(const char *str, gboolean *do_bool_search);
 
 gboolean	tracker_is_supported_lang 	(const char *lang);

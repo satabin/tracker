@@ -30,6 +30,7 @@ typedef enum {
 	MAIL_APP_EVOLUTION,
 	MAIL_APP_KMAIL,
 	MAIL_APP_THUNDERBIRD,
+        MAIL_APP_THUNDERBIRD_FEED,
 	MAIL_APP_UNKNOWN
 } MailApplication;
 
@@ -99,6 +100,7 @@ typedef struct {
 	MailFile	*parent_mail_file;
 	gint		id;
 	gboolean	is_mbox;
+        gint            mtime;
 	gchar		*path;
 	gchar		*uri;			/* uri to pass to a mail client to open it at mail message */
 	guint64		offset;			/* start address of the email */

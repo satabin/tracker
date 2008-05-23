@@ -18,7 +18,8 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#include<string.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "tracker-apps.h"
 #include "tracker-db.h"
@@ -29,7 +30,7 @@ tracker_applications_add_service_directories (void)
 {
 	if (1) { /* TODO: configurable.. tracker->index_applications? */
 
-		char *value;
+		char *value = NULL;
 		gchar *dir = NULL;
 
 		value = getenv ("XDG_DATA_HOME");

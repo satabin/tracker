@@ -8,14 +8,14 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA  02110-1301, USA.
- */
+ * Boston, MA  02110-1301, USA. 
+ */  
 
 #ifndef _TRACKER_UTILS_H_
 #define _TRACKER_UTILS_H_
@@ -39,14 +39,16 @@ extern char *tracker_actions[];
 
 #define MAX_HITS_FOR_WORD 30000
 
+/* set merge limit default to 64MB */
+#define MERGE_LIMIT 671088649
 
 /* max default file pause time in ms  = FILE_PAUSE_PERIOD * FILE_SCHEDULE_PERIOD */
 #define FILE_PAUSE_PERIOD		1
 #define FILE_SCHEDULE_PERIOD		300
 
 #define TRACKER_DB_VERSION_REQUIRED	13
-#define TRACKER_VERSION			"0.6.1"
-#define TRACKER_VERSION_INT		600
+#define TRACKER_VERSION			VERSION
+#define TRACKER_VERSION_INT		603
 
 /* default performance options */
 #define MAX_INDEX_TEXT_LENGTH		1048576
@@ -56,9 +58,9 @@ extern char *tracker_actions[];
 #define MAX_WORDS_TO_INDEX		10000
 
 /* default indexer options */
-#define MIN_INDEX_BUCKET_COUNT		65536    /* minimum bucket number of word index per division (total buckets = INDEXBNUM * INDEXDIV) */
+#define MIN_INDEX_BUCKET_COUNT		131072    /* minimum bucket number of word index per division (total buckets = INDEXBNUM * INDEXDIV) */
 #define INDEX_DIVISIONS	        	4        /* no. of divisions of file */
-#define MAX_INDEX_BUCKET_COUNT 		524288	 /* max no of buckets to use  */
+#define MAX_INDEX_BUCKET_COUNT 		262144	 /* max no of buckets to use  */
 #define INDEX_BUCKET_RATIO		1	 /* desired ratio of unused buckets to have (range 0 to 4)*/
 #define INDEX_PADDING	 		2
 
@@ -90,12 +92,21 @@ typedef enum {
 
 
 typedef enum {
-	DB_DATA,
-	DB_BLOB,
-	DB_EMAIL,
+	DB_DATA, 
+	DB_INDEX,
+	DB_COMMON, 
+	DB_CONTENT,
+	DB_EMAIL, 
 	DB_CACHE,
 	DB_USER
 } DBTypes;
+
+
+typedef enum {
+	DB_CATEGORY_FILES, 
+	DB_CATEGORY_EMAILS,
+	DB_CATEGORY_USER
+} DBCategory;
 
 
 typedef enum {
@@ -178,9 +189,17 @@ typedef struct {
 } ServiceInfo;
 
 
+typedef enum {
+	EVENT_NOTHING,
+	EVENT_SHUTDOWN,
+	EVENT_DISABLE,
+	EVENT_CACHE_FLUSHED
+} LoopEvent;
+
 typedef struct {
 
 	TrackerStatus	status;
+	int		pid;
 
 	/* config options */
 	GSList 		*watch_directory_roots_list;
@@ -195,10 +214,16 @@ typedef struct {
 
 	guint32		watch_limit;
 
+	gboolean	shutdown;
+	gboolean	paused;
+	gboolean	battery_paused;
+
 	/* controls how much to output to screen/log file */
 	int		verbosity;
 
 	gboolean	fatal_errors;
+
+	gpointer	index_db;
 
 	/* data directories */
 	char 		*data_dir;
@@ -220,6 +245,10 @@ typedef struct {
 	gboolean	use_extra_memory;
 	int		initial_sleep;
 	int		max_words_to_index;
+	int 		memory_limit;
+	gboolean	battery_checking;
+
+	/* indexing options */
 
 	/* indexing options */
 	int	 	max_index_bucket_count;
@@ -227,6 +256,15 @@ typedef struct {
 	int		min_index_bucket_count;
 	int		index_divisions;
 	int 		padding; /* values 1-8 */
+
+	gpointer	file_index;
+	gpointer	file_update_index;
+	gpointer	email_index;
+
+
+	guint32		merge_limit; 		/* size of index in MBs when merging is triggered -1 == no merging*/
+	gboolean	active_file_merge;
+	gboolean	active_email_merge;
 
 	int		min_word_length;  	/* words shorter than this are not parsed */
 	int		max_word_length;  	/* words longer than this are cropped */
@@ -251,6 +289,9 @@ typedef struct {
 	IndexStatus	index_status;
 
 	int		grace_period;
+	gboolean	request_waiting;
+
+	char *		xesam_dir;
 
 	/* battery and ac power status file */
 	char		*battery_state_file;
@@ -284,12 +325,15 @@ typedef struct {
 	int		update_count;
 
 	/* cache words before saving to word index */
-	GHashTable	*cached_table;
-	GMutex		*cache_table_mutex;
+	GHashTable	*file_word_table;
+	GHashTable	*file_update_word_table;
+	GHashTable	*email_word_table;
+
 	int		word_detail_limit;
 	int		word_detail_count;
 	int		word_detail_min;
 	int		word_count;
+	int		word_update_count;
 	int		word_count_limit;
 	int		word_count_min;
 	int		flush_count;
@@ -472,6 +516,8 @@ gboolean        tracker_is_empty_string         (const char *s);
 gchar *         tracker_long_to_str             (glong i);
 gchar *		tracker_int_to_str		(gint i);
 gchar *		tracker_uint_to_str		(guint i);
+gchar *		tracker_gint32_to_str		(gint32 i);
+gchar *		tracker_guint32_to_str		(guint32 i);
 gboolean	tracker_str_to_uint		(const char *s, guint *ret);
 char *		tracker_format_date 		(const char *time_string);
 time_t		tracker_str_to_date 		(const char *time_string);
@@ -529,6 +575,7 @@ gboolean	tracker_file_is_in_root_dir	(const char *uri);  /* test if a given file
 
 GSList * 	tracker_get_all_files 		(const char *dir, gboolean dir_only);
 GSList * 	tracker_get_files 		(const char *dir, gboolean dir_only);
+GSList *	tracker_get_files_with_prefix 	(const char *dir, const char *prefix);
 
 void 		tracker_get_all_dirs 		(const char *dir, GSList **file_list);
 void 		tracker_get_dirs 		(const char *dir, GSList **file_list);
@@ -566,5 +613,17 @@ char **		tracker_list_to_array 		(GSList *list);
 void		tracker_free_metadata_field 	(FieldData *field_data);
 
 gboolean	tracker_unlink 			(const char *uri);
+
+char *		tracker_get_battery_state_file 	();
+gboolean	tracker_using_battery 		(void);
+
+
+int 		tracker_get_memory_usage 	(void);
+
+guint32		tracker_file_size 		(const char *name);
+int		tracker_file_open 		(const char *file_name, gboolean readahead);
+void		tracker_file_close 		(int fd, gboolean no_longer_needed);
+
+void		tracker_add_io_grace 		(const char *uri);
 
 #endif

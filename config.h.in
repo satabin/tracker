@@ -12,6 +12,10 @@
 /* Define to 1 if you have the `dcgettext' function. */
 #undef HAVE_DCGETTEXT
 
+/* Define to 1 if you have the declaration of `posix_fadvise', and to 0 if you
+   don't. */
+#undef HAVE_DECL_POSIX_FADVISE
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
@@ -74,6 +78,9 @@
 
 /* Define if we have poppler */
 #undef HAVE_POPPLER
+
+/* Define to 1 if you have the `posix_fadvise' function. */
+#undef HAVE_POSIX_FADVISE
 
 /* Define if we have recent glib */
 #undef HAVE_RECENT_GLIB

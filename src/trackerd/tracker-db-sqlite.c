@@ -17,6 +17,9 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -24,17 +27,20 @@
 #include <strings.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <time.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <regex.h>
+#include <zlib.h>
 
 #include "tracker-db-sqlite.h"
 #include "tracker-indexer.h"
 #include "tracker-cache.h"
 #include "tracker-metadata.h"
+#include "tracker-utils.h"
 
 #include "config.h"
 
@@ -42,7 +48,8 @@
 #include "mingw-compat.h"
 #endif
 
-
+#define MAX_TEXT_BUFFER 65567
+#define MAX_COMPRESS_BUFFER 65565
 #define DEFAULT_PAGE_CACHE 64
 #define MIN_PAGE_CACHE 16
 
@@ -63,7 +70,7 @@ typedef struct {
 
 
 
-/* slqite utf-8 user defined collation sequence */
+/* sqlite utf-8 user defined collation sequence */
 
 static int 
 sqlite3_utf8_collation (void *NotUsed,  int len1, const void *str1,  int len2, const void *str2)
@@ -342,7 +349,7 @@ tracker_db_log_result (char ***result)
 		for (row = *rows; *row; row++) {
 			char *value;
 
-			value = *row;
+                        value = tracker_string_replace (*row, "%", "%%");
 
 			if (!value) {
 				value = "NULL";
@@ -358,6 +365,8 @@ tracker_db_log_result (char ***result)
 			} else {
 				str = g_strconcat (value, NULL);
 			}
+
+			g_free (value);
 		}
 
 		if (str) {
@@ -449,6 +458,9 @@ tracker_db_initialize (const char *datadir)
 	char	 *sql_file;
 	GTimeVal *tv;
 	int i = 0;
+
+
+	//g_assert (sqlite3_threadsafe() != 0);
 
 	tracker_log ("Using Sqlite version %s", sqlite3_version);
 
@@ -560,16 +572,10 @@ finalize_statement (gpointer key,
 }
 
 
-void
-tracker_db_close (DBConnection *db_con)
+
+static inline void
+close_db (DBConnection *db_con)
 {
-	if (!db_con->thread) {
-		db_con->thread = "main";
-	}
-
-	//sqlite3_interrupt (db_con->db);
-
-	/* clear prepared queries */
 	if (db_con->statements) {
 		g_hash_table_foreach (db_con->statements, finalize_statement, db_con);
 	}
@@ -582,7 +588,23 @@ tracker_db_close (DBConnection *db_con)
 	} else {
 		tracker_debug ("Database closed for thread %s", db_con->thread);
 	}
+
+
 }
+
+
+void
+tracker_db_close (DBConnection *db_con)
+{
+	if (!db_con->thread) {
+		db_con->thread = "main";
+	}
+
+	close_db (db_con);
+}
+
+
+
 
 
 /*
@@ -615,51 +637,153 @@ test_data (gpointer key,
 */
 
 
-DBConnection *
-tracker_db_connect_common (void)
+static sqlite3 *
+open_user_db (const char *name, gboolean *create_table)
 {
-	char	     *dbname;
-	DBConnection *db_con;
+	char	     	*dbname;
+	sqlite3 	*db;
 
-	dbname = g_build_filename (tracker->user_data_dir, "common.db", NULL);
+	*create_table = FALSE;
+	
+	dbname = g_build_filename (tracker->user_data_dir, name, NULL);
 
-	db_con = g_new (DBConnection, 1);
+	if (!g_file_test (dbname, G_FILE_TEST_IS_REGULAR)) {
+		tracker_log ("database file %s is not present - will create", dbname);
+		*create_table = TRUE;
+	} 
 
-	if (sqlite3_open (dbname, &db_con->db) != SQLITE_OK) {
-		tracker_error ("FATAL ERROR: can't open database at %s: %s", dbname, sqlite3_errmsg (db_con->db));
+
+	if (sqlite3_open (dbname, &db) != SQLITE_OK) {
+		tracker_error ("FATAL ERROR: can't open database at %s: %s", dbname, sqlite3_errmsg (db));
 		exit (1);
 	}
 
-	sqlite3_extended_result_codes (db_con->db, 0);
+	sqlite3_extended_result_codes (db, 0);
 
 	g_free (dbname);
 
-	db_con->db_type = DB_DATA;
+	sqlite3_busy_timeout (db, 10000);
 
-	sqlite3_busy_timeout (db_con->db, 10000);
+	return db;
+
+}
+
+
+
+static sqlite3 *
+open_db (const char *name, gboolean *create_table)
+{
+	char	     	*dbname;
+	sqlite3 	*db;
+
+	*create_table = FALSE;
+	
+	dbname = g_build_filename (tracker->data_dir, name, NULL);
+
+	if (!g_file_test (dbname, G_FILE_TEST_IS_REGULAR)) {
+		tracker_log ("database file %s is not present - will create", dbname);
+		*create_table = TRUE;
+	} 
+
+
+	if (sqlite3_open (dbname, &db) != SQLITE_OK) {
+		tracker_error ("FATAL ERROR: can't open database at %s: %s", dbname, sqlite3_errmsg (db));
+		exit (1);
+	}
+
+	sqlite3_extended_result_codes (db, 0);
+
+	g_free (dbname);
+
+	sqlite3_busy_timeout (db, 10000);
+
+	return db;
+
+}
+
+
+static void
+set_params (DBConnection *db_con, int cache_size, gboolean add_functions)
+{
+	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+
+	tracker_db_set_default_pragmas (db_con);
+
+	tracker_db_exec_no_reply (db_con, "PRAGMA page_size = 4096");
+
+	char *prag;
+
+	if (tracker->use_extra_memory) {
+		prag = g_strdup_printf ("PRAGMA cache_size = %d", cache_size);
+	} else {
+		prag = g_strdup_printf ("PRAGMA cache_size = %d", cache_size/2);
+	}
+
+	tracker_db_exec_no_reply (db_con, prag);
+
+	g_free (prag);
+
+	if (add_functions) {
+		/* create user defined utf-8 collation sequence */
+		if (SQLITE_OK != sqlite3_create_collation (db_con->db, "UTF8", SQLITE_UTF8, 0, &sqlite3_utf8_collation)) {
+			tracker_error ("ERROR: collation sequence failed due to %s", sqlite3_errmsg (db_con->db));
+		}
+	
+
+		/* create user defined functions that can be used in sql */
+		if (SQLITE_OK != sqlite3_create_function (db_con->db, "FormatDate", 1, SQLITE_ANY, NULL, &sqlite3_date_to_str, NULL, NULL)) {
+			tracker_error ("ERROR: function FormatDate failed due to %s", sqlite3_errmsg (db_con->db));
+		}
+		if (SQLITE_OK != sqlite3_create_function (db_con->db, "GetServiceName", 1, SQLITE_ANY, NULL, &sqlite3_get_service_name, NULL, NULL)) {
+			tracker_error ("ERROR: function GetServiceName failed due to %s", sqlite3_errmsg (db_con->db));
+		}
+		if (SQLITE_OK != sqlite3_create_function (db_con->db, "GetServiceTypeID", 1, SQLITE_ANY, NULL, &sqlite3_get_service_type, NULL, NULL)) {
+			tracker_error ("ERROR: function GetServiceTypeID failed due to %s", sqlite3_errmsg (db_con->db));
+		}
+		if (SQLITE_OK != sqlite3_create_function (db_con->db, "GetMaxServiceTypeID", 1, SQLITE_ANY, NULL, &sqlite3_get_max_service_type, NULL, NULL)) {
+			tracker_error ("ERROR: function GetMaxServiceTypeID failed due to %s", sqlite3_errmsg (db_con->db));
+		}
+		if (SQLITE_OK != sqlite3_create_function (db_con->db, "REGEXP", 2, SQLITE_ANY, NULL, &sqlite3_regexp, NULL, NULL)) {
+			tracker_error ("ERROR: function REGEXP failed due to %s", sqlite3_errmsg (db_con->db));
+		}
+	}
+}
+
+
+
+static void
+open_common_db (DBConnection *db_con)
+{
+	gboolean create;
+
+	db_con->db = open_user_db ("common.db", &create);
+
+	set_params (db_con, 16, FALSE);
+
+}
+
+
+DBConnection *
+tracker_db_connect_common (void)
+{
+
+	DBConnection *db_con;
+
+	db_con = g_new0 (DBConnection, 1);
+
+	open_common_db (db_con);
+
+	db_con->db_type = DB_COMMON;
 	
 	db_con->cache = NULL;
 	db_con->emails = NULL;
 	db_con->others = NULL;
 	db_con->blob = NULL;
-
-
-	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = 0");
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA count_changes = 0");
-	tracker_db_exec_no_reply (db_con, "PRAGMA page_size = 4096");
-
-	if (tracker->use_extra_memory) {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 32");
-	} else {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 8");
-	}
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA encoding = \"UTF-8\"");
+	db_con->common = db_con;
 
 	db_con->thread = NULL;
+
+	db_con->in_transaction = FALSE;
 
 	return db_con;
 }
@@ -691,60 +815,58 @@ tracker_db_attach_db (DBConnection *db_con, const char *name)
 	g_free (sql);
 }
 
+static inline void
+free_db_con (DBConnection *db_con)
+{
+	g_free (db_con);
+	db_con = NULL;
+}
 
 /* convenience function for process files thread */
 DBConnection *
-tracker_db_connect_all (gboolean include_indexers)
+tracker_db_connect_all (gboolean indexer_process)
 {
 
 	DBConnection *db_con;
 	DBConnection *blob_db_con = NULL;
+	DBConnection *word_index_db_con = NULL;
+
+	DBConnection *common_db_con = NULL;
+
 	DBConnection *emails_blob_db_con = NULL;
 	DBConnection *emails_db_con= NULL;
 	DBConnection *email_word_index_db_con= NULL;
-	DBConnection *common_db_con = NULL;
-	DBConnection *word_index_db_con = NULL;
-	DBConnection *file_index_db_con = NULL;
-	DBConnection *email_index_db_con = NULL;
 
-	db_con = tracker_db_connect ();
+	if (!indexer_process) {
+		db_con = tracker_db_connect ();
+		emails_db_con = tracker_db_connect_emails ();
+	} else {
+		db_con = tracker_db_connect_file_meta ();
+		emails_db_con = tracker_db_connect_email_meta ();
+	}
 
 	blob_db_con = tracker_db_connect_file_content ();
 	emails_blob_db_con = tracker_db_connect_email_content ();
-
-	emails_db_con = tracker_db_connect_emails ();
 	common_db_con  = tracker_db_connect_common ();
-	word_index_db_con = tracker_indexer_open ("file-index.db");
-	email_word_index_db_con = tracker_indexer_open ("email-index.db");
 
-	if (include_indexers) {
-		file_index_db_con = tracker_db_connect_file_meta ();
-		email_index_db_con = tracker_db_connect_email_meta ();
+	word_index_db_con = tracker->file_index;
+	email_word_index_db_con = tracker->email_index;
 
-		file_index_db_con->common = common_db_con;
-		file_index_db_con->blob = blob_db_con;
-		email_index_db_con->common = common_db_con;
-		email_index_db_con->blob = emails_blob_db_con;
-	}
+	db_con->cache = tracker_db_connect_cache ();
 
 	db_con->blob = blob_db_con;
 	db_con->data = db_con;
 	db_con->emails = emails_db_con;
 	db_con->common = common_db_con;
 	db_con->word_index = word_index_db_con;
-	db_con->index = file_index_db_con;
+	db_con->index = db_con;
 
 	emails_db_con->common = common_db_con;
 	emails_db_con->blob = emails_blob_db_con;
 	emails_db_con->data = db_con;
 	emails_db_con->word_index = email_word_index_db_con;
-	emails_db_con->index = email_index_db_con;
-
-	if (include_indexers) {
-		db_con->thread = "Indexing";
-	} else {
-		db_con->thread = "Request";
-	}
+	emails_db_con->index = emails_db_con;
+	emails_db_con->cache = db_con->cache;
 
 	return db_con;
 
@@ -754,25 +876,126 @@ void
 tracker_db_close_all (DBConnection *db_con)
 {
 
-	DBConnection *blob_db_con = db_con->blob;
-	DBConnection *emails_db_con = db_con->emails;
-	DBConnection *common_db_con = db_con->common;
-	DBConnection *file_index_db_con = db_con->index;
-	DBConnection *email_index_db_con = emails_db_con->index;
-	DBConnection *word_index_db_con = db_con->word_index;
+	DBConnection *email_db_con = db_con->emails;
+	DBConnection *email_blob_db_con = email_db_con->blob;
 
-	if (blob_db_con) tracker_db_close (blob_db_con);
-	if (common_db_con) tracker_db_close (common_db_con);
-	if (file_index_db_con) tracker_db_close (file_index_db_con);
-	if (email_index_db_con) tracker_db_close (email_index_db_con);
-	if (emails_db_con) tracker_db_close (emails_db_con);
-	if (word_index_db_con) tracker_db_close (word_index_db_con);
+	DBConnection *common_db_con = db_con->common;
+	DBConnection *cache_db_con = db_con->cache;
+
+	DBConnection *file_blob_db_con = db_con->blob;
+
+
+	/* close emails */
+	if (email_blob_db_con) {
+		tracker_db_close (email_blob_db_con);
+		free_db_con (email_blob_db_con);
+	}
+		
+	if (email_db_con) {
+		tracker_db_close (email_db_con);
+		g_free (email_db_con);
+	}
+
+
+	/* close files */
+	if (file_blob_db_con) {
+		tracker_db_close (file_blob_db_con);
+		free_db_con (file_blob_db_con);
+	}
 
 	tracker_db_close (db_con);
+	g_free (db_con);
+
+
+	/* close others */
+	if (common_db_con) {
+		tracker_db_close (common_db_con);
+		free_db_con (common_db_con);
+	}
+
+	
+	if (cache_db_con) {
+		tracker_db_close (cache_db_con);
+		free_db_con (cache_db_con);
+	}
+
+
+}
+
+void
+tracker_db_start_index_transaction (DBConnection *db_con)
+{
+	DBConnection *tmp;
+	DBConnection *email_db_con = db_con->emails;
+
+
+	tmp = db_con->common;
+	if (!tmp->in_transaction) tracker_db_start_transaction (tmp);
+	
+
+	/* files */
+	if (!db_con->in_transaction) tracker_db_start_transaction (db_con);
+
+	tmp = db_con->blob;
+	if (!tmp->in_transaction) tracker_db_start_transaction (tmp);
+
+	/* emails */
+	if (!email_db_con->in_transaction) tracker_db_start_transaction (email_db_con);
+
+	tmp = email_db_con->blob;
+	if (!tmp->in_transaction) tracker_db_start_transaction (tmp);
+}
+
+
+
+void
+tracker_db_end_index_transaction (DBConnection *db_con)
+{
+	DBConnection *tmp;
+	DBConnection *email_db_con = db_con->emails;
+
+	tmp = db_con->common;
+	if (tmp->in_transaction) {
+		tracker_db_end_transaction (tmp);
+	}
+
+	/* files */
+	if (db_con->in_transaction) {
+		tracker_db_end_transaction (db_con);
+	}
+
+	tmp = db_con->blob;
+	if (tmp->in_transaction) {
+		tracker_db_end_transaction (tmp);
+	}
+
+	/* emails */
+	if (email_db_con->in_transaction) {
+		tracker_db_end_transaction (email_db_con);
+	}
+
+	tmp = email_db_con->blob;
+	if (tmp->in_transaction) {
+		tracker_db_end_transaction (tmp);
+	}
 
 }
 
 
+void
+tracker_db_set_default_pragmas (DBConnection *db_con)
+{
+	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = OFF;");
+
+	tracker_db_exec_no_reply (db_con, "PRAGMA count_changes = 0;");
+
+	tracker_db_exec_no_reply (db_con, "PRAGMA temp_store = FILE;");
+
+	tracker_db_exec_no_reply (db_con, "PRAGMA encoding = \"UTF-8\"");
+
+	tracker_db_exec_no_reply (db_con, "PRAGMA auto_vacuum = 0;");
+
+}
 
 
 DBConnection *
@@ -800,6 +1023,7 @@ tracker_db_connect (void)
 	g_free (dbname);
 
 	db_con->db_type = DB_DATA;
+	db_con->db_category = DB_CATEGORY_FILES;
 
 	sqlite3_busy_timeout (db_con->db, 10000);
 
@@ -807,17 +1031,15 @@ tracker_db_connect (void)
 
 	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = 0");
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA count_changes = 0");
-
+	tracker_db_set_default_pragmas (db_con);
+	
 	if (tracker->use_extra_memory) {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 64");
-	} else {
 		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 32");
+	} else {
+		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 16");
 	}
 
-	tracker_db_exec_no_reply (db_con, "PRAGMA encoding = \"UTF-8\"");
+	
 
 	/* create user defined utf-8 collation sequence */
 	if (SQLITE_OK != sqlite3_create_collation (db_con->db, "UTF8", SQLITE_UTF8, 0, &sqlite3_utf8_collation)) {
@@ -846,271 +1068,242 @@ tracker_db_connect (void)
 		tracker_log ("Creating file database...");
 		load_sql_file (db_con, "sqlite-service.sql");
 		load_sql_trigger (db_con, "sqlite-service-triggers.sql");
+
+		load_sql_file (db_con, "sqlite-metadata.sql");
+	
+		tracker_db_load_service_file (db_con, "default.metadata", FALSE);
+		tracker_db_load_service_file (db_con, "file.metadata", FALSE);
+		tracker_db_load_service_file (db_con, "audio.metadata", FALSE);
+		tracker_db_load_service_file (db_con, "application.metadata", FALSE);
+		tracker_db_load_service_file (db_con, "document.metadata", FALSE);
+		tracker_db_load_service_file (db_con, "email.metadata", FALSE);
+		tracker_db_load_service_file (db_con, "image.metadata", FALSE);	
+		tracker_db_load_service_file (db_con, "video.metadata", FALSE);	
+	
 		tracker_db_exec_no_reply (db_con, "ANALYZE");
 	}
 
 
 	tracker_db_attach_db (db_con, "common");
-	tracker_db_attach_db (db_con, "cache");
+
 
 	db_con->thread = NULL;
 
 	return db_con;
 }
 
+
+void
+tracker_db_fsync (DBConnection *db_con, gboolean enable)
+{
+	if (!enable) {
+		tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = OFF;");
+	} else {
+		tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = NORMAL;");
+	}
+
+}
+
+static inline void
+open_file_db (DBConnection *db_con)
+{
+	gboolean create;
+
+	db_con->db = open_db ("file-meta.db", &create);	
+
+	set_params (db_con, 128, TRUE);
+}
 
 DBConnection *
 tracker_db_connect_file_meta (void)
 {
-	char	     *dbname;
 	DBConnection *db_con;
-
-	dbname = g_build_filename (tracker->data_dir, "file-meta.db", NULL);
-
-	if (!g_file_test (dbname, G_FILE_TEST_IS_REGULAR)) {
-		tracker_error ("ERROR: database file %s is not present", dbname);
-		g_assert (FALSE);
-	} 
 
 	db_con = g_new0 (DBConnection, 1);
 
-	if (sqlite3_open (dbname, &db_con->db) != SQLITE_OK) {
-		tracker_error ("FATAL ERROR: can't open database at %s: %s", dbname, sqlite3_errmsg (db_con->db));
-		exit (1);
-	}
-
-	g_free (dbname);
-
-	db_con->db_type = DB_DATA;
-
-	sqlite3_busy_timeout (db_con->db, 10000);
-	
+	db_con->db_type = DB_INDEX;
+	db_con->db_category = DB_CATEGORY_FILES;
 	db_con->index = db_con;
 
-	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = 0");
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA count_changes = 0");
-
-	if (tracker->use_extra_memory) {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 64");
-	} else {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 8");
-	}
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA encoding = \"UTF-8\"");
-
-	/* create user defined utf-8 collation sequence */
-	if (SQLITE_OK != sqlite3_create_collation (db_con->db, "UTF8", SQLITE_UTF8, 0, &sqlite3_utf8_collation)) {
-		tracker_error ("ERROR: collation sequence failed due to %s", sqlite3_errmsg (db_con->db));
-	}
-	
-	/* create user defined functions that can be used in sql */
-	if (SQLITE_OK != sqlite3_create_function (db_con->db, "FormatDate", 1, SQLITE_ANY, NULL, &sqlite3_date_to_str, NULL, NULL)) {
-		tracker_error ("ERROR: function FormatDate failed due to %s", sqlite3_errmsg (db_con->db));
-	}
-	if (SQLITE_OK != sqlite3_create_function (db_con->db, "GetServiceName", 1, SQLITE_ANY, NULL, &sqlite3_get_service_name, NULL, NULL)) {
-		tracker_error ("ERROR: function GetServiceName failed due to %s", sqlite3_errmsg (db_con->db));
-	}
-	if (SQLITE_OK != sqlite3_create_function (db_con->db, "GetServiceTypeID", 1, SQLITE_ANY, NULL, &sqlite3_get_service_type, NULL, NULL)) {
-		tracker_error ("ERROR: function GetServiceTypeID failed due to %s", sqlite3_errmsg (db_con->db));
-	}
-	if (SQLITE_OK != sqlite3_create_function (db_con->db, "GetMaxServiceTypeID", 1, SQLITE_ANY, NULL, &sqlite3_get_max_service_type, NULL, NULL)) {
-		tracker_error ("ERROR: function GetMaxServiceTypeID failed due to %s", sqlite3_errmsg (db_con->db));
-	}
-	if (SQLITE_OK != sqlite3_create_function (db_con->db, "REGEXP", 2, SQLITE_ANY, NULL, &sqlite3_regexp, NULL, NULL)) {
-		tracker_error ("ERROR: function REGEXP failed due to %s", sqlite3_errmsg (db_con->db));
-	}
+	open_file_db (db_con);
 
 	db_con->thread = NULL;
 
 	return db_con;
 }
 
+
+static inline void
+open_email_db (DBConnection *db_con)
+{
+	gboolean create;
+
+	db_con->db = open_db ("email-meta.db", &create);	
+
+	set_params (db_con, 128, TRUE);
+}
 
 DBConnection *
 tracker_db_connect_email_meta (void)
 {
-	char	     *dbname;
 	DBConnection *db_con;
-
-	dbname = g_build_filename (tracker->data_dir, "email-meta.db", NULL);
-
-	if (!g_file_test (dbname, G_FILE_TEST_IS_REGULAR)) {
-		tracker_error ("ERROR: database file %s is not present", dbname);
-		g_assert (FALSE);
-	} 
 
 	db_con = g_new0 (DBConnection, 1);
 
-	if (sqlite3_open (dbname, &db_con->db) != SQLITE_OK) {
-		tracker_error ("FATAL ERROR: can't open database at %s: %s", dbname, sqlite3_errmsg (db_con->db));
-		exit (1);
-	}
+	db_con->db_type = DB_INDEX;
+	db_con->db_category = DB_CATEGORY_EMAILS;
 
-	g_free (dbname);
-
-	db_con->db_type = DB_DATA;
-
-	sqlite3_busy_timeout (db_con->db, 10000);
-	
 	db_con->index = db_con;
+	db_con->emails = db_con;
 
-	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = 0");
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA count_changes = 0");
-
-	if (tracker->use_extra_memory) {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 64");
-	} else {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 8");
-	}
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA encoding = \"UTF-8\"");
-
-	/* create user defined utf-8 collation sequence */
-	if (SQLITE_OK != sqlite3_create_collation (db_con->db, "UTF8", SQLITE_UTF8, 0, &sqlite3_utf8_collation)) {
-		tracker_error ("ERROR: collation sequence failed due to %s", sqlite3_errmsg (db_con->db));
-	}
-	
-	/* create user defined functions that can be used in sql */
-	if (SQLITE_OK != sqlite3_create_function (db_con->db, "FormatDate", 1, SQLITE_ANY, NULL, &sqlite3_date_to_str, NULL, NULL)) {
-		tracker_error ("ERROR: function FormatDate failed due to %s", sqlite3_errmsg (db_con->db));
-	}
-	if (SQLITE_OK != sqlite3_create_function (db_con->db, "GetServiceName", 1, SQLITE_ANY, NULL, &sqlite3_get_service_name, NULL, NULL)) {
-		tracker_error ("ERROR: function GetServiceName failed due to %s", sqlite3_errmsg (db_con->db));
-	}
-	if (SQLITE_OK != sqlite3_create_function (db_con->db, "GetServiceTypeID", 1, SQLITE_ANY, NULL, &sqlite3_get_service_type, NULL, NULL)) {
-		tracker_error ("ERROR: function GetServiceTypeID failed due to %s", sqlite3_errmsg (db_con->db));
-	}
-	if (SQLITE_OK != sqlite3_create_function (db_con->db, "GetMaxServiceTypeID", 1, SQLITE_ANY, NULL, &sqlite3_get_max_service_type, NULL, NULL)) {
-		tracker_error ("ERROR: function GetMaxServiceTypeID failed due to %s", sqlite3_errmsg (db_con->db));
-	}
-	if (SQLITE_OK != sqlite3_create_function (db_con->db, "REGEXP", 2, SQLITE_ANY, NULL, &sqlite3_regexp, NULL, NULL)) {
-		tracker_error ("ERROR: function REGEXP failed due to %s", sqlite3_errmsg (db_con->db));
-	}
+	open_email_db (db_con);
 
 	db_con->thread = NULL;
 
 	return db_con;
 }
 
-DBConnection *
-tracker_db_connect_file_content (void)
+
+static inline void
+open_file_content_db (DBConnection *db_con)
 {
-	gboolean     create_table;
-	char	     *dbname;
-	DBConnection *db_con;
+	gboolean create;
 
-	create_table = FALSE;
+	db_con->db = open_db ("file-contents.db", &create);	
 
-	dbname = g_build_filename (tracker->data_dir, "file-content.db", NULL);
+	set_params (db_con, 256, FALSE);
 
-
-	if (!g_file_test (dbname, G_FILE_TEST_IS_REGULAR)) {
-		tracker_log ("database file %s is not present - will create", dbname);
-		create_table = TRUE;
-	} 
-
-
-	db_con = g_new0 (DBConnection, 1);
-
-	if (sqlite3_open (dbname, &db_con->db) != SQLITE_OK) {
-		tracker_error ("FATAL ERROR: can't open database at %s: %s", dbname, sqlite3_errmsg (db_con->db));
-		exit (1);
-	}
-
-	g_free (dbname);
-
-	db_con->db_type = DB_BLOB;
-
-	sqlite3_busy_timeout (db_con->db, 10000);
-
-	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = 0");
-	tracker_db_exec_no_reply (db_con, "PRAGMA page_size = 32768");
-	tracker_db_exec_no_reply (db_con, "PRAGMA count_changes = 0");
-
-	if (tracker->use_extra_memory) {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 4");
-	} else {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 2");
-	}
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA encoding = \"UTF-8\"");
-
-	if (create_table) {
+	if (create) {
 		tracker_db_exec_no_reply (db_con, "CREATE TABLE ServiceContents (ServiceID Int not null, MetadataID Int not null, Content Text, primary key (ServiceID, MetadataID))");
 		tracker_log ("creating file content table");
 	}
 
 	sqlite3_create_function (db_con->db, "uncompress", 1, SQLITE_ANY, NULL, &sqlite3_uncompress, NULL, NULL);
 
+	
+
+}
+
+DBConnection *
+tracker_db_connect_file_content (void)
+{
+	DBConnection *db_con;
+
+	db_con = g_new0 (DBConnection, 1);
+
+	db_con->db_type = DB_CONTENT;
+	db_con->db_category = DB_CATEGORY_FILES;
+	db_con->blob = db_con;
+
+	open_file_content_db (db_con);
+
 	db_con->thread = NULL;
 
 	return db_con;
 }
 
 
-DBConnection *
-tracker_db_connect_email_content (void)
+static inline void
+open_email_content_db (DBConnection *db_con)
 {
-	gboolean     create_table;
-	char	     *dbname;
-	DBConnection *db_con;
+	gboolean create;
 
-	create_table = FALSE;
+	db_con->db = open_db ("email-contents.db", &create);	
 
-	dbname = g_build_filename (tracker->data_dir, "email-content.db", NULL);
+	set_params (db_con, 256, FALSE);
 
-
-	if (!g_file_test (dbname, G_FILE_TEST_IS_REGULAR)) {
-		tracker_log ("database file %s is not present - will create", dbname);
-		create_table = TRUE;
-	} 
-
-
-	db_con = g_new0 (DBConnection, 1);
-
-	if (sqlite3_open (dbname, &db_con->db) != SQLITE_OK) {
-		tracker_error ("FATAL ERROR: can't open database at %s: %s", dbname, sqlite3_errmsg (db_con->db));
-		exit (1);
-	}
-
-	g_free (dbname);
-
-	db_con->db_type = DB_BLOB;
-
-	sqlite3_busy_timeout (db_con->db, 10000);
-
-	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = 0");
-	tracker_db_exec_no_reply (db_con, "PRAGMA page_size = 1024");
-	tracker_db_exec_no_reply (db_con, "PRAGMA count_changes = 0");
-
-	if (tracker->use_extra_memory) {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 8");
-	} else {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 2");
-	}
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA encoding = \"UTF-8\"");
-
-	if (create_table) {
+	if (create) {
 		tracker_db_exec_no_reply (db_con, "CREATE TABLE ServiceContents (ServiceID Int not null, MetadataID Int not null, Content Text, primary key (ServiceID, MetadataID))");
 		tracker_log ("creating email content table");
 	}
 
 	sqlite3_create_function (db_con->db, "uncompress", 1, SQLITE_ANY, NULL, &sqlite3_uncompress, NULL, NULL);
 
+	
+
+}
+
+DBConnection *
+tracker_db_connect_email_content (void)
+{
+	DBConnection *db_con;
+
+	db_con = g_new0 (DBConnection, 1);
+
+	db_con->db_type = DB_CONTENT;
+	db_con->db_category = DB_CATEGORY_EMAILS;
+	db_con->blob = db_con;
+
+	open_email_content_db (db_con);
+
 	db_con->thread = NULL;
 
 	return db_con;
+}
+
+
+void
+tracker_db_refresh_all (DBConnection *db_con)
+{
+	gboolean cache_trans = FALSE;
+	DBConnection *cache = db_con->cache;
+	DBConnection *emails = db_con->emails;
+
+	if (cache && cache->in_transaction) {
+		tracker_db_end_transaction (cache);
+		cache_trans = TRUE;
+	}
+
+	/* close and reopen all databases */	
+	close_db (db_con);	
+	close_db (db_con->blob);
+
+	close_db (emails->blob);
+	close_db (emails->common);
+	close_db (emails);
+
+	open_file_db (db_con);
+	open_file_content_db (db_con->blob);
+
+	open_email_content_db (emails->blob);
+	open_common_db (emails->common);
+	open_email_db (emails);
+		
+	if (cache_trans) {
+		tracker_db_start_transaction (cache);
+	}
+
+
+}
+
+void
+tracker_db_refresh_email (DBConnection *db_con)
+{
+	gboolean cache_trans = FALSE;
+	DBConnection *cache = db_con->cache;
+
+	if (cache && cache->in_transaction) {
+		tracker_db_end_transaction (cache);
+		cache_trans = TRUE;
+	}
+
+	/* close email DBs and reopen them */
+
+	DBConnection *emails = db_con->emails;
+
+	close_db (emails->blob);
+	close_db (emails->common);
+	close_db (emails);
+
+	open_email_content_db (emails->blob);
+	open_common_db (emails->common);
+	open_email_db (emails);
+
+	if (cache_trans) {
+		tracker_db_start_transaction (cache);
+	}
+
+	
 }
 
 DBConnection *
@@ -1143,24 +1336,19 @@ tracker_db_connect_cache (void)
 	g_free (dbname);
 
 	db_con->db_type = DB_CACHE;
+	db_con->cache = db_con;
 
 	sqlite3_busy_timeout (db_con->db, 10000);
 
 	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = 0");
-	tracker_db_exec_no_reply (db_con, "PRAGMA count_changes = 0");
-	tracker_db_exec_no_reply (db_con, "PRAGMA page_size = 4096");
+	tracker_db_set_default_pragmas (db_con);
 
 	if (tracker->use_extra_memory) {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 32");
+		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 128");
 	} else {
-		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 8");
+		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 32");
 	}
-
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA encoding = \"UTF-8\"");
-
 
 
 	if (create_table) {
@@ -1203,24 +1391,23 @@ tracker_db_connect_emails (void)
 
 
 	db_con->db_type = DB_EMAIL;
+	db_con->db_category = DB_CATEGORY_EMAILS;
+
+	db_con->emails = db_con;
 
 	sqlite3_busy_timeout (db_con->db, 10000);
 
 	db_con->statements = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-	tracker_db_exec_no_reply (db_con, "PRAGMA auto_vacuum = 0");
-	tracker_db_exec_no_reply (db_con, "PRAGMA synchronous = 0");
-	tracker_db_exec_no_reply (db_con, "PRAGMA count_changes = 0");
 	tracker_db_exec_no_reply (db_con, "PRAGMA page_size = 4096");
+
+	tracker_db_set_default_pragmas (db_con);
 
 	if (tracker->use_extra_memory) {
 		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 8");
 	} else {
 		tracker_db_exec_no_reply (db_con, "PRAGMA cache_size = 8");
 	}
-
-
-	tracker_db_exec_no_reply (db_con, "PRAGMA encoding = \"UTF-8\"");
 
 
 	/* create user defined utf-8 collation sequence */
@@ -2081,7 +2268,6 @@ tracker_create_db (void)
 	/* create common db first */
 
 	db_con = tracker_db_connect_common ();
-//db_con = tracker_db_connect ();
 	
 	load_sql_file (db_con, "sqlite-tracker.sql");
 	load_sql_file (db_con, "sqlite-service-types.sql");
@@ -2135,29 +2321,24 @@ tracker_log_sql (DBConnection *db_con, const char *query)
 static gboolean
 db_exists (const char *name)
 {
-	gboolean need_setup = FALSE;
+	gboolean is_present = FALSE;
 	
 	char *dbname = g_build_filename (tracker->data_dir, name, NULL);
 
-	if (!g_file_test (dbname, G_FILE_TEST_EXISTS)) {
-		need_setup = TRUE;
+	if (g_file_test (dbname, G_FILE_TEST_EXISTS)) {
+		is_present = TRUE;
 	}
 
 	g_free (dbname);
 
-	return need_setup;
+	return is_present;
 }
 
 
 gboolean
 tracker_db_needs_setup ()
 {
-
-	if (!db_exists ("file-meta.db") || !db_exists ("file-index.db") || !db_exists ("email-meta.db") || !db_exists ("email-index.db")) {
-		return TRUE;
-	}
-
-	return FALSE;
+	return (!db_exists ("file-meta.db") || !db_exists ("file-index.db") || !db_exists ("file-contents.db"));
 }
 
 
@@ -2479,6 +2660,79 @@ tracker_db_get_indexable_content_words (DBConnection *db_con, guint32 id, GHashT
 	return table;
 }
 
+static void
+save_full_text_bytes (DBConnection *blob_db_con, const char *str_file_id, GByteArray *byte_array)
+{
+	char		*value;
+	sqlite3_stmt 	*stmt;
+	int		busy_count;
+	int		rc;
+
+	stmt = get_prepared_query (blob_db_con, "SaveServiceContents");
+
+	FieldDef *def = tracker_db_get_field_def (blob_db_con, "File:Contents");
+
+	if (!def) {
+		tracker_error ("WARNING: metadata not found for type %s", "File:Contents");
+		return;
+	}
+
+	sqlite3_bind_text (stmt, 1, str_file_id, strlen (str_file_id), SQLITE_STATIC);
+	sqlite3_bind_text (stmt, 2, def->id, strlen (def->id), SQLITE_STATIC);
+	sqlite3_bind_blob (stmt, 3, (void *) byte_array->data, byte_array->len, SQLITE_STATIC);
+	sqlite3_bind_int  (stmt, 4, 0);
+
+	busy_count = 0;
+	lock_connection (blob_db_con);
+
+	while (TRUE) {
+
+		if (!lock_db ()) {
+			
+			if (value) {
+				g_free (value);
+			}
+
+			unlock_connection (blob_db_con);
+
+			return;
+		}
+
+		
+		rc = sqlite3_step (stmt);
+		
+
+		if (rc == SQLITE_BUSY) {
+			unlock_db ();
+			unlock_connection (blob_db_con);
+			busy_count++;
+
+			if (busy_count > 1000000) {
+				tracker_log ("WARNING: excessive busy count in query %s and thread %s", "save file contents", blob_db_con->thread);
+				busy_count = 0;
+			}
+			
+
+			if (busy_count > 50) {
+				g_usleep (g_random_int_range (1000, busy_count * 200));
+			} else {
+				g_usleep (100);
+			}
+			lock_connection (blob_db_con);
+			continue;
+		}
+
+		unlock_db ();
+		break;
+	}
+
+	unlock_connection (blob_db_con);
+	
+	if (rc != SQLITE_DONE) {
+		tracker_error ("WARNING: failed to update contents ");
+	}
+}
+
 
 static void
 save_full_text (DBConnection *blob_db_con, const char *str_file_id, const char *text, int length)
@@ -2578,99 +2832,177 @@ save_full_text (DBConnection *blob_db_con, const char *str_file_id, const char *
 void
 tracker_db_save_file_contents (DBConnection *db_con, GHashTable *index_table, GHashTable *old_table, const char *file_name, FileInfo *info)
 {
-	FILE 		*file;
-	char 		buffer[65565];
-	int  		bytes_read, throttle_count;
-	char		*str_file_id, *value;
-	GString 	*str;
+	char 		buffer[MAX_TEXT_BUFFER], out[MAX_COMPRESS_BUFFER];
+	int  		fd, bytes_read = 0, bytes_compressed = 0, flush;
+	guint32		buffer_length;
+	char		*str_file_id;
+	z_stream 	strm;
+	GByteArray	*byte_array;
+	gboolean	finished = FALSE;
+	int 		max_iterations = 10000;
 
 	DBConnection *blob_db_con = db_con->blob;
 
-	file = g_fopen (file_name, "r");
+	fd = tracker_file_open (file_name, TRUE);
 
-	if (!file) {
+	if (fd ==-1) {
 		tracker_error ("ERROR: could not open file %s", file_name);
+		return;
+	}
+
+ 	strm.zalloc = Z_NULL;
+    	strm.zfree = Z_NULL;
+    	strm.opaque = Z_NULL;
+    		
+	if (deflateInit (&strm, Z_DEFAULT_COMPRESSION) != Z_OK) {
+		tracker_error ("ERROR: could not initialise zlib");
+		close (fd);
 		return;
 	}
 
 	str_file_id = g_strdup_printf ("%d", info->file_id);
 
-	str = g_string_new ("");
-
-	value = NULL;
-
-	bytes_read = 0;
-
-	throttle_count = 0;
-
 	if (!index_table) {
 		index_table = g_hash_table_new (g_str_hash, g_str_equal);
 	}
 
-	while (fgets (buffer, 65565, file)) {
-		unsigned int buffer_length;
+	byte_array = g_byte_array_sized_new (MAX_TEXT_BUFFER);
 
-		buffer_length = strlen (buffer);
+	while (!finished) {
 
-		if (buffer_length < 3) {
-			continue;
+		char *value = NULL;
+		gboolean use_buffer = TRUE;
+
+		max_iterations--;
+
+		if (max_iterations < 0) break;
+
+		buffer_length = read (fd, buffer, MAX_TEXT_BUFFER-1);
+
+		if (buffer_length == 0) {
+			finished = TRUE;
+			break;
+		} 
+
+		bytes_read += buffer_length;
+
+		buffer[buffer_length] = '\0';
+								
+		if (buffer_length == (MAX_TEXT_BUFFER - 1)) {
+
+			/* seek beck to last line break so we get back a clean string for utf-8 validation */
+			char *end = strrchr (buffer, '\n');			
+
+			if (!end) {
+				tracker_log ("Could not find line break in text chunk..exiting");
+				break;
+			}
+
+			int bytes_backtracked = strlen (end) * -1;
+
+			buffer_length += bytes_backtracked;
+
+			buffer[buffer_length] = '\0';
+
+			if (lseek (fd, bytes_backtracked, SEEK_CUR) == -1) {
+				tracker_error ("Could not seek to line break in text chunk");
+				break;
+			}
+
+		} else {
+			finished = TRUE;
 		}
+		
+	
 
 		if (!g_utf8_validate (buffer, buffer_length, NULL)) {
 
-			value = g_locale_to_utf8 (buffer, buffer_length, NULL, NULL, NULL);
+			value = g_locale_to_utf8 (buffer, buffer_length, NULL, &buffer_length, NULL);
 
 			if (!value) {
-				continue;
+				finished = FALSE;
+				tracker_info ("could not convert text to valid utf8");
+				break;
 			}
 
-			if ((strlen (value) < buffer_length)) {
-				g_free (value);
-				continue;	
-			}
+			use_buffer = FALSE;
 
-			str = g_string_append (str, value);
-
-			index_table = tracker_parse_text (index_table, value, 1, TRUE, FALSE);
-
-			bytes_read += strlen (value);
-			g_free (value);
-
-		} else {
-			str = g_string_append (str, buffer);
-	
+		} 
+		
+		if (use_buffer) {
 			index_table = tracker_parse_text (index_table, buffer, 1, TRUE, FALSE);
-			
-			bytes_read += buffer_length;
+		} else {
+			index_table = tracker_parse_text (index_table, value, 1, TRUE, FALSE);
 		}
+
+		strm.avail_in = buffer_length;
+
+		if (use_buffer) {
+			strm.next_in = (unsigned char *) buffer;
+		} else {
+			strm.next_in = (unsigned char *) value;	
+		}
+
+            	strm.avail_out = MAX_COMPRESS_BUFFER;
+            	strm.next_out = (unsigned char *) out;
+			
+		/* set upper limit on text we read in */
+		if (finished || bytes_read >= tracker->max_index_text_length) {
+			finished = TRUE;
+			flush = Z_FINISH;
+		} else {
+			flush = Z_NO_FLUSH;
+		}
+
+
+		/* compress */
+       	        do {
+               		int ret = deflate (&strm, flush);   
+ 
+            		if (ret == Z_STREAM_ERROR) {
+				finished = FALSE;
+				tracker_error ("compression failed");
+				if (!use_buffer) g_free (value);
+				break;
+			}
+
+		        bytes_compressed = 65565 - strm.avail_out;
+
+			byte_array =  g_byte_array_append (byte_array, (guint8 *) out, bytes_compressed);
+
+			max_iterations--;
+
+			if (max_iterations < 0) break;
+
+              	} while (strm.avail_out == 0);
+
+		if (!use_buffer) g_free (value);
 
 		if (tracker->throttle > 9) {
-			throttle_count++;
-			if (throttle_count > (10 + (20 - tracker->throttle))) {
-				tracker_throttle (1);
-				throttle_count= 0;
-			}
+			tracker_throttle (tracker->throttle * 100);
 		}
 
-		/* set upper limit on text we read in to approx 1MB */
-		if (bytes_read > tracker->max_index_text_length) {
-			break;
+	}        	
+
+  
+	deflateEnd(&strm);
+
+	/* flush cache for file as we wont touch it again */
+	tracker_file_close (fd, TRUE);
+
+	if (finished && max_iterations > 0) {
+		if (bytes_read > 2) {
+			save_full_text_bytes (blob_db_con, str_file_id, byte_array);
 		}
+	} else {
+		tracker_info ("An error prevented full text extraction");
 	}
-
-	value = g_string_free (str, FALSE);
-
-	fclose (file);
-
-
-	//tracker_log ("saving full text with size %d", bytes_read);
-	save_full_text (blob_db_con, str_file_id, value, bytes_read);
+ 
+	g_byte_array_free (byte_array, TRUE);
 
 	g_free (str_file_id);
 
-	if (value) {
-		g_free (value);
-	}
+	
 }
 
 
@@ -2678,8 +3010,10 @@ tracker_db_save_file_contents (DBConnection *db_con, GHashTable *index_table, GH
 void
 tracker_db_clear_temp (DBConnection *db_con)
 {
-	tracker_db_exec_no_reply (db_con, "DELETE FROM FilePending");
-	tracker_db_exec_no_reply (db_con, "DELETE FROM FileWatches");
+	tracker_db_start_transaction (db_con->cache);
+	tracker_db_exec_no_reply (db_con->cache, "DELETE FROM FilePending");
+	tracker_db_exec_no_reply (db_con->cache, "DELETE FROM FileWatches");
+	tracker_db_end_transaction (db_con->cache);
 }
 
 
@@ -2728,6 +3062,8 @@ tracker_db_check_tables (DBConnection *db_con)
 }
 
 
+
+
 char ***
 tracker_db_search_text (DBConnection *db_con, const char *service, const char *search_string, int offset, int limit, gboolean save_results, gboolean detailed)
 {
@@ -2740,7 +3076,7 @@ tracker_db_search_text (DBConnection *db_con, const char *service, const char *s
 
 	array = tracker_parse_text_into_array (search_string);
 
-	char ***res = tracker_exec_proc (db_con, "GetRelatedServiceIDs", 2, service, service);
+	char ***res = tracker_exec_proc (db_con->common, "GetRelatedServiceIDs", 2, service, service);
 	
 	int i = 0,j =0;
 	char **row;
@@ -2899,7 +3235,7 @@ tracker_db_search_text (DBConnection *db_con, const char *service, const char *s
 
 					} else {
 
-						if (res[0][2]) {
+						if (res[0][2] && g_file_test (res[0][0], G_FILE_TEST_EXISTS)) {
 
 							row = g_new (char *, 4);
 
@@ -3418,22 +3754,24 @@ static char *
 get_backup_id (DBConnection *db_con, const char *id)
 {
 	char *backup_id = NULL;
-	char ***res = tracker_exec_proc (db_con, "GetBackupServiceByID", 1, id);
+	DBConnection *db_common = db_con->common;
+
+	char ***res = tracker_exec_proc (db_common, "GetBackupServiceByID", 1, id);
 
 	if (res) {
 		if (res[0] && res[0][0]) {
 			backup_id = g_strdup (res[0][0]);	
 		} else {
-			tracker_exec_proc (db_con, "InsertBackupService", 1, id);
-			backup_id = tracker_int_to_str (sqlite3_last_insert_rowid (db_con->db));
+			tracker_exec_proc (db_common, "InsertBackupService", 1, id);
+			backup_id = tracker_int_to_str (sqlite3_last_insert_rowid (db_common->db));
 
 		}
 
 		tracker_db_free_result (res);
 
 	} else {
-		tracker_exec_proc (db_con, "InsertBackupService", 1, id);
-		backup_id = tracker_int_to_str (sqlite3_last_insert_rowid (db_con->db));
+		tracker_exec_proc (db_common, "InsertBackupService", 1, id);
+		backup_id = tracker_int_to_str (sqlite3_last_insert_rowid (db_common->db));
 	}
 
 
@@ -3450,7 +3788,7 @@ backup_non_embedded_metadata (DBConnection *db_con, const char *id, const char *
 	char *backup_id = get_backup_id (db_con, id);
 
 	if (backup_id) {
-		tracker_exec_proc (db_con, "SetBackupMetadata", 3, backup_id, key_id, value);
+		tracker_exec_proc (db_con->common, "SetBackupMetadata", 3, backup_id, key_id, value);
 		g_free (backup_id);
 	}
 
@@ -3465,7 +3803,7 @@ backup_delete_non_embedded_metadata_value (DBConnection *db_con, const char *id,
 	char *backup_id = get_backup_id (db_con, id);
 
 	if (backup_id) {
-		tracker_exec_proc (db_con, "DeleteBackupMetadataValue", 3, backup_id, key_id, value);
+		tracker_exec_proc (db_con->common, "DeleteBackupMetadataValue", 3, backup_id, key_id, value);
 		g_free (backup_id);
 	}
 
@@ -3478,7 +3816,7 @@ backup_delete_non_embedded_metadata (DBConnection *db_con, const char *id, const
 	char *backup_id = get_backup_id (db_con, id);
 
 	if (backup_id) {
-		tracker_exec_proc (db_con, "DeleteBackupMetadata", 2, backup_id, key_id);
+		tracker_exec_proc (db_con->common, "DeleteBackupMetadata", 2, backup_id, key_id);
 		g_free (backup_id);
 	}
 
@@ -4059,12 +4397,10 @@ tracker_db_create_service (DBConnection *db_con, const char *service, FileInfo *
 
 
 	/* get a new unique ID for the service - use mutex to prevent race conditions */
-//	g_mutex_lock (sequence_mutex);
 
 	res = tracker_exec_proc (db_con->common, "GetNewID", 0);
 
 	if (!res || !res[0] || !res[0][0]) {
-//		g_mutex_unlock (sequence_mutex);
 		tracker_error ("ERROR: could not create service - GetNewID failed");
 		return 0;
 	}
@@ -4074,11 +4410,8 @@ tracker_db_create_service (DBConnection *db_con, const char *service, FileInfo *
 
 	sid = tracker_int_to_str (i);
 	tracker_exec_proc (db_con->common, "UpdateNewID",1, sid);
-//	g_mutex_unlock (sequence_mutex);
 
 	tracker_db_free_result (res);
-
-	str_mtime = g_strdup_printf ("%d", info->mtime);
 
 	if (info->is_directory) {
 		str_is_dir = "1";
@@ -4092,8 +4425,9 @@ tracker_db_create_service (DBConnection *db_con, const char *service, FileInfo *
 		str_is_link = "0";
 	}
 
-	str_offset = tracker_int_to_str (info->offset);
-	str_filesize = tracker_uint_to_str (info->file_size);
+	str_filesize = tracker_guint32_to_str (info->file_size);
+	str_mtime = tracker_gint32_to_str (info->mtime);
+	str_offset = tracker_gint32_to_str (info->offset);
 
 	service_type_id = tracker_get_id_for_service (service);
 
@@ -4107,7 +4441,8 @@ tracker_db_create_service (DBConnection *db_con, const char *service, FileInfo *
 	str_aux = tracker_int_to_str (info->aux_id);
 
 	if (service_type_id != -1) {
-		tracker_exec_proc (db_con, "CreateService", 11, sid, path, name, str_service_type_id, info->mime, str_filesize, str_is_dir, str_is_link, str_offset, str_mtime, str_aux);
+		tracker_exec_proc (db_con, "CreateService", 11, sid, path, name, str_service_type_id, info->mime, str_filesize,
+                                   str_is_dir, str_is_link, str_offset, str_mtime, str_aux);
 
 		if (db_con->in_error) {
 			tracker_error ("ERROR: CreateService uri is %s/%s", path, name);
@@ -4254,12 +4589,12 @@ dec_stat (DBConnection *db_con, int id)
 	char *service = tracker_get_service_by_id (id);
 
 	if (service) {
-		tracker_exec_proc (db_con, "DecStat", 1, service);
+		tracker_exec_proc (db_con->common, "DecStat", 1, service);
 
 		char *parent = tracker_get_parent_service (service);
 		
 		if (parent) {
-			tracker_exec_proc (db_con, "DecStat", 1, parent);
+			tracker_exec_proc (db_con->common, "DecStat", 1, parent);
 			g_free (parent);
 		}
 
@@ -4323,9 +4658,9 @@ tracker_db_delete_file (DBConnection *db_con, guint32 file_id)
 		}
 
 		tracker_exec_proc (db_con, "DeleteService1", 1, str_file_id);
-		tracker_exec_proc (db_con, "DeleteService6", 2, path, name);
-		tracker_exec_proc (db_con, "DeleteService7", 2, path, name);
-		tracker_exec_proc (db_con, "DeleteService9", 2, path, name);
+		tracker_exec_proc (db_con->common, "DeleteService6", 2, path, name);
+		tracker_exec_proc (db_con->common, "DeleteService7", 2, path, name);
+		tracker_exec_proc (db_con->common, "DeleteService9", 2, path, name);
 
 		tracker_db_free_result (res);
 	}
@@ -4413,7 +4748,7 @@ tracker_db_update_file (DBConnection *db_con, FileInfo *info)
 	name = g_path_get_basename (info->uri);
 	path = g_path_get_dirname (info->uri);
 
-	tracker_exec_proc (db_con, "UpdateFile", 8, str_service_type_id, path, name, info->mime, str_size, str_mtime, str_offset, str_file_id);
+	tracker_exec_proc (db_con->index, "UpdateFile", 8, str_service_type_id, path, name, info->mime, str_size, str_mtime, str_offset, str_file_id);
 	
 	g_free (str_service_type_id);
 	g_free (str_size);
@@ -4437,7 +4772,7 @@ tracker_db_has_pending_files (DBConnection *db_con)
 
 	has_pending = FALSE;
 
-	res = tracker_exec_proc (db_con, "ExistsPendingFiles", 0);
+	res = tracker_exec_proc (db_con->cache, "ExistsPendingFiles", 0);
 
 	if (res) {
 		char **row;
@@ -4471,7 +4806,7 @@ tracker_db_has_pending_metadata (DBConnection *db_con)
 
 	has_pending = FALSE;
 
-	res = tracker_exec_proc (db_con, "CountPendingMetadataFiles", 0);
+	res = tracker_exec_proc (db_con->cache, "CountPendingMetadataFiles", 0);
 
 	if (res) {
 		char **row;
@@ -4508,23 +4843,23 @@ tracker_db_get_pending_files (DBConnection *db_con)
 	time_str = tracker_int_to_str (time_now);
 
 
-	tracker_db_exec_no_reply (db_con, "DELETE FROM FileTemp");
+	tracker_db_exec_no_reply (db_con->cache, "DELETE FROM FileTemp");
 	str = g_strconcat ("INSERT INTO FileTemp (ID, FileID, Action, FileUri, MimeType, IsDir, IsNew, RefreshEmbedded, RefreshContents, ServiceTypeID) SELECT ID, FileID, Action, FileUri, MimeType, IsDir, IsNew, RefreshEmbedded, RefreshContents, ServiceTypeID FROM FilePending WHERE (PendingDate < ", time_str, ") AND (Action <> 20) LIMIT 250", NULL);
-	tracker_db_exec_no_reply (db_con, str);
-	tracker_db_exec_no_reply (db_con, "DELETE FROM FilePending WHERE ID IN (SELECT ID FROM FileTemp)");
+	tracker_db_exec_no_reply (db_con->cache, str);
+	tracker_db_exec_no_reply (db_con->cache, "DELETE FROM FilePending WHERE ID IN (SELECT ID FROM FileTemp)");
 
 
 	g_free (str);
 	g_free (time_str);
 
-	return tracker_exec_sql (db_con, "SELECT FileID, FileUri, Action, MimeType, IsDir, IsNew, RefreshEmbedded, RefreshContents, ServiceTypeID FROM FileTemp ORDER BY ID");
+	return tracker_exec_sql (db_con->cache, "SELECT FileID, FileUri, Action, MimeType, IsDir, IsNew, RefreshEmbedded, RefreshContents, ServiceTypeID FROM FileTemp ORDER BY ID");
 }
 
 
 void
 tracker_db_remove_pending_files (DBConnection *db_con)
 {
-	tracker_db_exec_no_reply (db_con, "DELETE FROM FileTemp");
+	tracker_db_exec_no_reply (db_con->cache, "DELETE FROM FileTemp");
 }
 
 
@@ -4539,11 +4874,11 @@ tracker_db_get_pending_metadata (DBConnection *db_con)
 
 	str = "INSERT INTO MetadataTemp (ID, FileID, Action, FileUri, MimeType, IsDir, IsNew, RefreshEmbedded, RefreshContents, ServiceTypeID) SELECT ID, FileID, Action, FileUri, MimeType, IsDir, IsNew, RefreshEmbedded, RefreshContents, ServiceTypeID FROM FilePending WHERE Action = 20 LIMIT 250";
 
-	tracker_db_exec_no_reply (db_con, "DELETE FROM MetadataTemp");
-	tracker_db_exec_no_reply (db_con, str);
-	tracker_db_exec_no_reply (db_con, "DELETE FROM FilePending WHERE ID IN (SELECT ID FROM MetadataTemp)");
+	tracker_db_exec_no_reply (db_con->cache, "DELETE FROM MetadataTemp");
+	tracker_db_exec_no_reply (db_con->cache, str);
+	tracker_db_exec_no_reply (db_con->cache, "DELETE FROM FilePending WHERE ID IN (SELECT ID FROM MetadataTemp)");
 
-	return tracker_exec_sql (db_con, "SELECT FileID, FileUri, Action, MimeType, IsDir, IsNew, RefreshEmbedded, RefreshContents, ServiceTypeID FROM MetadataTemp ORDER BY ID");
+	return tracker_exec_sql (db_con->cache, "SELECT FileID, FileUri, Action, MimeType, IsDir, IsNew, RefreshEmbedded, RefreshContents, ServiceTypeID FROM MetadataTemp ORDER BY ID");
 }
 
 
@@ -4557,7 +4892,7 @@ tracker_db_get_last_id (DBConnection *db_con)
 void
 tracker_db_remove_pending_metadata (DBConnection *db_con)
 {
-	tracker_db_exec_no_reply (db_con, "DELETE FROM MetadataTemp");
+	tracker_db_exec_no_reply (db_con->cache, "DELETE FROM MetadataTemp");
 }
 
 
@@ -4589,9 +4924,9 @@ tracker_db_insert_pending (DBConnection *db_con, const char *id, const char *act
 	str_service_type_id = tracker_int_to_str (service_type_id);
 
 	if (is_dir) {
-		tracker_exec_proc (db_con, "InsertPendingFile", 10, id, action, time_str, uri, mime, "1", str_new, "1", "1", str_service_type_id);
+		tracker_exec_proc (db_con->cache, "InsertPendingFile", 10, id, action, time_str, uri, mime, "1", str_new, "1", "1", str_service_type_id);
 	} else {
-		tracker_exec_proc (db_con, "InsertPendingFile", 10, id, action, time_str, uri, mime, "0", str_new, "1", "1", str_service_type_id);
+		tracker_exec_proc (db_con->cache, "InsertPendingFile", 10, id, action, time_str, uri, mime, "0", str_new, "1", "1", str_service_type_id);
 	}
 
 	g_free (str_service_type_id);
@@ -4612,7 +4947,7 @@ tracker_db_update_pending (DBConnection *db_con, const char *counter, const char
 
 	time_str = tracker_int_to_str (time_now + i);
 
-	tracker_exec_proc (db_con, "UpdatePendingFile", 3, time_str, action, uri);
+	tracker_exec_proc (db_con->cache, "UpdatePendingFile", 3, time_str, action, uri);
 
 	g_free (time_str);
 }
@@ -5058,7 +5393,7 @@ tracker_db_get_sub_watches (DBConnection *db_con, const char *dir)
 
 	folder = g_strconcat (dir, G_DIR_SEPARATOR_S, "*", NULL);
 
-	res = tracker_exec_proc (db_con, "GetSubWatches", 1, folder);
+	res = tracker_exec_proc (db_con->cache, "GetSubWatches", 1, folder);
 
 	g_free (folder);
 
@@ -5074,7 +5409,7 @@ tracker_db_delete_sub_watches (DBConnection *db_con, const char *dir)
 
 	folder = g_strconcat (dir, G_DIR_SEPARATOR_S, "*", NULL);
 
-	res = tracker_exec_proc (db_con, "DeleteSubWatches", 1, folder);
+	res = tracker_exec_proc (db_con->cache, "DeleteSubWatches", 1, folder);
 
 	g_free (folder);
 
@@ -5120,7 +5455,7 @@ tracker_db_move_file (DBConnection *db_con, const char *moved_from_uri, const ch
 	}
 
 	/* update backup service if necessary */
-	tracker_exec_proc (db_con, "UpdateBackupService", 4, path, name, old_path, old_name);
+	tracker_exec_proc (db_con->common, "UpdateBackupService", 4, path, name, old_path, old_name);
 	
 
 	tracker_db_end_transaction (db_con);
@@ -5260,6 +5595,8 @@ tracker_db_move_directory (DBConnection *db_con, const char *moved_from_uri, con
 			tracker_info ("moving subfolder %s to %s", dir_name, new_path);
 			
 			move_directory (db_con, dir_name, new_path);
+
+			g_usleep (1000);
 						
 			g_free (new_path);
 			g_free (dir_name);
@@ -5925,7 +6262,7 @@ tracker_db_get_metadata_field (DBConnection *db_con, const char *service, const 
 		if (my_field) {
 			field_data->select_field = g_strdup_printf (" S.%s ", my_field);
 			g_free (my_field);
-			field_data->needs_join = FALSE;
+			field_data->needs_join = FALSE;	
 		} else {
 			char *disp_field = tracker_db_get_display_field (def);
 			field_data->select_field = g_strdup_printf ("M%d.%s", field_count, disp_field);
@@ -5949,5 +6286,82 @@ tracker_db_get_metadata_field (DBConnection *db_con, const char *service, const 
 
 
 	return field_data;
+}
+
+char *
+tracker_db_get_option_string (DBConnection *db_con, const char *option)
+{
+
+	char *value;
+
+	gchar ***res = tracker_exec_proc (db_con, "GetOption", 1, option);
+
+	if (res) {
+		if (res[0] && res[0][0]) {
+			value = g_strdup (res[0][0]);
+		}
+		tracker_db_free_result (res);
+	}
+
+	return value;
+}
+
+
+void
+tracker_db_set_option_string (DBConnection *db_con, const char *option, const char *value)
+{
+	tracker_exec_proc (db_con, "SetOption", 2, value, option);
+}
+
+
+int
+tracker_db_get_option_int (DBConnection *db_con, const char *option)
+{
+
+	int value;
+
+	gchar ***res = tracker_exec_proc (db_con, "GetOption", 1, option);
+
+	if (res) {
+		if (res[0] && res[0][0]) {
+			value = atoi (res[0][0]);
+		}
+		tracker_db_free_result (res);
+	}
+
+	return value;
+}
+
+
+void
+tracker_db_set_option_int (DBConnection *db_con, const char *option, int value)
+{
+	char *str_value = tracker_int_to_str (value);
+
+	tracker_exec_proc (db_con, "SetOption", 2, str_value, option);
+		
+	g_free (str_value);
+}
+
+
+gboolean
+tracker_db_regulate_transactions (DBConnection *db_con, int interval)
+{
+	tracker->index_count++;
+			
+	if ((tracker->index_count == 1 || tracker->index_count == interval  || (tracker->index_count >= interval && tracker->index_count % interval == 0))) {
+			
+		if (tracker->index_count > 1) {
+			tracker_db_end_index_transaction (db_con);
+			tracker_db_start_index_transaction (db_con);
+			tracker_log ("Current memory usage is %d, word count %d and hits %d", tracker_get_memory_usage (), tracker->word_count, tracker->word_detail_count);
+		}
+
+		return TRUE;
+			
+	}
+
+	return FALSE;
+
 }
 

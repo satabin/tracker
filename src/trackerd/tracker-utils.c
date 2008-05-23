@@ -1,5 +1,6 @@
 /* Tracker - indexer and metadata database engine
  * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+ * Copyright (C) 2007, Michal Pryc (Michal.Pryc@Sun.Com)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -17,15 +18,14 @@
  * Boston, MA  02110-1301, USA.
  */
 
-
-
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
 
 
 #include "config.h"
-
+#include <sys/time.h>
+#include <sys/resource.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -87,18 +87,18 @@ static const char imonths[] = {
 
 
 static Matches tmap[] = {
-		{"da", "danish"},
-		{"nl", "dutch"},
-		{"en", "english"},
- 		{"fi", "finnish"},
-		{"fr", "french"},
-		{"de", "german"},
-		{"it", "italian"},
-		{"nb", "norwegian"},
-		{"pt", "portuguese"},
-		{"ru", "russian"},
-		{"es", "spanish"},
-		{"sv", "swedish"},
+		{"da", "Danish"},
+		{"nl", "Dutch"},
+		{"en", "English"},
+ 		{"fi", "Finnish"},
+		{"fr", "French"},
+		{"de", "German"},
+		{"it", "Italian"},
+		{"nb", "Norwegian"},
+		{"pt", "Portuguese"},
+		{"ru", "Russian"},
+		{"es", "Spanish"},
+		{"sv", "Swedish"},
 		{NULL, NULL},
 };
 
@@ -245,15 +245,12 @@ tracker_get_db_for_service (const char *service)
 	int id = tracker_get_id_for_parent_service (name);
 	char *str_id = tracker_int_to_str (id);
 
-//	ServiceDef *def = g_hash_table_lookup (tracker->service_id_table, str_id);
 	g_free (str_id);
 
 	g_free (name);
 
-//	if (!def) {
-		return DB_DATA;
+	return DB_DATA;
 
-//	return def->database;
 }
 
 
@@ -842,6 +839,20 @@ gchar *
 tracker_uint_to_str (guint i)
 {
 	return g_strdup_printf ("%u", i);
+}
+
+
+gchar *
+tracker_gint32_to_str (gint32 i)
+{
+        return g_strdup_printf ("%" G_GINT32_FORMAT, i);
+}
+
+
+gchar *
+tracker_guint32_to_str (guint32 i)
+{
+        return g_strdup_printf ("%" G_GUINT32_FORMAT, i);
 }
 
 
@@ -1701,31 +1712,21 @@ is_text_file (const gchar *uri)
 	GError	*err = NULL;
 	int 	fd;
 
-#if defined(__linux__)
-	fd = open (uri, O_RDONLY|O_NOATIME);
-#else
-	fd = open (uri, O_RDONLY); 
-#endif
-
-	if (fd ==-1) {
-		return FALSE;
-	}
+	fd = tracker_file_open (uri, FALSE);
 
 	buffer_length = read (fd, buffer, TEXT_SNIFF_SIZE);
 
-	close (fd);
-
 	if (buffer_length < 3) {
-		return FALSE;
+		goto return_false;
 	}
 
 	/* Don't allow embedded zeros in textfiles. */
 	if (memchr (buffer, 0, buffer_length) != NULL) {
-		return FALSE;
+		goto return_false;
 	}
 
 	if (is_utf8 (buffer, buffer_length)) {
-		return TRUE;
+		 goto return_true;
 	} else {
 		gchar *tmp = g_locale_to_utf8 (buffer, buffer_length, NULL, NULL, &err);
 		g_free (tmp);
@@ -1739,11 +1740,18 @@ is_text_file (const gchar *uri)
 
 			g_error_free (err);
 
-			return result;
+			if (result) goto return_true;
+
 		}
 	}
 
+return_false:
+	tracker_file_close (fd, TRUE);
 	return FALSE;
+
+return_true:
+	tracker_file_close (fd, FALSE);
+	return TRUE;
 }
 
 
@@ -1924,7 +1932,7 @@ has_prefix (const char *str1, const char *str2)
 
 
 static GSList *
-get_files (const char *dir, gboolean dir_only, gboolean skip_ignored_files)
+get_files (const char *dir, gboolean dir_only, gboolean skip_ignored_files, const char *filter_prefix)
 {
 	GDir	*dirp;
 	GSList	*file_list;
@@ -1958,6 +1966,10 @@ get_files (const char *dir, gboolean dir_only, gboolean skip_ignored_files)
 				continue;
 			}
 
+			if (filter_prefix && !g_str_has_prefix (str, filter_prefix)) {
+				continue;
+			}
+
 			if (skip_ignored_files && tracker_ignore_file (str)) {
 				g_free (str);
 				continue;
@@ -1970,6 +1982,8 @@ get_files (const char *dir, gboolean dir_only, gboolean skip_ignored_files)
 				g_free (mystr);
 				continue;
 			}
+
+
 
 			if (!tracker_file_is_in_root_dir (mystr)) {
 				tracker_log ("Skipping mount point %s", mystr);
@@ -2008,14 +2022,22 @@ get_files (const char *dir, gboolean dir_only, gboolean skip_ignored_files)
 GSList *
 tracker_get_all_files (const char *dir, gboolean dir_only)
 {
-	return get_files (dir, dir_only, FALSE);
+	return get_files (dir, dir_only, FALSE, NULL);
 }
+
+
+GSList *
+tracker_get_files_with_prefix (const char *dir, const char *prefix)
+{
+	return get_files (dir, FALSE, FALSE, prefix);
+}
+
 
 
 GSList *
 tracker_get_files (const char *dir, gboolean dir_only)
 {
-	return get_files (dir, dir_only, TRUE);
+	return get_files (dir, dir_only, TRUE, NULL);
 }
 
 
@@ -2215,6 +2237,21 @@ tracker_ignore_file (const char *uri)
 		return TRUE;
 	}
 
+	if (is_in_path (uri, g_get_tmp_dir ())) {
+		return TRUE;
+	}
+
+	if (is_in_path (uri, "/proc")) {
+		return TRUE;
+	}
+
+	if (is_in_path (uri, "/dev")) {
+		return TRUE;
+	}
+
+	if (is_in_path (uri, "/tmp")) {
+		return TRUE;
+	}
 
 	/* test suffixes */
 	for (st = ignore_suffix; *st; st++) {
@@ -2485,7 +2522,8 @@ tracker_load_config_file (void)
 					 "# Set to true prevents tracker from descending into mounted directory trees\n",
 					 "SkipMountPoints=false\n\n",
 					 "[Emails]\n",
-					 "IndexEvolutionEmails=true\n",
+					 "IndexEvolutionEmails=true\n\n",
+                                         "IndexThunderbirdEmails=true\n\n",
 					 "[Performance]\n",
 					 "# Maximum size of text in bytes to index from a file's text contents\n",
 					 "MaxTextToIndex=1048576\n",
@@ -2664,6 +2702,11 @@ tracker_load_config_file (void)
 		tracker->index_kmail_emails = FALSE;
 	}
 
+	if (g_key_file_has_key (key_file, "Emails", "IndexThunderbirdEmails", NULL)) {
+		tracker->index_thunderbird_emails = g_key_file_get_boolean (key_file, "Emails", "IndexThunderbirdEmails", NULL);
+	} else {
+		tracker->index_thunderbird_emails = FALSE;
+	}        
 
 	/* Performance options */
 
@@ -2677,30 +2720,7 @@ tracker_load_config_file (void)
 
 	}
 
-	if (g_key_file_has_key (key_file, "Performance", "MaxBucketCount", NULL)) {
-		tracker->max_index_bucket_count = g_key_file_get_integer (key_file, "Performance", "MaxBucketCount", NULL);
 
-	}
-
-	if (g_key_file_has_key (key_file, "Performance", "MinBucketCount", NULL)) {
-		tracker->min_index_bucket_count = g_key_file_get_integer (key_file, "Performance", "MinBucketCount", NULL);
-
-	}
-
-	if (g_key_file_has_key (key_file, "Performance", "Dvisions", NULL)) {
-		tracker->index_divisions = g_key_file_get_integer (key_file, "Performance", "Dvisions", NULL);
-
-	}
-
-	if (g_key_file_has_key (key_file, "Performance", "BucketRatio", NULL)) {
-		tracker->index_bucket_ratio = g_key_file_get_integer (key_file, "Performance", "BucketRatio", NULL);
-
-	}
-
-	if (g_key_file_has_key (key_file, "Performance", "Padding", NULL)) {
-		tracker->padding = g_key_file_get_integer (key_file, "Performance", "Padding", NULL);
-
-	}
 
 	if (g_key_file_has_key (key_file, "Performance", "MaxWordsToIndex", NULL)) {
 		tracker->max_words_to_index = g_key_file_get_integer (key_file, "Performance", "MaxWordsToIndex", NULL);
@@ -2755,8 +2775,10 @@ tracker_notify_file_data_available (void)
 		return;
 	}
 
+	int revs = 0;
+
 	/* we are in check phase - we need to wait until either check_mutex is unlocked or file thread is asleep then awaken it */
-	while (TRUE) {
+	while (revs < 100000) {
 
 		if (g_mutex_trylock (tracker->files_check_mutex)) {
 			g_mutex_unlock (tracker->files_check_mutex);
@@ -2771,6 +2793,7 @@ tracker_notify_file_data_available (void)
 
 		g_thread_yield ();
 		g_usleep (10);
+		revs++;
 	}
 }
 
@@ -3548,6 +3571,50 @@ tracker_string_replace (const char *haystack, char *needle, char *replacement)
 }
 
 
+static char *
+get_first_entry_in_dir (const char *dir)
+{
+	GDir	*dirp;
+	char 	*result = NULL;
+
+	if ((dirp = g_dir_open (dir, 0, NULL))) {
+
+		const char *name;
+
+   		if ((name = g_dir_read_name (dirp))) {
+			result = g_build_filename (dir, name, NULL);
+		}
+
+ 		g_dir_close (dirp);
+	}
+
+	return result;
+
+}
+
+char *
+tracker_get_battery_state_file ()
+{
+	const char 	*dir = "/proc/acpi/ac_adapter";
+	char 		*battery_path = NULL;
+	char 		*battery_file = NULL;
+
+	if (!g_file_test (dir, G_FILE_TEST_EXISTS)) {
+		return NULL;
+	}
+	
+	battery_path = get_first_entry_in_dir (dir);
+
+	if (!battery_path) return NULL;
+
+	battery_file = get_first_entry_in_dir (battery_path);
+
+	g_free (battery_path);
+
+	return battery_file;
+}
+
+
 gboolean
 tracker_using_battery (void)
 {
@@ -3565,6 +3632,10 @@ tracker_using_battery (void)
 	}
 
 	g_free (txt);
+
+	if (using_battery) {
+		tracker_log ("Now on battery power - suspending indexing");
+	}
 
 	return using_battery;
 }
@@ -3636,3 +3707,124 @@ tracker_unlink (const char *uri)
 
 	return TRUE;
 }
+
+
+int 
+tracker_get_memory_usage (void)
+{
+
+
+#if defined(__linux__)
+	int  fd, length, mem = 0;
+	char buffer[8192];
+
+	char *stat_file = g_strdup_printf ("/proc/%d/stat", tracker->pid);
+
+	fd = open (stat_file, O_RDONLY); 
+
+	g_free (stat_file);
+
+	if (fd ==-1) {
+		return 0;
+	}
+
+	
+	length = read (fd, buffer, 8192);
+
+	buffer[length] = 0;
+
+	close (fd);
+
+	char **terms = g_strsplit (buffer, " ", -1);
+
+	
+	if (terms) {
+
+		int i;
+		for (i=0; i < 24; i++) {
+			if (!terms[i]) {
+				break;
+			}		
+
+			if (i==23) mem = 4 * atoi (terms[23]);
+		}
+	}
+
+
+	g_strfreev (terms);
+
+	return mem;	
+	
+#endif
+	return 0;
+}
+
+guint32
+tracker_file_size (const char *name)
+{
+	struct stat finfo;
+	
+	if (g_lstat (name, &finfo) == -1) {
+		return 0;
+	}
+
+	return (guint32) finfo.st_size;
+
+}
+
+int
+tracker_file_open (const char *file_name, gboolean readahead)
+{
+	int fd;
+
+#if defined(__linux__)
+	fd = open (file_name, O_RDONLY|O_NOATIME);
+
+	if (fd == -1) {
+		fd = open (file_name, O_RDONLY); 
+	}
+#else
+	fd = open (file_name, O_RDONLY); 
+#endif
+
+	if (fd == -1) return -1;
+	
+#ifdef HAVE_POSIX_FADVISE
+	if (readahead) {
+		posix_fadvise (fd, 0, 0, POSIX_FADV_SEQUENTIAL);
+	} else {
+		posix_fadvise (fd, 0, 0, POSIX_FADV_RANDOM);
+	}
+#endif
+
+	return fd;
+}
+
+
+void
+tracker_file_close (int fd, gboolean no_longer_needed)
+{
+
+#ifdef HAVE_POSIX_FADVISE
+	if (no_longer_needed) {
+		posix_fadvise (fd, 0, 0, POSIX_FADV_DONTNEED);
+	}
+#endif
+	close (fd);
+}
+
+void
+tracker_add_io_grace (const char *uri)
+{
+	if (g_str_has_prefix (uri, tracker->xesam_dir)) {
+		return;
+	}
+
+	tracker_log ("file changes to %s is pausing tracker", uri);
+
+	tracker->grace_period++;
+}
+
+
+
+

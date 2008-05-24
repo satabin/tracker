@@ -5,6 +5,7 @@ Maintainer: Michael Biebl <biebl@debian.org>
 Build-Depends: cdbs,
                debhelper (>= 5.0.0),
                autotools-dev,
+               pkg-config,
                libxml-parser-perl,
                libglib2.0-dev (>= 2.12.0),
                libpango1.0-dev (>= 1.0.0),

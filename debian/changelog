@@ -7,6 +7,9 @@ tracker (0.6.6-2) UNRELEASED; urgency=low
     - Use mktemp to create a secure tmpdir for the msword filter.
       Thanks to Jon Dowland for the patch. Closes: #473733
   * Add symbols files for libtrackerclient0 and libtracker-gtk0. 
+  * debian/patches/02-static_keywords_reply.patch
+    - Make _keywords_reply a static function to not export it in the public
+      API.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 23 May 2008 15:03:21 +0200
 

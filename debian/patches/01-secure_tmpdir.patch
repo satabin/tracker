@@ -1,0 +1,23 @@
+diff --git a/filters/application/msword_filter b/filters/application/msword_filter
+index 287757b..7f0e001 100755
+--- a/filters/application/msword_filter
++++ b/filters/application/msword_filter
+@@ -1,15 +1,12 @@
+ #!/bin/sh
+ 
+-tmpdir=${TMPDIR-/tmp}
+-tmpdir="$tmpdir"/tmpdir.$$
++tmpdir=`mktemp -td tracker.msword_filter.XXXXXXXXXX` || exit 1
+ 
+-(umask 077 && mkdir "$tmpdir") || exit 1
+-
+-tmpfile="$tmpdir"/tmpfile.$$
++tmpfile="$tmpdir"/tmpfile
+ 
+ cp "$1" "$tmpfile"
+ 
+-# Change the working directory to $tmpdir which we can safely deleter later.
++# Change the working directory to $tmpdir which we can safely delete later.
+ # Some distributions ship a version of wvText which extracts the image files
+ # from the word document and places them in the current working directory.
+ 

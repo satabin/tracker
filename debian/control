@@ -32,6 +32,8 @@ Build-Depends: cdbs,
                libhal-dev (>= 0.5),
                python-support (>= 0.6)
 Standards-Version: 3.7.3
+Vcs-Git: git://git.debian.org/git/users/biebl/tracker.git
+Vcs-Browser: http://git.debian.org/?p=users/biebl/tracker.git;a=summary
 Homepage: http://www.tracker-project.org/
 
 Package: tracker

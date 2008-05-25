@@ -1,0 +1,126 @@
+diff --git a/filters/application/vnd.oasis.opendocument.presentation-template_filter b/filters/application/vnd.oasis.opendocument.presentation-template_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.oasis.opendocument.presentation-template_filter
++++ b/filters/application/vnd.oasis.opendocument.presentation-template_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.oasis.opendocument.presentation_filter b/filters/application/vnd.oasis.opendocument.presentation_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.oasis.opendocument.presentation_filter
++++ b/filters/application/vnd.oasis.opendocument.presentation_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.oasis.opendocument.spreadsheet-template_filter b/filters/application/vnd.oasis.opendocument.spreadsheet-template_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.oasis.opendocument.spreadsheet-template_filter
++++ b/filters/application/vnd.oasis.opendocument.spreadsheet-template_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.oasis.opendocument.spreadsheet_filter b/filters/application/vnd.oasis.opendocument.spreadsheet_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.oasis.opendocument.spreadsheet_filter
++++ b/filters/application/vnd.oasis.opendocument.spreadsheet_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.oasis.opendocument.text-template_filter b/filters/application/vnd.oasis.opendocument.text-template_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.oasis.opendocument.text-template_filter
++++ b/filters/application/vnd.oasis.opendocument.text-template_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.oasis.opendocument.text_filter b/filters/application/vnd.oasis.opendocument.text_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.oasis.opendocument.text_filter
++++ b/filters/application/vnd.oasis.opendocument.text_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.stardivision.writer_filter b/filters/application/vnd.stardivision.writer_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.stardivision.writer_filter
++++ b/filters/application/vnd.stardivision.writer_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.sun.xml.calc.template_filter b/filters/application/vnd.sun.xml.calc.template_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.sun.xml.calc.template_filter
++++ b/filters/application/vnd.sun.xml.calc.template_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.sun.xml.calc_filter b/filters/application/vnd.sun.xml.calc_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.sun.xml.calc_filter
++++ b/filters/application/vnd.sun.xml.calc_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.sun.xml.draw_filter b/filters/application/vnd.sun.xml.draw_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.sun.xml.draw_filter
++++ b/filters/application/vnd.sun.xml.draw_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.sun.xml.impress.template_filter b/filters/application/vnd.sun.xml.impress.template_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.sun.xml.impress.template_filter
++++ b/filters/application/vnd.sun.xml.impress.template_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.sun.xml.impress_filter b/filters/application/vnd.sun.xml.impress_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.sun.xml.impress_filter
++++ b/filters/application/vnd.sun.xml.impress_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.sun.xml.writer.template_filter b/filters/application/vnd.sun.xml.writer.template_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.sun.xml.writer.template_filter
++++ b/filters/application/vnd.sun.xml.writer.template_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"
+diff --git a/filters/application/vnd.sun.xml.writer_filter b/filters/application/vnd.sun.xml.writer_filter
+index 4024891..8479c9c 100755
+--- a/filters/application/vnd.sun.xml.writer_filter
++++ b/filters/application/vnd.sun.xml.writer_filter
+@@ -1,3 +1,3 @@
+ #!/bin/sh
+ 
+-nice -n19 unzip -p "$1" content.xml | o3totxt > "$2"
++nice -n19 odt2txt "$1" > "$2"

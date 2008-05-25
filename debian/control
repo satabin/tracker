@@ -49,7 +49,7 @@ Recommends: tracker-utils,
             poppler-utils | xpdf-utils,
             xsltproc,
             w3m,
-            o3read,
+            odt2txt,
             untex
 Suggests: imagemagick,
           evince,

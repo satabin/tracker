@@ -3,6 +3,7 @@ tracker (0.6.6-2) UNRELEASED; urgency=low
   * debian/control
     - Add Build-Depends on pkg-config.
     - Add Vcs-* fields.
+    - Replace Recommends on o3read with odt2txt.
   * debian/patches/01-secure_tmpdir.patch
     - Use mktemp to create a secure tmpdir for the msword filter.
       Thanks to Jon Dowland for the patch. Closes: #473733
@@ -10,6 +11,8 @@ tracker (0.6.6-2) UNRELEASED; urgency=low
   * debian/patches/02-static_keywords_reply.patch
     - Make _keywords_reply a static function to not export it in the public
       API.
+  * debian/patches/03-prefer_odt2txt.patch
+    - Use odt2txt to index OpenOffice documents. Closes: #478091
 
  -- Michael Biebl <biebl@debian.org>  Fri, 23 May 2008 15:03:21 +0200
 

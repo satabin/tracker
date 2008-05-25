@@ -1,4 +1,4 @@
-tracker (0.6.6-2) UNRELEASED; urgency=low
+tracker (0.6.6-2) unstable; urgency=low
 
   * debian/control
     - Add Build-Depends on pkg-config.
@@ -14,7 +14,7 @@ tracker (0.6.6-2) UNRELEASED; urgency=low
   * debian/patches/03-prefer_odt2txt.patch
     - Use odt2txt to index OpenOffice documents. Closes: #478091
 
- -- Michael Biebl <biebl@debian.org>  Fri, 23 May 2008 15:03:21 +0200
+ -- Michael Biebl <biebl@debian.org>  Sun, 25 May 2008 02:20:25 +0200
 
 tracker (0.6.6-1) unstable; urgency=low
 

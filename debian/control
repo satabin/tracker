@@ -3,7 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Michael Biebl <biebl@debian.org>
 Build-Depends: cdbs,
-               debhelper (>= 5.0.0),
+               debhelper (>= 7),
                autotools-dev,
                pkg-config,
                libxml-parser-perl,

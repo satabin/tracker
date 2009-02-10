@@ -12,6 +12,11 @@ tracker (0.6.90-1) UNRELEASED; urgency=low
     - Update to the latest upstream changes.
     - Output the resulting text file to stdout.
   * Switch patch management system to quilt.
+  * debian/compat
+    - Bump to debhelper v7 compat mode.
+  * debian/control
+    - Update Build-Depends
+      + Bump debhelper to (>= 7).
 
  -- Michael Biebl <biebl@debian.org>  Tue, 10 Feb 2009 07:22:13 +0100
 

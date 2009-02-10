@@ -1,0 +1,49 @@
+<!-- ##### SECTION Title ##### -->
+NFS Locking
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION tracker_nfs_lock_init ##### -->
+<para>
+
+</para>
+
+@nfs: 
+
+
+<!-- ##### FUNCTION tracker_nfs_lock_obtain ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_nfs_lock_release ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION tracker_nfs_lock_shutdown ##### -->
+<para>
+
+</para>
+
+
+

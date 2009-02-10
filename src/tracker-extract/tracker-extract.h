@@ -1,54 +1,67 @@
-/* Tracker Extract - extracts embedded metadata from files
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/*
+ * Copyright (C) 2008, Nokia
  *
- * This program is free software; you can redistribute it and/or
+ * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
+ * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef _TRACKER_EXTRACT_H_
-#define _TRACKER_EXTRACT_H_
+#ifndef __TRACKERD_EXTRACT_H__
+#define __TRACKERD_EXTRACT_H__
 
-#include <glib.h>
+#include <glib-object.h>
 
+#include <dbus/dbus-glib-bindings.h>
 
-typedef enum {
-        TIME = 0,       /* hh:mm:ss (seconds are optionals) */
-        TIMEZONE,       /* time added to current time */
-        DAY_PART,       /* AM or PM?  */
-        DAY_STR,        /* Monday, Tuesday, etc. */
-        DAY,            /* day 01, 02, 03, or... 31 in a month */
-        MONTH,          /* month? 0 to 11. Or, Jan, Feb, etc. */
-        YEAR,           /* 1900 - year */
-        LAST_STEP       /* This is the end... The end my friend... */
-} steps;
+#define TRACKER_EXTRACT_SERVICE	       "org.freedesktop.Tracker.Extract"
+#define TRACKER_EXTRACT_PATH	       "/org/freedesktop/Tracker/Extract"
+#define TRACKER_EXTRACT_INTERFACE      "org.freedesktop.Tracker.Extract"
 
-typedef struct TrackerExtractorData TrackerExtractorData;
-typedef TrackerExtractorData * (* TrackerExtractorDataFunc) (void);
+G_BEGIN_DECLS
 
-struct TrackerExtractorData {
-	const gchar *mime;
+#define TRACKER_TYPE_EXTRACT	       (tracker_extract_get_type ())
+#define TRACKER_EXTRACT(object)	       (G_TYPE_CHECK_INSTANCE_CAST ((object), TRACKER_TYPE_EXTRACT, TrackerExtract))
+#define TRACKER_EXTRACT_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), TRACKER_TYPE_EXTRACT, TrackerExtractClass))
+#define TRACKER_IS_EXTRACT(object)     (G_TYPE_CHECK_INSTANCE_TYPE ((object), TRACKER_TYPE_EXTRACT))
+#define TRACKER_IS_EXTRACT_CLASS(klass)(G_TYPE_CHECK_CLASS_TYPE ((klass), TRACKER_TYPE_EXTRACT))
+#define TRACKER_EXTRACT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRACKER_TYPE_EXTRACT, TrackerExtractClass))
 
-	void (* extractor) (const gchar *filename,
-			    GHashTable  *metadata);
+typedef struct TrackerExtract	   TrackerExtract;
+typedef struct TrackerExtractClass TrackerExtractClass;
+
+struct TrackerExtract {
+	GObject parent;
 };
 
+struct TrackerExtractClass {
+	GObjectClass parent;
+};
 
-gchar *         tracker_generic_date_extractor (gchar *date, steps steps_to_do[]);
+GType           tracker_extract_get_type                (void);
+TrackerExtract *tracker_extract_new                     (void);
+void            tracker_extract_get_metadata            (TrackerExtract         *object,
+							 const gchar            *path,
+							 const gchar            *mime,
+							 DBusGMethodInvocation  *context,
+							 GError                **error);
 
-gboolean        tracker_is_empty_string (const gchar *s);
+/* Not DBus API, convenience for command line */
+void            tracker_extract_get_metadata_by_cmdline (TrackerExtract         *object,
+							 const gchar            *path,
+							 const gchar            *mime);
 
-gboolean	tracker_spawn (gchar **argv, int timeout, gchar **tmp_stdout, gint *exit_status);
+G_END_DECLS
 
-#endif
+#endif /* __TRACKERD_EXTRACT_H__ */

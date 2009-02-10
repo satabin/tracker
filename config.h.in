@@ -19,17 +19,20 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
+/* Define if we have Evolution plugin */
+#undef HAVE_EVOLUTION_PLUGIN
+
 /* Define if we have exempi */
 #undef HAVE_EXEMPI
 
-/* Define if we have FAM */
-#undef HAVE_FAM
-
-/* Define to 1 if you have the <fam.h> header file. */
-#undef HAVE_FAM_H
+/* Define if we have external QDBM */
+#undef HAVE_EXTERNAL_QDBM
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #undef HAVE_FCNTL_H
+
+/* Define if we have GdkPixbuf */
+#undef HAVE_GDKPIXBUF
 
 /* Define to 1 if you have the `getline' function. */
 #undef HAVE_GETLINE
@@ -46,11 +49,11 @@
 /* Define if we have inotify */
 #undef HAVE_INOTIFY
 
-/* Define if we have inotify and header is linux/inotify.h */
-#undef HAVE_INOTIFY_LINUX
-
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
+
+/* Define if we have ioprio */
+#undef HAVE_IOPRIO
 
 /* Define if your <locale.h> file defines LC_MESSAGES. */
 #undef HAVE_LC_MESSAGES
@@ -61,14 +64,17 @@
 /* Define if we have libgsf */
 #undef HAVE_LIBGSF
 
+/* Define if we have libjpeg */
+#undef HAVE_LIBJPEG
+
+/* Define if we have libtiff */
+#undef HAVE_LIBTIFF
+
 /* Define if we have Libxine */
 #undef HAVE_LIBXINE
 
 /* Define if we have libxml2 */
 #undef HAVE_LIBXML2
-
-/* Define to 1 if you have the <linux/inotify.h> header file. */
-#undef HAVE_LINUX_INOTIFY_H
 
 /* Define to 1 if you have the <linux/unistd.h> header file. */
 #undef HAVE_LINUX_UNISTD_H
@@ -79,14 +85,17 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
-/* Define if we have poppler */
-#undef HAVE_POPPLER
+/* Define if we have poppler-glib */
+#undef HAVE_POPPLER_GLIB
 
 /* Define to 1 if you have the `posix_fadvise' function. */
 #undef HAVE_POSIX_FADVISE
 
-/* Define if we have recent glib */
-#undef HAVE_RECENT_GLIB
+/* Define if we have QDBM (our imported version) */
+#undef HAVE_QDBM
+
+/* Raptor RDF parsers */
+#undef HAVE_RAPTOR
 
 /* Define to 1 if you have the <sitdlib.h> header file. */
 #undef HAVE_SITDLIB_H
@@ -115,20 +124,24 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
-/* Define if we have unac lib */
+/* Define if we have Totem PL parser */
+#undef HAVE_TOTEM_PL_PARSER
+
+/* Define if we have UNAC for accent stripping */
 #undef HAVE_UNAC
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
-/* Define ioprio support */
-#undef IOPRIO_SUPPORT
+/* Define if we have GLib unit test framework */
+#undef HAVE_UNIT_TEST
+
+/* Define to the sub-directory in which libtool stores uninstalled libraries.
+   */
+#undef LT_OBJDIR
 
 /* Define if we are on win32 */
 #undef OS_WIN32
-
-/* Name of package */
-#undef PACKAGE
 
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
@@ -151,5 +164,5 @@
 /* Define that Tracker will try to use external video players */
 #undef USING_EXTERNAL_VIDEO_PLAYER
 
-/* Version number of package */
-#undef VERSION
+/* Defined for compilers not supporting __FUNCTION__ */
+#undef __FUNCTION__

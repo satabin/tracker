@@ -1,0 +1,355 @@
+<!-- ##### SECTION Title ##### -->
+Service
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT TrackerService ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerService:content-metadata ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:db-type ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:embedded ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:enabled ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:has-full-text ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:has-metadata ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:has-thumbs ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:id ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:key-metadata ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:name ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:parent ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:property-prefix ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:show-service-directories ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerService:show-service-files ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION tracker_service_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_content_metadata ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_db_type ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_embedded ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_enabled ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_has_full_text ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_has_metadata ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_has_thumbs ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_id ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_key_metadata ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_name ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_parent ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_property_prefix ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_show_service_directories ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_get_show_service_files ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_service_set_content_metadata ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_db_type ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_embedded ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_enabled ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_has_full_text ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_has_metadata ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_has_thumbs ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_id ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_key_metadata ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_name ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_parent ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_property_prefix ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_show_service_directories ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_service_set_show_service_files ##### -->
+<para>
+
+</para>
+
+@service: 
+@value: 
+
+

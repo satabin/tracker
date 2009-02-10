@@ -1,5 +1,7 @@
-/* Tracker - indexer and metadata database engine
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/*
  * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+ * Copyright (C) 2008, Nokia
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -17,442 +19,714 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <glib/gstdio.h>
-#include <sys/types.h>
 #include "config.h"
-#ifdef OS_WIN32
-#include <conio.h>
-#else
-#include <sys/resource.h>
-#endif
+
+#include <string.h>
+
+#include <libtracker-common/tracker-dbus.h>
+#include <libtracker-common/tracker-log.h>
+#include <libtracker-common/tracker-utils.h>
+#include <libtracker-common/tracker-type-utils.h>
+
+#include <libtracker-db/tracker-db-dbus.h>
+#include <libtracker-db/tracker-db-index.h>
+#include <libtracker-db/tracker-db-manager.h>
+
+#include <libtracker-data/tracker-data-manager.h>
+#include <libtracker-data/tracker-data-query.h>
+#include <libtracker-data/tracker-data-schema.h>
+#include <libtracker-data/tracker-data-search.h>
+#include <libtracker-data/tracker-rdf-query.h>
+
+#include "tracker-indexer-client.h"
+#include "tracker-dbus.h"
 #include "tracker-metadata.h"
-#include "tracker-utils.h"
+#include "tracker-marshal.h"
 
+G_DEFINE_TYPE(TrackerMetadata, tracker_metadata, G_TYPE_OBJECT)
 
-extern Tracker *tracker;
-
-
-typedef enum {
-	IGNORE_METADATA,
-	NO_METADATA,
-	DOC_METADATA,
-	IMAGE_METADATA,
-	VIDEO_METADATA,
-	AUDIO_METADATA,
-	DEVEL_METADATA,
-	TEXT_METADATA
-} MetadataFileType;
-
-
-/* document mime type specific metadata groups - NB mime types below may be prefixes */
-char *doc_mime_types[] = {
-			  "application/rtf",
-			  "text/richtext",
-			  "application/msword",
-			  "application/pdf",
-			  "application/postscript",
-			  "application/x-dvi",
-			  "application/vnd.ms-excel",
-			  "vnd.ms-powerpoint",
-			  "application/vnd.oasis.opendocument",
-			  "application/vnd.sun.xml",
-			  "application/vnd.stardivision",
-			  "application/x-abiword",
-			  "text/html",
-			  "text/sgml",
-			  "text/x-tex",
-			  "application/x-mswrite",
-			  "application/x-applix-word",
-			  "application/docbook+xml",
-			  "application/x-kword",
-			  "application/x-kword-crypt",
-			  "application/x-lyx",
-			  "application/vnd.lotus-1-2-3",
-			  "application/x-applix-spreadsheet",
-			  "application/x-gnumeric",
-			  "application/x-kspread",
-			  "application/x-kspread-crypt",
-			  "application/x-quattropro",
-			  "application/x-sc",
-			  "application/x-siag",
-			  "application/x-magicpoint",
-			  "application/x-kpresenter",
-			  "application/illustrator",
-			  "application/vnd.corel-draw",
-			  "application/vnd.stardivision.draw",
-			  "application/vnd.oasis.opendocument.graphics",
-			  "application/x-dia-diagram",
-			  "application/x-karbon",
-			  "application/x-killustrator",
-			  "application/x-kivio",
-			  "application/x-kontour",
-			  "application/x-wpg",
-			  "application/rdf+xml"
-};
-
-
-char *text_mime_types[] = {
-		"text/plain",
-		"text/x-authors",
-		"text/x-changelog",
-		"text/x-copying",
-		"text/x-credits",
-		"text/x-install",
-		"text/x-readme"
-};
-
-
-char *development_mime_types[] = {
-				"application/x-perl",
-				"application/x-shellscript",
-				"application/x-php",
-				"application/x-java",
-				"application/x-javascript",
-				"application/x-glade",
-				"application/x-csh",
-				"application/x-class-file",
-				"application/x-awk",
-				"application/x-asp",
-				"application/x-ruby",
-				"application/x-m4",
-				"text/x-m4",
-				"text/x-c++",
-				"text/x-adasrc",
-				"text/x-c",
-				"text/x-c++hdr",
-				"text/x-chdr",
-				"text/x-csharp",
-				"text/x-c++src",
-				"text/x-csrc",
-				"text/x-dcl",
-				"text/x-dsrc",
-				"text/x-emacs-lisp",
-				"text/x-fortran",
-				"text/x-haskell",
-				"text/x-literate-haskell",
-				"text/x-java",
-				"text/x-java-source" ,
-				"text/x-makefile",
-				"text/x-objcsrc",
-				"text/x-pascal",
-				"text/x-patch",
-				"text/x-python",
-				"text/x-scheme",
-				"text/x-sql",
-				"text/x-tcl"
-};
-
-
-
-
-static MetadataFileType
-tracker_get_metadata_type (const char *mime)
+static void
+tracker_metadata_class_init (TrackerMetadataClass *klass)
 {
-	int i;
-	int num_elements;
-
-	if (strcmp (mime, "text/plain") == 0) {
-		return TEXT_METADATA;
-	}
-
-	if (g_str_has_prefix (mime, "image") || (strcmp (mime, "application/vnd.oasis.opendocument.image") == 0) || (strcmp (mime, "application/x-krita") == 0)) {
-		return IMAGE_METADATA;
-
-	} else 	if (g_str_has_prefix (mime, "video")) {
-			return VIDEO_METADATA;
-
-	} else 	if (g_str_has_prefix (mime, "audio") || (strcmp (mime, "application/ogg") == 0)) {
-			return AUDIO_METADATA;
-
-	} else {
-		num_elements = sizeof (doc_mime_types) / sizeof (char *);
-		for (i = 0; i < num_elements; i++ ) {
-			if (g_str_has_prefix (mime, doc_mime_types [i] )) {
-				return DOC_METADATA;
-			}
-		}
-	}
-
-	num_elements = sizeof (development_mime_types) / sizeof (char *);
-
-	for (i = 0; i < num_elements; i++ ) {
-		if (strcmp (mime, development_mime_types[i]) == 0 ) {
-			return DEVEL_METADATA;
-		}
-	}
-
-	num_elements = sizeof (text_mime_types) / sizeof (char *);
-
-	for (i = 0; i < num_elements; i++ ) {
-		if (strcmp (mime, text_mime_types[i]) == 0 ) {
-			return TEXT_METADATA;
-		}
-	}
-
-	return NO_METADATA;
 }
 
-
-char *
-tracker_get_service_type_for_mime (const char *mime)
+static void
+tracker_metadata_init (TrackerMetadata *object)
 {
-	MetadataFileType stype;
-
-	stype = tracker_get_metadata_type (mime);
-
-	switch (stype) {
-
-			case IGNORE_METADATA:
-				if (g_str_has_prefix (mime, "video")) {
-					return g_strdup ("Videos");
-				} else {
-					return g_strdup ("Other");
-				}
-				break;
-
-			case NO_METADATA:
-				return g_strdup ("Other");
-				break;
-
-			case TEXT_METADATA:
-				return g_strdup ("Text");
-				break;
-
-			case DOC_METADATA:
-				return g_strdup ("Documents");
-				break;
-
-			case IMAGE_METADATA:
-				return g_strdup ("Images");
-				break;
-
-			case VIDEO_METADATA:
-				return g_strdup ("Videos");
-				break;
-
-			case AUDIO_METADATA:
-				return g_strdup ("Music");
-				break;
-
-			case DEVEL_METADATA:
-				return g_strdup ("Development");
-				break;
-	}
-
-	return g_strdup ("Other Files");
 }
 
-
-char *
-tracker_metadata_get_text_file (const char *uri, const char *mime)
+TrackerMetadata *
+tracker_metadata_new (void)
 {
-	MetadataFileType ftype;
-	char		 *text_filter_file;
-
-	text_filter_file = NULL;
-
-	ftype = tracker_get_metadata_type (mime);
-
-	/* no need to filter text based files - index em directly */
-
-	if (ftype == TEXT_METADATA || ftype == DEVEL_METADATA) {
-
-		return g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
-
-	} else {
-		char *tmp;
-
-		tmp = g_strdup (LIBDIR "/tracker/filters/");
-
-#ifdef OS_WIN32
-		text_filter_file = g_strconcat (tmp, mime, "_filter.bat", NULL);
-#else
-		text_filter_file = g_strconcat (tmp, mime, "_filter", NULL);
-#endif
-
-		g_free (tmp);
-	}
-
-	if (text_filter_file && g_file_test (text_filter_file, G_FILE_TEST_EXISTS)) {
-		char *argv[4];
-		char *temp_file_name;
-		int  fd;
-
-		temp_file_name = g_build_filename (tracker->sys_tmp_root_dir, "tmp_text_file_XXXXXX", NULL);
-
-		fd = g_mkstemp (temp_file_name);
-
-		if (fd == -1) {
-			g_warning ("make tmp file %s failed", temp_file_name);
-			return NULL;
-		} else {
-			close (fd);
-		}
-
-		argv[0] = g_strdup (text_filter_file);
-		argv[1] = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
-		argv[2] = g_strdup (temp_file_name);
-		argv[3] = NULL;
-
-		g_free (text_filter_file);
-
-		if (!argv[1]) {
-			tracker_error ("ERROR: uri could not be converted to locale format");
-			g_free (argv[0]);
-			g_free (argv[2]);
-			return NULL;
-		}
-
-		tracker_info ("extracting text for %s using filter %s", argv[1], argv[0]);
-
-		if (tracker_spawn (argv, 30, NULL, NULL)) {
-
-
-			g_free (argv[0]);
-			g_free (argv[1]);
-			g_free (argv[2]);
-
-			if (tracker_file_is_valid (temp_file_name)) {
-				return temp_file_name;
-			} else {
-				g_free (temp_file_name);
-				return NULL;
-			}
-
-		} else {
-			g_free (temp_file_name);
-
-			g_free (argv[0]);
-			g_free (argv[1]);
-			g_free (argv[2]);
-
-			return NULL;
-		}
-
-	} else {
-		g_free (text_filter_file);
-	}
-
-	return NULL;
+	return g_object_new (TRACKER_TYPE_METADATA, NULL);
 }
 
+/*
+ * Functions
+ */
 
-char *
-tracker_metadata_get_thumbnail (const char *path, const char *mime, const char *size)
+void
+tracker_metadata_get (TrackerMetadata	     *object,
+		      const gchar	     *service_type,
+		      const gchar	     *uri,
+		      gchar		    **keys,
+		      DBusGMethodInvocation  *context,
+		      GError		    **error)
 {
-	gchar   *thumbnail;
-	gchar   *argv[5];
-	gint     exit_status;
+	TrackerDBInterface  *iface;
+	TrackerDBResultSet  *result_set;
+	guint		     request_id;
+	const gchar         *service_result;
+	gchar		    *service_id;
+	guint		     i;
+	gchar		   **values;
+	GError		    *actual_error = NULL;
 
-	argv[0] = g_strdup ("tracker-thumbnailer");
-	argv[1] = g_filename_from_utf8 (path, -1, NULL, NULL, NULL);
-	argv[2] = g_strdup (mime);
-	argv[3] = g_strdup (size);
-	argv[4] = NULL;
+	request_id = tracker_dbus_get_next_request_id ();
 
-	if (!tracker_spawn (argv, 10, &thumbnail, &exit_status)) {
-		thumbnail = NULL;
-	} else if (exit_status != EXIT_SUCCESS) {
-		thumbnail = NULL;
-	} else {
-		tracker_log ("got thumbnail %s", thumbnail);
+	tracker_dbus_async_return_if_fail (service_type != NULL, context);
+	tracker_dbus_async_return_if_fail (uri != NULL, context);
+	tracker_dbus_async_return_if_fail (keys != NULL, context);
+	tracker_dbus_async_return_if_fail (g_strv_length (keys) > 0, context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get metadata values, "
+				  "service type:'%s'",
+				  service_type);
+
+	if (!tracker_ontology_service_is_valid (service_type)) {
+		tracker_dbus_request_failed (request_id,
+					     &actual_error,
+					     "Service '%s' is invalid or has not been implemented yet",
+					     service_type);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
 	}
 
-	g_free (argv[0]);
-	g_free (argv[1]);
-	g_free (argv[2]);
-	g_free (argv[3]);
+	service_id = tracker_data_query_file_id_as_string (service_type, uri);
+	if (!service_id) {
+		tracker_dbus_request_failed (request_id,
+					     &actual_error,
+					     "Service URI '%s' not found",
+					     uri);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
+	}
 
-	return thumbnail;
+	/* Checking keys */
+	for (i = 0; i < g_strv_length (keys); i++) {
+
+		if (tracker_ontology_get_field_by_name (keys[i]) == NULL) {
+			tracker_dbus_request_failed (request_id,
+						     &actual_error,
+						     "Metadata field '%s' not registered in the system",
+						     keys[i]);
+			dbus_g_method_return_error (context, actual_error);
+			g_error_free (actual_error);
+			return;
+		}
+	}
+
+	/* The parameter service_type can be "Files"
+	 * and the actual service type of the uri "Video"
+	 *
+	 * Note: Does this matter?
+	 */
+	iface = tracker_db_manager_get_db_interface_by_service (service_type);
+
+	service_result = tracker_data_query_service_type_by_id (iface, service_id);
+	if (!service_result) {
+	       g_free (service_id);
+	       tracker_dbus_request_failed (request_id,
+					    &actual_error,
+					    "Service type can not be found for entity '%s'",
+					    uri);
+	       dbus_g_method_return_error (context, actual_error);
+	       g_error_free (actual_error);
+	       return;
+	}
+
+	result_set = tracker_data_query_metadata_fields (iface, service_result, service_id, keys);
+	if (result_set) {
+		values = tracker_dbus_query_result_columns_to_strv (result_set, -1, -1, TRUE);
+		g_object_unref (result_set);
+	} else {
+		values = NULL;
+	}
+
+	if (!values) {
+		tracker_dbus_request_failed (request_id,
+					     &actual_error,
+					     "No metadata information was available");
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+	}
+
+	dbus_g_method_return (context, values);
+	g_strfreev (values);
+	g_free (service_id);
+
+	tracker_dbus_request_success (request_id);
 }
 
 void
-tracker_metadata_get_embedded (const char *uri, const char *mime, GHashTable *table)
+tracker_metadata_get_all (TrackerMetadata	     *object,
+			  const gchar	             *service_type,
+			  const gchar	             *uri,
+			  DBusGMethodInvocation      *context,
+			  GError		    **error)
 {
-	MetadataFileType meta_type;
-	gboolean success;
-	char *argv[4];
-	char *output;
-	char **values;
-	gint i;
+	guint		     request_id;
+	gchar		    *service_id;
+	GPtrArray *          values;
+	GError		    *actual_error = NULL;
 
-	if (!uri || !mime || !table) {
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_async_return_if_fail (service_type != NULL, context);
+	tracker_dbus_async_return_if_fail (uri != NULL, context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get all metadata values, "
+				  "service type:'%s' uri:'%s'",
+				  service_type, uri);
+
+	if (!tracker_ontology_service_is_valid (service_type)) {
+		tracker_dbus_request_failed (request_id,
+					     &actual_error,
+					     "Service '%s' is invalid or has not been implemented yet",
+					     service_type);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
 		return;
 	}
 
-	meta_type = tracker_get_metadata_type (mime);
-
-	if (! (meta_type == DOC_METADATA || meta_type == IMAGE_METADATA || meta_type == AUDIO_METADATA || meta_type == VIDEO_METADATA))
-		return;
-
-	/* we extract metadata out of process using pipes */
-	argv[0] = g_strdup ("tracker-extract");
-	argv[1] = g_filename_from_utf8 (uri, -1, NULL, NULL, NULL);
-	argv[2] = g_locale_from_utf8 (mime, -1, NULL, NULL, NULL);
-	argv[3] = NULL;
-
-	if (!argv[1] || !argv[2]) {
-		tracker_error ("ERROR: uri or mime could not be converted to locale format");
-
-		g_free (argv[0]);
-		g_free (argv[1]);
-		g_free (argv[2]);
-
+	service_id = tracker_data_query_file_id_as_string (service_type, uri);
+	if (!service_id) {
+		tracker_dbus_request_failed (request_id,
+					     &actual_error,
+					     "Service URI '%s' not found",
+					     uri);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
 		return;
 	}
 
-	success = tracker_spawn (argv, 10, &output, NULL);
+	values = tracker_data_query_all_metadata (service_type, service_id);
 
-	g_free (argv[0]);
-	g_free (argv[1]);
-	g_free (argv[2]);
+	dbus_g_method_return (context, values);
+	g_ptr_array_foreach (values, (GFunc)g_strfreev, NULL);
+	g_ptr_array_free (values, TRUE);
 
-	if (!success || !output)
+	tracker_dbus_request_success (request_id);
+}
+
+void
+tracker_metadata_set (TrackerMetadata	     *object,
+		      const gchar	     *service_type,
+		      const gchar	     *uri,
+		      gchar		    **keys,
+		      gchar		    **values,
+		      DBusGMethodInvocation  *context,
+		      GError		    **error)
+{
+	guint		    request_id;
+	gchar		   *service_id;
+	guint		    i;
+	GError		   *actual_error = NULL;
+	TrackerField       *field_def;
+
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_async_return_if_fail (service_type != NULL, context);
+	tracker_dbus_async_return_if_fail (keys != NULL, context);
+	tracker_dbus_async_return_if_fail (values != NULL, context);
+	tracker_dbus_async_return_if_fail (g_strv_length (keys) > 0, context);
+	tracker_dbus_async_return_if_fail (g_strv_length (values) > 0, context);
+	tracker_dbus_async_return_if_fail (g_strv_length (keys) == g_strv_length (values), context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to set metadata keys, "
+				  "service type:'%s' uri:'%s'",
+				  service_type, uri);
+
+	if (!tracker_ontology_service_is_valid (service_type)) {
+		tracker_dbus_request_failed (request_id,
+					     &actual_error,
+					     "Service_Type '%s' is invalid or has not been implemented yet",
+					     service_type);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
 		return;
+	}
 
-	/* parse returned stdout and extract keys and associated metadata values */
+	/* Check the uri exists, so we dont start the indexer in vain */
+	service_id = tracker_data_query_file_id_as_string (service_type, uri);
+	if (!service_id) {
+		tracker_dbus_request_failed (request_id,
+					     &actual_error,
+					     "Service URI '%s' not found",
+					     uri);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
+	}
 
-	values = g_strsplit_set (output, ";", -1);
+	/* Checking keys */
+	for (i = 0; i < g_strv_length (keys); i++) {
+		gchar **tmp_values;
+		gint    len;
 
-	for (i = 0; values[i]; i++) {
-		char *meta_data, *sep;
-		const char *name, *value;
-		char *utf_value;
+		field_def = tracker_ontology_get_field_by_name (keys[i]);
 
-		meta_data = g_strstrip (values[i]);
-		sep = strchr (meta_data, '=');
-
-		if (!sep)
-			continue;
-
-		/* zero out the separator, so we get
-		 * NULL-terminated name and value
-		 */
-		sep[0] = '\0';
-		name = meta_data;
-		value = sep + 1;
-
-		if (!name || !value)
-			continue;
-
-		if (g_hash_table_lookup (table, name))
-			continue;
-
-		if (!g_utf8_validate (value, -1, NULL)) {
-			utf_value = g_locale_to_utf8 (value, -1, NULL, NULL, NULL);
-		} else {
-			utf_value = g_strdup (value);
+		if (field_def == NULL) {
+			tracker_dbus_request_failed (request_id,
+						     &actual_error,
+						     "Metadata field '%s' not registered in the system",
+						     keys[i]);
+			dbus_g_method_return_error (context, actual_error);
+			g_error_free (actual_error);
+			return;
 		}
 
-		if (!utf_value)
-			continue;
+		tmp_values = tracker_string_to_string_list (values[i]);
+		len = g_strv_length (tmp_values);
+		g_strfreev (tmp_values);
 
-		tracker_add_metadata_to_table (table, g_strdup (name), utf_value);
+		if (!tracker_field_get_multiple_values (field_def) && len > 1) {
+			tracker_dbus_request_failed (request_id,
+						     &actual_error,
+						     "Field type: '%s' doesnt support multiple values (trying to set %d)",
+						     tracker_field_get_name (field_def),
+						     len);
+			dbus_g_method_return_error (context, actual_error);
+			g_error_free (actual_error);
+			return;
+		}
 	}
 
-	g_strfreev (values);
-	g_free (output);
+	/* Real insertion */
+	for (i = 0; i < g_strv_length (keys); i++) {
+		gchar	    **value;
+
+		value = tracker_string_to_string_list (values[i]);
+		org_freedesktop_Tracker_Indexer_property_set (tracker_dbus_indexer_get_proxy (),
+							      service_type,
+							      uri,
+							      keys[i],
+							      (const gchar **)value,
+							      &actual_error);
+		g_strfreev (value);
+		if (actual_error) {
+			tracker_dbus_request_failed (request_id, &actual_error, NULL);
+			dbus_g_method_return_error (context, actual_error);
+			g_error_free (actual_error);
+			return;
+		}
+	}
+
+	g_free (service_id);
+
+	/* FIXME: Check return value? */
+
+	dbus_g_method_return (context);
+
+	tracker_dbus_request_success (request_id);
 }
+
+void
+tracker_metadata_get_type_details (TrackerMetadata	  *object,
+				   const gchar		  *metadata,
+				   DBusGMethodInvocation  *context,
+				   GError		 **error)
+{
+	guint		  request_id;
+	TrackerField	 *def = NULL;
+	TrackerFieldType  field_type;
+	gchar		 *type;
+	gboolean	  is_embedded;
+	gboolean	  is_writable;
+	GError		 *actual_error = NULL;
+
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_async_return_if_fail (metadata != NULL, context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get metadata details, "
+				  "metadata type:'%s'",
+				  metadata);
+
+	def = tracker_ontology_get_field_by_name (metadata);
+	if (!def) {
+		tracker_dbus_request_failed (request_id,
+					     &actual_error,
+					     "Metadata name '%s' is invalid or unrecognized",
+					     metadata);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
+	}
+
+	field_type = tracker_field_get_data_type (def);
+
+	type = g_strdup (tracker_field_type_to_string (field_type));
+	is_embedded = tracker_field_get_embedded (def);
+	is_writable = !tracker_field_get_embedded (def);
+
+	dbus_g_method_return (context, type, is_embedded, is_writable);
+	g_free (type);
+
+	tracker_dbus_request_success (request_id);
+}
+
+void
+tracker_metadata_get_registered_types (TrackerMetadata	      *object,
+				       const gchar	      *service_type,
+				       DBusGMethodInvocation  *context,
+				       GError		     **error)
+{
+	guint		     request_id;
+	gchar		   **values = NULL;
+	const gchar	    *requested = NULL;
+	GSList		    *registered = NULL;
+	GError		    *actual_error = NULL;
+
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_async_return_if_fail (service_type != NULL, context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get registered metadata types, "
+				  "service_type:'%s'",
+				  service_type);
+
+	if (strcmp (service_type, "*") != 0 &&
+	    !tracker_ontology_service_is_valid (service_type)) {
+		tracker_dbus_request_failed (request_id,
+					     &actual_error,
+					     "Service_Type '%s' is invalid or has not been implemented yet",
+					     service_type);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
+	}
+
+	requested = (strcmp (service_type, "*") == 0 ? NULL : service_type);
+
+	registered = tracker_ontology_get_field_names_registered (requested);
+
+	values = tracker_gslist_to_string_list (registered);
+
+	g_slist_foreach (registered, (GFunc) g_free, NULL);
+	g_slist_free (registered);
+
+	dbus_g_method_return (context, values);
+
+	if (values) {
+		g_strfreev (values);
+	}
+
+	tracker_dbus_request_success (request_id);
+}
+
+void
+tracker_metadata_get_registered_classes (TrackerMetadata	*object,
+					 DBusGMethodInvocation	*context,
+					 GError		       **error)
+{
+	guint		     request_id;
+	gchar		   **values = NULL;
+	GSList		    *registered = NULL;
+
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get registered classes");
+
+	registered = tracker_ontology_get_service_names_registered ();
+
+	values = tracker_gslist_to_string_list (registered);
+
+	g_slist_foreach (registered, (GFunc) g_free, NULL);
+	g_slist_free (registered);
+
+	dbus_g_method_return (context, values);
+
+	if (values) {
+		g_strfreev (values);
+	}
+
+	tracker_dbus_request_success (request_id);
+}
+
+void
+tracker_metadata_get_unique_values (TrackerMetadata	   *object,
+				    const gchar		   *service_type,
+				    gchar		  **fields,
+				    const gchar		   *query_condition,
+				    gboolean		    order_desc,
+				    gint		    offset,
+				    gint		    max_hits,
+				    DBusGMethodInvocation  *context,
+				    GError		  **error)
+{
+	TrackerDBResultSet *result_set = NULL;
+	guint		    request_id;
+
+	GPtrArray	   *values = NULL;
+
+	GError		   *actual_error = NULL;
+
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_async_return_if_fail (service_type != NULL, context);
+	tracker_dbus_async_return_if_fail (fields != NULL, context);
+	tracker_dbus_async_return_if_fail (query_condition != NULL, context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get unique values, "
+				  "service type:'%s', query '%s'",
+				  service_type,
+				  query_condition);
+
+	result_set = tracker_data_search_get_unique_values (service_type, fields,
+							    query_condition,
+							    order_desc,
+							    offset,
+							    max_hits,
+							    &actual_error);
+
+	if (actual_error) {
+		tracker_dbus_request_failed (request_id, &actual_error, NULL);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
+	}
+
+	values = tracker_dbus_query_result_to_ptr_array (result_set);
+
+	dbus_g_method_return (context, values);
+
+	tracker_dbus_results_ptr_array_free (&values);
+
+	if (result_set) {
+		g_object_unref (result_set);
+	}
+
+	tracker_dbus_request_success (request_id);
+}
+
+void
+tracker_metadata_get_unique_values_with_count (TrackerMetadata	      *object,
+					       const gchar	      *service_type,
+					       gchar		     **fields,
+					       const gchar	      *query_condition,
+					       const gchar	      *count_field,
+					       gboolean		       order_desc,
+					       gint		       offset,
+					       gint		       max_hits,
+					       DBusGMethodInvocation  *context,
+					       GError		     **error)
+{
+	TrackerDBResultSet *result_set = NULL;
+	guint		    request_id;
+	GPtrArray	   *values = NULL;
+	GError		   *actual_error = NULL;
+
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_async_return_if_fail (service_type != NULL, context);
+	tracker_dbus_async_return_if_fail (fields != NULL, context);
+	tracker_dbus_async_return_if_fail (query_condition != NULL, context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get unique values, "
+				  "service type:'%s', query '%s'"
+				  "count field :'%s'",
+				  service_type,
+				  query_condition,
+				  count_field);
+
+	result_set = 
+		tracker_data_search_get_unique_values_with_count (service_type,
+								  fields,
+								  query_condition,
+								  count_field,
+								  order_desc,
+								  offset,
+								  max_hits,
+								  &actual_error);
+	
+	if (actual_error) {
+		tracker_dbus_request_failed (request_id, &actual_error, NULL);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
+	}
+
+	values = tracker_dbus_query_result_to_ptr_array (result_set);
+
+	dbus_g_method_return (context, values);
+
+	tracker_dbus_results_ptr_array_free (&values);
+
+	if (result_set) {
+		g_object_unref (result_set);
+	}
+
+	tracker_dbus_request_success (request_id);
+}
+
+void
+tracker_metadata_get_unique_values_with_count_and_sum (TrackerMetadata	      *object,
+						       const gchar	      *service_type,
+						       gchar		     **fields,
+						       const gchar	      *query_condition,
+						       const gchar	      *count_field,
+						       const gchar            *sum_field,
+						       gboolean		       order_desc,
+						       gint		       offset,
+						       gint		       max_hits,
+						       DBusGMethodInvocation  *context,
+						       GError		     **error)
+{
+	TrackerDBResultSet *result_set = NULL;
+	guint		    request_id;
+	GPtrArray	   *values = NULL;
+	GError		   *actual_error = NULL;
+
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_async_return_if_fail (service_type != NULL, context);
+	tracker_dbus_async_return_if_fail (fields != NULL, context);
+	tracker_dbus_async_return_if_fail (query_condition != NULL, context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get unique values with count and sum, "
+				  "service type:'%s', query '%s', "
+				  "count field :'%s', "
+				  "sum field :'%s'",
+				  service_type,
+				  query_condition,
+				  count_field,
+				  sum_field);
+
+	result_set = 
+		tracker_data_search_get_unique_values_with_count_and_sum (service_type,
+									  fields,
+									  query_condition,
+									  count_field,
+									  sum_field,
+									  order_desc,
+									  offset,
+									  max_hits,
+									  &actual_error);
+
+	if (actual_error) {
+		tracker_dbus_request_failed (request_id, &actual_error, NULL);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
+	}
+
+	values = tracker_dbus_query_result_to_ptr_array (result_set);
+
+	dbus_g_method_return (context, values);
+
+	tracker_dbus_results_ptr_array_free (&values);
+
+	if (result_set) {
+		g_object_unref (result_set);
+	}
+
+	tracker_dbus_request_success (request_id);
+}
+
+void
+tracker_metadata_get_sum (TrackerMetadata	 *object,
+			  const gchar		 *service_type,
+			  const gchar		 *field,
+			  const gchar		 *query_condition,
+			  DBusGMethodInvocation  *context,
+			  GError		**error)
+{
+	guint   request_id;
+	gint    sum;
+	GError *actual_error = NULL;
+
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_async_return_if_fail (service_type != NULL, context);
+	tracker_dbus_async_return_if_fail (field != NULL, context);
+	tracker_dbus_async_return_if_fail (query_condition != NULL, context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get sum, "
+				  "service type:'%s', field '%s', query '%s'",
+				  service_type,
+				  field,
+				  query_condition);
+
+	sum = tracker_data_search_get_sum (service_type,
+					   field,
+					   query_condition,
+					   &actual_error);
+
+	if (actual_error) {
+		tracker_dbus_request_failed (request_id, &actual_error, NULL);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
+	}
+
+	dbus_g_method_return (context, sum);
+
+	tracker_dbus_request_success (request_id);
+}
+
+void
+tracker_metadata_get_count (TrackerMetadata	   *object,
+			    const gchar		   *service_type,
+			    const gchar		   *field,
+			    const gchar		   *query_condition,
+			    DBusGMethodInvocation  *context,
+			    GError		  **error)
+{
+	guint	request_id;
+	gint    count;
+
+	GError *actual_error = NULL;
+
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_async_return_if_fail (service_type != NULL, context);
+	tracker_dbus_async_return_if_fail (field != NULL, context);
+	tracker_dbus_async_return_if_fail (query_condition != NULL, context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get count, "
+				  "service type:'%s', field '%s', query '%s'",
+				  service_type,
+				  field,
+				  query_condition);
+
+	count = tracker_data_search_get_count (service_type,
+					       field,
+					       query_condition,
+					       &actual_error);
+
+	if (actual_error) {
+		tracker_dbus_request_failed (request_id, &actual_error, NULL);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
+	}
+
+	dbus_g_method_return (context, count);
+
+	tracker_dbus_request_success (request_id);
+}
+

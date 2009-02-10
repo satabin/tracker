@@ -2,15 +2,64 @@
 # Process this file with autoconf to produce a configure script.
 # This file is part of Tracker.
 
-AC_PREREQ(2.59c)
-AC_INIT([tracker],[0.6.6],[tracker-list@gnome.org])
+AC_PREREQ(2.59)
 
-AC_CONFIG_SRCDIR([src/trackerd/trackerd.c])
-AM_INIT_AUTOMAKE([dist-bzip2])
+# Making releases:
+#   TRACKER_MICRO_VERSION += 1;
+#   TRACKER_INTERFACE_AGE += 1;
+#   TRACKER_BINARY_AGE += 1;
+# if any functions have been added, set TRACKER_INTERFACE_AGE to 0.
+# if backwards compatibility has been broken,
+# set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
+m4_define([tracker_major_version], [0])
+m4_define([tracker_minor_version], [6])
+m4_define([tracker_micro_version], [90])
+m4_define([tracker_interface_age], [0])
+m4_define([tracker_binary_age],
+          [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
+m4_define([tracker_version],
+          [tracker_major_version.tracker_minor_version.tracker_micro_version])
+# This is the X.Y used in -llibtracker-FOO-X.Y
+m4_define([tracker_api_version], [0.6])
+
+# Define a string for the earliest version that this release has
+# backwards binary compatibility with for all interfaces a module
+# might. Unless we add module-only API with lower stability
+# guarantees, this should be unchanged until we break binary compat
+# for Tracker.
+#
+# TRACKER_BINARY_VERSION=$TRACKER_MAJOR_VERSION.$TRACKER_MINOR_VERSION.$LT_CURRENT
+m4_define([tracker_binary_version], [0.6.90])
+
+AC_INIT([tracker], [tracker_version],
+        [http://bugzilla.gnome.org/enter_bug.cgi?product=tracker],
+	[tracker])
+
+AC_CONFIG_SRCDIR([src/trackerd/tracker-main.c])
+
+AM_INIT_AUTOMAKE(no-define)
+AM_CONFIG_HEADER(config.h)
+
+IDT_COMPILE_WARNINGS
+
+TRACKER_MAJOR_VERSION=tracker_major_version
+TRACKER_MINOR_VERSION=tracker_minor_version
+TRACKER_MICRO_VERSION=tracker_micro_version
+TRACKER_INTERFACE_AGE=tracker_interface_age
+TRACKER_BINARY_AGE=tracker_binary_age
+TRACKER_VERSION=tracker_version
+TRACKER_API_VERSION=tracker_api_version
+TRACKER_BINARY_VERSION=tracker_binary_version
+AC_SUBST(TRACKER_MAJOR_VERSION)
+AC_SUBST(TRACKER_MINOR_VERSION)
+AC_SUBST(TRACKER_MICRO_VERSION)
+AC_SUBST(TRACKER_INTERFACE_AGE)
+AC_SUBST(TRACKER_BINARY_AGE)
+AC_SUBST(TRACKER_API_VERSION)
+AC_SUBST(TRACKER_VERSION)
+AC_SUBST(TRACKER_BINARY_VERSION)
 
 AC_SUBST(PACKAGE_URL, [http://www.tracker-project.org])
-
-CFLAGS="$CFLAGS"
 
 # Checks for programs.
 AC_PROG_CC
@@ -19,13 +68,17 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LIBTOOL
 
+CFLAGS="$CFLAGS"
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([fcntl.h sitdlib.h string.h sys/time.h unistd.h linux/unistd.h])
 
-AC_CHECK_HEADER([zlib.h], [], [AC_MSG_ERROR([You must have zlib.h and zlib installed])])
+AC_CHECK_HEADER([zlib.h], 
+		[], 
+		[AC_MSG_ERROR([You must have zlib.h and zlib installed])])
 
-dnl can posix_fadvise be used
+# Can posix_fadvise be used
 AC_CHECK_DECLS(posix_fadvise, [], [], [
 #define _XOPEN_SOURCE 600
 #include <fcntl.h>])
@@ -34,50 +87,110 @@ AC_CHECK_DECLS(posix_fadvise, [], [], [
 AC_CHECK_FUNCS([posix_fadvise])
 AC_CHECK_FUNCS([getline])
 
-dnl Library Checks
-DBUS_REQUIRED=0.60
-GLIB_REQUIRED=2.14.0
-PANGO_REQUIRED=1.0.0
-GMIME_REQUIRED=2.1.0
+# Check for defines we expect
+AC_TRY_COMPILE(,
+	[
+#include "stdio.h"
+printf ("%s", __FUNCTION__);
+	],
+	have_function=yes,
+	have_function=no,
+)
 
-PKG_CHECK_MODULES(GLIB2, [ glib-2.0 >= $GLIB_REQUIRED ])
+if test "x$have_function" = "xno" ; then
+   AC_DEFINE(__FUNCTION__, 
+   	     __func__, 
+   	     [Defined for compilers not supporting __FUNCTION__])
+fi
+
+# Library required versions
+DBUS_REQUIRED=0.60
+GLIB_REQUIRED=2.16.0
+PANGO_REQUIRED=1.0.0
+QDBM_REQUIRED=1.8
+GMIME_REQUIRED=2.1.0
+LIBXML2_REQUIRED=0.6
+HAL_REQUIRED=0.5
+GDKPIXBUF_REQUIRED=2.12.0
+UNAC_REQUIRED=1.0.0
+POPPLER_GLIB_REQUIRED=0.4.5
+CAIRO_REQUIRED=1.0
+GDK_REQUIRED=1.0
+LIBEXIF_REQUIRED=0.6
+LIBGSF_REQUIRED=1.13
+EXEMPI_REQUIRED=1.99.2
+HILDON_THUMBNAIL_REQUIRED=3.0.10
+EVO_REQUIRED=2.25.5
+EDS_REQUIRED=2.25.5
+
+# Library Checks
+PKG_CHECK_MODULES(GLIB2, [glib-2.0 >= $GLIB_REQUIRED])
 AC_SUBST(GLIB2_CFLAGS)
 AC_SUBST(GLIB2_LIBS)
 
-# Check for gthread 2.0
-PKG_CHECK_MODULES(GTHREAD, [ gthread-2.0 >= $GLIB_REQUIRED ])
+# Check for GThread 2.0
+PKG_CHECK_MODULES(GTHREAD, [gthread-2.0 >= $GLIB_REQUIRED])
 AC_SUBST(GTHREAD_CFLAGS)
 AC_SUBST(GTHREAD_LIBS)
 
-# Check for gobject 2.0
-PKG_CHECK_MODULES(GOBJECT, [ gobject-2.0 >= $GLIB_REQUIRED ])
+# Check for GObject 2.0
+PKG_CHECK_MODULES(GOBJECT, [gobject-2.0 >= $GLIB_REQUIRED])
 AC_SUBST(GOBJECT_CFLAGS)
 AC_SUBST(GOBJECT_LIBS)
 
-# Check for gmodule 2.0
-PKG_CHECK_MODULES(GMODULE, [ gmodule-2.0 >= $GLIB_REQUIRED ])
+# Check for GModule 2.0
+PKG_CHECK_MODULES(GMODULE, [gmodule-2.0 >= $GLIB_REQUIRED])
 AC_SUBST(GMODULE_CFLAGS)
 AC_SUBST(GMODULE_LIBS)
 
-#Check for pango
-PKG_CHECK_MODULES(PANGO, [ pango >= $PANGO_REQUIRED ])
+PKG_CHECK_MODULES(GIO, [gio-2.0 >= $GLIB_REQUIRED])
+AC_SUBST(GIO_CFLAGS)
+AC_SUBST(GIO_LIBS)
+
+# Check for Pango
+PKG_CHECK_MODULES(PANGO, [pango >= $PANGO_REQUIRED])
 AC_SUBST(PANGO_CFLAGS)
 AC_SUBST(PANGO_LIBS)
 
 # Check for GMime
-PKG_CHECK_MODULES(GMIME, [ gmime-2.0 >= $GMIME_REQUIRED ])
+PKG_CHECK_MODULES(GMIME, [gmime-2.0 >= $GMIME_REQUIRED])
 AC_SUBST(GMIME_CFLAGS)
 AC_SUBST(GMIME_LIBS)
 
 # Check for Dbus 0.50 or higher
-PKG_CHECK_MODULES(DBUS, [ dbus-1 >= $DBUS_REQUIRED dbus-glib-1 >= $DBUS_REQUIRED ])
+PKG_CHECK_MODULES(DBUS, [dbus-1 >= $DBUS_REQUIRED dbus-glib-1 >= $DBUS_REQUIRED])
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 
 # Check for libpng 1.2 or higher
-PKG_CHECK_MODULES(LIBPNG, [ libpng >= 1.2 ])
+PKG_CHECK_MODULES(LIBPNG, [libpng >= 1.2])
 AC_SUBST(LIBPNG_CFLAGS)
 AC_SUBST(LIBPNG_LIBS)
+
+# Check for GConf
+PKG_CHECK_MODULES(GCONF, [gconf-2.0 >= 2.2.0], have_gconf=yes, have_gconf=no)
+AC_SUBST(GCONF_CFLAGS)
+AC_SUBST(GCONF_LIBS)
+
+AM_CONDITIONAL(HAVE_GCONF, test "$have_gconf" = "yes")
+
+# Check for Raptor
+PKG_CHECK_MODULES(RAPTOR, [raptor], have_raptor=yes, have_raptor=no)
+AC_SUBST(RAPTOR_CFLAGS)
+AC_SUBST(RAPTOR_LIBS)
+
+if test x$have_raptor == "xyes"; then
+  AC_DEFINE(HAVE_RAPTOR, 1, [Raptor RDF parsers])
+fi
+
+# Check we have the DBUS binding tool we need
+AC_PATH_PROG(DBUSBINDINGTOOL, dbus-binding-tool)
+if test -z $DBUSBINDINGTOOL; then
+   AC_MSG_ERROR([Could not find 'dbus-binding-tool'])
+fi
+
+GLIB_GENMARSHAL=`$PKG_CONFIG glib-2.0 --variable=glib_genmarshal`
+AC_SUBST(GLIB_GENMARSHAL)
 
 ####################################################################
 # DBus Service
@@ -85,7 +198,8 @@ AC_SUBST(LIBPNG_LIBS)
 
 dnl DBus services dir
 AC_ARG_WITH([session_bus_services_dir],
-            AS_HELP_STRING([--with-session-bus-services-dir], [Path to DBus services directory]))
+            AS_HELP_STRING([--with-session-bus-services-dir], 
+	                   [Path to DBus services directory]))
 
 if test "x$with_session_bus_services_dir" = "x" ; then
    services_dir="`pkg-config --variable session_bus_services_dir dbus-1`"
@@ -102,253 +216,336 @@ AC_SUBST(DBUS_SERVICES_DIR)
 ####################################################################
 
 AC_ARG_ENABLE([deskbar_applet],
-              AS_HELP_STRING([--enable-deskbar-applet=ARG], [Enable support for deskbar applet (handler, module, auto)]),,
+              AS_HELP_STRING([--enable-deskbar-applet=ARG], 
+	      		     [enable support for Deskbar applet]),,
               [enable_deskbar_applet=auto])
 
 if test "x$enable_deskbar_applet" = "xauto" ; then
-	if pkg-config --atleast-version=2.19 deskbar-applet ; then
-		enable_deskbar_applet="module"
-	elif pkg-config --atleast-version=2.16 deskbar-applet ; then
-		enable_deskbar_applet="handler"
-	else
-		enable_deskbar_applet="no"
-	fi
+   if pkg-config --atleast-version=2.19 deskbar-applet ; then
+      enable_deskbar_applet="module"
+   elif pkg-config --atleast-version=2.16 deskbar-applet ; then
+      enable_deskbar_applet="handler"
+   else
+      enable_deskbar_applet="no"
+   fi
 fi
 
 AM_CONDITIONAL(USING_DESKBAR_HANDLER, test "x$enable_deskbar_applet" = "xhandler")
 AM_CONDITIONAL(USING_DESKBAR_MODULE, test "x$enable_deskbar_applet" = "xmodule")
 
 AC_ARG_WITH([deskbar_applet_dir],
-            AS_HELP_STRING([--with-deskbar-applet-dir], [Path to Deskbar handler/module directory]))
+            AS_HELP_STRING([--with-deskbar-applet-dir], 
+	    		   [Path to Deskbar handler/module directory]))
 
 if test "x$enable_deskbar_applet" = "xhandler" ; then
-	if test "x$with_deskbar_applet_dir" = "x" ; then
-		handler_dir="`pkg-config --variable handlersdir deskbar-applet`"
-	else
-		handler_dir="$with_deskbar_applet_dir"
-	fi
-	if test "x$handler_dir" = "x" ; then
-		handler_dir="\$(exec_prefix)/lib/deskbar-applet/handlers"
-	fi
+   if test "x$with_deskbar_applet_dir" = "x" ; then
+      handler_dir="`pkg-config --variable handlersdir deskbar-applet`"
+   else
+      handler_dir="$with_deskbar_applet_dir"
+   fi
+
+   if test "x$handler_dir" = "x" ; then
+      handler_dir="\$(exec_prefix)/lib/deskbar-applet/handlers"
+   fi
 fi
 
 DESKBAR_HANDLER_DIR="$handler_dir"
 AC_SUBST(DESKBAR_HANDLER_DIR)
 
 if test "x$enable_deskbar_applet" = "xmodule" ; then
-	if test "x$with_deskbar_applet_dir" = "x" ; then
-		module_dir="`pkg-config --variable modulesdir deskbar-applet`"
-	else
-		module_dir="$with_deskbar_applet_dir"
-	fi
-	if test "x$module_dir" = "x" ; then
-		module_dir="\$(exec_prefix)/lib/deskbar-applet/modules-2.20-compatible"
-	fi
+   if test "x$with_deskbar_applet_dir" = "x" ; then
+       module_dir="`pkg-config --variable modulesdir deskbar-applet`"
+   else
+       module_dir="$with_deskbar_applet_dir"
+   fi
+
+   if test "x$module_dir" = "x" ; then
+      module_dir="\$(exec_prefix)/lib/deskbar-applet/modules-2.20-compatible"
+   fi
 fi
 
 DESKBAR_MODULE_DIR="$module_dir"
 AC_SUBST(DESKBAR_MODULE_DIR)
 
 ####################################################################
-# Compiler warning checks
-####################################################################
-AC_ARG_ENABLE(warnings,
-              AS_HELP_STRING([--disable-warnings], [disable GCC warnings]),,
-              [enable_warnings=yes])
-
-dnl Only use -Wall if we have gcc
-if test "x$GCC" = "xyes"; then
-  if test "x$enable_warnings" = "xyes"; then
-     CFLAGS="\
-     -Wall \
-     -Wchar-subscripts \
-     -Wnested-externs \
-     -Wpointer-arith \
-     -Wsign-compare \
-     $CFLAGS"
-  fi
-fi
-
-####################################################################
-# Compiler generate debug code
-####################################################################
-
-
-AC_ARG_ENABLE([debug_code],
-              AS_HELP_STRING([--enable-debug-code], [build with debug symbols]),,
-              [enable_debug_code=no])
-
-if test "x$enable_debug_code" = "xyes"; then
-	CFLAGS="-g $CFLAGS"
-fi
-
-####################################################################
-# gettext/intltool support 
+# gettext/intltool support
 ####################################################################
 
 GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",
-                   [The gettext translation domain])
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [The gettext translation domain])
 
 AM_GLIB_GNU_GETTEXT
 IT_PROG_INTLTOOL([0.35.0])
 
 ####################################################################
-# check for newer glib (>= 2.12.0) for g_option_context_set_summary ()
-# availability
-# used as well in tracker-configuration.c and tracker-metadata-tile.c
-# for other methods availability
+# Should we build GLib based unit tests
 ####################################################################
-RECENT_GLIB=2.12.0
 
-PKG_CHECK_MODULES(glib2, [ glib-2.0 >= $RECENT_GLIB ],
-                  [have_recent_glib=yes], [have_recent_glib=no])
+AC_ARG_ENABLE(unit_tests,
+	      AS_HELP_STRING([--enable-unit-tests=@<:@no/yes/auto@:>@],
+			     [enable unit tests]), ,
+	      [enable_unit_tests=no])
 
-if test "$have_recent_glib" = "yes" ; then
-   AC_DEFINE(HAVE_RECENT_GLIB, 1, [Define if we have recent glib])
+if test "x$enable_unit_tests" != "xno" ; then
+   have_unit_tests=yes
+   have_xesam_glib=no
+
+   AC_DEFINE(HAVE_UNIT_TEST, 1, [Define if we have GLib unit test framework])
+
+   AC_PATH_PROG(sqlite_exec, sqlite3)
+   if test -z $sqlite_exec; then
+      AC_MSG_ERROR([Could not find 'sqlite3'])
+   fi
+
+   AC_PATH_PROG(gtester, gtester)
+   if test -z $gtester; then
+      AC_MSG_ERROR([Could not find 'gtester'])
+   else
+      PKG_CHECK_MODULES(XESAM_GLIB, 
+                        xesam-glib, 
+			[have_xesam_glib=yes], 
+			[have_xesam_glib=no])
+   fi
+else
+   have_unit_tests=no
+   have_xesam_glib=no
 fi
 
-AM_CONDITIONAL(HAVE_RECENT_GLIB, test "$have_recent_glib" = "yes")
-
-
+AM_CONDITIONAL(HAVE_UNIT_TESTS, test "x$have_unit_tests" = "xyes")
+AM_CONDITIONAL(HAVE_XESAM_GLIB, test "x$have_xesam_glib" = "xyes")
 
 ####################################################################
-# External QDBM check
+# QDBM check
 ####################################################################
 
-QDBM_REQUIRED=1.8
+AC_ARG_ENABLE(external-qdbm, 
+	      AS_HELP_STRING([--enable-external-qdbm],
+			     [enable external QDBM, not our imported version]),,
+              [enable_external_qdbm=no])
 
-AC_ARG_ENABLE(external_qdbm, 
-	AS_HELP_STRING(
-		[--enable-external-qdbm],
-		[build using system's qdbm]),,
-	[enable_external_qdbm=no])
+if test "x$enable_external_qdbm" != "xno"; then
+   PKG_CHECK_MODULES(QDBM, 
+   		     [qdbm >= $QDBM_REQUIRED],
+		     [have_external_qdbm=yes],
+		     [have_external_qdbm=no])
+
+   if test "x$have_external_qdbm" = "xyes"; then
+      AC_DEFINE(HAVE_EXTERNAL_QDBM, [], [Define if we have external QDBM])
+   fi
+else
+   QDBM_CFLAGS="-I\$(top_srcdir)/src/qdbm"
+   QDBM_LIBS="\$(top_builddir)/src/qdbm/libqdbm-private.la"
+   AC_DEFINE(HAVE_QDBM, [], [Define if we have QDBM (our imported version)])
+fi
 
 if test "x$enable_external_qdbm" = "xyes"; then
-	PKG_CHECK_MODULES(QDBM, [ qdbm >= $QDBM_REQUIRED ])
-	AM_CONDITIONAL(USING_EXTERNAL_QDBM, true)
-else
-	QDBM_CFLAGS="-I\$(top_srcdir)/src/qdbm"
-	QDBM_LIBS="\$(top_builddir)/src/qdbm/libqdbm-private.la"
-	AM_CONDITIONAL(USING_EXTERNAL_QDBM, false)
-fi		
+   if test "x$have_external_qdbm" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find QDBM >= $QDBM_REQUIRED.])
+   fi
+fi
 
 AC_SUBST(QDBM_CFLAGS)
 AC_SUBST(QDBM_LIBS)
 
-
+AM_CONDITIONAL(HAVE_EXTERNAL_QDBM, test "x$have_external_qdbm" = "xyes")
 
 ##################################################################
-# check for libxml2
+# Check for libxml2
 ##################################################################
-  
-LIBXML2_REQUIRED=0.6
 
-AC_ARG_ENABLE(libxml2, AS_HELP_STRING([--disable-libxml2],[Disable HTML/XML extractors (full-text will still be available)]),,[enable_libxml2=yes])
+AC_ARG_ENABLE(libxml2, 
+	      AS_HELP_STRING([--disable-libxml2],
+			     [disable HTML/XML extractors (full-text will still be available)]),,
+	      [enable_libxml2=yes])
+
 if test "x$enable_libxml2" = "xyes"; then
-	PKG_CHECK_MODULES(LIBXML2, [
-		libxml-2.0 >= $LIBXML2_REQUIRED],
-		[have_libxml2=yes] , [have_libxml2=no])
-	AC_SUBST(LIBXML2_CFLAGS)
-	AC_SUBST(LIBXML2_LIBS)
+   PKG_CHECK_MODULES(LIBXML2, 
+	 	    [libxml-2.0 >= $LIBXML2_REQUIRED],
+		    [have_libxml2=yes],
+		    [have_libxml2=no])
+   AC_SUBST(LIBXML2_CFLAGS)
+   AC_SUBST(LIBXML2_LIBS)
+
+   if test "x$have_libxml2" = "xyes"; then
+      AC_DEFINE(HAVE_LIBXML2, [], [Define if we have libxml2])
+   fi
 else
-	have_libxml2="no (disabled)"
+   have_libxml2="no  (disabled)"
 fi
 
-if test "x$have_libxml2" = "xyes"; then
-	AC_DEFINE(HAVE_LIBXML2, [], [Define if we have libxml2])
+if test "x$enable_libxml2" = "xyes"; then
+   if test "x$have_libxml2" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libxml2 >= $LIBXML2_REQUIRED.])
+   fi
 fi
 
 AM_CONDITIONAL(HAVE_LIBXML2, test "x$have_libxml2" = "xyes")
 
 ##################################################################
-# check for HAL
+# Check for HAL
 ##################################################################
-  
-AC_ARG_ENABLE(hal, AS_HELP_STRING([--disable-hal],[Disable HAL support for ac power detection]),,[enable_hal=yes])
+
+AC_ARG_ENABLE(hal, 
+	      AS_HELP_STRING([--disable-hal],
+			     [disable HAL support for AC power detection]),,
+	      [enable_hal=yes])
+
 if test "x$enable_hal" = "xyes"; then
-	PKG_CHECK_MODULES(HAL, [hal >= 0.5], [have_hal=yes] , [have_hal=no])
-	AC_SUBST(HAL_CFLAGS)
-	AC_SUBST(HAL_LIBS)
+   PKG_CHECK_MODULES(HAL, 
+    	  	     [hal >= $HAL_REQUIRED hal-storage], 
+		     [have_hal=yes] , 
+		     [have_hal=no])
+   AC_SUBST(HAL_CFLAGS)
+   AC_SUBST(HAL_LIBS)
+
+   if test "x$have_hal" = "xyes"; then
+      AC_DEFINE(HAVE_HAL, [], [Define if we have HAL])
+   fi
 else
-	have_hal="no (disabled)"
+   have_hal="no  (disabled)"
 fi
 
-if test "x$have_hal" = "xyes"; then
-	AC_DEFINE(HAVE_HAL, [], [Define if we have HAL])
+if test "x$enable_hal" = "xyes"; then
+   if test "x$have_hal" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find HAL >= $HAL_REQUIRED and HAL storage.])
+   fi
 fi
+
+AM_CONDITIONAL(HAVE_HAL, test "x$have_hal" = "xyes")
+
+##################################################################
+# Check for GdkPixbuf, needed for the MP3 album art extractor
+##################################################################
+
+AC_ARG_ENABLE(gdkpixbuf, 
+	      AS_HELP_STRING([--disable-gdkpixbuf],
+			     [disable GdkPixbuf support, (MP3 album art)]),,
+	      [enable_gdkpixbuf=auto])
+
+if test "x$enable_gdkpixbuf" != "xno"; then
+   PKG_CHECK_MODULES(GDKPIXBUF,
+		     [gdk-pixbuf-2.0 >= $GDKPIXBUF_REQUIRED],
+		     [have_gdkpixbuf=yes],
+		     [have_gdkpixbuf=no])
+   AC_SUBST(GDKPIXBUF_LIBS)
+   AC_SUBST(GDKPIXBUF_CFLAGS)
+
+   if test "x$have_gdkpixbuf" = "xyes"; then
+      AC_DEFINE(HAVE_GDKPIXBUF, [], [Define if we have GdkPixbuf])
+   fi
+else
+   have_gdkpixbuf="no  (disabled)"
+fi
+
+if test "x$enable_gdkpixbuf" = "xyes"; then
+   if test "x$have_gdkpixbuf" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find GdkPixbuf >= $GDKPIXBUF_REQUIRED.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_GDKPIXBUF, test "x$have_gdkpixbuf" = "xyes")
 
 ####################################################################
-# check for GStreamer or Xine. Otherwise, call an external video
+# Check for GStreamer or Xine. Otherwise, call an external video
 # player (Totem or MPlayer).
 ####################################################################
 
 AC_ARG_ENABLE(video-extractor,
-	AS_HELP_STRING(
-		[--enable-video-extractor=ARG],
-		[enables one of the (gstreamer, xine, external, auto) video extractor backends]),,
-	[enable_video_extractor=auto])
+	      AS_HELP_STRING([--enable-video-extractor=ARG],
+	                     [enables one of the (gstreamer, xine, external, auto) video extractor backends]),,
+              [enable_video_extractor=auto])
 
-PKG_CHECK_MODULES(GSTREAMER, 
-	[gstreamer-0.10 >= 0.10.0],
-	[have_libgstreamer=yes] , [have_libgstreamer=no])
+PKG_CHECK_MODULES(GSTREAMER,
+		  [gstreamer-0.10 >= 0.10.12 gstreamer-tag-0.10 >= 0.10.12],
+		  [have_libgstreamer=yes],
+		  [have_libgstreamer=no])
+
 AC_SUBST(GSTREAMER_CFLAGS)
 AC_SUBST(GSTREAMER_LIBS)
 
-PKG_CHECK_MODULES(XINE, 
-	[libxine >= 1.0],
-	[have_libxine=yes] , [have_libxine=no])
+PKG_CHECK_MODULES(XINE,
+		  [libxine >= 1.0],
+		  [have_libxine=yes],
+		  [have_libxine=no])
+
 AC_SUBST(XINE_CFLAGS)
 AC_SUBST(XINE_LIBS)
 
-
 if test "x$enable_video_extractor" = "xauto"; then
-	if test "$have_libgstreamer" = "yes"; then
-		videos_handler="GStreamer"
-		videos_are_handled="yes"
-	elif test "$have_libxine" = "yes"; then
-		videos_handler="Xine"
-		videos_are_handled="yes"
-	else
-		videos_are_handled="?"
-		videos_handler="An external video player will be called"
-	fi
+   if test "$have_libgstreamer" = "yes"; then
+      have_video_handler_app="GStreamer"
+      have_video_handler="yes"
+   elif test "$have_libxine" = "yes"; then
+      have_video_handler_app="Xine"
+      have_video_handler="yes"
+   else
+      have_video_handler="?"
+      have_video_handler_app="An external video player will be called"
+   fi
 elif test "x$enable_video_extractor" = "xgstreamer"; then
-	if test "$have_libgstreamer" = "yes"; then
-		videos_handler="GStreamer"
-		videos_are_handled="yes"
-	else
-		AC_MSG_ERROR([***Gstreamer requested but not found - exiting!])
-	fi
+   if test "$have_libgstreamer" = "yes"; then
+      have_video_handler_app="GStreamer"
+      have_video_handler="yes"
+   else
+      AC_MSG_ERROR([***Gstreamer requested but not found - exiting!])
+   fi
 elif test "x$enable_video_extractor" = "xxine"; then
-	if test "$have_libxine" = "yes"; then
-		videos_handler="Xine"
-		videos_are_handled="yes"
-	else
-		AC_MSG_ERROR([***libxine requested but not found - exiting!])
-	fi
+   if test "$have_libxine" = "yes"; then
+      have_video_handler_app="Xine"
+      have_video_handler="yes"
+   else
+      AC_MSG_ERROR([***libxine requested but not found - exiting!])
+   fi
 else
-	videos_are_handled="?"
-	videos_handler="An external video player will be called"
-fi
-if test "$videos_handler" = "GStreamer"; then
-	AC_DEFINE(HAVE_GSTREAMER, [], [Define if we have GStreamer])
-	AM_CONDITIONAL(HAVE_GSTREAMER, true)
-	AM_CONDITIONAL(HAVE_LIBXINE, false)
-	AM_CONDITIONAL(USING_EXTERNAL_VIDEO_PLAYER, false)
-elif test "$videos_handler" = "Xine"; then
-	AC_DEFINE(HAVE_LIBXINE, [], [Define if we have Libxine])
-	AM_CONDITIONAL(HAVE_LIBXINE, true)
-	AM_CONDITIONAL(HAVE_GSTREAMER, false)
-	AM_CONDITIONAL(USING_EXTERNAL_VIDEO_PLAYER, false)
-else
-	AC_DEFINE(USING_EXTERNAL_VIDEO_PLAYER, [], [Define that Tracker will try to use external video players])
-	AM_CONDITIONAL(USING_EXTERNAL_VIDEO_PLAYER, true)
-	AM_CONDITIONAL(HAVE_GSTREAMER, false)
-	AM_CONDITIONAL(HAVE_LIBXINE, false)
+   have_video_handler="?"
+   have_video_handler_app="An external video player will be called"
 fi
 
+if test "$have_video_handler_app" = "GStreamer"; then
+   AC_DEFINE(HAVE_GSTREAMER, [], [Define if we have GStreamer])
+   AM_CONDITIONAL(HAVE_GSTREAMER, true)
+   AM_CONDITIONAL(HAVE_LIBXINE, false)
+   AM_CONDITIONAL(USING_EXTERNAL_VIDEO_PLAYER, false)
+elif test "$have_video_handler_app" = "Xine"; then
+   AC_DEFINE(HAVE_LIBXINE, [], [Define if we have Libxine])
+   AM_CONDITIONAL(HAVE_LIBXINE, true)
+   AM_CONDITIONAL(HAVE_GSTREAMER, false)
+   AM_CONDITIONAL(USING_EXTERNAL_VIDEO_PLAYER, false)
+else
+   AC_DEFINE(USING_EXTERNAL_VIDEO_PLAYER, [], [Define that Tracker will try to use external video players])
+   AM_CONDITIONAL(USING_EXTERNAL_VIDEO_PLAYER, true)
+   AM_CONDITIONAL(HAVE_GSTREAMER, false)
+   AM_CONDITIONAL(HAVE_LIBXINE, false)
+fi
+
+##################################################################
+# Check for Helixbin for GStreamer
+##################################################################
+
+AC_ARG_ENABLE(gstreamer-helix, 
+	      AS_HELP_STRING([--enable-gstreamer-helix],
+			     [enable GStreamer helixbin extractor (Real Media)]),,
+	      [enable_gst_helix=no])
+
+if test "x$enable_gst_helix" != "xno"; then
+   if test "x$have_libgstreamer" = "xyes"; then 
+      have_gst_helix="yes"
+   fi
+else
+   have_gst_helix="no  (disabled)"
+fi
+
+if test "x$enable_gst_helix" = "xyes"; then
+   if test "x$have_gst_helix" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find GStreamer Helix Bin])
+   fi
+   if test "x$have_libgstreamer" != "xyes"; then
+      AC_MSG_ERROR([GStreamer is not found/used but GStreamer Helix Bin requested])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_GST_HELIX, test "x$have_gst_helix" = "xyes")
 
 ####################################################################
 # Windows check
@@ -372,279 +569,174 @@ if test "$native_win32" = "yes" ; then
 fi
 
 ####################################################################
+#  libinotify
+####################################################################
+
+have_inotify=no
+AC_CHECK_HEADERS([sys/inotify.h],[have_inotify=yes])
+
+AM_CONDITIONAL(HAVE_INOTIFY, test "$have_inotify" = "yes")
+
+if test "$have_inotify" = "yes" ; then
+   AC_DEFINE(HAVE_INOTIFY, 1, [Define if we have inotify])
+fi
+
+####################################################################
 #  SQLite check
 ####################################################################
 
-SQLITE_REQUIRED=3.4
+SQLITE_REQUIRED=3.5
 
-PKG_CHECK_MODULES(SQLITE3, [ sqlite3 >= $SQLITE_REQUIRED ])
+PKG_CHECK_MODULES(SQLITE3, [sqlite3 >= $SQLITE_REQUIRED])
 
 AC_SUBST(SQLITE3_CFLAGS)
 AC_SUBST(SQLITE3_LIBS)
 
+##################################################################
+# Enable UNAC support?
+##################################################################
 
+AC_ARG_ENABLE(unac, 
+	      AS_HELP_STRING([--disable-unac],
+			     [disable UNAC support, required for stripping accents]),,
+	      [enable_unac=auto])
 
-###############################################################################
-# Check for file monitor backends
-###############################################################################
+if test "x$enable_unac" != "xno"; then
+   PKG_CHECK_MODULES(UNAC,
+		     [unac >= $UNAC_REQUIRED],
+		     [have_unac=yes],
+		     [have_unac=no])
+   AC_SUBST(UNAC_LIBS)
+   AC_SUBST(UNAC_CFLAGS)
 
-FAM_LIBS=
-inotify_support=no
-inotify_linux=no
-inotify_header=none
-fam_support=no
-fam_type=none
-
-AM_CONDITIONAL(HAVE_INOTIFY, false)
-AM_CONDITIONAL(HAVE_INOTIFY_LINUX, false)
-AM_CONDITIONAL(HAVE_FAM, false)
-
-AC_ARG_ENABLE(file-monitoring,
-	AS_HELP_STRING(
-		[--enable-file-monitoring=ARG],
-		[enables one of the (inotify, fam, polling, auto) file monitoring backends]),,
-	enable_file_monitoring=auto)
-
-
-AC_CHECK_HEADERS([sys/inotify.h],
-		 [
-		 inotify_support=yes
-		 inotify_linux=no
-		 ])
-
-AC_CHECK_HEADERS([linux/inotify.h],
-		 [
-		 inotify_linux=yes
-		 inotify_support=yes
-		 ])
-
-AC_CHECK_LIB(fam, FAMOpen,
-		[AC_CHECK_HEADERS(fam.h,
-		[
-		fam_support=yes
-		fam_type=fam
-		],[fam_support=no])],
-		[fam_support=no])
-
-PKG_CHECK_MODULES(GAMIN, 
-		gamin,
-		[
-		fam_support=yes
-		fam_type=gamin
-		], 
-		[
-		fam_support=no
-		])
-
-if test "x$enable_file_monitoring" = "xauto"; then
-	if test "$inotify_support"  = "yes"; then
-		primary_backend="inotify"
-		if test "$inotify_linux" = "yes"; then
-			inotify_header="linux/inotify.h"
-		else
-			inotify_header="sys/inotify.h"
-		fi
-
-	elif test "$fam_support" = "yes"; then
-		if test "$fam_type" = "gamin"; then
-			primary_backend="gamin"
-		else
-			primary_backend="fam"
-		fi
-	else
-		if test "$native_win32" = "yes"; then
-			primary_backend="win32"
-		else
-			primary_backend="polling only"
-		fi
-	fi
-elif test "x$enable_file_monitoring" = "xinotify"; then
-	if test "$inotify_support" = "no"; then
-		AC_MSG_ERROR([***inotify requested but not found - exiting!])
-	else
-		primary_backend="inotify"
-		if test "$inotify_linux" = "yes"; then
-			inotify_header="linux/inotify.h"
-		else
-			inotify_header="sys/inotify.h"
-		fi
-	fi
-elif test "x$enable_file_monitoring" = "xfam"; then
-	if test "$fam_support" = "no"; then
-		AC_MSG_ERROR([***fam requested but not found - exiting!])
-	else
-		if test "$fam_type" = "gamin"; then
-			primary_backend="gamin"
-		else
-			primary_backend="fam"
-		fi
-	fi
+   if test "x$have_unac" = "xyes"; then
+      AC_DEFINE(HAVE_UNAC, [], [Define if we have UNAC for accent stripping])
+   fi
 else
-	if test "$native_win32" = "yes"; then
-		primary_backend="win32"
-	else
-		primary_backend="polling only"
-	fi
+   have_unac="no  (disabled)"
 fi
 
-if test "$primary_backend" = "inotify"; then
-	AC_DEFINE(HAVE_INOTIFY, [], [Define if we have inotify])
-	AM_CONDITIONAL(HAVE_INOTIFY, true)
-	if test "$inotify_linux" = "yes"; then
-			AC_DEFINE(HAVE_INOTIFY_LINUX, [], 
-			[
-			Define if we have inotify and header is linux/inotify.h
-			])
-			AM_CONDITIONAL(HAVE_INOTIFY_LINUX, true)
-	fi
-elif test "$primary_backend" = "gamin"; then 
-	AC_DEFINE(HAVE_FAM, [], [Define if we have FAM])
-	AM_CONDITIONAL(HAVE_FAM, true)
-	FAM_LIBS="-lgamin-1"
-	AC_SUBST(FAM_LIBS)
-elif test "$primary_backend" = "fam"; then
-	AC_DEFINE(HAVE_FAM, [], [Define if we have FAM])
-	AM_CONDITIONAL(HAVE_FAM, true)
-	FAM_LIBS="-lfam"
-	AC_SUBST(FAM_LIBS)
+if test "x$enable_unac" = "xyes"; then
+   if test "x$have_unac" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find UNAC >= $UNAC_REQUIRED.])
+   fi
 fi
 
+AM_CONDITIONAL(HAVE_UNAC, test "x$have_unac" = "xyes")
 
 ##################################################################
 # Enable building libtracker-gtk?
 ##################################################################
+
 LIBTRACKERGTK_GTK_REQUIRED=2.8.20
 
+AC_ARG_ENABLE([libtrackergtk], 
+              AS_HELP_STRING([--disable-libtrackergtk], 
+	      		     [disable libtrackergtk]),,
+	      [enable_libtrackergtk=yes])
 
-AC_ARG_ENABLE([libtrackergtk], AS_HELP_STRING([--disable-libtrackergtk], [Disable libtrackergtk]),,[enable_libtrackergtk=yes])
 if test "x$enable_libtrackergtk" != "xno" ; then
-
-   	libtrackergtk_modules="\
+   libtrackergtk_modules="\
         	glib-2.0    >=  $GLIB_REQUIRED, \
         	gtk+-2.0    >=  $LIBTRACKERGTK_GTK_REQUIRED, \
         	dbus-1      >=  $DBUS_REQUIRED, \
         	dbus-glib-1 >=  $DBUS_REQUIRED"
 
-	PKG_CHECK_MODULES(LIBTRACKERGTK, [$libtrackergtk_modules],[enable_libtrackergtk=yes] , [enable_libtrackergtk=no])
+   PKG_CHECK_MODULES(LIBTRACKERGTK, 
+		     [$libtrackergtk_modules],
+		     [enable_libtrackergtk=yes], 
+		     [enable_libtrackergtk=no])
 
-    	AC_SUBST([LIBTRACKERGTK_CFLAGS])
-    	AC_SUBST([LIBTRACKERGTK_LIBS])
-
-	
+   AC_SUBST([LIBTRACKERGTK_CFLAGS])
+   AC_SUBST([LIBTRACKERGTK_LIBS])
 else
-	enable_libtrackergtk="no (disabled)"
+   enable_libtrackergtk="no  (disabled)"
 fi
 
 AM_CONDITIONAL(ENABLE_LIBTRACKERGTK, test "$enable_libtrackergtk" = "yes")
 
-
 ##################################################################
 # Enable building tracker-applet notification icon?
 ##################################################################
+
 LIBNOTIFY_GTK2_REQUIRED=2.10
 LIBNOTIFY_GLIB_REQUIRED=2.10
 LIBNOTIFY_REQUIRED=0.4.3
 
-AC_ARG_ENABLE([trackerapplet], AS_HELP_STRING([--disable-trackerapplet], [Disable trackerapplet]),,[enable_trackerapplet=yes])
-if test "x$enable_trackerapplet" != "xno" ; then
+AC_ARG_ENABLE([tracker-applet], 
+	      AS_HELP_STRING([--disable-tracker-applet], 
+	                     [disable tracker-applet]),,
+	      [enable_tracker_applet=yes])
 
-   	trackerapplet_modules="\
+if test "x$enable_tracker_applet" != "xno" ; then
+   tracker_applet_modules="\
         	glib-2.0    >=  $LIBNOTIFY_GLIB_REQUIRED, \
         	gtk+-2.0    >=  $LIBNOTIFY_GTK2_REQUIRED, \
         	dbus-1      >=  $DBUS_REQUIRED, \
         	dbus-glib-1 >=  $DBUS_REQUIRED, \
 		libnotify   >=  $LIBNOTIFY_REQUIRED"
 
-	PKG_CHECK_MODULES(TRACKERAPPLET, [$trackerapplet_modules],[enable_trackerapplet=yes] , [enable_trackerapplet=no])
+   PKG_CHECK_MODULES(TRACKER_APPLET, 
+   		     [$tracker_applet_modules],
+		     [enable_tracker_applet=yes], 
+   		     [enable_tracker_applet=no])
 
-    	AC_SUBST([TRACKERAPPLET_CFLAGS])
-    	AC_SUBST([TRACKERAPPLET_LIBS])
-
-	
+   AC_SUBST([TRACKER_APPLET_CFLAGS])
+   AC_SUBST([TRACKER_APPLET_LIBS])
 else
-	enable_trackerapplet="no (disabled)"
+   enable_tracker_applet="no  (disabled)"
 fi
 
-AM_CONDITIONAL(ENABLE_TRACKERAPPLET, test "$enable_trackerapplet" = "yes")
-
-
-##################################################################
-# Enable UNAC support?
-##################################################################
-
-
-AC_ARG_ENABLE([unac], AS_HELP_STRING([--disable-unac], [Disable unac accent stripper support]),,[enable_unac=yes])
-
-if test "x$enable_unac" != "xno" ; then
-
-  	PKG_CHECK_MODULES(UNAC, [unac >= 1.0.0],[enable_unac=yes] , [enable_unac=no])
-
-    	AC_SUBST([UNAC_CFLAGS])
-    	AC_SUBST([UNAC_LIBS])
-	
-else
-	enable_unac="no (disabled)"
-fi
-
-if test "$enable_unac" = "yes"; then
-	AC_DEFINE(HAVE_UNAC, [], [Define if we have unac lib])
-fi
-AM_CONDITIONAL(ENABLE_UNAC, test "$enable_unac" = "yes")
-
-
-
+AM_CONDITIONAL(ENABLE_TRACKER_APPLET, test "$enable_tracker_applet" = "yes")
 
 ##################################################################
-# check for GNOME/GTK dependencies to build tracker search tool (Gnome client)
+# Check for GNOME/GTK dependencies to build tracker search tool
 ##################################################################
 
 GTK_REQUIRED=2.8.0
 LIBGNOME_DESKTOP_REQUIRED=2.9.91
 LIBGNOME_REQUIRED=2.13.2
 LIBGNOMEUI_REQUIRED=2.13.7
-GNOMEVFS_REQUIRED=2.8.4
 
-AC_ARG_ENABLE(gui, AS_HELP_STRING([--disable-gui], [Disable building of the tracker-search-tool]),,[enable_gui=yes])
-if test "x$enable_gui" = "xyes"; then
-	PKG_CHECK_MODULES(GNOME_UTILS, [
-        	gtk+-2.0 >= $GTK_REQUIRED
-	        libgnome-2.0 >= $LIBGNOME_REQUIRED
-        	libgnomeui-2.0 >= $LIBGNOMEUI_REQUIRED],
-	        [have_gnome=yes] , [have_gnome=no])
-	#there is the slight possibility to have gnome-vfs and not libgnome for example
-	#so we should check and not overwrite have_gnome
-	if test "$have_gnome" = "yes"; then 
-		PKG_CHECK_MODULES(GNOMEVFS, [
-        		gnome-vfs-2.0 >= $GNOMEVFS_REQUIRED
-		        gnome-vfs-module-2.0 >= $GNOMEVFS_REQUIRED],
-		        [have_gnome=yes] , [have_gnome=no])
-	fi
-	if test "$have_gnome" = "yes"; then
-		PKG_CHECK_MODULES(GNOMEDESKTOP, [
-		        gnome-desktop-2.0 >= $LIBGNOME_DESKTOP_REQUIRED],
-        		[have_gnome=yes] , [have_gnome=no])
-	fi
-	AC_SUBST(GNOME_UTILS_CFLAGS)
-	AC_SUBST(GNOME_UTILS_LIBS)
-	AC_SUBST(GNOMEVFS_CFLAGS)
-	AC_SUBST(GNOMEVFS_LIBS)
-	AC_SUBST(GNOMEDESKTOP_CFLAGS)
-	AC_SUBST(GNOMEDESKTOP_LIBS)
+AC_ARG_ENABLE(tracker-search-tool, 
+              AS_HELP_STRING([--disable-tracker-search-tool], 
+	      		     [disable tracker-search-tool]),,
+	      [enable_tracker_search_tool=yes])
+
+if test "x$enable_tracker_search_tool" = "xyes"; then
+   PKG_CHECK_MODULES(GNOME_UTILS, 
+		     [gtk+-2.0 >= $GTK_REQUIRED
+	              libgnome-2.0 >= $LIBGNOME_REQUIRED
+		      libgnomeui-2.0 >= $LIBGNOMEUI_REQUIRED],
+	             [have_gnome=yes], 
+		     [have_gnome=no])
+
+   if test "$have_gnome" = "yes"; then
+      PKG_CHECK_MODULES(GNOMEDESKTOP, 
+			[gnome-desktop-2.0 >= $LIBGNOME_DESKTOP_REQUIRED],
+        		[have_gnome=yes], 
+			[have_gnome=no])
+   fi
+
+   AC_SUBST(GNOME_UTILS_CFLAGS)
+   AC_SUBST(GNOME_UTILS_LIBS)
+
+   AC_SUBST(GNOMEDESKTOP_CFLAGS)
+   AC_SUBST(GNOMEDESKTOP_LIBS)
 else
-	have_gnome="no (disabled)"
+   have_gnome="no  (disabled)"
 fi
 
-
-# do not build if libtracker-gtk is not being built
+# Do not build if libtracker-gtk is not being built
 if test "x$enable_libtrackergtk" != "xyes"; then
-	have_gnome="no (disabled as libtracker-gtk is not being built)"	
+   have_gnome="no  (disabled as libtracker-gtk is not being built)"
 fi
 
 AM_CONDITIONAL(HAVE_GNOME, test "$have_gnome" = "yes")
+
 if test "$have_gnome" = "yes"; then
    GNOME_COMMON_INIT
 fi
-
 
 ##################################################################
 # Checks for tracker-preferences
@@ -653,217 +745,572 @@ fi
 PREFERENCES_GLADE_REQUIRED=2.5
 PREFERENCES_GTK_REQUIRED=2.8.0
 
-AC_ARG_ENABLE([preferences],
-              AS_HELP_STRING([--disable-preferences], [Disable the preferences dialog]),,
-              [enable_preferences=yes])
+AC_ARG_ENABLE([tracker-preferences],
+              AS_HELP_STRING([--disable-tracker-preferences], 
+	                     [disable the tracker preferences dialog]),,
+              [enable_tracker_preferences=yes])
 
-if test "x$enable_preferences" != "xno" ; then
+if test "x$enable_tracker_preferences" != "xno" ; then
+   PKG_CHECK_MODULES(GLIB2, 
+   	             [glib-2.0 >= $PREFERENCES_GLIB_REQUIRED],
+		     [enable_preference=yes], 
+		     [enable_preference=no])
 
-   	PKG_CHECK_MODULES(GLIB2, [ glib-2.0 >= $PREFERENCES_GLIB_REQUIRED ],[enable_preference=yes] , [enable_preference=no])
-   	AC_SUBST([GLIB2_CFLAGS])
-   	AC_SUBST([GLIB2_LIBS])
+   AC_SUBST([GLIB2_CFLAGS])
+   AC_SUBST([GLIB2_LIBS])
 
-	if test "$enable_preferences" = "yes"; then 
-		PKG_CHECK_MODULES(GTK2, [ gtk+-2.0 >= $PREFERENCES_GTK_REQUIRED ],[enable_preference=yes] , [enable_preference=no])
-		AC_SUBST([GTK2_CFLAGS])
-   		AC_SUBST([GTK2_LIBS])
-	fi
+   if test "$enable_tracker_preferences" = "yes"; then
+      PKG_CHECK_MODULES(GTK2, 
+      			[gtk+-2.0 >= $PREFERENCES_GTK_REQUIRED],
+			[enable_preference=yes], 
+			[enable_preference=no])
 
-	if test "$enable_preferences" = "yes"; then 
+      AC_SUBST([GTK2_CFLAGS])
+      AC_SUBST([GTK2_LIBS])
+   fi
 
-	   	PKG_CHECK_MODULES(LIBGLADE, [ libglade-2.0 >= $PREFERENCES_GLADE_REQUIRED ], [enable_preferences=yes], [enable_preferences=no])
-		AC_SUBST([LIBGLADE_CFLAGS])
-   		AC_SUBST([LIBGLADE_LIBS])
-	fi
+   if test "$enable_tracker_preferences" = "yes"; then
+      PKG_CHECK_MODULES(LIBGLADE,  
+      		        [libglade-2.0 >= $PREFERENCES_GLADE_REQUIRED], 
+			[enable_tracker_preferences=yes], 
+			[enable_tracker_preferences=no])
+
+      AC_SUBST([LIBGLADE_CFLAGS])
+      AC_SUBST([LIBGLADE_LIBS])
+   fi
 else
-	enable_preferences="no (disabled)"
+   enable_tracker_preferences="no  (disabled)"
 fi
 
-AM_CONDITIONAL(ENABLE_PREFERENCES, test "$enable_preferences" = "yes")
+AM_CONDITIONAL(ENABLE_TRACKER_PREFERENCES, test "$enable_tracker_preferences" = "yes")
 
 ##################################################################
-# check for poppler's glib bingings
+# Check for poppler's glib bingings
 ##################################################################
 
-POPPLER_GLIB_REQUIRED=0.4.5
-CAIRO_REQUIRED=1.0
-GDK_REQUIRED=1.0
+AC_ARG_ENABLE(poppler-glib, 
+	      AS_HELP_STRING([--disable-poppler-glib], 
+	      		     [disable extractor for PDF data]),,
+	      [enable_poppler_glib=auto])
 
-AC_ARG_ENABLE(pdf, AS_HELP_STRING([--disable-pdf], [Disable PDF data extractor]),,[enable_pdf=yes])
-if test "x$enable_pdf" = "xyes"; then
-	PKG_CHECK_MODULES(POPPLER_GLIB, [
-		poppler-glib >= $POPPLER_GLIB_REQUIRED
-		cairo >= $CAIRO_REQUIRED
-		gdk-2.0 >= $GDK_REQUIRED],
-		[have_poppler=yes] , [have_poppler=no])
-	AC_SUBST(POPPLER_GLIB_CFLAGS)
-	AC_SUBST(POPPLER_GLIB_LIBS)
+if test "x$enable_poppler_glib" != "xno" ; then
+   PKG_CHECK_MODULES(POPPLER_GLIB, 
+   		     [poppler-glib >= $POPPLER_GLIB_REQUIRED
+		      cairo >= $CAIRO_REQUIRED
+		      gdk-2.0 >= $GDK_REQUIRED],
+		     [have_poppler_glib=yes],
+		     [have_poppler_glib=no])
+
+   AC_SUBST(POPPLER_GLIB_CFLAGS)
+   AC_SUBST(POPPLER_GLIB_LIBS)
+
+   if test "x$have_poppler_glib" = "xyes"; then
+      AC_DEFINE(HAVE_POPPLER_GLIB, [], [Define if we have poppler-glib])
+   fi
 else
-	have_poppler="no (disabled)"
+   have_poppler_glib="no  (disabled)"
 fi
-AM_CONDITIONAL(HAVE_POPPLER_GLIB, test "$have_poppler" = "yes")
-test "$have_poppler" = "yes" && AC_DEFINE(HAVE_POPPLER, [], [Define if we have poppler])
+
+if test "x$enable_poppler_glib" = "xyes"; then
+   if test "x$have_poppler_glib" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find poppler-glib >= $POPPLER_GLIB_REQUIRED.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_POPPLER_GLIB, test "x$have_poppler_glib" = "xyes")
 
 ##################################################################
-# check for libexif
+# Check for libexif
 ##################################################################
 
-LIBEXIF_REQUIRED=0.6
+AC_ARG_ENABLE(libexif, 
+              AS_HELP_STRING([--disable-libexif],
+		             [disable extractor for exif data]),,
+	      [enable_libexif=auto])
 
-AC_ARG_ENABLE(exif, AS_HELP_STRING([--disable-exif],[Disable exif data extractor]),,[enable_exif=yes])
-if test "x$enable_exif" = "xyes"; then
-	PKG_CHECK_MODULES(LIBEXIF, [
-		libexif >= $LIBEXIF_REQUIRED],
-		[have_libexif=yes] , [have_libexif=no])
-	AC_SUBST(LIBEXIF_CFLAGS)
-	AC_SUBST(LIBEXIF_LIBS)
+if test "x$enable_libexif" != "xno" ; then
+   PKG_CHECK_MODULES(LIBEXIF, 
+	             [libexif >= $LIBEXIF_REQUIRED],
+		     [have_libexif=yes],
+		     [have_libexif=no])
+
+   AC_SUBST(LIBEXIF_CFLAGS)
+   AC_SUBST(LIBEXIF_LIBS)
+
+   if test "x$have_libexif" = "xyes"; then
+      AC_DEFINE(HAVE_LIBEXIF, [], [Define if we have libexif])
+   fi
 else
-	have_libexif="no (disabled)"
+   have_libexif="no  (disabled)"
 fi
-AM_CONDITIONAL(HAVE_LIBEXIF, test "$have_libexif" = "yes")
-test "$have_libexif" = "yes" && AC_DEFINE(HAVE_LIBEXIF, [], [Define if we have libexif])
+
+if test "x$enable_libexif" = "xyes"; then
+   if test "x$have_libexif" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libexif >= $LIBEXIF_REQUIRED.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_EXIF, test "x$have_libexif" = "xyes")
 
 ##################################################################
-# check for libgsf
+# Check for libgsf
 ##################################################################
 
-LIBGSF_REQUIRED=1.13
+AC_ARG_ENABLE(libgsf, 
+              AS_HELP_STRING([--disable-libgsf], 
+	                     [disable extractor for GSF data]),,
+	      [enable_libgsf=auto])
 
-AC_ARG_ENABLE(gsf, AS_HELP_STRING([--disable-gsf], [Disable GSF data extractor]),,[enable_gsf=yes])
-if test "x$enable_gsf" = "xyes"; then
-	PKG_CHECK_MODULES(LIBGSF,[
-		libgsf-1 >= $LIBGSF_REQUIRED],
-		[have_libgsf=yes] , [have_libgsf=no])
-	AC_SUBST(LIBGSF_CFLAGS)
-	AC_SUBST(LIBGSF_LIBS)
+if test "x$enable_libgsf" != "xno" ; then
+   PKG_CHECK_MODULES(LIBGSF,
+                     [libgsf-1 >= $LIBGSF_REQUIRED],
+		     [have_libgsf=yes],
+		     [have_libgsf=no])
+
+   AC_SUBST(LIBGSF_CFLAGS)
+   AC_SUBST(LIBGSF_LIBS)
+
+   if test "x$have_libgsf" = "xyes"; then
+      AC_DEFINE(HAVE_LIBGSF, [], [Define if we have libgsf])
+   fi
 else
-	have_libgsf="no (disabled)"
+   have_libgsf="no  (disabled)"
 fi
-AM_CONDITIONAL(HAVE_LIBGSF, test "$have_libgsf" = "yes")
-test "$have_libgsf" = "yes" && AC_DEFINE(HAVE_LIBGSF, [], [Define if we have libgsf])
+
+if test "x$enable_libgsf" = "xyes"; then
+   if test "x$have_libgsf" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libgsf >= $LIBGSF_REQUIRED.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_LIBGSF, test "x$have_libgsf" = "xyes")
+
+##################################################################
+# Check for libjpeg
+##################################################################
+
+# FIXME This should be package based. Unfortunately in several main
+# distros, it is not.
+
+OLD_CFLAGS="$CFLAGS"
+OLD_LIBS="$LIBS"
+CFLAGS=""
+LIBS=""
+
+AC_ARG_ENABLE(libjpeg, 
+	      AS_HELP_STRING([--disable-libjpeg], 
+	                     [disable extractor for JPEG data]),,
+	      [enable_libjpeg=auto])
+
+if test "x$enable_libjpeg" != "xno" ; then
+   AC_CHECK_HEADER(jpeglib.h,
+   AC_CHECK_LIB(jpeg, jpeg_CreateCompress))
+
+   have_libjpeg=${ac_cv_lib_jpeg_jpeg_CreateCompress:-no}
+
+   LIBJPEG_CFLAGS="$CFLAGS"
+   LIBJPEG_LIBS="$LIBS"
+
+   AC_SUBST(LIBJPEG_CFLAGS)
+   AC_SUBST(LIBJPEG_LIBS)
+
+   if test "x$have_libjpeg" = "xyes"; then
+      AC_DEFINE(HAVE_LIBJPEG, [], [Define if we have libjpeg])
+   fi
+else
+   have_libjpeg="no  (disabled)"
+fi
+
+if test "x$enable_libjpeg" = "xyes"; then
+   if test "x$have_libjpeg" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libjpeg >= $LIBJPEG_REQUIRED.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_LIBJPEG, test "x$have_libjpeg" = "xyes")
+
+CFLAGS="$OLD_CFLAGS"
+LIBS="$OLD_LIBS"
+
+##################################################################
+# Check for libtiff
+##################################################################
+
+# FIXME This should be package based. Unfortunately in several main
+# distros, it is not.
+
+OLD_CFLAGS="$CFLAGS"
+OLD_LIBS="$LIBS"
+CFLAGS=""
+LIBS=""
+
+AC_ARG_ENABLE(libtiff, 
+              AS_HELP_STRING([--disable-libtiff], 
+     	                     [disable extractor for TIFF data]),,
+	      [enable_libtiff=auto])
+
+if test "x$enable_libtiff" != "xno" ; then
+   AC_CHECK_HEADER(tiff.h,
+		   AC_CHECK_LIB(tiff, TIFFOpen))
+
+   have_libtiff=${ac_cv_lib_tiff_TIFFOpen:-no}
+
+   LIBTIFF_CFLAGS="$CFLAGS"
+   LIBTIFF_LIBS="$LIBS"
+
+   AC_SUBST(LIBTIFF_CFLAGS)
+   AC_SUBST(LIBTIFF_LIBS)
+
+   if test "x$have_libtiff" = "xyes"; then
+      AC_DEFINE(HAVE_LIBTIFF, [], [Define if we have libtiff])
+   fi
+else
+   have_libtiff="no  (disabled)"
+fi
+
+if test "x$enable_libtiff" = "xyes"; then
+   if test "x$have_libtiff" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libtiff >= $LIBTIFF_REQUIRED.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_LIBTIFF, test "x$have_libtiff" = "xyes")
+
+CFLAGS="$OLD_CFLAGS"
+LIBS="$OLD_LIBS"
 
 ####################################################################
 # Check ioprio support
 ####################################################################
 
-AC_MSG_CHECKING([[checking ioprio support]])
-ioprio_support=no
-AC_RUN_IFELSE([ AC_LANG_PROGRAM([[
-#include <stdlib.h>
-#include <errno.h> 
-#include <sys/syscall.h>
-#include <unistd.h>
-inline int ioprio_get (int which, int who)
-{
-	return syscall (__NR_ioprio_get, which, who);
-}
-   ]], [[
-exit(ioprio_get(1,0));
-   ]]) ], 
-   [ AC_DEFINE(IOPRIO_SUPPORT,[],[Define ioprio support]) ioprio_support=yes ])
-AC_MSG_RESULT([$ioprio_support])
+AC_MSG_CHECKING([[ioprio support]])
+have_ioprio=no
 
-#####################################################
+AC_RUN_IFELSE(
+[AC_LANG_PROGRAM([[
+	#include <stdlib.h>
+	#include <errno.h>
+	#include <sys/syscall.h>
+	#include <unistd.h>
+]], 
+[[
+        inline int ioprio_get (int which, int who) 
+	{
+	       return syscall (__NR_ioprio_get, which, who);
+	}
 
-##################################################################
-# check for exempi
-##################################################################
+	int main ()
+	{
+	       return ioprio_get (1, 0);
+	}
+]]
+)],
+[have_ioprio=yes],[])
 
-EXEMPI_REQUIRED=1.99.2
-
-AC_ARG_ENABLE(xmp, AS_HELP_STRING([--disable-xmp], [Disable XMP extraction]),,[enable_xmp=yes])
-if test "x$enable_xmp" = "xyes"; then
-	PKG_CHECK_MODULES(EXEMPI,[
-		exempi-2.0 >= $EXEMPI_REQUIRED],
-		[have_exempi=yes] , [have_exempi=no])
-	AC_SUBST(EXEMPI_CFLAGS)
-	AC_SUBST(EXEMPI_LIBS)
-else
-	have_exempi="no (disabled)"
+if test "$have_ioprio" = "yes" ; then
+   AC_DEFINE(HAVE_IOPRIO, 1, [Define if we have ioprio])
 fi
-AM_CONDITIONAL(HAVE_EXEMPI, test "$have_exempi" = "yes")
-test "$have_exempi" = "yes" && AC_DEFINE(HAVE_EXEMPI, [], [Define if we have exempi])
+
+AC_MSG_RESULT([$have_ioprio])
+
+##################################################################
+# Check for exempi
+##################################################################
+
+AC_ARG_ENABLE(exempi, 
+              AS_HELP_STRING([--disable-exempi], 
+	                     [disable extractor for XMP data]),,
+	      [enable_exempi=auto])
+
+if test "x$enable_exempi" != "xno" ; then
+   PKG_CHECK_MODULES(EXEMPI,
+		     [exempi-2.0 >= $EXEMPI_REQUIRED],
+		     [have_exempi=yes], 
+		     [have_exempi=no])
+
+   AC_SUBST(EXEMPI_CFLAGS)
+   AC_SUBST(EXEMPI_LIBS)
+
+   if test "x$have_exempi" = "xyes"; then
+      AC_DEFINE(HAVE_EXEMPI, [], [Define if we have exempi])
+   fi
+else
+   have_exempi="no  (disabled)"
+fi
+
+if test "x$enable_exempi" = "xyes"; then
+   if test "x$have_exempi" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find exempi >= $EXEMPI_REQUIRED.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_EXEMPI, test "x$have_exempi" = "xyes")
+
+####################################################################
+# Checking totem-pl-parser
+####################################################################
+
+AC_ARG_ENABLE(playlist, 
+	      AS_HELP_STRING([--disable-playlist],
+			     [disable playlist support]),,
+	      [enable_playlist=auto])
+
+if test "x$enable_playlist" != "xno" ; then
+   PKG_CHECK_MODULES(TOTEM_PL_PARSER, 
+    	  	     [totem-plparser], 
+		     [have_playlist=yes], 
+		     [have_playlist=no])
+
+   AC_SUBST(TOTEM_PL_PARSER_CFLAGS)
+   AC_SUBST(TOTEM_PL_PARSER_LIBS)
+
+   if test "x$have_playlist" = "xyes"; then
+      AC_DEFINE(HAVE_TOTEM_PL_PARSER, [], [Define if we have Totem PL parser])
+   fi
+else
+   have_playlist="no  (disabled)"
+fi
+
+if test "x$enable_playlist" = "xyes"; then
+   if test "x$have_playlist" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find Totem PL parser.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_TOTEM_PL_PARSER, test "x$have_playlist" = "xyes")
+
+##################################################################
+# Enable Evolution plugin support?
+##################################################################
+
+AC_ARG_ENABLE(evolution-plugin, 
+	      AS_HELP_STRING([--disable-evolution-plugin],
+			     [disable evolution plugin support]),,
+	      [enable_evolution_plugin=no])
+
+if test "x$enable_evolution_plugin" != "xno" ; then
+   PKG_CHECK_MODULES(EVOLUTION_PLUGIN, [
+   		     evolution-plugin >= $EVO_REQUIRED
+		     evolution-data-server-1.2 >= $EDS_REQUIRED], 
+		     have_evolution_plugin=yes, 
+		     have_evolution_plugin=no)
+
+   AC_SUBST(EVOLUTION_PLUGIN_CFLAGS)
+   AC_SUBST(EVOLUTION_PLUGIN_LIBS)
+
+   if test x$have_evolution_plugin == "xyes"; then
+      EVOLUTION_PLUGIN_INSTALL_DIR=`$PKG_CONFIG evolution-plugin --variable=plugindir`
+   else
+      EVOLUTION_PLUGIN_INSTALL_DIR=/dev/null
+   fi
+
+   AC_SUBST(EVOLUTION_PLUGIN_INSTALL_DIR)
+
+   if test "x$have_evolution_plugin" = "xyes"; then
+      AC_DEFINE(HAVE_EVOLUTION_PLUGIN, 1, [Define if we have Evolution plugin ])
+   fi
+else
+   have_evolution_plugin="no  (disabled)"
+fi
+
+if test "x$enable_evolution_plugin" = "xyes"; then
+   if test "x$have_evolution_plugin" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find Evolution plugin requirements (evolution-dev, evolution-data-server-dev).])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_EVOLUTION_PLUGIN, test "$have_evolution_plugin" = "yes")
+
+##################################################################
+# Enable SQLite FTS support?
+##################################################################
+
+AC_ARG_ENABLE([sqlite_fts],
+              AS_HELP_STRING([--enable-sqlite-fts], 
+	                     [enable SQLite FTS support]),,
+              [enable_sqlite_fts=no])
+
+if test "x$enable_sqlite_fts" == "xno" ; then
+   enable_sqlite_fts="no  (disabled)"
+fi
+
+AM_CONDITIONAL(ENABLE_SQLITE_FTS, test "$enable_sqlite_fts" = "yes")
+
+####################################################################
+# Checks for gtk-doc and docbook-tools
+####################################################################
+
+GTK_DOC_CHECK([1.8])
+
+AC_CHECK_PROG(DB2HTML, db2html, true, false)
+AM_CONDITIONAL(HAVE_DOCBOOK, $DB2HTML)
+
+##################################################################
+# Check for older tracker project files which can cause problems
+##################################################################
+
+old_exec_message=""
+old_data_message=""
+
+AC_CHECK_FILE("${prefix}/bin/trackerd", old_exec_trackerd=yes,,)
+AC_CHECK_FILE("${prefix}/bin/tracker-indexer", old_exec_tracker_indexer=yes,,)
+AC_CHECK_FILE("${prefix}/bin/tracker-extract", old_exec_tracker_extract=yes,,)
+AC_CHECK_FILE("${prefix}/bin/tracker-thumbnailer", old_exec_tracker_thumbnailer=yes,,)
+AC_CHECK_FILE("${DBUS_SERVICES_DIR}/tracker.service", old_data_dbus_service=yes,)
+AC_CHECK_FILE("${prefix}/share/tracker/tracker-introspect.xml", old_data_dbus_xml=yes,,)
+AC_CHECK_FILE("${prefix}/share/tracker/sqlite-service-stored-procs.sql", old_data_stored_procs=yes,,)
+
+if test "x$old_exec_trackerd" == "xyes" -o \
+        "x$old_exec_tracker_indexer" == "xyes" -o \
+        "x$old_exec_tracker_extract" == "xyes" -o \
+        "x$old_exec_tracker_thumbnailer" == "xyes"; then
+   old_exec_message="
+        Old Tracker executable files were found in your path.
+        (trackerd, tracker-indexer, tracker-thumbnailer, tracker-extract)"
+   old_file_action="
+	** These files will be removed as part of the installation **"
+fi
+
+if test "x$old_data_dbus_service" == "xyes" -o \
+        "x$old_data_dbus_xml" == "xyes" -o \
+        "x$old_data_stored_procs" == "xyes"; then
+   old_data_message="
+        Old Tracker data files were found in the prefix you are installing to."
+   old_file_action="
+	** These files will be removed as part of the installation **"
+fi
+
+AM_CONDITIONAL(OLD_EXEC_REMOVE_ALL, test -n "$old_exec_message")
+AM_CONDITIONAL(OLD_DATA_REMOVE_ALL, test -n "$old_data_message")
+
+##################################################################
+# Write generated files
+##################################################################
 
 AC_CONFIG_FILES([
-	Makefile
-	tracker.pc
-	trackerd.desktop.in
-	libtracker-gtk.pc
-	docs/Makefile
-	data/Makefile
-	data/languages/Makefile
-	data/icons/Makefile
+	data/db/Makefile
+	data/dbus/Makefile
 	data/icons/16x16/Makefile
 	data/icons/22x22/Makefile
 	data/icons/24x24/Makefile
 	data/icons/32x32/Makefile
 	data/icons/48x48/Makefile
+	data/icons/Makefile
 	data/icons/scalable/Makefile
+	data/languages/Makefile
+	data/libtracker-gtk.pc
+	data/Makefile
+	data/modules/Makefile
 	data/services/Makefile
-	filters/Makefile
+	data/tracker.pc
+	data/tracker-module-1.0.pc
+	docs/Makefile
+	docs/design/Makefile
+	docs/manpages/Makefile
+	docs/reference/Makefile
+	docs/reference/libtracker-common/Makefile
+	docs/reference/libtracker-common/version.xml
+	docs/reference/libtracker-module/Makefile
+	docs/reference/libtracker-module/version.xml
 	filters/application/Makefile
+	filters/Makefile
 	filters/text/Makefile
-	thumbnailers/Makefile
-	thumbnailers/application/Makefile
-	thumbnailers/image/Makefile
-	src/Makefile
+	Makefile
+	po/Makefile.in
+	python/deskbar-handler/Makefile
+	python/Makefile
+	src/libinotify/Makefile
 	src/libstemmer/Makefile
-	src/qdbm/Makefile
-	src/text-filters/Makefile
-	src/text-filters/ooo_converter/Makefile
-	src/tracker-extract/Makefile
-	src/tracker-thumbnailer/Makefile
-	src/trackerd/Makefile
-	src/libtracker/Makefile
+	src/libtracker-common/Makefile
+	src/libtracker-data/Makefile
+	src/libtracker-db/Makefile
 	src/libtracker-gtk/Makefile
+	src/libtracker/Makefile
+	src/Makefile
+	src/qdbm/Makefile
 	src/tracker-applet/Makefile
 	src/tracker-applet/tracker-applet.desktop.in
+	src/trackerd/Makefile
+	src/tracker-extract/Makefile
+	src/tracker-fts/Makefile
+	src/tracker-indexer/Makefile
+	src/tracker-indexer/modules/Makefile
+	src/tracker-preferences/Makefile
+	src/tracker-preferences/tracker-preferences.desktop.in
 	src/tracker-search-tool/Makefile
 	src/tracker-search-tool/tracker-search-tool.desktop.in
-	src/tracker-preferences/Makefile
-	src/tracker-preferences/tracker-preferences.desktop.in	
-	src/xdgmime/Makefile
-	po/Makefile.in
-	python/Makefile
-	python/deskbar-handler/Makefile
+	src/tracker-utils/Makefile
+	src/plugins/Makefile
+	src/plugins/evolution/Makefile
+	tests/common/Makefile
+	tests/libtracker-common/Makefile
+	tests/libtracker-db/Makefile
+	tests/Makefile
+	tests/scripts/dummy_data_start.sh
+	tests/scripts/dummy_data_stop.sh
+	tests/scripts/Makefile
+	tests/trackerd/Makefile
+	tests/trackerd/xesam/Makefile
+	tests/tracker-indexer/Makefile
+	tests/tracker-extract/Makefile
+	utils/Makefile
+	utils/qdbm/Makefile
+	utils/tracker-fts/Makefile
 ])
-
-AC_CONFIG_HEADERS([config.h])
 
 AC_OUTPUT
 
 echo "
-Tracker-$VERSION:
+Build Configuration:
 
-	prefix:					${prefix}
-	source code location:			${srcdir}
-	compiler:				${CC}
-	enable gcc warnings:			$enable_warnings
-	build with debug symbols:		$enable_debug_code
-	file monitor backend to be used:	$primary_backend
-	inotify header location:		$inotify_header
-	ioprio support:				$ioprio_support
+	Prefix:					${prefix}
+	Source code location:			${srcdir}
+	Compiler:				${CC}
+	Compiler Warnings:			$enable_compile_warnings
+
 	Win32:					$native_win32
-	HAL (battery detection) support:	$have_hal
-	unac accent stripper support:		$enable_unac
-	deskbar-applet support:			$enable_deskbar_applet
-	build search tool (GNOME):		$have_gnome
-	build preferences ui:			$enable_preferences
-	build libtracker-gtk:			$enable_libtrackergtk
-	tracker applet notification icon:	$enable_trackerapplet
 
-Metadata extractors:
+	Enable unit tests:			$have_unit_tests
+	Enable unac accent stripper:	  	$enable_unac
 
-	pdf:					$have_poppler
-	png:					yes
-	exif (jpeg):				$have_libexif
-	ms and openoffice (gsf):		$have_libgsf
-	video files:				$videos_are_handled ($videos_handler)
-	xml/html formats:			$have_libxml2
-	embedded/sidecar xmp:			$have_exempi
+	Support for file monitoring:           	gio (w/ libinotify: $have_inotify)
+	Support for ioprio:			$have_ioprio
+	Support for HAL:                    	$have_hal
 
-"
+Applications:
 
-echo "
-****WARNING**** : You must make sure a version of SQLite compiled with --enable-threadsafe is available otherwise expect pain!
+	Build with SQLite FTS support:		$enable_sqlite_fts
+
+	Build deskbar-applet:			$enable_deskbar_applet
+	Build tracker-search-tool:	        $have_gnome
+	Build tracker-preferences:		$enable_tracker_preferences
+	Build tracker-applet:	                $enable_tracker_applet
+	Build libtracker-gtk:			$enable_libtrackergtk
+
+Metadata Extractors:
+
+	Support PNG:				yes
+	Support PDF:				$have_poppler_glib
+	Support JPEG:				$have_libjpeg (xmp: $have_exempi, exif: $have_libexif)
+	Support TIFF:				$have_libtiff (xmp: $have_exempi, exif: yes)
+	Support MS & Open Office (gsf):	        $have_libgsf
+	Support XML / HTML formats:		$have_libxml2
+	Support embedded / sidecar XMP:		$have_exempi
+	Support video formats:			$have_video_handler ($have_video_handler_app)
+	Support MP3 album art (w/ GdkPixbuf):	$have_gdkpixbuf
+	Support Playlists (w/ Totem):           $have_playlist
+
+Plugins:
+
+	Evolution extracter (data-pull):	yes (old)
+	Evolution plugin    (data-push):	$have_evolution_plugin
+
+Warning:
+
+        You must make sure SQLite is compiled with --enable-threadsafe
+
+	$old_exec_message
+	$old_data_message
+	$old_file_action
+
 "

@@ -1,0 +1,152 @@
+<!-- ##### SECTION Title ##### -->
+Type Conversions
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION tracker_gint32_to_string ##### -->
+<para>
+
+</para>
+
+@i: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_gint_to_string ##### -->
+<para>
+
+</para>
+
+@i: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_glong_to_string ##### -->
+<para>
+
+</para>
+
+@i: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_gslist_copy_with_string_data ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_gslist_to_string_list ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_guint32_to_string ##### -->
+<para>
+
+</para>
+
+@i: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_guint_to_string ##### -->
+<para>
+
+</para>
+
+@i: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_boolean_to_string_gint ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_in_string_list ##### -->
+<para>
+
+</para>
+
+@str: 
+@strv: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_list_to_gslist ##### -->
+<para>
+
+</para>
+
+@strv: 
+@length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_list_to_string ##### -->
+<para>
+
+</para>
+
+@strv: 
+@length: 
+@sep: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_to_date ##### -->
+<para>
+
+</para>
+
+@date_string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_to_string_list ##### -->
+<para>
+
+</para>
+
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_to_uint ##### -->
+<para>
+
+</para>
+
+@s: 
+@ret: 
+@Returns: 
+
+

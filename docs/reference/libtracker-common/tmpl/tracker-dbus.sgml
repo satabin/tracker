@@ -1,0 +1,157 @@
+<!-- ##### SECTION Title ##### -->
+DBus
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION tracker_dbus_data_new ##### -->
+<para>
+
+</para>
+
+@arg1: 
+@arg2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_dbus_error_quark ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_dbus_get_next_request_id ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_dbus_gvalue_slice_free ##### -->
+<para>
+
+</para>
+
+@value: 
+
+
+<!-- ##### FUNCTION tracker_dbus_gvalue_slice_new ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_dbus_queue_gfile_to_strv ##### -->
+<para>
+
+</para>
+
+@queue: 
+@max: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_dbus_queue_str_to_strv ##### -->
+<para>
+
+</para>
+
+@queue: 
+@max: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_dbus_request_add_hook ##### -->
+<para>
+
+</para>
+
+@new: 
+@done: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_dbus_request_comment ##### -->
+<para>
+
+</para>
+
+@request_id: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION tracker_dbus_request_failed ##### -->
+<para>
+
+</para>
+
+@request_id: 
+@error: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION tracker_dbus_request_new ##### -->
+<para>
+
+</para>
+
+@request_id: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION tracker_dbus_request_remove_hook ##### -->
+<para>
+
+</para>
+
+@handler: 
+
+
+<!-- ##### FUNCTION tracker_dbus_request_success ##### -->
+<para>
+
+</para>
+
+@request_id: 
+
+
+<!-- ##### FUNCTION tracker_dbus_results_ptr_array_free ##### -->
+<para>
+
+</para>
+
+@ptr_array: 
+
+
+<!-- ##### FUNCTION tracker_dbus_slist_to_strv ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+

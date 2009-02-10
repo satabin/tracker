@@ -1,0 +1,54 @@
+<refentry id="libtracker-common-IO-Priority">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-common-IO-Priority.top_of_page">IO Priority</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-COMMON Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>IO Priority</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-common-IO-Priority.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-common/tracker-ioprio.h&gt;
+
+<link linkend="void">void</link>                <link linkend="tracker-ioprio-init">tracker_ioprio_init</link>                 (void);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-common-IO-Priority.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-common-IO-Priority.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="tracker-ioprio-init" role="function">
+<title>tracker_ioprio_init ()</title>
+<indexterm zone="tracker-ioprio-init"><primary>tracker_ioprio_init</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_ioprio_init                 (void);</programlisting>
+<para>
+
+</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

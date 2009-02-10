@@ -1,0 +1,164 @@
+<!-- ##### SECTION Title ##### -->
+File Operations
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION tracker_env_check_xdg_dirs ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_file_close ##### -->
+<para>
+
+</para>
+
+@fd: 
+@no_longer_needed: 
+
+
+<!-- ##### FUNCTION tracker_file_get_mime_type ##### -->
+<para>
+
+</para>
+
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_file_get_mtime ##### -->
+<para>
+
+</para>
+
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_file_get_path_and_name ##### -->
+<para>
+
+</para>
+
+@uri: 
+@path: 
+@name: 
+
+
+<!-- ##### FUNCTION tracker_file_get_size ##### -->
+<para>
+
+</para>
+
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_file_is_directory ##### -->
+<para>
+
+</para>
+
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_file_is_indexable ##### -->
+<para>
+
+</para>
+
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_file_is_valid ##### -->
+<para>
+
+</para>
+
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_file_open ##### -->
+<para>
+
+</para>
+
+@uri: 
+@readahead: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_file_unlink ##### -->
+<para>
+
+</para>
+
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_path_evaluate_name ##### -->
+<para>
+
+</para>
+
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_path_hash_table_filter_duplicates ##### -->
+<para>
+
+</para>
+
+@roots: 
+
+
+<!-- ##### FUNCTION tracker_path_is_in_path ##### -->
+<para>
+
+</para>
+
+@path: 
+@in_path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_path_list_filter_duplicates ##### -->
+<para>
+
+</para>
+
+@roots: 
+@basename_exception_prefix: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_path_remove ##### -->
+<para>
+
+</para>
+
+@uri: 
+
+

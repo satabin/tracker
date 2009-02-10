@@ -1,0 +1,150 @@
+<!-- ##### SECTION Title ##### -->
+Parser
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### TYPEDEF TrackerParser ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION tracker_parser_new ##### -->
+<para>
+
+</para>
+
+@language: 
+@max_word_length: 
+@min_word_length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_parser_free ##### -->
+<para>
+
+</para>
+
+@parser: 
+
+
+<!-- ##### FUNCTION tracker_parser_is_stop_word ##### -->
+<para>
+
+</para>
+
+@parser: 
+@word: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_parser_next ##### -->
+<para>
+
+</para>
+
+@parser: 
+@position: 
+@byte_offset_start: 
+@byte_offset_end: 
+@new_paragraph: 
+@stop_word: 
+@word_length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_parser_process_word ##### -->
+<para>
+
+</para>
+
+@parser: 
+@word: 
+@length: 
+@do_strip: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_parser_reset ##### -->
+<para>
+
+</para>
+
+@parser: 
+@txt: 
+@txt_size: 
+@delimit_words: 
+@enable_stemmer: 
+@enable_stop_words: 
+@parse_reserved_words: 
+
+
+<!-- ##### FUNCTION tracker_parser_text ##### -->
+<para>
+
+</para>
+
+@word_table: 
+@txt: 
+@weight: 
+@language: 
+@max_words_to_index: 
+@max_word_length: 
+@min_word_length: 
+@filter_words: 
+@delimit_words: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_parser_text_fast ##### -->
+<para>
+
+</para>
+
+@word_table: 
+@txt: 
+@weight: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_parser_text_into_array ##### -->
+<para>
+
+</para>
+
+@text: 
+@language: 
+@max_word_length: 
+@min_word_length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_parser_text_to_string ##### -->
+<para>
+
+</para>
+
+@txt: 
+@language: 
+@max_word_length: 
+@min_word_length: 
+@filter_words: 
+@filter_numbers: 
+@delimit: 
+@Returns: 
+
+

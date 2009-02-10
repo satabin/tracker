@@ -1,26 +1,27 @@
-SUBDIRS = languages icons services
+include $(top_srcdir)/Makefile.decl
 
-configdir = $(datadir)/tracker
+SUBDIRS = db dbus modules languages icons services
 
-config_DATA =	tracker-introspect.xml \
-		sqlite-tracker.sql \
-		sqlite-cache.sql \
-		sqlite-email.sql \
-		sqlite-service-stored-procs.sql \
-		sqlite-service-triggers.sql \
-		sqlite-tracker-triggers.sql \
-		sqlite-user-data.sql \
-		sqlite-stored-procs.sql \
-		sqlite-service.sql	\
-		sqlite-service-types.sql \
-		sqlite-metadata.sql 
+trackerd.desktop.in: trackerd.desktop.in.in
+	@sed -e "s|@libexecdir[@]|${libexecdir}|" \
+	     -e "s|@VERSION[@]|${VERSION}|" $< > $@
 
-servicedir       = $(DBUS_SERVICES_DIR)
-service_in_files = tracker.service.in
-service_DATA     = tracker.service
+autostartdir = $(sysconfdir)/xdg/autostart
+autostart_in_in_files = trackerd.desktop.in.in
+autostart_in_files = trackerd.desktop.in
+autostart_DATA = trackerd.desktop
 
-CLEANFILES = $(service_DATA)
-EXTRA_DIST = $(config_DATA) $(service_in_files)
+@INTLTOOL_DESKTOP_RULE@
 
-%.service: %.service.in
-	@sed -e "s|\@bindir\@|$(bindir)|" $< > $@
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = 			\
+	tracker.pc			\
+	tracker-module-1.0.pc
+
+if ENABLE_LIBTRACKERGTK
+pkgconfig_DATA += libtracker-gtk.pc
+endif
+
+CLEANFILES = $(autostart_DATA) $(autostart_in_files)
+
+EXTRA_DIST = $(autostart_in_in_files)

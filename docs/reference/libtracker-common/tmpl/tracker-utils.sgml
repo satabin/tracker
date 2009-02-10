@@ -1,0 +1,89 @@
+<!-- ##### SECTION Title ##### -->
+General
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### FUNCTION tracker_escape_string ##### -->
+<para>
+
+</para>
+
+@in: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_is_empty_string ##### -->
+<para>
+
+</para>
+
+@str: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_seconds_estimate_to_string ##### -->
+<para>
+
+</para>
+
+@seconds_elapsed: 
+@short_string: 
+@items_done: 
+@items_remaining: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_seconds_to_string ##### -->
+<para>
+
+</para>
+
+@seconds_elapsed: 
+@short_string: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_remove ##### -->
+<para>
+
+</para>
+
+@haystack: 
+@needle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_replace ##### -->
+<para>
+
+</para>
+
+@haystack: 
+@needle: 
+@replacement: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_throttle ##### -->
+<para>
+
+</para>
+
+@config: 
+@multiplier: 
+
+

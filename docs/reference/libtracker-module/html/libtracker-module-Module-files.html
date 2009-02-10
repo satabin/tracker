@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Module files</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Tracker Indexer Reference Manual">
+<link rel="up" href="ch01.html" title="Modules">
+<link rel="prev" href="ch01.html" title="Modules">
+<link rel="next" href="libtracker-module-Iteratable-files.html" title="Iteratable files">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="tracker-indexer.html" title="Part I. Overview">
+<link rel="chapter" href="ch01.html" title="Modules">
+<link rel="chapter" href="ch02.html" title="Metadata">
+<link rel="part" href="integrating-applications.html" title="Part II. Integrating Applications">
+<link rel="chapter" href="adding-categories.html" title="Adding Categories &amp; Properties">
+<link rel="chapter" href="writing-an-extractor.html" title="Writing An Extractor">
+<link rel="chapter" href="writing-an-indexer-module.html" title="Writing An Indexer Module">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch01.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Indexer Reference Manual</th>
+<td><a accesskey="n" href="libtracker-module-Iteratable-files.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libtracker-module-Module-files.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libtracker-module-Module-files.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libtracker-module-Module-files.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#libtracker-module-Module-files.derived-interfaces" class="shortcut">Known Derived Interfaces</a>
+                   | 
+                  <a href="#libtracker-module-Module-files.properties" class="shortcut">Properties</a></nobr></td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="libtracker-module-Module-files"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libtracker-module-Module-files.top_of_page"></a>Module files</span></h2>
+<p>Module files — Implementation of files for Tracker modules.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="libtracker-module-Module-files.synopsis"></a><h2>Synopsis</h2>
+<a name="TrackerModuleFile"></a><pre class="synopsis">
+
+#include &lt;libtracker-module/tracker-module-file.h&gt;
+
+typedef             <a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a>;
+<a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+>GFile</a>*              <a class="link" href="libtracker-module-Module-files.html#tracker-module-file-get-file" title="tracker_module_file_get_file ()">tracker_module_file_get_file</a>        (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);
+const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="libtracker-module-Module-files.html#tracker-module-file-get-service-type" title="tracker_module_file_get_service_type ()">tracker_module_file_get_service_type</a>
+                                                        (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libtracker-module-Module-files.html#tracker-module-file-get-uri" title="tracker_module_file_get_uri ()">tracker_module_file_get_uri</a>         (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libtracker-module-Module-files.html#tracker-module-file-get-text" title="tracker_module_file_get_text ()">tracker_module_file_get_text</a>        (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);
+<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a>* <a class="link" href="libtracker-module-Module-files.html#tracker-module-file-get-metadata" title="tracker_module_file_get_metadata ()">tracker_module_file_get_metadata</a> (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="libtracker-module-Module-files.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----TrackerModuleFile
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="libtracker-module-Module-files.derived-interfaces"></a><h2>Known Derived Interfaces</h2>
+<p>
+TrackerModuleFile is required by
+ <a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable">TrackerModuleIteratable</a>.</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="libtracker-module-Module-files.properties"></a><h2>Properties</h2>
+<pre class="synopsis">
+  "<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile--file" title='The "file" property'>file</a>"                     <a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+>GFile</a>*                : Read / Write / Construct Only
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="libtracker-module-Module-files.description"></a><h2>Description</h2>
+<p>
+TrackerModuleFile represents a file, providing the necessary
+methods to provide information that Tracker can index. Files
+could also implement the TrackerModuleIteratable interface for
+files that could contain a set individual entities that could
+be relevant to Tracker (such as mail summaries)
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="libtracker-module-Module-files.details"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="TrackerModuleFile"></a><h3>TrackerModuleFile</h3>
+<pre class="programlisting">typedef struct TrackerModuleFile TrackerModuleFile;
+</pre>
+<p>
+Representation of a given file, used by the Tracker indexer to index contents.
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="tracker-module-file-get-file"></a><h3>tracker_module_file_get_file ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+>GFile</a>*              tracker_module_file_get_file        (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);</pre>
+<p>
+Returns a <a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+><span class="type">GFile</span></a> corresponding to the file managed by <a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile"><span class="type">TrackerModuleFile</span></a>.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> A <a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile"><span class="type">TrackerModuleFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a <a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+><span class="type">GFile</span></a>, this object should not be unreferenced.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="tracker-module-file-get-service-type"></a><h3>tracker_module_file_get_service_type ()</h3>
+<pre class="programlisting">const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        tracker_module_file_get_service_type
+                                                        (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);</pre>
+<p>
+Returns the service type for <em class="parameter"><code>file</code></em> in the current
+state (See <a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable"><span class="type">TrackerModuleIteratable</span></a>).</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> A <a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile"><span class="type">TrackerModuleFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The service type name.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="tracker-module-file-get-uri"></a><h3>tracker_module_file_get_uri ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              tracker_module_file_get_uri         (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);</pre>
+<p>
+Returns a unique URI for <em class="parameter"><code>file</code></em> in the current state (See <a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable"><span class="type">TrackerModuleIteratable</span></a>)</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> A <a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile"><span class="type">TrackerModuleFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> A newly allocated string containing the URI for the element.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="tracker-module-file-get-text"></a><h3>tracker_module_file_get_text ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              tracker_module_file_get_text        (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);</pre>
+<p>
+Extracts all the text that <em class="parameter"><code>file</code></em> could contain in the current
+state (see <a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable"><span class="type">TrackerModuleIteratable</span></a>) or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> if the element
+does not contain any text.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> A <a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile"><span class="type">TrackerModuleFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> A newly allocated string containing valid UTF-8, or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="tracker-module-file-get-metadata"></a><h3>tracker_module_file_get_metadata ()</h3>
+<pre class="programlisting"><a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a>* tracker_module_file_get_metadata (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);</pre>
+<p>
+Extracts all the metadata corresponding to <em class="parameter"><code>file</code></em> in the current
+state (see <a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable"><span class="type">TrackerModuleIteratable</span></a>) or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> if the element should not
+be indexed.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> A <a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile"><span class="type">TrackerModuleFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> A newly created <a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata"><span class="type">TrackerModuleMetadata</span></a> containing all
+         the extracted metadata, or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="libtracker-module-Module-files.property-details"></a><h2>Property Details</h2>
+<div class="refsect2" lang="en">
+<a name="TrackerModuleFile--file"></a><h3>The <code class="literal">"file"</code> property</h3>
+<pre class="programlisting">  "file"                     <a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+>GFile</a>*                : Read / Write / Construct Only</pre>
+<p>
+The GFile that corresponds to the TrackerModuleFile
+</p>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="libtracker-module-Module-files.see-also"></a><h2>See Also</h2>
+<p>
+TrackerModuleIteratable
+</p>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
+</body>
+</html>

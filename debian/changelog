@@ -8,6 +8,9 @@ tracker (0.6.90-1) UNRELEASED; urgency=low
     - Removed, merged upstream.
   * debian/patches/03-prefer_odt2txt.patch
     - Removed, merged upstream.
+  * debian/patches/01-secure_tmpdir.patch
+    - Update to the latest upstream changes.
+    - Output the resulting text file to stdout.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 10 Feb 2009 07:22:13 +0100
 

@@ -1,22 +1,67 @@
+include $(top_srcdir)/Makefile.decl
+
 if HAVE_GNOME
-tracker_gui_dir = tracker-search-tool
+build_tracker_search_tool = tracker-search-tool
 endif
 
-if !USING_EXTERNAL_QDBM 
-qdbm_dir = qdbm
+if HAVE_INOTIFY
+build_libinotify = libinotify
 endif
 
-if ENABLE_PREFERENCES
-tracker_preferences_dir = tracker-preferences
+if !HAVE_EXTERNAL_QDBM
+build_qdbm = qdbm
+endif
+
+if ENABLE_SQLITE_FTS
+build_sqlite_fts = tracker-fts
+endif
+
+if ENABLE_TRACKER_PREFERENCES
+build_tracker_preferences = tracker-preferences
+endif
+
+if ENABLE_TRACKER_APPLET
+build_tracker_applet = tracker-applet
 endif
 
 if ENABLE_LIBTRACKERGTK
-libtrackergtk_dir = libtracker-gtk
+build_libtrackergtk = libtracker-gtk
 endif
 
-if ENABLE_TRACKERAPPLET
-trackerapplet_dir = tracker-applet
-endif
+SUBDIRS = 					\
+	libstemmer				\
+	$(build_qdbm)				\
+	$(build_libinotify)			\
+	libtracker-common 			\
+	libtracker-db				\
+	libtracker-data				\
+	libtracker				\
+	$(build_sqlite_fts)			\
+	plugins					\
+	trackerd				\
+	tracker-utils				\
+	tracker-extract				\
+	tracker-indexer				\
+	$(build_libtrackergtk)			\
+	$(build_tracker_applet)			\
+	$(build_tracker_search_tool)		\
+	$(build_tracker_preferences)
 
-SUBDIRS = libstemmer xdgmime $(qdbm_dir) text-filters trackerd libtracker tracker-extract tracker-thumbnailer $(libtrackergtk_dir) $(tracker_gui_dir) $(trackerapplet_dir) $(tracker_preferences_dir)
-
+DIST_SUBDIRS = 					\
+	libstemmer				\
+	qdbm					\
+	libinotify				\
+	libtracker-common 			\
+	libtracker-db				\
+	libtracker-data				\
+	libtracker				\
+	tracker-fts				\
+	trackerd				\
+	tracker-utils				\
+	tracker-extract				\
+	tracker-indexer				\
+	libtracker-gtk				\
+	tracker-applet	 			\
+	tracker-search-tool			\
+	tracker-preferences			\
+	plugins

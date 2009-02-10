@@ -1,0 +1,190 @@
+<refentry id="libtracker-common-General">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-common-General.top_of_page">General</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-COMMON Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>General</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-common-General.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-common/tracker-utils.h&gt;
+
+<link linkend="gchar">gchar</link>*              <link linkend="tracker-escape-string">tracker_escape_string</link>               (const <link linkend="gchar">gchar</link> *in);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-is-empty-string">tracker_is_empty_string</link>             (const <link linkend="char">char</link> *str);
+<link linkend="gchar">gchar</link>*              <link linkend="tracker-seconds-estimate-to-string">tracker_seconds_estimate_to_string</link>  (<link linkend="gdouble">gdouble</link> seconds_elapsed,
+                                                         <link linkend="gboolean">gboolean</link> short_string,
+                                                         <link linkend="guint">guint</link> items_done,
+                                                         <link linkend="guint">guint</link> items_remaining);
+<link linkend="gchar">gchar</link>*              <link linkend="tracker-seconds-to-string">tracker_seconds_to_string</link>           (<link linkend="gdouble">gdouble</link> seconds_elapsed,
+                                                         <link linkend="gboolean">gboolean</link> short_string);
+<link linkend="gchar">gchar</link>*              <link linkend="tracker-string-remove">tracker_string_remove</link>               (<link linkend="gchar">gchar</link> *haystack,
+                                                         const <link linkend="gchar">gchar</link> *needle);
+<link linkend="gchar">gchar</link>*              <link linkend="tracker-string-replace">tracker_string_replace</link>              (const <link linkend="gchar">gchar</link> *haystack,
+                                                         const <link linkend="gchar">gchar</link> *needle,
+                                                         const <link linkend="gchar">gchar</link> *replacement);
+<link linkend="void">void</link>                <link linkend="tracker-throttle">tracker_throttle</link>                    (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+                                                         <link linkend="gint">gint</link> multiplier);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-common-General.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-common-General.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="tracker-escape-string" role="function">
+<title>tracker_escape_string ()</title>
+<indexterm zone="tracker-escape-string"><primary>tracker_escape_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_escape_string               (const <link linkend="gchar">gchar</link> *in);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>in</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-is-empty-string" role="function">
+<title>tracker_is_empty_string ()</title>
+<indexterm zone="tracker-is-empty-string"><primary>tracker_is_empty_string</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_is_empty_string             (const <link linkend="char">char</link> *str);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>str</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-seconds-estimate-to-string" role="function">
+<title>tracker_seconds_estimate_to_string ()</title>
+<indexterm zone="tracker-seconds-estimate-to-string"><primary>tracker_seconds_estimate_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_seconds_estimate_to_string  (<link linkend="gdouble">gdouble</link> seconds_elapsed,
+                                                         <link linkend="gboolean">gboolean</link> short_string,
+                                                         <link linkend="guint">guint</link> items_done,
+                                                         <link linkend="guint">guint</link> items_remaining);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>seconds_elapsed</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>short_string</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>items_done</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>items_remaining</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-seconds-to-string" role="function">
+<title>tracker_seconds_to_string ()</title>
+<indexterm zone="tracker-seconds-to-string"><primary>tracker_seconds_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_seconds_to_string           (<link linkend="gdouble">gdouble</link> seconds_elapsed,
+                                                         <link linkend="gboolean">gboolean</link> short_string);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>seconds_elapsed</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>short_string</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-string-remove" role="function">
+<title>tracker_string_remove ()</title>
+<indexterm zone="tracker-string-remove"><primary>tracker_string_remove</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_string_remove               (<link linkend="gchar">gchar</link> *haystack,
+                                                         const <link linkend="gchar">gchar</link> *needle);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>haystack</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>needle</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-string-replace" role="function">
+<title>tracker_string_replace ()</title>
+<indexterm zone="tracker-string-replace"><primary>tracker_string_replace</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_string_replace              (const <link linkend="gchar">gchar</link> *haystack,
+                                                         const <link linkend="gchar">gchar</link> *needle,
+                                                         const <link linkend="gchar">gchar</link> *replacement);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>haystack</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>needle</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>replacement</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-throttle" role="function">
+<title>tracker_throttle ()</title>
+<indexterm zone="tracker-throttle"><primary>tracker_throttle</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_throttle                    (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+                                                         <link linkend="gint">gint</link> multiplier);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>multiplier</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

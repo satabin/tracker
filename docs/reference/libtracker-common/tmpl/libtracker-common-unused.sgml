@@ -1,0 +1,255 @@
+<!-- ##### STRUCT TrackerFieldData ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:alias ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:data-type ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:field-name ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:id-field ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:is-condition ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:is-select ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:multiple-values ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:needs-join ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:select-field ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:table-name ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerFieldData:where-field ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION tracker_field_data_get_alias ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_get_data_type ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_get_field_name ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_get_id_field ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_get_is_condition ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_get_is_select ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_get_multiple_values ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_get_needs_join ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_get_select_field ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_get_table_name ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_get_where_field ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION tracker_field_data_set_alias ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+
+<!-- ##### FUNCTION tracker_field_data_set_data_type ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+
+<!-- ##### FUNCTION tracker_field_data_set_field_name ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+
+<!-- ##### FUNCTION tracker_field_data_set_id_field ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+
+<!-- ##### FUNCTION tracker_field_data_set_is_condition ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+
+<!-- ##### FUNCTION tracker_field_data_set_is_select ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+
+<!-- ##### FUNCTION tracker_field_data_set_multiple_values ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+
+<!-- ##### FUNCTION tracker_field_data_set_needs_join ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+
+<!-- ##### FUNCTION tracker_field_data_set_select_field ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+
+<!-- ##### FUNCTION tracker_field_data_set_table_name ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+
+<!-- ##### FUNCTION tracker_field_data_set_where_field ##### -->
+<para>
+
+</para>
+
+@field_data: 
+@value: 
+

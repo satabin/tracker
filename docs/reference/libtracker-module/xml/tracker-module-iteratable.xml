@@ -1,0 +1,110 @@
+<refentry id="libtracker-module-Iteratable-files">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-module-Iteratable-files.top_of_page">Iteratable files</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-MODULE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Iteratable files</refname>
+<refpurpose>Interface for iteratable files which could contain several individual entities.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-module-Iteratable-files.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+<anchor id="TrackerModuleIteratable"/>
+<synopsis>
+
+#include &lt;libtracker-module/tracker-module-iteratable.h&gt;
+
+typedef             <link linkend="TrackerModuleIteratable">TrackerModuleIteratable</link>;
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-module-iteratable-iter-contents">tracker_module_iteratable_iter_contents</link>
+                                                        (<link linkend="TrackerModuleIteratable">TrackerModuleIteratable</link> *iteratable);
+<link linkend="guint">guint</link>               <link linkend="tracker-module-iteratable-get-count">tracker_module_iteratable_get_count</link> (<link linkend="TrackerModuleIteratable">TrackerModuleIteratable</link> *iteratable);
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1 id="libtracker-module-Iteratable-files.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<synopsis>
+  <link linkend="GInterface">GInterface</link>
+   +----TrackerModuleIteratable
+</synopsis>
+
+</refsect1>
+
+<refsect1 id="libtracker-module-Iteratable-files.prerequisites" role="prerequisites">
+<title role="prerequisites.title">Prerequisites</title>
+<para>
+TrackerModuleIteratable requires
+ <link linkend="TrackerModuleFile">TrackerModuleFile</link>.</para>
+
+</refsect1>
+
+
+
+
+
+
+
+<refsect1 id="libtracker-module-Iteratable-files.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+TrackerModuleIteratable is an interface that can be implemented by
+TrackerModuleFile objects. It's used by Tracker so it can
+potentially iterate inside the contents of a file.
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-module-Iteratable-files.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerModuleIteratable" role="typedef">
+<title>TrackerModuleIteratable</title>
+<indexterm zone="TrackerModuleIteratable"><primary>TrackerModuleIteratable</primary></indexterm><programlisting>typedef struct TrackerModuleIteratable TrackerModuleIteratable; /* dummy typedef */
+</programlisting>
+<para>
+Interface that can be implemented by files.
+</para></refsect2>
+<refsect2 id="tracker-module-iteratable-iter-contents" role="function">
+<title>tracker_module_iteratable_iter_contents ()</title>
+<indexterm zone="tracker-module-iteratable-iter-contents"><primary>tracker_module_iteratable_iter_contents</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_module_iteratable_iter_contents
+                                                        (<link linkend="TrackerModuleIteratable">TrackerModuleIteratable</link> *iteratable);</programlisting>
+<para>
+Iterates to the next element contained in <parameter>iteratable</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>iteratable</parameter>&nbsp;:</term>
+<listitem><simpara> A <link linkend="TrackerModuleIteratable"><type>TrackerModuleIteratable</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if there was such next element, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-iteratable-get-count" role="function">
+<title>tracker_module_iteratable_get_count ()</title>
+<indexterm zone="tracker-module-iteratable-get-count"><primary>tracker_module_iteratable_get_count</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_module_iteratable_get_count (<link linkend="TrackerModuleIteratable">TrackerModuleIteratable</link> *iteratable);</programlisting>
+<para>
+Returns the number of elements contained in <parameter>iteratable</parameter></para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>iteratable</parameter>&nbsp;:</term>
+<listitem><simpara> A <link linkend="TrackerModuleIteratable"><type>TrackerModuleIteratable</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The elements count.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+<refsect1 id="libtracker-module-Iteratable-files.see-also">
+<title>See Also</title>
+<para>
+TrackerModuleFile
+</para>
+</refsect1>
+
+</refentry>

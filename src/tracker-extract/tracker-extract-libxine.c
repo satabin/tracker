@@ -17,18 +17,19 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#include "config.h"
+
 #include <xine.h>
 #include <glib.h>
 
-#include "tracker-extract.h"
-
+#include "tracker-main.h"
 
 static void
 add_uint32_info (GHashTable *metadata, char *key, uint32_t info)
 {
 	char *str_info;
 
-	str_info = g_strdup_printf ("%d", info);
+	str_info = tracker_escape_metadata_printf ("%d", info);
 	g_hash_table_insert (metadata, key, str_info);
 }
 
@@ -146,7 +147,8 @@ tracker_extract_xine (gchar *uri, GHashTable *metadata)
 
 		video_codec = xine_get_meta_info (stream, XINE_META_INFO_VIDEOCODEC);
 		if (video_codec) {
-			g_hash_table_insert (metadata, g_strdup ("Video:Codec"), g_strdup (video_codec));
+			g_hash_table_insert (metadata, g_strdup ("Video:Codec"),
+                                             tracker_escape_metadata (video_codec));
 		}
 	}
 
@@ -174,7 +176,8 @@ tracker_extract_xine (gchar *uri, GHashTable *metadata)
 
 		audio_codec = xine_get_meta_info (stream, XINE_META_INFO_AUDIOCODEC);
 		if (audio_codec) {
-			g_hash_table_insert (metadata, g_strdup ("Audio:Codec"), g_strdup (audio_codec));
+			g_hash_table_insert (metadata, g_strdup ("Audio:Codec"),
+                                             tracker_escape_metadata (audio_codec));
 		}
 	}
 
@@ -184,48 +187,58 @@ tracker_extract_xine (gchar *uri, GHashTable *metadata)
 	comment = xine_get_meta_info (stream, XINE_META_INFO_COMMENT);
 	if (comment) {
 		if (has_video) {
-			g_hash_table_insert (metadata, g_strdup ("Video:Comment"), g_strdup (comment));
+			g_hash_table_insert (metadata, g_strdup ("Video:Comment"),
+                                             tracker_escape_metadata (comment));
 		} else if (has_audio) {
-			g_hash_table_insert (metadata, g_strdup ("Audio:Comment"), g_strdup (comment));
+			g_hash_table_insert (metadata, g_strdup ("Audio:Comment"),
+                                             tracker_escape_metadata (comment));
 		}
 	}
 
 	title = xine_get_meta_info (stream, XINE_META_INFO_TITLE);
 	if (title) {
 		if (has_video) {
-			g_hash_table_insert (metadata, g_strdup ("Video:Title"), g_strdup (title));
+			g_hash_table_insert (metadata, g_strdup ("Video:Title"),
+                                             tracker_escape_metadata (title));
 		} else if (has_audio) {
-			g_hash_table_insert (metadata, g_strdup ("Audio:Title"), g_strdup (title));
+			g_hash_table_insert (metadata, g_strdup ("Audio:Title"),
+                                             tracker_escape_metadata (title));
 		}
 	}
 
 	author = xine_get_meta_info (stream, XINE_META_INFO_ARTIST);
 	if (author) {
 		if (has_video) {
-			g_hash_table_insert (metadata, g_strdup ("Video:Author"), g_strdup (author));
+			g_hash_table_insert (metadata, g_strdup ("Video:Author"),
+                                             tracker_escape_metadata (author));
 		} else if (has_audio) {
-			g_hash_table_insert (metadata, g_strdup ("Audio:Author"), g_strdup (author));
+			g_hash_table_insert (metadata, g_strdup ("Audio:Author"),
+                                             tracker_escape_metadata (author));
 		}
 	}
 
 	album = xine_get_meta_info (stream, XINE_META_INFO_ALBUM);
 	if (album) {
-		g_hash_table_insert (metadata, g_strdup ("Audio:Album"), g_strdup (album));
+		g_hash_table_insert (metadata, g_strdup ("Audio:Album"),
+                                     tracker_escape_metadata (album));
 	}
 
 	year = xine_get_meta_info (stream, XINE_META_INFO_YEAR);
 	if (year) {
-		g_hash_table_insert (metadata, g_strdup ("Audio:Year"), g_strdup (year));
+		g_hash_table_insert (metadata, g_strdup ("Audio:Year"),
+                                     tracker_escape_metadata (year));
 	}
 
 	genre = xine_get_meta_info (stream, XINE_META_INFO_GENRE);
 	if (genre) {
-		g_hash_table_insert (metadata, g_strdup ("Audio:Genre"), g_strdup (genre));
+		g_hash_table_insert (metadata, g_strdup ("Audio:Genre"),
+                                     tracker_escape_metadata (genre));
 	}
 
 	track = xine_get_meta_info (stream, XINE_META_INFO_TRACK_NUMBER);
 	if (track) {
-		g_hash_table_insert (metadata, g_strdup ("Audio:Track"), g_strdup (track));
+		g_hash_table_insert (metadata, g_strdup ("Audio:Track"),
+                                     tracker_escape_metadata (track));
 	}
 
 	/* FIXME: "Video.Copyright" seems missing */
@@ -241,15 +254,15 @@ tracker_extract_xine (gchar *uri, GHashTable *metadata)
 }
 
 
-TrackerExtractorData data[] = {
+TrackerExtractData data[] = {
 	{ "audio/*", tracker_extract_xine },
 	{ "video/*", tracker_extract_xine },
 	{ NULL, NULL }
 };
 
 
-TrackerExtractorData *
-tracker_get_extractor_data (void)
+TrackerExtractData *
+tracker_get_extract_data (void)
 {
 	return data;
 }

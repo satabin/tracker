@@ -1,0 +1,99 @@
+<!-- ##### SECTION Title ##### -->
+Language
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT TrackerLanguage ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerLanguage:config ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerLanguage:stop-words ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION tracker_language_new ##### -->
+<para>
+
+</para>
+
+@language: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_language_check_exists ##### -->
+<para>
+
+</para>
+
+@language_code: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_language_get_config ##### -->
+<para>
+
+</para>
+
+@language: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_language_get_default_code ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_language_get_stop_words ##### -->
+<para>
+
+</para>
+
+@language: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_language_set_config ##### -->
+<para>
+
+</para>
+
+@language: 
+@config: 
+
+
+<!-- ##### FUNCTION tracker_language_stem_word ##### -->
+<para>
+
+</para>
+
+@language: 
+@word: 
+@word_length: 
+@Returns: 
+
+

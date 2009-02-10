@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Adding Categories &amp; Properties</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Tracker Indexer Reference Manual">
+<link rel="up" href="integrating-applications.html" title="Part II. Integrating Applications">
+<link rel="prev" href="integrating-applications.html" title="Part II. Integrating Applications">
+<link rel="next" href="defining-properties.html" title="Defining Properties">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="tracker-indexer.html" title="Part I. Overview">
+<link rel="chapter" href="ch01.html" title="Modules">
+<link rel="chapter" href="ch02.html" title="Metadata">
+<link rel="part" href="integrating-applications.html" title="Part II. Integrating Applications">
+<link rel="chapter" href="adding-categories.html" title="Adding Categories &amp; Properties">
+<link rel="chapter" href="writing-an-extractor.html" title="Writing An Extractor">
+<link rel="chapter" href="writing-an-indexer-module.html" title="Writing An Indexer Module">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="integrating-applications.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="integrating-applications.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Indexer Reference Manual</th>
+<td><a accesskey="n" href="defining-properties.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter" lang="en">
+<div class="titlepage"><div>
+<div><h2 class="title">
+<a name="adding-categories"></a>Adding Categories &amp; Properties</h2></div>
+<div><div class="author">
+<h3 class="author">
+<span class="firstname">Ivan</span> <span class="surname">Frade</span>
+</h3>
+<div class="affiliation"><div class="address"><p><br>
+	  <code class="email">&lt;<a class="email" href="mailto:ivan.frade@nokia.com">ivan.frade@<em class="parameter"><code>nokia.com</code></em></a>&gt;</code><br>
+	</p></div></div>
+</div></div>
+</div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="adding-categories.html#defining-categories">Defining Categories</a></span></dt>
+<dt><span class="section"><a href="defining-properties.html">Defining Properties</a></span></dt>
+</dl></div>
+<p>
+    A category is something which identifies one or more files with
+    particular attributes, for example, Files, Folders, Audio, Video,
+    etc. These are all categories. This will help you understand how
+    to add a category for your 3rd party application to integrate it
+    with Tracker.
+  </p>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="defining-categories"></a>Defining Categories</h2></div></div></div>
+<p>
+      The essential attributes are: 
+      </p>
+<pre class="programlisting">
+[CategoryName]
+DisplayName=CategoryName
+Description=A description to the user
+Parent=Parent category. Usually Files. [1]
+Mimes=Mime types we want to assign to this category (e.g.
+audio/x-playlist)
+MimePrefixes=Prefix to match mimetypes (e.g. audio/ will match all mime types as audio/*)
+HasMetadata=Should tracker extract meta-data from these files?
+HasFullText=Shoudl tracker extract text content from these files?
+HasThumb= Should tracker generate thumbnails from these files?
+ShowServiceFiles=Do we want to see these files in the text search results?
+      </pre>
+<p>
+    </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>
+	[1] At the moment we only support two levels of hierarchy.
+      </p>
+</div>
+<div class="example">
+<a name="id493676"></a><p class="title"><b>Example 1. A Play List</b></p>
+<div class="example-contents"><pre class="programlisting">
+[Playlist]
+DisplayName=Playlists
+Description=Music playlists
+Mimes=audio/x-mpegurl
+HasMetadata=true
+HasFullText=false
+HasThumbs=false 
+ShowServiceFiles=true
+      </pre></div>
+</div>
+<br class="example-break"><p>
+      This is because we want to extract meta-data (i.e. the number of
+      songs) but don't want to index the full text and don't want to
+      generate thumbnails.
+    </p>
+<p>
+      In this case the properties will have the category name as
+      prefix (we will call them Playlist.X). We can add the
+      PropertyPrefix key in the category description to use a
+      different prefix.
+    </p>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
+</body>
+</html>

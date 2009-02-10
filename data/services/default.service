@@ -1,6 +1,7 @@
 [Files]
 DisplayName=All Files
 Description=All files in the filesystem
+PropertyPrefix=File
 UIVisible=true
 Icon=system-file-manager
 UIView=icon
@@ -13,13 +14,18 @@ Description=Folders in the filesystem
 Parent=Files
 UIVisible=true
 UIView=icon
+MimePrefixes=x-directory/;inode/;
 Icon=folder
 ShowServiceFiles=true
 ShowServiceDirectories=true
+HasFullText=false
+HasMetadata=false
+HasThumbs=false
 
 [Documents]
 DisplayName=Documents
 Description=Office and PDF based files
+PropertyPrefix=Doc
 Parent=Files
 UIVisible=true
 Icon=x-office-document
@@ -33,6 +39,9 @@ Mimes=application/rtf;text/richtext;application/msword;application/pdf;applicati
 MimePrefixes=application/vnd.oasis.opendocument;application/vnd.sun.xml;application/vnd.stardivision;
 ShowServiceFiles=true
 ShowServiceDirectories=true
+HasMetadata=true
+HasFullText=true
+HasThumbs=true
 
 [WebHistory]
 DisplayName=Web History
@@ -47,33 +56,45 @@ TabularMetadata=File:Name;File:Mime;Doc:Title;Doc:URL;Doc:Author;File:Size;File:
 TileMetadata=Doc:Title;Doc:URL;Doc:Subject;Doc:Author;Doc:Created;Doc:PageCount;File:Size;
 ShowServiceFiles=false
 ShowServiceDirectories=false
-
+HasMetadata=true
+HasFullText=true
+HasThumbs=true
 
 
 [Images]
 DisplayName=Images
 Description=Image based files
+PropertyPrefix=Image
 Parent=Files
 UIVisible=true
 UIView=icon
 Icon=image-x-generic
 KeyMetadata1=Image:Title
-KeyMetadata2=Image:Height
-KeyMetadata3=Image:Width
-KeyMetadata4=Image:Date
-KeyMetadata5=Image:Software
-KeyMetadata6=Image:Creator
+KeyMetadata2=Image:Date
+KeyMetadata3=Image:Country
+KeyMetadata4=Image:City
+KeyMetadata5=Image:Rating
+KeyMetadata6=Image:Location
+KeyMetadata7=Image:Orientation
+KeyMetadata8=Image:Height
+KeyMetadata9=Image:Width
+KeyMetadata10=Image:Software
+KeyMetadata11=Image:Creator
 TabularMetadata=File:Name;Image:Height;Image:Width;Image:Date;File:Modified;Image:Creator;Image:Software;
 TileMetadata=Image:Title;Image:Height;Image:Width;Image:Date;Image:Creator;Image:Software;Image:Comments;
 Mimes=application/vnd.oasis.opendocument.image;application/x-krita;
 MimePrefixes=image/;
 ShowServiceFiles=true
 ShowServiceDirectories=true
+HasMetadata=true
+HasFullText=false
+HasThumbs=true
 
 
 [Music]
 DisplayName=Music
 Description=Music based files
+PropertyPrefix=Audio
 Parent=Files
 UIVisible=true
 UIView=tabular
@@ -82,9 +103,9 @@ KeyMetadata1=Audio:Title
 KeyMetadata2=Audio:Artist
 KeyMetadata3=Audio:Album
 KeyMetadata4=Audio:Genre
-KeyMetadata5=Audio:Duration
+KeyMetadata5=Audio:TrackNo
 KeyMetadata6=Audio:ReleaseDate
-KeyMetadata7=Audio:TrackNo
+KeyMetadata7=Audio:Duration
 KeyMetadata8=Audio:Bitrate
 KeyMetadata9=Audio:PlayCount
 KeyMetadata10=Audio:DateAdded
@@ -95,11 +116,15 @@ Mimes=application/ogg;
 MimePrefixes=audio/;
 ShowServiceFiles=true
 ShowServiceDirectories=true
+HasMetadata=true
+HasFullText=false
+HasThumbs=false
 
 
 [Videos]
 DisplayName=Videos
 Description=Video based files
+PropertyPrefix=Video
 Parent=Files
 UIVisible=true
 UIView=icon
@@ -112,9 +137,13 @@ KeyMetadata5=Video:Duration
 KeyMetadata6=Audio:Bitrate
 TabularMetadata=File:Name;Video:Title;Video:Author;Video:Height;Video:Width;Video:Duration;Video:Bitrate;
 TileMetadata=Video:Title;Video:Author;Video:Height;Video:Width;Video:Duration;Video:Bitrate;
+Mimes=application/vnd.rn-realmedia
 MimePrefixes=video/;
 ShowServiceFiles=true
 ShowServiceDirectories=true
+HasMetadata=true
+HasFullText=false
+HasThumbs=true
 
 
 [Text]
@@ -127,6 +156,9 @@ ContentMetadata=File:Contents
 Mimes=text/plain;text/x-authors;text/x-changelog;text/x-copying;text/x-credits;text/x-install;text/x-readme;
 ShowServiceFiles=true
 ShowServiceDirectories=true
+HasMetadata=false
+HasFullText=true
+HasThumbs=false
 
 
 [Development]
@@ -139,6 +171,9 @@ ContentMetadata=File:Contents
 Mimes=application/x-perl;application/x-shellscript;application/x-php;application/x-java;application/x-javascript;application/x-glade;application/x-csh;application/x-class-file;application/x-awk;application/x-asp;application/x-ruby;application/x-m4;text/x-m4;text/x-c++;text/x-adasrc;text/x-c;text/x-c++hdr;text/x-chdr;text/x-csharp;text/x-c++src;text/x-csrc;text/x-dcl;text/x-dsrc;text/x-emacs-lisp;text/x-fortran;text/x-haskell;text/x-literate-haskell;text/x-java;text/x-java-source" ,text/x-makefile;text/x-objcsrc;text/x-pascal;text/x-patch;text/x-python;text/x-scheme;text/x-sql;text/x-tcl;
 ShowServiceFiles=true
 ShowServiceDirectories=true
+HasMetadata=false
+HasFullText=true
+HasThumbs=false
 
 [Other]
 DisplayName=Other Files
@@ -146,10 +181,14 @@ Description=All other files that do not belong in any other category
 Parent=Files
 ShowServiceFiles=true
 ShowServiceDirectories=true
+HasMetadata=true
+HasFullText=true
+HasThumbs=true
 
 [Emails]
 DisplayName=Emails
 Description=All Emails
+PropertyPrefix=Email
 UIVisible=true
 UIMetadata1=Email:Subject
 UIMetadata2=Email:Sender
@@ -163,6 +202,18 @@ DisplayName=Evolution Emails
 Description=Evolution based emails
 Parent=Emails
 ViewerExec=evolution "%1"
+KeyMetadata1=Email:Subject
+KeyMetadata2=Email:Sender
+KeyMetadata3=Email:Date
+TabularMetadata=Email:Sender;Email:Subject;Email:Date;
+TileMetadata=Email:Sender;Email:Subject;Email:Date;Email:SentTo;Email:CC;Email:Attachments
+ContentMetadata=Email:Body
+
+[ModestEmails]
+DisplayName=Modest Emails
+Description=Modest based emails
+Parent=Emails
+ViewerExec=modest-open "%1"
 KeyMetadata1=Email:Subject
 KeyMetadata2=Email:Sender
 KeyMetadata3=Email:Date
@@ -206,6 +257,12 @@ Description=All files that are attached to an Evolution Email
 Parent=EmailAttachments
 Icon=stock_attach
 
+[ModestAttachments]
+DisplayName=Modest Email Attachments
+Description=All files that are attached to an Modest Email
+Parent=EmailAttachments
+Icon=stock_attach
+
 [KMailAttachments]
 DisplayName=KMail Email Attachments
 Description=All files that are attached to an KMail Email
@@ -218,6 +275,9 @@ Description=Conversation log files
 UIVisible=true
 Icon=stock_help-chat
 ShowServiceFiles=true
+HasMetadata=false
+HasFullText=true
+HasThumbs=false
 
 [GaimConversations]
 DisplayName=Gaim Conversations
@@ -225,10 +285,14 @@ Description=All Gaim Conversation logs
 Parent=Conversations
 Icon=stock_help-chat
 ShowServiceFiles=true
+HasMetadata=false
+HasFullText=true
+HasThumbs=false
 
 [Applications]
 DisplayName=Applications
 Description=Application files
+PropertyPrefix=App
 UIVisible=true
 Icon=stock_active
 ShowServiceFiles=true
@@ -236,3 +300,20 @@ KeyMetadata1=App:DisplayName
 KeyMetadata2=App:Exec
 KeyMetadata3=App:Icon
 TileMetadata=App:GenericName;AppComment;App:Categories
+HasMetadata=false
+HasFullText=false
+HasThumbs=false
+
+[Playlists]
+DisplayName=Playlists
+Description=Music playlists
+Parent=Files
+PropertyPrefix=Playlist
+Mimes=audio/x-mpegurl;audio/mpegurl;audio/x-scpls;audio/x-pn-realaudio;application/ram;application/vnd.ms-wpl;application/smil;audio/x-ms-asx;audio/x-pn-realaudio-plugin;
+KeyMetadata1=Playlist:Duration
+KeyMetadata2=Playlist:Songs
+KeyMetadata3=Playlist:ValidDuration
+HasMetadata=true
+HasFullText=false
+HasThumbs=false
+ShowServiceFiles=true

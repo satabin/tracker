@@ -15,18 +15,17 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA.
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.
  */
 #ifndef _SEXY_ICON_ENTRY_H_
 #define _SEXY_ICON_ENTRY_H_
 
-typedef struct _SexyIconEntry      SexyIconEntry;
+typedef struct _SexyIconEntry	   SexyIconEntry;
 typedef struct _SexyIconEntryClass SexyIconEntryClass;
 typedef struct _SexyIconEntryPriv  SexyIconEntryPriv;
 
-#include <gtk/gtkentry.h>
-#include <gtk/gtkimage.h>
+#include <gtk/gtk.h>
 
 #define SEXY_TYPE_ICON_ENTRY (sexy_icon_entry_get_type())
 #define SEXY_ICON_ENTRY(obj) \

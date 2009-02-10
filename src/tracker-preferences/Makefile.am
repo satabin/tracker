@@ -1,43 +1,43 @@
+include $(top_srcdir)/Makefile.decl
+
 @INTLTOOL_DESKTOP_RULE@
 
 bin_PROGRAMS = tracker-preferences
 
 desktopdir = $(datadir)/applications
-desktop_in_files = tracker-preferences.desktop.in
-desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
-
+desktop_DATA =  tracker-preferences.desktop
 
 pkgdata_DATA = tracker-preferences.glade
 
-noinst_HEADERS = tracker-configuration.h \
-		 tracker-preferences-dialogs.h \
-		 tracker-preferences.h \
-		 tracker-preferences-utils.h \
-		 $(NULL)
+INCLUDES = 								\
+	-DTRACKER_DATADIR=\""$(datadir)/tracker"\" 			\
+	-DTRACKER_LOCALEDIR=\""$(localedir)"\" 				\
+	-DTRACKER_BINDIR=\""$(bindir)"\" 				\
+	-DTRACKER_LIBEXECDIR=\""$(libexecdir)"\" 			\
+	-DTRACKER_COMPILATION 						\
+	$(WARN_CFLAGS)							\
+	$(LIBGLADE_CFLAGS) 						\
+	$(GTK2_CFLAGS) 							\
+	$(DBUS_CFLAGS) 							\
+	$(GLIB_CFLAGS) 							\
+	-I$(top_srcdir)/src
 
-INCLUDES =	-DTRACKER_DATADIR=\""$(datadir)/tracker"\" \
-		-DTRACKER_LOCALEDIR=\""$(localedir)"\" \
-		-DTRACKER_BINDIR=\""$(bindir)"\" \
-		$(GLIB_CFLAGS) \
-		$(GTK2_CFLAGS) \
-		$(LIBGLADE_CFLAGS) \
-		$(DBUS_CFLAGS) \
-		-I$(top_srcdir)/src/libtracker \
-		$(NULL)
+tracker_preferences_SOURCES = 						\
+	tracker-preferences.c 						\
+	tracker-preferences.h 						\
+	tracker-preferences-dialogs.c 					\
+	tracker-preferences-dialogs.h 					\
+	tracker-preferences-main.c 					\
+	tracker-preferences-utils.c 					\
+	tracker-preferences-utils.h
 
-tracker_preferences_SOURCES = tracker-configuration.c \
-			      tracker-preferences.c \
-			      tracker-preferences-dialogs.c \
-			      tracker-preferences-main.c \
-			      tracker-preferences-utils.c \
-			      $(NULL)
-
-tracker_preferences_LDADD = $(GLIB_LIBS) \
-			    $(GTK2_LIBS) \
-			    $(LIBGLADE_LIBS) \
-				$(DBUS_LIBS) \
-				$(top_builddir)/src/libtracker/libtrackerclient.la \
-			    $(NULL)
+tracker_preferences_LDADD = 						\
+	$(top_builddir)/src/libtracker/libtrackerclient.la		\
+	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+	$(LIBGLADE_LIBS)						\
+	$(GTK2_LIBS) 							\
+	$(DBUS_LIBS) 							\
+	$(GLIB_LIBS)
 
 EXTRA_DIST = $(pkgdata_DATA)
 

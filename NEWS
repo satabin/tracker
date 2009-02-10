@@ -1,39 +1,498 @@
-18th October 
-	released 0.5.0
+NEW in 0.6.90:
+==============
 
-14 May
-	Improved support for Fedora Core 5
-	Improved EXIF metadata
-	Added new File based services
+Features:
+- Major re-factoring over the last 12 months for cleaner code.
+- Modular approach with:
+  - libtracker-common 
+    (common functions shared across all binaries)
+  - libtracker-db     
+    (database abstraction and manipulation API)
+  - libtracker-data   
+    (a higher level data get/set API)
+  - libtracker-module
+    (an API used by 3rd parties to index their content)
+- DBus re-factoring and use of GLib bindings (for maintainability).
+  (The method names haven't changed, but the objects have, so the
+  client applications will need to be updated).
+- Extractors are now run as an external process detached from the
+  indexer to not crash the indexer for problematic files.
+- The utility applications have all been improved and use GOption
+  for argument parsing.
+- Configuration is now more centralised and used by applications as
+  well as the daemon/indexer.
+- File monitoring has been rewritten using GIO and libinotify:
+- GnomeVFS support dropped from the project.
+- Requirement for GLib 2.16.x.
+- Imported libinotify (for use in the daemon for file monitoring).
+  (due to lack of MOVE event information from GIO).
+- Support for DBus introspection.
+- Support for removable media indexing (MMC, USB sticks).
+- Support for meta-data caching on removable devices
+  (see http://live.gnome.org/MetadataOnRemovableDevices)
+- Support for searching with OR operations.
+- Support for XESAM (initial support only).
+- Added application dedicated to indexing (tracker-indexer).
+- Added estimated time remaining while indexing.
+- Added module API and framework for applications to add support for
+  their media files to be indexed. 
+- Added utility applications:
+  - tracker-unique   
+    (searches for unique values with option RDF filters)
+  - tracker-services 
+    (lists all ontology services/properties)
+  - tracker-info     
+    (lists details known to tracker about a particular file)
+- Added unit tests for:
+  - trackerd
+  - tracker-indexer
+  - tracker-extract
+  - libtracker-common
+  - libtracker-db
+- Added documentation for:
+  - daemon/indexer design
+  - libtracker-common
+  - libtracker-module
 
-1 May
-	Made database more generic
-	Upgraded to mysql 5
-	Converted DB logic to stored procedures	
+Missing Support:
+- Index merging has been removed in this release due to lack of
+  time to implementing it and with plans to redesign. SQLite FTS has
+  the feature internally and will be used in future releases. This
+  is noticeable only for very large data sets where a slowdown can be
+  observed. 
 
-28th Mar
-	Made Dbus interface more generic	
+Bugs:
+- Fixed #486733, crash in Deskbar: Trying to launch the Tra... (Carlos Garnacho)
+- Fixed #474131, crash in Deskbar: Deskbar search applet --... (Carlos Garnacho)
+- Fixed #97029, Typos in the italian translation of the About box (Mikael Ottela)
+- Fixed #97765, GFlare: switchng between circle/poly doesn't work (Ivan Frade)
+- Fixed #93935, line object connects to self (Ivan Frade)
+- Fixed #90700, "View as EOG Image" (Martyn Russell)
+- Fixed #90138, no way to cleanly unset a message's message_id header (Mikael Ottela)
+- Fixed #96999, Right-click context menu should contain copy entry (even on webpages without input fields) (Mikael Ottela)
+- Fixed #100816, [ui-review] Edit menu usability (Mikael Ottela)
+- Fixed #90374, help crashes (Mikael Ottela)
+- Fixed #93962, gtkspinbutton wants to own its adjustment (Philip Van Hoof)
+- Fixed #97125, missing dot between two sentences in docs for gtk_icon_size_lookup_for_settings () (Mikael Ottela)
+- Fixed #89254, Documentation updates and corrections for GtkTreeModel (Mikael Ottela)
+- Fixed #99281, acme should use an event filter (Mikael Ottela)
+- Fixed #92788, add fcpackage to bootstrap (Martyn Russell)
+- Fixed #402054, Should not allow duplicate keywords to be assigned to a file (Ivan Frade)
+- Fixed #402063, Empty space is not a valid keyword (Ivan Frade)
+- Fixed #441739, Hit count not updated after deleting files (item_remove)
+- Fixed #481651, Minor spelling issue (Carlos Garnacho)
+- Fixed #493049, Trailing space in an original message in the message catalog (Ivan Frade)
+- Fixed #494878, Search hit number can not be reported by orca. (Saleem Abdulrasool)
+- Fixed #494907, Labels should be set as focusable. (Saleem Abdulrasool)
+- Fixed #495810, Executing a wrong RDF query makes tracker unresponsive and unstable (Carlos Garnacho)
+- Fixed #509601, Make metadata extractors modular (Carlos Garnacho)
+- Fixed #509607, Make Search support logical operators besides 'And' (Carlos Garnacho)
+- Fixed #511781, Patch to avoid excesive relocations (array_to_list)
+- Fixed #511788, Patch to simplify tracker_exec_proc_ignore_nulls() (Carlos Garnacho)
+- Fixed #513486, TrackerConfig implementation (Martyn Russell)
+- Fixed #513691, simplify tracker_exec_proc() (Saleem Abdulrasool)
+- Fixed #513692, Pack booleans in guints (Saleem Abdulrasool)
+- Fixed #514553, Implementing GetTextContents method (Martyn Russell)
+- Fixed #518265, Bad FSF address (Ivan Frade)
+- Fixed #523200, Refactoring Service type "cache" (Ivan Frade)
+- Fixed #525403, [Refactor] Isolating indexer (Ivan Frade)
+- Fixed #526727, Parsing dates in extractors (Ivan Frade)
+- Fixed #526761, Make mail indexing modular (Carlos Garnacho)
+- Fixed #528684, [Tracker] The second Applet Preferences window can not be closed (Wendy Hu)
+- Fixed #529373, Use logging infrastructure from GLib (Carlos Garnacho, Martyn Russell)
+- Fixed #548561, Typo in trackerd man page (Ivan Frade)
+- Fixed #557979, tracker-preferences.desktop categories (Ivan Frade)
+- Fixed #558613, Applet preferences do not show up localized (Gabor Kelemen)
+- Fixed #560581, [l10n] Typo in Tracker message (Ivan Frade)
+- Fixed #563666, All tracker utils programs require absolute paths (Ivan Frade)
+- Fixed #563909, Canonicalize command line options (Ivan Frade)
+- Fixed #565218, GNOME Goal: Clean up GLib and GTK+ includes (Ivan Frade)
+- Fixed #565725, Please refactor set_status_hint in tracker-applet.c (Ivan Frade)
+- Fixed #565928, tracker-applet --help does not show up translated (Ivan Frade)
+- Fixed #565932, Some strings are not marked for translation (Ivan Frade)
+- Fixed #566221, nautilus python extension tracker-tags-tab.py does not work in trunk anymore (Ivan Frade)
+- Fixed #556196, Include <sys/inotify.h>, not <linux/inotify.h> (John Millikin)
+- Fixed #495512, Tracker Deskbar Applets crashes (Carlos Garnacho)
+- Fixed #511752, Build fixes for Maemo platform (Martyn Russell)
+- Fixed #520789, Build compiler warnings (Martyn Russell)
+- Fixed #521803, Refactor request and file processing (Martyn Russell)
+- Fixed #95754, v1.03 Compilation impossible avec bison 1.50 (Ivan Frade)
+- Fixed #95151, Keybinding reported for a button should include the modifer. (Ivan Frade)
+- Fixed #90455,  (Mikael Ottela)
+- Fixed #494892, Label for/labeled by relation missing for add tag button. (Saleem Abdulrasool)
+- Fixed #495201, Tables are not labeled. (Patrick Wade)
+- Fixed #495205, Warning message label should be accessible to at-tools. (Saleem Abdulrasool)
+- Fixed #503215, The time unit is not reported by default. (Saleem Abdulrasool)
+- Fixed #563706, Tracker plugin fails to build against trunk (Martyn Russell)
+- Fixed #570209, tracker_data_manager_set_db_option_int() uses incorrect parameter order for SetOption (TJ)
+- Fixed #495528, "Save Results As" doesn't work for Email results (Carlos Garnacho)
+- Fixed #503725, check/uncheck "Index mounted directories" needs trackerd reindex (Martyn Russell)
+- Fixed #98896, ru.po still in KOI8 (Martyn Russell)
+
+Translations:
+- Updated ar: Khaled Hosny
+- Updated be: Alexander Nyakhaychyk
+- Updated be@latin: Ihar Hrachyshka
+- Updated ca: Gil Forcada
+- Updated cs: Petr Kovar, Kamil Paral
+- Updated da: Mads Lundby
+- Updated el: Simos Xenitellis
+- Updated en_GB: Philip Withnall, David Lodge
+- Updated es: Jorge González, Jorge Gonzalez
+- Updated fi: Timo Jyrinki, Ilkka Tuohela
+- Updated fr: Marc Veillet, Robert-André Mauchin and Stéphane Raimbault
+- Updated hu: Gabor Kelemen
+- Updated it: Luca Ferretti
+- Updated ja: Takao Fujiwara, Takao Fujiwara <takao
+- Updated lt: Žygimantas Beručka, Gintautas Miliauskas
+- Updated nb: Kjartan Maraas
+- Updated nl: Roel Huybrechts
+- Updated oc: Yannig Marchegay (Kokoyaya)
+- Updated pl: Tomasz Dominikowski, Wadim Dziedzic
+- Updated pt: Nicolau Gonçalves, Nicolau Gonçalves <excentriko@gmail
+- Updated pt_BR: Henrique P Machado, Henrique Machado and Fábio Nogueira
+- Updated sk: Pavol Klačanský
+- Updated sv: Daniel Nylander
+- Updated th: Manatsawin Hanmongkolchai, Isriya Paireepairit
+- Updated zh_CN: Martyn Russell, YangZhang
+
+Help Manual Translations:
+None
 
 
-27th Feb
-	Added full support for Inotify with optimisations for detected moves.
-	Also updated build system, fixed leaks and improved stability.
 
-16th January
-	Added support for Tracker as a Nautilus Search Backend
+Tracker 0.6.6
+============= (03 Mar 2008)
 
-5 January 2006 
-	Added polling mechanism to watch files in absence of FAM/iNotify or when FAM/iNotify watch limits have been exceeded
+  Applet
+  * HIG fix for preference window.
+  * Progress for index merges added.
 
-
-13 December 2005 
-	imported Tracker into CVS
+  Tracker daemon
+  * Fixed shutdown of daemon when paused to prevent hangs.
+  * Fixed an unfinished final index merge step when next restarted.
 
 
-8th  Dec 2005
-	Pre-release of Tracker launched
 
-15th Sept 2005
-	Tracker project started.
+Tracker 0.6.5
+============= (27 Feb 2008)
+
+  Applet
+  * Removed popup window and replaced with tooltip displaying status
+    and progress.
+  * New Applet preferences to turn off animation/hide icon/set
+    smart pause.
+  * Smart pause feature which can auto-pause the Tracker daemon
+    whenever the user presses a key or moves the mouse, thereby
+    improving system responsiveness during indexing.
+  * Annoying merge messages have now been removed.
+  * Reindex option added.
+  * About box added.
+  * Now hidden if indexing is disabled.
+  * Bugs with constant animation fixed.
+  * Animation rate slowed right down so as to be less annoying.
+
+  Tracker daemon
+  * Temporary blacklisting of frequently changing files (they are
+    indexed after one hour or on next restart of Tracker daemon).
+    This prevents constant indexing from downloads and torrents.
+  * More blacklisting of common tmp formats and vmware files.
+  * Memory leak fixes.
+  * Removed CPU-heavy corruption scan which can last long time and
+    occurs on battery too at startup when tracker daemon was not
+    previously shut down properly. Instead we now use bigger
+    transactions with fsync on to prevent corruption in the first
+    place (only slightly more disk IO is used during indexing as a
+    result).
+  * Fixed crashers.
+  * Fixed D-Bus shutdown/reindex call.
+
+
+
+Tracker 0.6.4
+============= (11 Dec 2007)
+
+  * Made indexing more robust by pausing if disk space is low or
+    index grows too big.
+  * Limit log file size to 10MB.
+  * New Tracker Applet - animates when indexing, provides ability to
+    pause indexing as well as viewing status and progress feedback
+    from indexer, statistics, and notification warnings; it can
+    also launch Tracker Preferences and Tracker Search Tool.
+  * New power management options enable much better customization.
+  * Ignored files fixes.
+  * Deskbar/tracker integration fixes.
+  * Made most prefs live and affect Tracker in real time; others
+    will prompt for restart and/or reindex where necessary.
+  * Shell script fixes
+  * Fixed Imap bug with embedded Auth in URI.
+  * Built-in corruption check and scan when Tracker is not shut down
+    cleanly - prevents infinite looping.
+  * Fix index deletions.
+  * Many more bug fixes and stability improvements.
+
+
+
+Tracker 0.6.3
+============= (25 Sep 2007)
+
+  * Fixed memory leaks.
+  * New index merging which allows for much better performance and
+    much less disk hogging I/O.
+  * Battery throttling - Tracker now stops indexing when on battery.
+  * Many more optimisations - transactions, use of O_NOATIME and
+    posix_fadvise everywhere.
+  * Check files exist before including in search results.
+  * Fixed disabling of indexing option in tracker-preferences.
+  * HIG fixes to tracker-preferences screen.
+  * Fixed resetting of stats.
+
+  note:
+    This version will cause your hard drive to be re-indexed so
+    that stats are fixed (previous version broke them).
+
+
+
+Tracker 0.6.2
+============= (25 Sep 2007)
+
+  * New Sqlite-based indexer which utilises the new incremental blob
+    I/O in sqlite 3.4.
+  * Highly-optimised email indexing (up to 5x faster).
+  * Dramatically reduced disk access and disk contention.
+  * Indexer now pauses for a grace period when non-Tracker processes
+    write to disk (providing changed files are being watched by
+    Tracker) - minimises slowdowns when compiling or checking out
+    source code.
+  * Makes use of idle class disk IO scheduling if available.
+  * Makes preliminary use of NO_ATIME (some disk access still uses
+    fopen).
+  * Fixed restore of user metadata on re-index (keywords are
+    auto-restored).
+  * Added increased number of (junk) files to automatically ignore.
+  * Improved stopwords.
+  * New Deskbar handler that uses the new Deskbar api (2.19+).
+  * Fixed old Deskbar handler to remove race condition causing
+    crashes.
+  * Fixed a number of annoying bugs in email indexing and Tracker
+    Preferences.
+
+  note:
+    This version will cause your hard drive to be re-indexed due to
+    the new Sqlite indexer backend.
+
+
+Tracker 0.6.1
+============= (08 Aug 2007)
+
+  * translations and bugfixes
+
+
+Tracker 0.6.0 "better late than never"
+============= (24 Jul 2007)
+
+  * Evolution Emails (mbox/pop/imap) now indexed.
+  * Gaim/Pidgin chat logs now indexed.
+  * Applications now indexed.
+  * New files indexed - all spreadsheets, csv (these require
+    Gnumeric to be installed) and oo draw.
+  * Vastly improved and new search UI using a sidebar for categories
+    and a new metadata tile.
+  * Tagging support in the UI.
+  * New tracker-preferences UI for easy setting of prefs.
+  * Added libtracker-gtk widget toolkit.
+  * Now uses XDG directories.
+  * Optimised triple store.
+  * Handles multiple triple stores (files, emails and user data are
+    all separate dbs).
+  * New IDF based ranking algorithm.
+  * XMP metadata support added.
+  * Made use of async calls in tracker-search-tool to prevent it
+    from freezing.
+  * Added a 60 second delay before indexing to prevent slowdowns on
+    desktop start-up.
+  * Added support for crawling directories without watching overhead
+    (useful for indexing source code without causing slowdowns when
+     compiling).
+
+
+Tracker 0.5.4 "Speed Daemon"
+============= (26 Jan 2007)
+
+  * Indexing at ludicrous speed - massively optimised indexing so
+    its now 10x faster than previous version. Indexing speeds are
+    now around 100 text files per second (which is about the
+    maximum possible considering the I/O time to read 100 files from
+    a hard drive).
+  * Index while you work - now scheduled even better so it should
+    never slow the system down whilst allowing users to work without
+    being affected by or even noticing it.
+  * Also provides additional --throttle command line parameter to
+    customise throttling even further so no need to endure noisy
+    fans or hot laptops while indexing.
+  * New verbosity param to control how much data is shown on screen
+    and in log.
+  * Fixed MPlayer backend which is now used if gstreamer backend
+    returns no metadata
+  * Improved reaping of all spawned apps - no more zombies!
+  * Improved mime and text file detection.
+  * Added improved deskbar-handler.
+  * Got Tracker to run nicely on FUSE based filesystems.
+
+
+Tracker 0.5.3
+============= (24 Dec 2006)
+
+  * Fixed memory leaks when indexing (typical mem usage should now
+    be ~6MB RSS when indexing large numbers of files).
+  * New improved metadata engine now sports multiple values per
+    metadata item and rdf style recursive metadata relationships.
+  * Support for Dublin Core types (especially for metadata
+    relationships).
+  * Changed command line options for trackerd to be similiar to
+    other programs.
+  * Metadata names now to reflect rdf style syntax (Eg DC:Keywords).
+  * Improved indexing of numeric data so that only meaningful
+    numbers are indexed (IE must contain 5 or more consecutive
+    numbers to be indexable).
+  * Improved indexing of filenames so that hyphens and underscores
+    are used as word breaks to create a delimited filename in
+    addition to the full filename.
+  * Improved snippet generator to start/end on a word break if
+    possible.
+
+
+Tracker 0.5.2
+============= (21 Nov 2006)
+
+  * Now has l10n/i18n support.
+  * Added timeout to all external processes and metadata extractors
+    used by Tracker.
+  * Added missing OpenOffice templates to our filters.
+  * Fixed filters to use different packages like w3m for indexing
+    html.
+  * Fixed Debian build and added new packages for data files and
+    translations.
+  * Imporved t-s-t and made snippets wordwrap, made snippets async,
+    used Tracker's mime facility, improved highlighting and fixed
+    crasher.
+  * Limited tracker-extract's memory usage using setrlimit.
+  * Added desktop files for tracker-search-tool.
+
+
+Tracker 0.5.1
+============= (07 Nov 2006)
+
+  * Inlined a threadsafe version of sqlite to prevent common errors
+    like content not being indexed. This can be overriden for those
+    with a threadsafe version of SQlite.
+  * New Gstreamer-based audio/video extractor on by default.
+  * Made extractors more robust.
+  * Fixed a number of compiler warnings.
+  * Tidied up the tracker-search-tool to have buttons more evenly-sized
+  * Fixed a few leaks and made the D-Bus interface more robust.
+  * Imporved IOprio detection.
+
+
+Tracker 0.5.0
+============= (25 Oct 2006)
+
+  * Completely new backend that has been moved from Mysql to the
+    nimble Sqlite database and QDBM inverted word index.
+  * New tracker-search-tool GUI which allows you to search for your
+    files in a google-like fashion with results depicted with
+    google-style search snippets.
+  * Revamped Rdf Query engine.
+  * New lighter design with big dependencies like libextractor
+    having been dropped in favour of lighter and optional metadata
+    extractors.
+  * Added new extractors that can use Totem or MPlayer.
+  * New options to tune Tracker for your system. We now have a
+    --enable-low-memory setting for use with computers with less
+    RAM and a --turbo mode for those  who want indexing to take
+    place as fast as possible.
+  * New snowball stemmers have been integrated into Tracker to
+    provide some of the highest quality open source stemming around.
+  * New language-specific stopword lists to prevent indexng of
+    common words (which are of little value).
+  * Can optionally make use of Pango word breaking for full
+    internationalisation support.
+
+
+Tracker 0.0.4 "Now indexing at Warp speed"
+============= (16 May 2006)
+
+  * Hugely optimised indexing when many files are waiting to be
+    indexed (especially when you first run trackerd).
+  * Mass queueing of files no longer blocks the main thread, meaning
+    super fast searches can still be performed during heavy indexing.
+  * Eliminated CPU bottlenecks and improved thread synchronisations
+    so Tracker now hits the ground running when indexing (approx
+    500+ files indexed per minute on inotify-enabled systems).
+  * Extended metadata support for more Exif fields.
+  * Added more service types.
+  * Imporved build and support for FC5 (includes RPMs).
+  * Redesigned Database around version 5 of the *embedded*
+    in-process MySQL database library.
+  * Now uses the auto-repair facility provided by MySQL to
+    automatically repair damaged database files so you need never
+    worry about losing your precious data.
+  * Moved virtually all DB logic into stored procedures which
+    provides a clean seperation of DB logic and application logic.
+  * Added support for parsing dates in various formats including
+    conversion to/from ISO 8601 format
+  * Fixed MSWord filter to prevent looping (WvText causes inotify to
+    report file write change causing endless looping).
+  * Redesigned DB structure to be more generic and service orientated
+  * Added support for service types (first class objects) to DB.
+  * Cleaned up code warnings and fixed potential crasher.
+  * Fixed issues with argv handling.
+  * Fixed build issue for Fedora Core 5.
+
+
+Tracker 0.0.3
+============= (29 Mar 2006)
+
+  * Made D-Bus interface more generic
+  * Corrected search results of hyphenated search terms.
+  * Added support for limiting no. of hits for searches.
+  * Added optional support for sorting search results by relevance
+    score.
+  * A few minor bug fixes (Updating file name metadata correctly
+    during move, correcting use of hyphenated search terms).
+  * Streamlined the inlined version of libextractor and improved
+    build system and fixed bug in previous version which prevented
+    compilation of the inlined version.
+
+
+Tracker 0.0.2
+============= (27 Feb 2006)
+
+  * Full inotify support (only compatible with Linux kernels 2.6.13
+    or higher) with optimisations for detected moves.
+  * Fallback to FAM/GAMIN and manual polling for non-Linux and/or
+    non-inotify systems.
+  * Improved build system which allows you to specify which file
+    monitoring backend to use.
+  * Valgrind'ed to remove all leaks.
+
+
+16 Jan 2006
+  *	Added support for Tracker as a Nautilus Search Backend.
+
+
+05 Jan 2006 
+  * Added polling mechanism to watch files in absence of FAM/iNotify
+	or when FAM/iNotify watch limits have been exceeded.
+
+13 Dec 2005 
+  * Imported Tracker into GNOME CVS.
+
+
+08 Dec 2005
+  * Pre-release of Tracker launched.
+
+15 Sep 2005
+  * Tracker project started.
 
 

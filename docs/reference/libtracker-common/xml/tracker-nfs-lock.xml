@@ -1,0 +1,86 @@
+<refentry id="libtracker-common-NFS-Locking">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-common-NFS-Locking.top_of_page">NFS Locking</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-COMMON Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>NFS Locking</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-common-NFS-Locking.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-common/tracker-nfs-lock.h&gt;
+
+<link linkend="void">void</link>                <link linkend="tracker-nfs-lock-init">tracker_nfs_lock_init</link>               (<link linkend="gboolean">gboolean</link> nfs);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-nfs-lock-obtain">tracker_nfs_lock_obtain</link>             (void);
+<link linkend="void">void</link>                <link linkend="tracker-nfs-lock-release">tracker_nfs_lock_release</link>            (void);
+<link linkend="void">void</link>                <link linkend="tracker-nfs-lock-shutdown">tracker_nfs_lock_shutdown</link>           (void);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-common-NFS-Locking.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-common-NFS-Locking.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="tracker-nfs-lock-init" role="function">
+<title>tracker_nfs_lock_init ()</title>
+<indexterm zone="tracker-nfs-lock-init"><primary>tracker_nfs_lock_init</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_nfs_lock_init               (<link linkend="gboolean">gboolean</link> nfs);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>nfs</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-nfs-lock-obtain" role="function">
+<title>tracker_nfs_lock_obtain ()</title>
+<indexterm zone="tracker-nfs-lock-obtain"><primary>tracker_nfs_lock_obtain</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_nfs_lock_obtain             (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-nfs-lock-release" role="function">
+<title>tracker_nfs_lock_release ()</title>
+<indexterm zone="tracker-nfs-lock-release"><primary>tracker_nfs_lock_release</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_nfs_lock_release            (void);</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2 id="tracker-nfs-lock-shutdown" role="function">
+<title>tracker_nfs_lock_shutdown ()</title>
+<indexterm zone="tracker-nfs-lock-shutdown"><primary>tracker_nfs_lock_shutdown</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_nfs_lock_shutdown           (void);</programlisting>
+<para>
+
+</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

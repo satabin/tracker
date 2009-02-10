@@ -1,5 +1,7 @@
-/* Tracker - indexer and metadata database engine
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/*
  * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+ * Copyright (C) 2008, Nokia
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -17,21 +19,113 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#ifndef __TRACKERD_METADATA_H__
+#define __TRACKERD_METADATA_H__
 
+#include <glib-object.h>
 
-#ifndef _TRACKER_METADATA_H_
-#define _TRACKER_METADATA_H_
+#include <libtracker-db/tracker-db-index.h>
 
-#include <glib.h>
+#define TRACKER_METADATA_SERVICE	 "org.freedesktop.Tracker"
+#define TRACKER_METADATA_PATH		 "/org/freedesktop/Tracker/Metadata"
+#define TRACKER_METADATA_INTERFACE	 "org.freedesktop.Tracker.Metadata"
 
-#define THUMB_SMALL "128"
-#define THUMB_LARGE "640"
+G_BEGIN_DECLS
 
+#define TRACKER_TYPE_METADATA		 (tracker_metadata_get_type ())
+#define TRACKER_METADATA(object)	 (G_TYPE_CHECK_INSTANCE_CAST ((object), TRACKER_TYPE_METADATA, TrackerMetadata))
+#define TRACKER_METADATA_CLASS(klass)	 (G_TYPE_CHECK_CLASS_CAST ((klass), TRACKER_TYPE_METADATA, TrackerMetadataClass))
+#define TRACKER_IS_METADATA(object)	 (G_TYPE_CHECK_INSTANCE_TYPE ((object), TRACKER_TYPE_METADATA))
+#define TRACKER_IS_METADATA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRACKER_TYPE_METADATA))
+#define TRACKER_METADATA_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), TRACKER_TYPE_METADATA, TrackerMetadataClass))
 
-void			tracker_metadata_get_embedded 	  	(const char *uri, const char *mime, GHashTable *table);
-char *			tracker_metadata_get_text_file 	  	(const char *uri, const char *mime);
-void			tracker_metadata_parse_text_contents 	(const char *file_as_text, unsigned int ID);
-char *			tracker_metadata_get_thumbnail 	  	(const char *path, const char *mime, const char *size);
-char *			tracker_get_service_type_for_mime 	(const char *mime);
+typedef struct TrackerMetadata	    TrackerMetadata;
+typedef struct TrackerMetadataClass TrackerMetadataClass;
 
-#endif
+struct TrackerMetadata {
+	GObject parent;
+};
+
+struct TrackerMetadataClass {
+	GObjectClass parent;
+};
+
+GType		 tracker_metadata_get_type		 (void);
+TrackerMetadata *tracker_metadata_new			 (void);
+void		 tracker_metadata_get			 (TrackerMetadata	 *object,
+							  const gchar		 *service_type,
+							  const gchar		 *uri,
+							  gchar			**keys,
+							  DBusGMethodInvocation  *context,
+							  GError		**error);
+void             tracker_metadata_get_all                (TrackerMetadata	 *object,
+					                  const gchar	         *service_type,
+					                  const gchar	         *uri,
+							  DBusGMethodInvocation  *context,
+							  GError		**error);
+void		 tracker_metadata_set			 (TrackerMetadata	 *object,
+							  const gchar		 *service_type,
+							  const gchar		 *uri,
+							  gchar			**keys,
+							  gchar			**metadata,
+							  DBusGMethodInvocation  *context,
+							  GError		**error);
+void		 tracker_metadata_get_type_details	 (TrackerMetadata	 *object,
+							  const gchar		 *metadata,
+							  DBusGMethodInvocation  *context,
+							  GError		**error);
+void		 tracker_metadata_get_registered_types	 (TrackerMetadata	 *object,
+							  const gchar		 *service_type,
+							  DBusGMethodInvocation  *context,
+							  GError		**error);
+void		 tracker_metadata_get_registered_classes (TrackerMetadata	 *object,
+							  DBusGMethodInvocation  *context,
+							  GError		**error);
+void		 tracker_metadata_get_unique_values	 (TrackerMetadata	 *object,
+							  const gchar		 *service_type,
+							  gchar			**fields,
+							  const gchar		 *query_condition,
+							  gboolean		  order_desc,
+							  gint			  offset,
+							  gint			  max_hits,
+							  DBusGMethodInvocation  *context,
+							  GError		**error);
+void		 tracker_metadata_get_sum		 (TrackerMetadata	 *object,
+							  const gchar		 *service_type,
+							  const gchar		 *field,
+							  const gchar		 *query_condition,
+							  DBusGMethodInvocation  *context,
+							  GError		**error);
+void		 tracker_metadata_get_count		 (TrackerMetadata	 *object,
+							  const gchar		 *service_type,
+							  const gchar		 *field,
+							  const gchar		 *query_condition,
+							  DBusGMethodInvocation  *context,
+							  GError		**error);
+
+void	   tracker_metadata_get_unique_values_with_count (TrackerMetadata          *object,
+							  const gchar	           *service_type,
+							  gchar		          **fields,
+							  const gchar	           *query_condition,
+							  const gchar	           *count,
+							  gboolean	            order_desc,
+							  gint			    offset,
+							  gint			    max_hits,
+							  DBusGMethodInvocation    *context,
+							  GError		  **error);
+
+void tracker_metadata_get_unique_values_with_count_and_sum (TrackerMetadata        *object,
+							    const gchar	           *service_type,
+							    gchar		  **fields,
+							    const gchar	           *query_condition,
+							    const gchar	           *count,
+							    const gchar            *sum,
+							    gboolean		    order_desc,
+							    gint		    offset,
+							    gint		    max_hits,
+							    DBusGMethodInvocation  *context,
+							    GError		  **error);
+
+G_END_DECLS
+
+#endif /* __TRACKERD_METADATA_H__ */

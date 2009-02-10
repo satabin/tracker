@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Common Library Reference Manual" link="index.html" author="" name="libtracker-common" version="2">
+  <chapters>
+    <sub name="Overview" link="libtracker-common.html"/>
+    <sub name="Utilities" link="ch01.html">
+      <sub name="File Operations" link="libtracker-common-File-Operations.html"/>
+      <sub name="IO Priority" link="libtracker-common-IO-Priority.html"/>
+      <sub name="Logging" link="libtracker-common-Logging.html"/>
+      <sub name="NFS Locking" link="libtracker-common-NFS-Locking.html"/>
+      <sub name="Type Conversions" link="libtracker-common-Type-Conversions.html"/>
+      <sub name="General" link="libtracker-common-General.html"/>
+    </sub>
+    <sub name="Ontology" link="ch02.html">
+      <sub name="Ontology" link="libtracker-common-Ontology.html"/>
+      <sub name="Service" link="libtracker-common-Service.html"/>
+      <sub name="Fields" link="libtracker-common-Fields.html"/>
+    </sub>
+    <sub name="Configuration" link="ch03.html">
+      <sub name="Config" link="libtracker-common-Config.html"/>
+      <sub name="HAL" link="libtracker-common-HAL.html"/>
+      <sub name="Language" link="libtracker-common-Language.html"/>
+      <sub name="Module Config" link="libtracker-common-Module-Config.html"/>
+    </sub>
+    <sub name="Indexing" link="ch04.html">
+      <sub name="Parser" link="libtracker-common-Parser.html"/>
+    </sub>
+    <sub name="Communication" link="ch05.html">
+      <sub name="DBus" link="libtracker-common-DBus.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <keyword type="function" name="tracker_env_check_xdg_dirs ()" link="libtracker-common-File-Operations.html#tracker-env-check-xdg-dirs"/>
+    <keyword type="function" name="tracker_file_close ()" link="libtracker-common-File-Operations.html#tracker-file-close"/>
+    <keyword type="function" name="tracker_file_get_mime_type ()" link="libtracker-common-File-Operations.html#tracker-file-get-mime-type"/>
+    <keyword type="function" name="tracker_file_get_mtime ()" link="libtracker-common-File-Operations.html#tracker-file-get-mtime"/>
+    <keyword type="function" name="tracker_file_get_path_and_name ()" link="libtracker-common-File-Operations.html#tracker-file-get-path-and-name"/>
+    <keyword type="function" name="tracker_file_get_size ()" link="libtracker-common-File-Operations.html#tracker-file-get-size"/>
+    <keyword type="function" name="tracker_file_is_directory ()" link="libtracker-common-File-Operations.html#tracker-file-is-directory"/>
+    <keyword type="function" name="tracker_file_is_indexable ()" link="libtracker-common-File-Operations.html#tracker-file-is-indexable"/>
+    <keyword type="function" name="tracker_file_is_valid ()" link="libtracker-common-File-Operations.html#tracker-file-is-valid"/>
+    <keyword type="function" name="tracker_file_open ()" link="libtracker-common-File-Operations.html#tracker-file-open"/>
+    <keyword type="function" name="tracker_file_unlink ()" link="libtracker-common-File-Operations.html#tracker-file-unlink"/>
+    <keyword type="function" name="tracker_path_evaluate_name ()" link="libtracker-common-File-Operations.html#tracker-path-evaluate-name"/>
+    <keyword type="function" name="tracker_path_hash_table_filter_duplicates ()" link="libtracker-common-File-Operations.html#tracker-path-hash-table-filter-duplicates"/>
+    <keyword type="function" name="tracker_path_is_in_path ()" link="libtracker-common-File-Operations.html#tracker-path-is-in-path"/>
+    <keyword type="function" name="tracker_path_list_filter_duplicates ()" link="libtracker-common-File-Operations.html#tracker-path-list-filter-duplicates"/>
+    <keyword type="function" name="tracker_path_remove ()" link="libtracker-common-File-Operations.html#tracker-path-remove"/>
+    <keyword type="function" name="tracker_ioprio_init ()" link="libtracker-common-IO-Priority.html#tracker-ioprio-init"/>
+    <keyword type="function" name="tracker_log_init ()" link="libtracker-common-Logging.html#tracker-log-init"/>
+    <keyword type="function" name="tracker_log_shutdown ()" link="libtracker-common-Logging.html#tracker-log-shutdown"/>
+    <keyword type="function" name="tracker_nfs_lock_init ()" link="libtracker-common-NFS-Locking.html#tracker-nfs-lock-init"/>
+    <keyword type="function" name="tracker_nfs_lock_obtain ()" link="libtracker-common-NFS-Locking.html#tracker-nfs-lock-obtain"/>
+    <keyword type="function" name="tracker_nfs_lock_release ()" link="libtracker-common-NFS-Locking.html#tracker-nfs-lock-release"/>
+    <keyword type="function" name="tracker_nfs_lock_shutdown ()" link="libtracker-common-NFS-Locking.html#tracker-nfs-lock-shutdown"/>
+    <keyword type="function" name="tracker_gint32_to_string ()" link="libtracker-common-Type-Conversions.html#tracker-gint32-to-string"/>
+    <keyword type="function" name="tracker_gint_to_string ()" link="libtracker-common-Type-Conversions.html#tracker-gint-to-string"/>
+    <keyword type="function" name="tracker_glong_to_string ()" link="libtracker-common-Type-Conversions.html#tracker-glong-to-string"/>
+    <keyword type="function" name="tracker_gslist_copy_with_string_data ()" link="libtracker-common-Type-Conversions.html#tracker-gslist-copy-with-string-data"/>
+    <keyword type="function" name="tracker_gslist_to_string_list ()" link="libtracker-common-Type-Conversions.html#tracker-gslist-to-string-list"/>
+    <keyword type="function" name="tracker_guint32_to_string ()" link="libtracker-common-Type-Conversions.html#tracker-guint32-to-string"/>
+    <keyword type="function" name="tracker_guint_to_string ()" link="libtracker-common-Type-Conversions.html#tracker-guint-to-string"/>
+    <keyword type="function" name="tracker_string_boolean_to_string_gint ()" link="libtracker-common-Type-Conversions.html#tracker-string-boolean-to-string-gint"/>
+    <keyword type="function" name="tracker_string_in_string_list ()" link="libtracker-common-Type-Conversions.html#tracker-string-in-string-list"/>
+    <keyword type="function" name="tracker_string_list_to_gslist ()" link="libtracker-common-Type-Conversions.html#tracker-string-list-to-gslist"/>
+    <keyword type="function" name="tracker_string_list_to_string ()" link="libtracker-common-Type-Conversions.html#tracker-string-list-to-string"/>
+    <keyword type="function" name="tracker_string_to_date ()" link="libtracker-common-Type-Conversions.html#tracker-string-to-date"/>
+    <keyword type="function" name="tracker_string_to_string_list ()" link="libtracker-common-Type-Conversions.html#tracker-string-to-string-list"/>
+    <keyword type="function" name="tracker_string_to_uint ()" link="libtracker-common-Type-Conversions.html#tracker-string-to-uint"/>
+    <keyword type="function" name="tracker_escape_string ()" link="libtracker-common-General.html#tracker-escape-string"/>
+    <keyword type="function" name="tracker_is_empty_string ()" link="libtracker-common-General.html#tracker-is-empty-string"/>
+    <keyword type="function" name="tracker_seconds_estimate_to_string ()" link="libtracker-common-General.html#tracker-seconds-estimate-to-string"/>
+    <keyword type="function" name="tracker_seconds_to_string ()" link="libtracker-common-General.html#tracker-seconds-to-string"/>
+    <keyword type="function" name="tracker_string_remove ()" link="libtracker-common-General.html#tracker-string-remove"/>
+    <keyword type="function" name="tracker_string_replace ()" link="libtracker-common-General.html#tracker-string-replace"/>
+    <keyword type="function" name="tracker_throttle ()" link="libtracker-common-General.html#tracker-throttle"/>
+    <keyword type="function" name="tracker_ontology_init ()" link="libtracker-common-Ontology.html#tracker-ontology-init"/>
+    <keyword type="function" name="tracker_ontology_shutdown ()" link="libtracker-common-Ontology.html#tracker-ontology-shutdown"/>
+    <keyword type="function" name="tracker_ontology_get_field_by_id ()" link="libtracker-common-Ontology.html#tracker-ontology-get-field-by-id"/>
+    <keyword type="function" name="tracker_ontology_get_field_by_name ()" link="libtracker-common-Ontology.html#tracker-ontology-get-field-by-name"/>
+    <keyword type="function" name="tracker_ontology_get_field_name_by_service_name ()" link="libtracker-common-Ontology.html#tracker-ontology-get-field-name-by-service-name"/>
+    <keyword type="function" name="tracker_ontology_get_field_names_registered ()" link="libtracker-common-Ontology.html#tracker-ontology-get-field-names-registered"/>
+    <keyword type="function" name="tracker_ontology_get_service_by_id ()" link="libtracker-common-Ontology.html#tracker-ontology-get-service-by-id"/>
+    <keyword type="function" name="tracker_ontology_get_service_by_mime ()" link="libtracker-common-Ontology.html#tracker-ontology-get-service-by-mime"/>
+    <keyword type="function" name="tracker_ontology_get_service_by_name ()" link="libtracker-common-Ontology.html#tracker-ontology-get-service-by-name"/>
+    <keyword type="function" name="tracker_ontology_get_service_db_by_name ()" link="libtracker-common-Ontology.html#tracker-ontology-get-service-db-by-name"/>
+    <keyword type="function" name="tracker_ontology_get_service_id_by_name ()" link="libtracker-common-Ontology.html#tracker-ontology-get-service-id-by-name"/>
+    <keyword type="function" name="tracker_ontology_get_service_names_registered ()" link="libtracker-common-Ontology.html#tracker-ontology-get-service-names-registered"/>
+    <keyword type="function" name="tracker_ontology_get_service_parent ()" link="libtracker-common-Ontology.html#tracker-ontology-get-service-parent"/>
+    <keyword type="function" name="tracker_ontology_get_service_parent_by_id ()" link="libtracker-common-Ontology.html#tracker-ontology-get-service-parent-by-id"/>
+    <keyword type="function" name="tracker_ontology_get_service_parent_id_by_id ()" link="libtracker-common-Ontology.html#tracker-ontology-get-service-parent-id-by-id"/>
+    <keyword type="function" name="tracker_ontology_service_add ()" link="libtracker-common-Ontology.html#tracker-ontology-service-add"/>
+    <keyword type="function" name="tracker_ontology_service_get_key_metadata ()" link="libtracker-common-Ontology.html#tracker-ontology-service-get-key-metadata"/>
+    <keyword type="function" name="tracker_ontology_service_get_show_directories ()" link="libtracker-common-Ontology.html#tracker-ontology-service-get-show-directories"/>
+    <keyword type="function" name="tracker_ontology_service_get_show_files ()" link="libtracker-common-Ontology.html#tracker-ontology-service-get-show-files"/>
+    <keyword type="function" name="tracker_ontology_service_has_embedded ()" link="libtracker-common-Ontology.html#tracker-ontology-service-has-embedded"/>
+    <keyword type="function" name="tracker_ontology_service_has_metadata ()" link="libtracker-common-Ontology.html#tracker-ontology-service-has-metadata"/>
+    <keyword type="function" name="tracker_ontology_service_has_text ()" link="libtracker-common-Ontology.html#tracker-ontology-service-has-text"/>
+    <keyword type="function" name="tracker_ontology_service_has_thumbnails ()" link="libtracker-common-Ontology.html#tracker-ontology-service-has-thumbnails"/>
+    <keyword type="function" name="tracker_ontology_service_is_valid ()" link="libtracker-common-Ontology.html#tracker-ontology-service-is-valid"/>
+    <keyword type="function" name="tracker_ontology_field_add ()" link="libtracker-common-Ontology.html#tracker-ontology-field-add"/>
+    <keyword type="function" name="tracker_ontology_field_get_display_name ()" link="libtracker-common-Ontology.html#tracker-ontology-field-get-display-name"/>
+    <keyword type="function" name="tracker_ontology_field_get_id ()" link="libtracker-common-Ontology.html#tracker-ontology-field-get-id"/>
+    <keyword type="function" name="tracker_ontology_field_is_child_of ()" link="libtracker-common-Ontology.html#tracker-ontology-field-is-child-of"/>
+    <keyword type="struct" name="TrackerService" link="libtracker-common-Service.html#TrackerService-struct"/>
+    <keyword type="function" name="tracker_service_new ()" link="libtracker-common-Service.html#tracker-service-new"/>
+    <keyword type="function" name="tracker_service_get_content_metadata ()" link="libtracker-common-Service.html#tracker-service-get-content-metadata"/>
+    <keyword type="function" name="tracker_service_get_db_type ()" link="libtracker-common-Service.html#tracker-service-get-db-type"/>
+    <keyword type="function" name="tracker_service_get_embedded ()" link="libtracker-common-Service.html#tracker-service-get-embedded"/>
+    <keyword type="function" name="tracker_service_get_enabled ()" link="libtracker-common-Service.html#tracker-service-get-enabled"/>
+    <keyword type="function" name="tracker_service_get_has_full_text ()" link="libtracker-common-Service.html#tracker-service-get-has-full-text"/>
+    <keyword type="function" name="tracker_service_get_has_metadata ()" link="libtracker-common-Service.html#tracker-service-get-has-metadata"/>
+    <keyword type="function" name="tracker_service_get_has_thumbs ()" link="libtracker-common-Service.html#tracker-service-get-has-thumbs"/>
+    <keyword type="function" name="tracker_service_get_id ()" link="libtracker-common-Service.html#tracker-service-get-id"/>
+    <keyword type="function" name="tracker_service_get_key_metadata ()" link="libtracker-common-Service.html#tracker-service-get-key-metadata"/>
+    <keyword type="function" name="tracker_service_get_name ()" link="libtracker-common-Service.html#tracker-service-get-name"/>
+    <keyword type="function" name="tracker_service_get_parent ()" link="libtracker-common-Service.html#tracker-service-get-parent"/>
+    <keyword type="function" name="tracker_service_get_property_prefix ()" link="libtracker-common-Service.html#tracker-service-get-property-prefix"/>
+    <keyword type="function" name="tracker_service_get_show_service_directories ()" link="libtracker-common-Service.html#tracker-service-get-show-service-directories"/>
+    <keyword type="function" name="tracker_service_get_show_service_files ()" link="libtracker-common-Service.html#tracker-service-get-show-service-files"/>
+    <keyword type="function" name="tracker_service_set_content_metadata ()" link="libtracker-common-Service.html#tracker-service-set-content-metadata"/>
+    <keyword type="function" name="tracker_service_set_db_type ()" link="libtracker-common-Service.html#tracker-service-set-db-type"/>
+    <keyword type="function" name="tracker_service_set_embedded ()" link="libtracker-common-Service.html#tracker-service-set-embedded"/>
+    <keyword type="function" name="tracker_service_set_enabled ()" link="libtracker-common-Service.html#tracker-service-set-enabled"/>
+    <keyword type="function" name="tracker_service_set_has_full_text ()" link="libtracker-common-Service.html#tracker-service-set-has-full-text"/>
+    <keyword type="function" name="tracker_service_set_has_metadata ()" link="libtracker-common-Service.html#tracker-service-set-has-metadata"/>
+    <keyword type="function" name="tracker_service_set_has_thumbs ()" link="libtracker-common-Service.html#tracker-service-set-has-thumbs"/>
+    <keyword type="function" name="tracker_service_set_id ()" link="libtracker-common-Service.html#tracker-service-set-id"/>
+    <keyword type="function" name="tracker_service_set_key_metadata ()" link="libtracker-common-Service.html#tracker-service-set-key-metadata"/>
+    <keyword type="function" name="tracker_service_set_name ()" link="libtracker-common-Service.html#tracker-service-set-name"/>
+    <keyword type="function" name="tracker_service_set_parent ()" link="libtracker-common-Service.html#tracker-service-set-parent"/>
+    <keyword type="function" name="tracker_service_set_property_prefix ()" link="libtracker-common-Service.html#tracker-service-set-property-prefix"/>
+    <keyword type="function" name="tracker_service_set_show_service_directories ()" link="libtracker-common-Service.html#tracker-service-set-show-service-directories"/>
+    <keyword type="function" name="tracker_service_set_show_service_files ()" link="libtracker-common-Service.html#tracker-service-set-show-service-files"/>
+    <keyword type="" name="The &quot;content-metadata&quot; property" link="libtracker-common-Service.html#TrackerService--content-metadata"/>
+    <keyword type="" name="The &quot;db-type&quot; property" link="libtracker-common-Service.html#TrackerService--db-type"/>
+    <keyword type="" name="The &quot;embedded&quot; property" link="libtracker-common-Service.html#TrackerService--embedded"/>
+    <keyword type="" name="The &quot;enabled&quot; property" link="libtracker-common-Service.html#TrackerService--enabled"/>
+    <keyword type="" name="The &quot;has-full-text&quot; property" link="libtracker-common-Service.html#TrackerService--has-full-text"/>
+    <keyword type="" name="The &quot;has-metadata&quot; property" link="libtracker-common-Service.html#TrackerService--has-metadata"/>
+    <keyword type="" name="The &quot;has-thumbs&quot; property" link="libtracker-common-Service.html#TrackerService--has-thumbs"/>
+    <keyword type="" name="The &quot;id&quot; property" link="libtracker-common-Service.html#TrackerService--id"/>
+    <keyword type="" name="The &quot;key-metadata&quot; property" link="libtracker-common-Service.html#TrackerService--key-metadata"/>
+    <keyword type="" name="The &quot;name&quot; property" link="libtracker-common-Service.html#TrackerService--name"/>
+    <keyword type="" name="The &quot;parent&quot; property" link="libtracker-common-Service.html#TrackerService--parent"/>
+    <keyword type="" name="The &quot;property-prefix&quot; property" link="libtracker-common-Service.html#TrackerService--property-prefix"/>
+    <keyword type="" name="The &quot;show-service-directories&quot; property" link="libtracker-common-Service.html#TrackerService--show-service-directories"/>
+    <keyword type="" name="The &quot;show-service-files&quot; property" link="libtracker-common-Service.html#TrackerService--show-service-files"/>
+    <keyword type="struct" name="TrackerField" link="libtracker-common-Fields.html#TrackerField-struct"/>
+    <keyword type="function" name="tracker_field_new ()" link="libtracker-common-Fields.html#tracker-field-new"/>
+    <keyword type="function" name="tracker_field_append_child_id ()" link="libtracker-common-Fields.html#tracker-field-append-child-id"/>
+    <keyword type="function" name="tracker_field_get_child_ids ()" link="libtracker-common-Fields.html#tracker-field-get-child-ids"/>
+    <keyword type="function" name="tracker_field_get_data_type ()" link="libtracker-common-Fields.html#tracker-field-get-data-type"/>
+    <keyword type="function" name="tracker_field_get_delimited ()" link="libtracker-common-Fields.html#tracker-field-get-delimited"/>
+    <keyword type="function" name="tracker_field_get_embedded ()" link="libtracker-common-Fields.html#tracker-field-get-embedded"/>
+    <keyword type="function" name="tracker_field_get_field_name ()" link="libtracker-common-Fields.html#tracker-field-get-field-name"/>
+    <keyword type="function" name="tracker_field_get_filtered ()" link="libtracker-common-Fields.html#tracker-field-get-filtered"/>
+    <keyword type="function" name="tracker_field_get_id ()" link="libtracker-common-Fields.html#tracker-field-get-id"/>
+    <keyword type="function" name="tracker_field_get_multiple_values ()" link="libtracker-common-Fields.html#tracker-field-get-multiple-values"/>
+    <keyword type="function" name="tracker_field_get_name ()" link="libtracker-common-Fields.html#tracker-field-get-name"/>
+    <keyword type="function" name="tracker_field_get_store_metadata ()" link="libtracker-common-Fields.html#tracker-field-get-store-metadata"/>
+    <keyword type="function" name="tracker_field_get_weight ()" link="libtracker-common-Fields.html#tracker-field-get-weight"/>
+    <keyword type="function" name="tracker_field_set_child_ids ()" link="libtracker-common-Fields.html#tracker-field-set-child-ids"/>
+    <keyword type="function" name="tracker_field_set_data_type ()" link="libtracker-common-Fields.html#tracker-field-set-data-type"/>
+    <keyword type="function" name="tracker_field_set_delimited ()" link="libtracker-common-Fields.html#tracker-field-set-delimited"/>
+    <keyword type="function" name="tracker_field_set_embedded ()" link="libtracker-common-Fields.html#tracker-field-set-embedded"/>
+    <keyword type="function" name="tracker_field_set_field_name ()" link="libtracker-common-Fields.html#tracker-field-set-field-name"/>
+    <keyword type="function" name="tracker_field_set_filtered ()" link="libtracker-common-Fields.html#tracker-field-set-filtered"/>
+    <keyword type="function" name="tracker_field_set_id ()" link="libtracker-common-Fields.html#tracker-field-set-id"/>
+    <keyword type="function" name="tracker_field_set_multiple_values ()" link="libtracker-common-Fields.html#tracker-field-set-multiple-values"/>
+    <keyword type="function" name="tracker_field_set_name ()" link="libtracker-common-Fields.html#tracker-field-set-name"/>
+    <keyword type="function" name="tracker_field_set_store_metadata ()" link="libtracker-common-Fields.html#tracker-field-set-store-metadata"/>
+    <keyword type="function" name="tracker_field_set_weight ()" link="libtracker-common-Fields.html#tracker-field-set-weight"/>
+    <keyword type="function" name="tracker_field_type_to_string ()" link="libtracker-common-Fields.html#tracker-field-type-to-string"/>
+    <keyword type="" name="The &quot;child-ids&quot; property" link="libtracker-common-Fields.html#TrackerField--child-ids"/>
+    <keyword type="" name="The &quot;data-type&quot; property" link="libtracker-common-Fields.html#TrackerField--data-type"/>
+    <keyword type="" name="The &quot;delimited&quot; property" link="libtracker-common-Fields.html#TrackerField--delimited"/>
+    <keyword type="" name="The &quot;embedded&quot; property" link="libtracker-common-Fields.html#TrackerField--embedded"/>
+    <keyword type="" name="The &quot;field-name&quot; property" link="libtracker-common-Fields.html#TrackerField--field-name"/>
+    <keyword type="" name="The &quot;filtered&quot; property" link="libtracker-common-Fields.html#TrackerField--filtered"/>
+    <keyword type="" name="The &quot;id&quot; property" link="libtracker-common-Fields.html#TrackerField--id"/>
+    <keyword type="" name="The &quot;multiple-values&quot; property" link="libtracker-common-Fields.html#TrackerField--multiple-values"/>
+    <keyword type="" name="The &quot;name&quot; property" link="libtracker-common-Fields.html#TrackerField--name"/>
+    <keyword type="" name="The &quot;store-metadata&quot; property" link="libtracker-common-Fields.html#TrackerField--store-metadata"/>
+    <keyword type="" name="The &quot;weight&quot; property" link="libtracker-common-Fields.html#TrackerField--weight"/>
+    <keyword type="struct" name="TrackerConfig" link="libtracker-common-Config.html#TrackerConfig-struct"/>
+    <keyword type="function" name="tracker_config_new ()" link="libtracker-common-Config.html#tracker-config-new"/>
+    <keyword type="function" name="tracker_config_add_crawl_directory_roots ()" link="libtracker-common-Config.html#tracker-config-add-crawl-directory-roots"/>
+    <keyword type="function" name="tracker_config_add_disabled_modules ()" link="libtracker-common-Config.html#tracker-config-add-disabled-modules"/>
+    <keyword type="function" name="tracker_config_add_no_watch_directory_roots ()" link="libtracker-common-Config.html#tracker-config-add-no-watch-directory-roots"/>
+    <keyword type="function" name="tracker_config_add_watch_directory_roots ()" link="libtracker-common-Config.html#tracker-config-add-watch-directory-roots"/>
+    <keyword type="function" name="tracker_config_get_crawl_directory_roots ()" link="libtracker-common-Config.html#tracker-config-get-crawl-directory-roots"/>
+    <keyword type="function" name="tracker_config_get_disable_indexing_on_battery ()" link="libtracker-common-Config.html#tracker-config-get-disable-indexing-on-battery"/>
+    <keyword type="function" name="tracker_config_get_disable_indexing_on_battery_init ()" link="libtracker-common-Config.html#tracker-config-get-disable-indexing-on-battery-init"/>
+    <keyword type="function" name="tracker_config_get_disabled_modules ()" link="libtracker-common-Config.html#tracker-config-get-disabled-modules"/>
+    <keyword type="function" name="tracker_config_get_enable_content_indexing ()" link="libtracker-common-Config.html#tracker-config-get-enable-content-indexing"/>
+    <keyword type="function" name="tracker_config_get_enable_indexing ()" link="libtracker-common-Config.html#tracker-config-get-enable-indexing"/>
+    <keyword type="function" name="tracker_config_get_enable_stemmer ()" link="libtracker-common-Config.html#tracker-config-get-enable-stemmer"/>
+    <keyword type="function" name="tracker_config_get_enable_thumbnails ()" link="libtracker-common-Config.html#tracker-config-get-enable-thumbnails"/>
+    <keyword type="function" name="tracker_config_get_enable_watches ()" link="libtracker-common-Config.html#tracker-config-get-enable-watches"/>
+    <keyword type="function" name="tracker_config_get_enable_xesam ()" link="libtracker-common-Config.html#tracker-config-get-enable-xesam"/>
+    <keyword type="function" name="tracker_config_get_fast_merges ()" link="libtracker-common-Config.html#tracker-config-get-fast-merges"/>
+    <keyword type="function" name="tracker_config_get_index_mounted_directories ()" link="libtracker-common-Config.html#tracker-config-get-index-mounted-directories"/>
+    <keyword type="function" name="tracker_config_get_index_removable_devices ()" link="libtracker-common-Config.html#tracker-config-get-index-removable-devices"/>
+    <keyword type="function" name="tracker_config_get_initial_sleep ()" link="libtracker-common-Config.html#tracker-config-get-initial-sleep"/>
+    <keyword type="function" name="tracker_config_get_language ()" link="libtracker-common-Config.html#tracker-config-get-language"/>
+    <keyword type="function" name="tracker_config_get_low_disk_space_limit ()" link="libtracker-common-Config.html#tracker-config-get-low-disk-space-limit"/>
+    <keyword type="function" name="tracker_config_get_low_memory_mode ()" link="libtracker-common-Config.html#tracker-config-get-low-memory-mode"/>
+    <keyword type="function" name="tracker_config_get_max_bucket_count ()" link="libtracker-common-Config.html#tracker-config-get-max-bucket-count"/>
+    <keyword type="function" name="tracker_config_get_max_text_to_index ()" link="libtracker-common-Config.html#tracker-config-get-max-text-to-index"/>
+    <keyword type="function" name="tracker_config_get_max_word_length ()" link="libtracker-common-Config.html#tracker-config-get-max-word-length"/>
+    <keyword type="function" name="tracker_config_get_max_words_to_index ()" link="libtracker-common-Config.html#tracker-config-get-max-words-to-index"/>
+    <keyword type="function" name="tracker_config_get_min_bucket_count ()" link="libtracker-common-Config.html#tracker-config-get-min-bucket-count"/>
+    <keyword type="function" name="tracker_config_get_min_word_length ()" link="libtracker-common-Config.html#tracker-config-get-min-word-length"/>
+    <keyword type="function" name="tracker_config_get_nfs_locking ()" link="libtracker-common-Config.html#tracker-config-get-nfs-locking"/>
+    <keyword type="function" name="tracker_config_get_no_index_file_types ()" link="libtracker-common-Config.html#tracker-config-get-no-index-file-types"/>
+    <keyword type="function" name="tracker_config_get_no_watch_directory_roots ()" link="libtracker-common-Config.html#tracker-config-get-no-watch-directory-roots"/>
+    <keyword type="function" name="tracker_config_get_throttle ()" link="libtracker-common-Config.html#tracker-config-get-throttle"/>
+    <keyword type="function" name="tracker_config_get_verbosity ()" link="libtracker-common-Config.html#tracker-config-get-verbosity"/>
+    <keyword type="function" name="tracker_config_get_watch_directory_roots ()" link="libtracker-common-Config.html#tracker-config-get-watch-directory-roots"/>
+    <keyword type="function" name="tracker_config_remove_disabled_modules ()" link="libtracker-common-Config.html#tracker-config-remove-disabled-modules"/>
+    <keyword type="function" name="tracker_config_set_disable_indexing_on_battery ()" link="libtracker-common-Config.html#tracker-config-set-disable-indexing-on-battery"/>
+    <keyword type="function" name="tracker_config_set_disable_indexing_on_battery_init ()" link="libtracker-common-Config.html#tracker-config-set-disable-indexing-on-battery-init"/>
+    <keyword type="function" name="tracker_config_set_enable_content_indexing ()" link="libtracker-common-Config.html#tracker-config-set-enable-content-indexing"/>
+    <keyword type="function" name="tracker_config_set_enable_indexing ()" link="libtracker-common-Config.html#tracker-config-set-enable-indexing"/>
+    <keyword type="function" name="tracker_config_set_enable_stemmer ()" link="libtracker-common-Config.html#tracker-config-set-enable-stemmer"/>
+    <keyword type="function" name="tracker_config_set_enable_thumbnails ()" link="libtracker-common-Config.html#tracker-config-set-enable-thumbnails"/>
+    <keyword type="function" name="tracker_config_set_enable_watches ()" link="libtracker-common-Config.html#tracker-config-set-enable-watches"/>
+    <keyword type="function" name="tracker_config_set_enable_xesam ()" link="libtracker-common-Config.html#tracker-config-set-enable-xesam"/>
+    <keyword type="function" name="tracker_config_set_fast_merges ()" link="libtracker-common-Config.html#tracker-config-set-fast-merges"/>
+    <keyword type="function" name="tracker_config_set_index_mounted_directories ()" link="libtracker-common-Config.html#tracker-config-set-index-mounted-directories"/>
+    <keyword type="function" name="tracker_config_set_index_removable_devices ()" link="libtracker-common-Config.html#tracker-config-set-index-removable-devices"/>
+    <keyword type="function" name="tracker_config_set_initial_sleep ()" link="libtracker-common-Config.html#tracker-config-set-initial-sleep"/>
+    <keyword type="function" name="tracker_config_set_language ()" link="libtracker-common-Config.html#tracker-config-set-language"/>
+    <keyword type="function" name="tracker_config_set_low_disk_space_limit ()" link="libtracker-common-Config.html#tracker-config-set-low-disk-space-limit"/>
+    <keyword type="function" name="tracker_config_set_low_memory_mode ()" link="libtracker-common-Config.html#tracker-config-set-low-memory-mode"/>
+    <keyword type="function" name="tracker_config_set_max_bucket_count ()" link="libtracker-common-Config.html#tracker-config-set-max-bucket-count"/>
+    <keyword type="function" name="tracker_config_set_max_text_to_index ()" link="libtracker-common-Config.html#tracker-config-set-max-text-to-index"/>
+    <keyword type="function" name="tracker_config_set_max_word_length ()" link="libtracker-common-Config.html#tracker-config-set-max-word-length"/>
+    <keyword type="function" name="tracker_config_set_max_words_to_index ()" link="libtracker-common-Config.html#tracker-config-set-max-words-to-index"/>
+    <keyword type="function" name="tracker_config_set_min_bucket_count ()" link="libtracker-common-Config.html#tracker-config-set-min-bucket-count"/>
+    <keyword type="function" name="tracker_config_set_min_word_length ()" link="libtracker-common-Config.html#tracker-config-set-min-word-length"/>
+    <keyword type="function" name="tracker_config_set_nfs_locking ()" link="libtracker-common-Config.html#tracker-config-set-nfs-locking"/>
+    <keyword type="function" name="tracker_config_set_throttle ()" link="libtracker-common-Config.html#tracker-config-set-throttle"/>
+    <keyword type="function" name="tracker_config_set_verbosity ()" link="libtracker-common-Config.html#tracker-config-set-verbosity"/>
+    <keyword type="" name="The &quot;crawl-directory-roots&quot; property" link="libtracker-common-Config.html#TrackerConfig--crawl-directory-roots"/>
+    <keyword type="" name="The &quot;disable-indexing-on-battery&quot; property" link="libtracker-common-Config.html#TrackerConfig--disable-indexing-on-battery"/>
+    <keyword type="" name="The &quot;disable-indexing-on-battery-init&quot; property" link="libtracker-common-Config.html#TrackerConfig--disable-indexing-on-battery-init"/>
+    <keyword type="" name="The &quot;disabled-modules&quot; property" link="libtracker-common-Config.html#TrackerConfig--disabled-modules"/>
+    <keyword type="" name="The &quot;enable-content-indexing&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-content-indexing"/>
+    <keyword type="" name="The &quot;enable-indexing&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-indexing"/>
+    <keyword type="" name="The &quot;enable-stemmer&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-stemmer"/>
+    <keyword type="" name="The &quot;enable-thumbnails&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-thumbnails"/>
+    <keyword type="" name="The &quot;enable-watches&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-watches"/>
+    <keyword type="" name="The &quot;enable-xesam&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-xesam"/>
+    <keyword type="" name="The &quot;fast-merges&quot; property" link="libtracker-common-Config.html#TrackerConfig--fast-merges"/>
+    <keyword type="" name="The &quot;index-mounted-directories&quot; property" link="libtracker-common-Config.html#TrackerConfig--index-mounted-directories"/>
+    <keyword type="" name="The &quot;index-removable-devices&quot; property" link="libtracker-common-Config.html#TrackerConfig--index-removable-devices"/>
+    <keyword type="" name="The &quot;initial-sleep&quot; property" link="libtracker-common-Config.html#TrackerConfig--initial-sleep"/>
+    <keyword type="" name="The &quot;language&quot; property" link="libtracker-common-Config.html#TrackerConfig--language"/>
+    <keyword type="" name="The &quot;low-disk-space-limit&quot; property" link="libtracker-common-Config.html#TrackerConfig--low-disk-space-limit"/>
+    <keyword type="" name="The &quot;low-memory-mode&quot; property" link="libtracker-common-Config.html#TrackerConfig--low-memory-mode"/>
+    <keyword type="" name="The &quot;max-bucket-count&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-bucket-count"/>
+    <keyword type="" name="The &quot;max-text-to-index&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-text-to-index"/>
+    <keyword type="" name="The &quot;max-word-length&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-word-length"/>
+    <keyword type="" name="The &quot;max-words-to-index&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-words-to-index"/>
+    <keyword type="" name="The &quot;min-bucket-count&quot; property" link="libtracker-common-Config.html#TrackerConfig--min-bucket-count"/>
+    <keyword type="" name="The &quot;min-word-length&quot; property" link="libtracker-common-Config.html#TrackerConfig--min-word-length"/>
+    <keyword type="" name="The &quot;nfs-locking&quot; property" link="libtracker-common-Config.html#TrackerConfig--nfs-locking"/>
+    <keyword type="" name="The &quot;no-index-file-types&quot; property" link="libtracker-common-Config.html#TrackerConfig--no-index-file-types"/>
+    <keyword type="" name="The &quot;no-watch-directory-roots&quot; property" link="libtracker-common-Config.html#TrackerConfig--no-watch-directory-roots"/>
+    <keyword type="" name="The &quot;throttle&quot; property" link="libtracker-common-Config.html#TrackerConfig--throttle"/>
+    <keyword type="" name="The &quot;verbosity&quot; property" link="libtracker-common-Config.html#TrackerConfig--verbosity"/>
+    <keyword type="" name="The &quot;watch-directory-roots&quot; property" link="libtracker-common-Config.html#TrackerConfig--watch-directory-roots"/>
+    <keyword type="struct" name="TrackerHal" link="libtracker-common-HAL.html#TrackerHal-struct"/>
+    <keyword type="function" name="tracker_hal_new ()" link="libtracker-common-HAL.html#tracker-hal-new"/>
+    <keyword type="function" name="tracker_hal_get_battery_exists ()" link="libtracker-common-HAL.html#tracker-hal-get-battery-exists"/>
+    <keyword type="function" name="tracker_hal_get_battery_in_use ()" link="libtracker-common-HAL.html#tracker-hal-get-battery-in-use"/>
+    <keyword type="function" name="tracker_hal_get_mounted_directory_roots ()" link="libtracker-common-HAL.html#tracker-hal-get-mounted-directory-roots"/>
+    <keyword type="function" name="tracker_hal_get_removable_device_roots ()" link="libtracker-common-HAL.html#tracker-hal-get-removable-device-roots"/>
+    <keyword type="" name="The &quot;battery-exists&quot; property" link="libtracker-common-HAL.html#TrackerHal--battery-exists"/>
+    <keyword type="" name="The &quot;battery-in-use&quot; property" link="libtracker-common-HAL.html#TrackerHal--battery-in-use"/>
+    <keyword type="" name="The &quot;battery-percentage&quot; property" link="libtracker-common-HAL.html#TrackerHal--battery-percentage"/>
+    <keyword type="" name="The &quot;mount-point-added&quot; signal" link="libtracker-common-HAL.html#TrackerHal-mount-point-added"/>
+    <keyword type="" name="The &quot;mount-point-removed&quot; signal" link="libtracker-common-HAL.html#TrackerHal-mount-point-removed"/>
+    <keyword type="struct" name="TrackerLanguage" link="libtracker-common-Language.html#TrackerLanguage-struct"/>
+    <keyword type="function" name="tracker_language_new ()" link="libtracker-common-Language.html#tracker-language-new"/>
+    <keyword type="function" name="tracker_language_check_exists ()" link="libtracker-common-Language.html#tracker-language-check-exists"/>
+    <keyword type="function" name="tracker_language_get_config ()" link="libtracker-common-Language.html#tracker-language-get-config"/>
+    <keyword type="function" name="tracker_language_get_default_code ()" link="libtracker-common-Language.html#tracker-language-get-default-code"/>
+    <keyword type="function" name="tracker_language_get_stop_words ()" link="libtracker-common-Language.html#tracker-language-get-stop-words"/>
+    <keyword type="function" name="tracker_language_set_config ()" link="libtracker-common-Language.html#tracker-language-set-config"/>
+    <keyword type="function" name="tracker_language_stem_word ()" link="libtracker-common-Language.html#tracker-language-stem-word"/>
+    <keyword type="" name="The &quot;config&quot; property" link="libtracker-common-Language.html#TrackerLanguage--config"/>
+    <keyword type="" name="The &quot;stop-words&quot; property" link="libtracker-common-Language.html#TrackerLanguage--stop-words"/>
+    <keyword type="function" name="tracker_module_config_init ()" link="libtracker-common-Module-Config.html#tracker-module-config-init"/>
+    <keyword type="function" name="tracker_module_config_shutdown ()" link="libtracker-common-Module-Config.html#tracker-module-config-shutdown"/>
+    <keyword type="function" name="tracker_module_config_get_description ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-description"/>
+    <keyword type="function" name="tracker_module_config_get_enabled ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-enabled"/>
+    <keyword type="function" name="tracker_module_config_get_ignored_directories ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-ignored-directories"/>
+    <keyword type="function" name="tracker_module_config_get_ignored_directory_patterns ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-ignored-directory-patterns"/>
+    <keyword type="function" name="tracker_module_config_get_ignored_file_patterns ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-ignored-file-patterns"/>
+    <keyword type="function" name="tracker_module_config_get_ignored_files ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-ignored-files"/>
+    <keyword type="function" name="tracker_module_config_get_index_file_patterns ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-index-file-patterns"/>
+    <keyword type="function" name="tracker_module_config_get_index_files ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-index-files"/>
+    <keyword type="function" name="tracker_module_config_get_index_mime_types ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-index-mime-types"/>
+    <keyword type="function" name="tracker_module_config_get_index_service ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-index-service"/>
+    <keyword type="function" name="tracker_module_config_get_modules ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-modules"/>
+    <keyword type="function" name="tracker_module_config_get_monitor_directories ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-monitor-directories"/>
+    <keyword type="function" name="tracker_module_config_get_monitor_recurse_directories ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-monitor-recurse-directories"/>
+    <keyword type="typedef" name="TrackerParser" link="libtracker-common-Parser.html#TrackerParser"/>
+    <keyword type="function" name="tracker_parser_new ()" link="libtracker-common-Parser.html#tracker-parser-new"/>
+    <keyword type="function" name="tracker_parser_free ()" link="libtracker-common-Parser.html#tracker-parser-free"/>
+    <keyword type="function" name="tracker_parser_is_stop_word ()" link="libtracker-common-Parser.html#tracker-parser-is-stop-word"/>
+    <keyword type="function" name="tracker_parser_next ()" link="libtracker-common-Parser.html#tracker-parser-next"/>
+    <keyword type="function" name="tracker_parser_process_word ()" link="libtracker-common-Parser.html#tracker-parser-process-word"/>
+    <keyword type="function" name="tracker_parser_reset ()" link="libtracker-common-Parser.html#tracker-parser-reset"/>
+    <keyword type="function" name="tracker_parser_text ()" link="libtracker-common-Parser.html#tracker-parser-text"/>
+    <keyword type="function" name="tracker_parser_text_fast ()" link="libtracker-common-Parser.html#tracker-parser-text-fast"/>
+    <keyword type="function" name="tracker_parser_text_into_array ()" link="libtracker-common-Parser.html#tracker-parser-text-into-array"/>
+    <keyword type="function" name="tracker_parser_text_to_string ()" link="libtracker-common-Parser.html#tracker-parser-text-to-string"/>
+    <keyword type="function" name="tracker_dbus_data_new ()" link="libtracker-common-DBus.html#tracker-dbus-data-new"/>
+    <keyword type="function" name="tracker_dbus_error_quark ()" link="libtracker-common-DBus.html#tracker-dbus-error-quark"/>
+    <keyword type="function" name="tracker_dbus_get_next_request_id ()" link="libtracker-common-DBus.html#tracker-dbus-get-next-request-id"/>
+    <keyword type="function" name="tracker_dbus_gvalue_slice_free ()" link="libtracker-common-DBus.html#tracker-dbus-gvalue-slice-free"/>
+    <keyword type="function" name="tracker_dbus_gvalue_slice_new ()" link="libtracker-common-DBus.html#tracker-dbus-gvalue-slice-new"/>
+    <keyword type="function" name="tracker_dbus_queue_gfile_to_strv ()" link="libtracker-common-DBus.html#tracker-dbus-queue-gfile-to-strv"/>
+    <keyword type="function" name="tracker_dbus_queue_str_to_strv ()" link="libtracker-common-DBus.html#tracker-dbus-queue-str-to-strv"/>
+    <keyword type="function" name="tracker_dbus_request_add_hook ()" link="libtracker-common-DBus.html#tracker-dbus-request-add-hook"/>
+    <keyword type="function" name="tracker_dbus_request_comment ()" link="libtracker-common-DBus.html#tracker-dbus-request-comment"/>
+    <keyword type="function" name="tracker_dbus_request_failed ()" link="libtracker-common-DBus.html#tracker-dbus-request-failed"/>
+    <keyword type="function" name="tracker_dbus_request_new ()" link="libtracker-common-DBus.html#tracker-dbus-request-new"/>
+    <keyword type="function" name="tracker_dbus_request_remove_hook ()" link="libtracker-common-DBus.html#tracker-dbus-request-remove-hook"/>
+    <keyword type="function" name="tracker_dbus_request_success ()" link="libtracker-common-DBus.html#tracker-dbus-request-success"/>
+    <keyword type="function" name="tracker_dbus_results_ptr_array_free ()" link="libtracker-common-DBus.html#tracker-dbus-results-ptr-array-free"/>
+    <keyword type="function" name="tracker_dbus_slist_to_strv ()" link="libtracker-common-DBus.html#tracker-dbus-slist-to-strv"/>
+  </functions>
+</book>

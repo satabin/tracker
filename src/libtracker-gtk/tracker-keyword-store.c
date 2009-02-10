@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*-
  *
- * tracker-gtk/keyword-store.c - A derived GtkListStore that maintians a 
- * DBus connection to tracker such that when a new keyword is created it 
+ * tracker-gtk/keyword-store.c - A derived GtkListStore that maintians a
+ * DBus connection to tracker such that when a new keyword is created it
  * is automatically inserted here.
  *
  * Copyright (C) 2007 John Stowers
@@ -41,7 +41,7 @@ static void tracker_keyword_store_populate_cb (GPtrArray *result, GError *error,
 G_DEFINE_TYPE_WITH_CODE (TrackerKeywordStore, tracker_keyword_store, GTK_TYPE_LIST_STORE,
 			G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_DRAG_SOURCE,
 			tracker_keyword_store_tree_drag_source_init))
-	
+
 #define parent_class tracker_keyword_store_parent_class
 
 static void
@@ -67,14 +67,14 @@ tracker_keyword_store_init (TrackerKeywordStore *store)
 	store->tracker_client = tracker_connect (TRUE);
 
 	//populate the liststore asyncronously
-	tracker_keywords_get_list_async (store->tracker_client, 
-					SERVICE_FILES, 
-					tracker_keyword_store_populate_cb, 
+	tracker_keywords_get_list_async (store->tracker_client,
+					SERVICE_FILES,
+					tracker_keyword_store_populate_cb,
 					store);
 }
 
 static gboolean
-tracker_keyword_store_row_draggable (GtkTreeDragSource   	*drag_source,
+tracker_keyword_store_row_draggable (GtkTreeDragSource		*drag_source,
 					GtkTreePath		*path)
 {
 	printf ("ROW DRAGGABLE\n");
@@ -82,11 +82,11 @@ tracker_keyword_store_row_draggable (GtkTreeDragSource   	*drag_source,
 }
 
 static gboolean
-tracker_keyword_store_drag_data_get (GtkTreeDragSource   	*drag_source,
+tracker_keyword_store_drag_data_get (GtkTreeDragSource		*drag_source,
 				     GtkTreePath		*path,
-				     GtkSelectionData	        *data)
+				     GtkSelectionData		*data)
 {
-	guchar *keyword;
+	gchar *keyword;
 	GtkTreeIter iter;
 	TrackerKeywordStore *store;
 
@@ -98,15 +98,13 @@ tracker_keyword_store_drag_data_get (GtkTreeDragSource   	*drag_source,
 
 	gtk_tree_model_get (GTK_TREE_MODEL(store), &iter, TRACKER_KEYWORD_STORE_KEYWORD, &keyword, -1);
 
-	gtk_selection_data_set (data, data->target, 8,
-				keyword,
-				strlen (keyword));
+	gtk_selection_data_set_text (data, keyword, strlen (keyword));
 	g_free (keyword);
 	return TRUE;
 }
 
 static gboolean
-tracker_keyword_store_drag_data_delete (GtkTreeDragSource 	*drag_source,
+tracker_keyword_store_drag_data_delete (GtkTreeDragSource	*drag_source,
 					GtkTreePath		*path)
 {
 	printf ("DRAG DATA DELETE\n");
@@ -121,7 +119,7 @@ tracker_keyword_store_tree_drag_source_init (GtkTreeDragSourceIface *iface)
 	iface->drag_data_delete = tracker_keyword_store_drag_data_delete;
 }
 
-static void 
+static void
 tracker_keyword_store_populate_cb (GPtrArray *result, GError *error, gpointer user_data) {
 	GtkTreeIter iter;
 	GtkListStore *list_store = GTK_LIST_STORE (user_data);
@@ -163,7 +161,7 @@ tracker_keyword_store_finalize (GObject *object)
 /**
  * tracker_keyword_store_new:
  *
- * Creates a #GtkListStore with several columns. This store is especially 
+ * Creates a #GtkListStore with several columns. This store is especially
  * useful because it also contais a hashtable which retains a gtk_tree_iter
  * indexed by keyword, for O(1) fast lookups of liststore contents.
  *
@@ -181,9 +179,9 @@ tracker_keyword_store_new (void)
  * returns true if successful
  **/
 gboolean
-tracker_keyword_store_insert (  GtkListStore 			*store,
-				const char 			*keyword, 
-				const char 			*stock_id 
+tracker_keyword_store_insert (	GtkListStore			*store,
+				const char			*keyword,
+				const char			*stock_id
 )
 {
 	GtkTreeIter *iter;
@@ -194,7 +192,7 @@ tracker_keyword_store_insert (  GtkListStore 			*store,
 
 	self = TRACKER_KEYWORD_STORE (store);
 
-	if (g_hash_table_lookup (self->keywords, keyword) == NULL) 
+	if (g_hash_table_lookup (self->keywords, keyword) == NULL)
 	{
 		iter = (GtkTreeIter *)g_new0 (GtkTreeIter, 1);
 		gtk_list_store_insert_with_values (store,
@@ -210,13 +208,13 @@ tracker_keyword_store_insert (  GtkListStore 			*store,
 }
 
 /**
- * O(1) lookup of items by keyword from the store 
+ * O(1) lookup of items by keyword from the store
  * Returns the GtkTreeIter corresponding to the item with keyword or
  * NULL of it cant be found
  **/
 GtkTreeIter *
-tracker_keyword_store_lookup (  GtkListStore 			*store,
-				const char 			*keyword)
+tracker_keyword_store_lookup (	GtkListStore			*store,
+				const char			*keyword)
 {
 	TrackerKeywordStore *self;
 
@@ -230,9 +228,9 @@ tracker_keyword_store_lookup (  GtkListStore 			*store,
 /**
  * O(1) removal of items by keyword
  **/
-gboolean 
-tracker_keyword_store_remove (  GtkListStore 			*store,
-				const char 			*keyword)
+gboolean
+tracker_keyword_store_remove (	GtkListStore			*store,
+				const char			*keyword)
 {
 	GtkTreeIter *iter;
 	TrackerKeywordStore *self;

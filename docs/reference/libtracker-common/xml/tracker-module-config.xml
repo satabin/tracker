@@ -1,0 +1,280 @@
+<refentry id="libtracker-common-Module-Config">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-common-Module-Config.top_of_page">Module Config</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-COMMON Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Module Config</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-common-Module-Config.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-common/tracker-module-config.h&gt;
+
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-module-config-init">tracker_module_config_init</link>          (void);
+<link linkend="void">void</link>                <link linkend="tracker-module-config-shutdown">tracker_module_config_shutdown</link>      (void);
+const <link linkend="gchar">gchar</link>*        <link linkend="tracker-module-config-get-description">tracker_module_config_get_description</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-module-config-get-enabled">tracker_module_config_get_enabled</link>   (const <link linkend="gchar">gchar</link> *name);
+<link linkend="GList">GList</link>*              <link linkend="tracker-module-config-get-ignored-directories">tracker_module_config_get_ignored_directories</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+<link linkend="GList">GList</link>*              <link linkend="tracker-module-config-get-ignored-directory-patterns">tracker_module_config_get_ignored_directory_patterns</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+<link linkend="GList">GList</link>*              <link linkend="tracker-module-config-get-ignored-file-patterns">tracker_module_config_get_ignored_file_patterns</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+<link linkend="GList">GList</link>*              <link linkend="tracker-module-config-get-ignored-files">tracker_module_config_get_ignored_files</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+<link linkend="GList">GList</link>*              <link linkend="tracker-module-config-get-index-file-patterns">tracker_module_config_get_index_file_patterns</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+<link linkend="GList">GList</link>*              <link linkend="tracker-module-config-get-index-files">tracker_module_config_get_index_files</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+<link linkend="GList">GList</link>*              <link linkend="tracker-module-config-get-index-mime-types">tracker_module_config_get_index_mime_types</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+const <link linkend="gchar">gchar</link>*        <link linkend="tracker-module-config-get-index-service">tracker_module_config_get_index_service</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+<link linkend="GList">GList</link>*              <link linkend="tracker-module-config-get-modules">tracker_module_config_get_modules</link>   (void);
+<link linkend="GList">GList</link>*              <link linkend="tracker-module-config-get-monitor-directories">tracker_module_config_get_monitor_directories</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+<link linkend="GList">GList</link>*              <link linkend="tracker-module-config-get-monitor-recurse-directories">tracker_module_config_get_monitor_recurse_directories</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-common-Module-Config.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-common-Module-Config.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="tracker-module-config-init" role="function">
+<title>tracker_module_config_init ()</title>
+<indexterm zone="tracker-module-config-init"><primary>tracker_module_config_init</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_module_config_init          (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-shutdown" role="function">
+<title>tracker_module_config_shutdown ()</title>
+<indexterm zone="tracker-module-config-shutdown"><primary>tracker_module_config_shutdown</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_config_shutdown      (void);</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2 id="tracker-module-config-get-description" role="function">
+<title>tracker_module_config_get_description ()</title>
+<indexterm zone="tracker-module-config-get-description"><primary>tracker_module_config_get_description</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_module_config_get_description
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-enabled" role="function">
+<title>tracker_module_config_get_enabled ()</title>
+<indexterm zone="tracker-module-config-get-enabled"><primary>tracker_module_config_get_enabled</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_module_config_get_enabled   (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-ignored-directories" role="function">
+<title>tracker_module_config_get_ignored_directories ()</title>
+<indexterm zone="tracker-module-config-get-ignored-directories"><primary>tracker_module_config_get_ignored_directories</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_module_config_get_ignored_directories
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-ignored-directory-patterns" role="function">
+<title>tracker_module_config_get_ignored_directory_patterns ()</title>
+<indexterm zone="tracker-module-config-get-ignored-directory-patterns"><primary>tracker_module_config_get_ignored_directory_patterns</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_module_config_get_ignored_directory_patterns
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-ignored-file-patterns" role="function">
+<title>tracker_module_config_get_ignored_file_patterns ()</title>
+<indexterm zone="tracker-module-config-get-ignored-file-patterns"><primary>tracker_module_config_get_ignored_file_patterns</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_module_config_get_ignored_file_patterns
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-ignored-files" role="function">
+<title>tracker_module_config_get_ignored_files ()</title>
+<indexterm zone="tracker-module-config-get-ignored-files"><primary>tracker_module_config_get_ignored_files</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_module_config_get_ignored_files
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-index-file-patterns" role="function">
+<title>tracker_module_config_get_index_file_patterns ()</title>
+<indexterm zone="tracker-module-config-get-index-file-patterns"><primary>tracker_module_config_get_index_file_patterns</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_module_config_get_index_file_patterns
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-index-files" role="function">
+<title>tracker_module_config_get_index_files ()</title>
+<indexterm zone="tracker-module-config-get-index-files"><primary>tracker_module_config_get_index_files</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_module_config_get_index_files
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-index-mime-types" role="function">
+<title>tracker_module_config_get_index_mime_types ()</title>
+<indexterm zone="tracker-module-config-get-index-mime-types"><primary>tracker_module_config_get_index_mime_types</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_module_config_get_index_mime_types
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-index-service" role="function">
+<title>tracker_module_config_get_index_service ()</title>
+<indexterm zone="tracker-module-config-get-index-service"><primary>tracker_module_config_get_index_service</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_module_config_get_index_service
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-modules" role="function">
+<title>tracker_module_config_get_modules ()</title>
+<indexterm zone="tracker-module-config-get-modules"><primary>tracker_module_config_get_modules</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_module_config_get_modules   (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-monitor-directories" role="function">
+<title>tracker_module_config_get_monitor_directories ()</title>
+<indexterm zone="tracker-module-config-get-monitor-directories"><primary>tracker_module_config_get_monitor_directories</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_module_config_get_monitor_directories
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-module-config-get-monitor-recurse-directories" role="function">
+<title>tracker_module_config_get_monitor_recurse_directories ()</title>
+<indexterm zone="tracker-module-config-get-monitor-recurse-directories"><primary>tracker_module_config_get_monitor_recurse_directories</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_module_config_get_monitor_recurse_directories
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

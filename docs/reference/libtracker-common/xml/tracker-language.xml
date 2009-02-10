@@ -1,0 +1,194 @@
+<refentry id="libtracker-common-Language">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-common-Language.top_of_page">Language</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-COMMON Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Language</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-common-Language.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+<anchor id="TrackerLanguage"/>
+<synopsis>
+
+#include &lt;libtracker-common/tracker-language.h&gt;
+
+                    <link linkend="TrackerLanguage-struct">TrackerLanguage</link>;
+<link linkend="TrackerLanguage">TrackerLanguage</link>*    <link linkend="tracker-language-new">tracker_language_new</link>                (<link linkend="TrackerConfig">TrackerConfig</link> *language);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-language-check-exists">tracker_language_check_exists</link>       (const <link linkend="gchar">gchar</link> *language_code);
+<link linkend="TrackerConfig">TrackerConfig</link>*      <link linkend="tracker-language-get-config">tracker_language_get_config</link>         (<link linkend="TrackerLanguage">TrackerLanguage</link> *language);
+<link linkend="gchar">gchar</link>*              <link linkend="tracker-language-get-default-code">tracker_language_get_default_code</link>   (void);
+<link linkend="GHashTable">GHashTable</link>*         <link linkend="tracker-language-get-stop-words">tracker_language_get_stop_words</link>     (<link linkend="TrackerLanguage">TrackerLanguage</link> *language);
+<link linkend="void">void</link>                <link linkend="tracker-language-set-config">tracker_language_set_config</link>         (<link linkend="TrackerLanguage">TrackerLanguage</link> *language,
+                                                         <link linkend="TrackerConfig">TrackerConfig</link> *config);
+const <link linkend="gchar">gchar</link>*        <link linkend="tracker-language-stem-word">tracker_language_stem_word</link>          (<link linkend="TrackerLanguage">TrackerLanguage</link> *language,
+                                                         const <link linkend="gchar">gchar</link> *word,
+                                                         <link linkend="gint">gint</link> word_length);
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1 id="libtracker-common-Language.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<synopsis>
+  <link linkend="GObject">GObject</link>
+   +----TrackerLanguage
+</synopsis>
+
+</refsect1>
+
+
+
+
+
+<refsect1 id="libtracker-common-Language.properties" role="properties">
+<title role="properties.title">Properties</title>
+<synopsis>
+  &quot;<link linkend="TrackerLanguage--config">config</link>&quot;                   <link linkend="TrackerConfig">TrackerConfig</link>*        : Read / Write
+  &quot;<link linkend="TrackerLanguage--stop-words">stop-words</link>&quot;               <link linkend="GHashTable">GHashTable</link>*           : Read
+</synopsis>
+</refsect1>
+
+
+
+<refsect1 id="libtracker-common-Language.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-common-Language.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerLanguage-struct" role="struct">
+<title>TrackerLanguage</title>
+<indexterm zone="TrackerLanguage-struct"><primary>TrackerLanguage</primary></indexterm><programlisting>typedef struct _TrackerLanguage TrackerLanguage;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2 id="tracker-language-new" role="function">
+<title>tracker_language_new ()</title>
+<indexterm zone="tracker-language-new"><primary>tracker_language_new</primary></indexterm><programlisting><link linkend="TrackerLanguage">TrackerLanguage</link>*    tracker_language_new                (<link linkend="TrackerConfig">TrackerConfig</link> *language);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>language</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-language-check-exists" role="function">
+<title>tracker_language_check_exists ()</title>
+<indexterm zone="tracker-language-check-exists"><primary>tracker_language_check_exists</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_language_check_exists       (const <link linkend="gchar">gchar</link> *language_code);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>language_code</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-language-get-config" role="function">
+<title>tracker_language_get_config ()</title>
+<indexterm zone="tracker-language-get-config"><primary>tracker_language_get_config</primary></indexterm><programlisting><link linkend="TrackerConfig">TrackerConfig</link>*      tracker_language_get_config         (<link linkend="TrackerLanguage">TrackerLanguage</link> *language);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>language</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-language-get-default-code" role="function">
+<title>tracker_language_get_default_code ()</title>
+<indexterm zone="tracker-language-get-default-code"><primary>tracker_language_get_default_code</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_language_get_default_code   (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-language-get-stop-words" role="function">
+<title>tracker_language_get_stop_words ()</title>
+<indexterm zone="tracker-language-get-stop-words"><primary>tracker_language_get_stop_words</primary></indexterm><programlisting><link linkend="GHashTable">GHashTable</link>*         tracker_language_get_stop_words     (<link linkend="TrackerLanguage">TrackerLanguage</link> *language);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>language</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-language-set-config" role="function">
+<title>tracker_language_set_config ()</title>
+<indexterm zone="tracker-language-set-config"><primary>tracker_language_set_config</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_language_set_config         (<link linkend="TrackerLanguage">TrackerLanguage</link> *language,
+                                                         <link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>language</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-language-stem-word" role="function">
+<title>tracker_language_stem_word ()</title>
+<indexterm zone="tracker-language-stem-word"><primary>tracker_language_stem_word</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_language_stem_word          (<link linkend="TrackerLanguage">TrackerLanguage</link> *language,
+                                                         const <link linkend="gchar">gchar</link> *word,
+                                                         <link linkend="gint">gint</link> word_length);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>language</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>word</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>word_length</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+<refsect1 id="libtracker-common-Language.property-details" role="property_details">
+<title role="property_details.title">Property Details</title>
+<refsect2 id="TrackerLanguage--config"><title>The <literal>&quot;config&quot;</literal> property</title>
+<indexterm zone="TrackerLanguage--config"><primary>TrackerLanguage:config</primary></indexterm><programlisting>  &quot;config&quot;                   <link linkend="TrackerConfig">TrackerConfig</link>*        : Read / Write</programlisting>
+<para>Config.</para></refsect2>
+<refsect2 id="TrackerLanguage--stop-words"><title>The <literal>&quot;stop-words&quot;</literal> property</title>
+<indexterm zone="TrackerLanguage--stop-words"><primary>TrackerLanguage:stop-words</primary></indexterm><programlisting>  &quot;stop-words&quot;               <link linkend="GHashTable">GHashTable</link>*           : Read</programlisting>
+<para>Stop words.</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

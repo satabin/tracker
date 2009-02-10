@@ -4,6 +4,10 @@ tracker (0.6.90-1) UNRELEASED; urgency=low
     - Adds proper D-Bus introspection support. Closes: #411778
     - Limit of search results can now be specified via the --limit option for
       tracker-{query,tag,files}. Closes: #430621
+  * debian/patches/02-static_keywords_reply.patch
+    - Removed, merged upstream.
+  * debian/patches/03-prefer_odt2txt.patch
+    - Removed, merged upstream.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 10 Feb 2009 07:22:13 +0100
 

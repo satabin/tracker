@@ -17,6 +17,15 @@ tracker (0.6.90-1) UNRELEASED; urgency=low
   * debian/control
     - Update Build-Depends
       + Bump debhelper to (>= 7).
+      + Bump libglib2.0-dev to (>= 2.16.0).
+      + Bump libgstreamer0.10-dev to (>= 0.10.12).
+      + Add  libgstreamer-plugins-base0.10-dev (>= 0.10.12).
+      + Replace libxml-parser-perl with intltool.
+      + Drop libgnomevfs2-dev.
+      + Add libtotem-plparser-dev.
+      + Add libraptor1-dev.
+      + Add libhal-storage-dev (>= 0.5).
+      + Add libtiff4-dev.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 10 Feb 2009 07:22:13 +0100
 

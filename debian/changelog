@@ -1,3 +1,12 @@
+tracker (0.6.90-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+    - Adds proper D-Bus introspection support. Closes: #411778
+    - Limit of search results can now be specified via the --limit option for
+      tracker-{query,tag,files}. Closes: #430621
+
+ -- Michael Biebl <biebl@debian.org>  Tue, 10 Feb 2009 07:22:13 +0100
+
 tracker (0.6.6-2) unstable; urgency=low
 
   * debian/control

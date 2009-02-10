@@ -30,7 +30,8 @@ Build-Depends: cdbs,
                libexempi-dev (>= 1.99.2),
                libnotify-dev (>= 0.4.3),
                libhal-dev (>= 0.5),
-               python-support (>= 0.6)
+               python-support (>= 0.6),
+               quilt
 Standards-Version: 3.7.3
 Vcs-Git: git://git.debian.org/git/users/biebl/tracker.git
 Vcs-Browser: http://git.debian.org/?p=users/biebl/tracker.git;a=summary

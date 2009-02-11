@@ -28,6 +28,8 @@ tracker (0.6.90-1) UNRELEASED; urgency=low
       + Add libtiff4-dev.
     - Add ${misc:Depends} to all packages.
     - Add tracker (= ${binary:Version}) to tracker-dbg.
+  * Bump Standards-Version to 3.8.0. Add README.source as recommended by the
+    new policy and refer to the quilt documentation.
   * Update symbols files.
   * Update list of installed files and man pages.
   * Install 30-tracker.conf into /etc/sysctl.d/ which will increase the

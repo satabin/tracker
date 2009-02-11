@@ -28,6 +28,8 @@ tracker (0.6.90-1) UNRELEASED; urgency=low
       + Add libtiff4-dev.
   * Update symbols files.
   * Update list of installed files and man pages.
+  * Install 30-tracker.conf into /etc/sysctl.d/ which will increase the
+    maximum number of inotify watches to 65536.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 10 Feb 2009 07:22:13 +0100
 

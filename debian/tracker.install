@@ -15,3 +15,4 @@ debian/tmp/usr/lib/tracker/extract-modules/*.so
 debian/tmp/usr/lib/tracker/indexer-modules/*.so
 debian/tmp/etc/xdg/autostart/trackerd.desktop
 debian/tmp/etc/xdg/autostart/trackerd.desktop usr/share/autostart/
+debian/30-tracker.conf etc/sysctl.d

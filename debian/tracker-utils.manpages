@@ -5,3 +5,6 @@ debian/tmp/usr/share/man/man1/tracker-search.1
 debian/tmp/usr/share/man/man1/tracker-stats.1
 debian/tmp/usr/share/man/man1/tracker-status.1
 debian/tmp/usr/share/man/man1/tracker-tag.1
+debian/tmp/usr/share/man/man1/tracker-unique.1
+debian/tmp/usr/share/man/man1/tracker-info.1
+debian/tmp/usr/share/man/man1/tracker-services.1

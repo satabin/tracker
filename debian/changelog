@@ -27,6 +27,7 @@ tracker (0.6.90-1) UNRELEASED; urgency=low
       + Add libhal-storage-dev (>= 0.5).
       + Add libtiff4-dev.
   * Update symbols files.
+  * Update list of installed files and man pages.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 10 Feb 2009 07:22:13 +0100
 

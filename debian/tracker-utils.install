@@ -5,3 +5,6 @@ debian/tmp/usr/bin/tracker-search
 debian/tmp/usr/bin/tracker-stats
 debian/tmp/usr/bin/tracker-status
 debian/tmp/usr/bin/tracker-tag
+debian/tmp/usr/bin/tracker-unique
+debian/tmp/usr/bin/tracker-info
+debian/tmp/usr/bin/tracker-services

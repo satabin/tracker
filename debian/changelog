@@ -1,4 +1,4 @@
-tracker (0.6.90-1) UNRELEASED; urgency=low
+tracker (0.6.90-1) experimental; urgency=low
 
   * New upstream release.
     - Adds proper D-Bus introspection support. Closes: #411778
@@ -35,7 +35,7 @@ tracker (0.6.90-1) UNRELEASED; urgency=low
   * Install 30-tracker.conf into /etc/sysctl.d/ which will increase the
     maximum number of inotify watches to 65536.
 
- -- Michael Biebl <biebl@debian.org>  Tue, 10 Feb 2009 07:22:13 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 11 Feb 2009 17:00:55 +0100
 
 tracker (0.6.6-2) unstable; urgency=low
 

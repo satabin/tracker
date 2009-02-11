@@ -17,7 +17,7 @@ DEB_CONFIGURE_EXTRA_FLAGS := \
 LDFLAGS += -Wl,--as-needed -Wl,-Bsymbolic
 
 # Enforce tight shlibs dependencies
-DEB_DH_MAKESHLIBS_ARGS_ALL := -V -X/usr/lib/tracker/extract-modules/
+DEB_DH_MAKESHLIBS_ARGS_ALL := -V -X/usr/lib/tracker/indexer-modules/ -X/usr/lib/tracker/extract-modules/
 
 binary-install/libdeskbar-tracker::
 	dh_pysupport -p$(cdbs_curpkg) /usr/lib/deskbar-applet/modules-2.20-compatible/

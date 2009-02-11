@@ -16,4 +16,3 @@ libtracker-gtk.so.0 libtracker-gtk0 #MINVER#
  tracker_tag_bar_get_type@Base 0.6.2
  tracker_tag_bar_new@Base 0.6.2
  tracker_tag_bar_set_uri@Base 0.6.2
- tracker_vfs_format_file_size_for_display@Base 0.6.2

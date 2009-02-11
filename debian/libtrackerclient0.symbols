@@ -42,12 +42,23 @@ libtrackerclient.so.0 libtrackerclient0 #MINVER#
  tracker_keywords_search@Base 0.6.2
  tracker_keywords_search_async@Base 0.6.2
  tracker_metadata_get@Base 0.6.2
+ tracker_metadata_get_all@Base 0.6.90
  tracker_metadata_get_async@Base 0.6.2
+ tracker_metadata_get_count@Base 0.6.90
+ tracker_metadata_get_count_async@Base 0.6.90
  tracker_metadata_get_registered_classes@Base 0.6.2
  tracker_metadata_get_registered_classes_async@Base 0.6.2
  tracker_metadata_get_registered_types@Base 0.6.2
  tracker_metadata_get_registered_types_async@Base 0.6.2
+ tracker_metadata_get_sum@Base 0.6.90
+ tracker_metadata_get_sum_async@Base 0.6.90
  tracker_metadata_get_type_details@Base 0.6.2
+ tracker_metadata_get_unique_values@Base 0.6.90
+ tracker_metadata_get_unique_values_async@Base 0.6.90
+ tracker_metadata_get_unique_values_with_count_and_sum@Base 0.6.90
+ tracker_metadata_get_unique_values_with_count_and_sum_async@Base 0.6.90
+ tracker_metadata_get_unique_values_with_count@Base 0.6.90
+ tracker_metadata_get_unique_values_with_count_async@Base 0.6.90
  tracker_metadata_get_writeable_types@Base 0.6.2
  tracker_metadata_get_writeable_types_async@Base 0.6.2
  tracker_metadata_register_type@Base 0.6.2

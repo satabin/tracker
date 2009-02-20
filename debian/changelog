@@ -1,3 +1,9 @@
+tracker (0.6.90-2) unstable; urgency=low
+
+  * Upload to unstable.
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 20 Feb 2009 02:50:12 +0100
+
 tracker (0.6.90-1) experimental; urgency=low
 
   * New upstream release.

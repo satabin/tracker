@@ -1,0 +1,39 @@
+diff --git a/src/tracker-applet/Makefile.am b/src/tracker-applet/Makefile.am
+index 774f621..b7f0466 100644
+--- a/src/tracker-applet/Makefile.am
++++ b/src/tracker-applet/Makefile.am
+@@ -3,6 +3,7 @@ include $(top_srcdir)/Makefile.decl
+ INCLUDES =								\
+ 	-DSHAREDIR=\""$(datadir)"\"					\
+ 	-DLOCALEDIR=\""$(localedir)"\" 					\
++	-DTRACKER_LIBEXECDIR=\""$(libexecdir)"\" 			\
+ 	-DTRACKER_COMPILATION						\
+ 	-I$(top_srcdir)/src						\
+ 	$(WARN_CFLAGS)							\
+diff --git a/src/tracker-applet/Makefile.in b/src/tracker-applet/Makefile.in
+index 680fbe7..d2bd1ee 100644
+--- a/src/tracker-applet/Makefile.in
++++ b/src/tracker-applet/Makefile.in
+@@ -344,6 +344,7 @@ TEST_PROGS =
+ INCLUDES = \
+ 	-DSHAREDIR=\""$(datadir)"\"					\
+ 	-DLOCALEDIR=\""$(localedir)"\" 					\
++	-DTRACKER_LIBEXECDIR=\""$(libexecdir)"\" 			\
+ 	-DTRACKER_COMPILATION						\
+ 	-I$(top_srcdir)/src						\
+ 	$(WARN_CFLAGS)							\
+diff --git a/src/tracker-applet/tracker-applet.c b/src/tracker-applet/tracker-applet.c
+index f8b8274..4f50f22 100644
+--- a/src/tracker-applet/tracker-applet.c
++++ b/src/tracker-applet/tracker-applet.c
+@@ -1800,7 +1800,9 @@ name_owner_changed (DBusGProxy	*proxy,
+ 
+ 		if (priv->reindex) {
+ 			GError *error = NULL;
+-			const gchar *command = "trackerd";
++			const gchar *command;
++
++			command = g_build_filename (TRACKER_LIBEXECDIR, "trackerd", NULL);
+ 
+ 			priv->reindex = FALSE;
+ 

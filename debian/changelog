@@ -1,4 +1,4 @@
-tracker (0.6.90-3) UNRELEASED; urgency=low
+tracker (0.6.90-3) unstable; urgency=low
 
   * debian/control
     - Add explicit Build-Depends on libglade2-dev (>= 2.5). Closes: #517893
@@ -6,7 +6,7 @@ tracker (0.6.90-3) UNRELEASED; urgency=low
     - When restarting trackerd from within tracker-applet, use the correct
       path to the binary. Closes: #516546
 
- -- Michael Biebl <biebl@debian.org>  Mon, 02 Mar 2009 20:47:49 +0100
+ -- Michael Biebl <biebl@debian.org>  Mon, 02 Mar 2009 22:18:27 +0100
 
 tracker (0.6.90-2) unstable; urgency=low
 

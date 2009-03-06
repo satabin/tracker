@@ -1,7 +1,7 @@
-Index: tracker-0.6.90/python/deskbar-handler/tracker-handler.py
+Index: tracker/python/deskbar-handler/tracker-handler.py
 ===================================================================
---- tracker-0.6.90.orig/python/deskbar-handler/tracker-handler.py	2009-02-16 23:10:42.000000000 +0000
-+++ tracker-0.6.90/python/deskbar-handler/tracker-handler.py	2009-02-16 23:12:26.000000000 +0000
+--- tracker.orig/python/deskbar-handler/tracker-handler.py	2009-02-20 02:49:58.000000000 +0100
++++ tracker/python/deskbar-handler/tracker-handler.py	2009-03-06 16:20:55.000000000 +0100
 @@ -21,12 +21,13 @@
  import urllib
  import string
@@ -34,10 +34,10 @@ Index: tracker-0.6.90/python/deskbar-handler/tracker-handler.py
  		return None
  	return desktop
  
-Index: tracker-0.6.90/python/deskbar-handler/tracker-module.py
+Index: tracker/python/deskbar-handler/tracker-module.py
 ===================================================================
---- tracker-0.6.90.orig/python/deskbar-handler/tracker-module.py	2009-02-16 23:12:40.000000000 +0000
-+++ tracker-0.6.90/python/deskbar-handler/tracker-module.py	2009-02-16 23:13:58.000000000 +0000
+--- tracker.orig/python/deskbar-handler/tracker-module.py	2009-03-06 16:20:54.000000000 +0100
++++ tracker/python/deskbar-handler/tracker-module.py	2009-03-06 16:20:55.000000000 +0100
 @@ -1,6 +1,7 @@
  # This deskbar module was ported from deskbar <= 2.18 handler by Marcus Fritzsch
  
@@ -54,7 +54,7 @@ Index: tracker-0.6.90/python/deskbar-handler/tracker-module.py
  import deskbar.interfaces.Module
  import deskbar.interfaces.Match
  import deskbar.interfaces.Action
-@@ -467,13 +467,13 @@
+@@ -470,13 +470,13 @@
  # this code is stolen from the programs handler of deskbar
  def parse_desktop_file(desktop, only_if_visible=False):
  	try:

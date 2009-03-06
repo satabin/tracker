@@ -1,3 +1,4 @@
 01-secure_tmpdir.patch
 02-tracker-restart.patch
 03-tracker-deskbar-live-search.patch
+05_gnomedesktop.patch

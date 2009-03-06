@@ -164,6 +164,7 @@ Depends: ${misc:Depends},
          python-gnome2,
          python-gobject | python-gtk2 (<< 2.10),
          deskbar-applet (>= 2.20.0),
+         python-gnome2-desktop,
          tracker
 Recommends: tracker-search-tool
 Description: metadata database, indexer and search tool - deskbar-applet plugin

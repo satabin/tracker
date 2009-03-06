@@ -1,4 +1,4 @@
-tracker (0.6.90-4) UNRELEASED; urgency=low
+tracker (0.6.90-4) unstable; urgency=low
 
   * debian/patches/03-tracker-deskbar-live-search.patch
     - Update deskbar module to the new tracker D-Bus API (object path of the
@@ -10,7 +10,7 @@ tracker (0.6.90-4) UNRELEASED; urgency=low
   * debian/control
     - Depend on python-gnome2-desktop (for patch 05_gnomedesktop.patch).
 
- -- Michael Biebl <biebl@debian.org>  Fri, 06 Mar 2009 13:36:49 +0100
+ -- Michael Biebl <biebl@debian.org>  Fri, 06 Mar 2009 16:21:43 +0100
 
 tracker (0.6.90-3) unstable; urgency=low
 

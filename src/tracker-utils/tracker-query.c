@@ -31,6 +31,7 @@
 #include <gio/gio.h>
 
 #include <libtracker/tracker.h>
+#include <libtracker-common/tracker-common.h>
 
 #ifdef G_OS_WIN32
 #include <trackerd/mingw-compat.h>
@@ -41,6 +42,7 @@ static gchar	     *search;
 static gchar	    **fields;
 static gchar	     *service;
 static gchar	    **keywords;
+static gchar        **order;
 static gint	      limit = 512;
 static gint	      offset;
 
@@ -67,6 +69,10 @@ static GOptionEntry   entries[] = {
 	},
 	{ "keyword", 'k', 0, G_OPTION_ARG_STRING_ARRAY, &keywords,
 	  N_("Adds a keyword filter"),
+	  NULL
+	},
+	{ "order", 'r', 0, G_OPTION_ARG_STRING_ARRAY, &order,
+	  N_("Adds an order field"),
 	  NULL
 	},
 	{ G_OPTION_REMAINING, 0, 0,
@@ -222,7 +228,7 @@ main (int argc, char **argv)
 				      offset,
 				      limit,
 				      FALSE,
-				      NULL,
+				      order,
 				      FALSE,
 				      &error);
 	g_free (buffer);
@@ -240,8 +246,33 @@ main (int argc, char **argv)
 		g_print ("%s\n",
 			 _("No results found matching your query"));
 	} else {
+		gint length;
+
+		length = array->len;
+
+		g_print (tracker_dngettext (NULL,
+					    _("Result: %d"), 
+					    _("Results: %d"),
+					    length),
+			 length);
+		g_print ("\n");
+
 		g_ptr_array_foreach (array, (GFunc) get_meta_table_data, NULL);
 		g_ptr_array_free (array, TRUE);
+
+		if (length >= limit) {
+			/* Display '...' so the user thinks there is
+			 * more items.
+			 */
+			g_print ("  ...\n");
+
+			/* Display warning so the user knows this is
+			 * not the WHOLE data set.
+			 */
+			g_printerr ("\n"
+				    "%s\n",
+				    _("NOTE: Limit was reached, there are more items in the database not listed here"));
+		}
 	}
 
 	tracker_disconnect (client);

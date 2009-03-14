@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include <string.h>
+#include <unistd.h>
 
 #include <gmodule.h>
 #include <gio/gio.h>
@@ -31,6 +32,7 @@
 #include "tracker-dbus.h"
 #include "tracker-extract.h"
 
+#define MAX_EXTRACT_TIME 5
 #define TRACKER_EXTRACT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TRACKER_TYPE_EXTRACT, TrackerExtractPrivate))
 
 typedef struct {
@@ -179,7 +181,6 @@ print_file_metadata_item (gpointer key,
 	value_utf8 = g_locale_to_utf8 (value, -1, NULL, NULL, NULL);
 
 	if (value_utf8) {
-		value_utf8 = g_strstrip (value_utf8);
 		tracker_dbus_request_debug (GPOINTER_TO_UINT (user_data),
 					    "  Found '%s'='%s'",
 					    key,
@@ -195,81 +196,114 @@ get_file_metadata (TrackerExtract *extract,
 		   const gchar    *mime)
 {
 	GHashTable *values;
+	GFile *file;
+	GFileInfo *info;
+	GError *error = NULL;
+	const gchar *attributes = NULL;
 	gchar *path_in_locale;
 	gchar *path_used;
 	gchar *mime_used = NULL;
-
+	goffset size = 0;
+		
 	path_used = g_strdup (path);
 	g_strstrip (path_used);
 
 	path_in_locale = g_filename_from_utf8 (path_used, -1, NULL, NULL, NULL);
+	g_free (path_used);
 
 	if (!path_in_locale) {
-		g_warning ("Could not convert path:'%s' from UTF-8 to locale", path_used);
+		g_warning ("Could not convert path from UTF-8 to locale");
 		g_free (path_used);
 		return NULL;
 	}
 
-	if (!g_file_test (path_in_locale, G_FILE_TEST_EXISTS)) {
+	file = g_file_new_for_path (path_in_locale);
+	if (!file) {
+		g_warning ("Could not create GFile for path:'%s'",
+			   path_in_locale);
+		g_free (path_in_locale);
+		return NULL;
+	}
+		
+	/* Blocks */
+	if (!g_file_query_exists (file, NULL)) {
 		g_warning ("File does not exist '%s'", path_in_locale);
+		g_object_unref (file);
 		g_free (path_in_locale);
 		return NULL;
 	}
 
-	if (mime && *mime) {
-		mime_used = g_strdup (mime);
-		g_strstrip (mime_used);
+	/* Do we get size and mime? or just size? */
+	if (mime && *mime) {	
+		attributes = 
+			G_FILE_ATTRIBUTE_STANDARD_SIZE;
 	} else {
-		GFile *file;
-
-		/* Try to guess mime type */
-		file = g_file_new_for_path (path_in_locale);
-
-		if (file) {
-			GFileInfo *info;
-			GError *error = NULL;
-			const gchar *attributes;
-
-			attributes = 
-				G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE;
-			
-			info = g_file_query_info (file,
-						  attributes,
-						  G_FILE_QUERY_INFO_NONE,
-						  NULL,
-						  &error);
-
-			if (error) {
-				tracker_dbus_request_comment (request_id,
-							      "  Could not create GFileInfo for path:'%s', %s",
-							      path_in_locale,
-							      error ? error->message : "no error given");
-				g_error_free (error);
-			}
-			
-			if (info) {
-				mime_used = g_strdup (g_file_info_get_content_type (info));
-				g_object_unref (info);
-			}
-
-			tracker_dbus_request_comment (request_id,
-						      "  Guessing mime type as '%s' for path:'%s'",
-						      mime_used,
-						      path_in_locale);
-
-			g_object_unref (file);
-		} else {
-			tracker_dbus_request_comment (request_id,
-						      "  Could not create GFile for path:'%s'",
-						      path_in_locale);
-		}
+		attributes = 
+			G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","
+			G_FILE_ATTRIBUTE_STANDARD_SIZE;
 	}
 
+	info = g_file_query_info (file, 
+				  attributes, 
+				  G_FILE_QUERY_INFO_NONE, 
+				  NULL, 
+				  &error);
+	
+	if (error || !info) {
+		tracker_dbus_request_comment (request_id,
+					      "  Could not create GFileInfo for file size check, %s",
+					      error ? error->message : "no error given");
+		g_error_free (error);
+		
+		if (info) {
+			g_object_unref (info);
+		}	
+		
+		g_object_unref (file);
+		g_free (path_in_locale);
+		
+		return NULL;
+	}
+	
+	/* Create hash table to send back */
 	values = g_hash_table_new_full (g_str_hash,
 					g_str_equal,
 					g_free,
 					g_free);
 
+	/* Check the size is actually non-zero */
+	size = g_file_info_get_size (info);
+
+	if (size < 1) {
+		tracker_dbus_request_comment (request_id,
+					      "  File size is 0 bytes, ignoring file");
+		
+		g_object_unref (info);
+		g_object_unref (file);
+		g_free (path_in_locale);
+
+		return values;
+	}
+
+	/* We know the mime */
+	if (mime && *mime) {
+		mime_used = g_strdup (mime);
+		g_strstrip (mime_used);
+	} else {
+		mime_used = g_strdup (g_file_info_get_content_type (info));
+
+		tracker_dbus_request_comment (request_id,
+					      "  Guessing mime type as '%s' for path:'%s'",
+					      mime_used,
+					      path_in_locale);
+	}
+
+	g_object_unref (file);
+
+
+	/* Now we have sanity checked everything, actually get the
+	 * data we need from the extractors.
+	 */
 	if (mime_used) {
 		TrackerExtractPrivate *priv;
 		TrackerExtractData *data;
@@ -292,7 +326,6 @@ get_file_metadata (TrackerExtract *extract,
 							      g_hash_table_size (values));
 				
 				g_free (path_in_locale);
-				g_free (path_used);
 				g_free (mime_used);
 				
 				return values;
@@ -307,7 +340,6 @@ get_file_metadata (TrackerExtract *extract,
 	}
 
 	g_free (path_in_locale);
-	g_free (path_used);
 
 	return values;
 }
@@ -358,9 +390,11 @@ tracker_extract_get_metadata (TrackerExtract	     *object,
 	tracker_dbus_request_debug (request_id,
 				    "  Resetting shutdown timeout");
 	
-	tracker_main_shutdown_timeout_reset ();
+	tracker_main_quit_timeout_reset ();
+	alarm (MAX_EXTRACT_TIME);
 
 	values = get_file_metadata (object, request_id, path, mime);
+
 	if (values) {
 		g_hash_table_foreach (values, 
 				      print_file_metadata_item, 
@@ -379,4 +413,7 @@ tracker_extract_get_metadata (TrackerExtract	     *object,
 		dbus_g_method_return_error (context, actual_error);
 		g_error_free (actual_error);
 	}
+
+	/* Unset alarm so the extractor doesn't die when it's idle */
+	alarm (0);
 }

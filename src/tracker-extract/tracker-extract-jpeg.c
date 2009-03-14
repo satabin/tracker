@@ -20,7 +20,7 @@
  */
 
 /*
- * FIXME: Use EXIF_DATA_OPTION_FOLLOW_SPECIFICATION for libexif to get raw data.
+ * FIXME: We should try to get raw data (from libexif) to avoid processing.
  */
 
 #include "config.h"
@@ -32,6 +32,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <setjmp.h>
 
 #include <glib.h>
 #include <glib/gstdio.h>
@@ -39,9 +40,11 @@
 #include <jpeglib.h>
 
 #include <libtracker-common/tracker-type-utils.h>
+#include <libtracker-common/tracker-file-utils.h>
 
 #include "tracker-main.h"
 #include "tracker-xmp.h"
+#include "tracker-iptc.h"
 
 #ifdef HAVE_EXEMPI
 #define XMP_NAMESPACE	     "http://ns.adobe.com/xap/1.0/\x00"
@@ -53,6 +56,12 @@
 #define EXIF_DATE_FORMAT "%Y:%m:%d %H:%M:%S"
 #endif /* HAVE_LIBEXIF */
 
+#ifdef HAVE_LIBIPTCDATA
+#define PS3_NAMESPACE	     "Photoshop 3.0\0"
+#define PS3_NAMESPACE_LENGTH 14
+#include <libiptcdata/iptc-jpeg.h>
+#endif /* HAVE_LIBIPTCDATA */
+
 static void extract_jpeg (const gchar *filename,
 			  GHashTable  *metadata);
 
@@ -60,6 +69,19 @@ static TrackerExtractData data[] = {
 	{ "image/jpeg", extract_jpeg },
 	{ NULL, NULL }
 };
+
+struct tej_error_mgr 
+{
+	struct jpeg_error_mgr jpeg;
+	jmp_buf setjmp_buffer;
+};
+
+static void tracker_extract_jpeg_error_exit (j_common_ptr cinfo)
+{
+    struct tej_error_mgr *h = (struct tej_error_mgr *)cinfo->err;
+    (*cinfo->err->output_message)(cinfo);
+    longjmp(h->setjmp_buffer, 1);
+}
 
 #ifdef HAVE_LIBEXIF
 
@@ -106,6 +128,10 @@ static TagType tags[] = {
 	{ -1, NULL, NULL }
 };
 
+#endif /* HAVE_EXIF */
+
+#ifdef HAVE_LIBEXIF
+
 static gchar *
 date_to_iso8601 (const gchar *date)
 {
@@ -148,7 +174,7 @@ fix_fnumber (const gchar *fn)
 		new_fn[0] = new_fn[1] = ' ';
 	}
 
-	return g_strstrip(new_fn);
+	return g_strstrip (new_fn);
 }
 
 static gchar *
@@ -243,12 +269,16 @@ read_exif (const unsigned char *buffer,
 
 #endif /* HAVE_LIBEXIF */
 
+
 static void
 extract_jpeg (const gchar *filename,
 	      GHashTable  *metadata)
 {
+	struct stat  fstatbuf;
+	size_t	     size;
+
 	struct jpeg_decompress_struct  cinfo;
-	struct jpeg_error_mgr	       jerr;
+	struct tej_error_mgr	       tejerr;
 	struct jpeg_marker_struct     *marker;
 	FILE			      *jpeg;
 	gint			       fd_jpeg;
@@ -257,20 +287,42 @@ extract_jpeg (const gchar *filename,
 		return;
 	}
 
+	if (stat (filename, &fstatbuf) == -1) {
+		close(fd_jpeg);
+		return;
+	}
+
+	/* Check size at least SOI+JFIF without thumb */
+	size = fstatbuf.st_size;
+	if (size < 18) {
+		close (fd_jpeg);
+		return;
+	}
+
 	if ((jpeg = fdopen (fd_jpeg, "rb"))) {
 		gchar *str;
 		gsize  len;
+#ifdef HAVE_LIBIPTCDATA
+		gsize  offset;
+		gsize  sublen;
+#endif /* HAVE_LIBEXIF */
 
-		cinfo.err = jpeg_std_error (&jerr);
+		cinfo.err = jpeg_std_error (&tejerr.jpeg);
+		tejerr.jpeg.error_exit = tracker_extract_jpeg_error_exit;
+		if (setjmp(tejerr.setjmp_buffer)) {
+			goto fail;
+		}
+
 		jpeg_create_decompress (&cinfo);
-
+		
 		jpeg_save_markers (&cinfo, JPEG_COM, 0xFFFF);
 		jpeg_save_markers (&cinfo, JPEG_APP0 + 1, 0xFFFF);
-
+		jpeg_save_markers (&cinfo, JPEG_APP0 + 13, 0xFFFF);
+		
 		jpeg_stdio_src (&cinfo, jpeg);
-
+		
 		jpeg_read_header (&cinfo, TRUE);
-
+		
 		/* FIXME? It is possible that there are markers after SOS,
 		 * but there shouldn't be. Should we decompress the whole file?
 		 *
@@ -278,23 +330,26 @@ extract_jpeg (const gchar *filename,
 		 * jpeg_finish_decompress(&cinfo);
 		 *
 		 * jpeg_calc_output_dimensions(&cinfo);
-		*/
-
+		 */
+		
 		marker = (struct jpeg_marker_struct *) &cinfo.marker_list;
-
+		
 		while (marker) {
 			switch (marker->marker) {
 			case JPEG_COM:
 				len = marker->data_length;
 				str = g_strndup ((gchar*) marker->data, len);
-
+				
 				g_hash_table_insert (metadata,
 						     g_strdup ("Image:Comments"),
 						     tracker_escape_metadata (str));
 				g_free (str);
 				break;
-
+				
 			case JPEG_APP0+1:
+				str = (gchar*) marker->data;
+				len = marker->data_length;
+
 #ifdef HAVE_LIBEXIF
 				if (strncmp ("Exif", (gchar*) (marker->data), 5) == 0) {
 					read_exif ((unsigned char*) marker->data,
@@ -304,8 +359,6 @@ extract_jpeg (const gchar *filename,
 #endif /* HAVE_LIBEXIF */
 
 #ifdef HAVE_EXEMPI
-				str = (gchar*) marker->data;
-				len = marker->data_length;
 
 				if (strncmp (XMP_NAMESPACE, str, XMP_NAMESPACE_LENGTH) == 0) {
 					tracker_read_xmp (str + XMP_NAMESPACE_LENGTH,
@@ -314,7 +367,20 @@ extract_jpeg (const gchar *filename,
 				}
 #endif /* HAVE_EXEMPI */
 				break;
-
+			case JPEG_APP0+13:
+				str = (gchar*) marker->data;
+				len = marker->data_length;
+#ifdef HAVE_LIBIPTCDATA
+				if (strncmp (PS3_NAMESPACE, str, PS3_NAMESPACE_LENGTH) == 0) {
+					offset = iptc_jpeg_ps3_find_iptc (str, len, &sublen);
+					if (offset>0) {
+						tracker_read_iptc (str + offset,
+								   sublen,
+								   metadata);
+					}
+				}
+#endif /* HAVE_LIBIPTCDATA */
+				break;
 			default:
 				marker = marker->next;
 				continue;
@@ -334,22 +400,20 @@ extract_jpeg (const gchar *filename,
 		/* Check that we have the minimum data. FIXME We should not need to do this */
 
 		if (!g_hash_table_lookup (metadata, "Image:Date")) {
-			struct stat st;
+			gchar *date;
+			guint64 mtime;
 
-			if (g_lstat(filename, &st) >= 0) {
-				gchar *date;
+			mtime = tracker_file_get_mtime (filename);
+			date = tracker_date_to_string ((time_t) mtime);
 
-				date = tracker_date_to_string (st.st_mtime);
-
-				g_hash_table_insert (metadata,
-						     g_strdup ("Image:Date"),
-						     tracker_escape_metadata (date));
-				g_free (date);
-			}
+			g_hash_table_insert (metadata,
+					     g_strdup ("Image:Date"),
+					     tracker_escape_metadata (date));
+			g_free (date);
 		}
 
 		jpeg_destroy_decompress (&cinfo);
-
+	fail:
 		fclose (jpeg);
 	} else {
 		close (fd_jpeg);

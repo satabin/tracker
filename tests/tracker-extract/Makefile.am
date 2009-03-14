@@ -27,11 +27,13 @@ INCLUDES = 								\
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
 	-I$(top_srcdir)/tests/common					\
-	$(DBUS_CFLAGS)							\
+	$(WARN_CFLAGS)							\
+	$(GLIB2_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
 	$(GMODULE_CFLAGS)						\
 	$(GTHREAD_CFLAGS)						\
 	$(PANGO_CFLAGS)							\
-	$(GLIB2_CFLAGS)
+	$(DBUS_CFLAGS)
 
 TEST_UTILS_SOURCES = 							\
 	tracker-extract-test-utils.c					\
@@ -57,6 +59,7 @@ test_tracker_extract_mp3_LDADD =					\
 	$(top_builddir)/src/tracker-extract/libextract-mp3.la   	\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
 	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)
 
@@ -68,10 +71,10 @@ test_tracker_extract_gstreamer_LDADD =					\
 	$(top_builddir)/src/tracker-extract/libextract-gstreamer.la   	\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
 	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							\
 	$(GSTREAMER_LIBS)
-
 
 test_tracker_extract_jpeg_SOURCES = 					\
 	tracker-extract-jpeg-test.c					\
@@ -82,6 +85,7 @@ test_tracker_extract_jpeg_LDADD =					\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GLIB2_LIBS)							\
 	$(LIBJPEG_LIBS)							\
 	$(LIBEXIF_LIBS)							\
@@ -97,6 +101,7 @@ test_tracker_extract_tiff_LDADD =					\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(LIBTIFF_LIBS)							\
 	$(EXEMPI_LIBS)
 
@@ -110,6 +115,7 @@ test_tracker_extract_png_LDADD =					\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(LIBPNG_LIBS)							\
 	$(EXEMPI_LIBS)
 

@@ -38,6 +38,7 @@
 #include <glib/gstdio.h>
 
 #include <libtracker-common/tracker-type-utils.h>
+#include <libtracker-common/tracker-file-utils.h>
 
 #include "tracker-main.h"
 #include "tracker-xmp.h"
@@ -72,6 +73,7 @@ static TagProcessors tag_processors[] = {
 
 static TrackerExtractData data[] = {
 	{ "image/png", extract_png },
+	{ "sketch/png", extract_png },
 	{ NULL, NULL }
 };
 
@@ -141,6 +143,9 @@ static void
 extract_png (const gchar *filename,
 	     GHashTable  *metadata)
 {
+	struct stat  fstatbuf;
+	size_t	     size;
+
 	gint	     fd_png;
 	FILE	    *png;
 	png_structp  png_ptr;
@@ -154,10 +159,23 @@ extract_png (const gchar *filename,
 	gint	     interlace_type, compression_type, filter_type;
 
 #if defined(__linux__)
-	if ((fd_png = g_open (filename, (O_RDONLY | O_NOATIME))) == -1) {
+	if (((fd_png = g_open (filename, (O_RDONLY | O_NOATIME))) == -1) &&
+	    ((fd_png = g_open (filename, (O_RDONLY))) == -1 ) ) {
 #else
 	if ((fd_png = g_open (filename, O_RDONLY)) == -1) {
 #endif
+		return;
+	}
+
+	if (stat (filename, &fstatbuf) == -1) {
+		close(fd_png);
+		return;
+	}
+
+	/* Check for minimum header size */
+	size = fstatbuf.st_size;
+	if (size < 64) {
+		close (fd_png);
 		return;
 	}
 
@@ -246,18 +264,16 @@ extract_png (const gchar *filename,
 		/* Check that we have the minimum data. FIXME We should not need to do this */
 
 		if (!g_hash_table_lookup (metadata, "Image:Date")) {
-			struct stat st;
+			gchar *date;
+			guint64 mtime;
 
-			if (g_lstat(filename, &st) >= 0) {
-				gchar *date;
-
-				date = tracker_date_to_string (st.st_mtime);
-
-				g_hash_table_insert (metadata,
-						     g_strdup ("Image:Date"),
-						     tracker_escape_metadata (date));
-				g_free (date);
-			}
+			mtime = tracker_file_get_mtime (filename);
+			date = tracker_date_to_string ((time_t) mtime);
+			
+			g_hash_table_insert (metadata,
+					     g_strdup ("Image:Date"),
+					     tracker_escape_metadata (date));
+			g_free (date);
 		}
 
 		png_destroy_read_struct (&png_ptr, &info_ptr, NULL);

@@ -5,20 +5,23 @@ INCLUDES =								\
 	-DLIBDIR=\""$(libdir)"\"					\
 	-DLOCALEDIR=\""$(localedir)"\" 					\
 	-DMAIL_MODULES_DIR=\""$(libdir)"/tracker/mail-modules\"         \
+	-DPUSH_MODULES_DIR=\""$(libdir)/tracker/push-modules/daemon"\"	\
 	-DG_LOG_DOMAIN=\"Tracker\"					\
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
+	$(WARN_CFLAGS)							\
+	$(GLIB2_CFLAGS)							\
+	$(GTHREAD_CFLAGS)						\
+	$(GMODULE_CFLAGS)						\
+	$(GIO_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
+	$(DBUS_CFLAGS)							\
+	$(PANGO_CFLAGS)							\
 	$(GMIME_CFLAGS)							\
 	$(FAM_CFLAGS)							\
 	$(SQLITE3_CFLAGS)						\
 	$(QDBM_CFLAGS)							\
-	$(DBUS_CFLAGS)							\
-	$(PANGO_CFLAGS)							\
-	$(GIO_CFLAGS)							\
-	$(GMODULE_CFLAGS)						\
-	$(GTHREAD_CFLAGS)						\
-	$(RAPTOR_CFLAGS)						\
-	$(GLIB2_CFLAGS)
+	$(RAPTOR_CFLAGS)
 
 if HAVE_INOTIFY
 inotify_libs = $(top_builddir)/src/libinotify/libinotify.la
@@ -57,24 +60,15 @@ trackerd_SOURCES =							\
 	tracker-status.h						\
 	tracker-utils.c							\
 	tracker-utils.h							\
-	tracker-xesam.c							\
-	tracker-xesam.h							\
-	tracker-xesam-manager.c						\
-	tracker-xesam-manager.h						\
-	tracker-xesam-session.c						\
-	tracker-xesam-session.h						\
-	tracker-xesam-live-search.c					\
-	tracker-xesam-live-search.h					\
-	tracker-cleanup.c						\
-	tracker-cleanup.h
+	tracker-volume-cleanup.c					\
+	tracker-volume-cleanup.h					\
+	tracker-push.c							\
+	tracker-push.h							\
+	tracker-push-registrar.c					\
+	tracker-push-registrar.h
 
 if OS_WIN32
 trackerd_win_libs = -lws2_32 -lkernel32
-endif
-
-if HAVE_EVOLUTION_PLUGIN
-plugin_libs =								\
-	$(top_builddir)/src/plugins/evolution/libtracker-evolution.la
 endif
 
 trackerd_LDADD =							\
@@ -95,6 +89,7 @@ trackerd_LDADD =							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							\
 	$(RAPTOR_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(trackerd_win_libs)						\
 	-lz								\
 	-lm
@@ -112,12 +107,12 @@ marshal_sources =                                         		\
         tracker-marshal.c
 
 dbus_sources = 								\
+	tracker-backup-glue.h						\
 	tracker-daemon-glue.h						\
 	tracker-files-glue.h						\
 	tracker-keywords-glue.h						\
 	tracker-metadata-glue.h						\
 	tracker-search-glue.h						\
-	tracker-xesam-glue.h						\
 	tracker-indexer-client.h
 
 %-glue.h: $(top_srcdir)/data/dbus/%.xml

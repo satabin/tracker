@@ -68,7 +68,7 @@ LTLIBRARIES = $(indexer_modules_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtracker_module_applications_la_DEPENDENCIES =  \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libtracker_module_applications_la_OBJECTS = applications.lo
 libtracker_module_applications_la_OBJECTS =  \
 	$(am_libtracker_module_applications_la_OBJECTS)
@@ -79,7 +79,7 @@ libtracker_module_applications_la_LINK = $(LIBTOOL) --tag=CC \
 @HAVE_GCONF_TRUE@libtracker_module_evolution_la_DEPENDENCIES =  \
 @HAVE_GCONF_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 @HAVE_GCONF_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@HAVE_GCONF_TRUE@	$(am__DEPENDENCIES_1)
+@HAVE_GCONF_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am__libtracker_module_evolution_la_SOURCES_DIST = evolution-common.c \
 	evolution-common.h evolution-imap-db.c evolution-imap-db.h \
 	evolution-imap.c evolution-imap.h evolution-pop.c \
@@ -97,7 +97,8 @@ libtracker_module_evolution_la_LINK = $(LIBTOOL) --tag=CC \
 @HAVE_GCONF_TRUE@am_libtracker_module_evolution_la_rpath = -rpath \
 @HAVE_GCONF_TRUE@	$(indexer_modulesdir)
 libtracker_module_files_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_libtracker_module_files_la_OBJECTS = files.lo
 libtracker_module_files_la_OBJECTS =  \
 	$(am_libtracker_module_files_la_OBJECTS)
@@ -107,7 +108,7 @@ libtracker_module_files_la_LINK = $(LIBTOOL) --tag=CC \
 	$(LDFLAGS) -o $@
 libtracker_module_gaim_conversations_la_DEPENDENCIES =  \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libtracker_module_gaim_conversations_la_OBJECTS =  \
 	gaim-conversations.lo
 libtracker_module_gaim_conversations_la_OBJECTS =  \
@@ -165,8 +166,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -182,6 +182,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -251,6 +253,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -323,8 +327,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -398,9 +400,10 @@ INCLUDES = \
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
 	$(WARN_CFLAGS)							\
+	$(GLIB2_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
 	$(GMODULE_CFLAGS)						\
 	$(GIO_CFLAGS)							\
-	$(GLIB2_CFLAGS)							\
 	$(GCONF_CFLAGS)							\
 	$(GMIME_CFLAGS)							\
 	$(SQLITE3_CFLAGS)
@@ -415,6 +418,7 @@ libtracker_module_applications_la_LDFLAGS = $(module_flags)
 libtracker_module_applications_la_LIBADD = \
 	$(GMODULE_LIBS)							\
 	$(GIO_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GLIB2_LIBS)
 
 
@@ -424,6 +428,7 @@ libtracker_module_files_la_LDFLAGS = $(module_flags)
 libtracker_module_files_la_LIBADD = \
 	$(GMODULE_LIBS)							\
 	$(GIO_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GLIB2_LIBS)
 
 
@@ -433,6 +438,7 @@ libtracker_module_gaim_conversations_la_LDFLAGS = $(module_flags)
 libtracker_module_gaim_conversations_la_LIBADD = \
 	$(GMODULE_LIBS)							\
 	$(GIO_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GLIB2_LIBS)
 
 
@@ -454,6 +460,7 @@ libtracker_module_gaim_conversations_la_LIBADD = \
 @HAVE_GCONF_TRUE@	$(GLIB2_LIBS)							\
 @HAVE_GCONF_TRUE@	$(GCONF_LIBS)							\
 @HAVE_GCONF_TRUE@	$(GMIME_LIBS)							\
+@HAVE_GCONF_TRUE@	$(GCOV_LIBS)							\
 @HAVE_GCONF_TRUE@	$(SQLITE3_LIBS)
 
 all: all-am

@@ -69,6 +69,7 @@ am__DEPENDENCIES_1 =
 tracker_search_tool_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) \
 	$(top_builddir)/src/libtracker-gtk/libtracker-gtk.la \
 	$(top_builddir)/src/libtracker/libtrackerclient.la
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
@@ -122,8 +123,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -139,6 +139,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -208,6 +210,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -280,8 +284,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -344,35 +346,38 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 INCLUDES = \
-	-I$(top_srcdir)/src/libtracker				\
-	$(GLIB2_CFLAGS)						\
-	$(GNOME_UTILS_CFLAGS)					\
-	$(GIO_CFLAGS)						\
-	$(GNOMEDESKTOP_CFLAGS)					\
-	$(DBUS_CFLAGS)						\
 	-DG_DISABLE_DEPRECATED					\
 	-DTRACKER_LOCALEDIR=\""$(localedir)"\" 			\
 	-DTRACKER_DATADIR=\""$(datadir)"\"			\
 	-DGREP_COMMAND=\""$(GREP_COMMAND)"\"			\
+	-I$(top_srcdir)/src/libtracker				\
+	$(WARN_CFLAGS)						\
+	$(GLIB2_CFLAGS)						\
+	$(GCOV_CFLAGS)						\
+	$(GIO_CFLAGS)						\
+	$(DBUS_CFLAGS)						\
+	$(GNOME_UTILS_CFLAGS)					\
+	$(GNOMEDESKTOP_CFLAGS)					\
 	$(LIBTRACKERGTK_CFLAGS)					
 
 tracker_search_tool_SOURCES = \
-	tracker-search-tool-support.c   \
-	tracker-search-tool-support.h   \
-	tracker-search-tool-callbacks.c \
-	tracker-search-tool-callbacks.h \
-	tracker-search-tool.c	        \
-	tracker-search-tool.h		\
-	sexy-icon-entry.c		\
+	tracker-search-tool-support.c   			\
+	tracker-search-tool-support.h   			\
+	tracker-search-tool-callbacks.c 			\
+	tracker-search-tool-callbacks.h 			\
+	tracker-search-tool.c	        			\
+	tracker-search-tool.h					\
+	sexy-icon-entry.c					\
 	sexy-icon-entry.h
 
 tracker_search_tool_LDADD = \
-	$(GLIB2_LIBS) \
-	$(GNOME_UTILS_LIBS) \
-	$(GIO_LIBS)    \
-	$(GNOMEDESKTOP_LIBS) \
-	$(DBUS_LIBS)	\
-        $(top_builddir)/src/libtracker-gtk/libtracker-gtk.la \
+	$(GLIB2_LIBS) 						\
+	$(GNOME_UTILS_LIBS) 					\
+	$(GIO_LIBS)    						\
+	$(GCOV_LIBS)    						\
+	$(GNOMEDESKTOP_LIBS) 					\
+	$(DBUS_LIBS)						\
+        $(top_builddir)/src/libtracker-gtk/libtracker-gtk.la 	\
 	$(top_builddir)/src/libtracker/libtrackerclient.la 
 
 desktopdir = $(datadir)/applications

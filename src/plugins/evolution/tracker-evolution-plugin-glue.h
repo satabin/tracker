@@ -53,7 +53,7 @@ G_BEGIN_DECLS
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* NONE:BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.TF90OU:1) */
+/* NONE:BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.092MPU:1) */
 extern void dbus_glib_marshal_tracker_evolution_plugin_VOID__BOXED_UINT_POINTER (GClosure     *closure,
                                                                                  GValue       *return_value,
                                                                                  guint         n_param_values,
@@ -112,7 +112,7 @@ const DBusGObjectInfo dbus_glib_tracker_evolution_plugin_object_info = {
   0,
   dbus_glib_tracker_evolution_plugin_methods,
   1,
-"org.gnome.evolution.metadata.Manager\0Register\0A\0registrar_path\0I\0o\0last_modseq\0I\0u\0\0\0",
+"org.freedesktop.email.metadata.Manager\0Register\0A\0registrar_path\0I\0o\0last_modseq\0I\0u\0\0\0",
 "\0",
 "\0"
 };

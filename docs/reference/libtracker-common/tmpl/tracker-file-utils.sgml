@@ -25,15 +25,6 @@ File Operations
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_file_close ##### -->
-<para>
-
-</para>
-
-@fd: 
-@no_longer_needed: 
-
-
 <!-- ##### FUNCTION tracker_file_get_mime_type ##### -->
 <para>
 
@@ -63,33 +54,6 @@ File Operations
 
 
 <!-- ##### FUNCTION tracker_file_get_size ##### -->
-<para>
-
-</para>
-
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_file_is_directory ##### -->
-<para>
-
-</para>
-
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_file_is_indexable ##### -->
-<para>
-
-</para>
-
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_file_is_valid ##### -->
 <para>
 
 </para>

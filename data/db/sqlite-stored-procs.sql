@@ -13,26 +13,18 @@ GetFileByID                    SELECT S.Path, S.Name, S.Mime, S.ServiceTypeID FR
 GetFileByID2                   SELECT (S.Path || '/' || S.Name) AS uri, GetServiceName (ServiceTypeID), S.Mime FROM Services AS S WHERE S.ID = ? AND S.Enabled = 1 AND (S.AuxilaryID = 0 OR S.AuxilaryID IN (SELECT VolumeID FROM Volumes WHERE Enabled = 1));
 GetFileMTime                   SELECT M.MetaDataValue FROM Services AS S INNER JOIN ServiceNumericMetaData M ON S.ID = M.ServiceID WHERE S.Path = ? AND S.Name = ? AND M.MetaDataID = (SELECT ID FROM MetaDataTypes WHERE MetaName ='File:Modified');
 GetServices                    SELECT TypeName, Description, Parent FROM ServiceTypes ORDER BY TypeID;
-GetFileChildren                SELECT ID, Name FROM Services WHERE Path = ?;
+GetFileChildren                SELECT ID, Path, Name, IsDirectory FROM Services WHERE Path = ?;
 
-/*
- * Live search queries
- */
-CreateEvent                    INSERT INTO Events (ServiceID, EventType) VALUES (?,?); 
 
-GetLiveSearchAllIDs            SELECT X.ServiceID FROM cache.LiveSearches AS X WHERE X.SearchID = ?
-GetLiveSearchDeletedIDs        SELECT E.ServiceID FROM Events AS E, cache.LiveSearches AS X WHERE E.ServiceID = X.ServiceID AND X.SearchID = ? AND E.EventType = 'Delete';
-GetLiveSearchHitCount          SELECT count(*) FROM cache.LiveSearches WHERE SearchID = ?;
-
-DeleteLiveSearchDeletedIDs     DELETE FROM cache.LiveSearches AS Y WHERE Y.ServiceID IN SELECT ServiceID FROM Events AS E, cache.LiveSearches AS X WHERE E.ServiceID = X.ServiceID AND X.SearchID = ? AND E.EventType = 'Delete'
-
-LiveSearchStopSearch           DELETE FROM cache.LiveSearches WHERE SearchID = ?
 
 /*
  * Option queries
  */
 GetOption                      SELECT OptionValue FROM Options WHERE OptionKey = ?;
 SetOption                      REPLACE INTO Options (OptionKey, OptionValue) VALUES (?,?);
+
+GetCollationLocale             SELECT OptionValue FROM Options WHERE OptionKey = 'CollationLocale';
+SetCollationLocale             UPDATE Options SET OptionValue = ? WHERE OptionKey = 'CollationLocale';
 
 /*
  * File queries
@@ -42,7 +34,10 @@ CreateService                  INSERT INTO Services (ID, Path, Name, ServiceType
 MoveService                    UPDATE Services SET Path = ?, Name = ? WHERE Path = ? AND Name = ?;
 MoveServiceChildren            UPDATE Services SET Path = replace (Path, ?, ?) WHERE Path = ? OR Path LIKE (? || '/%');
 
-SelectFileChild                SELECT ID, Path, Name, IsDirectory FROM Services WHERE Path = ?;
+DisableService                 UPDATE Services SET Enabled = 0 WHERE ID = ?;
+MarkServiceForRemoval          INSERT INTO DeletedServices (ID) VALUES (?);
+UnmarkServiceForRemoval        DELETE FROM DeletedServices WHERE ID = ?;
+GetFirstRemovedFile            SELECT ID FROM DeletedServices LIMIT 1;
 
 DeleteContent                  DELETE FROM ServiceContents WHERE ServiceID = ? AND MetadataId = ?;
 DeleteService1                 DELETE FROM Services WHERE ID = ?;
@@ -63,7 +58,7 @@ SaveServiceContents            REPLACE INTO ServiceContents (ServiceID, Metadata
 /*
  * Metadata/MIME queries
  */
-GetUserMetadataBackup          SELECT S.Path || '/' || S.Name, T.TypeName, M.MetadataID, M.MetadataDisplay From Services S, ServiceMetadata M, ServiceTypes T WHERE (S.ID == M.ServiceID) AND (S.ServiceTypeID == T.TypeID) AND (M.MetadataID IN (SELECT ID From MetadataTypes WHERE Embedded = 0)) UNION SELECT S.Path || '/' || S.Name, T.TypeName, M.MetadataID, upper(M.MetadataValue) From Services S, ServiceNumericMetadata M, ServiceTypes T WHERE (S.ID == M.ServiceID) AND (S.ServiceTypeID == T.TypeID) AND (M.MetadataID IN (SELECT ID From MetadataTypes WHERE Embedded = 0)) UNION SELECT S.Path || '/' || S.Name, T.Typename, M.MetadataID, M.MetadataValue From Services S, ServiceKeywordMetadata M, ServiceTypes T WHERE (S.ID == M.ServiceID) AND (S.ServiceTypeID == T.TypeID) AND (M.MetadataID IN (SELECT ID From MetadataTypes WHERE Embedded = 0));
+GetUserMetadataBackup          SELECT S.Path || '/' || S.Name, T.TypeName, M.MetadataID, M.MetadataDisplay FROM Services S, ServiceMetadata M, ServiceTypes T WHERE (S.ID == M.ServiceID) AND (S.ServiceTypeID == T.TypeID) AND (M.MetadataID IN (SELECT ID From MetadataTypes WHERE Embedded = 0)) UNION SELECT S.Path || '/' || S.Name, T.TypeName, M.MetadataID, upper(M.MetadataValue) FROM Services S, ServiceNumericMetadata M, ServiceTypes T WHERE (S.ID == M.ServiceID) AND (S.ServiceTypeID == T.TypeID) AND (M.MetadataID IN (SELECT ID From MetadataTypes WHERE Embedded = 0)) UNION SELECT S.Path || '/' || S.Name, T.Typename, M.MetadataID, M.MetadataValue FROM Services S, ServiceKeywordMetadata M, ServiceTypes T WHERE (S.ID == M.ServiceID) AND (S.ServiceTypeID == T.TypeID) AND (M.MetadataID IN (SELECT ID From MetadataTypes WHERE Embedded = 0));
 GetAllMetadata                 SELECT MetadataID, MetadataDisplay FROM ServiceMetadata WHERE ServiceID = ? UNION SELECT MetadataID, MetadataValue FROM ServiceKeywordMetadata WHERE ServiceID = ? UNION SELECT MetadataID, upper(MetadataValue) FROM ServiceNumericMetadata WHERE ServiceID = ?;
 GetMetadata                    SELECT MetaDataDisplay FROM ServiceMetaData WHERE ServiceID = ? AND MetaDataID = ?;
 GetMetadataAliases             SELECT DISTINCT M.MetaName, M.ID FROM MetaDataTypes AS M, MetaDataChildren AS C WHERE M.ID = C.ChildID AND C.MetaDataID = ?; 
@@ -72,7 +67,7 @@ GetMetadataKeyword             SELECT MetaDataValue FROM ServiceKeywordMetaData 
 GetMetadataNumeric             SELECT MetaDataValue FROM ServiceNumericMetaData WHERE ServiceID = ? AND MetaDataID = ?;
 GetMetadataTypes               SELECT ID, MetaName, DataTypeID, FieldName, Weight, Embedded, MultipleValues, Delimited, Filtered, Abstract FROM MetaDataTypes;
 
-SetMetadata                    INSERT INTO ServiceMetaData (ServiceID, MetaDataID, MetaDataValue, MetaDataDisplay) VALUES (?,?,?,?);
+SetMetadata                    INSERT INTO ServiceMetaData (ServiceID, MetaDataID, MetaDataValue, MetaDataDisplay, MetaDataCollation) VALUES (?,?,?,?,CollateKey(?));
 SetMetadataKeyword             INSERT INTO ServiceKeywordMetaData (ServiceID, MetaDataID, MetaDataValue) VALUES (?,?,?);
 SetMetadataNumeric             INSERT INTO ServiceNumericMetaData (ServiceID, MetaDataID, MetaDataValue) VALUES (?,?,?);
 
@@ -81,6 +76,8 @@ DeleteMetadataKeyword          DELETE FROM ServiceKeywordMetaData WHERE ServiceI
 DeleteMetadataKeywordValue     DELETE FROM ServiceKeywordMetaData WHERE ServiceID = ? AND MetaDataID = ? AND MetaDataValue = ?;
 DeleteMetadataValue            DELETE FROM ServiceMetaData WHERE ServiceID = ? AND MetaDataID = ? AND MetaDataDisplay = ?;
 DeleteMetadataNumeric          DELETE FROM ServiceNumericMetaData WHERE ServiceID = ? AND MetaDataID = ?;
+
+UpdateMetadataCollation        UPDATE ServiceMetadata SET MetadataCollation=CollateKey(MetadataDisplay);
 
 InsertMetaDataChildren         INSERT INTO MetaDataChildren (ChildID,MetadataID) VALUES (?,(SELECT ID FROM MetaDataTypes WHERE MetaName = ?));
 InsertMetadataType             INSERT INTO MetaDataTypes (MetaName) VALUES (?);
@@ -122,10 +119,7 @@ DeleteSearchResults1           DELETE FROM SearchResults1;
 /*
  * Statistics queries
  */
-IncStat                        UPDATE ServiceTypes SET TypeCount = (TypeCount + 1) WHERE TypeName = ?;
-DecStat                        UPDATE ServiceTypes SET TypeCount = (TypeCount - 1) WHERE TypeName = ?;
-GetStats                       SELECT TypeName, TypeCount FROM ServiceTypes GROUP BY TypeName ORDER BY TypeID ASC;
-
+GetStats                       SELECT COUNT(1), T.TypeName FROM Services S, ServiceTypes T WHERE S.AuxilaryID IN (SELECT VolumeID FROM Volumes WHERE Enabled = 1) AND S.Enabled = 1 AND T.TypeID=S.ServiceTypeID GROUP BY ServiceTypeID ORDER BY T.TypeName;
 GetHitDetails                  SELECT ROWID, HitCount, HitArraySize FROM HitIndex WHERE word = ?;
 
 /*
@@ -134,41 +128,12 @@ GetHitDetails                  SELECT ROWID, HitCount, HitArraySize FROM HitInde
 
 GetVolumeID                    SELECT VolumeID FROM Volumes WHERE UDI = ?;
 GetVolumeByPath                SELECT VolumeID FROM Volumes WHERE Enabled = 1 AND (? = MountPath OR ? LIKE (MountPath || '/%'));
-GetVolumesToClean              SELECT VolumeID FROM Volumes WHERE DisabledDate < date('now', '-3 day');
+GetVolumesToClean              SELECT MountPath, VolumeID FROM Volumes WHERE DisabledDate < date('now', '-3 day');
 InsertVolume                   INSERT INTO Volumes (MountPath, UDI, Enabled, DisabledDate) VALUES (?, ?, 1, date('now'));
 EnableVolume                   UPDATE Volumes SET MountPath = ?, Enabled = 1 WHERE UDI = ?;
 DisableVolume                  UPDATE Volumes SET Enabled = 0, DisabledDate = date ('now') WHERE UDI = ?;
-DisableAllVolumes              UPDATE Volumes SET Enabled = 0;
-
-/*
- * XESAM queries
- */
-InsertXesamMetadataType        INSERT INTO XesamMetaDataTypes (MetaName) VALUES (?);
-InsertXesamServiceType         INSERT INTO XesamServiceTypes (TypeName) VALUES (?);
-InsertXesamMetaDataMapping     INSERT INTO XesamMetaDataMapping (XesamMetaName, MetaName) VALUES (?, ?);
-InsertXesamServiceMapping      INSERT INTO XesamServiceMapping (XesamTypeName, TypeName) VALUES (?, ?);
-InsertXesamServiceLookup       REPLACE INTO XesamServiceLookup (XesamTypeName, TypeName) VALUES (?, ?);
-InsertXesamMetaDataLookup      REPLACE INTO XesamMetaDataLookup (XesamMetaName, MetaName) VALUES (?, ?);
-
-GetXesamServiceParents         SELECT TypeName, Parents FROM XesamServiceTypes;
-GetXesamServiceChildren        SELECT Child FROM XesamServiceChildren WHERE Parent = ?;
-GetXesamServiceMappings        SELECT TypeName FROM XesamServiceMapping WHERE XesamTypeName = ?;
-GetXesamServiceLookups         SELECT DISTINCT TypeName FROM XesamServiceLookup WHERE XesamTypeName = ?;
-
-GetXesamMetaDataParents        SELECT MetaName, Parents FROM XesamMetaDataTypes;
-GetXesamMetaDataChildren       SELECT Child FROM XesamMetaDataChildren WHERE Parent = ?;
-GetXesamMetaDataMappings       SELECT MetaName FROM XesamMetaDataMapping WHERE XesamMetaName = ?;
-GetXesamMetaDataLookups        SELECT DISTINCT MetaName FROM XesamMetaDataLookup WHERE XesamMetaName = ?;
-GetXesamMetaDataTextLookups    SELECT DISTINCT L.MetaName FROM XesamMetaDataLookup AS L INNER JOIN XesamMetaDataTypes AS T ON (T.MetaName = L.XesamMetaName) WHERE T.DataTypeID = 3;
-
-GetXesamMetaDataTypes          SELECT ID, MetaName, DataTypeID, FieldName, Weight, Embedded, MultipleValues, Delimited, Filtered, Abstract FROM XesamMetaDataTypes;
-GetXesamServiceTypes           SELECT TypeID, TypeName, Parents, PropertyPrefix, Enabled, Embedded, HasMetadata, HasFullText, HasThumbs, ContentMetadata, Database, ShowServiceFiles, ShowServiceDirectories, KeyMetadata1, KeyMetadata2, KeyMetadata3, KeyMetadata4, KeyMetadata5, KeyMetadata6, KeyMetadata7, KeyMetadata8, KeyMetadata9, KeyMetadata10, KeyMetadata11 FROM XesamServiceTypes;
-
-InsertXesamMimes               REPLACE INTO XesamFileMimes (Mime) VALUES (?);
-InsertXesamMimePrefixes        REPLACE INTO XesamFileMimePrefixes (MimePrefix) VALUES (?);
-
-GetXesamMimeForServiceId       SELECT Mime FROM XesamFileMimes WHERE ServiceTypeId = ?;
-GetXesamMimePrefixForServiceId SELECT MimePrefix FROM XesamFileMimePrefixes WHERE ServiceTypeId = ?;
+DisableAllVolumes              UPDATE Volumes SET Enabled = 0 WHERE VolumeID > 1;
+UpdateVolumeDisabledDate       UPDATE Volumes SET DisabledDate = date ('now') WHERE VolumeID = ?;
 
 /*
  * Turtle importing

@@ -3,8 +3,8 @@ CREATE TABLE  Services
 (
 	ID            		Integer primary key not null,
 	ServiceTypeID		Integer  default 0, /* see ServiceTypes table above for ID values. A value of 0 indicates a group resource rather than a service */
-	Path 			Text  not null  COLLATE UTF8, /* non-file objects should use service name here */
-	Name	 		Text default ' ' COLLATE UTF8, /* name of file or object - the combination path and name must be unique for all objects */
+	Path 			Text not null,      /* non-file objects should use service name here */
+	Name	 		Text default ' ',   /* name of file or object - the combination path and name must be unique for all objects */
 	Enabled			Integer default 1,
 	Mime			Text default ' ',
 	Size			Integer default 0,
@@ -16,9 +16,9 @@ CREATE TABLE  Services
 	KeyMetadata3		Text,
 	KeyMetadata4		Text,
 	KeyMetadata5		Text,
-	KeyMetadata6		Text,
-	KeyMetadata7		Text,
-	KeyMetadata8		Text,
+	KeyMetadata6		Integer,
+	KeyMetadata7		Integer,
+	KeyMetadata8		Integer,
 	KeyMetadata9		Text,
 	KeyMetadata10		Text,
 	KeyMetadata11		Text,
@@ -57,11 +57,11 @@ CREATE TABLE  ServiceMetaData
 	ServiceID		Integer not null,
 	MetaDataID 		Integer  not null,
 	MetaDataValue     	Text,
-	MetaDataDisplay		Text
-
+	MetaDataDisplay		Text,
+	MetaDataCollation	Text
 );
 
-CREATE INDEX ServiceMetaDataCompoundIndex ON ServiceMetaData (ServiceID, MetaDataID, MetaDataDisplay);
+CREATE INDEX ServiceMetaDataCompoundIndex ON ServiceMetaData (ServiceID, MetaDataID, MetaDataDisplay, MetaDataCollation);
 
 /* metadata for all keyword types - keywords are db indexed for fast searching - they are also not processed like other metadata. */
 CREATE TABLE  ServiceKeywordMetaData 
@@ -85,3 +85,8 @@ CREATE TABLE  ServiceNumericMetaData
 
 CREATE INDEX ServiceNumericMetaDataCompoundIndex ON ServiceNumericMetaData (ServiceID, MetaDataID, MetaDataValue);
 
+
+CREATE TABLE DeletedServices
+(
+        ID      Integer primary key not null
+);

@@ -33,10 +33,6 @@
 G_BEGIN_DECLS
 
 guint32  tracker_data_update_get_new_service_id         (TrackerDBInterface  *iface);
-void     tracker_data_update_increment_stats            (TrackerDBInterface  *iface,
-							 TrackerService      *service);
-void     tracker_data_update_decrement_stats            (TrackerDBInterface  *iface,
-							 TrackerService      *service);
 
 /* Services  */
 gboolean tracker_data_update_create_service             (TrackerService      *service,
@@ -44,6 +40,8 @@ gboolean tracker_data_update_create_service             (TrackerService      *se
 							 const gchar         *dirname,
 							 const gchar         *basename,
 							 GHashTable          *metadata);
+void     tracker_data_update_disable_service            (TrackerService      *service,
+							 guint32              service_id);
 void     tracker_data_update_delete_service             (TrackerService      *service,
 							 guint32              service_id);
 void     tracker_data_update_delete_service_recursively (TrackerService      *service,
@@ -81,19 +79,13 @@ void     tracker_data_update_set_content                (TrackerService      *se
 void     tracker_data_update_delete_content             (TrackerService      *service,
 							 guint32              service_id);
 
-/* Events */
-void     tracker_data_update_create_event               (TrackerDBInterface  *iface,
-							 guint32              service_id,
-							 const gchar         *type);
-
-/* XESAM API */
-void     tracker_data_update_delete_handled_events      (TrackerDBInterface  *iface);
 
 /* Volume handling */
 void tracker_data_update_enable_volume                  (const gchar         *udi,
                                                          const gchar         *mount_path);
 void tracker_data_update_disable_volume                 (const gchar         *udi);
 void tracker_data_update_disable_all_volumes            (void);
+void tracker_data_update_reset_volume                   (guint32              volume_id);
 
 G_END_DECLS
 

@@ -64,6 +64,9 @@
 /* Define if we have libgsf */
 #undef HAVE_LIBGSF
 
+/* Define if we have libiptcdata */
+#undef HAVE_LIBIPTCDATA
+
 /* Define if we have libjpeg */
 #undef HAVE_LIBJPEG
 
@@ -163,6 +166,9 @@
 
 /* Define that Tracker will try to use external video players */
 #undef USING_EXTERNAL_VIDEO_PLAYER
+
+/* Unzip ps.gz files */
+#undef USING_UNZIPPSFILES
 
 /* Defined for compilers not supporting __FUNCTION__ */
 #undef __FUNCTION__

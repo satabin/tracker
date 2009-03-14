@@ -15,12 +15,13 @@ INCLUDES = 								\
 	-DTRACKER_BINDIR=\""$(bindir)"\" 				\
 	-DTRACKER_LIBEXECDIR=\""$(libexecdir)"\" 			\
 	-DTRACKER_COMPILATION 						\
+	-I$(top_srcdir)/src						\
 	$(WARN_CFLAGS)							\
-	$(LIBGLADE_CFLAGS) 						\
+	$(GLIB_CFLAGS) 							\
+	$(GCOV_CFLAGS) 							\
 	$(GTK2_CFLAGS) 							\
 	$(DBUS_CFLAGS) 							\
-	$(GLIB_CFLAGS) 							\
-	-I$(top_srcdir)/src
+	$(LIBGLADE_CFLAGS)
 
 tracker_preferences_SOURCES = 						\
 	tracker-preferences.c 						\
@@ -37,6 +38,7 @@ tracker_preferences_LDADD = 						\
 	$(LIBGLADE_LIBS)						\
 	$(GTK2_LIBS) 							\
 	$(DBUS_LIBS) 							\
+	$(GCOV_LIBS) 							\
 	$(GLIB_LIBS)
 
 EXTRA_DIST = $(pkgdata_DATA)

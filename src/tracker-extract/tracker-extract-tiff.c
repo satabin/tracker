@@ -28,11 +28,12 @@
 #include <tiffio.h>
 
 #include <libtracker-common/tracker-type-utils.h>
+#include <libtracker-common/tracker-file-utils.h>
 
 #include "tracker-main.h"
 #include "tracker-xmp.h"
+#include "tracker-iptc.h"
 
-#define XMP_NAMESPACE_LENGTH 29
 #define EXIF_DATE_FORMAT     "%Y:%m:%d %H:%M:%S"
 
 typedef gchar * (*PostProcessor) (gchar *);
@@ -122,6 +123,11 @@ extract_tiff (const gchar *filename,
 
 	gfloat vardouble;
 
+#ifdef HAVE_LIBIPTCDATA
+	gchar   *iptcOffset;
+	guint32  iptcSize;
+#endif
+
 #ifdef HAVE_EXEMPI
 	gchar *xmpOffset;
 	guint32 size;
@@ -132,9 +138,18 @@ extract_tiff (const gchar *filename,
 		return;
 	}
 
+#ifdef HAVE_LIBIPTCDATA
+	if (TIFFGetField (image, TIFFTAG_RICHTIFFIPTC, &iptcSize, &iptcOffset)) {
+		if (TIFFIsByteSwapped(image) != 0) 
+			TIFFSwabArrayOfLong((uint32 *) iptcOffset,(unsigned long) iptcSize);
+		tracker_read_iptc (iptcOffset,
+				   4*iptcSize,
+				   metadata);
+	}
+#endif /* HAVE_LIBIPTCDATA */
+
 	/* FIXME There are problems between XMP data embedded with different tools
 	   due to bugs in the original spec (type) */
-
 #ifdef HAVE_EXEMPI
 	if (TIFFGetField (image, TIFFTAG_XMLPACKET, &size, &xmpOffset)) {
 		tracker_read_xmp (xmpOffset,
@@ -252,18 +267,16 @@ extract_tiff (const gchar *filename,
 	/* Check that we have the minimum data. FIXME We should not need to do this */
 	
 	if (!g_hash_table_lookup (metadata, "Image:Date")) {
-		struct stat st;
+		gchar *date;
+		guint64 mtime;
 		
-		if (g_lstat(filename, &st) >= 0) {
-			gchar *date;
-
-			date = tracker_date_to_string (st.st_mtime);
-
-			g_hash_table_insert (metadata,
-					     g_strdup ("Image:Date"),
-					     tracker_escape_metadata (date));
-			g_free (date);
-		}
+		mtime = tracker_file_get_mtime (filename);
+		date = tracker_date_to_string ((time_t) mtime);
+		
+		g_hash_table_insert (metadata,
+				     g_strdup ("Image:Date"),
+				     tracker_escape_metadata (date));
+		g_free (date);
 	}
 
 	TIFFClose (image);

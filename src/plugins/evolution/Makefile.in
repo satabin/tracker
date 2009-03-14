@@ -60,9 +60,14 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(eplugindir)" "$(DESTDIR)$(eplugindir)"
+am__installdirs = "$(DESTDIR)$(eplugindir)" \
+	"$(DESTDIR)$(pushd_modulesdir)" \
+	"$(DESTDIR)$(pushi_modulesdir)" "$(DESTDIR)$(eplugindir)"
 epluginLTLIBRARIES_INSTALL = $(INSTALL)
-LTLIBRARIES = $(eplugin_LTLIBRARIES) $(noinst_LTLIBRARIES)
+pushd_modulesLTLIBRARIES_INSTALL = $(INSTALL)
+pushi_modulesLTLIBRARIES_INSTALL = $(INSTALL)
+LTLIBRARIES = $(eplugin_LTLIBRARIES) $(pushd_modules_LTLIBRARIES) \
+	$(pushi_modules_LTLIBRARIES)
 liborg_freedesktop_Tracker_evolution_plugin_la_LIBADD =
 am_liborg_freedesktop_Tracker_evolution_plugin_la_OBJECTS =  \
 	tracker-evolution-plugin.lo
@@ -74,28 +79,40 @@ liborg_freedesktop_Tracker_evolution_plugin_la_LINK = $(LIBTOOL) \
 	$(liborg_freedesktop_Tracker_evolution_plugin_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
 am__DEPENDENCIES_1 =
-libtracker_evolution_indexer_la_DEPENDENCIES =  \
+libtracker_module_evolution_daemon_module_la_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libtracker_evolution_indexer_la_OBJECTS =  \
-	tracker-evolution-indexer.lo
-libtracker_evolution_indexer_la_OBJECTS =  \
-	$(am_libtracker_evolution_indexer_la_OBJECTS)
-libtracker_evolution_la_DEPENDENCIES =  \
-	$(top_builddir)/src/libtracker-data/libtracker-data.la \
-	$(top_builddir)/src/libtracker-db/libtracker-db.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
-am_libtracker_evolution_la_OBJECTS = tracker-evolution.lo \
+am_libtracker_module_evolution_daemon_module_la_OBJECTS =  \
 	tracker-evolution-registrar.lo
-libtracker_evolution_la_OBJECTS =  \
-	$(am_libtracker_evolution_la_OBJECTS)
+libtracker_module_evolution_daemon_module_la_OBJECTS =  \
+	$(am_libtracker_module_evolution_daemon_module_la_OBJECTS)
+libtracker_module_evolution_daemon_module_la_LINK = $(LIBTOOL) \
+	--tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link \
+	$(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(libtracker_module_evolution_daemon_module_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+libtracker_module_evolution_indexer_module_la_DEPENDENCIES =  \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+	$(top_builddir)/src/libtracker-db/libtracker-db.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libtracker_module_evolution_indexer_module_la_OBJECTS =  \
+	tracker-evolution-indexer.lo
+libtracker_module_evolution_indexer_module_la_OBJECTS =  \
+	$(am_libtracker_module_evolution_indexer_module_la_OBJECTS)
+libtracker_module_evolution_indexer_module_la_LINK = $(LIBTOOL) \
+	--tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link \
+	$(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(libtracker_module_evolution_indexer_module_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -109,12 +126,12 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(liborg_freedesktop_Tracker_evolution_plugin_la_SOURCES) \
-	$(libtracker_evolution_indexer_la_SOURCES) \
-	$(libtracker_evolution_la_SOURCES)
+	$(libtracker_module_evolution_daemon_module_la_SOURCES) \
+	$(libtracker_module_evolution_indexer_module_la_SOURCES)
 DIST_SOURCES =  \
 	$(liborg_freedesktop_Tracker_evolution_plugin_la_SOURCES) \
-	$(libtracker_evolution_indexer_la_SOURCES) \
-	$(libtracker_evolution_la_SOURCES)
+	$(libtracker_module_evolution_daemon_module_la_SOURCES) \
+	$(libtracker_module_evolution_indexer_module_la_SOURCES)
 epluginDATA_INSTALL = $(INSTALL_DATA)
 DATA = $(eplugin_DATA)
 ETAGS = etags
@@ -145,8 +162,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -162,6 +178,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -231,6 +249,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -303,8 +323,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -367,52 +385,62 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 INCLUDES = \
-	-I$(top_srcdir)/src				\
-	-DGETTEXT_PACKAGE="\"$(GETTEXT_PACKAGE)\""	\
-	-DLOCALEDIR="\"$(LOCALEDIR)\""			\
-	-DTRACKER_COMPILATION				\
-	$(DBUS_CFLAGS)					\
-	$(GMIME_CFLAGS)					\
-	$(EVOLUTION_PLUGIN_CFLAGS)
+	-I$(top_srcdir)/src						\
+	-DGETTEXT_PACKAGE="\"$(GETTEXT_PACKAGE)\""			\
+	-DLOCALEDIR="\"$(localedir)\""					\
+	-DTRACKER_COMPILATION						\
+	$(WARN_CFLAGS)							\
+	$(DBUS_CFLAGS)							\
+	$(GMIME_CFLAGS)							\
+	$(EVOLUTION_PLUGIN_CFLAGS)					\
+	$(GCOV_CFLAGS)
 
 eplugindir = $(EVOLUTION_PLUGIN_INSTALL_DIR)
 eplugin_DATA = org-freedesktop-Tracker-evolution-plugin.eplug
 eplugin_LTLIBRARIES = liborg-freedesktop-Tracker-evolution-plugin.la
-noinst_LTLIBRARIES = libtracker-evolution.la libtracker-evolution-indexer.la
-libtracker_evolution_indexer_la_SOURCES = \
+module_flags = -module -avoid-version -no-undefined
+pushd_modulesdir = $(libdir)/tracker/push-modules/daemon
+pushi_modulesdir = $(libdir)/tracker/push-modules/indexer
+pushd_modules_LTLIBRARIES = libtracker-module-evolution-daemon-module.la
+pushi_modules_LTLIBRARIES = libtracker-module-evolution-indexer-module.la
+libtracker_module_evolution_indexer_module_la_SOURCES = \
 	tracker-evolution-indexer.c					\
 	tracker-evolution-indexer.h					\
 	tracker-evolution-registrar-glue.h				\
 	tracker-evolution-common.h
 
-libtracker_evolution_la_SOURCES = \
-	tracker-evolution.c						\
-	tracker-evolution.h						\
+libtracker_module_evolution_daemon_module_la_SOURCES = \
 	tracker-evolution-registrar.c					\
 	tracker-evolution-registrar.h					\
 	tracker-evolution-common.h					\
 	tracker-evolution-registrar-glue.h
 
-libtracker_evolution_la_LIBADD = \
+libtracker_module_evolution_daemon_module_la_LDFLAGS = $(module_flags)
+libtracker_module_evolution_daemon_module_la_LIBADD = \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la          \
 	$(top_builddir)/src/libtracker-db/libtracker-db.la              \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la      \
-	$(DBUS_LIBS)                                                    \
-	$(GTHREAD_LIBS)                                                 \
-	$(GIO_LIBS)                                                     \
-	$(GLIB2_LIBS)                                                   \
-	$(RAPTOR_LIBS)
-
-libtracker_evolution_indexer_la_LIBADD = \
-	$(top_builddir)/src/libtracker-data/libtracker-data.la          \
-	$(top_builddir)/src/libtracker-db/libtracker-db.la              \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la      \
+	$(GMODULE_LIBS)							\
 	$(DBUS_LIBS)                                                    \
 	$(GTHREAD_LIBS)                                                 \
 	$(GIO_LIBS)                                                     \
 	$(GLIB2_LIBS)                                                   \
 	$(RAPTOR_LIBS)							\
-	$(GMIME_LIBS)
+	$(GCOV_LIBS)
+
+libtracker_module_evolution_indexer_module_la_LDFLAGS = $(module_flags)
+libtracker_module_evolution_indexer_module_la_LIBADD = \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la          \
+	$(top_builddir)/src/libtracker-db/libtracker-db.la              \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la      \
+	$(GMODULE_LIBS)							\
+	$(DBUS_LIBS)                                                    \
+	$(GTHREAD_LIBS)                                                 \
+	$(GIO_LIBS)                                                     \
+	$(GLIB2_LIBS)                                                   \
+	$(RAPTOR_LIBS)							\
+	$(GMIME_LIBS)							\
+	$(GCOV_LIBS)
 
 liborg_freedesktop_Tracker_evolution_plugin_la_SOURCES = \
 	tracker-evolution-plugin.c 			 		\
@@ -423,7 +451,8 @@ liborg_freedesktop_Tracker_evolution_plugin_la_SOURCES = \
 liborg_freedesktop_Tracker_evolution_plugin_la_LDFLAGS = -module -avoid-version
 liborg_freedesktop_Tracker_evolution_plugin_la_LDLIBS = \
 	$(EVOLUTION_PLUGIN_LIBS)					\
-	$(DBUS_LIBS)
+	$(DBUS_LIBS)							\
+	$(GCOV_LIBS)
 
 dbus_sources = \
 	tracker-evolution-plugin-glue.h					\
@@ -433,7 +462,8 @@ BUILT_SOURCES = \
 	$(dbus_sources)							\
 	$(eplugin_DATA)
 
-CLEANFILES = $(BUILT_SOURCES) \
+CLEANFILES = \
+	$(BUILT_SOURCES) 						\
 	org-freedesktop-Tracker-evolution-plugin.eplug
 
 EXTRA_DIST = \
@@ -501,10 +531,55 @@ clean-epluginLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
+install-pushd_modulesLTLIBRARIES: $(pushd_modules_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	test -z "$(pushd_modulesdir)" || $(MKDIR_P) "$(DESTDIR)$(pushd_modulesdir)"
+	@list='$(pushd_modules_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    f=$(am__strip_dir) \
+	    echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(pushd_modulesLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(pushd_modulesdir)/$$f'"; \
+	    $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(pushd_modulesLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(pushd_modulesdir)/$$f"; \
+	  else :; fi; \
+	done
 
-clean-noinstLTLIBRARIES:
-	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-	@list='$(noinst_LTLIBRARIES)'; for p in $$list; do \
+uninstall-pushd_modulesLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	@list='$(pushd_modules_LTLIBRARIES)'; for p in $$list; do \
+	  p=$(am__strip_dir) \
+	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f '$(DESTDIR)$(pushd_modulesdir)/$$p'"; \
+	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f "$(DESTDIR)$(pushd_modulesdir)/$$p"; \
+	done
+
+clean-pushd_modulesLTLIBRARIES:
+	-test -z "$(pushd_modules_LTLIBRARIES)" || rm -f $(pushd_modules_LTLIBRARIES)
+	@list='$(pushd_modules_LTLIBRARIES)'; for p in $$list; do \
+	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
+	  test "$$dir" != "$$p" || dir=.; \
+	  echo "rm -f \"$${dir}/so_locations\""; \
+	  rm -f "$${dir}/so_locations"; \
+	done
+install-pushi_modulesLTLIBRARIES: $(pushi_modules_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	test -z "$(pushi_modulesdir)" || $(MKDIR_P) "$(DESTDIR)$(pushi_modulesdir)"
+	@list='$(pushi_modules_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    f=$(am__strip_dir) \
+	    echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(pushi_modulesLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(pushi_modulesdir)/$$f'"; \
+	    $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(pushi_modulesLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(pushi_modulesdir)/$$f"; \
+	  else :; fi; \
+	done
+
+uninstall-pushi_modulesLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	@list='$(pushi_modules_LTLIBRARIES)'; for p in $$list; do \
+	  p=$(am__strip_dir) \
+	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f '$(DESTDIR)$(pushi_modulesdir)/$$p'"; \
+	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f "$(DESTDIR)$(pushi_modulesdir)/$$p"; \
+	done
+
+clean-pushi_modulesLTLIBRARIES:
+	-test -z "$(pushi_modules_LTLIBRARIES)" || rm -f $(pushi_modules_LTLIBRARIES)
+	@list='$(pushi_modules_LTLIBRARIES)'; for p in $$list; do \
 	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
 	  test "$$dir" != "$$p" || dir=.; \
 	  echo "rm -f \"$${dir}/so_locations\""; \
@@ -512,10 +587,10 @@ clean-noinstLTLIBRARIES:
 	done
 liborg-freedesktop-Tracker-evolution-plugin.la: $(liborg_freedesktop_Tracker_evolution_plugin_la_OBJECTS) $(liborg_freedesktop_Tracker_evolution_plugin_la_DEPENDENCIES) 
 	$(liborg_freedesktop_Tracker_evolution_plugin_la_LINK) -rpath $(eplugindir) $(liborg_freedesktop_Tracker_evolution_plugin_la_OBJECTS) $(liborg_freedesktop_Tracker_evolution_plugin_la_LIBADD) $(LIBS)
-libtracker-evolution-indexer.la: $(libtracker_evolution_indexer_la_OBJECTS) $(libtracker_evolution_indexer_la_DEPENDENCIES) 
-	$(LINK)  $(libtracker_evolution_indexer_la_OBJECTS) $(libtracker_evolution_indexer_la_LIBADD) $(LIBS)
-libtracker-evolution.la: $(libtracker_evolution_la_OBJECTS) $(libtracker_evolution_la_DEPENDENCIES) 
-	$(LINK)  $(libtracker_evolution_la_OBJECTS) $(libtracker_evolution_la_LIBADD) $(LIBS)
+libtracker-module-evolution-daemon-module.la: $(libtracker_module_evolution_daemon_module_la_OBJECTS) $(libtracker_module_evolution_daemon_module_la_DEPENDENCIES) 
+	$(libtracker_module_evolution_daemon_module_la_LINK) -rpath $(pushd_modulesdir) $(libtracker_module_evolution_daemon_module_la_OBJECTS) $(libtracker_module_evolution_daemon_module_la_LIBADD) $(LIBS)
+libtracker-module-evolution-indexer-module.la: $(libtracker_module_evolution_indexer_module_la_OBJECTS) $(libtracker_module_evolution_indexer_module_la_DEPENDENCIES) 
+	$(libtracker_module_evolution_indexer_module_la_LINK) -rpath $(pushi_modulesdir) $(libtracker_module_evolution_indexer_module_la_OBJECTS) $(libtracker_module_evolution_indexer_module_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -526,7 +601,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-evolution-indexer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-evolution-plugin.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-evolution-registrar.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-evolution.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -651,7 +725,7 @@ check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(LTLIBRARIES) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(eplugindir)" "$(DESTDIR)$(eplugindir)"; do \
+	for dir in "$(DESTDIR)$(eplugindir)" "$(DESTDIR)$(pushd_modulesdir)" "$(DESTDIR)$(pushi_modulesdir)" "$(DESTDIR)$(eplugindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -684,7 +758,8 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-epluginLTLIBRARIES clean-generic clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	clean-pushd_modulesLTLIBRARIES clean-pushi_modulesLTLIBRARIES \
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -702,7 +777,9 @@ info: info-am
 
 info-am:
 
-install-data-am: install-epluginDATA install-epluginLTLIBRARIES
+install-data-am: install-epluginDATA install-epluginLTLIBRARIES \
+	install-pushd_modulesLTLIBRARIES \
+	install-pushi_modulesLTLIBRARIES
 
 install-dvi: install-dvi-am
 
@@ -738,25 +815,31 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-epluginDATA uninstall-epluginLTLIBRARIES
+uninstall-am: uninstall-epluginDATA uninstall-epluginLTLIBRARIES \
+	uninstall-pushd_modulesLTLIBRARIES \
+	uninstall-pushi_modulesLTLIBRARIES
 
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am check-local clean \
 	clean-epluginLTLIBRARIES clean-generic clean-libtool \
-	clean-noinstLTLIBRARIES ctags distclean distclean-compile \
-	distclean-generic distclean-libtool distclean-tags distdir dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-epluginDATA install-epluginLTLIBRARIES install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
+	clean-pushd_modulesLTLIBRARIES clean-pushi_modulesLTLIBRARIES \
+	ctags distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-epluginDATA \
+	install-epluginLTLIBRARIES install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-pushd_modulesLTLIBRARIES \
+	install-pushi_modulesLTLIBRARIES install-strip installcheck \
 	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags uninstall uninstall-am uninstall-epluginDATA \
-	uninstall-epluginLTLIBRARIES
+	uninstall-epluginLTLIBRARIES \
+	uninstall-pushd_modulesLTLIBRARIES \
+	uninstall-pushi_modulesLTLIBRARIES
 
 
 ### testing rules
@@ -812,10 +895,10 @@ check-local: test
 	LC_ALL=C $(INTLTOOL_MERGE) -x -u /tmp $< $@
 
 %.eplug: %.eplug.in
-	sed -e "s%+PLUGIN_INSTALL_DIR+%$(EVOLUTION_PLUGIN_INSTALL_DIR)%" \
-	-e "s%+GETTEXT_PACKAGE+%$(GETTEXT_PACKAGE)%" \
-	-e "s%+LOCALEDIR+%$(LOCALEDIR)%" \
-	$< > $@
+	sed -e "s|+PLUGIN_INSTALL_DIR+|$(EVOLUTION_PLUGIN_INSTALL_DIR)|"	\
+	    -e "s|+GETTEXT_PACKAGE+|$(GETTEXT_PACKAGE)|"			\
+	    -e "s|+LOCALEDIR+|$(localedir)|"					\
+	    $< > $@
 
 %-glue.h: %.xml
 	$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^

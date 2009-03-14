@@ -87,7 +87,8 @@ test_tracker_extract_gstreamer_DEPENDENCIES =  \
 	$(top_builddir)/src/tracker-extract/libextract-gstreamer.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_test_tracker_extract_jpeg_OBJECTS =  \
 	tracker-extract-jpeg-test.$(OBJEXT) $(am__objects_1)
 test_tracker_extract_jpeg_OBJECTS =  \
@@ -97,7 +98,8 @@ test_tracker_extract_jpeg_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_test_tracker_extract_mp3_OBJECTS =  \
 	tracker-extract-mp3-test.$(OBJEXT) $(am__objects_1)
 test_tracker_extract_mp3_OBJECTS =  \
@@ -106,7 +108,7 @@ test_tracker_extract_mp3_DEPENDENCIES =  \
 	$(top_builddir)/src/tracker-extract/libextract-mp3.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_test_tracker_extract_png_OBJECTS =  \
 	tracker-extract-png-test.$(OBJEXT) $(am__objects_1)
 test_tracker_extract_png_OBJECTS =  \
@@ -116,7 +118,7 @@ test_tracker_extract_png_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_test_tracker_extract_tiff_OBJECTS =  \
 	tracker-extract-tiff-test.$(OBJEXT) $(am__objects_1)
 test_tracker_extract_tiff_OBJECTS =  \
@@ -126,7 +128,7 @@ test_tracker_extract_tiff_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -177,8 +179,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -194,6 +195,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -263,6 +266,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -335,8 +340,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -405,11 +408,13 @@ INCLUDES = \
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
 	-I$(top_srcdir)/tests/common					\
-	$(DBUS_CFLAGS)							\
+	$(WARN_CFLAGS)							\
+	$(GLIB2_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
 	$(GMODULE_CFLAGS)						\
 	$(GTHREAD_CFLAGS)						\
 	$(PANGO_CFLAGS)							\
-	$(GLIB2_CFLAGS)
+	$(DBUS_CFLAGS)
 
 TEST_UTILS_SOURCES = \
 	tracker-extract-test-utils.c					\
@@ -435,6 +440,7 @@ test_tracker_extract_mp3_LDADD = \
 	$(top_builddir)/src/tracker-extract/libextract-mp3.la   	\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
 	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)
 
@@ -446,6 +452,7 @@ test_tracker_extract_gstreamer_LDADD = \
 	$(top_builddir)/src/tracker-extract/libextract-gstreamer.la   	\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
 	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							\
 	$(GSTREAMER_LIBS)
@@ -459,6 +466,7 @@ test_tracker_extract_jpeg_LDADD = \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GLIB2_LIBS)							\
 	$(LIBJPEG_LIBS)							\
 	$(LIBEXIF_LIBS)							\
@@ -474,6 +482,7 @@ test_tracker_extract_tiff_LDADD = \
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(LIBTIFF_LIBS)							\
 	$(EXEMPI_LIBS)
 
@@ -487,6 +496,7 @@ test_tracker_extract_png_LDADD = \
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(LIBPNG_LIBS)							\
 	$(EXEMPI_LIBS)
 

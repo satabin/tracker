@@ -45,7 +45,6 @@
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-enable-thumbnails">tracker_config_get_enable_thumbnails</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-enable-watches">tracker_config_get_enable_watches</link>   (<link linkend="TrackerConfig">TrackerConfig</link> *config);
-<link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-enable-xesam">tracker_config_get_enable_xesam</link>     (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-fast-merges">tracker_config_get_fast_merges</link>      (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-index-mounted-directories">tracker_config_get_index_mounted_directories</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
@@ -93,8 +92,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-config-g
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);
 <link linkend="void">void</link>                <link linkend="tracker-config-set-enable-watches">tracker_config_set_enable_watches</link>   (<link linkend="TrackerConfig">TrackerConfig</link> *config,
-                                                         <link linkend="gboolean">gboolean</link> value);
-<link linkend="void">void</link>                <link linkend="tracker-config-set-enable-xesam">tracker_config_set_enable_xesam</link>     (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);
 <link linkend="void">void</link>                <link linkend="tracker-config-set-fast-merges">tracker_config_set_fast_merges</link>      (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);
@@ -161,7 +158,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-config-g
   &quot;<link linkend="TrackerConfig--enable-stemmer">enable-stemmer</link>&quot;           <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
   &quot;<link linkend="TrackerConfig--enable-thumbnails">enable-thumbnails</link>&quot;        <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
   &quot;<link linkend="TrackerConfig--enable-watches">enable-watches</link>&quot;           <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
-  &quot;<link linkend="TrackerConfig--enable-xesam">enable-xesam</link>&quot;             <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
   &quot;<link linkend="TrackerConfig--fast-merges">fast-merges</link>&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
   &quot;<link linkend="TrackerConfig--index-mounted-directories">index-mounted-directories</link>&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
   &quot;<link linkend="TrackerConfig--index-removable-devices">index-removable-devices</link>&quot;  <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
@@ -400,20 +396,6 @@ finished with.
 <refsect2 id="tracker-config-get-enable-watches" role="function">
 <title>tracker_config_get_enable_watches ()</title>
 <indexterm zone="tracker-config-get-enable-watches"><primary>tracker_config_get_enable_watches</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_watches   (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="tracker-config-get-enable-xesam" role="function">
-<title>tracker_config_get_enable_xesam ()</title>
-<indexterm zone="tracker-config-get-enable-xesam"><primary>tracker_config_get_enable_xesam</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_xesam     (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -844,22 +826,6 @@ is 3 you receive debug, messages, info and warnings.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="tracker-config-set-enable-xesam" role="function">
-<title>tracker_config_set_enable_xesam ()</title>
-<indexterm zone="tracker-config-set-enable-xesam"><primary>tracker_config_set_enable_xesam</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_xesam     (<link linkend="TrackerConfig">TrackerConfig</link> *config,
-                                                         <link linkend="gboolean">gboolean</link> value);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
-<listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
 <refsect2 id="tracker-config-set-fast-merges" role="function">
 <title>tracker_config_set_fast_merges ()</title>
 <indexterm zone="tracker-config-set-fast-merges"><primary>tracker_config_set_fast_merges</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_fast_merges      (<link linkend="TrackerConfig">TrackerConfig</link> *config,
@@ -1158,10 +1124,6 @@ is 3 you receive debug, messages, info and warnings.</para>
 <refsect2 id="TrackerConfig--enable-watches"><title>The <literal>&quot;enable-watches&quot;</literal> property</title>
 <indexterm zone="TrackerConfig--enable-watches"><primary>TrackerConfig:enable-watches</primary></indexterm><programlisting>  &quot;enable-watches&quot;           <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>You can disable all watches by setting this FALSE.</para><para>Default value: TRUE</para>
-</refsect2>
-<refsect2 id="TrackerConfig--enable-xesam"><title>The <literal>&quot;enable-xesam&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--enable-xesam"><primary>TrackerConfig:enable-xesam</primary></indexterm><programlisting>  &quot;enable-xesam&quot;             <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
-<para>Xesam DBus service.</para><para>Default value: FALSE</para>
 </refsect2>
 <refsect2 id="TrackerConfig--fast-merges"><title>The <literal>&quot;fast-merges&quot;</literal> property</title>
 <indexterm zone="TrackerConfig--fast-merges"><primary>TrackerConfig:fast-merges</primary></indexterm><programlisting>  &quot;fast-merges&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>

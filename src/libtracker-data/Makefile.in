@@ -68,13 +68,13 @@ libtracker_data_la_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
-am_libtracker_data_la_OBJECTS = tracker-data-live-search.lo \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libtracker_data_la_OBJECTS = tracker-data-backup.lo \
 	tracker-data-manager.lo tracker-data-metadata.lo \
 	tracker-data-query.lo tracker-data-schema.lo \
 	tracker-data-search.lo tracker-data-update.lo \
 	tracker-field-data.lo tracker-query-tree.lo \
-	tracker-rdf-query.lo tracker-turtle.lo tracker-xesam-query.lo
+	tracker-rdf-query.lo tracker-turtle.lo
 libtracker_data_la_OBJECTS = $(am_libtracker_data_la_OBJECTS)
 libtracker_data_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -122,8 +122,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -139,6 +138,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -208,6 +209,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -280,8 +283,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -349,14 +350,15 @@ INCLUDES = \
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
 	$(WARN_CFLAGS)							\
+	$(GLIB2_CFLAGS)							\
 	$(DBUS_CFLAGS)							\
-	$(RAPTOR_CFLAGS)                                                \
-	$(GLIB2_CFLAGS)
+	$(RAPTOR_CFLAGS)						\
+	$(GCOV_CFLAGS)
 
 libtracker_datadir = $(libdir)/tracker
 libtracker_data_LTLIBRARIES = libtracker-data.la
 libtracker_data_la_SOURCES = \
-	tracker-data-live-search.c					\
+	tracker-data-backup.c						\
 	tracker-data-manager.c						\
 	tracker-data-metadata.c						\
 	tracker-data-query.c						\
@@ -366,11 +368,10 @@ libtracker_data_la_SOURCES = \
 	tracker-field-data.c						\
 	tracker-query-tree.c						\
 	tracker-rdf-query.c						\
-	tracker-turtle.c						\
-	tracker-xesam-query.c
+	tracker-turtle.c						
 
 noinst_HEADERS = \
-	tracker-data-live-search.h					\
+	tracker-data-backup.h						\
 	tracker-data-manager.h						\
 	tracker-data-metadata.h						\
 	tracker-data-query.h						\
@@ -380,8 +381,7 @@ noinst_HEADERS = \
 	tracker-field-data.h						\
 	tracker-query-tree.h						\
 	tracker-rdf-query.h						\
-	tracker-turtle.h						\
-	tracker-xesam-query.h
+	tracker-turtle.h						
 
 libtracker_data_la_LDFLAGS = -version-info 0:0:0
 libtracker_data_la_LIBADD = \
@@ -390,6 +390,7 @@ libtracker_data_la_LIBADD = \
 	$(DBUS_LIBS)							\
 	$(GLIB2_LIBS)							\
 	$(RAPTOR_LIBS)							\
+	$(GCOV_LIBS)							\
 	-lz
 
 all: all-am
@@ -461,7 +462,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-live-search.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-backup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-metadata.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-query.Plo@am__quote@
@@ -472,7 +473,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-query-tree.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-rdf-query.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-turtle.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-xesam-query.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

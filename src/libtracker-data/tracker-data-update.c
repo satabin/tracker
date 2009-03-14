@@ -89,71 +89,6 @@ tracker_data_update_get_new_service_id (TrackerDBInterface *iface)
 	return ++max;
 }
 
-void
-tracker_data_update_increment_stats (TrackerDBInterface *iface,
-				     TrackerService     *service)
-{
-	const gchar *service_type, *parent;
-
-	service_type = tracker_service_get_name (service);
-	parent = tracker_service_get_parent (service);
-
-	tracker_db_interface_execute_procedure (iface,
-						NULL,
-						"IncStat",
-						service_type,
-						NULL);
-
-	if (parent) {
-		tracker_db_interface_execute_procedure (iface,
-							NULL,
-							"IncStat",
-							parent,
-							NULL);
-	}
-}
-
-void
-tracker_data_update_decrement_stats (TrackerDBInterface *iface,
-				     TrackerService     *service)
-{
-	const gchar *service_type, *parent;
-
-	service_type = tracker_service_get_name (service);
-	parent = tracker_service_get_parent (service);
-
-	tracker_db_interface_execute_procedure (iface,
-						NULL,
-						"DecStat",
-						service_type,
-						NULL);
-
-	if (parent) {
-		tracker_db_interface_execute_procedure (iface,
-							NULL,
-							"DecStat",
-							parent,
-							NULL);
-	}
-}
-
-void
-tracker_data_update_create_event (TrackerDBInterface *iface,
-				  guint32 service_id,
-				  const gchar *type)
-{
-	gchar *service_id_str;
-
-	service_id_str = tracker_guint32_to_string (service_id);
-
-	tracker_db_interface_execute_procedure (iface, NULL, "CreateEvent",
-						service_id_str,
-						type,
-						NULL);
-
-	g_free (service_id_str);
-}
-
 gboolean
 tracker_data_update_create_service (TrackerService *service,
 				    guint32	    service_id,
@@ -163,7 +98,7 @@ tracker_data_update_create_service (TrackerService *service,
 {
 	TrackerDBInterface *iface;
 	TrackerDBResultSet *result_set;
-	guint32	volume_id = 0;
+	guint32	volume_id = 1;
 	gchar *id_str, *service_type_id_str, *path, *volume_id_str;
 	gboolean is_dir, is_symlink;
 
@@ -218,6 +153,34 @@ tracker_data_update_create_service (TrackerService *service,
 }
 
 void
+tracker_data_update_disable_service (TrackerService *service,
+				     guint32         service_id)
+{
+	TrackerDBInterface *iface;
+	gchar *service_id_str;
+
+	g_return_if_fail (TRACKER_IS_SERVICE (service));
+	g_return_if_fail (service_id >= 1);
+
+	iface = tracker_db_manager_get_db_interface_by_type (tracker_service_get_name (service),
+							     TRACKER_DB_CONTENT_TYPE_METADATA);
+
+	service_id_str = tracker_guint32_to_string (service_id);
+
+	tracker_db_interface_execute_procedure (iface,
+						NULL,
+						"DisableService",
+						service_id_str,
+						NULL);
+	tracker_db_interface_execute_procedure (iface,
+						NULL,
+						"MarkServiceForRemoval",
+						service_id_str,
+						NULL);
+	g_free (service_id_str);
+}
+
+void
 tracker_data_update_delete_service (TrackerService *service,
 				    guint32	    service_id)
 {
@@ -240,6 +203,12 @@ tracker_data_update_delete_service (TrackerService *service,
 						service_id_str,
 						NULL);
 
+	/* Delete from cleanup maintenance table */
+	tracker_db_interface_execute_procedure (iface,
+						NULL,
+						"UnmarkServiceForRemoval",
+						service_id_str,
+						NULL);
 	g_free (service_id_str);
 }
 
@@ -361,6 +330,7 @@ tracker_data_update_set_metadata (TrackerService *service,
 	gchar *id_str;
 
 	id_str = tracker_guint32_to_string (service_id);
+
 	iface = tracker_db_manager_get_db_interface_by_type (tracker_service_get_name (service),
 							     TRACKER_DB_CONTENT_TYPE_METADATA);
 
@@ -382,6 +352,7 @@ tracker_data_update_set_metadata (TrackerService *service,
 							id_str,
 							tracker_field_get_id (field),
 							parsed_value,
+							value,
 							value,
 							NULL);
 		break;
@@ -555,14 +526,6 @@ tracker_data_update_delete_content (TrackerService *service,
 }
 
 void
-tracker_data_update_delete_handled_events (TrackerDBInterface *iface)
-{
-	g_return_if_fail (TRACKER_IS_DB_INTERFACE (iface));
-
-	tracker_data_manager_exec (iface, "DELETE FROM Events WHERE BeingHandled = 1");
-}
-
-void
 tracker_data_update_delete_service_by_path (const gchar *path,
 					    const gchar *rdf_type)
 {
@@ -727,7 +690,11 @@ tracker_data_update_replace_service (const gchar *path,
 	if (!rdf_type)
 		return;
 
-	service = tracker_ontology_get_service_by_name (rdf_type);
+	/*
+	service = tracker_ontology_get_service_by_name (rdf_type); */
+
+	/* The current ontology doesn't allow sanity like what above would be */
+	service = tracker_ontology_get_service_by_name ("Files");
 
 	iface = tracker_db_manager_get_db_interface_by_type (tracker_service_get_name (service),
 							     TRACKER_DB_CONTENT_TYPE_METADATA);
@@ -769,7 +736,9 @@ tracker_data_update_replace_service (const gchar *path,
 		iis_value = g_value_get_int (&is_value);
 
 		if (iis_value) {
-			ForeachInMetadataInfo *info = g_slice_new (ForeachInMetadataInfo);
+			ForeachInMetadataInfo *info;
+
+			info = g_slice_new (ForeachInMetadataInfo);
 			info->service = service;
 			info->iid_value = iid_value;
 
@@ -788,7 +757,7 @@ tracker_data_update_replace_service (const gchar *path,
 
 		g_object_unref (result_set);
 	} else {
-		guint32     id;
+		guint32 id;
 
 		id = tracker_data_update_get_new_service_id (iface);
 
@@ -855,6 +824,25 @@ tracker_data_update_enable_volume (const gchar *udi,
 							udi,
 							NULL);
 	}
+}
+
+void
+tracker_data_update_reset_volume (guint32 volume_id)
+{
+	TrackerDBInterface *iface;
+	gchar *volume_id_str;
+
+	/* NOTE: The default volume id 1 is not to be changed */
+	g_return_if_fail (volume_id > 1);
+
+	iface = tracker_db_manager_get_db_interface (TRACKER_DB_COMMON);
+
+	volume_id_str = tracker_guint32_to_string (volume_id);
+	tracker_db_interface_execute_procedure (iface, NULL,
+						"UpdateVolumeDisabledDate",
+						volume_id_str,
+						NULL);
+	g_free (volume_id_str);
 }
 
 void

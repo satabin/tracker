@@ -31,14 +31,10 @@
   </chapters>
   <functions>
     <keyword type="function" name="tracker_env_check_xdg_dirs ()" link="libtracker-common-File-Operations.html#tracker-env-check-xdg-dirs"/>
-    <keyword type="function" name="tracker_file_close ()" link="libtracker-common-File-Operations.html#tracker-file-close"/>
     <keyword type="function" name="tracker_file_get_mime_type ()" link="libtracker-common-File-Operations.html#tracker-file-get-mime-type"/>
     <keyword type="function" name="tracker_file_get_mtime ()" link="libtracker-common-File-Operations.html#tracker-file-get-mtime"/>
     <keyword type="function" name="tracker_file_get_path_and_name ()" link="libtracker-common-File-Operations.html#tracker-file-get-path-and-name"/>
     <keyword type="function" name="tracker_file_get_size ()" link="libtracker-common-File-Operations.html#tracker-file-get-size"/>
-    <keyword type="function" name="tracker_file_is_directory ()" link="libtracker-common-File-Operations.html#tracker-file-is-directory"/>
-    <keyword type="function" name="tracker_file_is_indexable ()" link="libtracker-common-File-Operations.html#tracker-file-is-indexable"/>
-    <keyword type="function" name="tracker_file_is_valid ()" link="libtracker-common-File-Operations.html#tracker-file-is-valid"/>
     <keyword type="function" name="tracker_file_open ()" link="libtracker-common-File-Operations.html#tracker-file-open"/>
     <keyword type="function" name="tracker_file_unlink ()" link="libtracker-common-File-Operations.html#tracker-file-unlink"/>
     <keyword type="function" name="tracker_path_evaluate_name ()" link="libtracker-common-File-Operations.html#tracker-path-evaluate-name"/>
@@ -198,7 +194,6 @@
     <keyword type="function" name="tracker_config_get_enable_stemmer ()" link="libtracker-common-Config.html#tracker-config-get-enable-stemmer"/>
     <keyword type="function" name="tracker_config_get_enable_thumbnails ()" link="libtracker-common-Config.html#tracker-config-get-enable-thumbnails"/>
     <keyword type="function" name="tracker_config_get_enable_watches ()" link="libtracker-common-Config.html#tracker-config-get-enable-watches"/>
-    <keyword type="function" name="tracker_config_get_enable_xesam ()" link="libtracker-common-Config.html#tracker-config-get-enable-xesam"/>
     <keyword type="function" name="tracker_config_get_fast_merges ()" link="libtracker-common-Config.html#tracker-config-get-fast-merges"/>
     <keyword type="function" name="tracker_config_get_index_mounted_directories ()" link="libtracker-common-Config.html#tracker-config-get-index-mounted-directories"/>
     <keyword type="function" name="tracker_config_get_index_removable_devices ()" link="libtracker-common-Config.html#tracker-config-get-index-removable-devices"/>
@@ -226,7 +221,6 @@
     <keyword type="function" name="tracker_config_set_enable_stemmer ()" link="libtracker-common-Config.html#tracker-config-set-enable-stemmer"/>
     <keyword type="function" name="tracker_config_set_enable_thumbnails ()" link="libtracker-common-Config.html#tracker-config-set-enable-thumbnails"/>
     <keyword type="function" name="tracker_config_set_enable_watches ()" link="libtracker-common-Config.html#tracker-config-set-enable-watches"/>
-    <keyword type="function" name="tracker_config_set_enable_xesam ()" link="libtracker-common-Config.html#tracker-config-set-enable-xesam"/>
     <keyword type="function" name="tracker_config_set_fast_merges ()" link="libtracker-common-Config.html#tracker-config-set-fast-merges"/>
     <keyword type="function" name="tracker_config_set_index_mounted_directories ()" link="libtracker-common-Config.html#tracker-config-set-index-mounted-directories"/>
     <keyword type="function" name="tracker_config_set_index_removable_devices ()" link="libtracker-common-Config.html#tracker-config-set-index-removable-devices"/>
@@ -252,7 +246,6 @@
     <keyword type="" name="The &quot;enable-stemmer&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-stemmer"/>
     <keyword type="" name="The &quot;enable-thumbnails&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-thumbnails"/>
     <keyword type="" name="The &quot;enable-watches&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-watches"/>
-    <keyword type="" name="The &quot;enable-xesam&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-xesam"/>
     <keyword type="" name="The &quot;fast-merges&quot; property" link="libtracker-common-Config.html#TrackerConfig--fast-merges"/>
     <keyword type="" name="The &quot;index-mounted-directories&quot; property" link="libtracker-common-Config.html#TrackerConfig--index-mounted-directories"/>
     <keyword type="" name="The &quot;index-removable-devices&quot; property" link="libtracker-common-Config.html#TrackerConfig--index-removable-devices"/>

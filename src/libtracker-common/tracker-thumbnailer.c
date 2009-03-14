@@ -140,37 +140,9 @@ thumbnailer_enabled_cb (GObject    *pspec,
 	private->service_is_enabled = tracker_config_get_enable_thumbnails (private->config);
 
 	g_debug ("Thumbnailer service %s", 
-		   private->service_is_enabled ? "enabled" : "disabled");
+		 private->service_is_enabled ? "enabled" : "disabled");
 }
 
-static void
-thumbnailer_reply_cb (DBusGProxy     *proxy,
-		      DBusGProxyCall *call,
-		      gpointer	      user_data)
-{
-	GError *error = NULL;
-	guint	handle;
-
-	/* The point of this is dbus-glib correctness. Answering this
-	 * because this comment used to be the question: what is the
-	 * point of this. It's correct this way because we do
-	 * asynchronous DBus calls using glib-dbus. For asynchronous
-	 * DBus calls it's recommended (if not required for cleaning
-	 * up) to call dbus_g_proxy_end_call.
-	 */
-	dbus_g_proxy_end_call (proxy, call, &error,
-			       G_TYPE_UINT, &handle,
-			       G_TYPE_INVALID);
-
-	if (error) {
-		g_warning ("%s", error->message);
-		g_error_free (error);
-		return;
-	}
-
-	g_debug ("Received response from thumbnailer, request ID:%d",
-	       GPOINTER_TO_UINT (user_data));
-}
 
 static gboolean
 thumbnailer_request_timeout_cb (gpointer data)
@@ -187,18 +159,16 @@ thumbnailer_request_timeout_cb (gpointer data)
 	private->mime_types[private->count] = NULL;
 	
 	g_debug ("Sending request to thumbnailer to queue %d files, request ID:%d...", 
-		   private->count,
-		   private->request_id);
+		 private->count,
+		 private->request_id);
 	
-	dbus_g_proxy_begin_call (private->requester_proxy,
-				 "Queue",
-				 thumbnailer_reply_cb,
-				 GUINT_TO_POINTER (private->request_id), 
-				 NULL,
-				 G_TYPE_STRV, private->uris,
-				 G_TYPE_STRV, private->mime_types,
-				 G_TYPE_UINT, 0,
-				 G_TYPE_INVALID);
+	dbus_g_proxy_call_no_reply (private->requester_proxy,
+				    "Queue",
+				    G_TYPE_STRV, private->uris,
+				    G_TYPE_STRV, private->mime_types,
+				    G_TYPE_UINT, 0,
+				    G_TYPE_INVALID,
+				    G_TYPE_INVALID);
 	
 	for (i = 0; i <= private->count; i++) {
 		g_free (private->uris[i]);
@@ -289,12 +259,12 @@ tracker_thumbnailer_init (TrackerConfig *config, guint timeout_seconds)
 	
 	if (error) {
 		g_debug ("Thumbnailer service did not return supported mime types, %s",
-			   error->message);
+			 error->message);
 
 		g_error_free (error);
 	} else if (mime_types) {
 		g_debug ("Thumbnailer supports %d mime types", 
-			   g_strv_length (mime_types));
+			 g_strv_length (mime_types));
 
 		private->supported_mime_types = mime_types;
 		private->service_is_available = TRUE;
@@ -340,33 +310,31 @@ tracker_thumbnailer_move (const gchar *from_uri,
 	private->request_id++;
 
 	g_debug ("Requesting thumbnailer moves URI from:'%s' to:'%s', request_id:%d...",
-		   from_uri,
-		   to_uri,
-		   private->request_id); 
+		 from_uri,
+		 to_uri,
+		 private->request_id); 
 
-	if (!strstr (to_uri, ":/"))
+	if (!strstr (to_uri, ":/")) {
 		to[0] = g_filename_to_uri (to_uri, NULL, NULL);
-	else
+	} else {
 		to[0] = g_strdup (to_uri);
+	}
 
-	if (!strstr (from_uri, ":/"))
+	if (!strstr (from_uri, ":/")) {
 		from[0] = g_filename_to_uri (from_uri, NULL, NULL);
-	else
+	} else {
 		from[0] = g_strdup (from_uri);
+	}
 
-	
-	dbus_g_proxy_begin_call (private->requester_proxy,
-				 "Move",
-				 thumbnailer_reply_cb,
-				 GUINT_TO_POINTER (private->request_id), 
-				 NULL,
-				 G_TYPE_STRV, from,
-				 G_TYPE_STRV, to,
-				 G_TYPE_INVALID);
+	dbus_g_proxy_call_no_reply (private->requester_proxy,
+				    "Move",
+				    G_TYPE_STRV, from,
+				    G_TYPE_STRV, to,
+				    G_TYPE_INVALID,
+				    G_TYPE_INVALID);
 
 	g_free (from[0]);
 	g_free (to[0]);
-
 }
 
 void
@@ -400,22 +368,21 @@ tracker_thumbnailer_remove (const gchar *uri,
 
 	private->request_id++;
 
-	if (!strstr (uri, ":/"))
+	if (!strstr (uri, ":/")) {
 		uris[0] = g_filename_to_uri (uri, NULL, NULL);
-	else
+	} else {
 		uris[0] = g_strdup (uri);
+	}
 
 	g_debug ("Requesting thumbnailer removes URI:'%s', request_id:%d...",
-		   uri,
-		   private->request_id); 
+		 uri,
+		 private->request_id); 
 	
-	dbus_g_proxy_begin_call (private->requester_proxy,
-				 "Delete",
-				 thumbnailer_reply_cb,
-				 GUINT_TO_POINTER (private->request_id),
-				 NULL,
-				 G_TYPE_STRV, uris,
-				 G_TYPE_INVALID);
+	dbus_g_proxy_call_no_reply (private->requester_proxy,
+				    "Delete",
+				    G_TYPE_STRV, uris,
+				    G_TYPE_INVALID,
+				    G_TYPE_INVALID);
 
 	g_free (uris[0]);
 }
@@ -439,17 +406,15 @@ tracker_thumbnailer_cleanup (const gchar *uri_prefix)
 	private->request_id++;
 
 	g_debug ("Requesting thumbnailer cleanup URI:'%s', request_id:%d...",
-		   uri_prefix,
-		   private->request_id); 
+		 uri_prefix,
+		 private->request_id); 
 
-	dbus_g_proxy_begin_call (private->requester_proxy,
-				 "Cleanup",
-				 thumbnailer_reply_cb,
-				 GUINT_TO_POINTER (private->request_id),
-				 NULL,
-				 G_TYPE_STRING, uri_prefix,
-				 G_TYPE_INT64, 0,
-				 G_TYPE_INVALID);
+	dbus_g_proxy_call_no_reply (private->requester_proxy,
+				    "Cleanup",
+				    G_TYPE_STRING, uri_prefix,
+				    G_TYPE_INT64, 0,
+				    G_TYPE_INVALID,
+				    G_TYPE_INVALID);
 }
 
 void
@@ -479,8 +444,8 @@ tracker_thumbnailer_get_file_thumbnail (const gchar *uri,
 	private->request_id++;
 
 	g_debug ("Requesting thumbnailer to get thumbnail for URI:'%s', request_id:%d...",
-		   uri,
-		   private->request_id); 
+		 uri,
+		 private->request_id); 
 
 	/* We want to deal with the current list first if it is
 	 * already at the limit.
@@ -496,10 +461,11 @@ tracker_thumbnailer_get_file_thumbnail (const gchar *uri,
 	}
 
 	/* Add new URI (detect if we got passed a path) */
-	if (!strstr (uri, ":/"))
+	if (!strstr (uri, ":/")) {
 		private->uris[private->count] = g_filename_to_uri (uri, NULL, NULL);
-	else
+	} else {
 		private->uris[private->count] = g_strdup (uri);
+	}
 
 	if (mime_type) {
 		private->mime_types[private->count] = g_strdup (mime_type);

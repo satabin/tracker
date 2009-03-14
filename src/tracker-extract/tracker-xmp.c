@@ -108,17 +108,32 @@ tracker_append_string_to_hash_table (GHashTable  *metadata,
 		gchar *orig;
 
 		if (g_hash_table_lookup_extended (metadata, key, NULL, (gpointer) &orig)) {
-			gchar *escaped;
+			gchar   *escaped;
+			gchar  **list;
+			gboolean found = FALSE;
+			guint    i;
 
-			escaped = tracker_escape_metadata (value);
-			new_value = g_strconcat (orig, "|", escaped, NULL);
+			escaped = tracker_escape_metadata (value);			
+			/* Don't add duplicates. FIXME This is inefficient */
+			list = g_strsplit (orig, "|", -1);			
+			for (i=0; list[i]; i++) {
+				if (strcmp (list[i], escaped) == 0) {
+					found = TRUE;
+					break;
+				}
+			}			
+			g_strfreev(list);
+			
+			if(!found) {
+				new_value = g_strconcat (orig, "|", escaped, NULL);
+				g_hash_table_insert (metadata, g_strdup (key), new_value);						
+			}
 
 			g_free (escaped);
 		} else {
 			new_value = tracker_escape_metadata (value);
+			g_hash_table_insert (metadata, g_strdup (key), new_value);
 		}
-		g_hash_table_insert (metadata, g_strdup (key), new_value);
-
 	} else {
 		if (!(g_hash_table_lookup(metadata, key) && !prio)) {
 			new_value = tracker_escape_metadata (value);
@@ -258,12 +273,14 @@ tracker_xmp_iter_simple (GHashTable  *metadata,
 		}
 		else if (strcmp (name, "keywords") == 0) {
 			tracker_append_string_to_hash_table (metadata, "Image:Keywords", value, append, FALSE);
+			tracker_append_string_to_hash_table (metadata, "Image:HasKeywords", "1", FALSE, FALSE);
 		}
 		else if (strcmp (name, "subject") == 0) {
 			tracker_append_string_to_hash_table (metadata, "DC:Subject", value, append, FALSE);
 
 			/* The subject field may contain keywords as well */
 			tracker_append_string_to_hash_table (metadata, "Image:Keywords", value, TRUE, FALSE);
+			tracker_append_string_to_hash_table (metadata, "Image:HasKeywords", "1", FALSE, FALSE);
 		}
 		else if (strcmp (name, "publisher") == 0) {
 			tracker_append_string_to_hash_table (metadata, "DC:Publisher", value, append, FALSE);
@@ -377,6 +394,7 @@ tracker_xmp_iter_simple (GHashTable  *metadata,
 
 			/* Added to the valid keywords */
 		        tracker_append_string_to_hash_table (metadata, "Image:Keywords", value, TRUE, FALSE);
+			tracker_append_string_to_hash_table (metadata, "Image:HasKeywords", "1", FALSE, FALSE);
 		}
 	}
 	/* Photoshop scheme */
@@ -386,12 +404,14 @@ tracker_xmp_iter_simple (GHashTable  *metadata,
 
 			/* Added to the valid keywords */
 		        tracker_append_string_to_hash_table (metadata, "Image:Keywords", value, TRUE, FALSE);
+			tracker_append_string_to_hash_table (metadata, "Image:HasKeywords", "1", FALSE, FALSE);
 		}
 		else if (strcmp (name, "Country") == 0) {
 			tracker_append_string_to_hash_table (metadata, "Image:Country", value, append, FALSE);
 
 			/* Added to the valid keywords */
 		        tracker_append_string_to_hash_table (metadata, "Image:Keywords", value, TRUE, FALSE);
+			tracker_append_string_to_hash_table (metadata, "Image:HasKeywords", "1", FALSE, FALSE);			
 		}
 	}
 

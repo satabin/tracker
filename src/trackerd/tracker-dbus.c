@@ -41,21 +41,26 @@
 #include "tracker-metadata-glue.h"
 #include "tracker-search.h"
 #include "tracker-search-glue.h"
-#include "tracker-xesam.h"
-#include "tracker-xesam-glue.h"
+#include "tracker-backup.h"
+#include "tracker-backup-glue.h"
 #include "tracker-indexer-client.h"
 #include "tracker-utils.h"
 #include "tracker-marshal.h"
 #include "tracker-status.h"
 #include "tracker-main.h"
 
-#define INDEXER_PAUSE_TIME_FOR_REQUESTS 10 /* seconds */
+#define INDEXER_PAUSE_TIME_FOR_REQUESTS 5 /* seconds */
+
+#define TRACKER_INDEXER_SERVICE   "org.freedesktop.Tracker.Indexer"
+#define TRACKER_INDEXER_PATH      "/org/freedesktop/Tracker/Indexer"
+#define TRACKER_INDEXER_INTERFACE "org.freedesktop.Tracker.Indexer"
 
 static DBusGConnection *connection;
 static DBusGProxy      *gproxy;
 static DBusGProxy      *proxy_for_indexer;
 static GSList	       *objects;
 static guint		indexer_resume_timeout_id;
+static gboolean         indexer_available;
 
 static gboolean
 dbus_register_service (DBusGProxy  *proxy,
@@ -106,10 +111,34 @@ dbus_register_object (DBusGConnection	    *lconnection,
 }
 
 static void
-dbus_name_owner_changed (gpointer  data,
-			 GClosure *closure)
+indexer_name_owner_changed (DBusGProxy   *proxy,
+			    const char   *name,
+			    const char   *prev_owner,
+			    const char   *new_owner,
+			    gpointer     *user_data)
 {
-	g_object_unref (data);
+	if (strcmp (name, TRACKER_INDEXER_SERVICE) == 0) {
+		if (!new_owner || !*new_owner) {
+			g_debug ("Indexer no longer present");
+			indexer_available = FALSE;
+		} else {
+			g_debug ("Indexer has become present");
+			indexer_available = TRUE;
+		}
+	}
+}
+
+static void
+initialize_indexer_presence (DBusGProxy *proxy)
+{
+	gchar *owner;
+
+	if (org_freedesktop_DBus_get_name_owner (gproxy, TRACKER_INDEXER_SERVICE, &owner, NULL)) {
+		indexer_available = (owner != NULL);
+		g_free (owner);
+	} else {
+		indexer_available = FALSE;
+	}
 }
 
 static gboolean
@@ -144,49 +173,29 @@ dbus_register_names (TrackerConfig *config)
 					    DBUS_PATH_DBUS,
 					    DBUS_INTERFACE_DBUS);
 
+	/* Register signals to know about tracker-indexer presence */
+	dbus_g_proxy_add_signal (gproxy, "NameOwnerChanged",
+				 G_TYPE_STRING, G_TYPE_STRING,
+				 G_TYPE_STRING, G_TYPE_INVALID);
+
+	dbus_g_proxy_connect_signal (gproxy, "NameOwnerChanged",
+				     G_CALLBACK (indexer_name_owner_changed),
+				     NULL, NULL);
+
+	initialize_indexer_presence (gproxy);
+
 	/* Register the service name for org.freedesktop.Tracker */
 	if (!dbus_register_service (gproxy, TRACKER_DAEMON_SERVICE)) {
 		return FALSE;
 	}
 
-	/* Register the service name for org.freedesktop.xesam if XESAM is enabled */
-	if (tracker_config_get_enable_xesam (config)) {
-		if (!dbus_register_service (gproxy, TRACKER_XESAM_SERVICE)) {
-			return FALSE;
-		}
-	}
-
 	return TRUE;
-}
-
-static void
-indexer_continue_async_cb (DBusGProxy *proxy,
-			   GError     *error,
-			   gpointer    user_data)
-{
-	if (error) {
-		g_message ("Couldn't resume the indexer: %s", error->message);
-		g_error_free (error);
-	}
-
-	g_object_unref (proxy);
 }
 
 static gboolean
 indexer_resume_cb (gpointer user_data)
 {
-	DBusGProxy *proxy;
-
-	proxy = user_data;
-
-	if (!tracker_status_get_is_paused_manually () &&
-	    !tracker_status_get_is_paused_for_batt () && 
-	    !tracker_status_get_is_paused_for_io () && 
-	    !tracker_status_get_is_paused_for_space ()) {
-		org_freedesktop_Tracker_Indexer_continue_async (g_object_ref (proxy),
-								indexer_continue_async_cb,
-								NULL);
-	}
+	tracker_status_set_is_paused_for_dbus (FALSE);
 
 	return FALSE;
 }
@@ -203,36 +212,45 @@ dbus_request_new_cb (guint    request_id,
 		     gpointer user_data)
 {
 	DBusGProxy    *proxy;
-	GError	      *error = NULL;
 	gboolean       set_paused = TRUE;
 	TrackerStatus  status;
 
 	status = tracker_status_get ();
+	proxy = tracker_dbus_indexer_get_proxy ();
 
 	/* Don't pause if already paused */
 	if (status == TRACKER_STATUS_PAUSED) {
+		g_message ("New DBus request, not pausing indexer, already in paused state");
+
+		/* Just check if we already have a timeout, to reset it */
+		if (indexer_resume_timeout_id != 0) {
+			g_source_remove (indexer_resume_timeout_id);
+			indexer_resume_timeout_id =
+				g_timeout_add_seconds_full (G_PRIORITY_DEFAULT,
+							    INDEXER_PAUSE_TIME_FOR_REQUESTS,
+							    indexer_resume_cb,
+							    g_object_ref (proxy),
+							    indexer_resume_destroy_notify_cb);
+		}
+
 		return;
 	}
 
-	/* Don't try to pause unless we are in particular states */
-	if (status != TRACKER_STATUS_INDEXING) {
+	if (!indexer_available) {
+		g_message ("New DBus request, not pausing indexer, since it's not there");
 		return;
 	}
-
-	g_message ("New DBus request, checking indexer is paused...");
 
 	/* First remove the timeout */
 	if (indexer_resume_timeout_id != 0) {
 		set_paused = FALSE;
 
 		g_source_remove (indexer_resume_timeout_id);
-		indexer_resume_timeout_id = 0;
 	}
 
 	/* Second reset it so we have another 10 seconds before
 	 * continuing.
 	 */
-	proxy = tracker_dbus_indexer_get_proxy ();
 	indexer_resume_timeout_id =
 		g_timeout_add_seconds_full (G_PRIORITY_DEFAULT,
 					    INDEXER_PAUSE_TIME_FOR_REQUESTS,
@@ -246,21 +264,12 @@ dbus_request_new_cb (guint    request_id,
 	 * tracker_get_is_paused_manually() returns TRUE.
 	 */
 	if (!set_paused) {
+		g_message ("New DBus request, not pausing indexer, already requested a pause");
 		return;
 	}
 
-	/* We use the blocking call here because this function
-	 * proceeds a call which needs the database to be available.
-	 * Therefore the indexer must reply to tell us it has paused
-	 * so we can actually use the database.
-	 */
-	org_freedesktop_Tracker_Indexer_pause (proxy, &error);
-
-	if (error) {
-		g_message ("Couldn't pause the indexer, "
-			   "we may have to wait for it to finish");
-		g_error_free (error);
-	}
+	g_message ("New DBus request, pausing indexer");
+	tracker_status_set_is_paused_for_dbus (TRUE);
 }
 
 gboolean
@@ -397,30 +406,20 @@ tracker_dbus_register_objects (TrackerConfig	*config,
 			      TRACKER_SEARCH_PATH);
 	objects = g_slist_prepend (objects, object);
 
-	/* Register the XESAM object if enabled */
-	if (tracker_config_get_enable_xesam (config)) {
-		object = tracker_xesam_new ();
-		if (!object) {
-			g_critical ("Could not create TrackerXesam object to register");
-			return FALSE;
-		}
-
-		dbus_register_object (connection,
-				      gproxy,
-				      G_OBJECT (object),
-				      &dbus_glib_tracker_xesam_object_info,
-				      TRACKER_XESAM_PATH);
-		objects = g_slist_prepend (objects, object);
-
-		dbus_g_proxy_add_signal (gproxy, "NameOwnerChanged",
-					 G_TYPE_STRING, G_TYPE_STRING,
-					 G_TYPE_STRING, G_TYPE_INVALID);
-
-		dbus_g_proxy_connect_signal (gproxy, "NameOwnerChanged",
-					     G_CALLBACK (tracker_xesam_name_owner_changed),
-					     g_object_ref (G_OBJECT (object)),
-					     dbus_name_owner_changed);
+	/* Add org.freedesktop.Tracker.Backup */
+	object = tracker_backup_new ();
+	if (!object) {
+		g_critical ("Could not create TrackerBackup object to register");
+		return FALSE;
 	}
+
+	dbus_register_object (connection,
+			      gproxy,
+			      G_OBJECT (object),
+			      &dbus_glib_tracker_backup_object_info,
+			      TRACKER_BACKUP_PATH);
+	objects = g_slist_prepend (objects, object);
+
 
 	/* Reverse list since we added objects at the top each time */
 	objects = g_slist_reverse (objects);
@@ -453,9 +452,9 @@ tracker_dbus_indexer_get_proxy (void)
 	if (!proxy_for_indexer) {
 		/* Get proxy for Service / Path / Interface of the indexer */
 		proxy_for_indexer = dbus_g_proxy_new_for_name (connection,
-							       "org.freedesktop.Tracker.Indexer",
-							       "/org/freedesktop/Tracker/Indexer",
-							       "org.freedesktop.Tracker.Indexer");
+							       TRACKER_INDEXER_SERVICE,
+							       TRACKER_INDEXER_PATH,
+							       TRACKER_INDEXER_INTERFACE);
 
 		if (!proxy_for_indexer) {
 			g_critical ("Couldn't create a DBusGProxy to the indexer service");

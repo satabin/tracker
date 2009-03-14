@@ -54,13 +54,18 @@
 
 #endif /* HAVE_GETLINE */
 
+#ifdef USING_UNZIPPSFILES
 static void extract_ps_gz (const gchar *filename,
 			   GHashTable  *metadata);
+#endif
+
 static void extract_ps	  (const gchar *filename,
 			   GHashTable  *metadata);
 
 static TrackerExtractData data[] = {
+#ifdef USING_UNZIPPSFILES
 	{ "application/x-gzpostscript",	extract_ps_gz },
+#endif
 	{ "application/postscript",	extract_ps    },
 	{ NULL, NULL }
 };
@@ -283,11 +288,12 @@ extract_ps (const gchar *filename,
 	}
 }
 
+#ifdef USING_UNZIPPSFILES
 static void
 extract_ps_gz (const gchar *filename,
 	       GHashTable  *metadata)
 {
-	FILE	    *fz;
+	FILE	    *fz, *f;
 	GError	    *error = NULL;
 	gchar	    *gunzipped;
 	gint	     fdz;
@@ -324,35 +330,54 @@ extract_ps_gz (const gchar *filename,
 	if (!ptat) {
 		g_unlink (gunzipped);
 		g_clear_error (&error);
+		close (fd);
 		return;
 	}
 
-	if ((fz = fdopen (fdz, "r"))) {
-		FILE *f;
+	fz = fdopen (fdz, "r");
 
-		if ((f = fdopen (fd, "w"))) {
-			unsigned char buf[8192];
-			size_t b, accum;
-			size_t max;
+	if (!fz) {
+		g_unlink (gunzipped);
+		close (fdz);
+		close (fd);
+		return;
+	}
 
-			/* 20 MiB should be enough! */
-			accum = 0;
-			max = 20u << 20;
+	f = fdopen (fd, "w");
 
-			while ((b = fread (buf, 1, 8192, fz)) && accum <= max) {
-				accum += b;
-				fwrite (buf, 1, b, f);
+	if (!f) {
+		g_unlink (gunzipped);
+		fclose (fz);
+		close (fd);
+		return;
+	}
+
+	if (f && fz) {
+		unsigned char buf[8192];
+		size_t w, b, accum;
+		size_t max;
+
+		/* 20 MiB should be enough! */
+		accum = 0;
+		max = 20u << 20;
+
+		while ((b = fread (buf, 1, 8192, fz)) && accum <= max) {
+			accum += b;
+			w = 0;
+
+			while (w < b) {
+				w += fwrite (buf, 1, b, f);
 			}
-
-			fclose (f);
 		}
 
 		fclose (fz);
+		fclose (f);
 	}
 
 	extract_ps (gunzipped, metadata);
 	g_unlink (gunzipped);
 }
+#endif
 
 TrackerExtractData *
 tracker_get_extract_data (void)

@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Metadata Convenience Fallback Functions</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Tracker Indexer Reference Manual">
+<link rel="up" href="ch02.html" title="Metadata">
+<link rel="prev" href="libtracker-module-Metadata-Object.html" title="Metadata Object">
+<link rel="next" href="integrating-applications.html" title="Part II. Integrating Applications">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="tracker-indexer.html" title="Part I. Overview">
+<link rel="chapter" href="ch01.html" title="Modules">
+<link rel="chapter" href="ch02.html" title="Metadata">
+<link rel="part" href="integrating-applications.html" title="Part II. Integrating Applications">
+<link rel="chapter" href="adding-categories.html" title="Adding Categories &amp; Properties">
+<link rel="chapter" href="writing-an-extractor.html" title="Writing An Extractor">
+<link rel="chapter" href="writing-an-indexer-module.html" title="Writing An Indexer Module">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libtracker-module-Metadata-Object.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Indexer Reference Manual</th>
+<td><a accesskey="n" href="integrating-applications.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libtracker-module-Metadata-Convenience-Fallback-Functions.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libtracker-module-Metadata-Convenience-Fallback-Functions.description" class="shortcut">Description</a></nobr></td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="libtracker-module-Metadata-Convenience-Fallback-Functions"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libtracker-module-Metadata-Convenience-Fallback-Functions.top_of_page"></a>Metadata Convenience Fallback Functions</span></h2>
+<p>Metadata Convenience Fallback Functions — Helper functions to retrieve metadata or text for common files</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="libtracker-module-Metadata-Convenience-Fallback-Functions.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;libtracker-module/tracker-module-metadata-utils.h&gt;
+
+<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a>* <a class="link" href="libtracker-module-Metadata-Convenience-Fallback-Functions.html#tracker-module-metadata-utils-get-data" title="tracker_module_metadata_utils_get_data ()">tracker_module_metadata_utils_get_data</a>
+                                                        (<a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+>GFile</a> *file);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libtracker-module-Metadata-Convenience-Fallback-Functions.html#tracker-module-metadata-utils-get-text" title="tracker_module_metadata_utils_get_text ()">tracker_module_metadata_utils_get_text</a>
+                                                        (<a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+>GFile</a> *file);
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="libtracker-module-Metadata-Convenience-Fallback-Functions.description"></a><h2>Description</h2>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="libtracker-module-Metadata-Convenience-Fallback-Functions.details"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="tracker-module-metadata-utils-get-data"></a><h3>tracker_module_metadata_utils_get_data ()</h3>
+<pre class="programlisting"><a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a>* tracker_module_metadata_utils_get_data
+                                                        (<a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+>GFile</a> *file);</pre>
+<p>
+Returns a <a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata"><span class="type">TrackerModuleMetadata</span></a> filled in with all the
+metadata that could be extracted for the given file.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> A <a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+><span class="type">GFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> A newly created <a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata"><span class="type">TrackerModuleMetadata</span></a>, or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> if the file is not found.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="tracker-module-metadata-utils-get-text"></a><h3>tracker_module_metadata_utils_get_text ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              tracker_module_metadata_utils_get_text
+                                                        (<a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+>GFile</a> *file);</pre>
+<p>
+Gets the text from <em class="parameter"><code>file</code></em>, if the file is considered as
+containing plain text, it will be extracted, else this function
+will resort to the installed text filters for the file MIME type.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> A <a
+href="/usr/share/gtk-doc/html/gio/GFile.html"
+><span class="type">GFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> A newly allocated string containing the file text, or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="libtracker-module-Metadata-Convenience-Fallback-Functions.see-also"></a><h2>See Also</h2>
+<p>
+<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata"><span class="type">TrackerModuleMetadata</span></a>, <a class="link" href="libtracker-module-Module-files.html#tracker-module-file-get-metadata" title="tracker_module_file_get_metadata ()"><code class="function">tracker_module_file_get_metadata()</code></a> and <a class="link" href="libtracker-module-Module-files.html#tracker-module-file-get-text" title="tracker_module_file_get_text ()"><code class="function">tracker_module_file_get_text()</code></a>
+</p>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.10</div>
+</body>
+</html>

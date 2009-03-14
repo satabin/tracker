@@ -18,177 +18,14 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#include <unistd.h>
+
+#include <glib/gstdio.h>
+
 #include "tracker-extract-test-utils.h"
 
-TrackerExtractData *
-tracker_test_extract_get_extract (const gchar *mime)
-{
-	TrackerExtractData *data;
-	
-	/* Search for exact match first */
-	data = tracker_get_extract_data ();	
-	while (data->mime) {
-		if (strcmp (data->mime, mime) == 0) {
-			return data;
-		}
-		data++;
-	}
-
-	/* Search for generic */
-	data = tracker_get_extract_data ();
-	while (data->mime) {
-		if (g_pattern_match_simple (data->mime, mime)) {
-			return data;
-		}
-		data++;
-	}
-	return NULL;
-}
-
-void
-extract_file (const TrackerExtractData *data, const gchar *file, const gchar *testdatafile)
-{
-	GHashTable *metadata;
-	GHashTable *testdata;
-
-	gchar      *filename;	
-	gchar      *testdata_filename;
-
-	GHashTableIter iter;
-	gpointer key, value;
-
-	g_assert (data != NULL);
-	g_assert (file != NULL);
-	g_assert (testdatafile != NULL);
-
-	filename = g_strconcat (TEST_DATA_DIR, file, NULL);
-	testdata_filename = g_strconcat (TEST_DATA_DIR, testdatafile, NULL);
-
-	metadata = g_hash_table_new_full (g_str_hash,
-					  g_str_equal,
-					  g_free,
-					  g_free);
-
-	(*data->extract) (filename, metadata);
-
-	testdata = parse_testdata_file (testdata_filename);
-
-	g_hash_table_iter_init (&iter, testdata);
-
-/*	dump_metadata(metadata); */
-
-	while (g_hash_table_iter_next (&iter, &key, &value)) {
-		check_metadata (metadata, (gchar *)key, (gchar *)value);
-	}
-
-	g_hash_table_destroy (metadata);
-	g_hash_table_destroy (testdata);
-}
-
-void
-performance_extract_files (const TrackerExtractData *data, const gchar *filematch, guint filecount)
-{
-	double perftime;
-	guint i;
-
-	g_assert (data != NULL);
-	g_assert (filematch != NULL);
-	g_assert (filecount >0 );
-	
-	g_test_timer_start();
-
-	for (i=1;i<=filecount;i++) {
-		char filename[256];
-		char tmp[256];
-		GHashTable *metadata;
-
-		metadata = g_hash_table_new_full (g_str_hash,
-						  g_str_equal,
-						  g_free,
-						  g_free);
-
-		
-
-		if (sprintf (tmp, "%s%s",TEST_DATA_DIR,filematch) < 0) {
-			g_assert_not_reached();
-		}
-
-		if (sprintf (filename, tmp, i) < 0) {
-			g_assert_not_reached();
-		}
-
-		(*data->extract) (filename, metadata);
-
-		g_assert (g_hash_table_size (metadata) > 0);
-
-		g_hash_table_destroy (metadata);
-	}		
-
-	perftime = g_test_timer_elapsed();
-
-	g_debug ("Time was: %f", perftime);
-
-	g_test_minimized_result (perftime, "Time of the performance tests");
-}
-
-void
-access_extract_files (const TrackerExtractData *data, const gchar *filematch, guint filecount)
-{
-	double perftime;
-	guint i;
-
-	g_assert (data != NULL);
-	g_assert (filematch != NULL);
-	g_assert (filecount >0 );
-	
-	for (i=1;i<=filecount;i++) {
-		char filename[256];
-		char tmp[256];
-		GHashTable *metadata;
-
-		metadata = g_hash_table_new_full (g_str_hash,
-						  g_str_equal,
-						  g_free,
-						  g_free);
-
-		
-
-		if (sprintf (tmp, "%s%s",TEST_DATA_DIR,filematch) < 0) {
-			g_assert_not_reached();
-		}
-
-		if (sprintf (filename, tmp, i) < 0) {
-			g_assert_not_reached();
-		}
-
-		(*data->extract) (filename, metadata);
-
-		g_assert (g_hash_table_size (metadata) > 0);
-
-		g_hash_table_destroy (metadata);
-	}		
-}
-
-TrackerExtractData *
-search_mime_extract (const gchar *mime)
-{
-	TrackerExtractData *data;
-
-	data = tracker_get_extract_data ();	
-
-	while (data->mime) {
-		if (strcmp (data->mime,mime) == 0) {
-			return data;
-		}
-		data++;
-	}	
-
-	return NULL;
-}
-
-
-GHashTable *
-parse_testdata_file (const gchar *filename)
+static GHashTable *
+parse_file (const gchar *filename)
 {
 	GHashTable *testdata;
 	GScanner *scanner;
@@ -221,7 +58,7 @@ parse_testdata_file (const gchar *filename)
 		FALSE,                         /* scope 0 fallback */
 		FALSE                          /* store int64 */
 	};
-	int fd;
+	gint fd;
 
 	testdata = g_hash_table_new_full (g_str_hash,
 					  g_str_equal,
@@ -239,8 +76,9 @@ parse_testdata_file (const gchar *filename)
 	for (ttype = g_scanner_get_next_token(scanner);
 	     ttype != G_TOKEN_EOF;
 	     ttype = g_scanner_get_next_token (scanner)) {
-		if (ttype = G_TOKEN_IDENTIFIER) {
+		if (ttype == G_TOKEN_IDENTIFIER) {
 			gchar key[256];
+
 			strcpy (key, scanner->value.v_identifier);
 			
 			ttype = g_scanner_get_next_token(scanner);
@@ -259,7 +97,6 @@ parse_testdata_file (const gchar *filename)
 				g_assert_not_reached();
 				
 			}
-			
 		}
 	}
 
@@ -269,11 +106,10 @@ parse_testdata_file (const gchar *filename)
 	return testdata;
 }
 
-
 static void
-dump_metadataitem (gpointer key,
-		   gpointer value,
-		   gpointer user_data)
+dump_metadata_item (gpointer key,
+		    gpointer value,
+		    gpointer user_data)
 {
 	gchar *value_utf8;
 
@@ -283,23 +119,25 @@ dump_metadataitem (gpointer key,
 	value_utf8 = g_locale_to_utf8 (value, -1, NULL, NULL, NULL);
 
 	if (value_utf8) {
-		value_utf8 = g_strstrip (value_utf8);
 		g_print ("%s=%s;\n", (gchar*) key, value_utf8);
 		g_free (value_utf8);
 	}
 }
 
-void
+static void
 dump_metadata (GHashTable *metadata)
 {
 	g_assert (metadata != NULL);
-	g_hash_table_foreach (metadata, dump_metadataitem, NULL);
+	g_hash_table_foreach (metadata, dump_metadata_item, NULL);
 }
 
-void
-check_metadata (GHashTable *metadata, gchar *key, gchar *value)
+static void
+check_metadata (GHashTable  *metadata, 
+		const gchar *key, 
+		const gchar *value)
 {
 	gchar *cvalue;
+
 	g_assert (metadata != NULL);
 	g_assert (key != NULL);
 	g_assert (value != NULL);
@@ -307,4 +145,157 @@ check_metadata (GHashTable *metadata, gchar *key, gchar *value)
 	cvalue = g_hash_table_lookup (metadata, key);
 	g_assert (cvalue != NULL);
 	g_assert_cmpstr (cvalue, ==, value);
+}
+
+TrackerExtractData *
+tracker_test_extract_get_extract (const gchar *mime)
+{
+	TrackerExtractData *data;
+	
+	/* Search for exact match first */
+	data = tracker_get_extract_data ();	
+	while (data->mime) {
+		if (strcmp (data->mime, mime) == 0) {
+			return data;
+		}
+		data++;
+	}
+
+	/* Search for generic */
+	data = tracker_get_extract_data ();
+	while (data->mime) {
+		if (g_pattern_match_simple (data->mime, mime)) {
+			return data;
+		}
+		data++;
+	}
+
+	return NULL;
+}
+
+void
+tracker_test_extract_file (const TrackerExtractData *data, 
+			   const gchar              *file, 
+			   const gchar              *test_data_file)
+{
+	GHashTable *metadata;
+	GHashTable *test_data;
+	gchar *filename;	
+	gchar *test_data_filename;
+	GHashTableIter iter;
+	gpointer key, value;
+
+	g_assert (data != NULL);
+	g_assert (file != NULL);
+	g_assert (test_data_file != NULL);
+
+	filename = g_strconcat (TEST_DATA_DIR, file, NULL);
+	test_data_filename = g_strconcat (TEST_DATA_DIR, test_data_file, NULL);
+
+	metadata = g_hash_table_new_full (g_str_hash,
+					  g_str_equal,
+					  g_free,
+					  g_free);
+
+	(*data->extract) (filename, metadata);
+
+	test_data = parse_file (test_data_filename);
+
+	g_hash_table_iter_init (&iter, test_data);
+
+	if (0) {
+		dump_metadata (metadata);
+	}
+
+	while (g_hash_table_iter_next (&iter, &key, &value)) {
+		check_metadata (metadata, key, value);
+	}
+
+	g_hash_table_destroy (metadata);
+	g_hash_table_destroy (test_data);
+}
+
+void
+tracker_test_extract_file_performance (const TrackerExtractData *data,
+				       const gchar              *file_match, 
+				       guint                     file_count)
+{
+	double perftime;
+	guint i;
+
+	g_assert (data != NULL);
+	g_assert (file_match != NULL);
+	g_assert (file_count > 0);
+	
+	g_test_timer_start ();
+
+	for (i = 1; i <= file_count; i++) {
+		GHashTable *metadata;
+		gchar filename[256];
+		gchar tmp[256];
+
+		metadata = g_hash_table_new_full (g_str_hash,
+						  g_str_equal,
+						  g_free,
+						  g_free);
+
+		
+
+		if (sprintf (tmp, "%s%s",TEST_DATA_DIR, file_match) < 0) {
+			g_assert_not_reached();
+		}
+
+		if (sprintf (filename, tmp, i) < 0) {
+			g_assert_not_reached();
+		}
+
+		(*data->extract) (filename, metadata);
+
+		g_assert (g_hash_table_size (metadata) > 0);
+
+		g_hash_table_destroy (metadata);
+	}		
+
+	perftime = g_test_timer_elapsed();
+
+	g_debug ("Time was: %f", perftime);
+
+	g_test_minimized_result (perftime, "Time of the performance tests");
+}
+
+void
+tracker_test_extract_file_access (const TrackerExtractData *data, 
+				  const gchar              *file_match, 
+				  guint                     file_count)
+{
+	guint i;
+
+	g_assert (data != NULL);
+	g_assert (file_match != NULL);
+	g_assert (file_count > 0);
+	
+	for (i = 1; i <= file_count; i++) {
+		GHashTable *metadata;
+		gchar filename[256];
+		gchar tmp[256];
+
+		metadata = g_hash_table_new_full (g_str_hash,
+						  g_str_equal,
+						  g_free,
+						  g_free);
+
+		if (sprintf (tmp, "%s%s", TEST_DATA_DIR, file_match) < 0) {
+			g_assert_not_reached ();
+		}
+
+		if (sprintf (filename, tmp, i) < 0) {
+			g_assert_not_reached ();
+		}
+
+		(*data->extract) (filename, metadata);
+
+		g_assert (g_hash_table_size (metadata) > 0);
+
+		g_hash_table_destroy (metadata);
+	}		
 }

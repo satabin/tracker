@@ -77,7 +77,8 @@ tracker_metadata_get (TrackerMetadata	     *object,
 	TrackerDBResultSet  *result_set;
 	guint		     request_id;
 	const gchar         *service_result;
-	gchar		    *service_id;
+	guint32              service_id;
+	gchar		    *service_id_str;
 	guint		     i;
 	gchar		   **values;
 	GError		    *actual_error = NULL;
@@ -104,8 +105,9 @@ tracker_metadata_get (TrackerMetadata	     *object,
 		return;
 	}
 
-	service_id = tracker_data_query_file_id_as_string (service_type, uri);
-	if (!service_id) {
+	service_id = tracker_data_query_file_id (service_type, uri);
+
+	if (service_id <= 0) {
 		tracker_dbus_request_failed (request_id,
 					     &actual_error,
 					     "Service URI '%s' not found",
@@ -138,7 +140,6 @@ tracker_metadata_get (TrackerMetadata	     *object,
 
 	service_result = tracker_data_query_service_type_by_id (iface, service_id);
 	if (!service_result) {
-	       g_free (service_id);
 	       tracker_dbus_request_failed (request_id,
 					    &actual_error,
 					    "Service type can not be found for entity '%s'",
@@ -148,7 +149,10 @@ tracker_metadata_get (TrackerMetadata	     *object,
 	       return;
 	}
 
-	result_set = tracker_data_query_metadata_fields (iface, service_result, service_id, keys);
+	service_id_str = tracker_guint_to_string (service_id);
+	result_set = tracker_data_query_metadata_fields (iface, service_result, service_id_str, keys);
+	g_free (service_id_str);
+
 	if (result_set) {
 		values = tracker_dbus_query_result_columns_to_strv (result_set, -1, -1, TRUE);
 		g_object_unref (result_set);
@@ -166,7 +170,6 @@ tracker_metadata_get (TrackerMetadata	     *object,
 
 	dbus_g_method_return (context, values);
 	g_strfreev (values);
-	g_free (service_id);
 
 	tracker_dbus_request_success (request_id);
 }
@@ -624,6 +627,75 @@ tracker_metadata_get_unique_values_with_count_and_sum (TrackerMetadata	      *ob
 									  offset,
 									  max_hits,
 									  &actual_error);
+
+	if (actual_error) {
+		tracker_dbus_request_failed (request_id, &actual_error, NULL);
+		dbus_g_method_return_error (context, actual_error);
+		g_error_free (actual_error);
+		return;
+	}
+
+	values = tracker_dbus_query_result_to_ptr_array (result_set);
+
+	dbus_g_method_return (context, values);
+
+	tracker_dbus_results_ptr_array_free (&values);
+
+	if (result_set) {
+		g_object_unref (result_set);
+	}
+
+	tracker_dbus_request_success (request_id);
+}
+
+void
+tracker_metadata_get_unique_values_with_concat_count_and_sum (TrackerMetadata	      *object,
+							      const gchar	      *service_type,
+							      gchar		     **fields,
+							      const gchar	      *query_condition,
+							      const gchar             *concat_field,
+							      const gchar	      *count_field,
+							      const gchar             *sum_field,
+							      gboolean		       order_desc,
+							      gint		       offset,
+							      gint		       max_hits,
+							      DBusGMethodInvocation  *context,
+							      GError		     **error)
+{
+	TrackerDBResultSet *result_set = NULL;
+	guint		    request_id;
+	GPtrArray	   *values = NULL;
+	GError		   *actual_error = NULL;
+
+	request_id = tracker_dbus_get_next_request_id ();
+
+	tracker_dbus_async_return_if_fail (service_type != NULL, context);
+	tracker_dbus_async_return_if_fail (fields != NULL, context);
+	tracker_dbus_async_return_if_fail (query_condition != NULL, context);
+
+	tracker_dbus_request_new (request_id,
+				  "DBus request to get unique values with count and sum, "
+				  "service type:'%s', query '%s', "
+				  "concat field :'%s' "
+				  "count field :'%s', "
+				  "sum field :'%s'",
+				  service_type,
+				  query_condition,
+				  concat_field,
+				  count_field,
+				  sum_field);
+
+	result_set = 
+		tracker_data_search_get_unique_values_with_concat_count_and_sum (service_type,
+										 fields,
+										 query_condition,
+										 concat_field,
+										 count_field,
+										 sum_field,
+										 order_desc,
+										 offset,
+										 max_hits,
+										 &actual_error);
 
 	if (actual_error) {
 		tracker_dbus_request_failed (request_id, &actual_error, NULL);

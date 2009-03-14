@@ -37,6 +37,8 @@
 
 /* Size of free block pool of inverted index */
 #define MAX_HIT_BUFFER 480000
+#define MAX_CACHE_DEPTH 2
+#define MAX_FLUSH_TIME 0.5 /* In fractions of a second */
 
 #define TRACKER_DB_INDEX_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_DB_INDEX, TrackerDBIndexPrivate))
 
@@ -53,16 +55,18 @@ struct TrackerDBIndexPrivate {
 	guint	    readonly : 1;
 	guint	    in_pause : 1;
 	guint	    in_flush : 1;
+	guint       overloaded : 1;
+
+	/* Internal caches */
+	guint       idle_flush_id;
+	GList      *cache_layers;
+	GHashTable *cur_cache;
 
 	/* From the indexer */
-	GHashTable *cache;
 	gchar	   *filename;
 	gint	    bucket_count;
 };
-/*
-static void tracker_db_index_class_init   (TrackerDBIndexClass *class);
-static void tracker_db_index_init	  (TrackerDBIndex      *tree);
-*/
+
 static void tracker_db_index_finalize	  (GObject	       *object);
 static void tracker_db_index_set_property (GObject	       *object,
 					   guint		prop_id,
@@ -74,13 +78,16 @@ static void tracker_db_index_get_property (GObject	       *object,
 					   GParamSpec	       *pspec);
 static void free_cache_values		  (GArray	       *array);
 
+
 enum {
 	PROP_0,
 	PROP_FILENAME,
 	PROP_MIN_BUCKET,
 	PROP_MAX_BUCKET,
 	PROP_RELOAD,
-	PROP_READONLY
+	PROP_READONLY,
+	PROP_FLUSHING,
+	PROP_OVERLOADED
 };
 
 G_DEFINE_TYPE (TrackerDBIndex, tracker_db_index, G_TYPE_OBJECT)
@@ -139,7 +146,31 @@ tracker_db_index_class_init (TrackerDBIndexClass *klass)
 							       G_PARAM_READWRITE |
 							       G_PARAM_CONSTRUCT));
 
+	g_object_class_install_property (object_class,
+					 PROP_FLUSHING,
+					 g_param_spec_boolean ("flushing",
+							       "Whether the index is currently being flushed",
+							       "Whether the index is currently being flushed",
+							       FALSE,
+							       G_PARAM_READABLE));
+	g_object_class_install_property (object_class,
+					 PROP_OVERLOADED,
+					 g_param_spec_boolean ("overloaded",
+							       "Whether the index cache is overloaded",
+							       "Whether the index cache is overloaded",
+							       FALSE,
+							       G_PARAM_READABLE));
+
 	g_type_class_add_private (object_class, sizeof (TrackerDBIndexPrivate));
+}
+
+static GHashTable *
+index_cache_new (void)
+{
+	return g_hash_table_new_full (g_str_hash,
+				      g_str_equal,
+				      (GDestroyNotify) g_free,
+				      (GDestroyNotify) free_cache_values);
 }
 
 static void
@@ -150,11 +181,6 @@ tracker_db_index_init (TrackerDBIndex *indez)
 	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
 
 	priv->reload = TRUE;
-
-	priv->cache = g_hash_table_new_full (g_str_hash,
-					     g_str_equal,
-					     (GDestroyNotify) g_free,
-					     (GDestroyNotify) free_cache_values);
 }
 
 static void
@@ -166,13 +192,25 @@ tracker_db_index_finalize (GObject *object)
 	indez = TRACKER_DB_INDEX (object);
 	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
 
-	tracker_db_index_flush (indez);
-	tracker_db_index_close (indez);
+	if (!priv->readonly) {
+		tracker_db_index_open (indez);
+		tracker_db_index_flush_sync (indez);
+		tracker_db_index_close (indez);
+	}
 
-	g_hash_table_destroy (priv->cache);
+	if (priv->idle_flush_id) {
+		g_source_remove (priv->idle_flush_id);
+		priv->idle_flush_id = 0;
+	}
+
+	g_list_foreach (priv->cache_layers, (GFunc) g_hash_table_destroy, NULL);
+	g_list_free (priv->cache_layers);
+
+	if (priv->cur_cache) {
+		g_hash_table_destroy (priv->cur_cache);
+	}
 
 	g_free (priv->filename);
-
 
 	G_OBJECT_CLASS (tracker_db_index_parent_class)->finalize (object);
 }
@@ -235,6 +273,12 @@ tracker_db_index_get_property (GObject	  *object,
 		break;
 	case PROP_READONLY:
 		g_value_set_boolean (value, priv->readonly);
+		break;
+	case PROP_FLUSHING:
+		g_value_set_boolean (value, priv->in_flush);
+		break;
+	case PROP_OVERLOADED:
+		g_value_set_boolean (value, priv->overloaded);
 		break;
 
 	default:
@@ -537,13 +581,29 @@ check_index_is_up_to_date (TrackerDBIndex *indez)
 	return !priv->reload;
 }
 
+static void
+update_overloaded_status (TrackerDBIndex *indez)
+{
+	TrackerDBIndexPrivate *priv;
+	gboolean overloaded;
+
+	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
+
+	overloaded = g_list_length (priv->cache_layers) > MAX_CACHE_DEPTH;
+
+	if (priv->overloaded != overloaded) {
+		priv->overloaded = overloaded;
+		g_object_notify (G_OBJECT (indez), "overloaded");
+	}
+}
+
 /* Use for deletes or updates of multiple entities when they are not
  * new.
  */
 static gboolean
-indexer_update_word (DEPOT	 *indez,
-		     const gchar *word,
-		     GArray	 *new_hits)
+indexer_update_word (const gchar *word,
+		     GArray	 *new_hits,
+		     DEPOT	 *indez)
 {
 	TrackerDBIndexItem *new_hit;
 	TrackerDBIndexItem *previous_hits;
@@ -574,18 +634,34 @@ indexer_update_word (DEPOT	 *indez,
 
 	/* New word in the index */
 	if (previous_hits == NULL) {
-		result = dpput (indez,
-				word, -1,
-				(char *) new_hits->data,
-				new_hits->len * sizeof (TrackerDBIndexItem),
-				DP_DOVER);
+		pending_hits = g_array_new (FALSE, TRUE, sizeof (TrackerDBIndexItem));
+		result = TRUE;
 
-		if (!result) {
-			g_warning ("Could not store word '%s': %s", word, dperrmsg (dpecode));
-			return FALSE;
+		/* Ensure weights are correct before inserting */
+		for (j = 0; j < new_hits->len; j++) {
+			new_hit = &g_array_index (new_hits, TrackerDBIndexItem, j);
+			score = tracker_db_index_item_get_score (new_hit);
+
+			if (score > 0) {
+				g_array_append_val (pending_hits, *new_hit);
+			}
 		}
 
-		return TRUE;
+		if (pending_hits->len > 0) {
+			result = dpput (indez,
+					word, -1,
+					(char *) pending_hits->data,
+					pending_hits->len * sizeof (TrackerDBIndexItem),
+					DP_DOVER);
+
+			if (!result) {
+				g_warning ("Could not store word '%s': %s", word, dperrmsg (dpecode));
+			}
+		}
+
+		g_array_free (pending_hits, TRUE);
+
+		return result;
 	}
 
 	/* Word already exists */
@@ -696,32 +772,107 @@ indexer_update_word (DEPOT	 *indez,
 	return TRUE;
 }
 
-static gboolean
-cache_flush_item (gpointer key,
-		  gpointer value,
-		  gpointer user_data)
+static void
+set_in_flush (TrackerDBIndex *indez,
+	      gboolean        in_flush)
 {
-	GArray *array;
-	DEPOT  *indez;
-	gchar  *word;
+	TrackerDBIndexPrivate *priv;
 
-	word = (gchar *) key;
-	array = (GArray *) value;
-	indez = (DEPOT *) user_data;
+	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
 
-	/* Mark element for removal if succesfull insertion */
+	if (in_flush != priv->in_flush) {
+		priv->in_flush = in_flush;
+		g_object_notify (G_OBJECT (indez), "flushing");
+	}
+}
 
-	/**
-	 * FIXME:
-	 *
-	 * Not removing the word from the memory-queue is not a good solution.
-	 * That's because the only thing we'll achieve is letting this queue
-	 * grow until it starts succeeding again. Which might end up being
-	 * never. Making tracker-indexer both becoming increasingly slow and
-	 * start consuming increasing amounts of memory.
-	 **/
+static gboolean
+index_flush_item (gpointer user_data)
+{
+	TrackerDBIndex *indez;
+	TrackerDBIndexPrivate *priv;
+	GHashTableIter iter;
+	gpointer key, value;
 
-	return indexer_update_word (indez, word, array);
+	indez = TRACKER_DB_INDEX (user_data);
+	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
+
+	if (priv->in_pause || !priv->index) {
+		g_debug ("Flushing was paused or index was closed, waiting...");
+		priv->idle_flush_id = 0;
+		return FALSE;
+	}
+
+	if (priv->cache_layers && g_hash_table_size (priv->cache_layers->data) > 0) {
+		GTimer *timer;
+
+		timer = g_timer_new ();
+		g_hash_table_iter_init (&iter, (GHashTable *) priv->cache_layers->data);
+
+		while (g_hash_table_iter_next (&iter, &key, &value)) {
+			/* Process words from cache */
+			if (indexer_update_word (key, value, priv->index)) {
+				g_hash_table_iter_remove (&iter);
+			}
+
+			if (g_timer_elapsed (timer, NULL) > MAX_FLUSH_TIME) {
+				break;
+			}
+		}
+
+		g_timer_destroy (timer);
+
+		return TRUE;
+	} else {
+		GList *link;
+
+		if (priv->cache_layers) {
+			/* Current cache being flushed is already empty, proceed with the next one */
+			link = priv->cache_layers;
+			priv->cache_layers = g_list_remove_link (priv->cache_layers, link);
+			g_hash_table_destroy (link->data);
+			g_list_free_1 (link);
+
+			update_overloaded_status (indez);
+		}
+
+		if (priv->cache_layers) {
+			g_debug ("Flushing next batch (%d words) to index...",
+				 g_hash_table_size (priv->cache_layers->data));
+			return TRUE;
+		} else {
+			g_debug ("Finished flushing elements to index");
+
+			set_in_flush (indez, FALSE);
+			priv->idle_flush_id = 0;
+
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
+static void
+init_flush (TrackerDBIndex *indez)
+{
+	TrackerDBIndexPrivate *priv;
+
+	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
+
+	if (priv->in_pause) {
+		g_debug ("Index was paused, waiting for it being resumed...");
+		return;
+	}
+
+	if (!priv->index) {
+		g_debug ("Index was not open for flush, waiting...");
+		return;
+	}
+
+	if (priv->idle_flush_id == 0) {
+		priv->idle_flush_id = g_idle_add (index_flush_item, indez);
+	}
 }
 
 gboolean
@@ -789,6 +940,11 @@ tracker_db_index_open (TrackerDBIndex *indez)
 			 rec_count);
 
 		priv->reload = FALSE;
+
+		if (priv->in_flush) {
+			g_debug ("Resuming flushing...");
+			init_flush (indez);
+		}
 	} else {
 		priv->reload = TRUE;
 	}
@@ -840,64 +996,69 @@ tracker_db_index_set_paused (TrackerDBIndex *indez,
 	}
 }
 
-guint
+void
 tracker_db_index_flush (TrackerDBIndex *indez)
 {
 	TrackerDBIndexPrivate *priv;
-	guint		       size, removed_items;
 
-	g_return_val_if_fail (TRACKER_IS_DB_INDEX (indez), 0);
+	g_return_if_fail (TRACKER_IS_DB_INDEX (indez));
 
 	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
 
-	if (priv->in_pause) {
-		g_debug ("Index was paused");
-		return 0;
+	if (!priv->in_flush) {
+		set_in_flush (indez, TRUE);
 	}
 
-	if (priv->in_flush) {
-		g_debug ("Index was already in the middle of a flush");
-		return 0;
+	if (priv->cur_cache && g_hash_table_size (priv->cur_cache) > 0) {
+		g_debug ("Pushing a new batch (%d words) to be flushed to index...",
+			 g_hash_table_size (priv->cur_cache));
+
+		/* Put current cache into the queue and create a
+		 * new one for keeping appending words
+		 */
+		priv->cache_layers = g_list_append (priv->cache_layers, priv->cur_cache);
+		priv->cur_cache = index_cache_new ();
+
+		update_overloaded_status (indez);
 	}
 
-	if (!priv->index) {
-		g_debug ("Index was not open for flush, waiting...");
-		return 0;
+	init_flush (indez);
+}
+
+void
+tracker_db_index_flush_sync (TrackerDBIndex *indez)
+{
+	TrackerDBIndexPrivate *priv;
+	GList *cache;
+
+	g_return_if_fail (TRACKER_IS_DB_INDEX (indez));
+
+	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
+
+	if (priv->idle_flush_id) {
+		g_source_remove (priv->idle_flush_id);
+		priv->idle_flush_id = 0;
 	}
 
-	priv->in_flush = TRUE;
-	size = g_hash_table_size (priv->cache);
-	removed_items = 0;
+	set_in_flush (indez, TRUE);
 
-	if (size > 0) {
-		GList *keys, *k;
-		gpointer value;
-
-		g_debug ("Flushing index with %d items in cache", size);
-
-		keys = g_hash_table_get_keys (priv->cache);
-
-		for (k = keys; k; k = k->next) {
-			value = g_hash_table_lookup (priv->cache, k->data);
-
-			if (cache_flush_item (k->data, value, priv->index)) {
-				g_hash_table_remove (priv->cache, k->data);
-				removed_items++;
-			}
-
-			g_main_context_iteration (NULL, FALSE);
-
-			if (priv->in_pause) {
-				break;
-			}
-		}
-
-		g_list_free (keys);
+	if (priv->cur_cache && g_hash_table_size (priv->cur_cache) > 0) {
+		priv->cache_layers = g_list_append (priv->cache_layers, priv->cur_cache);
+		priv->cur_cache = NULL;
 	}
 
-	priv->in_flush = FALSE;
+	for (cache = priv->cache_layers; cache; cache = cache->next) {
+		g_hash_table_foreach_remove (cache->data,
+					     (GHRFunc) indexer_update_word,
+					     priv->index);
+	}
 
-	return removed_items;
+	g_list_foreach (priv->cache_layers, (GFunc) g_hash_table_destroy, NULL);
+	g_list_free (priv->cache_layers);
+	priv->cache_layers = NULL;
+
+	set_in_flush (indez, FALSE);
+	update_overloaded_status (indez);
 }
 
 guint32
@@ -1009,7 +1170,6 @@ tracker_db_index_get_word_hits (TrackerDBIndex *indez,
 		return NULL;
 	}
 
-
 	details = NULL;
 
 	if (count) {
@@ -1017,7 +1177,7 @@ tracker_db_index_get_word_hits (TrackerDBIndex *indez,
 	}
 
 	if ((tmp = dpget (priv->index, word, -1, 0, MAX_HIT_BUFFER, &tsiz)) != NULL) {
-		if (tsiz >= (gint) sizeof (TrackerDBIndexItem)) {
+		if (tsiz >= sizeof (TrackerDBIndexItem)) {
 			details = (TrackerDBIndexItem *) tmp;
 
 			if (count) {
@@ -1025,7 +1185,6 @@ tracker_db_index_get_word_hits (TrackerDBIndex *indez,
 			}
 		}
 	}
-
 
 	return details;
 }
@@ -1048,19 +1207,23 @@ tracker_db_index_add_word (TrackerDBIndex *indez,
 
 	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
 
-	g_return_if_fail (priv->in_flush == FALSE);
+	g_return_if_fail (priv->readonly == FALSE);
+
+	if (G_UNLIKELY (!priv->cur_cache)) {
+		priv->cur_cache = index_cache_new ();
+	}
 
 	elem.id = service_id;
 	elem.amalgamated = tracker_db_index_item_calc_amalgamated (service_type, weight);
 
-	array = g_hash_table_lookup (priv->cache, word);
+	array = g_hash_table_lookup (priv->cur_cache, word);
 
 	if (!array) {
 		/* Create the array if it didn't exist (first time we
 		 * find the word)
 		 */
 		array = g_array_new (FALSE, TRUE, sizeof (TrackerDBIndexItem));
-		g_hash_table_insert (priv->cache, g_strdup (word), array);
+		g_hash_table_insert (priv->cur_cache, g_strdup (word), array);
 		g_array_append_val (array, elem);
 
 		return;
@@ -1071,25 +1234,15 @@ tracker_db_index_add_word (TrackerDBIndex *indez,
 		current = &g_array_index (array, TrackerDBIndexItem, i);
 
 		if (current->id == service_id) {
+			guint32 serv_type;
+
 			/* The word was already found in the same
-			 * service_id (file), increase score
+			 * service_id (file), modify score
 			 */
 			new_score = tracker_db_index_item_get_score (current) + weight;
-			if (new_score < 1) {
-				array = g_array_remove_index (array, i);
-				if (array->len == 0) {
-					g_hash_table_remove (priv->cache, word);
-				}
-			} else {
-				guint32 serv_type;
 
-				serv_type =
-					tracker_db_index_item_get_service_type (current);
-				current->amalgamated =
-					tracker_db_index_item_calc_amalgamated (serv_type,
-										new_score);
-			}
-
+			serv_type = tracker_db_index_item_get_service_type (current);
+			current->amalgamated = tracker_db_index_item_calc_amalgamated (serv_type, new_score);
 
 			return;
 		}
@@ -1097,97 +1250,28 @@ tracker_db_index_add_word (TrackerDBIndex *indez,
 
 	/* First time in the file */
 	g_array_append_val (array, elem);
-
 }
 
-/*
- * UNUSED
- *
- *  Use to delete dud hits for a word - dud_list is a list of
- * TrackerSearchHit structs.
- */
 gboolean
-tracker_db_index_remove_dud_hits (TrackerDBIndex *indez,
-				  const gchar	 *word,
-				  GSList	 *dud_list)
+tracker_db_index_get_flushing (TrackerDBIndex *indez)
 {
 	TrackerDBIndexPrivate *priv;
-	gchar		      *tmp;
-	gint		       tsiz;
-	gboolean	       retval = FALSE;
 
-	g_return_val_if_fail (indez, FALSE);
-	g_return_val_if_fail (word, FALSE);
-	g_return_val_if_fail (dud_list, FALSE);
-
-	if (!check_index_is_up_to_date (indez)) {
-		return TRUE;
-	}
+	g_return_val_if_fail (TRACKER_IS_DB_INDEX (indez), FALSE);
 
 	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
 
-	g_return_val_if_fail (priv->index, FALSE);
+	return priv->in_flush;
+}
 
+gboolean
+tracker_db_index_get_overloaded (TrackerDBIndex *indez)
+{
+	TrackerDBIndexPrivate *priv;
 
-	/* Check if existing record is there  */
-	tmp = dpget (priv->index,
-		     word,
-		     -1,
-		     0,
-		     MAX_HIT_BUFFER,
-		     &tsiz);
+	g_return_val_if_fail (TRACKER_IS_DB_INDEX (indez), FALSE);
 
-	if (!tmp) {
-		return FALSE;
-	}
+	priv = TRACKER_DB_INDEX_GET_PRIVATE (indez);
 
-	if (tsiz >= (int) sizeof (TrackerDBIndexItem)) {
-		TrackerDBIndexItem *details;
-		gint		    wi, i, pnum;
-
-		details = (TrackerDBIndexItem *) tmp;
-		pnum = tsiz / sizeof (TrackerDBIndexItem);
-		wi = 0;
-
-		for (i = 0; i < pnum; i++) {
-			GSList *lst;
-
-			for (lst = dud_list; lst; lst = lst->next) {
-				TrackerDBIndexItemRank *rank = lst->data;
-
-				if (!rank) {
-					continue;
-				}
-
-				if (details[i].id == rank->service_id) {
-					gint k;
-
-					/* Shift all subsequent
-					 * records in array down one
-					 * place.
-					 */
-					for (k = i + 1; k < pnum; k++) {
-						details[k - 1] = details[k];
-					}
-
-					/* Make size of array one size
-					 * smaller.
-					 */
-					tsiz -= sizeof (TrackerDBIndexItem);
-					pnum--;
-
-					break;
-				}
-			}
-		}
-
-		dpput (priv->index, word, -1, (gchar *) details, tsiz, DP_DOVER);
-
-		retval = TRUE;
-	}
-
-	g_free (tmp);
-
-
-	return retval;
+	return priv->overloaded;
 }

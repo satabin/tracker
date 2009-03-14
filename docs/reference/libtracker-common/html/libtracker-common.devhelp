@@ -31,14 +31,10 @@
   </chapters>
   <functions>
     <function name="tracker_env_check_xdg_dirs ()" link="libtracker-common-File-Operations.html#tracker-env-check-xdg-dirs"/>
-    <function name="tracker_file_close ()" link="libtracker-common-File-Operations.html#tracker-file-close"/>
     <function name="tracker_file_get_mime_type ()" link="libtracker-common-File-Operations.html#tracker-file-get-mime-type"/>
     <function name="tracker_file_get_mtime ()" link="libtracker-common-File-Operations.html#tracker-file-get-mtime"/>
     <function name="tracker_file_get_path_and_name ()" link="libtracker-common-File-Operations.html#tracker-file-get-path-and-name"/>
     <function name="tracker_file_get_size ()" link="libtracker-common-File-Operations.html#tracker-file-get-size"/>
-    <function name="tracker_file_is_directory ()" link="libtracker-common-File-Operations.html#tracker-file-is-directory"/>
-    <function name="tracker_file_is_indexable ()" link="libtracker-common-File-Operations.html#tracker-file-is-indexable"/>
-    <function name="tracker_file_is_valid ()" link="libtracker-common-File-Operations.html#tracker-file-is-valid"/>
     <function name="tracker_file_open ()" link="libtracker-common-File-Operations.html#tracker-file-open"/>
     <function name="tracker_file_unlink ()" link="libtracker-common-File-Operations.html#tracker-file-unlink"/>
     <function name="tracker_path_evaluate_name ()" link="libtracker-common-File-Operations.html#tracker-path-evaluate-name"/>
@@ -198,7 +194,6 @@
     <function name="tracker_config_get_enable_stemmer ()" link="libtracker-common-Config.html#tracker-config-get-enable-stemmer"/>
     <function name="tracker_config_get_enable_thumbnails ()" link="libtracker-common-Config.html#tracker-config-get-enable-thumbnails"/>
     <function name="tracker_config_get_enable_watches ()" link="libtracker-common-Config.html#tracker-config-get-enable-watches"/>
-    <function name="tracker_config_get_enable_xesam ()" link="libtracker-common-Config.html#tracker-config-get-enable-xesam"/>
     <function name="tracker_config_get_fast_merges ()" link="libtracker-common-Config.html#tracker-config-get-fast-merges"/>
     <function name="tracker_config_get_index_mounted_directories ()" link="libtracker-common-Config.html#tracker-config-get-index-mounted-directories"/>
     <function name="tracker_config_get_index_removable_devices ()" link="libtracker-common-Config.html#tracker-config-get-index-removable-devices"/>
@@ -226,7 +221,6 @@
     <function name="tracker_config_set_enable_stemmer ()" link="libtracker-common-Config.html#tracker-config-set-enable-stemmer"/>
     <function name="tracker_config_set_enable_thumbnails ()" link="libtracker-common-Config.html#tracker-config-set-enable-thumbnails"/>
     <function name="tracker_config_set_enable_watches ()" link="libtracker-common-Config.html#tracker-config-set-enable-watches"/>
-    <function name="tracker_config_set_enable_xesam ()" link="libtracker-common-Config.html#tracker-config-set-enable-xesam"/>
     <function name="tracker_config_set_fast_merges ()" link="libtracker-common-Config.html#tracker-config-set-fast-merges"/>
     <function name="tracker_config_set_index_mounted_directories ()" link="libtracker-common-Config.html#tracker-config-set-index-mounted-directories"/>
     <function name="tracker_config_set_index_removable_devices ()" link="libtracker-common-Config.html#tracker-config-set-index-removable-devices"/>
@@ -252,7 +246,6 @@
     <function name="The &quot;enable-stemmer&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-stemmer"/>
     <function name="The &quot;enable-thumbnails&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-thumbnails"/>
     <function name="The &quot;enable-watches&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-watches"/>
-    <function name="The &quot;enable-xesam&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-xesam"/>
     <function name="The &quot;fast-merges&quot; property" link="libtracker-common-Config.html#TrackerConfig--fast-merges"/>
     <function name="The &quot;index-mounted-directories&quot; property" link="libtracker-common-Config.html#TrackerConfig--index-mounted-directories"/>
     <function name="The &quot;index-removable-devices&quot; property" link="libtracker-common-Config.html#TrackerConfig--index-removable-devices"/>

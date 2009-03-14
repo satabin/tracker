@@ -8,15 +8,17 @@ INCLUDES =								\
 	-DLIBDIR=\""$(libdir)"\"					\
 	-DLOCALEDIR=\""$(localedir)"\" 					\
 	-DINDEXER_MODULES_DIR=\""$(libdir)/tracker/indexer-modules"\"	\
+	-DPUSH_MODULES_DIR=\""$(libdir)/tracker/push-modules/indexer"\" \
 	-DLIBEXEC_PATH=\""$(libexecdir)"\"				\
 	-DG_LOG_DOMAIN=\"Tracker\"					\
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
-	$(DBUS_CFLAGS)							\
+	$(WARN_CFLAGS)							\
+	$(GMODULE_CFLAGS)						\
 	$(PANGO_CFLAGS)							\
-	$(RAPTOR_CFLAGS)						\
-	$(GMODULE_CFLAGS)
-
+	$(DBUS_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
+	$(RAPTOR_CFLAGS)
 
 libtracker_moduledir = $(libdir)/tracker
 libtracker_moduleincludedir=$(includedir)/tracker-1.0/libtracker-module/
@@ -35,6 +37,8 @@ libtracker_moduleinclude_HEADERS =					\
 	tracker-module-metadata-utils.h					\
 	tracker-module-metadata.h
 
+libtracker_module_la_LIBADD = $(GCOV_LIBS)
+
 libexec_PROGRAMS = tracker-indexer
 
 tracker_indexer_SOURCES =						\
@@ -48,12 +52,9 @@ tracker_indexer_SOURCES =						\
 	tracker-module-metadata-private.h				\
 	tracker-marshal-main.c						\
 	tracker-removable-device.c					\
-	tracker-removable-device.h					
-
-if HAVE_EVOLUTION_PLUGIN
-plugin_libs =								\
-	$(top_builddir)/src/plugins/evolution/libtracker-evolution-indexer.la
-endif
+	tracker-removable-device.h					\
+	tracker-push.c							\
+	tracker-push.h
 
 tracker_indexer_LDADD =							\
 	$(plugin_libs)							\
@@ -68,6 +69,7 @@ tracker_indexer_LDADD =							\
 	$(GTHREAD_LIBS)							\
 	$(PANGO_LIBS)							\
 	$(GIO_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GLIB2_LIBS)							\
 	$(RAPTOR_LIBS)							\
 	-lz								\

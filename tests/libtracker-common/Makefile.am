@@ -25,11 +25,13 @@ INCLUDES = 								\
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
 	-I$(top_srcdir)/tests/common					\
-	$(DBUS_CFLAGS)							\
+	$(WARN_CFLAGS)							\
+	$(GLIB2_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
 	$(GMODULE_CFLAGS)						\
 	$(GTHREAD_CFLAGS)						\
 	$(PANGO_CFLAGS)							\
-	$(GLIB2_CFLAGS)
+	$(DBUS_CFLAGS)
 
 tracker_ontology_SOURCES = 						\
 	tracker-ontology-test.c 
@@ -38,6 +40,7 @@ tracker_ontology_LDADD =						\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							
 
@@ -48,6 +51,7 @@ tracker_dbus_LDADD =							\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(DBUS_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							
@@ -59,6 +63,7 @@ tracker_type_utils_LDADD =						\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							
 
@@ -69,6 +74,7 @@ tracker_file_utils_LDADD =						\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							
 
@@ -81,6 +87,7 @@ tracker_file_utils_LDADD =						\
 # 	$(top_builddir)/src/libstemmer/libstemmer.la	 		\
 # 	$(GMODULE_LIBS)							\
 # 	$(GTHREAD_LIBS)							\
+#	$(GCOV_LIBS)							\
 # 	$(PANGO_LIBS)							\
 # 	$(GLIB2_LIBS)							
 #
@@ -91,6 +98,7 @@ tracker_file_utils_LDADD =						\
 # 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 # 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 # 	$(GMODULE_LIBS)							\
+#	$(GCOV_LIBS)							\
 # 	$(GTHREAD_LIBS)							\
 # 	$(PANGO_LIBS)							\
 # 	$(GLIB2_LIBS)							

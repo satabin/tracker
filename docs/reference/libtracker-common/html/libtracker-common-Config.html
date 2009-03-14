@@ -104,9 +104,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libtracker-common-Config.html#tracker-config-get-enable-watches" title="tracker_config_get_enable_watches ()">tracker_config_get_enable_watches</a>   (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config);
 <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libtracker-common-Config.html#tracker-config-get-enable-xesam" title="tracker_config_get_enable_xesam ()">tracker_config_get_enable_xesam</a>     (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libtracker-common-Config.html#tracker-config-get-fast-merges" title="tracker_config_get_fast_merges ()">tracker_config_get_fast_merges</a>      (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config);
 <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
@@ -204,10 +201,6 @@ void                <a class="link" href="libtracker-common-Config.html#tracker-
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> value);
 void                <a class="link" href="libtracker-common-Config.html#tracker-config-set-enable-watches" title="tracker_config_set_enable_watches ()">tracker_config_set_enable_watches</a>   (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> value);
-void                <a class="link" href="libtracker-common-Config.html#tracker-config-set-enable-xesam" title="tracker_config_set_enable_xesam ()">tracker_config_set_enable_xesam</a>     (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> value);
@@ -319,9 +312,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>              : Read / Write / Construct
   "<a class="link" href="libtracker-common-Config.html#TrackerConfig--enable-watches" title='The "enable-watches" property'>enable-watches</a>"           <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Read / Write / Construct
-  "<a class="link" href="libtracker-common-Config.html#TrackerConfig--enable-xesam" title='The "enable-xesam" property'>enable-xesam</a>"             <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>              : Read / Write / Construct
   "<a class="link" href="libtracker-common-Config.html#TrackerConfig--fast-merges" title='The "fast-merges" property'>fast-merges</a>"              <a
@@ -759,33 +749,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 <pre class="programlisting"><a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            tracker_config_get_enable_watches   (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config);</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-
-
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="tracker-config-get-enable-xesam"></a><h3>tracker_config_get_enable_xesam ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            tracker_config_get_enable_xesam     (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config);</pre>
 <p>
 
 </p>
@@ -1571,34 +1534,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="tracker-config-set-enable-xesam"></a><h3>tracker_config_set_enable_xesam ()</h3>
-<pre class="programlisting">void                tracker_config_set_enable_xesam     (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> value);</pre>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td>
-
-
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
 <a name="tracker-config-set-fast-merges"></a><h3>tracker_config_set_fast_merges ()</h3>
 <pre class="programlisting">void                tracker_config_set_fast_merges      (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -2130,15 +2065,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>              : Read / Write / Construct</pre>
 <p>You can disable all watches by setting this FALSE.</p>
 <p>Default value: TRUE</p>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="TrackerConfig--enable-xesam"></a><h3>The <code class="literal">"enable-xesam"</code> property</h3>
-<pre class="programlisting">  "enable-xesam"             <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Read / Write / Construct</pre>
-<p>Xesam DBus service.</p>
-<p>Default value: FALSE</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">

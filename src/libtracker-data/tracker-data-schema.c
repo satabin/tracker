@@ -122,54 +122,6 @@ tracker_data_schema_metadata_field_get_related_names (TrackerDBInterface *iface,
 	return NULL;
 }
 
-TrackerDBResultSet *
-tracker_data_schema_xesam_get_metadata_names (TrackerDBInterface *iface,
-					      const gchar	 *name)
-{
-	TrackerDBResultSet *result_set;
-
-	g_return_val_if_fail (TRACKER_IS_DB_INTERFACE (iface), NULL);
-	g_return_val_if_fail (name != NULL, NULL);
-
-	result_set = tracker_data_manager_exec_proc (iface,
-					   "GetXesamMetaDataLookups",
-					   name,
-					   NULL);
-
-	return result_set;
-}
-
-TrackerDBResultSet *
-tracker_data_schema_xesam_get_text_metadata_names (TrackerDBInterface *iface)
-{
-	TrackerDBResultSet *result_set;
-
-	g_return_val_if_fail (TRACKER_IS_DB_INTERFACE (iface), NULL);
-
-	result_set = tracker_data_manager_exec_proc (iface,
-					   "GetXesamMetaDataTextLookups",
-					   NULL);
-
-	return result_set;
-}
-
-TrackerDBResultSet *
-tracker_data_schema_xesam_get_service_names (TrackerDBInterface *iface,
-					     const gchar        *name)
-{
-	TrackerDBResultSet *result_set;
-
-	g_return_val_if_fail (TRACKER_IS_DB_INTERFACE (iface), NULL);
-	g_return_val_if_fail (name != NULL, NULL);
-
-	result_set = tracker_data_manager_exec_proc (iface,
-					   "GetXesamServiceLookups",
-					   name,
-					   NULL);
-
-	return result_set;
-}
-
 const gchar *
 tracker_data_schema_metadata_field_get_db_table (TrackerFieldType type)
 {
@@ -221,6 +173,7 @@ tracker_data_schema_get_metadata_field (TrackerDBInterface *iface,
 		const gchar *table_name;
 		gchar	    *this_field_name;
 		gchar	    *where_field;
+		gchar       *order_field;
 
 		field_data = g_object_new (TRACKER_TYPE_FIELD_DATA,
 					   "is-select", is_select,
@@ -273,6 +226,18 @@ tracker_data_schema_get_metadata_field (TrackerDBInterface *iface,
 		}
 
 		tracker_field_data_set_where_field (field_data, where_field);
+
+		if ((tracker_field_get_data_type (def) == TRACKER_FIELD_TYPE_DOUBLE) ||
+		    (tracker_field_get_data_type (def) == TRACKER_FIELD_TYPE_INDEX)  ||
+		    (tracker_field_get_data_type (def) == TRACKER_FIELD_TYPE_STRING)) {
+			order_field = g_strdup_printf ("M%d.MetaDataCollation", field_count);
+		} else {
+			order_field = g_strdup_printf ("M%d.MetaDataValue", field_count);
+		}
+		
+		tracker_field_data_set_order_field (field_data, order_field);
+		
+		tracker_field_data_set_needs_null (field_data, FALSE);
 		g_free (where_field);
 		g_free (alias);
 	}

@@ -427,6 +427,44 @@ org_freedesktop_Tracker_Metadata_get_unique_values_with_count_and_sum_async (DBu
   stuff->userdata = userdata;
   return dbus_g_proxy_begin_call (proxy, "GetUniqueValuesWithCountAndSum", org_freedesktop_Tracker_Metadata_get_unique_values_with_count_and_sum_async_callback, stuff, g_free, G_TYPE_STRING, IN_service, G_TYPE_STRV, IN_meta_types, G_TYPE_STRING, IN_query, G_TYPE_STRING, IN_count_field, G_TYPE_STRING, IN_sum_field, G_TYPE_BOOLEAN, IN_descending, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID);
 }
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+gboolean
+org_freedesktop_Tracker_Metadata_get_unique_values_with_concat_count_and_sum (DBusGProxy *proxy, const char * IN_service, const char ** IN_meta_types, const char * IN_query, const char * IN_concat_field, const char * IN_count_field, const char * IN_sum_field, const gboolean IN_descending, const gint IN_offset, const gint IN_max_hits, GPtrArray** OUT_result, GError **error)
+
+{
+  return dbus_g_proxy_call (proxy, "GetUniqueValuesWithConcatCountAndSum", error, G_TYPE_STRING, IN_service, G_TYPE_STRV, IN_meta_types, G_TYPE_STRING, IN_query, G_TYPE_STRING, IN_concat_field, G_TYPE_STRING, IN_count_field, G_TYPE_STRING, IN_sum_field, G_TYPE_BOOLEAN, IN_descending, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID, dbus_g_type_get_collection ("GPtrArray", G_TYPE_STRV), OUT_result, G_TYPE_INVALID);
+}
+
+typedef void (*org_freedesktop_Tracker_Metadata_get_unique_values_with_concat_count_and_sum_reply) (DBusGProxy *proxy, GPtrArray *OUT_result, GError *error, gpointer userdata);
+
+static void
+org_freedesktop_Tracker_Metadata_get_unique_values_with_concat_count_and_sum_async_callback (DBusGProxy *proxy, DBusGProxyCall *call, void *user_data)
+{
+  DBusGAsyncData *data = (DBusGAsyncData*) user_data;
+  GError *error = NULL;
+  GPtrArray* OUT_result;
+  dbus_g_proxy_end_call (proxy, call, &error, dbus_g_type_get_collection ("GPtrArray", G_TYPE_STRV), &OUT_result, G_TYPE_INVALID);
+  (*(org_freedesktop_Tracker_Metadata_get_unique_values_with_concat_count_and_sum_reply)data->cb) (proxy, OUT_result, error, data->userdata);
+  return;
+}
+
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+DBusGProxyCall*
+org_freedesktop_Tracker_Metadata_get_unique_values_with_concat_count_and_sum_async (DBusGProxy *proxy, const char * IN_service, const char ** IN_meta_types, const char * IN_query, const char * IN_concat_field, const char * IN_count_field, const char * IN_sum_field, const gboolean IN_descending, const gint IN_offset, const gint IN_max_hits, org_freedesktop_Tracker_Metadata_get_unique_values_with_concat_count_and_sum_reply callback, gpointer userdata)
+
+{
+  DBusGAsyncData *stuff;
+  stuff = g_new (DBusGAsyncData, 1);
+  stuff->cb = G_CALLBACK (callback);
+  stuff->userdata = userdata;
+  return dbus_g_proxy_begin_call (proxy, "GetUniqueValuesWithConcatCountAndSum", org_freedesktop_Tracker_Metadata_get_unique_values_with_concat_count_and_sum_async_callback, stuff, g_free, G_TYPE_STRING, IN_service, G_TYPE_STRV, IN_meta_types, G_TYPE_STRING, IN_query, G_TYPE_STRING, IN_concat_field, G_TYPE_STRING, IN_count_field, G_TYPE_STRING, IN_sum_field, G_TYPE_BOOLEAN, IN_descending, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID);
+}
 #endif /* defined DBUS_GLIB_CLIENT_WRAPPERS_org_freedesktop_Tracker_Metadata */
 
 G_END_DECLS

@@ -34,7 +34,7 @@
 #include <gst/tag/tag.h>
 
 #include "tracker-main.h"
-#include "tracker-albumart.h"
+#include "tracker-extract-albumart.h"
 
 typedef enum {
 	EXTRACT_MIME_UNDEFINED=0,
@@ -811,13 +811,13 @@ tracker_extract_gstreamer_helix (const gchar *uri,
 	if (extractor->album_art_data && extractor->album_art_size) {
 #ifdef HAVE_GDKPIXBUF
 		tracker_process_albumart (extractor->album_art_data, extractor->album_art_size,
-				       g_hash_table_lookup (metadata, "Audio:Artist") ,
+				       /* g_hash_table_lookup (metadata, "Audio:Artist") */ NULL,
 				       g_hash_table_lookup (metadata, "Audio:Album"),
 				       g_hash_table_lookup (metadata, "Audio:AlbumTrackCount"),
 				       uri);
 #else
 		tracker_process_albumart (NULL, 0,
-				       g_hash_table_lookup (metadata, "Audio:Artist") ,
+				       /* g_hash_table_lookup (metadata, "Audio:Artist") */ NULL,
 				       g_hash_table_lookup (metadata, "Audio:Album"),
 				       g_hash_table_lookup (metadata, "Audio:AlbumTrackCount"),
 				       uri);
@@ -827,37 +827,37 @@ tracker_extract_gstreamer_helix (const gchar *uri,
 
 	/* Check that we have the minimum data. FIXME We should not need to do this */
 
-	if (type==EXTRACT_MIME_AUDIO) {
-		if (!g_hash_table_lookup (metadata, "Audio:Title")) {
-			g_hash_table_insert (metadata, g_strdup ("Audio:Title"), g_strdup (METADATA_UNKNOWN));
-		}
-		
-		if (!g_hash_table_lookup (metadata, "Audio:Album")) {
-			g_hash_table_insert (metadata, g_strdup ("Audio:Album"), g_strdup (METADATA_UNKNOWN));
-		}
-		
-		if (!g_hash_table_lookup (metadata, "Audio:Artist")) {
-			g_hash_table_insert (metadata, g_strdup ("Audio:Artist"), g_strdup (METADATA_UNKNOWN));
-		}
-		
-		if (!g_hash_table_lookup (metadata, "Audio:Genre")) {
-			g_hash_table_insert (metadata, g_strdup ("Audio:Genre"), g_strdup (METADATA_UNKNOWN));
-		}
-
-		if (!g_hash_table_lookup (metadata, "Audio:PlayCount")) {
-			g_hash_table_insert (metadata, g_strdup ("Audio:PlayCount"), g_strdup ("0"));
-		}
-	} else if (type==EXTRACT_MIME_VIDEO) {
+	if (type == EXTRACT_MIME_VIDEO) {
 		if (!g_hash_table_lookup (metadata, "Video:Title")) {
-			g_hash_table_insert (metadata, g_strdup ("Video:Title"), g_strdup (METADATA_UNKNOWN));
-		}
-		
-		if (!g_hash_table_lookup (metadata, "Video:Author")) {
-			g_hash_table_insert (metadata, g_strdup ("Video:Author"), g_strdup (METADATA_UNKNOWN));
-		}
+			gchar  *basename = g_filename_display_basename (uri);
+			gchar **parts    = g_strsplit (basename, ".", -1);
+			gchar  *title    = g_strdup (parts[0]);
+			
+			g_strfreev (parts);
+			g_free (basename);
 
-		if (!g_hash_table_lookup (metadata, "Video:PlayCount")) {
-			g_hash_table_insert (metadata, g_strdup ("Video:PlayCount"), g_strdup ("0"));
+			title = g_strdelimit (title, "_", ' ');
+			
+			g_hash_table_insert (metadata,
+					     g_strdup ("Video:Title"),
+					     tracker_escape_metadata (title));
+			g_free (title);
+		}
+	} else if (type == EXTRACT_MIME_AUDIO) {
+		if (!g_hash_table_lookup (metadata, "Audio:Title")) {
+			gchar  *basename = g_filename_display_basename (uri);
+			gchar **parts    = g_strsplit (basename, ".", -1);
+			gchar  *title    = g_strdup (parts[0]);
+			
+			g_strfreev (parts);
+			g_free (basename);
+			
+			title = g_strdelimit (title, "_", ' ');
+			
+			g_hash_table_insert (metadata,
+					     g_strdup ("Audio:Title"),
+					     tracker_escape_metadata (title));
+			g_free (title);
 		}
 	}
 

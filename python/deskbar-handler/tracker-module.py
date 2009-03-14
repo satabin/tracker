@@ -1,6 +1,7 @@
 # This deskbar module was ported from deskbar <= 2.18 handler by Marcus Fritzsch
 
 import gnome
+import gnomedesktop
 import gobject
 import re
 import sys
@@ -11,7 +12,6 @@ import cgi
 import os.path
 import deskbar
 import deskbar.core.Utils
-import deskbar.core.gnomedesktop
 import deskbar.interfaces.Module
 import deskbar.interfaces.Match
 import deskbar.interfaces.Action
@@ -78,7 +78,7 @@ class TrackerSearchToolHandler(deskbar.interfaces.Module):
 			'icon': deskbar.core.Utils.load_icon ('tracker'),
 			'name': _('Tracker Search'),
 			'description': _('Search with Tracker Search Tool'),
-			'version': '0.6.4',
+			'version': '0.6.91',
 	}
 
 	def __init__(self):
@@ -289,7 +289,7 @@ class TrackerLiveSearchHandler(deskbar.interfaces.Module):
 			'icon': deskbar.core.Utils.load_icon ('tracker'),
 			'name': _('Tracker Live Search'),
 			'description': _('Search with Tracker, as you type'),
-			'version': '0.6.4',
+			'version': '0.6.91',
 			'categories': {
 			'develop': {
 				'name': _('Development Files'),
@@ -333,7 +333,7 @@ class TrackerLiveSearchHandler(deskbar.interfaces.Module):
 	def __init__(self):
 		deskbar.interfaces.Module.__init__(self)
 		# initing on search request, see self.query
-		self.tracker = self.search_iface = self.keywords_iface = self.files_iface = None
+		self.tracker = self.tracker_search = self.tracker_keywords = self.tracker_files = self.search_iface = self.keywords_iface = self.files_iface = None
 		self.conv_re = re.compile (r'^.*?/logs/([^/]+)/([^/]+)/([^/]+)/(.+?)\.(:?txt|html)$') # all, proto, account, to-whom, time
 
 	def handle_email_hits (self, info, output):
@@ -392,7 +392,7 @@ class TrackerLiveSearchHandler(deskbar.interfaces.Module):
 			output['desktop'] = desktop
 		return 1
 
-	def recieve_hits (self, qstring, hits, max):
+	def receive_hits (self, qstring, hits, max):
 		matches = []
 
 		for info in hits:
@@ -433,7 +433,7 @@ class TrackerLiveSearchHandler(deskbar.interfaces.Module):
 			print 'Tracker response for %s; %d hits returned, %d shown' % \
 					(qstring, len(hits), len(matches))
 
-	def recieve_error (self, error):
+	def receive_error (self, error):
 		print >> sys.stderr, '*** Tracker dbus error:', error
 
 	def query (self, qstring):
@@ -447,18 +447,21 @@ class TrackerLiveSearchHandler(deskbar.interfaces.Module):
 				print "Connecting to Tracker (first search or trackerd restarted)"
 				import dbus
 				bus = dbus.SessionBus()
-				self.tracker = bus.get_object('org.freedesktop.Tracker', '/org/freedesktop/tracker')
-				self.search_iface = dbus.Interface(self.tracker, 'org.freedesktop.Tracker.Search')
-				self.keywords_iface = dbus.Interface(self.tracker, 'org.freedesktop.Tracker.Keywords')
-				self.files_iface = dbus.Interface(self.tracker, 'org.freedesktop.Tracker.Files')
+				self.tracker = bus.get_object('org.freedesktop.Tracker', '/org/freedesktop/Tracker')
+				self.tracker_search = bus.get_object('org.freedesktop.Tracker', '/org/freedesktop/Tracker/Search')
+				self.search_iface = dbus.Interface(self.tracker_search, 'org.freedesktop.Tracker.Search')
+				self.tracker_keywords = bus.get_object('org.freedesktop.Tracker', '/org/freedesktop/Tracker/Keywords')
+				self.keywords_iface = dbus.Interface(self.tracker_keywords, 'org.freedesktop.Tracker.Keywords')
+				self.tracker_files = bus.get_object('org.freedesktop.Tracker', '/org/freedesktop/Tracker/Files')
+				self.files_iface = dbus.Interface(self.tracker_files, 'org.freedesktop.Tracker.Files')
 			except:
 				print >> sys.stderr, 'DBus connection to tracker failed, check your settings.'
 				return
 		for service in [key for key in TYPES.iterkeys () if key != 'Extra']:
 			print 'Searching %s' % service
 			self.search_iface.TextDetailed (-1, service, qstring, 0, max, \
-					reply_handler = lambda hits: self.recieve_hits(qstring, hits, max),
-					error_handler = self.recieve_error)
+					reply_handler = lambda hits: self.receive_hits(qstring, hits, max),
+					error_handler = self.receive_error)
 		print 'Tracker query:', qstring
 
 
@@ -467,13 +470,13 @@ class TrackerLiveSearchHandler(deskbar.interfaces.Module):
 # this code is stolen from the programs handler of deskbar
 def parse_desktop_file(desktop, only_if_visible=False):
 	try:
-		desktop = deskbar.core.gnomedesktop.item_new_from_file(desktop, deskbar.core.gnomedesktop.LOAD_ONLY_IF_EXISTS)
+		desktop = gnomedesktop.item_new_from_file(desktop, gnomedesktop.LOAD_ONLY_IF_EXISTS)
 	except Exception, e:
 		print 'Couldn\'t read desktop file:%s:%s' % (desktop, e)
 		return None
-	if desktop == None or desktop.get_entry_type() != deskbar.core.gnomedesktop.TYPE_APPLICATION:
+	if desktop == None or desktop.get_entry_type() != gnomedesktop.TYPE_APPLICATION:
 		return None
-	if only_if_visible and desktop.get_boolean(deskbar.core.gnomedesktop.KEY_NO_DISPLAY):
+	if only_if_visible and desktop.get_boolean(gnomedesktop.KEY_NO_DISPLAY):
 		return None
 	return desktop
 

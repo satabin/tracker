@@ -63,7 +63,8 @@ am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(libstemmerdir)"
 libstemmerLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(libstemmer_LTLIBRARIES)
-libstemmer_la_LIBADD =
+am__DEPENDENCIES_1 =
+libstemmer_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libstemmer_la_OBJECTS = libstemmer.lo api.lo utilities.lo \
 	stem_UTF_8_danish.lo stem_UTF_8_dutch.lo stem_UTF_8_english.lo \
 	stem_UTF_8_finnish.lo stem_UTF_8_french.lo \
@@ -119,8 +120,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -136,6 +136,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -205,6 +207,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -277,8 +281,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -341,9 +343,10 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 INCLUDES = \
-	-DSHAREDIR=\""$(datadir)"\"			\
-	-DG_LOG_DOMAIN=\"Tracker\"			\
-	-I$(top_srcdir)/src
+	-DSHAREDIR=\""$(datadir)"\"	\
+	-DG_LOG_DOMAIN=\"Tracker\"	\
+	-I$(top_srcdir)/src		\
+	$(WARN_CFLAGS)
 
 libstemmerdir = $(libdir)/tracker
 libstemmer_LTLIBRARIES = libstemmer.la
@@ -386,6 +389,7 @@ noinst_HEADERS = \
 	stem_UTF_8_spanish.h		\
 	stem_UTF_8_swedish.h
 
+libstemmer_la_LIBADD = $(GCOV_LIBS)
 libstemmer_la_LDFLAGS = -version-info 0:0:0
 all: all-am
 

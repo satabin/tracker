@@ -6,6 +6,8 @@ tracker (0.6.91-1) UNRELEASED; urgency=low
     - debian/patches/02-tracker-restart.patch
     - debian/patches/03-tracker-deskbar-live-search.patch
     - debian/patches/05_gnomedesktop.patch
+  * debian/control
+    - Bump Standards-Version to 3.8.1. No further changes.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 14 Mar 2009 06:23:20 +0100
 

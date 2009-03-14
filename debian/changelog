@@ -1,6 +1,11 @@
 tracker (0.6.91-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Removed patches that were merged upstream
+    - debian/patches/01-secure_tmpdir.patch
+    - debian/patches/02-tracker-restart.patch
+    - debian/patches/03-tracker-deskbar-live-search.patch
+    - debian/patches/05_gnomedesktop.patch
 
  -- Michael Biebl <biebl@debian.org>  Sat, 14 Mar 2009 06:23:20 +0100
 

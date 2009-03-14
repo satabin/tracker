@@ -30,6 +30,7 @@
 #include <glib/gi18n.h>
 
 #include <libtracker/tracker.h>
+#include <libtracker-common/tracker-common.h>
 
 static gint	      limit = 512;
 static gint	      offset;
@@ -216,8 +217,12 @@ main (int argc, char **argv)
 			g_print ("%s\n",
 				 _("No results found matching your query"));
 		} else {
-			g_print ("%s\n",
-				 _("Results:"));
+			g_print (tracker_dngettext (NULL,
+						    _("Result: %d"), 
+						    _("Results: %d"),
+						    array->len),
+				 array->len);
+			g_print ("\n");
 
 			g_ptr_array_foreach (array, (GFunc) get_meta_table_data, NULL);
 			g_ptr_array_free (array, TRUE);
@@ -247,8 +252,16 @@ main (int argc, char **argv)
 			g_print ("%s\n",
 				 _("No results found matching your query"));
 		} else {
-			g_print ("%s:\n",
-				 _("Results"));
+			gint length;
+
+			length = g_strv_length (strv);
+			
+			g_print (tracker_dngettext (NULL,
+						    _("Result: %d"), 
+						    _("Results: %d"),
+						    length),
+				 length);
+			g_print ("\n");
 
 			for (p = strv; *p; p++) {
 				gchar *s;
@@ -263,6 +276,21 @@ main (int argc, char **argv)
 				g_free (s);
 			}
 
+
+			if (length >= limit) {
+				/* Display '...' so the user thinks there is
+				 * more items.
+				 */
+				g_print ("  ...\n");
+				
+				/* Display warning so the user knows this is
+				 * not the WHOLE data set.
+				 */
+				g_printerr ("\n"
+					    "%s\n",
+					    _("NOTE: Limit was reached, there are more items in the database not listed here"));
+			}
+			
 			g_free (strv);
 		}
 	}

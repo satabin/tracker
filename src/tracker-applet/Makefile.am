@@ -3,11 +3,13 @@ include $(top_srcdir)/Makefile.decl
 INCLUDES =								\
 	-DSHAREDIR=\""$(datadir)"\"					\
 	-DLOCALEDIR=\""$(localedir)"\" 					\
+	-DTRACKER_LIBEXECDIR=\""$(libexecdir)"\" 			\
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
 	$(WARN_CFLAGS)							\
+	$(LIBGLADE_CFLAGS)						\
 	$(TRACKER_APPLET_CFLAGS)					\
-	$(LIBGLADE_CFLAGS)
+	$(GCOV_CFLAGS)
 
 bin_PROGRAMS = tracker-applet
 
@@ -15,7 +17,8 @@ tracker_applet_LDADD = 							\
 	$(top_builddir)/src/libtracker/libtrackerclient.la 		\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 	$(TRACKER_APPLET_LIBS)						\
-	$(LIBGLADE_LIBS)
+	$(LIBGLADE_LIBS)						\
+	$(GCOV_LIBS)
 
 tracker_applet_SOURCES = 						\
 	tracker-applet.c 						\

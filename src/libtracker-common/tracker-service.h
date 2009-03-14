@@ -19,8 +19,8 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __TRACKERD_SERVICES_H__
-#define __TRACKERD_SERVICES_H__
+#ifndef __LIBTRACKER_COMMON_SERVICES_H__
+#define __LIBTRACKER_COMMON_SERVICES_H__
 
 #include <glib-object.h>
 
@@ -40,7 +40,6 @@ typedef enum {
 	TRACKER_DB_TYPE_CONTENT,
 	TRACKER_DB_TYPE_EMAIL,
 	TRACKER_DB_TYPE_FILES,
-	TRACKER_DB_TYPE_XESAM,
 	TRACKER_DB_TYPE_CACHE,
 	TRACKER_DB_TYPE_USER
 } TrackerDBType;
@@ -116,5 +115,5 @@ void		tracker_service_set_show_service_directories (TrackerService *service,
 
 G_END_DECLS
 
-#endif /* __TRACKERD_SERVICE_H__ */
+#endif /* __LIBTRACKER_COMMON_SERVICE_H__ */
 

@@ -31,6 +31,7 @@
 #include <gio/gio.h>
 
 #include <libtracker/tracker.h>
+#include <libtracker-common/tracker-common.h>
 
 static gchar	     *service;
 static gchar        **uri = NULL;
@@ -54,7 +55,7 @@ print_property_value (gpointer value)
 
 	pair = value;
 
-	g_print ("%s - %s\n", pair[0], pair[1]);
+	g_print ("  '%s' = '%s'\n", pair[0], pair[1]);
 }
 
 int
@@ -146,8 +147,16 @@ main (int argc, char **argv)
 		g_print ("%s\n",
 			 _("No metadata available for that uri"));
 	} else {
-		g_print ("%s\n",
-			 _("Results:"));
+		gint length;
+
+		length = results->len;
+
+		g_print (tracker_dngettext (NULL,
+					    _("Result: %d"), 
+					    _("Results: %d"),
+					    length),
+			 length);
+		g_print ("\n");
 		
 		g_ptr_array_foreach (results, (GFunc) print_property_value, NULL);
 		g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);

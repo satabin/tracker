@@ -86,6 +86,8 @@ void	       tracker_daemon_prompt_index_signals (TrackerDaemon	  *object,
 						    DBusGMethodInvocation *context,
 						    GError **error);
 
+/* None DBus/Object functions: should this be in tracker-status.c? -mr */
+void           tracker_daemon_signal_statistics    (void);
 
 G_END_DECLS
 

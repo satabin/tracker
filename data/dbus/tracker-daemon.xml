@@ -135,7 +135,7 @@
     <method name="PromptIndexSignals">
       <annotation name="org.freedesktop.DBus.GLib.Async" value="true"/>
     </method>
-    
+
     <!-- Signal change in index status - states are:
 	 "Initializing", "Watching", "Indexing", "Pending",
 	 "Optimizing", "Idle", "Shutdown".

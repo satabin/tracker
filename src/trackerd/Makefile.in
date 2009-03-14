@@ -64,13 +64,11 @@ am_trackerd_OBJECTS = tracker-backup.$(OBJEXT) \
 	tracker-main.$(OBJEXT) tracker-marshal-main.$(OBJEXT) \
 	tracker-metadata.$(OBJEXT) tracker-monitor.$(OBJEXT) \
 	tracker-search.$(OBJEXT) tracker-status.$(OBJEXT) \
-	tracker-utils.$(OBJEXT) tracker-xesam.$(OBJEXT) \
-	tracker-xesam-manager.$(OBJEXT) \
-	tracker-xesam-session.$(OBJEXT) \
-	tracker-xesam-live-search.$(OBJEXT) tracker-cleanup.$(OBJEXT)
+	tracker-utils.$(OBJEXT) tracker-volume-cleanup.$(OBJEXT) \
+	tracker-push.$(OBJEXT) tracker-push-registrar.$(OBJEXT)
 trackerd_OBJECTS = $(am_trackerd_OBJECTS)
 am__DEPENDENCIES_1 =
-trackerd_DEPENDENCIES = $(plugin_libs) \
+trackerd_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
@@ -80,7 +78,7 @@ trackerd_DEPENDENCIES = $(plugin_libs) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -123,8 +121,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -140,6 +137,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -209,6 +208,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -281,8 +282,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -349,20 +348,23 @@ INCLUDES = \
 	-DLIBDIR=\""$(libdir)"\"					\
 	-DLOCALEDIR=\""$(localedir)"\" 					\
 	-DMAIL_MODULES_DIR=\""$(libdir)"/tracker/mail-modules\"         \
+	-DPUSH_MODULES_DIR=\""$(libdir)/tracker/push-modules/daemon"\"	\
 	-DG_LOG_DOMAIN=\"Tracker\"					\
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
+	$(WARN_CFLAGS)							\
+	$(GLIB2_CFLAGS)							\
+	$(GTHREAD_CFLAGS)						\
+	$(GMODULE_CFLAGS)						\
+	$(GIO_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
+	$(DBUS_CFLAGS)							\
+	$(PANGO_CFLAGS)							\
 	$(GMIME_CFLAGS)							\
 	$(FAM_CFLAGS)							\
 	$(SQLITE3_CFLAGS)						\
 	$(QDBM_CFLAGS)							\
-	$(DBUS_CFLAGS)							\
-	$(PANGO_CFLAGS)							\
-	$(GIO_CFLAGS)							\
-	$(GMODULE_CFLAGS)						\
-	$(GTHREAD_CFLAGS)						\
-	$(RAPTOR_CFLAGS)						\
-	$(GLIB2_CFLAGS)
+	$(RAPTOR_CFLAGS)
 
 @HAVE_INOTIFY_TRUE@inotify_libs = $(top_builddir)/src/libinotify/libinotify.la
 trackerd_SOURCES = \
@@ -393,21 +395,14 @@ trackerd_SOURCES = \
 	tracker-status.h						\
 	tracker-utils.c							\
 	tracker-utils.h							\
-	tracker-xesam.c							\
-	tracker-xesam.h							\
-	tracker-xesam-manager.c						\
-	tracker-xesam-manager.h						\
-	tracker-xesam-session.c						\
-	tracker-xesam-session.h						\
-	tracker-xesam-live-search.c					\
-	tracker-xesam-live-search.h					\
-	tracker-cleanup.c						\
-	tracker-cleanup.h
+	tracker-volume-cleanup.c					\
+	tracker-volume-cleanup.h					\
+	tracker-push.c							\
+	tracker-push.h							\
+	tracker-push-registrar.c					\
+	tracker-push-registrar.h
 
 @OS_WIN32_TRUE@trackerd_win_libs = -lws2_32 -lkernel32
-@HAVE_EVOLUTION_PLUGIN_TRUE@plugin_libs = \
-@HAVE_EVOLUTION_PLUGIN_TRUE@	$(top_builddir)/src/plugins/evolution/libtracker-evolution.la
-
 trackerd_LDADD = \
 	$(plugin_libs)							\
 	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
@@ -426,6 +421,7 @@ trackerd_LDADD = \
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							\
 	$(RAPTOR_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(trackerd_win_libs)						\
 	-lz								\
 	-lm
@@ -435,12 +431,12 @@ marshal_sources = \
         tracker-marshal.c
 
 dbus_sources = \
+	tracker-backup-glue.h						\
 	tracker-daemon-glue.h						\
 	tracker-files-glue.h						\
 	tracker-keywords-glue.h						\
 	tracker-metadata-glue.h						\
 	tracker-search-glue.h						\
-	tracker-xesam-glue.h						\
 	tracker-indexer-client.h
 
 BUILT_SOURCES = \
@@ -522,7 +518,6 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-backup.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-cleanup.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crawler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-daemon.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus.Po@am__quote@
@@ -533,13 +528,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-metadata.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-monitor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-processor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-push-registrar.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-push.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-search.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-status.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-xesam-live-search.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-xesam-manager.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-xesam-session.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-xesam.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-volume-cleanup.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

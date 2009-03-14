@@ -19,8 +19,8 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __LIBTRACKER_DBUS_H__
-#define __LIBTRACKER_DBUS_H__
+#ifndef __LIBTRACKER_COMMON_DBUS_H__
+#define __LIBTRACKER_COMMON_DBUS_H__
 
 #if !defined (__LIBTRACKER_COMMON_INSIDE__) && !defined (TRACKER_COMPILATION)
 #error "only <libtracker-common/tracker-common.h> must be included directly."
@@ -91,6 +91,7 @@ TrackerDBusData *tracker_dbus_data_new		     (const gpointer		  arg1,
 GValue *	 tracker_dbus_gvalue_slice_new	     (GType			  type);
 void		 tracker_dbus_gvalue_slice_free      (GValue			 *value);
 gchar **	 tracker_dbus_slist_to_strv	     (GSList			 *list);
+gchar **         tracker_dbus_str_to_strv            (const gchar                *str);
 gchar **	 tracker_dbus_queue_str_to_strv      (GQueue			 *queue,
 						      gint			  max);
 gchar **	 tracker_dbus_queue_gfile_to_strv    (GQueue			 *queue,
@@ -123,4 +124,4 @@ void		 tracker_dbus_request_debug	     (gint			  request_id,
 
 G_END_DECLS
 
-#endif /* __LIBTRACKER_DBUS_H__ */
+#endif /* __LIBTRACKER_COMMON_DBUS_H__ */

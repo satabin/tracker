@@ -26,6 +26,8 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <linux/sched.h>
+#include <sched.h>
 
 #include <glib.h>
 #include <glib-object.h>
@@ -46,14 +48,19 @@
 #include <libtracker-data/tracker-turtle.h>
 #include <libtracker-data/tracker-data-manager.h>
 
-#include <plugins/evolution/tracker-evolution-indexer.h>
-
 #include "tracker-dbus.h"
 #include "tracker-indexer.h"
+#include "tracker-push.h"
+
+/* Temporary hack for out of date kernels, also, this value may not be
+ * the same on all architectures, but it is for x86.
+ */
+#ifndef SCHED_IDLE
+#define SCHED_IDLE 5
+#endif
 
 #define ABOUT								  \
-	"Tracker " PACKAGE_VERSION "\n"					  \
-	"Copyright (c) 2005-2008 Jamie McCracken (jamiemcc@gnome.org)\n"
+	"Tracker " PACKAGE_VERSION "\n"
 
 #define LICENSE								  \
 	"This program is free software and comes without any warranty.\n" \
@@ -67,12 +74,17 @@
 static GMainLoop    *main_loop;
 static guint	     quit_timeout_id;
 
+static gboolean      version;
 static gint	     verbosity = -1;
-static gboolean      process_all = FALSE;
-static gboolean      run_forever = FALSE;
-static gchar       **modules = NULL;
+static gboolean      process_all;
+static gboolean      run_forever;
+static gchar       **modules;
 
 static GOptionEntry  entries[] = {
+	{ "version", 'V', 0,
+	  G_OPTION_ARG_NONE, &version,
+	  N_("Displays version information"),
+	  NULL },
 	{ "verbosity", 'v', 0,
 	  G_OPTION_ARG_INT, &verbosity,
 	  N_("Logging, 0 = errors only, "
@@ -142,24 +154,16 @@ sanity_check_option_values (TrackerConfig *config)
 }
 
 static void
-signal_handler (gint signo)
+signal_handler (int signo)
 {
 	static gboolean in_loop = FALSE;
 
-	/* die if we get re-entrant signals handler calls */
+	/* Die if we get re-entrant signals handler calls */
 	if (in_loop) {
 		exit (EXIT_FAILURE);
 	}
 
 	switch (signo) {
-	case SIGSEGV:
-		/* we are screwed if we get this so exit immediately! */
-		exit (EXIT_FAILURE);
-
-	case SIGBUS:
-	case SIGILL:
-	case SIGFPE:
-	case SIGABRT:
 	case SIGTERM:
 	case SIGINT:
 		in_loop = TRUE;
@@ -167,7 +171,10 @@ signal_handler (gint signo)
 
 	default:
 		if (g_strsignal (signo)) {
-			g_warning ("Received signal: %s", g_strsignal (signo));
+			g_print ("\n");
+			g_print ("Received signal:%d->'%s'",
+                                 signo,
+                                 g_strsignal (signo));
 		}
 		break;
 	}
@@ -177,7 +184,7 @@ static void
 initialize_signal_handler (void)
 {
 #ifndef G_OS_WIN32
-	struct sigaction act, ign_act;
+	struct sigaction act;
 	sigset_t	 empty_mask;
 
 	sigemptyset (&empty_mask);
@@ -185,21 +192,57 @@ initialize_signal_handler (void)
 	act.sa_mask    = empty_mask;
 	act.sa_flags   = 0;
 
-	ign_act.sa_handler = SIG_IGN;
-	ign_act.sa_mask = empty_mask;
-	ign_act.sa_flags = 0;
-
 	sigaction (SIGTERM, &act, NULL);
-	sigaction (SIGILL,  &act, NULL);
-	sigaction (SIGBUS,  &act, NULL);
-	sigaction (SIGFPE,  &act, NULL);
-	sigaction (SIGHUP,  &act, NULL);
-	sigaction (SIGSEGV, &act, NULL);
-	sigaction (SIGABRT, &act, NULL);
-	sigaction (SIGUSR1, &act, NULL);
 	sigaction (SIGINT,  &act, NULL);
-	sigaction (SIGPIPE, &ign_act, NULL);
-#endif
+	sigaction (SIGHUP,  &act, NULL);
+#endif /* G_OS_WIN32 */
+}
+
+static void
+initialize_priority (void)
+{
+	struct sched_param sp;
+
+	/* Set disk IO priority and scheduling */
+	tracker_ioprio_init ();
+
+	/* Set process priority:
+	 * The nice() function uses attribute "warn_unused_result" and
+	 * so complains if we do not check its returned value. But it
+	 * seems that since glibc 2.2.4, nice() can return -1 on a
+	 * successful call so we have to check value of errno too.
+	 * Stupid... 
+	 */
+	g_message ("Setting process priority");
+
+	if (nice (19) == -1) {
+		const gchar *str = g_strerror (errno);
+
+		g_message ("Couldn't set nice value to 19, %s",
+			   str ? str : "no error given");
+	}
+
+	/* Set process scheduling parameters:
+	 * This is used so we don't steal scheduling priority from
+	 * the most important applications - like the phone
+	 * application which has a real time requirement here. This
+	 * is detailed in Nokia bug #95573 
+	 */
+	g_message ("Setting scheduling priority");
+
+	if (sched_getparam (0, &sp) == 0) {
+		if (sched_setscheduler (0, SCHED_IDLE, &sp) != 0) {
+			const gchar *str = g_strerror (errno);
+			
+			g_message ("Couldn't set scheduler priority, %s",
+				   str ? str : "no error given");
+		}
+	} else {
+		const gchar *str = g_strerror (errno);
+
+		g_message ("Couldn't get scheduler priority, %s",
+			   str ? str : "no error given");
+	}
 }
 
 static gboolean
@@ -209,7 +252,7 @@ quit_timeout_cb (gpointer user_data)
 
 	indexer = TRACKER_INDEXER (user_data);
 
-	if (!tracker_indexer_get_running (indexer)) {
+	if (tracker_indexer_get_stoppable (indexer)) {
 		g_message ("Indexer is still not running after %d seconds, quitting...",
 			   QUIT_TIMEOUT);
 		g_main_loop_quit (main_loop);
@@ -224,6 +267,7 @@ quit_timeout_cb (gpointer user_data)
 static void
 indexer_finished_cb (TrackerIndexer *indexer,
 		     gdouble	     seconds_elapsed,
+		     guint           items_processed,
 		     guint	     items_indexed,
 		     gboolean	     interrupted,
 		     gpointer	     user_data)
@@ -290,7 +334,11 @@ main (gint argc, gchar *argv[])
 	g_option_context_parse (context, &argc, &argv, &error);
 	g_option_context_free (context);
 
-	g_print ("\n" ABOUT "\n" LICENSE "\n");
+        if (version) {
+                g_print ("\n" ABOUT "\n" LICENSE "\n");
+                return EXIT_SUCCESS;
+        }
+
 	g_print ("Initializing tracker-indexer...\n");
 
 	initialize_signal_handler ();
@@ -300,12 +348,21 @@ main (gint argc, gchar *argv[])
 		return EXIT_FAILURE;
 	}
 
+	/* This makes sure we don't steal all the system's resources */
+	initialize_priority ();
+
 	/* Initialize logging */
 	config = tracker_config_new ();
 	language = tracker_language_new (config);
 
 	if (verbosity > -1) {
 		tracker_config_set_verbosity (config, verbosity);
+	}
+	/* Make sure we initialize DBus, this shows we are started
+	 * successfully when called upon from the daemon.
+	 */
+	if (!tracker_dbus_init ()) {
+		return EXIT_FAILURE;
 	}
 
 	filename = g_build_filename (g_get_user_data_dir (),
@@ -316,13 +373,6 @@ main (gint argc, gchar *argv[])
 	tracker_log_init (filename, tracker_config_get_verbosity (config));
 	g_print ("Starting log:\n  File:'%s'\n", filename);
 	g_free (filename);
-
-	/* Make sure we initialize DBus, this shows we are started
-	 * successfully when called upon from the daemon.
-	 */
-	if (!tracker_dbus_init ()) {
-		return EXIT_FAILURE;
-	}
 
 	sanity_check_option_values (config);
 
@@ -383,14 +433,11 @@ main (gint argc, gchar *argv[])
 
 	tracker_data_manager_init (config, language, file_index, email_index);
 
-#ifdef HAVE_EVOLUTION_PLUGIN
-	tracker_evolution_storer_init (config, indexer);
-#endif
+	tracker_push_init (config, indexer);
 
 	tracker_turtle_init ();
 
 	g_message ("Starting...");
-
 
 	main_loop = g_main_loop_new (NULL, FALSE);
 	g_main_loop_run (main_loop);
@@ -398,7 +445,6 @@ main (gint argc, gchar *argv[])
 	g_message ("Shutdown started");
 
 	tracker_turtle_shutdown ();
-
 
 	if (quit_timeout_id) {
 		g_source_remove (quit_timeout_id);
@@ -412,9 +458,7 @@ main (gint argc, gchar *argv[])
 
 	tracker_data_manager_shutdown ();
 
-#ifdef HAVE_EVOLUTION_PLUGIN
-	tracker_evolution_storer_shutdown ();
-#endif
+	tracker_push_shutdown ();
 
 	tracker_thumbnailer_shutdown ();
 	tracker_dbus_shutdown ();

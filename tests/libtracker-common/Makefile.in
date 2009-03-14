@@ -64,28 +64,29 @@ tracker_dbus_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_tracker_file_utils_OBJECTS = tracker-file-utils-test.$(OBJEXT)
 tracker_file_utils_OBJECTS = $(am_tracker_file_utils_OBJECTS)
 tracker_file_utils_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_tracker_ontology_OBJECTS = tracker-ontology-test.$(OBJEXT)
 tracker_ontology_OBJECTS = $(am_tracker_ontology_OBJECTS)
 tracker_ontology_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_tracker_type_utils_OBJECTS = tracker-type-utils-test.$(OBJEXT)
 tracker_type_utils_OBJECTS = $(am_tracker_type_utils_OBJECTS)
 tracker_type_utils_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -130,8 +131,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -147,6 +147,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -216,6 +218,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -288,8 +292,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -369,11 +371,13 @@ INCLUDES = \
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
 	-I$(top_srcdir)/tests/common					\
-	$(DBUS_CFLAGS)							\
+	$(WARN_CFLAGS)							\
+	$(GLIB2_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
 	$(GMODULE_CFLAGS)						\
 	$(GTHREAD_CFLAGS)						\
 	$(PANGO_CFLAGS)							\
-	$(GLIB2_CFLAGS)
+	$(DBUS_CFLAGS)
 
 tracker_ontology_SOURCES = \
 	tracker-ontology-test.c 
@@ -382,6 +386,7 @@ tracker_ontology_LDADD = \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							
 
@@ -392,6 +397,7 @@ tracker_dbus_LDADD = \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(DBUS_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							
@@ -403,6 +409,7 @@ tracker_type_utils_LDADD = \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							
 
@@ -413,6 +420,7 @@ tracker_file_utils_LDADD = \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							
 
@@ -426,6 +434,7 @@ tracker_file_utils_LDADD = \
 # 	$(top_builddir)/src/libstemmer/libstemmer.la	 		\
 # 	$(GMODULE_LIBS)							\
 # 	$(GTHREAD_LIBS)							\
+#	$(GCOV_LIBS)							\
 # 	$(PANGO_LIBS)							\
 # 	$(GLIB2_LIBS)							
 #
@@ -436,6 +445,7 @@ tracker_file_utils_LDADD = \
 # 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
 # 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 # 	$(GMODULE_LIBS)							\
+#	$(GCOV_LIBS)							\
 # 	$(GTHREAD_LIBS)							\
 # 	$(PANGO_LIBS)							\
 # 	$(GLIB2_LIBS)							

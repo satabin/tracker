@@ -10,7 +10,6 @@ noinst_PROGRAMS = $(TEST_PROGS)
 # 
 #       These tests include:
 #
-#	  union-performance
 #         tracker-db-dbus
 #	  tracker-db-manager-unattach
 #	  tracker-db-manager-attach
@@ -25,36 +24,21 @@ INCLUDES = 								\
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
 	-I$(top_srcdir)/tests/common					\
-	$(DBUS_CFLAGS)							\
-	$(SQLITE3_CFLAGS)						\
-	$(QDBM_CFLAGS)							\
+	$(WARN_CFLAGS)							\
+	$(GLIB2_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
 	$(GMODULE_CFLAGS)						\
 	$(GTHREAD_CFLAGS)						\
-	$(GLIB2_CFLAGS)
+	$(DBUS_CFLAGS)							\
+	$(SQLITE3_CFLAGS)						\
+	$(QDBM_CFLAGS)
 
 # TEST_PROGS +=								\
-#	union-performance						\
 #	tracker-index-reader						\
 # 	tracker-db-dbus							\
 # 	tracker-db-manager-unattach					\
 # 	tracker-db-manager-attach					\
 # 	tracker-db-manager-custom					\
-#
-# union_performance_SOURCES =						\
-# 	tracker-db-manager-common.h					\
-# 	tracker-db-manager-common.c					\
-# 	union-performance.c
-#
-# union_performance_LDADD =                                            	\
-# 	$(top_builddir)/src/libtracker-common/libtracker-common.la      \
-# 	$(top_builddir)/src/libtracker-db/libtracker-db.la              \
-# 	$(top_builddir)/tests/common/libtracker-testcommon.la           \
-# 	$(SQLITE3_LIBS)                                                 \
-# 	$(QDBM_LIBS)                                                    \
-# 	$(GMODULE_LIBS)                                                 \
-# 	$(GTHREAD_LIBS)                                                 \
-# 	$(GLIB2_LIBS)                                                   \
-# 	-lz
 #
 # tracker_db_manager_attach_SOURCES = 					\
 # 	tracker-db-manager-test-attach.c 				\
@@ -140,6 +124,7 @@ tracker_index_writer_LDADD =						\
 	$(top_builddir)/src/libtracker-db/libtracker-db.la	 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(QDBM_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							

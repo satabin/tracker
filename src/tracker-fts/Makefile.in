@@ -66,7 +66,8 @@ am__DEPENDENCIES_1 =
 tracker_fts_la_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_tracker_fts_la_OBJECTS = tracker-fts.lo tracker-fts-hash.lo
 tracker_fts_la_OBJECTS = $(am_tracker_fts_la_OBJECTS)
 tracker_fts_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
@@ -114,8 +115,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -131,6 +131,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -200,6 +202,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -272,8 +276,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -335,27 +337,29 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-module_flags = -module -avoid-version -no-undefined
-tracker_fts_modulesdir = $(libdir)
 INCLUDES = \
-	-g								\
-	-I$(top_srcdir)/src						\
-	$(GLIB2_CFLAGS)							\
-	$(SQLITE3_CFLAGS)						\
-	$(PANGO_CFLAGS)							\
+	-I$(top_srcdir)/src					\
+	$(WARN_CFLAGS)						\
+	$(GLIB2_CFLAGS)						\
+	$(GCOV_CFLAGS)						\
+	$(PANGO_CFLAGS)						\
+	$(SQLITE3_CFLAGS)					\
 	-DSTORE_CATEGORY=1			
 
+module_flags = -module -avoid-version -no-undefined
+tracker_fts_modulesdir = $(libdir)
 tracker_fts_modules_LTLIBRARIES = tracker-fts.la
 tracker_fts_la_SOURCES = \
-			tracker-fts.c					\
-			tracker-fts-hash.c				
+	tracker-fts.c						\
+	tracker-fts-hash.c				
 
 tracker_fts_la_LDFLAGS = $(module_flags)
 tracker_fts_la_LIBADD = \
-	$(top_builddir)/src/libtracker-db/libtracker-db.la              \
-	$(SQLITE3_LIBS)							\
-	$(GTHREAD_LIBS)							\
-	$(PANGO_LIBS)							\
+	$(top_builddir)/src/libtracker-db/libtracker-db.la	\
+	$(SQLITE3_LIBS)						\
+	$(GTHREAD_LIBS)						\
+	$(GCOV_LIBS)						\
+	$(PANGO_LIBS)						\
 	$(GLIB2_LIBS)							
 
 all: all-am

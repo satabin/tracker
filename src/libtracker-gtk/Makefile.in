@@ -67,7 +67,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtracker_gtk_la_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker/libtrackerclient.la \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libtracker_gtk_la_OBJECTS = tracker-utils.lo tracker-ui.lo \
 	tracker-metadata-tile.lo tracker-tag-bar.lo \
 	tracker-keyword-store.lo
@@ -119,8 +119,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -136,6 +135,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -205,6 +206,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -277,8 +280,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -341,29 +342,32 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 INCLUDES = \
-	-I$(top_srcdir)/src/libtracker 	\
-	$(LIBTRACKERGTK_CFLAGS)
+	-I$(top_srcdir)/src/libtracker			 	\
+	$(WARN_CFLAGS)						\
+	$(LIBTRACKERGTK_CFLAGS)					\
+	$(GCOV_CFLAGS)
 
 libtracker_gtkincdir = $(includedir)/libtracker-gtk
 lib_LTLIBRARIES = libtracker-gtk.la
 libtracker_gtkinc_HEADERS = \
-	tracker-gtk.h			\
-	tracker-utils.h 		\
-	tracker-ui.h			\
-	tracker-metadata-tile.h		\
-	tracker-tag-bar.h		\
+	tracker-gtk.h						\
+	tracker-utils.h 					\
+	tracker-ui.h						\
+	tracker-metadata-tile.h					\
+	tracker-tag-bar.h					\
 	tracker-keyword-store.h
 
 libtracker_gtk_la_SOURCES = \
-	tracker-utils.c			\
-	tracker-ui.c 			\
-	tracker-metadata-tile.c		\
-	tracker-tag-bar.c		\
+	tracker-utils.c						\
+	tracker-ui.c 						\
+	tracker-metadata-tile.c					\
+	tracker-tag-bar.c					\
 	tracker-keyword-store.c
 
 libtracker_gtk_la_LIBADD = \
-	$(top_builddir)/src/libtracker/libtrackerclient.la \
-	$(LIBTRACKERGTK_LIBS) 
+	$(top_builddir)/src/libtracker/libtrackerclient.la 	\
+	$(LIBTRACKERGTK_LIBS) 					\
+	$(GCOV_LIBS)
 
 libtracker_gtk_la_LDFLAGS = -version-info 0:0:0
 all: all-am

@@ -68,7 +68,8 @@ am__installdirs = "$(DESTDIR)$(libtracker_moduledir)" \
 	"$(DESTDIR)$(libtracker_moduleincludedir)"
 libtracker_moduleLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(libtracker_module_LTLIBRARIES)
-libtracker_module_la_LIBADD =
+am__DEPENDENCIES_1 =
+libtracker_module_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libtracker_module_la_OBJECTS = tracker-module-file.lo \
 	tracker-module-iteratable.lo tracker-module-metadata-utils.lo \
 	tracker-module-metadata.lo
@@ -78,10 +79,9 @@ PROGRAMS = $(libexec_PROGRAMS)
 am_tracker_indexer_OBJECTS = tracker-dbus.$(OBJEXT) \
 	tracker-indexer.$(OBJEXT) tracker-indexer-module.$(OBJEXT) \
 	tracker-main.$(OBJEXT) tracker-marshal-main.$(OBJEXT) \
-	tracker-removable-device.$(OBJEXT)
+	tracker-removable-device.$(OBJEXT) tracker-push.$(OBJEXT)
 tracker_indexer_OBJECTS = $(am_tracker_indexer_OBJECTS)
-am__DEPENDENCIES_1 =
-tracker_indexer_DEPENDENCIES = $(plugin_libs) libtracker-module.la \
+tracker_indexer_DEPENDENCIES = libtracker-module.la \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
@@ -89,7 +89,7 @@ tracker_indexer_DEPENDENCIES = $(plugin_libs) libtracker-module.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -145,8 +145,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -162,6 +161,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -231,6 +232,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -303,8 +306,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -373,14 +374,17 @@ INCLUDES = \
 	-DLIBDIR=\""$(libdir)"\"					\
 	-DLOCALEDIR=\""$(localedir)"\" 					\
 	-DINDEXER_MODULES_DIR=\""$(libdir)/tracker/indexer-modules"\"	\
+	-DPUSH_MODULES_DIR=\""$(libdir)/tracker/push-modules/indexer"\" \
 	-DLIBEXEC_PATH=\""$(libexecdir)"\"				\
 	-DG_LOG_DOMAIN=\"Tracker\"					\
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
-	$(DBUS_CFLAGS)							\
+	$(WARN_CFLAGS)							\
+	$(GMODULE_CFLAGS)						\
 	$(PANGO_CFLAGS)							\
-	$(RAPTOR_CFLAGS)						\
-	$(GMODULE_CFLAGS)
+	$(DBUS_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
+	$(RAPTOR_CFLAGS)
 
 libtracker_moduledir = $(libdir)/tracker
 libtracker_moduleincludedir = $(includedir)/tracker-1.0/libtracker-module/
@@ -398,6 +402,7 @@ libtracker_moduleinclude_HEADERS = \
 	tracker-module-metadata-utils.h					\
 	tracker-module-metadata.h
 
+libtracker_module_la_LIBADD = $(GCOV_LIBS)
 tracker_indexer_SOURCES = \
 	tracker-dbus.c							\
 	tracker-dbus.h							\
@@ -409,10 +414,9 @@ tracker_indexer_SOURCES = \
 	tracker-module-metadata-private.h				\
 	tracker-marshal-main.c						\
 	tracker-removable-device.c					\
-	tracker-removable-device.h					
-
-@HAVE_EVOLUTION_PLUGIN_TRUE@plugin_libs = \
-@HAVE_EVOLUTION_PLUGIN_TRUE@	$(top_builddir)/src/plugins/evolution/libtracker-evolution-indexer.la
+	tracker-removable-device.h					\
+	tracker-push.c							\
+	tracker-push.h
 
 tracker_indexer_LDADD = \
 	$(plugin_libs)							\
@@ -427,6 +431,7 @@ tracker_indexer_LDADD = \
 	$(GTHREAD_LIBS)							\
 	$(PANGO_LIBS)							\
 	$(GIO_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GLIB2_LIBS)							\
 	$(RAPTOR_LIBS)							\
 	-lz								\
@@ -556,6 +561,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-module-iteratable.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-module-metadata-utils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-module-metadata.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-push.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-removable-device.Po@am__quote@
 
 .c.o:

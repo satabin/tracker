@@ -64,7 +64,8 @@ tracker_index_writer_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -107,8 +108,7 @@ DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_HANDLER_DIR = @DESKBAR_HANDLER_DIR@
-DESKBAR_MODULE_DIR = @DESKBAR_MODULE_DIR@
+DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -124,6 +124,8 @@ EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
 GCONF_CFLAGS = @GCONF_CFLAGS@
 GCONF_LIBS = @GCONF_LIBS@
+GCOV_CFLAGS = @GCOV_CFLAGS@
+GCOV_LIBS = @GCOV_LIBS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -193,6 +195,8 @@ LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
 LIBGLADE_LIBS = @LIBGLADE_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
+LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
 LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
@@ -265,8 +269,6 @@ UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
-XESAM_GLIB_CFLAGS = @XESAM_GLIB_CFLAGS@
-XESAM_GLIB_LIBS = @XESAM_GLIB_LIBS@
 XGETTEXT = @XGETTEXT@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
@@ -336,7 +338,6 @@ GTESTER_REPORT = gtester-report
 # 
 #       These tests include:
 #
-#	  union-performance
 #         tracker-db-dbus
 #	  tracker-db-manager-unattach
 #	  tracker-db-manager-attach
@@ -348,37 +349,22 @@ INCLUDES = \
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
 	-I$(top_srcdir)/tests/common					\
-	$(DBUS_CFLAGS)							\
-	$(SQLITE3_CFLAGS)						\
-	$(QDBM_CFLAGS)							\
+	$(WARN_CFLAGS)							\
+	$(GLIB2_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
 	$(GMODULE_CFLAGS)						\
 	$(GTHREAD_CFLAGS)						\
-	$(GLIB2_CFLAGS)
+	$(DBUS_CFLAGS)							\
+	$(SQLITE3_CFLAGS)						\
+	$(QDBM_CFLAGS)
 
 
 # TEST_PROGS +=								\
-#	union-performance						\
 #	tracker-index-reader						\
 # 	tracker-db-dbus							\
 # 	tracker-db-manager-unattach					\
 # 	tracker-db-manager-attach					\
 # 	tracker-db-manager-custom					\
-#
-# union_performance_SOURCES =						\
-# 	tracker-db-manager-common.h					\
-# 	tracker-db-manager-common.c					\
-# 	union-performance.c
-#
-# union_performance_LDADD =                                            	\
-# 	$(top_builddir)/src/libtracker-common/libtracker-common.la      \
-# 	$(top_builddir)/src/libtracker-db/libtracker-db.la              \
-# 	$(top_builddir)/tests/common/libtracker-testcommon.la           \
-# 	$(SQLITE3_LIBS)                                                 \
-# 	$(QDBM_LIBS)                                                    \
-# 	$(GMODULE_LIBS)                                                 \
-# 	$(GTHREAD_LIBS)                                                 \
-# 	$(GLIB2_LIBS)                                                   \
-# 	-lz
 #
 # tracker_db_manager_attach_SOURCES = 					\
 # 	tracker-db-manager-test-attach.c 				\
@@ -463,6 +449,7 @@ tracker_index_writer_LDADD = \
 	$(top_builddir)/src/libtracker-db/libtracker-db.la	 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(QDBM_LIBS)							\
+	$(GCOV_LIBS)							\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
 	$(GLIB2_LIBS)							

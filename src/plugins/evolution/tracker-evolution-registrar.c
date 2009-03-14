@@ -23,20 +23,35 @@
 
 #include "config.h"
 
+#include <glib-object.h>
+#include <dbus/dbus-glib-bindings.h>
+
 #include <libtracker-data/tracker-data-update.h>
+#include <libtracker-data/tracker-data-manager.h>
+
+#include <trackerd/tracker-push-registrar.h>
+
 #define __TRACKER_EVOLUTION_REGISTRAR_C__
+
 #include "tracker-evolution-registrar.h"
 #include "tracker-evolution-registrar-glue.h"
 
-const DBusGMethodInfo *registrar_methods = dbus_glib_tracker_evolution_registrar_methods;
-
 #define TRACKER_EVOLUTION_REGISTRAR_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TRACKER_TYPE_EVOLUTION_REGISTRAR, TrackerEvolutionRegistrarPrivate))
 
-G_DEFINE_TYPE (TrackerEvolutionRegistrar, tracker_evolution_registrar, G_TYPE_OBJECT)
+#define TRACKER_TYPE_EVOLUTION_PUSH_REGISTRAR    (tracker_evolution_push_registrar_get_type ())
+#define TRACKER_EVOLUTION_PUSH_REGISTRAR(module) (G_TYPE_CHECK_INSTANCE_CAST ((module), TRACKER_TYPE_EVOLUTION_PUSH_REGISTRAR, TrackerEvolutionPushRegistrar))
 
-/* This runs in-process of trackerd. It simply proxies everything to the indexer
- * who wont always be running. Which is why this is needed (trackerd is always
- * running, so it's more suitable to respond to Evolution's requests). */
+typedef struct TrackerEvolutionPushRegistrar TrackerEvolutionPushRegistrar;
+typedef struct TrackerEvolutionPushRegistrarClass TrackerEvolutionPushRegistrarClass;
+
+struct TrackerEvolutionPushRegistrar {
+	TrackerPushRegistrar parent_instance;
+};
+
+struct TrackerEvolutionPushRegistrarClass {
+	TrackerPushRegistrarClass parent_class;
+};
+
 
 typedef struct {
 	DBusGProxy *idx_proxy;
@@ -47,6 +62,15 @@ enum {
 	PROP_0,
 	PROP_CONNECTION
 };
+
+static GType tracker_evolution_push_registrar_get_type (void) G_GNUC_CONST;
+
+G_DEFINE_TYPE (TrackerEvolutionRegistrar, tracker_evolution_registrar, G_TYPE_OBJECT)
+G_DEFINE_TYPE (TrackerEvolutionPushRegistrar, tracker_evolution_push_registrar, TRACKER_TYPE_PUSH_REGISTRAR);
+
+/* This runs in-process of trackerd. It simply proxies everything to the indexer
+ * who wont always be running. Which is why this is needed (trackerd is always
+ * running, so it's more suitable to respond to Evolution's requests). */
 
 static void
 tracker_evolution_registrar_finalize (GObject *object)
@@ -252,4 +276,121 @@ tracker_evolution_registrar_cleanup (TrackerEvolutionRegistrar *object,
 				    G_TYPE_INVALID);
 
 	dbus_g_method_return (context);
+}
+
+
+static void
+on_manager_destroy (DBusGProxy *proxy, gpointer user_data)
+{
+	return;
+}
+
+static void
+tracker_evolution_push_registrar_enable (TrackerPushRegistrar *registrar, 
+					 DBusGConnection      *connection,
+					 DBusGProxy           *dbus_proxy, 
+					 GError              **error)
+{
+	GError *nerror = NULL;
+	guint result;
+	DBusGProxy *manager_proxy;
+	GObject *object;
+
+	tracker_push_registrar_set_object (registrar, NULL);
+	tracker_push_registrar_set_manager (registrar, NULL);
+
+	manager_proxy = dbus_g_proxy_new_for_name (connection,
+						   TRACKER_EVOLUTION_MANAGER_SERVICE,
+						   TRACKER_EVOLUTION_MANAGER_PATH,
+						   TRACKER_EVOLUTION_MANAGER_INTERFACE);
+
+	/* Creation of the registrar */
+	if (!org_freedesktop_DBus_request_name (dbus_proxy, 
+						TRACKER_EVOLUTION_REGISTRAR_SERVICE,
+						DBUS_NAME_FLAG_DO_NOT_QUEUE,
+						&result, &nerror)) {
+
+		g_critical ("Could not setup DBus, %s in use\n", 
+			    TRACKER_EVOLUTION_REGISTRAR_SERVICE);
+
+		if (nerror) {
+			g_propagate_error (error, nerror);
+			return;
+		}
+	}
+
+	if (nerror) {
+		g_propagate_error (error, nerror);
+		return;
+	}
+
+	object = g_object_new (TRACKER_TYPE_EVOLUTION_REGISTRAR, 
+			       "connection", connection, NULL);
+
+	dbus_g_object_type_install_info (G_OBJECT_TYPE (object), 
+					 &dbus_glib_tracker_evolution_registrar_object_info);
+
+	dbus_g_connection_register_g_object (connection, 
+					     TRACKER_EVOLUTION_REGISTRAR_PATH, 
+					     object);
+
+	/* Registration of the registrar to the manager */
+	dbus_g_proxy_call_no_reply (manager_proxy, "Register",
+				    G_TYPE_OBJECT, object, 
+				    G_TYPE_UINT, (guint) tracker_data_manager_get_db_option_int ("EvolutionLastModseq"),
+				    G_TYPE_INVALID,
+				    G_TYPE_INVALID);
+
+	/* If while we had a proxy for the manager the manager shut itself down,
+	 * then we'll get rid of our registrar too, in on_manager_destroy */
+
+	g_signal_connect (manager_proxy, "destroy",
+			  G_CALLBACK (on_manager_destroy), registrar);
+
+	tracker_push_registrar_set_object (registrar, object);
+	tracker_push_registrar_set_manager (registrar, manager_proxy);
+
+	g_object_unref (object); /* sink own */
+	g_object_unref (manager_proxy);  /* sink own */
+}
+
+static void
+tracker_evolution_push_registrar_disable (TrackerPushRegistrar *registrar)
+{
+	tracker_push_registrar_set_object (registrar, NULL);
+	tracker_push_registrar_set_manager (registrar, NULL);
+}
+
+static void
+tracker_evolution_push_registrar_class_init (TrackerEvolutionPushRegistrarClass *klass)
+{
+	TrackerPushRegistrarClass *p_class = TRACKER_PUSH_REGISTRAR_CLASS (klass);
+
+	p_class->enable = tracker_evolution_push_registrar_enable;
+	p_class->disable = tracker_evolution_push_registrar_disable;
+}
+
+static void
+tracker_evolution_push_registrar_init (TrackerEvolutionPushRegistrar *registrar)
+{
+	return;
+}
+
+TrackerPushRegistrar *
+tracker_push_module_init (void)
+{
+	GObject *object;
+
+	object = g_object_new (TRACKER_TYPE_EVOLUTION_PUSH_REGISTRAR, NULL);
+
+	tracker_push_registrar_set_service (TRACKER_PUSH_REGISTRAR (object),
+					    TRACKER_EVOLUTION_MANAGER_SERVICE);
+
+	return TRACKER_PUSH_REGISTRAR (object);
+}
+
+void
+tracker_push_module_shutdown (TrackerPushRegistrar *registrar)
+{
+	tracker_evolution_push_registrar_disable (registrar);
 }

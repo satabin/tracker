@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <regex.h>
 #include <zlib.h>
+#include <locale.h>
 
 #include <glib/gstdio.h>
 
@@ -41,14 +42,13 @@
 #define ZLIB_BUF_SIZE		      8192
 
 /* Default memory settings for databases */
-#define TRACKER_DB_PAGE_SIZE_DEFAULT  4096
 #define TRACKER_DB_PAGE_SIZE_DONT_SET -1
 
 /* Size is in bytes and is currently 2Gb */
 #define TRACKER_DB_MAX_FILE_SIZE      2000000000 
 
 /* Set current database version we are working with */
-#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_2
+#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_3
 #define TRACKER_DB_VERSION_FILE       "db-version.txt"
 
 typedef enum {
@@ -59,8 +59,10 @@ typedef enum {
 
 typedef enum {
 	TRACKER_DB_VERSION_UNKNOWN, /* Unknown */
-	TRACKER_DB_VERSION_1,       /* TRUNK before indexer-split */
-	TRACKER_DB_VERSION_2        /* The indexer-split branch */
+	TRACKER_DB_VERSION_1,       /* Version 0.6.6  (before indexer-split) */
+	TRACKER_DB_VERSION_2,       /* Version 0.6.90 (after  indexer-split) */
+	TRACKER_DB_VERSION_3,       /* Version 0.6.91 (current TRUNK) */
+	TRACKER_DB_VERSION_4        /* Version 0.7    (vstore branch) */
 } TrackerDBVersion;
 
 typedef struct {
@@ -75,7 +77,12 @@ typedef struct {
 	gboolean	    add_functions;
 	gboolean	    attached;
 	gboolean	    is_index;
+	guint64             mtime;
 } TrackerDBDefinition;
+
+typedef struct {
+	GString *string;     /* The string we are accumulating */
+} AggregateData;
 
 static TrackerDBDefinition dbs[] = {
 	{ TRACKER_DB_UNKNOWN,
@@ -85,10 +92,11 @@ static TrackerDBDefinition dbs[] = {
 	  NULL,
 	  NULL,
 	  32,
-	  TRACKER_DB_PAGE_SIZE_DEFAULT,
+	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  FALSE,
 	  FALSE,
-	  FALSE },
+	  FALSE,
+ 	  0 },
 	{ TRACKER_DB_COMMON,
 	  TRACKER_DB_LOCATION_USER_DATA_DIR,
 	  NULL,
@@ -96,10 +104,11 @@ static TrackerDBDefinition dbs[] = {
 	  "common",
 	  NULL,
 	  32,
-	  TRACKER_DB_PAGE_SIZE_DEFAULT,
+	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  FALSE,
 	  FALSE,
-	  FALSE },
+	  FALSE,
+ 	  0 },
 	{ TRACKER_DB_CACHE,
 	  TRACKER_DB_LOCATION_SYS_TMP_DIR,
 	  NULL,
@@ -110,7 +119,8 @@ static TrackerDBDefinition dbs[] = {
 	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  FALSE,
 	  FALSE,
-	  FALSE },
+	  FALSE,
+ 	  0 },
 	{ TRACKER_DB_FILE_METADATA,
 	  TRACKER_DB_LOCATION_DATA_DIR,
 	  NULL,
@@ -118,10 +128,11 @@ static TrackerDBDefinition dbs[] = {
 	  "file-meta",
 	  NULL,
 	  512,
-	  TRACKER_DB_PAGE_SIZE_DEFAULT,
+	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  TRUE,
 	  FALSE,
-	  FALSE },
+	  FALSE,
+ 	  0 },
 	{ TRACKER_DB_FILE_FULLTEXT,
 	  TRACKER_DB_LOCATION_DATA_DIR,
 	  NULL,
@@ -129,10 +140,11 @@ static TrackerDBDefinition dbs[] = {
 	  "file-fulltext",
 	  NULL,
 	  512,
-	  TRACKER_DB_PAGE_SIZE_DEFAULT,
+	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  TRUE,
 	  FALSE,
-	  TRUE },  
+	  TRUE,
+ 	  0 },
 	{ TRACKER_DB_FILE_CONTENTS,
 	  TRACKER_DB_LOCATION_DATA_DIR,
 	  NULL,
@@ -140,10 +152,11 @@ static TrackerDBDefinition dbs[] = {
 	  "file-contents",
 	  NULL,
 	  1024,
-	  TRACKER_DB_PAGE_SIZE_DEFAULT,
+	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  FALSE,
 	  FALSE,
-	  FALSE },
+	  FALSE,
+ 	  0 },
 	{ TRACKER_DB_EMAIL_METADATA,
 	  TRACKER_DB_LOCATION_DATA_DIR,
 	  NULL,
@@ -151,9 +164,10 @@ static TrackerDBDefinition dbs[] = {
 	  "email-meta",
 	  NULL,
 	  512,
-	  TRACKER_DB_PAGE_SIZE_DEFAULT,
+	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  TRUE,
-	  FALSE},
+	  FALSE,
+ 	  0 },
 	{ TRACKER_DB_EMAIL_FULLTEXT,
 	  TRACKER_DB_LOCATION_DATA_DIR,
 	  NULL,
@@ -161,10 +175,11 @@ static TrackerDBDefinition dbs[] = {
 	  "email-fulltext",
 	  NULL,
 	  512,
-	  TRACKER_DB_PAGE_SIZE_DEFAULT,
+	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  TRUE,
 	  FALSE,
-	  TRUE},
+	  TRUE,
+ 	  0 },
 	{ TRACKER_DB_EMAIL_CONTENTS,
 	  TRACKER_DB_LOCATION_DATA_DIR,
 	  NULL,
@@ -172,21 +187,11 @@ static TrackerDBDefinition dbs[] = {
 	  "email-contents",
 	  NULL,
 	  512,
-	  TRACKER_DB_PAGE_SIZE_DEFAULT,
+	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  FALSE,
 	  FALSE,
-	  FALSE },
-	{ TRACKER_DB_XESAM,
-	  TRACKER_DB_LOCATION_DATA_DIR,
-	  NULL,
-	  "xesam.db",
-	  "xesam",
-	  NULL,
-	  512,
-	  TRACKER_DB_PAGE_SIZE_DEFAULT,
-	  TRUE,
 	  FALSE,
-	  FALSE },
+ 	  0 },
 };
 
 static gboolean		   db_exec_no_reply    (TrackerDBInterface *iface,
@@ -204,7 +209,6 @@ static gchar		  *sys_tmp_dir;
 static gpointer		   db_type_enum_class_pointer;
 static TrackerDBInterface *file_iface;
 static TrackerDBInterface *email_iface;
-static TrackerDBInterface *xesam_iface;
 
 static const gchar *
 location_to_directory (TrackerDBLocation location)
@@ -566,351 +570,6 @@ db_exec_no_reply (TrackerDBInterface *iface,
 	return TRUE;
 }
 
-static void
-load_service_file_xesam_map (TrackerDBInterface *iface,
-			     const gchar	*db_proc,
-			     const gchar	*data_to_split,
-			     const gchar	*data_to_insert)
-{
-	gchar **mappings;
-	gchar **mapping;
-
-	mappings = g_strsplit_set (data_to_split, ";", -1);
-
-	if (!mappings) {
-		return;
-	}
-
-	for (mapping = mappings; *mapping; mapping++) {
-		gchar *esc_value;
-
-		esc_value = tracker_escape_string (*mapping);
-		db_exec_proc (iface,
-			      db_proc,
-			      data_to_insert,
-			      esc_value,
-			      NULL);
-		g_free (esc_value);
-	}
-
-	g_strfreev (mappings);
-}
-
-static void
-load_service_file_xesam_insert (TrackerDBInterface *iface,
-				const gchar	   *sql_format,
-				const gchar	   *data_to_split,
-				const gchar	   *data_to_insert) 
-{
-	gchar **parents;
-	gchar **parent;
-
-	parents = g_strsplit_set (data_to_split, ";", -1);
-
-	if (!parents) {
-		return;
-	}
-
-	for (parent = parents; *parent; parent++) {
-		gchar *sql;
-
-		sql = g_strdup_printf (sql_format, *parent, data_to_insert);
-		db_exec_no_reply (iface, sql);
-		g_free (sql);
-	}
-
-	g_strfreev (parents);
-}
-
-static void
-load_service_file_xesam_update (TrackerDBInterface *iface,
-				const gchar	   *sql_format,
-				const gchar	   *data_to_update,
-				const gchar	   *data_key,
-				const gchar	   *data_value)
-{
-	gchar *str;
-	gchar *sql;
-
-	str = tracker_escape_string (data_key);
-	sql = g_strdup_printf (sql_format,
-			       data_to_update,
-			       str,
-			       data_value);
-	db_exec_no_reply (iface, sql);
-	g_free (sql);
-	g_free (str);
-}
-
-static gboolean
-load_service_file_xesam (TrackerDBInterface *iface,
-			 const gchar	    *filename)
-{
-	GKeyFile	     *key_file;
-	GError		     *error = NULL;
-	const gchar * const  *language_names;
-	gchar		    **groups;
-	gchar		     *service_file;
-	gchar		     *sql;
-	gboolean	      is_metadata;
-	gboolean	      is_service;
-	gboolean	      is_metadata_mapping;
-	gboolean	      is_service_mapping;
-	gint		      i, j;
-
-	const gchar	     *data_types[] = {
-		"string",
-		"float",
-		"integer",
-		"boolean",
-		"dateTime",
-		"List of strings",
-		"List of Uris",
-		"List of Urls",
-		NULL
-	};
-
-	key_file = g_key_file_new ();
-	service_file = g_build_filename (services_dir, filename, NULL);
-
-	if (!g_key_file_load_from_file (key_file, service_file, G_KEY_FILE_NONE, &error)) {
-		g_critical ("Couldn't load XESAM service file:'%s', %s",
-			    filename,
-			    error->message);
-		g_clear_error (&error);
-		g_free (service_file);
-		g_key_file_free (key_file);
-
-		return FALSE;
-	}
-
-	g_free (service_file);
-
-	is_metadata = FALSE;
-	is_service = FALSE;
-	is_metadata_mapping = FALSE;
-	is_service_mapping = FALSE;
-
-	if (g_str_has_suffix (filename, ".metadata")) {
-		is_metadata = TRUE;
-	} else if (g_str_has_suffix (filename, ".service")) {
-		is_service = TRUE;
-	} else if (g_str_has_suffix (filename, ".mmapping")) {
-		is_metadata_mapping = TRUE;
-	} else if (g_str_has_suffix (filename, ".smapping")) {
-		is_service_mapping = TRUE;
-	} else {
-		g_warning ("XESAM Service file:'%s' does not a recognised suffix "
-			   "('.service', '.metadata', '.mmapping' or '.smapping')",
-			   filename);
-		g_key_file_free (key_file);
-		return FALSE;
-	}
-
-	language_names = g_get_language_names ();
-
-	groups = g_key_file_get_groups (key_file, NULL);
-
-	for (i = 0; groups[i]; i++) {
-		gchar  *str_id;
-		gchar **keys;
-		gint	id = -1;
-
-		if (is_metadata) {
-			db_exec_proc (iface,
-				      "InsertXesamMetadataType",
-				      groups[i],
-				      NULL);
-			id = tracker_db_interface_sqlite_get_last_insert_id (TRACKER_DB_INTERFACE_SQLITE (iface));
-		} else if (is_service) {
-			db_exec_proc (iface,
-				      "InsertXesamServiceType",
-				      groups[i],
-				      NULL);
-			id = tracker_db_interface_sqlite_get_last_insert_id (TRACKER_DB_INTERFACE_SQLITE (iface));
-		}
-
-		/* Get inserted ID */
-		str_id = tracker_guint_to_string (id);
-		keys = g_key_file_get_keys (key_file, groups[i], NULL, NULL);
-
-		for (j = 0; keys[j]; j++) {
-			gchar *value;
-
-			value = g_key_file_get_locale_string (key_file,
-							      groups[i],
-							      keys[j],
-							      language_names[0],
-							      NULL);
-
-			if (!value) {
-				continue;
-			}
-
-			if (strcasecmp (value, "true") == 0) {
-				g_free (value);
-				value = g_strdup ("1");
-			} else if  (strcasecmp (value, "false") == 0) {
-				g_free (value);
-				value = g_strdup ("0");
-			}
-
-			if (is_metadata) {
-				if (strcasecmp (keys[j], "Parents") == 0) {
-					load_service_file_xesam_insert (iface,
-									"INSERT INTO XesamMetadataChildren (Parent, Child) VALUES ('%s', '%s')",
-									value,
-									groups[i]);
-				} else if (strcasecmp (keys[j], "ValueType") == 0) {
-					gint data_id;
-
-					data_id = tracker_string_in_string_list (value, (gchar **) data_types);
-
-					if (data_id != -1) {
-						gint mapped_data_id;
-						gboolean list = FALSE;
-
-						/* We map these values
-						 * to existing field
-						 * types. FIXME
-						 * Eventually we
-						 * should change the
-						 * config file
-						 * instead.
-						 */
-
-						switch (data_id) {
-						case 0:
-							mapped_data_id = TRACKER_FIELD_TYPE_STRING;
-							break;
-						case 1:
-							mapped_data_id = TRACKER_FIELD_TYPE_DOUBLE;
-							break;
-						case 2:
-							mapped_data_id = TRACKER_FIELD_TYPE_INTEGER;
-							break;
-						case 3:
-							mapped_data_id = TRACKER_FIELD_TYPE_INTEGER;
-							break;
-						case 4:
-							mapped_data_id = TRACKER_FIELD_TYPE_DATE;
-							break;
-						case 5:
-						case 6:
-						case 7:
-							list = TRUE;
-							mapped_data_id = TRACKER_FIELD_TYPE_STRING;
-							break;
-						default:
-							g_warning ("Couldn't map data id %d to TrackerFieldType",
-								   data_id);
-							mapped_data_id = -1;
-						}
-
-						sql = g_strdup_printf ("update XesamMetadataTypes set DataTypeID = %d where ID = %s",
-								       mapped_data_id,
-								       str_id);
-						db_exec_no_reply (iface, sql);
-						g_free (sql);
-
-						if (list) {
-							sql = g_strdup_printf ("update XesamMetadataTypes set MultipleValues = 1 where ID = %s",
-									       str_id);
-							db_exec_no_reply (iface, sql);
-							g_free (sql);
-						}
-					}
-				} else {
-					load_service_file_xesam_update (iface,
-									"update XesamMetadataTypes set	%s = '%s' where ID = %s",
-									keys[j],
-									value,
-									str_id);
-				}
-			} else	if (is_service) {
-				if (strcasecmp (keys[j], "Parents") == 0) {
-					load_service_file_xesam_insert (iface,
-									"INSERT INTO XesamServiceChildren (Parent, Child) VALUES ('%s', '%s')",
-									value,
-									groups[i]);
-				} else if (strcasecmp (keys[j], "Mimes") == 0) {
-					gchar **tab_array;
-					gint	k;
-
-					tab_array = g_key_file_get_string_list (key_file,
-										groups[i],
-										keys[j],
-										NULL,
-										NULL);
-
-					for (k = 0; tab_array[k]; k++) {
-						tracker_db_interface_execute_procedure (iface, NULL,
-											"InsertXesamMimes",
-											tab_array[k],
-											NULL);
-						tracker_db_interface_execute_query (iface,
-										    NULL,
-										    "update XesamFileMimes set ServiceTypeID = %s where Mime = '%s'",
-										    str_id,
-										    tab_array[k]);
-					}
-
-					g_strfreev (tab_array);
-				} else if (strcasecmp (keys[j], "MimePrefixes") == 0) {
-					gchar **tab_array;
-					gint	k;
-
-					tab_array = g_key_file_get_string_list (key_file,
-										groups[i],
-										keys[j],
-										NULL,
-										NULL);
-
-					for (k = 0; tab_array[k]; k++) {
-						tracker_db_interface_execute_procedure (iface,
-											NULL,
-											"InsertXesamMimePrefixes",
-											tab_array[k],
-											NULL);
-						tracker_db_interface_execute_query (iface,
-										    NULL,
-										    "update XesamFileMimePrefixes set ServiceTypeID = %s where MimePrefix = '%s'",
-										    str_id,
-										    tab_array[k]);
-					}
-
-					g_strfreev (tab_array);
-				} else {
-					load_service_file_xesam_update (iface,
-									"update XesamServiceTypes set  %s = '%s' where typeID = %s",
-									keys[j],
-									value,
-									str_id);
-				}
-			} else	if (is_metadata_mapping) {
-				load_service_file_xesam_map (iface,
-							     "InsertXesamMetaDataMapping",
-							     value,
-							     groups[i]);
-			} else {
-				load_service_file_xesam_map (iface,
-							     "InsertXesamServiceMapping",
-							     value,
-							     groups[i]);
-			}
-
-			g_free (value);
-		}
-
-		g_strfreev (keys);
-		g_free (str_id);
-	}
-
-	g_strfreev (groups);
-	g_key_file_free (key_file);
-
-	return TRUE;
-}
 
 static gboolean
 load_prepared_queries (void)
@@ -1227,41 +886,6 @@ db_get_mime_prefixes_for_service_id (TrackerDBInterface *iface,
 	return db_mime_query (iface, "GetMimePrefixForServiceId", service_id);
 }
 
-static GSList *
-db_get_xesam_mimes_for_service_id (TrackerDBInterface *iface,
-				   gint		       service_id)
-{
-	return db_mime_query (iface, "GetXesamMimeForServiceId", service_id);
-}
-
-static GSList *
-db_get_xesam_mime_prefixes_for_service_id (TrackerDBInterface *iface,
-					   gint		       service_id)
-{
-	return db_mime_query (iface, "GetXesamMimePrefixForServiceId", service_id);
-}
-
-/* Sqlite utf-8 user defined collation sequence */
-static gint
-utf8_collation_func (gchar *str1,
-		     gint   len1,
-		     gchar *str2,
-		     int    len2)
-{
-	gchar *word1, *word2;
-	gint   result;
-
-	/* Collate words */
-	word1 = g_utf8_collate_key_for_filename (str1, len1);
-	word2 = g_utf8_collate_key_for_filename (str2, len2);
-
-	result = strcmp (word1, word2);
-
-	g_free (word1);
-	g_free (word2);
-
-	return result;
-}
 
 /* Converts date/time in UTC format to ISO 8160 standardised format for display */
 static GValue
@@ -1313,13 +937,53 @@ function_regexp (TrackerDBInterface *interface,
 	return result;
 }
 
+static void
+function_group_concat_step (TrackerDBInterface *interface,
+			    void               *aggregate_context,
+			    gint		argc,
+			    GValue		values[])
+{
+	AggregateData *p;
+
+	g_return_if_fail (argc == 1);
+
+	p = aggregate_context;
+
+	if (!p->string) {
+		p->string = g_string_new ("");
+	} else {
+		p->string = g_string_append (p->string, "|");
+	}
+	
+	if (G_VALUE_HOLDS_STRING (&values[0])) {
+		p->string = g_string_append (p->string, g_value_get_string (&values[0]));
+	}
+}
+
+static GValue
+function_group_concat_final (TrackerDBInterface *interface,
+			     void               *aggregate_context)
+{
+	GValue result = { 0, };
+	AggregateData *p;
+
+	p = aggregate_context;
+
+	g_value_init (&result, G_TYPE_STRING);
+	g_value_set_string (&result, p->string->str);
+
+	g_string_free (p->string, TRUE);
+
+	return result;
+}
+
 static GValue
 function_get_service_name (TrackerDBInterface *interface,
 			   gint		       argc,
 			   GValue	       values[])
 {
-	GValue	result = { 0, };
-	const gchar  *str;
+	GValue result = { 0, };
+	const gchar *str;
 
 	str = tracker_ontology_get_service_by_id (g_value_get_int (&values[0]));
 	g_value_init (&result, G_TYPE_STRING);
@@ -1606,6 +1270,22 @@ function_replace (TrackerDBInterface *interface,
 	return result;
 }
 
+static GValue
+function_collate_key (TrackerDBInterface *interface,
+		      gint                argc,
+		      GValue              values[])
+{
+	GValue result = { 0 };
+	gchar *collate_key;
+
+	collate_key = g_utf8_collate_key (g_value_get_string (&values[0]), -1);
+
+	g_value_init (&result, G_TYPE_STRING);
+	g_value_take_string (&result, collate_key);
+
+	return result;
+}
+
 static void
 db_set_params (TrackerDBInterface *iface,
 	       gint		   cache_size,
@@ -1628,12 +1308,6 @@ db_set_params (TrackerDBInterface *iface,
 
 	if (add_functions) {
 		g_message ("  Adding functions (FormatDate, etc)");
-
-		if (!tracker_db_interface_sqlite_set_collation_function (TRACKER_DB_INTERFACE_SQLITE (iface),
-									 "UTF8",
-									 utf8_collation_func)) {
-			g_critical ("Collation sequence failed");
-		}
 
 		/* Create user defined functions that can be used in sql */
 		tracker_db_interface_sqlite_create_function (iface,
@@ -1669,9 +1343,20 @@ db_set_params (TrackerDBInterface *iface,
 							     "replace",
 							     function_replace,
 							     3);
+		
+		tracker_db_interface_sqlite_create_aggregate (iface,
+							      "group_concat",
+							      function_group_concat_step,
+							      1,
+							      function_group_concat_final,
+							      sizeof(AggregateData));
+
+		tracker_db_interface_sqlite_create_function (iface,
+							     "CollateKey",
+							     function_collate_key,
+							     1);
 	}
 }
-
 
 static void
 db_get_static_data (TrackerDBInterface *iface)
@@ -1779,90 +1464,6 @@ db_get_static_data (TrackerDBInterface *iface)
 	}
 }
 
-static void
-db_get_static_xesam_data (TrackerDBInterface *iface)
-{
-	TrackerDBResultSet *result_set;
-
-	/* Get static xesam metadata info */
-	result_set = tracker_db_interface_execute_procedure (iface,
-							     NULL,
-							     "GetXesamMetaDataTypes",
-							     NULL);
-
-	if (result_set) {
-		gboolean valid = TRUE;
-
-		while (valid) {
-			TrackerField  *def;
-
-			def = db_row_to_field_def (result_set);
-			/*
-			 * The ids in xesam db overwritte the IDs in common db! It means that all the
-			 * files are assigned to a wrong category
-			 *
-			 * g_message ("Loading xesam metadata def:'%s' with type:%d",
-			 *		   tracker_field_get_name (def),
-			 *		   tracker_field_get_data_type (def));
-			 *
-			 * tracker_ontology_field_add (def);
-			 */
-			valid = tracker_db_result_set_iter_next (result_set);
-			g_object_unref (def);
-		}
-
-		g_object_unref (result_set);
-	}
-
-	/* Get static xesam service info */
-	result_set = tracker_db_interface_execute_procedure (iface,
-							     NULL,
-							     "GetXesamServiceTypes",
-							     NULL);
-
-	if (result_set) {
-		gboolean valid = TRUE;
-
-		while (valid) {
-			TrackerService *service;
-			GSList	       *mimes, *mime_prefixes;
-			const gchar    *name;
-			gint		id;
-
-			service = db_row_to_service (result_set);
-
-			if (!service) {
-				continue;
-			}
-
-			id = tracker_service_get_id (service);
-			name = tracker_service_get_name (service);
-
-			mimes = db_get_xesam_mimes_for_service_id (iface, id);
-			mime_prefixes = db_get_xesam_mime_prefixes_for_service_id (iface, id);
-
-			/*
-			 * Same as above
-			 *
-			 * g_message ("Adding xesam service:'%s' with id:%d and mimes:%d",
-			 *   name,
-			 *   id,
-			 *   g_slist_length (mimes));
-			 *
-			 * tracker_ontology_service_add (service,
-			 *				   mimes,
-			 *				   mime_prefixes);
-			 */
-			g_slist_free (mimes);
-			g_slist_free (mime_prefixes);
-			g_object_unref (service);
-
-			valid = tracker_db_result_set_iter_next (result_set);
-		}
-
-		g_object_unref (result_set);
-	}
-}
 
 static const gchar *
 db_type_to_string (TrackerDB db)
@@ -1924,7 +1525,6 @@ db_interface_get_common (void)
 	iface = db_interface_get (TRACKER_DB_COMMON, &create);
 
 	if (create) {
-
 		GDir        *services;
 		const gchar *conf_file;
 
@@ -1937,8 +1537,6 @@ db_interface_get_common (void)
 		/*
 		 * Loading .service and .metadata files. "default." first because
 		 * contain the parent categories. 
-		 *
-		 * Skipping xesam files to keep the previous behaviour.
 		 */
 		load_service_file (iface, "default.service");
 		load_metadata_file (iface, "default.metadata");
@@ -1948,10 +1546,8 @@ db_interface_get_common (void)
 		conf_file = g_dir_read_name (services);
 
 		while (conf_file) {
-
 			if (!strcmp (conf_file, "default.service") ||
-			    !strcmp (conf_file, "default.metadata") || 
-			    g_str_has_prefix (conf_file, "xesam")) {
+			    !strcmp (conf_file, "default.metadata")) {
 				conf_file = g_dir_read_name (services);
 				continue;
 			}
@@ -2122,237 +1718,6 @@ db_interface_get_email_contents (void)
 	return iface;
 }
 
-static gboolean
-db_xesam_get_service_mapping (TrackerDBInterface *iface,
-			      const gchar	 *type,
-			      GList		**list)
-{
-	TrackerDBResultSet *result_set;
-	gboolean	    valid = TRUE;
-
-	result_set = db_exec_proc (iface,
-				   "GetXesamServiceMappings",
-				   type,
-				   NULL);
-
-	if (result_set) {
-		while (valid) {
-			gchar *st;
-
-			tracker_db_result_set_get (result_set, 0, &st, -1);
-			if (strcmp (st, " ") != 0) {
-				*list = g_list_prepend (*list, g_strdup (st));
-			}
-
-			valid = tracker_db_result_set_iter_next (result_set);
-			g_free (st);
-		}
-
-		*list = g_list_reverse (*list);
-		g_object_unref (result_set);
-	}
-
-	result_set = db_exec_proc (iface,
-				   "GetXesamServiceChildren",
-				   type,
-				   NULL);
-	valid = TRUE;
-
-	if (result_set) {
-		while (valid) {
-			gchar *st;
-
-			tracker_db_result_set_get (result_set, 0, &st, -1);
-			db_xesam_get_service_mapping (iface, st, list);
-
-			valid = tracker_db_result_set_iter_next (result_set);
-			g_free (st);
-		}
-
-		g_object_unref (result_set);
-	}
-
-	return TRUE;
-}
-
-static gboolean
-db_xesam_get_metadata_mapping (TrackerDBInterface  *iface,
-			       const gchar	   *type,
-			       GList		  **list)
-{
-	TrackerDBResultSet *result_set;
-	gboolean	    valid = TRUE;
-
-	result_set = db_exec_proc (iface,
-				   "GetXesamMetaDataMappings",
-				   type,
-				   NULL);
-
-	if (result_set) {
-		while (valid) {
-			gchar *st;
-
-			tracker_db_result_set_get (result_set, 0, &st, -1);
-
-			if (strcmp(st, " ") != 0) {
-				*list = g_list_prepend (*list, g_strdup (st));
-			}
-
-			valid = tracker_db_result_set_iter_next (result_set);
-			g_free (st);
-		}
-
-		*list = g_list_reverse (*list);
-		g_object_unref (result_set);
-	}
-
-	result_set = db_exec_proc (iface,
-				   "GetXesamMetaDataChildren",
-				   type,
-				   NULL);
-	valid = TRUE;
-
-	if (result_set) {
-		while (valid) {
-			gchar *st;
-
-			tracker_db_result_set_get (result_set, 0, &st, -1);
-			db_xesam_get_service_mapping (iface, st ,list);
-
-			valid = tracker_db_result_set_iter_next (result_set);
-			g_free (st);
-		}
-
-		g_object_unref (result_set);
-	}
-
-	return TRUE;
-}
-
-static gboolean
-db_xesam_create_lookup (TrackerDBInterface *iface)
-{
-	TrackerDBResultSet *result_set;
-	gboolean	    valid;
-
-	valid = TRUE;
-
-	result_set = db_exec_proc (iface,
-				   "GetXesamServiceParents",
-				   NULL);
-
-	if (result_set) {
-		while (valid) {
-			GList *list = NULL;
-			GList *iter = NULL;
-			gchar *st;
-
-			tracker_db_result_set_get (result_set, 0, &st, -1);
-			db_xesam_get_service_mapping (iface, st, &list);
-
-			iter = g_list_first (list);
-
-			while (iter) {
-				db_exec_proc (iface,
-					      "InsertXesamServiceLookup",
-					      st,
-					      iter->data,
-					      NULL);
-				g_free (iter->data);
-				iter = g_list_next (iter);
-			}
-
-			g_list_free (list);
-
-			valid = tracker_db_result_set_iter_next (result_set);
-		g_free (st);
-		}
-	}
-
-	g_object_unref (result_set);
-
-	valid = TRUE;
-	result_set = db_exec_proc (iface,
-				   "GetXesamMetaDataParents",
-				   NULL);
-
-	if (result_set) {
-		while (valid) {
-			GList *list = NULL;
-			GList *iter = NULL;
-			gchar *st;
-
-			tracker_db_result_set_get (result_set, 0, &st, -1);
-			db_xesam_get_metadata_mapping (iface, st, &list);
-
-			iter = g_list_first (list);
-			while (iter) {
-				db_exec_proc (iface,
-					      "InsertXesamMetaDataLookup",
-					      st,
-					      iter->data,
-					      NULL);
-				g_free (iter->data);
-				iter = g_list_next (iter);
-			}
-
-			g_list_free (list);
-
-			valid = tracker_db_result_set_iter_next (result_set);
-			g_free (st);
-		}
-	}
-
-	g_object_unref (result_set);
-
-	return TRUE;
-}
-
-static TrackerDBInterface *
-db_interface_get_xesam (void)
-{
-	TrackerDBInterface *iface;
-	gboolean	    create;
-
-	iface = db_interface_get (TRACKER_DB_XESAM, &create);
-
-	if (create) {
-
-		GDir        *services;
-		const gchar *conf_file;
-
-		tracker_db_interface_start_transaction (iface);
-		load_sql_file (iface, "sqlite-xesam.sql", NULL);
-
-
-		services = g_dir_open (services_dir, 0, NULL);
-
-		conf_file = g_dir_read_name (services);
-
-		while (conf_file) {
-
-			if (!g_str_has_prefix (conf_file, "xesam")) {
-				conf_file = g_dir_read_name (services);
-				continue;
-			}
-
-			g_debug ("Loading xesam configuration file %s", conf_file);
-			load_service_file_xesam (iface, conf_file);
-
-			conf_file = g_dir_read_name (services);
-		}
-
-		g_dir_close (services);
-
-		db_xesam_create_lookup (iface);
-		tracker_db_interface_end_transaction (iface);
-	}
-
-	/* Load static xesam data */
-	db_get_static_xesam_data (iface);
-
-	return iface;
-}
 
 static TrackerDBInterface *
 db_interface_create (TrackerDB db)
@@ -2385,16 +1750,12 @@ db_interface_create (TrackerDB db)
 	case TRACKER_DB_EMAIL_CONTENTS:
 		return db_interface_get_email_contents ();
 
-	case TRACKER_DB_XESAM:
-		return db_interface_get_xesam ();
-
 	default:
 		g_critical ("This TrackerDB type:%d->'%s' has no interface set up yet!!",
 			    db,
 			    db_type_to_string (db));
 		return NULL;
 	}
-
 }
 
 static void
@@ -2425,7 +1786,6 @@ db_get_version (void)
 		/* Check version is correct */
 		if (G_LIKELY (g_file_get_contents (filename, &contents, NULL, NULL))) {
 			if (contents && strlen (contents) <= 2) {
-
 				version = atoi (contents);
 			} else {
 				g_message ("  Version file content size is either 0 or bigger than expected");
@@ -2473,6 +1833,26 @@ db_set_version (void)
 	g_free (filename);
 }
 
+static void
+db_manager_analyze (TrackerDB db)
+{
+	TrackerDBInterface *iface;
+	guint64             current_mtime;
+
+	current_mtime = tracker_file_get_mtime (dbs[db].abs_filename);
+
+	if (current_mtime > dbs[db].mtime) {
+		g_message ("  Analyzing DB:'%s'", dbs[db].name);
+		iface = tracker_db_manager_get_db_interface (db);
+		db_exec_no_reply (iface, "ANALYZE %s.Services", dbs[db].name);
+
+		/* Remember current mtime for future */
+		dbs[db].mtime = current_mtime;
+	} else {
+		g_message ("  Not updating DB:'%s', no changes since last optimize", dbs[db].name);
+	}
+}
+
 GType
 tracker_db_get_type (void)
 {
@@ -2498,9 +1878,6 @@ tracker_db_get_type (void)
 			{ TRACKER_DB_EMAIL_CONTENTS,
 			  "TRACKER_DB_EMAIL_CONTENTS",
 			  "email contents" },
-			{ TRACKER_DB_XESAM,
-			  "TRACKER_DB_XESAM",
-			  "xesam" },
 			{ 0, NULL, NULL }
 		};
 
@@ -2508,6 +1885,40 @@ tracker_db_get_type (void)
 	}
 
 	return etype;
+}
+
+static void
+tracker_db_manager_ensure_locale (void)
+{
+	TrackerDBInterface *common, *iface;
+	TrackerDBResultSet *result_set;
+	const gchar *current_locale;
+	gchar *stored_locale = NULL;
+
+	current_locale = setlocale (LC_COLLATE, NULL);
+
+	common = dbs[TRACKER_DB_COMMON].iface;
+	result_set = tracker_db_interface_execute_procedure (common, NULL, "GetCollationLocale", NULL);
+
+	if (result_set) {
+		tracker_db_result_set_get (result_set, 0, &stored_locale, -1);
+		g_object_unref (result_set);
+	}
+
+	if (g_strcmp0 (current_locale, stored_locale) != 0) {
+		/* Locales differ, update collate keys */
+		g_debug ("Updating DB locale dependent data to: %s\n", current_locale);
+
+		iface = dbs[TRACKER_DB_FILE_METADATA].iface;
+		tracker_db_interface_execute_procedure (iface, NULL, "UpdateMetadataCollation", NULL);
+
+		iface = dbs[TRACKER_DB_EMAIL_METADATA].iface;
+		tracker_db_interface_execute_procedure (iface, NULL, "UpdateMetadataCollation", NULL);
+
+		tracker_db_interface_execute_procedure (common, NULL, "SetCollationLocale", current_locale, NULL);
+	}
+
+	g_free (stored_locale);
 }
 
 void
@@ -2529,9 +1940,6 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 	if (initialized) {
 		return;
 	}
-
-	if (shared_cache)
-		tracker_db_interface_sqlite_enable_shared_cache ();
 
 	need_reindex = FALSE;
 
@@ -2582,8 +1990,7 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 
 	version = db_get_version ();
 
-	if (version == TRACKER_DB_VERSION_UNKNOWN ||
-	    version == TRACKER_DB_VERSION_1) {
+	if (version < TRACKER_DB_VERSION_NOW) {
 		g_message ("  A reindex will be forced");
 		need_reindex = TRUE;
 	}
@@ -2623,6 +2030,12 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 			g_message ("One or more database files are missing, a reindex will be forced");
 			need_reindex = TRUE;
 		}
+	}
+
+	/* Set general database options */
+	if (shared_cache) {
+		g_message ("Enabling database shared cache");
+		tracker_db_interface_sqlite_enable_shared_cache ();
 	}
 
 	/* Add prepared queries */
@@ -2693,7 +2106,10 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 
 	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
 		dbs[i].iface = db_interface_create (i);
+		dbs[i].mtime = tracker_file_get_mtime (dbs[i].abs_filename);
 	}
+
+	tracker_db_manager_ensure_locale ();
 
 	initialized = TRUE;
 }
@@ -2738,11 +2154,6 @@ tracker_db_manager_shutdown (void)
 		email_iface = NULL;
 	}
 
-	if (xesam_iface) {
-		g_object_unref (xesam_iface);
-		xesam_iface = NULL;
-	}
-
 
 	/* Since we don't reference this enum anywhere, we do
 	 * it here to make sure it exists when we call
@@ -2773,10 +2184,8 @@ tracker_db_manager_remove_all (void)
 void
 tracker_db_manager_optimize (void)
 {
-	TrackerDBInterface *iface;
-	TrackerDB           db;
-	gboolean            dbs_are_open = FALSE;
-	guint               i;
+	gboolean dbs_are_open = FALSE;
+	guint    i;
 
 	g_return_if_fail (initialized != FALSE);
 
@@ -2800,19 +2209,9 @@ tracker_db_manager_optimize (void)
 		return;
 	}
 
-	/* Optimize the file content database first */
-	db = TRACKER_DB_FILE_METADATA;
-
-	g_message ("  Analyzing DB:'%s'", dbs[db].name);
-	iface = tracker_db_manager_get_db_interface (db);
-	db_exec_no_reply (iface, "ANALYZE %s.Services", dbs[db].name);
-
-	/* Optimize the email contents database second */
-	db = TRACKER_DB_EMAIL_METADATA;
-
-	g_message ("  Analyzing DB:'%s'", dbs[db].name);
-	iface = tracker_db_manager_get_db_interface (db);
-	db_exec_no_reply (iface, "ANALYZE %s.Services", dbs[db].name);
+	/* Optimize the file/email content databases */
+	db_manager_analyze (TRACKER_DB_FILE_METADATA);
+	db_manager_analyze (TRACKER_DB_EMAIL_METADATA);
 }
 
 const gchar *
@@ -2929,7 +2328,7 @@ tracker_db_manager_get_db_interface (TrackerDB db)
  * @service: the server for which you'll use the database connection
  *
  * Request a database connection that can be used for @service. At this moment
- * service can either be "Files", "Emails", "Attachments" or "Xesam".
+ * service can either be "Files", "Emails", "Attachments".
  *
  * The caller must NOT g_object_unref the result
  *
@@ -2947,7 +2346,6 @@ tracker_db_manager_get_db_interface_by_service (const gchar *service)
 
 	switch (type) {
 	case TRACKER_DB_TYPE_EMAIL:
-
 		if (!email_iface) {
 			email_iface = tracker_db_manager_get_db_interfaces (4,
 									    TRACKER_DB_COMMON,
@@ -2959,21 +2357,6 @@ tracker_db_manager_get_db_interface_by_service (const gchar *service)
 		iface = email_iface;
 		break;
 
-	case TRACKER_DB_TYPE_XESAM:
-		if (!xesam_iface) {
-			xesam_iface = tracker_db_manager_get_db_interfaces (7,
-									    TRACKER_DB_CACHE,
-									    TRACKER_DB_COMMON,
-									    TRACKER_DB_FILE_CONTENTS,
-									    TRACKER_DB_FILE_METADATA,
-									    TRACKER_DB_EMAIL_CONTENTS,
-									    TRACKER_DB_EMAIL_METADATA,
-									    TRACKER_DB_XESAM);
-		}
-
-		iface = xesam_iface;
-		break;
-
 	case TRACKER_DB_TYPE_UNKNOWN:
 	case TRACKER_DB_TYPE_DATA:
 	case TRACKER_DB_TYPE_INDEX:
@@ -2981,8 +2364,9 @@ tracker_db_manager_get_db_interface_by_service (const gchar *service)
 	case TRACKER_DB_TYPE_CONTENT:
 	case TRACKER_DB_TYPE_CACHE:
 	case TRACKER_DB_TYPE_USER:
-		g_warning ("Defaulting to Files DB. Strange DB Type for service %s", 
+		g_warning ("Defaulting to Files DB. Strange DB Type for service '%s'", 
 			   service);
+
 	case TRACKER_DB_TYPE_FILES:
 	default:
 		if (!file_iface) {
@@ -3019,16 +2403,16 @@ tracker_db_manager_get_db_interface_by_type (const gchar	  *service,
 		} else {
 			db = TRACKER_DB_EMAIL_CONTENTS;
 		}
-
 		break;
+
 	case TRACKER_DB_TYPE_FILES:
 		if (content_type == TRACKER_DB_CONTENT_TYPE_METADATA) {
 			db = TRACKER_DB_FILE_METADATA;
 		} else {
 			db = TRACKER_DB_FILE_CONTENTS;
 		}
-
 		break;
+
 	case TRACKER_DB_TYPE_UNKNOWN:
 	case TRACKER_DB_TYPE_DATA:
 	case TRACKER_DB_TYPE_INDEX:
@@ -3036,7 +2420,6 @@ tracker_db_manager_get_db_interface_by_type (const gchar	  *service,
 	case TRACKER_DB_TYPE_CONTENT:
 	case TRACKER_DB_TYPE_CACHE:
 	case TRACKER_DB_TYPE_USER:
-	case TRACKER_DB_TYPE_XESAM:
 	default:
 		g_warning ("Database type not supported");
 		return NULL;

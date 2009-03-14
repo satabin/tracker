@@ -33,6 +33,8 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <time.h>
+#include <linux/sched.h>
+#include <sched.h>
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -55,8 +57,9 @@
 
 #include <libtracker-data/tracker-data-manager.h>
 #include <libtracker-data/tracker-turtle.h>
+#include <libtracker-data/tracker-data-backup.h>
 
-#include <plugins/evolution/tracker-evolution.h>
+#include <tracker-push.h>
 
 #include "tracker-crawler.h"
 #include "tracker-dbus.h"
@@ -65,9 +68,9 @@
 #include "tracker-monitor.h"
 #include "tracker-processor.h"
 #include "tracker-status.h"
-#include "tracker-xesam-manager.h"
-#include "tracker-cleanup.h"
+#include "tracker-volume-cleanup.h"
 #include "tracker-backup.h"
+#include "tracker-daemon.h"
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -75,9 +78,15 @@
 #include "mingw-compat.h"
 #endif
 
+/* Temporary hack for out of date kernels, also, this value may not be
+ * the same on all architectures, but it is for x86.
+ */
+#ifndef SCHED_IDLE
+#define SCHED_IDLE 5
+#endif
+
 #define ABOUT								  \
-	"Tracker " PACKAGE_VERSION "\n"					  \
-	"Copyright (c) 2005-2008 Jamie McCracken (jamiemcc@gnome.org)\n"
+	"Tracker " PACKAGE_VERSION "\n"
 
 #define LICENSE								  \
 	"This program is free software and comes without any warranty.\n" \
@@ -111,9 +120,10 @@ typedef struct {
 } TrackerMainPrivate;
 
 /* Private */
-static GStaticPrivate	private_key = G_STATIC_PRIVATE_INIT;
+static GStaticPrivate	     private_key = G_STATIC_PRIVATE_INIT;
 
 /* Private command line parameters */
+static gboolean		     version;
 static gint		     verbosity = -1;
 static gint		     initial_sleep = -1;
 static gboolean		     low_memory;
@@ -126,7 +136,12 @@ static gboolean		     force_reindex;
 static gboolean		     disable_indexing;
 static gchar	            *language_code;
 
-static GOptionEntry	entries_daemon[] = {
+static GOptionEntry	     entries[] = {
+	/* Daemon options */
+	{ "version", 'V', 0,
+	  G_OPTION_ARG_NONE, &version,
+	  N_("Displays version information"),
+	  NULL },
 	{ "verbosity", 'v', 0,
 	  G_OPTION_ARG_INT, &verbosity,
 	  N_("Logging, 0 = errors only, "
@@ -156,10 +171,8 @@ static GOptionEntry	entries_daemon[] = {
 	  G_OPTION_ARG_STRING_ARRAY, &disable_modules,
 	  N_("Disable modules from being processed (you can do -d <module> -d <module>)"),
 	  NULL },
-	{ NULL }
-};
 
-static GOptionEntry   entries_indexer[] = {
+	/* Indexer options */
 	{ "force-reindex", 'r', 0,
 	  G_OPTION_ARG_NONE, &force_reindex,
 	  N_("Force a re-index of all content"),
@@ -295,6 +308,8 @@ check_runtime_level (TrackerConfig *config,
 #endif /* HAVE_HAL */
 	}
 
+	close (fd);
+
 	return runlevel;
 }
 
@@ -341,6 +356,33 @@ mount_point_added_cb (TrackerHal  *hal,
 }
 
 static void
+mount_point_set_and_signal_cb (DBusGProxy *proxy, 
+			       GError     *error, 
+			       gpointer    user_data)
+{
+	if (error) {
+		g_critical ("Couldn't set mount point state, %s", 
+			    error->message);
+		g_error_free (error);
+		g_free (user_data);
+		return;
+	}
+
+	g_message ("Indexer now knows about UDI state:");
+	g_message ("  %s", (gchar*) user_data);
+
+
+	/* This is a special case, because we don't get the
+	 * "Finished" signal from the indexer when we set something
+	 * in the volumes table, we have to signal all clients from
+	 * here that the statistics may have changed.
+	 */
+	tracker_daemon_signal_statistics ();
+
+	g_free (user_data);
+}
+
+static void
 mount_point_removed_cb (TrackerHal  *hal,
 			const gchar *udi,
 			const gchar *mount_point,
@@ -357,7 +399,7 @@ mount_point_removed_cb (TrackerHal  *hal,
 								   udi,
 								   mount_point,
 								   FALSE,
-								   mount_point_set_cb,
+								   mount_point_set_and_signal_cb,
 								   g_strdup (udi));
 }
 
@@ -396,7 +438,7 @@ sanity_check_option_values (TrackerConfig *config)
 	g_message ("Daemon options:");
 	g_message ("  Throttle level  .......................  %d",
 		   tracker_config_get_throttle (config));
-	g_message ("  Indexing enabled	.....................  %s",
+	g_message ("  Indexing enabled  .....................  %s",
 		   tracker_config_get_enable_indexing (config) ? "yes" : "no");
 	g_message ("  Monitoring enabled  ...................  %s",
 		   tracker_config_get_enable_watches (config) ? "yes" : "no");
@@ -423,7 +465,7 @@ shutdown_timeout_cb (gpointer user_data)
 }
 
 static void
-signal_handler (gint signo)
+signal_handler (int signo)
 {
 	static gboolean in_loop = FALSE;
 
@@ -433,15 +475,6 @@ signal_handler (gint signo)
 	}
 
 	switch (signo) {
-	case SIGSEGV:
-		/* We are screwed if we get this so exit immediately! */
-		exit (EXIT_FAILURE);
-
-	case SIGBUS:
-	case SIGILL:
-	case SIGFPE:
-	case SIGPIPE:
-	case SIGABRT:
 	case SIGTERM:
 	case SIGINT:
 		in_loop = TRUE;
@@ -449,9 +482,10 @@ signal_handler (gint signo)
 
 	default:
 		if (g_strsignal (signo)) {
-			g_message ("Received signal:%d->'%s'",
-				   signo,
-				   g_strsignal (signo));
+			g_print ("\n");
+			g_print ("Received signal:%d->'%s'",
+				 signo,
+				 g_strsignal (signo));
 		}
 		break;
 	}
@@ -461,8 +495,8 @@ static void
 initialize_signal_handler (void)
 {
 #ifndef G_OS_WIN32
-	struct sigaction   act;
-	sigset_t	   empty_mask;
+	struct sigaction act;
+	sigset_t	 empty_mask;
 
 	sigemptyset (&empty_mask);
 	act.sa_handler = signal_handler;
@@ -470,15 +504,32 @@ initialize_signal_handler (void)
 	act.sa_flags   = 0;
 
 	sigaction (SIGTERM, &act, NULL);
-	sigaction (SIGILL,  &act, NULL);
-	sigaction (SIGBUS,  &act, NULL);
-	sigaction (SIGFPE,  &act, NULL);
-	sigaction (SIGHUP,  &act, NULL);
-	sigaction (SIGSEGV, &act, NULL);
-	sigaction (SIGABRT, &act, NULL);
-	sigaction (SIGUSR1, &act, NULL);
 	sigaction (SIGINT,  &act, NULL);
+	sigaction (SIGHUP,  &act, NULL);
 #endif /* G_OS_WIN32 */
+}
+
+static void
+initialize_priority (void)
+{
+	/* Set disk IO priority and scheduling */
+	tracker_ioprio_init ();
+
+	/* Set process priority:
+	 * The nice() function uses attribute "warn_unused_result" and
+	 * so complains if we do not check its returned value. But it
+	 * seems that since glibc 2.2.4, nice() can return -1 on a
+	 * successful call so we have to check value of errno too.
+	 * Stupid... 
+	 */
+	g_message ("Setting process priority");
+
+	if (nice (19) == -1) {
+		const gchar *str = g_strerror (errno);
+
+		g_message ("Couldn't set nice value to 19, %s",
+			   str ? str : "no error given");
+	}
 }
 
 static void
@@ -552,9 +603,6 @@ initialize_directories (void)
 	filename = g_build_filename (private->sys_tmp_dir, "Attachments", NULL);
 	g_mkdir_with_parents (filename, 00700);
 	g_free (filename);
-
-	/* Remove existing log files */
-	tracker_file_unlink (private->log_filename);
 }
 
 static gboolean
@@ -596,12 +644,6 @@ initialize_databases (void)
 	return TRUE;
 }
 
-
-static void
-shutdown_indexer (void)
-{
-}
-
 static void
 shutdown_databases (void)
 {
@@ -611,7 +653,7 @@ shutdown_databases (void)
 
 	/* If we are reindexing, save the user metadata  */
 	if (private->reindex_on_shutdown) {
-		tracker_backup_save (private->ttl_backup_file);
+		tracker_data_backup_save (private->ttl_backup_file, NULL);
 	}
 	/* Reset integrity status as threads have closed cleanly */
 	tracker_data_manager_set_db_option_int ("IntegrityCheck", 0);
@@ -639,7 +681,6 @@ shutdown_directories (void)
 static const gchar *
 get_ttl_backup_filename (void) 
 {
-
 	TrackerMainPrivate *private;
 
 	private = g_static_private_get (&private_key);
@@ -680,7 +721,7 @@ backup_user_metadata (TrackerConfig *config, TrackerLanguage *language)
 	tracker_data_manager_init (config, language, file_index, email_index);
 	
 	/* Actual save of the metadata */
-	tracker_backup_save (get_ttl_backup_filename ());
+	tracker_data_backup_save (get_ttl_backup_filename (), NULL);
 	
 	/* Shutdown the DB stack */
 	tracker_data_manager_shutdown ();
@@ -695,25 +736,33 @@ backup_user_metadata (TrackerConfig *config, TrackerLanguage *language)
  * Saving the last backup file to help with debugging.
  */
 static void
-crawling_finished_cb (TrackerProcessor *processor, gpointer user_data)
+crawling_finished_cb (TrackerProcessor *processor, 
+		      gpointer          user_data)
 {
-	gulong *callback_id = user_data;
-	GError *error;
+	GError *error = NULL;
+	gulong *callback_id;
 	static gint counter = 0;
 	
-	counter += 1;
+	callback_id = user_data;
 
-	if (counter >= 2) {
+	if (++counter >= 2) {
 		gchar *rebackup;
 
 		g_debug ("Uninstalling initial crawling callback");
 		g_signal_handler_disconnect (processor, *callback_id);
 
 		if (g_file_test (get_ttl_backup_filename (), G_FILE_TEST_EXISTS)) {
-			org_freedesktop_Tracker_Indexer_restore_backup (tracker_dbus_indexer_get_proxy (), 
+			org_freedesktop_Tracker_Indexer_restore_backup (tracker_dbus_indexer_get_proxy (),
 									get_ttl_backup_filename (),
 									&error);
-		
+
+			if (error) {
+				g_message ("Could not restore backup, %s",
+					   error->message);
+				g_error_free (error);
+				return;
+			}
+
 			rebackup = g_strdup_printf ("%s.old",
 						    get_ttl_backup_filename ());
 			g_rename (get_ttl_backup_filename (), rebackup);
@@ -789,56 +838,6 @@ set_up_mount_points (TrackerHal *hal)
 								  hal);
 }
 
-static void
-set_up_throttle (TrackerHal    *hal,
-		 TrackerConfig *config)
-{
-	gint throttle;
-
-	/* If on a laptop battery and the throttling is default (i.e.
-	 * 0), then set the throttle to be higher so we don't kill
-	 * the laptop battery.
-	 */
-	throttle = tracker_config_get_throttle (config);
-
-	if (tracker_hal_get_battery_in_use (hal)) {
-		g_message ("We are running on battery");
-
-		if (throttle == THROTTLE_DEFAULT) {
-			tracker_config_set_throttle (config,
-						     THROTTLE_DEFAULT_ON_BATTERY);
-			g_message ("Setting throttle from %d to %d",
-				   throttle,
-				   THROTTLE_DEFAULT_ON_BATTERY);
-		} else {
-			g_message ("Not setting throttle, it is currently set to %d",
-				   throttle);
-		}
-	} else {
-		g_message ("We are not running on battery");
-
-		if (throttle == THROTTLE_DEFAULT_ON_BATTERY) {
-			tracker_config_set_throttle (config,
-						     THROTTLE_DEFAULT);
-			g_message ("Setting throttle from %d to %d",
-				   throttle,
-				   THROTTLE_DEFAULT);
-		} else {
-			g_message ("Not setting throttle, it is currently set to %d",
-				   throttle);
-		}
-	}
-}
-
-static void
-notify_battery_in_use_cb (GObject    *gobject,
-			  GParamSpec *arg1,
-			  gpointer    user_data)
-{
-	set_up_throttle (TRACKER_HAL (gobject),
-			 TRACKER_CONFIG (user_data));
-}
-
 #endif /* HAVE_HAL */
 
 static gboolean
@@ -863,7 +862,6 @@ gint
 main (gint argc, gchar *argv[])
 {
 	GOptionContext		   *context = NULL;
-	GOptionGroup		   *group;
 	GError			   *error = NULL;
 	TrackerMainPrivate	   *private;
 	TrackerConfig		   *config;
@@ -903,25 +901,7 @@ main (gint argc, gchar *argv[])
 	 * usage string - Usage: COMMAND <THIS_MESSAGE>
 	 */
 	context = g_option_context_new (_("- start the tracker daemon"));
-
-	/* Daemon group */
-	group = g_option_group_new ("daemon",
-				    _("Daemon Options"),
-				    _("Show daemon options"),
-				    NULL,
-				    NULL);
-	g_option_group_add_entries (group, entries_daemon);
-	g_option_context_add_group (context, group);
-
-	/* Indexer group */
-	group = g_option_group_new ("indexer",
-				    _("Indexer Options"),
-				    _("Show indexer options"),
-				    NULL,
-				    NULL);
-	g_option_group_add_entries (group, entries_indexer);
-	g_option_context_add_group (context, group);
-
+	g_option_context_add_main_entries (context, entries, NULL);
 	g_option_context_parse (context, &argc, &argv, &error);
 	g_option_context_free (context);
 
@@ -931,8 +911,12 @@ main (gint argc, gchar *argv[])
 		return EXIT_FAILURE;
 	}
 
-	/* Print information */
-	g_print ("\n" ABOUT "\n" LICENSE "\n");
+	if (version) {
+		/* Print information */
+		g_print ("\n" ABOUT "\n" LICENSE "\n");
+		return EXIT_SUCCESS;
+	}
+
 	g_print ("Initializing trackerd...\n");
 
 	initialize_signal_handler ();
@@ -942,21 +926,8 @@ main (gint argc, gchar *argv[])
 		return EXIT_FAILURE;
 	}
 
-	/* Set IO priority */
-	tracker_ioprio_init ();
-
-	/* nice() uses attribute "warn_unused_result" and so complains
-	 * if we do not check its returned value. But it seems that
-	 * since glibc 2.2.4, nice() can return -1 on a successful
-	 * call so we have to check value of errno too. Stupid...
-	 */
-	if (nice (19) == -1 && errno) {
-		const gchar *str;
-
-		str = g_strerror (errno);
-		g_message ("Couldn't set nice value to 19, %s",
-			   str ? str : "no error given");
-	}
+	/* This makes sure we don't steal all the system's resources */
+	initialize_priority ();
 
 	/* This makes sure we have all the locations like the data
 	 * dir, user data dir, etc all configured.
@@ -1011,6 +982,10 @@ main (gint argc, gchar *argv[])
 
 	initialize_directories ();
 
+	if (!tracker_dbus_init (config)) {
+		return EXIT_FAILURE;
+	}
+
 	/* Initialize other subsystems */
 	tracker_log_init (private->log_filename, tracker_config_get_verbosity (config));
 	g_print ("Starting log:\n  File:'%s'\n", private->log_filename);
@@ -1019,11 +994,18 @@ main (gint argc, gchar *argv[])
 
 	tracker_nfs_lock_init (tracker_config_get_nfs_locking (config));
 
-	if (!tracker_dbus_init (config)) {
-		return EXIT_FAILURE;
-	}
+#ifdef HAVE_HAL
+	hal = tracker_hal_new ();
 
-	tracker_status_init (config);
+	g_signal_connect (hal, "mount-point-added",
+			  G_CALLBACK (mount_point_added_cb),
+			  NULL);
+	g_signal_connect (hal, "mount-point-removed",
+			  G_CALLBACK (mount_point_removed_cb),
+			  NULL);
+#endif /* HAVE_HAL */
+
+	tracker_status_init (config, hal);
 
 	tracker_module_config_init ();
 
@@ -1052,20 +1034,6 @@ main (gint argc, gchar *argv[])
 					    tracker_config_get_max_bucket_count (config))) {
 		return EXIT_FAILURE;
 	}
-
-#ifdef HAVE_HAL
-	hal = tracker_hal_new ();
-
-	g_signal_connect (hal, "notify::battery-in-use",
-			  G_CALLBACK (notify_battery_in_use_cb),
-			  config);
-	g_signal_connect (hal, "mount-point-added",
-			  G_CALLBACK (mount_point_added_cb),
-			  NULL);
-	g_signal_connect (hal, "mount-point-removed",
-			  G_CALLBACK (mount_point_removed_cb),
-			  NULL);
-#endif /* HAVE_HAL */
 
 	/*
 	 * Check instances running
@@ -1103,8 +1071,7 @@ main (gint argc, gchar *argv[])
 	}
 
 	tracker_data_manager_init (config, language, file_index, email_index);
-	tracker_xesam_manager_init ();
-	tracker_cleanup_init ();
+	tracker_volume_cleanup_init ();
 
 #ifdef HAVE_HAL
 	/* We set up the throttle and mount points here. For the mount
@@ -1112,7 +1079,6 @@ main (gint argc, gchar *argv[])
 	 * we have to have already initialised the databases if we
 	 * are going to do that.
 	 */
-	set_up_throttle (hal, config);
 	set_up_mount_points (hal);
 #endif /* HAVE_HAL */
 
@@ -1127,9 +1093,7 @@ main (gint argc, gchar *argv[])
 		return EXIT_FAILURE;
 	}
 
-#ifdef HAVE_EVOLUTION_PLUGIN
-	tracker_evolution_init (config);
-#endif
+	tracker_push_init (config);
 
 	g_message ("Waiting for DBus requests...");
 
@@ -1177,15 +1141,6 @@ main (gint argc, gchar *argv[])
 
 	g_timeout_add_full (G_PRIORITY_LOW, 5000, shutdown_timeout_cb, NULL, NULL);
 
-	g_message ("Waiting for indexer to finish");
-	org_freedesktop_Tracker_Indexer_shutdown (tracker_dbus_indexer_get_proxy (), &error);
-
-	if (error) {
-		g_message ("Could not shutdown the indexer, %s", error->message);
-		g_message ("Continuing anyway...");
-		g_error_free (error);
-	}
-
 	g_message ("Cleaning up");
 	if (private->processor) {
 		/* We do this instead of let the private data free
@@ -1196,18 +1151,14 @@ main (gint argc, gchar *argv[])
 		private->processor = NULL;
 	}
 
-	shutdown_indexer ();
 	shutdown_databases ();
 	shutdown_directories ();
 
 	/* Shutdown major subsystems */
-	
-#ifdef HAVE_EVOLUTION_PLUGIN
-	tracker_evolution_shutdown ();
-#endif
 
-	tracker_cleanup_shutdown ();
-	tracker_xesam_manager_shutdown ();
+	tracker_push_shutdown ();
+
+	tracker_volume_cleanup_shutdown ();
 	tracker_dbus_shutdown ();
 	tracker_db_manager_shutdown ();
 	tracker_db_index_manager_shutdown ();
@@ -1220,9 +1171,6 @@ main (gint argc, gchar *argv[])
 	tracker_log_shutdown ();
 
 #ifdef HAVE_HAL
-	g_signal_handlers_disconnect_by_func (hal,
-					      notify_battery_in_use_cb,
-					      config);
 	g_signal_handlers_disconnect_by_func (hal,
 					      mount_point_added_cb,
 					      NULL);
@@ -1255,6 +1203,16 @@ tracker_shutdown (void)
 	tracker_processor_stop (private->processor);
 
 	g_main_loop_quit (private->main_loop);
+}
+
+const gchar *
+tracker_get_data_dir (void)
+{
+	TrackerMainPrivate *private;
+
+	private = g_static_private_get (&private_key);
+
+	return private->data_dir;
 }
 
 const gchar *

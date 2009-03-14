@@ -53,7 +53,7 @@ G_BEGIN_DECLS
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* NONE:STRING,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.IB10OU:1) */
+/* NONE:STRING,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.0VDMPU:1) */
 extern void dbus_glib_marshal_tracker_evolution_registrar_VOID__STRING_UINT_POINTER (GClosure     *closure,
                                                                                      GValue       *return_value,
                                                                                      guint         n_param_values,
@@ -99,7 +99,7 @@ dbus_glib_marshal_tracker_evolution_registrar_VOID__STRING_UINT_POINTER (GClosur
 }
 #define dbus_glib_marshal_tracker_evolution_registrar_NONE__STRING_UINT_POINTER	dbus_glib_marshal_tracker_evolution_registrar_VOID__STRING_UINT_POINTER
 
-/* NONE:BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.IB10OU:2) */
+/* NONE:BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.0VDMPU:2) */
 extern void dbus_glib_marshal_tracker_evolution_registrar_VOID__BOXED_UINT_POINTER (GClosure     *closure,
                                                                                     GValue       *return_value,
                                                                                     guint         n_param_values,
@@ -145,11 +145,11 @@ dbus_glib_marshal_tracker_evolution_registrar_VOID__BOXED_UINT_POINTER (GClosure
 }
 #define dbus_glib_marshal_tracker_evolution_registrar_NONE__BOXED_UINT_POINTER	dbus_glib_marshal_tracker_evolution_registrar_VOID__BOXED_UINT_POINTER
 
-/* NONE:UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.IB10OU:3) */
+/* NONE:UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.0VDMPU:3) */
 #define dbus_glib_marshal_tracker_evolution_registrar_VOID__UINT_POINTER	g_cclosure_marshal_VOID__UINT_POINTER
 #define dbus_glib_marshal_tracker_evolution_registrar_NONE__UINT_POINTER	dbus_glib_marshal_tracker_evolution_registrar_VOID__UINT_POINTER
 
-/* NONE:BOXED,BOXED,BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.IB10OU:4) */
+/* NONE:BOXED,BOXED,BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.0VDMPU:4) */
 extern void dbus_glib_marshal_tracker_evolution_registrar_VOID__BOXED_BOXED_BOXED_UINT_POINTER (GClosure     *closure,
                                                                                                 GValue       *return_value,
                                                                                                 guint         n_param_values,
@@ -199,7 +199,7 @@ dbus_glib_marshal_tracker_evolution_registrar_VOID__BOXED_BOXED_BOXED_UINT_POINT
 }
 #define dbus_glib_marshal_tracker_evolution_registrar_NONE__BOXED_BOXED_BOXED_UINT_POINTER	dbus_glib_marshal_tracker_evolution_registrar_VOID__BOXED_BOXED_BOXED_UINT_POINTER
 
-/* NONE:STRING,BOXED,BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.IB10OU:5) */
+/* NONE:STRING,BOXED,BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.0VDMPU:5) */
 extern void dbus_glib_marshal_tracker_evolution_registrar_VOID__STRING_BOXED_BOXED_UINT_POINTER (GClosure     *closure,
                                                                                                  GValue       *return_value,
                                                                                                  guint         n_param_values,
@@ -256,17 +256,17 @@ G_END_DECLS
 #include <dbus/dbus-glib.h>
 static const DBusGMethodInfo dbus_glib_tracker_evolution_registrar_methods[] = {
   { (GCallback) tracker_evolution_registrar_set, dbus_glib_marshal_tracker_evolution_registrar_NONE__STRING_BOXED_BOXED_UINT_POINTER, 0 },
-  { (GCallback) tracker_evolution_registrar_set_many, dbus_glib_marshal_tracker_evolution_registrar_NONE__BOXED_BOXED_BOXED_UINT_POINTER, 97 },
-  { (GCallback) tracker_evolution_registrar_unset, dbus_glib_marshal_tracker_evolution_registrar_NONE__STRING_UINT_POINTER, 202 },
-  { (GCallback) tracker_evolution_registrar_unset_many, dbus_glib_marshal_tracker_evolution_registrar_NONE__BOXED_UINT_POINTER, 273 },
-  { (GCallback) tracker_evolution_registrar_cleanup, dbus_glib_marshal_tracker_evolution_registrar_NONE__UINT_POINTER, 350 },
+  { (GCallback) tracker_evolution_registrar_set_many, dbus_glib_marshal_tracker_evolution_registrar_NONE__BOXED_BOXED_BOXED_UINT_POINTER, 99 },
+  { (GCallback) tracker_evolution_registrar_unset, dbus_glib_marshal_tracker_evolution_registrar_NONE__STRING_UINT_POINTER, 206 },
+  { (GCallback) tracker_evolution_registrar_unset_many, dbus_glib_marshal_tracker_evolution_registrar_NONE__BOXED_UINT_POINTER, 279 },
+  { (GCallback) tracker_evolution_registrar_cleanup, dbus_glib_marshal_tracker_evolution_registrar_NONE__UINT_POINTER, 358 },
 };
 
 const DBusGObjectInfo dbus_glib_tracker_evolution_registrar_object_info = {
   0,
   dbus_glib_tracker_evolution_registrar_methods,
   5,
-"org.gnome.evolution.metadata.Registrar\0Set\0A\0subject\0I\0s\0predicates\0I\0as\0values\0I\0as\0modseq\0I\0u\0\0org.gnome.evolution.metadata.Registrar\0SetMany\0A\0subjects\0I\0as\0predicates\0I\0aas\0values\0I\0aas\0modseq\0I\0u\0\0org.gnome.evolution.metadata.Registrar\0Unset\0A\0subject\0I\0s\0modseq\0I\0u\0\0org.gnome.evolution.metadata.Registrar\0UnsetMany\0A\0subjects\0I\0as\0modseq\0I\0u\0\0org.gnome.evolution.metadata.Registrar\0Cleanup\0A\0modseq\0I\0u\0\0\0",
+"org.freedesktop.email.metadata.Registrar\0Set\0A\0subject\0I\0s\0predicates\0I\0as\0values\0I\0as\0modseq\0I\0u\0\0org.freedesktop.email.metadata.Registrar\0SetMany\0A\0subjects\0I\0as\0predicates\0I\0aas\0values\0I\0aas\0modseq\0I\0u\0\0org.freedesktop.email.metadata.Registrar\0Unset\0A\0subject\0I\0s\0modseq\0I\0u\0\0org.freedesktop.email.metadata.Registrar\0UnsetMany\0A\0subjects\0I\0as\0modseq\0I\0u\0\0org.freedesktop.email.metadata.Registrar\0Cleanup\0A\0modseq\0I\0u\0\0\0",
 "\0",
 "\0"
 };

@@ -49,6 +49,8 @@
 #define TEXT_MAX_SIZE		     1048576  /* bytes */
 #define TEXT_CHECK_SIZE		     65535    /* bytes */
 
+#define TEXT_EXTRACTION_TIMEOUT      10
+
 typedef struct {
 	GPid pid;
 	guint stdout_watch_id;
@@ -57,8 +59,6 @@ typedef struct {
 	GMainLoop  *data_incoming_loop;
 	gpointer data;
 } ProcessContext;
-
-static ProcessContext *metadata_context = NULL;
 
 static DBusGProxy *
 get_dbus_extract_proxy (void)
@@ -95,7 +95,7 @@ get_dbus_extract_proxy (void)
 }
 
 static void
-process_context_invalidate (ProcessContext *context)
+process_context_destroy (ProcessContext *context)
 {
 	if (context->stdin_channel) {
 		g_io_channel_shutdown (context->stdin_channel, FALSE, NULL);
@@ -127,12 +127,7 @@ process_context_invalidate (ProcessContext *context)
 		g_spawn_close_pid (context->pid);
 		context->pid = 0;
 	}
-}
 
-static void
-process_context_destroy (ProcessContext *context)
-{
-	process_context_invalidate (context);
 	g_free (context);
 }
 
@@ -148,11 +143,6 @@ process_context_child_watch_cb (GPid	 pid,
 		 status);
 
 	context = (ProcessContext *) user_data;
-
-	if (context == metadata_context) {
-		metadata_context = NULL;
-	}
-
 	process_context_destroy (context);
 }
 
@@ -166,7 +156,7 @@ process_context_create (const gchar **argv,
 	GPid pid;
 
 	if (!tracker_spawn_async_with_channels (argv,
-						0,
+						TEXT_EXTRACTION_TIMEOUT,
 						&pid,
 						&stdin_channel,
 						&stdout_channel,
@@ -307,11 +297,11 @@ metadata_utils_get_embedded (const char            *path,
 		return;
 	}
 
-	g_hash_table_foreach (values, 
-			      metadata_utils_get_embedded_foreach, 
+	g_hash_table_foreach (values,
+			      metadata_utils_get_embedded_foreach,
 			      metadata);
 
-	/* Do we free this hash table? */
+	g_hash_table_destroy (values);
 }
 
 static gboolean
@@ -481,7 +471,7 @@ get_file_content (const gchar *path)
 		}
 
 		/* Set the NULL termination after the last byte read */
-		buf[TEXT_CHECK_SIZE - bytes_remaining] = '\0';
+		buf[buf_size - bytes_remaining] = '\0';
 
 		/* First of all, check if this is the first time we
 		 * have tried to read the file up to the TEXT_CHECK_SIZE
@@ -724,14 +714,6 @@ tracker_module_metadata_utils_get_data (GFile *file)
 	g_free (path_delimited);
 	g_free (basename);
 	g_free (dirname);
-
-	if (mime_type) {
-		gchar *uri;
-
-		uri = g_file_get_uri (file);
-		tracker_thumbnailer_get_file_thumbnail (uri, mime_type);
-		g_free (uri);
-	}
 
 	if (S_ISLNK (st.st_mode)) {
 		gchar *link_path;

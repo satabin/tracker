@@ -68,11 +68,6 @@ Config
 
 </para>
 
-<!-- ##### ARG TrackerConfig:enable-xesam ##### -->
-<para>
-
-</para>
-
 <!-- ##### ARG TrackerConfig:fast-merges ##### -->
 <para>
 
@@ -285,15 +280,6 @@ Config
 
 
 <!-- ##### FUNCTION tracker_config_get_enable_watches ##### -->
-<para>
-
-</para>
-
-@config: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_config_get_enable_xesam ##### -->
 <para>
 
 </para>
@@ -537,15 +523,6 @@ Config
 
 
 <!-- ##### FUNCTION tracker_config_set_enable_watches ##### -->
-<para>
-
-</para>
-
-@config: 
-@value: 
-
-
-<!-- ##### FUNCTION tracker_config_set_enable_xesam ##### -->
 <para>
 
 </para>

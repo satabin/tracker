@@ -167,6 +167,7 @@ typedef struct {
 	GString		    *sql_select;
 	GString		    *sql_from;
 	GString		    *sql_where;
+	GString             *sql_group;
 	GString		    *sql_order;
 	gchar		    *service;
 } ParserData;
@@ -390,8 +391,13 @@ add_metadata_field (ParserData	*data,
 			if (is_select) {
 				if (!tracker_field_data_get_is_select (field_data)) {
 					tracker_field_data_set_is_select (field_data, TRUE);
-					g_string_append_printf (data->sql_select, ", %s",
-								tracker_field_data_get_select_field (field_data));
+					if(tracker_field_data_get_multiple_values(field_data)) {
+						g_string_append_printf (data->sql_select, ", GROUP_CONCAT (%s)",
+									tracker_field_data_get_select_field (field_data));
+					} else {
+						g_string_append_printf (data->sql_select, ", %s",
+									tracker_field_data_get_select_field (field_data));
+					}
 				}
 			}
 
@@ -409,8 +415,13 @@ add_metadata_field (ParserData	*data,
 		if (field_data) {
 			data->fields = g_slist_prepend (data->fields, field_data);
 			if (is_select) {
-				g_string_append_printf (data->sql_select, ", %s",
-							tracker_field_data_get_select_field (field_data));
+				if(tracker_field_data_get_multiple_values(field_data)) {
+					g_string_append_printf (data->sql_select, ", GROUP_CONCAT (%s)",
+								tracker_field_data_get_select_field (field_data));
+				} else {
+					g_string_append_printf (data->sql_select, ", %s",
+								tracker_field_data_get_select_field (field_data));
+				}
 			}
 		}
 	}
@@ -810,13 +821,16 @@ build_sql (ParserData *data)
 						where_field,
 						data->current_value);
 		} else {
-			TrackerFieldType data_type;
-
-			data_type = tracker_field_data_get_data_type (field_data);
-
-			g_string_append_printf (str, " (%s = %s) ",
-						where_field,
-						value);
+			if (strcmp(value, " '' ") == 0) {
+				tracker_field_data_set_needs_null (field_data, TRUE);
+				g_string_append_printf (str, " ((%s = '') OR %s IS NULL) ",
+							where_field,
+							where_field);
+			} else {
+				g_string_append_printf (str, " (%s = %s) ",
+							where_field,
+							value);
+			}
 		}
 		break;
 
@@ -1122,11 +1136,11 @@ get_select_header (const char *service)
         case 6:
         case 7:
         case 8:
-                g_string_append_printf (result, " Select DISTINCT S.ID, (S.Path || '%s' || S.Name) as uri, GetServiceName(S.ServiceTypeID) as stype ", G_DIR_SEPARATOR_S);
+                g_string_append_printf (result, " Select DISTINCT (S.Path || '%s' || S.Name) as uri, GetServiceName(S.ServiceTypeID) as stype ", G_DIR_SEPARATOR_S);
                 break;
 
         default :
-                g_string_append_printf (result, " Select DISTINCT S.ID, (S.Path || '%s' || S.Name) as uri, GetServiceName(S.ServiceTypeID) as stype ", G_DIR_SEPARATOR_S);
+                g_string_append_printf (result, " Select DISTINCT (S.Path || '%s' || S.Name) as uri, GetServiceName(S.ServiceTypeID) as stype ", G_DIR_SEPARATOR_S);
                 break;
 	}
 
@@ -1188,7 +1202,7 @@ tracker_rdf_query_to_sql (TrackerDBInterface  *iface,
 					     tracker_rdf_error_quark (),
 					     PARSE_ERROR,
 					     "RDF Query failed, field:'%s' not found",
-					     sort_fields[i]);
+					     fields[i]);
 
 				g_slist_foreach (data.fields,
 						 (GFunc) g_object_unref,
@@ -1284,6 +1298,8 @@ tracker_rdf_query_to_sql (TrackerDBInterface  *iface,
 		g_string_append_printf (data.sql_where, "AND ");
 	}
 
+	data.sql_group = g_string_new (" GROUP BY S.ID ");
+
 	if (limit < 1) {
 		limit = 1024;
 	}
@@ -1312,6 +1328,7 @@ tracker_rdf_query_to_sql (TrackerDBInterface  *iface,
 			TrackerFieldData *field_data;
 
 			field_data = add_metadata_field (&data, sort_fields[i], FALSE, FALSE);
+			tracker_field_data_set_needs_join (field_data, TRUE);
 
 			if (!field_data) {
 				g_set_error (error,
@@ -1325,6 +1342,7 @@ tracker_rdf_query_to_sql (TrackerDBInterface  *iface,
 				g_slist_free (data.fields);
 				g_string_free (data.sql_select, TRUE);
 				g_string_free (data.sql_where, TRUE);
+				g_string_free (data.sql_group, TRUE);
 				g_string_free (data.sql_order, TRUE);
 
 				return NULL;
@@ -1335,7 +1353,7 @@ tracker_rdf_query_to_sql (TrackerDBInterface  *iface,
 			}
 
 			g_string_append_printf (data.sql_order, "%s %s",
-						tracker_field_data_get_select_field (field_data),
+						tracker_field_data_get_order_field (field_data),
 						sort_desc ? "DESC" : "ASC");
 		}
 	}
@@ -1368,6 +1386,7 @@ tracker_rdf_query_to_sql (TrackerDBInterface  *iface,
 		g_string_free (data.sql_select, TRUE);
 		g_string_free (data.sql_from, TRUE);
 		g_string_free (data.sql_where, TRUE);
+		g_string_free (data.sql_group, TRUE);
 		g_string_free (data.sql_order, TRUE);
 	} else {
 		GSList *l;
@@ -1388,13 +1407,23 @@ tracker_rdf_query_to_sql (TrackerDBInterface  *iface,
 
 				related_metadata = tracker_data_schema_metadata_field_get_related_names (iface,
                                                                                                          tracker_field_data_get_field_name (l->data));
-				g_string_append_printf (data.sql_from,
-							"\n INNER JOIN %s %s ON (S.ID = %s.ServiceID and %s.MetaDataID in (%s)) ",
-							tracker_field_data_get_table_name (l->data),
-							tracker_field_data_get_alias (l->data),
-							tracker_field_data_get_alias (l->data),
-							tracker_field_data_get_alias (l->data),
-							related_metadata);
+				if (tracker_field_data_get_needs_null (l->data)) {
+					g_string_append_printf (data.sql_from,
+								"\n LEFT OUTER JOIN %s %s ON (S.ID = %s.ServiceID and %s.MetaDataID in (%s)) ",
+								tracker_field_data_get_table_name (l->data),
+								tracker_field_data_get_alias (l->data),
+								tracker_field_data_get_alias (l->data),
+								tracker_field_data_get_alias (l->data),
+								related_metadata);
+				} else {
+					g_string_append_printf (data.sql_from,
+								"\n INNER JOIN %s %s ON (S.ID = %s.ServiceID and %s.MetaDataID in (%s)) ",
+								tracker_field_data_get_table_name (l->data),
+								tracker_field_data_get_alias (l->data),
+								tracker_field_data_get_alias (l->data),
+								tracker_field_data_get_alias (l->data),
+								related_metadata);
+				}
 				g_free (related_metadata);
 			}
 		}
@@ -1405,12 +1434,15 @@ tracker_rdf_query_to_sql (TrackerDBInterface  *iface,
 				      " ",
 				      data.sql_where->str,
 				      " ",
+				      data.sql_group->str,
+				      " ",
 				      data.sql_order->str,
 				      NULL);
 
 		g_string_free (data.sql_select, TRUE);
 		g_string_free (data.sql_from, TRUE);
 		g_string_free (data.sql_where, TRUE);
+		g_string_free (data.sql_group, TRUE);
 		g_string_free (data.sql_order, TRUE);
 	}
 
@@ -1515,14 +1547,25 @@ tracker_rdf_filter_to_sql (TrackerDBInterface *iface,
 				gchar *related_metadata;
 
 				related_metadata = tracker_data_schema_metadata_field_get_related_names (iface,
-                                                                                                         tracker_field_data_get_field_name (l->data));
-				g_string_append_printf (data.sql_from,
-							"\n INNER JOIN %s %s ON (S.ID = %s.ServiceID and %s.MetaDataID in (%s)) ",
-							tracker_field_data_get_table_name (l->data),
-							tracker_field_data_get_alias (l->data),
-							tracker_field_data_get_alias (l->data),
-							tracker_field_data_get_alias (l->data),
-							related_metadata);
+                                                                        tracker_field_data_get_field_name (l->data));
+				if (tracker_field_data_get_needs_null (l->data)) {
+					g_string_append_printf (data.sql_from,
+								"\n LEFT OUTER JOIN %s %s ON (S.ID = %s.ServiceID and %s.MetaDataID in (%s)) ",
+								tracker_field_data_get_table_name (l->data),
+								tracker_field_data_get_alias (l->data),
+								tracker_field_data_get_alias (l->data),
+								tracker_field_data_get_alias (l->data),
+								related_metadata);
+				} else {
+					g_string_append_printf (data.sql_from,
+								"\n INNER JOIN %s %s ON (S.ID = %s.ServiceID and %s.MetaDataID in (%s)) ",
+								tracker_field_data_get_table_name (l->data),
+								tracker_field_data_get_alias (l->data),
+								tracker_field_data_get_alias (l->data),
+								tracker_field_data_get_alias (l->data),
+								related_metadata);
+				}
+
 				g_free (related_metadata);
 			}
 		}

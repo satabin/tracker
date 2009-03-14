@@ -3,14 +3,10 @@
 <ANCHOR id="libtracker-common-File-Operations.description" href="libtracker-common/libtracker-common-File-Operations.html#libtracker-common-File-Operations.description">
 <ANCHOR id="libtracker-common-File-Operations.details" href="libtracker-common/libtracker-common-File-Operations.html#libtracker-common-File-Operations.details">
 <ANCHOR id="tracker-env-check-xdg-dirs" href="libtracker-common/libtracker-common-File-Operations.html#tracker-env-check-xdg-dirs">
-<ANCHOR id="tracker-file-close" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-close">
 <ANCHOR id="tracker-file-get-mime-type" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-get-mime-type">
 <ANCHOR id="tracker-file-get-mtime" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-get-mtime">
 <ANCHOR id="tracker-file-get-path-and-name" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-get-path-and-name">
 <ANCHOR id="tracker-file-get-size" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-get-size">
-<ANCHOR id="tracker-file-is-directory" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-is-directory">
-<ANCHOR id="tracker-file-is-indexable" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-is-indexable">
-<ANCHOR id="tracker-file-is-valid" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-is-valid">
 <ANCHOR id="tracker-file-open" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-open">
 <ANCHOR id="tracker-file-unlink" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-unlink">
 <ANCHOR id="tracker-path-evaluate-name" href="libtracker-common/libtracker-common-File-Operations.html#tracker-path-evaluate-name">
@@ -217,7 +213,6 @@
 <ANCHOR id="tracker-config-get-enable-stemmer" href="libtracker-common/libtracker-common-Config.html#tracker-config-get-enable-stemmer">
 <ANCHOR id="tracker-config-get-enable-thumbnails" href="libtracker-common/libtracker-common-Config.html#tracker-config-get-enable-thumbnails">
 <ANCHOR id="tracker-config-get-enable-watches" href="libtracker-common/libtracker-common-Config.html#tracker-config-get-enable-watches">
-<ANCHOR id="tracker-config-get-enable-xesam" href="libtracker-common/libtracker-common-Config.html#tracker-config-get-enable-xesam">
 <ANCHOR id="tracker-config-get-fast-merges" href="libtracker-common/libtracker-common-Config.html#tracker-config-get-fast-merges">
 <ANCHOR id="tracker-config-get-index-mounted-directories" href="libtracker-common/libtracker-common-Config.html#tracker-config-get-index-mounted-directories">
 <ANCHOR id="tracker-config-get-index-removable-devices" href="libtracker-common/libtracker-common-Config.html#tracker-config-get-index-removable-devices">
@@ -245,7 +240,6 @@
 <ANCHOR id="tracker-config-set-enable-stemmer" href="libtracker-common/libtracker-common-Config.html#tracker-config-set-enable-stemmer">
 <ANCHOR id="tracker-config-set-enable-thumbnails" href="libtracker-common/libtracker-common-Config.html#tracker-config-set-enable-thumbnails">
 <ANCHOR id="tracker-config-set-enable-watches" href="libtracker-common/libtracker-common-Config.html#tracker-config-set-enable-watches">
-<ANCHOR id="tracker-config-set-enable-xesam" href="libtracker-common/libtracker-common-Config.html#tracker-config-set-enable-xesam">
 <ANCHOR id="tracker-config-set-fast-merges" href="libtracker-common/libtracker-common-Config.html#tracker-config-set-fast-merges">
 <ANCHOR id="tracker-config-set-index-mounted-directories" href="libtracker-common/libtracker-common-Config.html#tracker-config-set-index-mounted-directories">
 <ANCHOR id="tracker-config-set-index-removable-devices" href="libtracker-common/libtracker-common-Config.html#tracker-config-set-index-removable-devices">
@@ -272,7 +266,6 @@
 <ANCHOR id="TrackerConfig--enable-stemmer" href="libtracker-common/libtracker-common-Config.html#TrackerConfig--enable-stemmer">
 <ANCHOR id="TrackerConfig--enable-thumbnails" href="libtracker-common/libtracker-common-Config.html#TrackerConfig--enable-thumbnails">
 <ANCHOR id="TrackerConfig--enable-watches" href="libtracker-common/libtracker-common-Config.html#TrackerConfig--enable-watches">
-<ANCHOR id="TrackerConfig--enable-xesam" href="libtracker-common/libtracker-common-Config.html#TrackerConfig--enable-xesam">
 <ANCHOR id="TrackerConfig--fast-merges" href="libtracker-common/libtracker-common-Config.html#TrackerConfig--fast-merges">
 <ANCHOR id="TrackerConfig--index-mounted-directories" href="libtracker-common/libtracker-common-Config.html#TrackerConfig--index-mounted-directories">
 <ANCHOR id="TrackerConfig--index-removable-devices" href="libtracker-common/libtracker-common-Config.html#TrackerConfig--index-removable-devices">

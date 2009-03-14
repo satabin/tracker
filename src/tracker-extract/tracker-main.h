@@ -28,13 +28,6 @@
 
 G_BEGIN_DECLS
 
-/* FIXME: We use this to say that we don't actually have any metadata
- * for this keyword. This is bad because it means we have to string
- * check every value returned in clients that use the Tracker API.
- * This will be fixed in due course after January some time, -mr.
- */
-#define METADATA_UNKNOWN ""
-
 typedef struct TrackerExtractData TrackerExtractData;
 
 typedef TrackerExtractData * (*TrackerExtractDataFunc)(void);
@@ -47,12 +40,12 @@ struct TrackerExtractData {
 };
 
 /* This is defined in each extract */
-TrackerExtractData *tracker_get_extract_data            (void);
+TrackerExtractData *tracker_get_extract_data        (void);
 
 /* This is used to not shutdown after the default of 30 seconds if we
  * get more work to do.
  */
-void                tracker_main_shutdown_timeout_reset (void);
+void                tracker_main_quit_timeout_reset (void);
 
 G_END_DECLS
 

@@ -38,6 +38,7 @@ struct _TrackerFieldDataPriv {
 
 	gchar		 *select_field;
 	gchar		 *where_field;
+	gchar            *order_field;
 	gchar		 *id_field;
 
 	TrackerFieldType  data_type;
@@ -46,6 +47,7 @@ struct _TrackerFieldDataPriv {
 	gboolean	  is_select;
 	gboolean	  is_condition;
 	gboolean	  needs_join;
+	gboolean          needs_null;
 };
 
 static void field_data_finalize     (GObject	  *object);
@@ -65,12 +67,14 @@ enum {
 	PROP_FIELD_NAME,
 	PROP_SELECT_FIELD,
 	PROP_WHERE_FIELD,
+	PROP_ORDER_FIELD,
 	PROP_ID_FIELD,
 	PROP_DATA_TYPE,
 	PROP_MULTIPLE_VALUES,
 	PROP_IS_SELECT,
 	PROP_IS_CONDITION,
-	PROP_NEEDS_JOIN
+	PROP_NEEDS_JOIN,
+	PROP_NEEDS_NULL
 };
 
 G_DEFINE_TYPE (TrackerFieldData, tracker_field_data, G_TYPE_OBJECT);
@@ -120,6 +124,13 @@ tracker_field_data_class_init (TrackerFieldDataClass *klass)
 							      NULL,
 							      G_PARAM_READWRITE));
 	g_object_class_install_property (object_class,
+					 PROP_ORDER_FIELD,
+					 g_param_spec_string ("order-field",
+							      "Order field",
+							      "Order field",
+							      NULL,
+							      G_PARAM_READWRITE));
+	g_object_class_install_property (object_class,
 					 PROP_ID_FIELD,
 					 g_param_spec_string ("id-field",
 							      "ID field",
@@ -162,7 +173,13 @@ tracker_field_data_class_init (TrackerFieldDataClass *klass)
 							       "Needs join",
 							       FALSE,
 							       G_PARAM_READWRITE));
-
+	g_object_class_install_property (object_class,
+					 PROP_NEEDS_JOIN,
+					 g_param_spec_boolean ("needs-null",
+							       "Needs null",
+							       "Needs null",
+							       FALSE,
+							       G_PARAM_READWRITE));
 	g_type_class_add_private (object_class, sizeof (TrackerFieldDataPriv));
 }
 
@@ -185,6 +202,7 @@ field_data_finalize (GObject *object)
 
 	g_free (priv->select_field);
 	g_free (priv->where_field);
+	g_free (priv->order_field);
 	g_free (priv->id_field);
 
 	(G_OBJECT_CLASS (tracker_field_data_parent_class)->finalize) (object);
@@ -215,6 +233,8 @@ field_data_get_property (GObject    *object,
 		break;
 	case PROP_WHERE_FIELD:
 		g_value_set_string (value, priv->where_field);
+	case PROP_ORDER_FIELD:
+		g_value_set_string (value, priv->order_field);
 		break;
 	case PROP_ID_FIELD:
 		g_value_set_string (value, priv->id_field);
@@ -234,6 +254,9 @@ field_data_get_property (GObject    *object,
 	case PROP_NEEDS_JOIN:
 		g_value_set_boolean (value, priv->needs_join);
 		break;
+	case PROP_NEEDS_NULL:
+		g_value_set_boolean (value, priv->needs_null);
+		break;		
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
 		break;
@@ -267,6 +290,10 @@ field_data_set_property (GObject      *object,
 		tracker_field_data_set_where_field (TRACKER_FIELD_DATA (object),
 						    g_value_get_string (value));
 		break;
+	case PROP_ORDER_FIELD:
+		tracker_field_data_set_order_field (TRACKER_FIELD_DATA (object),
+						    g_value_get_string (value));
+		break;
 	case PROP_ID_FIELD:
 		tracker_field_data_set_id_field (TRACKER_FIELD_DATA (object),
 						 g_value_get_string (value));
@@ -289,6 +316,10 @@ field_data_set_property (GObject      *object,
 		break;
 	case PROP_NEEDS_JOIN:
 		tracker_field_data_set_needs_join (TRACKER_FIELD_DATA (object),
+						   g_value_get_boolean (value));
+		break;
+	case PROP_NEEDS_NULL:
+		tracker_field_data_set_needs_null (TRACKER_FIELD_DATA (object),
 						   g_value_get_boolean (value));
 		break;
 	default:
@@ -368,6 +399,18 @@ tracker_field_data_get_where_field (TrackerFieldData *field_data)
 }
 
 const gchar *
+tracker_field_data_get_order_field (TrackerFieldData *field_data)
+{
+	TrackerFieldDataPriv *priv;
+
+	g_return_val_if_fail (TRACKER_IS_FIELD_DATA (field_data), NULL);
+
+	priv = GET_PRIV (field_data);
+
+	return priv->order_field;
+}
+
+const gchar *
 tracker_field_data_get_id_field (TrackerFieldData *field_data)
 {
 	TrackerFieldDataPriv *priv;
@@ -438,6 +481,18 @@ tracker_field_data_get_needs_join (TrackerFieldData *field_data)
 	priv = GET_PRIV (field_data);
 
 	return priv->needs_join;
+}
+
+gboolean
+tracker_field_data_get_needs_null (TrackerFieldData *field_data)
+{
+	TrackerFieldDataPriv *priv;
+
+	g_return_val_if_fail (TRACKER_IS_FIELD_DATA (field_data), FALSE);
+
+	priv = GET_PRIV (field_data);
+
+	return priv->needs_null;
 }
 
 void
@@ -546,6 +601,27 @@ tracker_field_data_set_where_field (TrackerFieldData *field_data,
 }
 
 void
+tracker_field_data_set_order_field (TrackerFieldData *field_data,
+				    const gchar      *value)
+{
+	TrackerFieldDataPriv *priv;
+
+	g_return_if_fail (TRACKER_IS_FIELD_DATA (field_data));
+
+	priv = GET_PRIV (field_data);
+
+	g_free (priv->order_field);
+
+	if (value) {
+		priv->order_field = g_strdup (value);
+	} else {
+		priv->order_field = NULL;
+	}
+
+	g_object_notify (G_OBJECT (field_data), "order-field");
+}
+
+void
 tracker_field_data_set_id_field (TrackerFieldData *field_data,
 				 const gchar	  *value)
 {
@@ -634,4 +710,18 @@ tracker_field_data_set_needs_join (TrackerFieldData *field_data,
 
 	priv->needs_join = value;
 	g_object_notify (G_OBJECT (field_data), "needs-join");
+}
+
+void
+tracker_field_data_set_needs_null (TrackerFieldData *field_data,
+				   gboolean	     value)
+{
+	TrackerFieldDataPriv *priv;
+
+	g_return_if_fail (TRACKER_IS_FIELD_DATA (field_data));
+
+	priv = GET_PRIV (field_data);
+
+	priv->needs_null = value;
+	g_object_notify (G_OBJECT (field_data), "needs-null");
 }

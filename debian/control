@@ -176,6 +176,7 @@ Description: metadata database, indexer and search tool - deskbar-applet plugin
 
 Package: tracker-dbg
 Architecture: any
+Section: debug
 Priority: extra
 Depends: tracker (= ${binary:Version}), ${misc:Depends}
 Description: metadata database, indexer and search tool - debugging symbols

@@ -12,6 +12,8 @@ tracker (0.6.91-1) UNRELEASED; urgency=low
   * debian/patches/01-tracker-statistics-fix.patch
     - Patch pulled from upstream SVN. Fixes a crash when calculating and
       showing the statistics.
+  * debian/libtrackerclient0.symbols
+    - Updated for new API additions.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 14 Mar 2009 06:23:20 +0100
 

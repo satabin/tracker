@@ -9,6 +9,9 @@ tracker (0.6.91-1) UNRELEASED; urgency=low
   * debian/control
     - Bump Standards-Version to 3.8.1. No further changes.
     - Change Section of tracker-dbg to debug.
+  * debian/patches/01-tracker-statistics-fix.patch
+    - Patch pulled from upstream SVN. Fixes a crash when calculating and
+      showing the statistics.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 14 Mar 2009 06:23:20 +0100
 

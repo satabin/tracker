@@ -1,4 +1,4 @@
-tracker (0.6.91-1) UNRELEASED; urgency=low
+tracker (0.6.91-1) unstable; urgency=low
 
   * New upstream release.
   * Removed patches that were merged upstream
@@ -17,7 +17,7 @@ tracker (0.6.91-1) UNRELEASED; urgency=low
   * debian/libtrackerclient0.symbols
     - Updated for new API additions.
 
- -- Michael Biebl <biebl@debian.org>  Sat, 14 Mar 2009 06:23:20 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 18 Mar 2009 15:31:46 +0100
 
 tracker (0.6.90-4) unstable; urgency=low
 

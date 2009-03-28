@@ -327,7 +327,11 @@ tracker_data_update_set_metadata (TrackerService *service,
 {
 	TrackerDBInterface *iface;
 	gint metadata_key;
+	gint collate_key;
 	gchar *id_str;
+
+	if(!strlen(value))
+		return;
 
 	id_str = tracker_guint32_to_string (service_id);
 
@@ -399,6 +403,22 @@ tracker_data_update_set_metadata (TrackerService *service,
 						    "update Services set IndexTime = '%s' where ID = %d",
 						    value,
 						    service_id);
+	}
+
+	collate_key = tracker_ontology_service_get_key_collate (tracker_service_get_name (service),
+								tracker_field_get_name (field));
+	if (collate_key > 0) {
+		gchar *val;
+		
+		val = tracker_escape_string (value);
+		
+		tracker_db_interface_execute_query (iface, NULL,
+			       "update Services set KeyMetadataCollation%d = CollateKey('%s') where id = %d",
+			       collate_key,
+			       val,
+			       service_id);
+
+		g_free (val);
 	}
 
 	g_free (id_str);
@@ -539,6 +559,11 @@ tracker_data_update_delete_service_by_path (const gchar *path,
 		return;
 
 	service = tracker_ontology_get_service_by_name (rdf_type);
+
+	if (!service) {
+		return;
+	}
+
 	service_type = tracker_service_get_name (service);
 	service_id = tracker_data_query_file_id (service_type, path);
 
@@ -670,11 +695,13 @@ tracker_data_update_replace_service (const gchar *path,
 	TrackerDBInterface  *iface;
 	TrackerDBResultSet  *result_set;
 	const gchar         *modified;
-	GError              *error = NULL;
 	TrackerService      *service;
 	gchar               *escaped_path;
 	gchar               *dirname;
 	gchar               *basename;
+	time_t               file_mtime;
+	gboolean             set_metadata = FALSE;
+	guint32              id = 0;
 
 	g_return_if_fail (path != NULL);
 	g_return_if_fail (metadata != NULL);
@@ -705,81 +732,56 @@ tracker_data_update_replace_service (const gchar *path,
 		return;
 	}
 
+	file_mtime = atoi (modified);
 	escaped_path = tracker_escape_string (path);
 
 	basename = g_path_get_basename (escaped_path);
 	dirname = g_path_get_dirname (escaped_path);
 
-	/* TODO Warning: comparing Modified against Accessed. Do we have a
-	 * better field for this? */
-
-	result_set = tracker_db_interface_execute_query (iface, &error,
-							 "SELECT ID, Accessed < '%s' FROM Services "
-							 "WHERE Path = '%s' AND "
-							 "Name = '%s'",
-							 modified,
-							 dirname, basename);
-
-	if (error) {
-		g_error_free (error);
-	}
-
+	result_set = tracker_db_interface_execute_procedure (iface, NULL,
+							     "GetServiceID",
+							     dirname,
+							     basename,
+							     NULL);
 	if (result_set) {
-		GValue id_value = { 0, };
-		GValue is_value = { 0, };
-		gint   iid_value, iis_value;
+		guint mtime;
 
-		_tracker_db_result_set_get_value (result_set, 0, &id_value);
-		iid_value = g_value_get_int (&id_value);
+		tracker_db_result_set_get (result_set,
+					   0, &id,
+					   1, &mtime,
+					   -1);
 
-		_tracker_db_result_set_get_value (result_set, 1, &is_value);
-		iis_value = g_value_get_int (&is_value);
-
-		if (iis_value) {
-			ForeachInMetadataInfo *info;
-
-			info = g_slice_new (ForeachInMetadataInfo);
-			info->service = service;
-			info->iid_value = iid_value;
-
-			info->config = tracker_data_manager_get_config ();
-			info->language = tracker_data_manager_get_language ();
-
-			g_hash_table_foreach (metadata, 
-					      foreach_in_metadata_set_metadata,
-					      info);
-
-			g_slice_free (ForeachInMetadataInfo, info);
+		if (mtime != file_mtime) {
+			set_metadata = TRUE;
 		}
-
-		g_value_unset (&id_value);
-		g_value_unset (&is_value);
 
 		g_object_unref (result_set);
 	} else {
-		guint32 id;
-
 		id = tracker_data_update_get_new_service_id (iface);
 
 		if (tracker_data_update_create_service (service, id,
 							dirname, basename,
 							metadata)) {
-			ForeachInMetadataInfo *info;
-
-			info = g_slice_new (ForeachInMetadataInfo);
-
-			info->service = service;
-			info->iid_value = id;
-
-			info->config = tracker_data_manager_get_config ();
-			info->language = tracker_data_manager_get_language ();
-
-			g_hash_table_foreach (metadata, 
-					      foreach_in_metadata_set_metadata,
-					      info);
-
-			g_slice_free (ForeachInMetadataInfo, info);
+			set_metadata = TRUE;
 		}
+	}
+
+	if (set_metadata) {
+		ForeachInMetadataInfo *info;
+
+		info = g_slice_new (ForeachInMetadataInfo);
+
+		info->service = service;
+		info->iid_value = id;
+
+		info->config = tracker_data_manager_get_config ();
+		info->language = tracker_data_manager_get_language ();
+
+		g_hash_table_foreach (metadata,
+				      foreach_in_metadata_set_metadata,
+				      info);
+
+		g_slice_free (ForeachInMetadataInfo, info);
 	}
 
 	g_free (dirname);

@@ -13,7 +13,7 @@ AC_PREREQ(2.59)
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [6])
-m4_define([tracker_micro_version], [91])
+m4_define([tracker_micro_version], [92])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -22,6 +22,15 @@ m4_define([tracker_version],
 # This is the X.Y used in -llibtracker-FOO-X.Y
 m4_define([tracker_api_version], [0.6])
 
+# libtool version related macros
+m4_define([tracker_lt_release], [tracker_major_version.tracker_minor_version])
+m4_define([tracker_lt_current],
+          [m4_eval(100 * tracker_minor_version + tracker_micro_version - tracker_interface_age)])
+m4_define([tracker_lt_revision], [tracker_interface_age])
+m4_define([tracker_lt_age], [m4_eval(tracker_binary_age - tracker_interface_age)])
+m4_define([tracker_lt_current_minus_age],
+          [m4_eval(tracker_lt_current - tracker_lt_age)])
+
 # Define a string for the earliest version that this release has
 # backwards binary compatibility with for all interfaces a module
 # might. Unless we add module-only API with lower stability
@@ -29,7 +38,7 @@ m4_define([tracker_api_version], [0.6])
 # for Tracker.
 #
 # TRACKER_BINARY_VERSION=$TRACKER_MAJOR_VERSION.$TRACKER_MINOR_VERSION.$LT_CURRENT
-m4_define([tracker_binary_version], [0.6.91])
+m4_define([tracker_binary_version], [0.6.92])
 
 AC_INIT([tracker], [tracker_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=tracker],
@@ -61,11 +70,24 @@ AC_SUBST(TRACKER_BINARY_VERSION)
 
 AC_SUBST(PACKAGE_URL, [http://www.tracker-project.org])
 
+# libtool versioning
+LT_RELEASE=tracker_lt_release
+LT_CURRENT=tracker_lt_current
+LT_REVISION=tracker_lt_revision
+LT_AGE=tracker_lt_age
+LT_CURRENT_MINUS_AGE=tracker_lt_current_minus_age
+AC_SUBST(LT_RELEASE)
+AC_SUBST(LT_CURRENT)
+AC_SUBST(LT_REVISION)
+AC_SUBST(LT_AGE)
+AC_SUBST(LT_CURRENT_MINUS_AGE)
+
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_LN_S
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
+AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
 CFLAGS="$CFLAGS"
@@ -488,26 +510,25 @@ fi
 AC_ARG_ENABLE(gstreamer-helix, 
 	      AS_HELP_STRING([--enable-gstreamer-helix],
 			     [enable GStreamer helix extractor for Real Media (default=no)]),,
-	      [enable_gst_helix=no])
+	      [enable_gstreamer_helix=no])
 
-if test "x$enable_gst_helix" != "xno"; then
+if test "x$enable_gstreamer_helix" != "xno"; then
    if test "x$have_libgstreamer" = "xyes"; then 
-      have_gst_helix="yes"
+      have_gstreamer_helix="yes"
+   else 
+      have_gstreamer_helix="no"
    fi
 else
-   have_gst_helix="no  (disabled)"
+   have_gstreamer_helix="no  (disabled)"
 fi
 
-if test "x$enable_gst_helix" = "xyes"; then
-   if test "x$have_gst_helix" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find GStreamer Helix Bin])
-   fi
-   if test "x$have_libgstreamer" != "xyes"; then
-      AC_MSG_ERROR([GStreamer is not found/used but GStreamer Helix Bin requested])
+if test "x$enable_gstreamer_helix" = "xyes"; then
+   if test "x$have_gstreamer_helix" != "xyes"; then
+      AC_MSG_ERROR([GStreamer is not available or disabled but GStreamer Helix Bin requested])
    fi
 fi
 
-AM_CONDITIONAL(HAVE_GST_HELIX, test "x$have_gst_helix" = "xyes")
+AM_CONDITIONAL(HAVE_GSTREAMER_HELIX, test "x$have_gstreamer_helix" = "xyes")
 
 ####################################################################
 # Windows check
@@ -590,20 +611,17 @@ AM_CONDITIONAL(HAVE_UNAC, test "x$have_unac" = "xyes")
 # Push modules
 ####################################################################
 
-# In vstore we want to make these mandatory, please remove these
-# (as) options when merging to vstore. Thanks!
-
 AC_ARG_ENABLE([evolution_push_module],
               AS_HELP_STRING([--enable-evolution-push-module],
-                             [enable support for Evolution push mechanism (default=no)]),,
-              [enable_evolution_push_module=no])
+                             [enable support for Evolution push mechanism (default=yes)]),,
+              [enable_evolution_push_module=yes])
 
 AM_CONDITIONAL(USING_EVOLUTION_PUSH_MODULE, test "x$enable_evolution_push_module" = "xyes")
 
 AC_ARG_ENABLE([kmail_push_module],
               AS_HELP_STRING([--enable-kmail-push-module],
-                             [enable support for KMail push mechanism (default=no)]),,
-              [enable_kmail_push_module=no])
+                             [enable support for KMail push mechanism (default=yes)]),,
+              [enable_kmail_push_module=yes])
 
 AM_CONDITIONAL(USING_KMAIL_PUSH_MODULE, test "x$enable_kmail_push_module" = "xyes")
 
@@ -654,7 +672,7 @@ if test "x$have_deskbar_applet" = "xhandler"; then
    fi
 
    if test -z "$deskbar_applet_dir"; then
-      deskbar_applet_dir="\$(exec_prefix)/lib/deskbar-applet/handlers"
+      deskbar_applet_dir="\$(libdir)/deskbar-applet/handlers"
    fi
 fi
 
@@ -665,8 +683,8 @@ if test "x$have_deskbar_applet" = "xmodule"; then
        deskbar_applet_dir="$with_deskbar_applet_dir"
    fi
 
-   if test -z "$module_dir"; then
-      deskbar_applet_dir="\$(exec_prefix)/lib/deskbar-applet/modules-2.20-compatible"
+   if test -z "$deskbar_applet_dir"; then
+      deskbar_applet_dir="\$(libdir)/deskbar-applet/modules-2.20-compatible"
    fi
 fi
 
@@ -1389,12 +1407,13 @@ Metadata Extractors:
 	Support PDF:				$have_poppler_glib
 	Support JPEG:				$have_libjpeg (xmp: $have_exempi, exif: $have_libexif, iptc: $have_libiptcdata)
 	Support TIFF:				$have_libtiff (xmp: $have_exempi, exif: yes, iptc: $have_libiptcdata)
-	Support MS & Open Office (gsf):	        $have_libgsf
-	Support XML / HTML formats:		$have_libxml2
+	Support MS & Open Office:	        $have_libgsf
+	Support XML / HTML:		        $have_libxml2
 	Support embedded / sidecar XMP:		$have_exempi
 	Support video formats:			$have_video_handler ($have_video_handler_app)
+	Support helix formats (RPM/RM/etc):     $have_gstreamer_helix
 	Support MP3 album art (w/ GdkPixbuf):	$have_gdkpixbuf
-	Support Playlists (w/ Totem):           $have_playlist
+	Support playlists (w/ Totem):           $have_playlist
 
 Plugins:
 

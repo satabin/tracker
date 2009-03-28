@@ -35,6 +35,7 @@
     <keyword type="function" name="tracker_module_file_get_uri ()" link="libtracker-module-Module-files.html#tracker-module-file-get-uri"/>
     <keyword type="function" name="tracker_module_file_get_text ()" link="libtracker-module-Module-files.html#tracker-module-file-get-text"/>
     <keyword type="function" name="tracker_module_file_get_metadata ()" link="libtracker-module-Module-files.html#tracker-module-file-get-metadata"/>
+    <keyword type="" name="The &quot;cancelled&quot; property" link="libtracker-module-Module-files.html#TrackerModuleFile--cancelled"/>
     <keyword type="" name="The &quot;file&quot; property" link="libtracker-module-Module-files.html#TrackerModuleFile--file"/>
     <keyword type="typedef" name="TrackerModuleIteratable" link="libtracker-module-Iteratable-files.html#TrackerModuleIteratable"/>
     <keyword type="function" name="tracker_module_iteratable_iter_contents ()" link="libtracker-module-Iteratable-files.html#tracker-module-iteratable-iter-contents"/>

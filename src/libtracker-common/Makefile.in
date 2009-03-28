@@ -248,6 +248,11 @@ LIBXML2_LIBS = @LIBXML2_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
+LT_AGE = @LT_AGE@
+LT_CURRENT = @LT_CURRENT@
+LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+LT_RELEASE = @LT_RELEASE@
+LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
@@ -435,7 +440,9 @@ libtracker_commoninclude_HEADERS = \
 	tracker-type-utils.h				\
 	tracker-utils.h
 
-libtracker_common_la_LDFLAGS = -version-info 0:0:0
+libtracker_common_la_LDFLAGS = \
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+
 libtracker_common_la_LIBADD = \
 	$(top_builddir)/src/libstemmer/libstemmer.la	\
 	$(HAL_LIBS)					\

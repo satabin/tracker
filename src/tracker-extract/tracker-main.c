@@ -26,10 +26,16 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <signal.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <linux/sched.h>
+#include <sched.h>
 
 #include <glib.h>
 #include <glib-object.h>
 #include <glib/gi18n.h>
+#include <gio/gio.h>
 
 #ifndef G_OS_WIN32
 #include <sys/resource.h>
@@ -40,17 +46,11 @@
 #include <libtracker-common/tracker-dbus.h>
 #include <libtracker-common/tracker-os-dependant.h>
 #include <libtracker-common/tracker-thumbnailer.h>
+#include <libtracker-common/tracker-ioprio.h>
 
 #include "tracker-main.h"
 #include "tracker-dbus.h"
 #include "tracker-extract.h"
-
-/* Temporary hack for out of date kernels, also, this value may not be
- * the same on all architectures, but it is for x86.
- */
-#ifndef SCHED_IDLE
-#define SCHED_IDLE 5
-#endif
 
 #define ABOUT								  \
 	"Tracker " PACKAGE_VERSION "\n"
@@ -83,7 +83,7 @@ static GOptionEntry  entries[] = {
 	     "1 = minimal, 2 = detailed and 3 = debug (default = 0)"),
 	  NULL },
 	{ "file", 'f', 0,
-	  G_OPTION_ARG_STRING, &filename,
+	  G_OPTION_ARG_FILENAME, &filename,
 	  N_("File to extract metadata for"),
 	  N_("FILE") },
 	{ "file", 'm', 0,
@@ -115,6 +115,30 @@ tracker_main_quit_timeout_reset (void)
 						 NULL);
 }
 
+
+static void
+initialize_priority (void)
+{
+	/* Set disk IO priority and scheduling */
+	tracker_ioprio_init ();
+
+	/* Set process priority:
+	 * The nice() function uses attribute "warn_unused_result" and
+	 * so complains if we do not check its returned value. But it
+	 * seems that since glibc 2.2.4, nice() can return -1 on a
+	 * successful call so we have to check value of errno too.
+	 * Stupid... 
+	 */
+	g_message ("Setting process priority");
+
+	if (nice (19) == -1) {
+		const gchar *str = g_strerror (errno);
+
+		g_message ("Couldn't set nice value to 19, %s",
+			   str ? str : "no error given");
+	}
+}
+
 static void
 initialize_directories (void)
 {
@@ -141,7 +165,7 @@ signal_handler (int signo)
 
 	/* Die if we get re-entrant signals handler calls */
 	if (in_loop) {
-		exit (EXIT_FAILURE);
+		_exit (EXIT_FAILURE);
 	}
 
 	switch (signo) {
@@ -201,6 +225,9 @@ main (int argc, char *argv[])
 	g_option_context_add_main_entries (context, entries, NULL);
 	g_option_context_parse (context, &argc, &argv, &error);
 
+	/* This makes sure we don't steal all the system's resources */
+	initialize_priority ();
+
 	if (!filename && mime_type) {
 		gchar *help;
 
@@ -242,15 +269,22 @@ main (int argc, char *argv[])
 
 	if (filename) {
 		TrackerExtract *object;
+		GFile *file;
+		gchar *full_path;
 
 		object = tracker_extract_new ();
 		if (!object) {
 			return EXIT_FAILURE;
 		}
 
-		tracker_extract_get_metadata_by_cmdline (object, filename, mime_type);
+		file = g_file_new_for_commandline_arg (filename);
+		full_path = g_file_get_path (file);
+
+		tracker_extract_get_metadata_by_cmdline (object, full_path, mime_type);
 
 		g_object_unref (object);
+		g_object_unref (file);
+		g_free (full_path);
 
 		return EXIT_SUCCESS;
 	}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <e-plugin-list>
-	<e-plugin type="shlib" location="/liborg-freedesktop-Tracker-evolution-plugin.so" localedir="" load-on-startup="after-ui" id="org.freedesktop.Tracker.evolution_plugin" domain="tracker" name="TrackerEvolutionPlugin">
+	<e-plugin type="shlib" location="/dev/null/liborg-freedesktop-Tracker-evolution-plugin.so" localedir="/usr/share/locale" load-on-startup="after-ui" id="org.freedesktop.Tracker.evolution_plugin" domain="tracker" name="TrackerEvolutionPlugin">
 
 		<description>Support for Tracker.</description>
 

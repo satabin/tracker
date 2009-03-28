@@ -1,3 +1,35 @@
+2009-03-27 Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation
+
+2009-03-26  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2009-03-24 Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation
+
+2009-03-24  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+	
+2009-03-23  Martyn Russell  <martyn@imendio.com>
+
+	* POTFILES.in: Fixed make distcheck.
+
+2009-03-18  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation
+
+2009-03-17  Ignacio Casal Quinteiro  <icq@gnome.org>
+
+	 * gl.po: Updated Galician translation by Suso Baleato.
+
+2009-03-13 Kenneth Nielsen <k.nielsen81@gmail.com>
+
+	* da.po: Updated Danish translation by Mads Lundby
+
 2009-03-02 Kenneth Nielsen <k.nielsen81@gmail.com>
 
 	* da.po: Updated Danish translation by Mads Lundby

@@ -81,13 +81,11 @@ libtracker_module_applications_la_LINK = $(LIBTOOL) --tag=CC \
 @HAVE_GCONF_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 @HAVE_GCONF_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am__libtracker_module_evolution_la_SOURCES_DIST = evolution-common.c \
-	evolution-common.h evolution-imap-db.c evolution-imap-db.h \
-	evolution-imap.c evolution-imap.h evolution-pop.c \
-	evolution-pop.h evolution.c
+	evolution-common.h evolution-imap.c evolution-imap.h \
+	evolution-pop.c evolution-pop.h evolution.c
 @HAVE_GCONF_TRUE@am_libtracker_module_evolution_la_OBJECTS =  \
-@HAVE_GCONF_TRUE@	evolution-common.lo evolution-imap-db.lo \
-@HAVE_GCONF_TRUE@	evolution-imap.lo evolution-pop.lo \
-@HAVE_GCONF_TRUE@	evolution.lo
+@HAVE_GCONF_TRUE@	evolution-common.lo evolution-imap.lo \
+@HAVE_GCONF_TRUE@	evolution-pop.lo evolution.lo
 libtracker_module_evolution_la_OBJECTS =  \
 	$(am_libtracker_module_evolution_la_OBJECTS)
 libtracker_module_evolution_la_LINK = $(LIBTOOL) --tag=CC \
@@ -271,6 +269,11 @@ LIBXML2_LIBS = @LIBXML2_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
+LT_AGE = @LT_AGE@
+LT_CURRENT = @LT_CURRENT@
+LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+LT_RELEASE = @LT_RELEASE@
+LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
@@ -446,8 +449,6 @@ libtracker_module_gaim_conversations_la_LIBADD = \
 @HAVE_GCONF_TRUE@libtracker_module_evolution_la_SOURCES = \
 @HAVE_GCONF_TRUE@	evolution-common.c						\
 @HAVE_GCONF_TRUE@	evolution-common.h						\
-@HAVE_GCONF_TRUE@	evolution-imap-db.c						\
-@HAVE_GCONF_TRUE@	evolution-imap-db.h						\
 @HAVE_GCONF_TRUE@	evolution-imap.c						\
 @HAVE_GCONF_TRUE@	evolution-imap.h						\
 @HAVE_GCONF_TRUE@	evolution-pop.c							\
@@ -540,7 +541,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/applications.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evolution-common.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evolution-imap-db.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evolution-imap.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evolution-pop.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evolution.Plo@am__quote@

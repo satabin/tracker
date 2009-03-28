@@ -1,5 +1,6 @@
-tracker (0.6.91-2) UNRELEASED; urgency=low
+tracker (0.6.92-1) UNRELEASED; urgency=low
 
+  * New upstream release.
   * debian/watch
     - Check for the tarball directly on the GNOME ftp server.
 

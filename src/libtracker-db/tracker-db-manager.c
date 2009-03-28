@@ -48,7 +48,7 @@
 #define TRACKER_DB_MAX_FILE_SIZE      2000000000 
 
 /* Set current database version we are working with */
-#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_3
+#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_4
 #define TRACKER_DB_VERSION_FILE       "db-version.txt"
 
 typedef enum {
@@ -61,8 +61,9 @@ typedef enum {
 	TRACKER_DB_VERSION_UNKNOWN, /* Unknown */
 	TRACKER_DB_VERSION_1,       /* Version 0.6.6  (before indexer-split) */
 	TRACKER_DB_VERSION_2,       /* Version 0.6.90 (after  indexer-split) */
-	TRACKER_DB_VERSION_3,       /* Version 0.6.91 (current TRUNK) */
-	TRACKER_DB_VERSION_4        /* Version 0.7    (vstore branch) */
+	TRACKER_DB_VERSION_3,       /* Version 0.6.91 (stable release) */
+	TRACKER_DB_VERSION_4,       /* Version 0.6.92 (current TRUNK) */
+	TRACKER_DB_VERSION_5        /* Version 0.7    (vstore branch) */
 } TrackerDBVersion;
 
 typedef struct {
@@ -282,15 +283,21 @@ load_metadata_file (TrackerDBInterface *iface,
 		    const gchar        *filename)
 {
 	GKeyFile      *key_file = NULL;
+	GError        *error = NULL;
 	gchar	      *service_file, *str_id;
 	gchar	     **groups, **keys;
 	TrackerField  *def;
 	gint	       id, i, j;
 
+	g_message ("Loading metadata file '%s'", filename);
+
 	key_file = g_key_file_new ();
 	service_file = g_build_filename (services_dir, filename, NULL);
 
-	if (!g_key_file_load_from_file (key_file, service_file, G_KEY_FILE_NONE, NULL)) {
+	if (!g_key_file_load_from_file (key_file, service_file, G_KEY_FILE_NONE, &error)) {
+		g_critical ("Couldn't load service file, %s", 
+			    error ? error->message : "no error given");
+		g_clear_error (&error);
 		g_free (service_file);
 		g_key_file_free (key_file);
 		return;
@@ -302,6 +309,7 @@ load_metadata_file (TrackerDBInterface *iface,
 		def = tracker_ontology_get_field_by_name (groups[i]);
 
 		if (!def) {
+			g_message ("  Adding ontology metadata:'%s'", groups[i]);
 			tracker_db_interface_execute_procedure (iface,
 								NULL,
 								"InsertMetadataType",
@@ -377,15 +385,21 @@ load_service_file (TrackerDBInterface *iface,
 {
 	TrackerService	*service;
 	GKeyFile	*key_file = NULL;
+	GError          *error = NULL;
 	gchar		*service_file, *str_id;
 	gchar	       **groups, **keys;
 	gint		 i, j, id;
+
+	g_message ("Loading service file '%s'", filename);
 
 	service_file = g_build_filename (services_dir, filename, NULL);
 
 	key_file = g_key_file_new ();
 
-	if (!g_key_file_load_from_file (key_file, service_file, G_KEY_FILE_NONE, NULL)) {
+	if (!g_key_file_load_from_file (key_file, service_file, G_KEY_FILE_NONE, &error)) {
+		g_critical ("Couldn't load service file, %s", 
+			    error ? error->message : "no error given");
+		g_clear_error (&error);
 		g_free (service_file);
 		g_key_file_free (key_file);
 		return;
@@ -394,10 +408,10 @@ load_service_file (TrackerDBInterface *iface,
 	groups = g_key_file_get_groups (key_file, NULL);
 
 	for (i = 0; groups[i]; i++) {
-		g_message ("Trying to obtain service:'%s' in cache", groups[i]);
 		service = tracker_ontology_get_service_by_name (groups[i]);
 
 		if (!service) {
+			g_message ("Adding ontology service type:'%s'", groups[i]);
 			tracker_db_interface_execute_procedure (iface,
 								NULL,
 								"InsertServiceType",
@@ -507,9 +521,41 @@ load_service_file (TrackerDBInterface *iface,
 				new_value = tracker_string_boolean_to_string_gint (value);
 				esc_value = tracker_escape_string (new_value);
 
+				/* Special case "Parent */
+				if (g_ascii_strcasecmp (keys[j], "parent") == 0) {
+					TrackerDBResultSet *result_set;
+					gchar *query;
+
+					query = g_strdup_printf ("SELECT TypeId FROM ServiceTypes WHERE TypeName = '%s'",
+								 esc_value);
+					result_set = tracker_db_interface_execute_query (iface, NULL, "%s", query);
+					g_free (query);
+
+					if (result_set) {
+						GValue value = {0, };
+						GValue transform = {0, };
+
+						g_value_init (&transform, G_TYPE_STRING);
+						
+						_tracker_db_result_set_get_value (result_set, 0, &value);
+						if (g_value_transform (&value, &transform)) {
+							tracker_db_interface_execute_query (iface,
+											    NULL,
+											    "UPDATE ServiceTypes SET ParentId = '%s' WHERE TypeID = %s",
+											    g_value_get_string (&transform),
+											    str_id);
+
+						}
+						
+						g_value_unset (&value);
+						g_value_unset (&transform);
+						g_object_unref (result_set);
+					}
+				}
+				
 				tracker_db_interface_execute_query (iface,
 								    NULL,
-								    "update ServiceTypes set  %s = '%s' where TypeID = %s",
+								    "UPDATE ServiceTypes SET %s = '%s' WHERE TypeID = %s",
 								    keys[j],
 								    esc_value,
 								    str_id);
@@ -527,24 +573,6 @@ load_service_file (TrackerDBInterface *iface,
 	g_key_file_free (key_file);
 	g_strfreev (groups);
 	g_free (service_file);
-}
-
-static TrackerDBResultSet *
-db_exec_proc (TrackerDBInterface *iface,
-	      const gchar	 *procedure,
-	      ...)
-{
-	TrackerDBResultSet *result_set;
-	va_list		    args;
-
-	va_start (args, procedure);
-	result_set = tracker_db_interface_execute_vprocedure (iface,
-							      NULL,
-							      procedure,
-							      args);
-	va_end (args);
-
-	return result_set;
 }
 
 static gboolean
@@ -690,11 +718,11 @@ load_prepared_queries (void)
 				continue;
 			}
 
-			g_message ("  Adding query:'%s'", details[0]);
+			g_message ("  Adding query:'%s'", g_strstrip (details[0]));
 
 			g_hash_table_insert (prepared_queries,
-					     g_strdup (details[0]),
-					     g_strdup (details[1]));
+					     g_strdup (g_strstrip (details[0])),
+					     g_strdup (g_strstrip (details[1])));
 			g_strfreev (details);
 		}
 
@@ -1404,10 +1432,6 @@ db_get_static_data (TrackerDBInterface *iface)
 				g_slist_free (child_ids);
 			}
 
-			g_message ("Loading metadata def:'%s' with weight:%d",
-				   tracker_field_get_name (def),
-				   tracker_field_get_weight (def));
-
 			tracker_ontology_field_add (def);
 			g_object_unref (def);
 
@@ -1444,14 +1468,14 @@ db_get_static_data (TrackerDBInterface *iface)
 			mimes = db_get_mimes_for_service_id (iface, id);
 			mime_prefixes = db_get_mime_prefixes_for_service_id (iface, id);
 
-			g_message ("Adding service:'%s' with id:%d and mimes:%d",
+			g_message ("Loading ontology service:'%s' with id:%d and mimes:%d",
 				   name,
 				   id,
 				   g_slist_length (mimes));
 
 			tracker_ontology_service_add (service,
-							   mimes,
-							   mime_prefixes);
+						      mimes,
+						      mime_prefixes);
 
 			g_slist_free (mimes);
 			g_slist_free (mime_prefixes);
@@ -1463,7 +1487,6 @@ db_get_static_data (TrackerDBInterface *iface)
 		g_object_unref (result_set);
 	}
 }
-
 
 static const gchar *
 db_type_to_string (TrackerDB db)
@@ -1529,6 +1552,7 @@ db_interface_get_common (void)
 		const gchar *conf_file;
 
 		tracker_db_interface_start_transaction (iface);
+
 		/* Create tables */
 		load_sql_file (iface, "sqlite-tracker.sql", NULL);
 		load_sql_file (iface, "sqlite-metadata.sql", NULL);
@@ -1553,12 +1577,10 @@ db_interface_get_common (void)
 			}
 
 			if (g_str_has_suffix (conf_file, ".service")) {
-				g_debug ("Loading service file %s", conf_file);
 				load_service_file (iface, conf_file);
 			}
 
 			if (g_str_has_suffix (conf_file, ".metadata")) {
-				g_debug ("Loading metadata file %s", conf_file);
 				load_metadata_file (iface, conf_file);
 			}
 
@@ -1765,8 +1787,11 @@ db_manager_remove_all (void)
 
 	g_message ("Removing all database files");
 
+	/* NOTE: We don't have to be initialized for this so we
+	 * calculate the absolute directories here. 
+	 */
 	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
-		g_message ("Removing database:'%s'",
+		g_message ("  Removing database:'%s'",
 			   dbs[i].abs_filename);
 		g_unlink (dbs[i].abs_filename);
 	}
@@ -1906,11 +1931,18 @@ tracker_db_manager_ensure_locale (void)
 	}
 
 	if (g_strcmp0 (current_locale, stored_locale) != 0) {
+		guint collate_key;
 		/* Locales differ, update collate keys */
-		g_debug ("Updating DB locale dependent data to: %s\n", current_locale);
+		g_message ("Updating DB locale dependent data to: %s\n", current_locale);
 
 		iface = dbs[TRACKER_DB_FILE_METADATA].iface;
 		tracker_db_interface_execute_procedure (iface, NULL, "UpdateMetadataCollation", NULL);
+
+		for (collate_key = 1; collate_key<6; collate_key++) {
+			tracker_db_interface_execute_query (iface, NULL,
+			   		    "UPDATE Services SET KeyMetadataCollation%d=CollateKey(KeyMetadata%d)",
+					    collate_key, collate_key);
+		} 
 
 		iface = dbs[TRACKER_DB_EMAIL_METADATA].iface;
 		tracker_db_interface_execute_procedure (iface, NULL, "UpdateMetadataCollation", NULL);
@@ -2032,6 +2064,14 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 		}
 	}
 
+	/* If we are just initializing to remove the databases,
+	 * return here. 
+	 */
+	if ((flags & TRACKER_DB_MANAGER_REMOVE_ALL) != 0) {
+		initialized = TRUE;
+		return;
+	}
+
 	/* Set general database options */
 	if (shared_cache) {
 		g_message ("Enabling database shared cache");
@@ -2135,8 +2175,10 @@ tracker_db_manager_shutdown (void)
 		}
 	}
 
-	g_hash_table_unref (prepared_queries);
-	prepared_queries = NULL;
+	if (prepared_queries) {
+		g_hash_table_unref (prepared_queries);
+		prepared_queries = NULL;
+	}
 
 	g_free (data_dir);
 	g_free (user_data_dir);
@@ -2177,7 +2219,7 @@ void
 tracker_db_manager_remove_all (void)
 {
 	g_return_if_fail (initialized != FALSE);
-
+	
 	db_manager_remove_all ();
 }
 

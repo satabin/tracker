@@ -78,13 +78,6 @@
 #include "mingw-compat.h"
 #endif
 
-/* Temporary hack for out of date kernels, also, this value may not be
- * the same on all architectures, but it is for x86.
- */
-#ifndef SCHED_IDLE
-#define SCHED_IDLE 5
-#endif
-
 #define ABOUT								  \
 	"Tracker " PACKAGE_VERSION "\n"
 
@@ -471,7 +464,7 @@ signal_handler (int signo)
 
 	/* Die if we get re-entrant signals handler calls */
 	if (in_loop) {
-		exit (EXIT_FAILURE);
+		_exit (EXIT_FAILURE);
 	}
 
 	switch (signo) {
@@ -612,25 +605,7 @@ initialize_databases (void)
 	 * Create SQLite databases
 	 */
 	if (!tracker_status_get_is_readonly () && force_reindex) {
-		TrackerDBInterface *iface;
-
 		tracker_status_set_is_first_time_index (TRUE);
-
-		/* Reset stats for embedded services if they are being reindexed */
-
-		/* Here it doesn't matter which one we ask, as long as it has common.db
-		 * attached. The service ones are cached connections, so we can use
-		 * those instead of asking for an individual-file connection (like what
-		 * the original code had) */
-
-		/* iface = tracker_db_manager_get_db_interfaceX (TRACKER_DB_COMMON); */
-
-		iface = tracker_db_manager_get_db_interface_by_service (TRACKER_DB_FOR_FILE_SERVICE);
-
-		g_message ("*** DELETING STATS *** ");
-		tracker_data_manager_exec_no_reply (iface,
-					  "update ServiceTypes set TypeCount = 0 where Embedded = 1");
-
 	}
 
 	/* Check db integrity if not previously shut down cleanly */
@@ -1110,7 +1085,7 @@ main (gint argc, gchar *argv[])
 		if (seconds > 0) {
 			g_message ("Waiting %d seconds before starting",
 				   seconds);
-			g_timeout_add (seconds * 1000, start_cb, NULL);
+			g_timeout_add_seconds (seconds, start_cb, NULL);
 		} else {
 			g_idle_add (start_cb, NULL);
 		}

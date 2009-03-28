@@ -1,3 +1,411 @@
+2009-03-27  Martyn Russell  <martyn@imendio.com>
+
+	* Release 0.6.92.
+
+2009-03-27  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-indexer/tracker-push.c (load_modules): Close the dir.
+
+2009-03-27  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-db/tracker-db-index.c (indexer_update_word): Do not
+	try to memmove() past array boundaries when removing an element.
+
+2009-03-27  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-data/tracker-data-query.c (result_set_to_metadata):
+	Do not leak GValues contents.
+
+2009-03-27  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-data/tracker-data-metadata.c
+	(tracker_data_metadata_insert_values): Create a copy of the list
+	before freeing the old values, since the new list could be constructed
+	from these old values. Fixes NB#100642.
+
+2009-03-26  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/libtracker-data/tracker-data-search.c: Added the missing
+	order-type join conditions.
+
+2009-03-26  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/tracker-extract/tracker-extract-gstreamer.c
+	* src/tracker-extract/tracker-iptc.c: Fixed a small ontology
+	mistake in the image extractors.
+
+2009-03-25  Carlos Garnacho  <carlos@imendio.com>
+
+	Make GVolumeMonitor::mount-pre-unmount cancel any ongoing operation in
+	the indexer on the removable media. This isn't available yet due to
+	GLib not emitting such signal, but it will soon.
+
+	* src/tracker-indexer/tracker-module-file.[ch]
+	(tracker_module_file_cancel) (tracker_module_file_is_cancelled): Added
+	new API.
+
+	* src/tracker-indexer/tracker-module-metadata-utils.[ch]: Reworked to
+	have child processes async+killable.
+	(tracker_module_metadata_utils_cancel): New function to kill all
+	external processes on a GFile.
+
+	* src/tracker-indexer/modules/files.c: Use new metadata utils function
+	to immediately cancel an operation.
+
+	* src/tracker-indexer/tracker-indexer.c (check_mount_removal)
+	(mount_pre_unmount_cb) (tracker_indexer_finalize)
+	(tracker_indexer_init): Hook to GVolumeMonitor::mount-pre-unmount, so
+	any ongoing+future operations on the removable media are cancelled.
+
+	(item_add_or_update) (item_move) (item_process) (process_file):
+	Reworked to have a single point of cancellation.
+
+2009-03-25  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/libtracker-data/tracker-data-schema.c:
+	* src/libtracker-data/tracker-rdf-query.c: Fixed a missing
+	condition for join.
+
+2009-03-25  Martyn Russell  <martyn@imendio.com>
+
+	* src/trackerd/tracker-daemon.c: (tracker_daemon_get_stats): Fixed
+	comparison with unset variable.
+
+2009-03-25  Jürg Billeter  <j@bitron.ch>
+
+	* configure.ac: Disable static libraries by default.
+
+2009-03-25  Jürg Billeter  <j@bitron.ch>
+
+	* configure.ac: Update help strings for the configure options of
+	the mail push modules.
+
+2009-03-25  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* data/db/sqlite-service.sql: Added key collations to Services
+	table. Additional indices.
+	* data/services/default.service:
+	* src/libtracker-db/tracker-db-manager.c
+	* src/libtracker-common/tracker-ontology.c
+	* src/libtracker-common/tracker-ontology.h
+	* src/libtracker-data/tracker-data-schema.c
+	* src/libtracker-data/tracker-data-search.c
+	* src/libtracker-data/tracker-rdf-query.c
+	* src/libtracker-data/tracker-data-update.c
+	* src/libtracker-data/tracker-field-data.c
+	* src/libtracker-data/tracker-field-data.h: Use key collations in
+	queries and updates. Performance improvements to the queries.
+	
+2009-03-25  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-data/tracker-data-update.c
+	(tracker_data_update_replace_service): Refactored not to have
+	duplicated code, do not compare file mtimes with the Accessed column in
+	the Services table, instead use the GetServiceID stored procedure
+	and compare against the IndexTime column.
+
+2009-03-24  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-applet/tracker-applet-prefs.glade:
+	* src/tracker-applet/tracker-applet.c: Removed all "merge" options
+	since they no longer apply. Added more state information so the
+	user isn't left wondering what is going on. Now we report states:
+	watching, crawling, optimising and shutting down.
+
+2009-03-24  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-utils/tracker-processes.c: Fixed build warnings.
+
+2009-03-23  Martyn Russell  <martyn@imendio.com>
+
+	* src/trackerd/tracker-processor.c: (get_remote_roots),
+	(process_module_files_add_removable_media), (crawler_finished_cb),
+	(mount_point_added_cb), (mount_point_removed_cb): Make use of
+	g_strcmp0() so we don't crash with NULL strings as reported in
+	LP#347352. 
+
+2009-03-23  Martyn Russell  <martyn@imendio.com>
+
+	* src/libtracker-db/tracker-db-index-manager.[ch]:
+	* src/libtracker-db/tracker-db-manager.[ch]: Make it possible to
+	initialise these managers JUST for removing databases and
+	resetting.
+	
+	* src/tracker-utils/Makefile.am:
+	* src/tracker-utils/tracker-processes.c: Added options
+	--hard-reset to kill all processes AND remove all databases. Also
+	updated all output messages so they are translated. Added
+	--terminate to use SIGTERM on all tracker processes and added
+	--kill to use SIGKILL on all tracker processes.
+
+2009-03-23  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-utils/tracker-processes.c: Only include basename in
+	list and exclude ourselves from the list of running processes.
+	Also remove the ":" between the "PID" and value for mouse copy and
+	paste ease.
+
+2009-03-23  Martyn Russell  <martyn@imendio.com>
+
+	* data/dbus/tracker-extract.xml:
+	* src/tracker-extract/tracker-extract.[ch]:
+	* src/tracker-indexer/tracker-indexer.c:
+	* src/tracker-indexer/tracker-module-metadata-utils.c: Added
+	GetPid API call to extractor. We now call this furst so we know
+	what process to kill when the extractor misbehaves. The old
+	solution would kill EVERY tracker-extract process on the system
+	which (if the user has permissions) is potentially quite bad for
+	multiple users using Tracker. This should be quicker than the old
+	solution too.
+
+2009-03-23  Philip Van Hoof  <philip@codeminded.be>
+
+	* src/tracker-indexer/modules/evolution.c: fixed undefined symbol
+	compilation error
+
+2009-03-23  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-applet/tracker-applet.c: Revert turning on debugging.
+
+2009-03-23  Martyn Russell  <martyn@imendio.com>
+
+	* src/trackerd/tracker-status.c: Make sure we change the
+	throttling when the battery is in use or not. Changed battery
+	charge debugging to show even when it is charging, not just
+	discharging. 
+
+2009-03-23  Martyn Russell  <martyn@imendio.com>
+
+	* src/libtracker-common/tracker-hal.c: Improved add/remove/found
+	devices debug messages. 
+	
+	* src/trackerd/tracker-status.c: (battery_percentage_cb): Fixed
+	message for battery percentage left so we don't always print 0%.
+
+2009-03-23  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-extract/tracker-main.c: (signal_handler):
+	* src/tracker-indexer/tracker-main.c: (signal_handler):
+	* src/trackerd/tracker-main.c: (signal_handler): Fixes NB#102800,
+	uses _exit() instead of exit() when receiving termination signals
+	more than once (like Ctrl+C).
+
+2009-03-20  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-indexer/tracker-module-metadata-utils.c: Used code
+	from tracker-processes utility to find tracker-extract when we get
+	a dbus timed out (and other type) messages and kill it with
+	SIGKILL. This should fix the problems we were seeing with the
+	extractor locking up for long periods of time on the device.
+
+	* src/tracker-utils/Makefile.am:
+	* src/tracker-utils/tracker-processes.c: Added utility to get all
+	tracker processes running on the system.
+
+2009-03-20  Martyn Russell  <martyn@imendio.com>
+
+	* data/db/sqlite-service-types.sql: 
+	* data/db/sqlite-service.sql:
+	* data/db/sqlite-stored-procs.sql:
+	* src/libtracker-db/tracker-db-manager.c: 
+	* src/trackerd/tracker-daemon.c: Added ParentID and 2 indexes
+	to improve GetStats performance. Removed erroneous indexes which
+	were creating warnings when creating the databases. Added stored
+	proc to get all parent service type statistics (like Files,
+	Emails, Conversations, etc).
+
+	* src/tracker-applet/tracker-applet.c: Fixed stats order. This was
+	broken recently with the change to the stored procs.
+	
+	* src/trackerd/tracker-main.c: Don't try to reset the stats in the
+	database when we reindex, we don't hold stats in the same place in
+	the same way now.
+
+2009-03-20  Philip Van Hoof  <philip@codeminded.be>
+
+	* src/tracker-indexer/modules/evolution.c:
+	* src/tracker-indexer/modules/Makefile.am:
+	* configure.ac:
+	* src/tracker-indexer/modules/evolution-imap-db.h:
+	* src/tracker-indexer/modules/evolution-imap-db.c:
+
+
+	Removed support for the sqlite based pull indexer module for
+	Evolution
+
+	Enabled by defualt the support for the push indexing module for
+	Evolution (Evolution pushes data into Tracker's storage)
+
+	This fixes https://qa.mandriva.com/show_bug.cgi?id=48977
+
+2009-03-20  Philip Van Hoof  <philip@codeminded.be>
+
+	* src/libtracker-common/tracker-thumbnailer.c: Using an int instead of
+	an int64 for this dbus call
+
+2009-03-20  Martyn Russell  <martyn@imendio.com>
+
+	* data/services/image.metadata: Fixed errors stopping file from
+	being loaded.
+	
+	* src/libtracker-db/tracker-db-manager.c: Improve debugging so we
+	see exactly what each .metadata file loads and also added GError
+	to g_key_file_load* functions for metadata and service files so if
+	they don't load we know why in the logs.
+
+2009-03-19  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* data/services/image.metadata: Added missing field type
+	definition.
+	
+2009-03-19  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* data/services/default.service
+	* data/db/sqlite-service.sql
+	* src/libtracker-data/tracker-data-search.c: Use the collation for
+	sorting correctly. First phase of improving the unique values
+	queries performance.
+	* src/libtracker-data/tracker-data-update.c: Make sure no empty
+	strings are added to the database.
+
+2009-03-19  Martyn Russell  <martyn@imendio.com>
+
+ 	* configure.ac:
+	* src/libinotify/Makefile.am:
+	* src/libstemmer/Makefile.am:
+	* src/libtracker-common/Makefile.am:
+	* src/libtracker-data/Makefile.am:
+	* src/libtracker-db/Makefile.am:
+	* src/libtracker-gtk/Makefile.am:
+	* src/libtracker/Makefile.am: Added libtool library versioning so
+	libraries are not all named .so.0.0.0. 
+
+2009-03-17  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* data/services/image.metadata: Added sublocation property to images.
+	* src/tracker-extract/tracker-iptc.c:
+	* src/tracker-extract/tracker-xmp.c: Extract information for the
+	sublocation.
+
+	Fixes NB#90455.
+
+2009-03-17  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/tracker-extract/tracker-extract-mp3.c: Minor fixes to id3v2
+	extraction.
+
+	Fixes NB#106424.
+
+2009-03-17  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-data/tracker-data-update.c
+	(tracker_data_update_delete_service_by_path): Fail gracefully if the
+	rdf type doesn't exist in the ontology.
+
+2009-03-17  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-indexer/tracker-indexer.c (flush_data): Fixed wrong
+	logic when signalling status.
+
+2009-03-17  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-indexer/tracker-indexer.c:
+	(should_change_index_for_file): Make sure we check the mtime in
+	the db and on the disk are the same here before returning, don't
+	assume if the file is older it means the same thing.
+
+2009-03-17  Martyn Russell  <martyn@imendio.com>
+
+	* configure.ac: Provide information about if GStreamer helix is
+	being built in the summary.
+
+2009-03-17  Martyn Russell  <martyn@imendio.com>
+
+	* configure.ac:
+	* src/tracker-extract/Makefile.am: Fixed GStreamer helix bin
+	checks in configure and renamed variables.
+
+2009-03-17  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-extract/tracker-main.c: Transform filenames passed
+	through the -f parameter to full paths.
+
+2009-03-17  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-extract/tracker-escape.c (tracker_escape_metadata):
+	Handle NULL strings. Fixes NB#106201.
+
+2009-03-16  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-applet/tracker-applet.c: (filter_x_events):
+	* src/trackerd/tracker-main.c: (main):
+	* src/trackerd/tracker-processor.c: (item_queue_handlers_set_up):
+	Use g_timeout_add_seconds() in preference to g_timeout_add().
+	Fixes bug #573834 (Marcel Stimberg).
+
+2009-03-16  Martyn Russell  <martyn@imendio.com>
+
+	* configure.ac: Fix confusion and error with deskbar-applet module
+	dir detection. Fixes bug #575271 (Deji Akingunola).
+
+2009-03-16  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-indexer/tracker-indexer.c (handle_metadata_add): Make
+	sure that we allocate enough space for the tags that are going to be
+	set, and that no empty places are left in between. This fixes both
+	memory corruption and strange behavior when saving tags.
+
+2009-03-16  Martyn Russell  <martyn@imendio.com>
+
+	* src/libtracker-db/tracker-db-dbus.c: Don't check each string for
+	utf8 validity in tracker_dbus_query_result_to_ptr_array() since we
+	call tracker_dbus_slist_to_strv() which does this for us anyway.
+	
+	* src/tracker-applet/tracker-applet.c: Fixed crasher here and
+	added a refresh button so the user can request updates more
+	frequently than they are signalled to us. Fixes bug #575332.
+	
+	* src/trackerd/tracker-daemon.c: Fixed the
+	"service-statistics-updated" signal here so we actually send the
+	GType that is expected based on the dbus XML introspection file.
+
+2009-03-16  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-db/tracker-db-manager.c (db_exec_proc): Removed dead
+	code.
+	* src/tracker-extract/tracker-extract-pdf.c: Added missing include.
+
+2009-03-16  Carlos Garnacho  <carlos@imendio.com>
+
+	* data/db/sqlite-tracker.sql: Set primary key on the Options table, so
+	the 'Replace' statement in the SetOption stored procedure actually
+	replaces the setting value. Fixes #570232
+
+2009-03-13  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/libtracker-data/tracker-rdf-query.c: Return undefined
+	integer values with empty field in rdf (as with strings)
+
+2009-03-13  Philip Van Hoof  <philip@codeminded.be>
+
+	* src/tracker-indexer/tracker-main.c:
+	* src/trackerd/tracker-main.c:
+	* src/tracker-extract/tracker-main.c: Reverting SCHED_IDLE and setting
+	the extractor to nice(). We don't want to go into SCHED_IDLE else will
+	any app with a bug like "while(1);" make us strave. This is really a
+	bad idea.
+
+	Apps that want to have a prio over tracker's processes should simply
+	use SCHED_FIFO themselves. Don't require apps to run at a lower prio,
+	run at a higher prio yourself if you are indeed realtime.
+
+	Keeping the nice() value so that for a normal desktop we run at a
+	level that is lower-than-everybody-else.
+
+2009-03-13  Martyn Russell  <martyn@imendio.com>
+
+	* Release 0.6.91.
+	
 2009-03-13  Martyn Russell  <martyn@imendio.com>
 
 	* NEWS:
@@ -308,7 +716,7 @@
 	terminal due to deprecated glade calls. Make step increment for
 	maximum bytes to index in text files increments of 1024. Fixed
 	throttle range to be 0->20 not 0->99 which is not valid. Removed
-	email options which have no effect. Fixes bug #571331.
+	email options which have no effect. Fixes bug #571331 .
 	
 2009-03-10  Martyn Russell  <martyn@imendio.com>
 

@@ -48,7 +48,8 @@ bin_PROGRAMS = tracker-search$(EXEEXT) tracker-query$(EXEEXT) \
 	tracker-meta-folder$(EXEEXT) tracker-stats$(EXEEXT) \
 	tracker-tag$(EXEEXT) tracker-files$(EXEEXT) \
 	tracker-status$(EXEEXT) tracker-unique$(EXEEXT) \
-	tracker-info$(EXEEXT) tracker-services$(EXEEXT)
+	tracker-info$(EXEEXT) tracker-processes$(EXEEXT) \
+	tracker-services$(EXEEXT)
 subdir = src/tracker-utils
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
@@ -67,6 +68,7 @@ am__DEPENDENCIES_1 =
 am__DEPENDENCIES_2 =  \
 	$(top_builddir)/src/libtracker/libtrackerclient.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 tracker_files_DEPENDENCIES = $(am__DEPENDENCIES_2)
@@ -76,6 +78,9 @@ tracker_info_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_tracker_meta_folder_OBJECTS = tracker-meta-folder.$(OBJEXT)
 tracker_meta_folder_OBJECTS = $(am_tracker_meta_folder_OBJECTS)
 tracker_meta_folder_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am_tracker_processes_OBJECTS = tracker-processes.$(OBJEXT)
+tracker_processes_OBJECTS = $(am_tracker_processes_OBJECTS)
+tracker_processes_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_tracker_query_OBJECTS = tracker-query.$(OBJEXT)
 tracker_query_OBJECTS = $(am_tracker_query_OBJECTS)
 tracker_query_DEPENDENCIES = $(am__DEPENDENCIES_2)
@@ -110,15 +115,17 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(tracker_files_SOURCES) $(tracker_info_SOURCES) \
-	$(tracker_meta_folder_SOURCES) $(tracker_query_SOURCES) \
-	$(tracker_search_SOURCES) $(tracker_services_SOURCES) \
-	$(tracker_stats_SOURCES) $(tracker_status_SOURCES) \
-	$(tracker_tag_SOURCES) $(tracker_unique_SOURCES)
+	$(tracker_meta_folder_SOURCES) $(tracker_processes_SOURCES) \
+	$(tracker_query_SOURCES) $(tracker_search_SOURCES) \
+	$(tracker_services_SOURCES) $(tracker_stats_SOURCES) \
+	$(tracker_status_SOURCES) $(tracker_tag_SOURCES) \
+	$(tracker_unique_SOURCES)
 DIST_SOURCES = $(tracker_files_SOURCES) $(tracker_info_SOURCES) \
-	$(tracker_meta_folder_SOURCES) $(tracker_query_SOURCES) \
-	$(tracker_search_SOURCES) $(tracker_services_SOURCES) \
-	$(tracker_stats_SOURCES) $(tracker_status_SOURCES) \
-	$(tracker_tag_SOURCES) $(tracker_unique_SOURCES)
+	$(tracker_meta_folder_SOURCES) $(tracker_processes_SOURCES) \
+	$(tracker_query_SOURCES) $(tracker_search_SOURCES) \
+	$(tracker_services_SOURCES) $(tracker_stats_SOURCES) \
+	$(tracker_status_SOURCES) $(tracker_tag_SOURCES) \
+	$(tracker_unique_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -252,6 +259,11 @@ LIBXML2_LIBS = @LIBXML2_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
+LT_AGE = @LT_AGE@
+LT_CURRENT = @LT_CURRENT@
+LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+LT_RELEASE = @LT_RELEASE@
+LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
@@ -383,6 +395,7 @@ INCLUDES = \
 libs = \
 	$(top_builddir)/src/libtracker/libtrackerclient.la		\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(top_builddir)/src/libtracker-db/libtracker-db.la		\
 	$(GIO_LIBS)							\
 	$(GCOV_LIBS)							\
 	$(GLIB2_LIBS)
@@ -405,6 +418,8 @@ tracker_unique_SOURCES = tracker-unique.c
 tracker_unique_LDADD = $(libs)
 tracker_info_SOURCES = tracker-info.c
 tracker_info_LDADD = $(libs)
+tracker_processes_SOURCES = tracker-processes.c
+tracker_processes_LDADD = $(libs)
 tracker_services_SOURCES = tracker-services.c
 tracker_services_LDADD = $(libs)
 all: all-am
@@ -477,6 +492,9 @@ tracker-info$(EXEEXT): $(tracker_info_OBJECTS) $(tracker_info_DEPENDENCIES)
 tracker-meta-folder$(EXEEXT): $(tracker_meta_folder_OBJECTS) $(tracker_meta_folder_DEPENDENCIES) 
 	@rm -f tracker-meta-folder$(EXEEXT)
 	$(LINK) $(tracker_meta_folder_OBJECTS) $(tracker_meta_folder_LDADD) $(LIBS)
+tracker-processes$(EXEEXT): $(tracker_processes_OBJECTS) $(tracker_processes_DEPENDENCIES) 
+	@rm -f tracker-processes$(EXEEXT)
+	$(LINK) $(tracker_processes_OBJECTS) $(tracker_processes_LDADD) $(LIBS)
 tracker-query$(EXEEXT): $(tracker_query_OBJECTS) $(tracker_query_DEPENDENCIES) 
 	@rm -f tracker-query$(EXEEXT)
 	$(LINK) $(tracker_query_OBJECTS) $(tracker_query_LDADD) $(LIBS)
@@ -508,6 +526,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-files.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-info.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-meta-folder.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-processes.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-query.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-search.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-services.Po@am__quote@

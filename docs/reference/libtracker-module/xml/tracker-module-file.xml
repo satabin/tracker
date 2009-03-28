@@ -51,6 +51,7 @@ TrackerModuleFile is required by
 <refsect1 id="libtracker-module-Module-files.properties" role="properties">
 <title role="properties.title">Properties</title>
 <synopsis>
+  &quot;<link linkend="TrackerModuleFile--cancelled">cancelled</link>&quot;                <link linkend="gboolean">gboolean</link>              : Read / Write
   &quot;<link linkend="TrackerModuleFile--file">file</link>&quot;                     <link linkend="GFile">GFile</link>*                : Read / Write / Construct Only
 </synopsis>
 </refsect1>
@@ -158,6 +159,10 @@ be indexed.</para>
 </refsect1>
 <refsect1 id="libtracker-module-Module-files.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
+<refsect2 id="TrackerModuleFile--cancelled"><title>The <literal>&quot;cancelled&quot;</literal> property</title>
+<indexterm zone="TrackerModuleFile--cancelled"><primary>TrackerModuleFile:cancelled</primary></indexterm><programlisting>  &quot;cancelled&quot;                <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<para>Whether operations on this file were cancelled.</para><para>Default value: FALSE</para>
+</refsect2>
 <refsect2 id="TrackerModuleFile--file"><title>The <literal>&quot;file&quot;</literal> property</title>
 <indexterm zone="TrackerModuleFile--file"><primary>TrackerModuleFile:file</primary></indexterm><programlisting>  &quot;file&quot;                     <link linkend="GFile">GFile</link>*                : Read / Write / Construct Only</programlisting>
 <para>

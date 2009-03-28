@@ -45,10 +45,6 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-
-# if HAVE_IMAGEMAGICK
-# modules_LTLIBRARIES += libextract-imagemagick.la
-# endif
 @HAVE_EXEMPI_TRUE@am__append_1 = libextract-xmp.la
 @HAVE_LIBJPEG_TRUE@am__append_2 = libextract-jpeg.la
 @HAVE_LIBTIFF_TRUE@am__append_3 = libextract-tiff.la
@@ -56,11 +52,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 @HAVE_LIBGSF_TRUE@am__append_5 = libextract-msoffice.la
 @HAVE_POPPLER_GLIB_TRUE@am__append_6 = libextract-pdf.la
 @HAVE_GSTREAMER_TRUE@am__append_7 = libextract-gstreamer.la
-
-#if HAVE_GSTREAMER
-#modules_LTLIBRARIES += libextract-gstreamer-tagreadbin.la
-#endif
-@HAVE_GST_HELIX_TRUE@am__append_8 = libextract-gstreamer-helix.la
+@HAVE_GSTREAMER_HELIX_TRUE@am__append_8 = libextract-gstreamer-helix.la
 @HAVE_LIBXINE_TRUE@am__append_9 = libextract-xine.la
 @USING_EXTERNAL_VIDEO_PLAYER_TRUE@am__append_10 = libextract-mplayer.la 				\
 @USING_EXTERNAL_VIDEO_PLAYER_TRUE@			libextract-totem.la
@@ -115,8 +107,8 @@ libextract_gstreamer_helix_la_LINK = $(LIBTOOL) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) \
 	$(libextract_gstreamer_helix_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_GST_HELIX_TRUE@am_libextract_gstreamer_helix_la_rpath = -rpath \
-@HAVE_GST_HELIX_TRUE@	$(modulesdir)
+@HAVE_GSTREAMER_HELIX_TRUE@am_libextract_gstreamer_helix_la_rpath =  \
+@HAVE_GSTREAMER_HELIX_TRUE@	-rpath $(modulesdir)
 libextract_gstreamer_la_DEPENDENCIES = $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
@@ -438,6 +430,11 @@ LIBXML2_LIBS = @LIBXML2_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
+LT_AGE = @LT_AGE@
+LT_CURRENT = @LT_CURRENT@
+LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+LT_RELEASE = @LT_RELEASE@
+LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
@@ -618,11 +615,6 @@ libextract_abw_la_SOURCES = tracker-extract-abw.c $(escape_sources)
 libextract_abw_la_LDFLAGS = $(module_flags)
 libextract_abw_la_LIBADD = $(GLIB2_LIBS) $(GCOV_LIBS)
 
-# Imagemagick
-# libextract_imagemagick_la_SOURCES = tracker-extract-imagemagick.c $(xmp_sources)
-# libextract_imagemagick_la_LDFLAGS = $(module_flags)
-# libextract_imagemagick_la_LIBADD = $(GLIB2_LIBS) $(EXEMPI_LIBS) $(GCOV_LIBS)
-
 # MP3
 libextract_mp3_la_SOURCES = tracker-extract-mp3.c $(albumart_sources) $(escape_sources)
 libextract_mp3_la_LDFLAGS = $(module_flags) $(albumart_flags)
@@ -681,11 +673,6 @@ libextract_pdf_la_LIBADD = $(GLIB2_LIBS) $(POPPLER_GLIB_LIBS) $(EXEMPI_LIBS) $(G
 libextract_gstreamer_la_SOURCES = tracker-extract-gstreamer.c $(albumart_sources) $(escape_sources)
 libextract_gstreamer_la_LDFLAGS = $(module_flags) $(albumart_flags)
 libextract_gstreamer_la_LIBADD = $(albumart_libs) $(GSTREAMER_LIBS) $(GLIB2_LIBS) $(GCOV_LIBS)
-
-# GStreamer tagreadbin
-#libextract_gstreamer_tagreadbin_la_SOURCES = tracker-extract-gstreamer-tagreadbin.c $(albumart_sources) $(escape_sources)
-#libextract_gstreamer_tagreadbin_la_LDFLAGS = $(module_flags) $(albumart_flags)
-#libextract_gstreamer_tagreadbin_la_LIBADD = $(albumart_libs) $(GSTREAMER_LIBS) $(GLIB2_LIBS)
 
 # GStreamer helix
 libextract_gstreamer_helix_la_SOURCES = tracker-extract-gstreamer-helix.c $(albumart_sources) $(escape_sources)

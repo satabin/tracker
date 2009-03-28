@@ -133,6 +133,11 @@ DisplayName=Location
 Description=Location where the image was taken or the location shown in the image.
 DataType=string
 
+[Image:Sublocation]
+DisplayName=Sublocation
+Description=Further detailed location where the image was taken or the location shown in the image.
+DataType=string
+
 [Image:Country]
 DisplayName=Country
 Description=Country where the image was taken or the country shown in the image.
@@ -146,4 +151,4 @@ DataType=string
 [Image:HasKeywords]
 DisplayName=HasKeywords
 Description=Field to improve performance when only the information about the existance of keywords is relevant.
-DataType=Integer
+DataType=integer

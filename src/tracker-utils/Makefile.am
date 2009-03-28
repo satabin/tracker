@@ -14,6 +14,7 @@ INCLUDES =								\
 libs = 									\
 	$(top_builddir)/src/libtracker/libtrackerclient.la		\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(top_builddir)/src/libtracker-db/libtracker-db.la		\
 	$(GIO_LIBS)							\
 	$(GCOV_LIBS)							\
 	$(GLIB2_LIBS)
@@ -28,6 +29,7 @@ bin_PROGRAMS = 								\
 	tracker-status							\
 	tracker-unique							\
 	tracker-info							\
+	tracker-processes						\
 	tracker-services
 
 tracker_search_SOURCES = tracker-search.c
@@ -56,6 +58,9 @@ tracker_unique_LDADD = $(libs)
 
 tracker_info_SOURCES = tracker-info.c
 tracker_info_LDADD = $(libs)
+
+tracker_processes_SOURCES = tracker-processes.c
+tracker_processes_LDADD = $(libs)
 
 tracker_services_SOURCES = tracker-services.c
 tracker_services_LDADD = $(libs)

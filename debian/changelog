@@ -11,6 +11,10 @@ tracker (0.6.92-1) UNRELEASED; urgency=low
     - Install the new-style push modules. Currently available is kmail
       support, evolution support requires at least version 2.25.5 of evolution
       and eds which are not yet in unstable.
+  * debian/control
+    - Tighten build dependency on libraptor1-dev to (>= 1.4.18-2) to make sure
+      we link against a version with GnuTLS support and not OpenSSL.
+      Closes: #519684
 
  -- Michael Biebl <biebl@debian.org>  Thu, 19 Mar 2009 01:29:41 +0100
 

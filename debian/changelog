@@ -7,6 +7,10 @@ tracker (0.6.92-1) UNRELEASED; urgency=low
     - Removed, merged upstream.
   * debian/libtracker{client,-gtk}-dev.install
     - Upstream no longer builds static libraries, so remove *.a files.
+  * debian/tracker.install
+    - Install the new-style push modules. Currently available is kmail
+      support, evolution support requires at least version 2.25.5 of evolution
+      and eds which are not yet in unstable.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 19 Mar 2009 01:29:41 +0100
 

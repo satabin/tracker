@@ -15,6 +15,8 @@ tracker (0.6.92-1) UNRELEASED; urgency=low
     - Tighten build dependency on libraptor1-dev to (>= 1.4.18-2) to make sure
       we link against a version with GnuTLS support and not OpenSSL.
       Closes: #519684
+  * debian/patches/10-drop-bogus-version-info.patch
+    - Revert bogus libtool so-versioning.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 19 Mar 2009 01:29:41 +0100
 

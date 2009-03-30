@@ -1,4 +1,4 @@
-tracker (0.6.92-1) UNRELEASED; urgency=low
+tracker (0.6.92-1) unstable; urgency=low
 
   * New upstream release.
   * debian/watch
@@ -18,7 +18,7 @@ tracker (0.6.92-1) UNRELEASED; urgency=low
   * debian/patches/10-drop-bogus-version-info.patch
     - Revert bogus libtool so-versioning.
 
- -- Michael Biebl <biebl@debian.org>  Thu, 19 Mar 2009 01:29:41 +0100
+ -- Michael Biebl <biebl@debian.org>  Tue, 31 Mar 2009 01:32:34 +0200
 
 tracker (0.6.91-1) unstable; urgency=low
 

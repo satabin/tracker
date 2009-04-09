@@ -12,7 +12,8 @@ DEB_CONFIGURE_EXTRA_FLAGS := \
 	--enable-gui \
 	--enable-preferences \
 	--enable-libtrackergtk \
-	--enable-trackerapplet
+	--enable-trackerapplet \
+	--enable-libvorbis
 
 LDFLAGS += -Wl,--as-needed -Wl,-Bsymbolic
 

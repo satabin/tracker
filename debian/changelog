@@ -3,6 +3,8 @@ tracker (0.6.93-1) UNRELEASED; urgency=low
   * New upstream release.
   * debian/tracker-utils.install
     - Install tracker-processes binary.
+  * debian/libtrackerclient0.symbols
+    - Updated for new API additions.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 09 Apr 2009 21:00:58 +0200
 

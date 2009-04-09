@@ -33,7 +33,9 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <time.h>
+#if defined(__linux__)
 #include <linux/sched.h>
+#endif
 #include <sched.h>
 
 #include <glib.h>
@@ -508,21 +510,10 @@ initialize_priority (void)
 	/* Set disk IO priority and scheduling */
 	tracker_ioprio_init ();
 
-	/* Set process priority:
-	 * The nice() function uses attribute "warn_unused_result" and
-	 * so complains if we do not check its returned value. But it
-	 * seems that since glibc 2.2.4, nice() can return -1 on a
-	 * successful call so we have to check value of errno too.
-	 * Stupid... 
+	/* NOTE: We only set the nice() value when crawling, for all
+	 * other times we don't have a nice() value. Check the
+	 * tracker-status code to see where this is done.
 	 */
-	g_message ("Setting process priority");
-
-	if (nice (19) == -1) {
-		const gchar *str = g_strerror (errno);
-
-		g_message ("Couldn't set nice value to 19, %s",
-			   str ? str : "no error given");
-	}
 }
 
 static void
@@ -843,7 +834,6 @@ main (gint argc, gchar *argv[])
 	TrackerLanguage		   *language;
 	TrackerHal		   *hal;
 	TrackerDBIndex		   *file_index;
-	TrackerDBIndex		   *file_update_index;
 	TrackerDBIndex		   *email_index;
 	TrackerRunningLevel	    runtime_level;
 	TrackerDBManagerFlags	    flags = 0;
@@ -985,7 +975,7 @@ main (gint argc, gchar *argv[])
 	tracker_module_config_init ();
 
 	tracker_turtle_init ();
-	tracker_thumbnailer_init (config, 30);
+	tracker_thumbnailer_init (config);
 
 	flags |= TRACKER_DB_MANAGER_REMOVE_CACHE;
 	index_flags |= TRACKER_DB_INDEX_MANAGER_READONLY;
@@ -1035,13 +1025,11 @@ main (gint argc, gchar *argv[])
 	}
 
 	file_index = tracker_db_index_manager_get_index (TRACKER_DB_INDEX_FILE);
-	file_update_index = tracker_db_index_manager_get_index (TRACKER_DB_INDEX_FILE_UPDATE);
 	email_index = tracker_db_index_manager_get_index (TRACKER_DB_INDEX_EMAIL);
 
 	if (!TRACKER_IS_DB_INDEX (file_index) ||
-	    !TRACKER_IS_DB_INDEX (file_update_index) ||
 	    !TRACKER_IS_DB_INDEX (email_index)) {
-		g_critical ("Could not create indexer for all indexes (file, file-update, email)");
+		g_critical ("Could not create indexer for all indexes (file, email)");
 		return EXIT_FAILURE;
 	}
 

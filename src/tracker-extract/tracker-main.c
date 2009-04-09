@@ -29,7 +29,9 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <unistd.h>
+#if defined(__linux__)
 #include <linux/sched.h>
+#endif
 #include <sched.h>
 
 #include <glib.h>
@@ -64,13 +66,14 @@
 
 #define QUIT_TIMEOUT 30 /* 1/2 minutes worth of seconds */
 
-static GMainLoop *main_loop;
-static guint      quit_timeout_id;
+static GMainLoop  *main_loop;
+static guint       quit_timeout_id = 0;
+static TrackerHal *hal;
 
-static gboolean   version;
-static gint       verbosity = -1;
-static gchar     *filename;
-static gchar     *mime_type;
+static gboolean    version;
+static gint        verbosity = -1;
+static gchar      *filename;
+static gchar      *mime_type;
 
 static GOptionEntry  entries[] = {
 	{ "version", 'V', 0,
@@ -115,6 +118,19 @@ tracker_main_quit_timeout_reset (void)
 						 NULL);
 }
 
+TrackerHal *
+tracker_main_get_hal (void)
+{
+	if (!hal) {
+#ifdef HAVE_HAL
+		hal = tracker_hal_new ();
+#else 
+		hal = NULL;
+#endif
+	}
+
+	return hal;
+}
 
 static void
 initialize_priority (void)
@@ -302,7 +318,9 @@ main (int argc, char *argv[])
 		tracker_config_set_verbosity (config, verbosity);
 	}
 
-	tracker_dbus_init ();
+	if (!tracker_dbus_init ()) {
+		return EXIT_FAILURE;
+	}
 
 	/* Initialize subsystems */
 	initialize_directories ();
@@ -310,7 +328,7 @@ main (int argc, char *argv[])
 	tracker_log_init (log_filename, tracker_config_get_verbosity (config));
 	g_print ("Starting log:\n  File:'%s'\n", log_filename);
 
-	tracker_thumbnailer_init (config, 0);
+	tracker_thumbnailer_init (config);
 
 	/* Make Tracker available for introspection */
 	if (!tracker_dbus_register_objects ()) {
@@ -326,10 +344,19 @@ main (int argc, char *argv[])
 	g_main_loop_run (main_loop);
 	g_main_loop_unref (main_loop);
 
+	g_message ("Shutdown started");
+
+	/* Push all items in thumbnail queue to the thumbnailer */
+	tracker_thumbnailer_queue_send ();
+
 	/* Shutdown subsystems */
 	tracker_dbus_shutdown ();
 	tracker_thumbnailer_shutdown ();
 	tracker_log_shutdown ();
+
+	if (hal) {
+		g_object_unref (hal);
+	}
 
 	g_free (log_filename);
 	g_object_unref (config);

@@ -107,13 +107,14 @@ tracker_append_string_to_hash_table (GHashTable  *metadata,
 	if (append) {
 		gchar *orig;
 
-		if (g_hash_table_lookup_extended (metadata, key, NULL, (gpointer) &orig)) {
+		if ( (orig = g_hash_table_lookup (metadata, key)) ) {
 			gchar   *escaped;
 			gchar  **list;
 			gboolean found = FALSE;
 			guint    i;
 
-			escaped = tracker_escape_metadata (value);			
+			escaped = tracker_escape_metadata (value);
+
 			/* Don't add duplicates. FIXME This is inefficient */
 			list = g_strsplit (orig, "|", -1);			
 			for (i=0; list[i]; i++) {
@@ -121,9 +122,10 @@ tracker_append_string_to_hash_table (GHashTable  *metadata,
 					found = TRUE;
 					break;
 				}
-			}			
+			}
+
 			g_strfreev(list);
-			
+
 			if(!found) {
 				new_value = g_strconcat (orig, "|", escaped, NULL);
 				g_hash_table_insert (metadata, g_strdup (key), new_value);						
@@ -269,7 +271,8 @@ tracker_xmp_iter_simple (GHashTable  *metadata,
 			tracker_append_string_to_hash_table (metadata, "Image:Description", value, append, FALSE);
 		}
 		else if (strcmp (name, "date") == 0) {
-			tracker_append_string_to_hash_table (metadata, "Image:Date", value, append, FALSE);
+			/* exempi considers this an array while we want a single value */
+			tracker_append_string_to_hash_table (metadata, "Image:Date", value, FALSE, FALSE);
 		}
 		else if (strcmp (name, "keywords") == 0) {
 			tracker_append_string_to_hash_table (metadata, "Image:Keywords", value, append, FALSE);

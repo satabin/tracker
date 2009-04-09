@@ -67,6 +67,8 @@ tracker_extract_finalize (GObject *object)
 
 	priv = TRACKER_EXTRACT_GET_PRIVATE (object);
 
+	g_array_free (priv->extractors, TRUE);
+
 	G_OBJECT_CLASS (tracker_extract_parent_class)->finalize (object);
 }
 
@@ -105,9 +107,8 @@ tracker_extract_new (void)
 	if (!dir) {
 		g_error ("Error opening modules directory: %s", error->message);
 		g_error_free (error);
-		g_array_free (extractors, TRUE);
-		extractors = NULL;
 		g_array_free (generic_extractors, TRUE);
+		g_array_free (extractors, TRUE);
 		return NULL;
 	}
 
@@ -136,19 +137,19 @@ tracker_extract_new (void)
 		if (g_module_symbol (module, "tracker_get_extract_data", (gpointer *) &func)) {
 			data = (func) ();
 
-			while (data->mime) {
+			for (; data->mime; data++) {
 				if (strchr (data->mime, '*') != NULL) {
 					g_array_append_val (generic_extractors, *data);
 				} else {
 					g_array_append_val (extractors, *data);
 				}
-
-				data++;
 			}
 		}
 
 		g_free (module_path);
 	}
+
+	g_dir_close (dir);
 
 	/* Append the generic extractors at the end of
 	 * the list, so the specific ones are used first
@@ -298,8 +299,8 @@ get_file_metadata (TrackerExtract *extract,
 					      path_in_locale);
 	}
 
+	g_object_unref (info);
 	g_object_unref (file);
-
 
 	/* Now we have sanity checked everything, actually get the
 	 * data we need from the extractors.
@@ -324,13 +325,15 @@ get_file_metadata (TrackerExtract *extract,
 				tracker_dbus_request_comment (request_id,
 							      "  Found %d metadata items",
 							      g_hash_table_size (values));
-				
+
 				g_free (path_in_locale);
 				g_free (mime_used);
-				
+
 				return values;
 			}
 		}
+
+		g_free (mime_used);
 
 		tracker_dbus_request_comment (request_id,
 					      "  Could not find any extractors to handle metadata type");

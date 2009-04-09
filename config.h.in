@@ -73,6 +73,9 @@
 /* Define if we have libtiff */
 #undef HAVE_LIBTIFF
 
+/* Define if we have libvorbis */
+#undef HAVE_LIBVORBIS
+
 /* Define if we have Libxine */
 #undef HAVE_LIBXINE
 

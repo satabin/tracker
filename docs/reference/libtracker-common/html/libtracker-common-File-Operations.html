@@ -48,6 +48,10 @@
 <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libtracker-common-File-Operations.html#tracker-env-check-xdg-dirs" title="tracker_env_check_xdg_dirs ()">tracker_env_check_xdg_dirs</a>          (void);
+void                <a class="link" href="libtracker-common-File-Operations.html#tracker-file-close" title="tracker_file_close ()">tracker_file_close</a>                  (FILE *file,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> need_again_soon);
 <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              <a class="link" href="libtracker-common-File-Operations.html#tracker-file-get-mime-type" title="tracker_file_get_mime_type ()">tracker_file_get_mime_type</a>          (const <a
@@ -72,14 +76,15 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#goffset"
 >goffset</a>             <a class="link" href="libtracker-common-File-Operations.html#tracker-file-get-size" title="tracker_file_get_size ()">tracker_file_get_size</a>               (const <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *uri);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>                <a class="link" href="libtracker-common-File-Operations.html#tracker-file-open" title="tracker_file_open ()">tracker_file_open</a>                   (const <a
+FILE*               <a class="link" href="libtracker-common-File-Operations.html#tracker-file-open" title="tracker_file_open ()">tracker_file_open</a>                   (const <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *uri,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *how,
                                                          <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> readahead);
+>gboolean</a> sequential);
 <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libtracker-common-File-Operations.html#tracker-file-unlink" title="tracker_file_unlink ()">tracker_file_unlink</a>                 (const <a
@@ -140,6 +145,34 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 
 </td>
 </tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="tracker-file-close"></a><h3>tracker_file_close ()</h3>
+<pre class="programlisting">void                tracker_file_close                  (FILE *file,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> need_again_soon);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>need_again_soon</code></em> :</span></p></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <hr>
@@ -270,14 +303,15 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" lang="en">
 <a name="tracker-file-open"></a><h3>tracker_file_open ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>                tracker_file_open                   (const <a
+<pre class="programlisting">FILE*               tracker_file_open                   (const <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *uri,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *how,
                                                          <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> readahead);</pre>
+>gboolean</a> sequential);</pre>
 <p>
 
 </p>
@@ -290,7 +324,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>readahead</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>how</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sequential</code></em> :</span></p></td>
 <td>
 </td>
 </tr>

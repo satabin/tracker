@@ -82,7 +82,7 @@
 
 #define TRACKER_INDEXER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_INDEXER, TrackerIndexerPrivate))
 
-#define FILES_REMAINING_THRESHOLD   10000
+#define FILES_REMAINING_THRESHOLD   1000
 #define MAX_FLUSH_FREQUENCY         60
 #define MIN_FLUSH_FREQUENCY         1
 
@@ -198,6 +198,7 @@ enum {
 	MODULE_FINISHED,
 	PAUSED,
 	CONTINUED,
+	INDEXING_ERROR,
 	LAST_SIGNAL
 };
 
@@ -502,6 +503,10 @@ index_flushing_notify_cb (GObject        *object,
 
 	state = indexer->private->state;
 
+	if ((state & TRACKER_INDEXER_STATE_CLEANUP) != 0) {
+		return;
+	}
+
 	if ((state & TRACKER_INDEXER_STATE_STOPPED) != 0 &&
 	    !tracker_db_index_get_flushing (indexer->private->file_index) &&
 	    !tracker_db_index_get_flushing (indexer->private->email_index)) {
@@ -523,6 +528,15 @@ index_overloaded_notify_cb (GObject        *object,
 		g_debug ("Index no longer overloaded, resuming data harvesting");
 		state_unset_flags (indexer, TRACKER_INDEXER_STATE_INDEX_OVERLOADED);
 	}
+}
+
+static void
+index_error_received_cb (TrackerDBIndex *index,
+			 const GError   *error,
+			 TrackerIndexer *indexer)
+{
+	g_signal_emit (indexer, signals[INDEXING_ERROR], 0,
+		       error->message, TRUE);
 }
 
 static void
@@ -578,7 +592,8 @@ mount_pre_unmount_cb (GVolumeMonitor *volume_monitor,
 	/* Now cancel current element if it's also in the mount */
 	current_info = g_queue_peek_head (indexer->private->file_queue);
 
-	if (g_file_has_prefix (current_info->file, mount_root)) {
+	if (current_info &&
+	    g_file_has_prefix (current_info->file, mount_root)) {
 		tracker_module_file_cancel (current_info->module_file);
 	}
 
@@ -772,6 +787,15 @@ tracker_indexer_class_init (TrackerIndexerClass *class)
 			      G_TYPE_NONE,
 			      1,
 			      G_TYPE_STRING);
+	signals[INDEXING_ERROR] =
+		g_signal_new ("indexing-error",
+			      G_OBJECT_CLASS_TYPE (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TrackerIndexerClass, indexing_error),
+			      NULL, NULL,
+			      tracker_marshal_VOID__STRING_BOOL,
+			      G_TYPE_NONE,
+			      2, G_TYPE_STRING, G_TYPE_BOOLEAN);
 
 	g_object_class_install_property (object_class,
 					 PROP_RUNNING,
@@ -927,6 +951,9 @@ cleanup_task_start (TrackerIndexer *indexer)
 		/* Open indexes */
 		tracker_db_index_open (indexer->private->file_index);
 		tracker_db_index_open (indexer->private->email_index);
+
+		/* Push all items in thumbnail queue to the thumbnailer */
+		tracker_thumbnailer_queue_send ();
 	}
 }
 
@@ -1037,6 +1064,8 @@ tracker_indexer_init (TrackerIndexer *indexer)
 			  G_CALLBACK (index_flushing_notify_cb), indexer);
 	g_signal_connect (priv->file_index, "notify::overloaded",
 			  G_CALLBACK (index_overloaded_notify_cb), indexer);
+	g_signal_connect (priv->file_index, "error-received",
+			  G_CALLBACK (index_error_received_cb), indexer);
 
 	lindex = tracker_db_index_manager_get_index (TRACKER_DB_INDEX_EMAIL);
 	priv->email_index = g_object_ref (lindex);
@@ -1045,6 +1074,8 @@ tracker_indexer_init (TrackerIndexer *indexer)
 			  G_CALLBACK (index_flushing_notify_cb), indexer);
 	g_signal_connect (priv->email_index, "notify::overloaded",
 			  G_CALLBACK (index_overloaded_notify_cb), indexer);
+	g_signal_connect (priv->email_index, "error-received",
+			  G_CALLBACK (index_error_received_cb), indexer);
 
 	/* Set up databases, these pointers are mostly used to
 	 * start/stop transactions, since TrackerDBManager treats
@@ -1549,7 +1580,7 @@ generate_item_thumbnail (TrackerIndexer        *indexer,
 		file = g_file_new_for_path (path);
 		uri = g_file_get_uri (file);
 
-		tracker_thumbnailer_get_file_thumbnail (uri, mime_type);
+		tracker_thumbnailer_queue_file (uri, mime_type);
 
 		g_object_unref (file);
 		g_free (uri);
@@ -1678,6 +1709,7 @@ item_add_or_update (TrackerIndexer        *indexer,
 				     basename, 
 				     NULL);
 
+#ifdef HAVE_HAL
 	if (tracker_hal_path_is_on_removable_device (indexer->private->hal,
 						     service_path, 
 						     &mount_point,
@@ -1689,7 +1721,7 @@ item_add_or_update (TrackerIndexer        *indexer,
 						       tracker_service_get_name (service),
 						       metadata);
 	}
-
+#endif
 	g_free (mount_point);
 	g_free (service_path);
 }
@@ -1758,6 +1790,7 @@ update_moved_item_removable_device (TrackerIndexer *indexer,
 	path = g_file_get_path (file);
 	source_path = g_file_get_path (source_file);
 
+#ifdef HAVE_HAL
 	if (tracker_hal_path_is_on_removable_device (indexer->private->hal,
 						     source_path,
 						     &mount_point,
@@ -1781,7 +1814,7 @@ update_moved_item_removable_device (TrackerIndexer *indexer,
 							      service_name);
 		}
 	}
-
+#endif
 	g_free (mount_point);
 	g_free (source_path);
 	g_free (path);
@@ -2101,7 +2134,7 @@ item_mark_for_removal (TrackerIndexer *indexer,
 
 		g_hash_table_destroy (children);
 	}
-
+#ifdef HAVE_HAL
 	if (tracker_hal_path_is_on_removable_device (indexer->private->hal,
 						     path, 
 						     &mount_point,
@@ -2111,7 +2144,7 @@ item_mark_for_removal (TrackerIndexer *indexer,
 						      path,
 						      tracker_service_get_name (service));
 	}
-
+#endif
 	g_free (mount_point);
 	g_free (path);
 }

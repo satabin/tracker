@@ -89,6 +89,44 @@ static
 inline
 #endif
 gboolean
+org_freedesktop_Tracker_Metadata_get_multiple (DBusGProxy *proxy, const char * IN_service_type, const char ** IN_uris, const char ** IN_keys, GPtrArray** OUT_metadata, GError **error)
+
+{
+  return dbus_g_proxy_call (proxy, "GetMultiple", error, G_TYPE_STRING, IN_service_type, G_TYPE_STRV, IN_uris, G_TYPE_STRV, IN_keys, G_TYPE_INVALID, dbus_g_type_get_collection ("GPtrArray", G_TYPE_STRV), OUT_metadata, G_TYPE_INVALID);
+}
+
+typedef void (*org_freedesktop_Tracker_Metadata_get_multiple_reply) (DBusGProxy *proxy, GPtrArray *OUT_metadata, GError *error, gpointer userdata);
+
+static void
+org_freedesktop_Tracker_Metadata_get_multiple_async_callback (DBusGProxy *proxy, DBusGProxyCall *call, void *user_data)
+{
+  DBusGAsyncData *data = (DBusGAsyncData*) user_data;
+  GError *error = NULL;
+  GPtrArray* OUT_metadata;
+  dbus_g_proxy_end_call (proxy, call, &error, dbus_g_type_get_collection ("GPtrArray", G_TYPE_STRV), &OUT_metadata, G_TYPE_INVALID);
+  (*(org_freedesktop_Tracker_Metadata_get_multiple_reply)data->cb) (proxy, OUT_metadata, error, data->userdata);
+  return;
+}
+
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+DBusGProxyCall*
+org_freedesktop_Tracker_Metadata_get_multiple_async (DBusGProxy *proxy, const char * IN_service_type, const char ** IN_uris, const char ** IN_keys, org_freedesktop_Tracker_Metadata_get_multiple_reply callback, gpointer userdata)
+
+{
+  DBusGAsyncData *stuff;
+  stuff = g_new (DBusGAsyncData, 1);
+  stuff->cb = G_CALLBACK (callback);
+  stuff->userdata = userdata;
+  return dbus_g_proxy_begin_call (proxy, "GetMultiple", org_freedesktop_Tracker_Metadata_get_multiple_async_callback, stuff, g_free, G_TYPE_STRING, IN_service_type, G_TYPE_STRV, IN_uris, G_TYPE_STRV, IN_keys, G_TYPE_INVALID);
+}
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+gboolean
 org_freedesktop_Tracker_Metadata_set (DBusGProxy *proxy, const char * IN_service_type, const char * IN_uri, const char ** IN_keys, const char ** IN_metadata, GError **error)
 
 {

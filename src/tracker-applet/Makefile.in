@@ -61,7 +61,7 @@ am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(autostartdir)" \
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_tracker_applet_OBJECTS = tracker-applet.$(OBJEXT) \
-	tracker-applet-marshallers.$(OBJEXT)
+	tracker-marshal-main.$(OBJEXT)
 tracker_applet_OBJECTS = $(am_tracker_applet_OBJECTS)
 am__DEPENDENCIES_1 =
 tracker_applet_DEPENDENCIES =  \
@@ -221,6 +221,8 @@ LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
 LIBTRACKERGTK_CFLAGS = @LIBTRACKERGTK_CFLAGS@
 LIBTRACKERGTK_LIBS = @LIBTRACKERGTK_LIBS@
+LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
+LIBVORBIS_LIBS = @LIBVORBIS_LIBS@
 LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
 LIBXML2_LIBS = @LIBXML2_LIBS@
 LIPO = @LIPO@
@@ -366,11 +368,17 @@ tracker_applet_LDADD = \
 	$(LIBGLADE_LIBS)						\
 	$(GCOV_LIBS)
 
+marshal_sources = \
+        tracker-marshal.h                             			\
+        tracker-marshal.c
+
+BUILT_SOURCES = \
+	$(marshal_sources)
+
 tracker_applet_SOURCES = \
 	tracker-applet.c 						\
-	tracker-applet.h 						\
-	tracker-applet-marshallers.c 					\
-	tracker-applet-marshallers.h
+	tracker-applet.h						\
+	tracker-marshal-main.c
 
 icondir = $(datadir)/tracker/icons
 icon_DATA = \
@@ -382,9 +390,10 @@ icon_DATA = \
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = tracker-applet.desktop
 pkgdata_DATA = tracker-applet-prefs.glade
-EXTRA_DIST = $(icon_DATA) $(pkgdata_DATA)
-CLEANFILES = $(autostart_DATA)
-all: all-am
+EXTRA_DIST = $(icon_DATA) $(pkgdata_DATA) tracker-marshal.list
+CLEANFILES = $(autostart_DATA) $(BUILT_SOURCES)
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
@@ -457,8 +466,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-applet-marshallers.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-applet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal-main.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -613,13 +622,15 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) check-local
-check: check-am
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(PROGRAMS) $(DATA)
 installdirs:
 	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(autostartdir)" "$(DESTDIR)$(icondir)" "$(DESTDIR)$(pkgdatadir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-am
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -644,6 +655,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
@@ -771,6 +783,12 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
+
+tracker-marshal.h: tracker-marshal.list
+	$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --header > $@
+
+tracker-marshal.c: tracker-marshal.list
+	$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --body > $@
 
 @INTLTOOL_DESKTOP_RULE@
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

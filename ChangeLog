@@ -1,3 +1,364 @@
+2009-04-09  Martyn Russell  <martyn@imendio.com>
+
+	* configure.ac: Updated in preparation for release 0.6.93.
+
+2009-04-09  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-applet/tracker-applet.c:
+	(about_menu_activated): Updated Copyright years. Patch by Michele
+	Mattioni.
+
+2009-04-09  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-extract/tracker-main.c:
+	(main): Don't keep the tracker-extract command running if DBus
+	says it is already running.
+
+2009-04-08  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-preferences/tracker-preferences.c (cmd_apply): Make the
+	"Index mounted directories" option also manage removable devices.
+
+2009-04-08  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-common/tracker-config.c: Fix a typo.
+
+2009-04-07  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-indexer.c (index_flushing_notify_cb): Do not try to
+	enter into finished state after flushing in the cleanup task, since it
+	closes the indexes.
+
+2009-04-07  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-extract/tracker-main.c: (main): Make sure we send
+	the thumbnailer queue to the thumbnailer daemon when we shutdown
+	after 30 seconds of inactivity in the extractor.
+
+2009-04-07  Martyn Russell  <martyn@imendio.com>
+
+	* src/trackerd/tracker-main.c: 
+	* src/trackerd/tracker-status.c: Only set nice() to 19 when
+	crawling the file system, for all other times, we use the value as
+	set when the process is started (which is controlled by outside
+	influence of course). 
+
+2009-04-07  Martyn Russell  <martyn@imendio.com>
+
+	* src/libtracker-common/tracker-thumbnailer.h:
+	* src/libtracker-common/tracker-albumart.h: Added preprocessor
+	checks for __LIBTRACKER_COMMON_INSIDE__ which were missing.
+	
+	* src/libtracker-common/tracker-albumart.[ch]: 
+	* src/tracker-extract/tracker-extract-mp3.c: Fixed coding style
+	issues.
+	
+	* src/libtracker-common/tracker-albumart.[ch]: 
+	* src/tracker-extract/tracker-extract-albumart.c:
+	* src/tracker-extract/tracker-main.[ch]: Only create one
+	TrackerHal object during the life time of tracker-extract instead
+	of for EVERY file which has album art (which is quite a lot). This
+	seems to be showing an increase of 2x the speed now for
+	tracker-extract. 
+	
+	* src/tracker-indexer/tracker-main.c: (main): Added print
+	statement like we have in the daemon so we know when the process
+	is finished and returning to the cmd line.
+	
+	* tests/tracker-extract/tracker-extract-test-utils.c:
+	(tracker_test_extract_file_access): Added tracker_main_get_hal()
+	fixes to ensure the tests build.
+
+2009-04-07  Carlos Garnacho  <carlos@imendio.com>
+
+	Propagate index errors up to the GUI, so the user has the opportunity
+	to trigger a reindex.
+
+	* src/libtracker-db/tracker-db-index.[ch]: Add an "error-received"
+	signal. Emit it when QDBM fails to store a word.
+	
+	* data/dbus/tracker-indexer.xml:
+	* src/tracker-indexer/tracker-marshal.list:
+	* src/tracker-indexer/tracker-indexer.[ch]: Add an "IndexingError"
+	DBus signal. Propagate up index errors.
+	
+	* data/dbus/tracker-daemon.xml:
+	* src/trackerd/tracker-dbus.c:
+	* src/trackerd/tracker-daemon.c:
+	* src/trackerd/tracker-marshal.list: Add an "IndexingError" signal.
+	Listen to that signal from the indexer in order to propagate it up the
+	stack.
+
+	src/tracker-applet/tracker-applet.[ch]: Listen for the new signal, and
+	display an error notification with an option to reindex from scratch.
+
+2009-04-07  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* tests/tracker-extract/tracker-extract-png-test.c
+	* tests/tracker-extract/tracker-extract-jpeg-test.c
+	* tests/tracker-extract/tracker-extract-testsuite-generic.c
+	* tests/tracker-extract/tracker-extract-tiff-test.c
+	* tests/tracker-extract/tracker-extract-gstreamer-test.c
+	* tests/tracker-extract/tracker-extract-testsuite-generic.h
+	* tests/tracker-extract/tracker-extract-mp3-test.c
+	* tests/tracker-extract/tracker-extract-test-utils.c
+	* tests/tracker-extract/tracker-extract-test-utils.h
+	* tests/tracker-extract/Makefile.am: Load the extractors
+	modules for tests instead of directly linking as before.
+
+2009-04-06  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-applet/tracker-marshal.list:
+	* src/tracker-applet/tracker-applet.c: Generate the right marshaller
+	for the IndexStateChange signal.
+
+2009-04-06  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-applet/tracker-applet-marshallers.[ch]: Do not keep
+	generated code.
+	* src/tracker-applet/tracker-marshal.list:
+	* src/tracker-applet/tracker-marshal-main.c:
+	* src/tracker-applet/Makefile.am: Instead use the right tools.
+	* src/tracker-applet/tracker-applet.c: Adapt to name changes.
+
+2009-04-06  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-extract/tracker-main.c:
+	* src/tracker-indexer/tracker-main.c:
+	* src/trackerd/tracker-main.c: Use #ifdef __linux__ before
+	including /usr/include/linux/ files. Fixes bug #577656 (Jasper
+	Lievisse Adriaanse).
+
+2009-04-06  Martyn Russell  <martyn@imendio.com>
+
+	* src/libtracker-common/tracker-os-dependant-unix.c:
+	(tracker_memory_setrlimits): Disabled by default to stop us
+	getting SIGSEGV just because we reach the memory limits (which are
+	small), instead we shouldn't be crashing, we should be
+	investigating said issues. This should fix several launchpad
+	issues that were reported since 0.6.91.
+
+2009-04-06  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/tracker-extract/tracker-iptc.c
+	* src/tracker-extract/tracker-xmp.c: Fixes to the way multiple
+	values are handled in some special cases in extraction.
+
+	Fixes NB#108793.
+	
+2009-04-06  Martyn Russell  <martyn@imendio.com>
+
+	* src/libtracker-data/tracker-turtle.[ch]: Fixed crasher in
+	tracker_turtle_close() by checking if ->file is set before doing
+	anything with it. Also now use tracker_file_{open|close} instead
+	so we use posix_fadvise(). Fixes LP#355982.
+
+2009-04-05  Ivan Frade  <ivan.frade@nokia.com>
+
+	* src/tracker-indexer/tracker-indexer.c: Surround hal code
+	with ifdefs to fix compilation without hal.
+
+	Fixes bug #577655.
+	
+2009-04-04  Ivan Frade  <ivan.frade@nokia.com>
+
+	* configure.ac: raptor >= 1.4.17. Tracker uses in the code
+	RAPTOR_FEATURE_WRITE_BASE_URI that is available only since that
+	version.
+	
+2009-04-03  Martyn Russell  <martyn@imendio.com>
+
+	* src/libtracker-common/tracker-albumart.c:
+	* src/libtracker-common/tracker-thumbnailer.[ch]:
+	* src/tracker-extract/tracker-extract-albumart.c:
+	* src/tracker-extract/tracker-main.c: 
+	* src/tracker-indexer/tracker-indexer.c:
+	* src/tracker-indexer/tracker-main.c:
+	* src/trackerd/tracker-main.c: Updated thumbnailer code so we only
+	send thumbnails to the thumbnailer daemon AFTER we have finished
+	indexing to improve performance.
+
+2009-04-03  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-extract/tracker-extract-gstreamer.c (add_tags)
+	(tracker_extract_gstreamer): Plug more leaks.
+
+2009-04-03  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-common/tracker-hal.c (tracker_hal_init)
+	(tracker_hal_finalize): Keep a pointer to the DBusConnection in order
+	to unref it. Also, shut the libhal context down before destroying it,
+	Fixes NB#107570.
+
+2009-04-03  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-common/tracker-albumart.c
+	(tracker_albumart_queue_cb): do not strcmp the GError message, use
+	error->code instead. Do not access() NULL paths.
+	(tracker_albumart_get_path): Improve memory management if the function
+	exits prematurely.
+	* src/tracker-extract/tracker-extract-albumart.c
+	(tracker_process_albumart): bail out if it couldn't get art_path.
+
+2009-04-02  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/tracker-extract/tracker-extract-gstreamer.c: Watch for
+	DURATION messages and stop extraction when we receive one. Needed
+	for elements/formats where several buffers needed for obtaining a
+	valid duration.
+
+	Plugged a leak, we never freed the audio- and videotags.
+
+2009-04-02  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-extract/tracker-extract-gstreamer.c
+	(tracker_extract_gstreamer): Fix a leak and a possible memory
+	corruption.
+	* src/tracker-extract/tracker-extract-mp3.c (extract_mp3): Do not make
+	id3 tags parsers read invalid memory if file size is above
+	MAX_FILE_READ.
+	* src/tracker-extract/tracker-extract-png.c (extract_png): Free
+	correctly the ending info pointer.
+	* src/tracker-extract/tracker-extract.c (get_file_metadata): Plug a
+	leak, caused when no extractor was found.
+	* src/tracker-extract/tracker-main.c: Initialize the quit timeout ID
+	to 0, so we don't try to remove nonexistent sources.
+
+2009-04-02  Michael Biebl  <mbiebl@gmail.com>
+
+	* src/plugins/evolution/Makefile.am, src/plugins/kmail/Makefile.am,
+	src/plugins/rss/Makefile.am: Do not include BUILT_SOURCES in
+	EXTRA_DIST.
+
+2009-04-02  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-utils/tracker-info.c: (main): Fixed translations to
+	use plural forms where needed. Spotted by Luca Ferretti.
+
+2009-04-02  Martyn Russell  <martyn@imendio.com>
+
+	* src/trackerd/tracker-monitor.c: (get_queue_from_gfile): Improve
+	performance here, don't create/free a new list and iterate the
+	hash table twice. This operation should be faster. Patch from
+	Philip Van Hoof.
+
+2009-04-01  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/tracker-extract/tracker-extract-mp3.c: More checks for
+	unknown genre values.
+
+	Fixes NB#106639.
+
+2009-04-01  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/tracker-extract/tracker-extract-gstreamer.c: Improvements to
+	the stream info extraction using gstreamer.
+
+	Fixes NB#107122.
+
+2009-04-01  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/tracker-extract/tracker-xmp.c: Handle existance of invalid dates
+	correctly.
+
+	Fixes NB#108793.
+
+2009-04-01  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-utils/tracker-info.c: Added command line switches to
+	faciliate the _get() and _get_multiple() APIs for Metadata. Now we
+	can request multiple specific metadata types for multiple files
+	using tracker-info.
+
+	* data/dbus/tracker-metadata.xml:
+	* src/libtracker/tracker.[ch]: 
+	* src/trackerd/tracker-metadata.[ch]: Added
+	tracker_metadata_get_multiple() so we can get multiple metadata
+	types for multiple files. This is quite a bit faster than
+	requesting multiple metadata types for one file at a time. Fixes
+	NB#108543.
+
+2009-04-01  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-indexer/tracker-indexer.c (mount_pre_unmount_cb): Check
+	that there's actually a current item before checking whether it's
+	inside the mount.
+
+2009-03-31  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/tracker-indexer/tracker-module-metadata-utils.c
+	(metadata_utils_get_embedded): Check for NULL context, since it can
+	potentially happen, noticed by Philip Van Hoof. Prevents Bug
+	NB#108819.
+	(extractor_context_create): Raise severity of error message.
+
+2009-03-31  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/tracker-extract/tracker-extract-gstreamer.c: Fixed a memory leak
+	* src/tracker-extract/tracker-iptc.c: Use location instead of
+	sublocation for iptc-sublocation.
+
+	Fixes NB#108331.
+
+2009-03-31  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	* src/tracker-extract/tracker-extract-mp3.c
+	* src/tracker-extract/tracker-extract-jpeg.c
+	* src/tracker-extract/tracker-extract.c
+	* src/tracker-extract/tracker-iptc.c: Some minor leak and other fixes
+
+2009-03-31  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-data/tracker-rdf-query.c (append_where_header):
+	Filter out disabled elements in the Services table. Fixes NB#106085.
+
+2009-03-30  Martyn Russell  <martyn@imendio.com>
+
+	* src/libtracker-common/tracker-file-utils.[ch]: Make
+	tracker_file_open() return a FILE*. Added tracker_file_close().
+	Don't use open() and fdopen() everywhere, just fopen() instead.
+	Add NOATIME retrspectively with fcntl().
+	
+	* configure.ac:
+	* src/tracker-extract/Makefile.am: 
+	* src/tracker-extract/tracker-extract-vorbis.c: Added vorbis
+	checks and cleaned up vorbis code. This is a backup, we use
+	GStreamer normally and this is disabled by default.
+	
+	* src/tracker-extract/tracker-extract-abw.c:
+	* src/tracker-extract/tracker-extract-jpeg.c:
+	* src/tracker-extract/tracker-extract-mp3.c:
+	* src/tracker-extract/tracker-extract-png.c:
+	* src/tracker-extract/tracker-extract-ps.c: 
+	* src/tracker-indexer/modules/evolution-imap.[ch]: Use
+	tracker_file_() functions to open/close files with
+	posix_fadvise(). 
+
+	* src/tracker-extract/tracker-extract.c: Fixed 2 memory leaks.
+	
+2009-03-30  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-indexer/tracker-removable-device.c: Code clean up.
+	Don't allocate memory for AddMetadataInfo and then return on some
+	failure without cleaning it up. Use tracker_file_() APIs so we use
+	posix_fadvise(). 
+
+2009-03-30  Martyn Russell  <martyn@imendio.com>
+
+	* utils/tracker-fts/tracker-fts-test.c: Fixed missing include warning.
+
+2009-03-30  Martyn Russell  <martyn@imendio.com>
+
+	* src/tracker-utils/tracker-tag.c: (main): Fixed remove sys
+	function confusion with static variable, was stopping tracker-tag
+	from building. Not sure why this has started happening now?
+
+2009-03-30  Carlos Garnacho  <carlos@imendio.com>
+
+	* src/libtracker-db/tracker-db-index-manager.[ch]:
+	* src/trackerd/tracker-main.c: Remove all references to the old
+	file-index-update.db file, which isn't used anymore.
+
 2009-03-27  Martyn Russell  <martyn@imendio.com>
 
 	* Release 0.6.92.

@@ -26,7 +26,9 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <unistd.h>
+#if defined(__linux__)
 #include <linux/sched.h>
+#endif
 #include <sched.h>
 
 #include <glib.h>
@@ -388,7 +390,7 @@ main (gint argc, gchar *argv[])
 			  NULL);
 
 	/* Set up connections to the thumbnailer if supported */
-	tracker_thumbnailer_init (config, 10);
+	tracker_thumbnailer_init (config);
 
 	if (process_all) {
 		/* Tell the indexer to process all configured modules */
@@ -435,6 +437,8 @@ main (gint argc, gchar *argv[])
 	tracker_db_manager_shutdown ();
 	tracker_module_config_shutdown ();
 	tracker_log_shutdown ();
+
+	g_print ("\nOK\n\n");
 
 	return EXIT_SUCCESS;
 }

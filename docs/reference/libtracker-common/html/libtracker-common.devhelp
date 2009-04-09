@@ -31,6 +31,7 @@
   </chapters>
   <functions>
     <function name="tracker_env_check_xdg_dirs ()" link="libtracker-common-File-Operations.html#tracker-env-check-xdg-dirs"/>
+    <function name="tracker_file_close ()" link="libtracker-common-File-Operations.html#tracker-file-close"/>
     <function name="tracker_file_get_mime_type ()" link="libtracker-common-File-Operations.html#tracker-file-get-mime-type"/>
     <function name="tracker_file_get_mtime ()" link="libtracker-common-File-Operations.html#tracker-file-get-mtime"/>
     <function name="tracker_file_get_path_and_name ()" link="libtracker-common-File-Operations.html#tracker-file-get-path-and-name"/>

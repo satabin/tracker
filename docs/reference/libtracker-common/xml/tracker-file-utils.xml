@@ -19,14 +19,17 @@
 #include &lt;libtracker-common/tracker-file-utils.h&gt;
 
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-env-check-xdg-dirs">tracker_env_check_xdg_dirs</link>          (void);
+<link linkend="void">void</link>                <link linkend="tracker-file-close">tracker_file_close</link>                  (<link linkend="FILE:CAPS">FILE</link> *file,
+                                                         <link linkend="gboolean">gboolean</link> need_again_soon);
 <link linkend="gchar">gchar</link>*              <link linkend="tracker-file-get-mime-type">tracker_file_get_mime_type</link>          (const <link linkend="gchar">gchar</link> *uri);
 <link linkend="guint64">guint64</link>             <link linkend="tracker-file-get-mtime">tracker_file_get_mtime</link>              (const <link linkend="gchar">gchar</link> *uri);
 <link linkend="void">void</link>                <link linkend="tracker-file-get-path-and-name">tracker_file_get_path_and_name</link>      (const <link linkend="gchar">gchar</link> *uri,
                                                          <link linkend="gchar">gchar</link> **path,
                                                          <link linkend="gchar">gchar</link> **name);
 <link linkend="goffset">goffset</link>             <link linkend="tracker-file-get-size">tracker_file_get_size</link>               (const <link linkend="gchar">gchar</link> *uri);
-<link linkend="gint">gint</link>                <link linkend="tracker-file-open">tracker_file_open</link>                   (const <link linkend="gchar">gchar</link> *uri,
-                                                         <link linkend="gboolean">gboolean</link> readahead);
+<link linkend="FILE:CAPS">FILE</link>*               <link linkend="tracker-file-open">tracker_file_open</link>                   (const <link linkend="gchar">gchar</link> *uri,
+                                                         const <link linkend="gchar">gchar</link> *how,
+                                                         <link linkend="gboolean">gboolean</link> sequential);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-file-unlink">tracker_file_unlink</link>                 (const <link linkend="gchar">gchar</link> *uri);
 <link linkend="gchar">gchar</link>*              <link linkend="tracker-path-evaluate-name">tracker_path_evaluate_name</link>          (const <link linkend="gchar">gchar</link> *uri);
 <link linkend="void">void</link>                <link linkend="tracker-path-hash-table-filter-duplicates">tracker_path_hash_table_filter_duplicates</link>
@@ -63,6 +66,22 @@
 
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-file-close" role="function">
+<title>tracker_file_close ()</title>
+<indexterm zone="tracker-file-close"><primary>tracker_file_close</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_file_close                  (<link linkend="FILE:CAPS">FILE</link> *file,
+                                                         <link linkend="gboolean">gboolean</link> need_again_soon);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>need_again_soon</parameter>&nbsp;:</term>
+<listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -131,15 +150,19 @@
 </variablelist></refsect2>
 <refsect2 id="tracker-file-open" role="function">
 <title>tracker_file_open ()</title>
-<indexterm zone="tracker-file-open"><primary>tracker_file_open</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_file_open                   (const <link linkend="gchar">gchar</link> *uri,
-                                                         <link linkend="gboolean">gboolean</link> readahead);</programlisting>
+<indexterm zone="tracker-file-open"><primary>tracker_file_open</primary></indexterm><programlisting><link linkend="FILE:CAPS">FILE</link>*               tracker_file_open                   (const <link linkend="gchar">gchar</link> *uri,
+                                                         const <link linkend="gchar">gchar</link> *how,
+                                                         <link linkend="gboolean">gboolean</link> sequential);</programlisting>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>readahead</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>how</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>sequential</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>

@@ -3,6 +3,7 @@
 <ANCHOR id="libtracker-common-File-Operations.description" href="libtracker-common/libtracker-common-File-Operations.html#libtracker-common-File-Operations.description">
 <ANCHOR id="libtracker-common-File-Operations.details" href="libtracker-common/libtracker-common-File-Operations.html#libtracker-common-File-Operations.details">
 <ANCHOR id="tracker-env-check-xdg-dirs" href="libtracker-common/libtracker-common-File-Operations.html#tracker-env-check-xdg-dirs">
+<ANCHOR id="tracker-file-close" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-close">
 <ANCHOR id="tracker-file-get-mime-type" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-get-mime-type">
 <ANCHOR id="tracker-file-get-mtime" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-get-mtime">
 <ANCHOR id="tracker-file-get-path-and-name" href="libtracker-common/libtracker-common-File-Operations.html#tracker-file-get-path-and-name">

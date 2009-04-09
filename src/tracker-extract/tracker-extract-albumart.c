@@ -40,6 +40,7 @@
 #include <libtracker-common/tracker-common.h>
 #include <libtracker-common/tracker-thumbnailer.h>
 
+#include "tracker-main.h"
 #include "tracker-extract-albumart.h"
 
 #ifdef HAVE_GDKPIXBUF
@@ -97,7 +98,7 @@ set_albumart (const unsigned char *buffer,
 		g_error_free (error);
 	}
 
-	tracker_thumbnailer_get_file_thumbnail (filename, "image/jpeg");
+	tracker_thumbnailer_queue_file (filename, "image/jpeg");
 	g_free (filename);
 
 	return TRUE;
@@ -132,6 +133,13 @@ tracker_process_albumart (const unsigned char *buffer,
 				   &art_path, 
 				   &local_uri);
 
+	if (!art_path) {
+		g_free (filename_uri);
+		g_free (local_uri);
+
+		return FALSE;
+	}
+
 	if (!g_file_test (art_path, G_FILE_TEST_EXISTS)) {
 #ifdef HAVE_GDKPIXBUF
 		/* If we have embedded album art */
@@ -156,7 +164,8 @@ tracker_process_albumart (const unsigned char *buffer,
 				/* If the heuristic failed, we request the download 
 				 * of the media-art to the media-art downloaders */
 				lcopied = TRUE;
-				tracker_albumart_request_download (artist,
+				tracker_albumart_request_download (tracker_main_get_hal (), 
+								   artist,
 								   album,
 								   local_uri,
 								   art_path);
@@ -171,16 +180,20 @@ tracker_process_albumart (const unsigned char *buffer,
 		 * device */
 
 		if (g_file_test (art_path, G_FILE_TEST_EXISTS)) {
-			gchar *asuri = g_filename_to_uri (art_path, NULL, NULL);
-			tracker_thumbnailer_get_file_thumbnail (asuri, "image/jpeg");
-			g_free (asuri);
+			gchar *as_uri;
+
+			as_uri = g_filename_to_uri (art_path, NULL, NULL);
+			tracker_thumbnailer_queue_file (as_uri, "image/jpeg");
+			g_free (as_uri);
 		}
 
 	}
 
 	if (local_uri && !g_file_test (local_uri, G_FILE_TEST_EXISTS)) {
 		if (g_file_test (art_path, G_FILE_TEST_EXISTS))
-			tracker_albumart_copy_to_local (art_path, local_uri);
+			tracker_albumart_copy_to_local (tracker_main_get_hal (),
+							art_path, 
+							local_uri);
 	}
 
 	g_free (art_path);

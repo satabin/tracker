@@ -66,6 +66,11 @@ Table of Contents
 
         http://tracker-project.org.
 
+  Repository (first is readonly, second is write access)
+
+	git://git.gnome.org/tracker
+	ssh://<user>@git.gnome.org/git/tracker
+
 2 Use Cases
 
   Tracker is the most powerful open source metadata database and

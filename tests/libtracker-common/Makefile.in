@@ -55,11 +55,19 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 am__EXEEXT_1 = tracker-ontology$(EXEEXT) tracker-dbus$(EXEEXT) \
-	tracker-type-utils$(EXEEXT) tracker-file-utils$(EXEEXT)
+	tracker-type-utils$(EXEEXT) tracker-file-utils$(EXEEXT) \
+	tracker-albumart$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
+am_tracker_albumart_OBJECTS = tracker-albumart-test.$(OBJEXT)
+tracker_albumart_OBJECTS = $(am_tracker_albumart_OBJECTS)
+am__DEPENDENCIES_1 =
+tracker_albumart_DEPENDENCIES =  \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_tracker_dbus_OBJECTS = tracker-dbus-test.$(OBJEXT)
 tracker_dbus_OBJECTS = $(am_tracker_dbus_OBJECTS)
-am__DEPENDENCIES_1 =
 tracker_dbus_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
@@ -99,10 +107,12 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(tracker_dbus_SOURCES) $(tracker_file_utils_SOURCES) \
-	$(tracker_ontology_SOURCES) $(tracker_type_utils_SOURCES)
-DIST_SOURCES = $(tracker_dbus_SOURCES) $(tracker_file_utils_SOURCES) \
-	$(tracker_ontology_SOURCES) $(tracker_type_utils_SOURCES)
+SOURCES = $(tracker_albumart_SOURCES) $(tracker_dbus_SOURCES) \
+	$(tracker_file_utils_SOURCES) $(tracker_ontology_SOURCES) \
+	$(tracker_type_utils_SOURCES)
+DIST_SOURCES = $(tracker_albumart_SOURCES) $(tracker_dbus_SOURCES) \
+	$(tracker_file_utils_SOURCES) $(tracker_ontology_SOURCES) \
+	$(tracker_type_utils_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -372,7 +382,7 @@ GTESTER_REPORT = gtester-report
 #	  tracker-field
 #
 TEST_PROGS = tracker-ontology tracker-dbus tracker-type-utils \
-	tracker-file-utils
+	tracker-file-utils tracker-albumart
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"Tracker\"					\
 	-DTRACKER_COMPILATION						\
@@ -456,6 +466,17 @@ tracker_file_utils_LDADD = \
 # 	$(GTHREAD_LIBS)							\
 # 	$(PANGO_LIBS)							\
 # 	$(GLIB2_LIBS)							
+tracker_albumart_SOURCES = \
+	tracker-albumart-test.c 
+
+tracker_albumart_LDADD = \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
+	$(GMODULE_LIBS)							\
+	$(GCOV_LIBS)							\
+	$(GTHREAD_LIBS)							\
+	$(GLIB2_LIBS)							
+
 EXTRA_DIST = non-utf8.txt
 all: all-am
 
@@ -497,6 +518,9 @@ clean-noinstPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
+tracker-albumart$(EXEEXT): $(tracker_albumart_OBJECTS) $(tracker_albumart_DEPENDENCIES) 
+	@rm -f tracker-albumart$(EXEEXT)
+	$(LINK) $(tracker_albumart_OBJECTS) $(tracker_albumart_LDADD) $(LIBS)
 tracker-dbus$(EXEEXT): $(tracker_dbus_OBJECTS) $(tracker_dbus_DEPENDENCIES) 
 	@rm -f tracker-dbus$(EXEEXT)
 	$(LINK) $(tracker_dbus_OBJECTS) $(tracker_dbus_LDADD) $(LIBS)
@@ -516,6 +540,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-utils-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ontology-test.Po@am__quote@

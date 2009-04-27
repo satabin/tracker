@@ -18,7 +18,9 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#include <glib/gstdio.h>
 #include <sqlite3.h>
+
 #include "tracker-db-interface-sqlite.h"
 
 #define TRACKER_DB_INTERFACE_SQLITE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_DB_INTERFACE_SQLITE, TrackerDBInterfaceSqlitePrivate))
@@ -552,17 +554,30 @@ create_result_set_from_stmt (TrackerDBInterfaceSqlite  *interface,
 	}
 
 	if (result != SQLITE_DONE) {
-
 		g_hash_table_foreach (priv->statements, foreach_print_error, stmt);
 
-		if (result == SQLITE_CORRUPT) {
-			g_critical ("Sqlite3 database:'%s' is corrupt, can not live without it",
-				    priv->filename);
-			g_assert_not_reached ();
+		/* This is rather fatal */
+		if (sqlite3_errcode (priv->db) == SQLITE_IOERR ||
+		    sqlite3_errcode (priv->db) == SQLITE_CORRUPT ||
+		    sqlite3_errcode (priv->db) == SQLITE_NOTADB) {
+			sqlite3_finalize (stmt);
+			sqlite3_close (priv->db);
+			
+			g_unlink (priv->filename);
+			
+			g_error ("SQLite experienced an error with file:'%s'. "
+				 "It is either NOT a SQLite database or it is "
+				 "corrupt or there was an IO error accessing the data. "
+				 "This file has now been removed and will be recreated on the next start. "
+				 "Shutting down now.",
+				 priv->filename);
+			return NULL;
 		}
 
 		if (!error) {
-			g_warning ("%s", sqlite3_errmsg (priv->db));
+			g_warning ("Could not perform SQLite operation, error:%d->'%s'",
+				   sqlite3_errcode (priv->db),
+				   sqlite3_errmsg (priv->db));
 		} else {
 			g_set_error (error,
 				     TRACKER_DB_INTERFACE_ERROR,

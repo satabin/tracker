@@ -65,7 +65,7 @@ RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = tracker-fts qdbm
+DIST_SUBDIRS = tracker-fts albumart qdbm
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
@@ -324,6 +324,7 @@ TEST_PROGS =
 @ENABLE_SQLITE_FTS_TRUE@build_sqlite_fts = tracker-fts
 SUBDIRS = \
 	$(build_sqlite_fts)	\
+	albumart		\
 	qdbm
 
 all: all-recursive

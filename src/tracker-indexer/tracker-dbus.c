@@ -26,11 +26,16 @@
 #include <libtracker-common/tracker-log.h>
 
 #include "tracker-dbus.h"
-#include "tracker-indexer.h"
-#include "tracker-indexer-glue.h"
 
 static DBusGConnection *connection;
 static DBusGProxy      *gproxy;
+static GHashTable      *name_monitors;
+
+typedef struct {
+	TrackerDBusNameMonitorFunc func;
+	gpointer user_data;
+	GDestroyNotify destroy_func;
+} TrackerDBusNameMonitor;
 
 static gboolean
 dbus_register_service (DBusGProxy  *proxy,
@@ -47,7 +52,7 @@ dbus_register_service (DBusGProxy  *proxy,
 						name,
 						DBUS_NAME_FLAG_DO_NOT_QUEUE,
 						&result, &error)) {
-		g_critical ("Could not aquire name:'%s', %s",
+		g_critical ("Could not acquire name:'%s', %s",
 			    name,
 			    error ? error->message : "no error given");
 		g_error_free (error);
@@ -72,11 +77,15 @@ name_owner_changed_cb (DBusGProxy *proxy,
 		       gchar	  *new_owner,
 		       gpointer    user_data)
 {
-	if (strcmp (name, TRACKER_DAEMON_SERVICE) == 0 && (!new_owner || !*new_owner)) {
-		/* Tracker daemon has dissapeared from
-		 * the bus, shutdown the indexer.
-		 */
-		tracker_indexer_stop (TRACKER_INDEXER (user_data));
+	TrackerDBusNameMonitor *name_monitor;
+
+	name_monitor = g_hash_table_lookup (name_monitors, name);
+
+	if (name_monitor) {
+		gboolean available;
+
+		available = (new_owner && *new_owner);
+		(name_monitor->func) (name, available, name_monitor->user_data);
 	}
 }
 
@@ -137,11 +146,36 @@ dbus_register_names (void)
 					    DBUS_INTERFACE_DBUS);
 
 	/* Register the service name for org.freedesktop.Tracker */
-	if (!dbus_register_service (gproxy, TRACKER_INDEXER_SERVICE)) {
+	if (!dbus_register_service (gproxy, "org.freedesktop.Tracker.Indexer")) {
 		return FALSE;
 	}
 
 	return TRUE;
+}
+
+static TrackerDBusNameMonitor *
+name_monitor_new (TrackerDBusNameMonitorFunc func,
+		  gpointer                   user_data,
+		  GDestroyNotify             destroy_func)
+{
+	TrackerDBusNameMonitor *name_monitor;
+
+	name_monitor = g_slice_new (TrackerDBusNameMonitor);
+	name_monitor->func = func;
+	name_monitor->user_data = user_data;
+	name_monitor->destroy_func = destroy_func;
+
+	return name_monitor;
+}
+
+static void
+name_monitor_free (TrackerDBusNameMonitor *name_monitor)
+{
+	if (name_monitor->user_data && name_monitor->destroy_func) {
+		(name_monitor->destroy_func) (name_monitor->user_data);
+	}
+
+	g_slice_free (TrackerDBusNameMonitor, name_monitor);
 }
 
 gboolean
@@ -157,6 +191,10 @@ tracker_dbus_init (void)
 		return FALSE;
 	}
 
+	name_monitors = g_hash_table_new_full (g_str_hash,
+					       g_str_equal,
+					       (GDestroyNotify) g_free,
+					       (GDestroyNotify) name_monitor_free);
 	return TRUE;
 }
 
@@ -169,25 +207,61 @@ tracker_dbus_shutdown (void)
 	}
 
 	connection = NULL;
+
+	g_hash_table_destroy (name_monitors);
+	name_monitors = NULL;
 }
 
 gboolean
-tracker_dbus_register_object (GObject *object)
+tracker_dbus_register_object (GObject               *object,
+			      const DBusGObjectInfo *info,
+			      const gchar	    *path)
 {
 	if (!connection || !gproxy) {
 		g_critical ("DBus support must be initialized before registering objects!");
 		return FALSE;
 	}
 
-	if (TRACKER_IS_INDEXER (object)) {
-		return dbus_register_object (object,
-					     connection,
-					     gproxy,
-					     &dbus_glib_tracker_indexer_object_info,
-					     TRACKER_INDEXER_PATH);
-	} else {
-		g_warning ("Object not handled by DBus");
+	return dbus_register_object (object,
+				     connection,
+				     gproxy,
+				     info,
+				     path);
+}
+
+void
+tracker_dbus_add_name_monitor (const gchar                *name,
+			       TrackerDBusNameMonitorFunc  func,
+			       gpointer                    user_data,
+			       GDestroyNotify              destroy_func)
+{
+	g_return_if_fail (name != NULL);
+	g_return_if_fail (func != NULL);
+
+	if (!name_monitors) {
+		g_critical ("DBus support must be initialized before adding name monitors!");
+		return;
 	}
 
-	return FALSE;
+	if (g_hash_table_lookup (name_monitors, name) != NULL) {
+		g_critical ("There is already a name monitor for such name");
+		return;
+	}
+
+	g_hash_table_insert (name_monitors,
+			     g_strdup (name),
+			     name_monitor_new (func, user_data, destroy_func));
+}
+
+void
+tracker_dbus_remove_name_monitor (const gchar *name)
+{
+	g_return_if_fail (name != NULL);
+
+	if (!name_monitors) {
+		g_critical ("DBus support must be initialized before removing name monitors!");
+		return;
+	}
+
+	g_hash_table_remove (name_monitors, name);
 }

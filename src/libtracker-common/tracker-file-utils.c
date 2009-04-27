@@ -64,22 +64,14 @@ tracker_file_open (const gchar *uri,
 
 		fd = fileno (file);
 		
+#if defined(__linux__)
 		/* Make sure we set the NOATIME flag if we have permissions to */
 		if ((flags = fcntl (fd, F_GETFL, 0)) != -1) {
 			fcntl (fd, F_SETFL, flags | O_NOATIME);
 		}
-
-#ifdef HAVE_POSIX_FADVISE
-		if (sequential_access) {
-			posix_fadvise (fd, 0, 0, POSIX_FADV_SEQUENTIAL);
-		} else {
-			posix_fadvise (fd, 0, 0, POSIX_FADV_RANDOM);
-		}
 #endif
 	}
 	
-	/* FIXME: Do nothing with posix_fadvise() for non-readonly operations */
-
 	return file;
 }
 
@@ -88,12 +80,6 @@ tracker_file_close (FILE     *file,
 		    gboolean  need_again_soon) 
 {
 	g_return_if_fail (file != NULL);
-
-#ifdef HAVE_POSIX_FADVISE
-	if (!need_again_soon) {
-		posix_fadvise (fileno (file), 0, 0, POSIX_FADV_DONTNEED);
-	}
-#endif
 
 	fclose (file);
 }

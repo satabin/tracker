@@ -1,6 +1,8 @@
 tracker (0.6.94-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Drop Build-Depends on deskbar-applet and python-gtk2-dev again and install
+    the tracker deskbar-applet module manually instead.
 
  -- Michael Biebl <biebl@debian.org>  Mon, 27 Apr 2009 06:16:28 +0200
 

@@ -37,8 +37,6 @@ Build-Depends: cdbs,
                libhal-dev (>= 0.5),
                libhal-storage-dev (>= 0.5),
                python-support (>= 0.6),
-               deskbar-applet,
-               python-gtk2-dev,
                quilt
 Standards-Version: 3.8.1
 Vcs-Git: git://git.debian.org/git/users/biebl/tracker.git

@@ -3,8 +3,15 @@ tracker (0.6.94-1) UNRELEASED; urgency=low
   * New upstream release.
   * Drop Build-Depends on deskbar-applet and python-gtk2-dev again and install
     the tracker deskbar-applet module manually instead.
+  * debian/patches/20-tracker-defaults.patch
+    Create configuration file with more conservative defaults.
+    (Closes: #525107)
+    - Disable evolution plugin by default.
+    - Set throttle level to 10.
+    NOTE: An existing ~/.config/tracker/tracker.cfg will *not* be updated
+    automatically. This change only affects newly created configuration files.
 
- -- Michael Biebl <biebl@debian.org>  Mon, 27 Apr 2009 06:16:28 +0200
+ -- Michael Biebl <biebl@debian.org>  Fri, 08 May 2009 17:00:53 +0200
 
 tracker (0.6.93-1) unstable; urgency=low
 

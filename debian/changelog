@@ -1,6 +1,8 @@
 tracker (0.6.95-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Stop installing the kmail push module for now as kmail support is not yet
+    mature enough.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 22 May 2009 23:30:34 +0200
 

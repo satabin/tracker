@@ -5,6 +5,19 @@
 
 G_BEGIN_DECLS
 
+#ifndef _DBUS_GLIB_ASYNC_DATA_FREE
+#define _DBUS_GLIB_ASYNC_DATA_FREE
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+void
+_dbus_glib_async_data_free (gpointer stuff)
+{
+	g_slice_free (DBusGAsyncData, stuff);
+}
+#endif
+
 #ifndef DBUS_GLIB_CLIENT_WRAPPERS_org_freedesktop_Tracker
 #define DBUS_GLIB_CLIENT_WRAPPERS_org_freedesktop_Tracker
 
@@ -41,10 +54,10 @@ org_freedesktop_Tracker_get_version_async (DBusGProxy *proxy, org_freedesktop_Tr
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "GetVersion", org_freedesktop_Tracker_get_version_async_callback, stuff, g_free, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "GetVersion", org_freedesktop_Tracker_get_version_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -79,10 +92,10 @@ org_freedesktop_Tracker_get_status_async (DBusGProxy *proxy, org_freedesktop_Tra
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "GetStatus", org_freedesktop_Tracker_get_status_async_callback, stuff, g_free, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "GetStatus", org_freedesktop_Tracker_get_status_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -117,10 +130,10 @@ org_freedesktop_Tracker_get_services_async (DBusGProxy *proxy, const gboolean IN
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "GetServices", org_freedesktop_Tracker_get_services_async_callback, stuff, g_free, G_TYPE_BOOLEAN, IN_main_services_only, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "GetServices", org_freedesktop_Tracker_get_services_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_BOOLEAN, IN_main_services_only, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -155,10 +168,10 @@ org_freedesktop_Tracker_get_stats_async (DBusGProxy *proxy, org_freedesktop_Trac
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "GetStats", org_freedesktop_Tracker_get_stats_async_callback, stuff, g_free, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "GetStats", org_freedesktop_Tracker_get_stats_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -192,10 +205,10 @@ org_freedesktop_Tracker_set_bool_option_async (DBusGProxy *proxy, const char * I
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "SetBoolOption", org_freedesktop_Tracker_set_bool_option_async_callback, stuff, g_free, G_TYPE_STRING, IN_option, G_TYPE_BOOLEAN, IN_value, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "SetBoolOption", org_freedesktop_Tracker_set_bool_option_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_STRING, IN_option, G_TYPE_BOOLEAN, IN_value, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -229,10 +242,10 @@ org_freedesktop_Tracker_set_int_option_async (DBusGProxy *proxy, const char * IN
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "SetIntOption", org_freedesktop_Tracker_set_int_option_async_callback, stuff, g_free, G_TYPE_STRING, IN_option, G_TYPE_INT, IN_value, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "SetIntOption", org_freedesktop_Tracker_set_int_option_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_STRING, IN_option, G_TYPE_INT, IN_value, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -266,10 +279,10 @@ org_freedesktop_Tracker_shutdown_async (DBusGProxy *proxy, const gboolean IN_rei
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "Shutdown", org_freedesktop_Tracker_shutdown_async_callback, stuff, g_free, G_TYPE_BOOLEAN, IN_reindex, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "Shutdown", org_freedesktop_Tracker_shutdown_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_BOOLEAN, IN_reindex, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -303,10 +316,10 @@ org_freedesktop_Tracker_prompt_index_signals_async (DBusGProxy *proxy, org_freed
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "PromptIndexSignals", org_freedesktop_Tracker_prompt_index_signals_async_callback, stuff, g_free, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "PromptIndexSignals", org_freedesktop_Tracker_prompt_index_signals_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_INVALID);
 }
 #endif /* defined DBUS_GLIB_CLIENT_WRAPPERS_org_freedesktop_Tracker */
 

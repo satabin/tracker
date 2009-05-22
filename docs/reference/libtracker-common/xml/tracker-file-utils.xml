@@ -8,7 +8,6 @@
 <refnamediv>
 <refname>File Operations</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libtracker-common-File-Operations.synopsis" role="synopsis">
@@ -19,24 +18,24 @@
 #include &lt;libtracker-common/tracker-file-utils.h&gt;
 
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-env-check-xdg-dirs">tracker_env_check_xdg_dirs</link>          (void);
-<link linkend="void">void</link>                <link linkend="tracker-file-close">tracker_file_close</link>                  (<link linkend="FILE:CAPS">FILE</link> *file,
+<link linkend="void">void</link>                <link linkend="tracker-file-close">tracker_file_close</link>                  (<link linkend="FILE--CAPS">FILE</link> *file,
                                                          <link linkend="gboolean">gboolean</link> need_again_soon);
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-file-get-mime-type">tracker_file_get_mime_type</link>          (const <link linkend="gchar">gchar</link> *uri);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-file-get-mime-type">tracker_file_get_mime_type</link>          (const <link linkend="gchar">gchar</link> *uri);
 <link linkend="guint64">guint64</link>             <link linkend="tracker-file-get-mtime">tracker_file_get_mtime</link>              (const <link linkend="gchar">gchar</link> *uri);
 <link linkend="void">void</link>                <link linkend="tracker-file-get-path-and-name">tracker_file_get_path_and_name</link>      (const <link linkend="gchar">gchar</link> *uri,
                                                          <link linkend="gchar">gchar</link> **path,
                                                          <link linkend="gchar">gchar</link> **name);
 <link linkend="goffset">goffset</link>             <link linkend="tracker-file-get-size">tracker_file_get_size</link>               (const <link linkend="gchar">gchar</link> *uri);
-<link linkend="FILE:CAPS">FILE</link>*               <link linkend="tracker-file-open">tracker_file_open</link>                   (const <link linkend="gchar">gchar</link> *uri,
+<link linkend="FILE--CAPS">FILE</link>*               <link linkend="tracker-file-open">tracker_file_open</link>                   (const <link linkend="gchar">gchar</link> *uri,
                                                          const <link linkend="gchar">gchar</link> *how,
                                                          <link linkend="gboolean">gboolean</link> sequential);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-file-unlink">tracker_file_unlink</link>                 (const <link linkend="gchar">gchar</link> *uri);
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-path-evaluate-name">tracker_path_evaluate_name</link>          (const <link linkend="gchar">gchar</link> *uri);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-path-evaluate-name">tracker_path_evaluate_name</link>          (const <link linkend="gchar">gchar</link> *uri);
 <link linkend="void">void</link>                <link linkend="tracker-path-hash-table-filter-duplicates">tracker_path_hash_table_filter_duplicates</link>
                                                         (<link linkend="GHashTable">GHashTable</link> *roots);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-path-is-in-path">tracker_path_is_in_path</link>             (const <link linkend="gchar">gchar</link> *path,
                                                          const <link linkend="gchar">gchar</link> *in_path);
-<link linkend="GSList">GSList</link>*             <link linkend="tracker-path-list-filter-duplicates">tracker_path_list_filter_duplicates</link> (<link linkend="GSList">GSList</link> *roots,
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-path-list-filter-duplicates">tracker_path_list_filter_duplicates</link> (<link linkend="GSList">GSList</link> *roots,
                                                          const <link linkend="gchar">gchar</link> *basename_exception_prefix);
 <link linkend="void">void</link>                <link linkend="tracker-path-remove">tracker_path_remove</link>                 (const <link linkend="gchar">gchar</link> *uri);
 </synopsis>
@@ -53,7 +52,6 @@
 <refsect1 id="libtracker-common-File-Operations.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -61,202 +59,163 @@
 <title role="details.title">Details</title>
 <refsect2 id="tracker-env-check-xdg-dirs" role="function">
 <title>tracker_env_check_xdg_dirs ()</title>
-<indexterm zone="tracker-env-check-xdg-dirs"><primary>tracker_env_check_xdg_dirs</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_env_check_xdg_dirs          (void);</programlisting>
+<indexterm zone="tracker-env-check-xdg-dirs"><primary sortas="tracker_env_check_xdg_dirs">tracker_env_check_xdg_dirs</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_env_check_xdg_dirs          (void);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-file-close" role="function">
 <title>tracker_file_close ()</title>
-<indexterm zone="tracker-file-close"><primary>tracker_file_close</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_file_close                  (<link linkend="FILE:CAPS">FILE</link> *file,
+<indexterm zone="tracker-file-close"><primary sortas="tracker_file_close">tracker_file_close</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_file_close                  (<link linkend="FILE--CAPS">FILE</link> *file,
                                                          <link linkend="gboolean">gboolean</link> need_again_soon);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>need_again_soon</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>need_again_soon</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-file-get-mime-type" role="function">
 <title>tracker_file_get_mime_type ()</title>
-<indexterm zone="tracker-file-get-mime-type"><primary>tracker_file_get_mime_type</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_file_get_mime_type          (const <link linkend="gchar">gchar</link> *uri);</programlisting>
+<indexterm zone="tracker-file-get-mime-type"><primary sortas="tracker_file_get_mime_type">tracker_file_get_mime_type</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_file_get_mime_type          (const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-file-get-mtime" role="function">
 <title>tracker_file_get_mtime ()</title>
-<indexterm zone="tracker-file-get-mtime"><primary>tracker_file_get_mtime</primary></indexterm><programlisting><link linkend="guint64">guint64</link>             tracker_file_get_mtime              (const <link linkend="gchar">gchar</link> *uri);</programlisting>
+<indexterm zone="tracker-file-get-mtime"><primary sortas="tracker_file_get_mtime">tracker_file_get_mtime</primary></indexterm><programlisting><link linkend="guint64">guint64</link>             tracker_file_get_mtime              (const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-file-get-path-and-name" role="function">
 <title>tracker_file_get_path_and_name ()</title>
-<indexterm zone="tracker-file-get-path-and-name"><primary>tracker_file_get_path_and_name</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_file_get_path_and_name      (const <link linkend="gchar">gchar</link> *uri,
+<indexterm zone="tracker-file-get-path-and-name"><primary sortas="tracker_file_get_path_and_name">tracker_file_get_path_and_name</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_file_get_path_and_name      (const <link linkend="gchar">gchar</link> *uri,
                                                          <link linkend="gchar">gchar</link> **path,
                                                          <link linkend="gchar">gchar</link> **name);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>path</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-file-get-size" role="function">
 <title>tracker_file_get_size ()</title>
-<indexterm zone="tracker-file-get-size"><primary>tracker_file_get_size</primary></indexterm><programlisting><link linkend="goffset">goffset</link>             tracker_file_get_size               (const <link linkend="gchar">gchar</link> *uri);</programlisting>
+<indexterm zone="tracker-file-get-size"><primary sortas="tracker_file_get_size">tracker_file_get_size</primary></indexterm><programlisting><link linkend="goffset">goffset</link>             tracker_file_get_size               (const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-file-open" role="function">
 <title>tracker_file_open ()</title>
-<indexterm zone="tracker-file-open"><primary>tracker_file_open</primary></indexterm><programlisting><link linkend="FILE:CAPS">FILE</link>*               tracker_file_open                   (const <link linkend="gchar">gchar</link> *uri,
+<indexterm zone="tracker-file-open"><primary sortas="tracker_file_open">tracker_file_open</primary></indexterm><programlisting><link linkend="FILE--CAPS">FILE</link>*               tracker_file_open                   (const <link linkend="gchar">gchar</link> *uri,
                                                          const <link linkend="gchar">gchar</link> *how,
                                                          <link linkend="gboolean">gboolean</link> sequential);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>how</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>how</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>sequential</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>sequential</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-file-unlink" role="function">
 <title>tracker_file_unlink ()</title>
-<indexterm zone="tracker-file-unlink"><primary>tracker_file_unlink</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_file_unlink                 (const <link linkend="gchar">gchar</link> *uri);</programlisting>
+<indexterm zone="tracker-file-unlink"><primary sortas="tracker_file_unlink">tracker_file_unlink</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_file_unlink                 (const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-path-evaluate-name" role="function">
 <title>tracker_path_evaluate_name ()</title>
-<indexterm zone="tracker-path-evaluate-name"><primary>tracker_path_evaluate_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_path_evaluate_name          (const <link linkend="gchar">gchar</link> *uri);</programlisting>
+<indexterm zone="tracker-path-evaluate-name"><primary sortas="tracker_path_evaluate_name">tracker_path_evaluate_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_path_evaluate_name          (const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-path-hash-table-filter-duplicates" role="function">
 <title>tracker_path_hash_table_filter_duplicates ()</title>
-<indexterm zone="tracker-path-hash-table-filter-duplicates"><primary>tracker_path_hash_table_filter_duplicates</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_path_hash_table_filter_duplicates
+<indexterm zone="tracker-path-hash-table-filter-duplicates"><primary sortas="tracker_path_hash_table_filter_duplicates">tracker_path_hash_table_filter_duplicates</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_path_hash_table_filter_duplicates
                                                         (<link linkend="GHashTable">GHashTable</link> *roots);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>roots</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>roots</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-path-is-in-path" role="function">
 <title>tracker_path_is_in_path ()</title>
-<indexterm zone="tracker-path-is-in-path"><primary>tracker_path_is_in_path</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_path_is_in_path             (const <link linkend="gchar">gchar</link> *path,
+<indexterm zone="tracker-path-is-in-path"><primary sortas="tracker_path_is_in_path">tracker_path_is_in_path</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_path_is_in_path             (const <link linkend="gchar">gchar</link> *path,
                                                          const <link linkend="gchar">gchar</link> *in_path);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>path</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>in_path</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>in_path</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-path-list-filter-duplicates" role="function">
 <title>tracker_path_list_filter_duplicates ()</title>
-<indexterm zone="tracker-path-list-filter-duplicates"><primary>tracker_path_list_filter_duplicates</primary></indexterm><programlisting><link linkend="GSList">GSList</link>*             tracker_path_list_filter_duplicates (<link linkend="GSList">GSList</link> *roots,
+<indexterm zone="tracker-path-list-filter-duplicates"><primary sortas="tracker_path_list_filter_duplicates">tracker_path_list_filter_duplicates</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_path_list_filter_duplicates (<link linkend="GSList">GSList</link> *roots,
                                                          const <link linkend="gchar">gchar</link> *basename_exception_prefix);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>roots</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>roots</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>basename_exception_prefix</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>basename_exception_prefix</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-path-remove" role="function">
 <title>tracker_path_remove ()</title>
-<indexterm zone="tracker-path-remove"><primary>tracker_path_remove</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_path_remove                 (const <link linkend="gchar">gchar</link> *uri);</programlisting>
+<indexterm zone="tracker-path-remove"><primary sortas="tracker_path_remove">tracker_path_remove</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_path_remove                 (const <link linkend="gchar">gchar</link> *uri);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

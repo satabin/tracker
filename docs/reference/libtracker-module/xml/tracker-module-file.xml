@@ -8,7 +8,6 @@
 <refnamediv>
 <refname>Module files</refname>
 <refpurpose>Implementation of files for Tracker modules.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libtracker-module-Module-files.synopsis" role="synopsis">
@@ -19,12 +18,13 @@
 #include &lt;libtracker-module/tracker-module-file.h&gt;
 
 typedef             <link linkend="TrackerModuleFile">TrackerModuleFile</link>;
-<link linkend="GFile">GFile</link>*              <link linkend="tracker-module-file-get-file">tracker_module_file_get_file</link>        (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);
-const <link linkend="gchar">gchar</link>*        <link linkend="tracker-module-file-get-service-type">tracker_module_file_get_service_type</link>
+<link linkend="GFile">GFile</link> *             <link linkend="tracker-module-file-get-file">tracker_module_file_get_file</link>        (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-module-file-get-service-type">tracker_module_file_get_service_type</link>
                                                         (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-module-file-get-uri">tracker_module_file_get_uri</link>         (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-module-file-get-text">tracker_module_file_get_text</link>        (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);
-<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link>* <link linkend="tracker-module-file-get-metadata">tracker_module_file_get_metadata</link> (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-module-file-get-uri">tracker_module_file_get_uri</link>         (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-module-file-get-text">tracker_module_file_get_text</link>        (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);
+<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> * <link linkend="tracker-module-file-get-metadata">tracker_module_file_get_metadata</link>
+                                                        (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);
 </synopsis>
 </refsynopsisdiv>
 
@@ -34,7 +34,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-module-f
   <link linkend="GObject">GObject</link>
    +----TrackerModuleFile
 </synopsis>
-
 </refsect1>
 
 
@@ -43,7 +42,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-module-f
 <para>
 TrackerModuleFile is required by
  <link linkend="TrackerModuleIteratable">TrackerModuleIteratable</link>.</para>
-
 </refsect1>
 
 
@@ -73,102 +71,97 @@ be relevant to Tracker (such as mail summaries)
 <title role="details.title">Details</title>
 <refsect2 id="TrackerModuleFile" role="typedef">
 <title>TrackerModuleFile</title>
-<indexterm zone="TrackerModuleFile"><primary>TrackerModuleFile</primary></indexterm><programlisting>typedef struct TrackerModuleFile TrackerModuleFile;
+<indexterm zone="TrackerModuleFile"><primary sortas="TrackerModuleFile">TrackerModuleFile</primary></indexterm><programlisting>typedef struct TrackerModuleFile TrackerModuleFile;
 </programlisting>
 <para>
 Representation of a given file, used by the Tracker indexer to index contents.
 </para></refsect2>
 <refsect2 id="tracker-module-file-get-file" role="function">
 <title>tracker_module_file_get_file ()</title>
-<indexterm zone="tracker-module-file-get-file"><primary>tracker_module_file_get_file</primary></indexterm><programlisting><link linkend="GFile">GFile</link>*              tracker_module_file_get_file        (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);</programlisting>
+<indexterm zone="tracker-module-file-get-file"><primary sortas="tracker_module_file_get_file">tracker_module_file_get_file</primary></indexterm><programlisting><link linkend="GFile">GFile</link> *             tracker_module_file_get_file        (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);</programlisting>
 <para>
 Returns a <link linkend="GFile"><type>GFile</type></link> corresponding to the file managed by <link linkend="TrackerModuleFile"><type>TrackerModuleFile</type></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleFile"><type>TrackerModuleFile</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a <link linkend="GFile"><type>GFile</type></link>, this object should not be unreferenced.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a <link linkend="GFile"><type>GFile</type></link>, this object should not be unreferenced.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-file-get-service-type" role="function">
 <title>tracker_module_file_get_service_type ()</title>
-<indexterm zone="tracker-module-file-get-service-type"><primary>tracker_module_file_get_service_type</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_module_file_get_service_type
+<indexterm zone="tracker-module-file-get-service-type"><primary sortas="tracker_module_file_get_service_type">tracker_module_file_get_service_type</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_module_file_get_service_type
                                                         (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);</programlisting>
 <para>
 Returns the service type for <parameter>file</parameter> in the current
 state (See <link linkend="TrackerModuleIteratable"><type>TrackerModuleIteratable</type></link>).</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleFile"><type>TrackerModuleFile</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The service type name.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The service type name.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-file-get-uri" role="function">
 <title>tracker_module_file_get_uri ()</title>
-<indexterm zone="tracker-module-file-get-uri"><primary>tracker_module_file_get_uri</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_module_file_get_uri         (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);</programlisting>
+<indexterm zone="tracker-module-file-get-uri"><primary sortas="tracker_module_file_get_uri">tracker_module_file_get_uri</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_module_file_get_uri         (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);</programlisting>
 <para>
 Returns a unique URI for <parameter>file</parameter> in the current state (See <link linkend="TrackerModuleIteratable"><type>TrackerModuleIteratable</type></link>)</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleFile"><type>TrackerModuleFile</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A newly allocated string containing the URI for the element.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A newly allocated string containing the URI for the element.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-file-get-text" role="function">
 <title>tracker_module_file_get_text ()</title>
-<indexterm zone="tracker-module-file-get-text"><primary>tracker_module_file_get_text</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_module_file_get_text        (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);</programlisting>
+<indexterm zone="tracker-module-file-get-text"><primary sortas="tracker_module_file_get_text">tracker_module_file_get_text</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_module_file_get_text        (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);</programlisting>
 <para>
 Extracts all the text that <parameter>file</parameter> could contain in the current
-state (see <link linkend="TrackerModuleIteratable"><type>TrackerModuleIteratable</type></link>) or <link linkend="NULL:CAPS"><literal>NULL</literal></link> if the element
+state (see <link linkend="TrackerModuleIteratable"><type>TrackerModuleIteratable</type></link>) or <link linkend="NULL--CAPS"><literal>NULL</literal></link> if the element
 does not contain any text.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleFile"><type>TrackerModuleFile</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A newly allocated string containing valid UTF-8, or <link linkend="NULL:CAPS"><literal>NULL</literal></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A newly allocated string containing valid UTF-8, or <link linkend="NULL--CAPS"><literal>NULL</literal></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-file-get-metadata" role="function">
 <title>tracker_module_file_get_metadata ()</title>
-<indexterm zone="tracker-module-file-get-metadata"><primary>tracker_module_file_get_metadata</primary></indexterm><programlisting><link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link>* tracker_module_file_get_metadata (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);</programlisting>
+<indexterm zone="tracker-module-file-get-metadata"><primary sortas="tracker_module_file_get_metadata">tracker_module_file_get_metadata</primary></indexterm><programlisting><link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> * tracker_module_file_get_metadata
+                                                        (<link linkend="TrackerModuleFile">TrackerModuleFile</link> *file);</programlisting>
 <para>
 Extracts all the metadata corresponding to <parameter>file</parameter> in the current
-state (see <link linkend="TrackerModuleIteratable"><type>TrackerModuleIteratable</type></link>) or <link linkend="NULL:CAPS"><literal>NULL</literal></link> if the element should not
+state (see <link linkend="TrackerModuleIteratable"><type>TrackerModuleIteratable</type></link>) or <link linkend="NULL--CAPS"><literal>NULL</literal></link> if the element should not
 be indexed.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleFile"><type>TrackerModuleFile</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A newly created <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link> containing all
-         the extracted metadata, or <link linkend="NULL:CAPS"><literal>NULL</literal></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A newly created <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link> containing all
+         the extracted metadata, or <link linkend="NULL--CAPS"><literal>NULL</literal></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
 <refsect1 id="libtracker-module-Module-files.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2 id="TrackerModuleFile--cancelled"><title>The <literal>&quot;cancelled&quot;</literal> property</title>
-<indexterm zone="TrackerModuleFile--cancelled"><primary>TrackerModuleFile:cancelled</primary></indexterm><programlisting>  &quot;cancelled&quot;                <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerModuleFile--cancelled" role="property"><title>The <literal>&quot;cancelled&quot;</literal> property</title>
+<indexterm zone="TrackerModuleFile--cancelled"><primary sortas="TrackerModuleFile:cancelled">TrackerModuleFile:cancelled</primary></indexterm><programlisting>  &quot;cancelled&quot;                <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Whether operations on this file were cancelled.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerModuleFile--file"><title>The <literal>&quot;file&quot;</literal> property</title>
-<indexterm zone="TrackerModuleFile--file"><primary>TrackerModuleFile:file</primary></indexterm><programlisting>  &quot;file&quot;                     <link linkend="GFile">GFile</link>*                : Read / Write / Construct Only</programlisting>
+<refsect2 id="TrackerModuleFile--file" role="property"><title>The <literal>&quot;file&quot;</literal> property</title>
+<indexterm zone="TrackerModuleFile--file"><primary sortas="TrackerModuleFile:file">TrackerModuleFile:file</primary></indexterm><programlisting>  &quot;file&quot;                     <link linkend="GFile">GFile</link>*                : Read / Write / Construct Only</programlisting>
 <para>
 The GFile that corresponds to the TrackerModuleFile
 </para></refsect2>
-
 </refsect1>
 
 

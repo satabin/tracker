@@ -1,3 +1,475 @@
+2009-05-22  Martyn Russell  <martyn@imendio.com>
+
+	NEWS for 0.6.95
+
+2009-05-22  Carlos Garnacho  <carlosg@gnome.org>
+
+	MetadataValue can be empty, avoid critical warnings when trying to retrieve it.
+
+2009-05-22  Martyn Russell  <martyn@imendio.com>
+
+	Bumped version to 0.6.95 for release
+
+	Fixed make distcheck failures in preparation for 0.6.95
+
+2009-05-21  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug 112133 - trackerd-11-1386.rcore.lzo crashed
+	Normalize mount point paths in TrackerProcessor, so they're removed properly,
+	and the processor doesn't think there are still pending removable media to
+	inspect.
+
+2009-05-21  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	Hungarian translation updated
+
+2009-05-20  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2009-05-20  Martyn Russell  <martyn@imendio.com>
+
+	Attempt to speed up indexing by less cols in indices
+
+2009-05-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	Improved HAL UDI lookup speed from ~5ms to 0.5ms
+
+	Fixed indexer potential path breakage by using g_build_path instead
+
+	Fixes indexer so we do not parse metadata text if FTS is disabled
+
+2009-05-20  Martyn Russell  <martyn@imendio.com>
+
+	Added --disable-detailed-metadata to NOT index less important metadata
+	This simply doesn't index data like Image:Comments which is considered
+	less useful than information like Image:Height, etc.
+
+	Removed File:Ext and File:NameDelimited for performance
+	The File:Ext can be obtained easily per Name anyway and the
+	File:NameDelimited is simply the File:Path and File:Name added
+	together so it duplicates data in the database. 
+
+	This removal makes quite a difference on the Maemo device.
+
+2009-05-20  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#110584, Image:HasKeywords working incorrectly
+	Fixes NB#113083, Tracker extracts Sub-location instead of Location field.
+
+	Mime check fixes to the album art extraction in gstreamer and mp3 extractors
+
+2009-05-20  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fix folder indexing
+	An empty folder was crawled and monitored but never sent to the indexer.
+	Fixed adding a call to process the item queues after adding a folder.
+
+	 Fixes NB#106085, Tracker DB is not updated when images were removed...
+
+2009-05-20  Philip Van Hoof  <philip@codeminded.be>
+
+	Increased the max allowed extraction time to 10 seconds
+	The GStreamer extractor often needs more time than 5 seconds
+
+	Optimization for embedded album-art extraction
+
+2009-05-18  Martyn Russell  <martyn@imendio.com>
+
+	Disable database SQL debugging... again :)
+
+	Fixed patch to disable SQLite FTS warnings causing huge DB failures
+
+	Added SQLite test utility
+
+	Don't insert empty strings for NULL values, it causes unique value disparity
+
+	Don't insert "(null)" into DB when string is NULL for updates
+
+	Do not add ID twice to update context & do not escape collation key twice
+
+2009-05-17  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Some leak fixes
+	Fixed a double free in mp3 extractor. Plugs a leak in tracker-files.
+	Found by Daniël Heres
+
+2009-05-15  Luca Ferretti  <elle.uca@libero.it>
+
+	Updated Italian translation
+
+2009-05-15  Martyn Russell  <martyn@imendio.com>
+
+	Don't iterate data update context twice and quote everything
+
+	Added dynamic pragma loader using config file
+
+	Make HAVE_SQLITE_FTS a #define in config.h
+
+2009-05-15  Carlos Garnacho  <carlos@lanedo.com>
+
+	Use single DB insert statements instead of insert and many updates
+	This seriously improves speed. My desktop, 7k items, 35s down to 28s.
+	This patch from Carlos was based on an intitial patch by Philip Van Hoof.
+
+2009-05-14  Martyn Russell  <martyn@imendio.com>
+
+	Added a preprocessor option for DB transactions
+
+2009-05-14  Carlos Garnacho  <carlosg@gnome.org>
+
+	Make trackerd delete index files as well on reindex.
+
+	Add new "index error" indexer status, pause the indexer on index error.
+
+	Make sync/async flush functions to stop on any error.
+
+2009-05-14  Ivan Frade  <ivan.frade@nokia.com>
+
+	Check if the sym link can be followed
+	Check if a link can be followed. In some cases (.../proc/... symbolic links,
+	present in chroot envs, scratchbox, etc.) link_path was NULL and caused
+	a SEGFAULT in g_filename_to_utf8.
+
+	(specially in ..../proc/... symbolic link)
+
+2009-05-14  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Do not use default values for numeric null fields
+	Instead of setting a default value for numeric fields with null content we
+	just return an empty string in this case as well.
+
+	Fixes NB#115978
+
+	Add multivalue support for all image metadata formats
+	Add support for multivalued fields in all image metadata formats and fix how
+	HasKeywords is used.
+
+	Fixes NB#110584.
+
+2009-05-13  Martyn Russell  <martyn@imendio.com>
+
+	Fix not crawling inserted removable media
+	Now we start the processor again when we get new removable media
+	inserted, this bug mainly affects the condition when we have finished
+	processing all files and the removable media state changes again. 
+
+	The statistics we report about files crawled and time taken is now
+	reset and correct each time this occurs.
+
+	The mount point added and removed callbacks from HAL were removed in
+	TrackerProcessor and now two functions are called FROM tracker-main.c
+	which do the same thing. The reason for this, is that we change state
+	while setting volume states and we can't process removable media in
+	some states. So to control this we do everything AFTER we have set the
+	removable media states correctly.
+
+2009-05-13  Philip Van Hoof  <philip@codeminded.be>
+
+	Bugfixes for album art heuristics
+
+2009-05-13  Martyn Russell  <martyn@imendio.com>
+
+	Make sure we call va_end before returning in evolution-imap module
+
+	Check return value of important GLib calls, found by coverity
+
+	Removed unused variables from coverity findings
+
+	Fixed src/libtracker-common/tracker-config coverity failures
+
+	Fixed src/libstemmer/libstemmer.c coverity failures
+
+	Fixed utils/qdbm/ print-words and search-word based on coverity
+
+	Fixed tracker-xmp coverity findings
+
+	Fixes to tracker-rdf-query module from coverity
+
+	Pause indexer when setting volume states & disable TTL use
+	Disable udi variable check in tracker-data-update, was causing some
+	log warnings when NULL is quite acceptable.
+
+	Disabled TTL APIs (tracker_removable_device_*) in indexer which was
+	causing several bugs related to speed and caching of albumart.
+
+	Make sure we quit the main loop in the event we have NO volumes to
+	enable on startup in the daemon.
+
+	Make sure we pause the indexer before doing ANY volume calls to ensure
+	they get through when the indexer is quite busy. Any failure response
+	here will shutdown the daemon so this is quite important.
+
+2009-05-12  Martyn Russell  <martyn@imendio.com>
+
+	Set up volume states before enabling public APIs via DBus
+	In the startup for the daemon, we now make sure we free
+	TrackerMainPrivate and fix a warning there. We also change the startup
+	so we wait until the indexer has replied regarding setting up volumes
+	before we allow users to send DBus requests in. If the indexer fails
+	to reply successfully with the volumes set up, we will exit
+	immediately. The reason for this, is because the SQL queries highly
+	depend on the Volumes table being accurate. A restart (triggered from
+	another DBus request) may well fix this anyway.
+
+	In the daemon module, we don't get the stats when we create the
+	GObject because tracker-main requests that for us AFTER we have set up
+	all our public interfaces (DBus, push modules, etc).
+
+	In the processor, we now set ->finished to FALSE when starting and we
+	also check ->finished before in _stop() so we don't print processor
+	summaries when we have already finished.
+
+2009-05-12  Philip Van Hoof  <philip@codeminded.be>
+
+	Performance improvement heurstic scan for album art
+	Don't try to open files that aren't PNG files.
+
+2009-05-11  Ivan Frade  <ivan.frade@nokia.com>
+
+	Check error on dbus connection
+	Check the GError returned by the DBus connect method, and not only
+	if connection != NULL.
+
+	Fixes NB#115956, Tracker tools core dumps
+
+	Add index to Volumes table
+	New index for Volumes table. This speed up the GetVolumeId query in
+	indexing time.
+
+2009-05-11  Martyn Russell  <martyn@imendio.com>
+
+	Get the actual mount point for a given path to get volume id in db
+	Before we did this, we were using clever SQL statements to get the
+	ID in the Volumes table based on a given path and the known volume's
+	mount point in the database. This of course doesn't give a real idea
+	of the mount point because you can't rely on clever string
+	manipulation, only the file system really knows which removable device
+	the file is on. So now we get the real device and use some extra
+	caching to improve performance here too so we can get the UDI by path.
+	The UDI is then looked up in the database for the volume ID.
+
+	NOTE: This is related to and improves on NB#109892 and NB#112632.
+
+2009-05-09  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fix GetVolumeByPath
+	There can be nested mount points (e.g. /home and /home/user/MyDocs), so we need to
+	return the longest match for a certain path (e.g. /home/user/MyDocs/a.mp3 must return
+	/home/user/MyDocs and not /home as result).
+
+	Added desc sort by length to return the longest mountpoint that matches.
+
+	Fixes NB#109892
+
+2009-05-08  Martyn Russell  <martyn@imendio.com>
+
+	Fixes: NB#112632, Files seem to go missing from database
+	Now we make sure we ALWAYS signal statistics changes when a mountable
+	device's state changes. Before we were only doing this on removable
+	for some reason. Now we do it when we re-mount the media again.
+
+2009-05-08  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Off-by-one fix to the genre name mapping in mp3 extraction
+	Fixes NB#113903
+
+2009-05-08  Martyn Russell  <martyn@imendio.com>
+
+	Fixes: NB#110221, ML: Album Art is not displaying in All Album and...
+	We were not returning strings in lowercase when stripping the names,
+	this means "Bryan Adams" and "bryan adams" produce different MD5 sums
+	which causes duplicates in albumart.
+
+2009-05-07  Martyn Russell  <martyn@imendio.com>
+
+	Add full text search optional and enabled by default
+
+	Revert patch to use binary search with QDBM cache, was causing regressions
+
+2009-05-07  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Allow queries without an rdf-file with tracker-query.
+
+	Added some extra checks for size in mp3 extraction.
+
+2009-05-07  Philip Van Hoof  <philip@codeminded.be>
+
+	Fixes for the heuristic scanner
+
+2009-05-07  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Do not free the option context a second time.
+
+2009-05-07  Martyn Russell  <martyn@imendio.com>
+
+	Fixes NB#100123, Image:Date is empty for some of the images
+	Always fallback to mtime for Image:Date metadata
+
+2009-05-06  Martyn Russell  <martyn@imendio.com>
+
+	Removed **** from low disk space messages in log
+
+	Use gint64 not guint for binary search, array index was sometimes < 0
+	The left/right/center variables used in the binary search were defined
+	as guint and center which is used for the index in the array had
+	rolled over to max guint after being set to a value < 0.
+
+	Fix indexer crash, by setting ALL struct members in unindex_metadata
+	We weren't setting the data.{service_id|id|index} and then using those
+	in the TrackerDBIndex calls as uninitialised data.
+
+	Fixed disk_space_check_stop() critical warning on shutdown
+
+	Fix Valgrind errors / leaks and added public API parameter checks
+	This patch removes a lot of casts which were unnecessary. It also
+	fixes a memory leak and doesn't allocate memory unnecessarily in
+	places. There were also reports from Valgrind about use of uninitiated
+	memory which should be fixed now. Public APIs now have full variable
+	checking on to throw out any erroneous calls.
+
+	Fixed indexer invalid writes in state_to_string() if string is empty
+	We assumed the string was always > 3 characters long and we always
+	truncated the last 3 characters which had the separator " | " appened.
+
+	Fixes binary search index size error, assumed 0 to array->len
+	This should have been 0 to array->len - 1. This was causing READ
+	errors noticed on the device as a crash finally.
+
+2009-05-06  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Add a generic dbus method for performing aggregates on unique value queries.
+	A more generic method has been added for aggregates on unique values.
+
+2009-05-05  Martyn Russell  <martyn@imendio.com>
+
+	Fixes: NB#114354, trackerd polls
+	This was more work than I expected. I think I fixed another bug with
+	the testing on this one. We now make sure that if we go back to IDLE
+	state after we have finished PENDING/WATCHING states for crawling we
+	correct the state to go straight back to PAUSED if we are paused for
+	any of the reasons we can be paused. The bug here was that we ended up
+	indexing content if we paused based on a full disk if the full disk
+	state occurred BEFORE we finished crawling the file system.
+
+	Also, we now watch the TrackerConfig low-disk-space-limit notify
+	signal to update in real time.
+
+2009-05-05  Carlos Garnacho  <carlosg@gnome.org>
+
+	Ensure a transaction is started right after getting metadata/text.
+
+	Perform binary search on already added words in cache.
+
+	Make adding words to index a bit more performant.
+
+2009-05-04  Carlos Garnacho  <carlosg@gnome.org>
+
+	Make tracker_hal_path_is_on_removable_device() a bit more performant.
+
+2009-05-04  Martyn Russell  <martyn@imendio.com>
+
+	Don't check for SQLite extension loader without FTS enabled
+
+2009-05-04  Rob Taylor  <rob.taylor@codethink.co.uk>
+
+	Fixes: GB#580908, [PATCH] Make configure error on missing hal and hal-storage a bit clearer.
+
+2009-05-04  Javier Jardón  <javierjc1982@gmail.com>
+
+	Fixes GB#575130, Remove deprecated GTK+ symbols
+
+2009-05-04  Rob Taylor  <rob.taylor@codethink.co.uk>
+
+	Fixes: GB#580905, [PATCH] Clean up help messages in configure
+
+2009-04-30  Carlos Garnacho  <carlosg@gnome.org>
+
+	Remove semicolon from comment, it broke sqlite parser.
+
+2009-04-30  Martyn Russell  <martyn@imendio.com>
+
+	Fixed a memory leak in tracker_dbus_query_result_multi_to_ptr_array()
+
+2009-04-30  Ivan Frade  <ivan.frade@nokia.com>
+
+	Test tracker-db-index-manager
+	Test tracker-db-index-manager. Check that it has been initialized in
+	get_index call.
+
+	Test tracker-db-action
+	Stupid to test an enum but improves the coverage numbers.
+
+	Test tracker-db-file-info
+	Tests for tracker-db-file-info.
+
+2009-04-29  Ivan Frade  <ivan.frade@nokia.com>
+
+	Add license and explanations
+	Add license to the source code files and explain in comments what the
+	mocks are doing.
+
+	Test tracker-thumbnailer
+	Add tests to tracker-thumbnailer. Includes a new gobject (MockDBusGProxy)
+	to mock the real DBus GProxy object, and some dbus methods are
+	overloaded to test the object without external dependencies.
+
+2009-04-29  Martyn Russell  <martyn@imendio.com>
+
+	Fixes: NB#113528, Tracker indexer crashes after querying meta data of...
+	Fixes: NB#113528, Error updating "Playlist:ValidDuration" property
+
+2009-04-28  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixes missing switch break causing WHERE property to return ORDER property
+
+	Add TrackerFieldData unit test
+	Get/set for all the properties, using methods and g_object_get/set
+
+2009-04-28  Yavor Doganov  <yavor@gnu.org>
+
+	Fixes GB#580586, FTBFS: undefined reference to `sqlite3_enable_load_extension`
+
+2009-04-28  Ivan Frade  <ivan.frade@nokia.com>
+
+	Test TrackerDataMetadata
+	Add Unit tests for tracker-data-metadata module in libtracker-data.
+
+2009-04-28  Carlos Garnacho  <carlosg@gnome.org>
+
+	Shut trackerd down cleanly, even during initialization. Fixes NB#107962.
+	* src/trackerd/tracker-status.[ch] (tracker_status_is_initialized): New
+	  function.
+	* src/trackerd/tracker-main.c (tracker_shutdown): Check whether resources
+	  are available before trying to shut them down.
+	  (main): Do not enter the main loop if we are already shutting down.
+
+	Plug several memory leaks.
+
+2009-04-27  Ivan Frade  <ivan.frade@nokia.com>
+
+	Add test to tracker-turtle
+	Add test to tracker-turtle (coverage over 90%). Commented out the
+	optimize test. It is not working fine.
+
+2009-04-27  Martyn Russell  <martyn@imendio.com>
+
+	Disables evolution push module and improves the code
+	This patch also fixes the coding style in places and replaces some
+	strchr() calls for the utf8 equivalent. Code was added to make the
+	evolution plugin work. The "File:Modified" metadata was missing and
+	that was the reason nothing was being added to the database.
+
+	NOTE: We are not using this because doing so makes the indexer
+	completely unresponsive. This is what is needed to actually make the
+	evolution plugin feed our database.  However, there is no queueing, no
+	pausing, no control at all, we simply handle everything as it comes.
+	This is not good enough for tracker-0.6 because it causes a regression
+	in the indexer. So this is disabled.
+
+	NOTE: This code is supposed to be quite different in the tracker-0.7
+	branch and as such it makes no sense fixing it.
+
 2009-04-24  Martyn Russell  <martyn@imendio.com>
 
 	Bumped version for release

@@ -8,7 +8,6 @@
 <refnamediv>
 <refname>Config</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libtracker-common-Config.synopsis" role="synopsis">
@@ -19,7 +18,7 @@
 #include &lt;libtracker-common/tracker-config.h&gt;
 
                     <link linkend="TrackerConfig-struct">TrackerConfig</link>;
-<link linkend="TrackerConfig">TrackerConfig</link>*      <link linkend="tracker-config-new">tracker_config_new</link>                  (void);
+<link linkend="TrackerConfig">TrackerConfig</link> *     <link linkend="tracker-config-new">tracker_config_new</link>                  (void);
 <link linkend="void">void</link>                <link linkend="tracker-config-add-crawl-directory-roots">tracker_config_add_crawl_directory_roots</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gchar">gchar</link> * const *roots);
@@ -31,13 +30,13 @@
 <link linkend="void">void</link>                <link linkend="tracker-config-add-watch-directory-roots">tracker_config_add_watch_directory_roots</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gchar">gchar</link> * const *roots);
-<link linkend="GSList">GSList</link>*             <link linkend="tracker-config-get-crawl-directory-roots">tracker_config_get_crawl_directory_roots</link>
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-config-get-crawl-directory-roots">tracker_config_get_crawl_directory_roots</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-disable-indexing-on-battery">tracker_config_get_disable_indexing_on_battery</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-disable-indexing-on-battery-init">tracker_config_get_disable_indexing_on_battery_init</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
-<link linkend="GSList">GSList</link>*             <link linkend="tracker-config-get-disabled-modules">tracker_config_get_disabled_modules</link> (<link linkend="TrackerConfig">TrackerConfig</link> *config);
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-config-get-disabled-modules">tracker_config_get_disabled_modules</link> (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-enable-content-indexing">tracker_config_get_enable_content_indexing</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-enable-indexing">tracker_config_get_enable_indexing</link>  (<link linkend="TrackerConfig">TrackerConfig</link> *config);
@@ -51,7 +50,7 @@
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-index-removable-devices">tracker_config_get_index_removable_devices</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gint">gint</link>                <link linkend="tracker-config-get-initial-sleep">tracker_config_get_initial_sleep</link>    (<link linkend="TrackerConfig">TrackerConfig</link> *config);
-const <link linkend="gchar">gchar</link>*        <link linkend="tracker-config-get-language">tracker_config_get_language</link>         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-config-get-language">tracker_config_get_language</link>         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gint">gint</link>                <link linkend="tracker-config-get-low-disk-space-limit">tracker_config_get_low_disk_space_limit</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-low-memory-mode">tracker_config_get_low_memory_mode</link>  (<link linkend="TrackerConfig">TrackerConfig</link> *config);
@@ -64,13 +63,13 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-config-g
 <link linkend="gint">gint</link>                <link linkend="tracker-config-get-min-bucket-count">tracker_config_get_min_bucket_count</link> (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gint">gint</link>                <link linkend="tracker-config-get-min-word-length">tracker_config_get_min_word_length</link>  (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-get-nfs-locking">tracker_config_get_nfs_locking</link>      (<link linkend="TrackerConfig">TrackerConfig</link> *config);
-<link linkend="GSList">GSList</link>*             <link linkend="tracker-config-get-no-index-file-types">tracker_config_get_no_index_file_types</link>
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-config-get-no-index-file-types">tracker_config_get_no_index_file_types</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
-<link linkend="GSList">GSList</link>*             <link linkend="tracker-config-get-no-watch-directory-roots">tracker_config_get_no_watch_directory_roots</link>
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-config-get-no-watch-directory-roots">tracker_config_get_no_watch_directory_roots</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gint">gint</link>                <link linkend="tracker-config-get-throttle">tracker_config_get_throttle</link>         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="gint">gint</link>                <link linkend="tracker-config-get-verbosity">tracker_config_get_verbosity</link>        (<link linkend="TrackerConfig">TrackerConfig</link> *config);
-<link linkend="GSList">GSList</link>*             <link linkend="tracker-config-get-watch-directory-roots">tracker_config_get_watch_directory_roots</link>
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-config-get-watch-directory-roots">tracker_config_get_watch_directory_roots</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);
 <link linkend="void">void</link>                <link linkend="tracker-config-remove-disabled-modules">tracker_config_remove_disabled_modules</link>
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
@@ -139,7 +138,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-config-g
   <link linkend="GObject">GObject</link>
    +----TrackerConfig
 </synopsis>
-
 </refsect1>
 
 
@@ -185,7 +183,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-config-g
 <refsect1 id="libtracker-common-Config.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -193,468 +190,376 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-config-g
 <title role="details.title">Details</title>
 <refsect2 id="TrackerConfig-struct" role="struct">
 <title>TrackerConfig</title>
-<indexterm zone="TrackerConfig-struct"><primary>TrackerConfig</primary></indexterm><programlisting>typedef struct _TrackerConfig TrackerConfig;</programlisting>
+<indexterm zone="TrackerConfig-struct"><primary sortas="TrackerConfig">TrackerConfig</primary></indexterm><programlisting>typedef struct _TrackerConfig TrackerConfig;</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="tracker-config-new" role="function">
 <title>tracker_config_new ()</title>
-<indexterm zone="tracker-config-new"><primary>tracker_config_new</primary></indexterm><programlisting><link linkend="TrackerConfig">TrackerConfig</link>*      tracker_config_new                  (void);</programlisting>
+<indexterm zone="tracker-config-new"><primary sortas="tracker_config_new">tracker_config_new</primary></indexterm><programlisting><link linkend="TrackerConfig">TrackerConfig</link> *     tracker_config_new                  (void);</programlisting>
 <para>
 Creates a new GObject for handling Tracker's config file.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A new TrackerConfig object. Must be unreferenced when
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A new TrackerConfig object. Must be unreferenced when
 finished with.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-add-crawl-directory-roots" role="function">
 <title>tracker_config_add_crawl_directory_roots ()</title>
-<indexterm zone="tracker-config-add-crawl-directory-roots"><primary>tracker_config_add_crawl_directory_roots</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_add_crawl_directory_roots
+<indexterm zone="tracker-config-add-crawl-directory-roots"><primary sortas="tracker_config_add_crawl_directory_roots">tracker_config_add_crawl_directory_roots</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_add_crawl_directory_roots
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gchar">gchar</link> * const *roots);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>roots</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>roots</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-add-disabled-modules" role="function">
 <title>tracker_config_add_disabled_modules ()</title>
-<indexterm zone="tracker-config-add-disabled-modules"><primary>tracker_config_add_disabled_modules</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_add_disabled_modules (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-add-disabled-modules"><primary sortas="tracker_config_add_disabled_modules">tracker_config_add_disabled_modules</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_add_disabled_modules (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          const <link linkend="gchar">gchar</link> * const *modules);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>modules</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>modules</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-add-no-watch-directory-roots" role="function">
 <title>tracker_config_add_no_watch_directory_roots ()</title>
-<indexterm zone="tracker-config-add-no-watch-directory-roots"><primary>tracker_config_add_no_watch_directory_roots</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_add_no_watch_directory_roots
+<indexterm zone="tracker-config-add-no-watch-directory-roots"><primary sortas="tracker_config_add_no_watch_directory_roots">tracker_config_add_no_watch_directory_roots</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_add_no_watch_directory_roots
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gchar">gchar</link> * const *roots);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>roots</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>roots</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-add-watch-directory-roots" role="function">
 <title>tracker_config_add_watch_directory_roots ()</title>
-<indexterm zone="tracker-config-add-watch-directory-roots"><primary>tracker_config_add_watch_directory_roots</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_add_watch_directory_roots
+<indexterm zone="tracker-config-add-watch-directory-roots"><primary sortas="tracker_config_add_watch_directory_roots">tracker_config_add_watch_directory_roots</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_add_watch_directory_roots
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gchar">gchar</link> * const *roots);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>roots</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>roots</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-crawl-directory-roots" role="function">
 <title>tracker_config_get_crawl_directory_roots ()</title>
-<indexterm zone="tracker-config-get-crawl-directory-roots"><primary>tracker_config_get_crawl_directory_roots</primary></indexterm><programlisting><link linkend="GSList">GSList</link>*             tracker_config_get_crawl_directory_roots
+<indexterm zone="tracker-config-get-crawl-directory-roots"><primary sortas="tracker_config_get_crawl_directory_roots">tracker_config_get_crawl_directory_roots</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_config_get_crawl_directory_roots
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-disable-indexing-on-battery" role="function">
 <title>tracker_config_get_disable_indexing_on_battery ()</title>
-<indexterm zone="tracker-config-get-disable-indexing-on-battery"><primary>tracker_config_get_disable_indexing_on_battery</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_disable_indexing_on_battery
+<indexterm zone="tracker-config-get-disable-indexing-on-battery"><primary sortas="tracker_config_get_disable_indexing_on_battery">tracker_config_get_disable_indexing_on_battery</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_disable_indexing_on_battery
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-disable-indexing-on-battery-init" role="function">
 <title>tracker_config_get_disable_indexing_on_battery_init ()</title>
-<indexterm zone="tracker-config-get-disable-indexing-on-battery-init"><primary>tracker_config_get_disable_indexing_on_battery_init</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_disable_indexing_on_battery_init
+<indexterm zone="tracker-config-get-disable-indexing-on-battery-init"><primary sortas="tracker_config_get_disable_indexing_on_battery_init">tracker_config_get_disable_indexing_on_battery_init</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_disable_indexing_on_battery_init
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-disabled-modules" role="function">
 <title>tracker_config_get_disabled_modules ()</title>
-<indexterm zone="tracker-config-get-disabled-modules"><primary>tracker_config_get_disabled_modules</primary></indexterm><programlisting><link linkend="GSList">GSList</link>*             tracker_config_get_disabled_modules (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-disabled-modules"><primary sortas="tracker_config_get_disabled_modules">tracker_config_get_disabled_modules</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_config_get_disabled_modules (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-enable-content-indexing" role="function">
 <title>tracker_config_get_enable_content_indexing ()</title>
-<indexterm zone="tracker-config-get-enable-content-indexing"><primary>tracker_config_get_enable_content_indexing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_content_indexing
+<indexterm zone="tracker-config-get-enable-content-indexing"><primary sortas="tracker_config_get_enable_content_indexing">tracker_config_get_enable_content_indexing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_content_indexing
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-enable-indexing" role="function">
 <title>tracker_config_get_enable_indexing ()</title>
-<indexterm zone="tracker-config-get-enable-indexing"><primary>tracker_config_get_enable_indexing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_indexing  (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-enable-indexing"><primary sortas="tracker_config_get_enable_indexing">tracker_config_get_enable_indexing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_indexing  (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-enable-stemmer" role="function">
 <title>tracker_config_get_enable_stemmer ()</title>
-<indexterm zone="tracker-config-get-enable-stemmer"><primary>tracker_config_get_enable_stemmer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_stemmer   (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-enable-stemmer"><primary sortas="tracker_config_get_enable_stemmer">tracker_config_get_enable_stemmer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_stemmer   (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-enable-thumbnails" role="function">
 <title>tracker_config_get_enable_thumbnails ()</title>
-<indexterm zone="tracker-config-get-enable-thumbnails"><primary>tracker_config_get_enable_thumbnails</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_thumbnails
+<indexterm zone="tracker-config-get-enable-thumbnails"><primary sortas="tracker_config_get_enable_thumbnails">tracker_config_get_enable_thumbnails</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_thumbnails
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-enable-watches" role="function">
 <title>tracker_config_get_enable_watches ()</title>
-<indexterm zone="tracker-config-get-enable-watches"><primary>tracker_config_get_enable_watches</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_watches   (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-enable-watches"><primary sortas="tracker_config_get_enable_watches">tracker_config_get_enable_watches</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_enable_watches   (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-fast-merges" role="function">
 <title>tracker_config_get_fast_merges ()</title>
-<indexterm zone="tracker-config-get-fast-merges"><primary>tracker_config_get_fast_merges</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_fast_merges      (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-fast-merges"><primary sortas="tracker_config_get_fast_merges">tracker_config_get_fast_merges</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_fast_merges      (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-index-mounted-directories" role="function">
 <title>tracker_config_get_index_mounted_directories ()</title>
-<indexterm zone="tracker-config-get-index-mounted-directories"><primary>tracker_config_get_index_mounted_directories</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_index_mounted_directories
+<indexterm zone="tracker-config-get-index-mounted-directories"><primary sortas="tracker_config_get_index_mounted_directories">tracker_config_get_index_mounted_directories</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_index_mounted_directories
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-index-removable-devices" role="function">
 <title>tracker_config_get_index_removable_devices ()</title>
-<indexterm zone="tracker-config-get-index-removable-devices"><primary>tracker_config_get_index_removable_devices</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_index_removable_devices
+<indexterm zone="tracker-config-get-index-removable-devices"><primary sortas="tracker_config_get_index_removable_devices">tracker_config_get_index_removable_devices</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_index_removable_devices
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-initial-sleep" role="function">
 <title>tracker_config_get_initial_sleep ()</title>
-<indexterm zone="tracker-config-get-initial-sleep"><primary>tracker_config_get_initial_sleep</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_initial_sleep    (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-initial-sleep"><primary sortas="tracker_config_get_initial_sleep">tracker_config_get_initial_sleep</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_initial_sleep    (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-language" role="function">
 <title>tracker_config_get_language ()</title>
-<indexterm zone="tracker-config-get-language"><primary>tracker_config_get_language</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_config_get_language         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-language"><primary sortas="tracker_config_get_language">tracker_config_get_language</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_config_get_language         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-low-disk-space-limit" role="function">
 <title>tracker_config_get_low_disk_space_limit ()</title>
-<indexterm zone="tracker-config-get-low-disk-space-limit"><primary>tracker_config_get_low_disk_space_limit</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_low_disk_space_limit
+<indexterm zone="tracker-config-get-low-disk-space-limit"><primary sortas="tracker_config_get_low_disk_space_limit">tracker_config_get_low_disk_space_limit</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_low_disk_space_limit
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-low-memory-mode" role="function">
 <title>tracker_config_get_low_memory_mode ()</title>
-<indexterm zone="tracker-config-get-low-memory-mode"><primary>tracker_config_get_low_memory_mode</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_low_memory_mode  (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-low-memory-mode"><primary sortas="tracker_config_get_low_memory_mode">tracker_config_get_low_memory_mode</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_low_memory_mode  (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-max-bucket-count" role="function">
 <title>tracker_config_get_max_bucket_count ()</title>
-<indexterm zone="tracker-config-get-max-bucket-count"><primary>tracker_config_get_max_bucket_count</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_max_bucket_count (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-max-bucket-count"><primary sortas="tracker_config_get_max_bucket_count">tracker_config_get_max_bucket_count</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_max_bucket_count (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-max-text-to-index" role="function">
 <title>tracker_config_get_max_text_to_index ()</title>
-<indexterm zone="tracker-config-get-max-text-to-index"><primary>tracker_config_get_max_text_to_index</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_max_text_to_index
+<indexterm zone="tracker-config-get-max-text-to-index"><primary sortas="tracker_config_get_max_text_to_index">tracker_config_get_max_text_to_index</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_max_text_to_index
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-max-word-length" role="function">
 <title>tracker_config_get_max_word_length ()</title>
-<indexterm zone="tracker-config-get-max-word-length"><primary>tracker_config_get_max_word_length</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_max_word_length  (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-max-word-length"><primary sortas="tracker_config_get_max_word_length">tracker_config_get_max_word_length</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_max_word_length  (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-max-words-to-index" role="function">
 <title>tracker_config_get_max_words_to_index ()</title>
-<indexterm zone="tracker-config-get-max-words-to-index"><primary>tracker_config_get_max_words_to_index</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_max_words_to_index
+<indexterm zone="tracker-config-get-max-words-to-index"><primary sortas="tracker_config_get_max_words_to_index">tracker_config_get_max_words_to_index</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_max_words_to_index
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-min-bucket-count" role="function">
 <title>tracker_config_get_min_bucket_count ()</title>
-<indexterm zone="tracker-config-get-min-bucket-count"><primary>tracker_config_get_min_bucket_count</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_min_bucket_count (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-min-bucket-count"><primary sortas="tracker_config_get_min_bucket_count">tracker_config_get_min_bucket_count</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_min_bucket_count (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-min-word-length" role="function">
 <title>tracker_config_get_min_word_length ()</title>
-<indexterm zone="tracker-config-get-min-word-length"><primary>tracker_config_get_min_word_length</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_min_word_length  (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-min-word-length"><primary sortas="tracker_config_get_min_word_length">tracker_config_get_min_word_length</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_min_word_length  (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-nfs-locking" role="function">
 <title>tracker_config_get_nfs_locking ()</title>
-<indexterm zone="tracker-config-get-nfs-locking"><primary>tracker_config_get_nfs_locking</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_nfs_locking      (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-nfs-locking"><primary sortas="tracker_config_get_nfs_locking">tracker_config_get_nfs_locking</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_get_nfs_locking      (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-no-index-file-types" role="function">
 <title>tracker_config_get_no_index_file_types ()</title>
-<indexterm zone="tracker-config-get-no-index-file-types"><primary>tracker_config_get_no_index_file_types</primary></indexterm><programlisting><link linkend="GSList">GSList</link>*             tracker_config_get_no_index_file_types
+<indexterm zone="tracker-config-get-no-index-file-types"><primary sortas="tracker_config_get_no_index_file_types">tracker_config_get_no_index_file_types</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_config_get_no_index_file_types
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-no-watch-directory-roots" role="function">
 <title>tracker_config_get_no_watch_directory_roots ()</title>
-<indexterm zone="tracker-config-get-no-watch-directory-roots"><primary>tracker_config_get_no_watch_directory_roots</primary></indexterm><programlisting><link linkend="GSList">GSList</link>*             tracker_config_get_no_watch_directory_roots
+<indexterm zone="tracker-config-get-no-watch-directory-roots"><primary sortas="tracker_config_get_no_watch_directory_roots">tracker_config_get_no_watch_directory_roots</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_config_get_no_watch_directory_roots
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-throttle" role="function">
 <title>tracker_config_get_throttle ()</title>
-<indexterm zone="tracker-config-get-throttle"><primary>tracker_config_get_throttle</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_throttle         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-throttle"><primary sortas="tracker_config_get_throttle">tracker_config_get_throttle</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_throttle         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-verbosity" role="function">
 <title>tracker_config_get_verbosity ()</title>
-<indexterm zone="tracker-config-get-verbosity"><primary>tracker_config_get_verbosity</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_verbosity        (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
+<indexterm zone="tracker-config-get-verbosity"><primary sortas="tracker_config_get_verbosity">tracker_config_get_verbosity</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_config_get_verbosity        (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
 Gets the verbosity of the logging in the indexer and the daemon.
 </para>
@@ -670,545 +575,468 @@ Note, you receive logging for anything less priority than the
 verbosity level as well as the level you set. So if the verbosity
 is 3 you receive debug, messages, info and warnings.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara> a <link linkend="TrackerConfig"><type>TrackerConfig</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> An integer value from 0 to 3.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> An integer value from 0 to 3.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-get-watch-directory-roots" role="function">
 <title>tracker_config_get_watch_directory_roots ()</title>
-<indexterm zone="tracker-config-get-watch-directory-roots"><primary>tracker_config_get_watch_directory_roots</primary></indexterm><programlisting><link linkend="GSList">GSList</link>*             tracker_config_get_watch_directory_roots
+<indexterm zone="tracker-config-get-watch-directory-roots"><primary sortas="tracker_config_get_watch_directory_roots">tracker_config_get_watch_directory_roots</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_config_get_watch_directory_roots
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-remove-disabled-modules" role="function">
 <title>tracker_config_remove_disabled_modules ()</title>
-<indexterm zone="tracker-config-remove-disabled-modules"><primary>tracker_config_remove_disabled_modules</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_remove_disabled_modules
+<indexterm zone="tracker-config-remove-disabled-modules"><primary sortas="tracker_config_remove_disabled_modules">tracker_config_remove_disabled_modules</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_remove_disabled_modules
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          const <link linkend="gchar">gchar</link> *module);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>module</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>module</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-disable-indexing-on-battery" role="function">
 <title>tracker_config_set_disable_indexing_on_battery ()</title>
-<indexterm zone="tracker-config-set-disable-indexing-on-battery"><primary>tracker_config_set_disable_indexing_on_battery</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_disable_indexing_on_battery
+<indexterm zone="tracker-config-set-disable-indexing-on-battery"><primary sortas="tracker_config_set_disable_indexing_on_battery">tracker_config_set_disable_indexing_on_battery</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_disable_indexing_on_battery
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-disable-indexing-on-battery-init" role="function">
 <title>tracker_config_set_disable_indexing_on_battery_init ()</title>
-<indexterm zone="tracker-config-set-disable-indexing-on-battery-init"><primary>tracker_config_set_disable_indexing_on_battery_init</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_disable_indexing_on_battery_init
+<indexterm zone="tracker-config-set-disable-indexing-on-battery-init"><primary sortas="tracker_config_set_disable_indexing_on_battery_init">tracker_config_set_disable_indexing_on_battery_init</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_disable_indexing_on_battery_init
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-enable-content-indexing" role="function">
 <title>tracker_config_set_enable_content_indexing ()</title>
-<indexterm zone="tracker-config-set-enable-content-indexing"><primary>tracker_config_set_enable_content_indexing</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_content_indexing
+<indexterm zone="tracker-config-set-enable-content-indexing"><primary sortas="tracker_config_set_enable_content_indexing">tracker_config_set_enable_content_indexing</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_content_indexing
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-enable-indexing" role="function">
 <title>tracker_config_set_enable_indexing ()</title>
-<indexterm zone="tracker-config-set-enable-indexing"><primary>tracker_config_set_enable_indexing</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_indexing  (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-enable-indexing"><primary sortas="tracker_config_set_enable_indexing">tracker_config_set_enable_indexing</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_indexing  (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-enable-stemmer" role="function">
 <title>tracker_config_set_enable_stemmer ()</title>
-<indexterm zone="tracker-config-set-enable-stemmer"><primary>tracker_config_set_enable_stemmer</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_stemmer   (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-enable-stemmer"><primary sortas="tracker_config_set_enable_stemmer">tracker_config_set_enable_stemmer</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_stemmer   (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-enable-thumbnails" role="function">
 <title>tracker_config_set_enable_thumbnails ()</title>
-<indexterm zone="tracker-config-set-enable-thumbnails"><primary>tracker_config_set_enable_thumbnails</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_thumbnails
+<indexterm zone="tracker-config-set-enable-thumbnails"><primary sortas="tracker_config_set_enable_thumbnails">tracker_config_set_enable_thumbnails</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_thumbnails
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-enable-watches" role="function">
 <title>tracker_config_set_enable_watches ()</title>
-<indexterm zone="tracker-config-set-enable-watches"><primary>tracker_config_set_enable_watches</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_watches   (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-enable-watches"><primary sortas="tracker_config_set_enable_watches">tracker_config_set_enable_watches</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_enable_watches   (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-fast-merges" role="function">
 <title>tracker_config_set_fast_merges ()</title>
-<indexterm zone="tracker-config-set-fast-merges"><primary>tracker_config_set_fast_merges</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_fast_merges      (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-fast-merges"><primary sortas="tracker_config_set_fast_merges">tracker_config_set_fast_merges</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_fast_merges      (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-index-mounted-directories" role="function">
 <title>tracker_config_set_index_mounted_directories ()</title>
-<indexterm zone="tracker-config-set-index-mounted-directories"><primary>tracker_config_set_index_mounted_directories</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_index_mounted_directories
+<indexterm zone="tracker-config-set-index-mounted-directories"><primary sortas="tracker_config_set_index_mounted_directories">tracker_config_set_index_mounted_directories</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_index_mounted_directories
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-index-removable-devices" role="function">
 <title>tracker_config_set_index_removable_devices ()</title>
-<indexterm zone="tracker-config-set-index-removable-devices"><primary>tracker_config_set_index_removable_devices</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_index_removable_devices
+<indexterm zone="tracker-config-set-index-removable-devices"><primary sortas="tracker_config_set_index_removable_devices">tracker_config_set_index_removable_devices</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_index_removable_devices
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-initial-sleep" role="function">
 <title>tracker_config_set_initial_sleep ()</title>
-<indexterm zone="tracker-config-set-initial-sleep"><primary>tracker_config_set_initial_sleep</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_initial_sleep    (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-initial-sleep"><primary sortas="tracker_config_set_initial_sleep">tracker_config_set_initial_sleep</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_initial_sleep    (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-language" role="function">
 <title>tracker_config_set_language ()</title>
-<indexterm zone="tracker-config-set-language"><primary>tracker_config_set_language</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_language         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-language"><primary sortas="tracker_config_set_language">tracker_config_set_language</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_language         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          const <link linkend="gchar">gchar</link> *value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-low-disk-space-limit" role="function">
 <title>tracker_config_set_low_disk_space_limit ()</title>
-<indexterm zone="tracker-config-set-low-disk-space-limit"><primary>tracker_config_set_low_disk_space_limit</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_low_disk_space_limit
+<indexterm zone="tracker-config-set-low-disk-space-limit"><primary sortas="tracker_config_set_low_disk_space_limit">tracker_config_set_low_disk_space_limit</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_low_disk_space_limit
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-low-memory-mode" role="function">
 <title>tracker_config_set_low_memory_mode ()</title>
-<indexterm zone="tracker-config-set-low-memory-mode"><primary>tracker_config_set_low_memory_mode</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_low_memory_mode  (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-low-memory-mode"><primary sortas="tracker_config_set_low_memory_mode">tracker_config_set_low_memory_mode</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_low_memory_mode  (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-max-bucket-count" role="function">
 <title>tracker_config_set_max_bucket_count ()</title>
-<indexterm zone="tracker-config-set-max-bucket-count"><primary>tracker_config_set_max_bucket_count</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_max_bucket_count (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-max-bucket-count"><primary sortas="tracker_config_set_max_bucket_count">tracker_config_set_max_bucket_count</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_max_bucket_count (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-max-text-to-index" role="function">
 <title>tracker_config_set_max_text_to_index ()</title>
-<indexterm zone="tracker-config-set-max-text-to-index"><primary>tracker_config_set_max_text_to_index</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_max_text_to_index
+<indexterm zone="tracker-config-set-max-text-to-index"><primary sortas="tracker_config_set_max_text_to_index">tracker_config_set_max_text_to_index</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_max_text_to_index
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-max-word-length" role="function">
 <title>tracker_config_set_max_word_length ()</title>
-<indexterm zone="tracker-config-set-max-word-length"><primary>tracker_config_set_max_word_length</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_max_word_length  (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-max-word-length"><primary sortas="tracker_config_set_max_word_length">tracker_config_set_max_word_length</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_max_word_length  (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-max-words-to-index" role="function">
 <title>tracker_config_set_max_words_to_index ()</title>
-<indexterm zone="tracker-config-set-max-words-to-index"><primary>tracker_config_set_max_words_to_index</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_max_words_to_index
+<indexterm zone="tracker-config-set-max-words-to-index"><primary sortas="tracker_config_set_max_words_to_index">tracker_config_set_max_words_to_index</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_max_words_to_index
                                                         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-min-bucket-count" role="function">
 <title>tracker_config_set_min_bucket_count ()</title>
-<indexterm zone="tracker-config-set-min-bucket-count"><primary>tracker_config_set_min_bucket_count</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_min_bucket_count (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-min-bucket-count"><primary sortas="tracker_config_set_min_bucket_count">tracker_config_set_min_bucket_count</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_min_bucket_count (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-min-word-length" role="function">
 <title>tracker_config_set_min_word_length ()</title>
-<indexterm zone="tracker-config-set-min-word-length"><primary>tracker_config_set_min_word_length</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_min_word_length  (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-min-word-length"><primary sortas="tracker_config_set_min_word_length">tracker_config_set_min_word_length</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_min_word_length  (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-nfs-locking" role="function">
 <title>tracker_config_set_nfs_locking ()</title>
-<indexterm zone="tracker-config-set-nfs-locking"><primary>tracker_config_set_nfs_locking</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_nfs_locking      (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-nfs-locking"><primary sortas="tracker_config_set_nfs_locking">tracker_config_set_nfs_locking</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_nfs_locking      (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-throttle" role="function">
 <title>tracker_config_set_throttle ()</title>
-<indexterm zone="tracker-config-set-throttle"><primary>tracker_config_set_throttle</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_throttle         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-throttle"><primary sortas="tracker_config_set_throttle">tracker_config_set_throttle</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_throttle         (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-config-set-verbosity" role="function">
 <title>tracker_config_set_verbosity ()</title>
-<indexterm zone="tracker-config-set-verbosity"><primary>tracker_config_set_verbosity</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_verbosity        (<link linkend="TrackerConfig">TrackerConfig</link> *config,
+<indexterm zone="tracker-config-set-verbosity"><primary sortas="tracker_config_set_verbosity">tracker_config_set_verbosity</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_config_set_verbosity        (<link linkend="TrackerConfig">TrackerConfig</link> *config,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
 <refsect1 id="libtracker-common-Config.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2 id="TrackerConfig--crawl-directory-roots"><title>The <literal>&quot;crawl-directory-roots&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--crawl-directory-roots"><primary>TrackerConfig:crawl-directory-roots</primary></indexterm><programlisting>  &quot;crawl-directory-roots&quot;    <link linkend="gpointer">gpointer</link>              : Read</programlisting>
+<refsect2 id="TrackerConfig--crawl-directory-roots" role="property"><title>The <literal>&quot;crawl-directory-roots&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--crawl-directory-roots"><primary sortas="TrackerConfig:crawl-directory-roots">TrackerConfig:crawl-directory-roots</primary></indexterm><programlisting>  &quot;crawl-directory-roots&quot;    <link linkend="gpointer">gpointer</link>              : Read</programlisting>
 <para>This is a GSList of directory roots to index but NOT watch.</para></refsect2>
-<refsect2 id="TrackerConfig--disable-indexing-on-battery"><title>The <literal>&quot;disable-indexing-on-battery&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--disable-indexing-on-battery"><primary>TrackerConfig:disable-indexing-on-battery</primary></indexterm><programlisting>  &quot;disable-indexing-on-battery&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--disable-indexing-on-battery" role="property"><title>The <literal>&quot;disable-indexing-on-battery&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--disable-indexing-on-battery"><primary sortas="TrackerConfig:disable-indexing-on-battery">TrackerConfig:disable-indexing-on-battery</primary></indexterm><programlisting>  &quot;disable-indexing-on-battery&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>Don't index when using AC battery.</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--disable-indexing-on-battery-init"><title>The <literal>&quot;disable-indexing-on-battery-init&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--disable-indexing-on-battery-init"><primary>TrackerConfig:disable-indexing-on-battery-init</primary></indexterm><programlisting>  &quot;disable-indexing-on-battery-init&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--disable-indexing-on-battery-init" role="property"><title>The <literal>&quot;disable-indexing-on-battery-init&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--disable-indexing-on-battery-init"><primary sortas="TrackerConfig:disable-indexing-on-battery-init">TrackerConfig:disable-indexing-on-battery-init</primary></indexterm><programlisting>  &quot;disable-indexing-on-battery-init&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>Don't index when using AC battery initially.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--disabled-modules"><title>The <literal>&quot;disabled-modules&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--disabled-modules"><primary>TrackerConfig:disabled-modules</primary></indexterm><programlisting>  &quot;disabled-modules&quot;         <link linkend="gpointer">gpointer</link>              : Read</programlisting>
+<refsect2 id="TrackerConfig--disabled-modules" role="property"><title>The <literal>&quot;disabled-modules&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--disabled-modules"><primary sortas="TrackerConfig:disabled-modules">TrackerConfig:disabled-modules</primary></indexterm><programlisting>  &quot;disabled-modules&quot;         <link linkend="gpointer">gpointer</link>              : Read</programlisting>
 <para>Modules to disable, like 'files', etc.</para></refsect2>
-<refsect2 id="TrackerConfig--enable-content-indexing"><title>The <literal>&quot;enable-content-indexing&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--enable-content-indexing"><primary>TrackerConfig:enable-content-indexing</primary></indexterm><programlisting>  &quot;enable-content-indexing&quot;  <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--enable-content-indexing" role="property"><title>The <literal>&quot;enable-content-indexing&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--enable-content-indexing"><primary sortas="TrackerConfig:enable-content-indexing">TrackerConfig:enable-content-indexing</primary></indexterm><programlisting>  &quot;enable-content-indexing&quot;  <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>Content specific indexing (i.e. file content).</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--enable-indexing"><title>The <literal>&quot;enable-indexing&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--enable-indexing"><primary>TrackerConfig:enable-indexing</primary></indexterm><programlisting>  &quot;enable-indexing&quot;          <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--enable-indexing" role="property"><title>The <literal>&quot;enable-indexing&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--enable-indexing"><primary sortas="TrackerConfig:enable-indexing">TrackerConfig:enable-indexing</primary></indexterm><programlisting>  &quot;enable-indexing&quot;          <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>All indexing.</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--enable-stemmer"><title>The <literal>&quot;enable-stemmer&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--enable-stemmer"><primary>TrackerConfig:enable-stemmer</primary></indexterm><programlisting>  &quot;enable-stemmer&quot;           <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--enable-stemmer" role="property"><title>The <literal>&quot;enable-stemmer&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--enable-stemmer"><primary sortas="TrackerConfig:enable-stemmer">TrackerConfig:enable-stemmer</primary></indexterm><programlisting>  &quot;enable-stemmer&quot;           <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>Language specific stemmer.</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--enable-thumbnails"><title>The <literal>&quot;enable-thumbnails&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--enable-thumbnails"><primary>TrackerConfig:enable-thumbnails</primary></indexterm><programlisting>  &quot;enable-thumbnails&quot;        <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--enable-thumbnails" role="property"><title>The <literal>&quot;enable-thumbnails&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--enable-thumbnails"><primary sortas="TrackerConfig:enable-thumbnails">TrackerConfig:enable-thumbnails</primary></indexterm><programlisting>  &quot;enable-thumbnails&quot;        <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>Create thumbnails from image based files.</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--enable-watches"><title>The <literal>&quot;enable-watches&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--enable-watches"><primary>TrackerConfig:enable-watches</primary></indexterm><programlisting>  &quot;enable-watches&quot;           <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--enable-watches" role="property"><title>The <literal>&quot;enable-watches&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--enable-watches"><primary sortas="TrackerConfig:enable-watches">TrackerConfig:enable-watches</primary></indexterm><programlisting>  &quot;enable-watches&quot;           <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>You can disable all watches by setting this FALSE.</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--fast-merges"><title>The <literal>&quot;fast-merges&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--fast-merges"><primary>TrackerConfig:fast-merges</primary></indexterm><programlisting>  &quot;fast-merges&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--fast-merges" role="property"><title>The <literal>&quot;fast-merges&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--fast-merges"><primary sortas="TrackerConfig:fast-merges">TrackerConfig:fast-merges</primary></indexterm><programlisting>  &quot;fast-merges&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>Spends more disk usage if TRUE.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--index-mounted-directories"><title>The <literal>&quot;index-mounted-directories&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--index-mounted-directories"><primary>TrackerConfig:index-mounted-directories</primary></indexterm><programlisting>  &quot;index-mounted-directories&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--index-mounted-directories" role="property"><title>The <literal>&quot;index-mounted-directories&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--index-mounted-directories"><primary sortas="TrackerConfig:index-mounted-directories">TrackerConfig:index-mounted-directories</primary></indexterm><programlisting>  &quot;index-mounted-directories&quot; <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>Don't traverse mounted directories which are not on the same file system.</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--index-removable-devices"><title>The <literal>&quot;index-removable-devices&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--index-removable-devices"><primary>TrackerConfig:index-removable-devices</primary></indexterm><programlisting>  &quot;index-removable-devices&quot;  <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--index-removable-devices" role="property"><title>The <literal>&quot;index-removable-devices&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--index-removable-devices"><primary sortas="TrackerConfig:index-removable-devices">TrackerConfig:index-removable-devices</primary></indexterm><programlisting>  &quot;index-removable-devices&quot;  <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>Don't traverse mounted directories which are for removable devices.</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--initial-sleep"><title>The <literal>&quot;initial-sleep&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--initial-sleep"><primary>TrackerConfig:initial-sleep</primary></indexterm><programlisting>  &quot;initial-sleep&quot;            <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--initial-sleep" role="property"><title>The <literal>&quot;initial-sleep&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--initial-sleep"><primary sortas="TrackerConfig:initial-sleep">TrackerConfig:initial-sleep</primary></indexterm><programlisting>  &quot;initial-sleep&quot;            <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>Initial sleep time in seconds (0-&gt;1000).</para><para>Allowed values: [0,1000]</para>
 <para>Default value: 45</para>
 </refsect2>
-<refsect2 id="TrackerConfig--language"><title>The <literal>&quot;language&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--language"><primary>TrackerConfig:language</primary></indexterm><programlisting>  &quot;language&quot;                 <link linkend="gchar">gchar</link>*                : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--language" role="property"><title>The <literal>&quot;language&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--language"><primary sortas="TrackerConfig:language">TrackerConfig:language</primary></indexterm><programlisting>  &quot;language&quot;                 <link linkend="gchar">gchar</link>*                : Read / Write / Construct</programlisting>
 <para>Language to use with stemming ('en', 'fr', 'sv', etc).</para><para>Default value: "en"</para>
 </refsect2>
-<refsect2 id="TrackerConfig--low-disk-space-limit"><title>The <literal>&quot;low-disk-space-limit&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--low-disk-space-limit"><primary>TrackerConfig:low-disk-space-limit</primary></indexterm><programlisting>  &quot;low-disk-space-limit&quot;     <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--low-disk-space-limit" role="property"><title>The <literal>&quot;low-disk-space-limit&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--low-disk-space-limit"><primary sortas="TrackerConfig:low-disk-space-limit">TrackerConfig:low-disk-space-limit</primary></indexterm><programlisting>  &quot;low-disk-space-limit&quot;     <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>Pause the indexer when the disk space is below this percentage (-1=off, 0-&gt;100).</para><para>Allowed values: [G_MAXULONG,100]</para>
 <para>Default value: 1</para>
 </refsect2>
-<refsect2 id="TrackerConfig--low-memory-mode"><title>The <literal>&quot;low-memory-mode&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--low-memory-mode"><primary>TrackerConfig:low-memory-mode</primary></indexterm><programlisting>  &quot;low-memory-mode&quot;          <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--low-memory-mode" role="property"><title>The <literal>&quot;low-memory-mode&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--low-memory-mode"><primary sortas="TrackerConfig:low-memory-mode">TrackerConfig:low-memory-mode</primary></indexterm><programlisting>  &quot;low-memory-mode&quot;          <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>Use extra memory at the expense of indexing speed.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--max-bucket-count"><title>The <literal>&quot;max-bucket-count&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--max-bucket-count"><primary>TrackerConfig:max-bucket-count</primary></indexterm><programlisting>  &quot;max-bucket-count&quot;         <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--max-bucket-count" role="property"><title>The <literal>&quot;max-bucket-count&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--max-bucket-count"><primary sortas="TrackerConfig:max-bucket-count">TrackerConfig:max-bucket-count</primary></indexterm><programlisting>  &quot;max-bucket-count&quot;         <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>Maximum bucket count (1000-&gt;524288).</para><para>Allowed values: &gt;= 1000</para>
 <para>Default value: 524288</para>
 </refsect2>
-<refsect2 id="TrackerConfig--max-text-to-index"><title>The <literal>&quot;max-text-to-index&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--max-text-to-index"><primary>TrackerConfig:max-text-to-index</primary></indexterm><programlisting>  &quot;max-text-to-index&quot;        <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--max-text-to-index" role="property"><title>The <literal>&quot;max-text-to-index&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--max-text-to-index"><primary sortas="TrackerConfig:max-text-to-index">TrackerConfig:max-text-to-index</primary></indexterm><programlisting>  &quot;max-text-to-index&quot;        <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>Maximum text in bytes to index from file's content.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 1048576</para>
 </refsect2>
-<refsect2 id="TrackerConfig--max-word-length"><title>The <literal>&quot;max-word-length&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--max-word-length"><primary>TrackerConfig:max-word-length</primary></indexterm><programlisting>  &quot;max-word-length&quot;          <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--max-word-length" role="property"><title>The <literal>&quot;max-word-length&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--max-word-length"><primary sortas="TrackerConfig:max-word-length">TrackerConfig:max-word-length</primary></indexterm><programlisting>  &quot;max-word-length&quot;          <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>Maximum word length used to index.</para><para>Allowed values: [0,200]</para>
 <para>Default value: 30</para>
 </refsect2>
-<refsect2 id="TrackerConfig--max-words-to-index"><title>The <literal>&quot;max-words-to-index&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--max-words-to-index"><primary>TrackerConfig:max-words-to-index</primary></indexterm><programlisting>  &quot;max-words-to-index&quot;       <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--max-words-to-index" role="property"><title>The <literal>&quot;max-words-to-index&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--max-words-to-index"><primary sortas="TrackerConfig:max-words-to-index">TrackerConfig:max-words-to-index</primary></indexterm><programlisting>  &quot;max-words-to-index&quot;       <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>Maximum unique words to index from file's content.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 10000</para>
 </refsect2>
-<refsect2 id="TrackerConfig--min-bucket-count"><title>The <literal>&quot;min-bucket-count&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--min-bucket-count"><primary>TrackerConfig:min-bucket-count</primary></indexterm><programlisting>  &quot;min-bucket-count&quot;         <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--min-bucket-count" role="property"><title>The <literal>&quot;min-bucket-count&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--min-bucket-count"><primary sortas="TrackerConfig:min-bucket-count">TrackerConfig:min-bucket-count</primary></indexterm><programlisting>  &quot;min-bucket-count&quot;         <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>Minimum bucket count (1000-&gt;65536).</para><para>Allowed values: &gt;= 1000</para>
 <para>Default value: 65536</para>
 </refsect2>
-<refsect2 id="TrackerConfig--min-word-length"><title>The <literal>&quot;min-word-length&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--min-word-length"><primary>TrackerConfig:min-word-length</primary></indexterm><programlisting>  &quot;min-word-length&quot;          <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--min-word-length" role="property"><title>The <literal>&quot;min-word-length&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--min-word-length"><primary sortas="TrackerConfig:min-word-length">TrackerConfig:min-word-length</primary></indexterm><programlisting>  &quot;min-word-length&quot;          <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>Minimum word length used to index (0-&gt;30).</para><para>Allowed values: [0,30]</para>
 <para>Default value: 3</para>
 </refsect2>
-<refsect2 id="TrackerConfig--nfs-locking"><title>The <literal>&quot;nfs-locking&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--nfs-locking"><primary>TrackerConfig:nfs-locking</primary></indexterm><programlisting>  &quot;nfs-locking&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--nfs-locking" role="property"><title>The <literal>&quot;nfs-locking&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--nfs-locking"><primary sortas="TrackerConfig:nfs-locking">TrackerConfig:nfs-locking</primary></indexterm><programlisting>  &quot;nfs-locking&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para>In NFS filesystems is not safe to have the lock file in the home directory.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerConfig--no-index-file-types"><title>The <literal>&quot;no-index-file-types&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--no-index-file-types"><primary>TrackerConfig:no-index-file-types</primary></indexterm><programlisting>  &quot;no-index-file-types&quot;      <link linkend="gpointer">gpointer</link>              : Read</programlisting>
+<refsect2 id="TrackerConfig--no-index-file-types" role="property"><title>The <literal>&quot;no-index-file-types&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--no-index-file-types"><primary sortas="TrackerConfig:no-index-file-types">TrackerConfig:no-index-file-types</primary></indexterm><programlisting>  &quot;no-index-file-types&quot;      <link linkend="gpointer">gpointer</link>              : Read</programlisting>
 <para>This is a GSList of file types to NOT index.</para></refsect2>
-<refsect2 id="TrackerConfig--no-watch-directory-roots"><title>The <literal>&quot;no-watch-directory-roots&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--no-watch-directory-roots"><primary>TrackerConfig:no-watch-directory-roots</primary></indexterm><programlisting>  &quot;no-watch-directory-roots&quot; <link linkend="gpointer">gpointer</link>              : Read</programlisting>
+<refsect2 id="TrackerConfig--no-watch-directory-roots" role="property"><title>The <literal>&quot;no-watch-directory-roots&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--no-watch-directory-roots"><primary sortas="TrackerConfig:no-watch-directory-roots">TrackerConfig:no-watch-directory-roots</primary></indexterm><programlisting>  &quot;no-watch-directory-roots&quot; <link linkend="gpointer">gpointer</link>              : Read</programlisting>
 <para>This is a GSList of directory roots to NOT index and NOT watch.</para></refsect2>
-<refsect2 id="TrackerConfig--throttle"><title>The <literal>&quot;throttle&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--throttle"><primary>TrackerConfig:throttle</primary></indexterm><programlisting>  &quot;throttle&quot;                 <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--throttle" role="property"><title>The <literal>&quot;throttle&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--throttle"><primary sortas="TrackerConfig:throttle">TrackerConfig:throttle</primary></indexterm><programlisting>  &quot;throttle&quot;                 <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>Throttle indexing, higher value is slower (0-&gt;20).</para><para>Allowed values: [0,20]</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2 id="TrackerConfig--verbosity"><title>The <literal>&quot;verbosity&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--verbosity"><primary>TrackerConfig:verbosity</primary></indexterm><programlisting>  &quot;verbosity&quot;                <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<refsect2 id="TrackerConfig--verbosity" role="property"><title>The <literal>&quot;verbosity&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--verbosity"><primary sortas="TrackerConfig:verbosity">TrackerConfig:verbosity</primary></indexterm><programlisting>  &quot;verbosity&quot;                <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>How much logging we have (0=errors, 1=minimal, 2=detailed, 3=debug).</para><para>Allowed values: [0,3]</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2 id="TrackerConfig--watch-directory-roots"><title>The <literal>&quot;watch-directory-roots&quot;</literal> property</title>
-<indexterm zone="TrackerConfig--watch-directory-roots"><primary>TrackerConfig:watch-directory-roots</primary></indexterm><programlisting>  &quot;watch-directory-roots&quot;    <link linkend="gpointer">gpointer</link>              : Read</programlisting>
+<refsect2 id="TrackerConfig--watch-directory-roots" role="property"><title>The <literal>&quot;watch-directory-roots&quot;</literal> property</title>
+<indexterm zone="TrackerConfig--watch-directory-roots"><primary sortas="TrackerConfig:watch-directory-roots">TrackerConfig:watch-directory-roots</primary></indexterm><programlisting>  &quot;watch-directory-roots&quot;    <link linkend="gpointer">gpointer</link>              : Read</programlisting>
 <para>This is a GSList of directory roots to index and watch.</para></refsect2>
-
 </refsect1>
 
 

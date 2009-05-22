@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
-<book xmlns="http://www.devhelp.net/book" title="Tracker Indexer Reference Manual" link="index.html" author="" name="libtracker-module" version="2">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Indexer Reference Manual" link="index.html" author="" name="libtracker-module" version="2" language="c">
   <chapters>
     <sub name="Overview" link="tracker-indexer.html"/>
     <sub name="Modules" link="ch01.html">
@@ -35,8 +35,8 @@
     <keyword type="function" name="tracker_module_file_get_uri ()" link="libtracker-module-Module-files.html#tracker-module-file-get-uri"/>
     <keyword type="function" name="tracker_module_file_get_text ()" link="libtracker-module-Module-files.html#tracker-module-file-get-text"/>
     <keyword type="function" name="tracker_module_file_get_metadata ()" link="libtracker-module-Module-files.html#tracker-module-file-get-metadata"/>
-    <keyword type="" name="The &quot;cancelled&quot; property" link="libtracker-module-Module-files.html#TrackerModuleFile--cancelled"/>
-    <keyword type="" name="The &quot;file&quot; property" link="libtracker-module-Module-files.html#TrackerModuleFile--file"/>
+    <keyword type="property" name="The &quot;cancelled&quot; property" link="libtracker-module-Module-files.html#TrackerModuleFile--cancelled"/>
+    <keyword type="property" name="The &quot;file&quot; property" link="libtracker-module-Module-files.html#TrackerModuleFile--file"/>
     <keyword type="typedef" name="TrackerModuleIteratable" link="libtracker-module-Iteratable-files.html#TrackerModuleIteratable"/>
     <keyword type="function" name="tracker_module_iteratable_iter_contents ()" link="libtracker-module-Iteratable-files.html#tracker-module-iteratable-iter-contents"/>
     <keyword type="function" name="tracker_module_iteratable_get_count ()" link="libtracker-module-Iteratable-files.html#tracker-module-iteratable-get-count"/>

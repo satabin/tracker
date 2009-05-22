@@ -8,7 +8,6 @@
 <refnamediv>
 <refname>Type Conversions</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libtracker-common-Type-Conversions.synopsis" role="synopsis">
@@ -18,25 +17,25 @@
 
 #include &lt;libtracker-common/tracker-type-utils.h&gt;
 
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-gint32-to-string">tracker_gint32_to_string</link>            (<link linkend="gint32">gint32</link> i);
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-gint-to-string">tracker_gint_to_string</link>              (<link linkend="gint">gint</link> i);
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-glong-to-string">tracker_glong_to_string</link>             (<link linkend="glong">glong</link> i);
-<link linkend="GSList">GSList</link>*             <link linkend="tracker-gslist-copy-with-string-data">tracker_gslist_copy_with_string_data</link>
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-gint32-to-string">tracker_gint32_to_string</link>            (<link linkend="gint32">gint32</link> i);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-gint-to-string">tracker_gint_to_string</link>              (<link linkend="gint">gint</link> i);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-glong-to-string">tracker_glong_to_string</link>             (<link linkend="glong">glong</link> i);
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-gslist-copy-with-string-data">tracker_gslist_copy_with_string_data</link>
                                                         (<link linkend="GSList">GSList</link> *list);
-<link linkend="gchar">gchar</link>**             <link linkend="tracker-gslist-to-string-list">tracker_gslist_to_string_list</link>       (<link linkend="GSList">GSList</link> *list);
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-guint32-to-string">tracker_guint32_to_string</link>           (<link linkend="guint32">guint32</link> i);
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-guint-to-string">tracker_guint_to_string</link>             (<link linkend="guint">guint</link> i);
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-string-boolean-to-string-gint">tracker_string_boolean_to_string_gint</link>
+<link linkend="gchar">gchar</link> **            <link linkend="tracker-gslist-to-string-list">tracker_gslist_to_string_list</link>       (<link linkend="GSList">GSList</link> *list);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-guint32-to-string">tracker_guint32_to_string</link>           (<link linkend="guint32">guint32</link> i);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-guint-to-string">tracker_guint_to_string</link>             (<link linkend="guint">guint</link> i);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-string-boolean-to-string-gint">tracker_string_boolean_to_string_gint</link>
                                                         (const <link linkend="gchar">gchar</link> *value);
 <link linkend="gint">gint</link>                <link linkend="tracker-string-in-string-list">tracker_string_in_string_list</link>       (const <link linkend="gchar">gchar</link> *str,
                                                          <link linkend="gchar">gchar</link> **strv);
-<link linkend="GSList">GSList</link>*             <link linkend="tracker-string-list-to-gslist">tracker_string_list_to_gslist</link>       (<link linkend="gchar">gchar</link> **strv,
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-string-list-to-gslist">tracker_string_list_to_gslist</link>       (<link linkend="gchar">gchar</link> **strv,
                                                          <link linkend="gsize">gsize</link> length);
-<link linkend="gchar">gchar</link>*              <link linkend="tracker-string-list-to-string">tracker_string_list_to_string</link>       (<link linkend="gchar">gchar</link> **strv,
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-string-list-to-string">tracker_string_list_to_string</link>       (<link linkend="gchar">gchar</link> **strv,
                                                          <link linkend="gsize">gsize</link> length,
                                                          <link linkend="gchar">gchar</link> sep);
 <link linkend="time-t">time_t</link>              <link linkend="tracker-string-to-date">tracker_string_to_date</link>              (const <link linkend="gchar">gchar</link> *date_string);
-<link linkend="gchar">gchar</link>**             <link linkend="tracker-string-to-string-list">tracker_string_to_string_list</link>       (const <link linkend="gchar">gchar</link> *str);
+<link linkend="gchar">gchar</link> **            <link linkend="tracker-string-to-string-list">tracker_string_to_string_list</link>       (const <link linkend="gchar">gchar</link> *str);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-string-to-uint">tracker_string_to_uint</link>              (const <link linkend="gchar">gchar</link> *s,
                                                          <link linkend="guint">guint</link> *ret);
 </synopsis>
@@ -52,231 +51,74 @@
 
 <refsect1 id="libtracker-common-Type-Conversions.description" role="desc">
 <title role="desc.title">Description</title>
-<para>
 
-</para>
 </refsect1>
 
 <refsect1 id="libtracker-common-Type-Conversions.details" role="details">
 <title role="details.title">Details</title>
 <refsect2 id="tracker-gint32-to-string" role="function">
 <title>tracker_gint32_to_string ()</title>
-<indexterm zone="tracker-gint32-to-string"><primary>tracker_gint32_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_gint32_to_string            (<link linkend="gint32">gint32</link> i);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>i</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<indexterm zone="tracker-gint32-to-string"><primary sortas="tracker_gint32_to_string">tracker_gint32_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_gint32_to_string            (<link linkend="gint32">gint32</link> i);</programlisting>
+</refsect2>
 <refsect2 id="tracker-gint-to-string" role="function">
 <title>tracker_gint_to_string ()</title>
-<indexterm zone="tracker-gint-to-string"><primary>tracker_gint_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_gint_to_string              (<link linkend="gint">gint</link> i);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>i</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<indexterm zone="tracker-gint-to-string"><primary sortas="tracker_gint_to_string">tracker_gint_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_gint_to_string              (<link linkend="gint">gint</link> i);</programlisting>
+</refsect2>
 <refsect2 id="tracker-glong-to-string" role="function">
 <title>tracker_glong_to_string ()</title>
-<indexterm zone="tracker-glong-to-string"><primary>tracker_glong_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_glong_to_string             (<link linkend="glong">glong</link> i);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>i</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<indexterm zone="tracker-glong-to-string"><primary sortas="tracker_glong_to_string">tracker_glong_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_glong_to_string             (<link linkend="glong">glong</link> i);</programlisting>
+</refsect2>
 <refsect2 id="tracker-gslist-copy-with-string-data" role="function">
 <title>tracker_gslist_copy_with_string_data ()</title>
-<indexterm zone="tracker-gslist-copy-with-string-data"><primary>tracker_gslist_copy_with_string_data</primary></indexterm><programlisting><link linkend="GSList">GSList</link>*             tracker_gslist_copy_with_string_data
+<indexterm zone="tracker-gslist-copy-with-string-data"><primary sortas="tracker_gslist_copy_with_string_data">tracker_gslist_copy_with_string_data</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_gslist_copy_with_string_data
                                                         (<link linkend="GSList">GSList</link> *list);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</refsect2>
 <refsect2 id="tracker-gslist-to-string-list" role="function">
 <title>tracker_gslist_to_string_list ()</title>
-<indexterm zone="tracker-gslist-to-string-list"><primary>tracker_gslist_to_string_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**             tracker_gslist_to_string_list       (<link linkend="GSList">GSList</link> *list);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<indexterm zone="tracker-gslist-to-string-list"><primary sortas="tracker_gslist_to_string_list">tracker_gslist_to_string_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link> **            tracker_gslist_to_string_list       (<link linkend="GSList">GSList</link> *list);</programlisting>
+</refsect2>
 <refsect2 id="tracker-guint32-to-string" role="function">
 <title>tracker_guint32_to_string ()</title>
-<indexterm zone="tracker-guint32-to-string"><primary>tracker_guint32_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_guint32_to_string           (<link linkend="guint32">guint32</link> i);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>i</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<indexterm zone="tracker-guint32-to-string"><primary sortas="tracker_guint32_to_string">tracker_guint32_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_guint32_to_string           (<link linkend="guint32">guint32</link> i);</programlisting>
+</refsect2>
 <refsect2 id="tracker-guint-to-string" role="function">
 <title>tracker_guint_to_string ()</title>
-<indexterm zone="tracker-guint-to-string"><primary>tracker_guint_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_guint_to_string             (<link linkend="guint">guint</link> i);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>i</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<indexterm zone="tracker-guint-to-string"><primary sortas="tracker_guint_to_string">tracker_guint_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_guint_to_string             (<link linkend="guint">guint</link> i);</programlisting>
+</refsect2>
 <refsect2 id="tracker-string-boolean-to-string-gint" role="function">
 <title>tracker_string_boolean_to_string_gint ()</title>
-<indexterm zone="tracker-string-boolean-to-string-gint"><primary>tracker_string_boolean_to_string_gint</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_string_boolean_to_string_gint
+<indexterm zone="tracker-string-boolean-to-string-gint"><primary sortas="tracker_string_boolean_to_string_gint">tracker_string_boolean_to_string_gint</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_string_boolean_to_string_gint
                                                         (const <link linkend="gchar">gchar</link> *value);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</refsect2>
 <refsect2 id="tracker-string-in-string-list" role="function">
 <title>tracker_string_in_string_list ()</title>
-<indexterm zone="tracker-string-in-string-list"><primary>tracker_string_in_string_list</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_string_in_string_list       (const <link linkend="gchar">gchar</link> *str,
+<indexterm zone="tracker-string-in-string-list"><primary sortas="tracker_string_in_string_list">tracker_string_in_string_list</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_string_in_string_list       (const <link linkend="gchar">gchar</link> *str,
                                                          <link linkend="gchar">gchar</link> **strv);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>str</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>strv</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</refsect2>
 <refsect2 id="tracker-string-list-to-gslist" role="function">
 <title>tracker_string_list_to_gslist ()</title>
-<indexterm zone="tracker-string-list-to-gslist"><primary>tracker_string_list_to_gslist</primary></indexterm><programlisting><link linkend="GSList">GSList</link>*             tracker_string_list_to_gslist       (<link linkend="gchar">gchar</link> **strv,
+<indexterm zone="tracker-string-list-to-gslist"><primary sortas="tracker_string_list_to_gslist">tracker_string_list_to_gslist</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_string_list_to_gslist       (<link linkend="gchar">gchar</link> **strv,
                                                          <link linkend="gsize">gsize</link> length);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>strv</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>length</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</refsect2>
 <refsect2 id="tracker-string-list-to-string" role="function">
 <title>tracker_string_list_to_string ()</title>
-<indexterm zone="tracker-string-list-to-string"><primary>tracker_string_list_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              tracker_string_list_to_string       (<link linkend="gchar">gchar</link> **strv,
+<indexterm zone="tracker-string-list-to-string"><primary sortas="tracker_string_list_to_string">tracker_string_list_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_string_list_to_string       (<link linkend="gchar">gchar</link> **strv,
                                                          <link linkend="gsize">gsize</link> length,
                                                          <link linkend="gchar">gchar</link> sep);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>strv</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>length</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>sep</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</refsect2>
 <refsect2 id="tracker-string-to-date" role="function">
 <title>tracker_string_to_date ()</title>
-<indexterm zone="tracker-string-to-date"><primary>tracker_string_to_date</primary></indexterm><programlisting><link linkend="time-t">time_t</link>              tracker_string_to_date              (const <link linkend="gchar">gchar</link> *date_string);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>date_string</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<indexterm zone="tracker-string-to-date"><primary sortas="tracker_string_to_date">tracker_string_to_date</primary></indexterm><programlisting><link linkend="time-t">time_t</link>              tracker_string_to_date              (const <link linkend="gchar">gchar</link> *date_string);</programlisting>
+</refsect2>
 <refsect2 id="tracker-string-to-string-list" role="function">
 <title>tracker_string_to_string_list ()</title>
-<indexterm zone="tracker-string-to-string-list"><primary>tracker_string_to_string_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**             tracker_string_to_string_list       (const <link linkend="gchar">gchar</link> *str);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>str</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+<indexterm zone="tracker-string-to-string-list"><primary sortas="tracker_string_to_string_list">tracker_string_to_string_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link> **            tracker_string_to_string_list       (const <link linkend="gchar">gchar</link> *str);</programlisting>
+</refsect2>
 <refsect2 id="tracker-string-to-uint" role="function">
 <title>tracker_string_to_uint ()</title>
-<indexterm zone="tracker-string-to-uint"><primary>tracker_string_to_uint</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_string_to_uint              (const <link linkend="gchar">gchar</link> *s,
+<indexterm zone="tracker-string-to-uint"><primary sortas="tracker_string_to_uint">tracker_string_to_uint</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_string_to_uint              (const <link linkend="gchar">gchar</link> *s,
                                                          <link linkend="guint">guint</link> *ret);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>s</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ret</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</refsect2>
 
 </refsect1>
 

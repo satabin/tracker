@@ -609,10 +609,14 @@ db_get_metadata (TrackerService *service,
 
 		while (valid) {
 			tracker_db_result_set_get (result_set, 0, &str, -1);
-			result = g_string_append (result, str);
-			result = g_string_append (result, " ");
+
+			if (str) {
+				result = g_string_append (result, str);
+				result = g_string_append (result, " ");
+				g_free (str);
+			}
+
 			valid = tracker_db_result_set_iter_next (result_set);
-			g_free (str);
 		}
 
 		g_object_unref (result_set);
@@ -661,6 +665,22 @@ tracker_data_query_metadata_field_values (TrackerService *service_def,
 								 NULL,
 								 query,
 								 NULL);
+
+		/* NOTE: This is defined in data/db/sqlite-service.sql
+		 * and we are hard coding this here to avoid crashes
+		 * later down in this code where we expect ints to be
+		 * strings. 
+		 *
+		 * Yes, I know this is crack, but we are trying to get
+		 * something stable right now, it will all be fixed in
+		 * the next release! :P -mr
+		 */
+		if (metadata_key == 6 ||
+		    metadata_key == 7 ||
+		    metadata_key == 8) {
+			is_numeric = TRUE;
+		}
+
 		g_free (query);
 	} else {
 		gchar *id_str;

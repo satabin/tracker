@@ -8,7 +8,7 @@
 <link rel="up" href="ch03.html" title="Configuration">
 <link rel="prev" href="libtracker-common-HAL.html" title="HAL">
 <link rel="next" href="libtracker-common-Module-Config.html" title="Module Config">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libtracker-common.html" title="Part I. Overview">
 <link rel="chapter" href="ch01.html" title="Utilities">
@@ -26,13 +26,15 @@
 <th width="100%" align="center">Tracker Common Library Reference Manual</th>
 <td><a accesskey="n" href="libtracker-common-Module-Config.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libtracker-common-Language.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libtracker-common-Language.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#libtracker-common-Language.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#libtracker-common-Language.properties" class="shortcut">Properties</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libtracker-common-Language.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libtracker-common-Language.description" class="shortcut">Description</a>
+                 | 
+                <a href="#libtracker-common-Language.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                 | 
+                <a href="#libtracker-common-Language.properties" class="shortcut">Properties</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libtracker-common-Language"></a><div class="titlepage"></div>
@@ -50,29 +52,29 @@
 #include &lt;libtracker-common/tracker-language.h&gt;
 
                     <a class="link" href="libtracker-common-Language.html#TrackerLanguage-struct" title="TrackerLanguage">TrackerLanguage</a>;
-<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a>*    <a class="link" href="libtracker-common-Language.html#tracker-language-new" title="tracker_language_new ()">tracker_language_new</a>                (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *language);
+<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *   <a class="link" href="libtracker-common-Language.html#tracker-language-new" title="tracker_language_new ()">tracker_language_new</a>                (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *language);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libtracker-common-Language.html#tracker-language-check-exists" title="tracker_language_check_exists ()">tracker_language_check_exists</a>       (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *language_code);
-<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a>*      <a class="link" href="libtracker-common-Language.html#tracker-language-get-config" title="tracker_language_get_config ()">tracker_language_get_config</a>         (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language);
+<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *     <a class="link" href="libtracker-common-Language.html#tracker-language-get-config" title="tracker_language_get_config ()">tracker_language_get_config</a>         (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libtracker-common-Language.html#tracker-language-get-default-code" title="tracker_language_get_default_code ()">tracker_language_get_default_code</a>   (void);
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *             <a class="link" href="libtracker-common-Language.html#tracker-language-get-default-code" title="tracker_language_get_default_code ()">tracker_language_get_default_code</a>   (void);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
->GHashTable</a>*         <a class="link" href="libtracker-common-Language.html#tracker-language-get-stop-words" title="tracker_language_get_stop_words ()">tracker_language_get_stop_words</a>     (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language);
+href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"
+>GHashTable</a> *        <a class="link" href="libtracker-common-Language.html#tracker-language-get-stop-words" title="tracker_language_get_stop_words ()">tracker_language_get_stop_words</a>     (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language);
 void                <a class="link" href="libtracker-common-Language.html#tracker-language-set-config" title="tracker_language_set_config ()">tracker_language_set_config</a>         (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language,
                                                          <a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config);
 const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*        <a class="link" href="libtracker-common-Language.html#tracker-language-stem-word" title="tracker_language_stem_word ()">tracker_language_stem_word</a>          (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *       <a class="link" href="libtracker-common-Language.html#tracker-language-stem-word" title="tracker_language_stem_word ()">tracker_language_stem_word</a>          (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *word,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> word_length);
 </pre>
 </div>
@@ -80,7 +82,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 <a name="libtracker-common-Language.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----TrackerLanguage
 </pre>
@@ -90,14 +92,13 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 <pre class="synopsis">
   "<a class="link" href="libtracker-common-Language.html#TrackerLanguage--config" title='The "config" property'>config</a>"                   <a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a>*        : Read / Write
   "<a class="link" href="libtracker-common-Language.html#TrackerLanguage--stop-words" title='The "stop-words" property'>stop-words</a>"               <a
-href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
+href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"
 >GHashTable</a>*           : Read
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="libtracker-common-Language.description"></a><h2>Description</h2>
 <p>
-
 </p>
 </div>
 <div class="refsect1" lang="en">
@@ -106,15 +107,13 @@ href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
 <a name="TrackerLanguage-struct"></a><h3>TrackerLanguage</h3>
 <pre class="programlisting">typedef struct _TrackerLanguage TrackerLanguage;</pre>
 <p>
-
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="tracker-language-new"></a><h3>tracker_language_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a>*    tracker_language_new                (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *language);</pre>
+<pre class="programlisting"><a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *   tracker_language_new                (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *language);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -127,8 +126,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
@@ -138,12 +135,11 @@ href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
 <div class="refsect2" lang="en">
 <a name="tracker-language-check-exists"></a><h3>tracker_language_check_exists ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            tracker_language_check_exists       (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *language_code);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -156,8 +152,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
@@ -166,9 +160,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" lang="en">
 <a name="tracker-language-get-config"></a><h3>tracker_language_get_config ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a>*      tracker_language_get_config         (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language);</pre>
+<pre class="programlisting"><a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *     tracker_language_get_config         (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -181,8 +174,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
@@ -192,18 +183,15 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <div class="refsect2" lang="en">
 <a name="tracker-language-get-default-code"></a><h3>tracker_language_get_default_code ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              tracker_language_get_default_code   (void);</pre>
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *             tracker_language_get_default_code   (void);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-
-
 </td>
 </tr></tbody>
 </table></div>
@@ -212,10 +200,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <div class="refsect2" lang="en">
 <a name="tracker-language-get-stop-words"></a><h3>tracker_language_get_stop_words ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
->GHashTable</a>*         tracker_language_get_stop_words     (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language);</pre>
+href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"
+>GHashTable</a> *        tracker_language_get_stop_words     (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -228,8 +215,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
@@ -241,7 +226,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
 <pre class="programlisting">void                tracker_language_set_config         (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language,
                                                          <a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -254,8 +238,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
@@ -265,16 +247,15 @@ href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
 <div class="refsect2" lang="en">
 <a name="tracker-language-stem-word"></a><h3>tracker_language_stem_word ()</h3>
 <pre class="programlisting">const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*        tracker_language_stem_word          (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *       tracker_language_stem_word          (<a class="link" href="libtracker-common-Language.html#TrackerLanguage">TrackerLanguage</a> *language,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *word,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> word_length);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -297,8 +278,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
@@ -316,7 +295,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 <div class="refsect2" lang="en">
 <a name="TrackerLanguage--stop-words"></a><h3>The <code class="literal">"stop-words"</code> property</h3>
 <pre class="programlisting">  "stop-words"               <a
-href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
+href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"
 >GHashTable</a>*           : Read</pre>
 <p>Stop words.</p>
 </div>
@@ -324,6 +303,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Hash-Tables.html#GHashTable"
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

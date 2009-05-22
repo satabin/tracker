@@ -8,7 +8,6 @@
 <refnamediv>
 <refname>Field Data</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libtracker-common-Field-Data.synopsis" role="synopsis">
@@ -32,7 +31,6 @@
 <refsect1 id="libtracker-common-Field-Data.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 

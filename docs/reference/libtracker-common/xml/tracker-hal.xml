@@ -8,7 +8,6 @@
 <refnamediv>
 <refname>HAL</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libtracker-common-HAL.synopsis" role="synopsis">
@@ -19,12 +18,12 @@
 #include &lt;libtracker-common/tracker-hal.h&gt;
 
                     <link linkend="TrackerHal-struct">TrackerHal</link>;
-<link linkend="TrackerHal">TrackerHal</link>*         <link linkend="tracker-hal-new">tracker_hal_new</link>                     (void);
+<link linkend="TrackerHal">TrackerHal</link> *        <link linkend="tracker-hal-new">tracker_hal_new</link>                     (void);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-hal-get-battery-exists">tracker_hal_get_battery_exists</link>      (<link linkend="TrackerHal">TrackerHal</link> *hal);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-hal-get-battery-in-use">tracker_hal_get_battery_in_use</link>      (<link linkend="TrackerHal">TrackerHal</link> *hal);
-<link linkend="GList">GList</link>*              <link linkend="tracker-hal-get-mounted-directory-roots">tracker_hal_get_mounted_directory_roots</link>
+<link linkend="GList">GList</link> *             <link linkend="tracker-hal-get-mounted-directory-roots">tracker_hal_get_mounted_directory_roots</link>
                                                         (<link linkend="TrackerHal">TrackerHal</link> *hal);
-<link linkend="GList">GList</link>*              <link linkend="tracker-hal-get-removable-device-roots">tracker_hal_get_removable_device_roots</link>
+<link linkend="GList">GList</link> *             <link linkend="tracker-hal-get-removable-device-roots">tracker_hal_get_removable_device_roots</link>
                                                         (<link linkend="TrackerHal">TrackerHal</link> *hal);
 </synopsis>
 </refsynopsisdiv>
@@ -35,7 +34,6 @@
   <link linkend="GObject">GObject</link>
    +----TrackerHal
 </synopsis>
-
 </refsect1>
 
 
@@ -63,7 +61,6 @@
 <refsect1 id="libtracker-common-HAL.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -71,142 +68,131 @@
 <title role="details.title">Details</title>
 <refsect2 id="TrackerHal-struct" role="struct">
 <title>TrackerHal</title>
-<indexterm zone="TrackerHal-struct"><primary>TrackerHal</primary></indexterm><programlisting>typedef struct _TrackerHal TrackerHal;</programlisting>
+<indexterm zone="TrackerHal-struct"><primary sortas="TrackerHal">TrackerHal</primary></indexterm><programlisting>typedef struct _TrackerHal TrackerHal;</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="tracker-hal-new" role="function">
 <title>tracker_hal_new ()</title>
-<indexterm zone="tracker-hal-new"><primary>tracker_hal_new</primary></indexterm><programlisting><link linkend="TrackerHal">TrackerHal</link>*         tracker_hal_new                     (void);</programlisting>
+<indexterm zone="tracker-hal-new"><primary sortas="tracker_hal_new">tracker_hal_new</primary></indexterm><programlisting><link linkend="TrackerHal">TrackerHal</link> *        tracker_hal_new                     (void);</programlisting>
 <para>
 Creates a new instance of <link linkend="TrackerHal"><type>TrackerHal</type></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created <link linkend="TrackerHal"><type>TrackerHal</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The newly created <link linkend="TrackerHal"><type>TrackerHal</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-hal-get-battery-exists" role="function">
 <title>tracker_hal_get_battery_exists ()</title>
-<indexterm zone="tracker-hal-get-battery-exists"><primary>tracker_hal_get_battery_exists</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_hal_get_battery_exists      (<link linkend="TrackerHal">TrackerHal</link> *hal);</programlisting>
+<indexterm zone="tracker-hal-get-battery-exists"><primary sortas="tracker_hal_get_battery_exists">tracker_hal_get_battery_exists</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_hal_get_battery_exists      (<link linkend="TrackerHal">TrackerHal</link> *hal);</programlisting>
 <para>
 Returns whether the computer has batteries.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>hal</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>hal</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerHal"><type>TrackerHal</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><type>TRUE</type></link> if the computer has batteries available.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><type>TRUE</type></link> if the computer has batteries available.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-hal-get-battery-in-use" role="function">
 <title>tracker_hal_get_battery_in_use ()</title>
-<indexterm zone="tracker-hal-get-battery-in-use"><primary>tracker_hal_get_battery_in_use</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_hal_get_battery_in_use      (<link linkend="TrackerHal">TrackerHal</link> *hal);</programlisting>
+<indexterm zone="tracker-hal-get-battery-in-use"><primary sortas="tracker_hal_get_battery_in_use">tracker_hal_get_battery_in_use</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_hal_get_battery_in_use      (<link linkend="TrackerHal">TrackerHal</link> *hal);</programlisting>
 <para>
 Returns whether the computer battery (if any) is currently in use.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>hal</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>hal</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerHal"><type>TrackerHal</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><type>TRUE</type></link> if the computer is running on battery power.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><type>TRUE</type></link> if the computer is running on battery power.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-hal-get-mounted-directory-roots" role="function">
 <title>tracker_hal_get_mounted_directory_roots ()</title>
-<indexterm zone="tracker-hal-get-mounted-directory-roots"><primary>tracker_hal_get_mounted_directory_roots</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_hal_get_mounted_directory_roots
+<indexterm zone="tracker-hal-get-mounted-directory-roots"><primary sortas="tracker_hal_get_mounted_directory_roots">tracker_hal_get_mounted_directory_roots</primary></indexterm><programlisting><link linkend="GList">GList</link> *             tracker_hal_get_mounted_directory_roots
                                                         (<link linkend="TrackerHal">TrackerHal</link> *hal);</programlisting>
 <para>
 Returns a <link linkend="Glist"><type>Glist</type></link> of strings containing the root directories for mounted devices.
 Each element must be freed using <link linkend="g-free"><function>g_free()</function></link> and the list itself using <link linkend="g-list-free"><function>g_list_free()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>hal</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>hal</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerHal"><type>TrackerHal</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The list of root directories.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The list of root directories.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-hal-get-removable-device-roots" role="function">
 <title>tracker_hal_get_removable_device_roots ()</title>
-<indexterm zone="tracker-hal-get-removable-device-roots"><primary>tracker_hal_get_removable_device_roots</primary></indexterm><programlisting><link linkend="GList">GList</link>*              tracker_hal_get_removable_device_roots
+<indexterm zone="tracker-hal-get-removable-device-roots"><primary sortas="tracker_hal_get_removable_device_roots">tracker_hal_get_removable_device_roots</primary></indexterm><programlisting><link linkend="GList">GList</link> *             tracker_hal_get_removable_device_roots
                                                         (<link linkend="TrackerHal">TrackerHal</link> *hal);</programlisting>
 <para>
 Returns a <link linkend="GList"><type>GList</type></link> of strings containing the root directories for removable devices.
 Each element must be freed using <link linkend="g-free"><function>g_free()</function></link> and the list itself through <link linkend="g-list-free"><function>g_list_free()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>hal</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>hal</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerHal"><type>TrackerHal</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The list of root directories.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The list of root directories.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
 <refsect1 id="libtracker-common-HAL.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2 id="TrackerHal--battery-exists"><title>The <literal>&quot;battery-exists&quot;</literal> property</title>
-<indexterm zone="TrackerHal--battery-exists"><primary>TrackerHal:battery-exists</primary></indexterm><programlisting>  &quot;battery-exists&quot;           <link linkend="gboolean">gboolean</link>              : Read</programlisting>
+<refsect2 id="TrackerHal--battery-exists" role="property"><title>The <literal>&quot;battery-exists&quot;</literal> property</title>
+<indexterm zone="TrackerHal--battery-exists"><primary sortas="TrackerHal:battery-exists">TrackerHal:battery-exists</primary></indexterm><programlisting>  &quot;battery-exists&quot;           <link linkend="gboolean">gboolean</link>              : Read</programlisting>
 <para>There is a battery on this machine.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerHal--battery-in-use"><title>The <literal>&quot;battery-in-use&quot;</literal> property</title>
-<indexterm zone="TrackerHal--battery-in-use"><primary>TrackerHal:battery-in-use</primary></indexterm><programlisting>  &quot;battery-in-use&quot;           <link linkend="gboolean">gboolean</link>              : Read</programlisting>
+<refsect2 id="TrackerHal--battery-in-use" role="property"><title>The <literal>&quot;battery-in-use&quot;</literal> property</title>
+<indexterm zone="TrackerHal--battery-in-use"><primary sortas="TrackerHal:battery-in-use">TrackerHal:battery-in-use</primary></indexterm><programlisting>  &quot;battery-in-use&quot;           <link linkend="gboolean">gboolean</link>              : Read</programlisting>
 <para>Whether the battery is being used.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerHal--battery-percentage"><title>The <literal>&quot;battery-percentage&quot;</literal> property</title>
-<indexterm zone="TrackerHal--battery-percentage"><primary>TrackerHal:battery-percentage</primary></indexterm><programlisting>  &quot;battery-percentage&quot;       <link linkend="gdouble">gdouble</link>               : Read</programlisting>
+<refsect2 id="TrackerHal--battery-percentage" role="property"><title>The <literal>&quot;battery-percentage&quot;</literal> property</title>
+<indexterm zone="TrackerHal--battery-percentage"><primary sortas="TrackerHal:battery-percentage">TrackerHal:battery-percentage</primary></indexterm><programlisting>  &quot;battery-percentage&quot;       <link linkend="gdouble">gdouble</link>               : Read</programlisting>
 <para>Battery percentage.</para><para>Allowed values: [0,1]</para>
 <para>Default value: 0</para>
 </refsect2>
-
 </refsect1>
 
 <refsect1 id="libtracker-common-HAL.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2 id="TrackerHal-mount-point-added"><title>The <literal>&quot;mount-point-added&quot;</literal> signal</title>
-<indexterm zone="TrackerHal-mount-point-added"><primary>TrackerHal::mount-point-added</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerHal">TrackerHal</link> *trackerhal,
+<refsect2 id="TrackerHal-mount-point-added" role="signal"><title>The <literal>&quot;mount-point-added&quot;</literal> signal</title>
+<indexterm zone="TrackerHal-mount-point-added"><primary sortas="TrackerHal::mount-point-added">TrackerHal::mount-point-added</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerHal">TrackerHal</link> *trackerhal,
                                                         <link linkend="gchar">gchar</link>      *arg1,
                                                         <link linkend="gchar">gchar</link>      *arg2,
                                                         <link linkend="gpointer">gpointer</link>    user_data)       : Run Last</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>trackerhal</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>trackerhal</parameter>&#160;:</term>
 <listitem><simpara>the object which received the signal.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>arg1</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>arg1</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>arg2</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>arg2</parameter>&#160;:</term>
 <listitem><simpara>
-
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2 id="TrackerHal-mount-point-removed"><title>The <literal>&quot;mount-point-removed&quot;</literal> signal</title>
-<indexterm zone="TrackerHal-mount-point-removed"><primary>TrackerHal::mount-point-removed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerHal">TrackerHal</link> *trackerhal,
+</variablelist></refsect2><refsect2 id="TrackerHal-mount-point-removed" role="signal"><title>The <literal>&quot;mount-point-removed&quot;</literal> signal</title>
+<indexterm zone="TrackerHal-mount-point-removed"><primary sortas="TrackerHal::mount-point-removed">TrackerHal::mount-point-removed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerHal">TrackerHal</link> *trackerhal,
                                                         <link linkend="gchar">gchar</link>      *arg1,
                                                         <link linkend="gchar">gchar</link>      *arg2,
                                                         <link linkend="gpointer">gpointer</link>    user_data)       : Run Last</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>trackerhal</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>trackerhal</parameter>&#160;:</term>
 <listitem><simpara>the object which received the signal.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>arg1</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>arg1</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>arg2</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>arg2</parameter>&#160;:</term>
 <listitem><simpara>
-
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 </refsect1>

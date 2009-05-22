@@ -203,7 +203,6 @@ static void
 tracker_daemon_init (TrackerDaemon *object)
 {
 	TrackerDaemonPrivate *priv;
-	TrackerDBInterface   *iface;
 	DBusGProxy           *proxy;
 
 	priv = TRACKER_DAEMON_GET_PRIVATE (object);
@@ -224,10 +223,10 @@ tracker_daemon_init (TrackerDaemon *object)
 				     object,
 				     NULL);
 
-	iface = tracker_db_manager_get_db_interface (TRACKER_DB_COMMON);
-
-	/* Do first time stats lookup */
-	priv->stats_cache = stats_cache_get_latest ();
+	priv->stats_cache = g_hash_table_new_full (g_str_hash,
+						   g_str_equal,
+						   g_free,
+						   NULL);
 
 	priv->stats_cache_timeout_id = 
 		g_timeout_add_seconds (STATS_CACHE_LIFETIME,
@@ -482,8 +481,8 @@ stats_cache_get_latest (void)
 		g_ptr_array_foreach (stats, stats_cache_filter_dups_func, values);
 		g_ptr_array_foreach (parent_stats, stats_cache_filter_dups_func, values);
 
-		g_ptr_array_free (parent_stats, TRUE);
-		g_ptr_array_free (stats, TRUE);
+		tracker_dbus_results_ptr_array_free (&parent_stats);
+		tracker_dbus_results_ptr_array_free (&stats);
 	}
 
 	return values;
@@ -712,8 +711,7 @@ tracker_daemon_shutdown (TrackerDaemon		*object,
 			 DBusGMethodInvocation	*context,
 			 GError		       **error)
 {
-	TrackerDaemonPrivate *priv;
-	guint		      request_id;
+	guint request_id;
 
 	request_id = tracker_dbus_get_next_request_id ();
 
@@ -721,8 +719,6 @@ tracker_daemon_shutdown (TrackerDaemon		*object,
 				  "DBus request to shutdown daemon, "
 				  "reindex:%s",
 				  reindex ? "yes" : "no");
-
-	priv = TRACKER_DAEMON_GET_PRIVATE (object);
 
 	g_message ("Tracker daemon attempting to shutdown");
 

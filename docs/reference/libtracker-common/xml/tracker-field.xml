@@ -8,7 +8,6 @@
 <refnamediv>
 <refname>Fields</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libtracker-common-Fields.synopsis" role="synopsis">
@@ -19,18 +18,18 @@
 #include &lt;libtracker-common/tracker-field.h&gt;
 
                     <link linkend="TrackerField-struct">TrackerField</link>;
-<link linkend="TrackerField">TrackerField</link>*       <link linkend="tracker-field-new">tracker_field_new</link>                   (void);
+<link linkend="TrackerField">TrackerField</link> *      <link linkend="tracker-field-new">tracker_field_new</link>                   (void);
 <link linkend="void">void</link>                <link linkend="tracker-field-append-child-id">tracker_field_append_child_id</link>       (<link linkend="TrackerField">TrackerField</link> *field,
                                                          const <link linkend="gchar">gchar</link> *id);
-const <link linkend="GSList">GSList</link>*       <link linkend="tracker-field-get-child-ids">tracker_field_get_child_ids</link>         (<link linkend="TrackerField">TrackerField</link> *field);
+const <link linkend="GSList">GSList</link> *      <link linkend="tracker-field-get-child-ids">tracker_field_get_child_ids</link>         (<link linkend="TrackerField">TrackerField</link> *field);
 <link linkend="TrackerFieldType">TrackerFieldType</link>    <link linkend="tracker-field-get-data-type">tracker_field_get_data_type</link>         (<link linkend="TrackerField">TrackerField</link> *field);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-field-get-delimited">tracker_field_get_delimited</link>         (<link linkend="TrackerField">TrackerField</link> *field);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-field-get-embedded">tracker_field_get_embedded</link>          (<link linkend="TrackerField">TrackerField</link> *field);
-const <link linkend="gchar">gchar</link>*        <link linkend="tracker-field-get-field-name">tracker_field_get_field_name</link>        (<link linkend="TrackerField">TrackerField</link> *field);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-field-get-field-name">tracker_field_get_field_name</link>        (<link linkend="TrackerField">TrackerField</link> *field);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-field-get-filtered">tracker_field_get_filtered</link>          (<link linkend="TrackerField">TrackerField</link> *field);
-const <link linkend="gchar">gchar</link>*        <link linkend="tracker-field-get-id">tracker_field_get_id</link>                (<link linkend="TrackerField">TrackerField</link> *field);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-field-get-id">tracker_field_get_id</link>                (<link linkend="TrackerField">TrackerField</link> *field);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-field-get-multiple-values">tracker_field_get_multiple_values</link>   (<link linkend="TrackerField">TrackerField</link> *field);
-const <link linkend="gchar">gchar</link>*        <link linkend="tracker-field-get-name">tracker_field_get_name</link>              (<link linkend="TrackerField">TrackerField</link> *field);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-field-get-name">tracker_field_get_name</link>              (<link linkend="TrackerField">TrackerField</link> *field);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-field-get-store-metadata">tracker_field_get_store_metadata</link>    (<link linkend="TrackerField">TrackerField</link> *field);
 <link linkend="gint">gint</link>                <link linkend="tracker-field-get-weight">tracker_field_get_weight</link>            (<link linkend="TrackerField">TrackerField</link> *service);
 <link linkend="void">void</link>                <link linkend="tracker-field-set-child-ids">tracker_field_set_child_ids</link>         (<link linkend="TrackerField">TrackerField</link> *field,
@@ -55,7 +54,7 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-field-ge
                                                          <link linkend="gboolean">gboolean</link> value);
 <link linkend="void">void</link>                <link linkend="tracker-field-set-weight">tracker_field_set_weight</link>            (<link linkend="TrackerField">TrackerField</link> *field,
                                                          <link linkend="gint">gint</link> value);
-const <link linkend="gchar">gchar</link>*        <link linkend="tracker-field-type-to-string">tracker_field_type_to_string</link>        (<link linkend="TrackerFieldType">TrackerFieldType</link> fieldtype);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-field-type-to-string">tracker_field_type_to_string</link>        (<link linkend="TrackerFieldType">TrackerFieldType</link> fieldtype);
 </synopsis>
 </refsynopsisdiv>
 
@@ -65,7 +64,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-field-ty
   <link linkend="GObject">GObject</link>
    +----TrackerField
 </synopsis>
-
 </refsect1>
 
 
@@ -94,7 +92,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-field-ty
 <refsect1 id="libtracker-common-Fields.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -102,430 +99,355 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-field-ty
 <title role="details.title">Details</title>
 <refsect2 id="TrackerField-struct" role="struct">
 <title>TrackerField</title>
-<indexterm zone="TrackerField-struct"><primary>TrackerField</primary></indexterm><programlisting>typedef struct _TrackerField TrackerField;</programlisting>
+<indexterm zone="TrackerField-struct"><primary sortas="TrackerField">TrackerField</primary></indexterm><programlisting>typedef struct _TrackerField TrackerField;</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="tracker-field-new" role="function">
 <title>tracker_field_new ()</title>
-<indexterm zone="tracker-field-new"><primary>tracker_field_new</primary></indexterm><programlisting><link linkend="TrackerField">TrackerField</link>*       tracker_field_new                   (void);</programlisting>
+<indexterm zone="tracker-field-new"><primary sortas="tracker_field_new">tracker_field_new</primary></indexterm><programlisting><link linkend="TrackerField">TrackerField</link> *      tracker_field_new                   (void);</programlisting>
 <para>
 Creates a new <link linkend="TrackerField"><type>TrackerField</type></link> instance.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created <link linkend="TrackerField"><type>TrackerField</type></link>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The newly created <link linkend="TrackerField"><type>TrackerField</type></link>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-append-child-id" role="function">
 <title>tracker_field_append_child_id ()</title>
-<indexterm zone="tracker-field-append-child-id"><primary>tracker_field_append_child_id</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_append_child_id       (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-append-child-id"><primary sortas="tracker_field_append_child_id">tracker_field_append_child_id</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_append_child_id       (<link linkend="TrackerField">TrackerField</link> *field,
                                                          const <link linkend="gchar">gchar</link> *id);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>id</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-child-ids" role="function">
 <title>tracker_field_get_child_ids ()</title>
-<indexterm zone="tracker-field-get-child-ids"><primary>tracker_field_get_child_ids</primary></indexterm><programlisting>const <link linkend="GSList">GSList</link>*       tracker_field_get_child_ids         (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
+<indexterm zone="tracker-field-get-child-ids"><primary sortas="tracker_field_get_child_ids">tracker_field_get_child_ids</primary></indexterm><programlisting>const <link linkend="GSList">GSList</link> *      tracker_field_get_child_ids         (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-data-type" role="function">
 <title>tracker_field_get_data_type ()</title>
-<indexterm zone="tracker-field-get-data-type"><primary>tracker_field_get_data_type</primary></indexterm><programlisting><link linkend="TrackerFieldType">TrackerFieldType</link>    tracker_field_get_data_type         (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
+<indexterm zone="tracker-field-get-data-type"><primary sortas="tracker_field_get_data_type">tracker_field_get_data_type</primary></indexterm><programlisting><link linkend="TrackerFieldType">TrackerFieldType</link>    tracker_field_get_data_type         (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-delimited" role="function">
 <title>tracker_field_get_delimited ()</title>
-<indexterm zone="tracker-field-get-delimited"><primary>tracker_field_get_delimited</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_field_get_delimited         (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
+<indexterm zone="tracker-field-get-delimited"><primary sortas="tracker_field_get_delimited">tracker_field_get_delimited</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_field_get_delimited         (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-embedded" role="function">
 <title>tracker_field_get_embedded ()</title>
-<indexterm zone="tracker-field-get-embedded"><primary>tracker_field_get_embedded</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_field_get_embedded          (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
+<indexterm zone="tracker-field-get-embedded"><primary sortas="tracker_field_get_embedded">tracker_field_get_embedded</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_field_get_embedded          (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-field-name" role="function">
 <title>tracker_field_get_field_name ()</title>
-<indexterm zone="tracker-field-get-field-name"><primary>tracker_field_get_field_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_field_get_field_name        (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
+<indexterm zone="tracker-field-get-field-name"><primary sortas="tracker_field_get_field_name">tracker_field_get_field_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_field_get_field_name        (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-filtered" role="function">
 <title>tracker_field_get_filtered ()</title>
-<indexterm zone="tracker-field-get-filtered"><primary>tracker_field_get_filtered</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_field_get_filtered          (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
+<indexterm zone="tracker-field-get-filtered"><primary sortas="tracker_field_get_filtered">tracker_field_get_filtered</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_field_get_filtered          (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-id" role="function">
 <title>tracker_field_get_id ()</title>
-<indexterm zone="tracker-field-get-id"><primary>tracker_field_get_id</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_field_get_id                (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
+<indexterm zone="tracker-field-get-id"><primary sortas="tracker_field_get_id">tracker_field_get_id</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_field_get_id                (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-multiple-values" role="function">
 <title>tracker_field_get_multiple_values ()</title>
-<indexterm zone="tracker-field-get-multiple-values"><primary>tracker_field_get_multiple_values</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_field_get_multiple_values   (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
+<indexterm zone="tracker-field-get-multiple-values"><primary sortas="tracker_field_get_multiple_values">tracker_field_get_multiple_values</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_field_get_multiple_values   (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-name" role="function">
 <title>tracker_field_get_name ()</title>
-<indexterm zone="tracker-field-get-name"><primary>tracker_field_get_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_field_get_name              (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
+<indexterm zone="tracker-field-get-name"><primary sortas="tracker_field_get_name">tracker_field_get_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_field_get_name              (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-store-metadata" role="function">
 <title>tracker_field_get_store_metadata ()</title>
-<indexterm zone="tracker-field-get-store-metadata"><primary>tracker_field_get_store_metadata</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_field_get_store_metadata    (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
+<indexterm zone="tracker-field-get-store-metadata"><primary sortas="tracker_field_get_store_metadata">tracker_field_get_store_metadata</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_field_get_store_metadata    (<link linkend="TrackerField">TrackerField</link> *field);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-get-weight" role="function">
 <title>tracker_field_get_weight ()</title>
-<indexterm zone="tracker-field-get-weight"><primary>tracker_field_get_weight</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_field_get_weight            (<link linkend="TrackerField">TrackerField</link> *service);</programlisting>
+<indexterm zone="tracker-field-get-weight"><primary sortas="tracker_field_get_weight">tracker_field_get_weight</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_field_get_weight            (<link linkend="TrackerField">TrackerField</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-child-ids" role="function">
 <title>tracker_field_set_child_ids ()</title>
-<indexterm zone="tracker-field-set-child-ids"><primary>tracker_field_set_child_ids</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_child_ids         (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-child-ids"><primary sortas="tracker_field_set_child_ids">tracker_field_set_child_ids</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_child_ids         (<link linkend="TrackerField">TrackerField</link> *field,
                                                          const <link linkend="GSList">GSList</link> *value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-data-type" role="function">
 <title>tracker_field_set_data_type ()</title>
-<indexterm zone="tracker-field-set-data-type"><primary>tracker_field_set_data_type</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_data_type         (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-data-type"><primary sortas="tracker_field_set_data_type">tracker_field_set_data_type</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_data_type         (<link linkend="TrackerField">TrackerField</link> *field,
                                                          <link linkend="TrackerFieldType">TrackerFieldType</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-delimited" role="function">
 <title>tracker_field_set_delimited ()</title>
-<indexterm zone="tracker-field-set-delimited"><primary>tracker_field_set_delimited</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_delimited         (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-delimited"><primary sortas="tracker_field_set_delimited">tracker_field_set_delimited</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_delimited         (<link linkend="TrackerField">TrackerField</link> *field,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-embedded" role="function">
 <title>tracker_field_set_embedded ()</title>
-<indexterm zone="tracker-field-set-embedded"><primary>tracker_field_set_embedded</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_embedded          (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-embedded"><primary sortas="tracker_field_set_embedded">tracker_field_set_embedded</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_embedded          (<link linkend="TrackerField">TrackerField</link> *field,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-field-name" role="function">
 <title>tracker_field_set_field_name ()</title>
-<indexterm zone="tracker-field-set-field-name"><primary>tracker_field_set_field_name</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_field_name        (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-field-name"><primary sortas="tracker_field_set_field_name">tracker_field_set_field_name</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_field_name        (<link linkend="TrackerField">TrackerField</link> *field,
                                                          const <link linkend="gchar">gchar</link> *value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-filtered" role="function">
 <title>tracker_field_set_filtered ()</title>
-<indexterm zone="tracker-field-set-filtered"><primary>tracker_field_set_filtered</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_filtered          (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-filtered"><primary sortas="tracker_field_set_filtered">tracker_field_set_filtered</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_filtered          (<link linkend="TrackerField">TrackerField</link> *field,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-id" role="function">
 <title>tracker_field_set_id ()</title>
-<indexterm zone="tracker-field-set-id"><primary>tracker_field_set_id</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_id                (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-id"><primary sortas="tracker_field_set_id">tracker_field_set_id</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_id                (<link linkend="TrackerField">TrackerField</link> *field,
                                                          const <link linkend="gchar">gchar</link> *value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-multiple-values" role="function">
 <title>tracker_field_set_multiple_values ()</title>
-<indexterm zone="tracker-field-set-multiple-values"><primary>tracker_field_set_multiple_values</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_multiple_values   (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-multiple-values"><primary sortas="tracker_field_set_multiple_values">tracker_field_set_multiple_values</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_multiple_values   (<link linkend="TrackerField">TrackerField</link> *field,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-name" role="function">
 <title>tracker_field_set_name ()</title>
-<indexterm zone="tracker-field-set-name"><primary>tracker_field_set_name</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_name              (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-name"><primary sortas="tracker_field_set_name">tracker_field_set_name</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_name              (<link linkend="TrackerField">TrackerField</link> *field,
                                                          const <link linkend="gchar">gchar</link> *value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-store-metadata" role="function">
 <title>tracker_field_set_store_metadata ()</title>
-<indexterm zone="tracker-field-set-store-metadata"><primary>tracker_field_set_store_metadata</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_store_metadata    (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-store-metadata"><primary sortas="tracker_field_set_store_metadata">tracker_field_set_store_metadata</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_store_metadata    (<link linkend="TrackerField">TrackerField</link> *field,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-set-weight" role="function">
 <title>tracker_field_set_weight ()</title>
-<indexterm zone="tracker-field-set-weight"><primary>tracker_field_set_weight</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_weight            (<link linkend="TrackerField">TrackerField</link> *field,
+<indexterm zone="tracker-field-set-weight"><primary sortas="tracker_field_set_weight">tracker_field_set_weight</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_field_set_weight            (<link linkend="TrackerField">TrackerField</link> *field,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>field</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-field-type-to-string" role="function">
 <title>tracker_field_type_to_string ()</title>
-<indexterm zone="tracker-field-type-to-string"><primary>tracker_field_type_to_string</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_field_type_to_string        (<link linkend="TrackerFieldType">TrackerFieldType</link> fieldtype);</programlisting>
+<indexterm zone="tracker-field-type-to-string"><primary sortas="tracker_field_type_to_string">tracker_field_type_to_string</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_field_type_to_string        (<link linkend="TrackerFieldType">TrackerFieldType</link> fieldtype);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>fieldtype</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>fieldtype</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
 <refsect1 id="libtracker-common-Fields.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2 id="TrackerField--child-ids"><title>The <literal>&quot;child-ids&quot;</literal> property</title>
-<indexterm zone="TrackerField--child-ids"><primary>TrackerField:child-ids</primary></indexterm><programlisting>  &quot;child-ids&quot;                <link linkend="gpointer">gpointer</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerField--child-ids" role="property"><title>The <literal>&quot;child-ids&quot;</literal> property</title>
+<indexterm zone="TrackerField--child-ids"><primary sortas="TrackerField:child-ids">TrackerField:child-ids</primary></indexterm><programlisting>  &quot;child-ids&quot;                <link linkend="gpointer">gpointer</link>              : Read / Write</programlisting>
 <para>Child ids.</para></refsect2>
-<refsect2 id="TrackerField--data-type"><title>The <literal>&quot;data-type&quot;</literal> property</title>
-<indexterm zone="TrackerField--data-type"><primary>TrackerField:data-type</primary></indexterm><programlisting>  &quot;data-type&quot;                <link linkend="TrackerFieldType">TrackerFieldType</link>      : Read / Write</programlisting>
+<refsect2 id="TrackerField--data-type" role="property"><title>The <literal>&quot;data-type&quot;</literal> property</title>
+<indexterm zone="TrackerField--data-type"><primary sortas="TrackerField:data-type">TrackerField:data-type</primary></indexterm><programlisting>  &quot;data-type&quot;                <link linkend="TrackerFieldType">TrackerFieldType</link>      : Read / Write</programlisting>
 <para>Field data type.</para><para>Default value: TRACKER_FIELD_TYPE_INDEX</para>
 </refsect2>
-<refsect2 id="TrackerField--delimited"><title>The <literal>&quot;delimited&quot;</literal> property</title>
-<indexterm zone="TrackerField--delimited"><primary>TrackerField:delimited</primary></indexterm><programlisting>  &quot;delimited&quot;                <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerField--delimited" role="property"><title>The <literal>&quot;delimited&quot;</literal> property</title>
+<indexterm zone="TrackerField--delimited"><primary sortas="TrackerField:delimited">TrackerField:delimited</primary></indexterm><programlisting>  &quot;delimited&quot;                <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Delimited.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerField--embedded"><title>The <literal>&quot;embedded&quot;</literal> property</title>
-<indexterm zone="TrackerField--embedded"><primary>TrackerField:embedded</primary></indexterm><programlisting>  &quot;embedded&quot;                 <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerField--embedded" role="property"><title>The <literal>&quot;embedded&quot;</literal> property</title>
+<indexterm zone="TrackerField--embedded"><primary sortas="TrackerField:embedded">TrackerField:embedded</primary></indexterm><programlisting>  &quot;embedded&quot;                 <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Embedded.</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerField--field-name"><title>The <literal>&quot;field-name&quot;</literal> property</title>
-<indexterm zone="TrackerField--field-name"><primary>TrackerField:field-name</primary></indexterm><programlisting>  &quot;field-name&quot;               <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
+<refsect2 id="TrackerField--field-name" role="property"><title>The <literal>&quot;field-name&quot;</literal> property</title>
+<indexterm zone="TrackerField--field-name"><primary sortas="TrackerField:field-name">TrackerField:field-name</primary></indexterm><programlisting>  &quot;field-name&quot;               <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>Column in services table with the contents of this metadata.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2 id="TrackerField--filtered"><title>The <literal>&quot;filtered&quot;</literal> property</title>
-<indexterm zone="TrackerField--filtered"><primary>TrackerField:filtered</primary></indexterm><programlisting>  &quot;filtered&quot;                 <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerField--filtered" role="property"><title>The <literal>&quot;filtered&quot;</literal> property</title>
+<indexterm zone="TrackerField--filtered"><primary sortas="TrackerField:filtered">TrackerField:filtered</primary></indexterm><programlisting>  &quot;filtered&quot;                 <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Filtered.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerField--id"><title>The <literal>&quot;id&quot;</literal> property</title>
-<indexterm zone="TrackerField--id"><primary>TrackerField:id</primary></indexterm><programlisting>  &quot;id&quot;                       <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
+<refsect2 id="TrackerField--id" role="property"><title>The <literal>&quot;id&quot;</literal> property</title>
+<indexterm zone="TrackerField--id"><primary sortas="TrackerField:id">TrackerField:id</primary></indexterm><programlisting>  &quot;id&quot;                       <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>Unique identifier for this field.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2 id="TrackerField--multiple-values"><title>The <literal>&quot;multiple-values&quot;</literal> property</title>
-<indexterm zone="TrackerField--multiple-values"><primary>TrackerField:multiple-values</primary></indexterm><programlisting>  &quot;multiple-values&quot;          <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerField--multiple-values" role="property"><title>The <literal>&quot;multiple-values&quot;</literal> property</title>
+<indexterm zone="TrackerField--multiple-values"><primary sortas="TrackerField:multiple-values">TrackerField:multiple-values</primary></indexterm><programlisting>  &quot;multiple-values&quot;          <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Multiple values.</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerField--name"><title>The <literal>&quot;name&quot;</literal> property</title>
-<indexterm zone="TrackerField--name"><primary>TrackerField:name</primary></indexterm><programlisting>  &quot;name&quot;                     <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
+<refsect2 id="TrackerField--name" role="property"><title>The <literal>&quot;name&quot;</literal> property</title>
+<indexterm zone="TrackerField--name"><primary sortas="TrackerField:name">TrackerField:name</primary></indexterm><programlisting>  &quot;name&quot;                     <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>Field name.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2 id="TrackerField--store-metadata"><title>The <literal>&quot;store-metadata&quot;</literal> property</title>
-<indexterm zone="TrackerField--store-metadata"><primary>TrackerField:store-metadata</primary></indexterm><programlisting>  &quot;store-metadata&quot;           <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerField--store-metadata" role="property"><title>The <literal>&quot;store-metadata&quot;</literal> property</title>
+<indexterm zone="TrackerField--store-metadata"><primary sortas="TrackerField:store-metadata">TrackerField:store-metadata</primary></indexterm><programlisting>  &quot;store-metadata&quot;           <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Store metadata.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerField--weight"><title>The <literal>&quot;weight&quot;</literal> property</title>
-<indexterm zone="TrackerField--weight"><primary>TrackerField:weight</primary></indexterm><programlisting>  &quot;weight&quot;                   <link linkend="gint">gint</link>                  : Read / Write</programlisting>
+<refsect2 id="TrackerField--weight" role="property"><title>The <literal>&quot;weight&quot;</literal> property</title>
+<indexterm zone="TrackerField--weight"><primary sortas="TrackerField:weight">TrackerField:weight</primary></indexterm><programlisting>  &quot;weight&quot;                   <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>Boost to the score.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
-
 </refsect1>
 
 

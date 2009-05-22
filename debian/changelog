@@ -1,3 +1,9 @@
+tracker (0.6.95-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 22 May 2009 23:30:34 +0200
+
 tracker (0.6.94-1) unstable; urgency=low
 
   * New upstream release.

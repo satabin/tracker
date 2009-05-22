@@ -8,7 +8,6 @@
 <refnamediv>
 <refname>Service</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libtracker-common-Service.synopsis" role="synopsis">
@@ -19,8 +18,8 @@
 #include &lt;libtracker-common/tracker-service.h&gt;
 
                     <link linkend="TrackerService-struct">TrackerService</link>;
-<link linkend="TrackerService">TrackerService</link>*     <link linkend="tracker-service-new">tracker_service_new</link>                 (void);
-const <link linkend="gchar">gchar</link>*        <link linkend="tracker-service-get-content-metadata">tracker_service_get_content_metadata</link>
+<link linkend="TrackerService">TrackerService</link> *    <link linkend="tracker-service-new">tracker_service_new</link>                 (void);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-service-get-content-metadata">tracker_service_get_content_metadata</link>
                                                         (<link linkend="TrackerService">TrackerService</link> *service);
 <link linkend="TrackerDBType">TrackerDBType</link>       <link linkend="tracker-service-get-db-type">tracker_service_get_db_type</link>         (<link linkend="TrackerService">TrackerService</link> *service);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-service-get-embedded">tracker_service_get_embedded</link>        (<link linkend="TrackerService">TrackerService</link> *service);
@@ -29,10 +28,10 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-service-
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-service-get-has-metadata">tracker_service_get_has_metadata</link>    (<link linkend="TrackerService">TrackerService</link> *service);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-service-get-has-thumbs">tracker_service_get_has_thumbs</link>      (<link linkend="TrackerService">TrackerService</link> *service);
 <link linkend="gint">gint</link>                <link linkend="tracker-service-get-id">tracker_service_get_id</link>              (<link linkend="TrackerService">TrackerService</link> *service);
-const <link linkend="GSList">GSList</link>*       <link linkend="tracker-service-get-key-metadata">tracker_service_get_key_metadata</link>    (<link linkend="TrackerService">TrackerService</link> *service);
-const <link linkend="gchar">gchar</link>*        <link linkend="tracker-service-get-name">tracker_service_get_name</link>            (<link linkend="TrackerService">TrackerService</link> *service);
-const <link linkend="gchar">gchar</link>*        <link linkend="tracker-service-get-parent">tracker_service_get_parent</link>          (<link linkend="TrackerService">TrackerService</link> *service);
-const <link linkend="gchar">gchar</link>*        <link linkend="tracker-service-get-property-prefix">tracker_service_get_property_prefix</link> (<link linkend="TrackerService">TrackerService</link> *service);
+const <link linkend="GSList">GSList</link> *      <link linkend="tracker-service-get-key-metadata">tracker_service_get_key_metadata</link>    (<link linkend="TrackerService">TrackerService</link> *service);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-service-get-name">tracker_service_get_name</link>            (<link linkend="TrackerService">TrackerService</link> *service);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-service-get-parent">tracker_service_get_parent</link>          (<link linkend="TrackerService">TrackerService</link> *service);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-service-get-property-prefix">tracker_service_get_property_prefix</link> (<link linkend="TrackerService">TrackerService</link> *service);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-service-get-show-service-directories">tracker_service_get_show_service_directories</link>
                                                         (<link linkend="TrackerService">TrackerService</link> *service);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-service-get-show-service-files">tracker_service_get_show_service_files</link>
@@ -77,7 +76,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-service-
   <link linkend="GObject">GObject</link>
    +----TrackerService
 </synopsis>
-
 </refsect1>
 
 
@@ -109,7 +107,6 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-service-
 <refsect1 id="libtracker-common-Service.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -117,508 +114,419 @@ const <link linkend="gchar">gchar</link>*        <link linkend="tracker-service-
 <title role="details.title">Details</title>
 <refsect2 id="TrackerService-struct" role="struct">
 <title>TrackerService</title>
-<indexterm zone="TrackerService-struct"><primary>TrackerService</primary></indexterm><programlisting>typedef struct _TrackerService TrackerService;</programlisting>
+<indexterm zone="TrackerService-struct"><primary sortas="TrackerService">TrackerService</primary></indexterm><programlisting>typedef struct _TrackerService TrackerService;</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="tracker-service-new" role="function">
 <title>tracker_service_new ()</title>
-<indexterm zone="tracker-service-new"><primary>tracker_service_new</primary></indexterm><programlisting><link linkend="TrackerService">TrackerService</link>*     tracker_service_new                 (void);</programlisting>
+<indexterm zone="tracker-service-new"><primary sortas="tracker_service_new">tracker_service_new</primary></indexterm><programlisting><link linkend="TrackerService">TrackerService</link> *    tracker_service_new                 (void);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-content-metadata" role="function">
 <title>tracker_service_get_content_metadata ()</title>
-<indexterm zone="tracker-service-get-content-metadata"><primary>tracker_service_get_content_metadata</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_service_get_content_metadata
+<indexterm zone="tracker-service-get-content-metadata"><primary sortas="tracker_service_get_content_metadata">tracker_service_get_content_metadata</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_service_get_content_metadata
                                                         (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-db-type" role="function">
 <title>tracker_service_get_db_type ()</title>
-<indexterm zone="tracker-service-get-db-type"><primary>tracker_service_get_db_type</primary></indexterm><programlisting><link linkend="TrackerDBType">TrackerDBType</link>       tracker_service_get_db_type         (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-db-type"><primary sortas="tracker_service_get_db_type">tracker_service_get_db_type</primary></indexterm><programlisting><link linkend="TrackerDBType">TrackerDBType</link>       tracker_service_get_db_type         (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-embedded" role="function">
 <title>tracker_service_get_embedded ()</title>
-<indexterm zone="tracker-service-get-embedded"><primary>tracker_service_get_embedded</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_embedded        (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-embedded"><primary sortas="tracker_service_get_embedded">tracker_service_get_embedded</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_embedded        (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-enabled" role="function">
 <title>tracker_service_get_enabled ()</title>
-<indexterm zone="tracker-service-get-enabled"><primary>tracker_service_get_enabled</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_enabled         (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-enabled"><primary sortas="tracker_service_get_enabled">tracker_service_get_enabled</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_enabled         (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-has-full-text" role="function">
 <title>tracker_service_get_has_full_text ()</title>
-<indexterm zone="tracker-service-get-has-full-text"><primary>tracker_service_get_has_full_text</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_has_full_text   (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-has-full-text"><primary sortas="tracker_service_get_has_full_text">tracker_service_get_has_full_text</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_has_full_text   (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-has-metadata" role="function">
 <title>tracker_service_get_has_metadata ()</title>
-<indexterm zone="tracker-service-get-has-metadata"><primary>tracker_service_get_has_metadata</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_has_metadata    (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-has-metadata"><primary sortas="tracker_service_get_has_metadata">tracker_service_get_has_metadata</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_has_metadata    (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-has-thumbs" role="function">
 <title>tracker_service_get_has_thumbs ()</title>
-<indexterm zone="tracker-service-get-has-thumbs"><primary>tracker_service_get_has_thumbs</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_has_thumbs      (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-has-thumbs"><primary sortas="tracker_service_get_has_thumbs">tracker_service_get_has_thumbs</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_has_thumbs      (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-id" role="function">
 <title>tracker_service_get_id ()</title>
-<indexterm zone="tracker-service-get-id"><primary>tracker_service_get_id</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_service_get_id              (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-id"><primary sortas="tracker_service_get_id">tracker_service_get_id</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_service_get_id              (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-key-metadata" role="function">
 <title>tracker_service_get_key_metadata ()</title>
-<indexterm zone="tracker-service-get-key-metadata"><primary>tracker_service_get_key_metadata</primary></indexterm><programlisting>const <link linkend="GSList">GSList</link>*       tracker_service_get_key_metadata    (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-key-metadata"><primary sortas="tracker_service_get_key_metadata">tracker_service_get_key_metadata</primary></indexterm><programlisting>const <link linkend="GSList">GSList</link> *      tracker_service_get_key_metadata    (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-name" role="function">
 <title>tracker_service_get_name ()</title>
-<indexterm zone="tracker-service-get-name"><primary>tracker_service_get_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_service_get_name            (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-name"><primary sortas="tracker_service_get_name">tracker_service_get_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_service_get_name            (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-parent" role="function">
 <title>tracker_service_get_parent ()</title>
-<indexterm zone="tracker-service-get-parent"><primary>tracker_service_get_parent</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_service_get_parent          (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-parent"><primary sortas="tracker_service_get_parent">tracker_service_get_parent</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_service_get_parent          (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-property-prefix" role="function">
 <title>tracker_service_get_property_prefix ()</title>
-<indexterm zone="tracker-service-get-property-prefix"><primary>tracker_service_get_property_prefix</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_service_get_property_prefix (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
+<indexterm zone="tracker-service-get-property-prefix"><primary sortas="tracker_service_get_property_prefix">tracker_service_get_property_prefix</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_service_get_property_prefix (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-show-service-directories" role="function">
 <title>tracker_service_get_show_service_directories ()</title>
-<indexterm zone="tracker-service-get-show-service-directories"><primary>tracker_service_get_show_service_directories</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_show_service_directories
+<indexterm zone="tracker-service-get-show-service-directories"><primary sortas="tracker_service_get_show_service_directories">tracker_service_get_show_service_directories</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_show_service_directories
                                                         (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-get-show-service-files" role="function">
 <title>tracker_service_get_show_service_files ()</title>
-<indexterm zone="tracker-service-get-show-service-files"><primary>tracker_service_get_show_service_files</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_show_service_files
+<indexterm zone="tracker-service-get-show-service-files"><primary sortas="tracker_service_get_show_service_files">tracker_service_get_show_service_files</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_service_get_show_service_files
                                                         (<link linkend="TrackerService">TrackerService</link> *service);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-content-metadata" role="function">
 <title>tracker_service_set_content_metadata ()</title>
-<indexterm zone="tracker-service-set-content-metadata"><primary>tracker_service_set_content_metadata</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_content_metadata
+<indexterm zone="tracker-service-set-content-metadata"><primary sortas="tracker_service_set_content_metadata">tracker_service_set_content_metadata</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_content_metadata
                                                         (<link linkend="TrackerService">TrackerService</link> *service,
                                                          const <link linkend="gchar">gchar</link> *value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-db-type" role="function">
 <title>tracker_service_set_db_type ()</title>
-<indexterm zone="tracker-service-set-db-type"><primary>tracker_service_set_db_type</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_db_type         (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-db-type"><primary sortas="tracker_service_set_db_type">tracker_service_set_db_type</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_db_type         (<link linkend="TrackerService">TrackerService</link> *service,
                                                          <link linkend="TrackerDBType">TrackerDBType</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-embedded" role="function">
 <title>tracker_service_set_embedded ()</title>
-<indexterm zone="tracker-service-set-embedded"><primary>tracker_service_set_embedded</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_embedded        (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-embedded"><primary sortas="tracker_service_set_embedded">tracker_service_set_embedded</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_embedded        (<link linkend="TrackerService">TrackerService</link> *service,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-enabled" role="function">
 <title>tracker_service_set_enabled ()</title>
-<indexterm zone="tracker-service-set-enabled"><primary>tracker_service_set_enabled</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_enabled         (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-enabled"><primary sortas="tracker_service_set_enabled">tracker_service_set_enabled</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_enabled         (<link linkend="TrackerService">TrackerService</link> *service,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-has-full-text" role="function">
 <title>tracker_service_set_has_full_text ()</title>
-<indexterm zone="tracker-service-set-has-full-text"><primary>tracker_service_set_has_full_text</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_has_full_text   (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-has-full-text"><primary sortas="tracker_service_set_has_full_text">tracker_service_set_has_full_text</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_has_full_text   (<link linkend="TrackerService">TrackerService</link> *service,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-has-metadata" role="function">
 <title>tracker_service_set_has_metadata ()</title>
-<indexterm zone="tracker-service-set-has-metadata"><primary>tracker_service_set_has_metadata</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_has_metadata    (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-has-metadata"><primary sortas="tracker_service_set_has_metadata">tracker_service_set_has_metadata</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_has_metadata    (<link linkend="TrackerService">TrackerService</link> *service,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-has-thumbs" role="function">
 <title>tracker_service_set_has_thumbs ()</title>
-<indexterm zone="tracker-service-set-has-thumbs"><primary>tracker_service_set_has_thumbs</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_has_thumbs      (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-has-thumbs"><primary sortas="tracker_service_set_has_thumbs">tracker_service_set_has_thumbs</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_has_thumbs      (<link linkend="TrackerService">TrackerService</link> *service,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-id" role="function">
 <title>tracker_service_set_id ()</title>
-<indexterm zone="tracker-service-set-id"><primary>tracker_service_set_id</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_id              (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-id"><primary sortas="tracker_service_set_id">tracker_service_set_id</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_id              (<link linkend="TrackerService">TrackerService</link> *service,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-key-metadata" role="function">
 <title>tracker_service_set_key_metadata ()</title>
-<indexterm zone="tracker-service-set-key-metadata"><primary>tracker_service_set_key_metadata</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_key_metadata    (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-key-metadata"><primary sortas="tracker_service_set_key_metadata">tracker_service_set_key_metadata</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_key_metadata    (<link linkend="TrackerService">TrackerService</link> *service,
                                                          const <link linkend="GSList">GSList</link> *value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-name" role="function">
 <title>tracker_service_set_name ()</title>
-<indexterm zone="tracker-service-set-name"><primary>tracker_service_set_name</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_name            (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-name"><primary sortas="tracker_service_set_name">tracker_service_set_name</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_name            (<link linkend="TrackerService">TrackerService</link> *service,
                                                          const <link linkend="gchar">gchar</link> *value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-parent" role="function">
 <title>tracker_service_set_parent ()</title>
-<indexterm zone="tracker-service-set-parent"><primary>tracker_service_set_parent</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_parent          (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-parent"><primary sortas="tracker_service_set_parent">tracker_service_set_parent</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_parent          (<link linkend="TrackerService">TrackerService</link> *service,
                                                          const <link linkend="gchar">gchar</link> *value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-property-prefix" role="function">
 <title>tracker_service_set_property_prefix ()</title>
-<indexterm zone="tracker-service-set-property-prefix"><primary>tracker_service_set_property_prefix</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_property_prefix (<link linkend="TrackerService">TrackerService</link> *service,
+<indexterm zone="tracker-service-set-property-prefix"><primary sortas="tracker_service_set_property_prefix">tracker_service_set_property_prefix</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_property_prefix (<link linkend="TrackerService">TrackerService</link> *service,
                                                          const <link linkend="gchar">gchar</link> *value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-show-service-directories" role="function">
 <title>tracker_service_set_show_service_directories ()</title>
-<indexterm zone="tracker-service-set-show-service-directories"><primary>tracker_service_set_show_service_directories</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_show_service_directories
+<indexterm zone="tracker-service-set-show-service-directories"><primary sortas="tracker_service_set_show_service_directories">tracker_service_set_show_service_directories</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_show_service_directories
                                                         (<link linkend="TrackerService">TrackerService</link> *service,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-service-set-show-service-files" role="function">
 <title>tracker_service_set_show_service_files ()</title>
-<indexterm zone="tracker-service-set-show-service-files"><primary>tracker_service_set_show_service_files</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_show_service_files
+<indexterm zone="tracker-service-set-show-service-files"><primary sortas="tracker_service_set_show_service_files">tracker_service_set_show_service_files</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_service_set_show_service_files
                                                         (<link linkend="TrackerService">TrackerService</link> *service,
                                                          <link linkend="gboolean">gboolean</link> value);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>service</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
 <refsect1 id="libtracker-common-Service.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2 id="TrackerService--content-metadata"><title>The <literal>&quot;content-metadata&quot;</literal> property</title>
-<indexterm zone="TrackerService--content-metadata"><primary>TrackerService:content-metadata</primary></indexterm><programlisting>  &quot;content-metadata&quot;         <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
+<refsect2 id="TrackerService--content-metadata" role="property"><title>The <literal>&quot;content-metadata&quot;</literal> property</title>
+<indexterm zone="TrackerService--content-metadata"><primary sortas="TrackerService:content-metadata">TrackerService:content-metadata</primary></indexterm><programlisting>  &quot;content-metadata&quot;         <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>Content metadata.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2 id="TrackerService--db-type"><title>The <literal>&quot;db-type&quot;</literal> property</title>
-<indexterm zone="TrackerService--db-type"><primary>TrackerService:db-type</primary></indexterm><programlisting>  &quot;db-type&quot;                  <link linkend="TrackerDBType">TrackerDBType</link>         : Read / Write</programlisting>
+<refsect2 id="TrackerService--db-type" role="property"><title>The <literal>&quot;db-type&quot;</literal> property</title>
+<indexterm zone="TrackerService--db-type"><primary sortas="TrackerService:db-type">TrackerService:db-type</primary></indexterm><programlisting>  &quot;db-type&quot;                  <link linkend="TrackerDBType">TrackerDBType</link>         : Read / Write</programlisting>
 <para>Database type.</para><para>Default value: TRACKER_DB_TYPE_DATA</para>
 </refsect2>
-<refsect2 id="TrackerService--embedded"><title>The <literal>&quot;embedded&quot;</literal> property</title>
-<indexterm zone="TrackerService--embedded"><primary>TrackerService:embedded</primary></indexterm><programlisting>  &quot;embedded&quot;                 <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerService--embedded" role="property"><title>The <literal>&quot;embedded&quot;</literal> property</title>
+<indexterm zone="TrackerService--embedded"><primary sortas="TrackerService:embedded">TrackerService:embedded</primary></indexterm><programlisting>  &quot;embedded&quot;                 <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Embedded.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerService--enabled"><title>The <literal>&quot;enabled&quot;</literal> property</title>
-<indexterm zone="TrackerService--enabled"><primary>TrackerService:enabled</primary></indexterm><programlisting>  &quot;enabled&quot;                  <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerService--enabled" role="property"><title>The <literal>&quot;enabled&quot;</literal> property</title>
+<indexterm zone="TrackerService--enabled"><primary sortas="TrackerService:enabled">TrackerService:enabled</primary></indexterm><programlisting>  &quot;enabled&quot;                  <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Enabled.</para><para>Default value: TRUE</para>
 </refsect2>
-<refsect2 id="TrackerService--has-full-text"><title>The <literal>&quot;has-full-text&quot;</literal> property</title>
-<indexterm zone="TrackerService--has-full-text"><primary>TrackerService:has-full-text</primary></indexterm><programlisting>  &quot;has-full-text&quot;            <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerService--has-full-text" role="property"><title>The <literal>&quot;has-full-text&quot;</literal> property</title>
+<indexterm zone="TrackerService--has-full-text"><primary sortas="TrackerService:has-full-text">TrackerService:has-full-text</primary></indexterm><programlisting>  &quot;has-full-text&quot;            <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Has full text.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerService--has-metadata"><title>The <literal>&quot;has-metadata&quot;</literal> property</title>
-<indexterm zone="TrackerService--has-metadata"><primary>TrackerService:has-metadata</primary></indexterm><programlisting>  &quot;has-metadata&quot;             <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerService--has-metadata" role="property"><title>The <literal>&quot;has-metadata&quot;</literal> property</title>
+<indexterm zone="TrackerService--has-metadata"><primary sortas="TrackerService:has-metadata">TrackerService:has-metadata</primary></indexterm><programlisting>  &quot;has-metadata&quot;             <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Has metadata.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerService--has-thumbs"><title>The <literal>&quot;has-thumbs&quot;</literal> property</title>
-<indexterm zone="TrackerService--has-thumbs"><primary>TrackerService:has-thumbs</primary></indexterm><programlisting>  &quot;has-thumbs&quot;               <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerService--has-thumbs" role="property"><title>The <literal>&quot;has-thumbs&quot;</literal> property</title>
+<indexterm zone="TrackerService--has-thumbs"><primary sortas="TrackerService:has-thumbs">TrackerService:has-thumbs</primary></indexterm><programlisting>  &quot;has-thumbs&quot;               <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Has thumbnails.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerService--id"><title>The <literal>&quot;id&quot;</literal> property</title>
-<indexterm zone="TrackerService--id"><primary>TrackerService:id</primary></indexterm><programlisting>  &quot;id&quot;                       <link linkend="gint">gint</link>                  : Read / Write</programlisting>
+<refsect2 id="TrackerService--id" role="property"><title>The <literal>&quot;id&quot;</literal> property</title>
+<indexterm zone="TrackerService--id"><primary sortas="TrackerService:id">TrackerService:id</primary></indexterm><programlisting>  &quot;id&quot;                       <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>Unique identifier for this service.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2 id="TrackerService--key-metadata"><title>The <literal>&quot;key-metadata&quot;</literal> property</title>
-<indexterm zone="TrackerService--key-metadata"><primary>TrackerService:key-metadata</primary></indexterm><programlisting>  &quot;key-metadata&quot;             <link linkend="gpointer">gpointer</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerService--key-metadata" role="property"><title>The <literal>&quot;key-metadata&quot;</literal> property</title>
+<indexterm zone="TrackerService--key-metadata"><primary sortas="TrackerService:key-metadata">TrackerService:key-metadata</primary></indexterm><programlisting>  &quot;key-metadata&quot;             <link linkend="gpointer">gpointer</link>              : Read / Write</programlisting>
 <para>Key metadata.</para></refsect2>
-<refsect2 id="TrackerService--name"><title>The <literal>&quot;name&quot;</literal> property</title>
-<indexterm zone="TrackerService--name"><primary>TrackerService:name</primary></indexterm><programlisting>  &quot;name&quot;                     <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
+<refsect2 id="TrackerService--name" role="property"><title>The <literal>&quot;name&quot;</literal> property</title>
+<indexterm zone="TrackerService--name"><primary sortas="TrackerService:name">TrackerService:name</primary></indexterm><programlisting>  &quot;name&quot;                     <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>Service name.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2 id="TrackerService--parent"><title>The <literal>&quot;parent&quot;</literal> property</title>
-<indexterm zone="TrackerService--parent"><primary>TrackerService:parent</primary></indexterm><programlisting>  &quot;parent&quot;                   <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
+<refsect2 id="TrackerService--parent" role="property"><title>The <literal>&quot;parent&quot;</literal> property</title>
+<indexterm zone="TrackerService--parent"><primary sortas="TrackerService:parent">TrackerService:parent</primary></indexterm><programlisting>  &quot;parent&quot;                   <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>Service name of parent.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2 id="TrackerService--property-prefix"><title>The <literal>&quot;property-prefix&quot;</literal> property</title>
-<indexterm zone="TrackerService--property-prefix"><primary>TrackerService:property-prefix</primary></indexterm><programlisting>  &quot;property-prefix&quot;          <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
+<refsect2 id="TrackerService--property-prefix" role="property"><title>The <literal>&quot;property-prefix&quot;</literal> property</title>
+<indexterm zone="TrackerService--property-prefix"><primary sortas="TrackerService:property-prefix">TrackerService:property-prefix</primary></indexterm><programlisting>  &quot;property-prefix&quot;          <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>The properties of this category are prefix:name.</para><para>Default value: NULL</para>
 </refsect2>
-<refsect2 id="TrackerService--show-service-directories"><title>The <literal>&quot;show-service-directories&quot;</literal> property</title>
-<indexterm zone="TrackerService--show-service-directories"><primary>TrackerService:show-service-directories</primary></indexterm><programlisting>  &quot;show-service-directories&quot; <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerService--show-service-directories" role="property"><title>The <literal>&quot;show-service-directories&quot;</literal> property</title>
+<indexterm zone="TrackerService--show-service-directories"><primary sortas="TrackerService:show-service-directories">TrackerService:show-service-directories</primary></indexterm><programlisting>  &quot;show-service-directories&quot; <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Show service directories.</para><para>Default value: FALSE</para>
 </refsect2>
-<refsect2 id="TrackerService--show-service-files"><title>The <literal>&quot;show-service-files&quot;</literal> property</title>
-<indexterm zone="TrackerService--show-service-files"><primary>TrackerService:show-service-files</primary></indexterm><programlisting>  &quot;show-service-files&quot;       <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
+<refsect2 id="TrackerService--show-service-files" role="property"><title>The <literal>&quot;show-service-files&quot;</literal> property</title>
+<indexterm zone="TrackerService--show-service-files"><primary sortas="TrackerService:show-service-files">TrackerService:show-service-files</primary></indexterm><programlisting>  &quot;show-service-files&quot;       <link linkend="gboolean">gboolean</link>              : Read / Write</programlisting>
 <para>Show service files.</para><para>Default value: FALSE</para>
 </refsect2>
-
 </refsect1>
 
 

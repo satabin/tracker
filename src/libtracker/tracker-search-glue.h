@@ -5,6 +5,19 @@
 
 G_BEGIN_DECLS
 
+#ifndef _DBUS_GLIB_ASYNC_DATA_FREE
+#define _DBUS_GLIB_ASYNC_DATA_FREE
+static
+#ifdef G_HAVE_INLINE
+inline
+#endif
+void
+_dbus_glib_async_data_free (gpointer stuff)
+{
+	g_slice_free (DBusGAsyncData, stuff);
+}
+#endif
+
 #ifndef DBUS_GLIB_CLIENT_WRAPPERS_org_freedesktop_Tracker_Search
 #define DBUS_GLIB_CLIENT_WRAPPERS_org_freedesktop_Tracker_Search
 
@@ -41,10 +54,10 @@ org_freedesktop_Tracker_Search_get_hit_count_async (DBusGProxy *proxy, const cha
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "GetHitCount", org_freedesktop_Tracker_Search_get_hit_count_async_callback, stuff, g_free, G_TYPE_STRING, IN_service, G_TYPE_STRING, IN_search_text, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "GetHitCount", org_freedesktop_Tracker_Search_get_hit_count_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_STRING, IN_service, G_TYPE_STRING, IN_search_text, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -79,10 +92,10 @@ org_freedesktop_Tracker_Search_get_hit_count_all_async (DBusGProxy *proxy, const
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "GetHitCountAll", org_freedesktop_Tracker_Search_get_hit_count_all_async_callback, stuff, g_free, G_TYPE_STRING, IN_search_text, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "GetHitCountAll", org_freedesktop_Tracker_Search_get_hit_count_all_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_STRING, IN_search_text, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -117,10 +130,10 @@ org_freedesktop_Tracker_Search_text_async (DBusGProxy *proxy, const gint IN_live
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "Text", org_freedesktop_Tracker_Search_text_async_callback, stuff, g_free, G_TYPE_INT, IN_live_query_id, G_TYPE_STRING, IN_service, G_TYPE_STRING, IN_search_text, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "Text", org_freedesktop_Tracker_Search_text_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_INT, IN_live_query_id, G_TYPE_STRING, IN_service, G_TYPE_STRING, IN_search_text, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -155,10 +168,10 @@ org_freedesktop_Tracker_Search_text_detailed_async (DBusGProxy *proxy, const gin
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "TextDetailed", org_freedesktop_Tracker_Search_text_detailed_async_callback, stuff, g_free, G_TYPE_INT, IN_live_query_id, G_TYPE_STRING, IN_service, G_TYPE_STRING, IN_search_text, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "TextDetailed", org_freedesktop_Tracker_Search_text_detailed_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_INT, IN_live_query_id, G_TYPE_STRING, IN_service, G_TYPE_STRING, IN_search_text, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -193,10 +206,10 @@ org_freedesktop_Tracker_Search_get_snippet_async (DBusGProxy *proxy, const char 
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "GetSnippet", org_freedesktop_Tracker_Search_get_snippet_async_callback, stuff, g_free, G_TYPE_STRING, IN_service, G_TYPE_STRING, IN_id, G_TYPE_STRING, IN_search_text, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "GetSnippet", org_freedesktop_Tracker_Search_get_snippet_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_STRING, IN_service, G_TYPE_STRING, IN_id, G_TYPE_STRING, IN_search_text, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -231,10 +244,10 @@ org_freedesktop_Tracker_Search_metadata_async (DBusGProxy *proxy, const char * I
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "Metadata", org_freedesktop_Tracker_Search_metadata_async_callback, stuff, g_free, G_TYPE_STRING, IN_service, G_TYPE_STRING, IN_field, G_TYPE_STRING, IN_search_text, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "Metadata", org_freedesktop_Tracker_Search_metadata_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_STRING, IN_service, G_TYPE_STRING, IN_field, G_TYPE_STRING, IN_search_text, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -269,10 +282,10 @@ org_freedesktop_Tracker_Search_query_async (DBusGProxy *proxy, const gint IN_liv
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "Query", org_freedesktop_Tracker_Search_query_async_callback, stuff, g_free, G_TYPE_INT, IN_live_query_id, G_TYPE_STRING, IN_service, G_TYPE_STRV, IN_fields, G_TYPE_STRING, IN_search_text, G_TYPE_STRV, IN_keywords, G_TYPE_STRING, IN_query_condition, G_TYPE_BOOLEAN, IN_sort_by_service, G_TYPE_STRV, IN_sort_fields, G_TYPE_BOOLEAN, IN_sort_descending, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "Query", org_freedesktop_Tracker_Search_query_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_INT, IN_live_query_id, G_TYPE_STRING, IN_service, G_TYPE_STRV, IN_fields, G_TYPE_STRING, IN_search_text, G_TYPE_STRV, IN_keywords, G_TYPE_STRING, IN_query_condition, G_TYPE_BOOLEAN, IN_sort_by_service, G_TYPE_STRV, IN_sort_fields, G_TYPE_BOOLEAN, IN_sort_descending, G_TYPE_INT, IN_offset, G_TYPE_INT, IN_max_hits, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -307,10 +320,10 @@ org_freedesktop_Tracker_Search_suggest_async (DBusGProxy *proxy, const char * IN
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "Suggest", org_freedesktop_Tracker_Search_suggest_async_callback, stuff, g_free, G_TYPE_STRING, IN_search_text, G_TYPE_INT, IN_maxdist, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "Suggest", org_freedesktop_Tracker_Search_suggest_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_STRING, IN_search_text, G_TYPE_INT, IN_maxdist, G_TYPE_INVALID);
 }
 static
 #ifdef G_HAVE_INLINE
@@ -345,10 +358,10 @@ org_freedesktop_Tracker_Search_sql_query_async (DBusGProxy *proxy, const char * 
 
 {
   DBusGAsyncData *stuff;
-  stuff = g_new (DBusGAsyncData, 1);
+  stuff = g_slice_new (DBusGAsyncData);
   stuff->cb = G_CALLBACK (callback);
   stuff->userdata = userdata;
-  return dbus_g_proxy_begin_call (proxy, "SqlQuery", org_freedesktop_Tracker_Search_sql_query_async_callback, stuff, g_free, G_TYPE_STRING, IN_query, G_TYPE_INVALID);
+  return dbus_g_proxy_begin_call (proxy, "SqlQuery", org_freedesktop_Tracker_Search_sql_query_async_callback, stuff, _dbus_glib_async_data_free, G_TYPE_STRING, IN_query, G_TYPE_INVALID);
 }
 #endif /* defined DBUS_GLIB_CLIENT_WRAPPERS_org_freedesktop_Tracker_Search */
 

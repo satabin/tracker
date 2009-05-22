@@ -1,0 +1,201 @@
+<!-- ##### SECTION Title ##### -->
+Properties
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT TrackerProperty ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerProperty:data-type ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:domain ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:embedded ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:filtered ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:fulltext-indexed ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:indexed ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:multiple-values ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:name ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:range ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:transient ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:uri ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerProperty:weight ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION tracker_property_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_property_get_data_type ##### -->
+<para>
+
+</para>
+
+@property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_property_get_embedded ##### -->
+<para>
+
+</para>
+
+@property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_property_get_filtered ##### -->
+<para>
+
+</para>
+
+@property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_property_get_multiple_values ##### -->
+<para>
+
+</para>
+
+@property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_property_get_name ##### -->
+<para>
+
+</para>
+
+@property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_property_get_weight ##### -->
+<para>
+
+</para>
+
+@property: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_property_set_data_type ##### -->
+<para>
+
+</para>
+
+@property: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_property_set_embedded ##### -->
+<para>
+
+</para>
+
+@property: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_property_set_filtered ##### -->
+<para>
+
+</para>
+
+@property: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_property_set_multiple_values ##### -->
+<para>
+
+</para>
+
+@property: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_property_set_weight ##### -->
+<para>
+
+</para>
+
+@property: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_property_type_to_string ##### -->
+<para>
+
+</para>
+
+@fieldtype: 
+@Returns: 
+
+

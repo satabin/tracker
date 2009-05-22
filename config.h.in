@@ -1,5 +1,11 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define if we want detailed metadata in the database */
+#undef ENABLE_DETAILED_METADATA
+
+/* Define if we enable FTS support */
+#undef ENABLE_FTS
+
 /* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
 
@@ -105,6 +111,9 @@
 
 /* Define to 1 if you have the <sitdlib.h> header file. */
 #undef HAVE_SITDLIB_H
+
+/* Define if we have SQLite FTS */
+#undef HAVE_SQLITE_FTS
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H

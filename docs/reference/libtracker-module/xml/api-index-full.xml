@@ -1,0 +1,27 @@
+<indexdiv>
+<indexdiv><title>T</title>
+<indexentry><primaryie linkends="TrackerModuleFile"><link linkend="TrackerModuleFile">TrackerModuleFile</link></primaryie></indexentry>
+<indexentry><primaryie linkends="TrackerModuleFile--cancelled"><link linkend="TrackerModuleFile--cancelled">TrackerModuleFile:cancelled</link></primaryie></indexentry>
+<indexentry><primaryie linkends="TrackerModuleFile--file"><link linkend="TrackerModuleFile--file">TrackerModuleFile:file</link></primaryie></indexentry>
+<indexentry><primaryie linkends="TrackerModuleIteratable"><link linkend="TrackerModuleIteratable">TrackerModuleIteratable</link></primaryie></indexentry>
+<indexentry><primaryie linkends="TrackerModuleMetadata"><link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-file-get-file"><link linkend="tracker-module-file-get-file">tracker_module_file_get_file</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-file-get-metadata"><link linkend="tracker-module-file-get-metadata">tracker_module_file_get_metadata</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-file-get-service-type"><link linkend="tracker-module-file-get-service-type">tracker_module_file_get_service_type</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-file-get-text"><link linkend="tracker-module-file-get-text">tracker_module_file_get_text</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-file-get-uri"><link linkend="tracker-module-file-get-uri">tracker_module_file_get_uri</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-iteratable-get-count"><link linkend="tracker-module-iteratable-get-count">tracker_module_iteratable_get_count</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-iteratable-iter-contents"><link linkend="tracker-module-iteratable-iter-contents">tracker_module_iteratable_iter_contents</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-add-date"><link linkend="tracker-module-metadata-add-date">tracker_module_metadata_add_date</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-add-double"><link linkend="tracker-module-metadata-add-double">tracker_module_metadata_add_double</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-add-float"><link linkend="tracker-module-metadata-add-float">tracker_module_metadata_add_float</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-add-int"><link linkend="tracker-module-metadata-add-int">tracker_module_metadata_add_int</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-add-string"><link linkend="tracker-module-metadata-add-string">tracker_module_metadata_add_string</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-add-take-string"><link linkend="tracker-module-metadata-add-take-string">tracker_module_metadata_add_take_string</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-add-uint"><link linkend="tracker-module-metadata-add-uint">tracker_module_metadata_add_uint</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-clear-field"><link linkend="tracker-module-metadata-clear-field">tracker_module_metadata_clear_field</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-new"><link linkend="tracker-module-metadata-new">tracker_module_metadata_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-utils-get-data"><link linkend="tracker-module-metadata-utils-get-data">tracker_module_metadata_utils_get_data</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-module-metadata-utils-get-text"><link linkend="tracker-module-metadata-utils-get-text">tracker_module_metadata_utils_get_text</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

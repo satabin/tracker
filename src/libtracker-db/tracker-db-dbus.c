@@ -49,7 +49,7 @@ row_add (GPtrArray *row,
 	g_ptr_array_add (row, elem);
 }
 
-static inline void
+static inline gboolean
 row_insert (GPtrArray *row, 
 	    gchar     *value, 
 	    guint      lindex)
@@ -67,12 +67,14 @@ row_insert (GPtrArray *row,
 	 */
 	for (iter = list; iter; iter=iter->next) {
 		if (strcmp (iter->data, value) == 0) {
-			return;
+			return FALSE;
 		}
 	}
 
 	list = g_slist_prepend (list, value);
 	elem->value = list;
+
+	return TRUE;
 }
 
 static inline void
@@ -124,6 +126,7 @@ rows_destroy (GPtrArray *rows)
 
 	for (i = 0; i < rows->len; i++) {
 		OneRow *row;
+
 		row = g_ptr_array_index (rows, i);
 		row_destroy (row->value);
 		g_slice_free (OneRow, row);
@@ -303,7 +306,7 @@ tracker_dbus_query_result_columns_to_strv (TrackerDBResultSet *result_set,
 			g_value_init (&transform, G_TYPE_STRING);
 			
 			_tracker_db_result_set_get_value (result_set, i, &value);
-			if (g_value_transform (&value, &transform)) {
+			if (G_IS_VALUE (&value) && g_value_transform (&value, &transform)) {
 				if (row_counter == 0) {
 					strv[i] = g_value_dup_string (&transform);
 				} else {
@@ -323,8 +326,11 @@ tracker_dbus_query_result_columns_to_strv (TrackerDBResultSet *result_set,
 					}
 					
 				}
+				g_value_unset (&value);
+			} else {
+				strv[i] = g_strdup ("");
 			}
-			g_value_unset (&value);
+			
 			g_value_unset (&transform);
 		}
 
@@ -360,22 +366,21 @@ tracker_dbus_query_result_to_hash_table (TrackerDBResultSet *result_set)
 	}
 
 	while (valid) {
-		GValue	 transform = { 0, };
 		GValue	*values;
 		gchar  **p;
 		gint	 i = 0;
 		gchar	*key;
 		GSList	*list = NULL;
 
-		g_value_init (&transform, G_TYPE_STRING);
-
 		tracker_db_result_set_get (result_set, 0, &key, -1);
 		values = tracker_dbus_gvalue_slice_new (G_TYPE_STRV);
 
 		for (i = 1; i < field_count; i++) {
+			GValue  transform = { 0, };
 			GValue	value = { 0, };
 			gchar  *str;
 
+			g_value_init (&transform, G_TYPE_STRING);
 			_tracker_db_result_set_get_value (result_set, i, &value);
 
 			if (g_value_transform (&value, &transform)) {
@@ -386,16 +391,23 @@ tracker_dbus_query_result_to_hash_table (TrackerDBResultSet *result_set)
 					g_free (str);
 					str = g_strdup ("");
 				}
+
+				g_value_unset (&transform);
 			} else {
 				str = g_strdup ("");
 			}
 
 			list = g_slist_prepend (list, (gchar*) str);
+
+			g_value_unset (&value);
 		}
 
 		list = g_slist_reverse (list);
 		p = tracker_dbus_slist_to_strv (list);
+
+		g_slist_foreach (list, (GFunc)g_free, NULL);
 		g_slist_free (list);
+
 		g_value_take_boxed (values, p);
 		g_hash_table_insert (hash_table, key, values);
 
@@ -439,7 +451,7 @@ tracker_dbus_query_result_to_ptr_array (TrackerDBResultSet *result_set)
 
 			_tracker_db_result_set_get_value (result_set, i, &value);
 
-			if (g_value_transform (&value, &transform)) {
+			if (G_IS_VALUE (&value) && g_value_transform (&value, &transform)) {
 				str = g_value_dup_string (&transform);
 			}
 
@@ -449,7 +461,9 @@ tracker_dbus_query_result_to_ptr_array (TrackerDBResultSet *result_set)
 
 			list = g_slist_prepend (list, (gchar*) str);
 
-			g_value_unset (&value);
+			if (G_IS_VALUE (&value)) {
+				g_value_unset (&value);
+			}
 			g_value_unset (&transform);
 		}
 
@@ -532,7 +546,10 @@ tracker_dbus_query_result_multi_to_ptr_array (TrackerDBResultSet *result_set)
 			if (add) {
 				row_add (row, str);
 			} else {				
-				row_insert (row, str, column-1);
+				if (!row_insert (row, str, column-1)) {
+					/* Failed to insert */
+					g_free (str);
+				}
 			}		       
 
 			g_value_unset (&value);

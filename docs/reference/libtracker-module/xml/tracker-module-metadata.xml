@@ -8,7 +8,6 @@
 <refnamediv>
 <refname>Metadata Object</refname>
 <refpurpose>Object used to exchange metadata information between the modules and Tracker indexer</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libtracker-module-Metadata-Object.synopsis" role="synopsis">
@@ -19,7 +18,7 @@
 #include &lt;libtracker-module/tracker-module-metadata.h&gt;
 
 typedef             <link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link>;
-<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link>* <link linkend="tracker-module-metadata-new">tracker_module_metadata_new</link>      (void);
+<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> * <link linkend="tracker-module-metadata-new">tracker_module_metadata_new</link>     (void);
 <link linkend="void">void</link>                <link linkend="tracker-module-metadata-clear-field">tracker_module_metadata_clear_field</link> (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
                                                          const <link linkend="gchar">gchar</link> *field_name);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-module-metadata-add-take-string">tracker_module_metadata_add_take_string</link>
@@ -53,7 +52,6 @@ typedef             <link linkend="TrackerModuleMetadata">TrackerModuleMetadata<
   <link linkend="GObject">GObject</link>
    +----TrackerModuleMetadata
 </synopsis>
-
 </refsect1>
 
 
@@ -78,41 +76,39 @@ for example) or multiple values (like Email:CC)
 <title role="details.title">Details</title>
 <refsect2 id="TrackerModuleMetadata" role="typedef">
 <title>TrackerModuleMetadata</title>
-<indexterm zone="TrackerModuleMetadata"><primary>TrackerModuleMetadata</primary></indexterm><programlisting>typedef struct TrackerModuleMetadata TrackerModuleMetadata;           /* dummy typedef */
+<indexterm zone="TrackerModuleMetadata"><primary sortas="TrackerModuleMetadata">TrackerModuleMetadata</primary></indexterm><programlisting>typedef struct TrackerModuleMetadata TrackerModuleMetadata;           /* dummy typedef */
 </programlisting>
 <para>
 Metadata object
 </para></refsect2>
 <refsect2 id="tracker-module-metadata-new" role="function">
 <title>tracker_module_metadata_new ()</title>
-<indexterm zone="tracker-module-metadata-new"><primary>tracker_module_metadata_new</primary></indexterm><programlisting><link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link>* tracker_module_metadata_new      (void);</programlisting>
+<indexterm zone="tracker-module-metadata-new"><primary sortas="tracker_module_metadata_new">tracker_module_metadata_new</primary></indexterm><programlisting><link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> * tracker_module_metadata_new     (void);</programlisting>
 <para>
 Creates a new <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link></para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A newly created <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A newly created <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-metadata-clear-field" role="function">
 <title>tracker_module_metadata_clear_field ()</title>
-<indexterm zone="tracker-module-metadata-clear-field"><primary>tracker_module_metadata_clear_field</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_clear_field (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
+<indexterm zone="tracker-module-metadata-clear-field"><primary sortas="tracker_module_metadata_clear_field">tracker_module_metadata_clear_field</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_clear_field (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
                                                          const <link linkend="gchar">gchar</link> *field_name);</programlisting>
 <para>
 Clears any content for the given field name.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>metadata</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>metadata</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>field_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field_name</parameter>&#160;:</term>
 <listitem><simpara> Field name for the metadata to clear
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-metadata-add-take-string" role="function">
 <title>tracker_module_metadata_add_take_string ()</title>
-<indexterm zone="tracker-module-metadata-add-take-string"><primary>tracker_module_metadata_add_take_string</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_module_metadata_add_take_string
+<indexterm zone="tracker-module-metadata-add-take-string"><primary sortas="tracker_module_metadata_add_take_string">tracker_module_metadata_add_take_string</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_module_metadata_add_take_string
                                                         (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
                                                          const <link linkend="gchar">gchar</link> *field_name,
                                                          <link linkend="gchar">gchar</link> *value);</programlisting>
@@ -123,147 +119,140 @@ function will allow adding several elements to the same
 field name.
 </para>
 <para>
-If the function returns <link linkend="TRUE:CAPS"><type>TRUE</type></link>, <parameter>metadata</parameter> will take
+If the function returns <link linkend="TRUE--CAPS"><type>TRUE</type></link>, <parameter>metadata</parameter> will take
 ownership on <parameter>value</parameter>, else you are responsible of
 freeing it.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>metadata</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>metadata</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>field_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field_name</parameter>&#160;:</term>
 <listitem><simpara> Field name for the metadata to insert
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara> Value for the metadata
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><type>TRUE</type></link> if the value was added successfully.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><type>TRUE</type></link> if the value was added successfully.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-metadata-add-string" role="function">
 <title>tracker_module_metadata_add_string ()</title>
-<indexterm zone="tracker-module-metadata-add-string"><primary>tracker_module_metadata_add_string</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_string  (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
+<indexterm zone="tracker-module-metadata-add-string"><primary sortas="tracker_module_metadata_add_string">tracker_module_metadata_add_string</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_string  (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
                                                          const <link linkend="gchar">gchar</link> *field_name,
                                                          const <link linkend="gchar">gchar</link> *value);</programlisting>
 <para>
 Adds a new metadata element as a string into <parameter>metadata</parameter>.
 see <link linkend="tracker-module-metadata-add-take-string"><function>tracker_module_metadata_add_take_string()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>metadata</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>metadata</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>field_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field_name</parameter>&#160;:</term>
 <listitem><simpara> Field name for the metadata to insert
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara> Value for the metadata
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-metadata-add-int" role="function">
 <title>tracker_module_metadata_add_int ()</title>
-<indexterm zone="tracker-module-metadata-add-int"><primary>tracker_module_metadata_add_int</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_int     (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
+<indexterm zone="tracker-module-metadata-add-int"><primary sortas="tracker_module_metadata_add_int">tracker_module_metadata_add_int</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_int     (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
                                                          const <link linkend="gchar">gchar</link> *field_name,
                                                          <link linkend="gint">gint</link> value);</programlisting>
 <para>
 Adds a new metadata element as a integer into <parameter>metadata</parameter>.
 see <link linkend="tracker-module-metadata-add-take-string"><function>tracker_module_metadata_add_take_string()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>metadata</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>metadata</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>field_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field_name</parameter>&#160;:</term>
 <listitem><simpara> Field name for the metadata to insert
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara> Value for the metadata
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-metadata-add-uint" role="function">
 <title>tracker_module_metadata_add_uint ()</title>
-<indexterm zone="tracker-module-metadata-add-uint"><primary>tracker_module_metadata_add_uint</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_uint    (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
+<indexterm zone="tracker-module-metadata-add-uint"><primary sortas="tracker_module_metadata_add_uint">tracker_module_metadata_add_uint</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_uint    (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
                                                          const <link linkend="gchar">gchar</link> *field_name,
                                                          <link linkend="guint">guint</link> value);</programlisting>
 <para>
 Adds a new metadata element as an unsigned integer into <parameter>metadata</parameter>.
 see <link linkend="tracker-module-metadata-add-take-string"><function>tracker_module_metadata_add_take_string()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>metadata</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>metadata</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>field_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field_name</parameter>&#160;:</term>
 <listitem><simpara> Field name for the metadata to insert
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara> Value for the metadata
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-metadata-add-double" role="function">
 <title>tracker_module_metadata_add_double ()</title>
-<indexterm zone="tracker-module-metadata-add-double"><primary>tracker_module_metadata_add_double</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_double  (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
+<indexterm zone="tracker-module-metadata-add-double"><primary sortas="tracker_module_metadata_add_double">tracker_module_metadata_add_double</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_double  (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
                                                          const <link linkend="gchar">gchar</link> *field_name,
                                                          <link linkend="gdouble">gdouble</link> value);</programlisting>
 <para>
 Adds a new metadata element as a double into <parameter>metadata</parameter>.
 see <link linkend="tracker-module-metadata-add-take-string"><function>tracker_module_metadata_add_take_string()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>metadata</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>metadata</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>field_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field_name</parameter>&#160;:</term>
 <listitem><simpara> Field name for the metadata to insert
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara> Value for the metadata
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-metadata-add-float" role="function">
 <title>tracker_module_metadata_add_float ()</title>
-<indexterm zone="tracker-module-metadata-add-float"><primary>tracker_module_metadata_add_float</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_float   (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
+<indexterm zone="tracker-module-metadata-add-float"><primary sortas="tracker_module_metadata_add_float">tracker_module_metadata_add_float</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_float   (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
                                                          const <link linkend="gchar">gchar</link> *field_name,
                                                          <link linkend="gfloat">gfloat</link> value);</programlisting>
 <para>
 Adds a new metadata element as a float into <parameter>metadata</parameter>.
 see <link linkend="tracker-module-metadata-add-take-string"><function>tracker_module_metadata_add_take_string()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>metadata</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>metadata</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>field_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field_name</parameter>&#160;:</term>
 <listitem><simpara> Field name for the metadata to insert
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara> Value for the metadata
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-metadata-add-date" role="function">
 <title>tracker_module_metadata_add_date ()</title>
-<indexterm zone="tracker-module-metadata-add-date"><primary>tracker_module_metadata_add_date</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_date    (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
+<indexterm zone="tracker-module-metadata-add-date"><primary sortas="tracker_module_metadata_add_date">tracker_module_metadata_add_date</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_add_date    (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
                                                          const <link linkend="gchar">gchar</link> *field_name,
                                                          <link linkend="time-t">time_t</link> value);</programlisting>
 <para>
 Adds a new metadata element as a time_t into <parameter>metadata</parameter>.
 see <link linkend="tracker-module-metadata-add-take-string"><function>tracker_module_metadata_add_take_string()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>metadata</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>metadata</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>field_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>field_name</parameter>&#160;:</term>
 <listitem><simpara> Field name for the metadata to insert
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara> Value for the metadata
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>

@@ -1,0 +1,52 @@
+<!-- ##### SECTION Title ##### -->
+Class
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT TrackerClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerClass:name ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerClass:uri ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION tracker_class_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_class_get_name ##### -->
+<para>
+
+</para>
+
+@service: 
+@Returns: 
+
+

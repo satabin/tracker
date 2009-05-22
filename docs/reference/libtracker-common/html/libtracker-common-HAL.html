@@ -8,7 +8,7 @@
 <link rel="up" href="ch03.html" title="Configuration">
 <link rel="prev" href="libtracker-common-Config.html" title="Config">
 <link rel="next" href="libtracker-common-Language.html" title="Language">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libtracker-common.html" title="Part I. Overview">
 <link rel="chapter" href="ch01.html" title="Utilities">
@@ -26,15 +26,17 @@
 <th width="100%" align="center">Tracker Common Library Reference Manual</th>
 <td><a accesskey="n" href="libtracker-common-Language.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libtracker-common-HAL.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libtracker-common-HAL.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#libtracker-common-HAL.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#libtracker-common-HAL.properties" class="shortcut">Properties</a>
-                   | 
-                  <a href="#libtracker-common-HAL.signals" class="shortcut">Signals</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libtracker-common-HAL.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libtracker-common-HAL.description" class="shortcut">Description</a>
+                 | 
+                <a href="#libtracker-common-HAL.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                 | 
+                <a href="#libtracker-common-HAL.properties" class="shortcut">Properties</a>
+                 | 
+                <a href="#libtracker-common-HAL.signals" class="shortcut">Signals</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libtracker-common-HAL"></a><div class="titlepage"></div>
@@ -52,20 +54,20 @@
 #include &lt;libtracker-common/tracker-hal.h&gt;
 
                     <a class="link" href="libtracker-common-HAL.html#TrackerHal-struct" title="TrackerHal">TrackerHal</a>;
-<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a>*         <a class="link" href="libtracker-common-HAL.html#tracker-hal-new" title="tracker_hal_new ()">tracker_hal_new</a>                     (void);
+<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *        <a class="link" href="libtracker-common-HAL.html#tracker-hal-new" title="tracker_hal_new ()">tracker_hal_new</a>                     (void);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libtracker-common-HAL.html#tracker-hal-get-battery-exists" title="tracker_hal_get_battery_exists ()">tracker_hal_get_battery_exists</a>      (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *hal);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libtracker-common-HAL.html#tracker-hal-get-battery-in-use" title="tracker_hal_get_battery_in_use ()">tracker_hal_get_battery_in_use</a>      (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *hal);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
->GList</a>*              <a class="link" href="libtracker-common-HAL.html#tracker-hal-get-mounted-directory-roots" title="tracker_hal_get_mounted_directory_roots ()">tracker_hal_get_mounted_directory_roots</a>
+href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"
+>GList</a> *             <a class="link" href="libtracker-common-HAL.html#tracker-hal-get-mounted-directory-roots" title="tracker_hal_get_mounted_directory_roots ()">tracker_hal_get_mounted_directory_roots</a>
                                                         (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *hal);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
->GList</a>*              <a class="link" href="libtracker-common-HAL.html#tracker-hal-get-removable-device-roots" title="tracker_hal_get_removable_device_roots ()">tracker_hal_get_removable_device_roots</a>
+href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"
+>GList</a> *             <a class="link" href="libtracker-common-HAL.html#tracker-hal-get-removable-device-roots" title="tracker_hal_get_removable_device_roots ()">tracker_hal_get_removable_device_roots</a>
                                                         (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *hal);
 </pre>
 </div>
@@ -73,7 +75,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
 <a name="libtracker-common-HAL.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----TrackerHal
 </pre>
@@ -82,13 +84,13 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 <a name="libtracker-common-HAL.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="libtracker-common-HAL.html#TrackerHal--battery-exists" title='The "battery-exists" property'>battery-exists</a>"           <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>              : Read
   "<a class="link" href="libtracker-common-HAL.html#TrackerHal--battery-in-use" title='The "battery-in-use" property'>battery-in-use</a>"           <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>              : Read
   "<a class="link" href="libtracker-common-HAL.html#TrackerHal--battery-percentage" title='The "battery-percentage" property'>battery-percentage</a>"       <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a>               : Read
 </pre>
 </div>
@@ -102,7 +104,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <div class="refsect1" lang="en">
 <a name="libtracker-common-HAL.description"></a><h2>Description</h2>
 <p>
-
 </p>
 </div>
 <div class="refsect1" lang="en">
@@ -111,17 +112,15 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <a name="TrackerHal-struct"></a><h3>TrackerHal</h3>
 <pre class="programlisting">typedef struct _TrackerHal TrackerHal;</pre>
 <p>
-
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="tracker-hal-new"></a><h3>tracker_hal_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a>*         tracker_hal_new                     (void);</pre>
+<pre class="programlisting"><a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *        tracker_hal_new                     (void);</pre>
 <p>
 Creates a new instance of <a class="link" href="libtracker-common-HAL.html#TrackerHal"><span class="type">TrackerHal</span></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -136,12 +135,11 @@ Creates a new instance of <a class="link" href="libtracker-common-HAL.html#Track
 <div class="refsect2" lang="en">
 <a name="tracker-hal-get-battery-exists"></a><h3>tracker_hal_get_battery_exists ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            tracker_hal_get_battery_exists      (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *hal);</pre>
 <p>
 Returns whether the computer has batteries.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -154,7 +152,7 @@ Returns whether the computer has batteries.</p>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><span class="type">TRUE</span></a> if the computer has batteries available.
 </td>
 </tr>
@@ -165,12 +163,11 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 <div class="refsect2" lang="en">
 <a name="tracker-hal-get-battery-in-use"></a><h3>tracker_hal_get_battery_in_use ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            tracker_hal_get_battery_in_use      (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *hal);</pre>
 <p>
 Returns whether the computer battery (if any) is currently in use.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -183,7 +180,7 @@ Returns whether the computer battery (if any) is currently in use.</p>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><span class="type">TRUE</span></a> if the computer is running on battery power.
 </td>
 </tr>
@@ -194,18 +191,17 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 <div class="refsect2" lang="en">
 <a name="tracker-hal-get-mounted-directory-roots"></a><h3>tracker_hal_get_mounted_directory_roots ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
->GList</a>*              tracker_hal_get_mounted_directory_roots
+href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"
+>GList</a> *             tracker_hal_get_mounted_directory_roots
                                                         (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *hal);</pre>
 <p>
 Returns a <span class="type">Glist</span> of strings containing the root directories for mounted devices.
 Each element must be freed using <a
-href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"
+href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"
 ><code class="function">g_free()</code></a> and the list itself using <a
-href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#g-list-free"
+href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free"
 ><code class="function">g_list_free()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -227,20 +223,19 @@ href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#g-list-free"
 <div class="refsect2" lang="en">
 <a name="tracker-hal-get-removable-device-roots"></a><h3>tracker_hal_get_removable_device_roots ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
->GList</a>*              tracker_hal_get_removable_device_roots
+href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"
+>GList</a> *             tracker_hal_get_removable_device_roots
                                                         (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *hal);</pre>
 <p>
 Returns a <a
-href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#GList"
+href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"
 ><span class="type">GList</span></a> of strings containing the root directories for removable devices.
 Each element must be freed using <a
-href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"
+href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"
 ><code class="function">g_free()</code></a> and the list itself through <a
-href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#g-list-free"
+href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#g-list-free"
 ><code class="function">g_list_free()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -264,7 +259,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Doubly-Linked-Lists.html#g-list-free"
 <div class="refsect2" lang="en">
 <a name="TrackerHal--battery-exists"></a><h3>The <code class="literal">"battery-exists"</code> property</h3>
 <pre class="programlisting">  "battery-exists"           <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>              : Read</pre>
 <p>There is a battery on this machine.</p>
 <p>Default value: FALSE</p>
@@ -273,7 +268,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 <div class="refsect2" lang="en">
 <a name="TrackerHal--battery-in-use"></a><h3>The <code class="literal">"battery-in-use"</code> property</h3>
 <pre class="programlisting">  "battery-in-use"           <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>              : Read</pre>
 <p>Whether the battery is being used.</p>
 <p>Default value: FALSE</p>
@@ -282,7 +277,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 <div class="refsect2" lang="en">
 <a name="TrackerHal--battery-percentage"></a><h3>The <code class="literal">"battery-percentage"</code> property</h3>
 <pre class="programlisting">  "battery-percentage"       <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a>               : Read</pre>
 <p>Battery percentage.</p>
 <p>Allowed values: [0,1]</p>
@@ -295,16 +290,15 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <a name="TrackerHal-mount-point-added"></a><h3>The <code class="literal">"mount-point-added"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *trackerhal,
                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a>      *arg1,
                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a>      *arg2,
                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a>    user_data)       : Run Last</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -322,7 +316,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>arg2</code></em> :</span></p></td>
 <td>
-
 </td>
 </tr>
 <tr>
@@ -337,16 +330,15 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <a name="TrackerHal-mount-point-removed"></a><h3>The <code class="literal">"mount-point-removed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *trackerhal,
                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a>      *arg1,
                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a>      *arg2,
                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a>    user_data)       : Run Last</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -364,7 +356,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>arg2</code></em> :</span></p></td>
 <td>
-
 </td>
 </tr>
 <tr>
@@ -378,6 +369,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

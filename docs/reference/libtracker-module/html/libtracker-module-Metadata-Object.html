@@ -8,7 +8,7 @@
 <link rel="up" href="ch02.html" title="Metadata">
 <link rel="prev" href="ch02.html" title="Metadata">
 <link rel="next" href="libtracker-module-Metadata-Convenience-Fallback-Functions.html" title="Metadata Convenience Fallback Functions">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="tracker-indexer.html" title="Part I. Overview">
 <link rel="chapter" href="ch01.html" title="Modules">
@@ -27,11 +27,13 @@
 <th width="100%" align="center">Tracker Indexer Reference Manual</th>
 <td><a accesskey="n" href="libtracker-module-Metadata-Convenience-Fallback-Functions.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libtracker-module-Metadata-Object.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libtracker-module-Metadata-Object.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#libtracker-module-Metadata-Object.object-hierarchy" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libtracker-module-Metadata-Object.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libtracker-module-Metadata-Object.description" class="shortcut">Description</a>
+                 | 
+                <a href="#libtracker-module-Metadata-Object.object-hierarchy" class="shortcut">Object Hierarchy</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libtracker-module-Metadata-Object"></a><div class="titlepage"></div>
@@ -49,59 +51,59 @@
 #include &lt;libtracker-module/tracker-module-metadata.h&gt;
 
 typedef             <a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a>;
-<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a>* <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-new" title="tracker_module_metadata_new ()">tracker_module_metadata_new</a>      (void);
+<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> * <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-new" title="tracker_module_metadata_new ()">tracker_module_metadata_new</a>     (void);
 void                <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-clear-field" title="tracker_module_metadata_clear_field ()">tracker_module_metadata_clear_field</a> (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-take-string" title="tracker_module_metadata_add_take_string ()">tracker_module_metadata_add_take_string</a>
                                                         (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *value);
 void                <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-string" title="tracker_module_metadata_add_string ()">tracker_module_metadata_add_string</a>  (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *value);
 void                <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-int" title="tracker_module_metadata_add_int ()">tracker_module_metadata_add_int</a>     (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> value);
 void                <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-uint" title="tracker_module_metadata_add_uint ()">tracker_module_metadata_add_uint</a>    (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 >guint</a> value);
 void                <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-double" title="tracker_module_metadata_add_double ()">tracker_module_metadata_add_double</a>  (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> value);
 void                <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-float" title="tracker_module_metadata_add_float ()">tracker_module_metadata_add_float</a>   (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gfloat"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"
 >gfloat</a> value);
 void                <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-date" title="tracker_module_metadata_add_date ()">tracker_module_metadata_add_date</a>    (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          time_t value);
 </pre>
@@ -110,7 +112,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <a name="libtracker-module-Metadata-Object.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----TrackerModuleMetadata
 </pre>
@@ -138,11 +140,10 @@ Metadata object
 <hr>
 <div class="refsect2" lang="en">
 <a name="tracker-module-metadata-new"></a><h3>tracker_module_metadata_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a>* tracker_module_metadata_new      (void);</pre>
+<pre class="programlisting"><a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> * tracker_module_metadata_new     (void);</pre>
 <p>
 Creates a new <a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata"><span class="type">TrackerModuleMetadata</span></a></p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -158,12 +159,11 @@ Creates a new <a class="link" href="libtracker-module-Metadata-Object.html#Track
 <a name="tracker-module-metadata-clear-field"></a><h3>tracker_module_metadata_clear_field ()</h3>
 <pre class="programlisting">void                tracker_module_metadata_clear_field (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name);</pre>
 <p>
 Clears any content for the given field name.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -185,14 +185,14 @@ Clears any content for the given field name.</p>
 <div class="refsect2" lang="en">
 <a name="tracker-module-metadata-add-take-string"></a><h3>tracker_module_metadata_add_take_string ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            tracker_module_metadata_add_take_string
                                                         (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *value);</pre>
 <p>
 Adds a new metadata element as a string into <em class="parameter"><code>metadata</code></em>.
@@ -202,12 +202,11 @@ field name.
 </p>
 <p>
 If the function returns <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><span class="type">TRUE</span></a>, <em class="parameter"><code>metadata</code></em> will take
 ownership on <em class="parameter"><code>value</code></em>, else you are responsible of
 freeing it.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -230,7 +229,7 @@ freeing it.</p>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><span class="type">TRUE</span></a> if the value was added successfully.
 </td>
 </tr>
@@ -242,16 +241,15 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 <a name="tracker-module-metadata-add-string"></a><h3>tracker_module_metadata_add_string ()</h3>
 <pre class="programlisting">void                tracker_module_metadata_add_string  (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *value);</pre>
 <p>
 Adds a new metadata element as a string into <em class="parameter"><code>metadata</code></em>.
 see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-take-string" title="tracker_module_metadata_add_take_string ()"><code class="function">tracker_module_metadata_add_take_string()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -279,16 +277,15 @@ see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-
 <a name="tracker-module-metadata-add-int"></a><h3>tracker_module_metadata_add_int ()</h3>
 <pre class="programlisting">void                tracker_module_metadata_add_int     (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> value);</pre>
 <p>
 Adds a new metadata element as a integer into <em class="parameter"><code>metadata</code></em>.
 see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-take-string" title="tracker_module_metadata_add_take_string ()"><code class="function">tracker_module_metadata_add_take_string()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -316,16 +313,15 @@ see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-
 <a name="tracker-module-metadata-add-uint"></a><h3>tracker_module_metadata_add_uint ()</h3>
 <pre class="programlisting">void                tracker_module_metadata_add_uint    (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 >guint</a> value);</pre>
 <p>
 Adds a new metadata element as an unsigned integer into <em class="parameter"><code>metadata</code></em>.
 see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-take-string" title="tracker_module_metadata_add_take_string ()"><code class="function">tracker_module_metadata_add_take_string()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -353,16 +349,15 @@ see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-
 <a name="tracker-module-metadata-add-double"></a><h3>tracker_module_metadata_add_double ()</h3>
 <pre class="programlisting">void                tracker_module_metadata_add_double  (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> value);</pre>
 <p>
 Adds a new metadata element as a double into <em class="parameter"><code>metadata</code></em>.
 see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-take-string" title="tracker_module_metadata_add_take_string ()"><code class="function">tracker_module_metadata_add_take_string()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -390,16 +385,15 @@ see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-
 <a name="tracker-module-metadata-add-float"></a><h3>tracker_module_metadata_add_float ()</h3>
 <pre class="programlisting">void                tracker_module_metadata_add_float   (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gfloat"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"
 >gfloat</a> value);</pre>
 <p>
 Adds a new metadata element as a float into <em class="parameter"><code>metadata</code></em>.
 see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-take-string" title="tracker_module_metadata_add_take_string ()"><code class="function">tracker_module_metadata_add_take_string()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -427,14 +421,13 @@ see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-
 <a name="tracker-module-metadata-add-date"></a><h3>tracker_module_metadata_add_date ()</h3>
 <pre class="programlisting">void                tracker_module_metadata_add_date    (<a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> *metadata,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *field_name,
                                                          time_t value);</pre>
 <p>
 Adds a new metadata element as a time_t into <em class="parameter"><code>metadata</code></em>.
 see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-metadata-add-take-string" title="tracker_module_metadata_add_take_string ()"><code class="function">tracker_module_metadata_add_take_string()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -467,6 +460,6 @@ see <a class="link" href="libtracker-module-Metadata-Object.html#tracker-module-
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

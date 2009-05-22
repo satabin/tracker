@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
-<book xmlns="http://www.devhelp.net/book" title="Tracker Common Library Reference Manual" link="index.html" author="" name="libtracker-common" version="2">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Common Library Reference Manual" link="index.html" author="" name="libtracker-common" version="2" language="c">
   <chapters>
     <sub name="Overview" link="libtracker-common.html"/>
     <sub name="Utilities" link="ch01.html">
@@ -129,20 +129,20 @@
     <keyword type="function" name="tracker_service_set_property_prefix ()" link="libtracker-common-Service.html#tracker-service-set-property-prefix"/>
     <keyword type="function" name="tracker_service_set_show_service_directories ()" link="libtracker-common-Service.html#tracker-service-set-show-service-directories"/>
     <keyword type="function" name="tracker_service_set_show_service_files ()" link="libtracker-common-Service.html#tracker-service-set-show-service-files"/>
-    <keyword type="" name="The &quot;content-metadata&quot; property" link="libtracker-common-Service.html#TrackerService--content-metadata"/>
-    <keyword type="" name="The &quot;db-type&quot; property" link="libtracker-common-Service.html#TrackerService--db-type"/>
-    <keyword type="" name="The &quot;embedded&quot; property" link="libtracker-common-Service.html#TrackerService--embedded"/>
-    <keyword type="" name="The &quot;enabled&quot; property" link="libtracker-common-Service.html#TrackerService--enabled"/>
-    <keyword type="" name="The &quot;has-full-text&quot; property" link="libtracker-common-Service.html#TrackerService--has-full-text"/>
-    <keyword type="" name="The &quot;has-metadata&quot; property" link="libtracker-common-Service.html#TrackerService--has-metadata"/>
-    <keyword type="" name="The &quot;has-thumbs&quot; property" link="libtracker-common-Service.html#TrackerService--has-thumbs"/>
-    <keyword type="" name="The &quot;id&quot; property" link="libtracker-common-Service.html#TrackerService--id"/>
-    <keyword type="" name="The &quot;key-metadata&quot; property" link="libtracker-common-Service.html#TrackerService--key-metadata"/>
-    <keyword type="" name="The &quot;name&quot; property" link="libtracker-common-Service.html#TrackerService--name"/>
-    <keyword type="" name="The &quot;parent&quot; property" link="libtracker-common-Service.html#TrackerService--parent"/>
-    <keyword type="" name="The &quot;property-prefix&quot; property" link="libtracker-common-Service.html#TrackerService--property-prefix"/>
-    <keyword type="" name="The &quot;show-service-directories&quot; property" link="libtracker-common-Service.html#TrackerService--show-service-directories"/>
-    <keyword type="" name="The &quot;show-service-files&quot; property" link="libtracker-common-Service.html#TrackerService--show-service-files"/>
+    <keyword type="property" name="The &quot;content-metadata&quot; property" link="libtracker-common-Service.html#TrackerService--content-metadata"/>
+    <keyword type="property" name="The &quot;db-type&quot; property" link="libtracker-common-Service.html#TrackerService--db-type"/>
+    <keyword type="property" name="The &quot;embedded&quot; property" link="libtracker-common-Service.html#TrackerService--embedded"/>
+    <keyword type="property" name="The &quot;enabled&quot; property" link="libtracker-common-Service.html#TrackerService--enabled"/>
+    <keyword type="property" name="The &quot;has-full-text&quot; property" link="libtracker-common-Service.html#TrackerService--has-full-text"/>
+    <keyword type="property" name="The &quot;has-metadata&quot; property" link="libtracker-common-Service.html#TrackerService--has-metadata"/>
+    <keyword type="property" name="The &quot;has-thumbs&quot; property" link="libtracker-common-Service.html#TrackerService--has-thumbs"/>
+    <keyword type="property" name="The &quot;id&quot; property" link="libtracker-common-Service.html#TrackerService--id"/>
+    <keyword type="property" name="The &quot;key-metadata&quot; property" link="libtracker-common-Service.html#TrackerService--key-metadata"/>
+    <keyword type="property" name="The &quot;name&quot; property" link="libtracker-common-Service.html#TrackerService--name"/>
+    <keyword type="property" name="The &quot;parent&quot; property" link="libtracker-common-Service.html#TrackerService--parent"/>
+    <keyword type="property" name="The &quot;property-prefix&quot; property" link="libtracker-common-Service.html#TrackerService--property-prefix"/>
+    <keyword type="property" name="The &quot;show-service-directories&quot; property" link="libtracker-common-Service.html#TrackerService--show-service-directories"/>
+    <keyword type="property" name="The &quot;show-service-files&quot; property" link="libtracker-common-Service.html#TrackerService--show-service-files"/>
     <keyword type="struct" name="TrackerField" link="libtracker-common-Fields.html#TrackerField-struct"/>
     <keyword type="function" name="tracker_field_new ()" link="libtracker-common-Fields.html#tracker-field-new"/>
     <keyword type="function" name="tracker_field_append_child_id ()" link="libtracker-common-Fields.html#tracker-field-append-child-id"/>
@@ -169,17 +169,17 @@
     <keyword type="function" name="tracker_field_set_store_metadata ()" link="libtracker-common-Fields.html#tracker-field-set-store-metadata"/>
     <keyword type="function" name="tracker_field_set_weight ()" link="libtracker-common-Fields.html#tracker-field-set-weight"/>
     <keyword type="function" name="tracker_field_type_to_string ()" link="libtracker-common-Fields.html#tracker-field-type-to-string"/>
-    <keyword type="" name="The &quot;child-ids&quot; property" link="libtracker-common-Fields.html#TrackerField--child-ids"/>
-    <keyword type="" name="The &quot;data-type&quot; property" link="libtracker-common-Fields.html#TrackerField--data-type"/>
-    <keyword type="" name="The &quot;delimited&quot; property" link="libtracker-common-Fields.html#TrackerField--delimited"/>
-    <keyword type="" name="The &quot;embedded&quot; property" link="libtracker-common-Fields.html#TrackerField--embedded"/>
-    <keyword type="" name="The &quot;field-name&quot; property" link="libtracker-common-Fields.html#TrackerField--field-name"/>
-    <keyword type="" name="The &quot;filtered&quot; property" link="libtracker-common-Fields.html#TrackerField--filtered"/>
-    <keyword type="" name="The &quot;id&quot; property" link="libtracker-common-Fields.html#TrackerField--id"/>
-    <keyword type="" name="The &quot;multiple-values&quot; property" link="libtracker-common-Fields.html#TrackerField--multiple-values"/>
-    <keyword type="" name="The &quot;name&quot; property" link="libtracker-common-Fields.html#TrackerField--name"/>
-    <keyword type="" name="The &quot;store-metadata&quot; property" link="libtracker-common-Fields.html#TrackerField--store-metadata"/>
-    <keyword type="" name="The &quot;weight&quot; property" link="libtracker-common-Fields.html#TrackerField--weight"/>
+    <keyword type="property" name="The &quot;child-ids&quot; property" link="libtracker-common-Fields.html#TrackerField--child-ids"/>
+    <keyword type="property" name="The &quot;data-type&quot; property" link="libtracker-common-Fields.html#TrackerField--data-type"/>
+    <keyword type="property" name="The &quot;delimited&quot; property" link="libtracker-common-Fields.html#TrackerField--delimited"/>
+    <keyword type="property" name="The &quot;embedded&quot; property" link="libtracker-common-Fields.html#TrackerField--embedded"/>
+    <keyword type="property" name="The &quot;field-name&quot; property" link="libtracker-common-Fields.html#TrackerField--field-name"/>
+    <keyword type="property" name="The &quot;filtered&quot; property" link="libtracker-common-Fields.html#TrackerField--filtered"/>
+    <keyword type="property" name="The &quot;id&quot; property" link="libtracker-common-Fields.html#TrackerField--id"/>
+    <keyword type="property" name="The &quot;multiple-values&quot; property" link="libtracker-common-Fields.html#TrackerField--multiple-values"/>
+    <keyword type="property" name="The &quot;name&quot; property" link="libtracker-common-Fields.html#TrackerField--name"/>
+    <keyword type="property" name="The &quot;store-metadata&quot; property" link="libtracker-common-Fields.html#TrackerField--store-metadata"/>
+    <keyword type="property" name="The &quot;weight&quot; property" link="libtracker-common-Fields.html#TrackerField--weight"/>
     <keyword type="struct" name="TrackerConfig" link="libtracker-common-Config.html#TrackerConfig-struct"/>
     <keyword type="function" name="tracker_config_new ()" link="libtracker-common-Config.html#tracker-config-new"/>
     <keyword type="function" name="tracker_config_add_crawl_directory_roots ()" link="libtracker-common-Config.html#tracker-config-add-crawl-directory-roots"/>
@@ -238,45 +238,45 @@
     <keyword type="function" name="tracker_config_set_nfs_locking ()" link="libtracker-common-Config.html#tracker-config-set-nfs-locking"/>
     <keyword type="function" name="tracker_config_set_throttle ()" link="libtracker-common-Config.html#tracker-config-set-throttle"/>
     <keyword type="function" name="tracker_config_set_verbosity ()" link="libtracker-common-Config.html#tracker-config-set-verbosity"/>
-    <keyword type="" name="The &quot;crawl-directory-roots&quot; property" link="libtracker-common-Config.html#TrackerConfig--crawl-directory-roots"/>
-    <keyword type="" name="The &quot;disable-indexing-on-battery&quot; property" link="libtracker-common-Config.html#TrackerConfig--disable-indexing-on-battery"/>
-    <keyword type="" name="The &quot;disable-indexing-on-battery-init&quot; property" link="libtracker-common-Config.html#TrackerConfig--disable-indexing-on-battery-init"/>
-    <keyword type="" name="The &quot;disabled-modules&quot; property" link="libtracker-common-Config.html#TrackerConfig--disabled-modules"/>
-    <keyword type="" name="The &quot;enable-content-indexing&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-content-indexing"/>
-    <keyword type="" name="The &quot;enable-indexing&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-indexing"/>
-    <keyword type="" name="The &quot;enable-stemmer&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-stemmer"/>
-    <keyword type="" name="The &quot;enable-thumbnails&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-thumbnails"/>
-    <keyword type="" name="The &quot;enable-watches&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-watches"/>
-    <keyword type="" name="The &quot;fast-merges&quot; property" link="libtracker-common-Config.html#TrackerConfig--fast-merges"/>
-    <keyword type="" name="The &quot;index-mounted-directories&quot; property" link="libtracker-common-Config.html#TrackerConfig--index-mounted-directories"/>
-    <keyword type="" name="The &quot;index-removable-devices&quot; property" link="libtracker-common-Config.html#TrackerConfig--index-removable-devices"/>
-    <keyword type="" name="The &quot;initial-sleep&quot; property" link="libtracker-common-Config.html#TrackerConfig--initial-sleep"/>
-    <keyword type="" name="The &quot;language&quot; property" link="libtracker-common-Config.html#TrackerConfig--language"/>
-    <keyword type="" name="The &quot;low-disk-space-limit&quot; property" link="libtracker-common-Config.html#TrackerConfig--low-disk-space-limit"/>
-    <keyword type="" name="The &quot;low-memory-mode&quot; property" link="libtracker-common-Config.html#TrackerConfig--low-memory-mode"/>
-    <keyword type="" name="The &quot;max-bucket-count&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-bucket-count"/>
-    <keyword type="" name="The &quot;max-text-to-index&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-text-to-index"/>
-    <keyword type="" name="The &quot;max-word-length&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-word-length"/>
-    <keyword type="" name="The &quot;max-words-to-index&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-words-to-index"/>
-    <keyword type="" name="The &quot;min-bucket-count&quot; property" link="libtracker-common-Config.html#TrackerConfig--min-bucket-count"/>
-    <keyword type="" name="The &quot;min-word-length&quot; property" link="libtracker-common-Config.html#TrackerConfig--min-word-length"/>
-    <keyword type="" name="The &quot;nfs-locking&quot; property" link="libtracker-common-Config.html#TrackerConfig--nfs-locking"/>
-    <keyword type="" name="The &quot;no-index-file-types&quot; property" link="libtracker-common-Config.html#TrackerConfig--no-index-file-types"/>
-    <keyword type="" name="The &quot;no-watch-directory-roots&quot; property" link="libtracker-common-Config.html#TrackerConfig--no-watch-directory-roots"/>
-    <keyword type="" name="The &quot;throttle&quot; property" link="libtracker-common-Config.html#TrackerConfig--throttle"/>
-    <keyword type="" name="The &quot;verbosity&quot; property" link="libtracker-common-Config.html#TrackerConfig--verbosity"/>
-    <keyword type="" name="The &quot;watch-directory-roots&quot; property" link="libtracker-common-Config.html#TrackerConfig--watch-directory-roots"/>
+    <keyword type="property" name="The &quot;crawl-directory-roots&quot; property" link="libtracker-common-Config.html#TrackerConfig--crawl-directory-roots"/>
+    <keyword type="property" name="The &quot;disable-indexing-on-battery&quot; property" link="libtracker-common-Config.html#TrackerConfig--disable-indexing-on-battery"/>
+    <keyword type="property" name="The &quot;disable-indexing-on-battery-init&quot; property" link="libtracker-common-Config.html#TrackerConfig--disable-indexing-on-battery-init"/>
+    <keyword type="property" name="The &quot;disabled-modules&quot; property" link="libtracker-common-Config.html#TrackerConfig--disabled-modules"/>
+    <keyword type="property" name="The &quot;enable-content-indexing&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-content-indexing"/>
+    <keyword type="property" name="The &quot;enable-indexing&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-indexing"/>
+    <keyword type="property" name="The &quot;enable-stemmer&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-stemmer"/>
+    <keyword type="property" name="The &quot;enable-thumbnails&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-thumbnails"/>
+    <keyword type="property" name="The &quot;enable-watches&quot; property" link="libtracker-common-Config.html#TrackerConfig--enable-watches"/>
+    <keyword type="property" name="The &quot;fast-merges&quot; property" link="libtracker-common-Config.html#TrackerConfig--fast-merges"/>
+    <keyword type="property" name="The &quot;index-mounted-directories&quot; property" link="libtracker-common-Config.html#TrackerConfig--index-mounted-directories"/>
+    <keyword type="property" name="The &quot;index-removable-devices&quot; property" link="libtracker-common-Config.html#TrackerConfig--index-removable-devices"/>
+    <keyword type="property" name="The &quot;initial-sleep&quot; property" link="libtracker-common-Config.html#TrackerConfig--initial-sleep"/>
+    <keyword type="property" name="The &quot;language&quot; property" link="libtracker-common-Config.html#TrackerConfig--language"/>
+    <keyword type="property" name="The &quot;low-disk-space-limit&quot; property" link="libtracker-common-Config.html#TrackerConfig--low-disk-space-limit"/>
+    <keyword type="property" name="The &quot;low-memory-mode&quot; property" link="libtracker-common-Config.html#TrackerConfig--low-memory-mode"/>
+    <keyword type="property" name="The &quot;max-bucket-count&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-bucket-count"/>
+    <keyword type="property" name="The &quot;max-text-to-index&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-text-to-index"/>
+    <keyword type="property" name="The &quot;max-word-length&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-word-length"/>
+    <keyword type="property" name="The &quot;max-words-to-index&quot; property" link="libtracker-common-Config.html#TrackerConfig--max-words-to-index"/>
+    <keyword type="property" name="The &quot;min-bucket-count&quot; property" link="libtracker-common-Config.html#TrackerConfig--min-bucket-count"/>
+    <keyword type="property" name="The &quot;min-word-length&quot; property" link="libtracker-common-Config.html#TrackerConfig--min-word-length"/>
+    <keyword type="property" name="The &quot;nfs-locking&quot; property" link="libtracker-common-Config.html#TrackerConfig--nfs-locking"/>
+    <keyword type="property" name="The &quot;no-index-file-types&quot; property" link="libtracker-common-Config.html#TrackerConfig--no-index-file-types"/>
+    <keyword type="property" name="The &quot;no-watch-directory-roots&quot; property" link="libtracker-common-Config.html#TrackerConfig--no-watch-directory-roots"/>
+    <keyword type="property" name="The &quot;throttle&quot; property" link="libtracker-common-Config.html#TrackerConfig--throttle"/>
+    <keyword type="property" name="The &quot;verbosity&quot; property" link="libtracker-common-Config.html#TrackerConfig--verbosity"/>
+    <keyword type="property" name="The &quot;watch-directory-roots&quot; property" link="libtracker-common-Config.html#TrackerConfig--watch-directory-roots"/>
     <keyword type="struct" name="TrackerHal" link="libtracker-common-HAL.html#TrackerHal-struct"/>
     <keyword type="function" name="tracker_hal_new ()" link="libtracker-common-HAL.html#tracker-hal-new"/>
     <keyword type="function" name="tracker_hal_get_battery_exists ()" link="libtracker-common-HAL.html#tracker-hal-get-battery-exists"/>
     <keyword type="function" name="tracker_hal_get_battery_in_use ()" link="libtracker-common-HAL.html#tracker-hal-get-battery-in-use"/>
     <keyword type="function" name="tracker_hal_get_mounted_directory_roots ()" link="libtracker-common-HAL.html#tracker-hal-get-mounted-directory-roots"/>
     <keyword type="function" name="tracker_hal_get_removable_device_roots ()" link="libtracker-common-HAL.html#tracker-hal-get-removable-device-roots"/>
-    <keyword type="" name="The &quot;battery-exists&quot; property" link="libtracker-common-HAL.html#TrackerHal--battery-exists"/>
-    <keyword type="" name="The &quot;battery-in-use&quot; property" link="libtracker-common-HAL.html#TrackerHal--battery-in-use"/>
-    <keyword type="" name="The &quot;battery-percentage&quot; property" link="libtracker-common-HAL.html#TrackerHal--battery-percentage"/>
-    <keyword type="" name="The &quot;mount-point-added&quot; signal" link="libtracker-common-HAL.html#TrackerHal-mount-point-added"/>
-    <keyword type="" name="The &quot;mount-point-removed&quot; signal" link="libtracker-common-HAL.html#TrackerHal-mount-point-removed"/>
+    <keyword type="property" name="The &quot;battery-exists&quot; property" link="libtracker-common-HAL.html#TrackerHal--battery-exists"/>
+    <keyword type="property" name="The &quot;battery-in-use&quot; property" link="libtracker-common-HAL.html#TrackerHal--battery-in-use"/>
+    <keyword type="property" name="The &quot;battery-percentage&quot; property" link="libtracker-common-HAL.html#TrackerHal--battery-percentage"/>
+    <keyword type="signal" name="The &quot;mount-point-added&quot; signal" link="libtracker-common-HAL.html#TrackerHal-mount-point-added"/>
+    <keyword type="signal" name="The &quot;mount-point-removed&quot; signal" link="libtracker-common-HAL.html#TrackerHal-mount-point-removed"/>
     <keyword type="struct" name="TrackerLanguage" link="libtracker-common-Language.html#TrackerLanguage-struct"/>
     <keyword type="function" name="tracker_language_new ()" link="libtracker-common-Language.html#tracker-language-new"/>
     <keyword type="function" name="tracker_language_check_exists ()" link="libtracker-common-Language.html#tracker-language-check-exists"/>
@@ -285,8 +285,8 @@
     <keyword type="function" name="tracker_language_get_stop_words ()" link="libtracker-common-Language.html#tracker-language-get-stop-words"/>
     <keyword type="function" name="tracker_language_set_config ()" link="libtracker-common-Language.html#tracker-language-set-config"/>
     <keyword type="function" name="tracker_language_stem_word ()" link="libtracker-common-Language.html#tracker-language-stem-word"/>
-    <keyword type="" name="The &quot;config&quot; property" link="libtracker-common-Language.html#TrackerLanguage--config"/>
-    <keyword type="" name="The &quot;stop-words&quot; property" link="libtracker-common-Language.html#TrackerLanguage--stop-words"/>
+    <keyword type="property" name="The &quot;config&quot; property" link="libtracker-common-Language.html#TrackerLanguage--config"/>
+    <keyword type="property" name="The &quot;stop-words&quot; property" link="libtracker-common-Language.html#TrackerLanguage--stop-words"/>
     <keyword type="function" name="tracker_module_config_init ()" link="libtracker-common-Module-Config.html#tracker-module-config-init"/>
     <keyword type="function" name="tracker_module_config_shutdown ()" link="libtracker-common-Module-Config.html#tracker-module-config-shutdown"/>
     <keyword type="function" name="tracker_module_config_get_description ()" link="libtracker-common-Module-Config.html#tracker-module-config-get-description"/>

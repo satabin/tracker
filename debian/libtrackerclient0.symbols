@@ -57,6 +57,8 @@ libtrackerclient.so.0 libtrackerclient0 #MINVER#
  tracker_metadata_get_type_details@Base 0.6.2
  tracker_metadata_get_unique_values@Base 0.6.90
  tracker_metadata_get_unique_values_async@Base 0.6.90
+ tracker_metadata_get_unique_values_with_aggregates@Base 0.6.95
+ tracker_metadata_get_unique_values_with_aggregates_async@Base 0.6.95
  tracker_metadata_get_unique_values_with_concat_count_and_sum@Base 0.6.91
  tracker_metadata_get_unique_values_with_concat_count_and_sum_async@Base 0.6.91
  tracker_metadata_get_unique_values_with_count@Base 0.6.90

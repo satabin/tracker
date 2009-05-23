@@ -1,4 +1,4 @@
-tracker (0.6.95-1) UNRELEASED; urgency=low
+tracker (0.6.95-1) unstable; urgency=low
 
   * New upstream release.
   * Stop installing the kmail push module for now as kmail support is not yet
@@ -6,7 +6,7 @@ tracker (0.6.95-1) UNRELEASED; urgency=low
   * debian/libtrackerclient0.symbols
     - Updated for new API additions.
 
- -- Michael Biebl <biebl@debian.org>  Fri, 22 May 2009 23:30:34 +0200
+ -- Michael Biebl <biebl@debian.org>  Sun, 24 May 2009 00:53:09 +0200
 
 tracker (0.6.94-1) unstable; urgency=low
 

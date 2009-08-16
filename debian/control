@@ -102,8 +102,8 @@ Section: libs
 Depends: ${shlibs:Depends},
          ${misc:Depends}
 Description: GTK+ widgets for apps that use tracker
- This library provides handy GTK+ widgets which allows applications to 
- easily make use of tracker. 
+ This library provides handy GTK+ widgets which allows applications to
+ easily make use of tracker.
 
 Package: libtracker-gtk-dev
 Architecture: any
@@ -117,8 +117,8 @@ Description: GTK+ widgets for apps that use tracker - development files
  This package contains the static libraries and header files needed to link
  applications with libtracker-gtk.
  .
- libtracker-gtk provides handy GTK+ widgets which allows applications to 
- easily make use of tracker. 
+ libtracker-gtk provides handy GTK+ widgets which allows applications to
+ easily make use of tracker.
 
 Package: tracker-utils
 Architecture: any

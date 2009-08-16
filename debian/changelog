@@ -1,11 +1,11 @@
-tracker (0.6.95-2) UNRELEASED; urgency=low
+tracker (0.6.95-2) unstable; urgency=low
 
   * Bump Standards-Version to 3.8.2. No further changes.
   * libdeskbar-tracker: Change Depends on python-gnome2-desktop to
     python-gnomedesktop, as python-gnome2-desktop is going away.
     (Closes: #541565)
 
- -- Michael Biebl <biebl@debian.org>  Sun, 16 Aug 2009 02:07:30 +0200
+ -- Michael Biebl <biebl@debian.org>  Sun, 16 Aug 2009 02:22:03 +0200
 
 tracker (0.6.95-1) unstable; urgency=low
 

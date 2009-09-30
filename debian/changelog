@@ -6,6 +6,9 @@ tracker (0.6.95-3) UNRELEASED; urgency=low
   * debian/patches/30-gmime-2.4.patch
     - Pull patch from https://bugzilla.gnome.org/show_bug.cgi?id=564640 to
       make tracker compile against GMime 2.4.
+  * debian/patches/99-autoreconf.patch
+    - Run autoreconf as the gmime-2.4 patch requires changes to the build
+      system.
 
  -- Michael Biebl <biebl@debian.org>  Wed, 30 Sep 2009 19:47:56 +0200
 

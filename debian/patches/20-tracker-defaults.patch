@@ -1,7 +1,7 @@
-diff --git a/src/libtracker-common/tracker-config.c b/src/libtracker-common/tracker-config.c
-index 1745480..8ce05e8 100644
---- a/src/libtracker-common/tracker-config.c
-+++ b/src/libtracker-common/tracker-config.c
+Index: tracker-0.6.95/src/libtracker-common/tracker-config.c
+===================================================================
+--- tracker-0.6.95.orig/src/libtracker-common/tracker-config.c	2009-09-30 20:33:41.664220179 +0200
++++ tracker-0.6.95/src/libtracker-common/tracker-config.c	2009-09-30 20:34:33.990883559 +0200
 @@ -77,7 +77,7 @@
  #define DEFAULT_LOW_MEMORY_MODE			 FALSE
  #define DEFAULT_NFS_LOCKING			 FALSE
@@ -11,7 +11,7 @@ index 1745480..8ce05e8 100644
  #define DEFAULT_ENABLE_INDEXING			 TRUE
  #define DEFAULT_ENABLE_CONTENT_INDEXING		 TRUE
  #define DEFAULT_ENABLE_THUMBNAILS		 TRUE
-@@ -761,6 +761,7 @@ config_create_with_defaults (GKeyFile *key_file,
+@@ -757,6 +757,7 @@
  	gchar	     *language;
  	const gchar  *watch_directory_roots[2] = { NULL, NULL };
  	const gchar  *empty_string_list[] = { NULL };
@@ -19,7 +19,7 @@ index 1745480..8ce05e8 100644
  
  	/* Get default values */
  	language = tracker_language_get_default_code ();
-@@ -871,7 +872,7 @@ config_create_with_defaults (GKeyFile *key_file,
+@@ -867,7 +868,7 @@
  
  	if (overwrite || !g_key_file_has_key (key_file, GROUP_INDEXING, KEY_DISABLED_MODULES, NULL)) {
  		g_key_file_set_string_list (key_file, GROUP_INDEXING, KEY_DISABLED_MODULES,

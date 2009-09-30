@@ -1,4 +1,4 @@
-tracker (0.6.95-3) UNRELEASED; urgency=low
+tracker (0.6.95-3) unstable; urgency=low
 
   * Port to GMime 2.4. (Closes: #549052)
   * debian/control
@@ -11,7 +11,7 @@ tracker (0.6.95-3) UNRELEASED; urgency=low
     - Run autoreconf as the gmime-2.4 patch requires changes to the build
       system.
 
- -- Michael Biebl <biebl@debian.org>  Wed, 30 Sep 2009 19:47:56 +0200
+ -- Michael Biebl <biebl@debian.org>  Wed, 30 Sep 2009 23:11:34 +0200
 
 tracker (0.6.95-2) unstable; urgency=low
 

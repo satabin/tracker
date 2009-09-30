@@ -3,6 +3,7 @@ tracker (0.6.95-3) UNRELEASED; urgency=low
   * Port to GMime 2.4. (Closes: #549052)
   * debian/control
     - Update Build-Depends libgmime-2.0-2-dev → libgmime-2.4-dev.
+    - Bump Standards-Version to 3.8.3. No further changes.
   * debian/patches/30-gmime-2.4.patch
     - Pull patch from https://bugzilla.gnome.org/show_bug.cgi?id=564640 to
       make tracker compile against GMime 2.4.

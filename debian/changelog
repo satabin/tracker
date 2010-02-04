@@ -1,3 +1,9 @@
+tracker (0.6.96-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 04 Feb 2010 21:44:49 +0100
+
 tracker (0.6.95-3) unstable; urgency=low
 
   * Port to GMime 2.4. (Closes: #549052)

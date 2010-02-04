@@ -122,6 +122,12 @@ void            tracker_indexer_files_delete        (TrackerIndexer         *ind
 						     GStrv                   files,
 						     DBusGMethodInvocation  *context,
 						     GError                **error);
+void            tracker_indexer_files_move          (TrackerIndexer         *indexer,
+						     const gchar            *module,
+						     GStrv                   from_files,
+						     GStrv                   to_files,
+						     DBusGMethodInvocation  *context,
+						     GError                **error);
 void            tracker_indexer_file_move           (TrackerIndexer         *indexer,
 						     const gchar            *module_name,
 						     gchar                  *from,
@@ -156,6 +162,10 @@ void            tracker_indexer_restore_backup      (TrackerIndexer         *ind
 						     DBusGMethodInvocation  *context,
 						     GError                **error);
 void            tracker_indexer_shutdown            (TrackerIndexer         *indexer,
+						     DBusGMethodInvocation  *context,
+						     GError                **error);
+void            tracker_indexer_set_profile         (TrackerIndexer         *indexer,
+						     const gchar            *profile_name,
 						     DBusGMethodInvocation  *context,
 						     GError                **error);
 

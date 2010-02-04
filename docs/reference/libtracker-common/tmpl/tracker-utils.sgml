@@ -9,20 +9,24 @@ General
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION tracker_escape_string ##### -->
+<!-- ##### FUNCTION tracker_escape_db_string ##### -->
 <para>
 
 </para>
 
-@in: 
+@str: 
+@add_quotes: 
+@escape_percent: 
 @Returns: 
 
 

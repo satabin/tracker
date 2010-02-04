@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Defining Properties</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Tracker Indexer Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Indexer Reference Manual">
 <link rel="up" href="adding-categories.html" title="Adding Categories &amp; Properties">
 <link rel="prev" href="adding-categories.html" title="Adding Categories &amp; Properties">
 <link rel="next" href="writing-an-extractor.html" title="Writing An Extractor">
@@ -26,7 +26,7 @@
 <th width="100%" align="center">Tracker Indexer Reference Manual</th>
 <td><a accesskey="n" href="writing-an-extractor.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="section" lang="en">
+<div class="section" title="Defining Properties">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="defining-properties"></a>Defining Properties</h2></div></div></div>
 <p>
@@ -42,7 +42,7 @@
       obtain from the extractor. The mandatory information is:
     </p>
 <div class="example">
-<a name="id488085"></a><p class="title"><b>Example 2. Mandatory Properties</b></p>
+<a name="id497196"></a><p class="title"><b>Example 2. Mandatory Properties</b></p>
 <div class="example-contents"><pre class="programlisting">
 [CategoryName:PropertyName]
 DisplayName=Name to show to the user
@@ -51,14 +51,14 @@ DataType=(index, keyword, double, integer, date) [2]
       </pre></div>
 </div>
 <br class="example-break"><div class="example">
-<a name="id488098"></a><p class="title"><b>Example 3. Properties Recommended</b></p>
+<a name="id497210"></a><p class="title"><b>Example 3. Properties Recommended</b></p>
 <div class="example-contents"><pre class="programlisting">
 Weight=Relevance of this property
 Parent=Parent property, usually from default.metadata
 Embedded=The property is embedded on the file or can/will be set by the user or other applications
       </pre></div>
 </div>
-<br class="example-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<br class="example-break"><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>
 	[2] The "index" and "keywords" are indexed as text. The
@@ -73,7 +73,7 @@ Embedded=The property is embedded on the file or can/will be set by the user or 
       following content: 
     </p>
 <div class="example">
-<a name="id488124"></a><p class="title"><b>Example 4. Real Data</b></p>
+<a name="id497236"></a><p class="title"><b>Example 4. Real Data</b></p>
 <div class="example-contents"><pre class="programlisting">
 [Playlist:TotalLength]
 DisplayName=Length

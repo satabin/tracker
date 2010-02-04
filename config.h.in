@@ -25,6 +25,9 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
+/* Enca language detection aid */
+#undef HAVE_ENCA
+
 /* Define if we have Evolution plugin */
 #undef HAVE_EVOLUTION_PLUGIN
 
@@ -170,11 +173,17 @@
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
 
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
+
+/* Use tagreadbin in gstreamer extraction */
+#undef TRACKER_EXTRACT_GSTREAMER_USE_TAGREADBIN
 
 /* Define that Tracker will try to use external video players */
 #undef USING_EXTERNAL_VIDEO_PLAYER

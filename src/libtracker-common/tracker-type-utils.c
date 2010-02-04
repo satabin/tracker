@@ -21,12 +21,17 @@
 
 #include "config.h"
 
+#if !defined(__OpenBSD__)
 #define _XOPEN_SOURCE
+#endif
+#include <sys/types.h>
 #include <time.h>
 
 #include <strings.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
 #include <glib.h>
 
@@ -35,6 +40,11 @@
 #include "tracker-type-utils.h"
 
 #define DATE_FORMAT_ISO8601 "%Y-%m-%dT%H:%M:%S%z"
+
+/* Fix for < Glib 2.20. */
+#ifndef G_GOFFSET_FORMAT
+#define G_GOFFSET_FORMAT G_GINT64_FORMAT
+#endif /* G_GOFFSET_FORMAT */
 
 static const char *months[] = {
 	"Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -45,26 +55,6 @@ static const char imonths[] = {
 	'1', '2', '3', '4', '5',
 	'6', '7', '8', '9', '0', '1', '2'
 };
-
-static gboolean
-is_int (const gchar *str)
-{
-	gint	 i, len;
-
-	if (!str || str[0] == '\0') {
-		return FALSE;
-	}
-
-	len = strlen (str);
-
-	for (i = 0; i < len; i++) {
-		if (!g_ascii_isdigit(str[i])) {
-			return FALSE;
-		}
-	}
-
-	return TRUE ;
-}
 
 static gint
 parse_month (const gchar *month)
@@ -80,8 +70,168 @@ parse_month (const gchar *month)
 	return -1;
 }
 
-/* Determine date format and convert to ISO 8601 format */
-/* FIXME We should handle all the fractions here (see ISO 8601), as well as YYYY:DDD etc */
+static gdouble
+get_remainder_multiplier (gint remainder)
+{
+	gdouble mult;
+
+	mult = (gdouble) remainder;
+
+	while (mult > 1) {
+		mult /= 10;
+	}
+
+	return mult;
+}
+
+/* FIXME We still do not handle large years or year-week
+ * or year-day-formats (not that they would be common in 
+ * file formats)
+ */
+static gboolean
+tracker_simplify_8601 (const gchar *date_string,
+		       gchar       *buf)
+{
+	gchar        *copy, *date, *sep;
+	gchar        *time = NULL, *zone = NULL;
+	const gchar  *time_part;
+	gint          year, mon, day, hour, min, sec, remainder;
+	gint          len;
+	gchar       **pieces;
+	const gchar  *timezone_sep = NULL;
+		
+
+	if (!date_string) {
+		return FALSE;
+	}
+
+	date = copy = g_strdup (date_string);
+	year = mon = day = 1;
+	hour = min = sec = 0;
+	zone = NULL;
+
+	/* First try to split date and time, either by ' ' or 'T' */
+	sep = strchr (copy, 'T');
+
+	if (!sep) {
+		sep = strchr (copy, ' ');
+	}
+
+	if (sep) {
+		/* Separate date and time */
+		*sep = '\0';
+		time_part = sep + 1;
+	} else {
+		time_part = NULL;
+	}
+
+	if (time_part) {
+		timezone_sep = g_strrstr (time_part, "+");
+		if (!timezone_sep) {
+			timezone_sep = g_strrstr (time_part, "-");
+		}
+
+		if (!timezone_sep) {
+			/* Remove a trailing Z */
+			len = strlen (time_part);
+			
+			if (time_part[len-1] == 'Z')
+				len--;
+
+			time = g_strndup (time_part, len);
+			zone = g_strdup ("+00:00");
+		} else {
+			pieces = g_strsplit_set (time_part, "+-", -1);
+			time = g_strdup (pieces [0]);
+			zone = g_strdup_printf ("%c%s", timezone_sep[0], pieces [1]);
+			g_strfreev (pieces);
+		}
+	}
+
+	if (!zone) {
+		zone = g_strdup ("+00:00");
+	}
+
+	if (date) {
+		len = strlen (date);
+
+		if (len == 10 && sscanf (date, "%4d-%2d-%2d", &year, &mon, &day) == 3) {
+			/* YYYY-MM-DD */
+		} else if (len == 8 && sscanf (date, "%2d-%2d-%2d", &year, &mon, &day) == 3) {
+			/* YY-MM-DD */
+		} else if (len == 8 && sscanf (date, "%4d%2d%2d", &year, &mon, &day) == 3) {
+			/* YYYYMMDD */
+		} else if (len == 6 && sscanf (date, "%2d%2d%2d", &year, &mon, &day) == 3) {
+			/* YYMMDD */
+		} else if (len == 7 && sscanf (date, "%4d-%2d", &year, &mon) == 2) {
+			/* YYYY-MM */
+			day = 1;
+		} else if (len == 4 && sscanf (date, "%4d", &year) == 1) {
+			/* Full year */
+			mon = day = 1;
+		} else if (len == 2 && sscanf (date, "%2d", &year) == 1) {
+			/* Only the century (this is a weird one) */
+			year *= 100;
+			mon = day = 1;
+		} else {
+			g_warning ("Could not parse date in '%s'", date);
+			g_free (copy);
+			return FALSE;
+		}
+	}
+
+	if (time) {
+		len = strlen (time);
+
+		if (len >= 8 && sscanf (time, "%2d:%2d:%2d", &hour, &min, &sec) == 3) {
+			/* hh:mm:ss */
+		} else if (len >= 7 && sscanf (time, "%2d:%2d.%d", &hour, &min, &remainder) == 3) {
+			gdouble mult;
+
+			mult = get_remainder_multiplier (remainder);
+			sec = 60 * mult;
+		} else if (len == 6 && sscanf (time, "%2d%2d%2d", &hour, &min, &sec) == 3) {
+			/* hhmmss */
+		} else if (len == 5 && sscanf (time, "%2d:%2d", &hour, &min) == 2) {
+			/* hh:mm */
+			sec = 0;
+		} else if (len >= 4 && sscanf (time, "%2d.%d", &hour, &remainder) == 2) {
+			gdouble mult;
+			gint secs_in_remainder;
+
+			/* hh.r */
+			mult = get_remainder_multiplier (remainder);
+			secs_in_remainder = 60 * 60 * mult;
+			min = secs_in_remainder / 60;
+			sec = secs_in_remainder % 60;
+		} else if (len == 2 && sscanf (time, "%2d", &hour) == 1) {
+			/* hh */
+			min = sec = 0;
+		} else {
+			g_critical ("Could not parse time in '%s'", time);
+			g_free (copy);
+			g_free (time);
+			g_free (zone);
+			return FALSE;
+		}
+	}
+
+	sprintf (buf,
+		 "%04d-%02d-%02dT%02d:%02d:%02d%s",
+		 year, mon, day,
+		 hour, min, sec,
+		 zone);
+
+	g_free (copy);
+	g_free (zone);
+	if (time) {
+		g_free (time);
+	}
+
+	return TRUE;
+}
+
+/* Determine date format and convert to simple ISO 8601 format */
 gchar *
 tracker_date_format (const gchar *date_string)
 {
@@ -94,68 +244,15 @@ tracker_date_format (const gchar *date_string)
 
 	len = strlen (date_string);
 
-	/* We cannot format a date without at least a four digit
+	/* We cannot format a date without at least a 2 digit
 	 * year.
 	 */
-	if (len < 4) {
+	if (len < 2) {
 		return NULL;
 	}
 
-	/* Check for year only dates (EG ID3 music tags might have
-	 * Audio.ReleaseDate as 4 digit year)
-	 */
-	if (len == 4) {
-		if (is_int (date_string)) {
-			buf[0] = date_string[0];
-			buf[1] = date_string[1];
-			buf[2] = date_string[2];
-			buf[3] = date_string[3];
-			buf[4] = '-';
-			buf[5] = '0';
-			buf[6] = '1';
-			buf[7] = '-';
-			buf[8] = '0';
-			buf[9] = '1';
-			buf[10] = 'T';
-			buf[11] = '0';
-			buf[12] = '0';
-			buf[13] = ':';
-			buf[14] = '0';
-			buf[15] = '0';
-			buf[16] = ':';
-			buf[17] = '0';
-			buf[18] = '0';
-			buf[19] = '\0';
-
-			return g_strdup (buf);
-		} else {
-			return NULL;
-		}
-	} else if (len == 10)  {
-		/* Check for date part only YYYY-MM-DD*/
-		buf[0] = date_string[0];
-		buf[1] = date_string[1];
-		buf[2] = date_string[2];
-		buf[3] = date_string[3];
-		buf[4] = '-';
-		buf[5] = date_string[5];
-		buf[6] = date_string[6];
-		buf[7] = '-';
-		buf[8] = date_string[8];
-		buf[9] = date_string[9];
-		buf[10] = 'T';
-		buf[11] = '0';
-		buf[12] = '0';
-		buf[13] = ':';
-		buf[14] = '0';
-		buf[15] = '0';
-		buf[16] = ':';
-		buf[17] = '0';
-		buf[18] = '0';
-		buf[19] = '\0';
-
-		return g_strdup (buf);
-	} else if (len == 14) {
+	/* First check for non-8601 formats (why do we even do this? Extractors should already)*/
+	if (len == 14) {
 		/* Check for pdf format EG 20050315113224-08'00' or
 		 * 20050216111533Z
 		 */
@@ -178,62 +275,16 @@ tracker_date_format (const gchar *date_string)
 		buf[16] = ':';
 		buf[17] = date_string[12];
 		buf[18] = date_string[13];
-		buf[19] = '\0';
-
-		return g_strdup (buf);
-	} else if (len == 15 && date_string[14] == 'Z') {
-		buf[0] = date_string[0];
-		buf[1] = date_string[1];
-		buf[2] = date_string[2];
-		buf[3] = date_string[3];
-		buf[4] = '-';
-		buf[5] = date_string[4];
-		buf[6] = date_string[5];
-		buf[7] = '-';
-		buf[8] = date_string[6];
-		buf[9] = date_string[7];
-		buf[10] = 'T';
-		buf[11] = date_string[8];
-		buf[12] = date_string[9];
-		buf[13] = ':';
-		buf[14] = date_string[10];
-		buf[15] = date_string[11];
-		buf[16] = ':';
-		buf[17] = date_string[12];
-		buf[18] = date_string[13];
-		buf[19] = 'Z';
-		buf[20] = '\0';
-
-		return g_strdup (buf);
-	} else if (len == 21 && (date_string[14] == '-' || date_string[14] == '+' )) {
-		buf[0] = date_string[0];
-		buf[1] = date_string[1];
-		buf[2] = date_string[2];
-		buf[3] = date_string[3];
-		buf[4] = '-';
-		buf[5] = date_string[4];
-		buf[6] = date_string[5];
-		buf[7] = '-';
-		buf[8] = date_string[6];
-		buf[9] = date_string[7];
-		buf[10] = 'T';
-		buf[11] = date_string[8];
-		buf[12] = date_string[9];
-		buf[13] = ':';
-		buf[14] = date_string[10];
-		buf[15] = date_string[11];
-		buf[16] = ':';
-		buf[17] = date_string[12];
-		buf[18] = date_string[13];
-		buf[19] = date_string[14];
-		buf[20] = date_string[15];
-		buf[21] = date_string[16];
-		buf[22] =  ':';
-		buf[23] = date_string[18];
-		buf[24] = date_string[19];
+		buf[19] = '+';
+		buf[20] = '0';
+		buf[21] = '0';
+		buf[22] = ':';
+		buf[23] = '0';
+		buf[24] = '0';
 		buf[25] = '\0';
 
 		return g_strdup (buf);
+
 	} else if ((len == 24) && (date_string[3] == ' ')) {
 		/* Check for msoffice date format "Mon Feb  9 10:10:00 2004" */
 		gint  num_month;
@@ -276,9 +327,16 @@ tracker_date_format (const gchar *date_string)
 		buf[16] = ':';
 		buf[17] = date_string[17];
 		buf[18] = date_string[18];
-		buf[19] = '\0';
+		buf[19] = '+';
+		buf[20] = '0';
+		buf[21] = '0';
+		buf[22] = ':';
+		buf[23] = '0';
+		buf[24] = '0';
+		buf[25] = '\0';
 
 		return g_strdup (buf);
+
 	} else if ((len == 19) && (date_string[4] == ':') && (date_string[7] == ':')) {
 		/* Check for Exif date format "2005:04:29 14:56:54" */
 		buf[0] = date_string[0];
@@ -300,39 +358,47 @@ tracker_date_format (const gchar *date_string)
 		buf[16] = ':';
 		buf[17] = date_string[17];
 		buf[18] = date_string[18];
-		buf[19] = '\0';
+		buf[19] = '+';
+		buf[20] = '0';
+		buf[21] = '0';
+		buf[22] = ':';
+		buf[23] = '0';
+		buf[24] = '0';
+		buf[25] = '\0';
 
 		return g_strdup (buf);
-	} else if ((len == 28) && (date_string[4] == '-') && (date_string[10] == 'T') 
-		   && (date_string[19] == '.') ) {
-		/* The fraction of seconds ISO 8601 "YYYY-MM-DDThh:mm:ss.ff+zz:zz" */
+
+	} else if (len == 15 && date_string[14] == 'Z') {		
 		buf[0] = date_string[0];
 		buf[1] = date_string[1];
 		buf[2] = date_string[2];
 		buf[3] = date_string[3];
 		buf[4] = '-';
-		buf[5] = date_string[5];
-		buf[6] = date_string[6];
+		buf[5] = date_string[4];
+		buf[6] = date_string[5];
 		buf[7] = '-';
-		buf[8] = date_string[8];
-		buf[9] = date_string[9];
+		buf[8] = date_string[6];
+		buf[9] = date_string[7];
 		buf[10] = 'T';
-		buf[11] = date_string[11];
-		buf[12] = date_string[12];
+		buf[11] = date_string[8];
+		buf[12] = date_string[9];
 		buf[13] = ':';
-		buf[14] = date_string[14];
-		buf[15] = date_string[15];
+		buf[14] = date_string[10];
+		buf[15] = date_string[11];
 		buf[16] = ':';
-		buf[17] = date_string[17];
-		buf[18] = date_string[18];
-		buf[19] = date_string[22];
-		buf[20] = date_string[23];
-		buf[21] = date_string[24];
+		buf[17] = date_string[12];
+		buf[18] = date_string[13];
+		buf[19] = '+';
+		buf[20] = '0';
+		buf[21] = '0';
 		buf[22] = ':';
-		buf[23] = date_string[26];
-		buf[24] = date_string[27];
+		buf[23] = '0';
+		buf[24] = '0';
 		buf[25] = '\0';
 
+		return g_strdup (buf);
+
+	} else if (tracker_simplify_8601 (date_string, buf)) {
 		return g_strdup (buf);
 	}
 
@@ -528,11 +594,15 @@ tracker_string_to_date (const gchar *date_string)
 		tm.tm_sec = strtoul (date_string, (gchar**) &date_string, 10);
 	}
 
+#if !(defined(__FreeBSD__) || defined(__OpenBSD__))
 	/* mktime() always assumes that "tm" is in locale time but we
 	 * want to keep control on time, so we go to UTC
 	 */
 	t  = mktime (&tm);
 	t -= timezone;
+#else
+	t = timegm (&tm);
+#endif
 
 	if (*date_string == '+' ||
 	    *date_string == '-') {
@@ -629,6 +699,24 @@ gchar *
 tracker_guint32_to_string (guint32 i)
 {
 	return g_strdup_printf ("%" G_GUINT32_FORMAT, i);
+}
+
+gchar *
+tracker_gint64_to_string (gint64 i)
+{
+	return g_strdup_printf ("%" G_GINT64_FORMAT, i);
+}
+
+gchar *
+tracker_guint64_to_string (guint64 i)
+{
+	return g_strdup_printf ("%" G_GUINT64_FORMAT, i);
+}
+
+gchar *
+tracker_goffset_to_string (goffset i)
+{
+	return g_strdup_printf ("%" G_GOFFSET_FORMAT, i);
 }
 
 gboolean

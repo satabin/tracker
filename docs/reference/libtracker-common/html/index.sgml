@@ -38,6 +38,10 @@
 <ANCHOR id="libtracker-common-Type-Conversions.synopsis" href="libtracker-common/libtracker-common-Type-Conversions.html#libtracker-common-Type-Conversions.synopsis">
 <ANCHOR id="libtracker-common-Type-Conversions.description" href="libtracker-common/libtracker-common-Type-Conversions.html#libtracker-common-Type-Conversions.description">
 <ANCHOR id="libtracker-common-Type-Conversions.details" href="libtracker-common/libtracker-common-Type-Conversions.html#libtracker-common-Type-Conversions.details">
+<ANCHOR id="tracker-date-format" href="libtracker-common/libtracker-common-Type-Conversions.html#tracker-date-format">
+<ANCHOR id="tracker-date-format-to-iso8601" href="libtracker-common/libtracker-common-Type-Conversions.html#tracker-date-format-to-iso8601">
+<ANCHOR id="tracker-date-to-string" href="libtracker-common/libtracker-common-Type-Conversions.html#tracker-date-to-string">
+<ANCHOR id="tracker-date-to-time-string" href="libtracker-common/libtracker-common-Type-Conversions.html#tracker-date-to-time-string">
 <ANCHOR id="tracker-gint32-to-string" href="libtracker-common/libtracker-common-Type-Conversions.html#tracker-gint32-to-string">
 <ANCHOR id="tracker-gint-to-string" href="libtracker-common/libtracker-common-Type-Conversions.html#tracker-gint-to-string">
 <ANCHOR id="tracker-glong-to-string" href="libtracker-common/libtracker-common-Type-Conversions.html#tracker-glong-to-string">
@@ -56,7 +60,7 @@
 <ANCHOR id="libtracker-common-General.synopsis" href="libtracker-common/libtracker-common-General.html#libtracker-common-General.synopsis">
 <ANCHOR id="libtracker-common-General.description" href="libtracker-common/libtracker-common-General.html#libtracker-common-General.description">
 <ANCHOR id="libtracker-common-General.details" href="libtracker-common/libtracker-common-General.html#libtracker-common-General.details">
-<ANCHOR id="tracker-escape-string" href="libtracker-common/libtracker-common-General.html#tracker-escape-string">
+<ANCHOR id="tracker-escape-db-string" href="libtracker-common/libtracker-common-General.html#tracker-escape-db-string">
 <ANCHOR id="tracker-is-empty-string" href="libtracker-common/libtracker-common-General.html#tracker-is-empty-string">
 <ANCHOR id="tracker-seconds-estimate-to-string" href="libtracker-common/libtracker-common-General.html#tracker-seconds-estimate-to-string">
 <ANCHOR id="tracker-seconds-to-string" href="libtracker-common/libtracker-common-General.html#tracker-seconds-to-string">

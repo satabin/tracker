@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>HAL</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Tracker Common Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
 <link rel="up" href="ch03.html" title="Configuration">
 <link rel="prev" href="libtracker-common-Config.html" title="Config">
 <link rel="next" href="libtracker-common-Language.html" title="Language">
@@ -38,7 +38,7 @@
                 <a href="#libtracker-common-HAL.signals" class="shortcut">Signals</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="HAL">
 <a name="libtracker-common-HAL"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libtracker-common-HAL.synopsis"></a><h2>Synopsis</h2>
 <a name="TrackerHal"></a><pre class="synopsis">
 
@@ -71,7 +71,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html
                                                         (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *hal);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="libtracker-common-HAL.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -80,7 +80,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
    +----TrackerHal
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Properties">
 <a name="libtracker-common-HAL.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="libtracker-common-HAL.html#TrackerHal--battery-exists" title='The "battery-exists" property'>battery-exists</a>"           <a
@@ -94,28 +94,28 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 >gdouble</a>               : Read
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Signals">
 <a name="libtracker-common-HAL.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
   "<a class="link" href="libtracker-common-HAL.html#TrackerHal-mount-point-added" title='The "mount-point-added" signal'>mount-point-added</a>"                              : Run Last
   "<a class="link" href="libtracker-common-HAL.html#TrackerHal-mount-point-removed" title='The "mount-point-removed" signal'>mount-point-removed</a>"                            : Run Last
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libtracker-common-HAL.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libtracker-common-HAL.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="TrackerHal">
 <a name="TrackerHal-struct"></a><h3>TrackerHal</h3>
 <pre class="programlisting">typedef struct _TrackerHal TrackerHal;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_hal_new ()">
 <a name="tracker-hal-new"></a><h3>tracker_hal_new ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *        tracker_hal_new                     (void);</pre>
 <p>
@@ -132,7 +132,7 @@ Creates a new instance of <a class="link" href="libtracker-common-HAL.html#Track
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_hal_get_battery_exists ()">
 <a name="tracker-hal-get-battery-exists"></a><h3>tracker_hal_get_battery_exists ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -151,16 +151,14 @@ Returns whether the computer has batteries.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><span class="type">TRUE</span></a> if the computer has batteries available.
+<td> <span class="type">TRUE</span> if the computer has batteries available.
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_hal_get_battery_in_use ()">
 <a name="tracker-hal-get-battery-in-use"></a><h3>tracker_hal_get_battery_in_use ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -179,16 +177,14 @@ Returns whether the computer battery (if any) is currently in use.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><span class="type">TRUE</span></a> if the computer is running on battery power.
+<td> <span class="type">TRUE</span> if the computer is running on battery power.
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_hal_get_mounted_directory_roots ()">
 <a name="tracker-hal-get-mounted-directory-roots"></a><h3>tracker_hal_get_mounted_directory_roots ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"
@@ -220,7 +216,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_hal_get_removable_device_roots ()">
 <a name="tracker-hal-get-removable-device-roots"></a><h3>tracker_hal_get_removable_device_roots ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"
@@ -254,9 +250,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Property Details">
 <a name="libtracker-common-HAL.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "battery-exists" property'>
 <a name="TrackerHal--battery-exists"></a><h3>The <code class="literal">"battery-exists"</code> property</h3>
 <pre class="programlisting">  "battery-exists"           <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -265,7 +261,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: FALSE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "battery-in-use" property'>
 <a name="TrackerHal--battery-in-use"></a><h3>The <code class="literal">"battery-in-use"</code> property</h3>
 <pre class="programlisting">  "battery-in-use"           <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -274,7 +270,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: FALSE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "battery-percentage" property'>
 <a name="TrackerHal--battery-percentage"></a><h3>The <code class="literal">"battery-percentage"</code> property</h3>
 <pre class="programlisting">  "battery-percentage"       <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -284,9 +280,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <p>Default value: 0</p>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Signal Details">
 <a name="libtracker-common-HAL.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "mount-point-added" signal'>
 <a name="TrackerHal-mount-point-added"></a><h3>The <code class="literal">"mount-point-added"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *trackerhal,
                                                         <a
@@ -326,7 +322,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "mount-point-removed" signal'>
 <a name="TrackerHal-mount-point-removed"></a><h3>The <code class="literal">"mount-point-removed"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="libtracker-common-HAL.html#TrackerHal">TrackerHal</a> *trackerhal,
                                                         <a

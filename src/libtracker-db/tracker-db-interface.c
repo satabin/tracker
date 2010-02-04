@@ -63,6 +63,15 @@ tracker_db_interface_error_quark (void)
 static void
 tracker_db_interface_class_init (gpointer iface)
 {
+	GType iface_type = G_TYPE_FROM_INTERFACE (iface);
+
+	g_signal_new ("invalidated",
+		      iface_type,
+		      G_SIGNAL_RUN_LAST,
+		      0, NULL, NULL,
+		      g_cclosure_marshal_VOID__VOID,
+		      G_TYPE_NONE, 0);
+
 	g_object_interface_install_property (iface,
 					     g_param_spec_boolean ("in-transaction",
 								   "In transaction",
@@ -656,6 +665,12 @@ tracker_db_result_set_get (TrackerDBResultSet *result_set,
 	row = g_ptr_array_index (priv->array, priv->current_row);
 	va_start (args, result_set);
 
+	if (!row) {
+		g_warning ("No data was allocated for row %d, this means the database "
+			   "contained NULL or non-managed values for all the data in it",
+			   priv->current_row);
+	}
+
 	while ((n_col = va_arg (args, gint)) >= 0) {
 		if ((guint) n_col >= priv->columns) {
 			g_critical ("Result set has %d columns, trying to access column %d, "
@@ -664,7 +679,7 @@ tracker_db_result_set_get (TrackerDBResultSet *result_set,
 			break;
 		}
 
-		if (priv->col_types[n_col] != G_TYPE_INVALID) {
+		if (row && row[n_col] && priv->col_types[n_col] != G_TYPE_INVALID) {
 			g_value_init (&value, priv->col_types[n_col]);
 			fill_in_value (&value, row[n_col]);
 			G_VALUE_LCOPY (&value, args, 0, &error);

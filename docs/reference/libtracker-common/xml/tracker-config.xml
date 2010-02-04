@@ -1027,7 +1027,7 @@ is 3 you receive debug, messages, info and warnings.</para>
 <refsect2 id="TrackerConfig--throttle" role="property"><title>The <literal>&quot;throttle&quot;</literal> property</title>
 <indexterm zone="TrackerConfig--throttle"><primary sortas="TrackerConfig:throttle">TrackerConfig:throttle</primary></indexterm><programlisting>  &quot;throttle&quot;                 <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para>Throttle indexing, higher value is slower (0-&gt;20).</para><para>Allowed values: [0,20]</para>
-<para>Default value: 0</para>
+<para>Default value: 10</para>
 </refsect2>
 <refsect2 id="TrackerConfig--verbosity" role="property"><title>The <literal>&quot;verbosity&quot;</literal> property</title>
 <indexterm zone="TrackerConfig--verbosity"><primary sortas="TrackerConfig:verbosity">TrackerConfig:verbosity</primary></indexterm><programlisting>  &quot;verbosity&quot;                <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>

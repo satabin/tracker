@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Metadata Convenience Fallback Functions</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Tracker Indexer Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Indexer Reference Manual">
 <link rel="up" href="ch02.html" title="Metadata">
 <link rel="prev" href="libtracker-module-Metadata-Object.html" title="Metadata Object">
 <link rel="next" href="integrating-applications.html" title="Part II. Integrating Applications">
@@ -33,7 +33,7 @@
                 <a href="#libtracker-module-Metadata-Convenience-Fallback-Functions.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="Metadata Convenience Fallback Functions">
 <a name="libtracker-module-Metadata-Convenience-Fallback-Functions"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -42,7 +42,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libtracker-module-Metadata-Convenience-Fallback-Functions.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
@@ -60,14 +60,14 @@ href="http://library.gnome.org/devel/gio/unstable/GFile.html"
 >GFile</a> *file);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libtracker-module-Metadata-Convenience-Fallback-Functions.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libtracker-module-Metadata-Convenience-Fallback-Functions.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_module_metadata_utils_get_data ()">
 <a name="tracker-module-metadata-utils-get-data"></a><h3>tracker_module_metadata_utils_get_data ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> * tracker_module_metadata_utils_get_data
                                                         (<a
@@ -90,16 +90,14 @@ href="http://library.gnome.org/devel/gio/unstable/GFile.html"
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A newly created <a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata"><span class="type">TrackerModuleMetadata</span></a>, or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a> if the file is not found.
+<td> A newly created <a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata"><span class="type">TrackerModuleMetadata</span></a>, or <code class="literal">NULL</code> if the file is not found.
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_module_metadata_utils_get_text ()">
 <a name="tracker-module-metadata-utils-get-text"></a><h3>tracker_module_metadata_utils_get_text ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -125,16 +123,14 @@ href="http://library.gnome.org/devel/gio/unstable/GFile.html"
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A newly allocated string containing the file text, or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>.
+<td> A newly allocated string containing the file text, or <code class="literal">NULL</code>.
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="See Also">
 <a name="libtracker-module-Metadata-Convenience-Fallback-Functions.see-also"></a><h2>See Also</h2>
 <p>
 <a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata"><span class="type">TrackerModuleMetadata</span></a>, <a class="link" href="libtracker-module-Module-files.html#tracker-module-file-get-metadata" title="tracker_module_file_get_metadata ()"><code class="function">tracker_module_file_get_metadata()</code></a> and <a class="link" href="libtracker-module-Module-files.html#tracker-module-file-get-text" title="tracker_module_file_get_text ()"><code class="function">tracker_module_file_get_text()</code></a>

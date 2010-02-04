@@ -34,6 +34,7 @@
 #include <gst/tag/tag.h>
 
 #include "tracker-main.h"
+#include "tracker-utils.h"
 #include "tracker-extract-albumart.h"
 
 typedef enum {
@@ -145,6 +146,14 @@ caps_set_video (GObject		  *object,
 }
 
 static void
+free_stream_info (gpointer data)
+{
+	if (data) {
+		g_object_unref (data);
+	}
+}
+
+static void
 update_stream_info (MetadataExtractor *extractor)
 {
 	GList  *streaminfo;
@@ -208,7 +217,7 @@ update_stream_info (MetadataExtractor *extractor)
 		}
 	}
 
-	g_list_foreach (streaminfo, (GFunc) g_object_unref, NULL);
+	g_list_foreach (streaminfo, (GFunc) free_stream_info, NULL);
 	g_list_free (streaminfo);
 }
 
@@ -838,37 +847,13 @@ tracker_extract_gstreamer_helix (const gchar *uri,
 	/* Check that we have the minimum data. FIXME We should not need to do this */
 
 	if (type == EXTRACT_MIME_VIDEO) {
-		if (!g_hash_table_lookup (metadata, "Video:Title")) {
-			gchar  *basename = g_filename_display_basename (uri);
-			gchar **parts    = g_strsplit (basename, ".", -1);
-			gchar  *title    = g_strdup (parts[0]);
-			
-			g_strfreev (parts);
-			g_free (basename);
-
-			title = g_strdelimit (title, "_", ' ');
-			
-			g_hash_table_insert (metadata,
-					     g_strdup ("Video:Title"),
-					     tracker_escape_metadata (title));
-			g_free (title);
-		}
+		tracker_utils_default_check_filename (metadata,
+						      "Video:Title",
+						      uri);
 	} else if (type == EXTRACT_MIME_AUDIO) {
-		if (!g_hash_table_lookup (metadata, "Audio:Title")) {
-			gchar  *basename = g_filename_display_basename (uri);
-			gchar **parts    = g_strsplit (basename, ".", -1);
-			gchar  *title    = g_strdup (parts[0]);
-			
-			g_strfreev (parts);
-			g_free (basename);
-			
-			title = g_strdelimit (title, "_", ' ');
-			
-			g_hash_table_insert (metadata,
-					     g_strdup ("Audio:Title"),
-					     tracker_escape_metadata (title));
-			g_free (title);
-		}
+		tracker_utils_default_check_filename (metadata,
+						      "Audio:Title",
+						      uri);
 	}
 
 	/* Also clean up */

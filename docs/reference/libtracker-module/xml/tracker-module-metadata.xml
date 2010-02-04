@@ -50,7 +50,8 @@ typedef             <link linkend="TrackerModuleMetadata">TrackerModuleMetadata<
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
   <link linkend="GObject">GObject</link>
-   +----TrackerModuleMetadata
+   +----<link linkend="TrackerDataMetadata">TrackerDataMetadata</link>
+         +----TrackerModuleMetadata
 </synopsis>
 </refsect1>
 
@@ -96,14 +97,12 @@ Creates a new <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata<
 <indexterm zone="tracker-module-metadata-clear-field"><primary sortas="tracker_module_metadata_clear_field">tracker_module_metadata_clear_field</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_module_metadata_clear_field (<link linkend="TrackerModuleMetadata">TrackerModuleMetadata</link> *metadata,
                                                          const <link linkend="gchar">gchar</link> *field_name);</programlisting>
 <para>
-Clears any content for the given field name.</para>
-<para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>metadata</parameter>&#160;:</term>
-<listitem><simpara> A <link linkend="TrackerModuleMetadata"><type>TrackerModuleMetadata</type></link>
+<listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>field_name</parameter>&#160;:</term>
-<listitem><simpara> Field name for the metadata to clear
+<listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-module-metadata-add-take-string" role="function">

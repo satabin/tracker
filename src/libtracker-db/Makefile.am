@@ -18,7 +18,6 @@ libtracker_db_LTLIBRARIES = libtracker-db.la
 libtracker_db_la_SOURCES = 						\
 	tracker-db-action.c						\
 	tracker-db-dbus.c						\
-	tracker-db-file-info.c						\
 	tracker-db-index.c						\
 	tracker-db-index-item.c						\
 	tracker-db-index-manager.c					\
@@ -29,7 +28,6 @@ libtracker_db_la_SOURCES = 						\
 noinst_HEADERS =							\
 	tracker-db-action.h						\
 	tracker-db-dbus.h						\
-	tracker-db-file-info.h						\
 	tracker-db-index.h						\
 	tracker-db-index-item.h						\
 	tracker-db-index-manager.h					\
@@ -38,7 +36,7 @@ noinst_HEADERS =							\
 	tracker-db-manager.h 
 
 libtracker_db_la_LDFLAGS =						\
-	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+	-version-info 0:0:0
 
 libtracker_db_la_LIBADD = 						\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\

@@ -9,6 +9,7 @@ tracker (0.6.96-1) UNRELEASED; urgency=low
     - debian/patches/30-gmime-2.4.patch (merged upstream)
   * debian/control
     - Fix small typo in tracker-dbg's package description. (Closes: #550771)
+    - Bump Standards-Version to 3.8.4. No further changes.
   * debian/patches/10-binutils-gold.patch
     - Add missing libraries to fix FTBFS with binutils-gold. (Closes: #556499)
   * debian/patches/15-am-maintainer-mode.patch

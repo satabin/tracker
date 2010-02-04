@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>General</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Tracker Common Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
 <link rel="up" href="ch01.html" title="Utilities">
 <link rel="prev" href="libtracker-common-Type-Conversions.html" title="Type Conversions">
 <link rel="next" href="ch02.html" title="Ontology">
@@ -32,7 +32,7 @@
                 <a href="#libtracker-common-General.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="General">
 <a name="libtracker-common-General"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -41,7 +41,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libtracker-common-General.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
@@ -49,9 +49,15 @@
 
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             <a class="link" href="libtracker-common-General.html#tracker-escape-string" title="tracker_escape_string ()">tracker_escape_string</a>               (const <a
+>gchar</a> *             <a class="link" href="libtracker-common-General.html#tracker-escape-db-string" title="tracker_escape_db_string ()">tracker_escape_db_string</a>            (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *in);
+>gchar</a> *str,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a> add_quotes,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a> escape_percent);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libtracker-common-General.html#tracker-is-empty-string" title="tracker_is_empty_string ()">tracker_is_empty_string</a>             (const char *str);
@@ -102,27 +108,43 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> multiplier);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libtracker-common-General.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libtracker-common-General.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
-<a name="tracker-escape-string"></a><h3>tracker_escape_string ()</h3>
+<div class="refsect2" title="tracker_escape_db_string ()">
+<a name="tracker-escape-db-string"></a><h3>tracker_escape_db_string ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             tracker_escape_string               (const <a
+>gchar</a> *             tracker_escape_db_string            (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *in);</pre>
+>gchar</a> *str,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a> add_quotes,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a> escape_percent);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>in</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>add_quotes</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>escape_percent</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
@@ -135,7 +157,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_is_empty_string ()">
 <a name="tracker-is-empty-string"></a><h3>tracker_is_empty_string ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -159,7 +181,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_seconds_estimate_to_string ()">
 <a name="tracker-seconds-estimate-to-string"></a><h3>tracker_seconds_estimate_to_string ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -209,7 +231,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_seconds_to_string ()">
 <a name="tracker-seconds-to-string"></a><h3>tracker_seconds_to_string ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -243,7 +265,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_string_remove ()">
 <a name="tracker-string-remove"></a><h3>tracker_string_remove ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -277,7 +299,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_string_replace ()">
 <a name="tracker-string-replace"></a><h3>tracker_string_replace ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -319,7 +341,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_throttle ()">
 <a name="tracker-throttle"></a><h3>tracker_throttle ()</h3>
 <pre class="programlisting">void                tracker_throttle                    (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a

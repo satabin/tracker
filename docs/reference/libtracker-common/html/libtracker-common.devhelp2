@@ -50,6 +50,10 @@
     <keyword type="function" name="tracker_nfs_lock_obtain ()" link="libtracker-common-NFS-Locking.html#tracker-nfs-lock-obtain"/>
     <keyword type="function" name="tracker_nfs_lock_release ()" link="libtracker-common-NFS-Locking.html#tracker-nfs-lock-release"/>
     <keyword type="function" name="tracker_nfs_lock_shutdown ()" link="libtracker-common-NFS-Locking.html#tracker-nfs-lock-shutdown"/>
+    <keyword type="function" name="tracker_date_format ()" link="libtracker-common-Type-Conversions.html#tracker-date-format"/>
+    <keyword type="function" name="tracker_date_format_to_iso8601 ()" link="libtracker-common-Type-Conversions.html#tracker-date-format-to-iso8601"/>
+    <keyword type="function" name="tracker_date_to_string ()" link="libtracker-common-Type-Conversions.html#tracker-date-to-string"/>
+    <keyword type="function" name="tracker_date_to_time_string ()" link="libtracker-common-Type-Conversions.html#tracker-date-to-time-string"/>
     <keyword type="function" name="tracker_gint32_to_string ()" link="libtracker-common-Type-Conversions.html#tracker-gint32-to-string"/>
     <keyword type="function" name="tracker_gint_to_string ()" link="libtracker-common-Type-Conversions.html#tracker-gint-to-string"/>
     <keyword type="function" name="tracker_glong_to_string ()" link="libtracker-common-Type-Conversions.html#tracker-glong-to-string"/>
@@ -64,7 +68,7 @@
     <keyword type="function" name="tracker_string_to_date ()" link="libtracker-common-Type-Conversions.html#tracker-string-to-date"/>
     <keyword type="function" name="tracker_string_to_string_list ()" link="libtracker-common-Type-Conversions.html#tracker-string-to-string-list"/>
     <keyword type="function" name="tracker_string_to_uint ()" link="libtracker-common-Type-Conversions.html#tracker-string-to-uint"/>
-    <keyword type="function" name="tracker_escape_string ()" link="libtracker-common-General.html#tracker-escape-string"/>
+    <keyword type="function" name="tracker_escape_db_string ()" link="libtracker-common-General.html#tracker-escape-db-string"/>
     <keyword type="function" name="tracker_is_empty_string ()" link="libtracker-common-General.html#tracker-is-empty-string"/>
     <keyword type="function" name="tracker_seconds_estimate_to_string ()" link="libtracker-common-General.html#tracker-seconds-estimate-to-string"/>
     <keyword type="function" name="tracker_seconds_to_string ()" link="libtracker-common-General.html#tracker-seconds-to-string"/>

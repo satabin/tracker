@@ -37,6 +37,7 @@
 
 #include <libtracker-common/tracker-type-utils.h>
 #include <libtracker-common/tracker-file-utils.h>
+#include <libtracker-common/tracker-utils.h>
 
 #include "tracker-main.h"
 #include "tracker-xmp.h"
@@ -93,10 +94,14 @@ typedef struct {
 } TagType;
 
 static gchar *date_to_iso8601	(const gchar *exif_date);
+
+#ifdef ENABLE_DETAILED_METADATA
 static gchar *fix_focal_length	(const gchar *fl);
-static gchar *fix_flash		(const gchar *flash);
 static gchar *fix_fnumber	(const gchar *fn);
 static gchar *fix_exposure_time (const gchar *et);
+#endif  /* ENABLE_DETAILED_METADATA */
+
+static gchar *fix_flash		(const gchar *flash);
 static gchar *fix_orientation   (const gchar *orientation);
 
 static TagType tags[] = {
@@ -134,7 +139,10 @@ static TagType tags[] = {
 #ifdef HAVE_LIBEXIF
 
 static void
-metadata_append (GHashTable *metadata, gchar *key, gchar *value, gboolean append)
+metadata_append (GHashTable  *metadata,
+		 const gchar *key,
+		 const gchar *value,
+		 gboolean     append)
 {
 	gchar   *new_value;
 	gchar   *orig;
@@ -164,22 +172,24 @@ metadata_append (GHashTable *metadata, gchar *key, gchar *value, gboolean append
 		g_free (escaped);		
 	} else {
 		new_value = tracker_escape_metadata (value);
-		g_hash_table_insert (metadata, g_strdup (key), new_value);
+		if (!tracker_is_empty_string (new_value)) {
+			g_hash_table_insert (metadata, g_strdup (key), new_value);
 
-		/* FIXME Postprocessing is evil and should be elsewhere */
-		if (strcmp (key, "Image:Keywords") == 0) {
-			g_hash_table_insert (metadata,
-					     g_strdup ("Image:HasKeywords"),
-					     tracker_escape_metadata ("1"));			
-		}		
-	}
-
-	/* Adding certain fields also to HasKeywords FIXME Postprocessing is evil */
-	if ((strcmp (key, "Image:Title") == 0) ||
-	    (strcmp (key, "Image:Description") == 0) ) {
-		g_hash_table_insert (metadata,
-				     g_strdup ("Image:HasKeywords"),
-				     tracker_escape_metadata ("1"));
+			/* FIXME Postprocessing is evil and should be elsewhere */
+			if (strcmp (key, "Image:Keywords") == 0) {
+				g_hash_table_insert (metadata,
+						     g_strdup ("Image:HasKeywords"),
+						     tracker_escape_metadata ("1"));			
+			}
+			
+			/* Adding certain fields also to HasKeywords FIXME Postprocessing is evil */
+			if ((strcmp (key, "Image:Title") == 0) ||
+			    (strcmp (key, "Image:Description") == 0) ) {
+				g_hash_table_insert (metadata,
+						     g_strdup ("Image:HasKeywords"),
+						     tracker_escape_metadata ("1"));
+			}
+		}
 	}
 }
 
@@ -192,11 +202,15 @@ date_to_iso8601 (const gchar *date)
 	return tracker_date_format_to_iso8601 (date, EXIF_DATE_FORMAT);
 }
 
+#ifdef ENABLE_DETAILED_METADATA
+
 static gchar *
 fix_focal_length (const gchar *fl)
 {
 	return g_strndup (fl, strstr (fl, " mm") - fl);
 }
+
+#endif /* ENABLE_DETAILED_METADATA */
 
 static gchar *
 fix_flash (const gchar *flash)
@@ -207,6 +221,8 @@ fix_flash (const gchar *flash)
 		return g_strdup ("0");
 	}
 }
+
+#ifdef ENABLE_DETAILED_METADATA
 
 static gchar *
 fix_fnumber (const gchar *fn)
@@ -253,6 +269,8 @@ fix_exposure_time (const gchar *et)
 
 	return g_strdup (et);
 }
+
+#endif /* ENABLE_DETAILED_METADATA */
 
 static gchar *
 fix_orientation (const gchar *orientation)
@@ -311,14 +329,14 @@ read_exif (const unsigned char *buffer,
 				str = (*p->post) (buffer);
 
 				metadata_append (metadata,
-						 g_strdup (p->name),
-						 tracker_escape_metadata (str),
+						 p->name,
+						 str,
 						 p->multi);
 				g_free (str);
 			} else {
 				metadata_append (metadata,
-						 g_strdup (p->name),
-						 tracker_escape_metadata (buffer),
+						 p->name,
+						 buffer,
 						 p->multi);
 			}
 		}
@@ -384,7 +402,7 @@ extract_jpeg (const gchar *filename,
 		 *
 		 * jpeg_calc_output_dimensions(&cinfo);
 		 */
-		
+
 		marker = (struct jpeg_marker_struct *) &cinfo.marker_list;
 		
 		while (marker) {

@@ -124,6 +124,7 @@
 <indexentry><primaryie linkends="tracker-config-set-throttle"><link linkend="tracker-config-set-throttle">tracker_config_set_throttle</link></primaryie></indexentry>
 <indexentry><primaryie linkends="tracker-config-set-verbosity"><link linkend="tracker-config-set-verbosity">tracker_config_set_verbosity</link></primaryie></indexentry>
 <indexentry><primaryie linkends="tracker-date-format"><link linkend="tracker-date-format">tracker_date_format</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-date-format-to-iso8601"><link linkend="tracker-date-format-to-iso8601">tracker_date_format_to_iso8601</link></primaryie></indexentry>
 <indexentry><primaryie linkends="tracker-date-to-string"><link linkend="tracker-date-to-string">tracker_date_to_string</link></primaryie></indexentry>
 <indexentry><primaryie linkends="tracker-date-to-time-string"><link linkend="tracker-date-to-time-string">tracker_date_to_time_string</link></primaryie></indexentry>
 <indexentry><primaryie linkends="tracker-dbus-data-new"><link linkend="tracker-dbus-data-new">tracker_dbus_data_new</link></primaryie></indexentry>
@@ -142,7 +143,7 @@
 <indexentry><primaryie linkends="tracker-dbus-results-ptr-array-free"><link linkend="tracker-dbus-results-ptr-array-free">tracker_dbus_results_ptr_array_free</link></primaryie></indexentry>
 <indexentry><primaryie linkends="tracker-dbus-slist-to-strv"><link linkend="tracker-dbus-slist-to-strv">tracker_dbus_slist_to_strv</link></primaryie></indexentry>
 <indexentry><primaryie linkends="tracker-env-check-xdg-dirs"><link linkend="tracker-env-check-xdg-dirs">tracker_env_check_xdg_dirs</link></primaryie></indexentry>
-<indexentry><primaryie linkends="tracker-escape-string"><link linkend="tracker-escape-string">tracker_escape_string</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-escape-db-string"><link linkend="tracker-escape-db-string">tracker_escape_db_string</link></primaryie></indexentry>
 <indexentry><primaryie linkends="tracker-field-append-child-id"><link linkend="tracker-field-append-child-id">tracker_field_append_child_id</link></primaryie></indexentry>
 <indexentry><primaryie linkends="tracker-field-get-child-ids"><link linkend="tracker-field-get-child-ids">tracker_field_get_child_ids</link></primaryie></indexentry>
 <indexentry><primaryie linkends="tracker-field-get-data-type"><link linkend="tracker-field-get-data-type">tracker_field_get_data_type</link></primaryie></indexentry>

@@ -17,7 +17,9 @@
 
 #include &lt;libtracker-common/tracker-utils.h&gt;
 
-<link linkend="gchar">gchar</link> *             <link linkend="tracker-escape-string">tracker_escape_string</link>               (const <link linkend="gchar">gchar</link> *in);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-escape-db-string">tracker_escape_db_string</link>            (const <link linkend="gchar">gchar</link> *str,
+                                                         <link linkend="gboolean">gboolean</link> add_quotes,
+                                                         <link linkend="gboolean">gboolean</link> escape_percent);
 <link linkend="gboolean">gboolean</link>            <link linkend="tracker-is-empty-string">tracker_is_empty_string</link>             (const <link linkend="char">char</link> *str);
 <link linkend="gchar">gchar</link> *             <link linkend="tracker-seconds-estimate-to-string">tracker_seconds_estimate_to_string</link>  (<link linkend="gdouble">gdouble</link> seconds_elapsed,
                                                          <link linkend="gboolean">gboolean</link> short_string,
@@ -51,12 +53,20 @@
 
 <refsect1 id="libtracker-common-General.details" role="details">
 <title role="details.title">Details</title>
-<refsect2 id="tracker-escape-string" role="function">
-<title>tracker_escape_string ()</title>
-<indexterm zone="tracker-escape-string"><primary sortas="tracker_escape_string">tracker_escape_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_escape_string               (const <link linkend="gchar">gchar</link> *in);</programlisting>
+<refsect2 id="tracker-escape-db-string" role="function">
+<title>tracker_escape_db_string ()</title>
+<indexterm zone="tracker-escape-db-string"><primary sortas="tracker_escape_db_string">tracker_escape_db_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_escape_db_string            (const <link linkend="gchar">gchar</link> *str,
+                                                         <link linkend="gboolean">gboolean</link> add_quotes,
+                                                         <link linkend="gboolean">gboolean</link> escape_percent);</programlisting>
 <para>
 </para><variablelist role="params">
-<varlistentry><term><parameter>in</parameter>&#160;:</term>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>add_quotes</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>escape_percent</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>

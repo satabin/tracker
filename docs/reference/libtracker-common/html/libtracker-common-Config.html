@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Config</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Tracker Common Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
 <link rel="up" href="ch03.html" title="Configuration">
 <link rel="prev" href="ch03.html" title="Configuration">
 <link rel="next" href="libtracker-common-HAL.html" title="HAL">
@@ -36,7 +36,7 @@
                 <a href="#libtracker-common-Config.properties" class="shortcut">Properties</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="Config">
 <a name="libtracker-common-Config"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -45,7 +45,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libtracker-common-Config.synopsis"></a><h2>Synopsis</h2>
 <a name="TrackerConfig"></a><pre class="synopsis">
 
@@ -277,7 +277,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> value);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="libtracker-common-Config.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -286,7 +286,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
    +----TrackerConfig
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Properties">
 <a name="libtracker-common-Config.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="libtracker-common-Config.html#TrackerConfig--crawl-directory-roots" title='The "crawl-directory-roots" property'>crawl-directory-roots</a>"    <a
@@ -375,21 +375,21 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 >gpointer</a>              : Read
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libtracker-common-Config.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libtracker-common-Config.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="TrackerConfig">
 <a name="TrackerConfig-struct"></a><h3>TrackerConfig</h3>
 <pre class="programlisting">typedef struct _TrackerConfig TrackerConfig;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_new ()">
 <a name="tracker-config-new"></a><h3>tracker_config_new ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *     tracker_config_new                  (void);</pre>
 <p>
@@ -407,7 +407,7 @@ finished with.
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_add_crawl_directory_roots ()">
 <a name="tracker-config-add-crawl-directory-roots"></a><h3>tracker_config_add_crawl_directory_roots ()</h3>
 <pre class="programlisting">void                tracker_config_add_crawl_directory_roots
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -433,7 +433,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_add_disabled_modules ()">
 <a name="tracker-config-add-disabled-modules"></a><h3>tracker_config_add_disabled_modules ()</h3>
 <pre class="programlisting">void                tracker_config_add_disabled_modules (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          const <a
@@ -458,7 +458,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_add_no_watch_directory_roots ()">
 <a name="tracker-config-add-no-watch-directory-roots"></a><h3>tracker_config_add_no_watch_directory_roots ()</h3>
 <pre class="programlisting">void                tracker_config_add_no_watch_directory_roots
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -484,7 +484,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_add_watch_directory_roots ()">
 <a name="tracker-config-add-watch-directory-roots"></a><h3>tracker_config_add_watch_directory_roots ()</h3>
 <pre class="programlisting">void                tracker_config_add_watch_directory_roots
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -510,7 +510,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_crawl_directory_roots ()">
 <a name="tracker-config-get-crawl-directory-roots"></a><h3>tracker_config_get_crawl_directory_roots ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"
@@ -535,7 +535,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_disable_indexing_on_battery ()">
 <a name="tracker-config-get-disable-indexing-on-battery"></a><h3>tracker_config_get_disable_indexing_on_battery ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -560,7 +560,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_disable_indexing_on_battery_init ()">
 <a name="tracker-config-get-disable-indexing-on-battery-init"></a><h3>tracker_config_get_disable_indexing_on_battery_init ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -585,7 +585,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_disabled_modules ()">
 <a name="tracker-config-get-disabled-modules"></a><h3>tracker_config_get_disabled_modules ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"
@@ -609,7 +609,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_enable_content_indexing ()">
 <a name="tracker-config-get-enable-content-indexing"></a><h3>tracker_config_get_enable_content_indexing ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -634,7 +634,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_enable_indexing ()">
 <a name="tracker-config-get-enable-indexing"></a><h3>tracker_config_get_enable_indexing ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -658,7 +658,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_enable_stemmer ()">
 <a name="tracker-config-get-enable-stemmer"></a><h3>tracker_config_get_enable_stemmer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -682,7 +682,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_enable_thumbnails ()">
 <a name="tracker-config-get-enable-thumbnails"></a><h3>tracker_config_get_enable_thumbnails ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -707,7 +707,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_enable_watches ()">
 <a name="tracker-config-get-enable-watches"></a><h3>tracker_config_get_enable_watches ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -731,7 +731,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_fast_merges ()">
 <a name="tracker-config-get-fast-merges"></a><h3>tracker_config_get_fast_merges ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -755,7 +755,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_index_mounted_directories ()">
 <a name="tracker-config-get-index-mounted-directories"></a><h3>tracker_config_get_index_mounted_directories ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -780,7 +780,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_index_removable_devices ()">
 <a name="tracker-config-get-index-removable-devices"></a><h3>tracker_config_get_index_removable_devices ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -805,7 +805,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_initial_sleep ()">
 <a name="tracker-config-get-initial-sleep"></a><h3>tracker_config_get_initial_sleep ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -829,7 +829,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_language ()">
 <a name="tracker-config-get-language"></a><h3>tracker_config_get_language ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -853,7 +853,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_low_disk_space_limit ()">
 <a name="tracker-config-get-low-disk-space-limit"></a><h3>tracker_config_get_low_disk_space_limit ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -878,7 +878,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_low_memory_mode ()">
 <a name="tracker-config-get-low-memory-mode"></a><h3>tracker_config_get_low_memory_mode ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -902,7 +902,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_max_bucket_count ()">
 <a name="tracker-config-get-max-bucket-count"></a><h3>tracker_config_get_max_bucket_count ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -926,7 +926,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_max_text_to_index ()">
 <a name="tracker-config-get-max-text-to-index"></a><h3>tracker_config_get_max_text_to_index ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -951,7 +951,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_max_word_length ()">
 <a name="tracker-config-get-max-word-length"></a><h3>tracker_config_get_max_word_length ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -975,7 +975,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_max_words_to_index ()">
 <a name="tracker-config-get-max-words-to-index"></a><h3>tracker_config_get_max_words_to_index ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1000,7 +1000,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_min_bucket_count ()">
 <a name="tracker-config-get-min-bucket-count"></a><h3>tracker_config_get_min_bucket_count ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1024,7 +1024,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_min_word_length ()">
 <a name="tracker-config-get-min-word-length"></a><h3>tracker_config_get_min_word_length ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1048,7 +1048,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_nfs_locking ()">
 <a name="tracker-config-get-nfs-locking"></a><h3>tracker_config_get_nfs_locking ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1072,7 +1072,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_no_index_file_types ()">
 <a name="tracker-config-get-no-index-file-types"></a><h3>tracker_config_get_no_index_file_types ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"
@@ -1097,7 +1097,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_no_watch_directory_roots ()">
 <a name="tracker-config-get-no-watch-directory-roots"></a><h3>tracker_config_get_no_watch_directory_roots ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"
@@ -1122,7 +1122,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_throttle ()">
 <a name="tracker-config-get-throttle"></a><h3>tracker_config_get_throttle ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1146,7 +1146,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_verbosity ()">
 <a name="tracker-config-get-verbosity"></a><h3>tracker_config_get_verbosity ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1184,7 +1184,7 @@ is 3 you receive debug, messages, info and warnings.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_get_watch_directory_roots ()">
 <a name="tracker-config-get-watch-directory-roots"></a><h3>tracker_config_get_watch_directory_roots ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"
@@ -1209,7 +1209,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_remove_disabled_modules ()">
 <a name="tracker-config-remove-disabled-modules"></a><h3>tracker_config_remove_disabled_modules ()</h3>
 <pre class="programlisting">void                tracker_config_remove_disabled_modules
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -1235,7 +1235,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_disable_indexing_on_battery ()">
 <a name="tracker-config-set-disable-indexing-on-battery"></a><h3>tracker_config_set_disable_indexing_on_battery ()</h3>
 <pre class="programlisting">void                tracker_config_set_disable_indexing_on_battery
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -1261,7 +1261,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_disable_indexing_on_battery_init ()">
 <a name="tracker-config-set-disable-indexing-on-battery-init"></a><h3>tracker_config_set_disable_indexing_on_battery_init ()</h3>
 <pre class="programlisting">void                tracker_config_set_disable_indexing_on_battery_init
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -1287,7 +1287,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_enable_content_indexing ()">
 <a name="tracker-config-set-enable-content-indexing"></a><h3>tracker_config_set_enable_content_indexing ()</h3>
 <pre class="programlisting">void                tracker_config_set_enable_content_indexing
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -1313,7 +1313,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_enable_indexing ()">
 <a name="tracker-config-set-enable-indexing"></a><h3>tracker_config_set_enable_indexing ()</h3>
 <pre class="programlisting">void                tracker_config_set_enable_indexing  (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1338,7 +1338,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_enable_stemmer ()">
 <a name="tracker-config-set-enable-stemmer"></a><h3>tracker_config_set_enable_stemmer ()</h3>
 <pre class="programlisting">void                tracker_config_set_enable_stemmer   (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1363,7 +1363,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_enable_thumbnails ()">
 <a name="tracker-config-set-enable-thumbnails"></a><h3>tracker_config_set_enable_thumbnails ()</h3>
 <pre class="programlisting">void                tracker_config_set_enable_thumbnails
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -1389,7 +1389,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_enable_watches ()">
 <a name="tracker-config-set-enable-watches"></a><h3>tracker_config_set_enable_watches ()</h3>
 <pre class="programlisting">void                tracker_config_set_enable_watches   (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1414,7 +1414,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_fast_merges ()">
 <a name="tracker-config-set-fast-merges"></a><h3>tracker_config_set_fast_merges ()</h3>
 <pre class="programlisting">void                tracker_config_set_fast_merges      (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1439,7 +1439,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_index_mounted_directories ()">
 <a name="tracker-config-set-index-mounted-directories"></a><h3>tracker_config_set_index_mounted_directories ()</h3>
 <pre class="programlisting">void                tracker_config_set_index_mounted_directories
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -1465,7 +1465,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_index_removable_devices ()">
 <a name="tracker-config-set-index-removable-devices"></a><h3>tracker_config_set_index_removable_devices ()</h3>
 <pre class="programlisting">void                tracker_config_set_index_removable_devices
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -1491,7 +1491,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_initial_sleep ()">
 <a name="tracker-config-set-initial-sleep"></a><h3>tracker_config_set_initial_sleep ()</h3>
 <pre class="programlisting">void                tracker_config_set_initial_sleep    (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1516,7 +1516,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_language ()">
 <a name="tracker-config-set-language"></a><h3>tracker_config_set_language ()</h3>
 <pre class="programlisting">void                tracker_config_set_language         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          const <a
@@ -1541,7 +1541,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_low_disk_space_limit ()">
 <a name="tracker-config-set-low-disk-space-limit"></a><h3>tracker_config_set_low_disk_space_limit ()</h3>
 <pre class="programlisting">void                tracker_config_set_low_disk_space_limit
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -1567,7 +1567,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_low_memory_mode ()">
 <a name="tracker-config-set-low-memory-mode"></a><h3>tracker_config_set_low_memory_mode ()</h3>
 <pre class="programlisting">void                tracker_config_set_low_memory_mode  (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1592,7 +1592,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_max_bucket_count ()">
 <a name="tracker-config-set-max-bucket-count"></a><h3>tracker_config_set_max_bucket_count ()</h3>
 <pre class="programlisting">void                tracker_config_set_max_bucket_count (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1617,7 +1617,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_max_text_to_index ()">
 <a name="tracker-config-set-max-text-to-index"></a><h3>tracker_config_set_max_text_to_index ()</h3>
 <pre class="programlisting">void                tracker_config_set_max_text_to_index
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -1643,7 +1643,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_max_word_length ()">
 <a name="tracker-config-set-max-word-length"></a><h3>tracker_config_set_max_word_length ()</h3>
 <pre class="programlisting">void                tracker_config_set_max_word_length  (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1668,7 +1668,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_max_words_to_index ()">
 <a name="tracker-config-set-max-words-to-index"></a><h3>tracker_config_set_max_words_to_index ()</h3>
 <pre class="programlisting">void                tracker_config_set_max_words_to_index
                                                         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
@@ -1694,7 +1694,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_min_bucket_count ()">
 <a name="tracker-config-set-min-bucket-count"></a><h3>tracker_config_set_min_bucket_count ()</h3>
 <pre class="programlisting">void                tracker_config_set_min_bucket_count (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1719,7 +1719,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_min_word_length ()">
 <a name="tracker-config-set-min-word-length"></a><h3>tracker_config_set_min_word_length ()</h3>
 <pre class="programlisting">void                tracker_config_set_min_word_length  (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1744,7 +1744,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_nfs_locking ()">
 <a name="tracker-config-set-nfs-locking"></a><h3>tracker_config_set_nfs_locking ()</h3>
 <pre class="programlisting">void                tracker_config_set_nfs_locking      (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1769,7 +1769,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_throttle ()">
 <a name="tracker-config-set-throttle"></a><h3>tracker_config_set_throttle ()</h3>
 <pre class="programlisting">void                tracker_config_set_throttle         (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1794,7 +1794,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_config_set_verbosity ()">
 <a name="tracker-config-set-verbosity"></a><h3>tracker_config_set_verbosity ()</h3>
 <pre class="programlisting">void                tracker_config_set_verbosity        (<a class="link" href="libtracker-common-Config.html#TrackerConfig">TrackerConfig</a> *config,
                                                          <a
@@ -1819,9 +1819,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Property Details">
 <a name="libtracker-common-Config.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "crawl-directory-roots" property'>
 <a name="TrackerConfig--crawl-directory-roots"></a><h3>The <code class="literal">"crawl-directory-roots"</code> property</h3>
 <pre class="programlisting">  "crawl-directory-roots"    <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -1829,7 +1829,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>This is a GSList of directory roots to index but NOT watch.</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "disable-indexing-on-battery" property'>
 <a name="TrackerConfig--disable-indexing-on-battery"></a><h3>The <code class="literal">"disable-indexing-on-battery"</code> property</h3>
 <pre class="programlisting">  "disable-indexing-on-battery" <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1838,7 +1838,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: TRUE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "disable-indexing-on-battery-init" property'>
 <a name="TrackerConfig--disable-indexing-on-battery-init"></a><h3>The <code class="literal">"disable-indexing-on-battery-init"</code> property</h3>
 <pre class="programlisting">  "disable-indexing-on-battery-init" <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1847,7 +1847,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: FALSE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "disabled-modules" property'>
 <a name="TrackerConfig--disabled-modules"></a><h3>The <code class="literal">"disabled-modules"</code> property</h3>
 <pre class="programlisting">  "disabled-modules"         <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -1855,7 +1855,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>Modules to disable, like 'files', etc.</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "enable-content-indexing" property'>
 <a name="TrackerConfig--enable-content-indexing"></a><h3>The <code class="literal">"enable-content-indexing"</code> property</h3>
 <pre class="programlisting">  "enable-content-indexing"  <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1864,7 +1864,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: TRUE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "enable-indexing" property'>
 <a name="TrackerConfig--enable-indexing"></a><h3>The <code class="literal">"enable-indexing"</code> property</h3>
 <pre class="programlisting">  "enable-indexing"          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1873,7 +1873,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: TRUE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "enable-stemmer" property'>
 <a name="TrackerConfig--enable-stemmer"></a><h3>The <code class="literal">"enable-stemmer"</code> property</h3>
 <pre class="programlisting">  "enable-stemmer"           <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1882,7 +1882,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: TRUE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "enable-thumbnails" property'>
 <a name="TrackerConfig--enable-thumbnails"></a><h3>The <code class="literal">"enable-thumbnails"</code> property</h3>
 <pre class="programlisting">  "enable-thumbnails"        <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1891,7 +1891,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: TRUE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "enable-watches" property'>
 <a name="TrackerConfig--enable-watches"></a><h3>The <code class="literal">"enable-watches"</code> property</h3>
 <pre class="programlisting">  "enable-watches"           <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1900,7 +1900,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: TRUE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "fast-merges" property'>
 <a name="TrackerConfig--fast-merges"></a><h3>The <code class="literal">"fast-merges"</code> property</h3>
 <pre class="programlisting">  "fast-merges"              <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1909,7 +1909,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: FALSE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "index-mounted-directories" property'>
 <a name="TrackerConfig--index-mounted-directories"></a><h3>The <code class="literal">"index-mounted-directories"</code> property</h3>
 <pre class="programlisting">  "index-mounted-directories" <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1918,7 +1918,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: TRUE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "index-removable-devices" property'>
 <a name="TrackerConfig--index-removable-devices"></a><h3>The <code class="literal">"index-removable-devices"</code> property</h3>
 <pre class="programlisting">  "index-removable-devices"  <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1927,7 +1927,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: TRUE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "initial-sleep" property'>
 <a name="TrackerConfig--initial-sleep"></a><h3>The <code class="literal">"initial-sleep"</code> property</h3>
 <pre class="programlisting">  "initial-sleep"            <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1937,7 +1937,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>Default value: 45</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "language" property'>
 <a name="TrackerConfig--language"></a><h3>The <code class="literal">"language"</code> property</h3>
 <pre class="programlisting">  "language"                 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -1946,7 +1946,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <p>Default value: "en"</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "low-disk-space-limit" property'>
 <a name="TrackerConfig--low-disk-space-limit"></a><h3>The <code class="literal">"low-disk-space-limit"</code> property</h3>
 <pre class="programlisting">  "low-disk-space-limit"     <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1956,7 +1956,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>Default value: 1</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "low-memory-mode" property'>
 <a name="TrackerConfig--low-memory-mode"></a><h3>The <code class="literal">"low-memory-mode"</code> property</h3>
 <pre class="programlisting">  "low-memory-mode"          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1965,7 +1965,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: FALSE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "max-bucket-count" property'>
 <a name="TrackerConfig--max-bucket-count"></a><h3>The <code class="literal">"max-bucket-count"</code> property</h3>
 <pre class="programlisting">  "max-bucket-count"         <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1975,7 +1975,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>Default value: 524288</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "max-text-to-index" property'>
 <a name="TrackerConfig--max-text-to-index"></a><h3>The <code class="literal">"max-text-to-index"</code> property</h3>
 <pre class="programlisting">  "max-text-to-index"        <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1985,7 +1985,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>Default value: 1048576</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "max-word-length" property'>
 <a name="TrackerConfig--max-word-length"></a><h3>The <code class="literal">"max-word-length"</code> property</h3>
 <pre class="programlisting">  "max-word-length"          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1995,7 +1995,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>Default value: 30</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "max-words-to-index" property'>
 <a name="TrackerConfig--max-words-to-index"></a><h3>The <code class="literal">"max-words-to-index"</code> property</h3>
 <pre class="programlisting">  "max-words-to-index"       <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -2005,7 +2005,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>Default value: 10000</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "min-bucket-count" property'>
 <a name="TrackerConfig--min-bucket-count"></a><h3>The <code class="literal">"min-bucket-count"</code> property</h3>
 <pre class="programlisting">  "min-bucket-count"         <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -2015,7 +2015,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>Default value: 65536</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "min-word-length" property'>
 <a name="TrackerConfig--min-word-length"></a><h3>The <code class="literal">"min-word-length"</code> property</h3>
 <pre class="programlisting">  "min-word-length"          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -2025,7 +2025,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>Default value: 3</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "nfs-locking" property'>
 <a name="TrackerConfig--nfs-locking"></a><h3>The <code class="literal">"nfs-locking"</code> property</h3>
 <pre class="programlisting">  "nfs-locking"              <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2034,7 +2034,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: FALSE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "no-index-file-types" property'>
 <a name="TrackerConfig--no-index-file-types"></a><h3>The <code class="literal">"no-index-file-types"</code> property</h3>
 <pre class="programlisting">  "no-index-file-types"      <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -2042,7 +2042,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>This is a GSList of file types to NOT index.</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "no-watch-directory-roots" property'>
 <a name="TrackerConfig--no-watch-directory-roots"></a><h3>The <code class="literal">"no-watch-directory-roots"</code> property</h3>
 <pre class="programlisting">  "no-watch-directory-roots" <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -2050,17 +2050,17 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>This is a GSList of directory roots to NOT index and NOT watch.</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "throttle" property'>
 <a name="TrackerConfig--throttle"></a><h3>The <code class="literal">"throttle"</code> property</h3>
 <pre class="programlisting">  "throttle"                 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a>                  : Read / Write / Construct</pre>
 <p>Throttle indexing, higher value is slower (0-&gt;20).</p>
 <p>Allowed values: [0,20]</p>
-<p>Default value: 0</p>
+<p>Default value: 10</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "verbosity" property'>
 <a name="TrackerConfig--verbosity"></a><h3>The <code class="literal">"verbosity"</code> property</h3>
 <pre class="programlisting">  "verbosity"                <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -2070,7 +2070,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>Default value: 0</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "watch-directory-roots" property'>
 <a name="TrackerConfig--watch-directory-roots"></a><h3>The <code class="literal">"watch-directory-roots"</code> property</h3>
 <pre class="programlisting">  "watch-directory-roots"    <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"

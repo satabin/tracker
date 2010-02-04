@@ -119,7 +119,11 @@ commit_turtle_parse_info_storer (TurtleStorerInfo *info,
 				data = tracker_module_metadata_get_hash_table (info->metadata);
 
 				hal = tracker_indexer_get_hal (info->indexer);
+#ifdef HAVE_HAL
 				udi = tracker_hal_udi_get_for_path (hal, dest_path);
+#else
+				udi = NULL;
+#endif
 
 				tracker_data_update_delete_service_by_path (path, info->rdf_type);
 				tracker_data_update_replace_service (udi,
@@ -133,7 +137,11 @@ commit_turtle_parse_info_storer (TurtleStorerInfo *info,
 				data = tracker_module_metadata_get_hash_table (info->metadata);
 
 				hal = tracker_indexer_get_hal (info->indexer);
+#ifdef HAVE_HAL
 				udi = tracker_hal_udi_get_for_path (hal, path);
+#else
+				udi = NULL;
+#endif
 
 				tracker_data_update_replace_service (udi, 
 								     path,
@@ -486,9 +494,9 @@ tracker_removable_device_add_metadata (TrackerIndexer        *indexer,
 
 	set_metadata ("rdf:type", rdf_type, info);
 
-	tracker_module_metadata_foreach (metadata, 
-					 foreach_in_metadata_set_metadata,
-					 info);
+	tracker_data_metadata_foreach (TRACKER_DATA_METADATA (metadata),
+				       foreach_in_metadata_set_metadata,
+				       info);
 
 	g_free (info->about_uri);
 

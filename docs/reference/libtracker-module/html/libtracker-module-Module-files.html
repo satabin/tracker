@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Module files</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Tracker Indexer Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Indexer Reference Manual">
 <link rel="up" href="ch01.html" title="Modules">
 <link rel="prev" href="ch01.html" title="Modules">
 <link rel="next" href="libtracker-module-Iteratable-files.html" title="Iteratable files">
@@ -39,7 +39,7 @@
                 <a href="#libtracker-module-Module-files.properties" class="shortcut">Properties</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="Module files">
 <a name="libtracker-module-Module-files"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -48,7 +48,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libtracker-module-Module-files.synopsis"></a><h2>Synopsis</h2>
 <a name="TrackerModuleFile"></a><pre class="synopsis">
 
@@ -72,7 +72,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
                                                         (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="libtracker-module-Module-files.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -81,13 +81,13 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
    +----TrackerModuleFile
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Known Derived Interfaces">
 <a name="libtracker-module-Module-files.derived-interfaces"></a><h2>Known Derived Interfaces</h2>
 <p>
 TrackerModuleFile is required by
  <a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable">TrackerModuleIteratable</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Properties">
 <a name="libtracker-module-Module-files.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile--cancelled" title='The "cancelled" property'>cancelled</a>"                <a
@@ -98,7 +98,7 @@ href="http://library.gnome.org/devel/gio/unstable/GFile.html"
 >GFile</a>*                : Read / Write / Construct Only
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libtracker-module-Module-files.description"></a><h2>Description</h2>
 <p>
 TrackerModuleFile represents a file, providing the necessary
@@ -108,9 +108,9 @@ files that could contain a set individual entities that could
 be relevant to Tracker (such as mail summaries)
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libtracker-module-Module-files.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="TrackerModuleFile">
 <a name="TrackerModuleFile"></a><h3>TrackerModuleFile</h3>
 <pre class="programlisting">typedef struct TrackerModuleFile TrackerModuleFile;
 </pre>
@@ -119,7 +119,7 @@ Representation of a given file, used by the Tracker indexer to index contents.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_module_file_get_file ()">
 <a name="tracker-module-file-get-file"></a><h3>tracker_module_file_get_file ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/gio/unstable/GFile.html"
@@ -149,7 +149,7 @@ href="http://library.gnome.org/devel/gio/unstable/GFile.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_module_file_get_service_type ()">
 <a name="tracker-module-file-get-service-type"></a><h3>tracker_module_file_get_service_type ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -177,7 +177,7 @@ state (See <a class="link" href="libtracker-module-Iteratable-files.html#Tracker
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_module_file_get_uri ()">
 <a name="tracker-module-file-get-uri"></a><h3>tracker_module_file_get_uri ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -203,16 +203,14 @@ Returns a unique URI for <em class="parameter"><code>file</code></em> in the cur
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_module_file_get_text ()">
 <a name="tracker-module-file-get-text"></a><h3>tracker_module_file_get_text ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *             tracker_module_file_get_text        (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);</pre>
 <p>
 Extracts all the text that <em class="parameter"><code>file</code></em> could contain in the current
-state (see <a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable"><span class="type">TrackerModuleIteratable</span></a>) or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a> if the element
+state (see <a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable"><span class="type">TrackerModuleIteratable</span></a>) or <code class="literal">NULL</code> if the element
 does not contain any text.</p>
 <p>
 </p>
@@ -226,24 +224,20 @@ does not contain any text.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A newly allocated string containing valid UTF-8, or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>.
+<td> A newly allocated string containing valid UTF-8, or <code class="literal">NULL</code>.
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_module_file_get_metadata ()">
 <a name="tracker-module-file-get-metadata"></a><h3>tracker_module_file_get_metadata ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata">TrackerModuleMetadata</a> * tracker_module_file_get_metadata
                                                         (<a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a> *file);</pre>
 <p>
 Extracts all the metadata corresponding to <em class="parameter"><code>file</code></em> in the current
-state (see <a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable"><span class="type">TrackerModuleIteratable</span></a>) or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a> if the element should not
+state (see <a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable"><span class="type">TrackerModuleIteratable</span></a>) or <code class="literal">NULL</code> if the element should not
 be indexed.</p>
 <p>
 </p>
@@ -258,18 +252,16 @@ be indexed.</p>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A newly created <a class="link" href="libtracker-module-Metadata-Object.html#TrackerModuleMetadata"><span class="type">TrackerModuleMetadata</span></a> containing all
-         the extracted metadata, or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>.
+         the extracted metadata, or <code class="literal">NULL</code>.
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Property Details">
 <a name="libtracker-module-Module-files.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "cancelled" property'>
 <a name="TrackerModuleFile--cancelled"></a><h3>The <code class="literal">"cancelled"</code> property</h3>
 <pre class="programlisting">  "cancelled"                <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -278,7 +270,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: FALSE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "file" property'>
 <a name="TrackerModuleFile--file"></a><h3>The <code class="literal">"file"</code> property</h3>
 <pre class="programlisting">  "file"                     <a
 href="http://library.gnome.org/devel/gio/unstable/GFile.html"
@@ -288,7 +280,7 @@ The GFile that corresponds to the TrackerModuleFile
 </p>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="See Also">
 <a name="libtracker-module-Module-files.see-also"></a><h2>See Also</h2>
 <p>
 TrackerModuleIteratable

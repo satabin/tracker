@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Iteratable files</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Tracker Indexer Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Indexer Reference Manual">
 <link rel="up" href="ch01.html" title="Modules">
 <link rel="prev" href="libtracker-module-Module-files.html" title="Module files">
 <link rel="next" href="ch02.html" title="Metadata">
@@ -37,7 +37,7 @@
                 <a href="#libtracker-module-Iteratable-files.prerequisites" class="shortcut">Prerequisites</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="Iteratable files">
 <a name="libtracker-module-Iteratable-files"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -46,7 +46,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libtracker-module-Iteratable-files.synopsis"></a><h2>Synopsis</h2>
 <a name="TrackerModuleIteratable"></a><pre class="synopsis">
 
@@ -62,20 +62,20 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 >guint</a>               <a class="link" href="libtracker-module-Iteratable-files.html#tracker-module-iteratable-get-count" title="tracker_module_iteratable_get_count ()">tracker_module_iteratable_get_count</a> (<a class="link" href="libtracker-module-Iteratable-files.html#TrackerModuleIteratable">TrackerModuleIteratable</a> *iteratable);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="libtracker-module-Iteratable-files.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   GInterface
    +----TrackerModuleIteratable
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Prerequisites">
 <a name="libtracker-module-Iteratable-files.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 TrackerModuleIteratable requires
  <a class="link" href="libtracker-module-Module-files.html#TrackerModuleFile">TrackerModuleFile</a>.</p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libtracker-module-Iteratable-files.description"></a><h2>Description</h2>
 <p>
 TrackerModuleIteratable is an interface that can be implemented by
@@ -83,9 +83,9 @@ TrackerModuleFile objects. It's used by Tracker so it can
 potentially iterate inside the contents of a file.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libtracker-module-Iteratable-files.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="TrackerModuleIteratable">
 <a name="TrackerModuleIteratable"></a><h3>TrackerModuleIteratable</h3>
 <pre class="programlisting">typedef struct TrackerModuleIteratable TrackerModuleIteratable; /* dummy typedef */
 </pre>
@@ -94,7 +94,7 @@ Interface that can be implemented by files.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_module_iteratable_iter_contents ()">
 <a name="tracker-module-iteratable-iter-contents"></a><h3>tracker_module_iteratable_iter_contents ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -114,18 +114,14 @@ Iterates to the next element contained in <em class="parameter"><code>iteratable
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a> if there was such next element, <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
-><code class="literal">FALSE</code></a> otherwise
+<td> <code class="literal">TRUE</code> if there was such next element, <code class="literal">FALSE</code> otherwise
 </td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_module_iteratable_get_count ()">
 <a name="tracker-module-iteratable-get-count"></a><h3>tracker_module_iteratable_get_count ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
@@ -151,7 +147,7 @@ Returns the number of elements contained in <em class="parameter"><code>iteratab
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="See Also">
 <a name="libtracker-module-Iteratable-files.see-also"></a><h2>See Also</h2>
 <p>
 TrackerModuleFile

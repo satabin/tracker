@@ -1,3 +1,801 @@
+2010-02-04  Martyn Russell  <martyn@lanedo.com>
+
+	Updated NEWS
+
+	Applied debian patch 30-gmime-2.4.patch
+
+	Applied debian patch 20-tracker-defaults.patch
+
+	Applied debian patch 10-drop-bogus-version-info.patch
+
+	Bumped version to 0.6.96
+
+	tests/tracker-extract: Fixed build link errors
+
+2010-02-03  Michael Biebl  <biebl@debian.org>
+
+	Fix build failures with  -Wl,--as-needed
+
+2010-01-15  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2010-01-11  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Dropped some alternative tag sources because of inconsistencies.
+
+	Fixes NB#137788, Try first TPE1 instead of TP2 for the Audio:Artist field
+	Drop TPE2 as a source of Audio:Artist
+
+2010-01-08  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#147883,Not supported mime-type by totem-pl-parser
+	Added missing mime-types for playlist extraction
+
+2009-11-24  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes Bug 147027, Hidden folders in PC become visible on the device after copying them
+	Check for hidden flag on FAT to filter out crap-folders created by Windows.
+
+2009-10-27  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#Bug 135485, Image:Date mismatch
+	Fixed priority and added XAP:ModifyDate to xmp extraction.
+
+2009-10-22  Kjartan Maraas  <kmaraas@gnome.org>
+
+	Added Norwegian bokmål translation.
+
+2009-10-16  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes GB#598575, error: invalid operands to binary
+
+	Fixes GB#598544 - Fix build without HAL
+
+2009-10-14  Carlos Garnacho  <carlos@lanedo.com>
+
+	Bug NB#131369 - Tries to open files as directories.
+	Ensure TrackerProcessor doesn't tell TrackerCrawler to process files.
+
+2009-10-12  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes NB#126283, [AF checked]  Top level category statistics show 2x...
+
+2009-10-09  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#126185, tracker-extract[1413]: GLIB CRITICAL ** GLib-GObject - g_object_unref: assertion `G_IS_OBJECT (object)' failed
+
+	Fixes NB#134330, trackerd crashed in sqlite3_bind_text
+
+	Fixes NB#126696, Tracker extractor crashes while extracting a corrupted music file
+
+	Fixes NB#135368, No Track Number in itunes audio books
+	Get the track number also from the first versions of id3.
+
+2009-10-08  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#142225, Album art: Windows media player filename format not supported.
+	Folder.jpg as used by Windows media player for album art added to the list of
+	checked files.
+
+2009-10-08  Timo Jyrinki  <timo.jyrinki@iki.fi>
+
+	Updated Finnish translation by Jiri Grönroos.
+
+2009-10-01  Martyn Russell  <martyn@lanedo.com>
+
+	Secondary fixes to initial patch for NB140966 after testing
+
+	Fixes NB#140966, tracker-indexer D-Bus interface should have a plural FilesMove
+
+2009-09-29  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes NB#140077, Send statistics signal only at the end of the indexing
+
+2009-09-28  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#126255, Image:Date is empty for some of the images
+
+2009-09-23  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes NB#140077, Send statistics signal only at the end of the indexing
+
+2009-09-22  Carlos Garnacho  <carlos@lanedo.com>
+
+	Bug NB#131278 - Random tracker-indexer-71C9-11-2408.rcore crash observed.
+	Don't shadow variable, and don't use it uninitialized.
+
+2009-09-11  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes: NB#131278, Random tracker-indexer-71C9-11-2408.rcore crash observed.
+
+2009-09-11  Ivan Frade  <ivan.frade@nokia.com>
+
+	Use correct property names in the vorbis extractor
+	Author: Tuomas Kulve <toumas@kulve.fi>
+
+2009-09-09  Carlos Garnacho  <carlos@lanedo.com>
+
+	Bug NB#138043 - New tracker indexer crashes.
+	Conceivably a row in the resultset could be NULL if there were NULL or
+	unrecognized values in the DB for all colunms in that row. In that case warn
+	and return NULL/0.
+
+2009-09-08  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#129094, HasKeywords is wrongly set for an attached image
+
+2009-09-03  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#125859, Different genre name shown for a clip with special character as Hindi
+	Fix the genre checking.
+
+	Fixes NB#125128, junk characters are shown in artist field of some of the audio files.
+	Do not rely too much on enca getting things right.
+
+	Fixes NB#135190, assertion `GST_VALUE_HOLDS_FRACTION (value)' failed
+	Added checks for fraction-type fields.
+
+2009-09-03  Carlos Garnacho  <carlos@lanedo.com>
+
+	Bug NB#136770 - Not able to see the pictures captured with camera application after renaming the current folder.
+	Turns out the monitor wasn't replacing the GFile (used as the key) in the
+	monitors hash table after a move operation, so monitoring a newly created
+	folder with the same name would fail silently.
+
+2009-08-22  Fran Dieguez  <fran.dieguez@glug.es>
+
+	Updated Galician Translation
+
+2009-08-21  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixes NB#96142, Duration of some video clips is not displayed
+	Timeout for gstreamer pipeline is now 15 seconds, instead of 5. This
+	should help to process big files when the system is very busy.
+
+2009-08-20  Daniel Nylander  <po@danielnylander.se>
+
+	Updated Swedish translation
+
+2009-08-20  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes NB#126773, trackerd and tracker-extract spam syslog
+	Create tracker-extract object AFTER calling tracker_log_init()
+
+	Reduce unnecessary log messages on trackerd/tracker-extract start
+
+2009-08-17  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#125991, Image Viewer consuming more time to filter the images based on date.
+	Added an index to the numeric metadata for sorting. Together with the two previous patches this fixes some of the performance issues.
+
+	Do not unnecessarily use DISTINCT in queries.
+
+	Check whether we are returning multivalued fields and group by ID only if we are.
+
+2009-08-14  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	Hungarian translation updated
+
+2009-08-13  Martyn Russell  <martyn@imendio.com>
+
+	Fixes NB#129415, Checked] [REGF] Video and Audio Library view and ...
+	This was caused by Microsoft Windows NOT setting the parent folder
+	mtime when it changes a child file. On Linux we can count on this. On
+	Windows we can not. So now we check in ALL cases for EVERY folder if
+	we have any stale children in the database and we remove them if
+	that's the case.
+
+2009-08-11  Martyn Russell  <martyn@imendio.com>
+
+	Improve solution to fix NB#131222
+	Don't limit strings to 1024 and make sure we NULL terminate strings.
+
+2009-08-11  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#132414, Tracker-extract crashes in tracker_utils_default_check_filename
+	Additional checks for default titles.
+
+2009-08-11  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixes NB#126772 spam in syslog
+	Move some g_message to g_debug to reduce the logging in syslog.
+
+2009-08-06  Philip Van Hoof  <philip@codeminded.be>
+
+	Fixed NB#131222, Bufferoverflow fix (tracker-extract crashed on a TIFF)
+
+	Revert comments in a previous patch
+
+	Revert comments in previous patch
+
+	Buffer overflow fix (this one was exploitable too)
+
+2009-07-31  Martyn Russell  <martyn@imendio.com>
+
+	Fixed es.po which was breaking debian builds
+
+2009-07-29  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixed NB#126260, Some images dont have Image:Date
+	Improved date parsing algorithm to support an ISO8601 valid format:
+	...THH:MM+yy:zz (time with no seconds and timezone)
+
+	Included unit test for the new format.
+
+2009-07-27  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#128713, Period in media filenames
+	Remove everything after the _last_ dot in the filename, and replace
+	in the remaining string '.' and '_' with whitespaces.
+
+	This is used to get a default title, when a media file doesn't have any.
+
+	Author:    Mikael Ottela <mikael.ottela@ixonos.com>
+
+2009-07-19  Mario Blättermann  <mariobl@gnome.org>
+
+	Updated German translation
+
+2009-07-18  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2009-07-13  Michael Biebl  <biebl@debian.org>
+
+	Fix make distcheck
+	* POTFILES.skip: Add src/rasqal/rdql_parser.c and
+	  src/rasqal/sparql_parser.c
+	* POTFILES.in: Add
+	  utils/mp3-genre-leading-uppercase/mp3-genre-leading-uppercase.c
+
+2009-07-09  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Revert "Fixes NB#125128, junk characters are shown in artist field of some of the"
+	This reverts commit b88eb2a051a89902999753a8cd07831d2608a61e.
+
+	This fix was committed prematurely, we wish to reach a stable state before introducing optional changes.
+
+	Revert "Fixes NB#126696, Tracker extractor crashes while extracting a corrupted music"
+	This reverts commit 3f9bdf04718567e9941e70857271307c6f5493bf.
+
+	This fix was committed prematurely, we wish to reach a stable state before introducing optinal fixes.
+
+2009-07-08  Daniel Nylander  <po@danielnylander.se>
+
+	Updated Swedish translation
+
+2009-07-07  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#125128, junk characters are shown in artist field of some of the audio files.
+	Use enca only when the encoding hasn't been set to anything or is unknown.
+
+	Fixes NB#126696, Tracker extractor crashes while extracting a corrupted music file
+	Added checks for the size of an extended header for the mp3 extractor.
+
+2009-06-30  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+	Updated Spanish translation
+
+2009-06-29  Martyn Russell  <martyn@imendio.com>
+
+	Fixed evolution plugin 64bit compiler warnings & broken for loop
+
+2009-06-26  Martyn Russell  <martyn@imendio.com>
+
+	Fix use of G_GOFFSET_FORMAT since we don't depend on glib 2.20 yet
+
+	Fixes: NB#121377, Tracker goes to pending state when corrupted mmc...
+	Don't index devices which are mounted as READONLY. Usually this means
+	there is some error with the device.
+
+	Fixes: NB#124920, Tracker sorting is incorrect
+	We now use g_utf8_collate_key_for_filename() instead of
+	g_utf8_collate_key() for all strings we collate (for sorting).
+
+	Fixed compiler warning, added offset type funcs & reduced mem allocs
+	Don't create "unknown" mime_type using g_strdup() since we are
+	returned a const normally from g_file_info_get_content_type() and we
+	only duplicate it later on anyway.
+
+	We were creating path_delimited to only free it too, so I removed
+	this. 
+
+	Added _offset_to_string functions for goffset type from GIO.
+
+2009-06-26  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixes NB#124822 Tracker not finding large video file
+	Tracker was using stat to get the basic data from the file. This function
+	only support files until 2Gb. Replaced that code to use GIO (which uses
+	64 bits to save the file size).
+
+2009-06-26  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug NB#125050 - got tracker criticals
+	Lower warning severity, it's not critical at all.
+
+2009-06-26  Martyn Russell  <martyn@imendio.com>
+
+	Don't stat() twice when setting up NFS lock
+
+	Removed unused libtracker-data/tracker-data-file-info.[ch]
+
+2009-06-25  Ivan Frade  <ivan.frade@nokia.com>
+
+	Dont use 100% CPU if FS changes while paused
+	Spotted by me, fixed by martyn.
+
+2009-06-25  Martyn Russell  <martyn@imendio.com>
+
+	Fixed warning
+
+2009-06-25  Carlos Garnacho  <carlosg@gnome.org>
+
+	Plug leak in libinotify. Noticed by Martyn.
+
+2009-06-25  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixes NB#124483, Glib critical failing on assertion
+	Store object references instead of pointers in the ontology
+	parent_services cache.
+
+2009-06-24  Martyn Russell  <martyn@imendio.com>
+
+	Fixed documentation build failures related to changes on TrackerDataMetadata
+
+	Fixed compiler warnings
+
+	Fixs according to specs and improve handwritten MP3 genres
+
+	Code cleanups for MP3 extractor
+
+	Reduce stats cache timeout from 5 minutes to 2 minutes
+
+2009-06-24  Philip Van Hoof  <philip@codeminded.be>
+
+	Compilation error if you don't have GdkPixbuf installed
+
+2009-06-24  Carlos Garnacho  <carlosg@gnome.org>
+
+	Implement TrackerModuleMetadata on top of TrackerDataMetadata.
+	Now, ideally, TrackerModuleMetadata should be used in tracker-indexer modules,
+	and Tracker should use the TrackerDataMetadata API to deal with it.
+
+2009-06-23  Martyn Russell  <martyn@imendio.com>
+
+	Fixes: NB#123591, Unknown genre displayed twice for the attached clips
+	Nasty bug, we were setting Text entries to '' not NULL and also not
+	setting the KeyMetadataCollation columns either which caused strange
+	results when we group and order by them - since the collated data is
+	then stale but still used.
+
+	Fixes core dump by double freeing a device in trackerd processor
+
+2009-06-23  Philip Van Hoof  <philip@codeminded.be>
+
+	The const for path was wrong here
+
+	Bugfix sending the uri to the thumbnailer of deleted files
+
+2009-06-22  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug NB#100123 - Image:Date is empty for some of the images
+	Reworked date parser, based on a patch by Mikael Ottela, now the parser uses
+	sscanf() to parse the date part by part, and compose the ISO8601 date from it.
+
+	Improve error handling/logging in sqlite created functions.
+
+2009-06-19  Carlos Garnacho  <carlosg@gnome.org>
+
+	Unref GstCaps with the right function.
+
+	Fix corner cases in the RDF parser wrt '%', '[' and '*' chars. Fully fixes NB#123030.
+	* if the RDF parser finds '*' globs, it's now translated to a LIKE clause, so we do not
+	  have to escape '[' to "[[]". This also makes RDF glob search caseless for ASCII.
+	* Add a boolean parameter to tracker_escape_db_string() to escape '%' or not, based
+	  on what's the string going to be used for. Literal comparisons do not need these
+	  escaped, and will look for the wrong string if it is.
+
+2009-06-19  Martyn Russell  <martyn@imendio.com>
+
+	Fix NULL crasher in trackerd with strcasecmp
+	This is down to not checking variables in libtracker-data before we
+	start using them and by passing dodgy variables to tracker-metadata in
+	the daemon. Now we have a check in the daemon AND variable checks in
+	libtracker-data too.
+
+	Also, I made the ASC and A comparison in the daemon case insensitive.
+
+2009-06-18  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug NB#123030 - Attached clip cannot be opened through music>artists, childcounts shown wrongly.
+	Escape data in RDF queries so sqlite can digest them.
+
+2009-06-17  Martyn Russell  <martyn@imendio.com>
+
+	Fixed a compilation error when building without libenca
+
+	Simplify the libenca code here a little
+
+2009-06-17  Philip Van Hoof  <philip@codeminded.be>
+
+	Bugfix for NB#119318, remaining v2 fields are now processed too
+
+	NB#119318, only do id3v1 tags if we needed enca to detect encoding
+
+	Last commit of this file broke the build if you have enca installed
+
+2009-06-17  Martyn Russell  <martyn@imendio.com>
+
+	Code clean ups and improvements for stats speed up changes
+
+	Small name changes to variables
+
+2009-06-17  Philip Van Hoof  <philip@codeminded.be>
+
+	Use libenca to check for Cyrillic encodings for ID3v1 tags
+	This partially fixes NB#119318. There are other tags which also need checks and
+	conversions done which can potentially overwrite the ID3v1 tag data we
+	initially retrieved.
+
+2009-06-17  Ivan Frade  <ivan.frade@nokia.com>
+
+	Speed up stats calculation
+	Calculate the stats of top categories adding the results of the subcategories,
+	instead of using a very expensive DB query.
+
+	Added a new list in tracker-ontology to keep the list of "top categories".
+
+2009-06-16  Philip Van Hoof  <philip@codeminded.be>
+
+	Performance improvement when registrar disappears
+
+2009-06-16  Ivan Frade  <ivan.frade@nokia.com>
+
+	Removed unnecessary DISTINCT in GetByServiceType
+	GetByServiceType is retrieving the files using SELECT DISTINCT, but
+	it is not possible to have duplicated files in the DB. Removing the
+	"DISTINCT" makes the query quite faster.
+
+2009-06-16  Philip Van Hoof  <philip@codeminded.be>
+
+	Apparently will camel_db_clone create a thread, avoiding
+
+	Evolution plugin, using mail_msg_unordered_push instead
+
+	Fixed various things about the plugin running in Evolution's process
+
+2009-06-15  Martyn Russell  <martyn@imendio.com>
+
+	AMD64 setrlimit() was too low
+
+2009-06-15  Philip Van Hoof  <philip@codeminded.be>
+
+	Bugfix thumbnailer, when no items must be thumbnailed, don't send a request
+
+2009-06-15  Martyn Russell  <martyn@imendio.com>
+
+	Tweaked the memory limitations for AMD64
+	Now we work out the virtual memory size correctly and have a 100Mb
+	buffer for regular processors, we now take that buffer and double it
+	for AMD64 processors so we have enough virtual memory to extract files
+	without getting OOM errors.
+
+2009-06-15  Carlos Garnacho  <carlosg@gnome.org>
+
+	Change File:Added to contain index time(), since some apps don't modify mtime when copying.
+
+	Adapt tracker-extract to create all its resources before setting mem limits.
+
+	Set memory limit based on current process memory usage.
+
+2009-06-15  Martyn Russell  <martyn@imendio.com>
+
+	Fixed gtk-doc warnings
+
+2009-06-12  Carlos Garnacho  <carlosg@gnome.org>
+
+	Lower tracker-extract's OOM score to the minimum.
+	This would make tracker-extract the most likely option if the kernel OOM
+	handler kicks in.
+
+2009-06-11  Martyn Russell  <martyn@imendio.com>
+
+	Fixes: NB#119230, tracker-extract: memory management shall be improved
+	This is another stab at using setrlimit(). For now we set the memory
+	limit to 80Mb as default and 512Mb for AMD. For some reason, anything
+	less than ~450Mb doesn't even allow tracker-extract to dlopen the
+	modules when we use GStreamer.
+
+	Doing a quick test with tracker-stats before and after shows it is
+	working on my AMD64 desktop and still indexing the same amount of
+	content.
+
+2009-06-11  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#117593, Top most played and Never played songs not listed in alphabetical order.
+	One can now add ASC or DESC to the sort fields (for example "Audio:Album ASC")
+	to define the sorting order for that specific field.
+
+2009-06-11  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2009-06-10  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#107116, Music:Duration displayed as -:- in library for some clips
+	Fixed mpeg v2 bitrates.
+
+2009-06-09  Martyn Russell  <martyn@imendio.com>
+
+	Fixes: NB#121542, trackerd[1460]: GLIB CRITICAL ** GLib-GIO - g_file_hash...
+
+2009-06-09  Carlos Garnacho  <carlosg@gnome.org>
+
+	Add some error logging to the GIO operations in tracker-crawler.
+
+2009-06-08  Mario Blättermann  <mariobl@gnome.org>
+
+	Updated German translation
+
+2009-06-08  Carlos Garnacho  <carlosg@gnome.org>
+
+	Avoid double reindexes from both trackerd and tracker-indexer
+	Do not check ontology directory mtime, since system date could be broken.
+	instead, any external apps modifying ontology will have to issue a
+	tracker-processes -r.
+
+	Also, added a FORCE_NO_REINDEX flag to the DB manager, so we ensure the indexer
+	doesn't force deletion and creation of databases, which would make trackerd
+	look in the wrong way.
+
+2009-06-08  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixes NB#120883, duration of playlist container...
+	Using glib macros to format numbers. Use G_GINT64_FORMAT and G_GUINT32_FORMAT
+	to print extraction results. Otherwise the results can be broken in
+	non-desktop platforms (like maemo).
+
+2009-06-08  Martyn Russell  <martyn@imendio.com>
+
+	Updated utils/sqlite/query to take multiple queries
+
+2009-06-05  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fix a typo in gstreamer extractor field name (Video:FrameRate)
+
+2009-06-05  Carlos Garnacho  <carlosg@gnome.org>
+
+	Make trackerd not wake tracker-indexer up when changing DB mode.
+	Now it checks whether the indexer is running before calling the DBus method,
+	and when the indexer is available, it will be changed immediately to match
+	trackerd settings.
+
+2009-06-05  Martyn Russell  <martyn@imendio.com>
+
+	Don't change the mode in indexer if same as current mode
+
+2009-06-05  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Some small fixes to the tagreadbin gstreamer implementation.
+
+2009-06-04  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#117899, iTunes+ m4a song cover art is not shown
+	We fall back to preview images in gstreamer album art extraction if proper
+	image is not found.
+
+	Fixes NB#119840, Music-Artists -Library view not displayed by tapping on (unknown Artist)
+	Update the check for empty string value for NULL include.
+
+2009-06-04  Carlos Garnacho  <carlosg@gnome.org>
+
+	As GErrors exist for some reason, use them.
+
+2009-06-04  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#119384, duration is not extracted for the wmv file of 30secs duration
+	Fixes rounding of duration calculation in gstreamer extractor.
+
+	Fixes NB#114880, tracker-extract crashed while extracting a video Fixes NB#95873, duration not extracted for mp2 and aac files Fixes NB#96142, Video library : Duration of the Video clips is not displaying.
+	The gstreamer extractor has been changed to use the new implementation of
+	tagreadbin if available.
+
+2009-06-04  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixes GB#584809 Remove tracker-thumbnailer manpage
+	Removed tracker-thumbnailer manpage.
+
+2009-06-03  Martyn Russell  <martyn@imendio.com>
+
+	Fixed state machine so we return to previous state after PAUSED
+	This bug was simulated by setting the LowDiskSpaceLimit in the config
+	to 99 and then starting the daemon. Then setting it to 1 in real time
+	should start sending files to the indexer, but instead it was returned
+	to PENDING state which meant the queue handler returned and didn't do
+	anything since it was expecting IDLE. IDLE was attempted but denied
+	given pause conditions.
+
+2009-06-03  Carlos Garnacho  <carlosg@gnome.org>
+
+	Make tracker-search use the iface invalidation mechanism.
+	This is necessary now that the DB manager can be restarted in the middle
+	of trackerd lifetime.
+
+	Add mechanisms to TrackerDBInterface/TrackerDBManager to invalidate interfaces.
+	On shutdown, all interfaces created through the DB manager will emit a
+	"invalidated" signal, so callers have to do pending cleanups if necessary.
+
+	Hook up tracker-status to profile setting in tracker-indexer/DB manager.
+
+2009-06-03  Martyn Russell  <martyn@imendio.com>
+
+	Added code to switch TrackerMode based on status
+
+2009-06-03  Carlos Garnacho  <carlosg@gnome.org>
+
+	Add a SetProfile DBus call to the indexer to switch DB pragma profiles on runtime.
+	tracker_db_manager_init() was added a new parameter for the profile name, it
+	will default to "Safe" if profile_name is NULL or doesn't exist. Callers of
+	this function have been modified to pass a NULL profile_name.
+
+2009-06-02  Martyn Russell  <martyn@imendio.com>
+
+	Fix iterating OVER every other device in the processor's list
+
+2009-06-01  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	Correct the utf encoding, fixes bug #584547
+
+2009-06-01  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug NB#118578 - Getting metadata with mafw_playlist_get_items_md fails.
+	Make volumes initialization completely sync without running the main loop,
+	so it doesn't process petitions before the DBus interfaces are properly
+	set up.
+
+2009-06-01  Martyn Russell  <martyn@imendio.com>
+
+	Fixed trackerd crasher when shutting down if started in readonly mode
+
+2009-06-01  Philip Van Hoof  <philip@codeminded.be>
+
+	Performance improvements for album-art detection
+
+2009-06-01  Carlos Garnacho  <carlosg@gnome.org>
+
+	Fix typo in logic.
+
+	Bug NB#119123 - tracker-indexer is crashing.
+	Make sure we also escape '%' chars in filenames, so sqlite doesn't think they
+	are parameters to be passed. Also improve performance of
+	tracker_escape_db_string() to be O(n) in all cases.
+
+2009-06-01  Martyn Russell  <martyn@imendio.com>
+
+	Fixed critical warning calling TrackerProcessor API before created
+	This fixes:
+
+	  Tracker-Critical **: tracker_processor_mount_point_added assertion
+	  `TRACKER_IS_PROCESSOR (processor)' failed
+
+	Which could occur because TrackerProcessor wasn't created at the time
+	of calling during startup of the daemon. This was a race condition.
+
+	Indexer pause time now 2s not 5s
+
+	Check space before creating DBs && disable indexer API when paused
+	The debugging is also a bit clearer when we are below the disk space
+	threshold as set in the config. The frequency of these messages is
+	slightly longer too so we don't fill the logs up so quickly.
+
+2009-05-29  Carlos Garnacho  <carlosg@gnome.org>
+
+	Plug some leaks.
+
+2009-05-28  Carlos Garnacho  <carlosg@gnome.org>
+
+	Add a File:Added field, representing the date when the item as added to the DB.
+	In order not to incorrectly represent old items as "recent" on reindex.
+	File:Added will contain the mtime of the file when it's first added, and will
+	remain unchanged if the file changes.
+
+2009-05-28  Philip Van Hoof  <philip@codeminded.be>
+
+	Fixes NB#119507, Removed debugging info
+
+2009-05-28  Martyn Russell  <martyn@imendio.com>
+
+	Monitor cache time now 1s & processor queue time now 0s for < 50 items
+	Now we only wait 1 second before sending files to the processor from
+	the monitor module. The reason for this, is to be more responsive from
+	monitor events. Now a DELETE event is handled within 1 to 2 seconds if
+	the indexer is idle.
+
+	The processor queue handler is set up using a 2 second timeout per
+	1000 files. Now when we have finished the initial check of all files,
+	we use g_idle_add() instead to make sure the indexer deals with items
+	much quicker.
+
+	Rework the processors device and module logic so it is clearer
+	This also cleans up some of the debugging so there is less of it. It
+	is also now less likely we end up in recursive loops because of real
+	time updates from removable devices being inserted and removed (the
+	logic here is much simpler and comprehensible
+
+2009-05-27  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes NB#110584, Image:HasKeywords cannot be used for ImageViewer puprposes Fixes NB#100123, Image:Date is empty for some of the images
+
+2009-05-27  Martyn Russell  <martyn@imendio.com>
+
+	Use MEMORY the default pragma for temp_store
+
+2009-05-27  Carlos Garnacho  <carlosg@gnome.org>
+
+	Plug potential leak when setting DB pragmas.
+	Turns out some pragmas can return data, so we have to unref the
+	TrackerDBResultSet if any is returned.
+
+2009-05-26  Ask H. Larsen  <asklarsen@gmail.com>
+
+	Updated Danish translation
+
+2009-05-26  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	Updated Hungarian translation
+
+2009-05-26  Carlos Garnacho  <carlosg@gnome.org>
+
+	Force a reindex if ontology directory mtime is more recent than common.db.
+
+2009-05-26  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fix playlist duration handling
+	The duration returned after parsing the playlist is just the string in the
+	file. Using totem_pl_parser_parse_duration we get the value in seconds.
+
+2009-05-26  Ask H. Larsen  <asklarsen@gmail.com>
+
+	Updated Danish translation
+
+2009-05-25  Martyn Russell  <martyn@imendio.com>
+
+	Fixes indexer warnings closing contexts inserting with collated data
+	This fixes warnings in the indexer like: 
+
+	  Couldn't close TrackerDataUpdateMetadataContext, unrecognized token:
+	  "^A"
+
+	Which were seen because we were using g_utf8_collate() and then
+	putting the value in the INSERT. That was breaking on soem occasions.
+
+2009-05-25  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug NB#114082 - Tracker source returns wrong metadata for attached clip with special characters
+	Replace metadata separator chars inside metadata with a similar UTF8 char.
+	Ideally we should be changing API to return multiple values in an array, until
+	then we need a way not to mistake metadata with special chars with multiple
+	values.
+
+2009-05-24  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2009-05-24  Mario Blättermann  <mariobl@gnome.org>
+
+	Updated German translation
+
+2009-05-22  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixes NB#118212, glib warnings when running trackerd
+	Handling correctly the error in tracker_metadata_get/_get_multiple.
+	The internal common function (_get_internal) set the GError, and the
+	public functions handle correctly the error (and log it).
+
 2009-05-22  Martyn Russell  <martyn@imendio.com>
 
 	NEWS for 0.6.95
@@ -54,8 +852,7 @@
 
 2009-05-20  Mikael Ottela  <mikael.ottela@ixonos.com>
 
-	Fixes NB#110584, Image:HasKeywords working incorrectly
-	Fixes NB#113083, Tracker extracts Sub-location instead of Location field.
+	Fixes NB#110584, Image:HasKeywords working incorrectly Fixes NB#113083, Tracker extracts Sub-location instead of Location field.
 
 	Mime check fixes to the album art extraction in gstreamer and mp3 extractors
 

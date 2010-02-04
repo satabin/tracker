@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Fields</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Tracker Common Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
 <link rel="up" href="ch02.html" title="Ontology">
 <link rel="prev" href="libtracker-common-Service.html" title="Service">
 <link rel="next" href="ch03.html" title="Configuration">
@@ -36,7 +36,7 @@
                 <a href="#libtracker-common-Fields.properties" class="shortcut">Properties</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="Fields">
 <a name="libtracker-common-Fields"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -45,7 +45,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libtracker-common-Fields.synopsis"></a><h2>Synopsis</h2>
 <a name="TrackerField"></a><pre class="synopsis">
 
@@ -135,7 +135,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *       <a class="link" href="libtracker-common-Fields.html#tracker-field-type-to-string" title="tracker_field_type_to_string ()">tracker_field_type_to_string</a>        (TrackerFieldType fieldtype);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Object Hierarchy">
 <a name="libtracker-common-Fields.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
@@ -144,7 +144,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
    +----TrackerField
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Properties">
 <a name="libtracker-common-Fields.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="libtracker-common-Fields.html#TrackerField--child-ids" title='The "child-ids" property'>child-ids</a>"                <a
@@ -180,21 +180,21 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a>                  : Read / Write
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libtracker-common-Fields.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libtracker-common-Fields.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="TrackerField">
 <a name="TrackerField-struct"></a><h3>TrackerField</h3>
 <pre class="programlisting">typedef struct _TrackerField TrackerField;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_new ()">
 <a name="tracker-field-new"></a><h3>tracker_field_new ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *      tracker_field_new                   (void);</pre>
 <p>
@@ -211,7 +211,7 @@ Creates a new <a class="link" href="libtracker-common-Fields.html#TrackerField">
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_append_child_id ()">
 <a name="tracker-field-append-child-id"></a><h3>tracker_field_append_child_id ()</h3>
 <pre class="programlisting">void                tracker_field_append_child_id       (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          const <a
@@ -236,7 +236,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_child_ids ()">
 <a name="tracker-field-get-child-ids"></a><h3>tracker_field_get_child_ids ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"
@@ -260,7 +260,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_data_type ()">
 <a name="tracker-field-get-data-type"></a><h3>tracker_field_get_data_type ()</h3>
 <pre class="programlisting">TrackerFieldType    tracker_field_get_data_type         (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field);</pre>
 <p>
@@ -282,7 +282,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_delimited ()">
 <a name="tracker-field-get-delimited"></a><h3>tracker_field_get_delimited ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -306,7 +306,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_embedded ()">
 <a name="tracker-field-get-embedded"></a><h3>tracker_field_get_embedded ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -330,7 +330,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_field_name ()">
 <a name="tracker-field-get-field-name"></a><h3>tracker_field_get_field_name ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -354,7 +354,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_filtered ()">
 <a name="tracker-field-get-filtered"></a><h3>tracker_field_get_filtered ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -378,7 +378,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_id ()">
 <a name="tracker-field-get-id"></a><h3>tracker_field_get_id ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -402,7 +402,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_multiple_values ()">
 <a name="tracker-field-get-multiple-values"></a><h3>tracker_field_get_multiple_values ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -426,7 +426,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_name ()">
 <a name="tracker-field-get-name"></a><h3>tracker_field_get_name ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -450,7 +450,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_store_metadata ()">
 <a name="tracker-field-get-store-metadata"></a><h3>tracker_field_get_store_metadata ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -474,7 +474,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_get_weight ()">
 <a name="tracker-field-get-weight"></a><h3>tracker_field_get_weight ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -498,7 +498,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_child_ids ()">
 <a name="tracker-field-set-child-ids"></a><h3>tracker_field_set_child_ids ()</h3>
 <pre class="programlisting">void                tracker_field_set_child_ids         (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          const <a
@@ -523,7 +523,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_data_type ()">
 <a name="tracker-field-set-data-type"></a><h3>tracker_field_set_data_type ()</h3>
 <pre class="programlisting">void                tracker_field_set_data_type         (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          TrackerFieldType value);</pre>
@@ -546,7 +546,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_delimited ()">
 <a name="tracker-field-set-delimited"></a><h3>tracker_field_set_delimited ()</h3>
 <pre class="programlisting">void                tracker_field_set_delimited         (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          <a
@@ -571,7 +571,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_embedded ()">
 <a name="tracker-field-set-embedded"></a><h3>tracker_field_set_embedded ()</h3>
 <pre class="programlisting">void                tracker_field_set_embedded          (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          <a
@@ -596,7 +596,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_field_name ()">
 <a name="tracker-field-set-field-name"></a><h3>tracker_field_set_field_name ()</h3>
 <pre class="programlisting">void                tracker_field_set_field_name        (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          const <a
@@ -621,7 +621,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_filtered ()">
 <a name="tracker-field-set-filtered"></a><h3>tracker_field_set_filtered ()</h3>
 <pre class="programlisting">void                tracker_field_set_filtered          (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          <a
@@ -646,7 +646,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_id ()">
 <a name="tracker-field-set-id"></a><h3>tracker_field_set_id ()</h3>
 <pre class="programlisting">void                tracker_field_set_id                (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          const <a
@@ -671,7 +671,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_multiple_values ()">
 <a name="tracker-field-set-multiple-values"></a><h3>tracker_field_set_multiple_values ()</h3>
 <pre class="programlisting">void                tracker_field_set_multiple_values   (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          <a
@@ -696,7 +696,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_name ()">
 <a name="tracker-field-set-name"></a><h3>tracker_field_set_name ()</h3>
 <pre class="programlisting">void                tracker_field_set_name              (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          const <a
@@ -721,7 +721,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_store_metadata ()">
 <a name="tracker-field-set-store-metadata"></a><h3>tracker_field_set_store_metadata ()</h3>
 <pre class="programlisting">void                tracker_field_set_store_metadata    (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          <a
@@ -746,7 +746,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_set_weight ()">
 <a name="tracker-field-set-weight"></a><h3>tracker_field_set_weight ()</h3>
 <pre class="programlisting">void                tracker_field_set_weight            (<a class="link" href="libtracker-common-Fields.html#TrackerField">TrackerField</a> *field,
                                                          <a
@@ -771,7 +771,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="tracker_field_type_to_string ()">
 <a name="tracker-field-type-to-string"></a><h3>tracker_field_type_to_string ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -795,9 +795,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Property Details">
 <a name="libtracker-common-Fields.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "child-ids" property'>
 <a name="TrackerField--child-ids"></a><h3>The <code class="literal">"child-ids"</code> property</h3>
 <pre class="programlisting">  "child-ids"                <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -805,14 +805,14 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>Child ids.</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "data-type" property'>
 <a name="TrackerField--data-type"></a><h3>The <code class="literal">"data-type"</code> property</h3>
 <pre class="programlisting">  "data-type"                TrackerFieldType      : Read / Write</pre>
 <p>Field data type.</p>
 <p>Default value: TRACKER_FIELD_TYPE_INDEX</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "delimited" property'>
 <a name="TrackerField--delimited"></a><h3>The <code class="literal">"delimited"</code> property</h3>
 <pre class="programlisting">  "delimited"                <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -821,7 +821,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: FALSE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "embedded" property'>
 <a name="TrackerField--embedded"></a><h3>The <code class="literal">"embedded"</code> property</h3>
 <pre class="programlisting">  "embedded"                 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -830,7 +830,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: TRUE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "field-name" property'>
 <a name="TrackerField--field-name"></a><h3>The <code class="literal">"field-name"</code> property</h3>
 <pre class="programlisting">  "field-name"               <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -839,7 +839,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <p>Default value: NULL</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "filtered" property'>
 <a name="TrackerField--filtered"></a><h3>The <code class="literal">"filtered"</code> property</h3>
 <pre class="programlisting">  "filtered"                 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -848,7 +848,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: FALSE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "id" property'>
 <a name="TrackerField--id"></a><h3>The <code class="literal">"id"</code> property</h3>
 <pre class="programlisting">  "id"                       <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -857,7 +857,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <p>Default value: NULL</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "multiple-values" property'>
 <a name="TrackerField--multiple-values"></a><h3>The <code class="literal">"multiple-values"</code> property</h3>
 <pre class="programlisting">  "multiple-values"          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -866,7 +866,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: TRUE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "name" property'>
 <a name="TrackerField--name"></a><h3>The <code class="literal">"name"</code> property</h3>
 <pre class="programlisting">  "name"                     <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -875,7 +875,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <p>Default value: NULL</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "store-metadata" property'>
 <a name="TrackerField--store-metadata"></a><h3>The <code class="literal">"store-metadata"</code> property</h3>
 <pre class="programlisting">  "store-metadata"           <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -884,7 +884,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <p>Default value: FALSE</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title='The "weight" property'>
 <a name="TrackerField--weight"></a><h3>The <code class="literal">"weight"</code> property</h3>
 <pre class="programlisting">  "weight"                   <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"

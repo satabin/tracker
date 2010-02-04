@@ -3,6 +3,11 @@ tracker (0.6.96-1) UNRELEASED; urgency=low
   * New upstream release.
   * debian/tracker.manpages
     - Remove tracker-thumbnailer.1, no longer installed upstream.
+  * Remove patches:
+    - debian/patches/10-drop-bogus-version-info.patch (merged upstream)
+    - debian/patches/20-tracker-defaults.patch (merged upstream)
+    - debian/patches/30-gmime-2.4.patch (merged upstream)
+    - debian/patches/99-autoreconf.patch (no longer required)
 
  -- Michael Biebl <biebl@debian.org>  Thu, 04 Feb 2010 21:44:49 +0100
 

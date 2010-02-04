@@ -1,4 +1,1 @@
-10-drop-bogus-version-info.patch
-20-tracker-defaults.patch
-30-gmime-2.4.patch
-99-autoreconf.patch
+# Debian patches for tracker

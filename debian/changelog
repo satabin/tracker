@@ -16,6 +16,11 @@ tracker (0.6.96-1) UNRELEASED; urgency=low
     - Set AM_MAINTAINER_MODE to make patching the build system less painful.
   * debian/patches/99-autoreconf.patch
     - Rerun autoreconf -i to update the build system.
+  * debian/*.lintian-overrides
+    - Add lintian overrides for tracker-search-tool and tracker-utils. Those
+      binaries encode an rpath for /usr/lib/tracker. As they are built from
+      the same source package and have a strict dependency on the tracker
+      binary package, it is acceptable to define an rpath.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 04 Feb 2010 21:44:49 +0100
 

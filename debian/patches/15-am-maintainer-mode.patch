@@ -1,0 +1,13 @@
+Index: tracker-0.6.96/configure.ac
+===================================================================
+--- tracker-0.6.96.orig/configure.ac	2010-02-05 00:14:04.123888274 +0100
++++ tracker-0.6.96/configure.ac	2010-02-05 00:15:08.659898330 +0100
+@@ -49,6 +49,8 @@
+ AM_INIT_AUTOMAKE([no-define tar-ustar])
+ AM_CONFIG_HEADER(config.h)
+ 
++AM_MAINTAINER_MODE
++
+ IDT_COMPILE_WARNINGS
+ 
+ TRACKER_MAJOR_VERSION=tracker_major_version

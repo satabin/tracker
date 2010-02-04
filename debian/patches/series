@@ -1,1 +1,4 @@
 # Debian patches for tracker
+10-binutils-gold.patch
+15-am-maintainer-mode.patch
+99-autoreconf.patch

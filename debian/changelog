@@ -7,9 +7,14 @@ tracker (0.6.96-1) UNRELEASED; urgency=low
     - debian/patches/10-drop-bogus-version-info.patch (merged upstream)
     - debian/patches/20-tracker-defaults.patch (merged upstream)
     - debian/patches/30-gmime-2.4.patch (merged upstream)
-    - debian/patches/99-autoreconf.patch (no longer required)
   * debian/control
     - Fix small typo in tracker-dbg's package description. (Closes: #550771)
+  * debian/patches/10-binutils-gold.patch
+    - Add missing libraries to fix FTBFS with binutils-gold. (Closes: #556499)
+  * debian/patches/15-am-maintainer-mode.patch
+    - Set AM_MAINTAINER_MODE to make patching the build system less painful.
+  * debian/patches/99-autoreconf.patch
+    - Rerun autoreconf -i to update the build system.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 04 Feb 2010 21:44:49 +0100
 

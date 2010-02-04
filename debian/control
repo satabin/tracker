@@ -181,5 +181,5 @@ Section: debug
 Priority: extra
 Depends: tracker (= ${binary:Version}), ${misc:Depends}
 Description: metadata database, indexer and search tool - debugging symbols
- This package includes the debugging symbols useful for debugging tracker and 
- its utilities
+ This package includes the debugging symbols useful for debugging tracker and
+ its utilities.

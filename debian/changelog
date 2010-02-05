@@ -28,6 +28,8 @@ tracker (0.6.96-1) UNRELEASED; urgency=low
       (Closes: #549868)
   * debian/rules
     - Update configure flags.
+    - Don't generate ldconfig calls in postinst/postrm for the libraries
+      shipped in /usr/lib/tracker.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 04 Feb 2010 21:44:49 +0100
 

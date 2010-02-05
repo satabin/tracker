@@ -1,0 +1,13 @@
+Index: tracker/docs/manpages/tracker-search.1
+===================================================================
+--- tracker.orig/docs/manpages/tracker-search.1	2010-02-05 00:56:58.627889111 +0100
++++ tracker/docs/manpages/tracker-search.1	2010-02-05 00:57:09.527897213 +0100
+@@ -7,7 +7,7 @@
+ .SH SYNOPSIS
+ .B tracker-search
+ [OPTIONS]
+-.I EXPRESION
++.I EXPRESSION
+ 
+ .SH DESCRIPTION
+ .B tracker-search

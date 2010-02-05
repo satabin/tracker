@@ -10,6 +10,7 @@ tracker (0.6.96-1) UNRELEASED; urgency=low
   * debian/control
     - Fix small typo in tracker-dbg's package description. (Closes: #550771)
     - Bump Standards-Version to 3.8.4. No further changes.
+    - Add Depends on procps.
   * debian/patches/10-binutils-gold.patch
     - Add missing libraries to fix FTBFS with binutils-gold. (Closes: #556499)
   * debian/patches/15-am-maintainer-mode.patch
@@ -30,6 +31,8 @@ tracker (0.6.96-1) UNRELEASED; urgency=low
     - Update configure flags.
     - Don't generate ldconfig calls in postinst/postrm for the libraries
       shipped in /usr/lib/tracker.
+  * debian/tracker.postinst
+    - Start procps to apply "sysctl.d/30-tracker.conf".
 
  -- Michael Biebl <biebl@debian.org>  Thu, 04 Feb 2010 21:44:49 +0100
 

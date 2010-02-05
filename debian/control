@@ -47,6 +47,7 @@ Package: tracker
 Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
+         procps,
          shared-mime-info,
          dbus
 Recommends: tracker-utils,

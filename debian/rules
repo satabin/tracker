@@ -9,10 +9,10 @@ DEB_CONFIGURE_EXTRA_FLAGS := \
 	--enable-unac \
 	--enable-external-qdbm \
 	--enable-deskbar-applet=module \
-	--enable-gui \
-	--enable-preferences \
+	--enable-tracker-search-tool \
+	--enable-tracker-preferences \
 	--enable-libtrackergtk \
-	--enable-trackerapplet \
+	--enable-tracker-applet \
 	--enable-libvorbis
 
 LDFLAGS += -Wl,--as-needed -Wl,-Bsymbolic

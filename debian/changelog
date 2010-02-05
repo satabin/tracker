@@ -26,6 +26,8 @@ tracker (0.6.96-1) UNRELEASED; urgency=low
   * debian/patches/25-trackerd-man-page-typo-fix.patch
     - Fix typo in the trackerd.1 man page spotted by Hans Spaans.
       (Closes: #549868)
+  * debian/rules
+    - Update configure flags.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 04 Feb 2010 21:44:49 +0100
 

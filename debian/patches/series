@@ -2,4 +2,5 @@
 10-binutils-gold.patch
 15-am-maintainer-mode.patch
 20-tracker-search-man-page-typo-fix.patch
+25-trackerd-man-page-typo-fix.patch
 99-autoreconf.patch

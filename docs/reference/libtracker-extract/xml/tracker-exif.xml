@@ -1,0 +1,121 @@
+<refentry id="libtracker-extract-tracker-exif">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-extract-tracker-exif.top_of_page">Exif</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-EXTRACT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Exif</refname>
+<refpurpose>Exchangeable Image File Format (EXIF)</refpurpose>
+</refnamediv>
+<refsect1 id="libtracker-extract-tracker-exif.stability-level">
+<title>Stability Level</title>
+Stable, unless otherwise indicated
+</refsect1>
+
+<refsynopsisdiv id="libtracker-extract-tracker-exif.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-extract/tracker-extract.h&gt;
+
+                    <link linkend="TrackerExifData">TrackerExifData</link>;
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-exif-read">tracker_exif_read</link>                   (unsigned <link linkend="char">char</link> *buffer,
+                                                         <link linkend="size-t">size_t</link> len,
+                                                         const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="TrackerExifData">TrackerExifData</link> *data);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-extract-tracker-exif.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+Exchangeable Image File Format (EXIF) is a specification for the
+image file format used by digital cameras. The specification uses
+the existing JPEG, TIFF Rev. 6.0, and RIFF WAV file formats, with
+the addition of specific metadata tags. It is not supported in JPEG
+2000, PNG, or GIF.
+</para>
+<para>
+This API is provided to remove code duplication between extractors
+using these standards.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-extract-tracker-exif.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerExifData" role="struct">
+<title>TrackerExifData</title>
+<indexterm zone="TrackerExifData"><primary sortas="TrackerExifData">TrackerExifData</primary></indexterm><programlisting>typedef struct {
+	gchar *y_dimension;
+	gchar *x_dimension;
+	gchar *image_width;
+	gchar *document_name;
+	gchar *time;
+	gchar *time_original;
+	gchar *artist;
+	gchar *user_comment;
+	gchar *description;
+	gchar *make;
+	gchar *model;
+	gchar *orientation;
+	gchar *exposure_time;
+	gchar *fnumber;
+	gchar *flash;
+	gchar *focal_length;
+	gchar *iso_speed_ratings;
+	gchar *metering_mode;
+	gchar *white_balance;
+	gchar *copyright;
+	gchar *software;
+} TrackerExifData;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="tracker-exif-read" role="function" condition="since:0.8">
+<title>tracker_exif_read ()</title>
+<indexterm zone="tracker-exif-read" role="0.8"><primary sortas="tracker_exif_read">tracker_exif_read</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_exif_read                   (unsigned <link linkend="char">char</link> *buffer,
+                                                         <link linkend="size-t">size_t</link> len,
+                                                         const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="TrackerExifData">TrackerExifData</link> *data);</programlisting>
+<para>
+This function takes <parameter>len</parameter> bytes of <parameter>buffer</parameter> and runs it through the
+EXIF library. The result is that <parameter>data</parameter> is populated with the EXIF
+data found in <parameter>uri</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
+<listitem><simpara> a chunk of data with exif data in it.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara> the size of <parameter>buffer</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
+<listitem><simpara> the URI this is related to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> a pointer to a TrackerExifData struture to populate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if the <parameter>data</parameter> was populated successfully, otherwise
+<link linkend="FALSE--CAPS"><literal>FALSE</literal></link> is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

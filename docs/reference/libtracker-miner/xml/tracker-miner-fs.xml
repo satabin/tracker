@@ -1,0 +1,551 @@
+<refentry id="TrackerMinerFS">
+<refmeta>
+<refentrytitle role="top_of_page" id="TrackerMinerFS.top_of_page">TrackerMinerFS</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-MINER Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>TrackerMinerFS</refname>
+<refpurpose>Abstract base class for filesystem miners</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="TrackerMinerFS.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-miner/tracker-miner.h&gt;
+
+typedef             <link linkend="TrackerMinerFSPrivate">TrackerMinerFSPrivate</link>;
+typedef             <link linkend="TrackerMinerFS">TrackerMinerFS</link>;
+                    <link linkend="TrackerMinerFSClass">TrackerMinerFSClass</link>;
+<link linkend="void">void</link>                <link linkend="tracker-miner-fs-directory-add">tracker_miner_fs_directory_add</link>      (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file,
+                                                         <link linkend="gboolean">gboolean</link> recurse);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-miner-fs-directory-remove">tracker_miner_fs_directory_remove</link>   (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file);
+<link linkend="void">void</link>                <link linkend="tracker-miner-fs-file-add">tracker_miner_fs_file_add</link>           (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file);
+<link linkend="void">void</link>                <link linkend="tracker-miner-fs-file-notify">tracker_miner_fs_file_notify</link>        (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file,
+                                                         const <link linkend="GError">GError</link> *error);
+<link linkend="void">void</link>                <link linkend="tracker-miner-fs-set-throttle">tracker_miner_fs_set_throttle</link>       (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="gdouble">gdouble</link> throttle);
+<link linkend="gdouble">gdouble</link>             <link linkend="tracker-miner-fs-get-throttle">tracker_miner_fs_get_throttle</link>       (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs);
+<link linkend="void">void</link>                <link linkend="tracker-miner-fs-force-recheck">tracker_miner_fs_force_recheck</link>      (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-miner-fs-get-parent-urn">tracker_miner_fs_get_parent_urn</link>     (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-miner-fs-get-urn">tracker_miner_fs_get_urn</link>            (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file);
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1 id="TrackerMinerFS.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<synopsis>
+  <link linkend="GObject">GObject</link>
+   +----<link linkend="TrackerMiner">TrackerMiner</link>
+         +----TrackerMinerFS
+</synopsis>
+</refsect1>
+
+
+
+
+
+<refsect1 id="TrackerMinerFS.properties" role="properties">
+<title role="properties.title">Properties</title>
+<synopsis>
+  &quot;<link linkend="TrackerMinerFS--process-pool-limit">process-pool-limit</link>&quot;       <link linkend="guint">guint</link>                 : Read / Write / Construct
+  &quot;<link linkend="TrackerMinerFS--throttle">throttle</link>&quot;                 <link linkend="gdouble">gdouble</link>               : Read / Write
+</synopsis>
+</refsect1>
+
+<refsect1 id="TrackerMinerFS.signals" role="signal_proto">
+<title role="signal_proto.title">Signals</title>
+<synopsis>
+  &quot;<link linkend="TrackerMinerFS-check-directory">check-directory</link>&quot;                                : Run Last
+  &quot;<link linkend="TrackerMinerFS-check-directory-contents">check-directory-contents</link>&quot;                       : Run Last
+  &quot;<link linkend="TrackerMinerFS-check-file">check-file</link>&quot;                                     : Run Last
+  &quot;<link linkend="TrackerMinerFS-finished">finished</link>&quot;                                       : Run Last
+  &quot;<link linkend="TrackerMinerFS-ignore-next-update-file">ignore-next-update-file</link>&quot;                        : Run Last
+  &quot;<link linkend="TrackerMinerFS-monitor-directory">monitor-directory</link>&quot;                              : Run Last
+  &quot;<link linkend="TrackerMinerFS-process-file">process-file</link>&quot;                                   : Run Last
+</synopsis>
+</refsect1>
+
+
+<refsect1 id="TrackerMinerFS.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+<link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link> is an abstract base class for miners that collect data
+from the filesystem, all the filesystem crawling and monitoring is
+abstracted away, leaving to implementations the decisions of what
+directories/files should it process, and the actual data extraction.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="TrackerMinerFS.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerMinerFSPrivate" role="typedef">
+<title>TrackerMinerFSPrivate</title>
+<indexterm zone="TrackerMinerFSPrivate"><primary sortas="TrackerMinerFSPrivate">TrackerMinerFSPrivate</primary></indexterm><programlisting>typedef struct TrackerMinerFSPrivate TrackerMinerFSPrivate;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerMinerFS" role="typedef">
+<title>TrackerMinerFS</title>
+<indexterm zone="TrackerMinerFS"><primary sortas="TrackerMinerFS">TrackerMinerFS</primary></indexterm><programlisting>typedef struct TrackerMinerFS        TrackerMinerFS;
+</programlisting>
+<para>
+Abstract miner abstract implementation to get data
+from the filesystem.</para>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerMinerFSClass" role="struct">
+<title>TrackerMinerFSClass</title>
+<indexterm zone="TrackerMinerFSClass"><primary sortas="TrackerMinerFSClass">TrackerMinerFSClass</primary></indexterm><programlisting>typedef struct {
+	TrackerMinerClass parent;
+
+	gboolean (* check_file)               (TrackerMinerFS       *fs,
+                                               GFile                *file);
+	gboolean (* check_directory)          (TrackerMinerFS       *fs,
+                                               GFile                *file);
+	gboolean (* check_directory_contents) (TrackerMinerFS       *fs,
+	                                       GFile                *parent,
+	                                       GList                *children);
+	gboolean (* process_file)             (TrackerMinerFS       *fs,
+                                               GFile                *file,
+                                               TrackerSparqlBuilder *builder,
+                                               GCancellable         *cancellable);
+	gboolean (* ignore_next_update_file)  (TrackerMinerFS       *fs,
+                                               GFile                *file,
+                                               TrackerSparqlBuilder *builder,
+                                               GCancellable         *cancellable);
+	gboolean (* monitor_directory)        (TrackerMinerFS       *fs,
+                                               GFile                *file);
+	void     (* finished)                 (TrackerMinerFS       *fs);
+} TrackerMinerFSClass;
+</programlisting>
+<para>
+Prototype for the abstract class, <parameter>check_file</parameter>, <parameter>check_directory</parameter>, <parameter>check_directory_contents</parameter>,
+<parameter>process_file</parameter> and <parameter>monitor_directory</parameter> must be implemented in the deriving class in order to
+actually extract data.</para>
+<para>
+</para><variablelist role="struct">
+<varlistentry>
+<term><link linkend="TrackerMinerClass">TrackerMinerClass</link>&#160;<structfield>parent</structfield>;</term>
+<listitem><simpara> parent object class
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>check_file</structfield>&#160;()</term>
+<listitem><simpara> Called when a file should be checked for further processing
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>check_directory</structfield>&#160;()</term>
+<listitem><simpara> Called when a directory should be checked for further processing
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>check_directory_contents</structfield>&#160;()</term>
+<listitem><simpara> Called when a directory should be checked for further processing, based on the directory contents.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>process_file</structfield>&#160;()</term>
+<listitem><simpara> Called when the metadata associated to a file is requested.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>ignore_next_update_file</structfield>&#160;()</term>
+<listitem><simpara> Called after a writeback event happens on a file.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>monitor_directory</structfield>&#160;()</term>
+<listitem><simpara> Called to check whether a directory should be modified.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>finished</structfield>&#160;()</term>
+<listitem><simpara> Called when all processing has been performed.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-fs-directory-add" role="function">
+<title>tracker_miner_fs_directory_add ()</title>
+<indexterm zone="tracker-miner-fs-directory-add"><primary sortas="tracker_miner_fs_directory_add">tracker_miner_fs_directory_add</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_fs_directory_add      (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file,
+                                                         <link linkend="gboolean">gboolean</link> recurse);</programlisting>
+<para>
+Tells the filesystem miner to inspect a directory.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>fs</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> <link linkend="GFile"><type>GFile</type></link> for the directory to inspect
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>recurse</parameter>&#160;:</term>
+<listitem><simpara> whether the directory should be inspected recursively
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-fs-directory-remove" role="function">
+<title>tracker_miner_fs_directory_remove ()</title>
+<indexterm zone="tracker-miner-fs-directory-remove"><primary sortas="tracker_miner_fs_directory_remove">tracker_miner_fs_directory_remove</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_miner_fs_directory_remove   (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file);</programlisting>
+<para>
+Removes a directory from being inspected by <parameter>fs</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>fs</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> <link linkend="GFile"><type>GFile</type></link> for the directory to be removed
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if the directory was successfully removed.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-fs-file-add" role="function">
+<title>tracker_miner_fs_file_add ()</title>
+<indexterm zone="tracker-miner-fs-file-add"><primary sortas="tracker_miner_fs_file_add">tracker_miner_fs_file_add</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_fs_file_add           (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file);</programlisting>
+<para>
+Tells the filesystem miner to inspect a file.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>fs</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> <link linkend="GFile"><type>GFile</type></link> for the file to inspect
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-fs-file-notify" role="function">
+<title>tracker_miner_fs_file_notify ()</title>
+<indexterm zone="tracker-miner-fs-file-notify"><primary sortas="tracker_miner_fs_file_notify">tracker_miner_fs_file_notify</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_fs_file_notify        (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file,
+                                                         const <link linkend="GError">GError</link> *error);</programlisting>
+<para>
+Notifies <parameter>fs</parameter> that all processing on <parameter>file</parameter> has been finished, if any error
+happened during file data processing, it should be passed in <parameter>error</parameter>, else
+that parameter will contain <link linkend="NULL--CAPS"><literal>NULL</literal></link> to reflect success.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>fs</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GFile"><type>GFile</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GError"><type>GError</type></link> with the error that happened during processing, or <link linkend="NULL--CAPS"><literal>NULL</literal></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-fs-set-throttle" role="function">
+<title>tracker_miner_fs_set_throttle ()</title>
+<indexterm zone="tracker-miner-fs-set-throttle"><primary sortas="tracker_miner_fs_set_throttle">tracker_miner_fs_set_throttle</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_fs_set_throttle       (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="gdouble">gdouble</link> throttle);</programlisting>
+<para>
+Tells the filesystem miner to throttle its operations.
+a value of 0 means no throttling at all, so the miner
+will perform operations at full speed, 1 is the slowest
+value.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>fs</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>throttle</parameter>&#160;:</term>
+<listitem><simpara> throttle value, between 0 and 1
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-fs-get-throttle" role="function">
+<title>tracker_miner_fs_get_throttle ()</title>
+<indexterm zone="tracker-miner-fs-get-throttle"><primary sortas="tracker_miner_fs_get_throttle">tracker_miner_fs_get_throttle</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             tracker_miner_fs_get_throttle       (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs);</programlisting>
+<para>
+Gets the current throttle value. see <link linkend="tracker-miner-fs-set-throttle"><function>tracker_miner_fs_set_throttle()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>fs</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> current throttle value.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-fs-force-recheck" role="function">
+<title>tracker_miner_fs_force_recheck ()</title>
+<indexterm zone="tracker-miner-fs-force-recheck"><primary sortas="tracker_miner_fs_force_recheck">tracker_miner_fs_force_recheck</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_fs_force_recheck      (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>fs</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-fs-get-parent-urn" role="function">
+<title>tracker_miner_fs_get_parent_urn ()</title>
+<indexterm zone="tracker-miner-fs-get-parent-urn"><primary sortas="tracker_miner_fs_get_parent_urn">tracker_miner_fs_get_parent_urn</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_miner_fs_get_parent_urn     (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file);</programlisting>
+<para>
+If <parameter>file</parameter> is currently being processed by <parameter>fs</parameter>, this function
+will return the parent folder URN if any. This function is
+useful to set the nie:belongsToContainer relationship. The
+processing order of <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link> guarantees that a folder
+has been already fully processed for indexing before any
+children is processed, so most usually this function should
+return non-<link linkend="NULL--CAPS"><literal>NULL</literal></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>fs</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GFile"><type>GFile</type></link> obtained in <link linkend="TrackerMinerFS-process-file"><type>"process-file"</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The parent folder URN, or <link linkend="NULL--CAPS"><literal>NULL</literal></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-fs-get-urn" role="function">
+<title>tracker_miner_fs_get_urn ()</title>
+<indexterm zone="tracker-miner-fs-get-urn"><primary sortas="tracker_miner_fs_get_urn">tracker_miner_fs_get_urn</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_miner_fs_get_urn            (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *fs,
+                                                         <link linkend="GFile">GFile</link> *file);</programlisting>
+<para>
+If the item exists in the store, this function retrieves
+the URN for a <link linkend="GFile"><type>GFile</type></link> being currently processed.
+</para>
+<para>
+If <parameter>file</parameter> is not being currently processed by <parameter>fs</parameter>, or doesn't
+exist in the store yet, <link linkend="NULL--CAPS"><literal>NULL</literal></link> will be returned.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>fs</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GFile"><type>GFile</type></link> obtained in <link linkend="TrackerMinerFS-process-file"><type>"process-file"</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The URN containing the data associated to <parameter>file</parameter>,
+         or <link linkend="NULL--CAPS"><literal>NULL</literal></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+<refsect1 id="TrackerMinerFS.property-details" role="property_details">
+<title role="property_details.title">Property Details</title>
+<refsect2 id="TrackerMinerFS--process-pool-limit" role="property"><title>The <literal>&quot;process-pool-limit&quot;</literal> property</title>
+<indexterm zone="TrackerMinerFS--process-pool-limit"><primary sortas="TrackerMinerFS:process-pool-limit">TrackerMinerFS:process-pool-limit</primary></indexterm><programlisting>  &quot;process-pool-limit&quot;       <link linkend="guint">guint</link>                 : Read / Write / Construct</programlisting>
+<para>Number of files that can be concurrently processed.</para><para>Allowed values: &gt;= 1</para>
+<para>Default value: 1</para>
+</refsect2>
+<refsect2 id="TrackerMinerFS--throttle" role="property"><title>The <literal>&quot;throttle&quot;</literal> property</title>
+<indexterm zone="TrackerMinerFS--throttle"><primary sortas="TrackerMinerFS:throttle">TrackerMinerFS:throttle</primary></indexterm><programlisting>  &quot;throttle&quot;                 <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
+<para>Modifier for the indexing speed, 0 is max speed.</para><para>Allowed values: [0,1]</para>
+<para>Default value: 0</para>
+</refsect2>
+</refsect1>
+
+<refsect1 id="TrackerMinerFS.signal-details" role="signals">
+<title role="signals.title">Signal Details</title>
+<refsect2 id="TrackerMinerFS-check-directory" role="signal"><title>The <literal>&quot;check-directory&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerFS-check-directory"><primary sortas="TrackerMinerFS::check-directory">TrackerMinerFS::check-directory</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            user_function                      (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *miner_fs,
+                                                        <link linkend="GFile">GFile</link>          *directory,
+                                                        <link linkend="gpointer">gpointer</link>        user_data)      : Run Last</programlisting>
+<para>
+The ::check-directory signal is emitted either on the filesystem crawling
+phase or whenever a new directory appears in a monitored directory
+in order to check whether <parameter>directory</parameter> must be inspected my <parameter>miner_fs</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner_fs</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>directory</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GFile"><type>GFile</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if <parameter>directory</parameter> must be inspected.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMinerFS-check-directory-contents" role="signal"><title>The <literal>&quot;check-directory-contents&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerFS-check-directory-contents"><primary sortas="TrackerMinerFS::check-directory-contents">TrackerMinerFS::check-directory-contents</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            user_function                      (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *miner_fs,
+                                                        <link linkend="GFile">GFile</link>          *directory,
+                                                        <link linkend="gpointer">gpointer</link>        children,
+                                                        <link linkend="gpointer">gpointer</link>        user_data)      : Run Last</programlisting>
+<para>
+The ::check-directory-contents signal is emitted either on the filesystem
+crawling phase or whenever a new directory appears in a monitored directory
+in order to check whether <parameter>directory</parameter> must be inspected my <parameter>miner_fs</parameter> based on
+the directory contents, for some implementations this signal may be useful
+to discard backup directories for example.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner_fs</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>directory</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GFile"><type>GFile</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>children</parameter>&#160;:</term>
+<listitem><simpara> <link linkend="GList"><type>GList</type></link> of <link linkend="GFile"><type>GFile</type></link><!-- -->s
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if <parameter>directory</parameter> must be inspected.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMinerFS-check-file" role="signal"><title>The <literal>&quot;check-file&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerFS-check-file"><primary sortas="TrackerMinerFS::check-file">TrackerMinerFS::check-file</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            user_function                      (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *miner_fs,
+                                                        <link linkend="GFile">GFile</link>          *file,
+                                                        <link linkend="gpointer">gpointer</link>        user_data)      : Run Last</programlisting>
+<para>
+The ::check-file signal is emitted either on the filesystem crawling
+phase or whenever a new file appears in a monitored directory
+in order to check whether <parameter>file</parameter> must be inspected my <parameter>miner_fs</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner_fs</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GFile"><type>GFile</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if <parameter>file</parameter> must be inspected.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMinerFS-finished" role="signal"><title>The <literal>&quot;finished&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerFS-finished"><primary sortas="TrackerMinerFS::finished">TrackerMinerFS::finished</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *miner_fs,
+                                                        <link linkend="gdouble">gdouble</link>         elapsed,
+                                                        <link linkend="guint">guint</link>           directories_found,
+                                                        <link linkend="guint">guint</link>           directories_ignored,
+                                                        <link linkend="guint">guint</link>           files_found,
+                                                        <link linkend="guint">guint</link>           files_ignored,
+                                                        <link linkend="gpointer">gpointer</link>        user_data)                : Run Last</programlisting>
+<para>
+The ::finished signal is emitted when <parameter>miner_fs</parameter> has finished
+all pending processing.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner_fs</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>elapsed</parameter>&#160;:</term>
+<listitem><simpara> elapsed time since mining was started
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>directories_found</parameter>&#160;:</term>
+<listitem><simpara> number of directories found
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>directories_ignored</parameter>&#160;:</term>
+<listitem><simpara> number of ignored directories
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>files_found</parameter>&#160;:</term>
+<listitem><simpara> number of files found
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>files_ignored</parameter>&#160;:</term>
+<listitem><simpara> number of ignored files
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMinerFS-ignore-next-update-file" role="signal"><title>The <literal>&quot;ignore-next-update-file&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerFS-ignore-next-update-file"><primary sortas="TrackerMinerFS::ignore-next-update-file">TrackerMinerFS::ignore-next-update-file</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            user_function                      (<link linkend="TrackerMinerFS">TrackerMinerFS</link>       *miner_fs,
+                                                        <link linkend="GFile">GFile</link>                *file,
+                                                        <link linkend="TrackerSparqlBuilder">TrackerSparqlBuilder</link> *builder,
+                                                        <link linkend="GCancellable">GCancellable</link>         *cancellable,
+                                                        <link linkend="gpointer">gpointer</link>              user_data)        : Run Last</programlisting>
+<para>
+The ::ignore-next-update-file signal is emitted whenever a file should
+be marked as to ignore on next update, and it's metadata prepared for that.
+</para>
+<para>
+<parameter>builder</parameter> is the <link linkend="TrackerSparqlBuilder"><type>TrackerSparqlBuilder</type></link> where all sparql updates
+to be performed for <parameter>file</parameter> will be appended.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner_fs</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GFile"><type>GFile</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>builder</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerSparqlBuilder"><type>TrackerSparqlBuilder</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cancellable</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GCancellable"><type>GCancellable</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> on success
+         <link linkend="FALSE--CAPS"><literal>FALSE</literal></link> on failure
+</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMinerFS-monitor-directory" role="signal"><title>The <literal>&quot;monitor-directory&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerFS-monitor-directory"><primary sortas="TrackerMinerFS::monitor-directory">TrackerMinerFS::monitor-directory</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            user_function                      (<link linkend="TrackerMinerFS">TrackerMinerFS</link> *miner_fs,
+                                                        <link linkend="GFile">GFile</link>          *directory,
+                                                        <link linkend="gpointer">gpointer</link>        user_data)      : Run Last</programlisting>
+<para>
+The ::monitor-directory is emitted either on the filesystem crawling phase
+or whenever a new directory appears in a monitored directory in order to
+check whether <parameter>directory</parameter> must be monitored for filesystem changes or not.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner_fs</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>directory</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GFile"><type>GFile</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if the directory must be monitored for changes.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMinerFS-process-file" role="signal"><title>The <literal>&quot;process-file&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerFS-process-file"><primary sortas="TrackerMinerFS::process-file">TrackerMinerFS::process-file</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            user_function                      (<link linkend="TrackerMinerFS">TrackerMinerFS</link>       *miner_fs,
+                                                        <link linkend="GFile">GFile</link>                *file,
+                                                        <link linkend="TrackerSparqlBuilder">TrackerSparqlBuilder</link> *builder,
+                                                        <link linkend="GCancellable">GCancellable</link>         *cancellable,
+                                                        <link linkend="gpointer">gpointer</link>              user_data)        : Run Last</programlisting>
+<para>
+The ::process-file signal is emitted whenever a file should
+be processed, and it's metadata extracted.
+</para>
+<para>
+<parameter>builder</parameter> is the <link linkend="TrackerSparqlBuilder"><type>TrackerSparqlBuilder</type></link> where all sparql updates
+to be performed for <parameter>file</parameter> will be appended.
+</para>
+<para>
+This signal allows both synchronous and asynchronous extraction,
+in the synchronous case <parameter>cancellable</parameter> can be safely ignored. In
+either case, on successful metadata extraction, implementations
+must call <link linkend="tracker-miner-fs-file-notify"><function>tracker_miner_fs_file_notify()</function></link> to indicate that
+processing has finished on <parameter>file</parameter>, so the miner can execute
+the SPARQL updates and continue processing other files.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner_fs</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerFS"><type>TrackerMinerFS</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GFile"><type>GFile</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>builder</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerSparqlBuilder"><type>TrackerSparqlBuilder</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cancellable</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GCancellable"><type>GCancellable</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if the file is accepted for processing,
+         <link linkend="FALSE--CAPS"><literal>FALSE</literal></link> if the file should be ignored.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+
+
+
+</refentry>

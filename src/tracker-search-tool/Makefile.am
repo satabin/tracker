@@ -2,43 +2,42 @@ include $(top_srcdir)/Makefile.decl
 
 @INTLTOOL_DESKTOP_RULE@
 
-INCLUDES = 	\
-	-DG_DISABLE_DEPRECATED					\
-	-DTRACKER_LOCALEDIR=\""$(localedir)"\" 			\
-	-DTRACKER_DATADIR=\""$(datadir)"\"			\
-	-DGREP_COMMAND=\""$(GREP_COMMAND)"\"			\
-	-I$(top_srcdir)/src/libtracker				\
-	$(WARN_CFLAGS)						\
-	$(GLIB2_CFLAGS)						\
-	$(GCOV_CFLAGS)						\
-	$(GIO_CFLAGS)						\
-	$(DBUS_CFLAGS)						\
-	$(GNOME_UTILS_CFLAGS)					\
-	$(GNOMEDESKTOP_CFLAGS)					\
-	$(LIBTRACKERGTK_CFLAGS)					
-
 bin_PROGRAMS = tracker-search-tool
 
-tracker_search_tool_SOURCES =     				\
-	tracker-search-tool-support.c   			\
-	tracker-search-tool-support.h   			\
-	tracker-search-tool-callbacks.c 			\
-	tracker-search-tool-callbacks.h 			\
-	tracker-search-tool.c	        			\
-	tracker-search-tool.h					\
-	sexy-icon-entry.c					\
-	sexy-icon-entry.h
+tracker_search_tool_VALASOURCES = 				\
+	tracker-query.gs 					\
+	tracker-entry.gs 					\
+	tracker-result-grid.gs		 			\
+	tracker-search-tool.gs 					\
+	tracker-category-view.gs 				\
+	tracker-metadata-tile.gs		 		\
+	tracker-utils.gs
 
-tracker_search_tool_LDADD =   					\
-	$(GLIB2_LIBS) 						\
-	$(GNOME_UTILS_LIBS) 					\
-	$(GIO_LIBS)    						\
-	$(GCOV_LIBS)    						\
-	$(GNOMEDESKTOP_LIBS) 					\
-	$(DBUS_LIBS)						\
-        $(top_builddir)/src/libtracker-gtk/libtracker-gtk.la 	\
-	$(top_builddir)/src/libtracker/libtrackerclient.la 
+tracker_search_tool_SOURCES = 					\
+	$(tracker_search_tool_VALASOURCES:.gs=.c)
 
+tracker_search_tool.gs.stamp: $(tracker_search_tool_VALASOURCES)
+	$(VALAC) -C -g --pkg dbus-glib-1 --pkg gee-1.0 --pkg gtk+-2.0 $^
+	touch tracker_search_tool.gs.stamp
+
+tracker_search_tool_CFLAGS = \
+	-DTRACKER_UI_DIR=\"$(datadir)/tracker/\"		\
+	-DSRCDIR=\"$(abs_srcdir)/\"				\
+	$(TRACKER_APPS_CFLAGS)					\
+	$(TRACKER_VALA_CFLAGS)					\
+	$(WARN_CFLAGS)						\
+	$(GCOV_CFLAGS)						\
+	-include$(top_srcdir)/config.h  			\
+	$(NULL)
+
+tracker_search_tool_LDADD = 					\
+	$(TRACKER_APPS_LIBS)					\
+	$(TRACKER_VALA_LIBS)					\
+	$(GCOV_LIBS)						\
+	$(NULL)
+
+uidir = $(datadir)/tracker
+ui_DATA = tst.ui
 
 desktopdir = $(datadir)/applications
 desktop_DATA = tracker-search-tool.desktop
@@ -46,7 +45,18 @@ desktop_DATA = tracker-search-tool.desktop
 icondir = $(datadir)/tracker/icons
 icon_DATA = thumbnail_frame.png
 
-EXTRA_DIST = $(icon_DATA)
-
 CLEANFILES = $(desktop_DATA)
+
+EXTRA_DIST = 							\
+	$(tracker_search_tool_VALASOURCES) 			\
+	$(icon_DATA) 						\
+	$(ui_DATA)						\
+	tracker_search_tool.gs.stamp
+
+MAINTAINERCLEANFILES = 						\
+	tracker_search_tool.gs.stamp 				\
+	$(tracker_search_tool_VALASOURCES:.gs=.c)
+
+BUILT_SOURCES = 						\
+	tracker_search_tool.gs.stamp
 

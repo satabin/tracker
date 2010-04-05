@@ -1,7 +1,6 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -31,7 +30,7 @@ G_BEGIN_DECLS
 gboolean tracker_dbus_init             (void);
 void     tracker_dbus_shutdown         (void);
 gboolean tracker_dbus_register_objects (gpointer object);
-GObject *tracker_dbus_get_object       (GType type);
+GObject *tracker_dbus_get_object       (GType    type);
 
 G_END_DECLS
 

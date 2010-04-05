@@ -1,0 +1,281 @@
+<refentry id="libtracker-client-Search">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-client-Search.top_of_page">Search</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-CLIENT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Search</refname>
+<refpurpose>Simple search functions.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-client-Search.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-client/tracker-client.h&gt;
+
+<link linkend="void">void</link>                (<link linkend="TrackerReplyArray">*TrackerReplyArray</link>)                (<link linkend="gchar">gchar</link> **result,
+                                                         <link linkend="GError">GError</link> *error,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="TrackerClient">TrackerClient</link> *     <link linkend="tracker-connect">tracker_connect</link>                     (<link linkend="gboolean">gboolean</link> enable_warnings,
+                                                         <link linkend="gint">gint</link> timeout);
+<link linkend="void">void</link>                <link linkend="tracker-disconnect">tracker_disconnect</link>                  (<link linkend="TrackerClient">TrackerClient</link> *client);
+<link linkend="guint">guint</link>               <link linkend="tracker-search-metadata-by-text-async">tracker_search_metadata_by_text_async</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="TrackerReplyArray">TrackerReplyArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="guint">guint</link>               <link linkend="tracker-search-metadata-by-text-and-location-async">tracker_search_metadata_by_text_and_location_async</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         const <link linkend="gchar">gchar</link> *location,
+                                                         <link linkend="TrackerReplyArray">TrackerReplyArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="guint">guint</link>               <link linkend="tracker-search-metadata-by-text-and-mime-async">tracker_search_metadata_by_text_and_mime_async</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         const <link linkend="gchar">gchar</link> **mimes,
+                                                         <link linkend="TrackerReplyArray">TrackerReplyArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="guint">guint</link>               <link linkend="tracker-search-metadata-by-text-and-mime-and-location-async">tracker_search_metadata_by_text_and_mime_and_location_async</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         const <link linkend="gchar">gchar</link> **mimes,
+                                                         const <link linkend="gchar">gchar</link> *location,
+                                                         <link linkend="TrackerReplyArray">TrackerReplyArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-client-Search.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+Simple search API.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-client-Search.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerReplyArray" role="function" condition="deprecated">
+<title>TrackerReplyArray ()</title>
+<indexterm zone="TrackerReplyArray" role="deprecated"><primary sortas="TrackerReplyArray">TrackerReplyArray</primary></indexterm><programlisting><link linkend="void">void</link>                (*TrackerReplyArray)                (<link linkend="gchar">gchar</link> **result,
+                                                         <link linkend="GError">GError</link> *error,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<warning><para><literal>TrackerReplyArray</literal> has been deprecated since version 0.8 and should not be used in newly-written code. Use <link linkend="TrackerReplyVoid"><type>TrackerReplyVoid</type></link> and <link linkend="TrackerReplyGPtrArray"><type>TrackerReplyGPtrArray</type></link>
+with <link linkend="tracker-resources-sparql-query"><function>tracker_resources_sparql_query()</function></link> instead.</para></warning>
+<para>
+This is used by the 0.6 Tracker APIs:
+  <link linkend="tracker-search-metadata-by-text-async"><function>tracker_search_metadata_by_text_async()</function></link>
+  <link linkend="tracker-search-metadata-by-text-and-location-async"><function>tracker_search_metadata_by_text_and_location_async()</function></link>
+  <link linkend="tracker-search-metadata-by-text-and-mime-async"><function>tracker_search_metadata_by_text_and_mime_async()</function></link>
+  <link linkend="tracker-search-metadata-by-text-and-mime-and-location-async"><function>tracker_search_metadata_by_text_and_mime_and_location_async()</function></link></para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>result</parameter>&#160;:</term>
+<listitem><simpara> a gchar ** with the results of the query.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a GError.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> a gpointer for user data.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-connect" role="function" condition="deprecated:0.8: Use tracker_client_new() instead.">
+<title>tracker_connect ()</title>
+<indexterm zone="tracker-connect" role="deprecated"><primary sortas="tracker_connect">tracker_connect</primary></indexterm><programlisting><link linkend="TrackerClient">TrackerClient</link> *     tracker_connect                     (<link linkend="gboolean">gboolean</link> enable_warnings,
+                                                         <link linkend="gint">gint</link> timeout);</programlisting>
+<warning><para><literal>tracker_connect</literal> has been deprecated since version 0.8 and should not be used in newly-written code. Use <link linkend="tracker-client-new"><function>tracker_client_new()</function></link> instead.</para></warning>
+<para>
+This function calls <link linkend="tracker-client-new"><function>tracker_client_new()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>enable_warnings</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="gboolean"><type>gboolean</type></link> to determine if warnings are issued in
+cases where they are found.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>timeout</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="gint"><type>gint</type></link> used for D-Bus call timeouts.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link> <link linkend="GObject"><type>GObject</type></link> which must be freed with
+<link linkend="g-object-unref"><function>g_object_unref()</function></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-disconnect" role="function" condition="deprecated:0.8: Use g_object_unref() instead.">
+<title>tracker_disconnect ()</title>
+<indexterm zone="tracker-disconnect" role="deprecated"><primary sortas="tracker_disconnect">tracker_disconnect</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_disconnect                  (<link linkend="TrackerClient">TrackerClient</link> *client);</programlisting>
+<warning><para><literal>tracker_disconnect</literal> has been deprecated since version 0.8 and should not be used in newly-written code. Use <link linkend="g-object-unref"><function>g_object_unref()</function></link> instead.</para></warning>
+<para>
+This will disconnect the D-Bus connections to Tracker services and
+free the allocated <link linkend="TrackerClient"><type>TrackerClient</type></link> by <link linkend="tracker-connect"><function>tracker_connect()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-search-metadata-by-text-async" role="function" condition="deprecated:0.8: Use tracker_resources_sparql_query() instead.">
+<title>tracker_search_metadata_by_text_async ()</title>
+<indexterm zone="tracker-search-metadata-by-text-async" role="deprecated"><primary sortas="tracker_search_metadata_by_text_async">tracker_search_metadata_by_text_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_search_metadata_by_text_async
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="TrackerReplyArray">TrackerReplyArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<warning><para><literal>tracker_search_metadata_by_text_async</literal> has been deprecated since version 0.8 and should not be used in newly-written code. Use <link linkend="tracker-resources-sparql-query"><function>tracker_resources_sparql_query()</function></link> instead.</para></warning>
+<para>
+Searches for <parameter>query</parameter> in all URIs with the prefix <parameter>location</parameter>.
+</para>
+<para>
+NOTE: <parameter>query</parameter> is found using FTS (Full Text Search).</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara> a string representing what to search for.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> callback function to be called when the update has been processed.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> user data to pass to <parameter>callback</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="guint"><type>guint</type></link> representing the operation ID. See
+<link linkend="tracker-cancel-call"><function>tracker_cancel_call()</function></link>. In the event of failure, 0 is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-search-metadata-by-text-and-location-async" role="function" condition="deprecated:0.8: Use tracker_resources_sparql_query() instead.">
+<title>tracker_search_metadata_by_text_and_location_async ()</title>
+<indexterm zone="tracker-search-metadata-by-text-and-location-async" role="deprecated"><primary sortas="tracker_search_metadata_by_text_and_location_async">tracker_search_metadata_by_text_and_location_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_search_metadata_by_text_and_location_async
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         const <link linkend="gchar">gchar</link> *location,
+                                                         <link linkend="TrackerReplyArray">TrackerReplyArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<warning><para><literal>tracker_search_metadata_by_text_and_location_async</literal> has been deprecated since version 0.8 and should not be used in newly-written code. Use <link linkend="tracker-resources-sparql-query"><function>tracker_resources_sparql_query()</function></link> instead.</para></warning>
+<para>
+Searches for <parameter>query</parameter> in all URIs with the prefix <parameter>location</parameter>.
+</para>
+<para>
+NOTE: <parameter>query</parameter> is found using FTS (Full Text Search).</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara> a string representing what to search for.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>location</parameter>&#160;:</term>
+<listitem><simpara> a string representing a path.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> callback function to be called when the update has been processed.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> user data to pass to <parameter>callback</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="guint"><type>guint</type></link> representing the operation ID. See
+<link linkend="tracker-cancel-call"><function>tracker_cancel_call()</function></link>. In the event of failure, 0 is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-search-metadata-by-text-and-mime-async" role="function" condition="deprecated:0.8: Use tracker_resources_sparql_query() instead.">
+<title>tracker_search_metadata_by_text_and_mime_async ()</title>
+<indexterm zone="tracker-search-metadata-by-text-and-mime-async" role="deprecated"><primary sortas="tracker_search_metadata_by_text_and_mime_async">tracker_search_metadata_by_text_and_mime_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_search_metadata_by_text_and_mime_async
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         const <link linkend="gchar">gchar</link> **mimes,
+                                                         <link linkend="TrackerReplyArray">TrackerReplyArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<warning><para><literal>tracker_search_metadata_by_text_and_mime_async</literal> has been deprecated since version 0.8 and should not be used in newly-written code. Use <link linkend="tracker-resources-sparql-query"><function>tracker_resources_sparql_query()</function></link> instead.</para></warning>
+<para>
+Searches for <parameter>query</parameter> in all URIs with a mime type matching any of
+the values in <parameter>mime</parameter>.
+</para>
+<para>
+NOTE: <parameter>query</parameter> is found using FTS (Full Text Search).</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara> a string representing what to search for.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mimes</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GStrv"><type>GStrv</type></link> representing mime types.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> callback function to be called when the update has been processed.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> user data to pass to <parameter>callback</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="guint"><type>guint</type></link> representing the operation ID. See
+<link linkend="tracker-cancel-call"><function>tracker_cancel_call()</function></link>. In the event of failure, 0 is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-search-metadata-by-text-and-mime-and-location-async" role="function" condition="deprecated:0.8: Use tracker_resources_sparql_query() instead.">
+<title>tracker_search_metadata_by_text_and_mime_and_location_async ()</title>
+<indexterm zone="tracker-search-metadata-by-text-and-mime-and-location-async" role="deprecated"><primary sortas="tracker_search_metadata_by_text_and_mime_and_location_async">tracker_search_metadata_by_text_and_mime_and_location_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_search_metadata_by_text_and_mime_and_location_async
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         const <link linkend="gchar">gchar</link> **mimes,
+                                                         const <link linkend="gchar">gchar</link> *location,
+                                                         <link linkend="TrackerReplyArray">TrackerReplyArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<warning><para><literal>tracker_search_metadata_by_text_and_mime_and_location_async</literal> has been deprecated since version 0.8 and should not be used in newly-written code. Use <link linkend="tracker-resources-sparql-query"><function>tracker_resources_sparql_query()</function></link> instead.</para></warning>
+<para>
+Searches for <parameter>query</parameter> in all URIs with the prefix <parameter>location</parameter> and with
+a mime type matching any of the values in <parameter>mime</parameter>.
+</para>
+<para>
+NOTE: <parameter>query</parameter> is found using FTS (Full Text Search).</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara> a string representing what to search for.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mimes</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GStrv"><type>GStrv</type></link> representing mime types.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>location</parameter>&#160;:</term>
+<listitem><simpara> a string representing a path.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> callback function to be called when the update has been processed.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> user data to pass to <parameter>callback</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="guint"><type>guint</type></link> representing the operation ID. See
+<link linkend="tracker-cancel-call"><function>tracker_cancel_call()</function></link>. In the event of failure, 0 is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

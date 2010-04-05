@@ -1,123 +1,128 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia (urho.konttori@nokia.com)
+ * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __TRACKER_DATA_UPDATE_H__
-#define __TRACKER_DATA_UPDATE_H__
+#ifndef __LIBTRACKER_DATA_UPDATE_H__
+#define __LIBTRACKER_DATA_UPDATE_H__
 
 #include <glib.h>
 
-#include <libtracker-common/tracker-ontology.h>
+#include <libtracker-common/tracker-ontologies.h>
 
 #include <libtracker-db/tracker-db-interface.h>
 
-#include "tracker-data-metadata.h"
-
 G_BEGIN_DECLS
 
-typedef struct TrackerDataUpdateMetadataContext TrackerDataUpdateMetadataContext;
-typedef enum TrackerDataUpdateMetadataContextType TrackerDataUpdateMetadataContextType;
+#if !defined (__LIBTRACKER_DATA_INSIDE__) && !defined (TRACKER_COMPILATION)
+#error "only <libtracker-data/tracker-data.h> must be included directly."
+#endif
 
-enum TrackerDataUpdateMetadataContextType {
-	TRACKER_CONTEXT_TYPE_INSERT,
-	TRACKER_CONTEXT_TYPE_UPDATE
-};
+#define TRACKER_DATA_ERROR tracker_data_error_quark ()
 
-struct TrackerDataUpdateMetadataContext {
-	TrackerDataUpdateMetadataContextType type;
-	TrackerService *service;
-	guint id;
-	GHashTable *data;
-};
+typedef enum  {
+	TRACKER_DATA_ERROR_UNKNOWN_CLASS,
+	TRACKER_DATA_ERROR_UNKNOWN_PROPERTY,
+	TRACKER_DATA_ERROR_INVALID_TYPE,
+	TRACKER_DATA_ERROR_CONSTRAINT,
+	TRACKER_DATA_ERROR_NO_SPACE
+} TrackerDataError;
 
-guint32  tracker_data_update_get_new_service_id         (TrackerDBInterface  *iface);
+typedef void (*TrackerStatementCallback) (const gchar *graph,
+                                          const gchar *subject,
+                                          const gchar *predicate,
+                                          const gchar *object,
+                                          GPtrArray   *rdf_types,
+                                          gpointer     user_data);
+typedef void (*TrackerCommitCallback)    (gpointer     user_data);
+typedef void (*TrackerBusyCallback)      (const gchar *status,
+                                          gdouble      progress,
+                                          gpointer     user_data);
 
-/* Services  */
-gboolean tracker_data_update_create_service             (TrackerDataUpdateMetadataContext *context,
-							 TrackerService      *service,
-							 guint32              service_id,
-							 const gchar         *udi,
-							 const gchar         *dirname,
-							 const gchar         *basename,
-							 GHashTable          *metadata);
-void     tracker_data_update_disable_service            (TrackerService      *service,
-							 guint32              service_id);
-void     tracker_data_update_delete_service             (TrackerService      *service,
-							 guint32              service_id);
-void     tracker_data_update_delete_service_recursively (TrackerService      *service,
-							 const gchar         *service_path);
-gboolean tracker_data_update_move_service               (TrackerService      *service,
-							 const gchar         *from,
-							 const gchar         *to);
-
-/* Turtle importing */
-void     tracker_data_update_replace_service            (const gchar         *udi,
-							 const gchar         *path,
-							 const gchar         *rdf_type,
-							 GHashTable          *metadata);
-void     tracker_data_update_delete_service_by_path     (const gchar         *path,
-							 const gchar         *rdf_type);
-void     tracker_data_update_delete_service_all         (const gchar *rdf_type);
-
+GQuark   tracker_data_error_quark                   (void);
 
 /* Metadata */
-void     tracker_data_update_set_metadata               (TrackerDataUpdateMetadataContext *context,
-							 TrackerService      *service,
-							 guint32              service_id,
-							 TrackerField        *field,
-							 const gchar         *value,
-							 const gchar         *parsed_value);
-void     tracker_data_update_delete_all_metadata        (TrackerService      *service,
-							 guint32              service_id);
-void     tracker_data_update_delete_metadata            (TrackerService      *service,
-							 guint32              service_id,
-							 TrackerField        *field,
-							 const gchar         *value);
+void     tracker_data_delete_resource_description   (const gchar               *graph,
+                                                     const gchar               *url,
+                                                     GError                   **error);
+void     tracker_data_delete_statement              (const gchar               *graph,
+                                                     const gchar               *subject,
+                                                     const gchar               *predicate,
+                                                     const gchar               *object,
+                                                     GError                   **error);
+void     tracker_data_insert_statement              (const gchar               *graph,
+                                                     const gchar               *subject,
+                                                     const gchar               *predicate,
+                                                     const gchar               *object,
+                                                     GError                   **error);
+void     tracker_data_insert_statement_with_uri     (const gchar               *graph,
+                                                     const gchar               *subject,
+                                                     const gchar               *predicate,
+                                                     const gchar               *object,
+                                                     GError                   **error);
+void     tracker_data_insert_statement_with_string  (const gchar               *graph,
+                                                     const gchar               *subject,
+                                                     const gchar               *predicate,
+                                                     const gchar               *object,
+                                                     GError                   **error);
+void     tracker_data_begin_db_transaction          (void);
+void     tracker_data_begin_db_transaction_for_replay (time_t                   time);
+void     tracker_data_commit_db_transaction         (void);
+void     tracker_data_begin_transaction             (GError                   **error);
+void     tracker_data_commit_transaction            (GError                   **error);
+void     tracker_data_rollback_transaction          (void);
+void     tracker_data_update_sparql                 (const gchar               *update,
+                                                     GError                   **error);
+GPtrArray *
+         tracker_data_update_sparql_blank           (const gchar               *update,
+                                                     GError                   **error);
+void     tracker_data_update_buffer_flush           (GError                   **error);
+void     tracker_data_update_buffer_might_flush     (GError                   **error);
 
-/* Contents */
-void     tracker_data_update_set_content                (TrackerService      *service,
-							 guint32              service_id,
-							 const gchar         *text);
-void     tracker_data_update_delete_content             (TrackerService      *service,
-							 guint32              service_id);
+void     tracker_data_sync                          (void);
+void     tracker_data_replay_journal                (GHashTable                *classes,
+                                                     GHashTable                *properties,
+                                                     GHashTable                *id_uri_map,
+                                                     TrackerBusyCallback        busy_callback,
+                                                     gpointer                   busy_user_data,
+                                                     const gchar               *busy_status);
 
+/* Calling back */
+void     tracker_data_add_insert_statement_callback      (TrackerStatementCallback   callback,
+                                                          gpointer                   user_data);
+void     tracker_data_add_delete_statement_callback      (TrackerStatementCallback   callback,
+                                                          gpointer                   user_data);
+void     tracker_data_add_commit_statement_callback      (TrackerCommitCallback      callback,
+                                                          gpointer                   user_data);
+void     tracker_data_add_rollback_statement_callback    (TrackerCommitCallback      callback,
+                                                          gpointer                   user_data);
+void     tracker_data_remove_insert_statement_callback   (TrackerStatementCallback   callback,
+                                                          gpointer                   user_data);
+void     tracker_data_remove_delete_statement_callback   (TrackerStatementCallback   callback,
+                                                          gpointer                   user_data);
+void     tracker_data_remove_commit_statement_callback   (TrackerCommitCallback      callback,
+                                                          gpointer                   user_data);
+void     tracker_data_remove_rollback_statement_callback (TrackerCommitCallback      callback,
+                                                          gpointer                   user_data);
 
-/* Volume handling */
-void tracker_data_update_enable_volume                  (const gchar         *udi,
-                                                         const gchar         *mount_path);
-void tracker_data_update_disable_volume                 (const gchar         *udi);
-void tracker_data_update_disable_all_volumes            (void);
-void tracker_data_update_reset_volume                   (guint32              volume_id);
-
-/* Metadata context */
-TrackerDataUpdateMetadataContext *
-     tracker_data_update_metadata_context_new           (TrackerDataUpdateMetadataContextType  type,
-							 TrackerService                       *service,
-							 guint                                 id);
-void tracker_data_update_metadata_context_add           (TrackerDataUpdateMetadataContext     *context,
-							 const gchar                          *column,
-							 const gchar                          *value,
-							 const gchar                          *function);
-void tracker_data_update_metadata_context_close         (TrackerDataUpdateMetadataContext     *context);
-void tracker_data_update_metadata_context_free          (TrackerDataUpdateMetadataContext     *context);
+void     tracker_data_update_shutdown                 (void);
+#define  tracker_data_update_init                     tracker_data_update_shutdown
 
 G_END_DECLS
 
-#endif /* __TRACKER_DATA_UPDATE_H__ */
+#endif /* __LIBTRACKER_DATA_UPDATE_H__ */

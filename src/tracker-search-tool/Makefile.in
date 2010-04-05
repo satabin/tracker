@@ -51,8 +51,11 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 bin_PROGRAMS = tracker-search-tool$(EXEEXT)
 subdir = src/tracker-search-tool
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -60,33 +63,53 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES = tracker-search-tool.desktop.in
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(desktopdir)" \
-	"$(DESTDIR)$(icondir)"
+	"$(DESTDIR)$(icondir)" "$(DESTDIR)$(uidir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_tracker_search_tool_OBJECTS =  \
-	tracker-search-tool-support.$(OBJEXT) \
-	tracker-search-tool-callbacks.$(OBJEXT) \
-	tracker-search-tool.$(OBJEXT) sexy-icon-entry.$(OBJEXT)
+am__objects_1 = tracker_search_tool-tracker-query.$(OBJEXT) \
+	tracker_search_tool-tracker-entry.$(OBJEXT) \
+	tracker_search_tool-tracker-result-grid.$(OBJEXT) \
+	tracker_search_tool-tracker-search-tool.$(OBJEXT) \
+	tracker_search_tool-tracker-category-view.$(OBJEXT) \
+	tracker_search_tool-tracker-metadata-tile.$(OBJEXT) \
+	tracker_search_tool-tracker-utils.$(OBJEXT)
+am_tracker_search_tool_OBJECTS = $(am__objects_1)
 tracker_search_tool_OBJECTS = $(am_tracker_search_tool_OBJECTS)
 am__DEPENDENCIES_1 =
 tracker_search_tool_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) \
-	$(top_builddir)/src/libtracker-gtk/libtracker-gtk.la \
-	$(top_builddir)/src/libtracker/libtrackerclient.la
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+tracker_search_tool_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(tracker_search_tool_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC    " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 CCLD = $(CC)
-LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD  " $@;
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(tracker_search_tool_SOURCES)
 DIST_SOURCES = $(tracker_search_tool_SOURCES)
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -110,14 +133,14 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-DATA = $(desktop_DATA) $(icon_DATA)
+DATA = $(desktop_DATA) $(icon_DATA) $(ui_DATA)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
-ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
 ALL_LINGUAS = @ALL_LINGUAS@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -130,16 +153,20 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+CXXDEPMODE = @CXXDEPMODE@
+CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
-DB2HTML = @DB2HTML@
 DBUSBINDINGTOOL = @DBUSBINDINGTOOL@
 DBUS_CFLAGS = @DBUS_CFLAGS@
 DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
+DEVKIT_POWER_CFLAGS = @DEVKIT_POWER_CFLAGS@
+DEVKIT_POWER_LIBS = @DEVKIT_POWER_LIBS@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -155,10 +182,9 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-GCONF_CFLAGS = @GCONF_CFLAGS@
-GCONF_LIBS = @GCONF_LIBS@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
+GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -167,29 +193,26 @@ GIO_LIBS = @GIO_LIBS@
 GLIB2_CFLAGS = @GLIB2_CFLAGS@
 GLIB2_LIBS = @GLIB2_LIBS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
-GMIME_CFLAGS = @GMIME_CFLAGS@
-GMIME_LIBS = @GMIME_LIBS@
 GMODULE_CFLAGS = @GMODULE_CFLAGS@
 GMODULE_LIBS = @GMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GNOMEDESKTOP_CFLAGS = @GNOMEDESKTOP_CFLAGS@
-GNOMEDESKTOP_LIBS = @GNOMEDESKTOP_LIBS@
-GNOME_UTILS_CFLAGS = @GNOME_UTILS_CFLAGS@
-GNOME_UTILS_LIBS = @GNOME_UTILS_LIBS@
+GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
+GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
 GOBJECT_CFLAGS = @GOBJECT_CFLAGS@
 GOBJECT_LIBS = @GOBJECT_LIBS@
+GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
-GTK2_CFLAGS = @GTK2_CFLAGS@
-GTK2_LIBS = @GTK2_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HTML_DIR = @HTML_DIR@
+ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
+ID3LIB_LIBS = @ID3LIB_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -205,8 +228,10 @@ LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
-LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
-LIBGLADE_LIBS = @LIBGLADE_LIBS@
+LIBFLAC_CFLAGS = @LIBFLAC_CFLAGS@
+LIBFLAC_LIBS = @LIBFLAC_LIBS@
+LIBGRSS_CFLAGS = @LIBGRSS_CFLAGS@
+LIBGRSS_LIBS = @LIBGRSS_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -217,11 +242,11 @@ LIBOBJS = @LIBOBJS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
+LIBSTREAMANALYZER_CFLAGS = @LIBSTREAMANALYZER_CFLAGS@
+LIBSTREAMANALYZER_LIBS = @LIBSTREAMANALYZER_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
 LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
-LIBTRACKERGTK_CFLAGS = @LIBTRACKERGTK_CFLAGS@
-LIBTRACKERGTK_LIBS = @LIBTRACKERGTK_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
 LIBVORBIS_LIBS = @LIBVORBIS_LIBS@
 LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
@@ -240,6 +265,9 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
+NAUTILUS_EXTENSION_CFLAGS = @NAUTILUS_EXTENSION_CFLAGS@
+NAUTILUS_EXTENSION_INSTALL_DIR = @NAUTILUS_EXTENSION_INSTALL_DIR@
+NAUTILUS_EXTENSION_LIBS = @NAUTILUS_EXTENSION_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -263,11 +291,9 @@ POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-QDBM_CFLAGS = @QDBM_CFLAGS@
-QDBM_LIBS = @QDBM_LIBS@
+QUILL_CFLAGS = @QUILL_CFLAGS@
+QUILL_LIBS = @QUILL_LIBS@
 RANLIB = @RANLIB@
-RAPTOR_CFLAGS = @RAPTOR_CFLAGS@
-RAPTOR_LIBS = @RAPTOR_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -277,18 +303,25 @@ STRIP = @STRIP@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
-TRACKER_APPLET_CFLAGS = @TRACKER_APPLET_CFLAGS@
-TRACKER_APPLET_LIBS = @TRACKER_APPLET_LIBS@
+TRACKER_APPLETS_CFLAGS = @TRACKER_APPLETS_CFLAGS@
+TRACKER_APPLETS_LIBS = @TRACKER_APPLETS_LIBS@
+TRACKER_APPS_CFLAGS = @TRACKER_APPS_CFLAGS@
+TRACKER_APPS_LIBS = @TRACKER_APPS_LIBS@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
+TRACKER_VALA_CFLAGS = @TRACKER_VALA_CFLAGS@
+TRACKER_VALA_LIBS = @TRACKER_VALA_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 UNAC_CFLAGS = @UNAC_CFLAGS@
 UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
+UUID_CFLAGS = @UUID_CFLAGS@
+UUID_LIBS = @UUID_LIBS@
+VALAC = @VALAC@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 XGETTEXT = @XGETTEXT@
@@ -299,6 +332,7 @@ abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -341,7 +375,6 @@ program_transform_name = @program_transform_name@
 psdir = @psdir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
-sqlite_exec = @sqlite_exec@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
@@ -353,48 +386,56 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-INCLUDES = \
-	-DG_DISABLE_DEPRECATED					\
-	-DTRACKER_LOCALEDIR=\""$(localedir)"\" 			\
-	-DTRACKER_DATADIR=\""$(datadir)"\"			\
-	-DGREP_COMMAND=\""$(GREP_COMMAND)"\"			\
-	-I$(top_srcdir)/src/libtracker				\
-	$(WARN_CFLAGS)						\
-	$(GLIB2_CFLAGS)						\
-	$(GCOV_CFLAGS)						\
-	$(GIO_CFLAGS)						\
-	$(DBUS_CFLAGS)						\
-	$(GNOME_UTILS_CFLAGS)					\
-	$(GNOMEDESKTOP_CFLAGS)					\
-	$(LIBTRACKERGTK_CFLAGS)					
+tracker_search_tool_VALASOURCES = \
+	tracker-query.gs 					\
+	tracker-entry.gs 					\
+	tracker-result-grid.gs		 			\
+	tracker-search-tool.gs 					\
+	tracker-category-view.gs 				\
+	tracker-metadata-tile.gs		 		\
+	tracker-utils.gs
 
 tracker_search_tool_SOURCES = \
-	tracker-search-tool-support.c   			\
-	tracker-search-tool-support.h   			\
-	tracker-search-tool-callbacks.c 			\
-	tracker-search-tool-callbacks.h 			\
-	tracker-search-tool.c	        			\
-	tracker-search-tool.h					\
-	sexy-icon-entry.c					\
-	sexy-icon-entry.h
+	$(tracker_search_tool_VALASOURCES:.gs=.c)
+
+tracker_search_tool_CFLAGS = \
+	-DTRACKER_UI_DIR=\"$(datadir)/tracker/\"		\
+	-DSRCDIR=\"$(abs_srcdir)/\"				\
+	$(TRACKER_APPS_CFLAGS)					\
+	$(TRACKER_VALA_CFLAGS)					\
+	$(WARN_CFLAGS)						\
+	$(GCOV_CFLAGS)						\
+	-include$(top_srcdir)/config.h  			\
+	$(NULL)
 
 tracker_search_tool_LDADD = \
-	$(GLIB2_LIBS) 						\
-	$(GNOME_UTILS_LIBS) 					\
-	$(GIO_LIBS)    						\
-	$(GCOV_LIBS)    						\
-	$(GNOMEDESKTOP_LIBS) 					\
-	$(DBUS_LIBS)						\
-        $(top_builddir)/src/libtracker-gtk/libtracker-gtk.la 	\
-	$(top_builddir)/src/libtracker/libtrackerclient.la 
+	$(TRACKER_APPS_LIBS)					\
+	$(TRACKER_VALA_LIBS)					\
+	$(GCOV_LIBS)						\
+	$(NULL)
 
+uidir = $(datadir)/tracker
+ui_DATA = tst.ui
 desktopdir = $(datadir)/applications
 desktop_DATA = tracker-search-tool.desktop
 icondir = $(datadir)/tracker/icons
 icon_DATA = thumbnail_frame.png
-EXTRA_DIST = $(icon_DATA)
 CLEANFILES = $(desktop_DATA)
-all: all-am
+EXTRA_DIST = \
+	$(tracker_search_tool_VALASOURCES) 			\
+	$(icon_DATA) 						\
+	$(ui_DATA)						\
+	tracker_search_tool.gs.stamp
+
+MAINTAINERCLEANFILES = \
+	tracker_search_tool.gs.stamp 				\
+	$(tracker_search_tool_VALASOURCES:.gs=.c)
+
+BUILT_SOURCES = \
+	tracker_search_tool.gs.stamp
+
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
@@ -475,7 +516,7 @@ clean-binPROGRAMS:
 	rm -f $$list
 tracker-search-tool$(EXEEXT): $(tracker_search_tool_OBJECTS) $(tracker_search_tool_DEPENDENCIES) 
 	@rm -f tracker-search-tool$(EXEEXT)
-	$(LINK) $(tracker_search_tool_OBJECTS) $(tracker_search_tool_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(tracker_search_tool_LINK) $(tracker_search_tool_OBJECTS) $(tracker_search_tool_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -483,31 +524,149 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sexy-icon-entry.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-search-tool-callbacks.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-search-tool-support.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-search-tool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_tool-tracker-category-view.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_tool-tracker-entry.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_tool-tracker-metadata-tile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_tool-tracker-query.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_tool-tracker-result-grid.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_tool-tracker-search-tool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_search_tool-tracker-utils.Po@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+tracker_search_tool-tracker-query.o: tracker-query.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-query.o -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-query.Tpo -c -o tracker_search_tool-tracker-query.o `test -f 'tracker-query.c' || echo '$(srcdir)/'`tracker-query.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-query.Tpo $(DEPDIR)/tracker_search_tool-tracker-query.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-query.c' object='tracker_search_tool-tracker-query.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-query.o `test -f 'tracker-query.c' || echo '$(srcdir)/'`tracker-query.c
+
+tracker_search_tool-tracker-query.obj: tracker-query.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-query.obj -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-query.Tpo -c -o tracker_search_tool-tracker-query.obj `if test -f 'tracker-query.c'; then $(CYGPATH_W) 'tracker-query.c'; else $(CYGPATH_W) '$(srcdir)/tracker-query.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-query.Tpo $(DEPDIR)/tracker_search_tool-tracker-query.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-query.c' object='tracker_search_tool-tracker-query.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-query.obj `if test -f 'tracker-query.c'; then $(CYGPATH_W) 'tracker-query.c'; else $(CYGPATH_W) '$(srcdir)/tracker-query.c'; fi`
+
+tracker_search_tool-tracker-entry.o: tracker-entry.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-entry.o -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-entry.Tpo -c -o tracker_search_tool-tracker-entry.o `test -f 'tracker-entry.c' || echo '$(srcdir)/'`tracker-entry.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-entry.Tpo $(DEPDIR)/tracker_search_tool-tracker-entry.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-entry.c' object='tracker_search_tool-tracker-entry.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-entry.o `test -f 'tracker-entry.c' || echo '$(srcdir)/'`tracker-entry.c
+
+tracker_search_tool-tracker-entry.obj: tracker-entry.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-entry.obj -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-entry.Tpo -c -o tracker_search_tool-tracker-entry.obj `if test -f 'tracker-entry.c'; then $(CYGPATH_W) 'tracker-entry.c'; else $(CYGPATH_W) '$(srcdir)/tracker-entry.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-entry.Tpo $(DEPDIR)/tracker_search_tool-tracker-entry.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-entry.c' object='tracker_search_tool-tracker-entry.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-entry.obj `if test -f 'tracker-entry.c'; then $(CYGPATH_W) 'tracker-entry.c'; else $(CYGPATH_W) '$(srcdir)/tracker-entry.c'; fi`
+
+tracker_search_tool-tracker-result-grid.o: tracker-result-grid.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-result-grid.o -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-result-grid.Tpo -c -o tracker_search_tool-tracker-result-grid.o `test -f 'tracker-result-grid.c' || echo '$(srcdir)/'`tracker-result-grid.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-result-grid.Tpo $(DEPDIR)/tracker_search_tool-tracker-result-grid.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-result-grid.c' object='tracker_search_tool-tracker-result-grid.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-result-grid.o `test -f 'tracker-result-grid.c' || echo '$(srcdir)/'`tracker-result-grid.c
+
+tracker_search_tool-tracker-result-grid.obj: tracker-result-grid.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-result-grid.obj -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-result-grid.Tpo -c -o tracker_search_tool-tracker-result-grid.obj `if test -f 'tracker-result-grid.c'; then $(CYGPATH_W) 'tracker-result-grid.c'; else $(CYGPATH_W) '$(srcdir)/tracker-result-grid.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-result-grid.Tpo $(DEPDIR)/tracker_search_tool-tracker-result-grid.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-result-grid.c' object='tracker_search_tool-tracker-result-grid.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-result-grid.obj `if test -f 'tracker-result-grid.c'; then $(CYGPATH_W) 'tracker-result-grid.c'; else $(CYGPATH_W) '$(srcdir)/tracker-result-grid.c'; fi`
+
+tracker_search_tool-tracker-search-tool.o: tracker-search-tool.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-search-tool.o -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-search-tool.Tpo -c -o tracker_search_tool-tracker-search-tool.o `test -f 'tracker-search-tool.c' || echo '$(srcdir)/'`tracker-search-tool.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-search-tool.Tpo $(DEPDIR)/tracker_search_tool-tracker-search-tool.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-search-tool.c' object='tracker_search_tool-tracker-search-tool.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-search-tool.o `test -f 'tracker-search-tool.c' || echo '$(srcdir)/'`tracker-search-tool.c
+
+tracker_search_tool-tracker-search-tool.obj: tracker-search-tool.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-search-tool.obj -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-search-tool.Tpo -c -o tracker_search_tool-tracker-search-tool.obj `if test -f 'tracker-search-tool.c'; then $(CYGPATH_W) 'tracker-search-tool.c'; else $(CYGPATH_W) '$(srcdir)/tracker-search-tool.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-search-tool.Tpo $(DEPDIR)/tracker_search_tool-tracker-search-tool.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-search-tool.c' object='tracker_search_tool-tracker-search-tool.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-search-tool.obj `if test -f 'tracker-search-tool.c'; then $(CYGPATH_W) 'tracker-search-tool.c'; else $(CYGPATH_W) '$(srcdir)/tracker-search-tool.c'; fi`
+
+tracker_search_tool-tracker-category-view.o: tracker-category-view.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-category-view.o -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-category-view.Tpo -c -o tracker_search_tool-tracker-category-view.o `test -f 'tracker-category-view.c' || echo '$(srcdir)/'`tracker-category-view.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-category-view.Tpo $(DEPDIR)/tracker_search_tool-tracker-category-view.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-category-view.c' object='tracker_search_tool-tracker-category-view.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-category-view.o `test -f 'tracker-category-view.c' || echo '$(srcdir)/'`tracker-category-view.c
+
+tracker_search_tool-tracker-category-view.obj: tracker-category-view.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-category-view.obj -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-category-view.Tpo -c -o tracker_search_tool-tracker-category-view.obj `if test -f 'tracker-category-view.c'; then $(CYGPATH_W) 'tracker-category-view.c'; else $(CYGPATH_W) '$(srcdir)/tracker-category-view.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-category-view.Tpo $(DEPDIR)/tracker_search_tool-tracker-category-view.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-category-view.c' object='tracker_search_tool-tracker-category-view.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-category-view.obj `if test -f 'tracker-category-view.c'; then $(CYGPATH_W) 'tracker-category-view.c'; else $(CYGPATH_W) '$(srcdir)/tracker-category-view.c'; fi`
+
+tracker_search_tool-tracker-metadata-tile.o: tracker-metadata-tile.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-metadata-tile.o -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-metadata-tile.Tpo -c -o tracker_search_tool-tracker-metadata-tile.o `test -f 'tracker-metadata-tile.c' || echo '$(srcdir)/'`tracker-metadata-tile.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-metadata-tile.Tpo $(DEPDIR)/tracker_search_tool-tracker-metadata-tile.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-metadata-tile.c' object='tracker_search_tool-tracker-metadata-tile.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-metadata-tile.o `test -f 'tracker-metadata-tile.c' || echo '$(srcdir)/'`tracker-metadata-tile.c
+
+tracker_search_tool-tracker-metadata-tile.obj: tracker-metadata-tile.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-metadata-tile.obj -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-metadata-tile.Tpo -c -o tracker_search_tool-tracker-metadata-tile.obj `if test -f 'tracker-metadata-tile.c'; then $(CYGPATH_W) 'tracker-metadata-tile.c'; else $(CYGPATH_W) '$(srcdir)/tracker-metadata-tile.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-metadata-tile.Tpo $(DEPDIR)/tracker_search_tool-tracker-metadata-tile.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-metadata-tile.c' object='tracker_search_tool-tracker-metadata-tile.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-metadata-tile.obj `if test -f 'tracker-metadata-tile.c'; then $(CYGPATH_W) 'tracker-metadata-tile.c'; else $(CYGPATH_W) '$(srcdir)/tracker-metadata-tile.c'; fi`
+
+tracker_search_tool-tracker-utils.o: tracker-utils.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-utils.o -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-utils.Tpo -c -o tracker_search_tool-tracker-utils.o `test -f 'tracker-utils.c' || echo '$(srcdir)/'`tracker-utils.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-utils.Tpo $(DEPDIR)/tracker_search_tool-tracker-utils.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-utils.c' object='tracker_search_tool-tracker-utils.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-utils.o `test -f 'tracker-utils.c' || echo '$(srcdir)/'`tracker-utils.c
+
+tracker_search_tool-tracker-utils.obj: tracker-utils.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -MT tracker_search_tool-tracker-utils.obj -MD -MP -MF $(DEPDIR)/tracker_search_tool-tracker-utils.Tpo -c -o tracker_search_tool-tracker-utils.obj `if test -f 'tracker-utils.c'; then $(CYGPATH_W) 'tracker-utils.c'; else $(CYGPATH_W) '$(srcdir)/tracker-utils.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_search_tool-tracker-utils.Tpo $(DEPDIR)/tracker_search_tool-tracker-utils.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-utils.c' object='tracker_search_tool-tracker-utils.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_search_tool_CFLAGS) $(CFLAGS) -c -o tracker_search_tool-tracker-utils.obj `if test -f 'tracker-utils.c'; then $(CYGPATH_W) 'tracker-utils.c'; else $(CYGPATH_W) '$(srcdir)/tracker-utils.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -554,6 +713,26 @@ uninstall-iconDATA:
 	test -n "$$files" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(icondir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(icondir)" && rm -f $$files
+install-uiDATA: $(ui_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(uidir)" || $(MKDIR_P) "$(DESTDIR)$(uidir)"
+	@list='$(ui_DATA)'; test -n "$(uidir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(uidir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(uidir)" || exit $$?; \
+	done
+
+uninstall-uiDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(ui_DATA)'; test -n "$(uidir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(uidir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(uidir)" && rm -f $$files
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -639,13 +818,15 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) check-local
-check: check-am
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(PROGRAMS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(desktopdir)" "$(DESTDIR)$(icondir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(desktopdir)" "$(DESTDIR)$(icondir)" "$(DESTDIR)$(uidir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-am
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -671,6 +852,8 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
@@ -693,7 +876,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-desktopDATA install-iconDATA
+install-data-am: install-desktopDATA install-iconDATA install-uiDATA
 
 install-dvi: install-dvi-am
 
@@ -740,9 +923,9 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-binPROGRAMS uninstall-desktopDATA \
-	uninstall-iconDATA
+	uninstall-iconDATA uninstall-uiDATA
 
-.MAKE: check-am install-am install-strip
+.MAKE: all check check-am install install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am check-local clean \
 	clean-binPROGRAMS clean-generic clean-libtool ctags distclean \
@@ -753,17 +936,18 @@ uninstall-am: uninstall-binPROGRAMS uninstall-desktopDATA \
 	install-exec install-exec-am install-html install-html-am \
 	install-iconDATA install-info install-info-am install-man \
 	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-binPROGRAMS uninstall-desktopDATA uninstall-iconDATA
+	install-strip install-uiDATA installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
+	uninstall-am uninstall-binPROGRAMS uninstall-desktopDATA \
+	uninstall-iconDATA uninstall-uiDATA
 
 
 ### testing rules
 
 # test: run all tests in cwd and subdirs
-test:	${TEST_PROGS}
+test:	${TEST_PROGS} all
 	@ test -z "${TEST_PROGS}" || ${GTESTER} --verbose ${TEST_PROGS}
 	@ for subdir in $(SUBDIRS) . ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" || \
@@ -810,6 +994,10 @@ test-report perf-report full-report:	${TEST_PROGS}
 check-local: test
 
 @INTLTOOL_DESKTOP_RULE@
+
+tracker_search_tool.gs.stamp: $(tracker_search_tool_VALASOURCES)
+	$(VALAC) -C -g --pkg dbus-glib-1 --pkg gee-1.0 --pkg gtk+-2.0 $^
+	touch tracker_search_tool.gs.stamp
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

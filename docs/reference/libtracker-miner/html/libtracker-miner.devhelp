@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Miner Library Reference Manual" link="index.html" author="" name="libtracker-miner">
+  <chapters>
+    <sub name="Overview" link="libtracker-miner.html"/>
+    <sub name="Base abstract miner class" link="ch01.html">
+      <sub name="TrackerMiner" link="TrackerMiner.html"/>
+      <sub name="TrackerMinerWeb" link="libtracker-miner-TrackerMinerWeb.html"/>
+      <sub name="TrackerPasswordProvider" link="libtracker-miner-TrackerPasswordProvider.html"/>
+    </sub>
+    <sub name="Helper implementations" link="ch02.html">
+      <sub name="TrackerMinerFS" link="TrackerMinerFS.html"/>
+    </sub>
+    <sub name="Managing miners" link="ch03.html">
+      <sub name="tracker-miner-manager" link="libtracker-miner-tracker-miner-manager.html"/>
+    </sub>
+    <sub name="Utilities" link="ch04.html">
+      <sub name="TrackerStorage" link="libtracker-miner-TrackerStorage.html"/>
+      <sub name="tracker-thumbnailer" link="libtracker-miner-tracker-thumbnailer.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <function name="TRACKER_MINER_ERROR_DOMAIN" link="TrackerMiner.html#TRACKER-MINER-ERROR-DOMAIN--CAPS"/>
+    <function name="TRACKER_MINER_ERROR" link="TrackerMiner.html#TRACKER-MINER-ERROR--CAPS"/>
+    <function name="TrackerMinerPrivate" link="TrackerMiner.html#TrackerMinerPrivate"/>
+    <function name="TrackerMiner" link="TrackerMiner.html#TrackerMiner"/>
+    <function name="TrackerMinerClass" link="TrackerMiner.html#TrackerMinerClass"/>
+    <function name="tracker_miner_error_quark ()" link="TrackerMiner.html#tracker-miner-error-quark"/>
+    <function name="tracker_miner_start ()" link="TrackerMiner.html#tracker-miner-start"/>
+    <function name="tracker_miner_stop ()" link="TrackerMiner.html#tracker-miner-stop"/>
+    <function name="tracker_miner_ignore_next_update ()" link="TrackerMiner.html#tracker-miner-ignore-next-update"/>
+    <function name="tracker_miner_is_started ()" link="TrackerMiner.html#tracker-miner-is-started"/>
+    <function name="tracker_miner_pause ()" link="TrackerMiner.html#tracker-miner-pause"/>
+    <function name="tracker_miner_resume ()" link="TrackerMiner.html#tracker-miner-resume"/>
+    <function name="tracker_miner_execute_update ()" link="TrackerMiner.html#tracker-miner-execute-update"/>
+    <function name="tracker_miner_execute_update_finish ()" link="TrackerMiner.html#tracker-miner-execute-update-finish"/>
+    <function name="tracker_miner_execute_sparql ()" link="TrackerMiner.html#tracker-miner-execute-sparql"/>
+    <function name="tracker_miner_execute_sparql_finish ()" link="TrackerMiner.html#tracker-miner-execute-sparql-finish"/>
+    <function name="tracker_miner_execute_batch_update ()" link="TrackerMiner.html#tracker-miner-execute-batch-update"/>
+    <function name="tracker_miner_execute_batch_update_finish ()" link="TrackerMiner.html#tracker-miner-execute-batch-update-finish"/>
+    <function name="tracker_miner_commit ()" link="TrackerMiner.html#tracker-miner-commit"/>
+    <function name="tracker_miner_commit_finish ()" link="TrackerMiner.html#tracker-miner-commit-finish"/>
+    <function name="The &quot;name&quot; property" link="TrackerMiner.html#TrackerMiner--name"/>
+    <function name="The &quot;progress&quot; property" link="TrackerMiner.html#TrackerMiner--progress"/>
+    <function name="The &quot;status&quot; property" link="TrackerMiner.html#TrackerMiner--status"/>
+    <function name="The &quot;error&quot; signal" link="TrackerMiner.html#TrackerMiner-error"/>
+    <function name="The &quot;ignore-next-update&quot; signal" link="TrackerMiner.html#TrackerMiner-ignore-next-update"/>
+    <function name="The &quot;paused&quot; signal" link="TrackerMiner.html#TrackerMiner-paused"/>
+    <function name="The &quot;progress&quot; signal" link="TrackerMiner.html#TrackerMiner-progress"/>
+    <function name="The &quot;resumed&quot; signal" link="TrackerMiner.html#TrackerMiner-resumed"/>
+    <function name="The &quot;started&quot; signal" link="TrackerMiner.html#TrackerMiner-started"/>
+    <function name="The &quot;stopped&quot; signal" link="TrackerMiner.html#TrackerMiner-stopped"/>
+    <function name="TRACKER_MINER_WEB_ERROR_DOMAIN" link="libtracker-miner-TrackerMinerWeb.html#TRACKER-MINER-WEB-ERROR-DOMAIN--CAPS"/>
+    <function name="TRACKER_MINER_WEB_ERROR" link="libtracker-miner-TrackerMinerWeb.html#TRACKER-MINER-WEB-ERROR--CAPS"/>
+    <function name="TRACKER_MINER_WEB_DBUS_INTERFACE" link="libtracker-miner-TrackerMinerWeb.html#TRACKER-MINER-WEB-DBUS-INTERFACE--CAPS"/>
+    <function name="TrackerMinerWebPrivate" link="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWebPrivate"/>
+    <function name="TrackerMinerWeb" link="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWeb"/>
+    <function name="TrackerMinerWebClass" link="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWebClass"/>
+    <function name="tracker_miner_web_error_quark ()" link="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-error-quark"/>
+    <function name="enum TrackerMinerWebError" link="libtracker-miner-TrackerMinerWeb.html#TrackerMinerWebError"/>
+    <function name="tracker_miner_web_associate ()" link="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-associate"/>
+    <function name="tracker_miner_web_authenticate ()" link="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-authenticate"/>
+    <function name="tracker_miner_web_dissociate ()" link="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-dissociate"/>
+    <function name="tracker_miner_web_get_association_data ()" link="libtracker-miner-TrackerMinerWeb.html#tracker-miner-web-get-association-data"/>
+    <function name="TRACKER_PASSWORD_PROVIDER_ERROR_DOMAIN" link="libtracker-miner-TrackerPasswordProvider.html#TRACKER-PASSWORD-PROVIDER-ERROR-DOMAIN--CAPS"/>
+    <function name="TRACKER_PASSWORD_PROVIDER_ERROR" link="libtracker-miner-TrackerPasswordProvider.html#TRACKER-PASSWORD-PROVIDER-ERROR--CAPS"/>
+    <function name="TRACKER_PASSWORD_PROVIDER_GET_INTERFACE()" link="libtracker-miner-TrackerPasswordProvider.html#TRACKER-PASSWORD-PROVIDER-GET-INTERFACE--CAPS"/>
+    <function name="TrackerPasswordProvider" link="libtracker-miner-TrackerPasswordProvider.html#TrackerPasswordProvider"/>
+    <function name="enum TrackerPasswordProviderError" link="libtracker-miner-TrackerPasswordProvider.html#TrackerPasswordProviderError"/>
+    <function name="TrackerPasswordProviderIface" link="libtracker-miner-TrackerPasswordProvider.html#TrackerPasswordProviderIface"/>
+    <function name="tracker_password_provider_error_quark ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-error-quark"/>
+    <function name="tracker_password_provider_get ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-get"/>
+    <function name="tracker_password_provider_get_name ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-get-name"/>
+    <function name="tracker_password_provider_store_password ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-store-password"/>
+    <function name="tracker_password_provider_get_password ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-get-password"/>
+    <function name="tracker_password_provider_forget_password ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-forget-password"/>
+    <function name="tracker_password_provider_lock_password ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-lock-password"/>
+    <function name="tracker_password_provider_unlock_password ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-unlock-password"/>
+    <function name="TrackerMinerFSPrivate" link="TrackerMinerFS.html#TrackerMinerFSPrivate"/>
+    <function name="TrackerMinerFS" link="TrackerMinerFS.html#TrackerMinerFS"/>
+    <function name="TrackerMinerFSClass" link="TrackerMinerFS.html#TrackerMinerFSClass"/>
+    <function name="tracker_miner_fs_directory_add ()" link="TrackerMinerFS.html#tracker-miner-fs-directory-add"/>
+    <function name="tracker_miner_fs_directory_remove ()" link="TrackerMinerFS.html#tracker-miner-fs-directory-remove"/>
+    <function name="tracker_miner_fs_file_add ()" link="TrackerMinerFS.html#tracker-miner-fs-file-add"/>
+    <function name="tracker_miner_fs_file_notify ()" link="TrackerMinerFS.html#tracker-miner-fs-file-notify"/>
+    <function name="tracker_miner_fs_set_throttle ()" link="TrackerMinerFS.html#tracker-miner-fs-set-throttle"/>
+    <function name="tracker_miner_fs_get_throttle ()" link="TrackerMinerFS.html#tracker-miner-fs-get-throttle"/>
+    <function name="tracker_miner_fs_force_recheck ()" link="TrackerMinerFS.html#tracker-miner-fs-force-recheck"/>
+    <function name="tracker_miner_fs_get_parent_urn ()" link="TrackerMinerFS.html#tracker-miner-fs-get-parent-urn"/>
+    <function name="tracker_miner_fs_get_urn ()" link="TrackerMinerFS.html#tracker-miner-fs-get-urn"/>
+    <function name="The &quot;process-pool-limit&quot; property" link="TrackerMinerFS.html#TrackerMinerFS--process-pool-limit"/>
+    <function name="The &quot;throttle&quot; property" link="TrackerMinerFS.html#TrackerMinerFS--throttle"/>
+    <function name="The &quot;check-directory&quot; signal" link="TrackerMinerFS.html#TrackerMinerFS-check-directory"/>
+    <function name="The &quot;check-directory-contents&quot; signal" link="TrackerMinerFS.html#TrackerMinerFS-check-directory-contents"/>
+    <function name="The &quot;check-file&quot; signal" link="TrackerMinerFS.html#TrackerMinerFS-check-file"/>
+    <function name="The &quot;finished&quot; signal" link="TrackerMinerFS.html#TrackerMinerFS-finished"/>
+    <function name="The &quot;ignore-next-update-file&quot; signal" link="TrackerMinerFS.html#TrackerMinerFS-ignore-next-update-file"/>
+    <function name="The &quot;monitor-directory&quot; signal" link="TrackerMinerFS.html#TrackerMinerFS-monitor-directory"/>
+    <function name="The &quot;process-file&quot; signal" link="TrackerMinerFS.html#TrackerMinerFS-process-file"/>
+    <function name="TrackerMinerManager" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager"/>
+    <function name="TrackerMinerManagerClass" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManagerClass"/>
+    <function name="miner_progress ()" link="libtracker-miner-tracker-miner-manager.html#miner-progress"/>
+    <function name="miner_paused ()" link="libtracker-miner-tracker-miner-manager.html#miner-paused"/>
+    <function name="miner_resumed ()" link="libtracker-miner-tracker-miner-manager.html#miner-resumed"/>
+    <function name="miner_activated ()" link="libtracker-miner-tracker-miner-manager.html#miner-activated"/>
+    <function name="miner_deactivated ()" link="libtracker-miner-tracker-miner-manager.html#miner-deactivated"/>
+    <function name="tracker_miner_manager_new ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-new"/>
+    <function name="tracker_miner_manager_get_running ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-get-running"/>
+    <function name="tracker_miner_manager_get_available ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-get-available"/>
+    <function name="tracker_miner_manager_pause ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-pause"/>
+    <function name="tracker_miner_manager_resume ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-resume"/>
+    <function name="tracker_miner_manager_is_active ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-is-active"/>
+    <function name="tracker_miner_manager_is_paused ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-is-paused"/>
+    <function name="tracker_miner_manager_get_status ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-get-status"/>
+    <function name="tracker_miner_manager_ignore_next_update ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-ignore-next-update"/>
+    <function name="tracker_miner_manager_get_display_name ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-get-display-name"/>
+    <function name="tracker_miner_manager_get_description ()" link="libtracker-miner-tracker-miner-manager.html#tracker-miner-manager-get-description"/>
+    <function name="The &quot;miner-activated&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-activated"/>
+    <function name="The &quot;miner-deactivated&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-deactivated"/>
+    <function name="The &quot;miner-paused&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-paused"/>
+    <function name="The &quot;miner-progress&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-progress"/>
+    <function name="The &quot;miner-resumed&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-resumed"/>
+    <function name="TrackerStorage" link="libtracker-miner-TrackerStorage.html#TrackerStorage"/>
+    <function name="TrackerStorageClass" link="libtracker-miner-TrackerStorage.html#TrackerStorageClass"/>
+    <function name="enum TrackerStorageType" link="libtracker-miner-TrackerStorage.html#TrackerStorageType"/>
+    <function name="tracker_storage_new ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-new"/>
+    <function name="tracker_storage_get_device_roots ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-get-device-roots"/>
+    <function name="tracker_storage_get_device_uuids ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-get-device-uuids"/>
+    <function name="tracker_storage_get_mount_point_for_uuid ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-get-mount-point-for-uuid"/>
+    <function name="tracker_storage_get_uuid_for_file ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-get-uuid-for-file"/>
+    <function name="tracker_thumbnailer_init ()" link="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-init"/>
+    <function name="tracker_thumbnailer_shutdown ()" link="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-shutdown"/>
+    <function name="tracker_thumbnailer_send ()" link="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-send"/>
+    <function name="tracker_thumbnailer_move_add ()" link="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-move-add"/>
+    <function name="tracker_thumbnailer_remove_add ()" link="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-remove-add"/>
+    <function name="tracker_thumbnailer_cleanup ()" link="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-cleanup"/>
+  </functions>
+</book>

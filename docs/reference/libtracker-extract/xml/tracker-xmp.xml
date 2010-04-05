@@ -1,0 +1,185 @@
+<refentry id="libtracker-extract-tracker-xmp">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-extract-tracker-xmp.top_of_page">XMP</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-EXTRACT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>XMP</refname>
+<refpurpose>Extensible Metadata Platform (XMP)</refpurpose>
+</refnamediv>
+<refsect1 id="libtracker-extract-tracker-xmp.stability-level">
+<title>Stability Level</title>
+Stable, unless otherwise indicated
+</refsect1>
+
+<refsynopsisdiv id="libtracker-extract-tracker-xmp.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-extract/tracker-extract.h&gt;
+
+                    <link linkend="TrackerXmpData">TrackerXmpData</link>;
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-xmp-read">tracker_xmp_read</link>                    (const <link linkend="gchar">gchar</link> *buffer,
+                                                         <link linkend="size-t">size_t</link> len,
+                                                         const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="TrackerXmpData">TrackerXmpData</link> *data);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-xmp-apply">tracker_xmp_apply</link>                   (<link linkend="TrackerSparqlBuilder">TrackerSparqlBuilder</link> *metadata,
+                                                         const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="TrackerXmpData">TrackerXmpData</link> *data);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-extract-tracker-xmp.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+The Adobe Extensible Metadata Platform (XMP) is a standard, created
+by Adobe Systems Inc., for processing and storing standardized and
+proprietary information relating to the contents of a file.
+</para>
+<para>
+XMP standardizes the definition, creation, and processing of
+extensible metadata. Serialized XMP can be embedded into a
+significant number of popular file formats, without breaking their
+readability by non-XMP-aware applications. Embedding metadata ("the
+truth is in the file") avoids many problems that occur when
+metadata is stored separately. XMP is used in PDF, photography and
+photo editing applications.
+</para>
+<para>
+This API is provided to remove code duplication between extractors
+using these standards.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-extract-tracker-xmp.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerXmpData" role="struct">
+<title>TrackerXmpData</title>
+<indexterm zone="TrackerXmpData"><primary sortas="TrackerXmpData">TrackerXmpData</primary></indexterm><programlisting>typedef struct {
+	/* NS_DC */
+	gchar *title;
+	gchar *rights;
+	gchar *creator;
+	gchar *description;
+	gchar *date;
+	gchar *keywords;
+	gchar *subject;
+
+	gchar *publisher;
+	gchar *contributor;
+	gchar *type;
+	gchar *format;
+	gchar *identifier;
+	gchar *source;
+	gchar *language;
+	gchar *relation;
+	gchar *coverage;
+
+	/* NS_CC */
+	gchar *license;
+
+	/* NS_PDF */
+	gchar *pdf_title;
+	gchar *pdf_keywords;
+
+	/* NS_EXIF */
+	gchar *title2;
+	gchar *time_original;
+	gchar *artist;
+	gchar *make;
+	gchar *model;
+	gchar *orientation;
+	gchar *flash;
+	gchar *metering_mode;
+	gchar *exposure_time;
+	gchar *fnumber;
+	gchar *focal_length;
+
+	gchar *iso_speed_ratings;
+	gchar *white_balance;
+	gchar *copyright;
+
+	/* TODO NS_XAP*/
+	gchar *rating;
+
+	/* TODO NS_IPTC4XMP */
+	/* TODO NS_PHOTOSHOP */
+	gchar *address;
+	gchar *country;
+	gchar *state;
+	gchar *city;
+} TrackerXmpData;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="tracker-xmp-read" role="function" condition="since:0.8">
+<title>tracker_xmp_read ()</title>
+<indexterm zone="tracker-xmp-read" role="0.8"><primary sortas="tracker_xmp_read">tracker_xmp_read</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_xmp_read                    (const <link linkend="gchar">gchar</link> *buffer,
+                                                         <link linkend="size-t">size_t</link> len,
+                                                         const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="TrackerXmpData">TrackerXmpData</link> *data);</programlisting>
+<para>
+This function takes <parameter>len</parameter> bytes of <parameter>buffer</parameter> and runs it through the
+XMP library. The result is that <parameter>data</parameter> is populated with the XMP
+data found in <parameter>uri</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
+<listitem><simpara> a chunk of data with xmp data in it.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara> the size of <parameter>buffer</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
+<listitem><simpara> the URI this is related to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> a pointer to a TrackerXmpData structure to populate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if the <parameter>data</parameter> was populated successfully, otherwise
+<link linkend="FALSE--CAPS"><literal>FALSE</literal></link> is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-xmp-apply" role="function" condition="since:0.8">
+<title>tracker_xmp_apply ()</title>
+<indexterm zone="tracker-xmp-apply" role="0.8"><primary sortas="tracker_xmp_apply">tracker_xmp_apply</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_xmp_apply                   (<link linkend="TrackerSparqlBuilder">TrackerSparqlBuilder</link> *metadata,
+                                                         const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="TrackerXmpData">TrackerXmpData</link> *data);</programlisting>
+<para>
+This function applies all data in <parameter>data</parameter> to <parameter>metadata</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>metadata</parameter>&#160;:</term>
+<listitem><simpara> the metadata object to apply XMP data to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
+<listitem><simpara> the URI this is related to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> the data to push into <parameter>metadata</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if the <parameter>data</parameter> was applied to <parameter>metadata</parameter> successfully,
+otherwise <link linkend="FALSE--CAPS"><literal>FALSE</literal></link> is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

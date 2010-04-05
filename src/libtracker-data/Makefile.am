@@ -8,46 +8,78 @@ INCLUDES =								\
 	$(WARN_CFLAGS)							\
 	$(GLIB2_CFLAGS)							\
 	$(DBUS_CFLAGS)							\
-	$(RAPTOR_CFLAGS)						\
-	$(GCOV_CFLAGS)
+	$(UUID_CFLAGS)							\
+	$(GCOV_CFLAGS)							\
+	$(SQLITE3_CFLAGS)
 
-libtracker_datadir = $(libdir)/tracker
+BUILT_SOURCES = libtracker-data.vala.stamp
+
+libtracker_datadir = $(libdir)/tracker-$(TRACKER_API_VERSION)
 libtracker_data_LTLIBRARIES = libtracker-data.la
 
+libtracker_data_la_VALASOURCES = 					\
+	tracker-sparql-expression.vala					\
+	tracker-sparql-pattern.vala					\
+	tracker-sparql-query.vala					\
+	tracker-sparql-scanner.vala					\
+	tracker-turtle-reader.vala
+
 libtracker_data_la_SOURCES = 						\
+	tracker-class.c							\
 	tracker-data-backup.c						\
 	tracker-data-manager.c						\
-	tracker-data-metadata.c						\
 	tracker-data-query.c						\
-	tracker-data-schema.c						\
-	tracker-data-search.c						\
 	tracker-data-update.c						\
-	tracker-field-data.c						\
-	tracker-query-tree.c						\
-	tracker-rdf-query.c						\
-	tracker-turtle.c						
+	tracker-namespace.c						\
+	tracker-ontology.c						\
+	tracker-ontologies.c						\
+	tracker-property.c						\
+	libtracker-data.vala.stamp					\
+	$(libtracker_data_la_VALASOURCES:.vala=.c)
 
 noinst_HEADERS =							\
+	tracker-class.h							\
+	tracker-data.h							\
 	tracker-data-backup.h						\
 	tracker-data-manager.h						\
-	tracker-data-metadata.h						\
 	tracker-data-query.h						\
-	tracker-data-schema.h						\
-	tracker-data-search.h						\
 	tracker-data-update.h						\
-	tracker-field-data.h						\
-	tracker-query-tree.h						\
-	tracker-rdf-query.h						\
-	tracker-turtle.h						
+	tracker-namespace.h						\
+	tracker-ontology.h						\
+	tracker-ontologies.h						\
+	tracker-property.h						\
+	tracker-sparql-query.h
+
+vapi_sources =								\
+	$(top_srcdir)/src/vapi/posix.vapi				\
+	$(top_srcdir)/src/vapi/glib-2.0-fixes.vapi			\
+	$(top_srcdir)/src/libtracker-common/libtracker-common.vapi	\
+	$(top_srcdir)/src/libtracker-db/libtracker-db.vapi		\
+	libtracker-data.vapi 
+
+libtracker-data.vala.stamp: $(libtracker_data_la_VALASOURCES) $(vapi_sources) 
+	$(AM_V_GEN)$(VALAC) $(GCOV_VALAFLAGS) -C $(VALAFLAGS) -H tracker-sparql-query.h $^
+	touch $@
 
 libtracker_data_la_LDFLAGS =						\
-	-version-info 0:0:0
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 libtracker_data_la_LIBADD = 						\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
 	$(top_builddir)/src/libtracker-db/libtracker-db.la		\
 	$(DBUS_LIBS)							\
 	$(GLIB2_LIBS)							\
-	$(RAPTOR_LIBS)							\
+	$(UUID_LIBS)							\
 	$(GCOV_LIBS)							\
 	-lz
+
+MAINTAINERCLEANFILES =							\
+	libtracker-data.vala.stamp					\
+	$(libtracker_data_la_VALASOURCES:.vala=.c)			\
+	tracker-sparql-query.h					\
+	$(NULL)
+
+EXTRA_DIST = $(libtracker_data_la_VALASOURCES)				\
+	libtracker-data.vala.stamp					\
+	libtracker-data.vapi
+

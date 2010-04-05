@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-Type Conversions
+tracker-type-utils
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -19,22 +19,14 @@ Type Conversions
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION tracker_date_format ##### -->
+<!-- ##### FUNCTION tracker_string_to_date ##### -->
 <para>
 
 </para>
 
 @date_string: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_date_format_to_iso8601 ##### -->
-<para>
-
-</para>
-
-@date_string: 
-@format: 
+@offset: 
+@error: 
 @Returns: 
 
 
@@ -47,16 +39,7 @@ Type Conversions
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_date_to_time_string ##### -->
-<para>
-
-</para>
-
-@date_string: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_gint32_to_string ##### -->
+<!-- ##### FUNCTION tracker_glong_to_string ##### -->
 <para>
 
 </para>
@@ -74,7 +57,7 @@ Type Conversions
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_glong_to_string ##### -->
+<!-- ##### FUNCTION tracker_guint_to_string ##### -->
 <para>
 
 </para>
@@ -83,21 +66,12 @@ Type Conversions
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_gslist_copy_with_string_data ##### -->
+<!-- ##### FUNCTION tracker_gint32_to_string ##### -->
 <para>
 
 </para>
 
-@list: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_gslist_to_string_list ##### -->
-<para>
-
-</para>
-
-@list: 
+@i: 
 @Returns: 
 
 
@@ -110,21 +84,13 @@ Type Conversions
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_guint_to_string ##### -->
+<!-- ##### FUNCTION tracker_string_to_uint ##### -->
 <para>
 
 </para>
 
-@i: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_string_boolean_to_string_gint ##### -->
-<para>
-
-</para>
-
-@value: 
+@s: 
+@ret: 
 @Returns: 
 
 
@@ -135,6 +101,16 @@ Type Conversions
 
 @str: 
 @strv: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_in_gslist ##### -->
+<para>
+
+</para>
+
+@str: 
+@list: 
 @Returns: 
 
 
@@ -159,15 +135,6 @@ Type Conversions
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_string_to_date ##### -->
-<para>
-
-</para>
-
-@date_string: 
-@Returns: 
-
-
 <!-- ##### FUNCTION tracker_string_to_string_list ##### -->
 <para>
 
@@ -177,13 +144,49 @@ Type Conversions
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_string_to_uint ##### -->
+<!-- ##### FUNCTION tracker_gslist_to_string_list ##### -->
 <para>
 
 </para>
 
-@s: 
-@ret: 
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_gslist_copy_with_string_data ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_gslist_with_string_data_equal ##### -->
+<para>
+
+</para>
+
+@list1: 
+@list2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_glist_copy_with_string_data ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_string_boolean_to_string_gint ##### -->
+<para>
+
+</para>
+
+@value: 
 @Returns: 
 
 

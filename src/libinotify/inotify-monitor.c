@@ -2,20 +2,20 @@
  * inotify-monitor.c - the primary interface for adding/removing watches
  * Copyright © 2005 Ryan Lortie <desrt@desrt.ca>
  *
- *   This library is free software; you can redistribute it and/or
- *   modify it under the terms of version 2.1 of the GNU Lesser General
- *   Public as published by the Free Software Foundation.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- *   This library is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *   Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- *   You should have received a copy of the GNU Lesser General Public
- *   License along with this library; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110
- *
- *   $Id: inotify-monitor.c 26 2005-12-01 19:11:01Z ryanl $
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301  USA
  */
 
 #include <string.h>
@@ -327,7 +327,7 @@ inotify_monitor_add( const char *filename, guint32 mask, unsigned long flags,
   }
   else
   {
-    char *parent = g_path_get_dirname( filename );
+    const char *parent = g_path_get_dirname( filename );
     unsigned long lflags;
     guint32 lmask;
 
@@ -346,7 +346,6 @@ inotify_monitor_add( const char *filename, guint32 mask, unsigned long flags,
     /* This will be filtered out if it shouldn't be delivered. */
     inotify_handle_invoke_callback( inh, NULL, IN_DELETE | IN_SYNTHETIC, -1 );
 
-    g_free (parent);
     result = 0;
   }
 

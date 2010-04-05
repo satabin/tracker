@@ -1,0 +1,86 @@
+<refentry id="libtracker-client-Cancellations">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-client-Cancellations.top_of_page">Cancellations</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-CLIENT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Cancellations</refname>
+<refpurpose>Cancelling requests.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-client-Cancellations.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-client/tracker-client.h&gt;
+
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-cancel-call">tracker_cancel_call</link>                 (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         <link linkend="guint">guint</link> call_id);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-cancel-last-call">tracker_cancel_last_call</link>            (<link linkend="TrackerClient">TrackerClient</link> *client);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-client-Cancellations.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+Tracker allows you to cancel any request that has not been processed
+yet. Aditionally, for fully synchronous requests, there is helper
+API to cancel the last request.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-client-Cancellations.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="tracker-cancel-call" role="function">
+<title>tracker_cancel_call ()</title>
+<indexterm zone="tracker-cancel-call"><primary sortas="tracker_cancel_call">tracker_cancel_call</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_cancel_call                 (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         <link linkend="guint">guint</link> call_id);</programlisting>
+<para>
+The <parameter>call_id</parameter> is a <link linkend="guint"><type>guint</type></link> which increments with each asynchronous
+API call made using libtracker-client. For synchronous API calls,
+see <link linkend="tracker-cancel-last-call"><function>tracker_cancel_last_call()</function></link> which is more useful.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>call_id</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="guint"><type>guint</type></link> id for the API call you want to cancel.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <parameter>gboolean</parameter> indicating if the call was cancelled or not.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-cancel-last-call" role="function">
+<title>tracker_cancel_last_call ()</title>
+<indexterm zone="tracker-cancel-last-call"><primary sortas="tracker_cancel_last_call">tracker_cancel_last_call</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_cancel_last_call            (<link linkend="TrackerClient">TrackerClient</link> *client);</programlisting>
+<para>
+Cancels the last API call made using <link linkend="tracker-cancel-call"><function>tracker_cancel_call()</function></link>. the
+last API call ID is always tracked so you don't have to provide it
+with this API.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="gboolean"><type>gboolean</type></link> indicating if the call was cancelled or not.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

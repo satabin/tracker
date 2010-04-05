@@ -1,6 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2008, Nokia (urho.konttori@nokia.com)
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -23,7 +22,7 @@ static gchar *nonutf8_str = NULL;
 
 gboolean
 tracker_test_helpers_cmpstr_equal (const gchar *obtained,
-				   const gchar *expected)
+                                   const gchar *expected)
 {
 	gboolean result;
 
@@ -52,7 +51,11 @@ tracker_test_helpers_get_nonutf8 (void)
 		file = g_mapped_file_new (TEST_TEXT, FALSE, NULL);
 		nonutf8_str = g_strdup (g_mapped_file_get_contents (file));
 		nonutf8_str [g_mapped_file_get_length (file) -1] = '\0';
+#if GLIB_CHECK_VERSION(2,22,0)
+		g_mapped_file_unref (file);
+#else
 		g_mapped_file_free (file);
+#endif
 	}
 
 	return nonutf8_str;

@@ -1,0 +1,440 @@
+<refentry id="libtracker-common-tracker-keyfile-object">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-common-tracker-keyfile-object.top_of_page">tracker-keyfile-object</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-COMMON Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>tracker-keyfile-object</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-common-tracker-keyfile-object.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-keyfile-object-blurb">tracker_keyfile_object_blurb</link>        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-keyfile-object-default-boolean">tracker_keyfile_object_default_boolean</link>
+                                                        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property);
+<link linkend="gint">gint</link>                <link linkend="tracker-keyfile-object-default-int">tracker_keyfile_object_default_int</link>  (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-keyfile-object-validate-int">tracker_keyfile_object_validate_int</link> (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="gint">gint</link> value);
+<link linkend="void">void</link>                <link linkend="tracker-keyfile-object-load-int">tracker_keyfile_object_load_int</link>     (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);
+<link linkend="void">void</link>                <link linkend="tracker-keyfile-object-load-boolean">tracker_keyfile_object_load_boolean</link> (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);
+<link linkend="void">void</link>                <link linkend="tracker-keyfile-object-load-string">tracker_keyfile_object_load_string</link>  (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);
+<link linkend="void">void</link>                <link linkend="tracker-keyfile-object-load-string-list">tracker_keyfile_object_load_string_list</link>
+                                                        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key,
+                                                         <link linkend="GSList">GSList</link> **return_instead);
+<link linkend="void">void</link>                <link linkend="tracker-keyfile-object-load-directory-list">tracker_keyfile_object_load_directory_list</link>
+                                                        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key,
+                                                         <link linkend="gboolean">gboolean</link> is_recursive,
+                                                         <link linkend="GSList">GSList</link> **return_instead);
+<link linkend="void">void</link>                <link linkend="tracker-keyfile-object-save-int">tracker_keyfile_object_save_int</link>     (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);
+<link linkend="void">void</link>                <link linkend="tracker-keyfile-object-save-boolean">tracker_keyfile_object_save_boolean</link> (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);
+<link linkend="void">void</link>                <link linkend="tracker-keyfile-object-save-string">tracker_keyfile_object_save_string</link>  (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);
+<link linkend="void">void</link>                <link linkend="tracker-keyfile-object-save-string-list">tracker_keyfile_object_save_string_list</link>
+                                                        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);
+<link linkend="void">void</link>                <link linkend="tracker-keyfile-object-save-directory-list">tracker_keyfile_object_save_directory_list</link>
+                                                        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-common-tracker-keyfile-object.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-common-tracker-keyfile-object.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="tracker-keyfile-object-blurb" role="function">
+<title>tracker_keyfile_object_blurb ()</title>
+<indexterm zone="tracker-keyfile-object-blurb"><primary sortas="tracker_keyfile_object_blurb">tracker_keyfile_object_blurb</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_keyfile_object_blurb        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-default-boolean" role="function">
+<title>tracker_keyfile_object_default_boolean ()</title>
+<indexterm zone="tracker-keyfile-object-default-boolean"><primary sortas="tracker_keyfile_object_default_boolean">tracker_keyfile_object_default_boolean</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_keyfile_object_default_boolean
+                                                        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-default-int" role="function">
+<title>tracker_keyfile_object_default_int ()</title>
+<indexterm zone="tracker-keyfile-object-default-int"><primary sortas="tracker_keyfile_object_default_int">tracker_keyfile_object_default_int</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_keyfile_object_default_int  (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-validate-int" role="function">
+<title>tracker_keyfile_object_validate_int ()</title>
+<indexterm zone="tracker-keyfile-object-validate-int"><primary sortas="tracker_keyfile_object_validate_int">tracker_keyfile_object_validate_int</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_keyfile_object_validate_int (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="gint">gint</link> value);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-load-int" role="function">
+<title>tracker_keyfile_object_load_int ()</title>
+<indexterm zone="tracker-keyfile-object-load-int"><primary sortas="tracker_keyfile_object_load_int">tracker_keyfile_object_load_int</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_keyfile_object_load_int     (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_file</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>group</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-load-boolean" role="function">
+<title>tracker_keyfile_object_load_boolean ()</title>
+<indexterm zone="tracker-keyfile-object-load-boolean"><primary sortas="tracker_keyfile_object_load_boolean">tracker_keyfile_object_load_boolean</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_keyfile_object_load_boolean (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_file</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>group</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-load-string" role="function">
+<title>tracker_keyfile_object_load_string ()</title>
+<indexterm zone="tracker-keyfile-object-load-string"><primary sortas="tracker_keyfile_object_load_string">tracker_keyfile_object_load_string</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_keyfile_object_load_string  (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_file</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>group</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-load-string-list" role="function">
+<title>tracker_keyfile_object_load_string_list ()</title>
+<indexterm zone="tracker-keyfile-object-load-string-list"><primary sortas="tracker_keyfile_object_load_string_list">tracker_keyfile_object_load_string_list</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_keyfile_object_load_string_list
+                                                        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key,
+                                                         <link linkend="GSList">GSList</link> **return_instead);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_file</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>group</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>return_instead</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-load-directory-list" role="function">
+<title>tracker_keyfile_object_load_directory_list ()</title>
+<indexterm zone="tracker-keyfile-object-load-directory-list"><primary sortas="tracker_keyfile_object_load_directory_list">tracker_keyfile_object_load_directory_list</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_keyfile_object_load_directory_list
+                                                        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key,
+                                                         <link linkend="gboolean">gboolean</link> is_recursive,
+                                                         <link linkend="GSList">GSList</link> **return_instead);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_file</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>group</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>is_recursive</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>return_instead</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-save-int" role="function">
+<title>tracker_keyfile_object_save_int ()</title>
+<indexterm zone="tracker-keyfile-object-save-int"><primary sortas="tracker_keyfile_object_save_int">tracker_keyfile_object_save_int</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_keyfile_object_save_int     (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_file</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>group</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-save-boolean" role="function">
+<title>tracker_keyfile_object_save_boolean ()</title>
+<indexterm zone="tracker-keyfile-object-save-boolean"><primary sortas="tracker_keyfile_object_save_boolean">tracker_keyfile_object_save_boolean</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_keyfile_object_save_boolean (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_file</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>group</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-save-string" role="function">
+<title>tracker_keyfile_object_save_string ()</title>
+<indexterm zone="tracker-keyfile-object-save-string"><primary sortas="tracker_keyfile_object_save_string">tracker_keyfile_object_save_string</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_keyfile_object_save_string  (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_file</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>group</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-save-string-list" role="function">
+<title>tracker_keyfile_object_save_string_list ()</title>
+<indexterm zone="tracker-keyfile-object-save-string-list"><primary sortas="tracker_keyfile_object_save_string_list">tracker_keyfile_object_save_string_list</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_keyfile_object_save_string_list
+                                                        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_file</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>group</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-keyfile-object-save-directory-list" role="function">
+<title>tracker_keyfile_object_save_directory_list ()</title>
+<indexterm zone="tracker-keyfile-object-save-directory-list"><primary sortas="tracker_keyfile_object_save_directory_list">tracker_keyfile_object_save_directory_list</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_keyfile_object_save_directory_list
+                                                        (<link linkend="gpointer">gpointer</link> object,
+                                                         const <link linkend="gchar">gchar</link> *property,
+                                                         <link linkend="GKeyFile">GKeyFile</link> *key_file,
+                                                         const <link linkend="gchar">gchar</link> *group,
+                                                         const <link linkend="gchar">gchar</link> *key);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_file</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>group</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

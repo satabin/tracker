@@ -49,73 +49,76 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 noinst_PROGRAMS = $(am__EXEEXT_1)
 subdir = tests/libtracker-db
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__EXEEXT_1 = tracker-index-writer$(EXEEXT) \
-	tracker-db-action$(EXEEXT) tracker-db-index-manager$(EXEEXT)
+am__EXEEXT_1 = tracker-db-journal$(EXEEXT) tracker-db-dbus$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
-am_tracker_db_action_OBJECTS = tracker-db-action-test.$(OBJEXT)
-tracker_db_action_OBJECTS = $(am_tracker_db_action_OBJECTS)
+am_tracker_db_dbus_OBJECTS = tracker-db-dbus-test.$(OBJEXT)
+tracker_db_dbus_OBJECTS = $(am_tracker_db_dbus_OBJECTS)
 am__DEPENDENCIES_1 =
-tracker_db_action_DEPENDENCIES =  \
+tracker_db_dbus_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
-am_tracker_db_index_manager_OBJECTS =  \
-	tracker-db-index-manager-test.$(OBJEXT)
-tracker_db_index_manager_OBJECTS =  \
-	$(am_tracker_db_index_manager_OBJECTS)
-tracker_db_index_manager_DEPENDENCIES =  \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+am_tracker_db_journal_OBJECTS = tracker-db-journal.$(OBJEXT)
+tracker_db_journal_OBJECTS = $(am_tracker_db_journal_OBJECTS)
+tracker_db_journal_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-db/libtracker-db.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-fts/libtracker-fts.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
-am_tracker_index_writer_OBJECTS = tracker-index-writer-test.$(OBJEXT)
-tracker_index_writer_OBJECTS = $(am_tracker_index_writer_OBJECTS)
-tracker_index_writer_DEPENDENCIES =  \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-db/libtracker-db.la \
-	$(top_builddir)/tests/common/libtracker-testcommon.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC    " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 CCLD = $(CC)
-LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
-SOURCES = $(tracker_db_action_SOURCES) \
-	$(tracker_db_index_manager_SOURCES) \
-	$(tracker_index_writer_SOURCES)
-DIST_SOURCES = $(tracker_db_action_SOURCES) \
-	$(tracker_db_index_manager_SOURCES) \
-	$(tracker_index_writer_SOURCES)
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD  " $@;
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
+SOURCES = $(tracker_db_dbus_SOURCES) $(tracker_db_journal_SOURCES)
+DIST_SOURCES = $(tracker_db_dbus_SOURCES) \
+	$(tracker_db_journal_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
-ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
 ALL_LINGUAS = @ALL_LINGUAS@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -128,16 +131,20 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+CXXDEPMODE = @CXXDEPMODE@
+CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
-DB2HTML = @DB2HTML@
 DBUSBINDINGTOOL = @DBUSBINDINGTOOL@
 DBUS_CFLAGS = @DBUS_CFLAGS@
 DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
+DEVKIT_POWER_CFLAGS = @DEVKIT_POWER_CFLAGS@
+DEVKIT_POWER_LIBS = @DEVKIT_POWER_LIBS@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -153,10 +160,9 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-GCONF_CFLAGS = @GCONF_CFLAGS@
-GCONF_LIBS = @GCONF_LIBS@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
+GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -165,29 +171,26 @@ GIO_LIBS = @GIO_LIBS@
 GLIB2_CFLAGS = @GLIB2_CFLAGS@
 GLIB2_LIBS = @GLIB2_LIBS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
-GMIME_CFLAGS = @GMIME_CFLAGS@
-GMIME_LIBS = @GMIME_LIBS@
 GMODULE_CFLAGS = @GMODULE_CFLAGS@
 GMODULE_LIBS = @GMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GNOMEDESKTOP_CFLAGS = @GNOMEDESKTOP_CFLAGS@
-GNOMEDESKTOP_LIBS = @GNOMEDESKTOP_LIBS@
-GNOME_UTILS_CFLAGS = @GNOME_UTILS_CFLAGS@
-GNOME_UTILS_LIBS = @GNOME_UTILS_LIBS@
+GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
+GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
 GOBJECT_CFLAGS = @GOBJECT_CFLAGS@
 GOBJECT_LIBS = @GOBJECT_LIBS@
+GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
-GTK2_CFLAGS = @GTK2_CFLAGS@
-GTK2_LIBS = @GTK2_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HTML_DIR = @HTML_DIR@
+ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
+ID3LIB_LIBS = @ID3LIB_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -203,8 +206,10 @@ LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
-LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
-LIBGLADE_LIBS = @LIBGLADE_LIBS@
+LIBFLAC_CFLAGS = @LIBFLAC_CFLAGS@
+LIBFLAC_LIBS = @LIBFLAC_LIBS@
+LIBGRSS_CFLAGS = @LIBGRSS_CFLAGS@
+LIBGRSS_LIBS = @LIBGRSS_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -215,11 +220,11 @@ LIBOBJS = @LIBOBJS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
+LIBSTREAMANALYZER_CFLAGS = @LIBSTREAMANALYZER_CFLAGS@
+LIBSTREAMANALYZER_LIBS = @LIBSTREAMANALYZER_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
 LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
-LIBTRACKERGTK_CFLAGS = @LIBTRACKERGTK_CFLAGS@
-LIBTRACKERGTK_LIBS = @LIBTRACKERGTK_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
 LIBVORBIS_LIBS = @LIBVORBIS_LIBS@
 LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
@@ -238,6 +243,9 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
+NAUTILUS_EXTENSION_CFLAGS = @NAUTILUS_EXTENSION_CFLAGS@
+NAUTILUS_EXTENSION_INSTALL_DIR = @NAUTILUS_EXTENSION_INSTALL_DIR@
+NAUTILUS_EXTENSION_LIBS = @NAUTILUS_EXTENSION_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -261,11 +269,9 @@ POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-QDBM_CFLAGS = @QDBM_CFLAGS@
-QDBM_LIBS = @QDBM_LIBS@
+QUILL_CFLAGS = @QUILL_CFLAGS@
+QUILL_LIBS = @QUILL_LIBS@
 RANLIB = @RANLIB@
-RAPTOR_CFLAGS = @RAPTOR_CFLAGS@
-RAPTOR_LIBS = @RAPTOR_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -275,18 +281,25 @@ STRIP = @STRIP@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
-TRACKER_APPLET_CFLAGS = @TRACKER_APPLET_CFLAGS@
-TRACKER_APPLET_LIBS = @TRACKER_APPLET_LIBS@
+TRACKER_APPLETS_CFLAGS = @TRACKER_APPLETS_CFLAGS@
+TRACKER_APPLETS_LIBS = @TRACKER_APPLETS_LIBS@
+TRACKER_APPS_CFLAGS = @TRACKER_APPS_CFLAGS@
+TRACKER_APPS_LIBS = @TRACKER_APPS_LIBS@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
+TRACKER_VALA_CFLAGS = @TRACKER_VALA_CFLAGS@
+TRACKER_VALA_LIBS = @TRACKER_VALA_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 UNAC_CFLAGS = @UNAC_CFLAGS@
 UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
+UUID_CFLAGS = @UUID_CFLAGS@
+UUID_LIBS = @UUID_LIBS@
+VALAC = @VALAC@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 XGETTEXT = @XGETTEXT@
@@ -297,6 +310,7 @@ abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -339,7 +353,6 @@ program_transform_name = @program_transform_name@
 psdir = @psdir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
-sqlite_exec = @sqlite_exec@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
@@ -350,23 +363,23 @@ GTESTER = gtester 			# for non-GLIB packages
 GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
+TEST_PROGS = tracker-db-journal tracker-db-dbus
 
 #
 # NOTE: Some of these tests have been disabled (by Martyn) temporarily
 # 	because make distcheck fails. The reason for this is that it
 # 	depends files being installed to $prefix/share which have not
 # 	been installed at this point.
-# 
+#
 #       These tests include:
 #
-#         tracker-db-dbus
 #	  tracker-db-manager-unattach
 #	  tracker-db-manager-attach
 #	  tracker-db-manager-custom
 #
-TEST_PROGS = tracker-index-writer tracker-db-action \
-	tracker-db-index-manager
 INCLUDES = \
+	-DTOP_SRCDIR=\"$(top_srcdir)\"					\
+	-DTOP_BUILDDIR=\"$(top_builddir)\"				\
 	-DG_LOG_DOMAIN=\"Tracker\"					\
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
@@ -377,130 +390,38 @@ INCLUDES = \
 	$(GMODULE_CFLAGS)						\
 	$(GTHREAD_CFLAGS)						\
 	$(DBUS_CFLAGS)							\
-	$(SQLITE3_CFLAGS)						\
-	$(QDBM_CFLAGS)
+	$(SQLITE3_CFLAGS)
 
 
-# TEST_PROGS +=								\
-#	tracker-index-reader						\
-# 	tracker-db-dbus							\
 # 	tracker-db-manager-unattach					\
 # 	tracker-db-manager-attach					\
-# 	tracker-db-manager-custom					\
-#
-# tracker_db_manager_attach_SOURCES = 					\
-# 	tracker-db-manager-test-attach.c 				\
-# 	tracker-db-manager-common.c					\
-# 	tracker-db-manager-common.h
-#
-# tracker_db_manager_attach_LDADD =					\
-# 	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
-# 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
-# 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
-# 	$(SQLITE3_LIBS)							\
-# 	$(QDBM_LIBS)							\
-# 	$(GMODULE_LIBS)							\
-# 	$(GTHREAD_LIBS)							\
-# 	$(GLIB2_LIBS)							\
-# 	-lz
-#
-# tracker_db_manager_unattach_SOURCES = 				\
-# 	tracker-db-manager-test-unattach.c 				\
-# 	tracker-db-manager-common.c					\
-# 	tracker-db-manager-common.h
-#
-# tracker_db_manager_unattach_LDADD =					\
-# 	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
-# 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
-# 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
-# 	$(SQLITE3_LIBS)							\
-# 	$(QDBM_LIBS)							\
-# 	$(GMODULE_LIBS)							\
-# 	$(GTHREAD_LIBS)							\
-# 	$(GLIB2_LIBS)							\
-# 	-lz
-#
-# tracker_db_manager_custom_SOURCES = 					\
-# 	tracker-db-manager-test-custom.c 				\
-# 	tracker-db-manager-common.c					\
-# 	tracker-db-manager-common.h
-#
-# tracker_db_manager_custom_LDADD =					\
-# 	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
-# 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
-# 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
-# 	$(SQLITE3_LIBS)							\
-# 	$(QDBM_LIBS)							\
-# 	$(GMODULE_LIBS)							\
-# 	$(GTHREAD_LIBS)							\
-# 	$(GLIB2_LIBS)							\
-# 	-lz
-#
-# tracker_db_dbus_SOURCES = 						\
-# 	tracker-db-dbus-test.c 		
-#
-# tracker_db_dbus_LDADD =						\
-# 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
-# 	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
-# 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
-# 	$(SQLITE3_LIBS)							\
-# 	$(GMODULE_LIBS)							\
-# 	$(GTHREAD_LIBS)							\
-# 	$(GLIB2_LIBS)							\
-# 	-lz
-#
-#
-# tracker_index_reader_SOURCES = 					\
-# 	tracker-index-reader-test.c 
-#
-# tracker_index_reader_LDADD = 						\
-# 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
-# 	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
-# 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
-# 	$(GMODULE_LIBS) 						\
-# 	$(GTHREAD_LIBS) 						\
-# 	$(GLIB2_LIBS) 							\
-# 	$(DBUS_LIBS) 							\
-# 	$(GIO_LIBS) 							\
-# 	$(QDBM_LIBS) 
-tracker_index_writer_SOURCES = \
-	tracker-index-writer-test.c
+# 	tracker-db-manager-custom					
+tracker_db_journal_SOURCES = \
+	tracker-db-journal.c
 
-tracker_index_writer_LDADD = \
+tracker_db_journal_LDADD = \
+	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
-	$(top_builddir)/src/libtracker-db/libtracker-db.la	 	\
+	$(top_builddir)/src/libtracker-fts/libtracker-fts.la		\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
-	$(QDBM_LIBS)							\
-	$(GCOV_LIBS)							\
+	$(SQLITE3_LIBS)							\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
-	$(GLIB2_LIBS)							
+	$(GLIB2_LIBS)							\
+	-lz
 
-tracker_db_action_SOURCES = \
-	tracker-db-action-test.c
+tracker_db_dbus_SOURCES = \
+	tracker-db-dbus-test.c
 
-tracker_db_action_LDADD = \
+tracker_db_dbus_LDADD = \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
-	$(top_builddir)/src/libtracker-db/libtracker-db.la	 	\
+	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
-	$(QDBM_LIBS)							\
-	$(GCOV_LIBS)							\
+	$(SQLITE3_LIBS)							\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
-	$(GLIB2_LIBS)							
-
-tracker_db_index_manager_SOURCES = \
-	tracker-db-index-manager-test.c
-
-tracker_db_index_manager_LDADD = \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
-	$(top_builddir)/src/libtracker-db/libtracker-db.la	 	\
-	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
-	$(QDBM_LIBS)							\
-	$(GCOV_LIBS)							\
-	$(GMODULE_LIBS)							\
-	$(GTHREAD_LIBS)							\
-	$(GLIB2_LIBS)							
+	$(GLIB2_LIBS)							\
+	-lz
 
 all: all-am
 
@@ -545,15 +466,12 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-tracker-db-action$(EXEEXT): $(tracker_db_action_OBJECTS) $(tracker_db_action_DEPENDENCIES) 
-	@rm -f tracker-db-action$(EXEEXT)
-	$(LINK) $(tracker_db_action_OBJECTS) $(tracker_db_action_LDADD) $(LIBS)
-tracker-db-index-manager$(EXEEXT): $(tracker_db_index_manager_OBJECTS) $(tracker_db_index_manager_DEPENDENCIES) 
-	@rm -f tracker-db-index-manager$(EXEEXT)
-	$(LINK) $(tracker_db_index_manager_OBJECTS) $(tracker_db_index_manager_LDADD) $(LIBS)
-tracker-index-writer$(EXEEXT): $(tracker_index_writer_OBJECTS) $(tracker_index_writer_DEPENDENCIES) 
-	@rm -f tracker-index-writer$(EXEEXT)
-	$(LINK) $(tracker_index_writer_OBJECTS) $(tracker_index_writer_LDADD) $(LIBS)
+tracker-db-dbus$(EXEEXT): $(tracker_db_dbus_OBJECTS) $(tracker_db_dbus_DEPENDENCIES) 
+	@rm -f tracker-db-dbus$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_db_dbus_OBJECTS) $(tracker_db_dbus_LDADD) $(LIBS)
+tracker-db-journal$(EXEEXT): $(tracker_db_journal_OBJECTS) $(tracker_db_journal_DEPENDENCIES) 
+	@rm -f tracker-db-journal$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_db_journal_OBJECTS) $(tracker_db_journal_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -561,27 +479,29 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-action-test.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-index-manager-test.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-index-writer-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-dbus-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-journal.Po@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
@@ -795,7 +715,7 @@ uninstall-am:
 ### testing rules
 
 # test: run all tests in cwd and subdirs
-test:	${TEST_PROGS}
+test:	${TEST_PROGS} all
 	@ test -z "${TEST_PROGS}" || ${GTESTER} --verbose ${TEST_PROGS}
 	@ for subdir in $(SUBDIRS) . ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" || \
@@ -840,6 +760,52 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
+
+#
+# tracker_db_manager_attach_SOURCES = 					\
+# 	tracker-db-manager-test-attach.c 				\
+# 	tracker-db-manager-common.c					\
+# 	tracker-db-manager-common.h
+#
+# tracker_db_manager_attach_LDADD =					\
+# 	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
+# 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+# 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
+# 	$(SQLITE3_LIBS)							\
+# 	$(GMODULE_LIBS)							\
+# 	$(GTHREAD_LIBS)							\
+# 	$(GLIB2_LIBS)							\
+# 	-lz
+#
+# tracker_db_manager_unattach_SOURCES = 				\
+# 	tracker-db-manager-test-unattach.c 				\
+# 	tracker-db-manager-common.c					\
+# 	tracker-db-manager-common.h
+#
+# tracker_db_manager_unattach_LDADD =					\
+# 	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
+# 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+# 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
+# 	$(SQLITE3_LIBS)							\
+# 	$(GMODULE_LIBS)							\
+# 	$(GTHREAD_LIBS)							\
+# 	$(GLIB2_LIBS)							\
+# 	-lz
+#
+# tracker_db_manager_custom_SOURCES = 					\
+# 	tracker-db-manager-test-custom.c 				\
+# 	tracker-db-manager-common.c					\
+# 	tracker-db-manager-common.h
+#
+# tracker_db_manager_custom_LDADD =					\
+# 	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
+# 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+# 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
+# 	$(SQLITE3_LIBS)							\
+# 	$(GMODULE_LIBS)							\
+# 	$(GTHREAD_LIBS)							\
+# 	$(GLIB2_LIBS)							\
+# 	-lz
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

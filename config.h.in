@@ -1,10 +1,7 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* Define if we want detailed metadata in the database */
-#undef ENABLE_DETAILED_METADATA
-
-/* Define if we enable FTS support */
-#undef ENABLE_FTS
+/* Include functional tests in the installation */
+#undef DIST_FUNCTIONAL_TESTS
 
 /* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
@@ -22,6 +19,9 @@
    don't. */
 #undef HAVE_DECL_POSIX_FADVISE
 
+/* Define if we have DEVKIT_POWER */
+#undef HAVE_DEVKIT_POWER
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
@@ -33,9 +33,6 @@
 
 /* Define if we have exempi */
 #undef HAVE_EXEMPI
-
-/* Define if we have external QDBM */
-#undef HAVE_EXTERNAL_QDBM
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #undef HAVE_FCNTL_H
@@ -49,14 +46,17 @@
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
 
+/* Define if we have Gnome Keyring for password storage */
+#undef HAVE_GNOME_KEYRING
+
 /* Define if we have GStreamer */
 #undef HAVE_GSTREAMER
 
+/* Define if we have gtk-doc (with gtk-doc) */
+#undef HAVE_GTK_DOC
+
 /* Define if we have HAL */
 #undef HAVE_HAL
-
-/* Define if we have inotify */
-#undef HAVE_INOTIFY
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
@@ -70,14 +70,26 @@
 /* Define if we have libexif */
 #undef HAVE_LIBEXIF
 
+/* Define if we have libflac */
+#undef HAVE_LIBFLAC
+
 /* Define if we have libgsf */
 #undef HAVE_LIBGSF
+
+/* Define to 1 if you have the `id3' library (-lid3). */
+#undef HAVE_LIBID3
+
+/* Have libinotify */
+#undef HAVE_LIBINOTIFY
 
 /* Define if we have libiptcdata */
 #undef HAVE_LIBIPTCDATA
 
 /* Define if we have libjpeg */
 #undef HAVE_LIBJPEG
+
+/* Define if we have libstreamanalyzer */
+#undef HAVE_LIBSTREAMANALYZER
 
 /* Define if we have libtiff */
 #undef HAVE_LIBTIFF
@@ -100,23 +112,20 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
+/* Define if we have Nautilus extension */
+#undef HAVE_NAUTILUS_EXTENSION
+
 /* Define if we have poppler-glib */
 #undef HAVE_POPPLER_GLIB
 
 /* Define to 1 if you have the `posix_fadvise' function. */
 #undef HAVE_POSIX_FADVISE
 
-/* Define if we have QDBM (our imported version) */
-#undef HAVE_QDBM
-
-/* Raptor RDF parsers */
-#undef HAVE_RAPTOR
+/* Define if we have QUILL */
+#undef HAVE_QUILL
 
 /* Define to 1 if you have the <sitdlib.h> header file. */
 #undef HAVE_SITDLIB_H
-
-/* Define if we have SQLite FTS */
-#undef HAVE_SQLITE_FTS
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
@@ -157,6 +166,9 @@
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #undef LT_OBJDIR
+
+/* Define to 1 if your C compiler doesn't accept -c and -o together. */
+#undef NO_MINUS_C_MINUS_O
 
 /* Define if we are on win32 */
 #undef OS_WIN32

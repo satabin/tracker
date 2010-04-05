@@ -1,7 +1,6 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -44,42 +43,42 @@
 #endif
 
 #include <libtracker-common/tracker-log.h>
-#include <libtracker-common/tracker-config.h>
 #include <libtracker-common/tracker-dbus.h>
 #include <libtracker-common/tracker-os-dependant.h>
-#include <libtracker-common/tracker-thumbnailer.h>
 #include <libtracker-common/tracker-ioprio.h>
 
+#include "tracker-albumart.h"
+#include "tracker-config.h"
 #include "tracker-main.h"
 #include "tracker-dbus.h"
 #include "tracker-extract.h"
 
-#define ABOUT								  \
+#define ABOUT	  \
 	"Tracker " PACKAGE_VERSION "\n"
 
-#define LICENSE								  \
+#define LICENSE	  \
 	"This program is free software and comes without any warranty.\n" \
-	"It is licensed under version 2 or later of the General Public "  \
-	"License which can be viewed at:\n"				  \
-	"\n"								  \
+	"It is licensed under version 2 or later of the General Public " \
+	"License which can be viewed at:\n" \
+	"\n" \
 	"  http://www.gnu.org/licenses/gpl.txt\n"
 
 #define QUIT_TIMEOUT 30 /* 1/2 minutes worth of seconds */
 
-static GMainLoop  *main_loop;
-static guint       quit_timeout_id = 0;
-static TrackerHal *hal;
+static GMainLoop *main_loop;
+static guint quit_timeout_id = 0;
 
-static gboolean    version;
-static gint        verbosity = -1;
-static gchar      *filename;
-static gchar      *mime_type;
+static gint verbosity = -1;
+static gchar *filename;
+static gchar *mime_type;
+static gboolean disable_shutdown;
+static gboolean force_internal_extractors;
+static gchar *force_module;
+static gboolean version;
 
-static GOptionEntry  entries[] = {
-	{ "version", 'V', 0,
-	  G_OPTION_ARG_NONE, &version,
-	  N_("Displays version information"),
-	  NULL },
+static TrackerFTSConfig *fts_config;
+
+static GOptionEntry entries[] = {
 	{ "verbosity", 'v', 0,
 	  G_OPTION_ARG_INT, &verbosity,
 	  N_("Logging, 0 = errors only, "
@@ -89,11 +88,28 @@ static GOptionEntry  entries[] = {
 	  G_OPTION_ARG_FILENAME, &filename,
 	  N_("File to extract metadata for"),
 	  N_("FILE") },
-	{ "file", 'm', 0,
+	{ "mime", 't', 0,
 	  G_OPTION_ARG_STRING, &mime_type,
 	  N_("MIME type for file (if not provided, this will be guessed)"),
 	  N_("MIME") },
-
+	/* Debug run is used to avoid that the mainloop exits, so that
+	 * as a developer you can be relax when running the tool in gdb */
+	{ "disable-shutdown", 'd', 0,
+	  G_OPTION_ARG_NONE, &disable_shutdown,
+	  N_("Disable shutting down after 30 seconds of inactivity"),
+	  NULL },
+	{ "force-internal-extractors", 'i', 0,
+	  G_OPTION_ARG_NONE, &force_internal_extractors,
+	  N_("Force internal extractors over 3rd parties like libstreamanalyzer"),
+	  NULL },
+	{ "force-module", 'm', 0,
+	  G_OPTION_ARG_STRING, &force_module,
+	  N_("Force a module to be used for extraction (e.g. \"foo\" for \"foo.so\")"),
+	  N_("MODULE") },
+	{ "version", 'V', 0,
+	  G_OPTION_ARG_NONE, &version,
+	  N_("Displays version information"),
+	  NULL },
 	{ NULL }
 };
 
@@ -101,7 +117,12 @@ static gboolean
 quit_timeout_cb (gpointer user_data)
 {
 	quit_timeout_id = 0;
-	g_main_loop_quit (main_loop);
+
+	if (!disable_shutdown) {
+		g_main_loop_quit (main_loop);
+	} else {
+		g_debug ("Would have quit the mainloop");
+	}
 
 	return FALSE;
 }
@@ -113,23 +134,9 @@ tracker_main_quit_timeout_reset (void)
 		g_source_remove (quit_timeout_id);
 	}
 
-	quit_timeout_id = g_timeout_add_seconds (QUIT_TIMEOUT, 
-						 quit_timeout_cb, 
-						 NULL);
-}
-
-TrackerHal *
-tracker_main_get_hal (void)
-{
-	if (!hal) {
-#ifdef HAVE_HAL
-		hal = tracker_hal_new ();
-#else 
-		hal = NULL;
-#endif
-	}
-
-	return hal;
+	quit_timeout_id = g_timeout_add_seconds (QUIT_TIMEOUT,
+	                                         quit_timeout_cb,
+	                                         NULL);
 }
 
 static void
@@ -143,7 +150,7 @@ initialize_priority (void)
 	 * so complains if we do not check its returned value. But it
 	 * seems that since glibc 2.2.4, nice() can return -1 on a
 	 * successful call so we have to check value of errno too.
-	 * Stupid... 
+	 * Stupid...
 	 */
 	g_message ("Setting process priority");
 
@@ -151,7 +158,7 @@ initialize_priority (void)
 		const gchar *str = g_strerror (errno);
 
 		g_message ("Couldn't set nice value to 19, %s",
-			   str ? str : "no error given");
+		           str ? str : "no error given");
 	}
 }
 
@@ -163,11 +170,11 @@ initialize_directories (void)
 	/* NOTE: We don't create the database directories here, the
 	 * tracker-db-manager does that for us.
 	 */
-	
+
 	user_data_dir = g_build_filename (g_get_user_data_dir (),
-					  "tracker",
-					  NULL);
-	
+	                                  "tracker",
+	                                  NULL);
+
 	/* g_message ("Checking directory exists:'%s'", user_data_dir); */
 	g_mkdir_with_parents (user_data_dir, 00755);
 
@@ -192,13 +199,14 @@ signal_handler (int signo)
 	case SIGTERM:
 	case SIGINT:
 		in_loop = TRUE;
+		disable_shutdown = FALSE;
 		quit_timeout_cb (NULL);
 	default:
 		if (g_strsignal (signo)) {
 			g_print ("\n");
-			g_print ("Received signal:%d->'%s'",
-				 signo,
-				 g_strsignal (signo));
+			g_print ("Received signal:%d->'%s'\n",
+			         signo,
+			         g_strsignal (signo));
 		}
 		break;
 	}
@@ -209,7 +217,7 @@ initialize_signal_handler (void)
 {
 #ifndef G_OS_WIN32
 	struct sigaction act;
-	sigset_t	 empty_mask;
+	sigset_t         empty_mask;
 
 	sigemptyset (&empty_mask);
 	act.sa_handler = signal_handler;
@@ -226,13 +234,11 @@ initialize_signal_handler (void)
 
 static void
 log_handler (const gchar    *domain,
-	     GLogLevelFlags  log_level,
-	     const gchar    *message,
-	     gpointer	     user_data)
+             GLogLevelFlags  log_level,
+             const gchar    *message,
+             gpointer        user_data)
 {
-	if (((log_level & G_LOG_LEVEL_DEBUG) && verbosity < 3) ||
-	    ((log_level & G_LOG_LEVEL_INFO) && verbosity < 2) ||
-	    ((log_level & G_LOG_LEVEL_MESSAGE) && verbosity < 1)) {
+	if (!tracker_log_should_handle (log_level, verbosity)) {
 		return;
 	}
 
@@ -249,25 +255,37 @@ log_handler (const gchar    *domain,
 	case G_LOG_LEVEL_INFO:
 	case G_LOG_LEVEL_DEBUG:
 	case G_LOG_LEVEL_MASK:
+	default:
 		g_fprintf (stdout, "%s\n", message);
 		fflush (stdout);
 		break;
-	}	
+	}
 }
+
+TrackerFTSConfig *
+tracker_main_get_fts_config (void)
+{
+	if (G_UNLIKELY (!fts_config)) {
+		fts_config = tracker_fts_config_new ();
+	}
+
+	return fts_config;
+}
+
 
 static int
 run_standalone (void)
 {
 	TrackerExtract *object;
 	GFile *file;
-	gchar *full_path;
+	gchar *uri;
 	guint log_handler_id;
 
 	/* Set log handler for library messages */
 	log_handler_id = g_log_set_handler (NULL,
-					    G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL,
-					    log_handler,
-					    NULL);
+	                                    G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL,
+	                                    log_handler,
+	                                    NULL);
 
 	g_log_set_default_handler (log_handler, NULL);
 
@@ -276,30 +294,37 @@ run_standalone (void)
 		verbosity = 3;
 	}
 
+	tracker_albumart_init ();
+
 	/* This makes sure we don't steal all the system's resources */
 	initialize_priority ();
 
 	file = g_file_new_for_commandline_arg (filename);
-	full_path = g_file_get_path (file);
+	uri = g_file_get_uri (file);
 
-	object = tracker_extract_new ();
+	object = tracker_extract_new (disable_shutdown,
+	                              force_internal_extractors,
+	                              force_module);
 
 	if (!object) {
+		g_free (uri);
 		return EXIT_FAILURE;
 	}
 
 	tracker_memory_setrlimits ();
 
-	tracker_extract_get_metadata_by_cmdline (object, full_path, mime_type);
+	tracker_extract_get_metadata_by_cmdline (object, uri, mime_type);
 
 	g_object_unref (object);
 	g_object_unref (file);
-	g_free (full_path);
+	g_free (uri);
 
 	if (log_handler_id != 0) {
 		/* Unset log handler */
 		g_log_remove_handler (NULL, log_handler_id);
 	}
+
+	tracker_albumart_shutdown ();
 
 	return EXIT_SUCCESS;
 }
@@ -311,14 +336,14 @@ main (int argc, char *argv[])
 	GError         *error = NULL;
 	TrackerConfig  *config;
 	TrackerExtract *object;
-	gchar          *log_filename;
+	gchar          *log_filename = NULL;
 
 	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 
-	/* Translators: this message will appear immediately after the	*/
-	/* usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>	*/
+	/* Translators: this message will appear immediately after the  */
+	/* usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>     */
 	context = g_option_context_new (_("- Extract file meta data"));
 
 	g_option_context_add_main_entries (context, entries, NULL);
@@ -328,7 +353,21 @@ main (int argc, char *argv[])
 		gchar *help;
 
 		g_printerr ("%s\n\n",
-			    _("Filename and mime type must be provided together"));
+		            _("Filename and mime type must be provided together"));
+
+		help = g_option_context_get_help (context, TRUE, NULL);
+		g_option_context_free (context);
+		g_printerr ("%s", help);
+		g_free (help);
+
+		return EXIT_FAILURE;
+	}
+
+	if (force_internal_extractors && force_module) {
+		gchar *help;
+
+		g_printerr ("%s\n\n",
+		            _("Options --force-internal-extractors and --force-module can't be used together"));
 
 		help = g_option_context_get_help (context, TRUE, NULL);
 		g_option_context_free (context);
@@ -347,6 +386,11 @@ main (int argc, char *argv[])
 
 	g_print ("Initializing tracker-extract...\n");
 
+	if (!filename) {
+		g_print ("  Shutdown after 30 seconds of inactivitiy is %s\n",
+		         disable_shutdown ? "disabled" : "enabled");
+	}
+
 	initialize_signal_handler ();
 
 	g_type_init ();
@@ -364,7 +408,7 @@ main (int argc, char *argv[])
 	/* Set conditions when we use stand alone settings */
 	if (filename) {
 		return run_standalone ();
-	} 
+	}
 
 	/* Initialize subsystems */
 	initialize_directories ();
@@ -376,30 +420,25 @@ main (int argc, char *argv[])
 		tracker_config_set_verbosity (config, verbosity);
 	}
 
-	log_filename =
-		g_build_filename (g_get_user_data_dir (),
-				  "tracker",
-				  "tracker-extract.log",
-				  NULL);
-
-	tracker_log_init (log_filename, tracker_config_get_verbosity (config));
+	tracker_log_init (tracker_config_get_verbosity (config), &log_filename);
 	g_print ("Starting log:\n  File:'%s'\n", log_filename);
+	g_free (log_filename);
 
 	/* This makes sure we don't steal all the system's resources */
 	initialize_priority ();
 
 	if (!tracker_dbus_init ()) {
-		g_free (log_filename);
 		g_object_unref (config);
 		tracker_log_shutdown ();
 
 		return EXIT_FAILURE;
 	}
 
-	object = tracker_extract_new ();
+	object = tracker_extract_new (disable_shutdown,
+	                              force_internal_extractors,
+	                              force_module);
 
 	if (!object) {
-		g_free (log_filename);
 		g_object_unref (config);
 		tracker_log_shutdown ();
 
@@ -408,17 +447,18 @@ main (int argc, char *argv[])
 
 	tracker_memory_setrlimits ();
 
-	tracker_thumbnailer_init (config);
-
 	/* Make Tracker available for introspection */
 	if (!tracker_dbus_register_objects (object)) {
 		g_object_unref (object);
 		g_object_unref (config);
-		g_free (log_filename);
 		tracker_log_shutdown ();
 
 		return EXIT_FAILURE;
 	}
+
+	g_message ("Waiting for D-Bus requests...");
+
+	tracker_albumart_init ();
 
 	/* Main loop */
 	main_loop = g_main_loop_new (NULL, FALSE);
@@ -428,19 +468,11 @@ main (int argc, char *argv[])
 
 	g_message ("Shutdown started");
 
-	/* Push all items in thumbnail queue to the thumbnailer */
-	tracker_thumbnailer_queue_send ();
-
 	/* Shutdown subsystems */
+	tracker_albumart_shutdown ();
 	tracker_dbus_shutdown ();
-	tracker_thumbnailer_shutdown ();
 	tracker_log_shutdown ();
 
-	if (hal) {
-		g_object_unref (hal);
-	}
-
-	g_free (log_filename);
 	g_object_unref (config);
 
 	return EXIT_SUCCESS;

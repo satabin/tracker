@@ -1,0 +1,123 @@
+<refentry id="TrackerConfigFile">
+<refmeta>
+<refentrytitle role="top_of_page" id="TrackerConfigFile.top_of_page">TrackerConfigFile</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-COMMON Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>TrackerConfigFile</refname>
+<refpurpose>Abstract base class for configuration files</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="TrackerConfigFile.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-common/tracker-common.h&gt;
+
+                    <link linkend="TrackerConfigFile-struct">TrackerConfigFile</link>;
+                    <link linkend="TrackerConfigFileClass">TrackerConfigFileClass</link>;
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-config-file-save">tracker_config_file_save</link>            (<link linkend="TrackerConfigFile">TrackerConfigFile</link> *config);
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1 id="TrackerConfigFile.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<synopsis>
+  <link linkend="GObject">GObject</link>
+   +----TrackerConfigFile
+</synopsis>
+</refsect1>
+
+
+
+
+
+<refsect1 id="TrackerConfigFile.properties" role="properties">
+<title role="properties.title">Properties</title>
+<synopsis>
+  &quot;<link linkend="TrackerConfigFile--domain">domain</link>&quot;                   <link linkend="gchar">gchar</link>*                : Read / Write / Construct
+</synopsis>
+</refsect1>
+
+<refsect1 id="TrackerConfigFile.signals" role="signal_proto">
+<title role="signal_proto.title">Signals</title>
+<synopsis>
+  &quot;<link linkend="TrackerConfigFile-changed">changed</link>&quot;                                        : Run Last
+</synopsis>
+</refsect1>
+
+
+<refsect1 id="TrackerConfigFile.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+<link linkend="TrackerConfigFile"><type>TrackerConfigFile</type></link> is an abstract base class to help creating objects
+that proxy a configuration file, mirroring settings to disk and notifying
+of changes.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="TrackerConfigFile.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerConfigFile-struct" role="struct">
+<title>TrackerConfigFile</title>
+<indexterm zone="TrackerConfigFile-struct"><primary sortas="TrackerConfigFile">TrackerConfigFile</primary></indexterm><programlisting>typedef struct _TrackerConfigFile TrackerConfigFile;</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerConfigFileClass" role="struct">
+<title>TrackerConfigFileClass</title>
+<indexterm zone="TrackerConfigFileClass"><primary sortas="TrackerConfigFileClass">TrackerConfigFileClass</primary></indexterm><programlisting>typedef struct {
+	GObjectClass parent_class;
+
+	void (* changed) (TrackerConfigFile *file);
+} TrackerConfigFileClass;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="tracker-config-file-save" role="function">
+<title>tracker_config_file_save ()</title>
+<indexterm zone="tracker-config-file-save"><primary sortas="tracker_config_file_save">tracker_config_file_save</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_config_file_save            (<link linkend="TrackerConfigFile">TrackerConfigFile</link> *config);</programlisting>
+<para>
+Writes the configuration stored in TrackerConfigFile to disk.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerConfigFile"><type>TrackerConfigFile</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> on success, <link linkend="FALSE--CAPS"><literal>FALSE</literal></link> otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+<refsect1 id="TrackerConfigFile.property-details" role="property_details">
+<title role="property_details.title">Property Details</title>
+<refsect2 id="TrackerConfigFile--domain" role="property"><title>The <literal>&quot;domain&quot;</literal> property</title>
+<indexterm zone="TrackerConfigFile--domain"><primary sortas="TrackerConfigFile:domain">TrackerConfigFile:domain</primary></indexterm><programlisting>  &quot;domain&quot;                   <link linkend="gchar">gchar</link>*                : Read / Write / Construct</programlisting>
+<para>The prefix before .cfg for the filename.</para><para>Default value: NULL</para>
+</refsect2>
+</refsect1>
+
+<refsect1 id="TrackerConfigFile.signal-details" role="signals">
+<title role="signals.title">Signal Details</title>
+<refsect2 id="TrackerConfigFile-changed" role="signal"><title>The <literal>&quot;changed&quot;</literal> signal</title>
+<indexterm zone="TrackerConfigFile-changed"><primary sortas="TrackerConfigFile::changed">TrackerConfigFile::changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerConfigFile">TrackerConfigFile</link> *config,
+                                                        <link linkend="gpointer">gpointer</link>           user_data)      : Run Last</programlisting>
+<para>
+the ::changed signal is emitted whenever
+the configuration file has changed on disk.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>config</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerConfigFile"><type>TrackerConfigFile</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+
+
+
+</refentry>

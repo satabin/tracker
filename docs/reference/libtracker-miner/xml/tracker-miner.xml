@@ -1,0 +1,691 @@
+<refentry id="TrackerMiner">
+<refmeta>
+<refentrytitle role="top_of_page" id="TrackerMiner.top_of_page">TrackerMiner</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-MINER Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>TrackerMiner</refname>
+<refpurpose>Abstract base class for data miners</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="TrackerMiner.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-miner/tracker-miner.h&gt;
+
+#define             <link linkend="TRACKER-MINER-ERROR-DOMAIN--CAPS">TRACKER_MINER_ERROR_DOMAIN</link>
+#define             <link linkend="TRACKER-MINER-ERROR--CAPS">TRACKER_MINER_ERROR</link>
+typedef             <link linkend="TrackerMinerPrivate">TrackerMinerPrivate</link>;
+typedef             <link linkend="TrackerMiner">TrackerMiner</link>;
+                    <link linkend="TrackerMinerClass">TrackerMinerClass</link>;
+<link linkend="GQuark">GQuark</link>              <link linkend="tracker-miner-error-quark">tracker_miner_error_quark</link>           (void);
+<link linkend="void">void</link>                <link linkend="tracker-miner-start">tracker_miner_start</link>                 (<link linkend="TrackerMiner">TrackerMiner</link> *miner);
+<link linkend="void">void</link>                <link linkend="tracker-miner-stop">tracker_miner_stop</link>                  (<link linkend="TrackerMiner">TrackerMiner</link> *miner);
+<link linkend="void">void</link>                <link linkend="tracker-miner-ignore-next-update">tracker_miner_ignore_next_update</link>    (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         const <link linkend="GStrv">GStrv</link> urls);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-miner-is-started">tracker_miner_is_started</link>            (<link linkend="TrackerMiner">TrackerMiner</link> *miner);
+<link linkend="gint">gint</link>                <link linkend="tracker-miner-pause">tracker_miner_pause</link>                 (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> *reason,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-miner-resume">tracker_miner_resume</link>                (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="gint">gint</link> cookie,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="void">void</link>                <link linkend="tracker-miner-execute-update">tracker_miner_execute_update</link>        (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> *sparql,
+                                                         <link linkend="GCancellable">GCancellable</link> *cancellable,
+                                                         <link linkend="GAsyncReadyCallback">GAsyncReadyCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="void">void</link>                <link linkend="tracker-miner-execute-update-finish">tracker_miner_execute_update_finish</link> (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="GAsyncResult">GAsyncResult</link> *result,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="void">void</link>                <link linkend="tracker-miner-execute-sparql">tracker_miner_execute_sparql</link>        (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> *sparql,
+                                                         <link linkend="GCancellable">GCancellable</link> *cancellable,
+                                                         <link linkend="GAsyncReadyCallback">GAsyncReadyCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+const <link linkend="GPtrArray">GPtrArray</link>*    <link linkend="tracker-miner-execute-sparql-finish">tracker_miner_execute_sparql_finish</link> (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="GAsyncResult">GAsyncResult</link> *result,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="void">void</link>                <link linkend="tracker-miner-execute-batch-update">tracker_miner_execute_batch_update</link>  (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> *sparql,
+                                                         <link linkend="GCancellable">GCancellable</link> *cancellable,
+                                                         <link linkend="GAsyncReadyCallback">GAsyncReadyCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="void">void</link>                <link linkend="tracker-miner-execute-batch-update-finish">tracker_miner_execute_batch_update_finish</link>
+                                                        (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="GAsyncResult">GAsyncResult</link> *result,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="void">void</link>                <link linkend="tracker-miner-commit">tracker_miner_commit</link>                (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="GCancellable">GCancellable</link> *cancellable,
+                                                         <link linkend="GAsyncReadyCallback">GAsyncReadyCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="void">void</link>                <link linkend="tracker-miner-commit-finish">tracker_miner_commit_finish</link>         (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="GAsyncResult">GAsyncResult</link> *result,
+                                                         <link linkend="GError">GError</link> **error);
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1 id="TrackerMiner.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<synopsis>
+  <link linkend="GObject">GObject</link>
+   +----TrackerMiner
+         +----<link linkend="TrackerMinerFS">TrackerMinerFS</link>
+</synopsis>
+</refsect1>
+
+
+
+
+
+<refsect1 id="TrackerMiner.properties" role="properties">
+<title role="properties.title">Properties</title>
+<synopsis>
+  &quot;<link linkend="TrackerMiner--name">name</link>&quot;                     <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only
+  &quot;<link linkend="TrackerMiner--progress">progress</link>&quot;                 <link linkend="gdouble">gdouble</link>               : Read / Write / Construct
+  &quot;<link linkend="TrackerMiner--status">status</link>&quot;                   <link linkend="gchar">gchar</link>*                : Read / Write
+</synopsis>
+</refsect1>
+
+<refsect1 id="TrackerMiner.signals" role="signal_proto">
+<title role="signal_proto.title">Signals</title>
+<synopsis>
+  &quot;<link linkend="TrackerMiner-error">error</link>&quot;                                          : Run Last
+  &quot;<link linkend="TrackerMiner-ignore-next-update">ignore-next-update</link>&quot;                             : Run Last
+  &quot;<link linkend="TrackerMiner-paused">paused</link>&quot;                                         : Run Last
+  &quot;<link linkend="TrackerMiner-progress">progress</link>&quot;                                       : Run Last
+  &quot;<link linkend="TrackerMiner-resumed">resumed</link>&quot;                                        : Run Last
+  &quot;<link linkend="TrackerMiner-started">started</link>&quot;                                        : Run Last
+  &quot;<link linkend="TrackerMiner-stopped">stopped</link>&quot;                                        : Run Last
+</synopsis>
+</refsect1>
+
+
+<refsect1 id="TrackerMiner.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+<link linkend="TrackerMiner"><type>TrackerMiner</type></link> is an abstract base class to help developing data miners
+for tracker-store, being an abstract class it doesn't do much by itself,
+but provides the basic signaling and operation control so the miners
+implementing this class are properly recognized by Tracker, and can be
+controlled properly by external means such as <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="TrackerMiner.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TRACKER-MINER-ERROR-DOMAIN--CAPS" role="macro">
+<title>TRACKER_MINER_ERROR_DOMAIN</title>
+<indexterm zone="TRACKER-MINER-ERROR-DOMAIN--CAPS"><primary sortas="TRACKER_MINER_ERROR_DOMAIN">TRACKER_MINER_ERROR_DOMAIN</primary></indexterm><programlisting>#define TRACKER_MINER_ERROR_DOMAIN "TrackerMiner"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TRACKER-MINER-ERROR--CAPS" role="macro">
+<title>TRACKER_MINER_ERROR</title>
+<indexterm zone="TRACKER-MINER-ERROR--CAPS"><primary sortas="TRACKER_MINER_ERROR">TRACKER_MINER_ERROR</primary></indexterm><programlisting>#define TRACKER_MINER_ERROR        tracker_miner_error_quark()
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerMinerPrivate" role="typedef">
+<title>TrackerMinerPrivate</title>
+<indexterm zone="TrackerMinerPrivate"><primary sortas="TrackerMinerPrivate">TrackerMinerPrivate</primary></indexterm><programlisting>typedef struct TrackerMinerPrivate TrackerMinerPrivate;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerMiner" role="typedef">
+<title>TrackerMiner</title>
+<indexterm zone="TrackerMiner"><primary sortas="TrackerMiner">TrackerMiner</primary></indexterm><programlisting>typedef struct TrackerMiner TrackerMiner;
+</programlisting>
+<para>
+Abstract miner object.</para>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerMinerClass" role="struct">
+<title>TrackerMinerClass</title>
+<indexterm zone="TrackerMinerClass"><primary sortas="TrackerMinerClass">TrackerMinerClass</primary></indexterm><programlisting>typedef struct {
+	GObjectClass parent_class;
+
+	/* signals */
+	void (* started)            (TrackerMiner *miner);
+	void (* stopped)            (TrackerMiner *miner);
+
+	void (* paused)             (TrackerMiner *miner);
+	void (* resumed)            (TrackerMiner *miner);
+
+	void (* progress)           (TrackerMiner *miner,
+	                             const gchar  *status,
+	                             gdouble       progress);
+
+	void (* error)              (TrackerMiner *miner,
+	                             GError       *error);
+
+	void (* ignore_next_update) (TrackerMiner *miner,
+	                             const GStrv   urls);
+} TrackerMinerClass;
+</programlisting>
+<para>
+Virtual methods left to implement.</para>
+<para>
+</para><variablelist role="struct">
+<varlistentry>
+<term><link linkend="GObjectClass">GObjectClass</link>&#160;<structfield>parent_class</structfield>;</term>
+<listitem><simpara> parent object class.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>started</structfield>&#160;()</term>
+<listitem><simpara> Called when the miner is told to start collecting data.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>stopped</structfield>&#160;()</term>
+<listitem><simpara> Called when the miner is told to stop collecting data.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>paused</structfield>&#160;()</term>
+<listitem><simpara> Called when the miner is told to pause.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>resumed</structfield>&#160;()</term>
+<listitem><simpara> Called when the miner is told to resume activity.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>progress</structfield>&#160;()</term>
+<listitem><simpara> progress.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>error</structfield>&#160;()</term>
+<listitem><simpara> error.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>ignore_next_update</structfield>&#160;()</term>
+<listitem><simpara> Called after ignore on next update event happens.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-error-quark" role="function">
+<title>tracker_miner_error_quark ()</title>
+<indexterm zone="tracker-miner-error-quark"><primary sortas="tracker_miner_error_quark">tracker_miner_error_quark</primary></indexterm><programlisting><link linkend="GQuark">GQuark</link>              tracker_miner_error_quark           (void);</programlisting>
+<para>
+Returns the <link linkend="GQuark"><type>GQuark</type></link> used to identify miner errors in GError structures.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the error <link linkend="GQuark"><type>GQuark</type></link>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-start" role="function">
+<title>tracker_miner_start ()</title>
+<indexterm zone="tracker-miner-start"><primary sortas="tracker_miner_start">tracker_miner_start</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_start                 (<link linkend="TrackerMiner">TrackerMiner</link> *miner);</programlisting>
+<para>
+Tells the miner to start processing data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-stop" role="function">
+<title>tracker_miner_stop ()</title>
+<indexterm zone="tracker-miner-stop"><primary sortas="tracker_miner_stop">tracker_miner_stop</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_stop                  (<link linkend="TrackerMiner">TrackerMiner</link> *miner);</programlisting>
+<para>
+Tells the miner to stop processing data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-ignore-next-update" role="function">
+<title>tracker_miner_ignore_next_update ()</title>
+<indexterm zone="tracker-miner-ignore-next-update"><primary sortas="tracker_miner_ignore_next_update">tracker_miner_ignore_next_update</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_ignore_next_update    (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         const <link linkend="GStrv">GStrv</link> urls);</programlisting>
+<para>
+Tells the miner to mark <parameter>urls</parameter> are to ignore on next update.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>urls</parameter>&#160;:</term>
+<listitem><simpara> the urls to mark as to ignore on next update
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-is-started" role="function">
+<title>tracker_miner_is_started ()</title>
+<indexterm zone="tracker-miner-is-started"><primary sortas="tracker_miner_is_started">tracker_miner_is_started</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_miner_is_started            (<link linkend="TrackerMiner">TrackerMiner</link> *miner);</programlisting>
+<para>
+Returns <link linkend="TRUE--CAPS"><type>TRUE</type></link> if the miner has been started.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><type>TRUE</type></link> if the miner is already started.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-pause" role="function">
+<title>tracker_miner_pause ()</title>
+<indexterm zone="tracker-miner-pause"><primary sortas="tracker_miner_pause">tracker_miner_pause</primary></indexterm><programlisting><link linkend="gint">gint</link>                tracker_miner_pause                 (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> *reason,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Asks <parameter>miner</parameter> to pause. On success the cookie ID is returned,
+this is what must be used in <link linkend="tracker-miner-resume"><function>tracker_miner_resume()</function></link> to resume
+operations. On failure <parameter>error</parameter> will be set and -1 will be returned.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reason</parameter>&#160;:</term>
+<listitem><simpara> reason to pause
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> return location for errors
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The pause cookie ID.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-resume" role="function">
+<title>tracker_miner_resume ()</title>
+<indexterm zone="tracker-miner-resume"><primary sortas="tracker_miner_resume">tracker_miner_resume</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_miner_resume                (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="gint">gint</link> cookie,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Asks the miner to resume processing. The cookie must be something
+returned by <link linkend="tracker-miner-pause"><function>tracker_miner_pause()</function></link>. The miner won't actually resume
+operations until all pause requests have been resumed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cookie</parameter>&#160;:</term>
+<listitem><simpara> pause cookie
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> return location for errors
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><type>TRUE</type></link> if the cookie was valid.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-execute-update" role="function">
+<title>tracker_miner_execute_update ()</title>
+<indexterm zone="tracker-miner-execute-update"><primary sortas="tracker_miner_execute_update">tracker_miner_execute_update</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_execute_update        (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> *sparql,
+                                                         <link linkend="GCancellable">GCancellable</link> *cancellable,
+                                                         <link linkend="GAsyncReadyCallback">GAsyncReadyCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+Executes an update SPARQL query on tracker-store, use this
+whenever you want to perform data insertions or modifications.
+</para>
+<para>
+When the operation is finished, <parameter>callback</parameter> will be called, providing a <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+object. Call tracker_miner_execute_sparql_finish on it to get the returned <link linkend="GError"><type>GError</type></link>,
+if there is one.
+</para>
+<para>
+If the operation is cancelled, <parameter>callback</parameter> will be called anyway, with the <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+object containing an error.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>sparql</parameter>&#160;:</term>
+<listitem><simpara> a SPARQL query
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cancellable</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GCancellable"><type>GCancellable</type></link> to control the operation
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GAsyncReadyCallback"><type>GAsyncReadyCallback</type></link> to call when the operation is finished
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> data to pass to <parameter>callback</parameter>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-execute-update-finish" role="function">
+<title>tracker_miner_execute_update_finish ()</title>
+<indexterm zone="tracker-miner-execute-update-finish"><primary sortas="tracker_miner_execute_update_finish">tracker_miner_execute_update_finish</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_execute_update_finish (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="GAsyncResult">GAsyncResult</link> *result,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Finishes the async update operation. If an error occured during the update,
+<parameter>error</parameter> will be set.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>result</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GError"><type>GError</type></link>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-execute-sparql" role="function">
+<title>tracker_miner_execute_sparql ()</title>
+<indexterm zone="tracker-miner-execute-sparql"><primary sortas="tracker_miner_execute_sparql">tracker_miner_execute_sparql</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_execute_sparql        (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> *sparql,
+                                                         <link linkend="GCancellable">GCancellable</link> *cancellable,
+                                                         <link linkend="GAsyncReadyCallback">GAsyncReadyCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+Executes the SPARQL query on tracker-store and returns asynchronously
+the queried data. Use this whenever you need to get data from
+already stored information.
+</para>
+<para>
+When the operation is finished, <parameter>callback</parameter> will be called, providing a <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+object. Call tracker_miner_execute_sparql_finish on it to get the query results, or
+the GError object if an error occured.
+</para>
+<para>
+If the operation is cancelled, <parameter>callback</parameter> will be called anyway, with the <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+object containing an error.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>sparql</parameter>&#160;:</term>
+<listitem><simpara> a SPARQL query
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cancellable</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GCancellable"><type>GCancellable</type></link> to control the operation
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GAsyncReadyCallback"><type>GAsyncReadyCallback</type></link> to call when the operation is finished
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> data to pass to <parameter>callback</parameter>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-execute-sparql-finish" role="function">
+<title>tracker_miner_execute_sparql_finish ()</title>
+<indexterm zone="tracker-miner-execute-sparql-finish"><primary sortas="tracker_miner_execute_sparql_finish">tracker_miner_execute_sparql_finish</primary></indexterm><programlisting>const <link linkend="GPtrArray">GPtrArray</link>*    tracker_miner_execute_sparql_finish (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="GAsyncResult">GAsyncResult</link> *result,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Finishes the async operation and returns the query results. If an error
+occured during the query, <parameter>error</parameter> will be set.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>result</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GAsyncResult"><type>GAsyncResult</type></link> object holding the result of the query
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GError"><type>GError</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a <link linkend="GPtrArray"><type>GPtrArray</type></link> with the sparql results which should not be freed.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-execute-batch-update" role="function">
+<title>tracker_miner_execute_batch_update ()</title>
+<indexterm zone="tracker-miner-execute-batch-update"><primary sortas="tracker_miner_execute_batch_update">tracker_miner_execute_batch_update</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_execute_batch_update  (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> *sparql,
+                                                         <link linkend="GCancellable">GCancellable</link> *cancellable,
+                                                         <link linkend="GAsyncReadyCallback">GAsyncReadyCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+Executes a batch of update SPARQL queries on tracker-store, use this
+whenever you want to perform data insertions or modifications in
+batches.
+</para>
+<para>
+When the operation is finished, <parameter>callback</parameter> will be called, providing a <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+object. Call tracker_miner_execute_batch_update_finish on it to get the returned <link linkend="GError"><type>GError</type></link>,
+if there is one.
+</para>
+<para>
+If the operation is cancelled, <parameter>callback</parameter> will be called anyway, with the <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+object containing an error.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>sparql</parameter>&#160;:</term>
+<listitem><simpara> a set of SPARQL updates
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cancellable</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GCancellable"><type>GCancellable</type></link> to control the operation
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GAsyncReadyCallback"><type>GAsyncReadyCallback</type></link> to call when the operation is finished
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> data to pass to <parameter>callback</parameter>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-execute-batch-update-finish" role="function">
+<title>tracker_miner_execute_batch_update_finish ()</title>
+<indexterm zone="tracker-miner-execute-batch-update-finish"><primary sortas="tracker_miner_execute_batch_update_finish">tracker_miner_execute_batch_update_finish</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_execute_batch_update_finish
+                                                        (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="GAsyncResult">GAsyncResult</link> *result,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Finishes the async batch update operation. If an error occured during the update,
+<parameter>error</parameter> will be set.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>result</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GError"><type>GError</type></link>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-commit" role="function">
+<title>tracker_miner_commit ()</title>
+<indexterm zone="tracker-miner-commit"><primary sortas="tracker_miner_commit">tracker_miner_commit</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_commit                (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="GCancellable">GCancellable</link> *cancellable,
+                                                         <link linkend="GAsyncReadyCallback">GAsyncReadyCallback</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+Commits all pending batch updates. See <link linkend="tracker-miner-execute-batch-update"><function>tracker_miner_execute_batch_update()</function></link>.
+</para>
+<para>
+When the operation is finished, <parameter>callback</parameter> will be called, providing a <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+object. Call tracker_miner_commit_finish on it to get the returned <link linkend="GError"><type>GError</type></link>,
+if there is one.
+</para>
+<para>
+If the operation is cancelled, <parameter>callback</parameter> will be called anyway, with the <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+object containing an error.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cancellable</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GCancellable"><type>GCancellable</type></link> to control the operation
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GAsyncReadyCallback"><type>GAsyncReadyCallback</type></link> to call when the operation is finished
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> data to pass to <parameter>callback</parameter>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-commit-finish" role="function">
+<title>tracker_miner_commit_finish ()</title>
+<indexterm zone="tracker-miner-commit-finish"><primary sortas="tracker_miner_commit_finish">tracker_miner_commit_finish</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_commit_finish         (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                         <link linkend="GAsyncResult">GAsyncResult</link> *result,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Finishes the async comit operation. If an error occured during the commit,
+<parameter>error</parameter> will be set.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>result</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GAsyncResult"><type>GAsyncResult</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GError"><type>GError</type></link>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+<refsect1 id="TrackerMiner.property-details" role="property_details">
+<title role="property_details.title">Property Details</title>
+<refsect2 id="TrackerMiner--name" role="property"><title>The <literal>&quot;name&quot;</literal> property</title>
+<indexterm zone="TrackerMiner--name"><primary sortas="TrackerMiner:name">TrackerMiner:name</primary></indexterm><programlisting>  &quot;name&quot;                     <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only</programlisting>
+<para>Miner name.</para><para>Default value: NULL</para>
+</refsect2>
+<refsect2 id="TrackerMiner--progress" role="property"><title>The <literal>&quot;progress&quot;</literal> property</title>
+<indexterm zone="TrackerMiner--progress"><primary sortas="TrackerMiner:progress">TrackerMiner:progress</primary></indexterm><programlisting>  &quot;progress&quot;                 <link linkend="gdouble">gdouble</link>               : Read / Write / Construct</programlisting>
+<para>Miner progress.</para><para>Allowed values: [0,1]</para>
+<para>Default value: 0</para>
+</refsect2>
+<refsect2 id="TrackerMiner--status" role="property"><title>The <literal>&quot;status&quot;</literal> property</title>
+<indexterm zone="TrackerMiner--status"><primary sortas="TrackerMiner:status">TrackerMiner:status</primary></indexterm><programlisting>  &quot;status&quot;                   <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
+<para>Translatable string with status description.</para><para>Default value: NULL</para>
+</refsect2>
+</refsect1>
+
+<refsect1 id="TrackerMiner.signal-details" role="signals">
+<title role="signals.title">Signal Details</title>
+<refsect2 id="TrackerMiner-error" role="signal"><title>The <literal>&quot;error&quot;</literal> signal</title>
+<indexterm zone="TrackerMiner-error"><primary sortas="TrackerMiner::error">TrackerMiner::error</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                        <link linkend="gpointer">gpointer</link>      error,
+                                                        <link linkend="gpointer">gpointer</link>      user_data)      : Run Last</programlisting>
+<para>
+The ::error signal will be emitted by TrackerMiner implementations to
+indicate some error in the data mining process.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> the error that happened
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMiner-ignore-next-update" role="signal"><title>The <literal>&quot;ignore-next-update&quot;</literal> signal</title>
+<indexterm zone="TrackerMiner-ignore-next-update"><primary sortas="TrackerMiner::ignore-next-update">TrackerMiner::ignore-next-update</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                        <link linkend="GStrv">GStrv</link>        *urls,
+                                                        <link linkend="gpointer">gpointer</link>      user_data)      : Run Last</programlisting>
+<para>
+the ::ignore-next-update signal is emitted in the miner
+right after it has been asked to mark <parameter>urls</parameter> as to ignore on next update
+through <link linkend="tracker-miner-ignore-next-update"><function>tracker_miner_ignore_next_update()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>urls</parameter>&#160;:</term>
+<listitem><simpara> the urls to mark as ignore on next update
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMiner-paused" role="signal"><title>The <literal>&quot;paused&quot;</literal> signal</title>
+<indexterm zone="TrackerMiner-paused"><primary sortas="TrackerMiner::paused">TrackerMiner::paused</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                        <link linkend="gpointer">gpointer</link>      user_data)      : Run Last</programlisting>
+<para>
+the ::paused signal is emitted whenever
+there is any reason to pause, either
+internal (through <link linkend="tracker-miner-pause"><function>tracker_miner_pause()</function></link>) or
+external (through DBus, see <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>).</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMiner-progress" role="signal"><title>The <literal>&quot;progress&quot;</literal> signal</title>
+<indexterm zone="TrackerMiner-progress"><primary sortas="TrackerMiner::progress">TrackerMiner::progress</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                        <link linkend="gchar">gchar</link>        *status,
+                                                        <link linkend="gdouble">gdouble</link>       progress,
+                                                        <link linkend="gpointer">gpointer</link>      user_data)      : Run Last</programlisting>
+<para>
+the ::progress signal will be emitted by TrackerMiner implementations
+to indicate progress about the data mining process. <parameter>status</parameter> will
+contain a translated string with the current miner status and <parameter>progress</parameter>
+will indicate how much has been processed so far.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>status</parameter>&#160;:</term>
+<listitem><simpara> miner status
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>progress</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="gdouble"><type>gdouble</type></link> indicating miner progress, from 0 to 1.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMiner-resumed" role="signal"><title>The <literal>&quot;resumed&quot;</literal> signal</title>
+<indexterm zone="TrackerMiner-resumed"><primary sortas="TrackerMiner::resumed">TrackerMiner::resumed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                        <link linkend="gpointer">gpointer</link>      user_data)      : Run Last</programlisting>
+<para>
+the ::resumed signal is emitted whenever
+all reasons to pause have disappeared, see
+<link linkend="tracker-miner-resume"><function>tracker_miner_resume()</function></link> and <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMiner-started" role="signal"><title>The <literal>&quot;started&quot;</literal> signal</title>
+<indexterm zone="TrackerMiner-started"><primary sortas="TrackerMiner::started">TrackerMiner::started</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                        <link linkend="gpointer">gpointer</link>      user_data)      : Run Last</programlisting>
+<para>
+the ::started signal is emitted in the miner
+right after it has been started through
+<link linkend="tracker-miner-start"><function>tracker_miner_start()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMiner-stopped" role="signal"><title>The <literal>&quot;stopped&quot;</literal> signal</title>
+<indexterm zone="TrackerMiner-stopped"><primary sortas="TrackerMiner::stopped">TrackerMiner::stopped</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMiner">TrackerMiner</link> *miner,
+                                                        <link linkend="gpointer">gpointer</link>      user_data)      : Run Last</programlisting>
+<para>
+the ::stopped signal is emitted in the miner
+right after it has been stopped through
+<link linkend="tracker-miner-stop"><function>tracker_miner_stop()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMiner"><type>TrackerMiner</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+
+
+
+</refentry>

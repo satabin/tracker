@@ -1,0 +1,17 @@
+<indexdiv>
+<indexdiv><title>T</title>
+<indexentry><primaryie linkends="tracker-resources-batch-commit"><link linkend="tracker-resources-batch-commit">tracker_resources_batch_commit</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-resources-batch-commit-async"><link linkend="tracker-resources-batch-commit-async">tracker_resources_batch_commit_async</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-resources-batch-sparql-update"><link linkend="tracker-resources-batch-sparql-update">tracker_resources_batch_sparql_update</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-resources-batch-sparql-update-async"><link linkend="tracker-resources-batch-sparql-update-async">tracker_resources_batch_sparql_update_async</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-resources-sparql-query"><link linkend="tracker-resources-sparql-query">tracker_resources_sparql_query</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-resources-sparql-query-async"><link linkend="tracker-resources-sparql-query-async">tracker_resources_sparql_query_async</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-resources-sparql-update"><link linkend="tracker-resources-sparql-update">tracker_resources_sparql_update</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-resources-sparql-update-async"><link linkend="tracker-resources-sparql-update-async">tracker_resources_sparql_update_async</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-sparql-escape"><link linkend="tracker-sparql-escape">tracker_sparql_escape</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-statistics-get"><link linkend="tracker-statistics-get">tracker_statistics_get</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-statistics-get-async"><link linkend="tracker-statistics-get-async">tracker_statistics_get_async</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-uri-printf-escaped"><link linkend="tracker-uri-printf-escaped">tracker_uri_printf_escaped</link></primaryie></indexentry>
+<indexentry><primaryie linkends="tracker-uri-vprintf-escaped"><link linkend="tracker-uri-vprintf-escaped">tracker_uri_vprintf_escaped</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

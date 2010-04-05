@@ -1,7 +1,6 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2005, Novell, Inc.
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+ * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
  * Copyright (C) 2006, Anders Aagaard
  *
  * Based mostly on code by Robert Love <rml@novell.com>
@@ -48,35 +47,35 @@
 #ifndef __NR_ioprio_set
 
 #if defined(__i386__)
-#define __NR_ioprio_set		289
-#define __NR_ioprio_get		290
+#define __NR_ioprio_set                 289
+#define __NR_ioprio_get                 290
 #elif defined(__powerpc__) || defined(__powerpc64__)
-#define __NR_ioprio_set		273
-#define __NR_ioprio_get		274
+#define __NR_ioprio_set                 273
+#define __NR_ioprio_get                 274
 #elif defined(__x86_64__)
-#define __NR_ioprio_set		251
-#define __NR_ioprio_get		252
+#define __NR_ioprio_set                 251
+#define __NR_ioprio_get                 252
 #elif defined(__ia64__)
-#define __NR_ioprio_set		1274
-#define __NR_ioprio_get		1275
+#define __NR_ioprio_set                 1274
+#define __NR_ioprio_get                 1275
 #elif defined(__alpha__)
-#define __NR_ioprio_set		442
-#define __NR_ioprio_get		443
+#define __NR_ioprio_set                 442
+#define __NR_ioprio_get                 443
 #elif defined(__s390x__) || defined(__s390__)
-#define __NR_ioprio_set		282
-#define __NR_ioprio_get		283
+#define __NR_ioprio_set                 282
+#define __NR_ioprio_get                 283
 #elif defined(__SH4__)
-#define __NR_ioprio_set		288
-#define __NR_ioprio_get		289
+#define __NR_ioprio_set                 288
+#define __NR_ioprio_get                 289
 #elif defined(__SH5__)
-#define __NR_ioprio_set		316
-#define __NR_ioprio_get		317
+#define __NR_ioprio_set                 316
+#define __NR_ioprio_get                 317
 #elif defined(__sparc__) || defined(__sparc64__)
-#define __NR_ioprio_set		196
-#define __NR_ioprio_get		218
+#define __NR_ioprio_set                 196
+#define __NR_ioprio_get                 218
 #elif defined(__arm__)
-#define __NR_ioprio_set		314
-#define __NR_ioprio_get		315
+#define __NR_ioprio_set                 314
+#define __NR_ioprio_get                 315
 #else
 #error "Unsupported architecture!"
 #endif
@@ -128,8 +127,6 @@ set_io_priority_best_effort (int ioprio_val)
 void
 tracker_ioprio_init (void)
 {
-	g_message ("Setting IO priority");
-
 	if (set_io_priority_idle () == -1) {
 		g_message ("Could not set idle IO priority, attempting best effort of 7");
 

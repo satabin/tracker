@@ -1,6 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2008, Nokia (urho.konttori@nokia.com)
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -25,9 +24,9 @@
 G_BEGIN_DECLS
 
 gboolean     tracker_test_helpers_cmpstr_equal (const gchar *obtained,
-						const gchar *expected);
+                                                const gchar *expected);
 const gchar *tracker_test_helpers_get_nonutf8  (void);
-void	     tracker_test_helpers_free_nonutf8 (void);
+void         tracker_test_helpers_free_nonutf8 (void);
 
 G_END_DECLS
 

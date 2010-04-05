@@ -1,7 +1,6 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -29,14 +28,34 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-#include <libtracker/tracker.h>
+#include <libtracker-client/tracker.h>
+
+#define ABOUT	  \
+	"Tracker " PACKAGE_VERSION "\n"
+
+#define LICENSE	  \
+	"This program is free software and comes without any warranty.\n" \
+	"It is licensed under version 2 or later of the General Public " \
+	"License which can be viewed at:\n" \
+	"\n" \
+	"  http://www.gnu.org/licenses/gpl.txt\n"
+
+static gboolean print_version;
+
+static GOptionEntry entries[] = {
+	{ "version", 'V', 0, G_OPTION_ARG_NONE, &print_version,
+	  N_("Print version"),
+	  NULL
+	},
+	{ NULL }
+};
 
 static void
 get_meta_table_data (gpointer value)
 {
 	gchar **meta;
 	gchar **p;
-	gint	i;
+	gint    i;
 
 	meta = value;
 
@@ -57,7 +76,7 @@ main (int argc, char **argv)
 	TrackerClient  *client;
 	GOptionContext *context;
 	GPtrArray      *array;
-	GError	       *error = NULL;
+	GError         *error = NULL;
 
 	setlocale (LC_ALL, "");
 
@@ -65,26 +84,35 @@ main (int argc, char **argv)
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 
-	/* Translators: this messagge will apper immediately after the	*/
-	/* usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>	*/
-	context = g_option_context_new (_(" - Show number of indexed files for each service"));
+	/* Translators: this messagge will apper immediately after the  */
+	/* usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>     */
+	context = g_option_context_new (_(" - Show statistics for all Nepomuk defined ontology classes"));
+	g_option_context_add_main_entries (context, entries, NULL);
 	g_option_context_parse (context, &argc, &argv, NULL);
+
+	if (print_version) {
+		g_print ("\n" ABOUT "\n" LICENSE "\n");
+		g_option_context_free (context);
+
+		return EXIT_SUCCESS;
+	}
+
 	g_option_context_free (context);
 
-	client = tracker_connect (FALSE);
+	client = tracker_client_new (0, G_MAXINT);
 
 	if (!client) {
 		g_printerr ("%s\n",
-			    _("Could not establish a DBus connection to Tracker"));
+		            _("Could not establish a D-Bus connection to Tracker"));
 		return EXIT_FAILURE;
 	}
 
-	array = tracker_get_stats (client, &error);
+	array = tracker_statistics_get (client, &error);
 
 	if (error) {
 		g_printerr ("%s, %s\n",
-			    _("Could not get Tracker statistics"),
-			    error->message);
+		            _("Could not get Tracker statistics"),
+		            error->message);
 		g_error_free (error);
 
 		return EXIT_FAILURE;
@@ -92,16 +120,16 @@ main (int argc, char **argv)
 
 	if (!array) {
 		g_print ("%s\n",
-			 _("No statistics available"));
+		         _("No statistics available"));
 	} else {
 		g_print ("%s\n",
-			 _("Statistics:"));
+		         _("Statistics:"));
 
 		g_ptr_array_foreach (array, (GFunc) get_meta_table_data, NULL);
 		g_ptr_array_free (array, TRUE);
 	}
 
-	tracker_disconnect (client);
+	g_object_unref (client);
 
 	return EXIT_SUCCESS;
 }

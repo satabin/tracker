@@ -1,6 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -27,7 +26,7 @@
 #include <dbus/dbus-glib-bindings.h>
 #include <dbus/dbus-glib-lowlevel.h>
 
-#include "tracker-evolution-common.h"
+#include <libtracker-miner/tracker-miner.h>
 
 #define TRACKER_TYPE_EVOLUTION_PLUGIN          (tracker_evolution_plugin_get_type())
 #define TRACKER_EVOLUTION_PLUGIN(o)            (G_TYPE_CHECK_INSTANCE_CAST ((o), TRACKER_TYPE_EVOLUTION_PLUGIN, TrackerEvolutionPlugin))
@@ -40,20 +39,15 @@ typedef struct TrackerEvolutionPlugin TrackerEvolutionPlugin;
 typedef struct TrackerEvolutionPluginClass TrackerEvolutionPluginClass;
 
 struct TrackerEvolutionPlugin {
-	GObject parent;
+	TrackerMiner parent;
 };
 
 struct TrackerEvolutionPluginClass {
-	GObjectClass parent;
+	TrackerMinerClass parent;
 };
 
 GType tracker_evolution_plugin_get_type (void);
 
-void tracker_evolution_plugin_register  (TrackerEvolutionPlugin *object, 
-					 gchar *registrar_path,
-					 guint last_modseq, 
-					 DBusGMethodInvocation *context,
-					 GError *derror);
 
 G_END_DECLS
 

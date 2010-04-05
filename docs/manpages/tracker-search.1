@@ -1,43 +1,80 @@
-.TH tracker-search 1 "July 2007" GNU "User Commands"
+.TH tracker-search 1 "July 2009" GNU "User Commands"
 
 .SH NAME
-tracker-search \- command line tool to search documents indexed by
-trackerd
+tracker-search \- Search all content for keywords
 
 .SH SYNOPSIS
-.B tracker-search
-[OPTIONS]
-.I EXPRESION
+\fBtracker-search\fR [\fIOPTION\fR...] \fIEXPRESSION\fR [\fIEXPRESSION\fR...]
 
 .SH DESCRIPTION
 .B tracker-search
-searches all by
-.BR trackerd(1)
-indexed content for
-.I expression.
-.I Expression
-can be any number of words to be searched for.
-
-.SH OPTIONS
-.TP
-\-?, --help
-Give a short help message.
-
+searches all indexed content for \fIEXPRESSION\fR. The resource in
+which \fIEXPRESSION\fR matches must exist (see 
+.B \-\-all
+for more information). All results are returned in ascending order. In
+all cases, if no \fIEXPRESSION\fR is given for an argument (like 
+.B \-\-folders
+for example) then ALL items in that category are returned instead.
 .TP
 \fIEXPRESSION\fR
 One or more terms to search. The default operation is a logical AND.
-
+For logical OR operations, see -r.
+.SH OPTIONS
 .TP
-\-l, --limit=N
-Limit search to N results.
-
+.B \-?, \-\-help
+Give a short help message.
 .TP
-\-s, --service=SERVICE
-Search by a specific service. For more information on tracker services,
-see
-.BR tracker-services (1).
+.B \-l, \-\-limit=N
+Limit search to N results. The default is 512.
+.TP
+.B \-o, \-\-offset=N
+Offset the search results by N. For example, start at item number 10
+in the results. The default is 0.
+.TP
+.B \-r, \-\-or-operator
+Use OR for search terms instead of AND (the default)
+.TP
+.B \-d, \-\-detailed
+Show more detailed results (only applies to general search)
+.TP
+.B \-a, \-\-all
+Show results which might not be available. This might bebecause a
+removable media is not mounted for example. Without this option,
+resources are only shown if they exist. This option applies to all
+command line switches except
+.B \-\-music-albums
+and
+.B \-\-music-artists.
+.TP
+.B \-f, \-\-files=EXPRESSION
+Search for files of any type matching \fIEXPRESSION\fR (optional).
+.TP
+.B \-e, \-\-folders=EXPRESSION
+Search for folders matching \fIEXPRESSION\fR (optional).
+.TP
+.B \-b, \-\-music-albums=ALBUM
+Search for music albums matching \fIALBUM\fR (optional).
+.TP
+.B \-s, \-\-music-artists=ARTIST
+Search for music artists matching \fIARTIST\fR (optional).
+.TP
+.B \-m, \-\-music=EXPRESSION
+Search for music files matching \fIEXPRESSION\fR (optional).
+.TP
+.B \-l, \-\-images=EXPRESSION
+Search for images matching \fIEXPRESSION\fR (optional).
+.TP
+.B \-v, \-\-videos=EXPRESSION
+Search for videos matching \fIEXPRESSION\fR (optional).
+.TP
+.B \-t, \-\-documents=EXPRESSION
+Search for documents matching \fIEXPRESSION\fR (optional).
+.TP
+.B \-V, \-\-version
+Print version.
 
-.SH "SEE ALSO"
-.BR trackerd (1),
-.BR tracker-search-tool (1),
-.BR tracker-services (1).
+.SH SEE ALSO
+.BR tracker-store (1),
+.BR tracker-stats (1),
+.BR tracker-tag (1),
+.BR tracker-info (1).

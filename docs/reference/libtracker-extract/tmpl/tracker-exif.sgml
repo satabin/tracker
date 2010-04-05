@@ -1,0 +1,60 @@
+<!-- ##### SECTION Title ##### -->
+tracker-exif
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT TrackerExifData ##### -->
+<para>
+
+</para>
+
+@y_dimension: 
+@x_dimension: 
+@image_width: 
+@document_name: 
+@time: 
+@time_original: 
+@artist: 
+@user_comment: 
+@description: 
+@make: 
+@model: 
+@orientation: 
+@exposure_time: 
+@fnumber: 
+@flash: 
+@focal_length: 
+@iso_speed_ratings: 
+@metering_mode: 
+@white_balance: 
+@copyright: 
+@software: 
+
+<!-- ##### FUNCTION tracker_exif_read ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@len: 
+@uri: 
+@data: 
+@Returns: 
+
+

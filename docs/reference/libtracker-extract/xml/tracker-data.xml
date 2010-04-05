@@ -1,0 +1,213 @@
+<refentry id="libtracker-extract-tracker-data">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-extract-tracker-data.top_of_page">How to use libtracker-extract</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-EXTRACT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>How to use libtracker-extract</refname>
+<refpurpose>The essentials by example</refpurpose>
+</refnamediv>
+<refsect1 id="libtracker-extract-tracker-data.stability-level">
+<title>Stability Level</title>
+Stable, unless otherwise indicated
+</refsect1>
+
+<refsynopsisdiv id="libtracker-extract-tracker-data.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-extract/tracker-extract.h&gt;
+
+<link linkend="void">void</link>                (<link linkend="TrackerExtractMimeFunc">*TrackerExtractMimeFunc</link>)           (const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="TrackerSparqlBuilder">TrackerSparqlBuilder</link> *preupdate,
+                                                         <link linkend="TrackerSparqlBuilder">TrackerSparqlBuilder</link> *metadata);
+<link linkend="TrackerExtractData">TrackerExtractData</link> * (<link linkend="TrackerExtractDataFunc">*TrackerExtractDataFunc</link>)          (void);
+                    <link linkend="TrackerExtractData">TrackerExtractData</link>;
+<link linkend="TrackerExtractData">TrackerExtractData</link> * <link linkend="tracker-extract-get-data">tracker_extract_get_data</link>           (void);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-extract-tracker-data.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+The libtracker-extract library is the foundation for Tracker
+metadata extraction of embedded data in files.
+</para>
+<para>
+Tracker comes with extractors written for the most common file
+types (like MP3, JPEG, PNG, etc.), however, for more special cases,
+3rd party applications may want to write their own plugin to
+extract their own file formats. This documentation describes how to
+do that.
+</para>
+<para>
+<example>
+<title>Basic extractor example</title>
+An example of how to write an extractor to retrieve PNG embedded
+metadata.
+<programlisting>
+ static void extract_png (const gchar          *filename,
+                          TrackerSparqlBuilder *preupdate,
+                          TrackerSparqlBuilder *metadata);
+
+ /&ast; Set functions to use to extract different mime types. &ast;/
+ static TrackerExtractData extract_data[] = {
+         { "image/png",  extract_png },
+         { "sketch/png", extract_png },
+         { NULL, NULL }
+ };
+
+ static void
+ extract_png (const gchar          *uri,
+              TrackerSparqlBuilder *preupdate,
+              TrackerSparqlBuilder *metadata)
+ {
+         gint height, width;
+
+         /&ast; Do data extraction. &ast;/
+         height = ...
+         width = ...
+
+         /&ast; Insert data into TrackerSparqlBuilder object. &ast;/
+         tracker_sparql_builder_predicate (metadata, "a");
+         tracker_sparql_builder_object (metadata, "nfo:Image");
+         tracker_sparql_builder_object (metadata, "nmm:Photo");
+
+         tracker_sparql_builder_predicate (metadata, "nfo:width");
+         tracker_sparql_builder_object_int64 (metadata, width);
+
+         tracker_sparql_builder_predicate (metadata, "nfo:height");
+         tracker_sparql_builder_object_int64 (metadata, height);
+
+         g_free (filename);
+ }
+
+ TrackerExtractData *
+ tracker_extract_get_data (void)
+ {
+         return extract_data;
+ }
+</programlisting>
+</example></para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-extract-tracker-data.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerExtractMimeFunc" role="function" condition="since:0.8">
+<title>TrackerExtractMimeFunc ()</title>
+<indexterm zone="TrackerExtractMimeFunc" role="0.8"><primary sortas="TrackerExtractMimeFunc">TrackerExtractMimeFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*TrackerExtractMimeFunc)           (const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="TrackerSparqlBuilder">TrackerSparqlBuilder</link> *preupdate,
+                                                         <link linkend="TrackerSparqlBuilder">TrackerSparqlBuilder</link> *metadata);</programlisting>
+<para>
+Extracts metadata from a file, and inserts it into <parameter>metadata</parameter>.
+</para>
+<para>
+The <parameter>metadata</parameter> parameter is a <link linkend="TrackerSparqlBuilder"><type>TrackerSparqlBuilder</type></link> constructed
+through <link linkend="tracker-sparql-builder-new-embedded-insert"><function>tracker_sparql_builder_new_embedded_insert()</function></link>, the subject
+is already set to be the file URN, so implementations of this
+function should just provide predicate/object(s) pairs. the data
+triples contained in there at the end of the function will be
+merged with further file information from miners.
+</para>
+<para>
+Whenever any of the inserted triples rely on entities that
+should also be provided by this extractor (for example, album
+or artist information from a song), such insertions should be
+added to <parameter>preupdate</parameter>, which is a <link linkend="TrackerSparqlBuilder"><type>TrackerSparqlBuilder</type></link> constructed.
+through <link linkend="tracker-sparql-builder-new-update"><function>tracker_sparql_builder_new_update()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
+<listitem><simpara> a string representing a URI.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>preupdate</parameter>&#160;:</term>
+<listitem><simpara> used to populate with data updates that
+            are a prerequisite for the actual file
+            metadata insertion.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>metadata</parameter>&#160;:</term>
+<listitem><simpara> used to populate with file metadata predicate/object(s).
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="TrackerExtractDataFunc" role="function" condition="since:0.6">
+<title>TrackerExtractDataFunc ()</title>
+<indexterm zone="TrackerExtractDataFunc" role="0.6"><primary sortas="TrackerExtractDataFunc">TrackerExtractDataFunc</primary></indexterm><programlisting><link linkend="TrackerExtractData">TrackerExtractData</link> * (*TrackerExtractDataFunc)          (void);</programlisting>
+<para>
+This function is used by by tracker-extract to call into each
+extractor to get a list of mime type and TrackerExtractMimeFunc
+combinations.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> an array of <link linkend="TrackerExtractData"><type>TrackerExtractData</type></link> which must be NULL
+terminated and must NOT be freed.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.6</para></refsect2>
+<refsect2 id="TrackerExtractData" role="struct" condition="since:0.8">
+<title>TrackerExtractData</title>
+<indexterm zone="TrackerExtractData" role="0.8"><primary sortas="TrackerExtractData">TrackerExtractData</primary></indexterm><programlisting>typedef struct {
+	const gchar *mime;
+	TrackerExtractMimeFunc func;
+} TrackerExtractData;
+</programlisting>
+<para>
+The <parameter>mime</parameter> is usually in the format of "image/png" for example.
+</para>
+<para>
+The <parameter>func</parameter> is called by tracker-extract if an extractor plugin
+matches the <parameter>mime</parameter>.</para>
+<para>
+</para><variablelist role="struct">
+<varlistentry>
+<term>const&#160;<link linkend="gchar">gchar</link>&#160;*<structfield>mime</structfield>;</term>
+<listitem><simpara> a string pointer representing a mime type.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="TrackerExtractMimeFunc">TrackerExtractMimeFunc</link>&#160;<structfield>func</structfield>;</term>
+<listitem><simpara> a function to extract extract the data in.
+</simpara></listitem>
+</varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-extract-get-data" role="function" condition="since:0.8">
+<title>tracker_extract_get_data ()</title>
+<indexterm zone="tracker-extract-get-data" role="0.8"><primary sortas="tracker_extract_get_data">tracker_extract_get_data</primary></indexterm><programlisting><link linkend="TrackerExtractData">TrackerExtractData</link> * tracker_extract_get_data           (void);</programlisting>
+<para>
+This function must be provided by ALL extractors. This is merely
+the declaration of the function which must be written by each
+extractor. 
+</para>
+<para>
+This is checked by tracker-extract by looking up the symbols for
+each plugin and making sure this function exists. This is only
+called by tracker-extract if a mime type in any of the
+<link linkend="TrackerExtractData"><type>TrackerExtractData</type></link> structures returned matches the mime type of
+the file being handled.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a <link linkend="TrackerExtractData"><type>TrackerExtractData</type></link> pointer which should not be freed.
+This pointer can be an array of <link linkend="TrackerExtractData"><type>TrackerExtractData</type></link> structures
+where multiple mime types are supported.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

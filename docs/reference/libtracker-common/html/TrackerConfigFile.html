@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TrackerConfigFile</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
+<link rel="up" href="ch02.html" title="Configuration">
+<link rel="prev" href="ch02.html" title="Configuration">
+<link rel="next" href="TrackerLanguage.html" title="TrackerLanguage">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libtracker-common.html" title="Part I. Overview">
+<link rel="chapter" href="ch01.html" title="Ontology">
+<link rel="chapter" href="ch02.html" title="Configuration">
+<link rel="chapter" href="ch03.html" title="Communication">
+<link rel="chapter" href="ch04.html" title="Utilities">
+<link rel="chapter" href="ch05.html" title="Performance">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch02.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Common Library Reference Manual</th>
+<td><a accesskey="n" href="TrackerLanguage.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#TrackerConfigFile.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#TrackerConfigFile.description" class="shortcut">Description</a>
+                 | 
+                <a href="#TrackerConfigFile.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                 | 
+                <a href="#TrackerConfigFile.properties" class="shortcut">Properties</a>
+                 | 
+                <a href="#TrackerConfigFile.signals" class="shortcut">Signals</a>
+</td></tr>
+</table>
+<div class="refentry" title="TrackerConfigFile">
+<a name="TrackerConfigFile"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="TrackerConfigFile.top_of_page"></a>TrackerConfigFile</span></h2>
+<p>TrackerConfigFile — Abstract base class for configuration files</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="TrackerConfigFile.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;libtracker-common/tracker-common.h&gt;
+
+                    <a class="link" href="TrackerConfigFile.html#TrackerConfigFile-struct" title="TrackerConfigFile">TrackerConfigFile</a>;
+                    <a class="link" href="TrackerConfigFile.html#TrackerConfigFileClass" title="TrackerConfigFileClass">TrackerConfigFileClass</a>;
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="TrackerConfigFile.html#tracker-config-file-save" title="tracker_config_file_save ()">tracker_config_file_save</a>            (<a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile">TrackerConfigFile</a> *config);
+</pre>
+</div>
+<div class="refsect1" title="Object Hierarchy">
+<a name="TrackerConfigFile.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----TrackerConfigFile
+</pre>
+</div>
+<div class="refsect1" title="Properties">
+<a name="TrackerConfigFile.properties"></a><h2>Properties</h2>
+<pre class="synopsis">
+  "<a class="link" href="TrackerConfigFile.html#TrackerConfigFile--domain" title='The "domain" property'>domain</a>"                   <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write / Construct
+</pre>
+</div>
+<div class="refsect1" title="Signals">
+<a name="TrackerConfigFile.signals"></a><h2>Signals</h2>
+<pre class="synopsis">
+  "<a class="link" href="TrackerConfigFile.html#TrackerConfigFile-changed" title='The "changed" signal'>changed</a>"                                        : Run Last
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="TrackerConfigFile.description"></a><h2>Description</h2>
+<p>
+<a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a> is an abstract base class to help creating objects
+that proxy a configuration file, mirroring settings to disk and notifying
+of changes.</p>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="TrackerConfigFile.details"></a><h2>Details</h2>
+<div class="refsect2" title="TrackerConfigFile">
+<a name="TrackerConfigFile-struct"></a><h3>TrackerConfigFile</h3>
+<pre class="programlisting">typedef struct _TrackerConfigFile TrackerConfigFile;</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="TrackerConfigFileClass">
+<a name="TrackerConfigFileClass"></a><h3>TrackerConfigFileClass</h3>
+<pre class="programlisting">typedef struct {
+	GObjectClass parent_class;
+
+	void (* changed) (TrackerConfigFile *file);
+} TrackerConfigFileClass;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="tracker_config_file_save ()">
+<a name="tracker-config-file-save"></a><h3>tracker_config_file_save ()</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            tracker_config_file_save            (<a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile">TrackerConfigFile</a> *config);</pre>
+<p>
+Writes the configuration stored in TrackerConfigFile to disk.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
+<td> a <a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> on success, <code class="literal">FALSE</code> otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" title="Property Details">
+<a name="TrackerConfigFile.property-details"></a><h2>Property Details</h2>
+<div class="refsect2" title='The "domain" property'>
+<a name="TrackerConfigFile--domain"></a><h3>The <code class="literal">"domain"</code> property</h3>
+<pre class="programlisting">  "domain"                   <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a>*                : Read / Write / Construct</pre>
+<p>The prefix before .cfg for the filename.</p>
+<p>Default value: NULL</p>
+</div>
+</div>
+<div class="refsect1" title="Signal Details">
+<a name="TrackerConfigFile.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2" title='The "changed" signal'>
+<a name="TrackerConfigFile-changed"></a><h3>The <code class="literal">"changed"</code> signal</h3>
+<pre class="programlisting">void                user_function                      (<a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile">TrackerConfigFile</a> *config,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
+>gpointer</a>           user_data)      : Run Last</pre>
+<p>
+the ::changed signal is emitted whenever
+the configuration file has changed on disk.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
+<td> the <a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

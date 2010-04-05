@@ -1,0 +1,362 @@
+<refentry id="libtracker-miner-TrackerMinerWeb">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-miner-TrackerMinerWeb.top_of_page">TrackerMinerWeb</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-MINER Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>TrackerMinerWeb</refname>
+<refpurpose>Abstract base class for miners using web services</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-miner-TrackerMinerWeb.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-miner/tracker-miner.h&gt;
+
+#define             <link linkend="TRACKER-MINER-WEB-ERROR-DOMAIN--CAPS">TRACKER_MINER_WEB_ERROR_DOMAIN</link>
+#define             <link linkend="TRACKER-MINER-WEB-ERROR--CAPS">TRACKER_MINER_WEB_ERROR</link>
+#define             <link linkend="TRACKER-MINER-WEB-DBUS-INTERFACE--CAPS">TRACKER_MINER_WEB_DBUS_INTERFACE</link>
+typedef             <link linkend="TrackerMinerWebPrivate">TrackerMinerWebPrivate</link>;
+typedef             <link linkend="TrackerMinerWeb">TrackerMinerWeb</link>;
+                    <link linkend="TrackerMinerWebClass">TrackerMinerWebClass</link>;
+<link linkend="GQuark">GQuark</link>              <link linkend="tracker-miner-web-error-quark">tracker_miner_web_error_quark</link>       (void);
+enum                <link linkend="TrackerMinerWebError">TrackerMinerWebError</link>;
+<link linkend="void">void</link>                <link linkend="tracker-miner-web-associate">tracker_miner_web_associate</link>         (<link linkend="TrackerMinerWeb">TrackerMinerWeb</link> *miner,
+                                                         <link linkend="GHashTable">GHashTable</link> *association_data,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="void">void</link>                <link linkend="tracker-miner-web-authenticate">tracker_miner_web_authenticate</link>      (<link linkend="TrackerMinerWeb">TrackerMinerWeb</link> *miner,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="void">void</link>                <link linkend="tracker-miner-web-dissociate">tracker_miner_web_dissociate</link>        (<link linkend="TrackerMinerWeb">TrackerMinerWeb</link> *miner,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="GHashTable">GHashTable</link> *        <link linkend="tracker-miner-web-get-association-data">tracker_miner_web_get_association_data</link>
+                                                        (<link linkend="TrackerMinerWeb">TrackerMinerWeb</link> *miner,
+                                                         <link linkend="GError">GError</link> **error);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-miner-TrackerMinerWeb.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+<link linkend="TrackerMinerWeb"><type>TrackerMinerWeb</type></link> is an abstract base class for miners retrieving data
+from web services. It's a very thin layer above <link linkend="TrackerMiner"><type>TrackerMiner</type></link>, only
+adding virtual methods needed to handle association with the remote
+service.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-miner-TrackerMinerWeb.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TRACKER-MINER-WEB-ERROR-DOMAIN--CAPS" role="macro">
+<title>TRACKER_MINER_WEB_ERROR_DOMAIN</title>
+<indexterm zone="TRACKER-MINER-WEB-ERROR-DOMAIN--CAPS"><primary sortas="TRACKER_MINER_WEB_ERROR_DOMAIN">TRACKER_MINER_WEB_ERROR_DOMAIN</primary></indexterm><programlisting>#define TRACKER_MINER_WEB_ERROR_DOMAIN "TrackerMinerWeb"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TRACKER-MINER-WEB-ERROR--CAPS" role="macro">
+<title>TRACKER_MINER_WEB_ERROR</title>
+<indexterm zone="TRACKER-MINER-WEB-ERROR--CAPS"><primary sortas="TRACKER_MINER_WEB_ERROR">TRACKER_MINER_WEB_ERROR</primary></indexterm><programlisting>#define TRACKER_MINER_WEB_ERROR        tracker_miner_web_error_quark ()
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TRACKER-MINER-WEB-DBUS-INTERFACE--CAPS" role="macro">
+<title>TRACKER_MINER_WEB_DBUS_INTERFACE</title>
+<indexterm zone="TRACKER-MINER-WEB-DBUS-INTERFACE--CAPS"><primary sortas="TRACKER_MINER_WEB_DBUS_INTERFACE">TRACKER_MINER_WEB_DBUS_INTERFACE</primary></indexterm><programlisting>#define TRACKER_MINER_WEB_DBUS_INTERFACE "org.freedesktop.Tracker1.MinerWeb"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerMinerWebPrivate" role="typedef">
+<title>TrackerMinerWebPrivate</title>
+<indexterm zone="TrackerMinerWebPrivate"><primary sortas="TrackerMinerWebPrivate">TrackerMinerWebPrivate</primary></indexterm><programlisting>typedef struct TrackerMinerWebPrivate TrackerMinerWebPrivate;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerMinerWeb" role="typedef">
+<title>TrackerMinerWeb</title>
+<indexterm zone="TrackerMinerWeb"><primary sortas="TrackerMinerWeb">TrackerMinerWeb</primary></indexterm><programlisting>typedef struct TrackerMinerWeb TrackerMinerWeb;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerMinerWebClass" role="struct" condition="since:0.8.">
+<title>TrackerMinerWebClass</title>
+<indexterm zone="TrackerMinerWebClass" role="0.8."><primary sortas="TrackerMinerWebClass">TrackerMinerWebClass</primary></indexterm><programlisting>typedef struct {
+	TrackerMinerClass parent_class;
+
+	/* vmethods */
+	void        (* authenticate)         (TrackerMinerWeb   *miner,
+	                                      GError           **error);
+	GHashTable* (* get_association_data) (TrackerMinerWeb   *miner,
+	                                      GError           **error);
+	void        (* associate)            (TrackerMinerWeb   *miner,
+	                                      const GHashTable  *association_data,
+	                                      GError           **error);
+	void        (* dissociate)           (TrackerMinerWeb   *miner,
+	                                      GError           **error);
+} TrackerMinerWebClass;
+</programlisting>
+<para>
+For the <parameter>authenticate</parameter> function, a username/password can be used and
+this should return an empty <link linkend="GHashTable"><literal>GHashTable</literal></link>. If the authentication is
+based on a token, the following keys <emphasis>must</emphasis> be
+returned in the <link linkend="GHashTable"><literal>GHashTable</literal></link>:
+</para>
+<para>
+<itemizedlist>
+  <listitem>
+    <para>
+      <emphasis>url</emphasis>: the url to point the user to.
+    </para>
+  </listitem>
+</itemizedlist>
+</para>
+<para>
+Additionally, the miner <emphasis>may</emphasis> define the
+following keys:
+</para>
+<para>
+<itemizedlist>
+  <listitem>
+    <para>
+      <emphasis>post_message</emphasis>: a message to display after
+      the user completes the association process.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <emphasis>post_url</emphasis>: a url to point the user to
+      after they have completed the association.
+    </para>
+  </listitem>
+</itemizedlist>
+</para>
+<para>
+<note>
+  <para>
+     If both <emphasis>post_message</emphasis> and
+     <emphasis>post_url</emphasis> are defined, the message will be
+     displayed before the url is opened.
+  </para>
+</note>
+</para>
+<para>
+For the <parameter>associate</parameter> function, in the case of a username/password
+based authentication, the following keys must be defined:
+</para>
+<para>
+<itemizedlist>
+  <listitem>
+    <para>
+      <emphasis>username</emphasis>: the username.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <emphasis>password</emphasis>: the password.
+    </para>
+  </listitem>
+</itemizedlist>
+</para>
+<para>
+In the case of a token based authentication, the <link linkend="GHashTable"><literal>GHashTable</literal></link> can be
+ignored since it will be empty.
+</para>
+<para>
+For the <parameter>dissociate</parameter> function, miners <emphasis>must</emphasis>
+forget any user credentials stored.</para>
+<para>
+</para><variablelist role="struct">
+<varlistentry>
+<term><link linkend="TrackerMinerClass">TrackerMinerClass</link>&#160;<structfield>parent_class</structfield>;</term>
+<listitem><simpara> parent object class
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>authenticate</structfield>&#160;()</term>
+<listitem><simpara> called when a miner must authenticate against a
+remote service
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>get_association_data</structfield>&#160;()</term>
+<listitem><simpara> called when one requests the miner's
+associated data
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>associate</structfield>&#160;()</term>
+<listitem><simpara> called when the miner is asked to associate a remote
+service
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><structfield>dissociate</structfield>&#160;()</term>
+<listitem><simpara> called when the miner is asked to revoke an
+association with a remote service
+</simpara></listitem>
+</varlistentry>
+</variablelist><para role="since">Since 0.8.</para></refsect2>
+<refsect2 id="tracker-miner-web-error-quark" role="function">
+<title>tracker_miner_web_error_quark ()</title>
+<indexterm zone="tracker-miner-web-error-quark"><primary sortas="tracker_miner_web_error_quark">tracker_miner_web_error_quark</primary></indexterm><programlisting><link linkend="GQuark">GQuark</link>              tracker_miner_web_error_quark       (void);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the <link linkend="GQuark"><type>GQuark</type></link> used to identify miner web errors in GError
+structures.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="TrackerMinerWebError" role="enum" condition="since:0.8">
+<title>enum TrackerMinerWebError</title>
+<indexterm zone="TrackerMinerWebError" role="0.8"><primary sortas="TrackerMinerWebError">TrackerMinerWebError</primary></indexterm><programlisting>typedef enum {
+	TRACKER_MINER_WEB_ERROR_WRONG_CREDENTIALS,
+	TRACKER_MINER_WEB_ERROR_TOKEN_EXPIRED,
+	TRACKER_MINER_WEB_ERROR_NO_CREDENTIALS,
+	TRACKER_MINER_WEB_ERROR_KEYRING,
+	TRACKER_MINER_WEB_ERROR_SERVICE,
+	TRACKER_MINER_WEB_ERROR_TRACKER
+} TrackerMinerWebError;
+</programlisting>
+<para>
+The following errors are possible during any of the performed
+actions with a remote service.</para>
+<para>
+</para><variablelist role="enum">
+<varlistentry id="TRACKER-MINER-WEB-ERROR-WRONG-CREDENTIALS--CAPS" role="constant">
+<term><literal>TRACKER_MINER_WEB_ERROR_WRONG_CREDENTIALS</literal></term>
+<listitem><simpara> The credentials were
+refused by the remote service
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="TRACKER-MINER-WEB-ERROR-TOKEN-EXPIRED--CAPS" role="constant">
+<term><literal>TRACKER_MINER_WEB_ERROR_TOKEN_EXPIRED</literal></term>
+<listitem><simpara> The remote service
+token has expired
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="TRACKER-MINER-WEB-ERROR-NO-CREDENTIALS--CAPS" role="constant">
+<term><literal>TRACKER_MINER_WEB_ERROR_NO_CREDENTIALS</literal></term>
+<listitem><simpara> There are currenty no
+credentials stored for this service
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="TRACKER-MINER-WEB-ERROR-KEYRING--CAPS" role="constant">
+<term><literal>TRACKER_MINER_WEB_ERROR_KEYRING</literal></term>
+<listitem><simpara> The credential storage failed to
+retrieve the relevant information. See <classname>TrackerPasswordProvider</classname>
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="TRACKER-MINER-WEB-ERROR-SERVICE--CAPS" role="constant">
+<term><literal>TRACKER_MINER_WEB_ERROR_SERVICE</literal></term>
+<listitem><simpara> Could not contact the remote service
+</simpara></listitem>
+</varlistentry>
+<varlistentry id="TRACKER-MINER-WEB-ERROR-TRACKER--CAPS" role="constant">
+<term><literal>TRACKER_MINER_WEB_ERROR_TRACKER</literal></term>
+<listitem><simpara> Could not contact the Tracker service
+</simpara></listitem>
+</varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-miner-web-associate" role="function">
+<title>tracker_miner_web_associate ()</title>
+<indexterm zone="tracker-miner-web-associate"><primary sortas="tracker_miner_web_associate">tracker_miner_web_associate</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_web_associate         (<link linkend="TrackerMinerWeb">TrackerMinerWeb</link> *miner,
+                                                         <link linkend="GHashTable">GHashTable</link> *association_data,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Asks <parameter>miner</parameter> to associate with a remote service using
+<parameter>association_data</parameter>. To know what data to put into <parameter>association_data</parameter>,
+see <classname>TrackerMinerWebClass</classname> for more
+information.
+</para>
+<para>
+On failure <parameter>error</parameter> will be set.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerWeb"><type>TrackerMinerWeb</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>association_data</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GHashTable"><literal>GHashTable</literal></link> with the data to use for
+associating with a remote service.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> return location for errors
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-web-authenticate" role="function">
+<title>tracker_miner_web_authenticate ()</title>
+<indexterm zone="tracker-miner-web-authenticate"><primary sortas="tracker_miner_web_authenticate">tracker_miner_web_authenticate</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_web_authenticate      (<link linkend="TrackerMinerWeb">TrackerMinerWeb</link> *miner,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Asks <parameter>miner</parameter> to authenticate with a remote service. On failure
+<parameter>error</parameter> will be set.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerWeb"><type>TrackerMinerWeb</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> return location for errors
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-web-dissociate" role="function">
+<title>tracker_miner_web_dissociate ()</title>
+<indexterm zone="tracker-miner-web-dissociate"><primary sortas="tracker_miner_web_dissociate">tracker_miner_web_dissociate</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_miner_web_dissociate        (<link linkend="TrackerMinerWeb">TrackerMinerWeb</link> *miner,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Asks <parameter>miner</parameter> to dissociate from a remote service. At this point, the
+miner should stop storing any credentials or sensitive information
+which could be used to authenticate with the remote service.
+</para>
+<para>
+On failure <parameter>error</parameter> will be set.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerWeb"><type>TrackerMinerWeb</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> return location for errors
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-web-get-association-data" role="function">
+<title>tracker_miner_web_get_association_data ()</title>
+<indexterm zone="tracker-miner-web-get-association-data"><primary sortas="tracker_miner_web_get_association_data">tracker_miner_web_get_association_data</primary></indexterm><programlisting><link linkend="GHashTable">GHashTable</link> *        tracker_miner_web_get_association_data
+                                                        (<link linkend="TrackerMinerWeb">TrackerMinerWeb</link> *miner,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Asks <parameter>miner</parameter> to retrieve association_data for. The data returned in
+the <link linkend="GHashTable"><literal>GHashTable</literal></link> depends on the <parameter>miner</parameter> implementation and the type
+of authentication. See <classname>TrackerMinerWebClass</classname>
+for more information.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerWeb"><type>TrackerMinerWeb</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> return location for errors
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a <link linkend="GHashTable"><literal>GHashTable</literal></link> with the data. On failure <parameter>error</parameter> will be set
+and <link linkend="NULL--CAPS"><literal>NULL</literal></link> will be returned.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

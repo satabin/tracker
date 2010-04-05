@@ -1,19 +1,18 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2007, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2007, Jamie McCracken <jamiemcc@gnome.org>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
@@ -30,16 +29,16 @@
 
 gboolean
 tracker_spawn (gchar **argv,
-	       gint    timeout,
-	       gchar **tmp_stdout,
-	       gint   *exit_status)
+               gint    timeout,
+               gchar **tmp_stdout,
+               gint   *exit_status)
 {
 	GSpawnFlags   flags;
-	GError	     *error = NULL;
-	gchar	    **new_argv;
+	GError       *error = NULL;
+	gchar       **new_argv;
 	gboolean      result;
-	gint	      length;
-	gint	      i;
+	gint          length;
+	gint          i;
 
 	g_return_val_if_fail (argv != NULL, FALSE);
 	g_return_val_if_fail (argv[0] != NULL, FALSE);
@@ -64,20 +63,20 @@ tracker_spawn (gchar **argv,
 	}
 
 	result = g_spawn_sync (NULL,
-			       new_argv,
-			       NULL,
-			       flags,
-			       NULL,
-			       GINT_TO_POINTER (timeout),
-			       tmp_stdout,
-			       NULL,
-			       exit_status,
-			       &error);
+	                       new_argv,
+	                       NULL,
+	                       flags,
+	                       NULL,
+	                       GINT_TO_POINTER (timeout),
+	                       tmp_stdout,
+	                       NULL,
+	                       exit_status,
+	                       &error);
 
 	if (error) {
 		g_warning ("Could not spawn command:'%s', %s",
-			   argv[0],
-			   error->message);
+		           argv[0],
+		           error->message);
 		g_error_free (error);
 	}
 
@@ -88,15 +87,15 @@ tracker_spawn (gchar **argv,
 
 gboolean
 tracker_spawn_async_with_channels (const gchar **argv,
-				   gint		 timeout,
-				   GPid		*pid,
-				   GIOChannel  **stdin_channel,
-				   GIOChannel  **stdout_channel,
-				   GIOChannel  **strerr_channel)
+                                   gint                  timeout,
+                                   GPid                 *pid,
+                                   GIOChannel  **stdin_channel,
+                                   GIOChannel  **stdout_channel,
+                                   GIOChannel  **strerr_channel)
 {
-	GError	 *error = NULL;
+	GError   *error = NULL;
 	gboolean  result;
-	gint	  stdin, stdout, stderr;
+	gint      stdin, stdout, stderr;
 
 	g_return_val_if_fail (argv != NULL, FALSE);
 	g_return_val_if_fail (argv[0] != NULL, FALSE);
@@ -104,21 +103,21 @@ tracker_spawn_async_with_channels (const gchar **argv,
 	g_return_val_if_fail (pid != NULL, FALSE);
 
 	result = g_spawn_async_with_pipes (NULL,
-					   (gchar **) argv,
-					   NULL,
-					   G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
-					   tracker_spawn_child_func,
-					   GINT_TO_POINTER (timeout),
-					   pid,
-					   stdin_channel ? &stdin : NULL,
-					   stdout_channel ? &stdout : NULL,
-					   stderr_channel ? &stderr : NULL,
-					   &error);
+	                                   (gchar **) argv,
+	                                   NULL,
+	                                   G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+	                                   tracker_spawn_child_func,
+	                                   GINT_TO_POINTER (timeout),
+	                                   pid,
+	                                   stdin_channel ? &stdin : NULL,
+	                                   stdout_channel ? &stdout : NULL,
+	                                   stderr_channel ? &stderr : NULL,
+	                                   &error);
 
 	if (error) {
 		g_warning ("Could not spawn command:'%s', %s",
-			   argv[0],
-			   error->message);
+		           argv[0],
+		           error->message);
 		g_error_free (error);
 	}
 

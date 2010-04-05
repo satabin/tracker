@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>tracker-thumbnailer</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
+<link rel="up" href="ch04.html" title="Utilities">
+<link rel="prev" href="libtracker-miner-TrackerStorage.html" title="TrackerStorage">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libtracker-miner.html" title="Part I. Overview">
+<link rel="chapter" href="ch01.html" title="Base abstract miner class">
+<link rel="chapter" href="ch02.html" title="Helper implementations">
+<link rel="chapter" href="ch03.html" title="Managing miners">
+<link rel="chapter" href="ch04.html" title="Utilities">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libtracker-miner-TrackerStorage.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Miner Library Reference Manual</th>
+<td> </td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libtracker-miner-tracker-thumbnailer.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libtracker-miner-tracker-thumbnailer.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="tracker-thumbnailer">
+<a name="libtracker-miner-tracker-thumbnailer"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libtracker-miner-tracker-thumbnailer.top_of_page"></a>tracker-thumbnailer</span></h2>
+<p>tracker-thumbnailer — Request the thumbnailer service creates or
+updates thumbnails.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libtracker-miner-tracker-thumbnailer.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;libtracker-miner/tracker-miner.h&gt;
+
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-init" title="tracker_thumbnailer_init ()">tracker_thumbnailer_init</a>            (void);
+void                <a class="link" href="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-shutdown" title="tracker_thumbnailer_shutdown ()">tracker_thumbnailer_shutdown</a>        (void);
+void                <a class="link" href="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-send" title="tracker_thumbnailer_send ()">tracker_thumbnailer_send</a>            (void);
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-move-add" title="tracker_thumbnailer_move_add ()">tracker_thumbnailer_move_add</a>        (const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *from_uri,
+                                                         const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *mime_type,
+                                                         const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *to_uri);
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-remove-add" title="tracker_thumbnailer_remove_add ()">tracker_thumbnailer_remove_add</a>      (const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *uri,
+                                                         const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *mime_type);
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libtracker-miner-tracker-thumbnailer.html#tracker-thumbnailer-cleanup" title="tracker_thumbnailer_cleanup ()">tracker_thumbnailer_cleanup</a>         (const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *uri_prefix);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libtracker-miner-tracker-thumbnailer.description"></a><h2>Description</h2>
+<p>
+This is a convenience API using D-Bus for creating and updating
+thumbnails for files being mined. It is also used to create
+thumbnails for album art found embedded in some medias.
+</p>
+<p>
+This follows the thumbnailer specification:
+http://live.gnome.org/ThumbnailerSpec</p>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libtracker-miner-tracker-thumbnailer.details"></a><h2>Details</h2>
+<div class="refsect2" title="tracker_thumbnailer_init ()">
+<a name="tracker-thumbnailer-init"></a><h3>tracker_thumbnailer_init ()</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            tracker_thumbnailer_init            (void);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_thumbnailer_shutdown ()">
+<a name="tracker-thumbnailer-shutdown"></a><h3>tracker_thumbnailer_shutdown ()</h3>
+<pre class="programlisting">void                tracker_thumbnailer_shutdown        (void);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="tracker_thumbnailer_send ()">
+<a name="tracker-thumbnailer-send"></a><h3>tracker_thumbnailer_send ()</h3>
+<pre class="programlisting">void                tracker_thumbnailer_send            (void);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="tracker_thumbnailer_move_add ()">
+<a name="tracker-thumbnailer-move-add"></a><h3>tracker_thumbnailer_move_add ()</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            tracker_thumbnailer_move_add        (const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *from_uri,
+                                                         const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *mime_type,
+                                                         const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *to_uri);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>from_uri</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mime_type</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>to_uri</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_thumbnailer_remove_add ()">
+<a name="tracker-thumbnailer-remove-add"></a><h3>tracker_thumbnailer_remove_add ()</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            tracker_thumbnailer_remove_add      (const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *uri,
+                                                         const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *mime_type);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mime_type</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_thumbnailer_cleanup ()">
+<a name="tracker-thumbnailer-cleanup"></a><h3>tracker_thumbnailer_cleanup ()</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            tracker_thumbnailer_cleanup         (const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *uri_prefix);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uri_prefix</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

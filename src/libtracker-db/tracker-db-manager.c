@@ -1,18 +1,17 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2008, Nokia (urho.konttori@nokia.com)
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
@@ -25,21 +24,25 @@
 #include <regex.h>
 #include <zlib.h>
 #include <locale.h>
+#include <time.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <fcntl.h>
 
 #include <glib/gstdio.h>
 
-#include <libtracker-common/tracker-field.h>
+#include <libtracker-common/tracker-date-time.h>
 #include <libtracker-common/tracker-file-utils.h>
-#include <libtracker-common/tracker-nfs-lock.h>
-#include <libtracker-common/tracker-ontology.h>
-#include <libtracker-common/tracker-type-utils.h>
 #include <libtracker-common/tracker-utils.h>
 
+#include "tracker-db-journal.h"
 #include "tracker-db-manager.h"
 #include "tracker-db-interface-sqlite.h"
+#include "tracker-db-interface.h"
 
 /* ZLib buffer settings */
-#define ZLIB_BUF_SIZE		      8192
+#define ZLIB_BUF_SIZE                 8192
 
 /* Required minimum space needed to create databases (5Mb) */
 #define TRACKER_DB_MIN_REQUIRED_SPACE 5242880
@@ -47,12 +50,11 @@
 /* Default memory settings for databases */
 #define TRACKER_DB_PAGE_SIZE_DONT_SET -1
 
-/* Size is in bytes and is currently 2Gb */
-#define TRACKER_DB_MAX_FILE_SIZE      2000000000 
-
 /* Set current database version we are working with */
-#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_4
+#define TRACKER_DB_VERSION_NOW        TRACKER_DB_VERSION_14
 #define TRACKER_DB_VERSION_FILE       "db-version.txt"
+
+#define IN_USE_FILENAME               ".meta.isrunning"
 
 typedef enum {
 	TRACKER_DB_LOCATION_DATA_DIR,
@@ -62,31 +64,35 @@ typedef enum {
 
 typedef enum {
 	TRACKER_DB_VERSION_UNKNOWN, /* Unknown */
-	TRACKER_DB_VERSION_1,       /* Version 0.6.6  (before indexer-split) */
-	TRACKER_DB_VERSION_2,       /* Version 0.6.90 (after  indexer-split) */
-	TRACKER_DB_VERSION_3,       /* Version 0.6.91 (stable release) */
-	TRACKER_DB_VERSION_4,       /* Version 0.6.92 (current TRUNK) */
-	TRACKER_DB_VERSION_5        /* Version 0.7    (vstore branch) */
+	TRACKER_DB_VERSION_01,      /* Version 0.6.6  (before indexer-split) */
+	TRACKER_DB_VERSION_02,      /* Version 0.6.90 (after  indexer-split) */
+	TRACKER_DB_VERSION_03,      /* Version 0.6.91 (stable release) */
+	TRACKER_DB_VERSION_04,      /* Version 0.6.92 (current TRUNK) */
+	TRACKER_DB_VERSION_05,      /* Version 0.7    (vstore branch) */
+	TRACKER_DB_VERSION_06,      /* Version 0.7.4  (nothing special) */
+	TRACKER_DB_VERSION_07,      /* Version 0.7.12 (nmo ontology) */
+	TRACKER_DB_VERSION_08,      /* Version 0.7.13 (coalesce & writeback) */
+	TRACKER_DB_VERSION_09,      /* Version 0.7.17 (mlo ontology) */
+	TRACKER_DB_VERSION_10,      /* Version 0.7.20 (nco im ontology) */
+	TRACKER_DB_VERSION_11,      /* Version 0.7.21 (named graphs/localtime) */
+	TRACKER_DB_VERSION_12,      /* Version 0.7.22 (fts-limits branch) */
+	TRACKER_DB_VERSION_13,      /* Version 0.7.28 (RC1 + mto + nco:url) */
+	TRACKER_DB_VERSION_14       /* Version 0.8.0  (first stable release)  */
 } TrackerDBVersion;
 
 typedef struct {
-	TrackerDB	    db;
+	TrackerDB           db;
 	TrackerDBLocation   location;
 	TrackerDBInterface *iface;
-	const gchar	   *file;
-	const gchar	   *name;
-	gchar		   *abs_filename;
-	gint		    cache_size;
-	gint		    page_size;
-	gboolean	    add_functions;
-	gboolean	    attached;
-	gboolean	    is_index;
+	const gchar        *file;
+	const gchar        *name;
+	gchar              *abs_filename;
+	gint                cache_size;
+	gint                page_size;
+	gboolean            attached;
+	gboolean            is_index;
 	guint64             mtime;
 } TrackerDBDefinition;
-
-typedef struct {
-	GString *string;     /* The string we are accumulating */
-} AggregateData;
 
 static TrackerDBDefinition dbs[] = {
 	{ TRACKER_DB_UNKNOWN,
@@ -99,128 +105,58 @@ static TrackerDBDefinition dbs[] = {
 	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  FALSE,
 	  FALSE,
-	  FALSE,
- 	  0 },
-	{ TRACKER_DB_COMMON,
-	  TRACKER_DB_LOCATION_USER_DATA_DIR,
-	  NULL,
-	  "common.db",
-	  "common",
-	  NULL,
-	  32,
-	  TRACKER_DB_PAGE_SIZE_DONT_SET,
-	  FALSE,
-	  FALSE,
-	  FALSE,
- 	  0 },
-	{ TRACKER_DB_CACHE,
-	  TRACKER_DB_LOCATION_SYS_TMP_DIR,
-	  NULL,
-	  "cache.db",
-	  "cache",
-	  NULL,
-	  128,
-	  TRACKER_DB_PAGE_SIZE_DONT_SET,
-	  FALSE,
-	  FALSE,
-	  FALSE,
- 	  0 },
-	{ TRACKER_DB_FILE_METADATA,
+	  0 },
+	{ TRACKER_DB_METADATA,
 	  TRACKER_DB_LOCATION_DATA_DIR,
 	  NULL,
-	  "file-meta.db",
-	  "file-meta",
+	  "meta.db",
+	  "meta",
 	  NULL,
-	  512,
+	  2000,
 	  TRACKER_DB_PAGE_SIZE_DONT_SET,
-	  TRUE,
 	  FALSE,
 	  FALSE,
- 	  0 },
-#ifdef HAVE_SQLITE_FTS
-	{ TRACKER_DB_FILE_FULLTEXT,
+	  0 },
+	{ TRACKER_DB_CONTENTS,
 	  TRACKER_DB_LOCATION_DATA_DIR,
 	  NULL,
-	  "file-fulltext.db",
-	  "file-fulltext",
-	  NULL,
-	  512,
-	  TRACKER_DB_PAGE_SIZE_DONT_SET,
-	  TRUE,
-	  FALSE,
-	  TRUE,
- 	  0 },
-#endif /* HAVE_SQLITE_FTS */
-	{ TRACKER_DB_FILE_CONTENTS,
-	  TRACKER_DB_LOCATION_DATA_DIR,
-	  NULL,
-	  "file-contents.db",
-	  "file-contents",
+	  "contents.db",
+	  "contents",
 	  NULL,
 	  1024,
 	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  FALSE,
 	  FALSE,
-	  FALSE,
- 	  0 },
-	{ TRACKER_DB_EMAIL_METADATA,
+	  0 },
+	{ TRACKER_DB_FULLTEXT,
 	  TRACKER_DB_LOCATION_DATA_DIR,
 	  NULL,
-	  "email-meta.db",
-	  "email-meta",
-	  NULL,
-	  512,
-	  TRACKER_DB_PAGE_SIZE_DONT_SET,
-	  TRUE,
-	  FALSE,
- 	  0 },
-#ifdef HAVE_SQLITE_FTS
-	{ TRACKER_DB_EMAIL_FULLTEXT,
-	  TRACKER_DB_LOCATION_DATA_DIR,
-	  NULL,
-	  "email-fulltext.db",
-	  "email-fulltext",
-	  NULL,
-	  512,
-	  TRACKER_DB_PAGE_SIZE_DONT_SET,
-	  TRUE,
-	  FALSE,
-	  TRUE,
- 	  0 },
-#endif /* HAVE_SQLITE_FTS */
-	{ TRACKER_DB_EMAIL_CONTENTS,
-	  TRACKER_DB_LOCATION_DATA_DIR,
-	  NULL,
-	  "email-contents.db",
-	  "email-contents",
+	  "fulltext.db",
+	  "fulltext",
 	  NULL,
 	  512,
 	  TRACKER_DB_PAGE_SIZE_DONT_SET,
 	  FALSE,
-	  FALSE,
-	  FALSE,
- 	  0 },
+	  TRUE,
+	  0 },
 };
 
-static gboolean            db_exec_no_reply          (TrackerDBInterface *iface,
-						      const gchar        *query,
-						      ...);
-static TrackerDBInterface *db_interface_create       (TrackerDB           db);
-static gboolean            save_pragma_file_defaults (gboolean            safe);
+static gboolean            db_exec_no_reply    (TrackerDBInterface *iface,
+                                                const gchar        *query,
+                                                ...);
+static TrackerDBInterface *db_interface_create (TrackerDB           db);
+static TrackerDBInterface *tracker_db_manager_get_db_interfaces     (gint num, ...);
+static TrackerDBInterface *tracker_db_manager_get_db_interfaces_ro  (gint num, ...);
 
-static gboolean		   initialized;
-static GHashTable	  *prepared_queries;
-static GHashTable         *pragmas;
-static gchar		  *services_dir;
-static gchar		  *sql_dir;
-static gchar		  *config_dir;
-static gchar		  *data_dir;
-static gchar		  *user_data_dir;
-static gchar		  *sys_tmp_dir;
-static gpointer		   db_type_enum_class_pointer;
-static TrackerDBInterface *file_iface;
-static TrackerDBInterface *email_iface;
-static GList              *not_owned_ifaces = NULL;
+static gboolean              initialized;
+static gboolean              locations_initialized;
+static gchar                *sql_dir;
+static gchar                *data_dir = NULL;
+static gchar                *user_data_dir = NULL;
+static gchar                *sys_tmp_dir = NULL;
+static gpointer              db_type_enum_class_pointer;
+static TrackerDBInterface   *resources_iface;
+static TrackerDBManagerFlags old_flags = 0;
 
 static const gchar *
 location_to_directory (TrackerDBLocation location)
@@ -237,153 +173,10 @@ location_to_directory (TrackerDBLocation location)
 	};
 }
 
-static gboolean
-load_pragma_file (const gchar *profile_name)
-{
-	GKeyFile      *key_file = NULL;
-	GError        *error = NULL;
-	GStrv          keys;
-	gchar	      *pragma_file;
-	gint           i;
-
-	if (pragmas) {
-		g_hash_table_unref (pragmas);
-	}
-
-	pragmas = g_hash_table_new_full (g_str_hash,
-					 g_str_equal,
-					 g_free,
-					 g_free);
-
-	key_file = g_key_file_new ();
-	pragma_file = g_build_filename (config_dir, "sqlite-db.pragmas", NULL);
-
-	if (!profile_name) {
-		profile_name = "Safe";
-	}
-
-	g_message ("Loading pragma file:'%s' using profile '%s'",
-		   pragma_file,
-		   profile_name);
-
-	if (!g_key_file_load_from_file (key_file, pragma_file, G_KEY_FILE_NONE, &error)) {
-		g_message ("  Couldn't load pragma file, %s", 
-			    error ? error->message : "no error given");
-
-		g_clear_error (&error);
-		g_free (pragma_file);
-		g_key_file_free (key_file);
-
-		g_message ("  Trying to re-create file with defaults"); 
-
-		save_pragma_file_defaults (TRUE);
-		return load_pragma_file (NULL);
-	}
-
-	if (!g_key_file_has_group (key_file, profile_name)) {
-		g_warning ("  Profile '%s' does not exist, stepping back to 'Safe'", profile_name);
-		profile_name = "Safe";
-	}
-
-	keys = g_key_file_get_keys (key_file, profile_name, NULL, NULL);
-
-	for (i = 0; keys[i]; i++) {
-		gchar *value;
-
-		value = g_key_file_get_string (key_file, profile_name, keys[i], NULL);
-		g_hash_table_insert (pragmas, g_strdup (keys[i]), value);
-
-		g_message ("  Adding pragma '%s' with value '%s'", 
-			   keys[i],
-			   value);
-	}
-
-	g_strfreev (keys);
-
-	g_free (pragma_file);
-	g_key_file_free (key_file);
-
-	return TRUE;
-}
-
-static gboolean
-save_pragma_file_defaults (gboolean safe)
-{
-	GKeyFile      *key_file = NULL;
-	GError        *error = NULL;
-	gchar	      *pragma_file;
-	gchar         *content;
-	const gchar   *group;
-
-	pragma_file = g_build_filename (config_dir, "sqlite-db.pragmas", NULL);
-	key_file = g_key_file_new ();
-
-	g_message ("Saving pragma file:'%s' with defaults using %s values", 
-		   pragma_file,
-		   safe ? "safe" : "fast");
-
-	g_key_file_set_comment (key_file, NULL, NULL,
-				"\n"
-				" There are two groups here, \"Safe\" and \"Fast\".\n"
-				" The \"Safe\" group is the default.\n"
-				"\n"
-				" These are the values which each property can be set to:\n"
-				"\n"
-				"   encoding:      \"UTF-8\", \"UTF-16\", \"UTF-16le\" or \"UTF-16be\"\n"
-				"   journal_mode:  \"OFF\", \"TRUNCATE\", \"PERSIST\", \"MEMORY\" or \"DELETE\"\n"
-				"   synchronous:   \"OFF\", \"NORMAL\", or \"FULL\"\n"
-				"   temp_store:    \"DEFAULT\", \"FILE\", or \"MEMORY\"\n"
-				"   auto_vacuum:   \"NONE\", \"FULL\", or \"INCREMENTAL\"\n"
-				"   count_changes: \"0\" or \"1\"\n",
-				NULL);
-
-	group = "Safe";
-	g_key_file_set_string (key_file, group, "encoding", "\"UTF-8\"");
-	g_key_file_set_string (key_file, group, "journal_mode", "DELETE");
-	g_key_file_set_string (key_file, group, "synchronous", "NORMAL");
-	g_key_file_set_string (key_file, group, "temp_store", "MEMORY");
-	g_key_file_set_string (key_file, group, "auto_vacuum", "NONE");
-	g_key_file_set_string (key_file, group, "count_changes", "0");
-
-	group = "Fast";
-	g_key_file_set_string (key_file, group, "encoding", "\"UTF-8\"");
-	g_key_file_set_string (key_file, group, "journal_mode", "MEMORY");
-	g_key_file_set_string (key_file, group, "synchronous", "OFF");
-	g_key_file_set_string (key_file, group, "temp_store", "MEMORY");
-	g_key_file_set_string (key_file, group, "auto_vacuum", "NONE");
-	g_key_file_set_string (key_file, group, "count_changes", "0");
-
-	content = g_key_file_to_data (key_file, NULL, &error);
-	g_key_file_free (key_file);
-
-	if (error) {
-		g_critical ("Couldn't produce default pragma file, %s", 
-			    error->message);
-		g_clear_error (&error);
-		g_free (pragma_file);
-		return FALSE;
-	}
-
-	if (!g_file_set_contents (pragma_file, content, -1, &error)) {
-		g_critical ("Couldn't write default configuration, %s", 
-			    error->message);
-		g_clear_error (&error);
-		g_free (content);
-		g_free (pragma_file);
-		return FALSE;
-	}
-
-	g_message ("  Written");
-	g_free (content);
-	g_free (pragma_file);
-	
-	return TRUE;
-}
-
 static void
 load_sql_file (TrackerDBInterface *iface,
-	       const gchar	  *file,
-	       const gchar	  *delimiter)
+               const gchar        *file,
+               const gchar        *delimiter)
 {
 	gchar *path, *content, **queries;
 	gint   count;
@@ -397,7 +190,7 @@ load_sql_file (TrackerDBInterface *iface,
 
 	if (!g_file_get_contents (path, &content, NULL, NULL)) {
 		g_critical ("Cannot read SQL file:'%s', please reinstall tracker"
-			    " or check read permissions on the file if it exists", file);
+		            " or check read permissions on the file if it exists", path);
 		g_assert_not_reached ();
 	}
 
@@ -432,314 +225,13 @@ load_sql_file (TrackerDBInterface *iface,
 	g_free (path);
 }
 
-static void
-load_metadata_file (TrackerDBInterface *iface,
-		    const gchar        *filename)
-{
-	GKeyFile      *key_file = NULL;
-	GError        *error = NULL;
-	gchar	      *service_file, *str_id;
-	gchar	     **groups, **keys;
-	TrackerField  *def;
-	gint	       id, i, j;
-
-	g_message ("Loading metadata file '%s'", filename);
-
-	key_file = g_key_file_new ();
-	service_file = g_build_filename (services_dir, filename, NULL);
-
-	if (!g_key_file_load_from_file (key_file, service_file, G_KEY_FILE_NONE, &error)) {
-		g_critical ("Couldn't load service file, %s", 
-			    error ? error->message : "no error given");
-		g_clear_error (&error);
-		g_free (service_file);
-		g_key_file_free (key_file);
-		return;
-	}
-
-	groups = g_key_file_get_groups (key_file, NULL);
-
-	for (i = 0; groups[i]; i++) {
-		def = tracker_ontology_get_field_by_name (groups[i]);
-
-		if (!def) {
-			g_message ("  Adding ontology metadata:'%s'", groups[i]);
-			tracker_db_interface_execute_procedure (iface,
-								NULL,
-								"InsertMetadataType",
-								groups[i],
-								NULL);
-			id = tracker_db_interface_sqlite_get_last_insert_id (TRACKER_DB_INTERFACE_SQLITE (iface));
-		} else {
-			id = atoi (tracker_field_get_id (def));
-			g_error ("Duplicated metadata description %s", groups[i]);
-		}
-
-		str_id = tracker_guint_to_string (id);
-		keys = g_key_file_get_keys (key_file, groups[i], NULL, NULL);
-
-		for (j = 0; keys[j]; j++) {
-			gchar *value, *new_value;
-
-			value = g_key_file_get_locale_string (key_file, groups[i], keys[j], NULL, NULL);
-
-			if (!value) {
-				continue;
-			}
-
-			new_value = tracker_string_boolean_to_string_gint (value);
-			g_free (value);
-
-			if (strcasecmp (keys[j], "Parent") == 0) {
-				tracker_db_interface_execute_procedure (iface,
-									NULL,
-									"InsertMetaDataChildren",
-									str_id,
-									new_value,
-									NULL);
-			} else if (strcasecmp (keys[j], "DataType") == 0) {
-				GEnumValue *enum_value;
-
-				enum_value = g_enum_get_value_by_nick (g_type_class_peek (TRACKER_TYPE_FIELD_TYPE), new_value);
-
-				if (enum_value) {
-					tracker_db_interface_execute_query (iface, NULL,
-									    "update MetaDataTypes set DataTypeID = %d where ID = %d",
-									    enum_value->value, id);
-				} else {
-					g_critical ("Field '%s' doesn't have a valid data type '%s'", groups[i], new_value);
-				}
-			} else {
-				gchar *escaped_value;
-
-				escaped_value = tracker_escape_db_string (new_value, TRUE, FALSE);
-
-				tracker_db_interface_execute_query (iface, NULL,
-								    "update MetaDataTypes set  %s = %s where ID = %d",
-								    keys[j], 
-								    escaped_value, 
-								    id);
-
-				g_free (escaped_value);
-			}
-
-			g_free (new_value);
-		}
-
-		g_free (str_id);
-		g_strfreev (keys);
-	}
-
-	g_strfreev (groups);
-	g_free (service_file);
-	g_key_file_free (key_file);
-}
-
-static void
-load_service_file (TrackerDBInterface *iface,
-		   const gchar	      *filename)
-{
-	TrackerService	*service;
-	GKeyFile	*key_file = NULL;
-	GError          *error = NULL;
-	gchar		*service_file, *str_id;
-	gchar	       **groups, **keys;
-	gint		 i, j, id;
-
-	g_message ("Loading service file '%s'", filename);
-
-	service_file = g_build_filename (services_dir, filename, NULL);
-
-	key_file = g_key_file_new ();
-
-	if (!g_key_file_load_from_file (key_file, service_file, G_KEY_FILE_NONE, &error)) {
-		g_critical ("Couldn't load service file, %s", 
-			    error ? error->message : "no error given");
-		g_clear_error (&error);
-		g_free (service_file);
-		g_key_file_free (key_file);
-		return;
-	}
-
-	groups = g_key_file_get_groups (key_file, NULL);
-
-	for (i = 0; groups[i]; i++) {
-		service = tracker_ontology_get_service_by_name (groups[i]);
-
-		if (!service) {
-			g_message ("Adding ontology service type:'%s'", groups[i]);
-			tracker_db_interface_execute_procedure (iface,
-								NULL,
-								"InsertServiceType",
-								groups[i],
-								NULL);
-			id = tracker_db_interface_sqlite_get_last_insert_id (TRACKER_DB_INTERFACE_SQLITE (iface));
-		} else {
-			id = tracker_service_get_id (service);
-		}
-
-		str_id = tracker_guint_to_string (id);
-
-		keys = g_key_file_get_keys (key_file, groups[i], NULL, NULL);
-
-		for (j = 0; keys[j]; j++) {
-			if (strcasecmp (keys[j], "TabularMetadata") == 0) {
-				gchar **tab_array;
-				gint	k;
-
-				tab_array = g_key_file_get_string_list (key_file,
-									groups[i],
-									keys[j],
-									NULL,
-									NULL);
-
-				for (k = 0; tab_array[k]; k++) {
-					tracker_db_interface_execute_procedure (iface,
-										NULL,
-										"InsertServiceTabularMetadata",
-										str_id,
-										tab_array[k],
-										NULL);
-				}
-
-				g_strfreev (tab_array);
-			} else if (strcasecmp (keys[j], "TileMetadata") == 0) {
-				gchar **tab_array;
-				gint	k;
-
-				tab_array = g_key_file_get_string_list (key_file,
-									groups[i],
-									keys[j],
-									NULL,
-									NULL);
-
-				for (k = 0; tab_array[k]; k++) {
-					tracker_db_interface_execute_procedure (iface,
-										NULL,
-										"InsertServiceTileMetadata",
-										str_id,
-										tab_array[k],
-										NULL);
-				}
-
-				g_strfreev (tab_array);
-			} else if (strcasecmp (keys[j], "Mimes") == 0) {
-				gchar **tab_array;
-				gint	k;
-
-				tab_array = g_key_file_get_string_list (key_file,
-									groups[i],
-									keys[j],
-									NULL,
-									NULL);
-
-				for (k = 0; tab_array[k]; k++) {
-					tracker_db_interface_execute_procedure (iface, NULL,
-										"InsertMimes",
-										tab_array[k],
-										NULL);
-					tracker_db_interface_execute_query (iface,
-									    NULL,
-									    "update FileMimes set ServiceTypeID = %s where Mime = '%s'",
-									    str_id,
-									    tab_array[k]);
-				}
-
-				g_strfreev (tab_array);
-			} else if (strcasecmp (keys[j], "MimePrefixes") == 0) {
-				gchar **tab_array;
-				gint	k;
-
-				tab_array = g_key_file_get_string_list (key_file,
-									groups[i],
-									keys[j],
-									NULL,
-									NULL);
-
-				for (k = 0; tab_array[k]; k++) {
-					tracker_db_interface_execute_procedure (iface,
-										NULL,
-										"InsertMimePrefixes",
-										tab_array[k],
-										NULL);
-					tracker_db_interface_execute_query (iface,
-									    NULL,
-									    "update FileMimePrefixes set ServiceTypeID = %s where MimePrefix = '%s'",
-									    str_id,
-									    tab_array[k]);
-				}
-
-				g_strfreev (tab_array);
-			} else {
-				gchar *value, *new_value, *escaped_value;
-
-				value = g_key_file_get_string (key_file, groups[i], keys[j], NULL);
-				new_value = tracker_string_boolean_to_string_gint (value);
-				escaped_value = tracker_escape_db_string (new_value, TRUE, FALSE);
-
-				/* Special case "Parent */
-				if (g_ascii_strcasecmp (keys[j], "parent") == 0) {
-					TrackerDBResultSet *result_set;
-					gchar *query;
-
-					query = g_strdup_printf ("SELECT TypeId FROM ServiceTypes WHERE TypeName = %s",
-								 escaped_value);
-					result_set = tracker_db_interface_execute_query (iface, NULL, "%s", query);
-					g_free (query);
-
-					if (result_set) {
-						GValue value = {0, };
-						GValue transform = {0, };
-
-						g_value_init (&transform, G_TYPE_STRING);
-						
-						_tracker_db_result_set_get_value (result_set, 0, &value);
-						if (g_value_transform (&value, &transform)) {
-							tracker_db_interface_execute_query (iface,
-											    NULL,
-											    "UPDATE ServiceTypes SET ParentId = '%s' WHERE TypeID = %s",
-											    g_value_get_string (&transform),
-											    str_id);
-
-						}
-						
-						g_value_unset (&value);
-						g_value_unset (&transform);
-						g_object_unref (result_set);
-					}
-				}
-				
-				tracker_db_interface_execute_query (iface,
-								    NULL,
-								    "UPDATE ServiceTypes SET %s = %s WHERE TypeID = %s",
-								    keys[j],
-								    escaped_value,
-								    str_id);
-
-				g_free (escaped_value);
-				g_free (value);
-				g_free (new_value);
-			}
-		}
-
-		g_free (str_id);
-		g_strfreev (keys);
-	}
-
-	g_key_file_free (key_file);
-	g_strfreev (groups);
-	g_free (service_file);
-}
-
 static gboolean
 db_exec_no_reply (TrackerDBInterface *iface,
-		  const gchar	     *query,
-		  ...)
+                  const gchar        *query,
+                  ...)
 {
 	TrackerDBResultSet *result_set;
-	va_list		    args;
-
-	tracker_nfs_lock_obtain ();
+	va_list                     args;
 
 	va_start (args, query);
 	result_set = tracker_db_interface_execute_vquery (iface, NULL, query, args);
@@ -749,761 +241,25 @@ db_exec_no_reply (TrackerDBInterface *iface,
 		g_object_unref (result_set);
 	}
 
-	tracker_nfs_lock_release ();
-
 	return TRUE;
 }
 
-
-static gboolean
-load_prepared_queries (void)
+TrackerDBManagerFlags
+tracker_db_manager_get_flags (void)
 {
-	GTimer	    *t;
-	GError	    *error = NULL;
-	GMappedFile *mapped_file;
-	GStrv	     queries;
-	gchar	    *filename;
-	gdouble      secs;
-
-	if (prepared_queries) {
-		g_hash_table_unref (prepared_queries);
-	}
-
-	prepared_queries = g_hash_table_new_full (g_str_hash,
-						  g_str_equal,
-						  g_free,
-						  g_free);
-
-	g_message ("Loading prepared queries...");
-
-	filename = g_build_filename (sql_dir, "sqlite-stored-procs.sql", NULL);
-
-	t = g_timer_new ();
-
-	mapped_file = g_mapped_file_new (filename, FALSE, &error);
-
-	if (error || !mapped_file) {
-		g_warning ("Could not get contents of SQL file:'%s', %s",
-			   filename,
-			   error ? error->message : "no error given");
-
-		if (mapped_file) {
-			g_mapped_file_free (mapped_file);
-		}
-
-		g_timer_destroy (t);
-		g_free (filename);
-
-		return FALSE;
-	}
-
-	g_message ("Loaded prepared queries file:'%s' size:%" G_GSIZE_FORMAT " bytes",
-		   filename,
-		   g_mapped_file_get_length (mapped_file));
-
-	queries = g_strsplit (g_mapped_file_get_contents (mapped_file), "\n", -1);
-	g_free (filename);
-
-	if (queries) {
-		GStrv p;
-		gchar *start;
-		gchar *end;
-
-		start = NULL;
-		end = NULL;
-
-		for (p = queries; *p; p++) {
-			GStrv        details;
-			gchar       *line;
-			const gchar *str;
-
-			line = NULL;
-
-			/* Check for comments */
-			if (start) {
-				if ((str = strstr (*p, "*/")) != NULL) {
-					str += 2;
-					end = g_strndup (str, strlen (*p) - strlen (str));
-				} else {
-					continue;
-				}
-			} else {
-				if ((str = strstr (*p, "/*")) != NULL) {
-					start = g_strndup (*p, str - *p);
-
-					if ((str = strstr (*p, "*/")) != NULL) {
-						str += 2;
-						end = g_strndup (str, strlen (*p) - strlen (str));
-					} else {
-						continue;
-					}
-				} 			
-			}
-
-			/* Remove comments */
-			if (start && end) {
-				if (start[0] != '\0' && end[0] != '\0') {
-					line = g_strconcat (start, end, NULL);
-				}
-
-				g_free (start);
-				g_free (end);
-
-				start = NULL;
-				end = NULL;
-
-				if (!line) {
-					continue;
-				}
-			} else {
-				line = *p;
-			}
-
-			/* Check for comments and empty lines */
-			if (line[0] == '#' || line[0] == '\0') {
-				if (line != *p) {
-					g_free (line);
-				}
-
-				continue;
-			}
-
-			/* Continue processing */
-			details = g_strsplit (line, " ", 2);
-
-			if (line != *p) {
-				g_free (line);
-			}
-
-			if (!details) {
-				continue;
-			} 
-			else if (!details[0] || !details[1]) {
-				g_strfreev (details);
-				continue;
-			}
-
-			g_message ("  Adding query:'%s'", g_strstrip (details[0]));
-
-			g_hash_table_insert (prepared_queries,
-					     g_strdup (g_strstrip (details[0])),
-					     g_strdup (g_strstrip (details[1])));
-			g_strfreev (details);
-		}
-
-		g_strfreev (queries);
-	}
-
-	secs = g_timer_elapsed (t, NULL);
-	g_timer_destroy (t);
-	g_mapped_file_free (mapped_file);
-
-	g_message ("Found %d prepared queries in %4.4f seconds",
-		   g_hash_table_size (prepared_queries),
-		   secs);
-
-	return TRUE;
-}
-
-static TrackerField *
-db_row_to_field_def (TrackerDBResultSet *result_set)
-{
-	TrackerField	 *field_def;
-	TrackerFieldType  field_type;
-	gchar		 *id_str, *field_name, *name;
-	gint		  weight, id;
-	gboolean	  embedded, multiple_values, delimited, filtered, store_metadata;
-
-	field_def = tracker_field_new ();
-
-	tracker_db_result_set_get (result_set,
-				   0, &id,
-				   1, &name,
-				   2, &field_type,
-				   3, &field_name,
-				   4, &weight,
-				   5, &embedded,
-				   6, &multiple_values,
-				   7, &delimited,
-				   8, &filtered,
-				   9, &store_metadata,
-				   -1);
-
-	id_str = tracker_gint_to_string (id);
-
-	tracker_field_set_id (field_def, id_str);
-	tracker_field_set_name (field_def, name);
-	tracker_field_set_data_type (field_def, field_type);
-	tracker_field_set_field_name (field_def, field_name);
-	tracker_field_set_weight (field_def, weight);
-	tracker_field_set_embedded (field_def, embedded);
-	tracker_field_set_multiple_values (field_def, multiple_values);
-	tracker_field_set_delimited (field_def, delimited);
-	tracker_field_set_filtered (field_def, filtered);
-	tracker_field_set_store_metadata (field_def, store_metadata);
-
-	g_free (id_str);
-	g_free (field_name);
-	g_free (name);
-
-	return field_def;
-}
-
-static TrackerService *
-db_row_to_service (TrackerDBResultSet *result_set)
-{
-	TrackerService *service;
-	GSList	       *new_list = NULL;
-	gint		id, i;
-	gchar	       *name, *parent, *content_metadata, *property_prefix = NULL;
-	gboolean	enabled, embedded, has_metadata, has_fulltext;
-	gboolean	has_thumbs, show_service_files, show_service_directories;
-
-	service = tracker_service_new ();
-
-	tracker_db_result_set_get (result_set,
-				   0, &id,
-				   1, &name,
-				   2, &parent,
-				   3, &property_prefix,
-				   4, &enabled,
-				   5, &embedded,
-				   6, &has_metadata,
-				   7, &has_fulltext,
-				   8, &has_thumbs,
-				   9, &content_metadata,
-				   11, &show_service_files,
-				   12, &show_service_directories,
-				   -1);
-
-	tracker_service_set_id (service, id);
-	tracker_service_set_name (service, name);
-	tracker_service_set_parent (service, parent);
-	tracker_service_set_property_prefix (service, property_prefix);
-	tracker_service_set_enabled (service, enabled);
-	tracker_service_set_embedded (service, embedded);
-	tracker_service_set_has_metadata (service, has_metadata);
-	tracker_service_set_has_full_text (service, has_fulltext);
-	tracker_service_set_has_thumbs (service, has_thumbs);
-	tracker_service_set_content_metadata (service, content_metadata);
-
-	tracker_service_set_show_service_files (service, show_service_files);
-	tracker_service_set_show_service_directories (service, show_service_directories);
-
-	for (i = 13; i < 24; i++) {
-		gchar *metadata;
-
-		tracker_db_result_set_get (result_set, i, &metadata, -1);
-
-		if (metadata) {
-			new_list = g_slist_prepend (new_list, metadata);
-		}
-	}
-
-	/* FIXME: is this necessary?
-	 * This values are set as key metadata in default.service already
-	 */
-#if 0
-	/* Hack to prevent db change late in the cycle, check the
-	 * service name matches "Applications", then add some voodoo.
-	 */
-	if (strcmp (name, "Applications") == 0) {
-		/* These strings should be definitions at the top of
-		 * this file somewhere really.
-		 */
-		new_list = g_slist_prepend (new_list, g_strdup ("App:DisplayName"));
-		new_list = g_slist_prepend (new_list, g_strdup ("App:Exec"));
-		new_list = g_slist_prepend (new_list, g_strdup ("App:Icon"));
-	}
-#endif
-
-	new_list = g_slist_reverse (new_list);
-
-	tracker_service_set_key_metadata (service, new_list);
-	g_slist_foreach (new_list, (GFunc) g_free, NULL);
-	g_slist_free (new_list);
-
-	g_free (name);
-	g_free (parent);
-	g_free (property_prefix);
-	g_free (content_metadata);
-
-	return service;
-}
-
-static GSList *
-db_mime_query (TrackerDBInterface *iface,
-	       const gchar	  *stored_proc,
-	       gint		   service_id)
-{
-	TrackerDBResultSet *result_set;
-	GSList		   *result = NULL;
-	gchar		   *service_id_str;
-
-	service_id_str = g_strdup_printf ("%d", service_id);
-
-	result_set = tracker_db_interface_execute_procedure (iface,
-							     NULL,
-							     stored_proc,
-							     service_id_str,
-							     NULL);
-	g_free (service_id_str);
-
-	if (result_set) {
-		gchar	 *str;
-		gboolean  valid = TRUE;
-
-		while (valid) {
-			tracker_db_result_set_get (result_set, 0, &str, -1);
-			result = g_slist_prepend (result, str);
-			valid = tracker_db_result_set_iter_next (result_set);
-		}
-
-		g_object_unref (result_set);
-	}
-
-	return result;
-}
-
-static GSList *
-db_get_mimes_for_service_id (TrackerDBInterface *iface,
-			     gint		 service_id)
-{
-	return db_mime_query (iface, "GetMimeForServiceId", service_id);
-}
-
-static GSList *
-db_get_mime_prefixes_for_service_id (TrackerDBInterface *iface,
-				     gint		 service_id)
-{
-	return db_mime_query (iface, "GetMimePrefixForServiceId", service_id);
-}
-
-
-/* Converts date/time in UTC format to ISO 8160 standardised format for display */
-static GValue
-function_date_to_str (TrackerDBInterface *interface,
-		      gint		  argc,
-		      GValue		  values[])
-{
-	GValue	result = { 0, };
-	gchar  *str;
-
-	str = tracker_date_to_string (g_value_get_double (&values[0]));
-	g_value_init (&result, G_TYPE_STRING);
-	g_value_take_string (&result, str);
-
-	return result;
-}
-
-static GValue
-function_regexp (TrackerDBInterface *interface,
-		 gint		     argc,
-		 GValue		     values[])
-{
-	GValue	result = { 0, };
-	regex_t	regex;
-	int	ret;
-
-	if (argc != 2) {
-		g_critical ("Invalid argument count");
-		return result;
-	}
-
-	ret = regcomp (&regex,
-		       g_value_get_string (&values[0]),
-		       REG_EXTENDED | REG_NOSUB);
-
-	if (ret != 0) {
-		g_critical ("Error compiling regular expression");
-		return result;
-	}
-
-	ret = regexec (&regex,
-		       g_value_get_string (&values[1]),
-		       0, NULL, 0);
-
-	g_value_init (&result, G_TYPE_INT);
-	g_value_set_int (&result, (ret == REG_NOMATCH) ? 0 : 1);
-	regfree (&regex);
-
-	return result;
-}
-
-static void
-function_group_concat_step (TrackerDBInterface *interface,
-			    void               *aggregate_context,
-			    gint		argc,
-			    GValue		values[])
-{
-	AggregateData *p;
-
-	g_return_if_fail (argc == 1);
-
-	p = aggregate_context;
-
-	if (!p->string) {
-		p->string = g_string_new ("");
-	} else {
-		p->string = g_string_append (p->string, "|");
-	}
-	
-	if (G_VALUE_HOLDS_STRING (&values[0])) {
-		p->string = g_string_append (p->string, g_value_get_string (&values[0]));
-	}
-}
-
-static GValue
-function_group_concat_final (TrackerDBInterface *interface,
-			     void               *aggregate_context)
-{
-	GValue result = { 0, };
-	AggregateData *p;
-
-	p = aggregate_context;
-
-	g_value_init (&result, G_TYPE_STRING);
-	g_value_set_string (&result, p->string->str);
-
-	g_string_free (p->string, TRUE);
-
-	return result;
-}
-
-static GValue
-function_get_service_name (TrackerDBInterface *interface,
-			   gint		       argc,
-			   GValue	       values[])
-{
-	GValue result = { 0, };
-	const gchar *str;
-
-	str = tracker_ontology_get_service_by_id (g_value_get_int (&values[0]));
-	g_value_init (&result, G_TYPE_STRING);
-	g_value_set_string (&result, str);
-
-	return result;
-}
-
-static GValue
-function_get_service_type (TrackerDBInterface *interface,
-			   gint		       argc,
-			   GValue	       values[])
-{
-	GValue result = { 0, };
-	gint   id;
-
-	id = tracker_ontology_get_service_id_by_name (g_value_get_string (&values[0]));
-	g_value_init (&result, G_TYPE_INT);
-	g_value_set_int (&result, id);
-
-	return result;
-}
-
-static GValue
-function_get_max_service_type (TrackerDBInterface *interface,
-			       gint		   argc,
-			       GValue		   values[])
-{
-	GValue result = { 0, };
-	gint   id;
-
-	id = tracker_ontology_get_service_id_by_name (g_value_get_string (&values[0]));
-	g_value_init (&result, G_TYPE_INT);
-	g_value_set_int (&result, id);
-
-	return result;
-}
-
-static gchar *
-function_uncompress_string (const gchar *ptr,
-			    gint	 size,
-			    gint	*uncompressed_size)
-{
-	z_stream       zs;
-	gchar	      *buf, *swap;
-	unsigned char  obuf[ZLIB_BUF_SIZE];
-	gint	       rv, asiz, bsiz, osiz;
-
-	zs.zalloc = Z_NULL;
-	zs.zfree = Z_NULL;
-	zs.opaque = Z_NULL;
-
-	if (inflateInit2 (&zs, 15) != Z_OK) {
-		return NULL;
-	}
-
-	asiz = size * 2 + 16;
-
-	if (asiz < ZLIB_BUF_SIZE) {
-		asiz = ZLIB_BUF_SIZE;
-	}
-
-	if (!(buf = malloc (asiz))) {
-		inflateEnd (&zs);
-		return NULL;
-	}
-
-	bsiz = 0;
-	zs.next_in = (unsigned char *)ptr;
-	zs.avail_in = size;
-	zs.next_out = obuf;
-	zs.avail_out = ZLIB_BUF_SIZE;
-
-	while ((rv = inflate (&zs, Z_NO_FLUSH)) == Z_OK) {
-		osiz = ZLIB_BUF_SIZE - zs.avail_out;
-
-		if (bsiz + osiz >= asiz) {
-			asiz = asiz * 2 + osiz;
-
-			if (!(swap = realloc (buf, asiz))) {
-				free (buf);
-				inflateEnd (&zs);
-				return NULL;
-			}
-
-			buf = swap;
-		}
-
-		memcpy (buf + bsiz, obuf, osiz);
-		bsiz += osiz;
-		zs.next_out = obuf;
-		zs.avail_out = ZLIB_BUF_SIZE;
-	}
-
-	if (rv != Z_STREAM_END) {
-		free (buf);
-		inflateEnd (&zs);
-		return NULL;
-	}
-	osiz = ZLIB_BUF_SIZE - zs.avail_out;
-
-	if (bsiz + osiz >= asiz) {
-		asiz = asiz * 2 + osiz;
-
-		if (!(swap = realloc (buf, asiz))) {
-			free (buf);
-			inflateEnd (&zs);
-			return NULL;
-		}
-
-		buf = swap;
-	}
-
-	memcpy (buf + bsiz, obuf, osiz);
-	bsiz += osiz;
-	buf[bsiz] = '\0';
-	*uncompressed_size = bsiz;
-	inflateEnd (&zs);
-
-	return buf;
-}
-
-static GByteArray *
-function_compress_string (const gchar *text)
-{
-	GByteArray *array;
-	z_stream zs;
-	gchar *buf, *swap;
-	guchar obuf[ZLIB_BUF_SIZE];
-	gint rv, asiz, bsiz, osiz, size;
-
-	size = strlen (text);
-
-	zs.zalloc = Z_NULL;
-	zs.zfree = Z_NULL;
-	zs.opaque = Z_NULL;
-
-	if (deflateInit2 (&zs, 6, Z_DEFLATED, 15, 6, Z_DEFAULT_STRATEGY) != Z_OK) {
-		return NULL;
-	}
-
-	asiz = size + 16;
-
-	if (asiz < ZLIB_BUF_SIZE) {
-		asiz = ZLIB_BUF_SIZE;
-	}
-
-	if (!(buf = malloc (asiz))) {
-		deflateEnd (&zs);
-		return NULL;
-	}
-
-	bsiz = 0;
-	zs.next_in = (unsigned char *) text;
-	zs.avail_in = size;
-	zs.next_out = obuf;
-	zs.avail_out = ZLIB_BUF_SIZE;
-
-	while ((rv = deflate (&zs, Z_FINISH)) == Z_OK) {
-		osiz = ZLIB_BUF_SIZE - zs.avail_out;
-
-		if (bsiz + osiz > asiz) {
-			asiz = asiz * 2 + osiz;
-
-			if (!(swap = realloc (buf, asiz))) {
-				free (buf);
-				deflateEnd (&zs);
-				return NULL;
-			}
-
-			buf = swap;
-		}
-
-		memcpy (buf + bsiz, obuf, osiz);
-		bsiz += osiz;
-		zs.next_out = obuf;
-		zs.avail_out = ZLIB_BUF_SIZE;
-	}
-
-	if (rv != Z_STREAM_END) {
-		free (buf);
-		deflateEnd (&zs);
-		return NULL;
-	}
-
-	osiz = ZLIB_BUF_SIZE - zs.avail_out;
-
-	if (bsiz + osiz + 1 > asiz) {
-		asiz = asiz * 2 + osiz;
-
-		if (!(swap = realloc (buf, asiz))) {
-			free (buf);
-			deflateEnd (&zs);
-			return NULL;
-		}
-
-		buf = swap;
-	}
-
-	memcpy (buf + bsiz, obuf, osiz);
-	bsiz += osiz;
-	buf[bsiz] = '\0';
-
-	array = g_byte_array_new ();
-	g_byte_array_append (array, (const guint8 *) buf, bsiz);
-
-	g_free (buf);
-
-	deflateEnd (&zs);
-
-	return array;
-}
-
-static GValue
-function_uncompress (TrackerDBInterface *interface,
-		     gint		 argc,
-		     GValue		 values[])
-{
-	GByteArray *array;
-	GValue	    result = { 0, };
-	gchar	   *output;
-	gint	    len;
-
-	array = g_value_get_boxed (&values[0]);
-
-	if (!array) {
-		return result;
-	}
-
-	output = function_uncompress_string ((const gchar *) array->data,
-					     array->len,
-					     &len);
-
-	if (!output) {
-		g_warning ("Uncompress failed");
-		return result;
-	}
-
-	g_value_init (&result, G_TYPE_STRING);
-	g_value_take_string (&result, output);
-
-	return result;
-}
-
-static GValue
-function_compress (TrackerDBInterface *interface,
-		   gint		       argc,
-		   GValue	       values[])
-{
-	GByteArray *array;
-	GValue result = { 0, };
-	const gchar *text;
-
-	text = g_value_get_string (&values[0]);
-
-	array = function_compress_string (text);
-
-	if (!array) {
-		g_warning ("Compress failed");
-		return result;
-	}
-
-	g_value_init (&result, TRACKER_TYPE_DB_BLOB);
-	g_value_take_boxed (&result, array);
-
-	return result;
-}
-
-static GValue
-function_replace (TrackerDBInterface *interface,
-		  gint		      argc,
-		  GValue	      values[])
-{
-	GValue result = { 0, };
-	gchar *str;
-
-	str = tracker_string_replace (g_value_get_string (&values[0]),
-				      g_value_get_string (&values[1]),
-				      g_value_get_string (&values[2]));
-
-	g_value_init (&result, G_TYPE_STRING);
-	g_value_take_string (&result, str);
-
-	return result;
-}
-
-static GValue
-function_collate_key (TrackerDBInterface *interface,
-		      gint                argc,
-		      GValue              values[])
-{
-	GValue result = { 0 };
-	gchar *collate_key;
-
-	collate_key = g_utf8_collate_key_for_filename (g_value_get_string (&values[0]), -1);
-
-	g_value_init (&result, G_TYPE_STRING);
-	g_value_take_string (&result, collate_key);
-
-	return result;
+	return old_flags;
 }
 
 static void
 db_set_params (TrackerDBInterface *iface,
-	       gint		   cache_size,
-	       gint		   page_size,
-	       gboolean		   add_functions)
+               gint                cache_size,
+               gint                page_size)
 {
-	GHashTableIter  iter;
-	gpointer        key, value;
-
-	if (pragmas) {
-		g_hash_table_iter_init (&iter, pragmas);
-		while (g_hash_table_iter_next (&iter, &key, &value)) {
-			TrackerDBResultSet *result_set;
-
-			result_set = tracker_db_interface_execute_query (iface,
-									 NULL,
-									 "PRAGMA %s = %s;",
-									 (const gchar*) key,
-									 (const gchar*) value);
-
-			if (result_set) {
-				g_object_unref (result_set);
-			}
-		}
-	}
+	tracker_db_interface_execute_query (iface, NULL, "PRAGMA synchronous = OFF;");
+	tracker_db_interface_execute_query (iface, NULL, "PRAGMA count_changes = 0;");
+	tracker_db_interface_execute_query (iface, NULL, "PRAGMA temp_store = FILE;");
+	tracker_db_interface_execute_query (iface, NULL, "PRAGMA encoding = \"UTF-8\"");
+	tracker_db_interface_execute_query (iface, NULL, "PRAGMA auto_vacuum = 0;");
 
 	if (page_size != TRACKER_DB_PAGE_SIZE_DONT_SET) {
 		g_message ("  Setting page size to %d", page_size);
@@ -1513,164 +269,13 @@ db_set_params (TrackerDBInterface *iface,
 	tracker_db_interface_execute_query (iface, NULL, "PRAGMA cache_size = %d", cache_size);
 	g_message ("  Setting cache size to %d", cache_size);
 
-	if (add_functions) {
-		g_message ("  Adding functions (FormatDate, etc)");
-
-		/* Create user defined functions that can be used in sql */
-		tracker_db_interface_sqlite_create_function (iface,
-							     "FormatDate",
-							     function_date_to_str,
-							     1);
-		tracker_db_interface_sqlite_create_function (iface,
-							     "GetServiceName",
-							     function_get_service_name,
-							     1);
-		tracker_db_interface_sqlite_create_function (iface,
-							     "GetServiceTypeID",
-							     function_get_service_type,
-							     1);
-		tracker_db_interface_sqlite_create_function (iface,
-							     "GetMaxServiceTypeID",
-							     function_get_max_service_type,
-							     1);
-		tracker_db_interface_sqlite_create_function (iface,
-							     "REGEXP",
-							     function_regexp,
-							     2);
-
-		tracker_db_interface_sqlite_create_function (iface,
-							     "uncompress",
-							     function_uncompress,
-							     1);
-		tracker_db_interface_sqlite_create_function (iface,
-							     "compress",
-							     function_compress,
-							     1);
-		tracker_db_interface_sqlite_create_function (iface,
-							     "replace",
-							     function_replace,
-							     3);
-		
-		tracker_db_interface_sqlite_create_aggregate (iface,
-							      "group_concat",
-							      function_group_concat_step,
-							      1,
-							      function_group_concat_final,
-							      sizeof(AggregateData));
-
-		tracker_db_interface_sqlite_create_function (iface,
-							     "CollateKey",
-							     function_collate_key,
-							     1);
-	}
 }
 
-static void
-db_get_static_data (TrackerDBInterface *iface)
-{
-	TrackerDBResultSet *result_set;
-
-	/* Get static metadata info */
-	result_set = tracker_db_interface_execute_procedure (iface,
-							     NULL,
-							     "GetMetadataTypes",
-							     NULL);
-
-	if (result_set) {
-		gboolean valid = TRUE;
-		gint	 id;
-
-		while (valid) {
-			TrackerDBResultSet *result_set2;
-			TrackerField	   *def;
-			GSList		   *child_ids = NULL;
-
-			def = db_row_to_field_def (result_set);
-
-			result_set2 = tracker_db_interface_execute_procedure (iface,
-									      NULL,
-									      "GetMetadataAliases",
-									      tracker_field_get_id (def),
-									      NULL);
-
-			if (result_set2) {
-				valid = TRUE;
-
-				while (valid) {
-					tracker_db_result_set_get (result_set2, 1, &id, -1);
-					child_ids = g_slist_prepend (child_ids,
-								     tracker_gint_to_string (id));
-
-					valid = tracker_db_result_set_iter_next (result_set2);
-				}
-
-				tracker_field_set_child_ids (def, child_ids);
-				g_object_unref (result_set2);
-
-				g_slist_foreach (child_ids, (GFunc) g_free, NULL);
-				g_slist_free (child_ids);
-			}
-
-			tracker_ontology_field_add (def);
-			g_object_unref (def);
-
-			valid = tracker_db_result_set_iter_next (result_set);
-		}
-
-		g_object_unref (result_set);
-	}
-
-	/* Get static service info */
-	result_set = tracker_db_interface_execute_procedure (iface,
-							     NULL,
-							     "GetAllServices",
-							     NULL);
-
-	if (result_set) {
-		gboolean valid = TRUE;
-
-		while (valid) {
-			TrackerService *service;
-			GSList	       *mimes, *mime_prefixes;
-			const gchar    *name;
-			gint		id;
-
-			service = db_row_to_service (result_set);
-
-			if (!service) {
-				continue;
-			}
-
-			id = tracker_service_get_id (service);
-			name = tracker_service_get_name (service);
-
-			mimes = db_get_mimes_for_service_id (iface, id);
-			mime_prefixes = db_get_mime_prefixes_for_service_id (iface, id);
-
-			g_message ("Loading ontology service:'%s' with id:%d and mimes:%d",
-				   name,
-				   id,
-				   g_slist_length (mimes));
-
-			tracker_ontology_service_add (service,
-						      mimes,
-						      mime_prefixes);
-
-			g_slist_free (mimes);
-			g_slist_free (mime_prefixes);
-			g_object_unref (service);
-
-			valid = tracker_db_result_set_iter_next (result_set);
-		}
-
-		g_object_unref (result_set);
-	}
-}
 
 static const gchar *
 db_type_to_string (TrackerDB db)
 {
-	GType	    type;
+	GType       type;
 	GEnumClass *enum_class;
 	GEnumValue *enum_value;
 
@@ -1687,10 +292,10 @@ db_type_to_string (TrackerDB db)
 
 static TrackerDBInterface *
 db_interface_get (TrackerDB  type,
-		  gboolean  *create)
+                  gboolean  *create)
 {
 	TrackerDBInterface *iface;
-	const gchar	   *path;
+	const gchar        *path;
 
 	path = dbs[type].abs_filename;
 
@@ -1701,230 +306,68 @@ db_interface_get (TrackerDB  type,
 	}
 
 	g_message ("%s database... '%s' (%s)",
-		   *create ? "Creating" : "Loading",
-		   path,
-		   db_type_to_string (type));
+	           *create ? "Creating" : "Loading",
+	           path,
+	           db_type_to_string (type));
 
 	iface = tracker_db_interface_sqlite_new (path);
 
-	tracker_db_interface_set_procedure_table (iface,
-						  prepared_queries);
-
 	db_set_params (iface,
-		       dbs[type].cache_size,
-		       dbs[type].page_size,
-		       dbs[type].add_functions);
+	               dbs[type].cache_size,
+	               dbs[type].page_size);
 
 	return iface;
 }
 
 static TrackerDBInterface *
-db_interface_get_common (void)
+db_interface_get_fulltext (void)
 {
 	TrackerDBInterface *iface;
-	gboolean	    create;
+	gboolean            create;
 
-	iface = db_interface_get (TRACKER_DB_COMMON, &create);
+	iface = db_interface_get (TRACKER_DB_FULLTEXT, &create);
+
+	return iface;
+}
+
+static TrackerDBInterface *
+db_interface_get_contents (void)
+{
+	TrackerDBInterface *iface;
+	gboolean            create;
+
+	iface = db_interface_get (TRACKER_DB_CONTENTS, &create);
 
 	if (create) {
-		GDir        *services;
-		const gchar *conf_file;
+		tracker_db_interface_start_transaction (iface);
+		load_sql_file (iface, "sqlite-contents.sql", NULL);
+		tracker_db_interface_end_db_transaction (iface);
+	}
 
+	return iface;
+}
+
+
+
+static TrackerDBInterface *
+db_interface_get_metadata (void)
+{
+	TrackerDBInterface *iface;
+	gboolean            create;
+
+	iface = db_interface_get (TRACKER_DB_METADATA, &create);
+
+	if (create) {
 		tracker_db_interface_start_transaction (iface);
 
 		/* Create tables */
 		load_sql_file (iface, "sqlite-tracker.sql", NULL);
-		load_sql_file (iface, "sqlite-metadata.sql", NULL);
-		load_sql_file (iface, "sqlite-service-types.sql", NULL);
 
-		/*
-		 * Loading .service and .metadata files. "default." first because
-		 * contain the parent categories. 
-		 */
-		load_service_file (iface, "default.service");
-		load_metadata_file (iface, "default.metadata");
-
-		services = g_dir_open (services_dir, 0, NULL);
-
-		conf_file = g_dir_read_name (services);
-
-		while (conf_file) {
-			if (!strcmp (conf_file, "default.service") ||
-			    !strcmp (conf_file, "default.metadata")) {
-				conf_file = g_dir_read_name (services);
-				continue;
-			}
-
-			if (g_str_has_suffix (conf_file, ".service")) {
-				load_service_file (iface, conf_file);
-			}
-
-			if (g_str_has_suffix (conf_file, ".metadata")) {
-				load_metadata_file (iface, conf_file);
-			}
-
-			conf_file = g_dir_read_name (services);
-		}
-
-		g_dir_close (services);
-
-		tracker_db_interface_end_transaction (iface);
-	}
-
-	/* Load static data into tracker ontology */
-	db_get_static_data (iface);
-
-	return iface;
-}
-
-static TrackerDBInterface *
-db_interface_get_cache (void)
-{
-	TrackerDBInterface *iface;
-	gboolean	    create;
-
-	iface = db_interface_get (TRACKER_DB_CACHE, &create);
-
-	if (create) {
-		tracker_db_interface_start_transaction (iface);
-		load_sql_file (iface, "sqlite-cache.sql", NULL);
-		tracker_db_interface_end_transaction (iface);
+		tracker_db_interface_end_db_transaction (iface);
 	}
 
 	return iface;
 }
-
-static TrackerDBInterface *
-db_interface_get_file_metadata (void)
-{
-	TrackerDBInterface *iface;
-	gboolean	    create;
-
-	iface = db_interface_get (TRACKER_DB_FILE_METADATA, &create);
-
-	if (create) {
-		tracker_db_interface_start_transaction (iface);
-		load_sql_file (iface, "sqlite-service.sql", NULL);
-		load_sql_file (iface, "sqlite-service-triggers.sql", "!");
-		tracker_db_interface_end_transaction (iface);
-	}
-
-	return iface;
-}
-
-#ifdef HAVE_SQLITE_FTS
-
-static TrackerDBInterface *
-db_interface_get_file_fulltext (void)
-{
-	TrackerDBInterface *iface;
-	gboolean	    create;
-
-	iface = db_interface_get (TRACKER_DB_FILE_FULLTEXT, &create);
-
-	if (create) {
-		tracker_db_interface_start_transaction (iface);
-		load_sql_file (iface, "sqlite-fulltext.sql", NULL);
-		tracker_db_interface_end_transaction (iface);
-	}
-
-	return iface;
-}
-
-#endif /* HAVE_SQLITE_FTS */
-
-static TrackerDBInterface *
-db_interface_get_file_contents (void)
-{
-	TrackerDBInterface *iface;
-	gboolean	    create;
-
-	iface = db_interface_get (TRACKER_DB_FILE_CONTENTS, &create);
-
-	if (create) {
-		tracker_db_interface_start_transaction (iface);
-		load_sql_file (iface, "sqlite-contents.sql", NULL);
-		tracker_db_interface_end_transaction (iface);
-	}
-
-	tracker_db_interface_sqlite_create_function (iface,
-						     "uncompress",
-						     function_uncompress,
-						     1);
-	tracker_db_interface_sqlite_create_function (iface,
-						     "compress",
-						     function_compress,
-						     1);
-
-	return iface;
-}
-
-static TrackerDBInterface *
-db_interface_get_email_metadata (void)
-{
-	TrackerDBInterface *iface;
-	gboolean	    create;
-
-	iface = db_interface_get (TRACKER_DB_EMAIL_METADATA, &create);
-
-	if (create) {
-		tracker_db_interface_start_transaction (iface);
-		load_sql_file (iface, "sqlite-service.sql", NULL);
-		load_sql_file (iface, "sqlite-email.sql", NULL);
-		load_sql_file (iface, "sqlite-service-triggers.sql", "!");
-		tracker_db_interface_end_transaction (iface);
-	}
-
-	return iface;
-}
-
-#ifdef HAVE_SQLITE_FTS
-
-static TrackerDBInterface *
-db_interface_get_email_fulltext (void)
-{
-	TrackerDBInterface *iface;
-	gboolean	    create;
-
-	iface = db_interface_get (TRACKER_DB_EMAIL_FULLTEXT, &create);
-
-	if (create) {
-		tracker_db_interface_start_transaction (iface);
-		load_sql_file (iface, "sqlite-fulltext.sql", NULL);
-		tracker_db_interface_end_transaction (iface);
-	}
-
-	return iface;
-}
-
-#endif /* HAVE_SQLITE_FTS */
-
-static TrackerDBInterface *
-db_interface_get_email_contents (void)
-{
-	TrackerDBInterface *iface;
-	gboolean	    create;
-
-	iface = db_interface_get (TRACKER_DB_EMAIL_CONTENTS, &create);
-
-	if (create) {
-		tracker_db_interface_start_transaction (iface);
-		load_sql_file (iface, "sqlite-contents.sql", NULL);
-		tracker_db_interface_end_transaction (iface);
-	}
-
-	tracker_db_interface_sqlite_create_function (iface,
-						     "uncompress",
-						     function_uncompress,
-						     1);
-	tracker_db_interface_sqlite_create_function (iface,
-						     "compress",
-						     function_compress,
-						     1);
-
-	return iface;
-}
-
 
 static TrackerDBInterface *
 db_interface_create (TrackerDB db)
@@ -1933,56 +376,56 @@ db_interface_create (TrackerDB db)
 	case TRACKER_DB_UNKNOWN:
 		return NULL;
 
-	case TRACKER_DB_COMMON:
-		return db_interface_get_common ();
+	case TRACKER_DB_METADATA:
+		return db_interface_get_metadata ();
 
-	case TRACKER_DB_CACHE:
-		return db_interface_get_cache ();
+	case TRACKER_DB_FULLTEXT:
+		return db_interface_get_fulltext ();
 
-	case TRACKER_DB_FILE_METADATA:
-		return db_interface_get_file_metadata ();
-		
-#ifdef HAVE_SQLITE_FTS
-	case TRACKER_DB_FILE_FULLTEXT:
-		return db_interface_get_file_fulltext ();	
-#endif /* HAVE_SQLITE_FTS */
-
-	case TRACKER_DB_FILE_CONTENTS:
-		return db_interface_get_file_contents ();
-
-	case TRACKER_DB_EMAIL_METADATA:
-		return db_interface_get_email_metadata ();
-
-#ifdef HAVE_SQLITE_FTS		
-	case TRACKER_DB_EMAIL_FULLTEXT:
-		return db_interface_get_email_fulltext ();	
-#endif /* HAVE_SQLITE_FTS */
-		
-	case TRACKER_DB_EMAIL_CONTENTS:
-		return db_interface_get_email_contents ();
+	case TRACKER_DB_CONTENTS:
+		return db_interface_get_contents ();
 
 	default:
 		g_critical ("This TrackerDB type:%d->'%s' has no interface set up yet!!",
-			    db,
-			    db_type_to_string (db));
+		            db,
+		            db_type_to_string (db));
 		return NULL;
 	}
 }
 
 static void
-db_manager_remove_all (void)
+db_manager_remove_all (gboolean rm_journal)
 {
 	guint i;
 
 	g_message ("Removing all database files");
 
 	/* NOTE: We don't have to be initialized for this so we
-	 * calculate the absolute directories here. 
+	 * calculate the absolute directories here.
 	 */
 	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
+
 		g_message ("  Removing database:'%s'",
-			   dbs[i].abs_filename);
+		           dbs[i].abs_filename);
 		g_unlink (dbs[i].abs_filename);
+	}
+
+	if (rm_journal) {
+		const gchar *opath = tracker_db_journal_get_filename ();
+
+		if (opath) {
+			GFile *file;
+			gchar *cpath;
+
+			cpath = g_strdup (opath);
+			tracker_db_journal_shutdown ();
+			g_message ("  Removing journal:'%s'",
+					   cpath);
+			file = g_file_new_for_path (cpath);
+			g_file_delete (file, NULL, NULL);
+			g_object_unref (file);
+			g_free (cpath);
+		}
 	}
 }
 
@@ -2005,7 +448,7 @@ db_get_version (void)
 				g_message ("  Version file content size is either 0 or bigger than expected");
 
 				version = TRACKER_DB_VERSION_UNKNOWN;
-			} 
+			}
 
 			g_free (contents);
 		} else {
@@ -2039,7 +482,7 @@ db_set_version (void)
 
 	if (!g_file_set_contents (filename, str, -1, &error)) {
 		g_message ("  Could not set file contents, %s",
-			   error ? error->message : "no error given");
+		           error ? error->message : "no error given");
 		g_clear_error (&error);
 	}
 
@@ -2050,15 +493,13 @@ db_set_version (void)
 static void
 db_manager_analyze (TrackerDB db)
 {
-	TrackerDBInterface *iface;
 	guint64             current_mtime;
 
 	current_mtime = tracker_file_get_mtime (dbs[db].abs_filename);
 
 	if (current_mtime > dbs[db].mtime) {
 		g_message ("  Analyzing DB:'%s'", dbs[db].name);
-		iface = tracker_db_manager_get_db_interface (db);
-		db_exec_no_reply (iface, "ANALYZE %s.Services", dbs[db].name);
+		db_exec_no_reply (dbs[db].iface, "ANALYZE %s.Services", dbs[db].name);
 
 		/* Remember current mtime for future */
 		dbs[db].mtime = current_mtime;
@@ -2074,24 +515,12 @@ tracker_db_get_type (void)
 
 	if (etype == 0) {
 		static const GEnumValue values[] = {
-			{ TRACKER_DB_COMMON,
-			  "TRACKER_DB_COMMON",
-			  "common" },
-			{ TRACKER_DB_CACHE,
-			  "TRACKER_DB_CACHE",
-			  "cache" },
-			{ TRACKER_DB_FILE_METADATA,
-			  "TRACKER_DB_FILE_METADATA",
-			  "file metadata" },
-			{ TRACKER_DB_FILE_CONTENTS,
-			  "TRACKER_DB_FILE_CONTENTS",
-			  "file contents" },
-			{ TRACKER_DB_EMAIL_METADATA,
-			  "TRACKER_DB_EMAIL_METADATA",
-			  "email metadata" },
-			{ TRACKER_DB_EMAIL_CONTENTS,
-			  "TRACKER_DB_EMAIL_CONTENTS",
-			  "email contents" },
+			{ TRACKER_DB_METADATA,
+			  "TRACKER_DB_METADATA",
+			  "metadata" },
+			{ TRACKER_DB_CONTENTS,
+			  "TRACKER_DB_CONTENTS",
+			  "contents" },
 			{ 0, NULL, NULL }
 		};
 
@@ -2104,15 +533,19 @@ tracker_db_get_type (void)
 static void
 tracker_db_manager_ensure_locale (void)
 {
-	TrackerDBInterface *common, *iface;
+	TrackerDBInterface *common;
+	TrackerDBStatement *stmt;
 	TrackerDBResultSet *result_set;
 	const gchar *current_locale;
 	gchar *stored_locale = NULL;
 
 	current_locale = setlocale (LC_COLLATE, NULL);
 
-	common = dbs[TRACKER_DB_COMMON].iface;
-	result_set = tracker_db_interface_execute_procedure (common, NULL, "GetCollationLocale", NULL);
+	common = dbs[TRACKER_DB_METADATA].iface;
+
+	stmt = tracker_db_interface_create_statement (common, "SELECT OptionValue FROM Options WHERE OptionKey = 'CollationLocale'");
+	result_set = tracker_db_statement_execute (stmt, NULL);
+	g_object_unref (stmt);
 
 	if (result_set) {
 		tracker_db_result_set_get (result_set, 0, &stored_locale, -1);
@@ -2120,41 +553,97 @@ tracker_db_manager_ensure_locale (void)
 	}
 
 	if (g_strcmp0 (current_locale, stored_locale) != 0) {
-		guint collate_key;
 		/* Locales differ, update collate keys */
 		g_message ("Updating DB locale dependent data to: %s\n", current_locale);
 
-		iface = dbs[TRACKER_DB_FILE_METADATA].iface;
-		tracker_db_interface_execute_procedure (iface, NULL, "UpdateMetadataCollation", NULL);
-
-		for (collate_key = 1; collate_key<6; collate_key++) {
-			tracker_db_interface_execute_query (iface, NULL,
-			   		    "UPDATE Services SET KeyMetadataCollation%d=CollateKey(KeyMetadata%d)",
-					    collate_key, collate_key);
-		} 
-
-		iface = dbs[TRACKER_DB_EMAIL_METADATA].iface;
-		tracker_db_interface_execute_procedure (iface, NULL, "UpdateMetadataCollation", NULL);
-
-		tracker_db_interface_execute_procedure (common, NULL, "SetCollationLocale", current_locale, NULL);
+		stmt = tracker_db_interface_create_statement (common, "UPDATE Options SET OptionValue = ? WHERE OptionKey = 'CollationLocale'");
+		tracker_db_statement_bind_text (stmt, 0, current_locale);
+		tracker_db_statement_execute (stmt, NULL);
+		g_object_unref (stmt);
 	}
 
 	g_free (stored_locale);
 }
 
-gboolean
-tracker_db_manager_init (TrackerDBManagerFlags	flags,
-			 gboolean	       *first_time,
-			 gboolean	        shared_cache,
-			 const gchar           *profile_name)
+static void
+db_recreate_all (void)
 {
-	GType		    etype;
-	TrackerDBVersion    version;
-	gchar		   *filename;
-	const gchar	   *dir;
-	gboolean	    need_reindex;
-	guint		    i;
+	guint i;
 
+	/* We call an internal version of this function here
+	 * because at the time 'initialized' = FALSE and that
+	 * will cause errors and do nothing.
+	 */
+	g_message ("Cleaning up database files for reindex");
+
+	db_manager_remove_all (FALSE);
+
+	/* Now create the databases and close them */
+	g_message ("Creating database files, this may take a few moments...");
+
+	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
+		dbs[i].iface = db_interface_create (i);
+	}
+
+	/* We don't close the dbs in the same loop as before
+	 * becase some databases need other databases
+	 * attached to be created correctly.
+	 */
+	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
+		g_object_unref (dbs[i].iface);
+		dbs[i].iface = NULL;
+	}
+}
+
+void
+tracker_db_manager_init_locations (void)
+{
+	const gchar *dir;
+	guint i;
+	gchar *filename;
+
+	filename = g_strdup_printf ("tracker-%s", g_get_user_name ());
+	sys_tmp_dir = g_build_filename (g_get_tmp_dir (), filename, NULL);
+	g_free (filename);
+
+	user_data_dir = g_build_filename (g_get_user_data_dir (),
+	                                  "tracker",
+	                                  "data",
+	                                  NULL);
+
+	data_dir = g_build_filename (g_get_user_cache_dir (),
+	                             "tracker",
+	                             NULL);
+
+	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
+		dir = location_to_directory (dbs[i].location);
+		dbs[i].abs_filename = g_build_filename (dir, dbs[i].file, NULL);
+
+		if (old_flags & TRACKER_DB_MANAGER_LOW_MEMORY_MODE) {
+			dbs[i].cache_size /= 2;
+		}
+	}
+
+	locations_initialized = TRUE;
+}
+
+gboolean
+tracker_db_manager_init (TrackerDBManagerFlags  flags,
+                         gboolean              *first_time,
+                         gboolean               shared_cache)
+{
+	GType               etype;
+	TrackerDBVersion    version;
+	gchar              *filename;
+	const gchar        *dir;
+	const gchar        *env_path;
+	gboolean            need_reindex;
+	guint               i;
+	gchar              *in_use_filename;
+	int                 in_use_file;
+	gboolean            loaded = FALSE;
+
+	/* First set defaults for return values */
 	if (first_time) {
 		*first_time = FALSE;
 	}
@@ -2180,35 +669,42 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 	/* Set up locations */
 	g_message ("Setting database locations");
 
-	services_dir = g_build_filename (SHAREDIR,
-					 "tracker",
-					 "services",
-					 NULL);
-	sql_dir = g_build_filename (SHAREDIR,
-				    "tracker",
-				    NULL);
-
-	user_data_dir = g_build_filename (g_get_user_data_dir (),
-					  "tracker",
-					  "data",
-					  NULL);
-
-	data_dir = g_build_filename (g_get_user_cache_dir (),
-				     "tracker",
-				     NULL);
-
-	config_dir = g_build_filename (g_get_user_config_dir (),
-				       "tracker",
-				       NULL);
+	old_flags = flags;
 
 	filename = g_strdup_printf ("tracker-%s", g_get_user_name ());
+	if (sys_tmp_dir)
+		g_free (sys_tmp_dir);
 	sys_tmp_dir = g_build_filename (g_get_tmp_dir (), filename, NULL);
 	g_free (filename);
+
+	env_path = g_getenv ("TRACKER_DB_SQL_DIR");
+
+	if (G_UNLIKELY (!env_path)) {
+		sql_dir = g_build_filename (SHAREDIR,
+		                            "tracker",
+		                            NULL);
+	} else {
+		sql_dir = g_strdup (env_path);
+	}
+
+	if (user_data_dir)
+		g_free (user_data_dir);
+
+	user_data_dir = g_build_filename (g_get_user_data_dir (),
+	                                  "tracker",
+	                                  "data",
+	                                  NULL);
+
+	if (data_dir)
+		g_free (data_dir);
+
+	data_dir = g_build_filename (g_get_user_cache_dir (),
+	                             "tracker",
+	                             NULL);
 
 	/* Make sure the directories exist */
 	g_message ("Checking database directories exist");
 
-	g_mkdir_with_parents (config_dir, 00755);
 	g_mkdir_with_parents (data_dir, 00755);
 	g_mkdir_with_parents (user_data_dir, 00755);
 	g_mkdir_with_parents (sys_tmp_dir, 00755);
@@ -2223,7 +719,7 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 	}
 
 	if (need_reindex) {
-		db_set_version ();	
+		db_set_version ();
 	}
 
 	g_message ("Checking database files exist");
@@ -2231,6 +727,8 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
 		/* Fill absolute path for the database */
 		dir = location_to_directory (dbs[i].location);
+		if (dbs[i].abs_filename)
+			g_free (dbs[i].abs_filename);
 		dbs[i].abs_filename = g_build_filename (dir, dbs[i].file, NULL);
 
 		if (flags & TRACKER_DB_MANAGER_LOW_MEMORY_MODE) {
@@ -2238,12 +736,8 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 		}
 
 		/* Check we have each database in place, if one is
-		 * missing, we reindex, except the cache which we
-		 * expect to be replaced on each startup.
+		 * missing, we reindex.
 		 */
-		if (i == TRACKER_DB_CACHE) {
-			continue;
-		}
 
 		/* No need to check for other files not existing (for
 		 * reindex) if one is already missing.
@@ -2259,8 +753,10 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 		}
 	}
 
+	locations_initialized = TRUE;
+
 	/* If we are just initializing to remove the databases,
-	 * return here. 
+	 * return here.
 	 */
 	if ((flags & TRACKER_DB_MANAGER_REMOVE_ALL) != 0) {
 		initialized = TRUE;
@@ -2273,129 +769,147 @@ tracker_db_manager_init (TrackerDBManagerFlags	flags,
 		tracker_db_interface_sqlite_enable_shared_cache ();
 	}
 
-	/* Get prepared queries */
-	load_prepared_queries ();
-
-	/* Get pragma details */
-	load_pragma_file (profile_name);
+	in_use_filename = g_build_filename (g_get_user_data_dir (),
+	                                    "tracker",
+	                                    "data",
+	                                    IN_USE_FILENAME,
+	                                    NULL);
 
 	/* Should we reindex? If so, just remove all databases files,
 	 * NOT the paths, note, that these paths are also used for
 	 * other things like the nfs lock file.
 	 */
-	if ((flags & TRACKER_DB_MANAGER_FORCE_NO_REINDEX) == 0 &&
-	    ((flags & TRACKER_DB_MANAGER_FORCE_REINDEX) != 0 || need_reindex)) {
+	if (flags & TRACKER_DB_MANAGER_FORCE_REINDEX || need_reindex) {
 		if (first_time) {
 			*first_time = TRUE;
 		}
 
-		if (!tracker_file_system_has_enough_space (data_dir, TRACKER_DB_MIN_REQUIRED_SPACE)) {
+		if (!tracker_file_system_has_enough_space (data_dir, TRACKER_DB_MIN_REQUIRED_SPACE, TRUE)) {
 			return FALSE;
 		}
 
-		/* We call an internal version of this function here
-		 * because at the time 'initialized' = FALSE and that
-		 * will cause errors and do nothing.
-		 */
-		g_message ("Cleaning up database files for reindex");
-		db_manager_remove_all ();
+		db_recreate_all ();
 
-		/* In cases where we re-init this module, make sure
-		 * we have cleaned up the ontology before we load all
-		 * new databases.
-		 */
-		tracker_ontology_shutdown ();
-		tracker_ontology_init ();
+		/* Load databases */
+		g_message ("Loading databases files...");
 
-		/* Now create the databases and close them */
-		g_message ("Creating database files, this may take a few moments...");
+	} else {
+		gboolean must_recreate;
 
-		for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
-			dbs[i].iface = db_interface_create (i);
-		}
+		/* Load databases */
+		g_message ("Loading databases files...");
 
-		/* We don't close the dbs in the same loop as before
-		 * becase some databases need other databases
-		 * attached to be created correctly.
-		 */
-		for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
-			if (dbs[i].iface) {
-				g_object_unref (dbs[i].iface);
-				dbs[i].iface = NULL;
+		must_recreate = !tracker_db_journal_reader_verify_last (NULL);
+
+		if (!must_recreate && g_file_test (in_use_filename, G_FILE_TEST_EXISTS)) {
+			gsize size = 0;
+
+			g_message ("Didn't shut down cleanly last time, doing integrity checks");
+
+			for (i = 1; i < G_N_ELEMENTS (dbs) && !must_recreate; i++) {
+				TrackerDBCursor *cursor;
+				TrackerDBStatement *stmt;
+				struct stat st;
+
+				if (g_stat (dbs[i].abs_filename, &st) == 0) {
+					size = st.st_size;
+				}
+
+				/* Size is 1 when using echo > file.db, none of our databases
+				 * are only one byte in size even initually. */
+
+				if (size <= 1) {
+					must_recreate = TRUE;
+					continue;
+				}
+
+				dbs[i].iface = db_interface_create (i);
+				dbs[i].mtime = tracker_file_get_mtime (dbs[i].abs_filename);
+
+				loaded = TRUE;
+
+				stmt = tracker_db_interface_create_statement (dbs[i].iface,
+				                                              "PRAGMA integrity_check(1)");
+
+				cursor = tracker_db_statement_start_cursor (stmt, NULL);
+				g_object_unref (stmt);
+
+				if (cursor) {
+					if (tracker_db_cursor_iter_next (cursor)) {
+						if (g_strcmp0 (tracker_db_cursor_get_string (cursor, 0), "ok") != 0) {
+							must_recreate = TRUE;
+						}
+					}
+					g_object_unref (cursor);
+				}
 			}
 		}
 
-		/* Reset ontology - we do this so we repopulate our
-		 * ontology caches with the db_interface_create()
-		 * calls below.
-		 */
-		tracker_ontology_shutdown ();
-		tracker_ontology_init ();
-	} else {
-		if ((flags & TRACKER_DB_MANAGER_FORCE_NO_REINDEX) && need_reindex) {
-			g_message ("Reindex was needed, but has been forbidden by NO_REINDEX flag");
+		if (must_recreate) {
+
+			if (first_time) {
+				*first_time = TRUE;
+			}
+
+			for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
+				if (dbs[i].iface) {
+					g_object_unref (dbs[i].iface);
+					dbs[i].iface = NULL;
+				}
+			}
+
+			if (!tracker_file_system_has_enough_space (data_dir, TRACKER_DB_MIN_REQUIRED_SPACE, TRUE)) {
+				return FALSE;
+			}
+
+			db_recreate_all ();
+			loaded = FALSE;
 		}
 
-		/* Make sure we remove and recreate the cache directory in tmp
-		 * each time we start up, this is meant to be a per-run
-		 * thing.
-		 */
-		if (flags & TRACKER_DB_MANAGER_REMOVE_CACHE) {
-			g_message ("Removing cache database:'%s'",
-				   dbs[TRACKER_DB_CACHE].abs_filename);
-			g_unlink (dbs[TRACKER_DB_CACHE].abs_filename);
+	}
+
+	if (!loaded) {
+		for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
+			dbs[i].iface = db_interface_create (i);
+			dbs[i].mtime = tracker_file_get_mtime (dbs[i].abs_filename);
 		}
-
-		/* In cases where we re-init this module, make sure
-		 * we have cleaned up the ontology before we load all
-		 * new databases.
-		 */
-		tracker_ontology_shutdown ();
-		tracker_ontology_init ();
 	}
 
-	/* Load databases */
-	g_message ("Loading databases files...");
-
-	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
-		dbs[i].iface = db_interface_create (i);
-		dbs[i].mtime = tracker_file_get_mtime (dbs[i].abs_filename);
-	}
+	in_use_file = g_open (in_use_filename,
+	                      O_WRONLY | O_APPEND | O_CREAT | O_SYNC,
+	                      S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP);
+	fsync (in_use_file);
+	close (in_use_file);
+	g_free (in_use_filename);
 
 	tracker_db_manager_ensure_locale ();
 
 	initialized = TRUE;
 
+	if (flags & TRACKER_DB_MANAGER_READONLY) {
+		resources_iface = tracker_db_manager_get_db_interfaces_ro (3,
+		                                                           TRACKER_DB_METADATA,
+		                                                           TRACKER_DB_FULLTEXT,
+		                                                           TRACKER_DB_CONTENTS);
+	} else {
+		resources_iface = tracker_db_manager_get_db_interfaces (3,
+		                                                        TRACKER_DB_METADATA,
+		                                                        TRACKER_DB_FULLTEXT,
+		                                                        TRACKER_DB_CONTENTS);
+	}
+
 	return TRUE;
-}
-
-static void
-invalidate_ifaces (void)
-{
-	GList *l;
-	gint i;
-
-	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
-		if (dbs[i].iface) {
-			g_signal_emit_by_name (dbs[i].iface, "invalidated");
-		}
-	}
-
-	for (l = not_owned_ifaces; l; l = l->next) {
-		g_signal_emit_by_name (l->data, "invalidated");
-	}
 }
 
 void
 tracker_db_manager_shutdown (void)
 {
 	guint i;
+	gchar *in_use_filename;
 
 	if (!initialized) {
 		return;
 	}
-
-	invalidate_ifaces ();
 
 	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
 		if (dbs[i].abs_filename) {
@@ -2409,31 +923,17 @@ tracker_db_manager_shutdown (void)
 		}
 	}
 
-	if (prepared_queries) {
-		g_hash_table_unref (prepared_queries);
-		prepared_queries = NULL;
-	}
-
-	if (pragmas) {
-		g_hash_table_unref (pragmas);
-		pragmas = NULL;
-	}
-
-	g_free (config_dir);
 	g_free (data_dir);
+	data_dir = NULL;
 	g_free (user_data_dir);
+	user_data_dir = NULL;
 	g_free (sys_tmp_dir);
-	g_free (services_dir);
+	sys_tmp_dir = NULL;
 	g_free (sql_dir);
 
-	if (file_iface) {
-		g_object_unref (file_iface);
-		file_iface = NULL;
-	}
-
-	if (email_iface) {
-		g_object_unref (email_iface);
-		email_iface = NULL;
+	if (resources_iface) {
+		g_object_unref (resources_iface);
+		resources_iface = NULL;
 	}
 
 
@@ -2449,21 +949,109 @@ tracker_db_manager_shutdown (void)
 	g_type_class_unref (db_type_enum_class_pointer);
 	db_type_enum_class_pointer = NULL;
 
-	/* Make sure we shutdown all other modules we depend on */
-	tracker_ontology_shutdown ();
-
 	initialized = FALSE;
+	locations_initialized = FALSE;
 
-	g_list_free (not_owned_ifaces);
-	not_owned_ifaces = NULL;
+	in_use_filename = g_build_filename (g_get_user_data_dir (),
+	                                    "tracker",
+	                                    "data",
+	                                    IN_USE_FILENAME,
+	                                    NULL);
+
+	g_unlink (in_use_filename);
+
+	g_free (in_use_filename);
 }
 
 void
-tracker_db_manager_remove_all (void)
+tracker_db_manager_remove_all (gboolean rm_journal)
 {
 	g_return_if_fail (initialized != FALSE);
-	
-	db_manager_remove_all ();
+
+	db_manager_remove_all (rm_journal);
+}
+
+
+void
+tracker_db_manager_move_to_temp (void)
+{
+	guint i;
+	gchar *cpath, *new_filename;
+
+	g_return_if_fail (initialized != FALSE);
+
+	g_message ("Moving all database files");
+
+	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
+		new_filename = g_strdup_printf ("%s.tmp", dbs[i].abs_filename);
+		g_message ("  Renaming database:'%s' -> '%s'",
+		           dbs[i].abs_filename, new_filename);
+		g_rename (dbs[i].abs_filename, new_filename);
+		g_free (new_filename);
+	}
+
+	cpath = g_strdup (tracker_db_journal_get_filename ());
+	new_filename = g_strdup_printf ("%s.tmp", cpath);
+	g_message ("  Renaming journal:'%s' -> '%s'",
+	           cpath, new_filename);
+	g_rename (cpath, new_filename);
+	g_free (cpath);
+	g_free (new_filename);
+}
+
+
+void
+tracker_db_manager_restore_from_temp (void)
+{
+	guint i;
+	gchar *cpath, *new_filename;
+
+	g_return_if_fail (locations_initialized != FALSE);
+
+	g_message ("Moving all database files");
+
+	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
+		new_filename = g_strdup_printf ("%s.tmp", dbs[i].abs_filename);
+		g_message ("  Renaming database:'%s' -> '%s'",
+		           dbs[i].abs_filename, new_filename);
+		g_rename (dbs[i].abs_filename, new_filename);
+		g_free (new_filename);
+	}
+
+	cpath = g_strdup (tracker_db_journal_get_filename ());
+	new_filename = g_strdup_printf ("%s.tmp", cpath);
+	g_message ("  Renaming journal:'%s' -> '%s'",
+	           cpath, new_filename);
+	g_rename (cpath, new_filename);
+	g_free (cpath);
+	g_free (new_filename);
+}
+
+void
+tracker_db_manager_remove_temp (void)
+{
+	guint i;
+	gchar *cpath, *new_filename;
+
+	g_return_if_fail (locations_initialized != FALSE);
+
+	g_message ("Removing all temp database files");
+
+	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
+		new_filename = g_strdup_printf ("%s.tmp", dbs[i].abs_filename);
+		g_message ("  Removing temp database:'%s'",
+		           new_filename);
+		g_unlink (new_filename);
+		g_free (new_filename);
+	}
+
+	cpath = g_strdup (tracker_db_journal_get_filename ());
+	new_filename = g_strdup_printf ("%s.tmp", cpath);
+	g_message ("  Removing temp journal:'%s'",
+	           new_filename);
+	g_unlink (new_filename);
+	g_free (cpath);
+	g_free (new_filename);
 }
 
 void
@@ -2480,15 +1068,11 @@ tracker_db_manager_optimize (void)
 
 	/* Check if any connections are open? */
 	for (i = 1; i < G_N_ELEMENTS (dbs); i++) {
-		if (!dbs[i].iface) {
-			continue;
-		}
-
 		if (G_OBJECT (dbs[i].iface)->ref_count > 1) {
 			g_message ("  DB:'%s' is still open with %d references!",
-				   dbs[i].name,
-				   G_OBJECT (dbs[i].iface)->ref_count);
-				   
+			           dbs[i].name,
+			           G_OBJECT (dbs[i].iface)->ref_count);
+
 			dbs_are_open = TRUE;
 		}
 	}
@@ -2498,9 +1082,8 @@ tracker_db_manager_optimize (void)
 		return;
 	}
 
-	/* Optimize the file/email content databases */
-	db_manager_analyze (TRACKER_DB_FILE_METADATA);
-	db_manager_analyze (TRACKER_DB_EMAIL_METADATA);
+	/* Optimize the metadata database */
+	db_manager_analyze (TRACKER_DB_METADATA);
 }
 
 const gchar *
@@ -2509,13 +1092,6 @@ tracker_db_manager_get_file (TrackerDB db)
 	g_return_val_if_fail (initialized != FALSE, NULL);
 
 	return dbs[db].abs_filename;
-}
-
-static void
-remove_not_owned_iface (gpointer  user_data,
-			GObject  *iface)
-{
-	not_owned_ifaces = g_list_remove (not_owned_ifaces, iface);
 }
 
 /**
@@ -2530,11 +1106,11 @@ remove_not_owned_iface (gpointer  user_data,
  *
  * returns: (caller-owns): a database connection
  **/
-TrackerDBInterface *
+static TrackerDBInterface *
 tracker_db_manager_get_db_interfaces (gint num, ...)
 {
-	gint		    n_args;
-	va_list		    args;
+	gint                n_args;
+	va_list                     args;
 	TrackerDBInterface *connection = NULL;
 
 	g_return_val_if_fail (initialized != FALSE, NULL);
@@ -2545,37 +1121,29 @@ tracker_db_manager_get_db_interfaces (gint num, ...)
 
 		if (!connection) {
 			connection = tracker_db_interface_sqlite_new (dbs[db].abs_filename);
-			tracker_db_interface_set_procedure_table (connection,
-								  prepared_queries);
 
 			db_set_params (connection,
-				       dbs[db].cache_size,
-				       dbs[db].page_size,
-				       TRUE);
+			               dbs[db].cache_size,
+			               dbs[db].page_size);
 
 		} else {
 			db_exec_no_reply (connection,
-					  "ATTACH '%s' as '%s'",
-					  dbs[db].abs_filename,
-					  dbs[db].name);
+			                  "ATTACH '%s' as '%s'",
+			                  dbs[db].abs_filename,
+			                  dbs[db].name);
 		}
 
 	}
 	va_end (args);
 
-	if (connection) {
-		not_owned_ifaces = g_list_prepend (not_owned_ifaces, connection);
-		g_object_weak_ref (G_OBJECT (connection), remove_not_owned_iface, NULL);
-	}
-
 	return connection;
 }
 
-TrackerDBInterface *
+static TrackerDBInterface *
 tracker_db_manager_get_db_interfaces_ro (gint num, ...)
 {
-	gint		    n_args;
-	va_list		    args;
+	gint                n_args;
+	va_list                     args;
 	TrackerDBInterface *connection = NULL;
 
 	g_return_val_if_fail (initialized != FALSE, NULL);
@@ -2586,26 +1154,18 @@ tracker_db_manager_get_db_interfaces_ro (gint num, ...)
 
 		if (!connection) {
 			connection = tracker_db_interface_sqlite_new_ro (dbs[db].abs_filename);
-			tracker_db_interface_set_procedure_table (connection,
-								  prepared_queries);
 			db_set_params (connection,
-				       dbs[db].cache_size,
-				       dbs[db].page_size,
-				       TRUE);
+			               dbs[db].cache_size,
+			               dbs[db].page_size);
 		} else {
 			db_exec_no_reply (connection,
-					  "ATTACH '%s' as '%s'",
-					  dbs[db].abs_filename,
-					  dbs[db].name);
+			                  "ATTACH '%s' as '%s'",
+			                  dbs[db].abs_filename,
+			                  dbs[db].name);
 		}
 
 	}
 	va_end (args);
-
-	if (connection) {
-		not_owned_ifaces = g_list_prepend (not_owned_ifaces, connection);
-		g_object_weak_ref (G_OBJECT (connection), remove_not_owned_iface, NULL);
-	}
 
 	return connection;
 }
@@ -2622,140 +1182,23 @@ tracker_db_manager_get_db_interfaces_ro (gint num, ...)
  * returns: (callee-owns): a database connection
  **/
 TrackerDBInterface *
-tracker_db_manager_get_db_interface (TrackerDB db)
+tracker_db_manager_get_db_interface (void)
 {
 	g_return_val_if_fail (initialized != FALSE, NULL);
 
-	return dbs[db].iface;
+	return resources_iface;
 }
 
 /**
- * tracker_db_manager_get_db_interface_by_service:
- * @service: the server for which you'll use the database connection
+ * tracker_db_manager_has_enough_space:
  *
- * Request a database connection that can be used for @service. At this moment
- * service can either be "Files", "Emails", "Attachments".
+ * Checks whether the file system, where the database files are stored,
+ * has enough free space to allow modifications.
  *
- * The caller must NOT g_object_unref the result
- *
- * returns: (callee-owns): a database connection
+ * returns: TRUE if there is enough space, FALSE otherwise
  **/
-TrackerDBInterface *
-tracker_db_manager_get_db_interface_by_service (const gchar *service)
-{
-	TrackerDBInterface	  *iface;
-	TrackerDBType		   type;
-
-	g_return_val_if_fail (initialized != FALSE, NULL);
-
-	type = tracker_ontology_get_service_db_by_name (service);
-
-	switch (type) {
-	case TRACKER_DB_TYPE_EMAIL:
-		if (!email_iface) {
-			email_iface = tracker_db_manager_get_db_interfaces (4,
-									    TRACKER_DB_COMMON,
-									    TRACKER_DB_EMAIL_CONTENTS,
-									    TRACKER_DB_EMAIL_METADATA,
-									    TRACKER_DB_CACHE);
-		}
-
-		iface = email_iface;
-		break;
-
-	case TRACKER_DB_TYPE_UNKNOWN:
-	case TRACKER_DB_TYPE_DATA:
-	case TRACKER_DB_TYPE_INDEX:
-	case TRACKER_DB_TYPE_COMMON:
-	case TRACKER_DB_TYPE_CONTENT:
-	case TRACKER_DB_TYPE_CACHE:
-	case TRACKER_DB_TYPE_USER:
-		g_warning ("Defaulting to Files DB. Strange DB Type for service '%s'", 
-			   service);
-
-	case TRACKER_DB_TYPE_FILES:
-	default:
-		if (!file_iface) {
-			file_iface = tracker_db_manager_get_db_interfaces (4,
-									   TRACKER_DB_COMMON,
-									   TRACKER_DB_FILE_CONTENTS,
-									   TRACKER_DB_FILE_METADATA,
-									   TRACKER_DB_CACHE);
-		}
-
-		iface = file_iface;
-		break;
-	}
-
-	return iface;
-}
-
-TrackerDBInterface *
-tracker_db_manager_get_db_interface_by_type (const gchar	  *service,
-					     TrackerDBContentType  content_type)
-{
-	TrackerDBType type;
-	TrackerDB     db;
-
-	g_return_val_if_fail (initialized != FALSE, NULL);
-	g_return_val_if_fail (service != NULL, NULL);
-
-	type = tracker_ontology_get_service_db_by_name (service);
-
-	switch (type) {
-	case TRACKER_DB_TYPE_EMAIL:
-		if (content_type == TRACKER_DB_CONTENT_TYPE_METADATA) {
-			db = TRACKER_DB_EMAIL_METADATA;
-		} else {
-			db = TRACKER_DB_EMAIL_CONTENTS;
-		}
-		break;
-
-	case TRACKER_DB_TYPE_FILES:
-		if (content_type == TRACKER_DB_CONTENT_TYPE_METADATA) {
-			db = TRACKER_DB_FILE_METADATA;
-		} else {
-			db = TRACKER_DB_FILE_CONTENTS;
-		}
-		break;
-
-	case TRACKER_DB_TYPE_UNKNOWN:
-	case TRACKER_DB_TYPE_DATA:
-	case TRACKER_DB_TYPE_INDEX:
-	case TRACKER_DB_TYPE_COMMON:
-	case TRACKER_DB_TYPE_CONTENT:
-	case TRACKER_DB_TYPE_CACHE:
-	case TRACKER_DB_TYPE_USER:
-	default:
-		g_warning ("Database type not supported");
-		return NULL;
-	}
-
-	return tracker_db_manager_get_db_interface (db);
-}
-
 gboolean
-tracker_db_manager_are_db_too_big (void)
+tracker_db_manager_has_enough_space  (void)
 {
-	const gchar *filename_const;
-	gboolean     too_big;
-
-	filename_const = tracker_db_manager_get_file (TRACKER_DB_FILE_METADATA);
-	too_big = tracker_file_get_size (filename_const) > TRACKER_DB_MAX_FILE_SIZE;
-
-	if (too_big) {
-		g_critical ("File metadata database is too big, discontinuing indexing");
-		return TRUE;
-	}
-
-	filename_const = tracker_db_manager_get_file (TRACKER_DB_EMAIL_METADATA);
-	too_big = tracker_file_get_size (filename_const) > TRACKER_DB_MAX_FILE_SIZE;
-
-	if (too_big) {
-		g_critical ("Email metadata database is too big, discontinuing indexing");
-		return TRUE;
-	}
-
-	return FALSE;
-
+	return tracker_file_system_has_enough_space (data_dir, TRACKER_DB_MIN_REQUIRED_SPACE, FALSE);
 }

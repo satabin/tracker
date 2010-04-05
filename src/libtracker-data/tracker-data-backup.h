@@ -1,42 +1,55 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
-#ifndef __TRACKER_DATA_BACKUP_H__
-#define __TRACKER_DATA_BACKUP_H__
+
+#ifndef __LIBTRACKER_DATA_BACKUP_H__
+#define __LIBTRACKER_DATA_BACKUP_H__
 
 #include <glib.h>
+#include <gio/gio.h>
+
+#include <libtracker-data/tracker-data-update.h>
 
 G_BEGIN_DECLS
 
-typedef void (* TrackerDataBackupRestoreFunc) (const gchar *subject,
-					       const gchar *predicate,
-					       const gchar *object,
-					       gpointer     user_data);
+#if !defined (__LIBTRACKER_DATA_INSIDE__) && !defined (TRACKER_COMPILATION)
+#error "only <libtracker-data/tracker-data.h> must be included directly."
+#endif
 
-gboolean tracker_data_backup_save    (const gchar                   *turtle_filename,
-				      GError                       **error);
-gboolean tracker_data_backup_restore (const gchar                   *turtle_filename,
-				      TrackerDataBackupRestoreFunc   restore_func,
-				      gpointer                       user_data,
-				      GError                       **error);
+#define TRACKER_DATA_BACKUP_ERROR_DOMAIN "TrackerBackup"
+#define TRACKER_DATA_BACKUP_ERROR        tracker_data_backup_error_quark()
+
+typedef void (*TrackerDataBackupFinished) (GError *error, gpointer user_data);
+
+GQuark tracker_data_backup_error_quark (void);
+void   tracker_data_backup_save        (GFile                     *destination,
+                                        TrackerDataBackupFinished  callback,
+                                        gpointer                   user_data,
+                                        GDestroyNotify             destroy);
+void   tracker_data_backup_restore     (GFile                     *journal,
+                                        TrackerDataBackupFinished  callback,
+                                        gpointer                   user_data,
+                                        GDestroyNotify             destroy,
+                                        const gchar              **test_schema,
+                                        TrackerBusyCallback        busy_callback,
+                                        gpointer                   busy_user_data);
 
 G_END_DECLS
 
-#endif /* __TRACKER_DATA_BACKUP_H__ */
+#endif /* __LIBTRACKER_DATA_BACKUP_H__ */

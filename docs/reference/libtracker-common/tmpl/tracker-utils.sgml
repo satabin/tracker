@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-General
+tracker-utils
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -19,18 +19,16 @@ General
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION tracker_escape_db_string ##### -->
+<!-- ##### FUNCTION tracker_is_empty_string ##### -->
 <para>
 
 </para>
 
 @str: 
-@add_quotes: 
-@escape_percent: 
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_is_empty_string ##### -->
+<!-- ##### FUNCTION tracker_is_blank_string ##### -->
 <para>
 
 </para>
@@ -59,35 +57,5 @@ General
 @seconds_elapsed: 
 @short_string: 
 @Returns: 
-
-
-<!-- ##### FUNCTION tracker_string_remove ##### -->
-<para>
-
-</para>
-
-@haystack: 
-@needle: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_string_replace ##### -->
-<para>
-
-</para>
-
-@haystack: 
-@needle: 
-@replacement: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_throttle ##### -->
-<para>
-
-</para>
-
-@config: 
-@multiplier: 
 
 

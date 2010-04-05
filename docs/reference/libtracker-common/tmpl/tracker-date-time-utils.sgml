@@ -1,0 +1,115 @@
+<!-- ##### SECTION Title ##### -->
+tracker-date-time-utils
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO TRACKER_DATE_ERROR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO TRACKER_TYPE_DATE_TIME ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM TrackerDateError ##### -->
+<para>
+
+</para>
+
+@TRACKER_DATE_ERROR_OFFSET: 
+@TRACKER_DATE_ERROR_INVALID_ISO8601: 
+
+<!-- ##### FUNCTION tracker_date_error_quark ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_date_time_get_local_date ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_date_time_get_local_time ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_date_time_get_offset ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_date_time_get_time ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_date_time_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_date_time_set ##### -->
+<para>
+
+</para>
+
+@value: 
+@time: 
+@offset: 
+
+
+<!-- ##### FUNCTION tracker_date_time_set_from_string ##### -->
+<para>
+
+</para>
+
+@value: 
+@date_time_string: 
+@error: 
+
+

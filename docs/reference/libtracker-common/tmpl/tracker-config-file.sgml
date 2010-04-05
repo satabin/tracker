@@ -1,0 +1,56 @@
+<!-- ##### SECTION Title ##### -->
+TrackerConfigFile
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT TrackerConfigFile ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SIGNAL TrackerConfigFile::changed ##### -->
+<para>
+
+</para>
+
+@trackerconfigfile: the object which received the signal.
+
+<!-- ##### ARG TrackerConfigFile:domain ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT TrackerConfigFileClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@changed: 
+
+<!-- ##### FUNCTION tracker_config_file_save ##### -->
+<para>
+
+</para>
+
+@config: 
+@Returns: 
+
+

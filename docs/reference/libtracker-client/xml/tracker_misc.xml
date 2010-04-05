@@ -1,0 +1,113 @@
+<refentry id="libtracker-client-Utilities">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-client-Utilities.top_of_page">Utilities</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-CLIENT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Utilities</refname>
+<refpurpose>Utility and miscellaneous functions.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-client-Utilities.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-client/tracker-client.h&gt;
+
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-sparql-escape">tracker_sparql_escape</link>               (const <link linkend="gchar">gchar</link> *str);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-uri-printf-escaped">tracker_uri_printf_escaped</link>          (const <link linkend="gchar">gchar</link> *format,
+                                                         ...);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-uri-vprintf-escaped">tracker_uri_vprintf_escaped</link>         (const <link linkend="gchar">gchar</link> *format,
+                                                         <link linkend="va-list">va_list</link> args);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-client-Utilities.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+This is miscellaneous API that may be useful to users.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-client-Utilities.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="tracker-sparql-escape" role="function" condition="since:0.8">
+<title>tracker_sparql_escape ()</title>
+<indexterm zone="tracker-sparql-escape" role="0.8"><primary sortas="tracker_sparql_escape">tracker_sparql_escape</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_sparql_escape               (const <link linkend="gchar">gchar</link> *str);</programlisting>
+<para>
+Escapes a string so it can be passed as a SPARQL parameter in
+any query/update.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara> a string to escape.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the newly allocated escaped string which must be freed
+using <link linkend="g-free"><function>g_free()</function></link>.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-uri-printf-escaped" role="function" condition="since:0.8">
+<title>tracker_uri_printf_escaped ()</title>
+<indexterm zone="tracker-uri-printf-escaped" role="0.8"><primary sortas="tracker_uri_printf_escaped">tracker_uri_printf_escaped</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_uri_printf_escaped          (const <link linkend="gchar">gchar</link> *format,
+                                                         ...);</programlisting>
+<para>
+Calls <link linkend="tracker-uri-vprintf-escaped"><function>tracker_uri_vprintf_escaped()</function></link> with the <parameter>Varargs</parameter> supplied.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>format</parameter>&#160;:</term>
+<listitem><simpara> a standard <link linkend="printf"><function>printf()</function></link> format string, but notice
+    <link linkend="string-precision">string precision pitfalls</link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>...</parameter>&#160;:</term>
+<listitem><simpara> the parameters to insert into the format string
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a newly-allocated string holding the result which should
+be freed with <link linkend="g-free"><function>g_free()</function></link> when finished with.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-uri-vprintf-escaped" role="function" condition="since:0.8">
+<title>tracker_uri_vprintf_escaped ()</title>
+<indexterm zone="tracker-uri-vprintf-escaped" role="0.8"><primary sortas="tracker_uri_vprintf_escaped">tracker_uri_vprintf_escaped</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_uri_vprintf_escaped         (const <link linkend="gchar">gchar</link> *format,
+                                                         <link linkend="va-list">va_list</link> args);</programlisting>
+<para>
+Similar to the standard C <link linkend="vsprintf"><function>vsprintf()</function></link> function but safer, since it 
+calculates the maximum space required and allocates memory to hold 
+the result. 
+</para>
+<para>
+The result is escaped using <link linkend="g-uri-escape-string"><function>g_uri_escape_string()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>format</parameter>&#160;:</term>
+<listitem><simpara> a standard <link linkend="printf"><function>printf()</function></link> format string, but notice
+    <link linkend="string-precision">string precision pitfalls</link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>args</parameter>&#160;:</term>
+<listitem><simpara> the list of parameters to insert into the format string
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a newly-allocated string holding the result which should
+be freed with <link linkend="g-free"><function>g_free()</function></link> when finished with.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

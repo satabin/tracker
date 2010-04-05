@@ -1,50 +1,75 @@
-<refentry id="libtracker-common-DBus">
+<refentry id="libtracker-common-tracker-dbus">
 <refmeta>
-<refentrytitle role="top_of_page" id="libtracker-common-DBus.top_of_page">DBus</refentrytitle>
+<refentrytitle role="top_of_page" id="libtracker-common-tracker-dbus.top_of_page">tracker-dbus</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBTRACKER-COMMON Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>DBus</refname>
+<refname>tracker-dbus</refname>
 <refpurpose></refpurpose>
 </refnamediv>
 
-<refsynopsisdiv id="libtracker-common-DBus.synopsis" role="synopsis">
+<refsynopsisdiv id="libtracker-common-tracker-dbus.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-#include &lt;libtracker-common/tracker-dbus.h&gt;
-
+#define             <link linkend="TRACKER-DBUS-ERROR-DOMAIN--CAPS">TRACKER_DBUS_ERROR_DOMAIN</link>
+#define             <link linkend="TRACKER-DBUS-ERROR--CAPS">TRACKER_DBUS_ERROR</link>
+#define             <link linkend="TRACKER-TYPE-G-STRV-ARRAY--CAPS">TRACKER_TYPE_G_STRV_ARRAY</link>
+#define             <link linkend="TRACKER-TYPE-STR-STRV-MAP--CAPS">TRACKER_TYPE_STR_STRV_MAP</link>
+#define             <link linkend="TRACKER-TYPE-EVENT-ARRAY--CAPS">TRACKER_TYPE_EVENT_ARRAY</link>
+#define             <link linkend="tracker-dbus-async-return-if-fail">tracker_dbus_async_return_if_fail</link>   (expr,context)
+#define             <link linkend="tracker-dbus-return-val-if-fail">tracker_dbus_return_val_if_fail</link>     (expr,val,error)
+enum                <link linkend="TrackerDBusEventsType">TrackerDBusEventsType</link>;
+typedef             <link linkend="TrackerDBusRequestHandler">TrackerDBusRequestHandler</link>;
+<link linkend="void">void</link>                (<link linkend="TrackerDBusRequestFunc">*TrackerDBusRequestFunc</link>)           (<link linkend="guint">guint</link> request_id,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+                    <link linkend="TrackerDBusData">TrackerDBusData</link>;
+<link linkend="GQuark">GQuark</link>              <link linkend="tracker-dbus-error-quark">tracker_dbus_error_quark</link>            (void);
 <link linkend="TrackerDBusData">TrackerDBusData</link> *   <link linkend="tracker-dbus-data-new">tracker_dbus_data_new</link>               (const <link linkend="gpointer">gpointer</link> arg1,
                                                          const <link linkend="gpointer">gpointer</link> arg2);
-<link linkend="GQuark">GQuark</link>              <link linkend="tracker-dbus-error-quark">tracker_dbus_error_quark</link>            (void);
-<link linkend="guint">guint</link>               <link linkend="tracker-dbus-get-next-request-id">tracker_dbus_get_next_request_id</link>    (void);
-<link linkend="void">void</link>                <link linkend="tracker-dbus-gvalue-slice-free">tracker_dbus_gvalue_slice_free</link>      (<link linkend="GValue">GValue</link> *value);
 <link linkend="GValue">GValue</link> *            <link linkend="tracker-dbus-gvalue-slice-new">tracker_dbus_gvalue_slice_new</link>       (<link linkend="GType">GType</link> type);
-<link linkend="gchar">gchar</link> **            <link linkend="tracker-dbus-queue-gfile-to-strv">tracker_dbus_queue_gfile_to_strv</link>    (<link linkend="GQueue">GQueue</link> *queue,
-                                                         <link linkend="gint">gint</link> max);
+<link linkend="void">void</link>                <link linkend="tracker-dbus-gvalue-slice-free">tracker_dbus_gvalue_slice_free</link>      (<link linkend="GValue">GValue</link> *value);
+<link linkend="gchar">gchar</link> **            <link linkend="tracker-dbus-slist-to-strv">tracker_dbus_slist_to_strv</link>          (<link linkend="GSList">GSList</link> *list);
+<link linkend="gchar">gchar</link> **            <link linkend="tracker-dbus-str-to-strv">tracker_dbus_str_to_strv</link>            (const <link linkend="gchar">gchar</link> *str);
 <link linkend="gchar">gchar</link> **            <link linkend="tracker-dbus-queue-str-to-strv">tracker_dbus_queue_str_to_strv</link>      (<link linkend="GQueue">GQueue</link> *queue,
                                                          <link linkend="gint">gint</link> max);
+<link linkend="gchar">gchar</link> **            <link linkend="tracker-dbus-queue-gfile-to-strv">tracker_dbus_queue_gfile_to_strv</link>    (<link linkend="GQueue">GQueue</link> *queue,
+                                                         <link linkend="gint">gint</link> max);
+<link linkend="void">void</link>                <link linkend="tracker-dbus-results-ptr-array-free">tracker_dbus_results_ptr_array_free</link> (<link linkend="GPtrArray">GPtrArray</link> **ptr_array);
+<link linkend="guint">guint</link>               <link linkend="tracker-dbus-get-next-request-id">tracker_dbus_get_next_request_id</link>    (void);
+<link linkend="void">void</link>                <link linkend="tracker-dbus-enable-client-lookup">tracker_dbus_enable_client_lookup</link>   (<link linkend="gboolean">gboolean</link> enable);
 <link linkend="TrackerDBusRequestHandler">TrackerDBusRequestHandler</link> * <link linkend="tracker-dbus-request-add-hook">tracker_dbus_request_add_hook</link>
                                                         (<link linkend="TrackerDBusRequestFunc">TrackerDBusRequestFunc</link> new,
                                                          <link linkend="TrackerDBusRequestFunc">TrackerDBusRequestFunc</link> done,
                                                          <link linkend="gpointer">gpointer</link> user_data);
-<link linkend="void">void</link>                <link linkend="tracker-dbus-request-comment">tracker_dbus_request_comment</link>        (<link linkend="gint">gint</link> request_id,
+<link linkend="void">void</link>                <link linkend="tracker-dbus-request-remove-hook">tracker_dbus_request_remove_hook</link>    (<link linkend="TrackerDBusRequestHandler">TrackerDBusRequestHandler</link> *handler);
+<link linkend="void">void</link>                <link linkend="tracker-dbus-request-new">tracker_dbus_request_new</link>            (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context,
                                                          const <link linkend="gchar">gchar</link> *format,
                                                          ...);
+<link linkend="void">void</link>                <link linkend="tracker-dbus-request-success">tracker_dbus_request_success</link>        (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context);
 <link linkend="void">void</link>                <link linkend="tracker-dbus-request-failed">tracker_dbus_request_failed</link>         (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context,
                                                          <link linkend="GError">GError</link> **error,
                                                          const <link linkend="gchar">gchar</link> *format,
                                                          ...);
-<link linkend="void">void</link>                <link linkend="tracker-dbus-request-new">tracker_dbus_request_new</link>            (<link linkend="gint">gint</link> request_id,
+<link linkend="void">void</link>                <link linkend="tracker-dbus-request-comment">tracker_dbus_request_comment</link>        (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context,
                                                          const <link linkend="gchar">gchar</link> *format,
                                                          ...);
-<link linkend="void">void</link>                <link linkend="tracker-dbus-request-remove-hook">tracker_dbus_request_remove_hook</link>    (<link linkend="TrackerDBusRequestHandler">TrackerDBusRequestHandler</link> *handler);
-<link linkend="void">void</link>                <link linkend="tracker-dbus-request-success">tracker_dbus_request_success</link>        (<link linkend="gint">gint</link> request_id);
-<link linkend="void">void</link>                <link linkend="tracker-dbus-results-ptr-array-free">tracker_dbus_results_ptr_array_free</link> (<link linkend="GPtrArray">GPtrArray</link> **ptr_array);
-<link linkend="gchar">gchar</link> **            <link linkend="tracker-dbus-slist-to-strv">tracker_dbus_slist_to_strv</link>          (<link linkend="GSList">GSList</link> *list);
+<link linkend="void">void</link>                <link linkend="tracker-dbus-request-info">tracker_dbus_request_info</link>           (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context,
+                                                         const <link linkend="gchar">gchar</link> *format,
+                                                         ...);
+<link linkend="void">void</link>                <link linkend="tracker-dbus-request-debug">tracker_dbus_request_debug</link>          (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context,
+                                                         const <link linkend="gchar">gchar</link> *format,
+                                                         ...);
+<link linkend="void">void</link>                <link linkend="tracker-dbus-request-block-hooks">tracker_dbus_request_block_hooks</link>    (void);
+<link linkend="void">void</link>                <link linkend="tracker-dbus-request-unblock-hooks">tracker_dbus_request_unblock_hooks</link>  (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -56,14 +81,116 @@
 
 
 
-<refsect1 id="libtracker-common-DBus.description" role="desc">
+<refsect1 id="libtracker-common-tracker-dbus.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 </para>
 </refsect1>
 
-<refsect1 id="libtracker-common-DBus.details" role="details">
+<refsect1 id="libtracker-common-tracker-dbus.details" role="details">
 <title role="details.title">Details</title>
+<refsect2 id="TRACKER-DBUS-ERROR-DOMAIN--CAPS" role="macro">
+<title>TRACKER_DBUS_ERROR_DOMAIN</title>
+<indexterm zone="TRACKER-DBUS-ERROR-DOMAIN--CAPS"><primary sortas="TRACKER_DBUS_ERROR_DOMAIN">TRACKER_DBUS_ERROR_DOMAIN</primary></indexterm><programlisting>#define TRACKER_DBUS_ERROR_DOMAIN "TrackerDBus"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TRACKER-DBUS-ERROR--CAPS" role="macro">
+<title>TRACKER_DBUS_ERROR</title>
+<indexterm zone="TRACKER-DBUS-ERROR--CAPS"><primary sortas="TRACKER_DBUS_ERROR">TRACKER_DBUS_ERROR</primary></indexterm><programlisting>#define TRACKER_DBUS_ERROR        tracker_dbus_error_quark()
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TRACKER-TYPE-G-STRV-ARRAY--CAPS" role="macro">
+<title>TRACKER_TYPE_G_STRV_ARRAY</title>
+<indexterm zone="TRACKER-TYPE-G-STRV-ARRAY--CAPS"><primary sortas="TRACKER_TYPE_G_STRV_ARRAY">TRACKER_TYPE_G_STRV_ARRAY</primary></indexterm><programlisting>#define             TRACKER_TYPE_G_STRV_ARRAY</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TRACKER-TYPE-STR-STRV-MAP--CAPS" role="macro">
+<title>TRACKER_TYPE_STR_STRV_MAP</title>
+<indexterm zone="TRACKER-TYPE-STR-STRV-MAP--CAPS"><primary sortas="TRACKER_TYPE_STR_STRV_MAP">TRACKER_TYPE_STR_STRV_MAP</primary></indexterm><programlisting>#define TRACKER_TYPE_STR_STRV_MAP (dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_STRV))
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TRACKER-TYPE-EVENT-ARRAY--CAPS" role="macro">
+<title>TRACKER_TYPE_EVENT_ARRAY</title>
+<indexterm zone="TRACKER-TYPE-EVENT-ARRAY--CAPS"><primary sortas="TRACKER_TYPE_EVENT_ARRAY">TRACKER_TYPE_EVENT_ARRAY</primary></indexterm><programlisting>#define             TRACKER_TYPE_EVENT_ARRAY</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="tracker-dbus-async-return-if-fail" role="macro">
+<title>tracker_dbus_async_return_if_fail()</title>
+<indexterm zone="tracker-dbus-async-return-if-fail"><primary sortas="tracker_dbus_async_return_if_fail">tracker_dbus_async_return_if_fail</primary></indexterm><programlisting>#define             tracker_dbus_async_return_if_fail(expr,context)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>expr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>context</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-dbus-return-val-if-fail" role="macro">
+<title>tracker_dbus_return_val_if_fail()</title>
+<indexterm zone="tracker-dbus-return-val-if-fail"><primary sortas="tracker_dbus_return_val_if_fail">tracker_dbus_return_val_if_fail</primary></indexterm><programlisting>#define             tracker_dbus_return_val_if_fail(expr,val,error)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>expr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="TrackerDBusEventsType" role="enum">
+<title>enum TrackerDBusEventsType</title>
+<indexterm zone="TrackerDBusEventsType"><primary sortas="TrackerDBusEventsType">TrackerDBusEventsType</primary></indexterm><programlisting>typedef enum {
+	TRACKER_DBUS_EVENTS_TYPE_ADD,
+	TRACKER_DBUS_EVENTS_TYPE_UPDATE,
+	TRACKER_DBUS_EVENTS_TYPE_DELETE
+} TrackerDBusEventsType;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerDBusRequestHandler" role="typedef">
+<title>TrackerDBusRequestHandler</title>
+<indexterm zone="TrackerDBusRequestHandler"><primary sortas="TrackerDBusRequestHandler">TrackerDBusRequestHandler</primary></indexterm><programlisting>typedef struct TrackerDBusRequestHandler TrackerDBusRequestHandler;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerDBusRequestFunc" role="function">
+<title>TrackerDBusRequestFunc ()</title>
+<indexterm zone="TrackerDBusRequestFunc"><primary sortas="TrackerDBusRequestFunc">TrackerDBusRequestFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*TrackerDBusRequestFunc)           (<link linkend="guint">guint</link> request_id,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>request_id</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="TrackerDBusData" role="struct">
+<title>TrackerDBusData</title>
+<indexterm zone="TrackerDBusData"><primary sortas="TrackerDBusData">TrackerDBusData</primary></indexterm><programlisting>typedef struct {
+	guint    id;
+	gpointer data1;
+	gpointer data2;
+} TrackerDBusData;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="tracker-dbus-error-quark" role="function">
+<title>tracker_dbus_error_quark ()</title>
+<indexterm zone="tracker-dbus-error-quark"><primary sortas="tracker_dbus_error_quark">tracker_dbus_error_quark</primary></indexterm><programlisting><link linkend="GQuark">GQuark</link>              tracker_dbus_error_quark            (void);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2 id="tracker-dbus-data-new" role="function">
 <title>tracker_dbus_data_new ()</title>
 <indexterm zone="tracker-dbus-data-new"><primary sortas="tracker_dbus_data_new">tracker_dbus_data_new</primary></indexterm><programlisting><link linkend="TrackerDBusData">TrackerDBusData</link> *   tracker_dbus_data_new               (const <link linkend="gpointer">gpointer</link> arg1,
@@ -79,19 +206,14 @@
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="tracker-dbus-error-quark" role="function">
-<title>tracker_dbus_error_quark ()</title>
-<indexterm zone="tracker-dbus-error-quark"><primary sortas="tracker_dbus_error_quark">tracker_dbus_error_quark</primary></indexterm><programlisting><link linkend="GQuark">GQuark</link>              tracker_dbus_error_quark            (void);</programlisting>
+<refsect2 id="tracker-dbus-gvalue-slice-new" role="function">
+<title>tracker_dbus_gvalue_slice_new ()</title>
+<indexterm zone="tracker-dbus-gvalue-slice-new"><primary sortas="tracker_dbus_gvalue_slice_new">tracker_dbus_gvalue_slice_new</primary></indexterm><programlisting><link linkend="GValue">GValue</link> *            tracker_dbus_gvalue_slice_new       (<link linkend="GType">GType</link> type);</programlisting>
 <para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
 </simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="tracker-dbus-get-next-request-id" role="function">
-<title>tracker_dbus_get_next_request_id ()</title>
-<indexterm zone="tracker-dbus-get-next-request-id"><primary sortas="tracker_dbus_get_next_request_id">tracker_dbus_get_next_request_id</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_dbus_get_next_request_id    (void);</programlisting>
-<para>
-</para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -104,12 +226,38 @@
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="tracker-dbus-gvalue-slice-new" role="function">
-<title>tracker_dbus_gvalue_slice_new ()</title>
-<indexterm zone="tracker-dbus-gvalue-slice-new"><primary sortas="tracker_dbus_gvalue_slice_new">tracker_dbus_gvalue_slice_new</primary></indexterm><programlisting><link linkend="GValue">GValue</link> *            tracker_dbus_gvalue_slice_new       (<link linkend="GType">GType</link> type);</programlisting>
+<refsect2 id="tracker-dbus-slist-to-strv" role="function">
+<title>tracker_dbus_slist_to_strv ()</title>
+<indexterm zone="tracker-dbus-slist-to-strv"><primary sortas="tracker_dbus_slist_to_strv">tracker_dbus_slist_to_strv</primary></indexterm><programlisting><link linkend="gchar">gchar</link> **            tracker_dbus_slist_to_strv          (<link linkend="GSList">GSList</link> *list);</programlisting>
 <para>
 </para><variablelist role="params">
-<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-dbus-str-to-strv" role="function">
+<title>tracker_dbus_str_to_strv ()</title>
+<indexterm zone="tracker-dbus-str-to-strv"><primary sortas="tracker_dbus_str_to_strv">tracker_dbus_str_to_strv</primary></indexterm><programlisting><link linkend="gchar">gchar</link> **            tracker_dbus_str_to_strv            (const <link linkend="gchar">gchar</link> *str);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-dbus-queue-str-to-strv" role="function">
+<title>tracker_dbus_queue_str_to_strv ()</title>
+<indexterm zone="tracker-dbus-queue-str-to-strv"><primary sortas="tracker_dbus_queue_str_to_strv">tracker_dbus_queue_str_to_strv</primary></indexterm><programlisting><link linkend="gchar">gchar</link> **            tracker_dbus_queue_str_to_strv      (<link linkend="GQueue">GQueue</link> *queue,
+                                                         <link linkend="gint">gint</link> max);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>queue</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>max</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
@@ -130,19 +278,30 @@
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="tracker-dbus-queue-str-to-strv" role="function">
-<title>tracker_dbus_queue_str_to_strv ()</title>
-<indexterm zone="tracker-dbus-queue-str-to-strv"><primary sortas="tracker_dbus_queue_str_to_strv">tracker_dbus_queue_str_to_strv</primary></indexterm><programlisting><link linkend="gchar">gchar</link> **            tracker_dbus_queue_str_to_strv      (<link linkend="GQueue">GQueue</link> *queue,
-                                                         <link linkend="gint">gint</link> max);</programlisting>
+<refsect2 id="tracker-dbus-results-ptr-array-free" role="function">
+<title>tracker_dbus_results_ptr_array_free ()</title>
+<indexterm zone="tracker-dbus-results-ptr-array-free"><primary sortas="tracker_dbus_results_ptr_array_free">tracker_dbus_results_ptr_array_free</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_results_ptr_array_free (<link linkend="GPtrArray">GPtrArray</link> **ptr_array);</programlisting>
 <para>
 </para><variablelist role="params">
-<varlistentry><term><parameter>queue</parameter>&#160;:</term>
+<varlistentry><term><parameter>ptr_array</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>max</parameter>&#160;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-dbus-get-next-request-id" role="function">
+<title>tracker_dbus_get_next_request_id ()</title>
+<indexterm zone="tracker-dbus-get-next-request-id"><primary sortas="tracker_dbus_get_next_request_id">tracker_dbus_get_next_request_id</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_dbus_get_next_request_id    (void);</programlisting>
+<para>
+</para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-dbus-enable-client-lookup" role="function">
+<title>tracker_dbus_enable_client_lookup ()</title>
+<indexterm zone="tracker-dbus-enable-client-lookup"><primary sortas="tracker_dbus_enable_client_lookup">tracker_dbus_enable_client_lookup</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_enable_client_lookup   (<link linkend="gboolean">gboolean</link> enable);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>enable</parameter>&#160;:</term>
+<listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="tracker-dbus-request-add-hook" role="function">
@@ -165,14 +324,27 @@
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="tracker-dbus-request-comment" role="function">
-<title>tracker_dbus_request_comment ()</title>
-<indexterm zone="tracker-dbus-request-comment"><primary sortas="tracker_dbus_request_comment">tracker_dbus_request_comment</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_comment        (<link linkend="gint">gint</link> request_id,
+<refsect2 id="tracker-dbus-request-remove-hook" role="function">
+<title>tracker_dbus_request_remove_hook ()</title>
+<indexterm zone="tracker-dbus-request-remove-hook"><primary sortas="tracker_dbus_request_remove_hook">tracker_dbus_request_remove_hook</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_remove_hook    (<link linkend="TrackerDBusRequestHandler">TrackerDBusRequestHandler</link> *handler);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>handler</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-dbus-request-new" role="function">
+<title>tracker_dbus_request_new ()</title>
+<indexterm zone="tracker-dbus-request-new"><primary sortas="tracker_dbus_request_new">tracker_dbus_request_new</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_new            (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context,
                                                          const <link linkend="gchar">gchar</link> *format,
                                                          ...);</programlisting>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>request_id</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>context</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
@@ -182,15 +354,32 @@
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2 id="tracker-dbus-request-success" role="function">
+<title>tracker_dbus_request_success ()</title>
+<indexterm zone="tracker-dbus-request-success"><primary sortas="tracker_dbus_request_success">tracker_dbus_request_success</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_success        (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>request_id</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>context</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2 id="tracker-dbus-request-failed" role="function">
 <title>tracker_dbus_request_failed ()</title>
 <indexterm zone="tracker-dbus-request-failed"><primary sortas="tracker_dbus_request_failed">tracker_dbus_request_failed</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_failed         (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context,
                                                          <link linkend="GError">GError</link> **error,
                                                          const <link linkend="gchar">gchar</link> *format,
                                                          ...);</programlisting>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>request_id</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>context</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>error</parameter>&#160;:</term>
@@ -203,14 +392,18 @@
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="tracker-dbus-request-new" role="function">
-<title>tracker_dbus_request_new ()</title>
-<indexterm zone="tracker-dbus-request-new"><primary sortas="tracker_dbus_request_new">tracker_dbus_request_new</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_new            (<link linkend="gint">gint</link> request_id,
+<refsect2 id="tracker-dbus-request-comment" role="function">
+<title>tracker_dbus_request_comment ()</title>
+<indexterm zone="tracker-dbus-request-comment"><primary sortas="tracker_dbus_request_comment">tracker_dbus_request_comment</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_comment        (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context,
                                                          const <link linkend="gchar">gchar</link> *format,
                                                          ...);</programlisting>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>request_id</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>context</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
@@ -220,44 +413,58 @@
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="tracker-dbus-request-remove-hook" role="function">
-<title>tracker_dbus_request_remove_hook ()</title>
-<indexterm zone="tracker-dbus-request-remove-hook"><primary sortas="tracker_dbus_request_remove_hook">tracker_dbus_request_remove_hook</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_remove_hook    (<link linkend="TrackerDBusRequestHandler">TrackerDBusRequestHandler</link> *handler);</programlisting>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>handler</parameter>&#160;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="tracker-dbus-request-success" role="function">
-<title>tracker_dbus_request_success ()</title>
-<indexterm zone="tracker-dbus-request-success"><primary sortas="tracker_dbus_request_success">tracker_dbus_request_success</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_success        (<link linkend="gint">gint</link> request_id);</programlisting>
+<refsect2 id="tracker-dbus-request-info" role="function">
+<title>tracker_dbus_request_info ()</title>
+<indexterm zone="tracker-dbus-request-info"><primary sortas="tracker_dbus_request_info">tracker_dbus_request_info</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_info           (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context,
+                                                         const <link linkend="gchar">gchar</link> *format,
+                                                         ...);</programlisting>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>request_id</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="tracker-dbus-results-ptr-array-free" role="function">
-<title>tracker_dbus_results_ptr_array_free ()</title>
-<indexterm zone="tracker-dbus-results-ptr-array-free"><primary sortas="tracker_dbus_results_ptr_array_free">tracker_dbus_results_ptr_array_free</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_results_ptr_array_free (<link linkend="GPtrArray">GPtrArray</link> **ptr_array);</programlisting>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>ptr_array</parameter>&#160;:</term>
+<varlistentry><term><parameter>context</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>...</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="tracker-dbus-slist-to-strv" role="function">
-<title>tracker_dbus_slist_to_strv ()</title>
-<indexterm zone="tracker-dbus-slist-to-strv"><primary sortas="tracker_dbus_slist_to_strv">tracker_dbus_slist_to_strv</primary></indexterm><programlisting><link linkend="gchar">gchar</link> **            tracker_dbus_slist_to_strv          (<link linkend="GSList">GSList</link> *list);</programlisting>
+<refsect2 id="tracker-dbus-request-debug" role="function">
+<title>tracker_dbus_request_debug ()</title>
+<indexterm zone="tracker-dbus-request-debug"><primary sortas="tracker_dbus_request_debug">tracker_dbus_request_debug</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_debug          (<link linkend="gint">gint</link> request_id,
+                                                         <link linkend="DBusGMethodInvocation">DBusGMethodInvocation</link> *context,
+                                                         const <link linkend="gchar">gchar</link> *format,
+                                                         ...);</programlisting>
 <para>
 </para><variablelist role="params">
-<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<varlistentry><term><parameter>request_id</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+<varlistentry><term><parameter>context</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>...</parameter>&#160;:</term>
+<listitem><simpara>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2 id="tracker-dbus-request-block-hooks" role="function">
+<title>tracker_dbus_request_block_hooks ()</title>
+<indexterm zone="tracker-dbus-request-block-hooks"><primary sortas="tracker_dbus_request_block_hooks">tracker_dbus_request_block_hooks</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_block_hooks    (void);</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="tracker-dbus-request-unblock-hooks" role="function">
+<title>tracker_dbus_request_unblock_hooks ()</title>
+<indexterm zone="tracker-dbus-request-unblock-hooks"><primary sortas="tracker_dbus_request_unblock_hooks">tracker_dbus_request_unblock_hooks</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_dbus_request_unblock_hooks  (void);</programlisting>
+<para>
+</para></refsect2>
 
 </refsect1>
 

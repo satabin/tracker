@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>NAO Ontology</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
+<link rel="up" href="ontology.html" title="Part I. Overview">
+<link rel="prev" href="nfo-properties.html" title="NFO Ontology Properties">
+<link rel="next" href="nao-properties.html" title="NAO Ontology Properties">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="ontology.html" title="Part I. Overview">
+<link rel="chapter" href="xsd-ontology.html" title="XSD Ontology">
+<link rel="chapter" href="nie-ontology.html" title="NIE Ontology">
+<link rel="chapter" href="nco-ontology.html" title="NCO Ontology">
+<link rel="chapter" href="nmo-ontology.html" title="NMO Ontology">
+<link rel="chapter" href="nfo-ontology.html" title="NFO Ontology">
+<link rel="chapter" href="nao-ontology.html" title="NAO Ontology">
+<link rel="chapter" href="mto-ontology.html" title="MTO Ontology">
+<link rel="chapter" href="nmm-ontology.html" title="NMM Ontology">
+<link rel="chapter" href="mfo-ontology.html" title="MFO Ontology">
+<link rel="chapter" href="mlo-ontology.html" title="MLO Ontology">
+<link rel="chapter" href="tracker-ontology.html" title="TRACKER Ontology">
+<link rel="chapter" href="maemo-ontology.html" title="MAEMO Ontology">
+<link rel="chapter" href="ncal-ontology.html" title="NCAL Ontology">
+<link rel="chapter" href="scal-ontology.html" title="SCAL Ontology">
+<link rel="chapter" href="fts-properties.html" title="Full-text indexed properties in the ontology">
+<link rel="part" href="ontology-notation-description.html" title="Part II. Notation">
+<link rel="part" href="ontology-graphs.html" title="Part III. The big picture">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="nfo-properties.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ontology.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Ontology Reference Manual</th>
+<td><a accesskey="n" href="nao-properties.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter" title="NAO Ontology">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="nao-ontology"></a>NAO Ontology</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="nao-ontology.html#nao-classes">NAO Ontology Classes</a></span></dt>
+<dt><span class="section"><a href="nao-properties.html">NAO Ontology Properties</a></span></dt>
+</dl></div>
+<dt><span class="term">Authors:</span></dt>
+<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">Siegfried Handschuh, DERI/NUIG, &lt;siegfried.handschuh@deri.org&gt;</li>
+<li class="listitem">Ludger van Elst, DFKI, &lt;elst@dfki.uni-kl.de&gt;</li>
+<li class="listitem">Michael Sintek, DFKI, &lt;michael.sintek@dfki.de&gt;</li>
+<li class="listitem">Simon Scerri, DERI/NUIG, &lt;simon.scerri@deri.org&gt;</li>
+</ul></div></dd>
+<dt><span class="term">Editors:</span></dt>
+<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">Tracker developers (translation into turtle)</li>
+<li class="listitem">Simon Scerri, DERI/NUIG, &lt;simon.scerri@deri.org&gt;</li>
+</ul></div></dd>
+<dt><span class="term">Contributors:</span></dt>
+<dd><div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">Antoni Mylka, DFKI, &lt;antoni.mylka@dfki.de&gt;</li>
+<li class="listitem">Julien Gaugaz, L3S, &lt;gaugaz@l3s.de&gt;</li>
+<li class="listitem">Knud Möller, DERI/NUIG, &lt;knud.moeller@deri.org&gt;</li>
+<li class="listitem">Sebastian Trüg, EDGE-IT, &lt;strueg@mandriva.com&gt;</li>
+<li class="listitem">Max Völkel, FZI, &lt;voelkel@fzi.de&gt;</li>
+<li class="listitem">Leo Sauermann, DFKI, &lt;leo.sauermann@dfki.de&gt;</li>
+</ul></div></dd>
+<dt><span class="term">Upstream:</span></dt>
+<dd><p><a class="ulink" href="http://www.semanticdesktop.org/ontologies/nao/" target="_top">Upstream version</a></p></dd>
+<dt><span class="term">ChangeLog:</span></dt>
+<dd><p><a class="ulink" href="http://git.gnome.org/cgit/tracker/log/data/ontologies/31-nao.ontology" target="_top">Tracker changes</a></p></dd>
+<dt><span class="term">Copyright:</span></dt>
+<dd><p>© 2007 <a class="ulink" href="http://nepomuk.semanticdesktop.org" target="_top">NEPOMUK Consortium</a>®. This work is made available under the terms of NEPOMUK <a class="ulink" href="http://www.semanticdesktop.org/ontologies/nfo/LICENSE.txt" target="_top">software license</a></p></dd>
+<div class="section" title="NAO Ontology Classes">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="nao-classes"></a>NAO Ontology Classes</h2></div></div></div>
+<div class="refsect2" title="nao:Property">
+<a name="nao-Property"></a><h3>nao:Property</h3>
+<p>Dont use this without asking first your ontology doctor</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subclasses</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In domain of</code></em> :</span></p></td>
+<td>
+<a class="link" href="nao-properties.html#nao-propertyValue" title="nao:propertyValue">nao:propertyValue</a>, <a class="link" href="nao-properties.html#nao-propertyName" title="nao:propertyName">nao:propertyName</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In range of</code></em> :</span></p></td>
+<td>
+<a class="link" href="nao-properties.html#nao-hasProperty" title="nao:hasProperty">nao:hasProperty</a>, </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nao:Tag">
+<a name="nao-Tag"></a><h3>nao:Tag</h3>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subclasses</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In domain of</code></em> :</span></p></td>
+<td>
+<a class="link" href="nao-properties.html#nao-prefLabel" title="nao:prefLabel">nao:prefLabel</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In range of</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Predefined instances</code></em> :</span></p></td>
+<td>
+nao:predefined-tag-favorite, </td>
+</tr>
+</tbody>
+</table></div>
+<div class="note" title="Note:" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note:</h3>
+<p>This class notifies about changes</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-File Operations
+tracker-file-utils
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -19,11 +19,14 @@ File Operations
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION tracker_env_check_xdg_dirs ##### -->
+<!-- ##### FUNCTION tracker_file_open ##### -->
 <para>
 
 </para>
 
+@uri: 
+@how: 
+@sequential: 
 @Returns: 
 
 
@@ -36,7 +39,7 @@ File Operations
 @need_again_soon: 
 
 
-<!-- ##### FUNCTION tracker_file_get_mime_type ##### -->
+<!-- ##### FUNCTION tracker_file_get_size ##### -->
 <para>
 
 </para>
@@ -54,60 +57,51 @@ File Operations
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_file_get_path_and_name ##### -->
+<!-- ##### FUNCTION tracker_file_get_mime_type ##### -->
 <para>
 
 </para>
 
-@uri: 
+@file: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_file_system_has_enough_space ##### -->
+<para>
+
+</para>
+
 @path: 
-@name: 
-
-
-<!-- ##### FUNCTION tracker_file_get_size ##### -->
-<para>
-
-</para>
-
-@uri: 
+@required_bytes: 
+@creating_db: 
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_file_open ##### -->
+<!-- ##### FUNCTION tracker_file_is_locked ##### -->
 <para>
 
 </para>
 
-@uri: 
-@how: 
-@sequential: 
+@file: 
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_file_unlink ##### -->
+<!-- ##### FUNCTION tracker_file_lock ##### -->
 <para>
 
 </para>
 
-@uri: 
+@file: 
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_path_evaluate_name ##### -->
+<!-- ##### FUNCTION tracker_file_unlock ##### -->
 <para>
 
 </para>
 
-@uri: 
+@file: 
 @Returns: 
-
-
-<!-- ##### FUNCTION tracker_path_hash_table_filter_duplicates ##### -->
-<para>
-
-</para>
-
-@roots: 
 
 
 <!-- ##### FUNCTION tracker_path_is_in_path ##### -->
@@ -120,6 +114,15 @@ File Operations
 @Returns: 
 
 
+<!-- ##### FUNCTION tracker_path_has_write_access_or_was_created ##### -->
+<para>
+
+</para>
+
+@path: 
+@Returns: 
+
+
 <!-- ##### FUNCTION tracker_path_list_filter_duplicates ##### -->
 <para>
 
@@ -127,14 +130,24 @@ File Operations
 
 @roots: 
 @basename_exception_prefix: 
+@is_recursive: 
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_path_remove ##### -->
+<!-- ##### FUNCTION tracker_path_evaluate_name ##### -->
 <para>
 
 </para>
 
 @uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_env_check_xdg_dirs ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 

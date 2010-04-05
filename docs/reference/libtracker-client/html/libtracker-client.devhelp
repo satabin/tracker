@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Client Library Reference Manual" link="index.html" author="" name="libtracker-client">
+  <chapters>
+    <sub name="Overview" link="libtracker-client.html"/>
+    <sub name="General" link="ch01.html">
+      <sub name="TrackerClient" link="TrackerClient.html"/>
+      <sub name="Cancellations" link="libtracker-client-Cancellations.html"/>
+      <sub name="Utilities" link="libtracker-client-Utilities.html"/>
+    </sub>
+    <sub name="Querying" link="ch02.html">
+      <sub name="Statistics" link="libtracker-client-Statistics.html"/>
+      <sub name="Resources" link="libtracker-client-Resources.html"/>
+      <sub name="Search" link="libtracker-client-Search.html"/>
+    </sub>
+    <sub name="Building Queries" link="ch03.html">
+      <sub name="Sparql builder" link="libtracker-client-TrackerSparqlBuilder.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <function name="TRACKER_DBUS_SERVICE" link="TrackerClient.html#TRACKER-DBUS-SERVICE--CAPS"/>
+    <function name="TRACKER_DBUS_OBJECT" link="TrackerClient.html#TRACKER-DBUS-OBJECT--CAPS"/>
+    <function name="TRACKER_DBUS_INTERFACE_RESOURCES" link="TrackerClient.html#TRACKER-DBUS-INTERFACE-RESOURCES--CAPS"/>
+    <function name="TRACKER_DBUS_INTERFACE_STATISTICS" link="TrackerClient.html#TRACKER-DBUS-INTERFACE-STATISTICS--CAPS"/>
+    <function name="TrackerClient" link="TrackerClient.html#TrackerClient-struct"/>
+    <function name="TrackerClientClass" link="TrackerClient.html#TrackerClientClass"/>
+    <function name="enum TrackerClientFlags" link="TrackerClient.html#TrackerClientFlags"/>
+    <function name="tracker_client_new ()" link="TrackerClient.html#tracker-client-new"/>
+    <function name="The &quot;enable-warnings&quot; property" link="TrackerClient.html#TrackerClient--enable-warnings"/>
+    <function name="The &quot;timeout&quot; property" link="TrackerClient.html#TrackerClient--timeout"/>
+    <function name="tracker_cancel_call ()" link="libtracker-client-Cancellations.html#tracker-cancel-call"/>
+    <function name="tracker_cancel_last_call ()" link="libtracker-client-Cancellations.html#tracker-cancel-last-call"/>
+    <function name="tracker_sparql_escape ()" link="libtracker-client-Utilities.html#tracker-sparql-escape"/>
+    <function name="tracker_uri_printf_escaped ()" link="libtracker-client-Utilities.html#tracker-uri-printf-escaped"/>
+    <function name="tracker_uri_vprintf_escaped ()" link="libtracker-client-Utilities.html#tracker-uri-vprintf-escaped"/>
+    <function name="TrackerReplyGPtrArray ()" link="libtracker-client-Statistics.html#TrackerReplyGPtrArray"/>
+    <function name="tracker_statistics_get ()" link="libtracker-client-Statistics.html#tracker-statistics-get"/>
+    <function name="tracker_statistics_get_async ()" link="libtracker-client-Statistics.html#tracker-statistics-get-async"/>
+    <function name="TrackerReplyGPtrArray ()" link="libtracker-client-Resources.html#TrackerReplyGPtrArray"/>
+    <function name="TrackerReplyVoid ()" link="libtracker-client-Resources.html#TrackerReplyVoid"/>
+    <function name="tracker_resources_sparql_query ()" link="libtracker-client-Resources.html#tracker-resources-sparql-query"/>
+    <function name="tracker_resources_sparql_query_async ()" link="libtracker-client-Resources.html#tracker-resources-sparql-query-async"/>
+    <function name="tracker_resources_sparql_update ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update"/>
+    <function name="tracker_resources_sparql_update_async ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update-async"/>
+    <function name="tracker_resources_sparql_update_blank ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update-blank"/>
+    <function name="tracker_resources_sparql_update_blank_async ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update-blank-async"/>
+    <function name="tracker_resources_batch_sparql_update ()" link="libtracker-client-Resources.html#tracker-resources-batch-sparql-update"/>
+    <function name="tracker_resources_batch_sparql_update_async ()" link="libtracker-client-Resources.html#tracker-resources-batch-sparql-update-async"/>
+    <function name="tracker_resources_batch_commit ()" link="libtracker-client-Resources.html#tracker-resources-batch-commit"/>
+    <function name="tracker_resources_batch_commit_async ()" link="libtracker-client-Resources.html#tracker-resources-batch-commit-async"/>
+    <function name="tracker_resources_load ()" link="libtracker-client-Resources.html#tracker-resources-load"/>
+    <function name="tracker_resources_load_async ()" link="libtracker-client-Resources.html#tracker-resources-load-async"/>
+    <function name="TrackerReplyArray ()" link="libtracker-client-Search.html#TrackerReplyArray"/>
+    <function name="tracker_connect ()" link="libtracker-client-Search.html#tracker-connect"/>
+    <function name="tracker_disconnect ()" link="libtracker-client-Search.html#tracker-disconnect"/>
+    <function name="tracker_search_metadata_by_text_async ()" link="libtracker-client-Search.html#tracker-search-metadata-by-text-async"/>
+    <function name="tracker_search_metadata_by_text_and_location_async ()" link="libtracker-client-Search.html#tracker-search-metadata-by-text-and-location-async"/>
+    <function name="tracker_search_metadata_by_text_and_mime_async ()" link="libtracker-client-Search.html#tracker-search-metadata-by-text-and-mime-async"/>
+    <function name="tracker_search_metadata_by_text_and_mime_and_location_async ()" link="libtracker-client-Search.html#tracker-search-metadata-by-text-and-mime-and-location-async"/>
+    <function name="TrackerSparqlBuilder" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"/>
+    <function name="TrackerSparqlBuilderClass" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderClass"/>
+    <function name="TrackerSparqlBuilderPrivate" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderPrivate"/>
+    <function name="enum TrackerSparqlBuilderState" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderState"/>
+    <function name="tracker_sparql_builder_new ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new"/>
+    <function name="tracker_sparql_builder_new_embedded_insert ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert"/>
+    <function name="tracker_sparql_builder_new_update ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-update"/>
+    <function name="tracker_sparql_builder_construct ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct"/>
+    <function name="tracker_sparql_builder_construct_embedded_insert ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-embedded-insert"/>
+    <function name="tracker_sparql_builder_construct_update ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-update"/>
+    <function name="tracker_sparql_builder_get_state ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-state"/>
+    <function name="tracker_sparql_builder_get_result ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-result"/>
+    <function name="tracker_sparql_builder_get_length ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-length"/>
+    <function name="tracker_sparql_builder_append ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-append"/>
+    <function name="tracker_sparql_builder_prepend ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-prepend"/>
+    <function name="tracker_sparql_builder_insert_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open"/>
+    <function name="tracker_sparql_builder_insert_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-close"/>
+    <function name="tracker_sparql_builder_where_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-open"/>
+    <function name="tracker_sparql_builder_where_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-close"/>
+    <function name="tracker_sparql_builder_delete_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-open"/>
+    <function name="tracker_sparql_builder_delete_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-close"/>
+    <function name="tracker_sparql_builder_drop_graph ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-drop-graph"/>
+    <function name="tracker_sparql_builder_subject_variable ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-variable"/>
+    <function name="tracker_sparql_builder_subject_iri ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri"/>
+    <function name="tracker_sparql_builder_subject ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject"/>
+    <function name="tracker_sparql_builder_predicate_iri ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate-iri"/>
+    <function name="tracker_sparql_builder_predicate ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate"/>
+    <function name="tracker_sparql_builder_object_iri ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-iri"/>
+    <function name="tracker_sparql_builder_object ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object"/>
+    <function name="tracker_sparql_builder_object_string ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-string"/>
+    <function name="tracker_sparql_builder_object_boolean ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-boolean"/>
+    <function name="tracker_sparql_builder_object_int64 ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-int64"/>
+    <function name="tracker_sparql_builder_object_date ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-date"/>
+    <function name="tracker_sparql_builder_object_double ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-double"/>
+    <function name="tracker_sparql_builder_object_variable ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-variable"/>
+    <function name="tracker_sparql_builder_object_blank_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-open"/>
+    <function name="tracker_sparql_builder_object_blank_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-close"/>
+    <function name="tracker_sparql_builder_object_unvalidated ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-unvalidated"/>
+  </functions>
+</book>

@@ -1,0 +1,89 @@
+<!-- ##### SECTION Title ##### -->
+TrackerClient
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO TRACKER_DBUS_SERVICE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO TRACKER_DBUS_OBJECT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO TRACKER_DBUS_INTERFACE_RESOURCES ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO TRACKER_DBUS_INTERFACE_STATISTICS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### STRUCT TrackerClient ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG TrackerClient:enable-warnings ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerClient:timeout ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT TrackerClientClass ##### -->
+<para>
+
+</para>
+
+@parent: 
+
+<!-- ##### ENUM TrackerClientFlags ##### -->
+<para>
+
+</para>
+
+@TRACKER_CLIENT_ENABLE_WARNINGS: 
+
+<!-- ##### FUNCTION tracker_client_new ##### -->
+<para>
+
+</para>
+
+@flags: 
+@timeout: 
+@Returns: 
+
+

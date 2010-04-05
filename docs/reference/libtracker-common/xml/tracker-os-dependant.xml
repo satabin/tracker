@@ -1,0 +1,137 @@
+<refentry id="libtracker-common-tracker-os-dependant">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-common-tracker-os-dependant.top_of_page">tracker-os-dependant</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-COMMON Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>tracker-os-dependant</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-common-tracker-os-dependant.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-spawn">tracker_spawn</link>                       (<link linkend="gchar">gchar</link> **argv,
+                                                         <link linkend="gint">gint</link> timeout,
+                                                         <link linkend="gchar">gchar</link> **tmp_stdout,
+                                                         <link linkend="gint">gint</link> *exit_status);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-spawn-async-with-channels">tracker_spawn_async_with_channels</link>   (const <link linkend="gchar">gchar</link> **argv,
+                                                         <link linkend="gint">gint</link> timeout,
+                                                         <link linkend="GPid">GPid</link> *pid,
+                                                         <link linkend="GIOChannel">GIOChannel</link> **stdin_channel,
+                                                         <link linkend="GIOChannel">GIOChannel</link> **stdout_channel,
+                                                         <link linkend="GIOChannel">GIOChannel</link> **stderr_channel);
+<link linkend="void">void</link>                <link linkend="tracker-spawn-child-func">tracker_spawn_child_func</link>            (<link linkend="gpointer">gpointer</link> user_data);
+<link linkend="gchar">gchar</link> *             <link linkend="tracker-create-permission-string">tracker_create_permission_string</link>    (<link linkend="struct-stat">struct stat</link> finfo);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-memory-setrlimits">tracker_memory_setrlimits</link>           (void);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-common-tracker-os-dependant.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-common-tracker-os-dependant.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="tracker-spawn" role="function">
+<title>tracker_spawn ()</title>
+<indexterm zone="tracker-spawn"><primary sortas="tracker_spawn">tracker_spawn</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_spawn                       (<link linkend="gchar">gchar</link> **argv,
+                                                         <link linkend="gint">gint</link> timeout,
+                                                         <link linkend="gchar">gchar</link> **tmp_stdout,
+                                                         <link linkend="gint">gint</link> *exit_status);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>argv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>timeout</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tmp_stdout</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>exit_status</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-spawn-async-with-channels" role="function">
+<title>tracker_spawn_async_with_channels ()</title>
+<indexterm zone="tracker-spawn-async-with-channels"><primary sortas="tracker_spawn_async_with_channels">tracker_spawn_async_with_channels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_spawn_async_with_channels   (const <link linkend="gchar">gchar</link> **argv,
+                                                         <link linkend="gint">gint</link> timeout,
+                                                         <link linkend="GPid">GPid</link> *pid,
+                                                         <link linkend="GIOChannel">GIOChannel</link> **stdin_channel,
+                                                         <link linkend="GIOChannel">GIOChannel</link> **stdout_channel,
+                                                         <link linkend="GIOChannel">GIOChannel</link> **stderr_channel);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>argv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>timeout</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pid</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>stdin_channel</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>stdout_channel</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>stderr_channel</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-spawn-child-func" role="function">
+<title>tracker_spawn_child_func ()</title>
+<indexterm zone="tracker-spawn-child-func"><primary sortas="tracker_spawn_child_func">tracker_spawn_child_func</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_spawn_child_func            (<link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-create-permission-string" role="function">
+<title>tracker_create_permission_string ()</title>
+<indexterm zone="tracker-create-permission-string"><primary sortas="tracker_create_permission_string">tracker_create_permission_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link> *             tracker_create_permission_string    (<link linkend="struct-stat">struct stat</link> finfo);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>finfo</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-memory-setrlimits" role="function">
+<title>tracker_memory_setrlimits ()</title>
+<indexterm zone="tracker-memory-setrlimits"><primary sortas="tracker_memory_setrlimits">tracker_memory_setrlimits</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_memory_setrlimits           (void);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

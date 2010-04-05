@@ -1,7 +1,6 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2006, Edward Duffy (eduffy@gmail.com)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2006, Edward Duffy <eduffy@gmail.com>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -19,36 +18,36 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#include "config.h"
-
 #include <string.h>
 
 #include <glib.h>
 
 #include <libtracker-common/tracker-os-dependant.h>
+#include <libtracker-common/tracker-ontologies.h>
+#include <libtracker-common/tracker-utils.h>
 
-#include "tracker-main.h"
-#include "tracker-escape.h"
+#include <libtracker-extract/tracker-extract.h>
+#include <libtracker-client/tracker.h>
 
-static gchar *tags[][2] = {
-	{ "TOTEM_INFO_VIDEO_HEIGHT",		"Video:Height"		},
-	{ "TOTEM_INFO_VIDEO_WIDTH",		"Video:Width"		},
-	{ "TOTEM_INFO_FPS",			"Video:FrameRate"	},
-	{ "TOTEM_INFO_VIDEO_CODEC",		"Video:Codec"		},
-	{ "TOTEM_INFO_VIDEO_BITRATE",		"Video:Bitrate"		},
-	{ "TOTEM_INFO_TITLE",			"Video:Title"		},
-	{ "TOTEM_INFO_AUTHOR",			"Video:Author"		},
-#ifdef ENABLE_DETAILED_METADATA
-	{ "TOTEM_INFO_AUDIO_BITRATE",		"Audio:Bitrate"		},
-	{ "TOTEM_INFO_AUDIO_SAMPLE_RATE",	"Audio:Samplerate"	},
-	{ "TOTEM_INFO_AUDIO_CODEC",		"Audio:Codec"		},
-	{ "TOTEM_INFO_AUDIO_CHANNELS",		"Audio:Channels"	},
-#endif /* ENABLE_DETAILED_METADATA */
-	{ NULL,					NULL			}
+static void extract_totem (const gchar          *uri,
+                           TrackerSparqlBuilder *preupdate,
+                           TrackerSparqlBuilder *metadata);
+
+static const gchar *tags[][2] = {
+	{ "TOTEM_INFO_VIDEO_HEIGHT",      "nfo:height"         },
+	{ "TOTEM_INFO_VIDEO_WIDTH",       "nfo:width"          },
+	{ "TOTEM_INFO_FPS",               "nfo:frameRate"      },
+	{ "TOTEM_INFO_VIDEO_CODEC",       "nfo:codec"          },
+	{ "TOTEM_INFO_VIDEO_BITRATE",     "nfo:averageBitrate" },
+	{ "TOTEM_INFO_TITLE",             "nie:title"          },
+	{ "TOTEM_INFO_ARTIST",            "nco:creator"        },
+	{ "TOTEM_INFO_ALBUM",             "nmm:musicAlbum"     },
+	{ "TOTEM_INFO_AUDIO_BITRATE",     "nfo:averageBitrate" },
+	{ "TOTEM_INFO_AUDIO_SAMPLE_RATE", "nfo:sampleRate"     },
+	{ "TOTEM_INFO_AUDIO_CODEC",       "nfo:codec"          },
+	{ "TOTEM_INFO_AUDIO_CHANNELS",    "nfo:channels"       },
+	{ NULL, NULL }
 };
-
-static void extract_totem (const gchar *filename,
-			   GHashTable  *metadata);
 
 static TrackerExtractData data[] = {
 	{ "audio/*", extract_totem },
@@ -57,18 +56,39 @@ static TrackerExtractData data[] = {
 };
 
 static void
-extract_totem (const gchar *filename,
-	       GHashTable  *metadata)
+metadata_write_foreach (gpointer key,
+                        gpointer value,
+                        gpointer user_data)
+{
+	TrackerSparqlBuilder *metadata = user_data;
+
+	tracker_sparql_builder_predicate (metadata, (const gchar *) key);
+	tracker_sparql_builder_object_unvalidated (metadata, (const gchar *) value);
+}
+
+static void
+extract_totem (const gchar          *uri,
+               TrackerSparqlBuilder *preupdate,
+               TrackerSparqlBuilder *metadata)
 {
 	gchar *argv[3];
 	gchar *totem;
+	gboolean has_video = FALSE;
+	GHashTable *tmp_metadata;
 
 	argv[0] = g_strdup ("totem-video-indexer");
-	argv[1] = g_strdup (filename);
+	argv[1] = g_filename_from_uri (uri, NULL, NULL);
 	argv[2] = NULL;
+
+	tmp_metadata = g_hash_table_new_full (g_str_hash,
+	                                      g_str_equal,
+	                                      (GDestroyNotify) g_free,
+	                                      (GDestroyNotify) g_free);
 
 	if (tracker_spawn (argv, 10, &totem, NULL)) {
 		gchar **lines, **line;
+		gchar *artist = NULL, *album = NULL;
+		gchar *artist_uri = NULL, *album_uri = NULL;
 
 		lines = g_strsplit (totem, "\n", -1);
 
@@ -76,19 +96,95 @@ extract_totem (const gchar *filename,
 			gint i;
 
 			for (i = 0; tags[i][0]; i++) {
+				if (g_strcmp0 (*line, "TOTEM_INFO_HAS_VIDEO=True") == 0) {
+					has_video = TRUE;
+				}
+
 				if (g_str_has_prefix (*line, tags[i][0])) {
-					g_hash_table_insert (metadata,
-							     g_strdup (tags[i][1]),
-							     tracker_escape_metadata ((*line) + strlen (tags[i][0]) + 1));
+					gchar *value = (*line) + strlen (tags[i][0]) + 1;
+
+					if (g_strcmp0 (tags[i][0], "TOTEM_INFO_ARTIST") == 0) {
+						artist = g_strdup (value);
+						artist_uri = tracker_uri_printf_escaped ("urn:artist:%s", artist);
+					} else if (g_strcmp0 (tags[i][0], "TOTEM_INFO_ALBUM") == 0) {
+						album = g_strdup (value);
+						album_uri = tracker_uri_printf_escaped ("urn:album:%s", album);
+					} else {
+						g_hash_table_insert (tmp_metadata, g_strdup (tags[i][1]), g_strdup (value));
+					}
 					break;
 				}
 			}
 		}
+
+		if (artist) {
+			tracker_sparql_builder_insert_open (preupdate, NULL);
+
+			tracker_sparql_builder_subject_iri (preupdate, artist_uri);
+			tracker_sparql_builder_predicate (preupdate, "a");
+			tracker_sparql_builder_object (preupdate, "nmm:Artist");
+
+			if (has_video) {
+				tracker_sparql_builder_object (preupdate, "nmm:director");
+			} else {
+				tracker_sparql_builder_object (preupdate, "nmm:composer");
+			}
+
+			tracker_sparql_builder_predicate (preupdate, "nmm:artistName");
+			tracker_sparql_builder_object_unvalidated (preupdate, artist);
+
+			tracker_sparql_builder_insert_close (preupdate);
+		}
+
+		if (album) {
+			tracker_sparql_builder_insert_open (preupdate, NULL);
+
+			tracker_sparql_builder_subject_iri (preupdate, album_uri);
+			tracker_sparql_builder_predicate (preupdate, "a");
+			tracker_sparql_builder_object (preupdate, "nmm:MusicAlbum");
+			tracker_sparql_builder_predicate (preupdate, "nmm:albumTitle");
+			tracker_sparql_builder_object_unvalidated (preupdate, album);
+
+			tracker_sparql_builder_insert_close (preupdate);
+		}
+
+		tracker_sparql_builder_predicate (metadata, "a");
+
+		if (has_video) {
+			tracker_sparql_builder_object (metadata, "nmm:Video");
+		} else {
+			tracker_sparql_builder_object (metadata, "nmm:MusicPiece");
+			tracker_sparql_builder_object (metadata, "nfo:Audio");
+		}
+
+		g_hash_table_foreach (tmp_metadata, metadata_write_foreach, metadata);
+
+		if (artist) {
+			if (has_video) {
+				tracker_sparql_builder_object (metadata, "nmm:leadActor");
+			} else {
+				tracker_sparql_builder_predicate (metadata, "nmm:performer");
+			}
+
+			tracker_sparql_builder_object_iri (metadata, artist_uri);
+		}
+
+		if (album && !has_video) {
+			tracker_sparql_builder_predicate (metadata, "nmm:musicAlbum");
+			tracker_sparql_builder_object_iri (metadata, album_uri);
+		}
+
+		g_free (album_uri);
+		g_free (artist_uri);
+		g_free (album);
+		g_free (artist);
 	}
+
+	g_hash_table_destroy (tmp_metadata);
 }
 
 TrackerExtractData *
-tracker_get_extract_data (void)
+tracker_extract_get_data (void)
 {
 	return data;
 }

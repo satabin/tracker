@@ -1,7 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -21,393 +19,89 @@
 
 #include "config.h"
 
-#include <string.h>
-#include <stdlib.h>
 #include <signal.h>
-#include <time.h>
 #include <locale.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include <glib.h>
 #include <glib/gi18n.h>
 
-#include <libtracker/tracker.h>
+#include <libtracker-client/tracker.h>
+#include <libtracker-common/tracker-type-utils.h>
+#include <libtracker-miner/tracker-miner.h>
 
-#define TRACKER_TYPE_G_STRV_ARRAY  (dbus_g_type_get_collection ("GPtrArray", G_TYPE_STRV))
+#include "tracker-status-client.h"
 
-#define DETAIL_MAX_WIDTH 30
+#define ABOUT	  \
+	"Tracker " PACKAGE_VERSION "\n"
 
-#define g_marshal_value_peek_boolean(v)  g_value_get_boolean (v)
-#define g_marshal_value_peek_string(v)	 (char*) g_value_get_string (v)
-#define g_marshal_value_peek_int(v)      g_value_get_int (v)
-#define g_marshal_value_peek_double(v)   g_value_get_double (v)
+#define LICENSE	  \
+	"This program is free software and comes without any warranty.\n" \
+	"It is licensed under version 2 or later of the General Public " \
+	"License which can be viewed at:\n" \
+	"\n" \
+	"  http://www.gnu.org/licenses/gpl.txt\n"
+
+static DBusGConnection *connection = NULL;
+static DBusGProxy *proxy = NULL;
 
 static GMainLoop *main_loop;
-static gchar     *last_state;   
-static gboolean   last_initial_index;
-static gboolean   last_in_merge;
-static gboolean   last_is_paused_manually;
-static gboolean   last_is_paused_for_bat;
-static gboolean   last_is_paused_for_io;
-static gboolean   last_is_indexing_enabled;
+static GHashTable *miners_progress;
+static GHashTable *miners_status;
+static gint longest_miner_name_length = 0;
+static gint paused_length = 0;
 
-static gboolean   follow;
-static gboolean   detailed;
+static gboolean list_miners_running;
+static gboolean list_miners_available;
+static gboolean pause_details;
+static gchar *miner_name;
+static gchar *pause_reason;
+static gint resume_cookie = -1;
+static gboolean follow;
+static gboolean detailed;
+static gboolean print_version;
 
 static GOptionEntry entries[] = {
 	{ "follow", 'f', 0, G_OPTION_ARG_NONE, &follow,
 	  N_("Follow status changes as they happen"),
-	  NULL 
+	  NULL
 	},
 	{ "detailed", 'd', 0, G_OPTION_ARG_NONE, &detailed,
 	  N_("Include details with state updates (only applies to --follow)"),
-	  NULL 
+	  NULL
+	},
+	{ "list-miners-running", 'l', 0, G_OPTION_ARG_NONE, &list_miners_running,
+	  N_("List all miners currently running"),
+	  NULL
+	},
+	{ "list-miners-available", 'a', 0, G_OPTION_ARG_NONE, &list_miners_available,
+	  N_("List all miners installed"),
+	  NULL
+	},
+	{ "pause-details", 'i', 0, G_OPTION_ARG_NONE, &pause_details,
+	  N_("List pause reasons and applications for a miner"),
+	  NULL
+	},
+	{ "miner", 'm', 0, G_OPTION_ARG_STRING, &miner_name,
+	  N_("Miner to use with other commands (you can use suffixes, e.g. FS or Applications)"),
+	  N_("MINER")
+	},
+	{ "pause", 'p', 0, G_OPTION_ARG_STRING, &pause_reason,
+	  N_("Pause a miner (you must use this with --miner)"),
+	  N_("REASON")
+	},
+	{ "resume", 'r', 0, G_OPTION_ARG_INT, &resume_cookie,
+	  N_("Resume a miner (you must use this with --miner)"),
+	  N_("COOKIE")
+	},
+	{ "version", 'V', 0, G_OPTION_ARG_NONE, &print_version,
+	  N_("Print version"),
+	  NULL
 	},
 	{ NULL }
 };
-
-static gchar *
-seconds_to_string (gdouble  seconds_elapsed,
-		   gboolean short_string)
-{
-	GString *s;
-	gchar	*str;
-	gdouble  total;
-	gint	 days, hours, minutes, seconds;
-
-	g_return_val_if_fail (seconds_elapsed >= 0.0, g_strdup (_("less than one second")));
-
-	total	 = seconds_elapsed;
-
-	seconds  = (gint) total % 60;
-	total	/= 60;
-	minutes  = (gint) total % 60;
-	total	/= 60;
-	hours	 = (gint) total % 24;
-	days	 = (gint) total / 24;
-
-	s = g_string_new ("");
-
-	if (short_string) {
-		if (days) {
-			g_string_append_printf (s, " %dd", days);
-		}
-
-		if (hours) {
-			g_string_append_printf (s, " %2.2dh", hours);
-		}
-
-		if (minutes) {
-			g_string_append_printf (s, " %2.2dm", minutes);
-		}
-
-		if (seconds) {
-			g_string_append_printf (s, " %2.2ds", seconds);
-		}
-	} else {
-		if (days) {
-			g_string_append_printf (s, " %d day%s",
-						days,
-						days == 1 ? "" : "s");
-		}
-
-		if (hours) {
-			g_string_append_printf (s, " %2.2d hour%s",
-						hours,
-						hours == 1 ? "" : "s");
-		}
-
-		if (minutes) {
-			g_string_append_printf (s, " %2.2d minute%s",
-						minutes,
-						minutes == 1 ? "" : "s");
-		}
-
-		if (seconds) {
-			g_string_append_printf (s, " %2.2d second%s",
-						seconds,
-						seconds == 1 ? "" : "s");
-		}
-	}
-
-	str = g_string_free (s, FALSE);
-
-	if (str[0] == '\0') {
-		g_free (str);
-		str = g_strdup (_("less than one second"));
-	} else {
-		g_strchug (str);
-	}
-
-	return str;
-}
-
-static gchar *
-seconds_estimate_to_string (gdouble  seconds_elapsed,
-			    gboolean short_string,
-			    guint    items_done,
-			    guint    items_remaining)
-{
-	gdouble per_item;
-	gdouble total;
-
-	g_return_val_if_fail (seconds_elapsed >= 0.0, g_strdup (_("unknown time")));
-
-	/* We don't want division by 0 or if total is 0 because items
-	 * remaining is 0 then, equally pointless.
-	 */
-	if (items_done < 1 ||
-	    items_remaining < 1) {
-		return g_strdup (_("unknown time"));
-	}
-
-	per_item = seconds_elapsed / items_done;
-	total = per_item * items_remaining;
-
-	return seconds_to_string (total, short_string);
-}
-
-static void
-index_service_stats_updated (DBusGProxy *proxy,
-                             GPtrArray  *new_stats,
-                             gpointer    user_data)
-{
-	gint i;
-	
-	g_print ("%s:\n", _("Statistics have been updated"));
-
-	for (i = 0; i < new_stats->len; i++) {
-                const gchar **p;
-                const gchar  *service_type = NULL;
-		gchar        *str;
-                
-                p = g_ptr_array_index (new_stats, i);
-                
-                service_type = p[0];
-		
-                if (!service_type) {
-                        continue;
-                }
-		
-		str = g_strdup_printf (_("Updating '%s' with new count:%s"), 
-				       service_type,
-				       p[1]);
-		g_print ("  %s\n", str);
-		g_free (str);
-        }
-}
-
-static void
-index_progress_changed (DBusGProxy  *proxy,
-			const gchar *current_service,
-			const gchar *uri,
-			gint	     items_processed,
-			gint	     items_remaining,
-			gint	     items_total,
-			gdouble      seconds_elapsed,
-			gpointer     user_data)
-{
-	gchar *str1, *str2, *str3;
-
-	str1 = seconds_estimate_to_string (seconds_elapsed,
-					   TRUE,
-					   items_processed,
-					   items_remaining);
-	str2 = seconds_to_string (seconds_elapsed, TRUE);
-
-	str3 = g_strdup_printf (_("Processed %d/%d, current service:'%s', %s left, %s elapsed"),
-				items_processed,
-				items_total,
-				current_service,
-				str1,
-				str2);
-
-	g_free (str2);
-	g_free (str1);
-
-	g_print ("%s\n", str3);
-	g_free (str3);
-
-	if (detailed && uri && *uri) {
-		gchar *str;
-
-		str = g_strdup_printf (_("Last file to be indexed was '%s'"),
-				       uri);
-		g_print ("  %s\n", str);
-		g_free (str);
-	}
-}
-
-static void
-index_state_changed (DBusGProxy  *proxy,
-		     const gchar *state,
-		     gboolean	  initial_index,
-		     gboolean	  in_merge,
-		     gboolean	  is_paused_manually,
-		     gboolean	  is_paused_for_bat,
-		     gboolean	  is_paused_for_io,
-		     gboolean	  is_indexing_enabled,
-		     gpointer     user_data)
-{
-	static gboolean first_change = TRUE;
-	gchar *str;
-	
-	str = g_strdup_printf (_( "Tracker status changed from '%s' --> '%s'"), 
-			       last_state ? last_state : _("None"), 
-			       state);
-	g_print ("%s\n", str);
-	g_free (str);
-
-	if (detailed) {
-		if (first_change || last_initial_index != initial_index) {
-			g_print ("  %-*.*s: %s\n",
-				 DETAIL_MAX_WIDTH, DETAIL_MAX_WIDTH,
-				 _("Initial index"),
-				 initial_index ? _("yes") : _("no"));			
-		}
-		
-		if (first_change || last_in_merge != in_merge) {
-			g_print ("  %-*.*s: %s\n",
-				 DETAIL_MAX_WIDTH, DETAIL_MAX_WIDTH,
-				 _("In merge"),
-				 in_merge ? _("yes") : _("no"));
-		}
-
-		if (first_change || last_is_paused_manually != is_paused_manually) {
-			g_print ("  %-*.*s: %s\n",
-				 DETAIL_MAX_WIDTH, DETAIL_MAX_WIDTH,
-				 _("Is paused manually"),
-				 is_paused_manually ? _("yes") : _("no"));
-		}
-
-		if (first_change || last_is_paused_for_bat != is_paused_for_bat) {
-			g_print ("  %-*.*s: %s\n",
-				 DETAIL_MAX_WIDTH, DETAIL_MAX_WIDTH,
-				 _("Is paused for low battery"),
-				 is_paused_for_bat ? _("yes") : _("no"));
-		}
-
-		if (first_change || last_is_paused_for_io != is_paused_for_io) {
-			g_print ("  %-*.*s: %s\n",
-				 DETAIL_MAX_WIDTH, DETAIL_MAX_WIDTH,
-				 _("Is paused for IO"),
-				 is_paused_for_io ? _("yes") : _("no"));
-		}
-
-		if (first_change || last_is_indexing_enabled != is_indexing_enabled) {
-			g_print ("  %-*.*s: %s\n",
-				 DETAIL_MAX_WIDTH, DETAIL_MAX_WIDTH,
-				 _("Is indexing enabled"),
-				 is_indexing_enabled ? _("yes") : _("no"));
-		}
-	}
-
-	/* Remember last details so we don't spam the same crap each
-	 * time to console, only updates.
-	 */
-	g_free (last_state);
-	last_state = g_strdup (state);
-
-	last_initial_index = initial_index;
-	last_in_merge = in_merge;
-	last_is_paused_manually = is_paused_manually;
-	last_is_paused_for_bat = is_paused_for_bat;
-	last_is_paused_for_io = is_paused_for_io;
-	last_is_indexing_enabled = is_indexing_enabled;
-	
-	first_change = FALSE;
-}
-
-/* Taken from tracker-applet */
-static void
-tracker_VOID__STRING_BOOLEAN_BOOLEAN_BOOLEAN_BOOLEAN_BOOLEAN (GClosure	   *closure,
-							      GValue	   *return_value,
-							      guint	    n_param_values,
-							      const GValue *param_values,
-							      gpointer	    invocation_hint,
-							      gpointer	    marshal_data)
-{
-	typedef void (*GMarshalFunc_VOID__STRING_BOOLEAN_BOOLEAN_BOOLEAN_BOOLEAN_BOOLEAN) (gpointer	  data1,
-											   gpointer	  arg_1,
-											   gboolean	  arg_2,
-											   gboolean	  arg_3,
-											   gboolean	  arg_4,
-											   gboolean	  arg_5,
-											   gboolean	  arg_6,
-											   gboolean	  arg_7,
-											   gpointer	  data2);
-	register GMarshalFunc_VOID__STRING_BOOLEAN_BOOLEAN_BOOLEAN_BOOLEAN_BOOLEAN callback;
-	register GCClosure *cc = (GCClosure*) closure;
-	register gpointer data1, data2;
-	
-	g_return_if_fail (n_param_values == 8);
-	
-	if (G_CCLOSURE_SWAP_DATA (closure))
-	{
-		data1 = closure->data;
-		data2 = g_value_peek_pointer (param_values + 0);
-	}
-	else
-	{
-		data1 = g_value_peek_pointer (param_values + 0);
-		data2 = closure->data;
-	}
-	callback = (GMarshalFunc_VOID__STRING_BOOLEAN_BOOLEAN_BOOLEAN_BOOLEAN_BOOLEAN) (marshal_data ? marshal_data : cc->callback);
-	
-	callback (data1,
-		  g_marshal_value_peek_string (param_values + 1),
-		  g_marshal_value_peek_boolean (param_values + 2),
-		  g_marshal_value_peek_boolean (param_values + 3),
-		  g_marshal_value_peek_boolean (param_values + 4),
-		  g_marshal_value_peek_boolean (param_values + 5),
-		  g_marshal_value_peek_boolean (param_values + 6),
-		  g_marshal_value_peek_boolean (param_values + 7),
-		  data2);
-}
-
-/* VOID:STRING,STRING,INT,INT,INT,DOUBLE (tracker-marshal.list:2) */
-static void
-tracker_VOID__STRING_STRING_INT_INT_INT_DOUBLE (GClosure     *closure,
-						GValue       *return_value G_GNUC_UNUSED,
-						guint         n_param_values,
-						const GValue *param_values,
-						gpointer      invocation_hint G_GNUC_UNUSED,
-						gpointer      marshal_data)
-{
-	typedef void (*GMarshalFunc_VOID__STRING_STRING_INT_INT_INT_DOUBLE) (gpointer     data1,
-									     gpointer     arg_1,
-									     gpointer     arg_2,
-									     gint         arg_3,
-									     gint         arg_4,
-									     gint         arg_5,
-									     gdouble      arg_6,
-									     gpointer     data2);
-	register GMarshalFunc_VOID__STRING_STRING_INT_INT_INT_DOUBLE callback;
-	register GCClosure *cc = (GCClosure*) closure;
-	register gpointer data1, data2;
-	
-	g_return_if_fail (n_param_values == 7);
-	
-	if (G_CCLOSURE_SWAP_DATA (closure))
-	{
-		data1 = closure->data;
-		data2 = g_value_peek_pointer (param_values + 0);
-	}
-	else
-	{
-		data1 = g_value_peek_pointer (param_values + 0);
-		data2 = closure->data;
-	}
-	callback = (GMarshalFunc_VOID__STRING_STRING_INT_INT_INT_DOUBLE) (marshal_data ? marshal_data : cc->callback);
-	
-	callback (data1,
-		  g_marshal_value_peek_string (param_values + 1),
-		  g_marshal_value_peek_string (param_values + 2),
-		  g_marshal_value_peek_int (param_values + 3),
-		  g_marshal_value_peek_int (param_values + 4),
-		  g_marshal_value_peek_int (param_values + 5),
-		  g_marshal_value_peek_double (param_values + 6),
-		  data2);
-}
 
 static void
 signal_handler (int signo)
@@ -428,9 +122,9 @@ signal_handler (int signo)
 	default:
 		if (g_strsignal (signo)) {
 			g_print ("\n");
-			g_print ("Received signal:%d->'%s'",
-				 signo,
-				 g_strsignal (signo));
+			g_print ("Received signal:%d->'%s'\n",
+			         signo,
+			         g_strsignal (signo));
 		}
 		break;
 	}
@@ -439,26 +133,325 @@ signal_handler (int signo)
 static void
 initialize_signal_handler (void)
 {
-#ifndef G_OS_WIN32
 	struct sigaction act;
-	sigset_t	 empty_mask;
+	sigset_t empty_mask;
 
 	sigemptyset (&empty_mask);
 	act.sa_handler = signal_handler;
-	act.sa_mask    = empty_mask;
-	act.sa_flags   = 0;
+	act.sa_mask = empty_mask;
+	act.sa_flags = 0;
 
 	sigaction (SIGTERM, &act, NULL);
-	sigaction (SIGINT,  &act, NULL);
-	sigaction (SIGHUP,  &act, NULL);
-#endif /* G_OS_WIN32 */
+	sigaction (SIGINT, &act, NULL);
+	sigaction (SIGHUP, &act, NULL);
+}
+
+static int
+miner_pause (TrackerMinerManager *manager,
+             const gchar         *miner,
+             const gchar         *reason)
+{
+	gchar *str;
+	gint cookie;
+
+	str = g_strdup_printf (_("Attempting to pause miner '%s' with reason '%s'"),
+	                       miner,
+	                       reason);
+	g_print ("%s\n", str);
+	g_free (str);
+
+	if (!tracker_miner_manager_pause (manager, miner, reason, &cookie)) {
+		g_printerr (_("Could not pause miner: %s"), miner);
+		g_printerr ("\n");
+		return EXIT_FAILURE;
+	}
+
+	str = g_strdup_printf (_("Cookie is %d"), cookie);
+	g_print ("  %s\n", str);
+	g_free (str);
+
+	return EXIT_SUCCESS;
+}
+
+static int
+miner_resume (TrackerMinerManager *manager,
+              const gchar         *miner,
+              gint                 cookie)
+{
+	gchar *str;
+
+	str = g_strdup_printf (_("Attempting to resume miner %s with cookie %d"),
+	                       miner,
+	                       cookie);
+	g_print ("%s\n", str);
+	g_free (str);
+
+	if (!tracker_miner_manager_resume (manager, miner, cookie)) {
+		g_printerr (_("Could not resume miner: %s"), miner);
+		return EXIT_FAILURE;
+	}
+
+	g_print ("  %s\n", _("Done"));
+
+	return EXIT_SUCCESS;
+}
+
+static gboolean
+miner_get_details (TrackerMinerManager  *manager,
+                   const gchar          *miner,
+                   gchar               **status,
+                   gdouble              *progress,
+                   GStrv                *pause_applications,
+                   GStrv                *pause_reasons)
+{
+	if ((status || progress) &&
+	    !tracker_miner_manager_get_status (manager, miner,
+	                                       status, progress)) {
+		g_printerr (_("Could not get status from miner: %s"), miner);
+		return FALSE;
+	}
+
+	tracker_miner_manager_is_paused (manager, miner,
+	                                 pause_applications,
+	                                 pause_reasons);
+
+	return TRUE;
+}
+
+static void
+miner_print_state (TrackerMinerManager *manager,
+                   const gchar         *miner_name,
+                   const gchar         *status,
+                   gdouble              progress,
+                   gboolean             is_running,
+                   gboolean             is_paused)
+{
+	const gchar *name;
+	time_t now;
+	gchar time_str[64];
+	size_t len;
+	struct tm *local_time;
+	gchar *progress_str;
+
+	if (detailed) {
+		now = time ((time_t *) NULL);
+		local_time = localtime (&now);
+		len = strftime (time_str,
+		                sizeof (time_str) - 1,
+		                "%d %b %Y, %H:%M:%S:",
+		                local_time);
+		time_str[len] = '\0';
+	} else {
+		time_str[0] = '\0';
+	}
+
+	name = tracker_miner_manager_get_display_name (manager, miner_name);
+
+	if (!is_running) {
+		progress_str = g_strdup_printf ("✗   ");
+	} else if (progress > 0.0 && progress < 1.0) {
+		progress_str = g_strdup_printf ("%-3.0f%%", progress * 100);
+	} else {
+		progress_str = g_strdup_printf ("✓   ");
+	}
+
+	if (is_running) {
+		g_print ("%s  %s  %-*.*s %s%-*.*s%s %s %s\n",
+		         time_str,
+		         progress_str,
+		         longest_miner_name_length,
+		         longest_miner_name_length,
+		         name,
+		         is_paused ? "(" : " ",
+		         paused_length,
+		         paused_length,
+		         is_paused ? _("PAUSED") : " ",
+		         is_paused ? ")" : " ",
+		         status ? "-" : "",
+		         status ? status : "");
+	} else {
+		g_print ("%s  %s  %-*.*s  %-*.*s  - %s\n",
+		         time_str,
+		         progress_str,
+		         longest_miner_name_length,
+		         longest_miner_name_length,
+		         name,
+		         paused_length,
+		         paused_length,
+		         " ",
+		         _("Not running or is a disabled plugin"));
+	}
+
+	g_free (progress_str);
+}
+
+static void
+store_print_state (void)
+{
+	GError *error = NULL;
+	gdouble progress;
+	gchar *status;
+	gchar time_str[64];
+	gchar *progress_str;
+
+	org_freedesktop_Tracker1_Status_get_progress (proxy, &progress, &error);
+
+	if (error) {
+		g_critical ("Could not retrieve tracker-store progress: %s", error->message);
+		return;
+	}
+
+	org_freedesktop_Tracker1_Status_get_status (proxy, &status, &error);
+
+	if (error) {
+		g_critical ("Could not retrieve tracker-store status: %s", error->message);
+		return;
+	}
+
+	if (detailed) {
+		struct tm *local_time;
+		time_t now;
+		size_t len;
+
+		now = time ((time_t *) NULL);
+		local_time = localtime (&now);
+		len = strftime (time_str,
+		                sizeof (time_str) - 1,
+		                "%d %b %Y, %H:%M:%S:",
+		                local_time);
+		time_str[len] = '\0';
+	} else {
+		time_str[0] = '\0';
+	}
+
+	if (progress > 0.0 && progress < 1.0) {
+		progress_str = g_strdup_printf ("%-3.0f%%", progress * 100);
+	} else {
+		progress_str = g_strdup_printf ("✓   ");
+	}
+	
+	g_print ("%s  %s  %-*.*s    %s %s\n",
+	         time_str,
+	         progress_str,
+	         longest_miner_name_length + paused_length,
+	         longest_miner_name_length + paused_length,
+	         _("Journal replay"),
+	         status ? "-" : "",
+	         status ? status : "");
+}
+
+static void
+manager_miner_progress_cb (TrackerMinerManager *manager,
+                           const gchar         *miner_name,
+                           const gchar         *status,
+                           gdouble              progress)
+{
+	GValue *gvalue;
+
+	gvalue = g_slice_new0 (GValue);
+
+	g_value_init (gvalue, G_TYPE_DOUBLE);
+	g_value_set_double (gvalue, progress);
+
+	miner_print_state (manager, miner_name, status, progress, TRUE, FALSE);
+
+	g_hash_table_replace (miners_status,
+	                      g_strdup (miner_name),
+	                      g_strdup (status));
+	g_hash_table_replace (miners_progress,
+	                      g_strdup (miner_name),
+	                      gvalue);
+}
+
+static void
+store_progress_cb (TrackerMinerManager *manager,
+                   const gchar         *status,
+                   gdouble              progress)
+{
+	store_print_state ();
+}
+
+
+static void
+manager_miner_paused_cb (TrackerMinerManager *manager,
+                         const gchar         *miner_name)
+{
+	GValue *gvalue;
+
+	gvalue = g_hash_table_lookup (miners_progress, miner_name);
+
+	miner_print_state (manager, miner_name,
+	                   g_hash_table_lookup (miners_status, miner_name),
+	                   gvalue ? g_value_get_double (gvalue) : 0.0,
+	                   TRUE,
+	                   TRUE);
+}
+
+static void
+manager_miner_resumed_cb (TrackerMinerManager *manager,
+                          const gchar         *miner_name)
+{
+	GValue *gvalue;
+
+	gvalue = g_hash_table_lookup (miners_progress, miner_name);
+
+	miner_print_state (manager, miner_name,
+	                   g_hash_table_lookup (miners_status, miner_name),
+	                   gvalue ? g_value_get_double (gvalue) : 0.0,
+	                   TRUE,
+	                   FALSE);
+}
+
+static void
+miners_progress_destroy_notify (gpointer data)
+{
+	GValue *value;
+
+	value = data;
+	g_value_unset (value);
+	g_slice_free (GValue, value);
+}
+
+static gboolean
+init_store_proxy (void)
+{
+	GError *error = NULL;
+
+	if (connection && proxy) {
+		return TRUE;
+	}
+
+	connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+
+	if (error) {
+		g_critical ("Could not connect to the D-Bus session bus, %s",
+		            error ? error->message : "no error given.");
+		g_clear_error (&error);
+		return FALSE;
+	}
+
+	proxy = dbus_g_proxy_new_for_name (connection,
+	                                   "org.freedesktop.Tracker1",
+	                                   "/org/freedesktop/Tracker1/Status",
+	                                   "org.freedesktop.Tracker1.Status");
+
+	dbus_g_proxy_add_signal (proxy,
+	                         "Progress",
+	                         G_TYPE_STRING,
+	                         G_TYPE_DOUBLE,
+	                         G_TYPE_INVALID);
+	return TRUE;
 }
 
 gint
 main (gint argc, gchar *argv[])
 {
+	TrackerMinerManager *manager;
 	GOptionContext *context;
-	TrackerClient  *client;
+	TrackerClient *client;
+	GSList *miners_available;
+	GSList *miners_running;
+	GSList *l;
 
 	setlocale (LC_ALL, "");
 
@@ -466,121 +459,302 @@ main (gint argc, gchar *argv[])
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 
-	context = g_option_context_new (_("- Report current status"));
+	context = g_option_context_new (_("- Monitor and control status"));
 	g_option_context_add_main_entries (context, entries, NULL);
 	g_option_context_parse (context, &argc, &argv, NULL);
-	g_option_context_free (context);
 
-	client = tracker_connect (FALSE);
+	if (print_version) {
+		g_print ("\n" ABOUT "\n" LICENSE "\n");
+		g_option_context_free (context);
 
-	if (!client) {
-		g_printerr ("%s\n",
-			    _("Could not establish a DBus connection to Tracker"));
+		return EXIT_SUCCESS;
+	}
+
+	if (pause_reason && resume_cookie != -1) {
+		gchar *help;
+
+		g_printerr ("%s\n\n",
+		            _("You can not use miner pause and resume switches together"));
+
+		help = g_option_context_get_help (context, TRUE, NULL);
+		g_option_context_free (context);
+		g_printerr ("%s", help);
+		g_free (help);
 
 		return EXIT_FAILURE;
 	}
 
-	if (!follow) {
-		GError *error = NULL;
-		gchar *state;
+	if ((pause_reason || resume_cookie != -1) && !miner_name) {
+		gchar *help;
 
-		state = tracker_get_status (client, &error);
-		
-		if (error) {
-			g_printerr ("%s, %s\n",
-				    _("Could not get Tracker status"),
-				    error->message);
-			g_error_free (error);
-			
-			return EXIT_FAILURE;
-		}
+		g_printerr ("%s\n\n",
+		            _("You must provide the miner for pause or resume commands"));
 
+		help = g_option_context_get_help (context, TRUE, NULL);
+		g_option_context_free (context);
+		g_printerr ("%s", help);
+		g_free (help);
 
-		if (state) {
-			gchar *str;
-			
-			str = g_strdup_printf (_("Tracker status is '%s'"), state);
-			g_print ("%s\n", str);
-			g_free (str);
-		}
-	} else {
-		DBusGProxy *proxy;
-
-		g_print ("Press Ctrl+C to end follow of Tracker state\n");
-
-		proxy = client->proxy;
-
-		/* Set signal handlers */
-		dbus_g_object_register_marshaller (tracker_VOID__STRING_BOOLEAN_BOOLEAN_BOOLEAN_BOOLEAN_BOOLEAN,
-						   G_TYPE_NONE,
-						   G_TYPE_STRING,
-						   G_TYPE_BOOLEAN,
-						   G_TYPE_BOOLEAN,
-						   G_TYPE_BOOLEAN,
-						   G_TYPE_BOOLEAN,
-						   G_TYPE_BOOLEAN,
-						   G_TYPE_BOOLEAN,
-						   G_TYPE_INVALID);
-		dbus_g_object_register_marshaller (tracker_VOID__STRING_STRING_INT_INT_INT_DOUBLE,
-						   G_TYPE_NONE,
-						   G_TYPE_STRING,
-						   G_TYPE_STRING,
-						   G_TYPE_INT,
-						   G_TYPE_INT,
-						   G_TYPE_INT,
-						   G_TYPE_DOUBLE,
-						   G_TYPE_INVALID);
-	
-		dbus_g_proxy_add_signal (proxy,
-					 "IndexStateChange",
-					 G_TYPE_STRING,
-					 G_TYPE_BOOLEAN,
-					 G_TYPE_BOOLEAN,
-					 G_TYPE_BOOLEAN,
-					 G_TYPE_BOOLEAN,
-					 G_TYPE_BOOLEAN,
-					 G_TYPE_BOOLEAN,
-					 G_TYPE_INVALID);
-		dbus_g_proxy_add_signal (proxy,
-					 "IndexProgress",
-					 G_TYPE_STRING,
-					 G_TYPE_STRING,
-					 G_TYPE_INT,
-					 G_TYPE_INT,
-					 G_TYPE_INT,
-					 G_TYPE_DOUBLE,
-					 G_TYPE_INVALID);
-		dbus_g_proxy_add_signal (proxy,
-					 "ServiceStatisticsUpdated",
-					 TRACKER_TYPE_G_STRV_ARRAY,
-					 G_TYPE_INVALID);
-				
-		dbus_g_proxy_connect_signal (proxy,
-					     "IndexStateChange",
-					     G_CALLBACK (index_state_changed),
-					     NULL,
-					     NULL);
-		dbus_g_proxy_connect_signal (proxy,
-					     "IndexProgress",
-					     G_CALLBACK (index_progress_changed),
-					     NULL,
-					     NULL);
-		dbus_g_proxy_connect_signal (proxy,
-					     "ServiceStatisticsUpdated",
-					     G_CALLBACK (index_service_stats_updated),
-					     NULL,
-					     NULL);
-
-		initialize_signal_handler ();
-			
-		main_loop = g_main_loop_new (NULL, FALSE);
-		g_main_loop_run (main_loop);
-		g_main_loop_unref (main_loop);
-
-		g_free (last_state);
+		return EXIT_FAILURE;
 	}
 
-	tracker_disconnect (client);
+	if ((!pause_reason && resume_cookie == -1) && miner_name) {
+		gchar *help;
+
+		g_printerr ("%s\n\n",
+		            _("You must provide a pause or resume command for the miner"));
+
+		help = g_option_context_get_help (context, TRUE, NULL);
+		g_option_context_free (context);
+		g_printerr ("%s", help);
+		g_free (help);
+
+		return EXIT_FAILURE;
+	}
+
+	g_option_context_free (context);
+
+	g_type_init ();
+
+	if (!g_thread_supported ()) {
+		g_thread_init (NULL);
+	}
+
+	client = tracker_client_new (0, G_MAXINT);
+
+	if (!client) {
+		g_printerr ("%s\n",
+		            _("Could not establish a D-Bus connection to Tracker"));
+
+		return EXIT_FAILURE;
+	}
+
+	manager = tracker_miner_manager_new ();
+	miners_available = tracker_miner_manager_get_available (manager);
+	miners_running = tracker_miner_manager_get_running (manager);
+
+	if (list_miners_available) {
+		gchar *str;
+
+		str = g_strdup_printf (_("Found %d miners installed"), g_slist_length (miners_available));
+		g_print ("%s%s\n", str, g_slist_length (miners_available) > 0 ? ":" : "");
+		g_free (str);
+
+		for (l = miners_available; l; l = l->next) {
+			g_print ("  %s\n", (gchar*) l->data);
+		}
+	}
+
+	if (list_miners_running) {
+		gchar *str;
+
+		str = g_strdup_printf (_("Found %d miners running"), g_slist_length (miners_running));
+		g_print ("%s%s\n", str, g_slist_length (miners_running) > 0 ? ":" : "");
+		g_free (str);
+
+		for (l = miners_running; l; l = l->next) {
+			g_print ("  %s\n", (gchar*) l->data);
+		}
+	}
+
+	if (pause_reason) {
+		return miner_pause (manager, miner_name, pause_reason);
+	}
+
+	if (resume_cookie != -1) {
+		return miner_resume (manager, miner_name, resume_cookie);
+	}
+
+	if (list_miners_available || list_miners_running) {
+		/* Don't list miners be request AND then anyway later */
+		g_slist_foreach (miners_available, (GFunc) g_free, NULL);
+		g_slist_free (miners_available);
+
+		g_slist_foreach (miners_running, (GFunc) g_free, NULL);
+		g_slist_free (miners_running);
+
+		g_object_unref (client);
+		return EXIT_SUCCESS;
+	}
+
+	if (pause_details) {
+		gint paused_miners = 0;
+
+		if (!miners_running) {
+			g_print ("%s\n", _("No miners are running"));
+
+			g_slist_foreach (miners_available, (GFunc) g_free, NULL);
+			g_slist_free (miners_available);
+
+			g_slist_foreach (miners_running, (GFunc) g_free, NULL);
+			g_slist_free (miners_running);
+
+			return EXIT_SUCCESS;
+		}
+
+		for (l = miners_running; l; l = l->next) {
+			const gchar *name;
+			GStrv pause_applications, pause_reasons;
+			gint i;
+
+			name = tracker_miner_manager_get_display_name (manager, l->data);
+
+			if (!name) {
+				g_critical ("Could not get name for '%s'", (gchar *) l->data);
+				continue;
+			}
+
+			if (!miner_get_details (manager,
+			                        l->data,
+			                        NULL,
+			                        NULL,
+			                        &pause_applications,
+			                        &pause_reasons)) {
+				continue;
+			}
+
+			if (!(*pause_applications) || !(*pause_reasons)) {
+				g_strfreev (pause_applications);
+				g_strfreev (pause_reasons);
+				continue;
+			}
+
+			paused_miners++;
+			if (paused_miners == 1) {
+				g_print ("%s:\n", _("Miners"));
+			}
+
+			g_print ("  %s:\n", name);
+
+			for (i = 0; pause_applications[i] != NULL; i++) {
+				g_print ("    %s: '%s', %s: '%s'\n",
+				         _("Application"),
+				         pause_applications[i],
+				         _("Reason"),
+				         pause_reasons[i]);
+			}
+
+			g_strfreev (pause_applications);
+			g_strfreev (pause_reasons);
+		}
+
+		if (paused_miners < 1) {
+			g_print ("%s\n", _("No miners are paused"));
+		}
+
+		g_slist_foreach (miners_available, (GFunc) g_free, NULL);
+		g_slist_free (miners_available);
+
+		g_slist_foreach (miners_running, (GFunc) g_free, NULL);
+		g_slist_free (miners_running);
+
+		return EXIT_SUCCESS;
+	}
+
+	/* Work out lengths for output spacing */
+	paused_length = strlen (_("PAUSED"));
+
+	for (l = miners_available; l; l = l->next) {
+		const gchar *name;
+
+		name = tracker_miner_manager_get_display_name (manager, l->data);
+		longest_miner_name_length = MAX (longest_miner_name_length, strlen (name));
+	}
+
+	/* Display states */
+	g_print ("%s:\n", _("Store"));
+	init_store_proxy ();
+	store_print_state ();
+
+	g_print ("\n");
+
+	g_print ("%s:\n", _("Miners"));
+
+	for (l = miners_available; l; l = l->next) {
+		const gchar *name;
+		gboolean is_running;
+
+		name = tracker_miner_manager_get_display_name (manager, l->data);
+
+		if (!name) {
+			g_critical ("Could not get name for '%s'", (gchar *) l->data);
+			continue;
+		}
+
+		is_running = tracker_string_in_gslist (l->data, miners_running);
+
+		if (is_running) {
+			GStrv pause_applications, pause_reasons;
+			gchar *status = NULL;
+			gdouble progress;
+			gboolean is_paused;
+
+			if (!miner_get_details (manager,
+			                        l->data,
+			                        &status,
+			                        &progress,
+			                        &pause_applications,
+			                        &pause_reasons)) {
+				continue;
+			}
+
+			is_paused = *pause_applications || *pause_reasons;
+
+			miner_print_state (manager, l->data, status, progress, TRUE, is_paused);
+
+			g_strfreev (pause_applications);
+			g_strfreev (pause_reasons);
+			g_free (status);
+		} else {
+			miner_print_state (manager, l->data, NULL, 0.0, FALSE, FALSE);
+		}
+	}
+
+	g_slist_foreach (miners_available, (GFunc) g_free, NULL);
+	g_slist_free (miners_available);
+
+	g_slist_foreach (miners_running, (GFunc) g_free, NULL);
+	g_slist_free (miners_running);
+
+	if (!follow) {
+		/* Do nothing further */
+		g_object_unref (client);
+		g_print ("\n");
+		return EXIT_SUCCESS;
+	}
+
+	g_print ("Press Ctrl+C to end follow of Tracker state\n");
+
+	g_signal_connect (manager, "miner-progress",
+	                  G_CALLBACK (manager_miner_progress_cb), NULL);
+	g_signal_connect (manager, "miner-paused",
+	                  G_CALLBACK (manager_miner_paused_cb), NULL);
+	g_signal_connect (manager, "miner-resumed",
+	                  G_CALLBACK (manager_miner_resumed_cb), NULL);
+	dbus_g_proxy_connect_signal (proxy, "Progress",
+	                             G_CALLBACK (store_progress_cb),
+	                             NULL, NULL);
+
+	initialize_signal_handler ();
+
+	miners_progress = g_hash_table_new_full (g_str_hash,
+	                                         g_str_equal,
+	                                         (GDestroyNotify) g_free,
+	                                         (GDestroyNotify) miners_progress_destroy_notify);
+	miners_status = g_hash_table_new_full (g_str_hash,
+	                                       g_str_equal,
+	                                       (GDestroyNotify) g_free,
+	                                       (GDestroyNotify) g_free);
+
+	main_loop = g_main_loop_new (NULL, FALSE);
+	g_main_loop_run (main_loop);
+	g_main_loop_unref (main_loop);
+
+	g_hash_table_unref (miners_progress);
+	g_hash_table_unref (miners_status);
+
+	g_object_unref (client);
+	g_object_unref (manager);
 
 	return EXIT_SUCCESS;
 }

@@ -1,0 +1,986 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TrackerMinerFS</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
+<link rel="up" href="ch02.html" title="Helper implementations">
+<link rel="prev" href="ch02.html" title="Helper implementations">
+<link rel="next" href="ch03.html" title="Managing miners">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libtracker-miner.html" title="Part I. Overview">
+<link rel="chapter" href="ch01.html" title="Base abstract miner class">
+<link rel="chapter" href="ch02.html" title="Helper implementations">
+<link rel="chapter" href="ch03.html" title="Managing miners">
+<link rel="chapter" href="ch04.html" title="Utilities">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch02.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Miner Library Reference Manual</th>
+<td><a accesskey="n" href="ch03.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#TrackerMinerFS.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#TrackerMinerFS.description" class="shortcut">Description</a>
+                 | 
+                <a href="#TrackerMinerFS.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                 | 
+                <a href="#TrackerMinerFS.properties" class="shortcut">Properties</a>
+                 | 
+                <a href="#TrackerMinerFS.signals" class="shortcut">Signals</a>
+</td></tr>
+</table>
+<div class="refentry" title="TrackerMinerFS">
+<a name="TrackerMinerFS"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="TrackerMinerFS.top_of_page"></a>TrackerMinerFS</span></h2>
+<p>TrackerMinerFS — Abstract base class for filesystem miners</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="TrackerMinerFS.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;libtracker-miner/tracker-miner.h&gt;
+
+typedef             <a class="link" href="TrackerMinerFS.html#TrackerMinerFSPrivate" title="TrackerMinerFSPrivate">TrackerMinerFSPrivate</a>;
+typedef             <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a>;
+                    <a class="link" href="TrackerMinerFS.html#TrackerMinerFSClass" title="TrackerMinerFSClass">TrackerMinerFSClass</a>;
+void                <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-directory-add" title="tracker_miner_fs_directory_add ()">tracker_miner_fs_directory_add</a>      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a> recurse);
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-directory-remove" title="tracker_miner_fs_directory_remove ()">tracker_miner_fs_directory_remove</a>   (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file);
+void                <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-file-add" title="tracker_miner_fs_file_add ()">tracker_miner_fs_file_add</a>           (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file);
+void                <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-file-notify" title="tracker_miner_fs_file_notify ()">tracker_miner_fs_file_notify</a>        (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file,
+                                                         const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"
+>GError</a> *error);
+void                <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-set-throttle" title="tracker_miner_fs_set_throttle ()">tracker_miner_fs_set_throttle</a>       (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
+>gdouble</a> throttle);
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-get-throttle" title="tracker_miner_fs_get_throttle ()">tracker_miner_fs_get_throttle</a>       (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs);
+void                <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-force-recheck" title="tracker_miner_fs_force_recheck ()">tracker_miner_fs_force_recheck</a>      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs);
+const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *       <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-get-parent-urn" title="tracker_miner_fs_get_parent_urn ()">tracker_miner_fs_get_parent_urn</a>     (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file);
+const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *       <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-get-urn" title="tracker_miner_fs_get_urn ()">tracker_miner_fs_get_urn</a>            (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file);
+</pre>
+</div>
+<div class="refsect1" title="Object Hierarchy">
+<a name="TrackerMinerFS.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+  <a
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a class="link" href="TrackerMiner.html" title="TrackerMiner">TrackerMiner</a>
+         +----TrackerMinerFS
+</pre>
+</div>
+<div class="refsect1" title="Properties">
+<a name="TrackerMinerFS.properties"></a><h2>Properties</h2>
+<pre class="synopsis">
+  "<a class="link" href="TrackerMinerFS.html#TrackerMinerFS--process-pool-limit" title='The "process-pool-limit" property'>process-pool-limit</a>"       <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
+>guint</a>                 : Read / Write / Construct
+  "<a class="link" href="TrackerMinerFS.html#TrackerMinerFS--throttle" title='The "throttle" property'>throttle</a>"                 <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read / Write
+</pre>
+</div>
+<div class="refsect1" title="Signals">
+<a name="TrackerMinerFS.signals"></a><h2>Signals</h2>
+<pre class="synopsis">
+  "<a class="link" href="TrackerMinerFS.html#TrackerMinerFS-check-directory" title='The "check-directory" signal'>check-directory</a>"                                : Run Last
+  "<a class="link" href="TrackerMinerFS.html#TrackerMinerFS-check-directory-contents" title='The "check-directory-contents" signal'>check-directory-contents</a>"                       : Run Last
+  "<a class="link" href="TrackerMinerFS.html#TrackerMinerFS-check-file" title='The "check-file" signal'>check-file</a>"                                     : Run Last
+  "<a class="link" href="TrackerMinerFS.html#TrackerMinerFS-finished" title='The "finished" signal'>finished</a>"                                       : Run Last
+  "<a class="link" href="TrackerMinerFS.html#TrackerMinerFS-ignore-next-update-file" title='The "ignore-next-update-file" signal'>ignore-next-update-file</a>"                        : Run Last
+  "<a class="link" href="TrackerMinerFS.html#TrackerMinerFS-monitor-directory" title='The "monitor-directory" signal'>monitor-directory</a>"                              : Run Last
+  "<a class="link" href="TrackerMinerFS.html#TrackerMinerFS-process-file" title='The "process-file" signal'>process-file</a>"                                   : Run Last
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="TrackerMinerFS.description"></a><h2>Description</h2>
+<p>
+<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> is an abstract base class for miners that collect data
+from the filesystem, all the filesystem crawling and monitoring is
+abstracted away, leaving to implementations the decisions of what
+directories/files should it process, and the actual data extraction.</p>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="TrackerMinerFS.details"></a><h2>Details</h2>
+<div class="refsect2" title="TrackerMinerFSPrivate">
+<a name="TrackerMinerFSPrivate"></a><h3>TrackerMinerFSPrivate</h3>
+<pre class="programlisting">typedef struct TrackerMinerFSPrivate TrackerMinerFSPrivate;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="TrackerMinerFS">
+<a name="TrackerMinerFS"></a><h3>TrackerMinerFS</h3>
+<pre class="programlisting">typedef struct TrackerMinerFS        TrackerMinerFS;
+</pre>
+<p>
+Abstract miner abstract implementation to get data
+from the filesystem.</p>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="TrackerMinerFSClass">
+<a name="TrackerMinerFSClass"></a><h3>TrackerMinerFSClass</h3>
+<pre class="programlisting">typedef struct {
+	TrackerMinerClass parent;
+
+	gboolean (* check_file)               (TrackerMinerFS       *fs,
+                                               GFile                *file);
+	gboolean (* check_directory)          (TrackerMinerFS       *fs,
+                                               GFile                *file);
+	gboolean (* check_directory_contents) (TrackerMinerFS       *fs,
+	                                       GFile                *parent,
+	                                       GList                *children);
+	gboolean (* process_file)             (TrackerMinerFS       *fs,
+                                               GFile                *file,
+                                               TrackerSparqlBuilder *builder,
+                                               GCancellable         *cancellable);
+	gboolean (* ignore_next_update_file)  (TrackerMinerFS       *fs,
+                                               GFile                *file,
+                                               TrackerSparqlBuilder *builder,
+                                               GCancellable         *cancellable);
+	gboolean (* monitor_directory)        (TrackerMinerFS       *fs,
+                                               GFile                *file);
+	void     (* finished)                 (TrackerMinerFS       *fs);
+} TrackerMinerFSClass;
+</pre>
+<p>
+Prototype for the abstract class, <em class="parameter"><code>check_file</code></em>, <em class="parameter"><code>check_directory</code></em>, <em class="parameter"><code>check_directory_contents</code></em>,
+<em class="parameter"><code>process_file</code></em> and <em class="parameter"><code>monitor_directory</code></em> must be implemented in the deriving class in order to
+actually extract data.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><a class="link" href="TrackerMiner.html#TrackerMinerClass" title="TrackerMinerClass">TrackerMinerClass</a> <em class="structfield"><code>parent</code></em>;</span></p></td>
+<td> parent object class
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code>check_file</code></em> ()</span></p></td>
+<td> Called when a file should be checked for further processing
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code>check_directory</code></em> ()</span></p></td>
+<td> Called when a directory should be checked for further processing
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code>check_directory_contents</code></em> ()</span></p></td>
+<td> Called when a directory should be checked for further processing, based on the directory contents.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code>process_file</code></em> ()</span></p></td>
+<td> Called when the metadata associated to a file is requested.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code>ignore_next_update_file</code></em> ()</span></p></td>
+<td> Called after a writeback event happens on a file.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code>monitor_directory</code></em> ()</span></p></td>
+<td> Called to check whether a directory should be modified.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code>finished</code></em> ()</span></p></td>
+<td> Called when all processing has been performed.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_miner_fs_directory_add ()">
+<a name="tracker-miner-fs-directory-add"></a><h3>tracker_miner_fs_directory_add ()</h3>
+<pre class="programlisting">void                tracker_miner_fs_directory_add      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a> recurse);</pre>
+<p>
+Tells the filesystem miner to inspect a directory.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
+<td> a <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a> for the directory to inspect
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>recurse</code></em> :</span></p></td>
+<td> whether the directory should be inspected recursively
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_miner_fs_directory_remove ()">
+<a name="tracker-miner-fs-directory-remove"></a><h3>tracker_miner_fs_directory_remove ()</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            tracker_miner_fs_directory_remove   (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file);</pre>
+<p>
+Removes a directory from being inspected by <em class="parameter"><code>fs</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
+<td> a <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a> for the directory to be removed
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if the directory was successfully removed.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_miner_fs_file_add ()">
+<a name="tracker-miner-fs-file-add"></a><h3>tracker_miner_fs_file_add ()</h3>
+<pre class="programlisting">void                tracker_miner_fs_file_add           (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file);</pre>
+<p>
+Tells the filesystem miner to inspect a file.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
+<td> a <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a> for the file to inspect
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_miner_fs_file_notify ()">
+<a name="tracker-miner-fs-file-notify"></a><h3>tracker_miner_fs_file_notify ()</h3>
+<pre class="programlisting">void                tracker_miner_fs_file_notify        (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file,
+                                                         const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"
+>GError</a> *error);</pre>
+<p>
+Notifies <em class="parameter"><code>fs</code></em> that all processing on <em class="parameter"><code>file</code></em> has been finished, if any error
+happened during file data processing, it should be passed in <em class="parameter"><code>error</code></em>, else
+that parameter will contain <code class="literal">NULL</code> to reflect success.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
+<td> a <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"
+><span class="type">GError</span></a> with the error that happened during processing, or <code class="literal">NULL</code>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_miner_fs_set_throttle ()">
+<a name="tracker-miner-fs-set-throttle"></a><h3>tracker_miner_fs_set_throttle ()</h3>
+<pre class="programlisting">void                tracker_miner_fs_set_throttle       (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
+>gdouble</a> throttle);</pre>
+<p>
+Tells the filesystem miner to throttle its operations.
+a value of 0 means no throttling at all, so the miner
+will perform operations at full speed, 1 is the slowest
+value.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
+<td> a <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>throttle</code></em> :</span></p></td>
+<td> throttle value, between 0 and 1
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_miner_fs_get_throttle ()">
+<a name="tracker-miner-fs-get-throttle"></a><h3>tracker_miner_fs_get_throttle ()</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
+>gdouble</a>             tracker_miner_fs_get_throttle       (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs);</pre>
+<p>
+Gets the current throttle value. see <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-set-throttle" title="tracker_miner_fs_set_throttle ()"><code class="function">tracker_miner_fs_set_throttle()</code></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
+<td> a <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> current throttle value.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_miner_fs_force_recheck ()">
+<a name="tracker-miner-fs-force-recheck"></a><h3>tracker_miner_fs_force_recheck ()</h3>
+<pre class="programlisting">void                tracker_miner_fs_force_recheck      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_miner_fs_get_parent_urn ()">
+<a name="tracker-miner-fs-get-parent-urn"></a><h3>tracker_miner_fs_get_parent_urn ()</h3>
+<pre class="programlisting">const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *       tracker_miner_fs_get_parent_urn     (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file);</pre>
+<p>
+If <em class="parameter"><code>file</code></em> is currently being processed by <em class="parameter"><code>fs</code></em>, this function
+will return the parent folder URN if any. This function is
+useful to set the nie:belongsToContainer relationship. The
+processing order of <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> guarantees that a folder
+has been already fully processed for indexing before any
+children is processed, so most usually this function should
+return non-<code class="literal">NULL</code>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
+<td> a <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a> obtained in <a class="link" href="TrackerMinerFS.html#TrackerMinerFS-process-file" title='The "process-file" signal'><span class="type">"process-file"</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The parent folder URN, or <code class="literal">NULL</code>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="tracker_miner_fs_get_urn ()">
+<a name="tracker-miner-fs-get-urn"></a><h3>tracker_miner_fs_get_urn ()</h3>
+<pre class="programlisting">const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *       tracker_miner_fs_get_urn            (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *fs,
+                                                         <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a> *file);</pre>
+<p>
+If the item exists in the store, this function retrieves
+the URN for a <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a> being currently processed.
+</p>
+<p>
+If <em class="parameter"><code>file</code></em> is not being currently processed by <em class="parameter"><code>fs</code></em>, or doesn't
+exist in the store yet, <code class="literal">NULL</code> will be returned.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fs</code></em> :</span></p></td>
+<td> a <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a> obtained in <a class="link" href="TrackerMinerFS.html#TrackerMinerFS-process-file" title='The "process-file" signal'><span class="type">"process-file"</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The URN containing the data associated to <em class="parameter"><code>file</code></em>,
+         or <code class="literal">NULL</code>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" title="Property Details">
+<a name="TrackerMinerFS.property-details"></a><h2>Property Details</h2>
+<div class="refsect2" title='The "process-pool-limit" property'>
+<a name="TrackerMinerFS--process-pool-limit"></a><h3>The <code class="literal">"process-pool-limit"</code> property</h3>
+<pre class="programlisting">  "process-pool-limit"       <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
+>guint</a>                 : Read / Write / Construct</pre>
+<p>Number of files that can be concurrently processed.</p>
+<p>Allowed values: &gt;= 1</p>
+<p>Default value: 1</p>
+</div>
+<hr>
+<div class="refsect2" title='The "throttle" property'>
+<a name="TrackerMinerFS--throttle"></a><h3>The <code class="literal">"throttle"</code> property</h3>
+<pre class="programlisting">  "throttle"                 <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read / Write</pre>
+<p>Modifier for the indexing speed, 0 is max speed.</p>
+<p>Allowed values: [0,1]</p>
+<p>Default value: 0</p>
+</div>
+</div>
+<div class="refsect1" title="Signal Details">
+<a name="TrackerMinerFS.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2" title='The "check-directory" signal'>
+<a name="TrackerMinerFS-check-directory"></a><h3>The <code class="literal">"check-directory"</code> signal</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            user_function                      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *miner_fs,
+                                                        <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a>          *directory,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)      : Run Last</pre>
+<p>
+The ::check-directory signal is emitted either on the filesystem crawling
+phase or whenever a new directory appears in a monitored directory
+in order to check whether <em class="parameter"><code>directory</code></em> must be inspected my <em class="parameter"><code>miner_fs</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
+<td> the <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>directory</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>directory</code></em> must be inspected.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title='The "check-directory-contents" signal'>
+<a name="TrackerMinerFS-check-directory-contents"></a><h3>The <code class="literal">"check-directory-contents"</code> signal</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            user_function                      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *miner_fs,
+                                                        <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a>          *directory,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
+>gpointer</a>        children,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)      : Run Last</pre>
+<p>
+The ::check-directory-contents signal is emitted either on the filesystem
+crawling phase or whenever a new directory appears in a monitored directory
+in order to check whether <em class="parameter"><code>directory</code></em> must be inspected my <em class="parameter"><code>miner_fs</code></em> based on
+the directory contents, for some implementations this signal may be useful
+to discard backup directories for example.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
+<td> the <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>directory</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>children</code></em> :</span></p></td>
+<td> <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"
+><span class="type">GList</span></a> of <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a>s
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>directory</code></em> must be inspected.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title='The "check-file" signal'>
+<a name="TrackerMinerFS-check-file"></a><h3>The <code class="literal">"check-file"</code> signal</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            user_function                      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *miner_fs,
+                                                        <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a>          *file,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)      : Run Last</pre>
+<p>
+The ::check-file signal is emitted either on the filesystem crawling
+phase or whenever a new file appears in a monitored directory
+in order to check whether <em class="parameter"><code>file</code></em> must be inspected my <em class="parameter"><code>miner_fs</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
+<td> the <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>file</code></em> must be inspected.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title='The "finished" signal'>
+<a name="TrackerMinerFS-finished"></a><h3>The <code class="literal">"finished"</code> signal</h3>
+<pre class="programlisting">void                user_function                      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *miner_fs,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
+>gdouble</a>         elapsed,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
+>guint</a>           directories_found,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
+>guint</a>           directories_ignored,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
+>guint</a>           files_found,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
+>guint</a>           files_ignored,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)                : Run Last</pre>
+<p>
+The ::finished signal is emitted when <em class="parameter"><code>miner_fs</code></em> has finished
+all pending processing.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
+<td> the <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>elapsed</code></em> :</span></p></td>
+<td> elapsed time since mining was started
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>directories_found</code></em> :</span></p></td>
+<td> number of directories found
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>directories_ignored</code></em> :</span></p></td>
+<td> number of ignored directories
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>files_found</code></em> :</span></p></td>
+<td> number of files found
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>files_ignored</code></em> :</span></p></td>
+<td> number of ignored files
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title='The "ignore-next-update-file" signal'>
+<a name="TrackerMinerFS-ignore-next-update-file"></a><h3>The <code class="literal">"ignore-next-update-file"</code> signal</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            user_function                      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a>       *miner_fs,
+                                                        <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a>                *file,
+                                                        <a
+href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"
+>TrackerSparqlBuilder</a> *builder,
+                                                        <a
+href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"
+>GCancellable</a>         *cancellable,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
+>gpointer</a>              user_data)        : Run Last</pre>
+<p>
+The ::ignore-next-update-file signal is emitted whenever a file should
+be marked as to ignore on next update, and it's metadata prepared for that.
+</p>
+<p>
+<em class="parameter"><code>builder</code></em> is the <a
+href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"
+><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
+to be performed for <em class="parameter"><code>file</code></em> will be appended.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
+<td> the <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>builder</code></em> :</span></p></td>
+<td> a <a
+href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"
+><span class="type">TrackerSparqlBuilder</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"
+><span class="type">GCancellable</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> on success
+         <code class="literal">FALSE</code> on failure
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title='The "monitor-directory" signal'>
+<a name="TrackerMinerFS-monitor-directory"></a><h3>The <code class="literal">"monitor-directory"</code> signal</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            user_function                      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a> *miner_fs,
+                                                        <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a>          *directory,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)      : Run Last</pre>
+<p>
+The ::monitor-directory is emitted either on the filesystem crawling phase
+or whenever a new directory appears in a monitored directory in order to
+check whether <em class="parameter"><code>directory</code></em> must be monitored for filesystem changes or not.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
+<td> the <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>directory</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if the directory must be monitored for changes.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title='The "process-file" signal'>
+<a name="TrackerMinerFS-process-file"></a><h3>The <code class="literal">"process-file"</code> signal</h3>
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            user_function                      (<a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS">TrackerMinerFS</a>       *miner_fs,
+                                                        <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+>GFile</a>                *file,
+                                                        <a
+href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"
+>TrackerSparqlBuilder</a> *builder,
+                                                        <a
+href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"
+>GCancellable</a>         *cancellable,
+                                                        <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
+>gpointer</a>              user_data)        : Run Last</pre>
+<p>
+The ::process-file signal is emitted whenever a file should
+be processed, and it's metadata extracted.
+</p>
+<p>
+<em class="parameter"><code>builder</code></em> is the <a
+href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"
+><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
+to be performed for <em class="parameter"><code>file</code></em> will be appended.
+</p>
+<p>
+This signal allows both synchronous and asynchronous extraction,
+in the synchronous case <em class="parameter"><code>cancellable</code></em> can be safely ignored. In
+either case, on successful metadata extraction, implementations
+must call <a class="link" href="TrackerMinerFS.html#tracker-miner-fs-file-notify" title="tracker_miner_fs_file_notify ()"><code class="function">tracker_miner_fs_file_notify()</code></a> to indicate that
+processing has finished on <em class="parameter"><code>file</code></em>, so the miner can execute
+the SPARQL updates and continue processing other files.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
+<td> the <a class="link" href="TrackerMinerFS.html" title="TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GFile.html"
+><span class="type">GFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>builder</code></em> :</span></p></td>
+<td> a <a
+href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"
+><span class="type">TrackerSparqlBuilder</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td> a <a
+href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"
+><span class="type">GCancellable</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if the file is accepted for processing,
+         <code class="literal">FALSE</code> if the file should be ignored.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

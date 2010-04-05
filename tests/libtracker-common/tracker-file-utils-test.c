@@ -1,6 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2008, Nokia (urho.konttori@nokia.com)
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -28,7 +27,7 @@
 #include <tracker-test-helpers.h>
 
 static GSList *
-array_as_list (gchar **array)
+array_as_list (const gchar **array)
 {
 	gint i;
 	GSList *result = NULL;
@@ -56,14 +55,14 @@ string_in_list (GSList *list, const gchar *string)
 static void
 test_path_list_filter_duplicates (void)
 {
-	gchar *input_roots [] = {"/home", "/home/ivan", "/tmp", "/usr/", "/usr/share/local", NULL};
+	const gchar *input_roots [] = {"/home", "/home/ivan", "/tmp", "/usr/", "/usr/share/local", NULL};
 
 	GSList *input_as_list = NULL;
 	GSList *result;
 
 	input_as_list = array_as_list (input_roots);
 
-	result = tracker_path_list_filter_duplicates (input_as_list, ".");
+	result = tracker_path_list_filter_duplicates (input_as_list, ".", TRUE);
 	g_assert_cmpint (3, ==, g_slist_length (result));
 
 	g_assert (string_in_list (result, "/home"));
@@ -154,7 +153,7 @@ test_path_evaluate_name (void)
 
 	result = tracker_path_evaluate_name (tracker_test_helpers_get_nonutf8 ());
 	tracker_test_helpers_cmpstr_equal (result,
-					   tracker_test_helpers_get_nonutf8 ());
+	                                   tracker_test_helpers_get_nonutf8 ());
 
 	g_unsetenv ("TEST_TRACKER_DIR");
 }
@@ -171,7 +170,7 @@ test_file_get_mime_type (void)
 	dir = g_file_new_for_path (dir_name);
 	g_file_make_directory (dir, NULL, NULL);
 
-	result = tracker_file_get_mime_type (dir_name);
+	result = tracker_file_get_mime_type (dir);
 
 	g_assert (tracker_test_helpers_cmpstr_equal (result, "inode/directory"));
 
@@ -179,55 +178,6 @@ test_file_get_mime_type (void)
 	g_file_delete (dir, NULL, NULL);
 	g_object_unref (dir);
 	g_free (dir_name);
-}
-
-static void
-test_file_get_path_and_name ()
-{
-
-	gchar *name = NULL;
-	gchar *path = NULL;
-
-	tracker_file_get_path_and_name ("/home/ivan/test/file.txt",
-					&path,
-					&name);
-
-	g_assert_cmpint (g_strcmp0 (name, "file.txt"), ==, 0);
-	g_assert_cmpint (g_strcmp0 (path, "/home/ivan/test"), ==, 0);
-
-	g_free (name);
-	g_free (path);
-	name = NULL;
-	path = NULL;
-
-	tracker_file_get_path_and_name ("/home/ivan//test/file.txt",
-					&path,
-					&name);
-
-	g_assert_cmpint (g_strcmp0 (name, "file.txt"), ==, 0);
-	g_assert_cmpint (g_strcmp0 (path, "/home/ivan/test"), ==, 0);
-
-	g_free (name);
-	g_free (path);
-	name = NULL;
-	path = NULL;
-/*
- *	TODO: Fix this case
- *
-	tracker_file_get_path_and_name ("file:///home/ivan//test/file.txt",
-					&path,
-					&name);
-
-	g_assert_cmpint (g_strcmp0 (name, "file.txt"), ==, 0);
-	g_print ("%s\n", path);
-	g_assert_cmpint (g_strcmp0 (path, "file:///home/ivan/test"), ==, 0);
-
-	g_free (name);
-	g_free (path);
-	name = NULL;
-	path = NULL;
-*/
-
 }
 
 int
@@ -240,16 +190,13 @@ main (int argc, char **argv)
 
 
 	g_test_add_func ("/tracker/libtracker-common/tracker-file-utils/path_evaluate_name",
-			 test_path_evaluate_name);
+	                 test_path_evaluate_name);
 
 	g_test_add_func ("/tracker/libtracker-common/tracker-file-utils/path_list_filter_duplicates",
-			 test_path_list_filter_duplicates);
+	                 test_path_list_filter_duplicates);
 
 	g_test_add_func ("/tracker/libtracker-common/tracker-file-utils/file_get_mime_type",
-			 test_file_get_mime_type);
-
-	g_test_add_func ("/libtracker_common/tracker-file-utils/file_get_path_and_name",
-			 test_file_get_path_and_name);
+	                 test_file_get_mime_type);
 
 	result = g_test_run ();
 

@@ -45,13 +45,15 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-DIST_COMMON = $(am__noinst_HEADERS_DIST) \
-	$(libtracker_commoninclude_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(top_srcdir)/Makefile.decl
+DIST_COMMON = $(am__noinst_HEADERS_DIST) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(top_srcdir)/Makefile.decl COPYING.LIB
 subdir = src/libtracker-common
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -79,8 +81,7 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(libtracker_commondir)" \
-	"$(DESTDIR)$(libtracker_commonincludedir)"
+am__installdirs = "$(DESTDIR)$(libtracker_commondir)"
 LTLIBRARIES = $(libtracker_common_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtracker_common_la_DEPENDENCIES =  \
@@ -88,57 +89,77 @@ libtracker_common_la_DEPENDENCIES =  \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am__libtracker_common_la_SOURCES_DIST = tracker-os-dependant-unix.c \
-	tracker-os-dependant-win.c tracker-hal.c tracker-config.c \
-	tracker-dbus.c tracker-field.c tracker-file-utils.c \
-	tracker-ioprio.c tracker-language.c tracker-log.c \
-	tracker-marshal-main.c tracker-module-config.c \
-	tracker-nfs-lock.c tracker-ontology.c tracker-parser.c \
-	tracker-service.c tracker-type-utils.c tracker-utils.c \
-	tracker-thumbnailer.c tracker-albumart.c
-@OS_WIN32_FALSE@am__objects_1 = tracker-os-dependant-unix.lo
-@OS_WIN32_TRUE@am__objects_1 = tracker-os-dependant-win.lo
-@HAVE_HAL_TRUE@am__objects_2 = tracker-hal.lo
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+am__libtracker_common_la_SOURCES_DIST = tracker-marshal.h \
+	tracker-marshal.c tracker-os-dependant-unix.c \
+	tracker-os-dependant-win.c tracker-power-hal.c \
+	tracker-power-devicekit.c tracker-config-file.c \
+	tracker-date-time.c tracker-dbus.c tracker-file-utils.c \
+	tracker-ioprio.c tracker-keyfile-object.c tracker-language.c \
+	tracker-log.c tracker-type-utils.c tracker-utils.c \
+	tracker-crc32.c
+am__objects_1 = tracker-marshal.lo
+@OS_WIN32_FALSE@am__objects_2 = tracker-os-dependant-unix.lo
+@OS_WIN32_TRUE@am__objects_2 = tracker-os-dependant-win.lo
+@HAVE_DEVKIT_POWER_FALSE@@HAVE_HAL_TRUE@am__objects_3 =  \
+@HAVE_DEVKIT_POWER_FALSE@@HAVE_HAL_TRUE@	tracker-power-hal.lo
+@HAVE_DEVKIT_POWER_TRUE@am__objects_3 = tracker-power-devicekit.lo
 am_libtracker_common_la_OBJECTS = $(am__objects_1) $(am__objects_2) \
-	tracker-config.lo tracker-dbus.lo tracker-field.lo \
-	tracker-file-utils.lo tracker-ioprio.lo tracker-language.lo \
-	tracker-log.lo tracker-marshal-main.lo \
-	tracker-module-config.lo tracker-nfs-lock.lo \
-	tracker-ontology.lo tracker-parser.lo tracker-service.lo \
-	tracker-type-utils.lo tracker-utils.lo tracker-thumbnailer.lo \
-	tracker-albumart.lo
+	$(am__objects_3) tracker-config-file.lo tracker-date-time.lo \
+	tracker-dbus.lo tracker-file-utils.lo tracker-ioprio.lo \
+	tracker-keyfile-object.lo tracker-language.lo tracker-log.lo \
+	tracker-type-utils.lo tracker-utils.lo tracker-crc32.lo
 libtracker_common_la_OBJECTS = $(am_libtracker_common_la_OBJECTS)
-libtracker_common_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libtracker_common_la_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+libtracker_common_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libtracker_common_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC    " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 CCLD = $(CC)
-LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD  " $@;
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libtracker_common_la_SOURCES)
 DIST_SOURCES = $(am__libtracker_common_la_SOURCES_DIST)
-am__noinst_HEADERS_DIST = tracker-hal.h tracker-dbus.h \
-	tracker-ioprio.h tracker-log.h tracker-nfs-lock.h \
-	tracker-os-dependant.h tracker-thumbnailer.h \
-	tracker-albumart.h
-HEADERS = $(libtracker_commoninclude_HEADERS) $(noinst_HEADERS)
+am__noinst_HEADERS_DIST = tracker-power.h tracker-dbus.h \
+	tracker-ioprio.h tracker-log.h tracker-os-dependant.h \
+	tracker-config-file.h tracker-common.h tracker-date-time.h \
+	tracker-file-utils.h tracker-keyfile-object.h \
+	tracker-language.h tracker-ontologies.h tracker-type-utils.h \
+	tracker-utils.h tracker-crc32.h
+HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
-ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
 ALL_LINGUAS = @ALL_LINGUAS@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -151,16 +172,20 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+CXXDEPMODE = @CXXDEPMODE@
+CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
-DB2HTML = @DB2HTML@
 DBUSBINDINGTOOL = @DBUSBINDINGTOOL@
 DBUS_CFLAGS = @DBUS_CFLAGS@
 DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
+DEVKIT_POWER_CFLAGS = @DEVKIT_POWER_CFLAGS@
+DEVKIT_POWER_LIBS = @DEVKIT_POWER_LIBS@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -176,10 +201,9 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-GCONF_CFLAGS = @GCONF_CFLAGS@
-GCONF_LIBS = @GCONF_LIBS@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
+GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -188,29 +212,26 @@ GIO_LIBS = @GIO_LIBS@
 GLIB2_CFLAGS = @GLIB2_CFLAGS@
 GLIB2_LIBS = @GLIB2_LIBS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
-GMIME_CFLAGS = @GMIME_CFLAGS@
-GMIME_LIBS = @GMIME_LIBS@
 GMODULE_CFLAGS = @GMODULE_CFLAGS@
 GMODULE_LIBS = @GMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GNOMEDESKTOP_CFLAGS = @GNOMEDESKTOP_CFLAGS@
-GNOMEDESKTOP_LIBS = @GNOMEDESKTOP_LIBS@
-GNOME_UTILS_CFLAGS = @GNOME_UTILS_CFLAGS@
-GNOME_UTILS_LIBS = @GNOME_UTILS_LIBS@
+GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
+GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
 GOBJECT_CFLAGS = @GOBJECT_CFLAGS@
 GOBJECT_LIBS = @GOBJECT_LIBS@
+GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
-GTK2_CFLAGS = @GTK2_CFLAGS@
-GTK2_LIBS = @GTK2_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HTML_DIR = @HTML_DIR@
+ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
+ID3LIB_LIBS = @ID3LIB_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -226,8 +247,10 @@ LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
-LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
-LIBGLADE_LIBS = @LIBGLADE_LIBS@
+LIBFLAC_CFLAGS = @LIBFLAC_CFLAGS@
+LIBFLAC_LIBS = @LIBFLAC_LIBS@
+LIBGRSS_CFLAGS = @LIBGRSS_CFLAGS@
+LIBGRSS_LIBS = @LIBGRSS_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -238,11 +261,11 @@ LIBOBJS = @LIBOBJS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
+LIBSTREAMANALYZER_CFLAGS = @LIBSTREAMANALYZER_CFLAGS@
+LIBSTREAMANALYZER_LIBS = @LIBSTREAMANALYZER_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
 LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
-LIBTRACKERGTK_CFLAGS = @LIBTRACKERGTK_CFLAGS@
-LIBTRACKERGTK_LIBS = @LIBTRACKERGTK_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
 LIBVORBIS_LIBS = @LIBVORBIS_LIBS@
 LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
@@ -261,6 +284,9 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
+NAUTILUS_EXTENSION_CFLAGS = @NAUTILUS_EXTENSION_CFLAGS@
+NAUTILUS_EXTENSION_INSTALL_DIR = @NAUTILUS_EXTENSION_INSTALL_DIR@
+NAUTILUS_EXTENSION_LIBS = @NAUTILUS_EXTENSION_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -284,11 +310,9 @@ POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-QDBM_CFLAGS = @QDBM_CFLAGS@
-QDBM_LIBS = @QDBM_LIBS@
+QUILL_CFLAGS = @QUILL_CFLAGS@
+QUILL_LIBS = @QUILL_LIBS@
 RANLIB = @RANLIB@
-RAPTOR_CFLAGS = @RAPTOR_CFLAGS@
-RAPTOR_LIBS = @RAPTOR_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -298,18 +322,25 @@ STRIP = @STRIP@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
-TRACKER_APPLET_CFLAGS = @TRACKER_APPLET_CFLAGS@
-TRACKER_APPLET_LIBS = @TRACKER_APPLET_LIBS@
+TRACKER_APPLETS_CFLAGS = @TRACKER_APPLETS_CFLAGS@
+TRACKER_APPLETS_LIBS = @TRACKER_APPLETS_LIBS@
+TRACKER_APPS_CFLAGS = @TRACKER_APPS_CFLAGS@
+TRACKER_APPS_LIBS = @TRACKER_APPS_LIBS@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
+TRACKER_VALA_CFLAGS = @TRACKER_VALA_CFLAGS@
+TRACKER_VALA_LIBS = @TRACKER_VALA_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 UNAC_CFLAGS = @UNAC_CFLAGS@
 UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
+UUID_CFLAGS = @UUID_CFLAGS@
+UUID_LIBS = @UUID_LIBS@
+VALAC = @VALAC@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 XGETTEXT = @XGETTEXT@
@@ -320,6 +351,7 @@ abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -362,7 +394,6 @@ program_transform_name = @program_transform_name@
 psdir = @psdir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
-sqlite_exec = @sqlite_exec@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
@@ -378,6 +409,7 @@ INCLUDES = \
 	-DSHAREDIR=\""$(datadir)"\"			\
 	-DG_LOG_DOMAIN=\"Tracker\"			\
 	-DTRACKER_COMPILATION				\
+	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE	\
 	-I$(top_srcdir)/src				\
 	$(WARN_CFLAGS)					\
 	$(GLIB2_CFLAGS)					\
@@ -386,70 +418,68 @@ INCLUDES = \
 	$(GIO_CFLAGS)					\
 	$(PANGO_CFLAGS)					\
 	$(HAL_CFLAGS)					\
+	$(DEVKIT_POWER_CFLAGS)				\
 	$(DBUS_CFLAGS)					\
 	$(UNAC_CFLAGS)
 
-libtracker_commondir = $(libdir)/tracker
-libtracker_commonincludedir = $(includedir)/tracker-1.0/libtracker-common/
+libtracker_commondir = $(libdir)/tracker-$(TRACKER_API_VERSION)
 libtracker_common_LTLIBRARIES = libtracker-common.la
 @OS_WIN32_FALSE@os_sources = tracker-os-dependant-unix.c
 @OS_WIN32_TRUE@os_sources = tracker-os-dependant-win.c
-@HAVE_HAL_TRUE@hal_sources = \
-@HAVE_HAL_TRUE@	tracker-hal.c
+@HAVE_DEVKIT_POWER_FALSE@@HAVE_HAL_TRUE@power_headers = \
+@HAVE_DEVKIT_POWER_FALSE@@HAVE_HAL_TRUE@	tracker-power.h
 
-@HAVE_HAL_TRUE@hal_headers = \
-@HAVE_HAL_TRUE@	tracker-hal.h
+
+# Prefer DeviceKit-power for the power data if it's available, else fall back to HAL
+@HAVE_DEVKIT_POWER_TRUE@power_headers = \
+@HAVE_DEVKIT_POWER_TRUE@	tracker-power.h
+
+@HAVE_DEVKIT_POWER_FALSE@@HAVE_HAL_TRUE@power_sources = \
+@HAVE_DEVKIT_POWER_FALSE@@HAVE_HAL_TRUE@	tracker-power-hal.c
+
+@HAVE_DEVKIT_POWER_TRUE@power_sources = \
+@HAVE_DEVKIT_POWER_TRUE@	tracker-power-devicekit.c
 
 libtracker_common_la_SOURCES = \
+	$(marshal_sources)				\
 	$(os_sources)					\
-	$(hal_sources)					\
-	tracker-config.c 				\
+	$(power_sources)				\
+	tracker-config-file.c				\
+	tracker-date-time.c				\
 	tracker-dbus.c	 				\
-	tracker-field.c					\
 	tracker-file-utils.c				\
 	tracker-ioprio.c				\
+	tracker-keyfile-object.c			\
 	tracker-language.c				\
 	tracker-log.c	 				\
-	tracker-marshal-main.c				\
-	tracker-module-config.c				\
-	tracker-nfs-lock.c				\
-	tracker-ontology.c				\
-	tracker-parser.c				\
-	tracker-service.c				\
 	tracker-type-utils.c				\
 	tracker-utils.c					\
-	tracker-thumbnailer.c				\
-	tracker-albumart.c
+	tracker-crc32.c
 
 noinst_HEADERS = \
-	$(hal_headers)					\
+	$(power_headers)				\
 	tracker-dbus.h					\
 	tracker-ioprio.h				\
 	tracker-log.h					\
-	tracker-nfs-lock.h				\
 	tracker-os-dependant.h				\
-	tracker-thumbnailer.h				\
-	tracker-albumart.h
-
-libtracker_commoninclude_HEADERS = \
+	tracker-config-file.h				\
 	tracker-common.h				\
-	tracker-config.h				\
-	tracker-field.h					\
+	tracker-date-time.h				\
 	tracker-file-utils.h				\
+	tracker-keyfile-object.h			\
 	tracker-language.h				\
-	tracker-module-config.h				\
-	tracker-ontology.h				\
-	tracker-parser.h				\
-	tracker-service.h				\
+	tracker-ontologies.h				\
 	tracker-type-utils.h				\
-	tracker-utils.h
+	tracker-utils.h					\
+	tracker-crc32.h
 
 libtracker_common_la_LDFLAGS = \
-	-version-info 0:0:0
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 libtracker_common_la_LIBADD = \
 	$(top_builddir)/src/libstemmer/libstemmer.la	\
 	$(HAL_LIBS)					\
+	$(DEVKIT_POWER_LIBS)				\
 	$(DBUS_LIBS)					\
 	$(UNAC_LIBS)					\
 	$(PANGO_LIBS)					\
@@ -465,8 +495,11 @@ marshal_sources = \
 BUILT_SOURCES = \
 	$(marshal_sources)
 
-CLEANFILES = $(BUILT_SOURCES)
-EXTRA_DIST = tracker-marshal.list
+CLEANFILES = $(marshal_sources)
+EXTRA_DIST = \
+	tracker-marshal.list				\
+	libtracker-common.vapi
+
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -534,7 +567,7 @@ clean-libtracker_commonLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libtracker-common.la: $(libtracker_common_la_OBJECTS) $(libtracker_common_la_DEPENDENCIES) 
-	$(libtracker_common_la_LINK) -rpath $(libtracker_commondir) $(libtracker_common_la_OBJECTS) $(libtracker_common_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libtracker_common_la_LINK) -rpath $(libtracker_commondir) $(libtracker_common_la_OBJECTS) $(libtracker_common_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -542,44 +575,43 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-config.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-config-file.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crc32.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-date-time.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-field.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-utils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-hal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ioprio.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-keyfile-object.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-language.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-log.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal-main.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-module-config.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-nfs-lock.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ontology.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-os-dependant-unix.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-os-dependant-win.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-parser.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-service.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-thumbnailer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-power-devicekit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-power-hal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-type-utils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Plo@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
@@ -589,26 +621,6 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-libtracker_commonincludeHEADERS: $(libtracker_commoninclude_HEADERS)
-	@$(NORMAL_INSTALL)
-	test -z "$(libtracker_commonincludedir)" || $(MKDIR_P) "$(DESTDIR)$(libtracker_commonincludedir)"
-	@list='$(libtracker_commoninclude_HEADERS)'; test -n "$(libtracker_commonincludedir)" || list=; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(libtracker_commonincludedir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(libtracker_commonincludedir)" || exit $$?; \
-	done
-
-uninstall-libtracker_commonincludeHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libtracker_commoninclude_HEADERS)'; test -n "$(libtracker_commonincludedir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(libtracker_commonincludedir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(libtracker_commonincludedir)" && rm -f $$files
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -698,7 +710,7 @@ check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libtracker_commondir)" "$(DESTDIR)$(libtracker_commonincludedir)"; do \
+	for dir in "$(DESTDIR)$(libtracker_commondir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -752,8 +764,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libtracker_commonLTLIBRARIES \
-	install-libtracker_commonincludeHEADERS
+install-data-am: install-libtracker_commonLTLIBRARIES
 
 install-dvi: install-dvi-am
 
@@ -799,8 +810,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libtracker_commonLTLIBRARIES \
-	uninstall-libtracker_commonincludeHEADERS
+uninstall-am: uninstall-libtracker_commonLTLIBRARIES
 
 .MAKE: all check check-am install install-am install-strip
 
@@ -812,20 +822,18 @@ uninstall-am: uninstall-libtracker_commonLTLIBRARIES \
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
 	install-info-am install-libtracker_commonLTLIBRARIES \
-	install-libtracker_commonincludeHEADERS install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-libtracker_commonLTLIBRARIES \
-	uninstall-libtracker_commonincludeHEADERS
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
+	uninstall-am uninstall-libtracker_commonLTLIBRARIES
 
 
 ### testing rules
 
 # test: run all tests in cwd and subdirs
-test:	${TEST_PROGS}
+test:	${TEST_PROGS} all
 	@ test -z "${TEST_PROGS}" || ${GTESTER} --verbose ${TEST_PROGS}
 	@ for subdir in $(SUBDIRS) . ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" || \
@@ -872,12 +880,11 @@ test-report perf-report full-report:	${TEST_PROGS}
 check-local: test
 
 tracker-marshal.h: tracker-marshal.list
-	$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --header > $@
+	$(AM_V_GEN)$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --header > $@
 
 tracker-marshal.c: tracker-marshal.list
-	$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --body > $@
-
-tracker-marshal-main.c: tracker-marshal.c tracker-marshal.h
+	$(AM_V_GEN)echo "#include \"tracker-marshal.h\"" > $@ &&	\
+		   $(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --body >> $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

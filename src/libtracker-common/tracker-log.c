@@ -1,19 +1,17 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
- * General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.          See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
@@ -37,19 +35,19 @@
 #include "tracker-file-utils.h"
 
 static gboolean  initialized;
-static GMutex	*mutex;
-static FILE	*fd;
-static gint	 verbosity;
-static guint	 log_handler_id;
+static GMutex   *mutex;
+static FILE     *fd;
+static gint      verbosity;
+static guint     log_handler_id;
 
 static inline void
 log_output (const gchar    *domain,
-	    GLogLevelFlags  log_level,
-	    const gchar    *message)
+            GLogLevelFlags  log_level,
+            const gchar    *message)
 {
-	time_t	      now;
-	gchar	      time_str[64];
-	gchar	     *output;
+	time_t        now;
+	gchar         time_str[64];
+	gchar        *output;
 	struct tm    *local_time;
 	GTimeVal      current_time;
 	const gchar  *log_level_str;
@@ -102,11 +100,11 @@ log_output (const gchar    *domain,
 	}
 
 	output = g_strdup_printf ("%s%s %s%s: %s",
-				  log_level_str ? "\n" : "",
-				  time_str,
-				  domain,
-				  log_level_str ? log_level_str : "",
-				  message);
+	                          log_level_str ? "\n" : "",
+	                          time_str,
+	                          domain,
+	                          log_level_str ? log_level_str : "",
+	                          message);
 
 	if (G_UNLIKELY (fd == NULL)) {
 		g_fprintf (stderr, "%s\n", output);
@@ -123,13 +121,11 @@ log_output (const gchar    *domain,
 
 static void
 tracker_log_handler (const gchar    *domain,
-		     GLogLevelFlags  log_level,
-		     const gchar    *message,
-		     gpointer	     user_data)
+                     GLogLevelFlags  log_level,
+                     const gchar    *message,
+                     gpointer        user_data)
 {
-	if (((log_level & G_LOG_LEVEL_DEBUG) && verbosity < 3) ||
-	    ((log_level & G_LOG_LEVEL_INFO) && verbosity < 2) ||
-	    ((log_level & G_LOG_LEVEL_MESSAGE) && verbosity < 1)) {
+	if (!tracker_log_should_handle (log_level, verbosity)) {
 		return;
 	}
 
@@ -140,17 +136,25 @@ tracker_log_handler (const gchar    *domain,
 }
 
 gboolean
-tracker_log_init (const gchar *filename,
-		  gint	       this_verbosity)
+tracker_log_init (gint    this_verbosity,
+                  gchar **used_filename)
 {
-	g_return_val_if_fail (filename != NULL, FALSE);
+	gchar *filename;
+	gchar *basename;
 
 	if (initialized) {
 		return TRUE;
 	}
 
+	basename = g_strdup_printf ("%s.log", g_get_application_name ());
+	filename = g_build_filename (g_get_user_data_dir (),
+	                             "tracker",
+	                             basename,
+	                             NULL);
+	g_free (basename);
+
 	/* Remove previous log */
-	tracker_file_unlink (filename);
+	g_unlink (filename);
 
 	/* Open file */
 	fd = g_fopen (filename, "a");
@@ -159,25 +163,34 @@ tracker_log_init (const gchar *filename,
 
 		error_string = g_strerror (errno);
 		g_fprintf (stderr,
-			   "Could not open log:'%s', %s\n",
-			   filename,
-			   error_string);
+		           "Could not open log:'%s', %s\n",
+		           filename,
+		           error_string);
 		g_fprintf (stderr,
-			   "All logging will go to stderr\n");
+		           "All logging will go to stderr\n");
 	}
 
-	verbosity = this_verbosity;
+	verbosity = CLAMP (this_verbosity, 0, 3);
 	mutex = g_mutex_new ();
 
 	/* Add log handler function */
 	log_handler_id = g_log_set_handler (NULL,
-					    G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL,
-					    tracker_log_handler,
-					    NULL);
+	                                    G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL,
+	                                    tracker_log_handler,
+	                                    NULL);
 
 	g_log_set_default_handler (tracker_log_handler, NULL);
 
+	if (used_filename) {
+		*used_filename = filename;
+	} else {
+		g_free (filename);
+	}
+
 	initialized = TRUE;
+
+	/* log binary name and version */
+	g_message ("%s %s", g_get_application_name (), PACKAGE_VERSION);
 
 	return TRUE;
 }
@@ -199,4 +212,51 @@ tracker_log_shutdown (void)
 	g_mutex_free (mutex);
 
 	initialized = FALSE;
+}
+
+gboolean
+tracker_log_should_handle (GLogLevelFlags log_level,
+                           gint           this_verbosity)
+{
+	switch (this_verbosity) {
+		/* Log level 3: EVERYTHING */
+	case 3:
+		break;
+
+		/* Log level 2: CRITICAL/ERROR/WARNING/INFO/MESSAGE only */
+	case 2:
+		if (!(log_level & G_LOG_LEVEL_MESSAGE) &&
+		    !(log_level & G_LOG_LEVEL_INFO) &&
+		    !(log_level & G_LOG_LEVEL_WARNING) &&
+		    !(log_level & G_LOG_LEVEL_ERROR) &&
+		    !(log_level & G_LOG_LEVEL_CRITICAL)) {
+			return FALSE;
+		}
+
+		break;
+
+		/* Log level 1: CRITICAL/ERROR/WARNING/INFO only */
+	case 1:
+		if (!(log_level & G_LOG_LEVEL_INFO) &&
+		    !(log_level & G_LOG_LEVEL_WARNING) &&
+		    !(log_level & G_LOG_LEVEL_ERROR) &&
+		    !(log_level & G_LOG_LEVEL_CRITICAL)) {
+			return FALSE;
+		}
+
+		break;
+
+		/* Log level 0: CRITICAL/ERROR/WARNING only (default) */
+	default:
+	case 0:
+		if (!(log_level & G_LOG_LEVEL_WARNING) &&
+		    !(log_level & G_LOG_LEVEL_ERROR) &&
+		    !(log_level & G_LOG_LEVEL_CRITICAL)) {
+			return FALSE;
+		}
+
+		break;
+	}
+
+	return TRUE;
 }

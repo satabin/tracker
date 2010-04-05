@@ -1,0 +1,172 @@
+<!-- ##### SECTION Title ##### -->
+Resources
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### USER_FUNCTION TrackerReplyGPtrArray ##### -->
+<para>
+
+</para>
+
+@result: 
+@error: 
+@user_data: 
+
+
+<!-- ##### USER_FUNCTION TrackerReplyVoid ##### -->
+<para>
+
+</para>
+
+@error: 
+@user_data: 
+
+
+<!-- ##### FUNCTION tracker_resources_sparql_query ##### -->
+<para>
+
+</para>
+
+@client: 
+@query: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_resources_sparql_query_async ##### -->
+<para>
+
+</para>
+
+@client: 
+@query: 
+@callback: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_resources_sparql_update ##### -->
+<para>
+
+</para>
+
+@client: 
+@query: 
+@error: 
+
+
+<!-- ##### FUNCTION tracker_resources_sparql_update_async ##### -->
+<para>
+
+</para>
+
+@client: 
+@query: 
+@callback: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_resources_sparql_update_blank ##### -->
+<para>
+
+</para>
+
+@client: 
+@query: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_resources_sparql_update_blank_async ##### -->
+<para>
+
+</para>
+
+@client: 
+@query: 
+@callback: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_resources_batch_sparql_update ##### -->
+<para>
+
+</para>
+
+@client: 
+@query: 
+@error: 
+
+
+<!-- ##### FUNCTION tracker_resources_batch_sparql_update_async ##### -->
+<para>
+
+</para>
+
+@client: 
+@query: 
+@callback: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_resources_batch_commit ##### -->
+<para>
+
+</para>
+
+@client: 
+@error: 
+
+
+<!-- ##### FUNCTION tracker_resources_batch_commit_async ##### -->
+<para>
+
+</para>
+
+@client: 
+@callback: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_resources_load ##### -->
+<para>
+
+</para>
+
+@client: 
+@uri: 
+@error: 
+
+
+<!-- ##### FUNCTION tracker_resources_load_async ##### -->
+<para>
+
+</para>
+
+@client: 
+@uri: 
+@callback: 
+@user_data: 
+@Returns: 
+
+

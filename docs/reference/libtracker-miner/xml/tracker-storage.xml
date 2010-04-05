@@ -1,0 +1,181 @@
+<refentry id="libtracker-miner-TrackerStorage">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-miner-TrackerStorage.top_of_page">TrackerStorage</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-MINER Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>TrackerStorage</refname>
+<refpurpose>Removable storage and mount point convenience API</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-miner-TrackerStorage.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-miner/tracker-miner.h&gt;
+
+                    <link linkend="TrackerStorage">TrackerStorage</link>;
+                    <link linkend="TrackerStorageClass">TrackerStorageClass</link>;
+enum                <link linkend="TrackerStorageType">TrackerStorageType</link>;
+<link linkend="TrackerStorage">TrackerStorage</link> *    <link linkend="tracker-storage-new">tracker_storage_new</link>                 (void);
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-storage-get-device-roots">tracker_storage_get_device_roots</link>    (<link linkend="TrackerStorage">TrackerStorage</link> *storage,
+                                                         <link linkend="TrackerStorageType">TrackerStorageType</link> type,
+                                                         <link linkend="gboolean">gboolean</link> exact_match);
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-storage-get-device-uuids">tracker_storage_get_device_uuids</link>    (<link linkend="TrackerStorage">TrackerStorage</link> *storage,
+                                                         <link linkend="TrackerStorageType">TrackerStorageType</link> type,
+                                                         <link linkend="gboolean">gboolean</link> exact_match);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-storage-get-mount-point-for-uuid">tracker_storage_get_mount_point_for_uuid</link>
+                                                        (<link linkend="TrackerStorage">TrackerStorage</link> *storage,
+                                                         const <link linkend="gchar">gchar</link> *uuid);
+const <link linkend="gchar">gchar</link>*        <link linkend="tracker-storage-get-uuid-for-file">tracker_storage_get_uuid_for_file</link>   (<link linkend="TrackerStorage">TrackerStorage</link> *storage,
+                                                         <link linkend="GFile">GFile</link> *file);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-miner-TrackerStorage.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+This API is a convenience to to be able to keep track of volumes
+which are mounted and also the type of removable media available.
+The API is built upon the top of GIO's <link linkend="GMount"><type>GMount</type></link>, <link linkend="GDrive"><type>GDrive</type></link> and <link linkend="GVolume"><type>GVolume</type></link> API.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-miner-TrackerStorage.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerStorage" role="struct">
+<title>TrackerStorage</title>
+<indexterm zone="TrackerStorage"><primary sortas="TrackerStorage">TrackerStorage</primary></indexterm><programlisting>typedef struct {
+	GObject parent;
+} TrackerStorage;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerStorageClass" role="struct">
+<title>TrackerStorageClass</title>
+<indexterm zone="TrackerStorageClass"><primary sortas="TrackerStorageClass">TrackerStorageClass</primary></indexterm><programlisting>typedef struct {
+	GObjectClass parent_class;
+} TrackerStorageClass;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerStorageType" role="enum">
+<title>enum TrackerStorageType</title>
+<indexterm zone="TrackerStorageType"><primary sortas="TrackerStorageType">TrackerStorageType</primary></indexterm><programlisting>typedef enum {
+	TRACKER_STORAGE_REMOVABLE = 1 &lt;&lt; 0,
+	TRACKER_STORAGE_OPTICAL   = 1 &lt;&lt; 1
+} TrackerStorageType;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="tracker-storage-new" role="function">
+<title>tracker_storage_new ()</title>
+<indexterm zone="tracker-storage-new"><primary sortas="tracker_storage_new">tracker_storage_new</primary></indexterm><programlisting><link linkend="TrackerStorage">TrackerStorage</link> *    tracker_storage_new                 (void);</programlisting>
+<para>
+Creates a new instance of <link linkend="TrackerStorage"><type>TrackerStorage</type></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The newly created <link linkend="TrackerStorage"><type>TrackerStorage</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-storage-get-device-roots" role="function">
+<title>tracker_storage_get_device_roots ()</title>
+<indexterm zone="tracker-storage-get-device-roots"><primary sortas="tracker_storage_get_device_roots">tracker_storage_get_device_roots</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_storage_get_device_roots    (<link linkend="TrackerStorage">TrackerStorage</link> *storage,
+                                                         <link linkend="TrackerStorageType">TrackerStorageType</link> type,
+                                                         <link linkend="gboolean">gboolean</link> exact_match);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>storage</parameter>&#160;:</term>
+<listitem><simpara> A <link linkend="TrackerStorage"><type>TrackerStorage</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara> A <link linkend="TrackerStorageType"><type>TrackerStorageType</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>exact_match</parameter>&#160;:</term>
+<listitem><simpara> if all devices should exactly match the types
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a <link linkend="GSList"><type>GSList</type></link> of strings containing the root directories for
+devices with <parameter>type</parameter> based on <parameter>exact_match</parameter>. Each element must be
+freed using <link linkend="g-free"><function>g_free()</function></link> and the list itself through <link linkend="g-slist-free"><function>g_slist_free()</function></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-storage-get-device-uuids" role="function">
+<title>tracker_storage_get_device_uuids ()</title>
+<indexterm zone="tracker-storage-get-device-uuids"><primary sortas="tracker_storage_get_device_uuids">tracker_storage_get_device_uuids</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_storage_get_device_uuids    (<link linkend="TrackerStorage">TrackerStorage</link> *storage,
+                                                         <link linkend="TrackerStorageType">TrackerStorageType</link> type,
+                                                         <link linkend="gboolean">gboolean</link> exact_match);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>storage</parameter>&#160;:</term>
+<listitem><simpara> A <link linkend="TrackerStorage"><type>TrackerStorage</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara> A <link linkend="TrackerStorageType"><type>TrackerStorageType</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>exact_match</parameter>&#160;:</term>
+<listitem><simpara> if all devices should exactly match the types
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a <link linkend="GSList"><type>GSList</type></link> of strings containing the UUID for devices with
+<parameter>type</parameter> based on <parameter>exact_match</parameter>. Each element must be freed using
+<link linkend="g-free"><function>g_free()</function></link> and the list itself through <link linkend="g-slist-free"><function>g_slist_free()</function></link>. 
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-storage-get-mount-point-for-uuid" role="function">
+<title>tracker_storage_get_mount_point_for_uuid ()</title>
+<indexterm zone="tracker-storage-get-mount-point-for-uuid"><primary sortas="tracker_storage_get_mount_point_for_uuid">tracker_storage_get_mount_point_for_uuid</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_storage_get_mount_point_for_uuid
+                                                        (<link linkend="TrackerStorage">TrackerStorage</link> *storage,
+                                                         const <link linkend="gchar">gchar</link> *uuid);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>storage</parameter>&#160;:</term>
+<listitem><simpara> A <link linkend="TrackerStorage"><type>TrackerStorage</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uuid</parameter>&#160;:</term>
+<listitem><simpara> A string pointer to the UUID for the <link linkend="GVolume"><literal>GVolume</literal></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The mount point for <parameter>uuid</parameter>, this should not be freed.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-storage-get-uuid-for-file" role="function">
+<title>tracker_storage_get_uuid_for_file ()</title>
+<indexterm zone="tracker-storage-get-uuid-for-file"><primary sortas="tracker_storage_get_uuid_for_file">tracker_storage_get_uuid_for_file</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        tracker_storage_get_uuid_for_file   (<link linkend="TrackerStorage">TrackerStorage</link> *storage,
+                                                         <link linkend="GFile">GFile</link> *file);</programlisting>
+<para>
+Returns the UUID of the removable device for <parameter>file</parameter></para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>storage</parameter>&#160;:</term>
+<listitem><simpara> A <link linkend="TrackerStorage"><type>TrackerStorage</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> a file
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Returns the UUID of the removable device for <parameter>file</parameter>, this
+should not be freed.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

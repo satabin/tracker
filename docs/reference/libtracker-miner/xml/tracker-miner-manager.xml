@@ -1,0 +1,514 @@
+<refentry id="libtracker-miner-tracker-miner-manager">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-miner-tracker-miner-manager.top_of_page">tracker-miner-manager</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-MINER Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>tracker-miner-manager</refname>
+<refpurpose>External control and monitoring of miners</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-miner-tracker-miner-manager.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+<anchor id="TrackerMinerManager"/>
+<synopsis>
+
+#include &lt;libtracker-miner/tracker-miner.h&gt;
+
+typedef             <link linkend="TrackerMinerManager">TrackerMinerManager</link>;
+typedef             <link linkend="TrackerMinerManagerClass">TrackerMinerManagerClass</link>;
+<link linkend="void">void</link>                <link linkend="miner-progress">miner_progress</link>                      (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner_name,
+                                                         const <link linkend="gchar">gchar</link> *status,
+                                                         <link linkend="gdouble">gdouble</link> progress);
+<link linkend="void">void</link>                <link linkend="miner-paused">miner_paused</link>                        (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner_name);
+<link linkend="void">void</link>                <link linkend="miner-resumed">miner_resumed</link>                       (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner_name);
+<link linkend="void">void</link>                <link linkend="miner-activated">miner_activated</link>                     (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner_name);
+<link linkend="void">void</link>                <link linkend="miner-deactivated">miner_deactivated</link>                   (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner_name);
+<link linkend="TrackerMinerManager">TrackerMinerManager</link> * <link linkend="tracker-miner-manager-new">tracker_miner_manager_new</link>         (void);
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-miner-manager-get-running">tracker_miner_manager_get_running</link>   (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager);
+<link linkend="GSList">GSList</link> *            <link linkend="tracker-miner-manager-get-available">tracker_miner_manager_get_available</link> (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-miner-manager-pause">tracker_miner_manager_pause</link>         (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> *reason,
+                                                         <link linkend="guint32">guint32</link> *cookie);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-miner-manager-resume">tracker_miner_manager_resume</link>        (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner,
+                                                         <link linkend="guint32">guint32</link> cookie);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-miner-manager-is-active">tracker_miner_manager_is_active</link>     (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-miner-manager-is-paused">tracker_miner_manager_is_paused</link>     (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner,
+                                                         <link linkend="GStrv">GStrv</link> *applications,
+                                                         <link linkend="GStrv">GStrv</link> *reasons);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-miner-manager-get-status">tracker_miner_manager_get_status</link>    (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner,
+                                                         <link linkend="gchar">gchar</link> **status,
+                                                         <link linkend="gdouble">gdouble</link> *progress);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-miner-manager-ignore-next-update">tracker_miner_manager_ignore_next_update</link>
+                                                        (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> **urls);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-miner-manager-get-display-name">tracker_miner_manager_get_display_name</link>
+                                                        (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner);
+const <link linkend="gchar">gchar</link> *       <link linkend="tracker-miner-manager-get-description">tracker_miner_manager_get_description</link>
+                                                        (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner);
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1 id="libtracker-miner-tracker-miner-manager.object-hierarchy" role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<synopsis>
+  <link linkend="GObject">GObject</link>
+   +----TrackerMinerManager
+</synopsis>
+</refsect1>
+
+
+
+
+
+
+<refsect1 id="libtracker-miner-tracker-miner-manager.signals" role="signal_proto">
+<title role="signal_proto.title">Signals</title>
+<synopsis>
+  &quot;<link linkend="TrackerMinerManager-miner-activated">miner-activated</link>&quot;                                : Run Last
+  &quot;<link linkend="TrackerMinerManager-miner-deactivated">miner-deactivated</link>&quot;                              : Run Last
+  &quot;<link linkend="TrackerMinerManager-miner-paused">miner-paused</link>&quot;                                   : Run Last
+  &quot;<link linkend="TrackerMinerManager-miner-progress">miner-progress</link>&quot;                                 : Run Last
+  &quot;<link linkend="TrackerMinerManager-miner-resumed">miner-resumed</link>&quot;                                  : Run Last
+</synopsis>
+</refsect1>
+
+
+<refsect1 id="libtracker-miner-tracker-miner-manager.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+<link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link> keeps track of available miners, their current
+progress/status, and also allows basic external control on them, such
+as pausing or resuming data processing.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-miner-tracker-miner-manager.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerMinerManager" role="typedef">
+<title>TrackerMinerManager</title>
+<indexterm zone="TrackerMinerManager"><primary sortas="TrackerMinerManager">TrackerMinerManager</primary></indexterm><programlisting>typedef struct TrackerMinerManager TrackerMinerManager;
+</programlisting>
+<para>
+Object to query and control miners.</para>
+<para>
+</para></refsect2>
+<refsect2 id="TrackerMinerManagerClass" role="typedef">
+<title>TrackerMinerManagerClass</title>
+<indexterm zone="TrackerMinerManagerClass"><primary sortas="TrackerMinerManagerClass">TrackerMinerManagerClass</primary></indexterm><programlisting>typedef struct TrackerMinerManagerClass TrackerMinerManagerClass;
+</programlisting>
+<para>
+<link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link> class.</para>
+<para>
+</para></refsect2>
+<refsect2 id="miner-progress" role="function">
+<title>miner_progress ()</title>
+<indexterm zone="miner-progress"><primary sortas="miner_progress">miner_progress</primary></indexterm><programlisting><link linkend="void">void</link>                miner_progress                      (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner_name,
+                                                         const <link linkend="gchar">gchar</link> *status,
+                                                         <link linkend="gdouble">gdouble</link> progress);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner_name</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>status</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>progress</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="miner-paused" role="function">
+<title>miner_paused ()</title>
+<indexterm zone="miner-paused"><primary sortas="miner_paused">miner_paused</primary></indexterm><programlisting><link linkend="void">void</link>                miner_paused                        (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner_name);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner_name</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="miner-resumed" role="function">
+<title>miner_resumed ()</title>
+<indexterm zone="miner-resumed"><primary sortas="miner_resumed">miner_resumed</primary></indexterm><programlisting><link linkend="void">void</link>                miner_resumed                       (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner_name);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner_name</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="miner-activated" role="function">
+<title>miner_activated ()</title>
+<indexterm zone="miner-activated"><primary sortas="miner_activated">miner_activated</primary></indexterm><programlisting><link linkend="void">void</link>                miner_activated                     (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner_name);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner_name</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="miner-deactivated" role="function">
+<title>miner_deactivated ()</title>
+<indexterm zone="miner-deactivated"><primary sortas="miner_deactivated">miner_deactivated</primary></indexterm><programlisting><link linkend="void">void</link>                miner_deactivated                   (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner_name);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner_name</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-new" role="function">
+<title>tracker_miner_manager_new ()</title>
+<indexterm zone="tracker-miner-manager-new"><primary sortas="tracker_miner_manager_new">tracker_miner_manager_new</primary></indexterm><programlisting><link linkend="TrackerMinerManager">TrackerMinerManager</link> * tracker_miner_manager_new         (void);</programlisting>
+<para>
+Creates a new <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link> instance.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-get-running" role="function">
+<title>tracker_miner_manager_get_running ()</title>
+<indexterm zone="tracker-miner-manager-get-running"><primary sortas="tracker_miner_manager_get_running">tracker_miner_manager_get_running</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_miner_manager_get_running   (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager);</programlisting>
+<para>
+Returns a list of references for all active miners.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="trackerMinerManager"><type>trackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a <link linkend="GSList"><type>GSList</type></link> of miner references. This list must be freed
+         through <link linkend="g-slist-free"><function>g_slist_free()</function></link>, and all contained data with <link linkend="g-free"><function>g_free()</function></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-get-available" role="function">
+<title>tracker_miner_manager_get_available ()</title>
+<indexterm zone="tracker-miner-manager-get-available"><primary sortas="tracker_miner_manager_get_available">tracker_miner_manager_get_available</primary></indexterm><programlisting><link linkend="GSList">GSList</link> *            tracker_miner_manager_get_available (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager);</programlisting>
+<para>
+Returns a list of references for all available miners.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a <link linkend="GSList"><type>GSList</type></link> of miner references. This list must be freed
+         through <link linkend="g-slist-free"><function>g_slist_free()</function></link>, and all contained data with <link linkend="g-free"><function>g_free()</function></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-pause" role="function">
+<title>tracker_miner_manager_pause ()</title>
+<indexterm zone="tracker-miner-manager-pause"><primary sortas="tracker_miner_manager_pause">tracker_miner_manager_pause</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_miner_manager_pause         (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> *reason,
+                                                         <link linkend="guint32">guint32</link> *cookie);</programlisting>
+<para>
+Asks <parameter>miner</parameter> to pause. a miner could be paused by
+several reasons, and its activity won't be resumed
+until all pause requests have been resumed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reason</parameter>&#160;:</term>
+<listitem><simpara> reason to pause
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cookie</parameter>&#160;:</term>
+<listitem><simpara> return location for the pause cookie ID
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if the miner was paused successfully.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-resume" role="function">
+<title>tracker_miner_manager_resume ()</title>
+<indexterm zone="tracker-miner-manager-resume"><primary sortas="tracker_miner_manager_resume">tracker_miner_manager_resume</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_miner_manager_resume        (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner,
+                                                         <link linkend="guint32">guint32</link> cookie);</programlisting>
+<para>
+Tells <parameter>miner</parameter> to resume activity. The miner won't actually resume
+operations until all pause requests have been resumed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cookie</parameter>&#160;:</term>
+<listitem><simpara> pause cookie
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if the miner was successfully resumed.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-is-active" role="function">
+<title>tracker_miner_manager_is_active ()</title>
+<indexterm zone="tracker-miner-manager-is-active"><primary sortas="tracker_miner_manager_is_active">tracker_miner_manager_is_active</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_miner_manager_is_active     (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner);</programlisting>
+<para>
+Returns <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if <parameter>miner</parameter> is currently active.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if <parameter>miner</parameter> is active.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-is-paused" role="function">
+<title>tracker_miner_manager_is_paused ()</title>
+<indexterm zone="tracker-miner-manager-is-paused"><primary sortas="tracker_miner_manager_is_paused">tracker_miner_manager_is_paused</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_miner_manager_is_paused     (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner,
+                                                         <link linkend="GStrv">GStrv</link> *applications,
+                                                         <link linkend="GStrv">GStrv</link> *reasons);</programlisting>
+<para>
+This function either returns <link linkend="FALSE--CAPS"><literal>FALSE</literal></link> if the miner is not paused,
+or returns <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> and fills in <parameter>applications</parameter> and <parameter>reasons</parameter> with
+the pause reasons and the applications that asked for it. Both
+arrays will have the same lengh, and will be sorted so the
+application/pause reason pairs have the same index.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>applications</parameter>&#160;:</term>
+<listitem><simpara> return location for application names.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reasons</parameter>&#160;:</term>
+<listitem><simpara> return location for pause reasons.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if <parameter>miner</parameter> is paused.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-get-status" role="function">
+<title>tracker_miner_manager_get_status ()</title>
+<indexterm zone="tracker-miner-manager-get-status"><primary sortas="tracker_miner_manager_get_status">tracker_miner_manager_get_status</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_miner_manager_get_status    (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner,
+                                                         <link linkend="gchar">gchar</link> **status,
+                                                         <link linkend="gdouble">gdouble</link> *progress);</programlisting>
+<para>
+Returns the current status and progress for <parameter>miner</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>status</parameter>&#160;:</term>
+<listitem><simpara> return location for status
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>progress</parameter>&#160;:</term>
+<listitem><simpara> return location for progress
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if the status could be retrieved successfully.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-ignore-next-update" role="function">
+<title>tracker_miner_manager_ignore_next_update ()</title>
+<indexterm zone="tracker-miner-manager-ignore-next-update"><primary sortas="tracker_miner_manager_ignore_next_update">tracker_miner_manager_ignore_next_update</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_miner_manager_ignore_next_update
+                                                        (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner,
+                                                         const <link linkend="gchar">gchar</link> **urls);</programlisting>
+<para>
+Asks <parameter>miner</parameter> to mark <parameter>subjects</parameter> as writeback</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>urls</parameter>&#160;:</term>
+<listitem><simpara> subjects to mark as writeback
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="TRUE--CAPS"><literal>TRUE</literal></link> if the miner was asked to ignore on next update successfully.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-get-display-name" role="function">
+<title>tracker_miner_manager_get_display_name ()</title>
+<indexterm zone="tracker-miner-manager-get-display-name"><primary sortas="tracker_miner_manager_get_display_name">tracker_miner_manager_get_display_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_miner_manager_get_display_name
+                                                        (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner);</programlisting>
+<para>
+Returns a translated display name for <parameter>miner</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The miner display name.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-miner-manager-get-description" role="function">
+<title>tracker_miner_manager_get_description ()</title>
+<indexterm zone="tracker-miner-manager-get-description"><primary sortas="tracker_miner_manager_get_description">tracker_miner_manager_get_description</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link> *       tracker_miner_manager_get_description
+                                                        (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                         const <link linkend="gchar">gchar</link> *miner);</programlisting>
+<para>
+Returns the description for <parameter>miner</parameter>, or <link linkend="NULL--CAPS"><literal>NULL</literal></link> if none is specified.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The miner description.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+<refsect1 id="libtracker-miner-tracker-miner-manager.signal-details" role="signals">
+<title role="signals.title">Signal Details</title>
+<refsect2 id="TrackerMinerManager-miner-activated" role="signal"><title>The <literal>&quot;miner-activated&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerManager-miner-activated"><primary sortas="TrackerMinerManager::miner-activated">TrackerMinerManager::miner-activated</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                        <link linkend="gchar">gchar</link>               *miner,
+                                                        <link linkend="gpointer">gpointer</link>             user_data)      : Run Last</programlisting>
+<para>
+The ::miner-activated signal will be emitted whenever a miner
+(referenced by <parameter>miner</parameter>) is activated (technically, this means
+the miner has appeared in the session bus).</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMinerManager-miner-deactivated" role="signal"><title>The <literal>&quot;miner-deactivated&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerManager-miner-deactivated"><primary sortas="TrackerMinerManager::miner-deactivated">TrackerMinerManager::miner-deactivated</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                        <link linkend="gchar">gchar</link>               *miner,
+                                                        <link linkend="gpointer">gpointer</link>             user_data)      : Run Last</programlisting>
+<para>
+The ::miner-deactivated signal will be emitted whenever a miner
+(referenced by <parameter>miner</parameter>) is deactivated (technically, this means
+the miner has disappeared from the session bus).</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMinerManager-miner-paused" role="signal"><title>The <literal>&quot;miner-paused&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerManager-miner-paused"><primary sortas="TrackerMinerManager::miner-paused">TrackerMinerManager::miner-paused</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                        <link linkend="gchar">gchar</link>               *miner,
+                                                        <link linkend="gpointer">gpointer</link>             user_data)      : Run Last</programlisting>
+<para>
+The ::miner-paused signal will be emitted whenever a miner
+(referenced by <parameter>miner</parameter>) is paused.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMinerManager-miner-progress" role="signal"><title>The <literal>&quot;miner-progress&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerManager-miner-progress"><primary sortas="TrackerMinerManager::miner-progress">TrackerMinerManager::miner-progress</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                        <link linkend="gchar">gchar</link>               *miner,
+                                                        <link linkend="gchar">gchar</link>               *status,
+                                                        <link linkend="gdouble">gdouble</link>              progress,
+                                                        <link linkend="gpointer">gpointer</link>             user_data)      : Run Last</programlisting>
+<para>
+The ::miner-progress signal is meant to report status/progress changes
+in any tracked miner.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>status</parameter>&#160;:</term>
+<listitem><simpara> miner status
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>progress</parameter>&#160;:</term>
+<listitem><simpara> miner progress, from 0 to 1
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2><refsect2 id="TrackerMinerManager-miner-resumed" role="signal"><title>The <literal>&quot;miner-resumed&quot;</literal> signal</title>
+<indexterm zone="TrackerMinerManager-miner-resumed"><primary sortas="TrackerMinerManager::miner-resumed">TrackerMinerManager::miner-resumed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="TrackerMinerManager">TrackerMinerManager</link> *manager,
+                                                        <link linkend="gchar">gchar</link>               *miner,
+                                                        <link linkend="gpointer">gpointer</link>             user_data)      : Run Last</programlisting>
+<para>
+The ::miner-resumed signal will be emitted whenever a miner
+(referenced by <parameter>miner</parameter>) is resumed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>manager</parameter>&#160;:</term>
+<listitem><simpara> the <link linkend="TrackerMinerManager"><type>TrackerMinerManager</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>miner</parameter>&#160;:</term>
+<listitem><simpara> miner reference
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+
+
+
+</refentry>

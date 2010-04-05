@@ -1,10 +1,34 @@
 include $(top_srcdir)/Makefile.decl
 
-SUBDIRS = data src filters docs po python utils
+SUBDIRS = data src docs po utils examples
 
 if HAVE_UNIT_TESTS
 SUBDIRS += tests
 endif
+
+#if ENABLE_GCOV
+.PHONY: coverage coverage-report
+coverage:
+	find $(top_srcdir) -name "*.gcda" | xargs rm -f
+	$(MAKE) $(AM_MAKEFLAGS) test
+
+coverage-report: coverage
+	lcov --directory $(top_srcdir)/src --capture --output-file $(top_builddir)/lcov.info
+	lcov --directory $(top_srcdir)/src --output-file $(top_builddir)/lcov.info --remove $(top_builddir)/lcov.info \
+		tracker-sparql-builder.c \
+		tracker-sparql-expression.c \
+		tracker-sparql-pattern.c \
+		tracker-sparql-query.c \
+		tracker-sparql-scanner.c \
+		tracker-turtle-reader.c \
+		tracker-turtle-writer.c \
+		"*.vapi" \
+		"*-glue.h" \
+		"tracker-marshal.*"
+	rm -rf $(top_builddir)/coverage
+	$(mkdir_p) $(top_builddir)/coverage
+	genhtml --title "@PACKAGE_STRING@" --output-directory $(top_builddir)/coverage $(top_builddir)/lcov.info
+#endif
 
 dist-hook: gen-ChangeLog
 
@@ -21,11 +45,6 @@ gen-ChangeLog:
 EXTRA_DIST = 					\
 	ChangeLog.pre-0-6-93			\
 	gitlog-to-changelog			\
-	rdf-query-examples/80s-music.rdf 	\
-	rdf-query-examples/90s-music.rdf 	\
-	rdf-query-examples/all-documents.rdf 	\
-	rdf-query-examples/big-documents.rdf 	\
-	rdf-query-examples/wallpapers.rdf 	\
 	intltool-extract.in 			\
 	intltool-merge.in 			\
 	intltool-update.in 
@@ -37,7 +56,9 @@ DISTCLEANFILES = 				\
 
 DISTCHECK_CONFIGURE_FLAGS =			\
 	--with-session-bus-services-dir="\$(datadir)"/dbus-1/services \
+	--disable-evolution-miner		\
 	--disable-deskbar-applet		\
+	--disable-nautilus-extension		\
 	--enable-gtk-doc
 
 if OLD_EXEC_REMOVE_ALL
@@ -55,3 +76,4 @@ install-data-hook:
 	rm -Rf $(DESTDIR)$(datadir)/tracker/tracker-introspect.xml
 endif	
 
+ACLOCAL_AMFLAGS = -I m4

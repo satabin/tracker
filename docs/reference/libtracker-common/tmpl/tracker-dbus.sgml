@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-DBus
+tracker-dbus
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -19,15 +19,92 @@ DBus
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION tracker_dbus_data_new ##### -->
+<!-- ##### MACRO TRACKER_DBUS_ERROR_DOMAIN ##### -->
 <para>
 
 </para>
 
-@arg1: 
-@arg2: 
-@Returns: 
 
+
+<!-- ##### MACRO TRACKER_DBUS_ERROR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO TRACKER_TYPE_G_STRV_ARRAY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO TRACKER_TYPE_STR_STRV_MAP ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO TRACKER_TYPE_EVENT_ARRAY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO tracker_dbus_async_return_if_fail ##### -->
+<para>
+
+</para>
+
+@expr: 
+@context: 
+
+
+<!-- ##### MACRO tracker_dbus_return_val_if_fail ##### -->
+<para>
+
+</para>
+
+@expr: 
+@val: 
+@error: 
+
+
+<!-- ##### ENUM TrackerDBusEventsType ##### -->
+<para>
+
+</para>
+
+@TRACKER_DBUS_EVENTS_TYPE_ADD: 
+@TRACKER_DBUS_EVENTS_TYPE_UPDATE: 
+@TRACKER_DBUS_EVENTS_TYPE_DELETE: 
+
+<!-- ##### TYPEDEF TrackerDBusRequestHandler ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION TrackerDBusRequestFunc ##### -->
+<para>
+
+</para>
+
+@request_id: 
+@user_data: 
+
+
+<!-- ##### STRUCT TrackerDBusData ##### -->
+<para>
+
+</para>
+
+@id: 
+@data1: 
+@data2: 
 
 <!-- ##### FUNCTION tracker_dbus_error_quark ##### -->
 <para>
@@ -37,20 +114,14 @@ DBus
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_dbus_get_next_request_id ##### -->
+<!-- ##### FUNCTION tracker_dbus_data_new ##### -->
 <para>
 
 </para>
 
+@arg1: 
+@arg2: 
 @Returns: 
-
-
-<!-- ##### FUNCTION tracker_dbus_gvalue_slice_free ##### -->
-<para>
-
-</para>
-
-@value: 
 
 
 <!-- ##### FUNCTION tracker_dbus_gvalue_slice_new ##### -->
@@ -62,13 +133,29 @@ DBus
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_dbus_queue_gfile_to_strv ##### -->
+<!-- ##### FUNCTION tracker_dbus_gvalue_slice_free ##### -->
 <para>
 
 </para>
 
-@queue: 
-@max: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_dbus_slist_to_strv ##### -->
+<para>
+
+</para>
+
+@list: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_dbus_str_to_strv ##### -->
+<para>
+
+</para>
+
+@str: 
 @Returns: 
 
 
@@ -82,6 +169,40 @@ DBus
 @Returns: 
 
 
+<!-- ##### FUNCTION tracker_dbus_queue_gfile_to_strv ##### -->
+<para>
+
+</para>
+
+@queue: 
+@max: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_dbus_results_ptr_array_free ##### -->
+<para>
+
+</para>
+
+@ptr_array: 
+
+
+<!-- ##### FUNCTION tracker_dbus_get_next_request_id ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_dbus_enable_client_lookup ##### -->
+<para>
+
+</para>
+
+@enable: 
+
+
 <!-- ##### FUNCTION tracker_dbus_request_add_hook ##### -->
 <para>
 
@@ -93,37 +214,6 @@ DBus
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_dbus_request_comment ##### -->
-<para>
-
-</para>
-
-@request_id: 
-@format: 
-@Varargs: 
-
-
-<!-- ##### FUNCTION tracker_dbus_request_failed ##### -->
-<para>
-
-</para>
-
-@request_id: 
-@error: 
-@format: 
-@Varargs: 
-
-
-<!-- ##### FUNCTION tracker_dbus_request_new ##### -->
-<para>
-
-</para>
-
-@request_id: 
-@format: 
-@Varargs: 
-
-
 <!-- ##### FUNCTION tracker_dbus_request_remove_hook ##### -->
 <para>
 
@@ -132,28 +222,82 @@ DBus
 @handler: 
 
 
+<!-- ##### FUNCTION tracker_dbus_request_new ##### -->
+<para>
+
+</para>
+
+@request_id: 
+@context: 
+@format: 
+@Varargs: 
+
+
 <!-- ##### FUNCTION tracker_dbus_request_success ##### -->
 <para>
 
 </para>
 
 @request_id: 
+@context: 
 
 
-<!-- ##### FUNCTION tracker_dbus_results_ptr_array_free ##### -->
+<!-- ##### FUNCTION tracker_dbus_request_failed ##### -->
 <para>
 
 </para>
 
-@ptr_array: 
+@request_id: 
+@context: 
+@error: 
+@format: 
+@Varargs: 
 
 
-<!-- ##### FUNCTION tracker_dbus_slist_to_strv ##### -->
+<!-- ##### FUNCTION tracker_dbus_request_comment ##### -->
 <para>
 
 </para>
 
-@list: 
-@Returns: 
+@request_id: 
+@context: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION tracker_dbus_request_info ##### -->
+<para>
+
+</para>
+
+@request_id: 
+@context: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION tracker_dbus_request_debug ##### -->
+<para>
+
+</para>
+
+@request_id: 
+@context: 
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION tracker_dbus_request_block_hooks ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION tracker_dbus_request_unblock_hooks ##### -->
+<para>
+
+</para>
+
 
 

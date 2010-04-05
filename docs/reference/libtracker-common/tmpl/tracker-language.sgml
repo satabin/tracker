@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-Language
+TrackerLanguage
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -25,7 +25,12 @@ Language
 </para>
 
 
-<!-- ##### ARG TrackerLanguage:config ##### -->
+<!-- ##### ARG TrackerLanguage:enable-stemmer ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerLanguage:language-code ##### -->
 <para>
 
 </para>
@@ -35,16 +40,14 @@ Language
 
 </para>
 
-<!-- ##### FUNCTION tracker_language_new ##### -->
+<!-- ##### STRUCT TrackerLanguageClass ##### -->
 <para>
 
 </para>
 
-@language: 
-@Returns: 
+@parent_class: 
 
-
-<!-- ##### FUNCTION tracker_language_check_exists ##### -->
+<!-- ##### FUNCTION tracker_language_new ##### -->
 <para>
 
 </para>
@@ -53,20 +56,12 @@ Language
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_language_get_config ##### -->
+<!-- ##### FUNCTION tracker_language_get_enable_stemmer ##### -->
 <para>
 
 </para>
 
 @language: 
-@Returns: 
-
-
-<!-- ##### FUNCTION tracker_language_get_default_code ##### -->
-<para>
-
-</para>
-
 @Returns: 
 
 
@@ -79,13 +74,31 @@ Language
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_language_set_config ##### -->
+<!-- ##### FUNCTION tracker_language_get_language_code ##### -->
 <para>
 
 </para>
 
 @language: 
-@config: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_language_set_enable_stemmer ##### -->
+<para>
+
+</para>
+
+@language: 
+@value: 
+
+
+<!-- ##### FUNCTION tracker_language_set_language_code ##### -->
+<para>
+
+</para>
+
+@language: 
+@language_code: 
 
 
 <!-- ##### FUNCTION tracker_language_stem_word ##### -->
@@ -96,6 +109,15 @@ Language
 @language: 
 @word: 
 @word_length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_language_get_name_by_code ##### -->
+<para>
+
+</para>
+
+@language_code: 
 @Returns: 
 
 

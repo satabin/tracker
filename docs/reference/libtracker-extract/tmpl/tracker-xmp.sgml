@@ -1,0 +1,88 @@
+<!-- ##### SECTION Title ##### -->
+tracker-xmp
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT TrackerXmpData ##### -->
+<para>
+
+</para>
+
+@title: 
+@rights: 
+@creator: 
+@description: 
+@date: 
+@keywords: 
+@subject: 
+@publisher: 
+@contributor: 
+@type: 
+@format: 
+@identifier: 
+@source: 
+@language: 
+@relation: 
+@coverage: 
+@license: 
+@pdf_title: 
+@pdf_keywords: 
+@title2: 
+@time_original: 
+@artist: 
+@make: 
+@model: 
+@orientation: 
+@flash: 
+@metering_mode: 
+@exposure_time: 
+@fnumber: 
+@focal_length: 
+@iso_speed_ratings: 
+@white_balance: 
+@copyright: 
+@rating: 
+@address: 
+@country: 
+@state: 
+@city: 
+
+<!-- ##### FUNCTION tracker_xmp_read ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@len: 
+@uri: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_xmp_apply ##### -->
+<para>
+
+</para>
+
+@metadata: 
+@uri: 
+@data: 
+@Returns: 
+
+

@@ -1,7 +1,6 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2007, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2007, Jamie McCracken <jamiemcc@gnome.org>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -27,57 +26,75 @@
 
 #include <string.h>
 #include <stdlib.h>
+
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
 #include <totem-pl-parser.h>
 
-#include "tracker-main.h"
+#include <libtracker-extract/tracker-extract.h>
 
-#define PLAYLIST_PROPERTY_NO_TRACKS "Playlist:Songs"
-#define PLAYLIST_PROPERTY_DURATION  "Playlist:Duration"
-#define PLAYLIST_PROPERTY_CALCULATED "Playlist:ValidDuration"
+#define PLAYLIST_PROPERTY_NO_TRACKS "entryCounter"
+#define PLAYLIST_PROPERTY_DURATION  "listDuration"
+/*
+  FIXME Decide what to do with this in nepomuk
+  #define PLAYLIST_PROPERTY_CALCULATED "Playlist:ValidDuration"
+*/
 
 #define PLAYLIST_DEFAULT_NO_TRACKS 0
-#define PLAYLIST_DEFAULT_DURATION 0 
+#define PLAYLIST_DEFAULT_DURATION 0
 
 typedef struct {
-	guint32     track_counter;
-	gint64      total_time;
+	guint32 track_counter;
+	gint64 total_time;
+	TrackerSparqlBuilder *metadata;
+	const gchar *uri;
 } PlaylistMetadata;
 
-static void extract_playlist (const gchar *filename,
-			      GHashTable  *metadata);
+static void extract_playlist (const gchar          *uri,
+                              TrackerSparqlBuilder *preupdate,
+                              TrackerSparqlBuilder *metadata);
 
-
-static TrackerExtractData data[] = {
+static TrackerExtractData playlist_data[] = {
 	{ "audio/x-mpegurl", extract_playlist },
 	{ "audio/mpegurl", extract_playlist },
 	{ "audio/x-scpls", extract_playlist },
 	{ "audio/x-pn-realaudio", extract_playlist },
 	{ "application/ram", extract_playlist },
-	{ "application/vnd.ms-wpl", extract_playlist }, 
-	{ "application/smil", extract_playlist }, 
+	{ "application/vnd.ms-wpl", extract_playlist },
+	{ "application/smil", extract_playlist },
 	{ "audio/x-ms-asx", extract_playlist },
-	{ "application/x-ms-asx", extract_playlist },
 	{ NULL, NULL }
 };
 
 static void
-entry_parsed (TotemPlParser *parser, const gchar *uri, GHashTable *metadata, gpointer user_data)
+entry_parsed (TotemPlParser *parser, const gchar *to_uri, GHashTable *to_metadata, gpointer user_data)
 {
 	gchar *duration;
 	PlaylistMetadata *data;
 
 	data = (PlaylistMetadata *)user_data;
+	data->track_counter++;
 
-	data->track_counter += 1;
+	tracker_sparql_builder_predicate (data->metadata, "nfo:hasMediaFileListEntry");
 
-	duration = g_hash_table_lookup (metadata, TOTEM_PL_PARSER_FIELD_DURATION);
+	tracker_sparql_builder_object_blank_open (data->metadata);
+	tracker_sparql_builder_predicate (data->metadata, "a");
+	tracker_sparql_builder_object (data->metadata, "nfo:MediaFileListEntry");
+
+	tracker_sparql_builder_predicate (data->metadata, "nfo:entryContent");
+	tracker_sparql_builder_object_unvalidated (data->metadata, to_uri);
+
+	tracker_sparql_builder_predicate (data->metadata, "nfo:listPosition");
+	tracker_sparql_builder_object_int64 (data->metadata, (gint64) data->track_counter);
+
+	tracker_sparql_builder_object_blank_close (data->metadata);
+
+	duration = g_hash_table_lookup (to_metadata, TOTEM_PL_PARSER_FIELD_DURATION);
 
 	if (duration == NULL) {
-		duration = g_hash_table_lookup (metadata, TOTEM_PL_PARSER_FIELD_DURATION_MS);
+		duration = g_hash_table_lookup (to_metadata, TOTEM_PL_PARSER_FIELD_DURATION_MS);
 	}
 
 	if (duration != NULL) {
@@ -85,61 +102,58 @@ entry_parsed (TotemPlParser *parser, const gchar *uri, GHashTable *metadata, gpo
 		if (secs > 0) {
 			data->total_time += secs;
 		}
-	} 
+	}
 }
 
 static void
-extract_playlist (const gchar *filename,
-		  GHashTable  *metadata)
+extract_playlist (const gchar          *uri,
+                  TrackerSparqlBuilder *preupdate,
+                  TrackerSparqlBuilder *metadata)
 {
 	TotemPlParser       *pl;
 	TotemPlParserResult  result;
-	PlaylistMetadata     data = {0, 0};
-	gchar               *proper_filename;
+	PlaylistMetadata     data = { 0, 0, metadata, uri };
 
 	pl = totem_pl_parser_new ();
 
-        g_object_set (pl, "recurse", FALSE, "disable-unsafe", TRUE, NULL);
+	g_object_set (pl, "recurse", FALSE, "disable-unsafe", TRUE, NULL);
 
-        g_signal_connect (G_OBJECT (pl), "entry-parsed", 
-                          G_CALLBACK (entry_parsed), &data);
+	g_signal_connect (G_OBJECT (pl), "entry-parsed",
+	                  G_CALLBACK (entry_parsed), &data);
 
-	if (g_str_has_prefix (filename, "file://")) {
-		proper_filename = g_strdup (filename);
-	} else {
-		proper_filename = g_strconcat ("file://", filename, NULL);
-	}
+	tracker_sparql_builder_predicate (metadata, "a");
+	tracker_sparql_builder_object (metadata, "nfo:MediaList");
 
-        result = totem_pl_parser_parse (pl, proper_filename, FALSE);
+	result = totem_pl_parser_parse (pl, uri, FALSE);
 
-        switch (result) {
-        case TOTEM_PL_PARSER_RESULT_SUCCESS:
-                break;
-        case TOTEM_PL_PARSER_RESULT_IGNORED:
-        case TOTEM_PL_PARSER_RESULT_ERROR:
-        case TOTEM_PL_PARSER_RESULT_UNHANDLED:
+	switch (result) {
+	case TOTEM_PL_PARSER_RESULT_SUCCESS:
+		break;
+	case TOTEM_PL_PARSER_RESULT_IGNORED:
+	case TOTEM_PL_PARSER_RESULT_ERROR:
+	case TOTEM_PL_PARSER_RESULT_UNHANDLED:
 		data.total_time = PLAYLIST_DEFAULT_NO_TRACKS;
 		data.track_counter = PLAYLIST_DEFAULT_DURATION;
-                break;
-        default:
-                g_warning ("Undefined result in totem-plparser");
-        }
+		break;
+	default:
+		g_warning ("Undefined result in totem-plparser");
+	}
 
-	g_hash_table_insert (metadata, 
-			     g_strdup (PLAYLIST_PROPERTY_DURATION), 
-			     tracker_escape_metadata_printf ("%" G_GINT64_FORMAT, data.total_time));
-	g_hash_table_insert (metadata, 
-			     g_strdup (PLAYLIST_PROPERTY_NO_TRACKS), 
-			     tracker_escape_metadata_printf ("%" G_GUINT32_FORMAT, data.track_counter));
-	g_hash_table_insert (metadata,
-			     g_strdup (PLAYLIST_PROPERTY_CALCULATED),
-			     g_strdup (data.total_time == 0 ? "0" : "1"));
-	g_free (proper_filename);
-        g_object_unref (pl);
+	if (data.total_time > 0) {
+		tracker_sparql_builder_predicate (metadata, "nfo:listDuration");
+		tracker_sparql_builder_object_int64 (metadata, data.total_time);
+	}
+
+	if (data.track_counter > 0) {
+		tracker_sparql_builder_predicate (metadata, "nfo:entryCounter");
+		tracker_sparql_builder_object_int64 (metadata, data.track_counter);
+	}
+
+	g_object_unref (pl);
 }
 
 TrackerExtractData *
-tracker_get_extract_data (void)
+tracker_extract_get_data (void)
 {
-	return data;
+	return playlist_data;
 }

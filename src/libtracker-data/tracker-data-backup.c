@@ -1,19 +1,18 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
@@ -23,155 +22,159 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
-#ifdef HAVE_RAPTOR
-#include <raptor.h>
-#endif
-
-#include <libtracker-data/tracker-data-query.h>
-#include <libtracker-data/tracker-turtle.h>
+#include <libtracker-db/tracker-db-manager.h>
+#include <libtracker-db/tracker-db-journal.h>
+#include <libtracker-data/tracker-data-manager.h>
 
 #include "tracker-data-backup.h"
 
-#ifdef HAVE_RAPTOR
-
-typedef struct BackupRestoreData BackupRestoreData;
-
-struct BackupRestoreData {
-	TrackerDataBackupRestoreFunc func;
+typedef struct {
+	GFile *destination, *journal;
+	TrackerDataBackupFinished callback;
 	gpointer user_data;
-};
+	GDestroyNotify destroy;
+	GError *error;
+} BackupSaveInfo;
 
-/*
- * (uri, metadataid, value)
- */
-static void
-extended_result_set_to_turtle (TrackerDBResultSet  *result_set,
-			       TurtleFile          *turtle_file)
+GQuark
+tracker_data_backup_error_quark (void)
 {
-	TrackerField *field;
-	gboolean valid = TRUE;
+	return g_quark_from_static_string (TRACKER_DATA_BACKUP_ERROR_DOMAIN);
+}
 
-	while (valid) {
-		gchar *uri, *service_type, *str;
-		gint metadata_id;
+static void
+free_backup_save_info (BackupSaveInfo *info)
+{
+	if (info->destination) {
+		g_object_unref (info->destination);
+	}
 
-		tracker_db_result_set_get (result_set,
-					   0, &uri,
-					   1, &service_type,
-					   2, &metadata_id,
-					   3, &str,
-					   -1);
+	if (info->journal) {
+		g_object_unref (info->journal);
+	}
 
-		field = tracker_ontology_get_field_by_id (metadata_id);
+	if (info->destroy) {
+		info->destroy (info->user_data);
+	}
 
-		if (!field) {
-			g_critical ("Field id %d in database but not in tracker-ontology",
-				    metadata_id);
-			g_free (str);
-			g_free (service_type);
-			g_free (uri);
-			return;
+	g_clear_error (&info->error);
+
+	g_free (info);
+}
+
+static void
+on_journal_copied (GObject *source_object,
+                   GAsyncResult *res,
+                   gpointer user_data)
+{
+	BackupSaveInfo *info = user_data;
+	GError *error = NULL;
+
+	g_file_copy_finish (info->journal, res, &error);
+
+	if (info->callback) {
+		info->callback (error, info->user_data);
+	}
+
+	free_backup_save_info (info);
+
+	g_clear_error (&error);
+}
+
+void
+tracker_data_backup_save (GFile *destination,
+                          TrackerDataBackupFinished callback,
+                          gpointer user_data,
+                          GDestroyNotify destroy)
+{
+	BackupSaveInfo *info;
+
+	info = g_new0 (BackupSaveInfo, 1);
+	info->destination = g_object_ref (destination);
+	info->journal = g_file_new_for_path (tracker_db_journal_get_filename ());
+	info->callback = callback;
+	info->user_data = user_data;
+	info->destroy = destroy;
+
+	/* It's fine to copy this asynchronous: the journal replay code can or 
+	 * should cope with unfinished entries at the end of the file, while
+	 * restoring a backup made this way. */
+
+	g_file_copy_async (info->journal, info->destination,
+	                   G_FILE_COPY_OVERWRITE,
+	                   G_PRIORITY_HIGH,
+	                   NULL, NULL, NULL,
+	                   on_journal_copied,
+	                   info);
+}
+
+static gboolean
+on_restore_done (gpointer user_data)
+{
+	BackupSaveInfo *info = user_data;
+
+	if (info->callback) {
+		info->callback (info->error, info->user_data);
+	}
+
+	free_backup_save_info (info);
+
+	return FALSE;
+}
+
+void
+tracker_data_backup_restore (GFile *journal,
+                             TrackerDataBackupFinished callback,
+                             gpointer user_data,
+                             GDestroyNotify destroy,
+                             const gchar **test_schemas,
+                             TrackerBusyCallback busy_callback,
+                             gpointer busy_user_data)
+{
+	BackupSaveInfo *info;
+
+	info = g_new0 (BackupSaveInfo, 1);
+	info->destination = g_file_new_for_path (tracker_db_journal_get_filename ());
+	info->journal = g_object_ref (journal);
+	info->callback = callback;
+	info->user_data = user_data;
+	info->destroy = destroy;
+
+	if (g_file_query_exists (info->journal, NULL)) {
+		TrackerDBManagerFlags flags = tracker_db_manager_get_flags ();
+		gboolean is_first;
+
+		tracker_db_manager_move_to_temp ();
+		tracker_data_manager_shutdown ();
+
+		/* Synchronous: we don't want the mainloop to run while copying the
+		 * journal, as nobody should be writing anything at this point */
+
+		g_file_copy (info->journal, info->destination,
+		             G_FILE_COPY_OVERWRITE,
+		             NULL, NULL, NULL,
+		             &info->error);
+
+		tracker_db_manager_init_locations ();
+		tracker_db_journal_init (NULL, FALSE);
+
+		if (info->error) {
+			tracker_db_manager_restore_from_temp ();
+		} else {
+			tracker_db_manager_remove_temp ();
 		}
 
-		g_debug ("Inserting in turtle <%s, %s, %s>",
-			 uri, tracker_field_get_name (field), str);
-		tracker_turtle_add_triple (turtle_file, uri, field, str);
+		tracker_db_journal_shutdown ();
 
-		g_free (str);
-		g_free (service_type);
-		g_free (uri);
+		tracker_data_manager_init (flags, test_schemas, &is_first, TRUE,
+		                           busy_callback, busy_user_data,
+		                           "Restoring backup");
 
-		valid = tracker_db_result_set_iter_next (result_set);
-	}
-}
-
-static void
-restore_backup_triple (gpointer                user_data,
-		       const raptor_statement *triple)
-{
-	BackupRestoreData *data;
-
-	data = (BackupRestoreData *) user_data;
-
-	g_debug ("Turtle loading <%s, %s, %s>",
-		 (gchar *)triple->subject,
-		 (gchar *)triple->predicate,
-		 (gchar *)triple->object);
-
-	(data->func) ((const gchar *) triple->subject,
-		      (const gchar *) triple->predicate,
-		      (const gchar *) triple->object,
-		      data->user_data);
-}
-
-#endif /* HAVE_RAPTOR */
-
-gboolean
-tracker_data_backup_save (const gchar  *turtle_filename,
-			  GError      **error)
-{
-#ifdef HAVE_RAPTOR
-	TrackerDBResultSet *data;
-	TrackerService *service;
-	TurtleFile *turtle_file;
-
-	/* TODO: temporary location */
-	if (g_file_test (turtle_filename, G_FILE_TEST_EXISTS)) {
-		g_unlink (turtle_filename);
+	} else {
+		g_set_error (&info->error, TRACKER_DATA_BACKUP_ERROR, 0, 
+		             "Backup file doesn't exist");
 	}
 
-	turtle_file = tracker_turtle_open (turtle_filename);
-
-	g_message ("Saving metadata backup in turtle file");
-
-	service = tracker_ontology_get_service_by_name ("Files");
-	data = tracker_data_query_backup_metadata (service);
-
-	if (data) {
-		extended_result_set_to_turtle (data, turtle_file);
-		g_object_unref (data);
-	}
-
-	tracker_turtle_close (turtle_file);
-
-	return TRUE;
-#else
-	g_set_error (error, 0, 0,
-		     "Turtle files are not supported, could not save backup");
-
-	return FALSE;
-#endif /* HAVE_RAPTOR */
+	on_restore_done (info);
 }
 
-gboolean
-tracker_data_backup_restore (const gchar                   *turtle_filename,
-			     TrackerDataBackupRestoreFunc   restore_func,
-			     gpointer                       user_data,
-			     GError                       **error)
-{
-#ifdef HAVE_RAPTOR
-	BackupRestoreData data;
-
-	data.func = restore_func;
-	data.user_data = user_data;
-
-	g_message ("Restoring metadata backup from turtle file");
-
-	if (!g_file_test (turtle_filename, G_FILE_TEST_EXISTS)) {
-		g_set_error (error, 0, 0,
-			     "Turtle file does not exist");
-		return FALSE;
-	}
-
-	tracker_turtle_process (turtle_filename,
-				"/",
-				(TurtleTripleCallback) restore_backup_triple,
-				&data);
-	return TRUE;
-#else
-	g_set_error (error, 0, 0,
-		     "Turtle files are not supported, could not restore backup");
-
-	return FALSE;
-#endif /* HAVE_RAPTOR */
-}

@@ -47,31 +47,40 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-@HAVE_ENCA_TRUE@am__append_1 = $(ENCA_CFLAGS)
-@HAVE_LIBVORBIS_TRUE@am__append_2 = libextract-vorbis.la
-@HAVE_EXEMPI_TRUE@am__append_3 = libextract-xmp.la
-@HAVE_LIBJPEG_TRUE@am__append_4 = libextract-jpeg.la
-@HAVE_LIBTIFF_TRUE@am__append_5 = libextract-tiff.la
-@HAVE_LIBXML2_TRUE@am__append_6 = libextract-html.la
-@HAVE_LIBGSF_TRUE@am__append_7 = libextract-msoffice.la
-@HAVE_POPPLER_GLIB_TRUE@am__append_8 = libextract-pdf.la
-@HAVE_GSTREAMER_TRUE@am__append_9 = libextract-gstreamer.la
-@HAVE_GSTREAMER_HELIX_TRUE@am__append_10 = libextract-gstreamer-helix.la
-@HAVE_LIBXINE_TRUE@am__append_11 = libextract-xine.la
-@USING_EXTERNAL_VIDEO_PLAYER_TRUE@am__append_12 = libextract-mplayer.la 				\
+@HAVE_LIBSTREAMANALYZER_TRUE@am__append_1 = $(LIBSTREAMANALYZER_CFLAGS)
+@HAVE_ENCA_TRUE@am__append_2 = $(ENCA_CFLAGS)
+@HAVE_LIBVORBIS_TRUE@am__append_3 = libextract-vorbis.la
+@HAVE_LIBFLAC_TRUE@am__append_4 = libextract-flac.la
+@HAVE_EXEMPI_TRUE@am__append_5 = libextract-xmp.la
+@HAVE_LIBJPEG_TRUE@am__append_6 = libextract-jpeg.la
+@HAVE_LIBTIFF_TRUE@am__append_7 = libextract-tiff.la
+@HAVE_LIBXML2_TRUE@am__append_8 = libextract-html.la
+@HAVE_LIBGSF_TRUE@am__append_9 = libextract-msoffice.la
+@HAVE_POPPLER_GLIB_TRUE@am__append_10 = libextract-pdf.la
+@HAVE_GSTREAMER_TRUE@am__append_11 = libextract-gstreamer.la
+@HAVE_GSTREAMER_HELIX_TRUE@am__append_12 = libextract-gstreamer-helix.la
+@HAVE_LIBXINE_TRUE@am__append_13 = libextract-xine.la
+@USING_EXTERNAL_VIDEO_PLAYER_TRUE@am__append_14 = libextract-mplayer.la 				\
 @USING_EXTERNAL_VIDEO_PLAYER_TRUE@			libextract-totem.la
 
-@HAVE_TOTEM_PL_PARSER_TRUE@am__append_13 = libextract-playlist.la
-@HAVE_GDKPIXBUF_TRUE@am__append_14 = $(DBUS_CFLAGS)
-@HAVE_GDKPIXBUF_TRUE@am__append_15 = \
-@HAVE_GDKPIXBUF_TRUE@	$(GDKPIXBUF_LIBS) $(DBUS_LIBS) $(GCOV_LIBS)
-
+@HAVE_TOTEM_PL_PARSER_TRUE@am__append_15 = libextract-playlist.la
 @HAVE_ENCA_TRUE@am__append_16 = $(ENCA_LIBS)
 libexec_PROGRAMS = tracker-extract$(EXEEXT)
+@HAVE_LIBSTREAMANALYZER_TRUE@am__append_17 = tracker-topanalyzer.cpp tracker-topanalyzer.h
+@HAVE_LIBSTREAMANALYZER_TRUE@am__append_18 = $(LIBSTREAMANALYZER_LIBS)
+@HAVE_GDKPIXBUF_TRUE@am__append_19 = $(GDKPIXBUF_LIBS)
+@HAVE_GDKPIXBUF_TRUE@am__append_20 = tracker-albumart-pixbuf.c
+@HAVE_GDKPIXBUF_FALSE@@HAVE_QUILL_TRUE@am__append_21 = $(QUILL_CFLAGS)
+@HAVE_GDKPIXBUF_FALSE@@HAVE_QUILL_TRUE@am__append_22 = tracker-albumart-quill.cpp
+@HAVE_GDKPIXBUF_FALSE@@HAVE_QUILL_TRUE@am__append_23 = $(QUILL_LIBS)
+@HAVE_GDKPIXBUF_FALSE@@HAVE_QUILL_FALSE@am__append_24 = tracker-albumart-dummy.c
 subdir = src/tracker-extract
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -102,217 +111,303 @@ am__base_list = \
 am__installdirs = "$(DESTDIR)$(modulesdir)" "$(DESTDIR)$(libexecdir)"
 LTLIBRARIES = $(modules_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libextract_abw_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
-am__objects_1 = tracker-escape.lo tracker-utils.lo
-am_libextract_abw_la_OBJECTS = tracker-extract-abw.lo $(am__objects_1)
+libextract_abw_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libextract_abw_la_OBJECTS = tracker-extract-abw.lo
 libextract_abw_la_OBJECTS = $(am_libextract_abw_la_OBJECTS)
-libextract_abw_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_abw_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_GDKPIXBUF_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) \
-@HAVE_GDKPIXBUF_TRUE@	$(am__DEPENDENCIES_1) \
-@HAVE_GDKPIXBUF_TRUE@	$(am__DEPENDENCIES_1)
-am__DEPENDENCIES_3 = $(am__DEPENDENCIES_2)
-libextract_gstreamer_helix_la_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+libextract_abw_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_abw_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
+libextract_flac_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
-am__objects_2 = tracker-extract-albumart.lo
+am_libextract_flac_la_OBJECTS = tracker-extract-flac.lo
+libextract_flac_la_OBJECTS = $(am_libextract_flac_la_OBJECTS)
+libextract_flac_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_flac_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+@HAVE_LIBFLAC_TRUE@am_libextract_flac_la_rpath = -rpath $(modulesdir)
+libextract_gstreamer_helix_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_libextract_gstreamer_helix_la_OBJECTS =  \
-	tracker-extract-gstreamer-helix.lo $(am__objects_2) \
-	$(am__objects_1)
+	tracker-extract-gstreamer-helix.lo
 libextract_gstreamer_helix_la_OBJECTS =  \
 	$(am_libextract_gstreamer_helix_la_OBJECTS)
-libextract_gstreamer_helix_la_LINK = $(LIBTOOL) --tag=CC \
+libextract_gstreamer_helix_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) \
 	$(libextract_gstreamer_helix_la_LDFLAGS) $(LDFLAGS) -o $@
 @HAVE_GSTREAMER_HELIX_TRUE@am_libextract_gstreamer_helix_la_rpath =  \
 @HAVE_GSTREAMER_HELIX_TRUE@	-rpath $(modulesdir)
-libextract_gstreamer_la_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+libextract_gstreamer_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
-am__objects_3 = libextract_gstreamer_la-tracker-extract-albumart.lo
-am__objects_4 = libextract_gstreamer_la-tracker-escape.lo \
-	libextract_gstreamer_la-tracker-utils.lo
-am_libextract_gstreamer_la_OBJECTS =  \
-	libextract_gstreamer_la-tracker-extract-gstreamer.lo \
-	$(am__objects_3) $(am__objects_4)
+am_libextract_gstreamer_la_OBJECTS = tracker-extract-gstreamer.lo
 libextract_gstreamer_la_OBJECTS =  \
 	$(am_libextract_gstreamer_la_OBJECTS)
-libextract_gstreamer_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(libextract_gstreamer_la_CFLAGS) $(CFLAGS) \
-	$(libextract_gstreamer_la_LDFLAGS) $(LDFLAGS) -o $@
+libextract_gstreamer_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_gstreamer_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
 @HAVE_GSTREAMER_TRUE@am_libextract_gstreamer_la_rpath = -rpath \
 @HAVE_GSTREAMER_TRUE@	$(modulesdir)
-libextract_html_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libextract_html_la_OBJECTS = tracker-extract-html.lo \
-	$(am__objects_1)
-libextract_html_la_OBJECTS = $(am_libextract_html_la_OBJECTS)
-libextract_html_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_html_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_LIBXML2_TRUE@am_libextract_html_la_rpath = -rpath $(modulesdir)
-libextract_jpeg_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+libextract_html_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
-am__objects_5 = tracker-xmp.lo
-am__objects_6 = tracker-iptc.lo
-am_libextract_jpeg_la_OBJECTS = tracker-extract-jpeg.lo \
-	$(am__objects_5) $(am__objects_6) $(am__objects_1)
-libextract_jpeg_la_OBJECTS = $(am_libextract_jpeg_la_OBJECTS)
-libextract_jpeg_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_jpeg_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_LIBJPEG_TRUE@am_libextract_jpeg_la_rpath = -rpath $(modulesdir)
-@HAVE_ENCA_TRUE@am__DEPENDENCIES_4 = $(am__DEPENDENCIES_1)
-libextract_mp3_la_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+am_libextract_html_la_OBJECTS = tracker-extract-html.lo
+libextract_html_la_OBJECTS = $(am_libextract_html_la_OBJECTS)
+libextract_html_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_html_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+@HAVE_LIBXML2_TRUE@am_libextract_html_la_rpath = -rpath $(modulesdir)
+libextract_jpeg_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_4)
-am_libextract_mp3_la_OBJECTS = tracker-extract-mp3.lo $(am__objects_2) \
-	$(am__objects_1)
+	$(am__DEPENDENCIES_1)
+am_libextract_jpeg_la_OBJECTS = tracker-extract-jpeg.lo
+libextract_jpeg_la_OBJECTS = $(am_libextract_jpeg_la_OBJECTS)
+libextract_jpeg_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_jpeg_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+@HAVE_LIBJPEG_TRUE@am_libextract_jpeg_la_rpath = -rpath $(modulesdir)
+@HAVE_ENCA_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
+libextract_mp3_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_2)
+am_libextract_mp3_la_OBJECTS = tracker-extract-mp3.lo
 libextract_mp3_la_OBJECTS = $(am_libextract_mp3_la_OBJECTS)
-libextract_mp3_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_mp3_la_LDFLAGS) $(LDFLAGS) -o $@
-libextract_mplayer_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_libextract_mplayer_la_OBJECTS = tracker-extract-mplayer.lo \
-	$(am__objects_1)
+libextract_mp3_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_mp3_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
+libextract_mplayer_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1)
+am_libextract_mplayer_la_OBJECTS = tracker-extract-mplayer.lo
 libextract_mplayer_la_OBJECTS = $(am_libextract_mplayer_la_OBJECTS)
-libextract_mplayer_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_mplayer_la_LDFLAGS) $(LDFLAGS) -o $@
+libextract_mplayer_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_mplayer_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
 @USING_EXTERNAL_VIDEO_PLAYER_TRUE@am_libextract_mplayer_la_rpath =  \
 @USING_EXTERNAL_VIDEO_PLAYER_TRUE@	-rpath $(modulesdir)
-libextract_msoffice_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libextract_msoffice_la_OBJECTS = tracker-extract-msoffice.lo \
-	$(am__objects_1)
+libextract_msoffice_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+am_libextract_msoffice_la_OBJECTS = tracker-extract-msoffice.lo
 libextract_msoffice_la_OBJECTS = $(am_libextract_msoffice_la_OBJECTS)
-libextract_msoffice_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_msoffice_la_LDFLAGS) $(LDFLAGS) -o $@
+libextract_msoffice_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_msoffice_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
 @HAVE_LIBGSF_TRUE@am_libextract_msoffice_la_rpath = -rpath \
 @HAVE_LIBGSF_TRUE@	$(modulesdir)
-libextract_oasis_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
-am_libextract_oasis_la_OBJECTS = tracker-extract-oasis.lo \
-	$(am__objects_1)
+libextract_oasis_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libextract_oasis_la_OBJECTS = tracker-extract-oasis.lo
 libextract_oasis_la_OBJECTS = $(am_libextract_oasis_la_OBJECTS)
-libextract_oasis_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_oasis_la_LDFLAGS) $(LDFLAGS) -o $@
-libextract_pdf_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+libextract_oasis_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_oasis_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+libextract_pdf_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
-am_libextract_pdf_la_OBJECTS = tracker-extract-pdf.lo $(am__objects_5) \
-	$(am__objects_1)
+am_libextract_pdf_la_OBJECTS = tracker-extract-pdf.lo
 libextract_pdf_la_OBJECTS = $(am_libextract_pdf_la_OBJECTS)
-libextract_pdf_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_pdf_la_LDFLAGS) $(LDFLAGS) -o $@
+libextract_pdf_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_pdf_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
 @HAVE_POPPLER_GLIB_TRUE@am_libextract_pdf_la_rpath = -rpath \
 @HAVE_POPPLER_GLIB_TRUE@	$(modulesdir)
-libextract_playlist_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libextract_playlist_la_OBJECTS = tracker-extract-playlist.lo \
-	$(am__objects_1)
+libextract_playlist_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+am_libextract_playlist_la_OBJECTS = tracker-extract-playlist.lo
 libextract_playlist_la_OBJECTS = $(am_libextract_playlist_la_OBJECTS)
-libextract_playlist_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_playlist_la_LDFLAGS) $(LDFLAGS) -o $@
+libextract_playlist_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_playlist_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
 @HAVE_TOTEM_PL_PARSER_TRUE@am_libextract_playlist_la_rpath = -rpath \
 @HAVE_TOTEM_PL_PARSER_TRUE@	$(modulesdir)
-libextract_png_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+libextract_png_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
-am_libextract_png_la_OBJECTS = tracker-extract-png.lo $(am__objects_5) \
-	$(am__objects_1)
+am_libextract_png_la_OBJECTS = tracker-extract-png.lo
 libextract_png_la_OBJECTS = $(am_libextract_png_la_OBJECTS)
-libextract_png_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_png_la_LDFLAGS) $(LDFLAGS) -o $@
-libextract_ps_la_DEPENDENCIES =  \
+libextract_png_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_png_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
+libextract_ps_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libextract_ps_la_OBJECTS = tracker-extract-ps.lo $(am__objects_1)
+am_libextract_ps_la_OBJECTS = tracker-extract-ps.lo
 libextract_ps_la_OBJECTS = $(am_libextract_ps_la_OBJECTS)
-libextract_ps_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_ps_la_LDFLAGS) $(LDFLAGS) -o $@
-libextract_tiff_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+libextract_ps_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_ps_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
+libextract_text_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libextract_tiff_la_OBJECTS = tracker-extract-tiff.lo \
-	$(am__objects_5) $(am__objects_6) $(am__objects_1)
-libextract_tiff_la_OBJECTS = $(am_libextract_tiff_la_OBJECTS)
-libextract_tiff_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_tiff_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_LIBTIFF_TRUE@am_libextract_tiff_la_rpath = -rpath $(modulesdir)
-libextract_totem_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
-am_libextract_totem_la_OBJECTS = tracker-extract-totem.lo \
-	$(am__objects_1)
+am_libextract_text_la_OBJECTS = tracker-extract-text.lo
+libextract_text_la_OBJECTS = $(am_libextract_text_la_OBJECTS)
+libextract_text_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_text_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+libextract_tiff_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+am_libextract_tiff_la_OBJECTS = tracker-extract-tiff.lo
+libextract_tiff_la_OBJECTS = $(am_libextract_tiff_la_OBJECTS)
+libextract_tiff_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_tiff_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+@HAVE_LIBTIFF_TRUE@am_libextract_tiff_la_rpath = -rpath $(modulesdir)
+libextract_totem_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libextract_totem_la_OBJECTS = tracker-extract-totem.lo
 libextract_totem_la_OBJECTS = $(am_libextract_totem_la_OBJECTS)
-libextract_totem_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_totem_la_LDFLAGS) $(LDFLAGS) -o $@
+libextract_totem_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_totem_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
 @USING_EXTERNAL_VIDEO_PLAYER_TRUE@am_libextract_totem_la_rpath =  \
 @USING_EXTERNAL_VIDEO_PLAYER_TRUE@	-rpath $(modulesdir)
-libextract_vorbis_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libextract_vorbis_la_OBJECTS = tracker-extract-vorbis.lo \
-	$(am__objects_1)
-libextract_vorbis_la_OBJECTS = $(am_libextract_vorbis_la_OBJECTS)
-libextract_vorbis_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_vorbis_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_LIBVORBIS_TRUE@am_libextract_vorbis_la_rpath = -rpath \
-@HAVE_LIBVORBIS_TRUE@	$(modulesdir)
-libextract_xine_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libextract_xine_la_OBJECTS = tracker-extract-libxine.lo \
-	$(am__objects_1)
-libextract_xine_la_OBJECTS = $(am_libextract_xine_la_OBJECTS)
-libextract_xine_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_xine_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_LIBXINE_TRUE@am_libextract_xine_la_rpath = -rpath $(modulesdir)
-libextract_xmp_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libextract_xmp_la_OBJECTS = tracker-extract-xmp.lo $(am__objects_5) \
-	$(am__objects_1)
-libextract_xmp_la_OBJECTS = $(am_libextract_xmp_la_OBJECTS)
-libextract_xmp_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libextract_xmp_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_EXEMPI_TRUE@am_libextract_xmp_la_rpath = -rpath $(modulesdir)
-PROGRAMS = $(libexec_PROGRAMS)
-am_tracker_extract_OBJECTS = tracker-dbus.$(OBJEXT) \
-	tracker-extract.$(OBJEXT) tracker-main.$(OBJEXT)
-tracker_extract_OBJECTS = $(am_tracker_extract_OBJECTS)
-tracker_extract_DEPENDENCIES =  \
+libextract_vorbis_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+am_libextract_vorbis_la_OBJECTS = tracker-extract-vorbis.lo
+libextract_vorbis_la_OBJECTS = $(am_libextract_vorbis_la_OBJECTS)
+libextract_vorbis_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_vorbis_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+@HAVE_LIBVORBIS_TRUE@am_libextract_vorbis_la_rpath = -rpath \
+@HAVE_LIBVORBIS_TRUE@	$(modulesdir)
+libextract_xine_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+am_libextract_xine_la_OBJECTS = tracker-extract-libxine.lo
+libextract_xine_la_OBJECTS = $(am_libextract_xine_la_OBJECTS)
+libextract_xine_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_xine_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+@HAVE_LIBXINE_TRUE@am_libextract_xine_la_rpath = -rpath $(modulesdir)
+libextract_xmp_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libextract_xmp_la_OBJECTS = tracker-extract-xmp.lo
+libextract_xmp_la_OBJECTS = $(am_libextract_xmp_la_OBJECTS)
+libextract_xmp_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libextract_xmp_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
+@HAVE_EXEMPI_TRUE@am_libextract_xmp_la_rpath = -rpath $(modulesdir)
+PROGRAMS = $(libexec_PROGRAMS)
+am__tracker_extract_SOURCES_DIST = tracker-marshal.h tracker-marshal.c \
+	tracker-extract-glue.h tracker-albumart.c tracker-albumart.h \
+	tracker-config.c tracker-config.h tracker-dbus.c \
+	tracker-dbus.h tracker-extract.c tracker-extract.h \
+	tracker-fts-config.c tracker-fts-config.h tracker-main.c \
+	tracker-main.h tracker-albumart-generic.h \
+	tracker-topanalyzer.cpp tracker-topanalyzer.h \
+	tracker-albumart-pixbuf.c tracker-albumart-quill.cpp \
+	tracker-albumart-dummy.c
+am__objects_1 = tracker-marshal.$(OBJEXT)
+am__objects_2 =
+@HAVE_LIBSTREAMANALYZER_TRUE@am__objects_3 =  \
+@HAVE_LIBSTREAMANALYZER_TRUE@	tracker-topanalyzer.$(OBJEXT)
+@HAVE_GDKPIXBUF_TRUE@am__objects_4 =  \
+@HAVE_GDKPIXBUF_TRUE@	tracker-albumart-pixbuf.$(OBJEXT)
+@HAVE_GDKPIXBUF_FALSE@@HAVE_QUILL_TRUE@am__objects_5 = tracker-albumart-quill.$(OBJEXT)
+@HAVE_GDKPIXBUF_FALSE@@HAVE_QUILL_FALSE@am__objects_6 = tracker-albumart-dummy.$(OBJEXT)
+am_tracker_extract_OBJECTS = $(am__objects_1) $(am__objects_2) \
+	tracker-albumart.$(OBJEXT) tracker-config.$(OBJEXT) \
+	tracker-dbus.$(OBJEXT) tracker-extract.$(OBJEXT) \
+	tracker-fts-config.$(OBJEXT) tracker-main.$(OBJEXT) \
+	$(am__objects_3) $(am__objects_4) $(am__objects_5) \
+	$(am__objects_6)
+tracker_extract_OBJECTS = $(am_tracker_extract_OBJECTS)
+@HAVE_LIBSTREAMANALYZER_TRUE@am__DEPENDENCIES_3 =  \
+@HAVE_LIBSTREAMANALYZER_TRUE@	$(am__DEPENDENCIES_1)
+@HAVE_GDKPIXBUF_TRUE@am__DEPENDENCIES_4 = $(am__DEPENDENCIES_1)
+@HAVE_GDKPIXBUF_FALSE@@HAVE_QUILL_TRUE@am__DEPENDENCIES_5 =  \
+@HAVE_GDKPIXBUF_FALSE@@HAVE_QUILL_TRUE@	$(am__DEPENDENCIES_1)
+tracker_extract_DEPENDENCIES = $(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_5)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC    " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 CCLD = $(CC)
-LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
-SOURCES = $(libextract_abw_la_SOURCES) \
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD  " $@;
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
+AM_V_CXX = $(am__v_CXX_$(V))
+am__v_CXX_ = $(am__v_CXX_$(AM_DEFAULT_VERBOSITY))
+am__v_CXX_0 = @echo "  CXX   " $@;
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CXXLD = $(am__v_CXXLD_$(V))
+am__v_CXXLD_ = $(am__v_CXXLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CXXLD_0 = @echo "  CXXLD " $@;
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
+SOURCES = $(libextract_abw_la_SOURCES) $(libextract_flac_la_SOURCES) \
 	$(libextract_gstreamer_helix_la_SOURCES) \
 	$(libextract_gstreamer_la_SOURCES) \
 	$(libextract_html_la_SOURCES) $(libextract_jpeg_la_SOURCES) \
@@ -320,11 +415,12 @@ SOURCES = $(libextract_abw_la_SOURCES) \
 	$(libextract_msoffice_la_SOURCES) \
 	$(libextract_oasis_la_SOURCES) $(libextract_pdf_la_SOURCES) \
 	$(libextract_playlist_la_SOURCES) $(libextract_png_la_SOURCES) \
-	$(libextract_ps_la_SOURCES) $(libextract_tiff_la_SOURCES) \
-	$(libextract_totem_la_SOURCES) $(libextract_vorbis_la_SOURCES) \
-	$(libextract_xine_la_SOURCES) $(libextract_xmp_la_SOURCES) \
-	$(tracker_extract_SOURCES)
+	$(libextract_ps_la_SOURCES) $(libextract_text_la_SOURCES) \
+	$(libextract_tiff_la_SOURCES) $(libextract_totem_la_SOURCES) \
+	$(libextract_vorbis_la_SOURCES) $(libextract_xine_la_SOURCES) \
+	$(libextract_xmp_la_SOURCES) $(tracker_extract_SOURCES)
 DIST_SOURCES = $(libextract_abw_la_SOURCES) \
+	$(libextract_flac_la_SOURCES) \
 	$(libextract_gstreamer_helix_la_SOURCES) \
 	$(libextract_gstreamer_la_SOURCES) \
 	$(libextract_html_la_SOURCES) $(libextract_jpeg_la_SOURCES) \
@@ -332,17 +428,18 @@ DIST_SOURCES = $(libextract_abw_la_SOURCES) \
 	$(libextract_msoffice_la_SOURCES) \
 	$(libextract_oasis_la_SOURCES) $(libextract_pdf_la_SOURCES) \
 	$(libextract_playlist_la_SOURCES) $(libextract_png_la_SOURCES) \
-	$(libextract_ps_la_SOURCES) $(libextract_tiff_la_SOURCES) \
-	$(libextract_totem_la_SOURCES) $(libextract_vorbis_la_SOURCES) \
-	$(libextract_xine_la_SOURCES) $(libextract_xmp_la_SOURCES) \
-	$(tracker_extract_SOURCES)
+	$(libextract_ps_la_SOURCES) $(libextract_text_la_SOURCES) \
+	$(libextract_tiff_la_SOURCES) $(libextract_totem_la_SOURCES) \
+	$(libextract_vorbis_la_SOURCES) $(libextract_xine_la_SOURCES) \
+	$(libextract_xmp_la_SOURCES) \
+	$(am__tracker_extract_SOURCES_DIST)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
-ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
 ALL_LINGUAS = @ALL_LINGUAS@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -355,16 +452,20 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+CXXDEPMODE = @CXXDEPMODE@
+CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
-DB2HTML = @DB2HTML@
 DBUSBINDINGTOOL = @DBUSBINDINGTOOL@
 DBUS_CFLAGS = @DBUS_CFLAGS@
 DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DESKBAR_APPLET_DIR = @DESKBAR_APPLET_DIR@
+DEVKIT_POWER_CFLAGS = @DEVKIT_POWER_CFLAGS@
+DEVKIT_POWER_LIBS = @DEVKIT_POWER_LIBS@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -380,10 +481,9 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-GCONF_CFLAGS = @GCONF_CFLAGS@
-GCONF_LIBS = @GCONF_LIBS@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
+GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -392,29 +492,26 @@ GIO_LIBS = @GIO_LIBS@
 GLIB2_CFLAGS = @GLIB2_CFLAGS@
 GLIB2_LIBS = @GLIB2_LIBS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
-GMIME_CFLAGS = @GMIME_CFLAGS@
-GMIME_LIBS = @GMIME_LIBS@
 GMODULE_CFLAGS = @GMODULE_CFLAGS@
 GMODULE_LIBS = @GMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GNOMEDESKTOP_CFLAGS = @GNOMEDESKTOP_CFLAGS@
-GNOMEDESKTOP_LIBS = @GNOMEDESKTOP_LIBS@
-GNOME_UTILS_CFLAGS = @GNOME_UTILS_CFLAGS@
-GNOME_UTILS_LIBS = @GNOME_UTILS_LIBS@
+GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
+GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
 GOBJECT_CFLAGS = @GOBJECT_CFLAGS@
 GOBJECT_LIBS = @GOBJECT_LIBS@
+GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
-GTK2_CFLAGS = @GTK2_CFLAGS@
-GTK2_LIBS = @GTK2_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HTML_DIR = @HTML_DIR@
+ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
+ID3LIB_LIBS = @ID3LIB_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -430,8 +527,10 @@ LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
-LIBGLADE_CFLAGS = @LIBGLADE_CFLAGS@
-LIBGLADE_LIBS = @LIBGLADE_LIBS@
+LIBFLAC_CFLAGS = @LIBFLAC_CFLAGS@
+LIBFLAC_LIBS = @LIBFLAC_LIBS@
+LIBGRSS_CFLAGS = @LIBGRSS_CFLAGS@
+LIBGRSS_LIBS = @LIBGRSS_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
@@ -442,11 +541,11 @@ LIBOBJS = @LIBOBJS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
 LIBS = @LIBS@
+LIBSTREAMANALYZER_CFLAGS = @LIBSTREAMANALYZER_CFLAGS@
+LIBSTREAMANALYZER_LIBS = @LIBSTREAMANALYZER_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
 LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
-LIBTRACKERGTK_CFLAGS = @LIBTRACKERGTK_CFLAGS@
-LIBTRACKERGTK_LIBS = @LIBTRACKERGTK_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
 LIBVORBIS_LIBS = @LIBVORBIS_LIBS@
 LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
@@ -465,6 +564,9 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
+NAUTILUS_EXTENSION_CFLAGS = @NAUTILUS_EXTENSION_CFLAGS@
+NAUTILUS_EXTENSION_INSTALL_DIR = @NAUTILUS_EXTENSION_INSTALL_DIR@
+NAUTILUS_EXTENSION_LIBS = @NAUTILUS_EXTENSION_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -488,11 +590,9 @@ POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-QDBM_CFLAGS = @QDBM_CFLAGS@
-QDBM_LIBS = @QDBM_LIBS@
+QUILL_CFLAGS = @QUILL_CFLAGS@
+QUILL_LIBS = @QUILL_LIBS@
 RANLIB = @RANLIB@
-RAPTOR_CFLAGS = @RAPTOR_CFLAGS@
-RAPTOR_LIBS = @RAPTOR_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -502,18 +602,25 @@ STRIP = @STRIP@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
-TRACKER_APPLET_CFLAGS = @TRACKER_APPLET_CFLAGS@
-TRACKER_APPLET_LIBS = @TRACKER_APPLET_LIBS@
+TRACKER_APPLETS_CFLAGS = @TRACKER_APPLETS_CFLAGS@
+TRACKER_APPLETS_LIBS = @TRACKER_APPLETS_LIBS@
+TRACKER_APPS_CFLAGS = @TRACKER_APPS_CFLAGS@
+TRACKER_APPS_LIBS = @TRACKER_APPS_LIBS@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
+TRACKER_VALA_CFLAGS = @TRACKER_VALA_CFLAGS@
+TRACKER_VALA_LIBS = @TRACKER_VALA_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
 UNAC_CFLAGS = @UNAC_CFLAGS@
 UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
+UUID_CFLAGS = @UUID_CFLAGS@
+UUID_LIBS = @UUID_LIBS@
+VALAC = @VALAC@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 XGETTEXT = @XGETTEXT@
@@ -524,6 +631,7 @@ abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -566,7 +674,6 @@ program_transform_name = @program_transform_name@
 psdir = @psdir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
-sqlite_exec = @sqlite_exec@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
@@ -579,180 +686,262 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 module_flags = -module -avoid-version -no-undefined
-modulesdir = $(libdir)/tracker/extract-modules
+modulesdir = $(libdir)/tracker-$(TRACKER_API_VERSION)/extract-modules
 INCLUDES = -DLOCALEDIR=\""$(localedir)"\" \
-	-DMODULESDIR=\"$(modulesdir)\" -DG_LOG_DOMAIN=\"Tracker\" \
-	-DTRACKER_COMPILATION -I$(top_srcdir)/src $(WARN_CFLAGS) \
-	$(GLIB2_CFLAGS) $(GCOV_CFLAGS) $(GDKPIXBUF_CFLAGS) \
-	$(GMODULE_CFLAGS) $(DBUS_CFLAGS) $(EXEMPI_CFLAGS) \
-	$(LIBJPEG_CFLAGS) $(LIBTIFF_CFLAGS) $(LIBEXIF_CFLAGS) \
-	$(LIBIPTCDATA_CFLAGS) $(LIBGSF_CFLAGS) $(LIBXML2_CFLAGS) \
-	$(LIBPNG_CFLAGS) $(POPPLER_GLIB_CFLAGS) $(GSTREAMER_CFLAGS) \
-	$(XINE_CFLAGS) $(TOTEM_PL_PARSER_CFLAGS) $(am__append_1)
+	-DTRACKER_EXTRACTORS_DIR=\"$(modulesdir)\" \
+	-DG_LOG_DOMAIN=\"Tracker\" -DTRACKER_COMPILATION \
+	-I$(top_srcdir)/src $(WARN_CFLAGS) $(GLIB2_CFLAGS) \
+	$(GCOV_CFLAGS) $(GDKPIXBUF_CFLAGS) $(GMODULE_CFLAGS) \
+	$(DBUS_CFLAGS) $(LIBJPEG_CFLAGS) $(LIBTIFF_CFLAGS) \
+	$(LIBGSF_CFLAGS) $(LIBXML2_CFLAGS) $(LIBPNG_CFLAGS) \
+	$(POPPLER_GLIB_CFLAGS) $(GSTREAMER_CFLAGS) $(XINE_CFLAGS) \
+	$(TOTEM_PL_PARSER_CFLAGS) $(am__append_1) $(am__append_2) \
+	$(am__append_21)
+
+# NOTE: 
+# We don't always link with libtracker-common, we only link
+# against it if we directly use functions in the .so
 modules_LTLIBRARIES = libextract-abw.la libextract-mp3.la \
 	libextract-oasis.la libextract-png.la libextract-ps.la \
-	$(am__append_2) $(am__append_3) $(am__append_4) \
+	libextract-text.la $(am__append_3) $(am__append_4) \
 	$(am__append_5) $(am__append_6) $(am__append_7) \
 	$(am__append_8) $(am__append_9) $(am__append_10) \
-	$(am__append_11) $(am__append_12) $(am__append_13)
-
-# A mockup extractor for testing purposes
-#modules_LTLIBRARIES += libextract-mockup.la
-
-# Common XMP Sources
-xmp_sources = \
-	tracker-xmp.c							\
-	tracker-xmp.h
-
-
-# Common iptc Sources
-iptc_sources = \
-	tracker-iptc.c							\
-	tracker-iptc.h
-
-
-# Common AlbumArt sources
-albumart_libs = $(am__append_15)
-albumart_flags = $(am__append_14)
-albumart_sources = \
-	tracker-extract-albumart.c					\
-	tracker-extract-albumart.h
-
-util_sources = \
-	tracker-escape.c						\
-	tracker-escape.h						\
-	tracker-utils.c							\
-	tracker-utils.h
-
+	$(am__append_11) $(am__append_12) $(am__append_13) \
+	$(am__append_14) $(am__append_15)
 
 # ABW
-libextract_abw_la_SOURCES = tracker-extract-abw.c $(util_sources)
+libextract_abw_la_SOURCES = tracker-extract-abw.c
 libextract_abw_la_LDFLAGS = $(module_flags)
-libextract_abw_la_LIBADD = $(GLIB2_LIBS) $(GCOV_LIBS)
+libextract_abw_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(GLIB2_LIBS) 							\
+	$(GCOV_LIBS)
+
 
 # MP3
-libextract_mp3_la_SOURCES = tracker-extract-mp3.c $(albumart_sources) $(util_sources)
-libextract_mp3_la_LDFLAGS = $(module_flags) $(albumart_flags)
-libextract_mp3_la_LIBADD = $(albumart_libs) $(GLIB2_LIBS) $(GCOV_LIBS) \
-	$(am__append_16)
+libextract_mp3_la_SOURCES = tracker-extract-mp3.c
+libextract_mp3_la_LDFLAGS = $(module_flags)
+libextract_mp3_la_LIBADD = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(GLIB2_LIBS) $(GCOV_LIBS) $(am__append_16)
 #libextract_mp3_la_LIBADD += -L/usr/lib/libenca.a
 
 # Vorbis (OGG)
-libextract_vorbis_la_SOURCES = tracker-extract-vorbis.c $(util_sources)
+libextract_vorbis_la_SOURCES = tracker-extract-vorbis.c $(escape_sources)
 libextract_vorbis_la_LDFLAGS = $(module_flags)
-libextract_vorbis_la_LIBADD = $(GLIB2_LIBS) $(LIBVORBIS_LIBS) $(GCOV_LIBS)
+libextract_vorbis_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(LIBVORBIS_LIBS)						\
+	$(GLIB2_LIBS)							\
+	$(GCOV_LIBS)
+
+
+# Flac
+libextract_flac_la_SOURCES = tracker-extract-flac.c $(escape_sources)
+libextract_flac_la_LDFLAGS = $(module_flags)
+libextract_flac_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(LIBFLAC_LIBS)							\
+	$(GLIB2_LIBS)							\
+	$(GCOV_LIBS)
+
 
 # MPlayer
-libextract_mplayer_la_SOURCES = tracker-extract-mplayer.c $(util_sources)
+libextract_mplayer_la_SOURCES = tracker-extract-mplayer.c
 libextract_mplayer_la_LDFLAGS = $(module_flags)
-libextract_mplayer_la_LIBADD = $(GLIB2_LIBS)
+libextract_mplayer_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+	$(GLIB2_LIBS)
+
 
 # Oasis
-libextract_oasis_la_SOURCES = tracker-extract-oasis.c $(util_sources)
+libextract_oasis_la_SOURCES = tracker-extract-oasis.c
 libextract_oasis_la_LDFLAGS = $(module_flags)
-libextract_oasis_la_LIBADD = $(GLIB2_LIBS)  $(GCOV_LIBS)
+libextract_oasis_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(GLIB2_LIBS) 							\
+	$(GCOV_LIBS)
+
 
 # PNG
-libextract_png_la_SOURCES = tracker-extract-png.c $(xmp_sources) $(util_sources)
+libextract_png_la_SOURCES = tracker-extract-png.c
 libextract_png_la_LDFLAGS = $(module_flags)
-libextract_png_la_LIBADD = $(GLIB2_LIBS) $(LIBPNG_LIBS) $(EXEMPI_LIBS) $(GCOV_LIBS)
+libextract_png_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(GLIB2_LIBS) 							\
+	$(LIBPNG_LIBS) 							\
+	$(GCOV_LIBS)
+
 
 # PS
-libextract_ps_la_SOURCES = tracker-extract-ps.c $(util_sources)
+libextract_ps_la_SOURCES = tracker-extract-ps.c
 libextract_ps_la_LDFLAGS = $(module_flags)
 libextract_ps_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
 	$(GLIB2_LIBS)                                                   \
 	$(GCOV_LIBS)
 
 
 # Totem
-libextract_totem_la_SOURCES = tracker-extract-totem.c $(util_sources)
+libextract_totem_la_SOURCES = tracker-extract-totem.c
 libextract_totem_la_LDFLAGS = $(module_flags)
-libextract_totem_la_LIBADD = $(GLIB2_LIBS) $(GCOV_LIBS)
+libextract_totem_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(GLIB2_LIBS) 							\
+	$(GCOV_LIBS)
+
 
 # XMP
-libextract_xmp_la_SOURCES = tracker-extract-xmp.c $(xmp_sources) $(util_sources)
+libextract_xmp_la_SOURCES = tracker-extract-xmp.c
 libextract_xmp_la_LDFLAGS = $(module_flags)
-libextract_xmp_la_LIBADD = $(GLIB2_LIBS) $(EXEMPI_LIBS) $(GCOV_LIBS)
+libextract_xmp_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(GLIB2_LIBS) 							\
+	$(GCOV_LIBS)
+
 
 # HTML
-libextract_html_la_SOURCES = tracker-extract-html.c $(util_sources)
+libextract_html_la_SOURCES = tracker-extract-html.c
 libextract_html_la_LDFLAGS = $(module_flags)
-libextract_html_la_LIBADD = $(GLIB2_LIBS) $(LIBXML2_LIBS) $(GCOV_LIBS)
+libextract_html_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(GLIB2_LIBS) 							\
+	$(LIBXML2_LIBS) 						\
+	$(GCOV_LIBS)
+
 
 # MS Office
-libextract_msoffice_la_SOURCES = tracker-extract-msoffice.c $(util_sources)
+libextract_msoffice_la_SOURCES = tracker-extract-msoffice.c
 libextract_msoffice_la_LDFLAGS = $(module_flags)
-libextract_msoffice_la_LIBADD = $(GLIB2_LIBS) $(LIBGSF_LIBS) $(GCOV_LIBS)
+libextract_msoffice_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(LIBGSF_LIBS)							\
+	$(GLIB2_LIBS)							\
+	$(GCOV_LIBS)
+
 
 # PDF
-libextract_pdf_la_SOURCES = tracker-extract-pdf.c $(xmp_sources) $(util_sources)
+libextract_pdf_la_SOURCES = tracker-extract-pdf.c
 libextract_pdf_la_LDFLAGS = $(module_flags)
-libextract_pdf_la_LIBADD = $(GLIB2_LIBS) $(POPPLER_GLIB_LIBS) $(EXEMPI_LIBS) $(GCOV_LIBS)
+libextract_pdf_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(POPPLER_GLIB_LIBS)						\
+	$(GLIB2_LIBS)							\
+	$(GCOV_LIBS)
+
 
 # GStreamer
-libextract_gstreamer_la_SOURCES = tracker-extract-gstreamer.c $(albumart_sources) $(util_sources)
-libextract_gstreamer_la_CFLAGS = -std=c99
-libextract_gstreamer_la_LDFLAGS = $(module_flags) $(albumart_flags) -lm
-libextract_gstreamer_la_LIBADD = $(albumart_libs) $(GSTREAMER_LIBS) $(GLIB2_LIBS) $(GCOV_LIBS)
+libextract_gstreamer_la_SOURCES = tracker-extract-gstreamer.c
+libextract_gstreamer_la_LDFLAGS = $(module_flags)
+libextract_gstreamer_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(GSTREAMER_LIBS)						\
+	$(GLIB2_LIBS)							\
+	$(GCOV_LIBS)
+
 
 # GStreamer helix
-libextract_gstreamer_helix_la_SOURCES = tracker-extract-gstreamer-helix.c $(albumart_sources) $(util_sources)
+libextract_gstreamer_helix_la_SOURCES = tracker-extract-gstreamer-helix.c
 libextract_gstreamer_helix_la_LDFLAGS = $(module_flags) $(albumart_flags)
-libextract_gstreamer_helix_la_LIBADD = $(albumart_libs) $(GSTREAMER_LIBS) $(GLIB2_LIBS) $(GCOV_LIBS)
+libextract_gstreamer_helix_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(GSTREAMER_LIBS) 						\
+	$(GLIB2_LIBS) 							\
+	$(GCOV_LIBS)
+
 
 # Xine
-libextract_xine_la_SOURCES = tracker-extract-libxine.c $(util_sources)
+libextract_xine_la_SOURCES = tracker-extract-libxine.c
 libextract_xine_la_LDFLAGS = $(module_flags)
-libextract_xine_la_LIBADD = $(GLIB2_LIBS) $(XINE_LIBS) $(GCOV_LIBS)
+libextract_xine_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(XINE_LIBS)							\
+	$(GLIB2_LIBS)  							\
+	$(GCOV_LIBS)
+
 
 # JPEG
-libextract_jpeg_la_SOURCES = tracker-extract-jpeg.c $(xmp_sources) $(iptc_sources) $(util_sources)
+libextract_jpeg_la_SOURCES = tracker-extract-jpeg.c
 libextract_jpeg_la_LDFLAGS = $(module_flags)
-libextract_jpeg_la_LIBADD = $(GLIB2_LIBS) $(LIBJPEG_LIBS) $(LIBEXIF_LIBS) $(LIBIPTCDATA_LIBS) $(EXEMPI_LIBS) $(GCOV_LIBS)
+libextract_jpeg_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(LIBJPEG_LIBS) 						\
+	$(GLIB2_LIBS) 							\
+	$(GCOV_LIBS)
+
 
 # TIFF
-libextract_tiff_la_SOURCES = tracker-extract-tiff.c $(xmp_sources) $(iptc_sources) $(util_sources)
+libextract_tiff_la_SOURCES = tracker-extract-tiff.c $(xmp_sources) $(iptc_sources)
 libextract_tiff_la_LDFLAGS = $(module_flags)
-libextract_tiff_la_LIBADD = $(GLIB2_LIBS) $(LIBTIFF_LIBS) $(LIBIPTCDATA_LIBS) $(EXEMPI_LIBS) $(GCOV_LIBS)
+libextract_tiff_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(LIBTIFF_LIBS) 						\
+	$(GLIB2_LIBS) 							\
+	$(GCOV_LIBS)
 
-# MOCKUP
-libextract_mockup_la_SOURCES = tracker-extract-mockup.c $(util_sources)
-libextract_mockup_la_LDFLAGS = $(module_flags)
-libextract_mockup_la_LIBADD = $(GLIB2_LIBS) $(GCOV_LIBS)
 
 # Playlists using totem-pl-parser
-libextract_playlist_la_SOURCES = tracker-extract-playlist.c  $(util_sources)
+libextract_playlist_la_SOURCES = tracker-extract-playlist.c
 libextract_playlist_la_LDFLAGS = $(module_flags)
-libextract_playlist_la_LIBADD = $(GLIB2_LIBS) $(TOTEM_PL_PARSER_LIBS) $(GCOV_LIBS)
-tracker_extract_SOURCES = \
-	tracker-dbus.c							\
-	tracker-dbus.h							\
-	tracker-extract.c						\
-	tracker-extract.h						\
-	tracker-main.c							\
-	tracker-main.h
+libextract_playlist_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(TOTEM_PL_PARSER_LIBS) 					\
+	$(GLIB2_LIBS)  							\
+	$(GCOV_LIBS)
 
-tracker_extract_LDADD = \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
-	$(GMODULE_LIBS)							\
-	$(GTHREAD_LIBS)							\
-	$(GCOV_LIBS)							\
-	$(GLIB2_LIBS)
+
+# TIFF
+libextract_text_la_SOURCES = tracker-extract-text.c
+libextract_text_la_LDFLAGS = $(module_flags)
+libextract_text_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(GIO_LIBS)							\
+	$(GLIB2_LIBS)  							\
+	$(GCOV_LIBS)
+
+tracker_extract_SOURCES = $(marshal_sources) $(dbus_sources) \
+	tracker-albumart.c tracker-albumart.h tracker-config.c \
+	tracker-config.h tracker-dbus.c tracker-dbus.h \
+	tracker-extract.c tracker-extract.h tracker-fts-config.c \
+	tracker-fts-config.h tracker-main.c tracker-main.h \
+	tracker-albumart-generic.h $(am__append_17) $(am__append_20) \
+	$(am__append_22) $(am__append_24)
+tracker_extract_LDADD = $(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(DBUS_LIBS) $(GMODULE_LIBS) $(GTHREAD_LIBS) $(GIO_LIBS) \
+	$(GCOV_LIBS) $(GLIB2_LIBS) $(am__append_18) $(am__append_19) \
+	$(am__append_23)
+marshal_sources = \
+        tracker-marshal.h                             			\
+        tracker-marshal.c
 
 dbus_sources = \
 	tracker-extract-glue.h
 
 BUILT_SOURCES = \
+	$(marshal_sources)						\
 	$(dbus_sources)
 
 CLEANFILES = $(BUILT_SOURCES)
+EXTRA_DIST = tracker-marshal.list
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o .obj
+.SUFFIXES: .c .cpp .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -815,41 +1004,45 @@ clean-modulesLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libextract-abw.la: $(libextract_abw_la_OBJECTS) $(libextract_abw_la_DEPENDENCIES) 
-	$(libextract_abw_la_LINK) -rpath $(modulesdir) $(libextract_abw_la_OBJECTS) $(libextract_abw_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_abw_la_LINK) -rpath $(modulesdir) $(libextract_abw_la_OBJECTS) $(libextract_abw_la_LIBADD) $(LIBS)
+libextract-flac.la: $(libextract_flac_la_OBJECTS) $(libextract_flac_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libextract_flac_la_LINK) $(am_libextract_flac_la_rpath) $(libextract_flac_la_OBJECTS) $(libextract_flac_la_LIBADD) $(LIBS)
 libextract-gstreamer-helix.la: $(libextract_gstreamer_helix_la_OBJECTS) $(libextract_gstreamer_helix_la_DEPENDENCIES) 
-	$(libextract_gstreamer_helix_la_LINK) $(am_libextract_gstreamer_helix_la_rpath) $(libextract_gstreamer_helix_la_OBJECTS) $(libextract_gstreamer_helix_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_gstreamer_helix_la_LINK) $(am_libextract_gstreamer_helix_la_rpath) $(libextract_gstreamer_helix_la_OBJECTS) $(libextract_gstreamer_helix_la_LIBADD) $(LIBS)
 libextract-gstreamer.la: $(libextract_gstreamer_la_OBJECTS) $(libextract_gstreamer_la_DEPENDENCIES) 
-	$(libextract_gstreamer_la_LINK) $(am_libextract_gstreamer_la_rpath) $(libextract_gstreamer_la_OBJECTS) $(libextract_gstreamer_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_gstreamer_la_LINK) $(am_libextract_gstreamer_la_rpath) $(libextract_gstreamer_la_OBJECTS) $(libextract_gstreamer_la_LIBADD) $(LIBS)
 libextract-html.la: $(libextract_html_la_OBJECTS) $(libextract_html_la_DEPENDENCIES) 
-	$(libextract_html_la_LINK) $(am_libextract_html_la_rpath) $(libextract_html_la_OBJECTS) $(libextract_html_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_html_la_LINK) $(am_libextract_html_la_rpath) $(libextract_html_la_OBJECTS) $(libextract_html_la_LIBADD) $(LIBS)
 libextract-jpeg.la: $(libextract_jpeg_la_OBJECTS) $(libextract_jpeg_la_DEPENDENCIES) 
-	$(libextract_jpeg_la_LINK) $(am_libextract_jpeg_la_rpath) $(libextract_jpeg_la_OBJECTS) $(libextract_jpeg_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_jpeg_la_LINK) $(am_libextract_jpeg_la_rpath) $(libextract_jpeg_la_OBJECTS) $(libextract_jpeg_la_LIBADD) $(LIBS)
 libextract-mp3.la: $(libextract_mp3_la_OBJECTS) $(libextract_mp3_la_DEPENDENCIES) 
-	$(libextract_mp3_la_LINK) -rpath $(modulesdir) $(libextract_mp3_la_OBJECTS) $(libextract_mp3_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_mp3_la_LINK) -rpath $(modulesdir) $(libextract_mp3_la_OBJECTS) $(libextract_mp3_la_LIBADD) $(LIBS)
 libextract-mplayer.la: $(libextract_mplayer_la_OBJECTS) $(libextract_mplayer_la_DEPENDENCIES) 
-	$(libextract_mplayer_la_LINK) $(am_libextract_mplayer_la_rpath) $(libextract_mplayer_la_OBJECTS) $(libextract_mplayer_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_mplayer_la_LINK) $(am_libextract_mplayer_la_rpath) $(libextract_mplayer_la_OBJECTS) $(libextract_mplayer_la_LIBADD) $(LIBS)
 libextract-msoffice.la: $(libextract_msoffice_la_OBJECTS) $(libextract_msoffice_la_DEPENDENCIES) 
-	$(libextract_msoffice_la_LINK) $(am_libextract_msoffice_la_rpath) $(libextract_msoffice_la_OBJECTS) $(libextract_msoffice_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_msoffice_la_LINK) $(am_libextract_msoffice_la_rpath) $(libextract_msoffice_la_OBJECTS) $(libextract_msoffice_la_LIBADD) $(LIBS)
 libextract-oasis.la: $(libextract_oasis_la_OBJECTS) $(libextract_oasis_la_DEPENDENCIES) 
-	$(libextract_oasis_la_LINK) -rpath $(modulesdir) $(libextract_oasis_la_OBJECTS) $(libextract_oasis_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_oasis_la_LINK) -rpath $(modulesdir) $(libextract_oasis_la_OBJECTS) $(libextract_oasis_la_LIBADD) $(LIBS)
 libextract-pdf.la: $(libextract_pdf_la_OBJECTS) $(libextract_pdf_la_DEPENDENCIES) 
-	$(libextract_pdf_la_LINK) $(am_libextract_pdf_la_rpath) $(libextract_pdf_la_OBJECTS) $(libextract_pdf_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_pdf_la_LINK) $(am_libextract_pdf_la_rpath) $(libextract_pdf_la_OBJECTS) $(libextract_pdf_la_LIBADD) $(LIBS)
 libextract-playlist.la: $(libextract_playlist_la_OBJECTS) $(libextract_playlist_la_DEPENDENCIES) 
-	$(libextract_playlist_la_LINK) $(am_libextract_playlist_la_rpath) $(libextract_playlist_la_OBJECTS) $(libextract_playlist_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_playlist_la_LINK) $(am_libextract_playlist_la_rpath) $(libextract_playlist_la_OBJECTS) $(libextract_playlist_la_LIBADD) $(LIBS)
 libextract-png.la: $(libextract_png_la_OBJECTS) $(libextract_png_la_DEPENDENCIES) 
-	$(libextract_png_la_LINK) -rpath $(modulesdir) $(libextract_png_la_OBJECTS) $(libextract_png_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_png_la_LINK) -rpath $(modulesdir) $(libextract_png_la_OBJECTS) $(libextract_png_la_LIBADD) $(LIBS)
 libextract-ps.la: $(libextract_ps_la_OBJECTS) $(libextract_ps_la_DEPENDENCIES) 
-	$(libextract_ps_la_LINK) -rpath $(modulesdir) $(libextract_ps_la_OBJECTS) $(libextract_ps_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_ps_la_LINK) -rpath $(modulesdir) $(libextract_ps_la_OBJECTS) $(libextract_ps_la_LIBADD) $(LIBS)
+libextract-text.la: $(libextract_text_la_OBJECTS) $(libextract_text_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libextract_text_la_LINK) -rpath $(modulesdir) $(libextract_text_la_OBJECTS) $(libextract_text_la_LIBADD) $(LIBS)
 libextract-tiff.la: $(libextract_tiff_la_OBJECTS) $(libextract_tiff_la_DEPENDENCIES) 
-	$(libextract_tiff_la_LINK) $(am_libextract_tiff_la_rpath) $(libextract_tiff_la_OBJECTS) $(libextract_tiff_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_tiff_la_LINK) $(am_libextract_tiff_la_rpath) $(libextract_tiff_la_OBJECTS) $(libextract_tiff_la_LIBADD) $(LIBS)
 libextract-totem.la: $(libextract_totem_la_OBJECTS) $(libextract_totem_la_DEPENDENCIES) 
-	$(libextract_totem_la_LINK) $(am_libextract_totem_la_rpath) $(libextract_totem_la_OBJECTS) $(libextract_totem_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_totem_la_LINK) $(am_libextract_totem_la_rpath) $(libextract_totem_la_OBJECTS) $(libextract_totem_la_LIBADD) $(LIBS)
 libextract-vorbis.la: $(libextract_vorbis_la_OBJECTS) $(libextract_vorbis_la_DEPENDENCIES) 
-	$(libextract_vorbis_la_LINK) $(am_libextract_vorbis_la_rpath) $(libextract_vorbis_la_OBJECTS) $(libextract_vorbis_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_vorbis_la_LINK) $(am_libextract_vorbis_la_rpath) $(libextract_vorbis_la_OBJECTS) $(libextract_vorbis_la_LIBADD) $(LIBS)
 libextract-xine.la: $(libextract_xine_la_OBJECTS) $(libextract_xine_la_DEPENDENCIES) 
-	$(libextract_xine_la_LINK) $(am_libextract_xine_la_rpath) $(libextract_xine_la_OBJECTS) $(libextract_xine_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_xine_la_LINK) $(am_libextract_xine_la_rpath) $(libextract_xine_la_OBJECTS) $(libextract_xine_la_LIBADD) $(LIBS)
 libextract-xmp.la: $(libextract_xmp_la_OBJECTS) $(libextract_xmp_la_DEPENDENCIES) 
-	$(libextract_xmp_la_LINK) $(am_libextract_xmp_la_rpath) $(libextract_xmp_la_OBJECTS) $(libextract_xmp_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_xmp_la_LINK) $(am_libextract_xmp_la_rpath) $(libextract_xmp_la_OBJECTS) $(libextract_xmp_la_LIBADD) $(LIBS)
 install-libexecPROGRAMS: $(libexec_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(libexecdir)" || $(MKDIR_P) "$(DESTDIR)$(libexecdir)"
@@ -895,7 +1088,7 @@ clean-libexecPROGRAMS:
 	rm -f $$list
 tracker-extract$(EXEEXT): $(tracker_extract_OBJECTS) $(tracker_extract_DEPENDENCIES) 
 	@rm -f tracker-extract$(EXEEXT)
-	$(LINK) $(tracker_extract_OBJECTS) $(tracker_extract_LDADD) $(LIBS)
+	$(AM_V_CXXLD)$(CXXLINK) $(tracker_extract_OBJECTS) $(tracker_extract_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -903,15 +1096,16 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_gstreamer_la-tracker-escape.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_gstreamer_la-tracker-extract-albumart.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_gstreamer_la-tracker-extract-gstreamer.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_gstreamer_la-tracker-utils.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart-dummy.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart-pixbuf.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart-quill.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-escape.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-abw.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-albumart.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-flac.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-gstreamer-helix.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-gstreamer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-html.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-jpeg.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-libxine.Plo@am__quote@
@@ -923,64 +1117,64 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-playlist.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-png.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-ps.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-text.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-tiff.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-totem.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-vorbis.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-xmp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-iptc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-fts-config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-xmp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-topanalyzer.Po@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
-libextract_gstreamer_la-tracker-extract-gstreamer.lo: tracker-extract-gstreamer.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -MT libextract_gstreamer_la-tracker-extract-gstreamer.lo -MD -MP -MF $(DEPDIR)/libextract_gstreamer_la-tracker-extract-gstreamer.Tpo -c -o libextract_gstreamer_la-tracker-extract-gstreamer.lo `test -f 'tracker-extract-gstreamer.c' || echo '$(srcdir)/'`tracker-extract-gstreamer.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libextract_gstreamer_la-tracker-extract-gstreamer.Tpo $(DEPDIR)/libextract_gstreamer_la-tracker-extract-gstreamer.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-extract-gstreamer.c' object='libextract_gstreamer_la-tracker-extract-gstreamer.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -c -o libextract_gstreamer_la-tracker-extract-gstreamer.lo `test -f 'tracker-extract-gstreamer.c' || echo '$(srcdir)/'`tracker-extract-gstreamer.c
+.cpp.o:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
 
-libextract_gstreamer_la-tracker-extract-albumart.lo: tracker-extract-albumart.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -MT libextract_gstreamer_la-tracker-extract-albumart.lo -MD -MP -MF $(DEPDIR)/libextract_gstreamer_la-tracker-extract-albumart.Tpo -c -o libextract_gstreamer_la-tracker-extract-albumart.lo `test -f 'tracker-extract-albumart.c' || echo '$(srcdir)/'`tracker-extract-albumart.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libextract_gstreamer_la-tracker-extract-albumart.Tpo $(DEPDIR)/libextract_gstreamer_la-tracker-extract-albumart.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-extract-albumart.c' object='libextract_gstreamer_la-tracker-extract-albumart.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -c -o libextract_gstreamer_la-tracker-extract-albumart.lo `test -f 'tracker-extract-albumart.c' || echo '$(srcdir)/'`tracker-extract-albumart.c
+.cpp.obj:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-libextract_gstreamer_la-tracker-escape.lo: tracker-escape.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -MT libextract_gstreamer_la-tracker-escape.lo -MD -MP -MF $(DEPDIR)/libextract_gstreamer_la-tracker-escape.Tpo -c -o libextract_gstreamer_la-tracker-escape.lo `test -f 'tracker-escape.c' || echo '$(srcdir)/'`tracker-escape.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libextract_gstreamer_la-tracker-escape.Tpo $(DEPDIR)/libextract_gstreamer_la-tracker-escape.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-escape.c' object='libextract_gstreamer_la-tracker-escape.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -c -o libextract_gstreamer_la-tracker-escape.lo `test -f 'tracker-escape.c' || echo '$(srcdir)/'`tracker-escape.c
-
-libextract_gstreamer_la-tracker-utils.lo: tracker-utils.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -MT libextract_gstreamer_la-tracker-utils.lo -MD -MP -MF $(DEPDIR)/libextract_gstreamer_la-tracker-utils.Tpo -c -o libextract_gstreamer_la-tracker-utils.lo `test -f 'tracker-utils.c' || echo '$(srcdir)/'`tracker-utils.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libextract_gstreamer_la-tracker-utils.Tpo $(DEPDIR)/libextract_gstreamer_la-tracker-utils.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-utils.c' object='libextract_gstreamer_la-tracker-utils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -c -o libextract_gstreamer_la-tracker-utils.lo `test -f 'tracker-utils.c' || echo '$(srcdir)/'`tracker-utils.c
+.cpp.lo:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -1200,7 +1394,7 @@ uninstall-am: uninstall-libexecPROGRAMS uninstall-modulesLTLIBRARIES
 ### testing rules
 
 # test: run all tests in cwd and subdirs
-test:	${TEST_PROGS}
+test:	${TEST_PROGS} all
 	@ test -z "${TEST_PROGS}" || ${GTESTER} --verbose ${TEST_PROGS}
 	@ for subdir in $(SUBDIRS) . ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" || \
@@ -1246,8 +1440,15 @@ test-report perf-report full-report:	${TEST_PROGS}
 # run make test as part of make check
 check-local: test
 
+tracker-marshal.h: tracker-marshal.list
+	$(AM_V_GEN)$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --header > $@
+
+tracker-marshal.c: tracker-marshal.list
+	$(AM_V_GEN)echo "#include \"tracker-marshal.h\"" > $@ &&	\
+		   $(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --body >> $@
+
 %-glue.h: $(top_srcdir)/data/dbus/%.xml
-	$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
+	$(AM_V_GEN)$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

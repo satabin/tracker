@@ -1,0 +1,467 @@
+<refentry id="libtracker-client-Resources">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-client-Resources.top_of_page">Resources</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-CLIENT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Resources</refname>
+<refpurpose>Doing SPARQL queries to tracker-store.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-client-Resources.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-client/tracker-client.h&gt;
+
+<link linkend="void">void</link>                (<link linkend="TrackerReplyGPtrArray">*TrackerReplyGPtrArray</link>)            (<link linkend="GPtrArray">GPtrArray</link> *result,
+                                                         <link linkend="GError">GError</link> *error,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="void">void</link>                (<link linkend="TrackerReplyVoid">*TrackerReplyVoid</link>)                 (<link linkend="GError">GError</link> *error,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="GPtrArray">GPtrArray</link> *         <link linkend="tracker-resources-sparql-query">tracker_resources_sparql_query</link>      (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="guint">guint</link>               <link linkend="tracker-resources-sparql-query-async">tracker_resources_sparql_query_async</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="TrackerReplyGPtrArray">TrackerReplyGPtrArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="void">void</link>                <link linkend="tracker-resources-sparql-update">tracker_resources_sparql_update</link>     (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="guint">guint</link>               <link linkend="tracker-resources-sparql-update-async">tracker_resources_sparql_update_async</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="TrackerReplyVoid">TrackerReplyVoid</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="GPtrArray">GPtrArray</link> *         <link linkend="tracker-resources-sparql-update-blank">tracker_resources_sparql_update_blank</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="guint">guint</link>               <link linkend="tracker-resources-sparql-update-blank-async">tracker_resources_sparql_update_blank_async</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="TrackerReplyGPtrArray">TrackerReplyGPtrArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="void">void</link>                <link linkend="tracker-resources-batch-sparql-update">tracker_resources_batch_sparql_update</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="guint">guint</link>               <link linkend="tracker-resources-batch-sparql-update-async">tracker_resources_batch_sparql_update_async</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="TrackerReplyVoid">TrackerReplyVoid</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="void">void</link>                <link linkend="tracker-resources-batch-commit">tracker_resources_batch_commit</link>      (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="guint">guint</link>               <link linkend="tracker-resources-batch-commit-async">tracker_resources_batch_commit_async</link>
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         <link linkend="TrackerReplyVoid">TrackerReplyVoid</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="void">void</link>                <link linkend="tracker-resources-load">tracker_resources_load</link>              (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="guint">guint</link>               <link linkend="tracker-resources-load-async">tracker_resources_load_async</link>        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="TrackerReplyVoid">TrackerReplyVoid</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-client-Resources.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+Tracker uses the SPARQL query language
+<footnote><para><ulink url="http://www.w3.org/TR/rdf-sparql-query/">SPARQL</ulink> query language for RDF (W3C)</para></footnote>
+to retrieve data from tracker-store, and the stored information applies to the Nepomuk
+ontology
+<footnote><para><ulink url="http://nepomuk.semanticdesktop.org/">Nepomuk</ulink> - The social semantic desktop</para></footnote>.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-client-Resources.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerReplyGPtrArray" role="function">
+<title>TrackerReplyGPtrArray ()</title>
+<indexterm zone="TrackerReplyGPtrArray"><primary sortas="TrackerReplyGPtrArray">TrackerReplyGPtrArray</primary></indexterm><programlisting><link linkend="void">void</link>                (*TrackerReplyGPtrArray)            (<link linkend="GPtrArray">GPtrArray</link> *result,
+                                                         <link linkend="GError">GError</link> *error,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+The <parameter>result</parameter> is returned as a <link linkend="GPtrArray"><type>GPtrArray</type></link> containing an array of
+<link linkend="GStrv"><type>GStrv</type></link> with the results from the query unless there is an error. If
+there is an error the <parameter>error</parameter> is populated with the details. The
+<parameter>user_data</parameter> is provided in the callback.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>result</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="TrackerReplyVoid" role="function">
+<title>TrackerReplyVoid ()</title>
+<indexterm zone="TrackerReplyVoid"><primary sortas="TrackerReplyVoid">TrackerReplyVoid</primary></indexterm><programlisting><link linkend="void">void</link>                (*TrackerReplyVoid)                 (<link linkend="GError">GError</link> *error,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+The <parameter>user_data</parameter> is returned when the query has completed. If there
+is an error the <parameter>error</parameter> is populated with the details.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a GError.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> a gpointer for user data.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-resources-sparql-query" role="function" condition="since:0.8">
+<title>tracker_resources_sparql_query ()</title>
+<indexterm zone="tracker-resources-sparql-query" role="0.8"><primary sortas="tracker_resources_sparql_query">tracker_resources_sparql_query</primary></indexterm><programlisting><link linkend="GPtrArray">GPtrArray</link> *         tracker_resources_sparql_query      (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Queries the database using SPARQL. An example query would be:
+</para>
+<para>
+<example>
+<title>Using tracker_resource_sparql_query(<!-- -->)</title>
+An example of using <link linkend="tracker-resource-sparql-query"><function>tracker_resource_sparql_query()</function></link> to list all
+albums by title and include their song count and song total length.
+<programlisting>
+ TrackerClient *client;
+ GPtrArray *array;
+ GError *error = NULL;
+ const gchar *query;
+
+ /&ast; Create D-Bus connection with no warnings and maximum timeout. &ast;/
+ client = tracker_client_new (0, G_MAXINT);
+ query = "SELECT"
+         "  ?album"
+         "  ?title"
+         "  COUNT(?song) AS songs"
+         "  SUM(?length) AS totallength"
+         "WHERE {"
+         "  ?album a nmm:MusicAlbum ;"
+         "  nie:title ?title ."
+         "  ?song nmm:musicAlbum ?album ;"
+         "  nfo:duration ?length"
+         "} "
+         "GROUP BY ?album");
+
+ array = tracker_resources_sparql_query (client, query, &amp;error);
+
+ if (error) {
+         g_warning ("Could not query Tracker, %s", error->message);
+         g_error_free (error);
+         g_object_unref (client);
+         return;
+ }
+
+ /&ast; Do something with the array &ast;/
+
+ g_ptr_array_free (array, TRUE);
+</programlisting>
+</example>
+</para>
+<para>
+This API call is completely synchronous so it may block.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara> a string representing SPARQL.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GError"><type>GError</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="GPtrArray"><type>GPtrArray</type></link> with the query results which must be freed
+using <link linkend="g-ptr-array-free"><function>g_ptr_array_free()</function></link>.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-resources-sparql-query-async" role="function" condition="since:0.8">
+<title>tracker_resources_sparql_query_async ()</title>
+<indexterm zone="tracker-resources-sparql-query-async" role="0.8"><primary sortas="tracker_resources_sparql_query_async">tracker_resources_sparql_query_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_resources_sparql_query_async
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="TrackerReplyGPtrArray">TrackerReplyGPtrArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+Does an asynchronous SPARQL query. See <link linkend="tracker-resources-sparql-query"><function>tracker_resources_sparql_query()</function></link>
+to see how an SPARLQL query should be like.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara> a string representing SPARQL.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> callback function to be called when the data is ready.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> user data to pass to <parameter>callback</parameter>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="guint"><type>guint</type></link> representing the operation ID. See
+<link linkend="tracker-cancel-call"><function>tracker_cancel_call()</function></link>. In the event of failure, 0 is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-resources-sparql-update" role="function" condition="since:0.8">
+<title>tracker_resources_sparql_update ()</title>
+<indexterm zone="tracker-resources-sparql-update" role="0.8"><primary sortas="tracker_resources_sparql_update">tracker_resources_sparql_update</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_resources_sparql_update     (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Updates the database using SPARQL.
+</para>
+<para>
+This API behaves the same way <link linkend="tracker-resources-sparql-query"><function>tracker_resources_sparql_query()</function></link> does
+but with the difference that it is intended to be used for data
+updates.
+</para>
+<para>
+This API call is completely synchronous so it may block.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara> a string representing SPARQL.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GError"><type>GError</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-resources-sparql-update-async" role="function" condition="since:0.8">
+<title>tracker_resources_sparql_update_async ()</title>
+<indexterm zone="tracker-resources-sparql-update-async" role="0.8"><primary sortas="tracker_resources_sparql_update_async">tracker_resources_sparql_update_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_resources_sparql_update_async
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="TrackerReplyVoid">TrackerReplyVoid</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+Does an asynchronous SPARQL update.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara> a string representing an SPARQL update.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> callback function to be called when the update has been processed.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> user data to pass to <parameter>callback</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="guint"><type>guint</type></link> representing the operation ID. See
+<link linkend="tracker-cancel-call"><function>tracker_cancel_call()</function></link>. In the event of failure, 0 is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-resources-sparql-update-blank" role="function">
+<title>tracker_resources_sparql_update_blank ()</title>
+<indexterm zone="tracker-resources-sparql-update-blank"><primary sortas="tracker_resources_sparql_update_blank">tracker_resources_sparql_update_blank</primary></indexterm><programlisting><link linkend="GPtrArray">GPtrArray</link> *         tracker_resources_sparql_update_blank
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-resources-sparql-update-blank-async" role="function">
+<title>tracker_resources_sparql_update_blank_async ()</title>
+<indexterm zone="tracker-resources-sparql-update-blank-async"><primary sortas="tracker_resources_sparql_update_blank_async">tracker_resources_sparql_update_blank_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_resources_sparql_update_blank_async
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="TrackerReplyGPtrArray">TrackerReplyGPtrArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-resources-batch-sparql-update" role="function" condition="since:0.8">
+<title>tracker_resources_batch_sparql_update ()</title>
+<indexterm zone="tracker-resources-batch-sparql-update" role="0.8"><primary sortas="tracker_resources_batch_sparql_update">tracker_resources_batch_sparql_update</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_resources_batch_sparql_update
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Updates the database using SPARQL. Updates done this way have to be committed
+explicitly through <link linkend="tracker-resources-batch-commit"><function>tracker_resources_batch_commit()</function></link> or
+<link linkend="tracker-resources-batch-commit-async"><function>tracker_resources_batch_commit_async()</function></link>. This API call is synchronous so it may
+block.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara> a string representing SPARQL.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> return location for errors.
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-resources-batch-sparql-update-async" role="function" condition="since:0.8">
+<title>tracker_resources_batch_sparql_update_async ()</title>
+<indexterm zone="tracker-resources-batch-sparql-update-async" role="0.8"><primary sortas="tracker_resources_batch_sparql_update_async">tracker_resources_batch_sparql_update_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_resources_batch_sparql_update_async
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *query,
+                                                         <link linkend="TrackerReplyVoid">TrackerReplyVoid</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+Updates the database using SPARQL. see <link linkend="tracker-resources-batch-sparql-update"><function>tracker_resources_batch_sparql_update()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>query</parameter>&#160;:</term>
+<listitem><simpara> a string representing SPARQL.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> function to be called when the batch update has been performed.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> user data to pass to <parameter>callback</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="guint"><type>guint</type></link> representing the operation ID. See
+<link linkend="tracker-cancel-call"><function>tracker_cancel_call()</function></link>. In the event of failure, 0 is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-resources-batch-commit" role="function" condition="since:0.8">
+<title>tracker_resources_batch_commit ()</title>
+<indexterm zone="tracker-resources-batch-commit" role="0.8"><primary sortas="tracker_resources_batch_commit">tracker_resources_batch_commit</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_resources_batch_commit      (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Commits a batch of already issued SPARQL updates. This API call is
+synchronous so it may block.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> return location for errors.
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-resources-batch-commit-async" role="function" condition="since:0.8">
+<title>tracker_resources_batch_commit_async ()</title>
+<indexterm zone="tracker-resources-batch-commit-async" role="0.8"><primary sortas="tracker_resources_batch_commit_async">tracker_resources_batch_commit_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_resources_batch_commit_async
+                                                        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         <link linkend="TrackerReplyVoid">TrackerReplyVoid</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+Commits a batch of already issued SPARQL updates.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> callback to be called when the operation is finished.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> user data to pass to <parameter>callback</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="guint"><type>guint</type></link> representing the operation ID. See
+<link linkend="tracker-cancel-call"><function>tracker_cancel_call()</function></link>. In the event of failure, 0 is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-resources-load" role="function">
+<title>tracker_resources_load ()</title>
+<indexterm zone="tracker-resources-load"><primary sortas="tracker_resources_load">tracker_resources_load</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_resources_load              (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-resources-load-async" role="function">
+<title>tracker_resources_load_async ()</title>
+<indexterm zone="tracker-resources-load-async"><primary sortas="tracker_resources_load_async">tracker_resources_load_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_resources_load_async        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         const <link linkend="gchar">gchar</link> *uri,
+                                                         <link linkend="TrackerReplyVoid">TrackerReplyVoid</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

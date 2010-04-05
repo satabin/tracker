@@ -1,22 +1,19 @@
-<refentry id="libtracker-common-IO-Priority">
+<refentry id="libtracker-common-tracker-ioprio">
 <refmeta>
-<refentrytitle role="top_of_page" id="libtracker-common-IO-Priority.top_of_page">IO Priority</refentrytitle>
+<refentrytitle role="top_of_page" id="libtracker-common-tracker-ioprio.top_of_page">tracker-ioprio</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBTRACKER-COMMON Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>IO Priority</refname>
+<refname>tracker-ioprio</refname>
 <refpurpose></refpurpose>
 </refnamediv>
 
-<refsynopsisdiv id="libtracker-common-IO-Priority.synopsis" role="synopsis">
+<refsynopsisdiv id="libtracker-common-tracker-ioprio.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-#include &lt;libtracker-common/tracker-ioprio.h&gt;
-
 <link linkend="void">void</link>                <link linkend="tracker-ioprio-init">tracker_ioprio_init</link>                 (void);
 </synopsis>
 </refsynopsisdiv>
@@ -29,13 +26,13 @@
 
 
 
-<refsect1 id="libtracker-common-IO-Priority.description" role="desc">
+<refsect1 id="libtracker-common-tracker-ioprio.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 </para>
 </refsect1>
 
-<refsect1 id="libtracker-common-IO-Priority.details" role="details">
+<refsect1 id="libtracker-common-tracker-ioprio.details" role="details">
 <title role="details.title">Details</title>
 <refsect2 id="tracker-ioprio-init" role="function">
 <title>tracker_ioprio_init ()</title>

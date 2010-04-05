@@ -1,0 +1,52 @@
+<!-- ##### SECTION Title ##### -->
+Statistics
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### USER_FUNCTION TrackerReplyGPtrArray ##### -->
+<para>
+
+</para>
+
+@result: 
+@error: 
+@user_data: 
+
+
+<!-- ##### FUNCTION tracker_statistics_get ##### -->
+<para>
+
+</para>
+
+@client: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_statistics_get_async ##### -->
+<para>
+
+</para>
+
+@client: 
+@callback: 
+@user_data: 
+@Returns: 
+
+

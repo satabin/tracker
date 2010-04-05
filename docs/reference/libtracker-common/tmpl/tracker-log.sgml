@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-Logging
+tracker-log
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -24,8 +24,8 @@ Logging
 
 </para>
 
-@filename: 
 @verbosity: 
+@used_filename: 
 @Returns: 
 
 
@@ -34,5 +34,23 @@ Logging
 
 </para>
 
+
+
+<!-- ##### FUNCTION tracker_log_should_handle ##### -->
+<para>
+
+</para>
+
+@log_level: 
+@verbosity: 
+@Returns: 
+
+
+<!-- ##### MACRO tracker_info ##### -->
+<para>
+
+</para>
+
+@...: 
 
 

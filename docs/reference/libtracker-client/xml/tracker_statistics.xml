@@ -1,0 +1,130 @@
+<refentry id="libtracker-client-Statistics">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-client-Statistics.top_of_page">Statistics</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-CLIENT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Statistics</refname>
+<refpurpose>Data statistics.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-client-Statistics.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-client/tracker-client.h&gt;
+
+<link linkend="void">void</link>                (<link linkend="TrackerReplyGPtrArray">*TrackerReplyGPtrArray</link>)            (<link linkend="GPtrArray">GPtrArray</link> *result,
+                                                         <link linkend="GError">GError</link> *error,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+<link linkend="GPtrArray">GPtrArray</link> *         <link linkend="tracker-statistics-get">tracker_statistics_get</link>              (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         <link linkend="GError">GError</link> **error);
+<link linkend="guint">guint</link>               <link linkend="tracker-statistics-get-async">tracker_statistics_get_async</link>        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         <link linkend="TrackerReplyGPtrArray">TrackerReplyGPtrArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-client-Statistics.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+This API is meant to get statistics about the stored data.</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-client-Statistics.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="TrackerReplyGPtrArray" role="function">
+<title>TrackerReplyGPtrArray ()</title>
+<indexterm zone="TrackerReplyGPtrArray"><primary sortas="TrackerReplyGPtrArray">TrackerReplyGPtrArray</primary></indexterm><programlisting><link linkend="void">void</link>                (*TrackerReplyGPtrArray)            (<link linkend="GPtrArray">GPtrArray</link> *result,
+                                                         <link linkend="GError">GError</link> *error,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+The <parameter>result</parameter> is returned as a <link linkend="GPtrArray"><type>GPtrArray</type></link> containing an array of
+<link linkend="GStrv"><type>GStrv</type></link> with the results from the query unless there is an error. If
+there is an error the <parameter>error</parameter> is populated with the details. The
+<parameter>user_data</parameter> is provided in the callback.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>result</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GPtrArray"><type>GPtrArray</type></link> with the results of the query.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GError"><type>GError</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="gpointer"><type>gpointer</type></link> for user data.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-statistics-get" role="function" condition="since:0.8">
+<title>tracker_statistics_get ()</title>
+<indexterm zone="tracker-statistics-get" role="0.8"><primary sortas="tracker_statistics_get">tracker_statistics_get</primary></indexterm><programlisting><link linkend="GPtrArray">GPtrArray</link> *         tracker_statistics_get              (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         <link linkend="GError">GError</link> **error);</programlisting>
+<para>
+Requests statistics about each class in the ontology (for example,
+nfo:Image and nmm:Photo which indicate the number of images and the
+number of photos).
+</para>
+<para>
+The returned <link linkend="GPtrArray"><type>GPtrArray</type></link> contains an array of <link linkend="GStrv"><type>GStrv</type></link> which have 2
+strings. The first is the class (e.g. nfo:Image), the second is the
+count for that class.
+</para>
+<para>
+This API call is completely synchronous so it may block.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="GError"><type>GError</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="GPtrArray"><type>GPtrArray</type></link> with the statistics which must be freed using
+<link linkend="g-ptr-array-free"><function>g_ptr_array_free()</function></link>.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+<refsect2 id="tracker-statistics-get-async" role="function" condition="since:0.8">
+<title>tracker_statistics_get_async ()</title>
+<indexterm zone="tracker-statistics-get-async" role="0.8"><primary sortas="tracker_statistics_get_async">tracker_statistics_get_async</primary></indexterm><programlisting><link linkend="guint">guint</link>               tracker_statistics_get_async        (<link linkend="TrackerClient">TrackerClient</link> *client,
+                                                         <link linkend="TrackerReplyGPtrArray">TrackerReplyGPtrArray</link> callback,
+                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<para>
+This behaves exactly as <link linkend="tracker-statistics-get"><function>tracker_statistics_get()</function></link> but asynchronously.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerClient"><type>TrackerClient</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara> a <link linkend="TrackerReplyGPtrArray"><type>TrackerReplyGPtrArray</type></link> to be used when the data is
+available.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
+<listitem><simpara> user data to pass to <parameter>callback</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A <link linkend="guint"><type>guint</type></link> representing the operation ID. See
+<link linkend="tracker-cancel-call"><function>tracker_cancel_call()</function></link>. In the event of failure, 0 is returned.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since 0.8</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

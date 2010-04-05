@@ -1,67 +1,44 @@
 include $(top_srcdir)/Makefile.decl
 
-if HAVE_INOTIFY
-build_libinotify = libinotify
-endif
-
-if !HAVE_EXTERNAL_QDBM
-build_qdbm = qdbm
-endif
-
-if ENABLE_SQLITE_FTS
-build_sqlite_fts = tracker-fts
-endif
-
-if HAVE_TRACKER_PREFERENCES
-build_tracker_preferences = tracker-preferences
-endif
-
-if HAVE_TRACKER_APPLET
-build_tracker_applet = tracker-applet
-endif
-
-if HAVE_LIBTRACKERGTK
-build_libtrackergtk = libtracker-gtk
-endif
-
-if HAVE_TRACKER_SEARCH_TOOL
-build_tracker_search_tool = tracker-search-tool
+if HAVE_LIBINOTIFY
+libinotify_dir = libinotify
 endif
 
 SUBDIRS = 					\
 	libstemmer				\
-	$(build_qdbm)				\
-	$(build_libinotify)			\
+	$(libinotify_dir)			\
 	libtracker-common 			\
+	libtracker-client			\
+	libtracker-fts				\
 	libtracker-db				\
 	libtracker-data				\
-	libtracker				\
-	$(build_sqlite_fts)			\
+	libtracker-extract			\
+	libtracker-miner			\
+	miners					\
 	plugins					\
-	trackerd				\
+	tracker-store				\
+	tracker-control				\
 	tracker-utils				\
 	tracker-extract				\
-	tracker-indexer				\
-	$(build_libtrackergtk)			\
-	$(build_tracker_applet)			\
-	$(build_tracker_search_tool)		\
-	$(build_tracker_preferences)
+	tracker-writeback			\
+	vapi
 
-DIST_SUBDIRS = 					\
-	libstemmer				\
-	qdbm					\
-	libinotify				\
-	libtracker-common 			\
-	libtracker-db				\
-	libtracker-data				\
-	libtracker				\
-	tracker-fts				\
-	trackerd				\
-	tracker-utils				\
-	tracker-extract				\
-	tracker-indexer				\
-	libtracker-gtk				\
-	tracker-applet	 			\
-	tracker-search-tool			\
-	tracker-preferences			\
-	plugins
+if HAVE_TRACKER_PREFERENCES
+SUBDIRS += tracker-preferences
+endif
+
+if HAVE_TRACKER_STATUS_ICON
+SUBDIRS += tracker-status-icon
+endif
+
+if HAVE_TRACKER_SEARCH_TOOL
+SUBDIRS += tracker-search-tool
+endif
+
+if HAVE_TRACKER_SEARCH_BAR
+SUBDIRS += tracker-search-bar
+endif
+
+if HAVE_TRACKER_EXPLORER
+SUBDIRS += tracker-explorer
+endif

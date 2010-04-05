@@ -1,7 +1,6 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -19,81 +18,120 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#include <stdio.h>
-#include <string.h>
-
-#include <glib.h>
-
 #include <libtracker-common/tracker-os-dependant.h>
 
+#include <libtracker-extract/tracker-extract.h>
+
 #include "tracker-main.h"
-#include "tracker-escape.h"
 
 typedef enum {
-	READ_TITLE,
-	READ_SUBJECT,
-	READ_AUTHOR,
-	READ_KEYWORDS,
-	READ_COMMENTS,
-	READ_STATS,
-	READ_CREATED,
-	READ_FILE_OTHER
-} tag_type;
+	ODT_TAG_TYPE_UNKNOWN,
+	ODT_TAG_TYPE_TITLE,
+	ODT_TAG_TYPE_SUBJECT,
+	ODT_TAG_TYPE_AUTHOR,
+	ODT_TAG_TYPE_KEYWORDS,
+	ODT_TAG_TYPE_COMMENTS,
+	ODT_TAG_TYPE_STATS,
+	ODT_TAG_TYPE_CREATED,
+	ODT_TAG_TYPE_GENERATOR
+} ODTTagType;
 
 typedef struct {
-	GHashTable *metadata;
-	tag_type current;
+	TrackerSparqlBuilder *metadata;
+	ODTTagType current;
+	const gchar *uri;
 } ODTParseInfo;
 
-static void start_element_handler (GMarkupParseContext	*context,
-				   const gchar		*element_name,
-				   const gchar	       **attribute_names,
-				   const gchar	       **attribute_values,
-				   gpointer		 user_data,
-				   GError	       **error);
-static void end_element_handler   (GMarkupParseContext	*context,
-				   const gchar		*element_name,
-				   gpointer		 user_data,
-				   GError	       **error);
-static void text_handler	  (GMarkupParseContext	*context,
-				   const gchar		*text,
-				   gsize		 text_len,
-				   gpointer		 user_data,
-				   GError	       **error);
-static void extract_oasis	  (const gchar		*filename,
-				   GHashTable		*metadata);
+static void xml_start_element_handler (GMarkupParseContext   *context,
+                                       const gchar           *element_name,
+                                       const gchar          **attribute_names,
+                                       const gchar          **attribute_values,
+                                       gpointer               user_data,
+                                       GError               **error);
+static void xml_end_element_handler   (GMarkupParseContext   *context,
+                                       const gchar           *element_name,
+                                       gpointer               user_data,
+                                       GError               **error);
+static void xml_text_handler          (GMarkupParseContext   *context,
+                                       const gchar           *text,
+                                       gsize                  text_len,
+                                       gpointer               user_data,
+                                       GError               **error);
+static void extract_oasis             (const gchar           *filename,
+                                       TrackerSparqlBuilder  *preupdate,
+                                       TrackerSparqlBuilder  *metadata);
 
 static TrackerExtractData extract_data[] = {
 	{ "application/vnd.oasis.opendocument.*", extract_oasis },
 	{ NULL, NULL }
 };
 
-static void
-extract_oasis (const gchar *filename,
-	       GHashTable  *metadata)
+static gchar *
+extract_content (const gchar *path,
+                 guint        n_words)
 {
-	gchar	      *argv[5];
-	gchar	      *xml;
-	ODTParseInfo   info = {
-		metadata,
-		-1
-	};
+	gchar *command, *output, *text;
+	GError *error = NULL;
+
+	command = g_strdup_printf ("odt2txt --encoding=utf-8 '%s'", path);
+	g_debug ("Executing command:'%s'", command);
+
+	if (!g_spawn_command_line_sync (command, &output, NULL, NULL, &error)) {
+		g_warning ("Could not extract text from '%s': %s", path, error->message);
+		g_error_free (error);
+		g_free (command);
+
+		return NULL;
+	}
+
+	g_debug ("Normalizing output with %d max words", n_words);
+	text = tracker_text_normalize (output, n_words, NULL);
+
+	g_free (command);
+	g_free (output);
+
+	return text;
+}
+
+static void
+extract_oasis (const gchar          *uri,
+               TrackerSparqlBuilder *preupdate,
+               TrackerSparqlBuilder *metadata)
+{
+	gchar *argv[5];
+	gchar *xml;
+	gchar *filename;
+	gchar *content;
+	TrackerFTSConfig *fts_config;
+	guint n_words;
+
+	filename = g_filename_from_uri (uri, NULL, NULL);
 
 	argv[0] = g_strdup ("unzip");
 	argv[1] = g_strdup ("-p");
-	argv[2] = g_strdup (filename);
+	argv[2] = filename;
 	argv[3] = g_strdup ("meta.xml");
 	argv[4] = NULL;
 
+	/* Question: shouldn't we g_unlink meta.xml then? */
+
+	tracker_sparql_builder_predicate (metadata, "a");
+	tracker_sparql_builder_object (metadata, "nfo:PaginatedTextDocument");
+
 	if (tracker_spawn (argv, 10, &xml, NULL)) {
+		ODTParseInfo info;
 		GMarkupParseContext *context;
-		GMarkupParser	     parser = {
-			start_element_handler,
-			end_element_handler,
-			text_handler,
+		GMarkupParser parser = {
+			xml_start_element_handler,
+			xml_end_element_handler,
+			xml_text_handler,
 			NULL,
 			NULL
 		};
+
+		info.metadata = metadata;
+		info.current = ODT_TAG_TYPE_UNKNOWN;
+		info.uri = uri;
 
 		context = g_markup_parse_context_new (&parser, 0, &info, NULL);
 		g_markup_parse_context_parse (context, xml, -1, NULL);
@@ -102,149 +140,162 @@ extract_oasis (const gchar *filename,
 		g_free (xml);
 	}
 
+	fts_config = tracker_main_get_fts_config ();
+	n_words = tracker_fts_config_get_max_words_to_index (fts_config);
+	content = extract_content (filename, n_words);
+
+	if (content) {
+		tracker_sparql_builder_predicate (metadata, "nie:plainTextContent");
+		tracker_sparql_builder_object_unvalidated (metadata, content);
+		g_free (content);
+	}
+
 	g_free (argv[3]);
-	g_free (argv[2]);
 	g_free (argv[1]);
 	g_free (argv[0]);
+
+	g_free (filename);
 }
 
-void
-start_element_handler (GMarkupParseContext  *context,
-		       const gchar	    *element_name,
-		       const gchar	   **attribute_names,
-		       const gchar	   **attribute_values,
-		       gpointer		     user_data,
-		       GError		   **error)
+static void
+xml_start_element_handler (GMarkupParseContext  *context,
+                           const gchar          *element_name,
+                           const gchar         **attribute_names,
+                           const gchar         **attribute_values,
+                           gpointer              user_data,
+                           GError              **error)
 {
 	ODTParseInfo *data = user_data;
 
-	if (strcmp (element_name, "dc:title") == 0) {
-		data->current = READ_TITLE;
-	}
-	else if (strcmp (element_name, "dc:subject") == 0) {
-		data->current = READ_SUBJECT;
-	}
-	else if (strcmp (element_name, "dc:creator") == 0) {
-		data->current = READ_AUTHOR;
-	}
-	else if (strcmp (element_name, "meta:keyword") == 0) {
-		data->current = READ_KEYWORDS;
-	}
-	else if (strcmp (element_name, "dc:description") == 0) {
-		data->current = READ_COMMENTS;
-	}
-	else if (strcmp (element_name, "meta:document-statistic") == 0) {
-		GHashTable *metadata;
+	if (g_ascii_strcasecmp (element_name, "dc:title") == 0) {
+		data->current = ODT_TAG_TYPE_TITLE;
+	} else if (g_ascii_strcasecmp (element_name, "dc:subject") == 0) {
+		data->current = ODT_TAG_TYPE_SUBJECT;
+	} else if (g_ascii_strcasecmp (element_name, "dc:creator") == 0) {
+		data->current = ODT_TAG_TYPE_AUTHOR;
+	} else if (g_ascii_strcasecmp (element_name, "meta:keyword") == 0) {
+		data->current = ODT_TAG_TYPE_KEYWORDS;
+	} else if (g_ascii_strcasecmp (element_name, "dc:description") == 0) {
+		data->current = ODT_TAG_TYPE_COMMENTS;
+	} else if (g_ascii_strcasecmp (element_name, "meta:document-statistic") == 0) {
+		TrackerSparqlBuilder *metadata;
+		const gchar *uri;
 		const gchar **a, **v;
 
 		metadata = data->metadata;
+		uri = data->uri;
 
 		for (a = attribute_names, v = attribute_values; *a; ++a, ++v) {
-			if (strcmp (*a, "meta:word-count") == 0) {
-				g_hash_table_insert (metadata,
-						     g_strdup ("Doc:WordCount"),
-						     tracker_escape_metadata (*v));
-			}
-			else if (strcmp (*a, "meta:page-count") == 0) {
-				g_hash_table_insert (metadata,
-						     g_strdup ("Doc:PageCount"),
-						     tracker_escape_metadata (*v));
+			if (g_ascii_strcasecmp (*a, "meta:word-count") == 0) {
+				tracker_sparql_builder_predicate (metadata, "nfo:wordCount");
+				tracker_sparql_builder_object_unvalidated (metadata, *v);
+			} else if (g_ascii_strcasecmp (*a, "meta:page-count") == 0) {
+				tracker_sparql_builder_predicate (metadata, "nfo:pageCount");
+				tracker_sparql_builder_object_unvalidated (metadata, *v);
 			}
 		}
 
-		data->current = READ_STATS;
-	}
-	else if (strcmp (element_name, "meta:creation-date") == 0) {
-		data->current = READ_CREATED;
-	}
-	else if (strcmp (element_name, "meta:generator") == 0) {
-		data->current = READ_FILE_OTHER;
-	}
-	else {
+		data->current = ODT_TAG_TYPE_STATS;
+	} else if (g_ascii_strcasecmp (element_name, "meta:creation-date") == 0) {
+		data->current = ODT_TAG_TYPE_CREATED;
+	} else if (g_ascii_strcasecmp (element_name, "meta:generator") == 0) {
+	 	data->current = ODT_TAG_TYPE_GENERATOR;
+	} else {
 		data->current = -1;
 	}
 }
 
-void
-end_element_handler (GMarkupParseContext  *context,
-		     const gchar	  *element_name,
-		     gpointer		   user_data,
-		     GError		 **error)
+static void
+xml_end_element_handler (GMarkupParseContext  *context,
+                         const gchar          *element_name,
+                         gpointer              user_data,
+                         GError              **error)
 {
 	((ODTParseInfo*) user_data)->current = -1;
 }
 
-void
-text_handler (GMarkupParseContext  *context,
-	      const gchar	   *text,
-	      gsize		    text_len,
-	      gpointer		    user_data,
-	      GError		  **error)
+static void
+xml_text_handler (GMarkupParseContext  *context,
+                  const gchar          *text,
+                  gsize                 text_len,
+                  gpointer              user_data,
+                  GError              **error)
 {
 	ODTParseInfo *data;
-	GHashTable   *metadata;
+	TrackerSparqlBuilder *metadata;
+	const gchar *uri;
+	gchar *date;
 
 	data = user_data;
 	metadata = data->metadata;
+	uri = data->uri;
 
 	switch (data->current) {
-	case READ_TITLE:
-		g_hash_table_insert (metadata,
-				     g_strdup ("Doc:Title"),
-				     tracker_escape_metadata (text));
+	case ODT_TAG_TYPE_TITLE:
+		tracker_sparql_builder_predicate (metadata, "nie:title");
+		tracker_sparql_builder_object_unvalidated (metadata, text);
 		break;
-	case READ_SUBJECT:
-		g_hash_table_insert (metadata,
-				     g_strdup ("Doc:Subject"),
-				     tracker_escape_metadata (text));
+
+	case ODT_TAG_TYPE_SUBJECT:
+		tracker_sparql_builder_predicate (metadata, "nie:subject");
+		tracker_sparql_builder_object_unvalidated (metadata, text);
 		break;
-	case READ_AUTHOR:
-		g_hash_table_insert (metadata,
-				     g_strdup ("Doc:Author"),
-				     tracker_escape_metadata (text));
+
+	case ODT_TAG_TYPE_AUTHOR:
+		tracker_sparql_builder_predicate (metadata, "nco:publisher");
+
+		tracker_sparql_builder_object_blank_open (metadata);
+		tracker_sparql_builder_predicate (metadata, "a");
+		tracker_sparql_builder_object (metadata, "nco:Contact");
+
+		tracker_sparql_builder_predicate (metadata, "nco:fullname");
+		tracker_sparql_builder_object_unvalidated (metadata, text);
+		tracker_sparql_builder_object_blank_close (metadata);
 		break;
-	case READ_KEYWORDS: {
+
+	case ODT_TAG_TYPE_KEYWORDS: {
 		gchar *keywords;
+		gchar *lasts, *keyw;
 
-		if ((keywords = g_hash_table_lookup (metadata, "Doc:Keywords"))) {
-			gchar *escaped;
+		keywords = g_strdup (text);
 
-			escaped = tracker_escape_metadata (text);
-			g_hash_table_replace (metadata,
-					      g_strdup ("Doc:Keywords"),
-					      g_strconcat (keywords, ",", escaped, NULL));
-			g_free (escaped);
-		} else {
-			g_hash_table_insert (metadata,
-					     g_strdup ("Doc:Keywords"),
-					     tracker_escape_metadata (text));
+		for (keyw = strtok_r (keywords, ",; ", &lasts); 
+		     keyw;
+		     keyw = strtok_r (NULL, ",; ", &lasts)) {
+			tracker_sparql_builder_predicate (metadata, "nie:keyword");
+			tracker_sparql_builder_object_unvalidated (metadata, keyw);
 		}
+
+		g_free (keywords);
+
+		break;
 	}
+
+	case ODT_TAG_TYPE_COMMENTS:
+		tracker_sparql_builder_predicate (metadata, "nie:comment");
+		tracker_sparql_builder_object_unvalidated (metadata, text);
 		break;
-	case READ_COMMENTS:
-		g_hash_table_insert (metadata,
-				     g_strdup ("Doc:Comments"),
-				     tracker_escape_metadata (text));
+
+	case ODT_TAG_TYPE_CREATED:
+		date = tracker_date_guess (text);
+		tracker_sparql_builder_predicate (metadata, "nie:contentCreated");
+		tracker_sparql_builder_object_unvalidated (metadata, date);
+		g_free (date);
 		break;
-	case READ_CREATED:
-		g_hash_table_insert (metadata,
-				     g_strdup ("Doc:Created"),
-				     tracker_escape_metadata (text));
-		break;
-	case READ_FILE_OTHER:
-		g_hash_table_insert (metadata,
-				     g_strdup ("File:Other"),
-				     tracker_escape_metadata (text));
+
+	case ODT_TAG_TYPE_GENERATOR:
+		tracker_sparql_builder_predicate (metadata, "nie:generator");
+		tracker_sparql_builder_object_unvalidated (metadata, text);
 		break;
 
 	default:
-	case READ_STATS:
+	case ODT_TAG_TYPE_STATS:
 		break;
 	}
 }
 
 TrackerExtractData *
-tracker_get_extract_data (void)
+tracker_extract_get_data (void)
 {
 	return extract_data;
 }

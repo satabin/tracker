@@ -1,0 +1,58 @@
+.TH tracker-miner-fs 1 "September 2009" GNU "User Commands"
+
+.SH NAME
+tracker-miner-fs \- Used to crawl the file system to mine data.
+
+.SH SYNOPSIS
+\fBtracker-miner-fs\fR [\fIOPTION\fR...]
+
+.SH DESCRIPTION
+.B tracker-miner-fs
+is not supposed to be run by the user since it is started by
+its .desktop file when the user logs in. It can also be started
+manually of course for debugging purposes. You can not run more than
+one instance of this at the same time.
+
+.B tracker-miner-fs
+mines information about applications and files only.
+
+.SH OPTIONS
+.TP
+.B \-?, \-\-help
+Show summary of options.
+.TP
+.B \-V, \-\-version
+Returns the version of this binary.
+.TP
+.B \-v, \-\-verbosity={0|1|2|3}
+Sets the logging level, 0=errors, 1=minimal, 2=detailed, 3=debug.
+.TP
+.B \-s, \-\-initial-sleep=SECONDS
+Sets the initial sleep time before crawling the file system is started.
+.TP
+.B \-e, \-\-eligible=FILE
+Checks if 
+.B FILE 
+is eligible for being mined based on the current
+configuration rules. In addition to this, it will check if 
+.B FILE
+would be monitored for changes. This works with non-existing 
+.B FILE
+arguments as well as existing 
+.B FILE
+arguments.
+.TP
+.B \-a, \-\-add\-file=FILE
+Forces the addition of
+.B FILE
+into the database, regardless of configuration settings. This option
+is mostly meant for testing purposes.
+
+.SH FILES
+.I $HOME/.config/tracker/tracker-miner-fs.cfg
+
+.SH SEE ALSO
+.BR tracker-store (1),
+.BR tracker-info (1).
+.TP
+.BR tracker-miner-fs.cfg (5).

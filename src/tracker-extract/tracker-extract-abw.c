@@ -1,7 +1,6 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * Copyright (C) 2007, Mr Jamie McCracken (jamiemcc@gnome.org)
- * Copyright (C) 2008, Nokia
+ * Copyright (C) 2007, Jamie McCracken <jamiemcc@gnome.org>
+ * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -36,11 +35,11 @@
 
 #include <libtracker-common/tracker-file-utils.h>
 
-#include "tracker-main.h"
-#include "tracker-escape.h"
+#include <libtracker-extract/tracker-extract.h>
 
-static void extract_abw (const gchar *filename,
-			 GHashTable  *metadata);
+static void extract_abw (const gchar          *uri,
+                         TrackerSparqlBuilder *preupdate,
+                         TrackerSparqlBuilder *metadata);
 
 static TrackerExtractData data[] = {
 	{ "application/x-abiword", extract_abw },
@@ -48,12 +47,16 @@ static TrackerExtractData data[] = {
 };
 
 static void
-extract_abw (const gchar *filename,
-	     GHashTable  *metadata)
+extract_abw (const gchar          *uri,
+             TrackerSparqlBuilder *preupdate,
+             TrackerSparqlBuilder *metadata)
 {
 	FILE *f;
+	gchar *filename;
 
+	filename = g_filename_from_uri (uri, NULL, NULL);
 	f = tracker_file_open (filename, "r", TRUE);
+	g_free (filename);
 
 	if (f) {
 		gchar  *line;
@@ -63,34 +66,37 @@ extract_abw (const gchar *filename,
 		line = NULL;
 		length = 0;
 
+		tracker_sparql_builder_predicate (metadata, "a");
+		tracker_sparql_builder_object (metadata, "nfo:Document");
+
 		while ((read_char = getline (&line, &length, f)) != -1) {
 			if (g_str_has_suffix (line, "</m>\n")) {
 				line[read_char - 5] = '\0';
 			}
+
 			if (g_str_has_prefix (line, "<m key=\"dc.title\">")) {
-				g_hash_table_insert (metadata,
-						     g_strdup ("Doc:Title"),
-						     tracker_escape_metadata (line + 18));
-			}
-			else if (g_str_has_prefix (line, "<m key=\"dc.subject\">")) {
-				g_hash_table_insert (metadata,
-						     g_strdup ("Doc:Subject"),
-						     tracker_escape_metadata (line + 20));
-			}
-			else if (g_str_has_prefix (line, "<m key=\"dc.creator\">")) {
-				g_hash_table_insert (metadata,
-						     g_strdup ("Doc:Author"),
-						     tracker_escape_metadata (line + 20));
-			}
-			else if (g_str_has_prefix (line, "<m key=\"abiword.keywords\">")) {
-				g_hash_table_insert (metadata,
-						     g_strdup ("Doc:Keywords"),
-						     tracker_escape_metadata (line + 26));
-			}
-			else if (g_str_has_prefix (line, "<m key=\"dc.description\">")) {
-				g_hash_table_insert (metadata,
-						     g_strdup ("Doc:Comments"),
-						     tracker_escape_metadata (line + 24));
+				tracker_sparql_builder_predicate (metadata, "nie:title");
+				tracker_sparql_builder_object_unvalidated (metadata, line + 18);
+			} else if (g_str_has_prefix (line, "<m key=\"dc.subject\">")) {
+				tracker_sparql_builder_predicate (metadata, "nie:subject");
+				tracker_sparql_builder_object_unvalidated (metadata, line + 20);
+			} else if (g_str_has_prefix (line, "<m key=\"dc.creator\">")) {
+				tracker_sparql_builder_predicate (metadata, "nco:creator");
+				tracker_sparql_builder_object_unvalidated (metadata, line + 20);
+			} else if (g_str_has_prefix (line, "<m key=\"abiword.keywords\">")) {
+				gchar *keywords = g_strdup (line + 26);
+				char *lasts, *keyw;
+
+				for (keyw = strtok_r (keywords, ",; ", &lasts); keyw;
+				     keyw = strtok_r (NULL, ",; ", &lasts)) {
+					tracker_sparql_builder_predicate (metadata, "nie:keyword");
+					tracker_sparql_builder_object_unvalidated (metadata, keyw);
+				}
+
+				g_free (keywords);
+			} else if (g_str_has_prefix (line, "<m key=\"dc.description\">")) {
+				tracker_sparql_builder_predicate (metadata, "nie:comment");
+				tracker_sparql_builder_object_unvalidated (metadata, line + 24);
 			}
 
 			g_free (line);
@@ -107,7 +113,7 @@ extract_abw (const gchar *filename,
 }
 
 TrackerExtractData *
-tracker_get_extract_data (void)
+tracker_extract_get_data (void)
 {
 	return data;
 }

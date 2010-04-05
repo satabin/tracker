@@ -1,0 +1,126 @@
+<refentry id="libtracker-miner-tracker-thumbnailer">
+<refmeta>
+<refentrytitle role="top_of_page" id="libtracker-miner-tracker-thumbnailer.top_of_page">tracker-thumbnailer</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBTRACKER-MINER Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>tracker-thumbnailer</refname>
+<refpurpose>Request the thumbnailer service creates or
+updates thumbnails.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libtracker-miner-tracker-thumbnailer.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;libtracker-miner/tracker-miner.h&gt;
+
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-thumbnailer-init">tracker_thumbnailer_init</link>            (void);
+<link linkend="void">void</link>                <link linkend="tracker-thumbnailer-shutdown">tracker_thumbnailer_shutdown</link>        (void);
+<link linkend="void">void</link>                <link linkend="tracker-thumbnailer-send">tracker_thumbnailer_send</link>            (void);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-thumbnailer-move-add">tracker_thumbnailer_move_add</link>        (const <link linkend="gchar">gchar</link> *from_uri,
+                                                         const <link linkend="gchar">gchar</link> *mime_type,
+                                                         const <link linkend="gchar">gchar</link> *to_uri);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-thumbnailer-remove-add">tracker_thumbnailer_remove_add</link>      (const <link linkend="gchar">gchar</link> *uri,
+                                                         const <link linkend="gchar">gchar</link> *mime_type);
+<link linkend="gboolean">gboolean</link>            <link linkend="tracker-thumbnailer-cleanup">tracker_thumbnailer_cleanup</link>         (const <link linkend="gchar">gchar</link> *uri_prefix);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libtracker-miner-tracker-thumbnailer.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+This is a convenience API using D-Bus for creating and updating
+thumbnails for files being mined. It is also used to create
+thumbnails for album art found embedded in some medias.
+</para>
+<para>
+This follows the thumbnailer specification:
+http://live.gnome.org/ThumbnailerSpec</para>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libtracker-miner-tracker-thumbnailer.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="tracker-thumbnailer-init" role="function">
+<title>tracker_thumbnailer_init ()</title>
+<indexterm zone="tracker-thumbnailer-init"><primary sortas="tracker_thumbnailer_init">tracker_thumbnailer_init</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_thumbnailer_init            (void);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-thumbnailer-shutdown" role="function">
+<title>tracker_thumbnailer_shutdown ()</title>
+<indexterm zone="tracker-thumbnailer-shutdown"><primary sortas="tracker_thumbnailer_shutdown">tracker_thumbnailer_shutdown</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_thumbnailer_shutdown        (void);</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="tracker-thumbnailer-send" role="function">
+<title>tracker_thumbnailer_send ()</title>
+<indexterm zone="tracker-thumbnailer-send"><primary sortas="tracker_thumbnailer_send">tracker_thumbnailer_send</primary></indexterm><programlisting><link linkend="void">void</link>                tracker_thumbnailer_send            (void);</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="tracker-thumbnailer-move-add" role="function">
+<title>tracker_thumbnailer_move_add ()</title>
+<indexterm zone="tracker-thumbnailer-move-add"><primary sortas="tracker_thumbnailer_move_add">tracker_thumbnailer_move_add</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_thumbnailer_move_add        (const <link linkend="gchar">gchar</link> *from_uri,
+                                                         const <link linkend="gchar">gchar</link> *mime_type,
+                                                         const <link linkend="gchar">gchar</link> *to_uri);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>from_uri</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mime_type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>to_uri</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-thumbnailer-remove-add" role="function">
+<title>tracker_thumbnailer_remove_add ()</title>
+<indexterm zone="tracker-thumbnailer-remove-add"><primary sortas="tracker_thumbnailer_remove_add">tracker_thumbnailer_remove_add</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_thumbnailer_remove_add      (const <link linkend="gchar">gchar</link> *uri,
+                                                         const <link linkend="gchar">gchar</link> *mime_type);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mime_type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="tracker-thumbnailer-cleanup" role="function">
+<title>tracker_thumbnailer_cleanup ()</title>
+<indexterm zone="tracker-thumbnailer-cleanup"><primary sortas="tracker_thumbnailer_cleanup">tracker_thumbnailer_cleanup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            tracker_thumbnailer_cleanup         (const <link linkend="gchar">gchar</link> *uri_prefix);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>uri_prefix</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

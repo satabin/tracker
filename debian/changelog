@@ -1,3 +1,19 @@
+tracker (0.8.1-1) UNRELEASED; urgency=low
+
+  * New major upstream release. (Closes: #549695)
+    - The changes are too numerous to list them all, as it is basically a
+      rewrite. Some relevant changes:
+    - QDBM is gone, and with it its limitations. (Closes: #452657, #525393)
+    - The metadata store has been split from the file system crawler and can
+      be used independently. There are separate "miners" which can be
+      installed to feed data to tracker.
+      The new packaging layout accounts for that change.
+    - Support for Nepomuk with SPARQL which are used to query and update the
+      data.
+    - tracker-meta-folder is gone. (Closes: #430623)
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 20:33:12 +0200
+
 tracker (0.6.96-2) unstable; urgency=low
 
   * debian/patches/30-vfat-hidden-attribute-build-fix.patch

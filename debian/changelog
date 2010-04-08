@@ -11,6 +11,14 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
     - Support for Nepomuk with SPARQL which are used to query and update the
       data.
     - tracker-meta-folder is gone. (Closes: #430623)
+  * Remove patches
+    - debian/patches/10-binutils-gold.patch (fixed upstream)
+    - debian/patches/15-am-maintainer-mode.patch (obsolete)
+    - debian/patches/20-tracker-search-man-page-typo-fix.patch (merged
+      upstream)
+    - debian/patches/25-trackerd-man-page-typo-fix.patch (merged upstream)
+    - debian/patches/99-autoreconf.patch (obsolete)
+
 
  -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 20:33:12 +0200
 

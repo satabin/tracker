@@ -55,6 +55,14 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
     and libtracker-miner-0.8-0.
   * Rename tracker.postinst → tracker-miner-fs.postinst as tracker-miner-fs
     needs the increased fs.inotify.max_user_watches, not tracker-store.
+  * Add lintian overrides for binary-or-shlib-defines-rpath for packages
+    linking against private libraries in /usr/lib/tracker-0.8.
+    - Add debian/libtracker-extract-0.8-0.lintian-overrides.
+    - Add debian/libtracker-miner-0.8-0.lintian-overrides.
+    - Add debian/tracker-gui.lintian-overrides.
+    - Add debian/tracker-miner-evolution.lintian-overrides.
+    - Add debian/tracker-miner-fs.lintian-overrides.
+    - Add debian/tracker-utils.lintian-overrides.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 20:33:12 +0200
 

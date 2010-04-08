@@ -1,4 +1,0 @@
-debian/tmp/usr/lib/libtrackerclient.so
-debian/tmp/usr/include/tracker.h
-debian/tmp/usr/include/tracker-*-glue.h
-debian/tmp/usr/lib/pkgconfig/tracker.pc

@@ -1,8 +1,0 @@
-debian/tmp/usr/bin/tracker-search-tool
-debian/tmp/usr/share/applications/
-debian/tmp/usr/share/tracker/icons/
-debian/tmp/usr/bin/tracker-preferences
-debian/tmp/usr/share/tracker/tracker-preferences.glade
-debian/tmp/usr/share/tracker/tracker-applet-prefs.glade
-debian/tmp/usr/bin/tracker-applet
-debian/tmp/etc/xdg/autostart/tracker-applet.desktop

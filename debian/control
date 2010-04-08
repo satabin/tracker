@@ -50,28 +50,18 @@ Package: tracker
 Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         procps,
          shared-mime-info,
          dbus
 Recommends: tracker-utils,
-            tracker-search-tool,
-            unzip,
-            wv,
-            poppler-utils | xpdf-utils,
-            xsltproc,
-            w3m,
-            odt2txt,
-            untex
-Suggests: imagemagick,
-          evince,
-          djvulibre-bin,
-          gnumeric
+            tracker-gui,
+            tracker-miner-fs,
+            tracker-miner-evolution
 Description: metadata database, indexer and search tool
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtrackerclient0
+Package: libtracker-client-0.8-0
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends},
@@ -84,14 +74,12 @@ Description: metadata database, indexer and search tool - library
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtrackerclient-dev
+Package: libtracker-client-0.8-dev
 Architecture: any
 Section: libdevel
-Depends: libtrackerclient0 (= ${binary:Version}),
+Depends: libtracker-client-0.8-0 (= ${binary:Version}),
          ${misc:Depends},
-         libglib2.0-dev,
-         libdbus-1-dev,
-         libdbus-glib-1-dev
+         libglib2.0-dev
 Description: metadata database, indexer and search tool - development files
  This package contains the static libraries and header files needed to link
  applications with libtrackerclient.
@@ -100,6 +88,51 @@ Description: metadata database, indexer and search tool - development files
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
+Package: libtracker-miner-0.8-0
+Architecture: any
+Section: libs
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Description: tracker data miner library
+ This package contains the library that is used by applications that provide
+ data miners for tracker.
+
+Package: libtracker-miner-0.8-dev
+Architecture: any
+Section: libdevel
+Depends: libtracker-miner-0.8-0 (= ${binary:Version}),
+         ${misc:Depends},
+         libtracker-client-0.8-dev,
+         libglib2.0-dev
+Description: tracker data miner library - development files
+ This package contains the static libraries and header files needed to link
+ applications with libtracker-miner.
+ .
+ libtracker-miner provides a library to develop tracker data miners.
+
+Package: libtracker-extract-0.8-0
+Architecture: any
+Section: libs
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Description: tracker extractor library
+ This package contains the library that is used by applications that provide
+ metadata extractors for 3rd party file types.
+
+Package: libtracker-extract-0.8-dev
+Architecture: any
+Section: libdevel
+Depends: libtracker-extract-0.8-0 (= ${binary:Version}),
+         ${misc:Depends},
+         libtracker-client-0.8-dev,
+         libglib2.0-dev
+Description: tracker extractor library - development files
+ This package contains the static libraries and header files needed to link
+ applications with libtracker-extract.
+ .
+ libtracker-extract provides a library to develop metadata extractors for 3rd
+ party file types.
+
 Package: tracker-utils
 Architecture: any
 Depends: ${shlibs:Depends},
@@ -107,31 +140,91 @@ Depends: ${shlibs:Depends},
          tracker (= ${binary:Version})
 Description: metadata database, indexer and search tool - commandline tools
  Included utilities for Tracker:
-  * tracker-files: get files based on a ServiceType or on specified mime types.
-  * tracker-meta-folder: get metadata for files in a folder.
-  * tracker-query: this reads from STDIN an RDF Query that specifies the search
-    criteria for various fields. It prints to STDOUT all matching files. Some
-    examples are included in this package.
+  * tracker-import: import data using Turtle files
+  * tracker-info: get information about files
   * tracker-search: this perfoms a google like search using SEARCHTERM to
     retrieve all matching files where SEARCHTERM appears in any searchable
-    metadata.
-  * tracker-stats: retreive some statistics.
-  * tracker-status: report the trackerd status.
-  * tracker-tag: tool to manage tags on files.
+    metadata
+  * tracker-sparql: query or update Tracker database using SPARQL
+  * tracker-stats: retreive some statistics
+  * tracker-status: report the trackerd status
+  * tracker-tag: tool to manage tags on files
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
 Package: tracker-search-tool
+Architecture: all
+Section: oldlibs
+Depends: tracker-gui
+Description: transitional package to tracker-gui
+ This is a transitional package to faciliate the upgrade to the new name
+ tracker-gui. It can be safely removed after the upgrade.
+
+Package: tracker-gui
 Architecture: any
 Section: gnome
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          tracker (= ${binary:Version})
-Recommends: xdg-utils
+Conflicts: tracker-search-tool (<< 0.8.1-1)
+Replaces: tracker-search-tool (<< 0.8.1-1)
 Description: metadata database, indexer and search tool - GNOME frontend
  This package provides a graphical Tracker search tool for GNOME.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: tracker-explorer
+Architecture: any
+Section: gnome
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         tracker (= ${binary:Version})
+Description: metadata database, indexer and search tool - developer tool
+ This package includes a graphical developer tool that allows to query the
+ tracker database for object properties and relationships.
+
+Package: tracker-extract
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         tracker (= ${binary:Version})
+Recommends: unzip,
+            odt2txt
+Description: metadata database, indexer and search tool - metadata extractors
+ This package contains the metadata extractors.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: tracker-miner-fs
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         tracker (= ${binary:Version}),
+         tracker-extract (= ${binary:Version}),
+         procps
+Conflicts: tracker (<< 0.7.0)
+Description: metadata database, indexer and search tool - filesystem indexer
+ This package contains the tracker indexer for indexing your files and folders.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: tracker-miner-evolution
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         tracker (= ${binary:Version})
+Conflicts: tracker (<< 0.7.0)
+Description: metadata database, indexer and search tool - evolution plugin
+ This package contains a plugin for evolution which allows to index your
+ evolution emails.
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,

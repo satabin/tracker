@@ -1,0 +1,9 @@
+usr/share/dbus-1/services/org.freedesktop.Tracker1.Extract.service
+usr/share/tracker/tracker-extract.xml
+usr/lib/tracker/tracker-extract
+usr/lib/tracker-0.8/extract-modules/*.so
+usr/share/man/man1/tracker-extract.1
+usr/share/man/man5/tracker-extract.cfg.5
+#usr/share/tracker/tracker-writeback.xml (tracker-store or drop?)
+#usr/lib/tracker/tracker-writeback (tracker-store or drop?)
+#usr/lib/tracker-0.8/writeback-modules/*.so (tracker-store or drop, is?)

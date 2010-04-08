@@ -1,0 +1,4 @@
+usr/lib/libtracker-miner-0.8.so
+usr/lib/pkgconfig/tracker-miner-0.8.pc
+usr/include/tracker-0.8/libtracker-miner/*.h
+usr/share/vala/vapi/tracker-miner-0.8.vapi

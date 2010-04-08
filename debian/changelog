@@ -43,6 +43,14 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
     - Add libxml2-dev (>= 2.6), uuid-dev, libgee-dev (>= 0.3), valac.
   * New package layout
     - Drop libdeskbar-applet, libtracker-gtk0, libtracker-gtk-dev.
+    - Add libtracker-miner-0.8-0, libtracker-miner-0.8-dev,
+      libtracker-extract-0.8-0 libtracker-extract-0.8-dev,
+      tracker-extract, tracker-miner-fs, tracker-miner-evolution,
+      tracker-explorer, tracker-gui.
+    - Make tracker-search-tool a transitional package which depends on
+      tracker-gui.
+    - Rename libtrackerclient0 → libtracker-client-0.8-0,
+      libtrackerclient-dev → libtracker-client-0.8-dev.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 20:33:12 +0200
 

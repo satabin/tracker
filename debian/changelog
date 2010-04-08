@@ -65,6 +65,10 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
     - Add debian/tracker-miner-evolution.lintian-overrides.
     - Add debian/tracker-miner-fs.lintian-overrides.
     - Add debian/tracker-utils.lintian-overrides.
+  * Remove the old xdg autostart files for trackerd and tracker-applet
+    on upgrades:
+    - Add debian/tracker-gui.preinst.
+    - Add debian/tracker.preinst.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 20:33:12 +0200
 

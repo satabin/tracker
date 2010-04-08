@@ -340,11 +340,11 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-@DIST_FUNCTIONAL_TESTS_TRUE@configdir = $(datadir)/tracker-tests/data/Images
-@DIST_FUNCTIONAL_TESTS_TRUE@config_DATA = \
-@DIST_FUNCTIONAL_TESTS_TRUE@	test-image-1.jpg
+configdir = $(datadir)/tracker-tests/data/Images
+config_DATA = \
+	test-image-1.jpg
 
-@DIST_FUNCTIONAL_TESTS_TRUE@EXTRA_DIST = $(config_DATA)
+EXTRA_DIST = $(config_DATA)
 all: all-am
 
 .SUFFIXES:

@@ -340,11 +340,11 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-@DIST_FUNCTIONAL_TESTS_TRUE@configdir = $(datadir)/tracker-tests
-@DIST_FUNCTIONAL_TESTS_TRUE@config_SCRIPTS = \
-@DIST_FUNCTIONAL_TESTS_TRUE@	01-writeback.py		
+configdir = $(datadir)/tracker-tests
+config_SCRIPTS = \
+	01-writeback.py		
 
-@DIST_FUNCTIONAL_TESTS_TRUE@EXTRA_DIST = $(config_SCRIPTS)
+EXTRA_DIST = $(config_SCRIPTS)
 all: all-am
 
 .SUFFIXES:

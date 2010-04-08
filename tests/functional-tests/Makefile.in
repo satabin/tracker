@@ -381,25 +381,25 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 SUBDIRS = data
-@DIST_FUNCTIONAL_TESTS_TRUE@configdir = $(datadir)/tracker-tests
-@DIST_FUNCTIONAL_TESTS_TRUE@config_SCRIPTS = \
-@DIST_FUNCTIONAL_TESTS_TRUE@	tests.xml		\
-@DIST_FUNCTIONAL_TESTS_TRUE@	01-insertion.py		\
-@DIST_FUNCTIONAL_TESTS_TRUE@	02-metacontacts.py	\
-@DIST_FUNCTIONAL_TESTS_TRUE@	03-fts-functions.py	\
-@DIST_FUNCTIONAL_TESTS_TRUE@	configuration.py	\
-@DIST_FUNCTIONAL_TESTS_TRUE@	metadata_extraction_tc.py \
-@DIST_FUNCTIONAL_TESTS_TRUE@	writeback-tc.py 	\
-@DIST_FUNCTIONAL_TESTS_TRUE@	04-group-concat.py	\
-@DIST_FUNCTIONAL_TESTS_TRUE@	05-coalesce.py		\
-@DIST_FUNCTIONAL_TESTS_TRUE@	06-distance.py		\
-@DIST_FUNCTIONAL_TESTS_TRUE@	07-graph.py		\
-@DIST_FUNCTIONAL_TESTS_TRUE@	08-unique-insertions.py \
-@DIST_FUNCTIONAL_TESTS_TRUE@	virtual-files-tc.py	\
-@DIST_FUNCTIONAL_TESTS_TRUE@	performance-tc.py	\
-@DIST_FUNCTIONAL_TESTS_TRUE@	bootup-tc.py
+configdir = $(datadir)/tracker-tests
+config_SCRIPTS = \
+	01-insertion.py			\
+	02-metacontacts.py		\
+	03-fts-functions.py		\
+	04-group-concat.py		\
+	05-coalesce.py			\
+	06-distance.py			\
+	07-graph.py			\
+	08-unique-insertions.py 	\
+	bootup-tc.py			\
+	configuration.py		\
+	metadata_extraction_tc.py 	\
+	performance-tc.py		\
+	tests.xml			\
+	virtual-files-tc.py		\
+	writeback-tc.py
 
-@DIST_FUNCTIONAL_TESTS_TRUE@EXTRA_DIST = $(config_SCRIPTS)
+EXTRA_DIST = $(config_SCRIPTS)
 all: all-recursive
 
 .SUFFIXES:

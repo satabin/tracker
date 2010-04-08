@@ -49,7 +49,6 @@ typedef struct _TrackerSparqlExpressionPrivate TrackerSparqlExpressionPrivate;
 
 typedef struct _TrackerSparqlQuery TrackerSparqlQuery;
 typedef struct _TrackerSparqlQueryClass TrackerSparqlQueryClass;
-#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 
 #define TRACKER_TYPE_SPARQL_TOKEN_TYPE (tracker_sparql_token_type_get_type ())
 #define _g_free0(var) (var = (g_free (var), NULL))
@@ -63,6 +62,7 @@ typedef struct _TrackerSparqlQueryClass TrackerSparqlQueryClass;
 
 typedef struct _TrackerSparqlVariable TrackerSparqlVariable;
 typedef struct _TrackerSparqlVariableClass TrackerSparqlVariableClass;
+#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 
 #define TRACKER_SPARQL_TYPE_CONTEXT (tracker_sparql_context_get_type ())
 #define TRACKER_SPARQL_CONTEXT(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_SPARQL_TYPE_CONTEXT, TrackerSparqlContext))
@@ -445,17 +445,11 @@ static int _vala_strcmp0 (const char * str1, const char * str2);
 
 
 
-static gpointer _g_object_ref0 (gpointer self) {
-	return self ? g_object_ref (self) : NULL;
-}
-
-
 TrackerSparqlExpression* tracker_sparql_expression_construct (GType object_type, TrackerSparqlQuery* query) {
 	TrackerSparqlExpression * self;
-	TrackerSparqlQuery* _tmp0_;
 	g_return_val_if_fail (query != NULL, NULL);
 	self = (TrackerSparqlExpression*) g_object_new (object_type, NULL);
-	self->priv->query = (_tmp0_ = _g_object_ref0 (query), _g_object_unref0 (self->priv->query), _tmp0_);
+	self->priv->query = query;
 	return self;
 }
 
@@ -745,6 +739,11 @@ static char* string_substring (const char* self, glong offset, glong len) {
 	start = g_utf8_offset_to_pointer (self, offset);
 	result = g_strndup (start, ((gchar*) g_utf8_offset_to_pointer (start, len)) - ((gchar*) start));
 	return result;
+}
+
+
+static gpointer _g_object_ref0 (gpointer self) {
+	return self ? g_object_ref (self) : NULL;
 }
 
 
@@ -1318,7 +1317,10 @@ static void tracker_sparql_expression_translate_bound_call (TrackerSparqlExpress
 
 static void tracker_sparql_expression_translate_regex (TrackerSparqlExpression* self, GString* sql, GError** error) {
 	GError * _inner_error_;
-	gboolean _tmp0_;
+	char* _tmp0_;
+	char* _tmp2_;
+	char* _tmp1_;
+	gboolean _tmp3_;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (sql != NULL);
 	_inner_error_ = NULL;
@@ -1368,7 +1370,7 @@ static void tracker_sparql_expression_translate_regex (TrackerSparqlExpression* 
 			return;
 		}
 	}
-	tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
+	_tmp0_ = tracker_sparql_expression_parse_string_literal (self, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 			g_propagate_error (error, _inner_error_);
@@ -1379,8 +1381,11 @@ static void tracker_sparql_expression_translate_regex (TrackerSparqlExpression* 
 			return;
 		}
 	}
+	g_string_append (sql, _tmp2_ = tracker_sparql_expression_escape_sql_string_literal (self, _tmp1_ = _tmp0_));
+	_g_free0 (_tmp2_);
+	_g_free0 (_tmp1_);
 	g_string_append (sql, ", ");
-	_tmp0_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
+	_tmp3_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 			g_propagate_error (error, _inner_error_);
@@ -1391,8 +1396,11 @@ static void tracker_sparql_expression_translate_regex (TrackerSparqlExpression* 
 			return;
 		}
 	}
-	if (_tmp0_) {
-		tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
+	if (_tmp3_) {
+		char* _tmp4_;
+		char* _tmp6_;
+		char* _tmp5_;
+		_tmp4_ = tracker_sparql_expression_parse_string_literal (self, &_inner_error_);
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 				g_propagate_error (error, _inner_error_);
@@ -1403,6 +1411,9 @@ static void tracker_sparql_expression_translate_regex (TrackerSparqlExpression* 
 				return;
 			}
 		}
+		g_string_append (sql, _tmp6_ = tracker_sparql_expression_escape_sql_string_literal (self, _tmp5_ = _tmp4_));
+		_g_free0 (_tmp6_);
+		_g_free0 (_tmp5_);
 	} else {
 		g_string_append (sql, "''");
 	}
@@ -4846,7 +4857,6 @@ static void tracker_sparql_expression_instance_init (TrackerSparqlExpression * s
 static void tracker_sparql_expression_finalize (GObject* obj) {
 	TrackerSparqlExpression * self;
 	self = TRACKER_SPARQL_EXPRESSION (obj);
-	_g_object_unref0 (self->priv->query);
 	G_OBJECT_CLASS (tracker_sparql_expression_parent_class)->finalize (obj);
 }
 

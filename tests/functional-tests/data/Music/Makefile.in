@@ -340,11 +340,11 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-@DIST_FUNCTIONAL_TESTS_TRUE@configdir = $(datadir)/tracker-tests/data/Music
-@DIST_FUNCTIONAL_TESTS_TRUE@config_DATA = \
-@DIST_FUNCTIONAL_TESTS_TRUE@	tracker-mp3-test.mp3
+configdir = $(datadir)/tracker-tests/data/Music
+config_DATA = \
+	tracker-mp3-test.mp3
 
-@DIST_FUNCTIONAL_TESTS_TRUE@EXTRA_DIST = $(config_DATA)
+EXTRA_DIST = $(config_DATA)
 all: all-am
 
 .SUFFIXES:

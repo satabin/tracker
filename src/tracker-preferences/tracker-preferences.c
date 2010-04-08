@@ -118,6 +118,7 @@ void button_index_recursively_add_clicked_cb (GtkButton* source);
 void button_index_recursively_remove_clicked_cb (GtkButton* source);
 void button_index_single_remove_clicked_cb (GtkButton* source);
 void button_index_single_add_clicked_cb (GtkButton* source);
+void button_ignored_directories_globs_add_clicked_cb (GtkButton* source);
 void button_ignored_directories_add_clicked_cb (GtkButton* source);
 void button_ignored_directories_remove_clicked_cb (GtkButton* source);
 void button_ignored_directories_with_content_add_clicked_cb (GtkButton* source);
@@ -211,7 +212,6 @@ void checkbutton_index_optical_discs_toggled_cb (GtkCheckButton* source) {
 char* hscale_disk_space_limit_format_value_cb (GtkScale* source, double value) {
 	char* result = NULL;
 	g_return_val_if_fail (source != NULL, NULL);
-	tracker_config_set_low_disk_space_limit (config, (gint) value);
 	if (((gint) value) == (-1)) {
 		result = g_strdup (_ ("Disabled"));
 		return result;
@@ -224,7 +224,6 @@ char* hscale_disk_space_limit_format_value_cb (GtkScale* source, double value) {
 char* hscale_throttle_format_value_cb (GtkScale* source, double value) {
 	char* result = NULL;
 	g_return_val_if_fail (source != NULL, NULL);
-	tracker_config_set_throttle (config, (gint) value);
 	result = g_strdup_printf (_ ("%d/20"), (gint) value);
 	return result;
 }
@@ -246,9 +245,11 @@ void add_freevalue (GtkListStore* model) {
 	dialog = NULL;
 	entry = NULL;
 	content_area = NULL;
-	dialog = (_tmp0_ = g_object_ref_sink ((GtkDialog*) gtk_dialog_new_with_buttons (_ ("Enter value"), window, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL)), _g_object_unref0 (dialog), _tmp0_);
+	dialog = (_tmp0_ = g_object_ref_sink ((GtkDialog*) gtk_dialog_new_with_buttons (_ ("Enter value"), window, GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_NO_SEPARATOR, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL)), _g_object_unref0 (dialog), _tmp0_);
+	gtk_dialog_set_default_response (dialog, (gint) GTK_RESPONSE_ACCEPT);
 	content_area = (_tmp1_ = _g_object_ref0 (GTK_CONTAINER (gtk_dialog_get_content_area (dialog))), _g_object_unref0 (content_area), _tmp1_);
 	entry = (_tmp2_ = g_object_ref_sink ((GtkEntry*) gtk_entry_new ()), _g_object_unref0 (entry), _tmp2_);
+	gtk_entry_set_activates_default (entry, TRUE);
 	gtk_widget_show ((GtkWidget*) entry);
 	gtk_container_add (content_area, (GtkWidget*) entry);
 	if (gtk_dialog_run (dialog) == GTK_RESPONSE_ACCEPT) {
@@ -378,9 +379,15 @@ void button_index_single_add_clicked_cb (GtkButton* source) {
 }
 
 
-void button_ignored_directories_add_clicked_cb (GtkButton* source) {
+void button_ignored_directories_globs_add_clicked_cb (GtkButton* source) {
 	g_return_if_fail (source != NULL);
 	add_freevalue (liststore_ignored_directories);
+}
+
+
+void button_ignored_directories_add_clicked_cb (GtkButton* source) {
+	g_return_if_fail (source != NULL);
+	add_dir (liststore_ignored_directories);
 }
 
 
@@ -492,6 +499,8 @@ void button_apply_clicked_cb (GtkButton* source) {
 	__g_slist_free_g_free0 (_tmp3_);
 	tracker_config_set_index_recursive_directories (config, _tmp4_ = model_to_slist (liststore_index_recursively));
 	__g_slist_free_g_free0 (_tmp4_);
+	tracker_config_set_low_disk_space_limit (config, (gint) gtk_range_get_value ((GtkRange*) hscale_disk_space_limit));
+	tracker_config_set_throttle (config, (gint) gtk_range_get_value ((GtkRange*) hscale_throttle));
 	tracker_config_save (config);
 	tracker_icon_config_save (icon_config);
 }

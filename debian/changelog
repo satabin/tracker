@@ -51,6 +51,8 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
       tracker-gui.
     - Rename libtrackerclient0 → libtracker-client-0.8-0,
       libtrackerclient-dev → libtracker-client-0.8-dev.
+  * Add symbols files for libtracker-client-0.8-0, libtracker-extract-0.8-0
+    and libtracker-miner-0.8-0.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 20:33:12 +0200
 

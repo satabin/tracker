@@ -100,30 +100,6 @@ Description: metadata database, indexer and search tool - development files
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-gtk0
-Architecture: any
-Section: libs
-Depends: ${shlibs:Depends},
-         ${misc:Depends}
-Description: GTK+ widgets for apps that use tracker
- This library provides handy GTK+ widgets which allows applications to
- easily make use of tracker.
-
-Package: libtracker-gtk-dev
-Architecture: any
-Section: libdevel
-Depends: libtracker-gtk0 (= ${binary:Version}),
-         ${misc:Depends},
-         libtrackerclient-dev,
-         libgtk2.0-dev,
-         libglib2.0-dev
-Description: GTK+ widgets for apps that use tracker - development files
- This package contains the static libraries and header files needed to link
- applications with libtracker-gtk.
- .
- libtracker-gtk provides handy GTK+ widgets which allows applications to
- easily make use of tracker.
-
 Package: tracker-utils
 Architecture: any
 Depends: ${shlibs:Depends},
@@ -156,24 +132,6 @@ Depends: ${shlibs:Depends},
 Recommends: xdg-utils
 Description: metadata database, indexer and search tool - GNOME frontend
  This package provides a graphical Tracker search tool for GNOME.
- .
- Tracker is an advanced framework for first class objects with associated
- metadata and tags. It provides a one stop solution for all metadata, tags,
- shared object databases, search tools and indexing.
-
-Package: libdeskbar-tracker
-Architecture: all
-Depends: ${misc:Depends},
-         ${python:Depends},
-         python-dbus (>= 0.41),
-         python-gnome2,
-         python-gobject,
-         python-gnomedesktop,
-         deskbar-applet (>= 2.20.0),
-         tracker
-Recommends: tracker-search-tool
-Description: metadata database, indexer and search tool - deskbar-applet plugin
- This package provides a deskbar-applet plugin for Tracker.
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,

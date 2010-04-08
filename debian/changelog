@@ -41,6 +41,8 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
       specifis in MP3s.
     - Add libiptcdata0-dev for extracting IPTC metadata from images.
     - Add libxml2-dev (>= 2.6), uuid-dev, libgee-dev (>= 0.3), valac.
+  * New package layout
+    - Drop libdeskbar-applet, libtracker-gtk0, libtracker-gtk-dev.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 20:33:12 +0200
 

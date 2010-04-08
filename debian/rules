@@ -8,10 +8,8 @@ include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 DEB_CONFIGURE_EXTRA_FLAGS := \
 	--enable-unac \
 	--enable-external-qdbm \
-	--enable-deskbar-applet=module \
 	--enable-tracker-search-tool \
 	--enable-tracker-preferences \
-	--enable-libtrackergtk \
 	--enable-tracker-applet \
 	--enable-libvorbis
 
@@ -23,5 +21,3 @@ DEB_DH_MAKESHLIBS_ARGS_ALL := -V
 DEB_DH_MAKESHLIBS_ARGS_tracker := -X/usr/lib/tracker/indexer-modules/ \
                                   -X/usr/lib/tracker/extract-modules/ \
                                   -n
-binary-install/libdeskbar-tracker::
-	dh_pysupport -p$(cdbs_curpkg) /usr/lib/deskbar-applet/modules-2.20-compatible/

@@ -11,7 +11,7 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
     - Support for Nepomuk with SPARQL which are used to query and update the
       data.
     - tracker-meta-folder is gone. (Closes: #430623)
-  * Remove patches
+  * Remove patches:
     - debian/patches/10-binutils-gold.patch (fixed upstream)
     - debian/patches/15-am-maintainer-mode.patch (obsolete)
     - debian/patches/20-tracker-search-man-page-typo-fix.patch (merged
@@ -20,7 +20,7 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
     - debian/patches/99-autoreconf.patch (obsolete)
   * debian/patches/30-vfat-hidden-attribute-build-fix.patch
     - Refresh to apply cleanly.
-  * Update Build-Depends
+  * Update Build-Depends:
     - Bump libglib2.0-dev to (>= 2.20.0).
     - Bump libdbus-1-dev to (>= 1.0).
     - Bump libdbus-glib-1-dev to (>= 0.78).
@@ -41,7 +41,7 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
       specifis in MP3s.
     - Add libiptcdata0-dev for extracting IPTC metadata from images.
     - Add libxml2-dev (>= 2.6), uuid-dev, libgee-dev (>= 0.3), valac.
-  * New package layout
+  * New package layout:
     - Drop libdeskbar-applet, libtracker-gtk0, libtracker-gtk-dev.
     - Add libtracker-miner-0.8-0, libtracker-miner-0.8-dev,
       libtracker-extract-0.8-0 libtracker-extract-0.8-dev,
@@ -51,12 +51,14 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
       tracker-gui.
     - Rename libtrackerclient0 → libtracker-client-0.8-0,
       libtrackerclient-dev → libtracker-client-0.8-dev.
-  * Add symbols files for libtracker-client-0.8-0, libtracker-extract-0.8-0
-    and libtracker-miner-0.8-0.
+  * Add symbols files for all shared libraries:
+    - Add debian/libtracker-client-0.8-0.symbols.
+    - Add debian/libtracker-miner-0.8-0.symbols.
+    - Add debian/libtracker-extract-0.8-0.symbols.
   * Rename tracker.postinst → tracker-miner-fs.postinst as tracker-miner-fs
     needs the increased fs.inotify.max_user_watches, not tracker-store.
   * Add lintian overrides for binary-or-shlib-defines-rpath for packages
-    linking against private libraries in /usr/lib/tracker-0.8.
+    linking against private libraries in /usr/lib/tracker-0.8:
     - Add debian/libtracker-extract-0.8-0.lintian-overrides.
     - Add debian/libtracker-miner-0.8-0.lintian-overrides.
     - Add debian/tracker-gui.lintian-overrides.

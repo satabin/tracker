@@ -1,10 +1,10 @@
-tracker (0.6.96-2) UNRELEASED; urgency=low
+tracker (0.6.96-2) unstable; urgency=low
 
   * debian/patches/30-vfat-hidden-attribute-build-fix.patch
     - Don't build VFAT check for hidden attributes on non-linux platforms.
       Thanks Petr Salinger for the patch. (Closes: #576938)
 
- -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 16:23:14 +0200
+ -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 16:47:01 +0200
 
 tracker (0.6.96-1) unstable; urgency=low
 

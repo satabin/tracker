@@ -30,7 +30,7 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
     - Drop libgmime-2.4-dev, libgnome2-dev, libgnomeui-dev,
       libgnome-desktop-dev, libglade2-dev, libraptor1-dev, libqdbm-dev,
       libhal-dev, libhal-storage-dev.
-    - Add libflac (>= 1.2.1) for FLAC extractor support.
+    - Add libflac-dev (>= 1.2.1) for FLAC extractor support.
     - Add evolution-dev (>= 2.25.5) and evolution-data-server-dev (>= 2.25.5)
       for the evolution email miner.
     - Add libpanel-applet2-dev for the tracker-search-bar applet.

@@ -3,4 +3,5 @@
 15-am-maintainer-mode.patch
 20-tracker-search-man-page-typo-fix.patch
 25-trackerd-man-page-typo-fix.patch
+30-vfat-hidden-attribute-build-fix.patch
 99-autoreconf.patch

@@ -18,7 +18,8 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
       upstream)
     - debian/patches/25-trackerd-man-page-typo-fix.patch (merged upstream)
     - debian/patches/99-autoreconf.patch (obsolete)
-
+  * debian/patches/30-vfat-hidden-attribute-build-fix.patch
+    - Refresh to apply cleanly.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 20:33:12 +0200
 

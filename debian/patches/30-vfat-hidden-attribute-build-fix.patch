@@ -1,36 +1,34 @@
 Description: Don't build vfat related code on non-linux platforms
 Author: Petr Salinger <Petr.Salinger@seznam.cz>
 Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=576938
-diff --git a/src/trackerd/tracker-crawler.c b/src/trackerd/tracker-crawler.c
-index 6a42cca..d897bb1 100644
---- a/src/trackerd/tracker-crawler.c
-+++ b/src/trackerd/tracker-crawler.c
-@@ -23,10 +23,12 @@
- #include <string.h>
+Index: tracker/src/miners/fs/tracker-miner-files.c
+===================================================================
+--- tracker.orig/src/miners/fs/tracker-miner-files.c	2010-04-01 17:24:01.000000000 +0200
++++ tracker/src/miners/fs/tracker-miner-files.c	2010-04-08 21:03:44.183099610 +0200
+@@ -21,8 +21,10 @@
  
- /* VFAT check, FIXME should we move this elsewhere? */
-+#ifdef __linux__
+ #include <sys/statvfs.h>
  #include <fcntl.h>
++#ifdef __linux__
  #include <sys/ioctl.h>
  #include <linux/msdos_fs.h>
- #include <unistd.h>
 +#endif /* __linux__ */
- /* End of VFAT check includes */
+ #include <unistd.h>
  
- #include <gio/gio.h>
-@@ -384,6 +386,7 @@ is_path_ignored (TrackerCrawler *crawler,
- 			goto done;
- 		}
+ #include <glib/gi18n.h>
+@@ -1777,6 +1779,7 @@
+ 	 */
+ 	is_hidden = file_info && g_file_info_get_is_hidden (file_info);
  
 +#ifdef __linux__
- 		/* If the file is on FAT and if the hidden attribute is set, we
- 		 * consider the directory to be hidden */
- 
-@@ -414,6 +417,7 @@ is_path_ignored (TrackerCrawler *crawler,
- 				goto done;
- 			}
+ 	/* Second we check if the file is on FAT and if the hidden
+ 	 * attribute is set. GIO does this but ONLY on a Windows OS,
+ 	 * not for Windows files under a Linux OS, so we have to check
+@@ -1796,6 +1799,7 @@
+ 			close (fd);
  		}
+ 	}
 +#endif /* __linux__ */
  
- 		/* Check module directory ignore patterns */
- 		for (l = crawler->private->ignored_directory_patterns; l; l = l->next) {
+ 	if (is_hidden) {
+ 		/* FIXME: We need to check if the file is actually a

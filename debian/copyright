@@ -3,22 +3,79 @@ Tue, 28 Nov 2006 20:35:52 +0100.
 
 It was downloaded from http://www.tracker-project.org/
 
-Upstream Author:
-   Jamie McCracken (jamiemcc at gnome.org)
+Upstream Authors:
+    Jamie McCracken <jamiemcc at gnome.org>
+    Martyn Russell <martyn@lanedo.com>
+    Carlos Garnacho <carlosg@gnome.org>
+    Philip Van Hoof <philip@codeminded.be>
+    Jürg Billeter <j@bitron.ch>
+    Mikael Ottela <mikael.ottela@ixonos.com>
 
 Copyright:
-   Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
+    Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+    Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
 
 License:
-
-All files if not specified otherwise are licensed under the GPL v2 or later.
-
+    All files if not specified otherwise are licensed under the GPL v2 or later.
 
 ===============================================================================
-src/libtracker/* (libtrackerclient)
+src/libinotify/*
 
-Copyright (C) 2006, Mr Jamie McCracken (jamiemcc@gnome.org)
-License: LGPL v2 or later
+Copyright (C) 2005 Ryan Lortie <desrt@desrt.ca>
+License: LGPL v2.1 or later
+
+===============================================================================
+src/libtracker-client/*
+
+Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+Copyright (C) 2008-2010, Nokia <ivan.frade@nokia.com>
+Copyright (C) 2010, Adrien Bustany <abustany@gnome.org>
+License: LGPL v2.1 or later
+
+===============================================================================
+src/libtracker-common/*
+
+Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
+
+License: LGPL v2.1 or later
+
+===============================================================================
+src/libtracker-data/*
+
+Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+Copyright (C) 2007, Jason Kivlighn <jkivlighn@gmail.com>
+Copyright (C) 2007, Creative Commons <http://creativecommons.org>
+Copyright (C) 2008-2010, Nokia <ivan.frade@nokia.com>
+License: LGPL v2.1 or later
+
+===============================================================================
+src/libtracker-db/*
+
+Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+Copyright (C) 2008-2009, Nokia <ivan.frade@nokia.com>
+License: LGPL v2.1 or later
+
+===============================================================================
+src/libtracker-extract/*
+
+Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+Copyright (C) 2009-2010, Nokia <ivan.frade@nokia.com>
+License: LGPL v2.1 or later
+
+===============================================================================
+src/libtracker-fts/*
+
+Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+Copyright (C) 2008-2009, Nokia <ivan.frade@nokia.com>
+License: LGPL v2.1 or later
+
+===============================================================================
+src/libtracker-miner/*
+
+Copyright (C) 2008-2009, Nokia <ivan.frade@nokia.com>
+Copyright (C) 2009-2010, Adrien Bustany <abustany@gnome.org>
+License: LGPL v2.1 or later
 
 ===============================================================================
 src/libstemmer/*
@@ -50,61 +107,13 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ===============================================================================
-src/sqlite3/* (inlined copy of sqlite)
+src/tracker-utils/*
 
-The author disclaims all copyright. The library is in the public domain.
-
-===============================================================================
-src/text-filters/ooo_converter/* (inlined copy of o3read)
-
-Copyright (C) 2002-2005  Ulric Eriksson <ulric@siag.nu>
-License: GPL v2 or later
-
-===============================================================================
-src/trackerd/xdgmime* (inlined copy of xdgmime)
-
-Copyright (C) 2004  Red Hat, Inc
-License: Academic Free License version 2.0 or LGPL v2 or later
-
-===============================================================================
-src/qdbm/* (inlined copy of QDBM)
-
-Copyright (C) 2000-2006 Mikio Hirabayashi
+Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+Copyright (C) 2008-2009, Nokia <ivan.frade@nokia.com>
 License: LGPL v2.1 or later
 
 ===============================================================================
-src/tracker-thumbnailer/md5.*
-
-Copyright (C) 1999 Aladdin Enterprises.  All rights reserved.
-
-This software is provided 'as-is', without any express or implied
-warranty.  In no event will the authors be held liable for any damages
-arising from the use of this software.
-
-Permission is granted to anyone to use this software for any purpose,
-including commercial applications, and to alter it and redistribute it
-freely, subject to the following restrictions:
-
-1. The origin of this software must not be misrepresented; you must not
-   claim that you wrote the original software. If you use this software
-   in a product, an acknowledgment in the product documentation would be
-   appreciated but is not required.
-2. Altered source versions must be plainly marked as such, and must not be
-   misrepresented as being the original software.
-3. This notice may not be removed or altered from any source distribution.
-
-===============================================================================
-src/tracker-search-tool/sexy-icon-* (inlined copy of libsexy)
-
-Copyright (C) 2004-2006 Christian Hammond
-License: LGPL v2 or later
-
-===============================================================================
-python/deskbar-handler/tracker-handler.py
-
-Copyright (c) 2006 Mikkel Kamstrup
-License: GPL v2 or later
-
 
 
 On Debian systems, the complete text of the GNU Lesser General

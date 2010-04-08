@@ -69,6 +69,9 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
     on upgrades:
     - Add debian/tracker-gui.preinst.
     - Add debian/tracker.preinst.
+  * debian/rules:
+    - Update configure switches, enable FLAC extractor support.
+    - Update DEB_DH_MAKESHLIBS_ARGS_ALL arguments.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 20:33:12 +0200
 

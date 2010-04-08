@@ -7,17 +7,23 @@ include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 
 DEB_CONFIGURE_EXTRA_FLAGS := \
 	--enable-unac \
-	--enable-external-qdbm \
+	--disable-unit-tests \
+	--enable-tracker-status-icon \
+	--enable-tracker-explorer \
+	--enable-tracker-search-bar \
 	--enable-tracker-search-tool \
 	--enable-tracker-preferences \
-	--enable-tracker-applet \
-	--enable-libvorbis
+	--enable-nautilus-extension \
+	--enable-libvorbis \
+	--enable-libflac
 
 LDFLAGS += -Wl,--as-needed -Wl,-Bsymbolic
 
 # Enforce tight shlibs dependencies
-DEB_DH_MAKESHLIBS_ARGS_ALL := -V
-# Don't generate ldconfig calls or shlibs for the plugins.
-DEB_DH_MAKESHLIBS_ARGS_tracker := -X/usr/lib/tracker/indexer-modules/ \
-                                  -X/usr/lib/tracker/extract-modules/ \
-                                  -n
+DEB_DH_MAKESHLIBS_ARGS_ALL := -V -X/usr/lib/tracker-0.8/writeback-modules/ \
+                                 -X/usr/lib/tracker-0.8/extract-modules/ \
+                                 -X/usr/lib/tracker-0.8/push-modules/ \
+                                 -X/usr/lib/tracker-0.8/libtracker-data \
+                                 -X/usr/lib/evolution/ \
+                                 -X/usr/lib/nautilus/extensions-2.0/
+

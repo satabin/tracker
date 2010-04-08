@@ -105,8 +105,6 @@ public static void checkbutton_index_optical_discs_toggled_cb (CheckButton sourc
 }
 
 public static string hscale_disk_space_limit_format_value_cb (Scale source, double value) {
-	config.low_disk_space_limit = (int) value;
-
 	if (((int) value) == -1) {
 		return _("Disabled");
 	}
@@ -115,7 +113,6 @@ public static string hscale_disk_space_limit_format_value_cb (Scale source, doub
 }
 
 public static string hscale_throttle_format_value_cb (Scale source, double value) {
-	config.throttle = (int) value;
 	return _("%d/20").printf ((int) value);
 }
 
@@ -126,12 +123,14 @@ public static void add_freevalue (ListStore model) {
 
 	dialog = new Dialog.with_buttons (_("Enter value"),
 	                                  window,
-	                                  DialogFlags.DESTROY_WITH_PARENT,
+	                                  DialogFlags.DESTROY_WITH_PARENT | DialogFlags.NO_SEPARATOR,
 	                                  STOCK_CANCEL, ResponseType.CANCEL,
 	                                  STOCK_OK, ResponseType.ACCEPT);
 
+	dialog.set_default_response(ResponseType.ACCEPT);
 	content_area = (Container) dialog.get_content_area ();
 	entry = new Entry ();
+	entry.set_activates_default (true);
 	entry.show ();
 	content_area.add (entry);
 
@@ -208,8 +207,12 @@ public static void button_index_single_add_clicked_cb (Button source) {
 	add_dir (liststore_index_single);
 }
 
-public static void button_ignored_directories_add_clicked_cb (Button source) {
+public static void button_ignored_directories_globs_add_clicked_cb (Button source) {
 	add_freevalue (liststore_ignored_directories);
+}
+
+public static void button_ignored_directories_add_clicked_cb (Button source) {
+	add_dir (liststore_ignored_directories);
 }
 
 public static void button_ignored_directories_remove_clicked_cb (Button source) {
@@ -272,6 +275,9 @@ public static void button_apply_clicked_cb (Button source) {
 	config.ignored_files = model_to_slist (liststore_ignored_files);
 	config.ignored_directories_with_content = model_to_slist (liststore_gnored_directories_with_content);
 	config.index_recursive_directories = model_to_slist (liststore_index_recursively);
+
+	config.low_disk_space_limit = (int) hscale_disk_space_limit.get_value ();
+	config.throttle = (int) hscale_throttle.get_value ();
 
 	config.save ();
 	icon_config.save ();

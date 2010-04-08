@@ -18,7 +18,7 @@
  */
 
 class Tracker.Sparql.Expression : Object {
-	Query query;
+	weak Query query;
 
 	const string XSD_NS = "http://www.w3.org/2001/XMLSchema#";
 	const string FN_NS = "http://www.w3.org/2005/xpath-functions#";
@@ -240,10 +240,15 @@ class Tracker.Sparql.Expression : Object {
 		translate_expression_as_string (sql);
 		sql.append (", ");
 		expect (SparqlTokenType.COMMA);
-		translate_expression (sql);
+		// SQLite's sqlite3_set_auxdata doesn't work correctly with bound
+		// strings for the regex in function_sparql_regex.
+		// translate_expression (sql);
+		sql.append (escape_sql_string_literal (parse_string_literal ()));
 		sql.append (", ");
 		if (accept (SparqlTokenType.COMMA)) {
-			translate_expression (sql);
+			// Same as above
+			// translate_expression (sql);
+			sql.append (escape_sql_string_literal (parse_string_literal ()));
 		} else {
 			sql.append ("''");
 		}

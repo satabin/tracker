@@ -901,12 +901,10 @@ GType tracker_sparql_predicate_variable_get_type (void) {
 
 TrackerSparqlPattern* tracker_sparql_pattern_construct (GType object_type, TrackerSparqlQuery* query) {
 	TrackerSparqlPattern * self;
-	TrackerSparqlQuery* _tmp0_;
-	TrackerSparqlExpression* _tmp1_;
 	g_return_val_if_fail (query != NULL, NULL);
 	self = (TrackerSparqlPattern*) g_object_new (object_type, NULL);
-	self->priv->query = (_tmp0_ = _g_object_ref0 (query), _g_object_unref0 (self->priv->query), _tmp0_);
-	self->priv->expression = (_tmp1_ = _g_object_ref0 (query->expression), _g_object_unref0 (self->priv->expression), _tmp1_);
+	self->priv->query = query;
+	self->priv->expression = query->expression;
 	return self;
 }
 
@@ -4911,8 +4909,6 @@ static void tracker_sparql_pattern_instance_init (TrackerSparqlPattern * self) {
 static void tracker_sparql_pattern_finalize (GObject* obj) {
 	TrackerSparqlPattern * self;
 	self = TRACKER_SPARQL_PATTERN (obj);
-	_g_object_unref0 (self->priv->query);
-	_g_object_unref0 (self->priv->expression);
 	_g_free0 (self->priv->current_graph);
 	_g_free0 (self->priv->current_subject);
 	_g_free0 (self->priv->current_predicate);

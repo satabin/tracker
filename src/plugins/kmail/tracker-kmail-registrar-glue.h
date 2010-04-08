@@ -53,7 +53,7 @@ G_BEGIN_DECLS
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* NONE:BOXED,BOXED,BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.B89EAV:1) */
+/* NONE:BOXED,BOXED,BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.A54KAV:1) */
 extern void dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_BOXED_BOXED_UINT_POINTER (GClosure     *closure,
                                                                                             GValue       *return_value,
                                                                                             guint         n_param_values,
@@ -103,7 +103,7 @@ dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_BOXED_BOXED_UINT_POINTER (
 }
 #define dbus_glib_marshal_tracker_kmail_registrar_NONE__BOXED_BOXED_BOXED_UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_BOXED_BOXED_UINT_POINTER
 
-/* NONE:STRING,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.B89EAV:2) */
+/* NONE:STRING,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.A54KAV:2) */
 extern void dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_UINT_POINTER (GClosure     *closure,
                                                                                  GValue       *return_value,
                                                                                  guint         n_param_values,
@@ -149,7 +149,7 @@ dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_UINT_POINTER (GClosure   
 }
 #define dbus_glib_marshal_tracker_kmail_registrar_NONE__STRING_UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_UINT_POINTER
 
-/* NONE:BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.B89EAV:3) */
+/* NONE:BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.A54KAV:3) */
 extern void dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_UINT_POINTER (GClosure     *closure,
                                                                                 GValue       *return_value,
                                                                                 guint         n_param_values,
@@ -195,11 +195,11 @@ dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_UINT_POINTER (GClosure    
 }
 #define dbus_glib_marshal_tracker_kmail_registrar_NONE__BOXED_UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_UINT_POINTER
 
-/* NONE:UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.B89EAV:4) */
+/* NONE:UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.A54KAV:4) */
 #define dbus_glib_marshal_tracker_kmail_registrar_VOID__UINT_POINTER	g_cclosure_marshal_VOID__UINT_POINTER
 #define dbus_glib_marshal_tracker_kmail_registrar_NONE__UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__UINT_POINTER
 
-/* NONE:STRING,BOXED,BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.B89EAV:5) */
+/* NONE:STRING,BOXED,BOXED,UINT,POINTER (/tmp/dbus-binding-tool-c-marshallers.A54KAV:5) */
 extern void dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_BOXED_BOXED_UINT_POINTER (GClosure     *closure,
                                                                                              GValue       *return_value,
                                                                                              guint         n_param_values,

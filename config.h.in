@@ -25,6 +25,9 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
+/* Define if we have eds 2.29.1 or newer */
+#undef HAVE_EDS_2_29_1
+
 /* Enca language detection aid */
 #undef HAVE_ENCA
 

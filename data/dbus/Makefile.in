@@ -46,6 +46,9 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
+@USING_MINER_RSS_TRUE@am__append_1 = \
+@USING_MINER_RSS_TRUE@	org.freedesktop.Tracker1.Miner.RSS.service.in
+
 subdir = data/dbus
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
@@ -358,12 +361,10 @@ config_noinst = \
 
 # Services
 servicedir = $(DBUS_SERVICES_DIR)
-service_in_files = \
-	org.freedesktop.Tracker1.service.in			\
-	org.freedesktop.Tracker1.Miner.Applications.service.in	\
-	org.freedesktop.Tracker1.Miner.Files.service.in		\
-	org.freedesktop.Tracker1.Extract.service.in
-
+service_in_files = org.freedesktop.Tracker1.service.in \
+	org.freedesktop.Tracker1.Miner.Applications.service.in \
+	org.freedesktop.Tracker1.Miner.Files.service.in \
+	org.freedesktop.Tracker1.Extract.service.in $(am__append_1)
 service_DATA = $(service_in_files:.service.in=.service)
 EXTRA_DIST = \
 	$(service_in_files)					\

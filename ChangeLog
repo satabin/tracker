@@ -1,3 +1,158 @@
+2010-04-08  Martyn Russell  <martyn@lanedo.com>
+
+	Bumped version number
+
+	Updated NEWS
+
+	Revert "Added indices to message ontology for query performance"
+	This reverts commit be44257ce207c3e39cf03418fce10f01e859ce8c.
+
+	This would require a new db version and reindex, only available for 0.9
+
+	Updated NEWS
+
+	libtracker-db: Change version enum to use more sensible names
+
+2010-04-08  Tshepang Lekhonkhobe  <tshepang@gmail.com>
+
+	Updated README to link to Roadmap
+
+2010-04-08  Amit Jain  <ext-amit.1.jain@nokia.com>
+
+	functional-tests: Updated perfmrnace-tc.py, mostly whitespace changes
+
+2010-04-08  Martyn Russell  <martyn@lanedo.com>
+
+	Removed TODO, it was out of date
+
+	Updated README
+
+	Fixes GB#614981 - Make distcheck depend on important components
+
+	configure: Enable functional tests by default
+
+	configure: Default libunac to auto not disabled
+	We disabled this in the past due to a corruption that used to occur.
+	This has been fixed so we can again use it.
+
+	tracker-miner-rss: Added debug information to follow what is going on
+
+	tracker-miner-rss: Small code clean ups
+
+	Fixes NB#158962, tracker-miner-fs emits criticals for some desktop files
+	Desktop files with non-standard type cause SPARQL warnings. Now we
+	warn in the logs where type is not correct and default to 'Application'
+
+	tracker-miner-rss: Add RSS D-Bus service file
+
+	tracker-miner-rss: Link with libtracker-common
+
+	tracker-miner-fs: Removed unused $(tracker_store_win_libs) from Makefile.am
+
+2010-04-08  Philip Van Hoof  <philip@codeminded.be>
+
+	tests/libtracker-data: Unit test for more than one regex query
+
+2010-04-08  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug 614722 - Strcasestr is defined on FreeBSD
+	Avoid exif_entry_get_value() wherever it may return translated strings, instead
+	use raw exif values. This also avoids the use of strcasestr().
+
+2010-04-08  Mario Blättermann  <mariobl@gnome.org>
+
+	Updated German translation
+
+2010-04-08  Jürg Billeter  <j@bitron.ch>
+
+	Update .gitignore
+
+2010-04-08  Javier Jardón  <jjardon@gnome.org>
+
+	Fixes GB#614877 - Remove deprecated Encoding key from desktop files
+
+2010-04-08  Carlos Garnacho  <carlosg@gnome.org>
+
+	NB#162546 - tracker-miner-fs is emitting criticals after resuming...
+	Make sure the timer is stopped on tracker_crawler_start() if it was previously
+	paused.
+
+2010-04-06  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#614560 - Build problems in the gio file monitoring case.
+	Fix 2/2 - Don't link with libinotify if using GIO
+
+	Fixes GB#614560, Build problems in the gio file monitoring case
+	Fix 1/2 - use same _monitor_move() function for inotify/gio
+
+2010-04-06  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2010-04-06  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Fixed debian builds, don't use $(builddir) in Makefile.am
+
+	Revert "tracker-preferences: Turn off no-show-all in .ui file for a frame"
+	This reverts commit 0fe2ac5e7e07e68be0e4cccd920071598d7c2c40.
+	This caused a regression where the start up delay was displayed in the preferences
+
+2010-04-06  Michael Biebl  <biebl@debian.org>
+
+	ifdef is sufficient, so use that
+
+	Fix evolution plugin build failure with e-d-s 2.28
+	Let pkg-config do the version check so we don't fail with e-d-s 2.28.
+	See also https://bugzilla.gnome.org/show_bug.cgi?id=613199
+
+2010-04-06  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug 614722 - Strcasestr is defined on FreeBSD
+	Make sure we are comparing lowercase UTF-8 strings when applying the heuristic
+	to get albumart from the local audio file folder, so only strstr() is needed.
+
+2010-04-06  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Fixed bug for SPARQL regex
+	SQLite's sqlite3_set_auxdata doesn't work for bound string values for the
+	regex string. This fix changes the regex from a bound literal to being part
+	of the SQL query string itself.
+
+2010-04-06  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Added indices to message ontology for query performance
+
+2010-04-06  Tshepang Lekhonkhobe  <tshepang@gmail.com>
+
+	tracker-preferences: improvements to the ignored_dirs gtkentry UI
+	* removes the separator between text entry and the 2 buttons
+	* OK is the default action when hitting return
+
+	these were suggested by mitch
+
+	tracker-preferences: add filechooser button for ignored directories
+
+2010-04-06  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-preferences: Turn off no-show-all in .ui file for a frame
+
+	tracker-preferences: Workaround for gtk+ bug setting scalers to max default
+	The scaler type in gtk+ seems to be setting the scaler's value to its max
+	default when the scaler is in a tab, the tab isn't open and
+	gtk_widget_show_all is called for. It also signals when this happens the
+	changed signal. In the signal handler we set the config object. If the tab
+	is never activated that means that we've written the config value with some-
+	thing the user didn't ask for (the default max value). I workaround-fixed
+	this by only setting the config object on apply-click.
+
+2010-04-06  Saleem Abdulrasool  <compnerd@compnerd.org>
+
+	ignore vim swapfiles
+
+2010-04-06  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Fix memory leak due to reference cycle
+
 2010-04-01  Martyn Russell  <martyn@lanedo.com>
 
 	NEWS: last minute tweaks

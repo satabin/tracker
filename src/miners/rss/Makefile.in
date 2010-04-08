@@ -67,6 +67,7 @@ am_tracker_miner_rss_OBJECTS = tracker-main.$(OBJEXT) \
 tracker_miner_rss_OBJECTS = $(am_tracker_miner_rss_OBJECTS)
 am__DEPENDENCIES_1 =
 tracker_miner_rss_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
@@ -361,10 +362,11 @@ INCLUDES = \
 	-DG_LOG_DOMAIN=\"Tracker\"					\
 	-DTRACKER_COMPILATION						\
 	-I$(top_srcdir)/src						\
+	$(WARN_CFLAGS)							\
 	$(GMODULE_CFLAGS)						\
 	$(DBUS_CFLAGS)							\
-	$(WARN_CFLAGS)							\
-	$(LIBGRSS_CFLAGS)
+	$(LIBGRSS_CFLAGS)						\
+	$(GCOV_CFLAGS)
 
 tracker_miner_rss_SOURCES = \
 	tracker-main.c							\
@@ -373,11 +375,11 @@ tracker_miner_rss_SOURCES = \
 
 tracker_miner_rss_LDADD = \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la	\
-	$(GLIB2_LIBS)						\
-	$(DBUS_LIBS)						\
-	$(LIBGRSS_LIBS)
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(LIBGRSS_LIBS)							\
+	$(DBUS_LIBS)							\
+	$(GLIB2_LIBS)
 
-CLEANFILES = $(BUILT_SOURCES)
 all: all-am
 
 .SUFFIXES:
@@ -605,7 +607,6 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)

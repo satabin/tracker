@@ -47,6 +47,9 @@ host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
 noinst_PROGRAMS = $(am__EXEEXT_1)
+@HAVE_LIBINOTIFY_TRUE@am__append_1 = \
+@HAVE_LIBINOTIFY_TRUE@	$(top_builddir)/src/libinotify/libinotify.la
+
 subdir = tests/tracker-miner-fs
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
@@ -73,11 +76,10 @@ tracker_metadata_utils_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
-	$(top_builddir)/src/libinotify/libinotify.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__append_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -385,21 +387,14 @@ tracker_metadata_utils_SOURCES = \
 	$(top_srcdir)/src/miners/fs/tracker-marshal.c				\
 	tracker-metadata-utils-test.c
 
-tracker_metadata_utils_LDADD = \
-	$(top_builddir)/src/libtracker-data/libtracker-data.la 			\
-	$(top_builddir)/src/libtracker-db/libtracker-db.la 			\
-	$(top_builddir)/src/libtracker-common/libtracker-common.la 		\
+tracker_metadata_utils_LDADD =  \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+	$(top_builddir)/src/libtracker-db/libtracker-db.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/tests/common/libtracker-testcommon.la           	\
-	$(top_builddir)/src/libinotify/libinotify.la				\
-	$(DBUS_LIBS)								\
-	$(PANGO_LIBS)								\
-	$(GMODULE_LIBS)								\
-	$(GTHREAD_LIBS)								\
-	$(GIO_LIBS)								\
-	$(GCOV_LIBS)								\
-	$(GLIB2_LIBS)
-
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(DBUS_LIBS) $(PANGO_LIBS) $(GMODULE_LIBS) $(GTHREAD_LIBS) \
+	$(GIO_LIBS) $(GCOV_LIBS) $(GLIB2_LIBS) $(am__append_1)
 all: all-am
 
 .SUFFIXES:

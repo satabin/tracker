@@ -13,7 +13,7 @@ AC_PREREQ(2.59)
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [8])
-m4_define([tracker_micro_version], [0])
+m4_define([tracker_micro_version], [1])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -764,8 +764,8 @@ AC_SUBST(SQLITE3_LIBS)
 
 AC_ARG_ENABLE(unac,
 	      AS_HELP_STRING([--enable-unac],
-			     [enable UNAC support, required for stripping accents [[default=no]]]),,
-	      [enable_unac=no])
+			     [enable UNAC support, required for stripping accents [[default=auto]]]),,
+	      [enable_unac=auto])
 
 if test "x$enable_unac" != "xno"; then
    PKG_CHECK_MODULES(UNAC,
@@ -1468,6 +1468,9 @@ if test "x$enable_evolution_miner" != "xno" ; then
 		     have_evolution_plugin=yes,
 		     have_evolution_plugin=no)
 
+   PKG_CHECK_EXISTS([evolution-data-server-1.2 >= 2.29.1],
+		    [AC_DEFINE(HAVE_EDS_2_29_1, 1, [Define if we have eds 2.29.1 or newer])])
+
    AC_SUBST(EVOLUTION_PLUGIN_CFLAGS)
    AC_SUBST(EVOLUTION_PLUGIN_LIBS)
 
@@ -1560,8 +1563,8 @@ AM_CONDITIONAL(HAVE_NAUTILUS_EXTENSION, test "$have_nautilus_extension" = "yes")
 ####################################################################
 AC_ARG_ENABLE([functional-tests],
               AS_HELP_STRING([--enable-functional-tests],
-	                     [enable functional tests [[default=no]]]),,
-	     [enable_functional_tests=no])
+	                     [enable functional tests [[default=yes]]]),,
+	     [enable_functional_tests=yes])
 
 if test x$enable_functional_tests != "xno"; then
   AC_DEFINE(DIST_FUNCTIONAL_TESTS, 1, [Include functional tests in the installation])

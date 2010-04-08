@@ -18,15 +18,22 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#include "config.h"
+
 #include <stdio.h>
+
 #include <libgrss.h>
+
 #include <dbus/dbus-glib.h>
 
 #include <glib/gi18n.h>
 
 #include "tracker-miner-rss.h"
 
-#define GET_PRIV(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TRACKER_TYPE_MINER_RSS, TrackerMinerRSSPrivate))
+#define TRACKER_MINER_RSS_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TRACKER_TYPE_MINER_RSS, TrackerMinerRSSPrivate))
+
+#define TRACKER_DBUS_OBJECT_FEED    TRACKER_DBUS_OBJECT "/Resources/Classes/mfo/FeedChannel"
+#define TRACKER_DBUS_INTERFACE_FEED TRACKER_DBUS_INTERFACE_RESOURCES ".Class"
 
 typedef struct _TrackerMinerRSSPrivate TrackerMinerRSSPrivate;
 
@@ -38,19 +45,19 @@ struct _TrackerMinerRSSPrivate {
 	gint now_fetching;
 };
 
-static void        tracker_miner_rss_started   (TrackerMiner    *miner);
-static void        tracker_miner_rss_stopped   (TrackerMiner    *miner);
-static void        tracker_miner_rss_paused    (TrackerMiner    *miner);
-static void        tracker_miner_rss_resumed   (TrackerMiner    *miner);
-static void        retrieve_and_schedule_feeds (TrackerMinerRSS *miner);
-static void        change_status               (FeedsPool       *pool,
-                                                FeedChannel     *feed,
-                                                gpointer         user_data);
-static void        feed_fetched                (FeedsPool       *pool,
-                                                FeedChannel     *feed,
-                                                GList           *items,
-                                                gpointer         user_data);
-static const gchar *get_message_url            (FeedItem        *item);
+static void         miner_started               (TrackerMiner    *miner);
+static void         miner_stopped               (TrackerMiner    *miner);
+static void         miner_paused                (TrackerMiner    *miner);
+static void         miner_resumed               (TrackerMiner    *miner);
+static void         retrieve_and_schedule_feeds (TrackerMinerRSS *miner);
+static void         change_status               (FeedsPool       *pool,
+                                                 FeedChannel     *feed,
+                                                 gpointer         user_data);
+static void         feed_fetched                (FeedsPool       *pool,
+                                                 FeedChannel     *feed,
+                                                 GList           *items,
+                                                 gpointer         user_data);
+static const gchar *get_message_url             (FeedItem        *item);
 
 G_DEFINE_TYPE (TrackerMinerRSS, tracker_miner_rss, TRACKER_TYPE_MINER)
 
@@ -59,7 +66,7 @@ tracker_miner_rss_finalize (GObject *object)
 {
 	TrackerMinerRSSPrivate *priv;
 
-	priv = GET_PRIV (object);
+	priv = TRACKER_MINER_RSS_GET_PRIVATE (object);
 
 	priv->stopped = TRUE;
 	g_object_unref (priv->pool);
@@ -75,10 +82,10 @@ tracker_miner_rss_class_init (TrackerMinerRSSClass *klass)
 
 	object_class->finalize = tracker_miner_rss_finalize;
 
-	miner_class->started = tracker_miner_rss_started;
-	miner_class->stopped = tracker_miner_rss_stopped;
-	miner_class->paused  = tracker_miner_rss_paused;
-	miner_class->resumed = tracker_miner_rss_resumed;
+	miner_class->started = miner_started;
+	miner_class->stopped = miner_stopped;
+	miner_class->paused  = miner_paused;
+	miner_class->resumed = miner_resumed;
 
 	g_type_class_add_private (object_class, sizeof (TrackerMinerRSSPrivate));
 }
@@ -91,6 +98,8 @@ subjects_added_cb (DBusGProxy *proxy,
 	TrackerMinerRSS *miner;
 
 	miner = TRACKER_MINER_RSS (user_data);
+
+	g_message ("Subjects added: %d", subjects ? g_strv_length (subjects) : 0);
 
 	/* TODO Add only the channels added? */
 	retrieve_and_schedule_feeds (miner);
@@ -105,6 +114,8 @@ subjects_removed_cb (DBusGProxy *proxy,
 
 	miner = TRACKER_MINER_RSS (user_data);
 
+	g_message ("Subjects removed: %d", subjects ? g_strv_length (subjects) : 0);
+
 	/* TODO Remove only the channels removed? */
 	retrieve_and_schedule_feeds (miner);
 }
@@ -112,20 +123,38 @@ subjects_removed_cb (DBusGProxy *proxy,
 static void
 tracker_miner_rss_init (TrackerMinerRSS *object)
 {
-	DBusGProxy *wrap;
+	DBusGConnection *connection;
+	DBusGProxy *proxy;
+	GError *error = NULL;
 	TrackerMinerRSSPrivate *priv;
 
-	wrap = dbus_g_proxy_new_for_name (dbus_g_bus_get (DBUS_BUS_SESSION, NULL),
-	                                  "org.freedesktop.Tracker1",
-	                                  "/org/freedesktop/Tracker1/Resources/Classes/mfo/FeedChannel",
-	                                  "org.freedesktop.Tracker1.Resources.Class");
+	g_message ("Initializing...");
 
-	if (wrap == NULL) {
-		g_warning ("Unable to listen for added and removed channels");
+	connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+
+	if (!connection) {
+		g_critical ("Could not connect to the D-Bus session bus, %s",
+			    error ? error->message : "no error given.");
+		g_error_free (error);
 		return;
 	}
 
-	priv = GET_PRIV (object);
+	proxy = dbus_g_proxy_new_for_name (connection,
+	                                   TRACKER_DBUS_SERVICE,
+	                                   TRACKER_DBUS_OBJECT_FEED,
+	                                   TRACKER_DBUS_INTERFACE_FEED);
+
+	/* "org.freedesktop.Tracker1", */
+	/*                                   "/org/freedesktop/Tracker1/Resources/Classes/mfo/FeedChannel", */
+	/*                                   "org.freedesktop.Tracker1.Resources.Class"); */
+
+	if (!proxy) {
+		g_message ("Could not create DBusGProxy for interface:'%s'",
+		           TRACKER_DBUS_INTERFACE_FEED);
+		return;
+	}
+
+	priv = TRACKER_MINER_RSS_GET_PRIVATE (object);
 
 	priv->pool = feeds_pool_new ();
 	g_signal_connect (priv->pool, "feed-fetching", G_CALLBACK (change_status), object);
@@ -134,11 +163,14 @@ tracker_miner_rss_init (TrackerMinerRSS *object)
 
 	g_object_set (object, "progress", 0.0, "status", _("Initializing"), NULL);
 
-	dbus_g_proxy_add_signal (wrap, "SubjectsAdded", G_TYPE_STRV, G_TYPE_INVALID);
-	dbus_g_proxy_connect_signal (wrap, "SubjectsAdded", G_CALLBACK (subjects_added_cb), object, NULL);
+	g_message ("Listening for feed changes on D-Bus interface...");
+	g_message ("  Path:'%s'", TRACKER_DBUS_OBJECT_FEED);
 
-	dbus_g_proxy_add_signal (wrap, "SubjectsRemoved", G_TYPE_STRV, G_TYPE_INVALID);
-	dbus_g_proxy_connect_signal (wrap, "SubjectsRemoved", G_CALLBACK (subjects_removed_cb), object, NULL);
+	dbus_g_proxy_add_signal (proxy, "SubjectsAdded", G_TYPE_STRV, G_TYPE_INVALID);
+	dbus_g_proxy_connect_signal (proxy, "SubjectsAdded", G_CALLBACK (subjects_added_cb), object, NULL);
+
+	dbus_g_proxy_add_signal (proxy, "SubjectsRemoved", G_TYPE_STRV, G_TYPE_INVALID);
+	dbus_g_proxy_connect_signal (proxy, "SubjectsRemoved", G_CALLBACK (subjects_removed_cb), object, NULL);
 }
 
 static void
@@ -152,7 +184,7 @@ verify_channel_update (GObject      *source,
 
 	tracker_miner_execute_update_finish (TRACKER_MINER (source), result, &error);
 	if (error != NULL) {
-		g_critical ("Unable to update information about channel: %s", error->message);
+		g_critical ("Could not update channel information, %s", error->message);
 		g_error_free (error);
 	}
 }
@@ -163,6 +195,8 @@ update_updated_interval (TrackerMinerRSS *miner,
                          time_t          *now)
 {
 	TrackerSparqlBuilder *sparql;
+
+	g_message ("Updating mfo:updatedTime for channel '%s'", uri);
 
 	/* I hope there will be soon a SPARQL command to just update a
 	 * value instead to delete and re-insert it
@@ -204,15 +238,19 @@ change_status (FeedsPool   *pool,
 	TrackerMinerRSS *miner;
 	TrackerMinerRSSPrivate *priv;
 
-	g_message ("Fetching %s", feed_channel_get_source (feed));
-
 	miner = TRACKER_MINER_RSS (user_data);
-	priv = GET_PRIV (miner);
+	priv = TRACKER_MINER_RSS_GET_PRIVATE (miner);
 	avail = feeds_pool_get_listened_num (priv->pool);
 
 	priv->now_fetching++;
+
 	if (priv->now_fetching > avail)
 		priv->now_fetching = avail;
+
+	g_message ("Fetching channel '%s' (in progress: %d/%d)", 
+	           feed_channel_get_source (feed),
+	           priv->now_fetching,
+	           avail);
 
 	prog = ((gdouble) priv->now_fetching) / ((gdouble) avail);
 	g_object_set (miner, "progress", prog, "status", _("Fetching..."), NULL);
@@ -229,7 +267,7 @@ verify_item_insertion (GObject      *source,
 
 	tracker_miner_execute_update_finish (TRACKER_MINER (source), result, &error);
 	if (error != NULL) {
-		g_critical ("Unable to create new item: %s", error->message);
+		g_critical ("Could not insert feed information, %s", error->message);
 		g_error_free (error);
 	}
 }
@@ -261,18 +299,21 @@ item_verify_reply_cb (GObject      *source_object,
 	                                                &error);
 
 	if (error != NULL) {
-		g_warning ("Unable to verify item existance: %s\n", error->message);
+		g_message ("Could not verify feed existance, %s", error->message);
 		g_error_free (error);
 		return;
 	}
 
 	values = g_ptr_array_index (response, 0);
-	if (g_strcmp0 (values[0], "1") == 0)
+	if (g_strcmp0 (values[0], "1") == 0) {
 		return;
+	}
 
 	item = user_data;
 
 	url = get_message_url (item);
+
+	g_message ("Updating feed information for '%s'", url);
 
 	sparql = tracker_sparql_builder_new_update ();
 
@@ -280,10 +321,14 @@ item_verify_reply_cb (GObject      *source_object,
 	tracker_sparql_builder_insert_open (sparql, url);
 
 	if (has_geopoint) {
+		g_message ("  Geopoint, using longitude:%f, latitude:%f", 
+		           longitude, latitude);
+
 		tracker_sparql_builder_subject (sparql, "_:location");
 		tracker_sparql_builder_predicate (sparql, "a");
 		tracker_sparql_builder_object (sparql, "mlo:GeoLocation");
 		tracker_sparql_builder_predicate (sparql, "mlo:asGeoPoint");
+
 		tracker_sparql_builder_object_blank_open (sparql);
 		tracker_sparql_builder_predicate (sparql, "a");
 		tracker_sparql_builder_object (sparql, "mlo:GeoPoint");
@@ -307,6 +352,8 @@ item_verify_reply_cb (GObject      *source_object,
 
 	tmp_string = feed_item_get_title (item);
 	if (tmp_string != NULL) {
+		g_message ("  Title:'%s'", tmp_string);
+
 		tracker_sparql_builder_predicate (sparql, "nie:title");
 		tracker_sparql_builder_object_unvalidated (sparql, tmp_string);
 	}
@@ -369,6 +416,8 @@ check_if_save (TrackerMinerRSS *miner,
 	feed = feed_item_get_parent (item);
 	communication_channel = g_object_get_data (G_OBJECT (feed), "subject");
 
+	g_debug ("Verifying feed '%s' is stored", url);
+
 	query = g_strdup_printf ("ASK { ?message a mfo:FeedMessage; "
 	                         "nie:url \"%s\"; nmo:communicationChannel <%s> }",
 	                         url,
@@ -396,7 +445,7 @@ feed_fetched (FeedsPool   *pool,
 	TrackerMinerRSSPrivate *priv;
 
 	miner = TRACKER_MINER_RSS (user_data);
-	priv = GET_PRIV (miner);
+	priv = TRACKER_MINER_RSS_GET_PRIVATE (miner);
 
 	priv->now_fetching--;
 	if (priv->now_fetching <= 0) {
@@ -437,12 +486,14 @@ feeds_retrieve_cb (GObject      *source_object,
 	                                                &error);
 
 	if (error != NULL) {
-		g_warning ("Unable to retrieve list of feeds: %s\n", error->message);
+		g_message ("Could not retrieve feeds, %s", error->message);
 		g_error_free (error);
 		return;
 	}
 
 	channels = NULL;
+
+	g_message ("Found %d feeds", response->len);
 
 	for (i = 0; i < response->len; i++) {
 		values = g_ptr_array_index (response, i);
@@ -466,7 +517,7 @@ feeds_retrieve_cb (GObject      *source_object,
 		channels = g_list_prepend (channels, chan);
 	}
 
-	priv = GET_PRIV (source_object);
+	priv = TRACKER_MINER_RSS_GET_PRIVATE (source_object);
 	feeds_pool_listen (priv->pool, channels);
 }
 
@@ -474,6 +525,8 @@ static void
 retrieve_and_schedule_feeds (TrackerMinerRSS *miner)
 {
 	const gchar *sparql;
+
+	g_message ("Retrieving and scheduling feeds...");
 
 	sparql = "SELECT ?chanUrl ?interval ?chanUrn WHERE "
 	         "{ ?chanUrn a mfo:FeedChannel . "
@@ -486,11 +539,9 @@ retrieve_and_schedule_feeds (TrackerMinerRSS *miner)
 	                              NULL,
 	                              feeds_retrieve_cb,
 	                              NULL);
-
 }
 
-static
-const gchar *
+static const gchar *
 get_message_url (FeedItem *item)
 {
 	const gchar *url;
@@ -502,13 +553,13 @@ get_message_url (FeedItem *item)
 }
 
 static void
-tracker_miner_rss_started (TrackerMiner *miner)
+miner_started (TrackerMiner *miner)
 {
 	TrackerMinerRSSPrivate *priv;
 
 	g_object_set (miner, "progress", 0.0, "status", "Initializing", NULL);
 
-	priv = GET_PRIV (miner);
+	priv = TRACKER_MINER_RSS_GET_PRIVATE (miner);
 	retrieve_and_schedule_feeds (TRACKER_MINER_RSS (miner));
 	feeds_pool_switch (priv->pool, TRUE);
 
@@ -516,31 +567,31 @@ tracker_miner_rss_started (TrackerMiner *miner)
 }
 
 static void
-tracker_miner_rss_stopped (TrackerMiner *miner)
+miner_stopped (TrackerMiner *miner)
 {
 	TrackerMinerRSSPrivate *priv;
 
-	priv = GET_PRIV (miner);
+	priv = TRACKER_MINER_RSS_GET_PRIVATE (miner);
 	feeds_pool_switch (priv->pool, FALSE);
 	g_object_set (miner, "progress", 1.0, "status", "Idle", NULL);
 }
 
 static void
-tracker_miner_rss_paused (TrackerMiner *miner)
+miner_paused (TrackerMiner *miner)
 {
 	TrackerMinerRSSPrivate *priv;
 
-	priv = GET_PRIV (miner);
+	priv = TRACKER_MINER_RSS_GET_PRIVATE (miner);
 	feeds_pool_switch (priv->pool, FALSE);
 	g_object_set (miner, "status", "Paused", NULL);
 }
 
 static void
-tracker_miner_rss_resumed (TrackerMiner *miner)
+miner_resumed (TrackerMiner *miner)
 {
 	TrackerMinerRSSPrivate *priv;
 
-	priv = GET_PRIV (miner);
+	priv = TRACKER_MINER_RSS_GET_PRIVATE (miner);
 	feeds_pool_switch (priv->pool, TRUE);
 	g_object_set (miner, "status", "Idle", NULL);
 }

@@ -46,8 +46,8 @@ host_triplet = @host@
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(top_srcdir)/Makefile.decl $(top_srcdir)/configure AUTHORS \
-	COPYING ChangeLog INSTALL NEWS TODO compile config.guess \
-	config.sub depcomp install-sh ltmain.sh missing mkinstalldirs
+	COPYING ChangeLog INSTALL NEWS compile config.guess config.sub \
+	depcomp install-sh ltmain.sh missing mkinstalldirs
 @HAVE_UNIT_TESTS_TRUE@am__append_1 = tests
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -389,9 +389,25 @@ DISTCLEANFILES = \
 DISTCHECK_CONFIGURE_FLAGS = \
 	--with-session-bus-services-dir="\$(datadir)"/dbus-1/services \
 	--disable-evolution-miner		\
-	--disable-deskbar-applet		\
 	--disable-nautilus-extension		\
-	--enable-gtk-doc
+	--enable-unit-tests			\
+	--enable-functional-tests		\
+	--enable-gtk-doc			\
+	--enable-miner-rss			\
+	--enable-unac				\
+	--enable-poppler-glib			\
+	--enable-exempi				\
+	--enable-libiptcdata			\
+	--enable-libjpeg			\
+	--enable-libtiff			\
+	--enable-libvorbis			\
+	--enable-libflac			\
+	--enable-libgsf				\
+	--enable-playlist			\
+	--enable-tracker-preferences		\
+	--enable-tracker-search-bar		\
+	--enable-tracker-status-icon		\
+	--with-enca
 
 ACLOCAL_AMFLAGS = -I m4
 all: config.h

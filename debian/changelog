@@ -1,4 +1,4 @@
-tracker (0.8.1-1) UNRELEASED; urgency=low
+tracker (0.8.1-1) experimental; urgency=low
 
   * New major upstream release. (Closes: #549695)
     - The changes are too numerous to list them all, as it is basically a
@@ -74,7 +74,7 @@ tracker (0.8.1-1) UNRELEASED; urgency=low
     - Update DEB_DH_MAKESHLIBS_ARGS_ALL arguments.
   * Review and update debian/copyright.
 
- -- Michael Biebl <biebl@debian.org>  Thu, 08 Apr 2010 20:33:12 +0200
+ -- Michael Biebl <biebl@debian.org>  Fri, 09 Apr 2010 00:12:53 +0200
 
 tracker (0.6.96-2) unstable; urgency=low
 

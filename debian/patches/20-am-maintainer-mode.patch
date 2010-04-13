@@ -1,0 +1,13 @@
+Index: tracker-0.8.1/configure.ac
+===================================================================
+--- tracker-0.8.1.orig/configure.ac	2010-04-14 00:56:30.159712371 +0200
++++ tracker-0.8.1/configure.ac	2010-04-14 00:57:27.215720052 +0200
+@@ -50,6 +50,8 @@
+ 
+ AM_INIT_AUTOMAKE([no-define tar-ustar])
+ 
++AM_MAINTAINER_MODE([enable])
++
+ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+ 
+ IDT_COMPILE_WARNINGS

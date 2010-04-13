@@ -1,0 +1,4013 @@
+Index: tracker-0.8.1/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/Makefile.in	2010-04-14 01:00:12.095712866 +0200
++++ tracker-0.8.1/Makefile.in	2010-04-14 01:00:04.803707835 +0200
+@@ -245,6 +245,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -416,7 +417,7 @@
+ .SUFFIXES:
+ am--refresh:
+ 	@:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -443,9 +444,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	$(SHELL) ./config.status --recheck
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	$(am__cd) $(srcdir) && $(AUTOCONF)
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
+ $(am__aclocal_m4_deps):
+ 
+@@ -458,7 +459,7 @@
+ stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
+ 	@rm -f stamp-h1
+ 	cd $(top_builddir) && $(SHELL) ./config.status config.h
+-$(srcdir)/config.h.in:  $(am__configure_deps) 
++$(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps) 
+ 	($(am__cd) $(top_srcdir) && $(AUTOHEADER))
+ 	rm -f stamp-h1
+ 	touch $@
+Index: tracker-0.8.1/aclocal.m4
+===================================================================
+--- tracker-0.8.1.orig/aclocal.m4	2010-04-14 01:00:12.155714929 +0200
++++ tracker-0.8.1/aclocal.m4	2010-04-14 00:59:46.775716281 +0200
+@@ -1210,6 +1210,46 @@
+ rmdir .tst 2>/dev/null
+ AC_SUBST([am__leading_dot])])
+ 
++# Add --enable-maintainer-mode option to configure.         -*- Autoconf -*-
++# From Jim Meyering
++
++# Copyright (C) 1996, 1998, 2000, 2001, 2002, 2003, 2004, 2005, 2008
++# Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
++
++# serial 5
++
++# AM_MAINTAINER_MODE([DEFAULT-MODE])
++# ----------------------------------
++# Control maintainer-specific portions of Makefiles.
++# Default is to disable them, unless `enable' is passed literally.
++# For symmetry, `disable' may be passed as well.  Anyway, the user
++# can override the default with the --enable/--disable switch.
++AC_DEFUN([AM_MAINTAINER_MODE],
++[m4_case(m4_default([$1], [disable]),
++       [enable], [m4_define([am_maintainer_other], [disable])],
++       [disable], [m4_define([am_maintainer_other], [enable])],
++       [m4_define([am_maintainer_other], [enable])
++        m4_warn([syntax], [unexpected argument to AM@&t@_MAINTAINER_MODE: $1])])
++AC_MSG_CHECKING([whether to am_maintainer_other maintainer-specific portions of Makefiles])
++  dnl maintainer-mode's default is 'disable' unless 'enable' is passed
++  AC_ARG_ENABLE([maintainer-mode],
++[  --][am_maintainer_other][-maintainer-mode  am_maintainer_other make rules and dependencies not useful
++			  (and sometimes confusing) to the casual installer],
++      [USE_MAINTAINER_MODE=$enableval],
++      [USE_MAINTAINER_MODE=]m4_if(am_maintainer_other, [enable], [no], [yes]))
++  AC_MSG_RESULT([$USE_MAINTAINER_MODE])
++  AM_CONDITIONAL([MAINTAINER_MODE], [test $USE_MAINTAINER_MODE = yes])
++  MAINT=$MAINTAINER_MODE_TRUE
++  AC_SUBST([MAINT])dnl
++]
++)
++
++AU_DEFUN([jm_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
++
+ # Check to see how 'make' treats includes.	            -*- Autoconf -*-
+ 
+ # Copyright (C) 2001, 2002, 2003, 2005, 2009  Free Software Foundation, Inc.
+Index: tracker-0.8.1/configure
+===================================================================
+--- tracker-0.8.1.orig/configure	2010-04-14 01:00:19.571717102 +0200
++++ tracker-0.8.1/configure	2010-04-14 00:59:49.527707580 +0200
+@@ -1038,6 +1038,9 @@
+ CC
+ AM_BACKSLASH
+ AM_DEFAULT_VERBOSITY
++MAINT
++MAINTAINER_MODE_FALSE
++MAINTAINER_MODE_TRUE
+ am__untar
+ am__tar
+ AMTAR
+@@ -1102,6 +1105,7 @@
+ ac_subst_files=''
+ ac_user_opts='
+ enable_option_checking
++enable_maintainer_mode
+ enable_silent_rules
+ with_compile_warnings
+ enable_dependency_tracking
+@@ -1859,6 +1863,8 @@
+   --disable-option-checking  ignore unrecognized --enable/--with options
+   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
++  --disable-maintainer-mode  disable make rules and dependencies not useful
++			  (and sometimes confusing) to the casual installer
+   --enable-silent-rules          less verbose build output (undo: `make V=1')
+   --disable-silent-rules         verbose build output (undo: `make V=0')
+   --disable-dependency-tracking  speeds up one-time build
+@@ -3609,6 +3615,30 @@
+ 
+ 
+ 
++
++{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to disable maintainer-specific portions of Makefiles" >&5
++$as_echo_n "checking whether to disable maintainer-specific portions of Makefiles... " >&6; }
++    # Check whether --enable-maintainer-mode was given.
++if test "${enable_maintainer_mode+set}" = set; then :
++  enableval=$enable_maintainer_mode; USE_MAINTAINER_MODE=$enableval
++else
++  USE_MAINTAINER_MODE=yes
++fi
++
++  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $USE_MAINTAINER_MODE" >&5
++$as_echo "$USE_MAINTAINER_MODE" >&6; }
++   if test $USE_MAINTAINER_MODE = yes; then
++  MAINTAINER_MODE_TRUE=
++  MAINTAINER_MODE_FALSE='#'
++else
++  MAINTAINER_MODE_TRUE='#'
++  MAINTAINER_MODE_FALSE=
++fi
++
++  MAINT=$MAINTAINER_MODE_TRUE
++
++
++
+ # Check whether --enable-silent-rules was given.
+ if test "${enable_silent_rules+set}" = set; then :
+   enableval=$enable_silent_rules;
+@@ -5955,8 +5985,8 @@
+ 
+ 
+ 
+-macro_version='2.2.6'
+-macro_revision='1.3012'
++macro_version='2.2.6b'
++macro_revision='1.3017'
+ 
+ 
+ 
+@@ -6627,13 +6657,13 @@
+ else
+   lt_cv_nm_interface="BSD nm"
+   echo "int some_variable = 0;" > conftest.$ac_ext
+-  (eval echo "\"\$as_me:6630: $ac_compile\"" >&5)
++  (eval echo "\"\$as_me:6660: $ac_compile\"" >&5)
+   (eval "$ac_compile" 2>conftest.err)
+   cat conftest.err >&5
+-  (eval echo "\"\$as_me:6633: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
++  (eval echo "\"\$as_me:6663: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
+   cat conftest.err >&5
+-  (eval echo "\"\$as_me:6636: output\"" >&5)
++  (eval echo "\"\$as_me:6666: output\"" >&5)
+   cat conftest.out >&5
+   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
+     lt_cv_nm_interface="MS dumpbin"
+@@ -7827,7 +7857,7 @@
+   ;;
+ *-*-irix6*)
+   # Find out which ABI we are using.
+-  echo '#line 7830 "configure"' > conftest.$ac_ext
++  echo '#line 7860 "configure"' > conftest.$ac_ext
+   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
+   (eval $ac_compile) 2>&5
+   ac_status=$?
+@@ -9854,11 +9884,11 @@
+    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
+    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
+    -e 's:$: $lt_compiler_flag:'`
+-   (eval echo "\"\$as_me:9857: $lt_compile\"" >&5)
++   (eval echo "\"\$as_me:9887: $lt_compile\"" >&5)
+    (eval "$lt_compile" 2>conftest.err)
+    ac_status=$?
+    cat conftest.err >&5
+-   echo "$as_me:9861: \$? = $ac_status" >&5
++   echo "$as_me:9891: \$? = $ac_status" >&5
+    if (exit $ac_status) && test -s "$ac_outfile"; then
+      # The compiler can only warn and ignore the option if not recognized
+      # So say no if there are warnings other than the usual output.
+@@ -10193,11 +10223,11 @@
+    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
+    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
+    -e 's:$: $lt_compiler_flag:'`
+-   (eval echo "\"\$as_me:10196: $lt_compile\"" >&5)
++   (eval echo "\"\$as_me:10226: $lt_compile\"" >&5)
+    (eval "$lt_compile" 2>conftest.err)
+    ac_status=$?
+    cat conftest.err >&5
+-   echo "$as_me:10200: \$? = $ac_status" >&5
++   echo "$as_me:10230: \$? = $ac_status" >&5
+    if (exit $ac_status) && test -s "$ac_outfile"; then
+      # The compiler can only warn and ignore the option if not recognized
+      # So say no if there are warnings other than the usual output.
+@@ -10298,11 +10328,11 @@
+    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
+    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
+    -e 's:$: $lt_compiler_flag:'`
+-   (eval echo "\"\$as_me:10301: $lt_compile\"" >&5)
++   (eval echo "\"\$as_me:10331: $lt_compile\"" >&5)
+    (eval "$lt_compile" 2>out/conftest.err)
+    ac_status=$?
+    cat out/conftest.err >&5
+-   echo "$as_me:10305: \$? = $ac_status" >&5
++   echo "$as_me:10335: \$? = $ac_status" >&5
+    if (exit $ac_status) && test -s out/conftest2.$ac_objext
+    then
+      # The compiler can only warn and ignore the option if not recognized
+@@ -10353,11 +10383,11 @@
+    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
+    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
+    -e 's:$: $lt_compiler_flag:'`
+-   (eval echo "\"\$as_me:10356: $lt_compile\"" >&5)
++   (eval echo "\"\$as_me:10386: $lt_compile\"" >&5)
+    (eval "$lt_compile" 2>out/conftest.err)
+    ac_status=$?
+    cat out/conftest.err >&5
+-   echo "$as_me:10360: \$? = $ac_status" >&5
++   echo "$as_me:10390: \$? = $ac_status" >&5
+    if (exit $ac_status) && test -s out/conftest2.$ac_objext
+    then
+      # The compiler can only warn and ignore the option if not recognized
+@@ -12736,7 +12766,7 @@
+   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
+   lt_status=$lt_dlunknown
+   cat > conftest.$ac_ext <<_LT_EOF
+-#line 12739 "configure"
++#line 12769 "configure"
+ #include "confdefs.h"
+ 
+ #if HAVE_DLFCN_H
+@@ -12832,7 +12862,7 @@
+   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
+   lt_status=$lt_dlunknown
+   cat > conftest.$ac_ext <<_LT_EOF
+-#line 12835 "configure"
++#line 12865 "configure"
+ #include "confdefs.h"
+ 
+ #if HAVE_DLFCN_H
+@@ -14788,11 +14818,11 @@
+    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
+    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
+    -e 's:$: $lt_compiler_flag:'`
+-   (eval echo "\"\$as_me:14791: $lt_compile\"" >&5)
++   (eval echo "\"\$as_me:14821: $lt_compile\"" >&5)
+    (eval "$lt_compile" 2>conftest.err)
+    ac_status=$?
+    cat conftest.err >&5
+-   echo "$as_me:14795: \$? = $ac_status" >&5
++   echo "$as_me:14825: \$? = $ac_status" >&5
+    if (exit $ac_status) && test -s "$ac_outfile"; then
+      # The compiler can only warn and ignore the option if not recognized
+      # So say no if there are warnings other than the usual output.
+@@ -14887,11 +14917,11 @@
+    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
+    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
+    -e 's:$: $lt_compiler_flag:'`
+-   (eval echo "\"\$as_me:14890: $lt_compile\"" >&5)
++   (eval echo "\"\$as_me:14920: $lt_compile\"" >&5)
+    (eval "$lt_compile" 2>out/conftest.err)
+    ac_status=$?
+    cat out/conftest.err >&5
+-   echo "$as_me:14894: \$? = $ac_status" >&5
++   echo "$as_me:14924: \$? = $ac_status" >&5
+    if (exit $ac_status) && test -s out/conftest2.$ac_objext
+    then
+      # The compiler can only warn and ignore the option if not recognized
+@@ -14939,11 +14969,11 @@
+    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
+    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
+    -e 's:$: $lt_compiler_flag:'`
+-   (eval echo "\"\$as_me:14942: $lt_compile\"" >&5)
++   (eval echo "\"\$as_me:14972: $lt_compile\"" >&5)
+    (eval "$lt_compile" 2>out/conftest.err)
+    ac_status=$?
+    cat out/conftest.err >&5
+-   echo "$as_me:14946: \$? = $ac_status" >&5
++   echo "$as_me:14976: \$? = $ac_status" >&5
+    if (exit $ac_status) && test -s out/conftest2.$ac_objext
+    then
+      # The compiler can only warn and ignore the option if not recognized
+@@ -22847,6 +22877,10 @@
+   am__EXEEXT_FALSE=
+ fi
+ 
++if test -z "${MAINTAINER_MODE_TRUE}" && test -z "${MAINTAINER_MODE_FALSE}"; then
++  as_fn_error "conditional \"MAINTAINER_MODE\" was never defined.
++Usually this means the macro was only invoked conditionally." "$LINENO" 5
++fi
+ if test -z "${AMDEP_TRUE}" && test -z "${AMDEP_FALSE}"; then
+   as_fn_error "conditional \"AMDEP\" was never defined.
+ Usually this means the macro was only invoked conditionally." "$LINENO" 5
+Index: tracker-0.8.1/data/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/Makefile.in	2010-04-14 01:00:12.207714853 +0200
++++ tracker-0.8.1/data/Makefile.in	2010-04-14 00:59:51.063708260 +0200
+@@ -260,6 +260,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -414,7 +415,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -439,9 +440,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ tracker-client.pc: $(top_builddir)/config.status $(srcdir)/tracker-client.pc.in
+Index: tracker-0.8.1/data/db/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/db/Makefile.in	2010-04-14 01:00:12.263715285 +0200
++++ tracker-0.8.1/data/db/Makefile.in	2010-04-14 00:59:51.179709916 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -349,7 +350,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -374,9 +375,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/dbus/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/dbus/Makefile.in	2010-04-14 01:00:12.539715517 +0200
++++ tracker-0.8.1/data/dbus/Makefile.in	2010-04-14 00:59:51.311708295 +0200
+@@ -216,6 +216,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -375,7 +376,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -400,9 +401,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/icons/16x16/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/icons/16x16/Makefile.in	2010-04-14 01:00:12.895713952 +0200
++++ tracker-0.8.1/data/icons/16x16/Makefile.in	2010-04-14 00:59:51.427707981 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -346,7 +347,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -371,9 +372,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/icons/22x22/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/icons/22x22/Makefile.in	2010-04-14 01:00:12.671710276 +0200
++++ tracker-0.8.1/data/icons/22x22/Makefile.in	2010-04-14 00:59:51.547709013 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -346,7 +347,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -371,9 +372,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/icons/24x24/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/icons/24x24/Makefile.in	2010-04-14 01:00:12.951714378 +0200
++++ tracker-0.8.1/data/icons/24x24/Makefile.in	2010-04-14 00:59:51.667710063 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -346,7 +347,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -371,9 +372,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/icons/32x32/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/icons/32x32/Makefile.in	2010-04-14 01:00:12.727718251 +0200
++++ tracker-0.8.1/data/icons/32x32/Makefile.in	2010-04-14 00:59:51.787708870 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -346,7 +347,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -371,9 +372,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/icons/48x48/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/icons/48x48/Makefile.in	2010-04-14 01:00:12.783714213 +0200
++++ tracker-0.8.1/data/icons/48x48/Makefile.in	2010-04-14 00:59:51.903707719 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -346,7 +347,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -371,9 +372,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/icons/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/icons/Makefile.in	2010-04-14 01:00:12.619715381 +0200
++++ tracker-0.8.1/data/icons/Makefile.in	2010-04-14 00:59:52.031707532 +0200
+@@ -229,6 +229,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -361,7 +362,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -386,9 +387,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/icons/scalable/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/icons/scalable/Makefile.in	2010-04-14 01:00:12.839714362 +0200
++++ tracker-0.8.1/data/icons/scalable/Makefile.in	2010-04-14 00:59:52.151710258 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -346,7 +347,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -371,9 +372,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/languages/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/languages/Makefile.in	2010-04-14 01:00:12.319714039 +0200
++++ tracker-0.8.1/data/languages/Makefile.in	2010-04-14 00:59:52.271708787 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -360,7 +361,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -385,9 +386,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/miners/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/miners/Makefile.in	2010-04-14 01:00:12.395710031 +0200
++++ tracker-0.8.1/data/miners/Makefile.in	2010-04-14 00:59:52.391710102 +0200
+@@ -214,6 +214,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -354,7 +355,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -379,9 +380,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/data/ontologies/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/data/ontologies/Makefile.in	2010-04-14 01:00:12.455714041 +0200
++++ tracker-0.8.1/data/ontologies/Makefile.in	2010-04-14 00:59:52.571707883 +0200
+@@ -214,6 +214,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -352,7 +353,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -377,9 +378,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/docs/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/docs/Makefile.in	2010-04-14 01:00:13.015710234 +0200
++++ tracker-0.8.1/docs/Makefile.in	2010-04-14 00:59:52.695708044 +0200
+@@ -230,6 +230,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -361,7 +362,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -386,9 +387,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/docs/design/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/docs/design/Makefile.in	2010-04-14 01:00:13.971715256 +0200
++++ tracker-0.8.1/docs/design/Makefile.in	2010-04-14 00:59:52.807707786 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -324,7 +325,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -349,9 +350,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/docs/manpages/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/docs/manpages/Makefile.in	2010-04-14 01:00:13.891711495 +0200
++++ tracker-0.8.1/docs/manpages/Makefile.in	2010-04-14 00:59:52.935708721 +0200
+@@ -215,6 +215,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -370,7 +371,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -395,9 +396,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/docs/reference/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/docs/reference/Makefile.in	2010-04-14 01:00:13.071714855 +0200
++++ tracker-0.8.1/docs/reference/Makefile.in	2010-04-14 00:59:53.063713568 +0200
+@@ -229,6 +229,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -366,7 +367,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -391,9 +392,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/docs/reference/libtracker-client/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/docs/reference/libtracker-client/Makefile.in	2010-04-14 01:00:13.603714471 +0200
++++ tracker-0.8.1/docs/reference/libtracker-client/Makefile.in	2010-04-14 00:59:53.195708323 +0200
+@@ -196,6 +196,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -357,18 +358,12 @@
+ 	-I$(top_srcdir)/src						\
+ 	$(GLIB2_CFLAGS)							\
+ 	$(GIO_CFLAGS)							\
+-	$(PANGO_CFLAGS)							\
+-	$(HAL_CFLAGS)							\
+-	$(DBUS_CFLAGS)							\
+-	$(UNAC_CFLAGS)
++	$(DBUS_CFLAGS)
+ 
+ GTKDOC_LIBS = \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+-	$(HAL_LIBS)							\
+ 	$(DBUS_LIBS)							\
+-	$(UNAC_LIBS)							\
+-	$(PANGO_LIBS)							\
+ 	$(GIO_LIBS)							\
+ 	$(GLIB2_LIBS)
+ 
+@@ -425,7 +420,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(top_srcdir)/gtk-doc.make $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(top_srcdir)/gtk-doc.make $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -450,9 +445,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ version.xml: $(top_builddir)/config.status $(srcdir)/version.xml.in
+Index: tracker-0.8.1/docs/reference/libtracker-common/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/docs/reference/libtracker-common/Makefile.in	2010-04-14 01:00:13.447714711 +0200
++++ tracker-0.8.1/docs/reference/libtracker-common/Makefile.in	2010-04-14 00:59:53.331708328 +0200
+@@ -196,6 +196,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -354,17 +355,11 @@
+ 	-I$(top_srcdir)/src						\
+ 	$(GLIB2_CFLAGS)							\
+ 	$(GIO_CFLAGS)							\
+-	$(PANGO_CFLAGS)							\
+-	$(HAL_CFLAGS)							\
+-	$(DBUS_CFLAGS)							\
+-	$(UNAC_CFLAGS)
++	$(DBUS_CFLAGS)
+ 
+ GTKDOC_LIBS = \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+-	$(HAL_LIBS)							\
+ 	$(DBUS_LIBS)							\
+-	$(UNAC_LIBS)							\
+-	$(PANGO_LIBS)							\
+ 	$(GIO_LIBS)							\
+ 	$(GLIB2_LIBS)
+ 
+@@ -421,7 +416,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(top_srcdir)/gtk-doc.make $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(top_srcdir)/gtk-doc.make $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -446,9 +441,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ version.xml: $(top_builddir)/config.status $(srcdir)/version.xml.in
+Index: tracker-0.8.1/docs/reference/libtracker-extract/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/docs/reference/libtracker-extract/Makefile.in	2010-04-14 01:00:13.123710310 +0200
++++ tracker-0.8.1/docs/reference/libtracker-extract/Makefile.in	2010-04-14 00:59:53.463707815 +0200
+@@ -196,6 +196,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -412,7 +413,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(top_srcdir)/gtk-doc.make $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(top_srcdir)/gtk-doc.make $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -437,9 +438,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ version.xml: $(top_builddir)/config.status $(srcdir)/version.xml.in
+Index: tracker-0.8.1/docs/reference/libtracker-miner/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/docs/reference/libtracker-miner/Makefile.in	2010-04-14 01:00:13.747714665 +0200
++++ tracker-0.8.1/docs/reference/libtracker-miner/Makefile.in	2010-04-14 00:59:53.599712011 +0200
+@@ -196,6 +196,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -366,19 +367,13 @@
+ 	-I$(top_srcdir)/src						\
+ 	$(GLIB2_CFLAGS)							\
+ 	$(GIO_CFLAGS)							\
+-	$(PANGO_CFLAGS)							\
+-	$(HAL_CFLAGS)							\
+-	$(DBUS_CFLAGS)							\
+-	$(UNAC_CFLAGS)
++	$(DBUS_CFLAGS)
+ 
+ GTKDOC_LIBS = \
+ 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la	 \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+-	$(HAL_LIBS)							\
+ 	$(DBUS_LIBS)							\
+-	$(UNAC_LIBS)							\
+-	$(PANGO_LIBS)							\
+ 	$(GIO_LIBS)							\
+ 	$(GLIB2_LIBS)
+ 
+@@ -435,7 +430,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(top_srcdir)/gtk-doc.make $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(top_srcdir)/gtk-doc.make $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -460,9 +455,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ version.xml: $(top_builddir)/config.status $(srcdir)/version.xml.in
+Index: tracker-0.8.1/docs/reference/ontology/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/docs/reference/ontology/Makefile.in	2010-04-14 01:00:13.239715316 +0200
++++ tracker-0.8.1/docs/reference/ontology/Makefile.in	2010-04-14 00:59:53.731711793 +0200
+@@ -196,6 +196,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -411,7 +412,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(top_srcdir)/gtk-doc.make $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(top_srcdir)/gtk-doc.make $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -436,9 +437,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ version.xml: $(top_builddir)/config.status $(srcdir)/version.xml.in
+Index: tracker-0.8.1/docs/tools/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/docs/tools/Makefile.in	2010-04-14 01:00:14.035712789 +0200
++++ tracker-0.8.1/docs/tools/Makefile.in	2010-04-14 00:59:53.899712239 +0200
+@@ -233,6 +233,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -433,7 +434,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .dia .lo .o .obj .png
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -458,9 +459,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/examples/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/examples/Makefile.in	2010-04-14 01:00:14.395715919 +0200
++++ tracker-0.8.1/examples/Makefile.in	2010-04-14 00:59:54.023707629 +0200
+@@ -229,6 +229,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -364,7 +365,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -389,9 +390,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/examples/libtracker-extract/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/examples/libtracker-extract/Makefile.in	2010-04-14 01:00:14.447715275 +0200
++++ tracker-0.8.1/examples/libtracker-extract/Makefile.in	2010-04-14 00:59:54.167706990 +0200
+@@ -225,6 +225,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -372,7 +373,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -397,9 +398,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/examples/libtracker-miner/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/examples/libtracker-miner/Makefile.in	2010-04-14 01:00:14.507711180 +0200
++++ tracker-0.8.1/examples/libtracker-miner/Makefile.in	2010-04-14 00:59:54.311712765 +0200
+@@ -227,6 +227,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -358,18 +359,12 @@
+ 	-DSHAREDIR=\""$(datadir)"\"				\
+ 	-DG_LOG_DOMAIN=\"Tracker\"				\
+ 	-DTRACKER_COMPILATION					\
+-	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE	\
+ 	-I$(top_srcdir)/src					\
+ 	$(WARN_CFLAGS)						\
+ 	$(GLIB2_CFLAGS)						\
+ 	$(GCOV_CFLAGS)						\
+-	$(GDKPIXBUF_CFLAGS)					\
+ 	$(GIO_CFLAGS)						\
+-	$(PANGO_CFLAGS)						\
+-	$(HAL_CFLAGS)						\
+-	$(DEVKIT_POWER_CFLAGS)					\
+-	$(DBUS_CFLAGS)						\
+-	$(UNAC_CFLAGS)
++	$(DBUS_CFLAGS)
+ 
+ tracker_miner_test_SOURCES = \
+ 	tracker-miner-test.c    				\
+@@ -393,7 +388,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -418,9 +413,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/examples/rss-reader/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/examples/rss-reader/Makefile.in	2010-04-14 01:00:14.563714685 +0200
++++ tracker-0.8.1/examples/rss-reader/Makefile.in	2010-04-14 00:59:54.431708491 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -352,7 +353,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -377,9 +378,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/ltmain.sh
+===================================================================
+--- tracker-0.8.1.orig/ltmain.sh	2010-04-14 01:00:14.631716649 +0200
++++ tracker-0.8.1/ltmain.sh	2010-04-14 00:59:40.619713722 +0200
+@@ -1,6 +1,6 @@
+ # Generated from ltmain.m4sh.
+ 
+-# ltmain.sh (GNU libtool) 2.2.6
++# ltmain.sh (GNU libtool) 2.2.6b
+ # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+ 
+ # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006, 2007 2008 Free Software Foundation, Inc.
+@@ -65,7 +65,7 @@
+ #       compiler:		$LTCC
+ #       compiler flags:		$LTCFLAGS
+ #       linker:		$LD (gnu? $with_gnu_ld)
+-#       $progname:		(GNU libtool) 2.2.6 Debian-2.2.6a-4
++#       $progname:		(GNU libtool) 2.2.6b Debian-2.2.6b-2
+ #       automake:		$automake_version
+ #       autoconf:		$autoconf_version
+ #
+@@ -73,9 +73,9 @@
+ 
+ PROGRAM=ltmain.sh
+ PACKAGE=libtool
+-VERSION="2.2.6 Debian-2.2.6a-4"
++VERSION="2.2.6b Debian-2.2.6b-2"
+ TIMESTAMP=""
+-package_revision=1.3012
++package_revision=1.3017
+ 
+ # Be Bourne compatible
+ if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
+Index: tracker-0.8.1/m4/ltversion.m4
+===================================================================
+--- tracker-0.8.1.orig/m4/ltversion.m4	2010-04-14 01:00:19.507714812 +0200
++++ tracker-0.8.1/m4/ltversion.m4	2010-04-14 00:59:40.907712978 +0200
+@@ -9,15 +9,15 @@
+ 
+ # Generated from ltversion.in.
+ 
+-# serial 3012 ltversion.m4
++# serial 3017 ltversion.m4
+ # This file is part of GNU Libtool
+ 
+-m4_define([LT_PACKAGE_VERSION], [2.2.6])
+-m4_define([LT_PACKAGE_REVISION], [1.3012])
++m4_define([LT_PACKAGE_VERSION], [2.2.6b])
++m4_define([LT_PACKAGE_REVISION], [1.3017])
+ 
+ AC_DEFUN([LTVERSION_VERSION],
+-[macro_version='2.2.6'
+-macro_revision='1.3012'
++[macro_version='2.2.6b'
++macro_revision='1.3017'
+ _LT_DECL(, macro_version, 0, [Which release of libtool.m4 was used?])
+ _LT_DECL(, macro_revision, 0)
+ ])
+Index: tracker-0.8.1/src/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/Makefile.in	2010-04-14 01:00:17.343715723 +0200
++++ tracker-0.8.1/src/Makefile.in	2010-04-14 00:59:54.559713616 +0200
+@@ -239,6 +239,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -376,7 +377,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -401,9 +402,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/src/libinotify/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/libinotify/Makefile.in	2010-04-14 01:00:18.639714316 +0200
++++ tracker-0.8.1/src/libinotify/Makefile.in	2010-04-14 00:59:54.699709112 +0200
+@@ -222,6 +222,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -375,7 +376,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -400,9 +401,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/src/libstemmer/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/libstemmer/Makefile.in	2010-04-14 01:00:17.983714831 +0200
++++ tracker-0.8.1/src/libstemmer/Makefile.in	2010-04-14 00:59:54.847708690 +0200
+@@ -229,6 +229,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -407,7 +408,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -432,9 +433,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/src/libtracker-client/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/libtracker-client/Makefile.in	2010-04-14 01:00:19.259712566 +0200
++++ tracker-0.8.1/src/libtracker-client/Makefile.in	2010-04-14 00:59:55.071709559 +0200
+@@ -257,6 +257,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -463,7 +464,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -488,9 +489,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+Index: tracker-0.8.1/src/libtracker-common/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/libtracker-common/Makefile.in	2010-04-14 01:00:18.959715966 +0200
++++ tracker-0.8.1/src/libtracker-common/Makefile.in	2010-04-14 00:59:55.239709460 +0200
+@@ -88,9 +88,7 @@
+ 	$(top_builddir)/src/libstemmer/libstemmer.la \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+ am__libtracker_common_la_SOURCES_DIST = tracker-marshal.h \
+ 	tracker-marshal.c tracker-os-dependant-unix.c \
+ 	tracker-os-dependant-win.c tracker-power-hal.c \
+@@ -278,6 +276,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -414,13 +413,10 @@
+ 	$(WARN_CFLAGS)					\
+ 	$(GLIB2_CFLAGS)					\
+ 	$(GCOV_CFLAGS)					\
+-	$(GDKPIXBUF_CFLAGS)				\
+ 	$(GIO_CFLAGS)					\
+-	$(PANGO_CFLAGS)					\
+ 	$(HAL_CFLAGS)					\
+ 	$(DEVKIT_POWER_CFLAGS)				\
+-	$(DBUS_CFLAGS)					\
+-	$(UNAC_CFLAGS)
++	$(DBUS_CFLAGS)
+ 
+ libtracker_commondir = $(libdir)/tracker-$(TRACKER_API_VERSION)
+ libtracker_common_LTLIBRARIES = libtracker-common.la
+@@ -481,12 +477,9 @@
+ 	$(HAL_LIBS)					\
+ 	$(DEVKIT_POWER_LIBS)				\
+ 	$(DBUS_LIBS)					\
+-	$(UNAC_LIBS)					\
+-	$(PANGO_LIBS)					\
+ 	$(GIO_LIBS)					\
+ 	$(GCOV_LIBS)					\
+-	$(GLIB2_LIBS)					\
+-	$(GDKPIXBUF_LIBS)
++	$(GLIB2_LIBS)
+ 
+ marshal_sources = \
+         tracker-marshal.h              			\
+@@ -505,7 +498,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -530,9 +523,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-libtracker_commonLTLIBRARIES: $(libtracker_common_LTLIBRARIES)
+Index: tracker-0.8.1/src/libtracker-data/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/libtracker-data/Makefile.in	2010-04-14 01:00:19.151713890 +0200
++++ tracker-0.8.1/src/libtracker-data/Makefile.in	2010-04-14 00:59:55.399708607 +0200
+@@ -259,6 +259,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -468,7 +469,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -493,9 +494,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-libtracker_dataLTLIBRARIES: $(libtracker_data_LTLIBRARIES)
+Index: tracker-0.8.1/src/libtracker-db/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/libtracker-db/Makefile.in	2010-04-14 01:00:18.279715673 +0200
++++ tracker-0.8.1/src/libtracker-db/Makefile.in	2010-04-14 00:59:55.547711528 +0200
+@@ -228,6 +228,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -398,7 +399,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -423,9 +424,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/src/libtracker-extract/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/libtracker-extract/Makefile.in	2010-04-14 01:00:17.395715082 +0200
++++ tracker-0.8.1/src/libtracker-extract/Makefile.in	2010-04-14 00:59:55.699709671 +0200
+@@ -90,8 +90,7 @@
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+ am_libtracker_extract_@TRACKER_API_VERSION@_la_OBJECTS =  \
+ 	tracker-exif.lo tracker-iptc.lo tracker-utils.lo \
+ 	tracker-xmp.lo
+@@ -259,6 +258,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -394,7 +394,6 @@
+ 	$(WARN_CFLAGS)					\
+ 	$(GLIB2_CFLAGS)					\
+ 	$(GCOV_CFLAGS)					\
+-	$(GDKPIXBUF_CFLAGS)				\
+ 	$(GIO_CFLAGS)					\
+ 	$(LIBIPTCDATA_CFLAGS)				\
+ 	$(LIBEXIF_CFLAGS) 				\
+@@ -431,7 +430,6 @@
+ 	$(GIO_LIBS)					\
+ 	$(GCOV_LIBS)					\
+ 	$(GLIB2_LIBS)					\
+-	$(GDKPIXBUF_LIBS)				\
+ 	$(LIBIPTCDATA_LIBS)				\
+ 	$(LIBEXIF_LIBS)					\
+ 	$(EXEMPI_LIBS)
+@@ -440,7 +438,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -465,9 +463,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+Index: tracker-0.8.1/src/libtracker-fts/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/libtracker-fts/Makefile.in	2010-04-14 01:00:18.703714092 +0200
++++ tracker-0.8.1/src/libtracker-fts/Makefile.in	2010-04-14 00:59:55.843708180 +0200
+@@ -65,7 +65,8 @@
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
++	$(am__DEPENDENCIES_1)
+ am_libtracker_fts_la_OBJECTS = tracker-fts.lo tracker-fts-config.lo \
+ 	tracker-fts-hash.lo tracker-parser.lo
+ libtracker_fts_la_OBJECTS = $(am_libtracker_fts_la_OBJECTS)
+@@ -225,6 +226,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -361,6 +363,7 @@
+ 	$(GCOV_CFLAGS)							\
+ 	$(PANGO_CFLAGS)							\
+ 	$(DBUS_CFLAGS)							\
++	$(UNAC_CFLAGS)							\
+ 	$(SQLITE3_CFLAGS)
+ 
+ noinst_LTLIBRARIES = libtracker-fts.la
+@@ -381,13 +384,14 @@
+ 	$(GTHREAD_LIBS)							\
+ 	$(GCOV_LIBS)							\
+ 	$(PANGO_LIBS)							\
++	$(UNAC_LIBS)							\
+ 	$(GLIB2_LIBS)							
+ 
+ all: all-am
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -412,9 +416,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/src/libtracker-miner/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/libtracker-miner/Makefile.in	2010-04-14 01:00:19.327713685 +0200
++++ tracker-0.8.1/src/libtracker-miner/Makefile.in	2010-04-14 00:59:56.031708929 +0200
+@@ -106,10 +106,8 @@
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__append_1) $(am__DEPENDENCIES_2)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) $(am__append_1) \
++	$(am__DEPENDENCIES_2)
+ am__libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES_DIST =  \
+ 	tracker-crawler.c tracker-dbus.c tracker-dbus.h \
+ 	tracker-marshal.c tracker-marshal.h tracker-miner-dbus.h \
+@@ -296,6 +294,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -426,12 +425,9 @@
+ INCLUDES = -DSHAREDIR=\""$(datadir)"\" \
+ 	-DDBUS_SERVICES_DIR=\""$(DBUS_SERVICES_DIR)"\" \
+ 	-DG_LOG_DOMAIN=\"Tracker\" -DTRACKER_COMPILATION \
+-	-DI_KNOW_THE_DEVICEKIT_POWER_API_IS_SUBJECT_TO_CHANGE \
+ 	-DTRACKER_MINERS_DIR=\""$(datadir)/tracker/miners"\" \
+ 	-I$(top_srcdir)/src $(WARN_CFLAGS) $(GLIB2_CFLAGS) \
+-	$(GCOV_CFLAGS) $(GDKPIXBUF_CFLAGS) $(GIO_CFLAGS) \
+-	$(PANGO_CFLAGS) $(HAL_CFLAGS) $(DEVKIT_POWER_CFLAGS) \
+-	$(DBUS_CFLAGS) $(UNAC_CFLAGS) $(am__append_4)
++	$(GCOV_CFLAGS) $(GIO_CFLAGS) $(DBUS_CFLAGS) $(am__append_4)
+ lib_LTLIBRARIES = libtracker-miner-@TRACKER_API_VERSION@.la
+ libtracker_minerdir = $(libdir)/tracker-$(TRACKER_API_VERSION)
+ libtracker_minerincludedir = $(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-miner/
+@@ -461,9 +457,8 @@
+ libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD =  \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+-	$(HAL_LIBS) $(DEVKIT_POWER_LIBS) $(DBUS_LIBS) $(UNAC_LIBS) \
+-	$(PANGO_LIBS) $(GIO_LIBS) $(GCOV_LIBS) $(GLIB2_LIBS) \
+-	$(GDKPIXBUF_LIBS) $(am__append_1) $(am__append_3)
++	$(DBUS_LIBS) $(GIO_LIBS) $(GCOV_LIBS) $(GLIB2_LIBS) \
++	$(am__append_1) $(am__append_3)
+ marshal_sources = \
+ 	tracker-marshal.c				\
+ 	tracker-marshal.h
+@@ -494,7 +489,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -519,9 +514,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+Index: tracker-0.8.1/src/miners/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/miners/Makefile.in	2010-04-14 01:00:18.091717137 +0200
++++ tracker-0.8.1/src/miners/Makefile.in	2010-04-14 00:59:56.155708813 +0200
+@@ -230,6 +230,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -361,7 +362,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -386,9 +387,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/src/miners/fs/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/miners/fs/Makefile.in	2010-04-14 01:00:18.147715615 +0200
++++ tracker-0.8.1/src/miners/fs/Makefile.in	2010-04-14 00:59:56.315709363 +0200
+@@ -74,8 +74,7 @@
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+ AM_V_lt = $(am__v_lt_$(V))
+ am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+ am__v_lt_0 = --silent
+@@ -232,6 +231,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -370,7 +370,6 @@
+ 	-I$(top_srcdir)/src						\
+ 	$(WARN_CFLAGS)							\
+ 	$(GMODULE_CFLAGS)						\
+-	$(PANGO_CFLAGS)							\
+ 	$(DBUS_CFLAGS)							\
+ 	$(GCOV_CFLAGS)
+ 
+@@ -394,7 +393,6 @@
+ 	$(DBUS_LIBS)							\
+ 	$(GMODULE_LIBS)							\
+ 	$(GTHREAD_LIBS)							\
+-	$(PANGO_LIBS)							\
+ 	$(GIO_LIBS)							\
+ 	$(GCOV_LIBS)							\
+ 	$(GLIB2_LIBS)							\
+@@ -421,7 +419,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -446,9 +444,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-libexecPROGRAMS: $(libexec_PROGRAMS)
+Index: tracker-0.8.1/src/miners/rss/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/miners/rss/Makefile.in	2010-04-14 01:00:18.219712219 +0200
++++ tracker-0.8.1/src/miners/rss/Makefile.in	2010-04-14 00:59:56.459708144 +0200
+@@ -226,6 +226,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -384,7 +385,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -409,9 +410,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-libexecPROGRAMS: $(libexec_PROGRAMS)
+Index: tracker-0.8.1/src/plugins/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/plugins/Makefile.in	2010-04-14 01:00:17.467715867 +0200
++++ tracker-0.8.1/src/plugins/Makefile.in	2010-04-14 00:59:56.583708016 +0200
+@@ -232,6 +232,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -363,7 +364,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -388,9 +389,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/src/plugins/evolution/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/plugins/evolution/Makefile.in	2010-04-14 01:00:17.643715105 +0200
++++ tracker-0.8.1/src/plugins/evolution/Makefile.in	2010-04-14 00:59:56.759712566 +0200
+@@ -257,6 +257,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -435,7 +436,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -460,9 +461,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-epluginLTLIBRARIES: $(eplugin_LTLIBRARIES)
+Index: tracker-0.8.1/src/plugins/kmail/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/plugins/kmail/Makefile.in	2010-04-14 01:00:17.583711089 +0200
++++ tracker-0.8.1/src/plugins/kmail/Makefile.in	2010-04-14 00:59:56.919708918 +0200
+@@ -255,6 +255,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -422,7 +423,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -447,9 +448,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-pushd_modulesLTLIBRARIES: $(pushd_modules_LTLIBRARIES)
+Index: tracker-0.8.1/src/plugins/nautilus/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/plugins/nautilus/Makefile.in	2010-04-14 01:00:17.519714104 +0200
++++ tracker-0.8.1/src/plugins/nautilus/Makefile.in	2010-04-14 00:59:57.075709510 +0200
+@@ -250,6 +250,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -405,7 +406,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -430,9 +431,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-nautilus_extensionLTLIBRARIES: $(nautilus_extension_LTLIBRARIES)
+Index: tracker-0.8.1/src/tracker-control/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/tracker-control/Makefile.in	2010-04-14 01:00:17.923711663 +0200
++++ tracker-0.8.1/src/tracker-control/Makefile.in	2010-04-14 00:59:57.235710905 +0200
+@@ -231,6 +231,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -398,7 +399,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -423,9 +424,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-binPROGRAMS: $(bin_PROGRAMS)
+Index: tracker-0.8.1/src/tracker-explorer/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/tracker-explorer/Makefile.in	2010-04-14 01:00:18.839714935 +0200
++++ tracker-0.8.1/src/tracker-explorer/Makefile.in	2010-04-14 00:59:57.391707588 +0200
+@@ -251,6 +251,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -416,7 +417,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -441,9 +442,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-binPROGRAMS: $(bin_PROGRAMS)
+Index: tracker-0.8.1/src/tracker-extract/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/tracker-extract/Makefile.in	2010-04-14 01:00:18.523715172 +0200
++++ tracker-0.8.1/src/tracker-extract/Makefile.in	2010-04-14 00:59:57.715707798 +0200
+@@ -558,6 +558,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -942,7 +943,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .cpp .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -967,9 +968,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-modulesLTLIBRARIES: $(modules_LTLIBRARIES)
+Index: tracker-0.8.1/src/tracker-preferences/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/tracker-preferences/Makefile.in	2010-04-14 01:00:18.351713110 +0200
++++ tracker-0.8.1/src/tracker-preferences/Makefile.in	2010-04-14 00:59:57.891711220 +0200
+@@ -251,6 +251,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -432,7 +433,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -457,9 +458,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ tracker-preferences.desktop.in: $(top_builddir)/config.status $(srcdir)/tracker-preferences.desktop.in.in
+Index: tracker-0.8.1/src/tracker-search-bar/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/tracker-search-bar/Makefile.in	2010-04-14 01:00:18.771716330 +0200
++++ tracker-0.8.1/src/tracker-search-bar/Makefile.in	2010-04-14 00:59:58.079708623 +0200
+@@ -74,7 +74,7 @@
+ am__DEPENDENCIES_1 =
+ tracker_search_bar_DEPENDENCIES = $(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+ AM_V_lt = $(am__v_lt_$(V))
+ am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+ am__v_lt_0 = --silent
+@@ -257,6 +257,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -400,6 +401,7 @@
+ 	-I$(top_srcdir)/src					\
+ 	$(TRACKER_APPS_CFLAGS)					\
+ 	$(TRACKER_APPLETS_CFLAGS)				\
++	$(GDKPIXBUF_CFLAGS)					\
+ 	$(WARN_CFLAGS)						\
+ 	$(GCOV_CFLAGS)
+ 
+@@ -407,6 +409,7 @@
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+ 	$(TRACKER_APPS_LIBS)					\
+ 	$(TRACKER_APPLETS_LIBS)					\
++	$(GDKPIXBUF_LIBS)					\
+ 	$(GCOV_LIBS)
+ 
+ uidir = $(datadir)/tracker
+@@ -435,7 +438,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -460,9 +463,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-libexecPROGRAMS: $(libexec_PROGRAMS)
+Index: tracker-0.8.1/src/tracker-search-tool/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/tracker-search-tool/Makefile.in	2010-04-14 01:00:17.843715444 +0200
++++ tracker-0.8.1/src/tracker-search-tool/Makefile.in	2010-04-14 00:59:58.287707752 +0200
+@@ -76,7 +76,8 @@
+ tracker_search_tool_OBJECTS = $(am_tracker_search_tool_OBJECTS)
+ am__DEPENDENCIES_1 =
+ tracker_search_tool_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
++	$(am__DEPENDENCIES_1)
+ AM_V_lt = $(am__v_lt_$(V))
+ am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+ am__v_lt_0 = --silent
+@@ -259,6 +260,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -403,6 +405,8 @@
+ 	-DSRCDIR=\"$(abs_srcdir)/\"				\
+ 	$(TRACKER_APPS_CFLAGS)					\
+ 	$(TRACKER_VALA_CFLAGS)					\
++	$(PANGO_CFLAGS)						\
++	$(GDKPIXBUF_CFLAGS)					\
+ 	$(WARN_CFLAGS)						\
+ 	$(GCOV_CFLAGS)						\
+ 	-include$(top_srcdir)/config.h  			\
+@@ -411,6 +415,7 @@
+ tracker_search_tool_LDADD = \
+ 	$(TRACKER_APPS_LIBS)					\
+ 	$(TRACKER_VALA_LIBS)					\
++	$(GDKPIXBUF_LIBS)					\
+ 	$(GCOV_LIBS)						\
+ 	$(NULL)
+ 
+@@ -439,7 +444,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -464,9 +469,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ tracker-search-tool.desktop.in: $(top_builddir)/config.status $(srcdir)/tracker-search-tool.desktop.in.in
+Index: tracker-0.8.1/src/tracker-status-icon/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/tracker-status-icon/Makefile.in	2010-04-14 01:00:17.771714654 +0200
++++ tracker-0.8.1/src/tracker-status-icon/Makefile.in	2010-04-14 00:59:58.447709131 +0200
+@@ -73,7 +73,8 @@
+ tracker_status_icon_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
++	$(am__DEPENDENCIES_1)
+ AM_V_lt = $(am__v_lt_$(V))
+ am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+ am__v_lt_0 = --silent
+@@ -252,6 +253,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -387,6 +389,7 @@
+ 	-DTRACKER_COMPILATION						\
+ 	-I$(top_srcdir)/src						\
+ 	$(TRACKER_APPS_CFLAGS)						\
++	$(PANGO_CFLAGS)							\
+ 	$(WARN_CFLAGS)							\
+ 	$(GCOV_CFLAGS)
+ 
+@@ -397,6 +400,7 @@
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+ 	$(TRACKER_APPS_LIBS)						\
++	$(PANGO_LIBS)							\
+ 	$(GCOV_LIBS)							\
+ 	-lX11
+ 
+@@ -424,7 +428,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -449,9 +453,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ tracker-status-icon.desktop.in: $(top_builddir)/config.status $(srcdir)/tracker-status-icon.desktop.in.in
+Index: tracker-0.8.1/src/tracker-store/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/tracker-store/Makefile.in	2010-04-14 01:00:18.419717020 +0200
++++ tracker-0.8.1/src/tracker-store/Makefile.in	2010-04-14 00:59:58.619708973 +0200
+@@ -82,8 +82,7 @@
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+ AM_V_lt = $(am__v_lt_$(V))
+ am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+ am__v_lt_0 = --silent
+@@ -240,6 +239,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -382,7 +382,6 @@
+ 	$(GIO_CFLAGS)							\
+ 	$(GCOV_CFLAGS)							\
+ 	$(DBUS_CFLAGS)							\
+-	$(PANGO_CFLAGS)							\
+ 	$(FAM_CFLAGS)							\
+ 	$(SQLITE3_CFLAGS)
+ 
+@@ -424,7 +423,6 @@
+ 	$(top_builddir)/src/libstemmer/libstemmer.la	 		\
+ 	$(SQLITE3_LIBS)							\
+ 	$(DBUS_LIBS)							\
+-	$(PANGO_LIBS)							\
+ 	$(GIO_LIBS)							\
+ 	$(GMODULE_LIBS)							\
+ 	$(GTHREAD_LIBS)							\
+@@ -456,7 +454,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -481,9 +479,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-libexecPROGRAMS: $(libexec_PROGRAMS)
+Index: tracker-0.8.1/src/tracker-utils/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/tracker-utils/Makefile.in	2010-04-14 01:00:17.707715719 +0200
++++ tracker-0.8.1/src/tracker-utils/Makefile.in	2010-04-14 00:59:58.811708295 +0200
+@@ -256,6 +256,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -432,7 +433,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -457,9 +458,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-binPROGRAMS: $(bin_PROGRAMS)
+Index: tracker-0.8.1/src/tracker-writeback/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/tracker-writeback/Makefile.in	2010-04-14 01:00:19.067714636 +0200
++++ tracker-0.8.1/src/tracker-writeback/Makefile.in	2010-04-14 00:59:58.995717755 +0200
+@@ -281,6 +281,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -478,7 +479,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -503,9 +504,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-modulesLTLIBRARIES: $(modules_LTLIBRARIES)
+Index: tracker-0.8.1/src/vapi/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/src/vapi/Makefile.in	2010-04-14 01:00:18.899714753 +0200
++++ tracker-0.8.1/src/vapi/Makefile.in	2010-04-14 00:59:59.119708414 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -323,7 +324,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -348,9 +349,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/Makefile.in	2010-04-14 01:00:14.687713170 +0200
++++ tracker-0.8.1/tests/Makefile.in	2010-04-14 00:59:59.243715277 +0200
+@@ -233,6 +233,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -367,7 +368,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -392,9 +393,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/common/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/common/Makefile.in	2010-04-14 01:00:15.151714449 +0200
++++ tracker-0.8.1/tests/common/Makefile.in	2010-04-14 00:59:59.387708196 +0200
+@@ -220,6 +220,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -366,7 +367,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -391,9 +392,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/functional-tests/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/functional-tests/Makefile.in	2010-04-14 01:00:14.851712831 +0200
++++ tracker-0.8.1/tests/functional-tests/Makefile.in	2010-04-14 00:59:59.519708238 +0200
+@@ -253,6 +253,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -403,7 +404,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -428,9 +429,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-configSCRIPTS: $(config_SCRIPTS)
+Index: tracker-0.8.1/tests/functional-tests/data/Images/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/functional-tests/data/Images/Makefile.in	2010-04-14 01:00:14.959714290 +0200
++++ tracker-0.8.1/tests/functional-tests/data/Images/Makefile.in	2010-04-14 00:59:59.639709567 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -348,7 +349,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -373,9 +374,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/functional-tests/data/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/functional-tests/data/Makefile.in	2010-04-14 01:00:14.903712469 +0200
++++ tracker-0.8.1/tests/functional-tests/data/Makefile.in	2010-04-14 00:59:59.771708508 +0200
+@@ -253,6 +253,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -390,7 +391,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -415,9 +416,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/functional-tests/data/Music/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/functional-tests/data/Music/Makefile.in	2010-04-14 01:00:15.019715780 +0200
++++ tracker-0.8.1/tests/functional-tests/data/Music/Makefile.in	2010-04-14 00:59:59.895711170 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -348,7 +349,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -373,9 +374,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-common/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-common/Makefile.in	2010-04-14 01:00:15.539710507 +0200
++++ tracker-0.8.1/tests/libtracker-common/Makefile.in	2010-04-14 01:00:00.067716871 +0200
+@@ -254,6 +254,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -392,7 +393,6 @@
+ 	$(GCOV_CFLAGS)							\
+ 	$(GMODULE_CFLAGS)						\
+ 	$(GTHREAD_CFLAGS)						\
+-	$(PANGO_CFLAGS)							\
+ 	$(DBUS_CFLAGS)
+ 
+ tracker_dbus_SOURCES = \
+@@ -451,7 +451,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -476,9 +476,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/Makefile.in	2010-04-14 01:00:15.659714910 +0200
++++ tracker-0.8.1/tests/libtracker-data/Makefile.in	2010-04-14 01:00:00.239708901 +0200
+@@ -279,6 +279,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -492,7 +493,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -517,9 +518,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/aggregates/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/aggregates/Makefile.in	2010-04-14 01:00:16.343714885 +0200
++++ tracker-0.8.1/tests/libtracker-data/aggregates/Makefile.in	2010-04-14 01:00:00.355709429 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -329,7 +330,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -354,9 +355,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/algebra/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/algebra/Makefile.in	2010-04-14 01:00:16.007710342 +0200
++++ tracker-0.8.1/tests/libtracker-data/algebra/Makefile.in	2010-04-14 01:00:00.471708833 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -351,7 +352,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -376,9 +377,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/anon/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/anon/Makefile.in	2010-04-14 01:00:16.895715640 +0200
++++ tracker-0.8.1/tests/libtracker-data/anon/Makefile.in	2010-04-14 01:00:00.591710712 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -325,7 +326,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -350,9 +351,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/ask/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/ask/Makefile.in	2010-04-14 01:00:16.623714791 +0200
++++ tracker-0.8.1/tests/libtracker-data/ask/Makefile.in	2010-04-14 01:00:00.703708504 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -325,7 +326,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -350,9 +351,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/backup/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/backup/Makefile.in	2010-04-14 01:00:15.791715246 +0200
++++ tracker-0.8.1/tests/libtracker-data/backup/Makefile.in	2010-04-14 01:00:00.823707589 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -323,7 +324,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -348,9 +349,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/basic/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/basic/Makefile.in	2010-04-14 01:00:16.107712472 +0200
++++ tracker-0.8.1/tests/libtracker-data/basic/Makefile.in	2010-04-14 01:00:00.939707833 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -333,7 +334,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -358,9 +359,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/bnode-coreference/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/bnode-coreference/Makefile.in	2010-04-14 01:00:15.943715047 +0200
++++ tracker-0.8.1/tests/libtracker-data/bnode-coreference/Makefile.in	2010-04-14 01:00:01.063710215 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -325,7 +326,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -350,9 +351,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/bound/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/bound/Makefile.in	2010-04-14 01:00:16.283712271 +0200
++++ tracker-0.8.1/tests/libtracker-data/bound/Makefile.in	2010-04-14 01:00:01.179710195 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -325,7 +326,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -350,9 +351,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/datetime/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/datetime/Makefile.in	2010-04-14 01:00:16.683713778 +0200
++++ tracker-0.8.1/tests/libtracker-data/datetime/Makefile.in	2010-04-14 01:00:01.291707703 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -333,7 +334,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -358,9 +359,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/error/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/error/Makefile.in	2010-04-14 01:00:16.755714850 +0200
++++ tracker-0.8.1/tests/libtracker-data/error/Makefile.in	2010-04-14 01:00:01.411707900 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -332,7 +333,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -357,9 +358,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/expr-ops/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/expr-ops/Makefile.in	2010-04-14 01:00:17.063713568 +0200
++++ tracker-0.8.1/tests/libtracker-data/expr-ops/Makefile.in	2010-04-14 01:00:01.527708139 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -337,7 +338,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -362,9 +363,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/functions/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/functions/Makefile.in	2010-04-14 01:00:16.535709439 +0200
++++ tracker-0.8.1/tests/libtracker-data/functions/Makefile.in	2010-04-14 01:00:01.647707793 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -343,7 +344,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -368,9 +369,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/graph/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/graph/Makefile.in	2010-04-14 01:00:16.975715768 +0200
++++ tracker-0.8.1/tests/libtracker-data/graph/Makefile.in	2010-04-14 01:00:01.763709165 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -333,7 +334,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -358,9 +359,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/nie/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/nie/Makefile.in	2010-04-14 01:00:15.851715625 +0200
++++ tracker-0.8.1/tests/libtracker-data/nie/Makefile.in	2010-04-14 01:00:01.879708574 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -348,7 +349,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -373,9 +374,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/nmo/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/nmo/Makefile.in	2010-04-14 01:00:16.179715503 +0200
++++ tracker-0.8.1/tests/libtracker-data/nmo/Makefile.in	2010-04-14 01:00:02.003713745 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -354,7 +355,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -379,9 +380,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/optional/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/optional/Makefile.in	2010-04-14 01:00:17.143710915 +0200
++++ tracker-0.8.1/tests/libtracker-data/optional/Makefile.in	2010-04-14 01:00:02.123710042 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -325,7 +326,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -350,9 +351,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/regex/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/regex/Makefile.in	2010-04-14 01:00:16.407713537 +0200
++++ tracker-0.8.1/tests/libtracker-data/regex/Makefile.in	2010-04-14 01:00:02.239710018 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -327,7 +328,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -352,9 +353,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/sort/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/sort/Makefile.in	2010-04-14 01:00:15.711714273 +0200
++++ tracker-0.8.1/tests/libtracker-data/sort/Makefile.in	2010-04-14 01:00:02.355713340 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -337,7 +338,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -362,9 +363,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/subqueries/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/subqueries/Makefile.in	2010-04-14 01:00:16.471714700 +0200
++++ tracker-0.8.1/tests/libtracker-data/subqueries/Makefile.in	2010-04-14 01:00:02.471708275 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -327,7 +328,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -352,9 +353,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-data/turtle/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-data/turtle/Makefile.in	2010-04-14 01:00:16.831712239 +0200
++++ tracker-0.8.1/tests/libtracker-data/turtle/Makefile.in	2010-04-14 01:00:02.587709364 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -329,7 +330,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -354,9 +355,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-db/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-db/Makefile.in	2010-04-14 01:00:15.099713408 +0200
++++ tracker-0.8.1/tests/libtracker-db/Makefile.in	2010-04-14 01:00:02.739709180 +0200
+@@ -237,6 +237,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -427,7 +428,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -452,9 +453,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-extract/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-extract/Makefile.in	2010-04-14 01:00:14.795713800 +0200
++++ tracker-0.8.1/tests/libtracker-extract/Makefile.in	2010-04-14 01:00:02.891707309 +0200
+@@ -239,6 +239,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -376,7 +377,6 @@
+ 	$(GCOV_CFLAGS)							\
+ 	$(GMODULE_CFLAGS)						\
+ 	$(GTHREAD_CFLAGS)						\
+-	$(PANGO_CFLAGS)							\
+ 	$(DBUS_CFLAGS)
+ 
+ tracker_utils_SOURCES = \
+@@ -411,7 +411,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -436,9 +436,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-fts/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-fts/Makefile.in	2010-04-14 01:00:15.343715444 +0200
++++ tracker-0.8.1/tests/libtracker-fts/Makefile.in	2010-04-14 01:00:03.047709293 +0200
+@@ -267,6 +267,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -442,7 +443,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -467,9 +468,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-fts/limits/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-fts/limits/Makefile.in	2010-04-14 01:00:15.391711220 +0200
++++ tracker-0.8.1/tests/libtracker-fts/limits/Makefile.in	2010-04-14 01:00:03.163708715 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -330,7 +331,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -355,9 +356,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-fts/prefix/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-fts/prefix/Makefile.in	2010-04-14 01:00:15.475714930 +0200
++++ tracker-0.8.1/tests/libtracker-fts/prefix/Makefile.in	2010-04-14 01:00:03.283708360 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -328,7 +329,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -353,9 +354,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/libtracker-miner/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/libtracker-miner/Makefile.in	2010-04-14 01:00:17.203702079 +0200
++++ tracker-0.8.1/tests/libtracker-miner/Makefile.in	2010-04-14 01:00:03.459711217 +0200
+@@ -259,6 +259,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -407,7 +408,6 @@
+ 	$(GIO_CFLAGS)								\
+ 	$(GMODULE_CFLAGS)							\
+ 	$(GTHREAD_CFLAGS)							\
+-	$(PANGO_CFLAGS)								\
+ 	$(DBUS_CFLAGS)
+ 
+ tracker_monitor_test_SOURCES = \
+@@ -458,7 +458,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -483,9 +483,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/tracker-extract/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/tracker-extract/Makefile.in	2010-04-14 01:00:15.283708919 +0200
++++ tracker-0.8.1/tests/tracker-extract/Makefile.in	2010-04-14 01:00:03.595708707 +0200
+@@ -193,6 +193,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -352,13 +353,12 @@
+ 	$(GCOV_CFLAGS)							\
+ 	$(GMODULE_CFLAGS)						\
+ 	$(GTHREAD_CFLAGS)						\
+-	$(PANGO_CFLAGS)							\
+ 	$(DBUS_CFLAGS)
+ 
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -383,9 +383,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/tracker-miner-fs/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/tracker-miner-fs/Makefile.in	2010-04-14 01:00:14.739713650 +0200
++++ tracker-0.8.1/tests/tracker-miner-fs/Makefile.in	2010-04-14 01:00:03.755708425 +0200
+@@ -78,8 +78,7 @@
+ 	$(top_builddir)/tests/common/libtracker-testcommon.la \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+ 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__append_1)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) $(am__append_1)
+ AM_V_lt = $(am__v_lt_$(V))
+ am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+ am__v_lt_0 = --silent
+@@ -236,6 +235,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -379,7 +379,6 @@
+ 	$(GCOV_CFLAGS)								\
+ 	$(GMODULE_CFLAGS)							\
+ 	$(GTHREAD_CFLAGS)							\
+-	$(PANGO_CFLAGS)								\
+ 	$(DBUS_CFLAGS)
+ 
+ tracker_metadata_utils_SOURCES = \
+@@ -393,13 +392,13 @@
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+ 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+ 	$(top_builddir)/tests/common/libtracker-testcommon.la \
+-	$(DBUS_LIBS) $(PANGO_LIBS) $(GMODULE_LIBS) $(GTHREAD_LIBS) \
+-	$(GIO_LIBS) $(GCOV_LIBS) $(GLIB2_LIBS) $(am__append_1)
++	$(DBUS_LIBS) $(GMODULE_LIBS) $(GTHREAD_LIBS) $(GIO_LIBS) \
++	$(GCOV_LIBS) $(GLIB2_LIBS) $(am__append_1)
+ all: all-am
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -424,9 +423,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/tracker-store/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/tracker-store/Makefile.in	2010-04-14 01:00:15.211711479 +0200
++++ tracker-0.8.1/tests/tracker-store/Makefile.in	2010-04-14 01:00:03.879708295 +0200
+@@ -193,6 +193,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -337,13 +338,12 @@
+ 	$(GCOV_CFLAGS)								\
+ 	$(GMODULE_CFLAGS)							\
+ 	$(GTHREAD_CFLAGS)							\
+-	$(PANGO_CFLAGS)								\
+ 	$(DBUS_CFLAGS)
+ 
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -368,9 +368,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/tests/tracker-writeback/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/tests/tracker-writeback/Makefile.in	2010-04-14 01:00:15.607715825 +0200
++++ tracker-0.8.1/tests/tracker-writeback/Makefile.in	2010-04-14 01:00:04.007711181 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -348,7 +349,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -373,9 +374,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ install-configSCRIPTS: $(config_SCRIPTS)
+Index: tracker-0.8.1/utils/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/utils/Makefile.in	2010-04-14 01:00:14.107716940 +0200
++++ tracker-0.8.1/utils/Makefile.in	2010-04-14 01:00:04.131709106 +0200
+@@ -229,6 +229,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -365,7 +366,7 @@
+ all: all-recursive
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -390,9 +391,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/utils/gtk-sparql/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/utils/gtk-sparql/Makefile.in	2010-04-14 01:00:14.159715467 +0200
++++ tracker-0.8.1/utils/gtk-sparql/Makefile.in	2010-04-14 01:00:04.251707636 +0200
+@@ -213,6 +213,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -353,7 +354,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -378,9 +379,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/utils/lyrics/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/utils/lyrics/Makefile.in	2010-04-14 01:00:14.279714275 +0200
++++ tracker-0.8.1/utils/lyrics/Makefile.in	2010-04-14 01:00:04.367708443 +0200
+@@ -189,6 +189,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -323,7 +324,7 @@
+ all: all-am
+ 
+ .SUFFIXES:
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -348,9 +349,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/utils/playlists/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/utils/playlists/Makefile.in	2010-04-14 01:00:14.223716080 +0200
++++ tracker-0.8.1/utils/playlists/Makefile.in	2010-04-14 01:00:04.515708846 +0200
+@@ -225,6 +225,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -372,7 +373,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -397,9 +398,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 
+Index: tracker-0.8.1/utils/services/Makefile.in
+===================================================================
+--- tracker-0.8.1.orig/utils/services/Makefile.in	2010-04-14 01:00:14.335715262 +0200
++++ tracker-0.8.1/utils/services/Makefile.in	2010-04-14 01:00:04.667715371 +0200
+@@ -234,6 +234,7 @@
+ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
+ LT_RELEASE = @LT_RELEASE@
+ LT_REVISION = @LT_REVISION@
++MAINT = @MAINT@
+ MAKEINFO = @MAKEINFO@
+ MKDIR_P = @MKDIR_P@
+ MKINSTALLDIRS = @MKINSTALLDIRS@
+@@ -403,7 +404,7 @@
+ 
+ .SUFFIXES:
+ .SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
+ 	@for dep in $?; do \
+ 	  case '$(am__configure_deps)' in \
+ 	    *$$dep*) \
+@@ -428,9 +429,9 @@
+ $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ 
+-$(top_srcdir)/configure:  $(am__configure_deps)
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+ 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+ $(am__aclocal_m4_deps):
+ 

@@ -211,7 +211,6 @@ Depends: ${shlibs:Depends},
          tracker (= ${binary:Version}),
          tracker-extract (= ${binary:Version}),
          procps
-Conflicts: tracker (<< 0.7.0)
 Description: metadata database, indexer and search tool - filesystem indexer
  This package contains the tracker indexer for indexing your files and folders.
  .
@@ -224,7 +223,6 @@ Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          tracker (= ${binary:Version})
-Conflicts: tracker (<< 0.7.0)
 Description: metadata database, indexer and search tool - evolution plugin
  This package contains a plugin for evolution which allows to index your
  evolution emails.

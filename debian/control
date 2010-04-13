@@ -169,8 +169,10 @@ Section: gnome
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          tracker (= ${binary:Version})
-Conflicts: tracker-search-tool (<< 0.8.1-1)
-Replaces: tracker-search-tool (<< 0.8.1-1)
+Conflicts: tracker-search-tool (<< 0.8.1-1),
+           tracker (<< 0.8.1-1)
+Replaces: tracker-search-tool (<< 0.8.1-1),
+          tracker (<< 0.8.1-1)
 Description: metadata database, indexer and search tool - GNOME frontend
  This package provides a graphical Tracker search tool for GNOME.
  .

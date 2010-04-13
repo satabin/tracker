@@ -3,6 +3,8 @@ tracker (0.8.1-2) UNRELEASED; urgency=low
   * debian/control
     - Add Breaks: rygel-tracker (<< 0.5~) as the D-Bus API has changed between
       0.6 and 0.8.
+    - Add Conflicts/Replaces: tracker (<< 0.8.1-1) to tracker-gui. The icons
+      were moved between those two packages.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 13 Apr 2010 01:39:39 +0200
 

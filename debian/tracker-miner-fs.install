@@ -6,4 +6,4 @@ usr/share/man/man1/tracker-miner-fs.1
 usr/share/man/man5/tracker-miner-fs.cfg.5
 usr/share/tracker/miners/tracker-miner-applications.desktop
 usr/share/tracker/miners/tracker-miner-files.desktop
-debian/30-tracker.conf etc/sysctl.d
+debian/30-tracker.conf etc/sysctl.d/

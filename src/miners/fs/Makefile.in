@@ -74,8 +74,7 @@ tracker_miner_fs_DEPENDENCIES = $(top_builddir)/src/libtracker-client/libtracker
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -370,7 +369,6 @@ INCLUDES = \
 	-I$(top_srcdir)/src						\
 	$(WARN_CFLAGS)							\
 	$(GMODULE_CFLAGS)						\
-	$(PANGO_CFLAGS)							\
 	$(DBUS_CFLAGS)							\
 	$(GCOV_CFLAGS)
 
@@ -394,7 +392,6 @@ tracker_miner_fs_LDADD = \
 	$(DBUS_LIBS)							\
 	$(GMODULE_LIBS)							\
 	$(GTHREAD_LIBS)							\
-	$(PANGO_LIBS)							\
 	$(GIO_LIBS)							\
 	$(GCOV_LIBS)							\
 	$(GLIB2_LIBS)							\

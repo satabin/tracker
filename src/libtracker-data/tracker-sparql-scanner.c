@@ -1157,24 +1157,24 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 						gboolean _tmp3_ = FALSE;
 						type = TRACKER_SPARQL_TOKEN_TYPE_NONE;
 						self->priv->current++;
-						if (self->priv->current < (self->priv->end - g_utf8_strlen ("prefix", -1))) {
+						if (self->priv->current < (self->priv->end - strlen ("prefix"))) {
 							_tmp3_ = tracker_sparql_scanner_matches (self, self->priv->current, "PREFIX");
 						} else {
 							_tmp3_ = FALSE;
 						}
 						if (_tmp3_) {
 							type = TRACKER_SPARQL_TOKEN_TYPE_ATPREFIX;
-							self->priv->current = self->priv->current + g_utf8_strlen ("prefix", -1);
+							self->priv->current = self->priv->current + strlen ("prefix");
 						} else {
 							gboolean _tmp4_ = FALSE;
-							if (self->priv->current < (self->priv->end - g_utf8_strlen ("base", -1))) {
+							if (self->priv->current < (self->priv->end - strlen ("base"))) {
 								_tmp4_ = tracker_sparql_scanner_matches (self, self->priv->current, "BASE");
 							} else {
 								_tmp4_ = FALSE;
 							}
 							if (_tmp4_) {
 								type = TRACKER_SPARQL_TOKEN_TYPE_ATBASE;
-								self->priv->current = self->priv->current + g_utf8_strlen ("base", -1);
+								self->priv->current = self->priv->current + strlen ("base");
 							}
 						}
 						break;

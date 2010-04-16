@@ -78,8 +78,7 @@ tracker_metadata_utils_DEPENDENCIES =  \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__append_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) $(am__append_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -379,7 +378,6 @@ INCLUDES = \
 	$(GCOV_CFLAGS)								\
 	$(GMODULE_CFLAGS)							\
 	$(GTHREAD_CFLAGS)							\
-	$(PANGO_CFLAGS)								\
 	$(DBUS_CFLAGS)
 
 tracker_metadata_utils_SOURCES = \
@@ -393,8 +391,8 @@ tracker_metadata_utils_LDADD =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
-	$(DBUS_LIBS) $(PANGO_LIBS) $(GMODULE_LIBS) $(GTHREAD_LIBS) \
-	$(GIO_LIBS) $(GCOV_LIBS) $(GLIB2_LIBS) $(am__append_1)
+	$(DBUS_LIBS) $(GMODULE_LIBS) $(GTHREAD_LIBS) $(GIO_LIBS) \
+	$(GCOV_LIBS) $(GLIB2_LIBS) $(am__append_1)
 all: all-am
 
 .SUFFIXES:

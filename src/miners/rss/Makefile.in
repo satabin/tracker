@@ -69,7 +69,7 @@ am__DEPENDENCIES_1 =
 tracker_miner_rss_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -378,7 +378,8 @@ tracker_miner_rss_LDADD = \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
 	$(LIBGRSS_LIBS)							\
 	$(DBUS_LIBS)							\
-	$(GLIB2_LIBS)
+	$(GLIB2_LIBS)							\
+	$(GTHREAD_LIBS)
 
 all: all-am
 

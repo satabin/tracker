@@ -525,7 +525,7 @@ void tracker_sparql_expression_translate_order_condition (TrackerSparqlExpressio
 TrackerPropertyType tracker_sparql_pattern_translate_select (TrackerSparqlPattern* self, GString* sql, gboolean subquery, GError** error);
 char* tracker_sparql_query_resolve_prefixed_name (TrackerSparqlQuery* self, const char* prefix, const char* local_name, GError** error);
 char* tracker_sparql_query_generate_bnodeid (TrackerSparqlQuery* self, const char* user_bnodeid);
-char* tracker_sparql_expression_parse_string_literal (TrackerSparqlExpression* self, GError** error);
+char* tracker_sparql_expression_parse_string_literal (TrackerSparqlExpression* self, TrackerPropertyType* type, GError** error);
 static void tracker_sparql_pattern_parse_property_list_not_empty (TrackerSparqlPattern* self, GString* sql, gboolean in_simple_optional, GError** error);
 char* tracker_sparql_pattern_parse_var_or_term (TrackerSparqlPattern* self, GString* sql, gboolean* is_var, GError** error);
 static void tracker_sparql_pattern_parse_object (TrackerSparqlPattern* self, GString* sql, gboolean in_simple_optional, GError** error);
@@ -1935,7 +1935,7 @@ char* tracker_sparql_pattern_parse_var_or_term (TrackerSparqlPattern* self, GStr
 						if (tracker_sparql_pattern_current (self) == TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL1) {
 							char* _tmp17_;
 							char* _tmp18_;
-							_tmp17_ = tracker_sparql_expression_parse_string_literal (self->priv->expression, &_inner_error_);
+							_tmp17_ = tracker_sparql_expression_parse_string_literal (self->priv->expression, NULL, &_inner_error_);
 							if (_inner_error_ != NULL) {
 								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 									g_propagate_error (error, _inner_error_);
@@ -1953,7 +1953,7 @@ char* tracker_sparql_pattern_parse_var_or_term (TrackerSparqlPattern* self, GStr
 							if (tracker_sparql_pattern_current (self) == TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL2) {
 								char* _tmp19_;
 								char* _tmp20_;
-								_tmp19_ = tracker_sparql_expression_parse_string_literal (self->priv->expression, &_inner_error_);
+								_tmp19_ = tracker_sparql_expression_parse_string_literal (self->priv->expression, NULL, &_inner_error_);
 								if (_inner_error_ != NULL) {
 									if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 										g_propagate_error (error, _inner_error_);
@@ -1971,7 +1971,7 @@ char* tracker_sparql_pattern_parse_var_or_term (TrackerSparqlPattern* self, GStr
 								if (tracker_sparql_pattern_current (self) == TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG1) {
 									char* _tmp21_;
 									char* _tmp22_;
-									_tmp21_ = tracker_sparql_expression_parse_string_literal (self->priv->expression, &_inner_error_);
+									_tmp21_ = tracker_sparql_expression_parse_string_literal (self->priv->expression, NULL, &_inner_error_);
 									if (_inner_error_ != NULL) {
 										if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 											g_propagate_error (error, _inner_error_);
@@ -1989,7 +1989,7 @@ char* tracker_sparql_pattern_parse_var_or_term (TrackerSparqlPattern* self, GStr
 									if (tracker_sparql_pattern_current (self) == TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG2) {
 										char* _tmp23_;
 										char* _tmp24_;
-										_tmp23_ = tracker_sparql_expression_parse_string_literal (self->priv->expression, &_inner_error_);
+										_tmp23_ = tracker_sparql_expression_parse_string_literal (self->priv->expression, NULL, &_inner_error_);
 										if (_inner_error_ != NULL) {
 											if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 												g_propagate_error (error, _inner_error_);

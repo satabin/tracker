@@ -1,5 +1,4 @@
 # Debian patches for tracker
-10-improve-library-dependencies.patch
 20-am-maintainer-mode.patch
 30-vfat-hidden-attribute-build-fix.patch
 99-autoreconf.patch

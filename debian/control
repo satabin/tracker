@@ -97,6 +97,10 @@ Depends: ${shlibs:Depends},
 Description: tracker data miner library
  This package contains the library that is used by applications that provide
  data miners for tracker.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
 
 Package: libtracker-miner-0.8-dev
 Architecture: any
@@ -110,6 +114,10 @@ Description: tracker data miner library - development files
  applications with libtracker-miner.
  .
  libtracker-miner provides a library to develop tracker data miners.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
 
 Package: libtracker-extract-0.8-0
 Architecture: any
@@ -119,6 +127,10 @@ Depends: ${shlibs:Depends},
 Description: tracker extractor library
  This package contains the library that is used by applications that provide
  metadata extractors for 3rd party file types.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
 
 Package: libtracker-extract-0.8-dev
 Architecture: any
@@ -133,6 +145,10 @@ Description: tracker extractor library - development files
  .
  libtracker-extract provides a library to develop metadata extractors for 3rd
  party file types.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
 
 Package: tracker-utils
 Architecture: any
@@ -147,7 +163,7 @@ Description: metadata database, indexer and search tool - commandline tools
     retrieve all matching files where SEARCHTERM appears in any searchable
     metadata
   * tracker-sparql: query or update Tracker database using SPARQL
-  * tracker-stats: retreive some statistics
+  * tracker-stats: retrieve some statistics
   * tracker-status: report the trackerd status
   * tracker-tag: tool to manage tags on files
  .
@@ -160,8 +176,12 @@ Architecture: all
 Section: oldlibs
 Depends: tracker-gui
 Description: transitional package to tracker-gui
- This is a transitional package to faciliate the upgrade to the new name
+ This is a dummy package to facilitate the upgrade to the new name
  tracker-gui. It can be safely removed after the upgrade.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
 
 Package: tracker-gui
 Architecture: any
@@ -173,8 +193,13 @@ Conflicts: tracker-search-tool (<< 0.8.1-1),
            tracker (<< 0.8.1-1)
 Replaces: tracker-search-tool (<< 0.8.1-1),
           tracker (<< 0.8.1-1)
-Description: metadata database, indexer and search tool - GNOME frontend
- This package provides a graphical Tracker search tool for GNOME.
+Description: metadata database, indexer and search tool - GNOME frontends
+ Included in this package:
+  * tracker-search-tool: standard search tool
+  * tracker-search-bar: search applet
+  * tracker-status-icon: GNOME status icon
+  * tracker-preferences: preferences editor
+  * nautilus-extension: nautilus extension for tag editing
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
@@ -189,6 +214,10 @@ Depends: ${shlibs:Depends},
 Description: metadata database, indexer and search tool - developer tool
  This package includes a graphical developer tool that allows to query the
  tracker database for object properties and relationships.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
 
 Package: tracker-extract
 Architecture: any
@@ -239,3 +268,7 @@ Depends: tracker (= ${binary:Version}), ${misc:Depends}
 Description: metadata database, indexer and search tool - debugging symbols
  This package includes the debugging symbols useful for debugging tracker and
  its utilities.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.

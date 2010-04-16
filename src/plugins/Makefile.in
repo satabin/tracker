@@ -46,7 +46,7 @@ host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
 @USING_KMAIL_MINER_TRUE@am__append_1 = kmail
-@HAVE_EVOLUTION_PLUGIN_TRUE@@USING_EVOLUTION_MINER_TRUE@am__append_2 = evolution
+@USING_EVOLUTION_MINER_TRUE@am__append_2 = evolution
 @HAVE_NAUTILUS_EXTENSION_TRUE@am__append_3 = nautilus
 subdir = src/plugins
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4

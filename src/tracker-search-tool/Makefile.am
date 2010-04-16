@@ -25,6 +25,8 @@ tracker_search_tool_CFLAGS = \
 	-DSRCDIR=\"$(abs_srcdir)/\"				\
 	$(TRACKER_APPS_CFLAGS)					\
 	$(TRACKER_VALA_CFLAGS)					\
+	$(PANGO_CFLAGS)						\
+	$(GDKPIXBUF_CFLAGS)					\
 	$(WARN_CFLAGS)						\
 	$(GCOV_CFLAGS)						\
 	-include$(top_srcdir)/config.h  			\
@@ -33,6 +35,7 @@ tracker_search_tool_CFLAGS = \
 tracker_search_tool_LDADD = 					\
 	$(TRACKER_APPS_LIBS)					\
 	$(TRACKER_VALA_LIBS)					\
+	$(GDKPIXBUF_LIBS)					\
 	$(GCOV_LIBS)						\
 	$(NULL)
 

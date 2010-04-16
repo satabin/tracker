@@ -31,9 +31,6 @@
 /* Enca language detection aid */
 #undef HAVE_ENCA
 
-/* Define if we have Evolution plugin */
-#undef HAVE_EVOLUTION_PLUGIN
-
 /* Define if we have exempi */
 #undef HAVE_EXEMPI
 

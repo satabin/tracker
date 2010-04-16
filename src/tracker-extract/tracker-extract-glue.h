@@ -53,7 +53,7 @@ G_BEGIN_DECLS
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* NONE:STRING,STRING,POINTER (/tmp/dbus-binding-tool-c-marshallers.G0KIAV:1) */
+/* NONE:STRING,STRING,POINTER (/tmp/dbus-binding-tool-c-marshallers.DIRDBV:1) */
 extern void dbus_glib_marshal_tracker_extract_VOID__STRING_STRING_POINTER (GClosure     *closure,
                                                                            GValue       *return_value,
                                                                            guint         n_param_values,
@@ -99,7 +99,7 @@ dbus_glib_marshal_tracker_extract_VOID__STRING_STRING_POINTER (GClosure     *clo
 }
 #define dbus_glib_marshal_tracker_extract_NONE__STRING_STRING_POINTER	dbus_glib_marshal_tracker_extract_VOID__STRING_STRING_POINTER
 
-/* NONE:POINTER (/tmp/dbus-binding-tool-c-marshallers.G0KIAV:2) */
+/* NONE:POINTER (/tmp/dbus-binding-tool-c-marshallers.DIRDBV:2) */
 #define dbus_glib_marshal_tracker_extract_VOID__POINTER	g_cclosure_marshal_VOID__POINTER
 #define dbus_glib_marshal_tracker_extract_NONE__POINTER	dbus_glib_marshal_tracker_extract_VOID__POINTER
 

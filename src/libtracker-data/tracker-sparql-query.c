@@ -591,7 +591,7 @@ static void tracker_sparql_query_parse_construct_triples_block (TrackerSparqlQue
 char* tracker_sparql_pattern_parse_var_or_term (TrackerSparqlPattern* self, GString* sql, gboolean* is_var, GError** error);
 static char* tracker_sparql_query_parse_construct_var_or_term (TrackerSparqlQuery* self, GHashTable* var_value_map, GError** error);
 static void tracker_sparql_query_parse_construct_property_list_not_empty (TrackerSparqlQuery* self, GHashTable* var_value_map, GError** error);
-char* tracker_sparql_expression_parse_string_literal (TrackerSparqlExpression* self, GError** error);
+char* tracker_sparql_expression_parse_string_literal (TrackerSparqlExpression* self, TrackerPropertyType* type, GError** error);
 static void tracker_sparql_query_parse_construct_object_list (TrackerSparqlQuery* self, GHashTable* var_value_map, GError** error);
 static void tracker_sparql_query_parse_construct_object (TrackerSparqlQuery* self, GHashTable* var_value_map, GError** error);
 static void tracker_sparql_query_finalize (GObject* obj);
@@ -3473,7 +3473,7 @@ static char* tracker_sparql_query_parse_construct_var_or_term (TrackerSparqlQuer
 												if (tracker_sparql_query_current (self) == TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL1) {
 													char* _tmp31_;
 													char* _tmp32_;
-													_tmp31_ = tracker_sparql_expression_parse_string_literal (self->expression, &_inner_error_);
+													_tmp31_ = tracker_sparql_expression_parse_string_literal (self->expression, NULL, &_inner_error_);
 													if (_inner_error_ != NULL) {
 														if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == TRACKER_DATA_ERROR)) || (_inner_error_->domain == TRACKER_DATE_ERROR)) {
 															g_propagate_error (error, _inner_error_);
@@ -3491,7 +3491,7 @@ static char* tracker_sparql_query_parse_construct_var_or_term (TrackerSparqlQuer
 													if (tracker_sparql_query_current (self) == TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL2) {
 														char* _tmp33_;
 														char* _tmp34_;
-														_tmp33_ = tracker_sparql_expression_parse_string_literal (self->expression, &_inner_error_);
+														_tmp33_ = tracker_sparql_expression_parse_string_literal (self->expression, NULL, &_inner_error_);
 														if (_inner_error_ != NULL) {
 															if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == TRACKER_DATA_ERROR)) || (_inner_error_->domain == TRACKER_DATE_ERROR)) {
 																g_propagate_error (error, _inner_error_);
@@ -3509,7 +3509,7 @@ static char* tracker_sparql_query_parse_construct_var_or_term (TrackerSparqlQuer
 														if (tracker_sparql_query_current (self) == TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG1) {
 															char* _tmp35_;
 															char* _tmp36_;
-															_tmp35_ = tracker_sparql_expression_parse_string_literal (self->expression, &_inner_error_);
+															_tmp35_ = tracker_sparql_expression_parse_string_literal (self->expression, NULL, &_inner_error_);
 															if (_inner_error_ != NULL) {
 																if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == TRACKER_DATA_ERROR)) || (_inner_error_->domain == TRACKER_DATE_ERROR)) {
 																	g_propagate_error (error, _inner_error_);
@@ -3527,7 +3527,7 @@ static char* tracker_sparql_query_parse_construct_var_or_term (TrackerSparqlQuer
 															if (tracker_sparql_query_current (self) == TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG2) {
 																char* _tmp37_;
 																char* _tmp38_;
-																_tmp37_ = tracker_sparql_expression_parse_string_literal (self->expression, &_inner_error_);
+																_tmp37_ = tracker_sparql_expression_parse_string_literal (self->expression, NULL, &_inner_error_);
 																if (_inner_error_ != NULL) {
 																	if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == TRACKER_DATA_ERROR)) || (_inner_error_->domain == TRACKER_DATE_ERROR)) {
 																		g_propagate_error (error, _inner_error_);

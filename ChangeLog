@@ -1,3 +1,137 @@
+2010-04-15  Martyn Russell  <martyn@lanedo.com>
+
+	Updated NEWS
+
+	Bumped version
+
+	libtracker-data: Fixed distcheck, missing rq/out files for xpath functions
+
+	libtracker-data: Fixed distcheck, missing .out file
+
+2010-04-15  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Bugfix in a check
+
+2010-04-15  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fix for GB#615035 - Removing unzip command dependency from ms-office extractor
+	Initial patch from Amil Aggarwal, updated patch from Aleksander Morgado.
+
+2010-04-15  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data, libtracker-db: Various performance improvements, and a compilation fix
+
+2010-04-15  Gintautas Miliauskas  <gintautas@miliauskas.lt>
+
+	Updated Lithuanian translation.
+
+2010-04-15  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common: Bugfix usage of timegm on *BSD. Also use it for glibc, it's faster
+
+	libtracker-data: Small performance improvement in the SPARQL scanner
+
+	libtracker-db: Performance improvement for a often used class
+
+	libtracker-db: Performance improvement for TrackerDBResultSet
+
+2010-04-15  Michael Biebl  <biebl@debian.org>
+
+	Improve GDKPIXBUF linking
+
+	Improve HAL linking
+
+	Improve DEVICEKIT_POWER linking
+
+	Improve PANGO linking
+
+	Improve UNAC linking
+
+2010-04-15  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Performance improvement for often used classes
+	NOTE: Had to be fixed up for 0.8 branch
+
+2010-04-15  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#615178 - Graceful crawling stop
+	When crawler was stopped in the middle of a crawling operation, it was actually
+	stopping the crawler twice, being the second one invalid, and dumping several
+	criticals to the log.
+
+	Fixes GB#615563 - Proper handling of --enable-evolution-miner configure option
+	* Put together all evolution-plugin stuff in configure.ac
+	* Removed AC_DEFINE of HAVE_EVOLUTION_PLUGIN, as nowhere used
+	* Enabled auto mode by default in --enable-evolution-miner
+	* Merged USING_EVOLUTION_MINER and HAVE_EVOLUTION_PLUGIN AM_CONDITIONALs into
+	    a single USING_EVOLUTION_MINER
+	* Issue configure error when --enable-evolution-miner=yes and evolution
+	    dependencies are not installed
+
+2010-04-15  Petr Kovar  <pknbe@volny.cz>
+
+	Update Czech translation by Marek Cernocky
+
+2010-04-15  Mathias Hasselmann  <hasselmm@gnome.org>
+
+	Test http://www.w3.org/2005/xpath-functions#substring() function.
+
+2010-04-15  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes GB#615184, Is the low memory configuration option deprecated?
+	The LowMemoryMode has now been removed from tracker-store
+
+	The TRACKER_DB_MANAGER_LOW_MEMORY_MODE flag was also removed from
+	libtracker-db now that it is unused.
+
+2010-04-15  Mathias Hasselmann  <hasselmm@gnome.org>
+
+	Add http://www.w3.org/2005/xpath-functions#substring() function.
+	Fixes NB#163544
+
+2010-04-15  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#615313 - Avoid Invalid Read when iterating INotifyHandle list
+
+	Fixes GB#615182 - Avoid initializing priorities twice in tracker-miner-fs
+
+2010-04-15  Ivan Frade  <ivan.frade@nokia.com>
+
+	Unit test for NB#163715
+
+2010-04-15  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Handle integer typed literals the same as integer literals
+	Fixes NB#163715.
+
+2010-04-15  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-extract: Support multiple XMP keywords
+	Fixes NB#163480
+
+2010-04-15  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2010-04-15  Ivan Frade  <ivan.frade@nokia.com>
+
+	Testing queue sending async queries and updates.
+
+2010-04-15  Adrien Bustany  <abustany@gnome.org>
+
+	libtracker-miner: Add properties in VAPI file
+	This commit add several properties from TrackerMiner and TrackerMinerWeb in the
+	VAPI file, allowing the use of the syntax 'property = value' rather than
+	'set ("property", value)'. The former syntax adds type safety.
+
+2010-04-15  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: This symbol got renamed earlier
+
+2010-04-08  Debarshi Ray  <debarshir@src.gnome.org>
+
+	tracker-miner-rss: Implicitly link the RSS miner against GTHREAD_LIBS
+
 2010-04-08  Martyn Russell  <martyn@lanedo.com>
 
 	Bumped version number

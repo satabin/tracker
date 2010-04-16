@@ -74,7 +74,7 @@ tracker_search_bar_OBJECTS = $(am_tracker_search_bar_OBJECTS)
 am__DEPENDENCIES_1 =
 tracker_search_bar_DEPENDENCIES = $(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -400,6 +400,7 @@ tracker_search_bar_CFLAGS = \
 	-I$(top_srcdir)/src					\
 	$(TRACKER_APPS_CFLAGS)					\
 	$(TRACKER_APPLETS_CFLAGS)				\
+	$(GDKPIXBUF_CFLAGS)					\
 	$(WARN_CFLAGS)						\
 	$(GCOV_CFLAGS)
 
@@ -407,6 +408,7 @@ tracker_search_bar_LDADD = \
 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
 	$(TRACKER_APPS_LIBS)					\
 	$(TRACKER_APPLETS_LIBS)					\
+	$(GDKPIXBUF_LIBS)					\
 	$(GCOV_LIBS)
 
 uidir = $(datadir)/tracker

@@ -76,7 +76,8 @@ am_tracker_search_tool_OBJECTS = $(am__objects_1)
 tracker_search_tool_OBJECTS = $(am_tracker_search_tool_OBJECTS)
 am__DEPENDENCIES_1 =
 tracker_search_tool_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -403,6 +404,8 @@ tracker_search_tool_CFLAGS = \
 	-DSRCDIR=\"$(abs_srcdir)/\"				\
 	$(TRACKER_APPS_CFLAGS)					\
 	$(TRACKER_VALA_CFLAGS)					\
+	$(PANGO_CFLAGS)						\
+	$(GDKPIXBUF_CFLAGS)					\
 	$(WARN_CFLAGS)						\
 	$(GCOV_CFLAGS)						\
 	-include$(top_srcdir)/config.h  			\
@@ -411,6 +414,7 @@ tracker_search_tool_CFLAGS = \
 tracker_search_tool_LDADD = \
 	$(TRACKER_APPS_LIBS)					\
 	$(TRACKER_VALA_LIBS)					\
+	$(GDKPIXBUF_LIBS)					\
 	$(GCOV_LIBS)						\
 	$(NULL)
 

@@ -40,7 +40,9 @@ Build-Depends: cdbs,
                libiptcdata0-dev,
                uuid-dev,
                libgee-dev (>= 0.3),
-               valac
+               valac,
+               gtk-doc-tools,
+               graphviz
 Standards-Version: 3.8.4
 Vcs-Git: git://git.debian.org/git/users/biebl/tracker.git
 Vcs-Browser: http://git.debian.org/?p=users/biebl/tracker.git;a=summary

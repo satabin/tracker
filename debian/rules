@@ -15,7 +15,8 @@ DEB_CONFIGURE_EXTRA_FLAGS := \
 	--enable-tracker-preferences \
 	--enable-nautilus-extension \
 	--enable-libvorbis \
-	--enable-libflac
+	--enable-libflac \
+	--enable-gtk-doc
 
 LDFLAGS += -Wl,--as-needed -Wl,-Bsymbolic
 

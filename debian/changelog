@@ -3,6 +3,11 @@ tracker (0.8.2-2) UNRELEASED; urgency=low
   * debian/control
     - Improve package descriptions. Thanks to Tshepang Lekhonkhobe for the
       patch.
+    - Add Build-Depends on gtk-doc-tools and graphviz.
+  * debian/rules
+    - Add --enable-gtk-doc to DEB_CONFIGURE_EXTRA_FLAGS.
+  * debian/libtracker-{client,extractor,miner}-dev.install
+    - Install API documentation.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 17 Apr 2010 03:12:25 +0200
 

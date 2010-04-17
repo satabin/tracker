@@ -83,7 +83,7 @@ Depends: libtracker-client-0.8-0 (= ${binary:Version}),
          libglib2.0-dev
 Description: metadata database, indexer and search tool - development files
  This package contains the static libraries and header files needed to link
- applications with libtrackerclient.
+ applications with libtracker-client.
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,
@@ -164,7 +164,7 @@ Description: metadata database, indexer and search tool - commandline tools
     metadata
   * tracker-sparql: query or update Tracker database using SPARQL
   * tracker-stats: retrieve some statistics
-  * tracker-status: report the trackerd status
+  * tracker-status: report status of tracker-store and running miners
   * tracker-tag: tool to manage tags on files
  .
  Tracker is an advanced framework for first class objects with associated
@@ -176,7 +176,7 @@ Architecture: all
 Section: oldlibs
 Depends: tracker-gui
 Description: transitional package to tracker-gui
- This is a dummy package to facilitate the upgrade to the new name
+ This is a transitional package to facilitate the upgrade to the new name
  tracker-gui. It can be safely removed after the upgrade.
  .
  Tracker is an advanced framework for first class objects with associated
@@ -196,7 +196,7 @@ Replaces: tracker-search-tool (<< 0.8.1-1),
 Description: metadata database, indexer and search tool - GNOME frontends
  Included in this package:
   * tracker-search-tool: standard search tool
-  * tracker-search-bar: search applet
+  * tracker-search-bar: search applet for the GNOME panel
   * tracker-status-icon: GNOME status icon
   * tracker-preferences: preferences editor
   * nautilus-extension: nautilus extension for tag editing

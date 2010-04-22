@@ -1,5 +1,6 @@
-tracker (0.8.2-2) UNRELEASED; urgency=low
+tracker (0.8.3-1) UNRELEASED; urgency=low
 
+  * New upstream release.
   * debian/control
     - Improve package descriptions. Thanks to Tshepang Lekhonkhobe for the
       patch.

@@ -9,6 +9,8 @@ tracker (0.8.3-1) UNRELEASED; urgency=low
     - Add --enable-gtk-doc to DEB_CONFIGURE_EXTRA_FLAGS.
   * debian/libtracker-{client,extractor,miner}-dev.install
     - Install API documentation.
+  * debian/patches/30-vfat-hidden-attribute-build-fix.patch
+    - Removed, merged upstream.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 17 Apr 2010 03:12:25 +0200
 

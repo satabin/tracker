@@ -1,3 +1,145 @@
+2010-04-22  Martyn Russell  <martyn@lanedo.com>
+
+	Bumped version
+
+	Updates NEWS
+
+2010-04-22  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2010-04-22  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#616165: Improved reading PS and PS-GZ files
+	 * Don't use a temporary file for the uncompressed ps-gz file contents
+	 * Re-use the same buffer when iterating each line in the ps extractor, no need
+	    to allocate a new one each time.
+	 * Stop reading the uncompressed PS file if reached a max limit (same previous
+	    limit of 20MBytes is used, just a safe one)
+
+	Fixes GB#616403 - Improve & fix reading msoffice/powerpoint files
+	Bugfixes:
+	 * CharsAtoms now read as CharsAtoms; and BytesAtoms read as BytesAtoms.
+	 * UTF-16 string converted to UTF-8 before normalizing
+	 * Fix the Invalid Reads as now generated UTF-8 string comes NIL-terminated
+
+	Improvements:
+	 * Stop reading when max bytes reached
+	 * Re-use buffer for reading
+
+	Fixes GB#616329: Improve and fix reading msoffice/excel files
+	 * Strings which are split into two ExcelExtendedStringRecord are now properly read.
+	 * String contents are now converted from CP1252 or UTF-16 to UTF-8
+	 * Reading the string is now done in either 1 or 2 GSF reads, not byte per byte.
+
+	 * Limited the max number of bytes to be read from the stream, to the common safe
+	     limit of 3*max_words*max_word_size.
+	 * Contents are now normalized and word-counted in a buffered way.
+	 * Stop reading the contents when max bytes reached.
+	 * Stop reading the contents when max number of words reached.
+
+2010-04-22  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Don't translate statuses
+	This also adds a tracker-status -s to list common statuses
+
+2010-04-22  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#615948 - Improved reading msoffice/xml files
+	 * Don't use heap to store the whole output of libgsf, use just a buffer
+	    in stack, and read & parse in a buffered way.
+	 * Limit to 20MBytes the max of bytes which could be read from the
+	    uncompressed XML file.
+
+2010-04-22  Tshepang Lekhonkhobe  <tshepang@gmail.com>
+
+	tracker-sparql: Fixed typo in man page for command line args
+
+	tracker-control: Added --reindex-mime-type and --start options to man page docs
+
+2010-04-22  Carlos Garnacho  <carlosg@gnome.org>
+
+	Move nfo:isContentEncrypted to be defined in 33-nfo.ontology.
+
+	tracker-extract-pdf: set nfo:isContentEncrypted for encrypted docs.
+
+2010-04-22  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#616158/doc: Improve reading msoffice doc files
+	 * Limit the max number of bytes to be read from the stream, to some safe
+	limit like 3*max_words*max_word_size.
+	 * Don't load the whole doc in heap: use a buffer to read the contents, convert
+	to UTF-8, perform normalization and word count (chunk by chunk).
+	 * Stop reading the contents when max bytes reached.
+	 * Stop reading the contents when max number of words reached.
+
+2010-04-22  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fixes bug 161964 -  Some special audio files are not displayed in the Music..
+	Try to check whether a mp4 file is actually only audio, not video.
+
+2010-04-22  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract-html: Improve <script> bypassing.
+
+	Bug 615856 - add html content extraction
+	Add simple parser for text inside <body>. The skipping of JS scripts is a bit
+	weak (also given faulty html pages hoping for a forgiving browser), but that's
+	something that may be improved in the future.
+
+2010-04-22  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2010-04-22  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-db: O_LARGEFILE must be added to the g_open of the journal
+
+2010-04-22  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2010-04-22  Christian.Kirbach  <Christian.Kirbach@googlemail.com>
+
+	Updated German translation
+
+2010-04-22  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Proper indentation
+
+2010-04-22  Martyn Russell  <martyn@lanedo.com>
+
+	Functional Tests: Added basic file operations to miner-fs and support for desktop environment
+
+2010-04-22  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Added some full content queries for testing. Fixed a few problems.
+
+	Add videos to data generation.
+	Add videos to data generation. Fix some issues with images.
+
+	Small fixes to the data generators
+	Add large test set configuration max.cfg
+
+2010-04-22  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fix GB#615868: Improved OASIS extractor
+	 * Fork & spawn asynchronously
+	 * Buffered read, up to (3 * max_words * max_word_length) bytes max
+	 * Stop reading when max words reached
+
+2010-04-22  Carlos Garnacho  <carlosg@gnome.org>
+
+	Don't run past an array.
+
+2010-04-22  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Fix memory leak on journal replay
+
+2010-04-16  Michael Biebl  <biebl@debian.org>
+
+	Fix build failures on none Linux platforms
+
 2010-04-15  Martyn Russell  <martyn@lanedo.com>
 
 	Updated NEWS

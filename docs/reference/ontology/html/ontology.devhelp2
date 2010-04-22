@@ -422,6 +422,7 @@
     <keyword type="" name="nfo:wordCount" link="nfo-properties.html#nfo-wordCount"/>
     <keyword type="" name="nfo:channels" link="nfo-properties.html#nfo-channels"/>
     <keyword type="" name="nfo:bitrateType" link="nfo-properties.html#nfo-bitrateType"/>
+    <keyword type="" name="nfo:isContentEncrypted" link="nfo-properties.html#nfo-isContentEncrypted"/>
     <keyword type="" name="nfo:rearChannels" link="nfo-properties.html#nfo-rearChannels"/>
     <keyword type="" name="nfo:aspectRatio" link="nfo-properties.html#nfo-aspectRatio"/>
     <keyword type="" name="nfo:encoding" link="nfo-properties.html#nfo-encoding"/>
@@ -497,7 +498,6 @@
     <keyword type="" name="nmm:isColorCorrected" link="nmm-properties.html#nmm-isColorCorrected"/>
     <keyword type="" name="nmm:internationalStandardRecordingCode" link="nmm-properties.html#nmm-internationalStandardRecordingCode"/>
     <keyword type="" name="nmm:meteringMode" link="nmm-properties.html#nmm-meteringMode"/>
-    <keyword type="" name="nfo:isContentEncrypted" link="nmm-properties.html#nfo-isContentEncrypted"/>
     <keyword type="" name="nmm:radioPTY" link="nmm-properties.html#nmm-radioPTY"/>
     <keyword type="" name="nmm:musicAlbum" link="nmm-properties.html#nmm-musicAlbum"/>
     <keyword type="" name="nmm:fnumber" link="nmm-properties.html#nmm-fnumber"/>
@@ -506,8 +506,8 @@
     <keyword type="" name="nmm:setNumber" link="nmm-properties.html#nmm-setNumber"/>
     <keyword type="" name="nmm:musicCDIdentifier" link="nmm-properties.html#nmm-musicCDIdentifier"/>
     <keyword type="" name="nmm:composer" link="nmm-properties.html#nmm-composer"/>
-    <keyword type="" name="nmm:synopsis" link="nmm-properties.html#nmm-synopsis"/>
     <keyword type="" name="nmm:leadActor" link="nmm-properties.html#nmm-leadActor"/>
+    <keyword type="" name="nmm:synopsis" link="nmm-properties.html#nmm-synopsis"/>
     <keyword type="" name="nmm:albumTitle" link="nmm-properties.html#nmm-albumTitle"/>
     <keyword type="" name="nmm:flash" link="nmm-properties.html#nmm-flash"/>
     <keyword type="" name="nmm:subtitle" link="nmm-properties.html#nmm-subtitle"/>

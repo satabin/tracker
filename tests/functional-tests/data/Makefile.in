@@ -380,7 +380,11 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-SUBDIRS = Music Images
+SUBDIRS = \
+	Music		\
+	Video		\
+	Images
+
 configdir = $(datadir)/tracker-tests/data
 config_DATA = \
 	pickled_Music		\

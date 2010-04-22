@@ -349,6 +349,7 @@
 <ANCHOR id="nfo-wordCount" href="ontology/nfo-properties.html#nfo-wordCount">
 <ANCHOR id="nfo-channels" href="ontology/nfo-properties.html#nfo-channels">
 <ANCHOR id="nfo-bitrateType" href="ontology/nfo-properties.html#nfo-bitrateType">
+<ANCHOR id="nfo-isContentEncrypted" href="ontology/nfo-properties.html#nfo-isContentEncrypted">
 <ANCHOR id="nfo-rearChannels" href="ontology/nfo-properties.html#nfo-rearChannels">
 <ANCHOR id="nfo-aspectRatio" href="ontology/nfo-properties.html#nfo-aspectRatio">
 <ANCHOR id="nfo-encoding" href="ontology/nfo-properties.html#nfo-encoding">
@@ -424,7 +425,6 @@
 <ANCHOR id="nmm-isColorCorrected" href="ontology/nmm-properties.html#nmm-isColorCorrected">
 <ANCHOR id="nmm-internationalStandardRecordingCode" href="ontology/nmm-properties.html#nmm-internationalStandardRecordingCode">
 <ANCHOR id="nmm-meteringMode" href="ontology/nmm-properties.html#nmm-meteringMode">
-<ANCHOR id="nfo-isContentEncrypted" href="ontology/nmm-properties.html#nfo-isContentEncrypted">
 <ANCHOR id="nmm-radioPTY" href="ontology/nmm-properties.html#nmm-radioPTY">
 <ANCHOR id="nmm-musicAlbum" href="ontology/nmm-properties.html#nmm-musicAlbum">
 <ANCHOR id="nmm-fnumber" href="ontology/nmm-properties.html#nmm-fnumber">
@@ -433,8 +433,8 @@
 <ANCHOR id="nmm-setNumber" href="ontology/nmm-properties.html#nmm-setNumber">
 <ANCHOR id="nmm-musicCDIdentifier" href="ontology/nmm-properties.html#nmm-musicCDIdentifier">
 <ANCHOR id="nmm-composer" href="ontology/nmm-properties.html#nmm-composer">
-<ANCHOR id="nmm-synopsis" href="ontology/nmm-properties.html#nmm-synopsis">
 <ANCHOR id="nmm-leadActor" href="ontology/nmm-properties.html#nmm-leadActor">
+<ANCHOR id="nmm-synopsis" href="ontology/nmm-properties.html#nmm-synopsis">
 <ANCHOR id="nmm-albumTitle" href="ontology/nmm-properties.html#nmm-albumTitle">
 <ANCHOR id="nmm-flash" href="ontology/nmm-properties.html#nmm-flash">
 <ANCHOR id="nmm-subtitle" href="ontology/nmm-properties.html#nmm-subtitle">

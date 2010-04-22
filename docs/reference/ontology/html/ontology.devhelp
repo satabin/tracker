@@ -422,6 +422,7 @@
     <function name="nfo:wordCount" link="nfo-properties.html#nfo-wordCount"/>
     <function name="nfo:channels" link="nfo-properties.html#nfo-channels"/>
     <function name="nfo:bitrateType" link="nfo-properties.html#nfo-bitrateType"/>
+    <function name="nfo:isContentEncrypted" link="nfo-properties.html#nfo-isContentEncrypted"/>
     <function name="nfo:rearChannels" link="nfo-properties.html#nfo-rearChannels"/>
     <function name="nfo:aspectRatio" link="nfo-properties.html#nfo-aspectRatio"/>
     <function name="nfo:encoding" link="nfo-properties.html#nfo-encoding"/>
@@ -497,7 +498,6 @@
     <function name="nmm:isColorCorrected" link="nmm-properties.html#nmm-isColorCorrected"/>
     <function name="nmm:internationalStandardRecordingCode" link="nmm-properties.html#nmm-internationalStandardRecordingCode"/>
     <function name="nmm:meteringMode" link="nmm-properties.html#nmm-meteringMode"/>
-    <function name="nfo:isContentEncrypted" link="nmm-properties.html#nfo-isContentEncrypted"/>
     <function name="nmm:radioPTY" link="nmm-properties.html#nmm-radioPTY"/>
     <function name="nmm:musicAlbum" link="nmm-properties.html#nmm-musicAlbum"/>
     <function name="nmm:fnumber" link="nmm-properties.html#nmm-fnumber"/>
@@ -506,8 +506,8 @@
     <function name="nmm:setNumber" link="nmm-properties.html#nmm-setNumber"/>
     <function name="nmm:musicCDIdentifier" link="nmm-properties.html#nmm-musicCDIdentifier"/>
     <function name="nmm:composer" link="nmm-properties.html#nmm-composer"/>
-    <function name="nmm:synopsis" link="nmm-properties.html#nmm-synopsis"/>
     <function name="nmm:leadActor" link="nmm-properties.html#nmm-leadActor"/>
+    <function name="nmm:synopsis" link="nmm-properties.html#nmm-synopsis"/>
     <function name="nmm:albumTitle" link="nmm-properties.html#nmm-albumTitle"/>
     <function name="nmm:flash" link="nmm-properties.html#nmm-flash"/>
     <function name="nmm:subtitle" link="nmm-properties.html#nmm-subtitle"/>

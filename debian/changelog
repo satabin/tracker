@@ -11,6 +11,8 @@ tracker (0.8.3-1) UNRELEASED; urgency=low
     - Install API documentation.
   * debian/patches/30-vfat-hidden-attribute-build-fix.patch
     - Removed, merged upstream.
+  * debian/tracker.install
+    - Install D-Bus interface description file tracker-miner-web.xml.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 17 Apr 2010 03:12:25 +0200
 

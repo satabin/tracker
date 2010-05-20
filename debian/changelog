@@ -11,6 +11,8 @@ tracker (0.8.7-1) UNRELEASED; urgency=low
   * debian/control
     - Drop python-support from Build-Depends as we no longer build
       libdeskbar-tracker.
+    - Drop libpoppler-dev from Build-Depends since only the glib frontend is
+      used and not the core library. Thanks to Pino Toscano for the hint.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 20 May 2010 23:30:47 +0200
 

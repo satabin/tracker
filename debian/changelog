@@ -3,6 +3,11 @@ tracker (0.8.7-1) UNRELEASED; urgency=low
   * New upstream release.
   * debian/watch
     - Only track stable releases.
+  * Switch to source format 3.0 (quilt)
+    - Add debian/source/format.
+    - Drop quilt from Build-Depends.
+    - Remove /usr/share/cdbs/1/rules/patchsys-quilt.mk from debian/rules.
+    - Remove debian/README.source.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 20 May 2010 23:30:47 +0200
 

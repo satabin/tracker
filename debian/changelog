@@ -8,6 +8,9 @@ tracker (0.8.7-1) UNRELEASED; urgency=low
     - Drop quilt from Build-Depends.
     - Remove /usr/share/cdbs/1/rules/patchsys-quilt.mk from debian/rules.
     - Remove debian/README.source.
+  * debian/control
+    - Drop python-support from Build-Depends as we no longer build
+      libdeskbar-tracker.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 20 May 2010 23:30:47 +0200
 
@@ -102,7 +105,7 @@ tracker (0.8.1-1) experimental; urgency=low
     - Add libiptcdata0-dev for extracting IPTC metadata from images.
     - Add libxml2-dev (>= 2.6), uuid-dev, libgee-dev (>= 0.3), valac.
   * New package layout:
-    - Drop libdeskbar-applet, libtracker-gtk0, libtracker-gtk-dev.
+    - Drop libdeskbar-tracker, libtracker-gtk0, libtracker-gtk-dev.
     - Add libtracker-miner-0.8-0, libtracker-miner-0.8-dev,
       libtracker-extract-0.8-0 libtracker-extract-0.8-dev,
       tracker-extract, tracker-miner-fs, tracker-miner-evolution,

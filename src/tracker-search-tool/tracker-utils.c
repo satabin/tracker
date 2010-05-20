@@ -42,7 +42,7 @@ typedef enum  {
 	CATEGORIES_EmailAttachment,
 	CATEGORIES_File,
 	CATEGORIES_Folder,
-	CATEGORIES_Music,
+	CATEGORIES_Audio,
 	CATEGORIES_Video,
 	CATEGORIES_Image,
 	CATEGORIES_Document,
@@ -96,7 +96,7 @@ static void tracker_utils_finalize (TrackerUtils* obj);
 GType categories_get_type (void) {
 	static volatile gsize categories_type_id__volatile = 0;
 	if (g_once_init_enter (&categories_type_id__volatile)) {
-		static const GEnumValue values[] = {{CATEGORIES_Application, "CATEGORIES_Application", "application"}, {CATEGORIES_Contact, "CATEGORIES_Contact", "contact"}, {CATEGORIES_Email, "CATEGORIES_Email", "email"}, {CATEGORIES_EmailAttachment, "CATEGORIES_EmailAttachment", "emailattachment"}, {CATEGORIES_File, "CATEGORIES_File", "file"}, {CATEGORIES_Folder, "CATEGORIES_Folder", "folder"}, {CATEGORIES_Music, "CATEGORIES_Music", "music"}, {CATEGORIES_Video, "CATEGORIES_Video", "video"}, {CATEGORIES_Image, "CATEGORIES_Image", "image"}, {CATEGORIES_Document, "CATEGORIES_Document", "document"}, {CATEGORIES_Text, "CATEGORIES_Text", "text"}, {CATEGORIES_Development, "CATEGORIES_Development", "development"}, {CATEGORIES_Web, "CATEGORIES_Web", "web"}, {CATEGORIES_WebHistory, "CATEGORIES_WebHistory", "webhistory"}, {0, NULL, NULL}};
+		static const GEnumValue values[] = {{CATEGORIES_Application, "CATEGORIES_Application", "application"}, {CATEGORIES_Contact, "CATEGORIES_Contact", "contact"}, {CATEGORIES_Email, "CATEGORIES_Email", "email"}, {CATEGORIES_EmailAttachment, "CATEGORIES_EmailAttachment", "emailattachment"}, {CATEGORIES_File, "CATEGORIES_File", "file"}, {CATEGORIES_Folder, "CATEGORIES_Folder", "folder"}, {CATEGORIES_Audio, "CATEGORIES_Audio", "audio"}, {CATEGORIES_Video, "CATEGORIES_Video", "video"}, {CATEGORIES_Image, "CATEGORIES_Image", "image"}, {CATEGORIES_Document, "CATEGORIES_Document", "document"}, {CATEGORIES_Text, "CATEGORIES_Text", "text"}, {CATEGORIES_Development, "CATEGORIES_Development", "development"}, {CATEGORIES_Web, "CATEGORIES_Web", "web"}, {CATEGORIES_WebHistory, "CATEGORIES_WebHistory", "webhistory"}, {0, NULL, NULL}};
 		GType categories_type_id;
 		categories_type_id = g_enum_register_static ("Categories", values);
 		g_once_init_leave (&categories_type_id__volatile, categories_type_id);

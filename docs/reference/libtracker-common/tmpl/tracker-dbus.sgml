@@ -19,6 +19,9 @@ tracker-dbus
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO TRACKER_DBUS_ERROR_DOMAIN ##### -->
 <para>
 
@@ -111,6 +114,7 @@ tracker-dbus
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -192,6 +196,7 @@ tracker-dbus
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -292,6 +297,7 @@ tracker-dbus
 
 </para>
 
+@void: 
 
 
 <!-- ##### FUNCTION tracker_dbus_request_unblock_hooks ##### -->
@@ -299,5 +305,6 @@ tracker-dbus
 
 </para>
 
+@void: 
 
 

@@ -31,7 +31,6 @@ class Tracker.Sparql.Expression : Object {
 
 	Context context {
 		get { return query.context; }
-		set { query.context = value; }
 	}
 
 	Pattern pattern {
@@ -122,38 +121,7 @@ class Tracker.Sparql.Expression : Object {
 
 		long begin = sql.len;
 		var type = PropertyType.UNKNOWN;
-		if (accept (SparqlTokenType.COUNT)) {
-			sql.append ("COUNT(");
-			translate_aggregate_expression (sql);
-			sql.append (")");
-			type = PropertyType.INTEGER;
-		} else if (accept (SparqlTokenType.SUM)) {
-			sql.append ("SUM(");
-			type = translate_aggregate_expression (sql);
-			sql.append (")");
-		} else if (accept (SparqlTokenType.AVG)) {
-			sql.append ("AVG(");
-			type = translate_aggregate_expression (sql);
-			sql.append (")");
-		} else if (accept (SparqlTokenType.MIN)) {
-			sql.append ("MIN(");
-			type = translate_aggregate_expression (sql);
-			sql.append (")");
-		} else if (accept (SparqlTokenType.MAX)) {
-			sql.append ("MAX(");
-			type = translate_aggregate_expression (sql);
-			sql.append (")");
-		} else if (accept (SparqlTokenType.GROUP_CONCAT)) {
-			sql.append ("GROUP_CONCAT(");
-			expect (SparqlTokenType.OPEN_PARENS);
-			translate_expression_as_string (sql);
-			sql.append (", ");
-			expect (SparqlTokenType.COMMA);
-			sql.append (escape_sql_string_literal (parse_string_literal ()));
-			sql.append (")");
-			expect (SparqlTokenType.CLOSE_PARENS);
-			type = PropertyType.STRING;
-		} else if (current () == SparqlTokenType.VAR) {
+		if (current () == SparqlTokenType.VAR) {
 			type = translate_expression (sql);
 			// we need variable name in case of compositional subqueries
 			variable = context.get_variable (get_last_string ().substring (1));
@@ -580,6 +548,13 @@ class Tracker.Sparql.Expression : Object {
 			sql.append_printf ("\"%s_u_offsets\"", v);
 
 			return PropertyType.STRING;
+		} else if (uri == TRACKER_NS + "id") {
+			var type = translate_expression (sql);
+			if (type != PropertyType.RESOURCE) {
+				throw get_error ("expected resource");
+			}
+
+			return PropertyType.INTEGER;
 		} else if (uri == TRACKER_NS + "cartesian-distance") {
 			sql.append ("SparqlCartesianDistance(");
 			translate_expression (sql);
@@ -623,6 +598,26 @@ class Tracker.Sparql.Expression : Object {
 			sql.append (")");
 
 			return PropertyType.STRING;
+		} else if (uri == TRACKER_NS + "uri-is-parent") {
+			sql.append ("SparqlUriIsParent(");
+			translate_expression_as_string (sql);
+			sql.append (", ");
+			expect (SparqlTokenType.COMMA);
+
+			translate_expression_as_string (sql);
+			sql.append (")");
+
+			return PropertyType.BOOLEAN;
+		} else if (uri == TRACKER_NS + "uri-is-descendant") {
+			sql.append ("SparqlUriIsDescendant(");
+			translate_expression_as_string (sql);
+			sql.append (", ");
+			expect (SparqlTokenType.COMMA);
+
+			translate_expression_as_string (sql);
+			sql.append (")");
+
+			return PropertyType.BOOLEAN;
 		} else if (uri == TRACKER_NS + "string-from-filename") {
 			sql.append ("SparqlStringFromFilename(");
 			translate_expression_as_string (sql);
@@ -792,6 +787,8 @@ class Tracker.Sparql.Expression : Object {
 	}
 
 	PropertyType translate_primary_expression (StringBuilder sql) throws SparqlError {
+		PropertyType type;
+
 		switch (current ()) {
 		case SparqlTokenType.OPEN_PARENS:
 			return translate_bracketted_expression (sql);
@@ -835,8 +832,6 @@ class Tracker.Sparql.Expression : Object {
 		case SparqlTokenType.STRING_LITERAL2:
 		case SparqlTokenType.STRING_LITERAL_LONG1:
 		case SparqlTokenType.STRING_LITERAL_LONG2:
-			PropertyType type;
-
 			var binding = new LiteralBinding ();
 			binding.literal = parse_string_literal (out type);
 			query.bindings.append (binding);
@@ -918,6 +913,47 @@ class Tracker.Sparql.Expression : Object {
 		case SparqlTokenType.REGEX:
 			translate_regex (sql);
 			return PropertyType.BOOLEAN;
+		case SparqlTokenType.COUNT:
+			next ();
+			sql.append ("COUNT(");
+			translate_aggregate_expression (sql);
+			sql.append (")");
+			return PropertyType.INTEGER;
+		case SparqlTokenType.SUM:
+			next ();
+			sql.append ("SUM(");
+			type = translate_aggregate_expression (sql);
+			sql.append (")");
+			return type;
+		case SparqlTokenType.AVG:
+			next ();
+			sql.append ("AVG(");
+			type = translate_aggregate_expression (sql);
+			sql.append (")");
+			return type;
+		case SparqlTokenType.MIN:
+			next ();
+			sql.append ("MIN(");
+			type = translate_aggregate_expression (sql);
+			sql.append (")");
+			return type;
+		case SparqlTokenType.MAX:
+			next ();
+			sql.append ("MAX(");
+			type = translate_aggregate_expression (sql);
+			sql.append (")");
+			return type;
+		case SparqlTokenType.GROUP_CONCAT:
+			next ();
+			sql.append ("GROUP_CONCAT(");
+			expect (SparqlTokenType.OPEN_PARENS);
+			translate_expression_as_string (sql);
+			sql.append (", ");
+			expect (SparqlTokenType.COMMA);
+			sql.append (escape_sql_string_literal (parse_string_literal ()));
+			sql.append (")");
+			expect (SparqlTokenType.CLOSE_PARENS);
+			return PropertyType.STRING;
 		case SparqlTokenType.PN_PREFIX:
 			next ();
 			string ns = get_last_string ();
@@ -1106,16 +1142,12 @@ class Tracker.Sparql.Expression : Object {
 		if (current () == SparqlTokenType.SELECT) {
 			// scalar subquery
 
-			context = new Context.subquery (context);
-
 			sql.append ("(");
-			var type = pattern.translate_select (sql, true);
+			var select_context = pattern.translate_select (sql, true, true);
 			sql.append (")");
 
-			context = context.parent_context;
-
 			expect (SparqlTokenType.CLOSE_PARENS);
-			return type;
+			return select_context.type;
 		}
 
 		var optype = translate_expression (sql);

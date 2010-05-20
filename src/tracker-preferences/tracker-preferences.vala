@@ -50,6 +50,7 @@ public static TreeView treeview_ignored_directories;
 public static TreeView treeview_ignored_directories_with_content;
 public static TreeView treeview_ignored_files;
 public static ToggleButton togglebutton_home;
+public static Notebook notebook;
 public static RadioButton radiobutton_display_never;
 public static RadioButton radiobutton_display_active;
 public static RadioButton radiobutton_display_always;
@@ -368,10 +369,20 @@ static int main (string[] args) {
 		hscale_throttle.set_value ((double) config.throttle);
 		togglebutton_home = builder.get_object ("togglebutton_home") as ToggleButton;
 
+		notebook = builder.get_object ("notebook") as Notebook;
+
 		radiobutton_display_never = builder.get_object ("radiobutton_display_never") as RadioButton;
 		radiobutton_display_active = builder.get_object ("radiobutton_display_active") as RadioButton;
 		radiobutton_display_always = builder.get_object ("radiobutton_display_always") as RadioButton;
 		initialize_visibility_radiobutton ();
+
+		/* Note: if the General tab ever has more config parameters than those
+		 *  of the status icon, then don't remove the page, just the status-icon
+		 *  related parameters */
+		if (!HAVE_TRACKER_STATUS_ICON) {
+			/* Page #0 is the Contents page */
+			notebook.remove_page (0);
+		}
 
 		treeview_index_recursively = builder.get_object ("treeview_index_recursively") as TreeView;
 		treeview_index_single = builder.get_object ("treeview_index_single") as TreeView;
@@ -386,12 +397,12 @@ static int main (string[] args) {
 		setup_standard_treeview (treeview_ignored_files, _("File"));
 
 		liststore_index_recursively = builder.get_object ("liststore_index_recursively") as ListStore;
-		fill_in_model (liststore_index_recursively, config.index_recursive_directories);
+		fill_in_model (liststore_index_recursively, config.index_recursive_directories_unfiltered);
 
 		togglebutton_home.active = model_contains (liststore_index_recursively, HOME_STRING);
 
 		liststore_index_single = builder.get_object ("liststore_index_single") as ListStore;
-		fill_in_model (liststore_index_single, config.index_single_directories);
+		fill_in_model (liststore_index_single, config.index_single_directories_unfiltered);
 
 		liststore_ignored_directories = builder.get_object ("liststore_ignored_directories") as ListStore;
 		fill_in_model (liststore_ignored_directories, config.ignored_directories);

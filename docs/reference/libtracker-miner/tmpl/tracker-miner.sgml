@@ -19,6 +19,9 @@ TrackerMiner
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO TRACKER_MINER_ERROR_DOMAIN ##### -->
 <para>
 
@@ -132,6 +135,7 @@ TrackerMiner
 
 </para>
 
+@void: 
 @Returns: 
 
 

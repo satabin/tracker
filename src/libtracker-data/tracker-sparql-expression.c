@@ -142,7 +142,18 @@ typedef struct _TrackerSparqlLiteralBinding TrackerSparqlLiteralBinding;
 typedef struct _TrackerSparqlLiteralBindingClass TrackerSparqlLiteralBindingClass;
 typedef struct _TrackerSparqlLiteralBindingPrivate TrackerSparqlLiteralBindingPrivate;
 typedef struct _TrackerSparqlQueryPrivate TrackerSparqlQueryPrivate;
+
+#define TRACKER_SPARQL_TYPE_SELECT_CONTEXT (tracker_sparql_select_context_get_type ())
+#define TRACKER_SPARQL_SELECT_CONTEXT(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_SPARQL_TYPE_SELECT_CONTEXT, TrackerSparqlSelectContext))
+#define TRACKER_SPARQL_SELECT_CONTEXT_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRACKER_SPARQL_TYPE_SELECT_CONTEXT, TrackerSparqlSelectContextClass))
+#define TRACKER_SPARQL_IS_SELECT_CONTEXT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRACKER_SPARQL_TYPE_SELECT_CONTEXT))
+#define TRACKER_SPARQL_IS_SELECT_CONTEXT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRACKER_SPARQL_TYPE_SELECT_CONTEXT))
+#define TRACKER_SPARQL_SELECT_CONTEXT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRACKER_SPARQL_TYPE_SELECT_CONTEXT, TrackerSparqlSelectContextClass))
+
+typedef struct _TrackerSparqlSelectContext TrackerSparqlSelectContext;
+typedef struct _TrackerSparqlSelectContextClass TrackerSparqlSelectContextClass;
 #define _tracker_sparql_context_unref0(var) ((var == NULL) ? NULL : (var = (tracker_sparql_context_unref (var), NULL)))
+typedef struct _TrackerSparqlSelectContextPrivate TrackerSparqlSelectContextPrivate;
 
 struct _TrackerSparqlExpression {
 	GObject parent_instance;
@@ -307,7 +318,7 @@ struct _TrackerSparqlContext {
 	GHashTable* select_var_set;
 	GHashTable* predicate_variable_map;
 	GHashTable* used_sql_identifiers;
-	gboolean in_scalar_subquery;
+	gboolean scalar_subquery;
 };
 
 struct _TrackerSparqlContextClass {
@@ -337,6 +348,16 @@ struct _TrackerSparqlQuery {
 
 struct _TrackerSparqlQueryClass {
 	GObjectClass parent_class;
+};
+
+struct _TrackerSparqlSelectContext {
+	TrackerSparqlContext parent_instance;
+	TrackerSparqlSelectContextPrivate * priv;
+	TrackerPropertyType type;
+};
+
+struct _TrackerSparqlSelectContextClass {
+	TrackerSparqlContextClass parent_class;
 };
 
 
@@ -375,9 +396,6 @@ static gboolean tracker_sparql_expression_maybe_numeric (TrackerSparqlExpression
 static void tracker_sparql_expression_skip_bracketted_expression (TrackerSparqlExpression* self, GError** error);
 void tracker_sparql_expression_skip_select_variables (TrackerSparqlExpression* self, GError** error);
 GType tracker_sparql_variable_get_type (void);
-static TrackerPropertyType tracker_sparql_expression_translate_aggregate_expression (TrackerSparqlExpression* self, GString* sql, GError** error);
-static void tracker_sparql_expression_translate_expression_as_string (TrackerSparqlExpression* self, GString* sql, GError** error);
-char* tracker_sparql_expression_parse_string_literal (TrackerSparqlExpression* self, TrackerPropertyType* type, GError** error);
 TrackerPropertyType tracker_sparql_expression_translate_expression (TrackerSparqlExpression* self, GString* sql, GError** error);
 gpointer tracker_sparql_context_ref (gpointer instance);
 void tracker_sparql_context_unref (gpointer instance);
@@ -406,6 +424,8 @@ TrackerPropertyType tracker_sparql_expression_translate_select_expression (Track
 static void tracker_sparql_expression_translate_expression_as_order_condition (TrackerSparqlExpression* self, GString* sql, GError** error);
 void tracker_sparql_expression_translate_order_condition (TrackerSparqlExpression* self, GString* sql, GError** error);
 static void tracker_sparql_expression_translate_bound_call (TrackerSparqlExpression* self, GString* sql, GError** error);
+static void tracker_sparql_expression_translate_expression_as_string (TrackerSparqlExpression* self, GString* sql, GError** error);
+char* tracker_sparql_expression_parse_string_literal (TrackerSparqlExpression* self, TrackerPropertyType* type, GError** error);
 static void tracker_sparql_expression_translate_regex (TrackerSparqlExpression* self, GString* sql, GError** error);
 void tracker_sparql_expression_append_expression_as_string (GString* sql, const char* expression, TrackerPropertyType type);
 TrackerSparqlLiteralBinding* tracker_sparql_literal_binding_new (void);
@@ -421,6 +441,7 @@ char* tracker_sparql_query_resolve_prefixed_name (TrackerSparqlQuery* self, cons
 static TrackerPropertyType tracker_sparql_expression_parse_type_uri (TrackerSparqlExpression* self, GError** error);
 static TrackerPropertyType tracker_sparql_expression_translate_uri_expression (TrackerSparqlExpression* self, GString* sql, const char* uri, GError** error);
 static TrackerPropertyType tracker_sparql_expression_translate_bracketted_expression (TrackerSparqlExpression* self, GString* sql, GError** error);
+static TrackerPropertyType tracker_sparql_expression_translate_aggregate_expression (TrackerSparqlExpression* self, GString* sql, GError** error);
 static TrackerPropertyType tracker_sparql_expression_translate_primary_expression (TrackerSparqlExpression* self, GString* sql, GError** error);
 static TrackerPropertyType tracker_sparql_expression_translate_unary_expression (TrackerSparqlExpression* self, GString* sql, GError** error);
 static TrackerPropertyType tracker_sparql_expression_translate_multiplicative_expression (TrackerSparqlExpression* self, GString* sql, GError** error);
@@ -431,14 +452,11 @@ static TrackerPropertyType tracker_sparql_expression_translate_relational_expres
 static TrackerPropertyType tracker_sparql_expression_translate_value_logical (TrackerSparqlExpression* self, GString* sql, GError** error);
 static TrackerPropertyType tracker_sparql_expression_translate_conditional_and_expression (TrackerSparqlExpression* self, GString* sql, GError** error);
 static TrackerPropertyType tracker_sparql_expression_translate_conditional_or_expression (TrackerSparqlExpression* self, GString* sql, GError** error);
-TrackerSparqlContext* tracker_sparql_context_new_subquery (TrackerSparqlContext* parent_context);
-TrackerSparqlContext* tracker_sparql_context_construct_subquery (GType object_type, TrackerSparqlContext* parent_context);
-static void tracker_sparql_expression_set_context (TrackerSparqlExpression* self, TrackerSparqlContext* value);
-TrackerPropertyType tracker_sparql_pattern_translate_select (TrackerSparqlPattern* self, GString* sql, gboolean subquery, GError** error);
+GType tracker_sparql_select_context_get_type (void);
+TrackerSparqlSelectContext* tracker_sparql_pattern_translate_select (TrackerSparqlPattern* self, GString* sql, gboolean subquery, gboolean scalar_subquery, GError** error);
 TrackerPropertyType tracker_sparql_expression_translate_constraint (TrackerSparqlExpression* self, GString* sql, GError** error);
 static void tracker_sparql_expression_finalize (GObject* obj);
 static void tracker_sparql_expression_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
-static void tracker_sparql_expression_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
 static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func);
 static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
 static gint _vala_array_length (gpointer array);
@@ -754,30 +772,19 @@ TrackerPropertyType tracker_sparql_expression_translate_select_expression (Track
 	TrackerSparqlVariable* variable;
 	glong begin;
 	TrackerPropertyType type;
-	gboolean _tmp0_;
-	gboolean _tmp20_;
+	gboolean _tmp7_;
 	g_return_val_if_fail (self != NULL, 0);
 	g_return_val_if_fail (sql != NULL, 0);
 	_inner_error_ = NULL;
 	variable = NULL;
 	begin = (glong) sql->len;
 	type = TRACKER_PROPERTY_TYPE_UNKNOWN;
-	_tmp0_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_COUNT, &_inner_error_);
-	if (_inner_error_ != NULL) {
-		if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-			g_propagate_error (error, _inner_error_);
-			_g_object_unref0 (variable);
-			return 0;
-		} else {
-			_g_object_unref0 (variable);
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-			g_clear_error (&_inner_error_);
-			return 0;
-		}
-	}
-	if (_tmp0_) {
-		g_string_append (sql, "COUNT(");
-		tracker_sparql_expression_translate_aggregate_expression (self, sql, &_inner_error_);
+	if (tracker_sparql_expression_current (self) == TRACKER_SPARQL_TOKEN_TYPE_VAR) {
+		TrackerPropertyType _tmp0_;
+		TrackerSparqlVariable* _tmp3_;
+		char* _tmp2_;
+		char* _tmp1_;
+		_tmp0_ = tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 				g_propagate_error (error, _inner_error_);
@@ -790,11 +797,30 @@ TrackerPropertyType tracker_sparql_expression_translate_select_expression (Track
 				return 0;
 			}
 		}
-		g_string_append (sql, ")");
-		type = TRACKER_PROPERTY_TYPE_INTEGER;
+		type = _tmp0_;
+		variable = (_tmp3_ = _g_object_ref0 (tracker_sparql_context_get_variable (tracker_sparql_expression_get_context (self), _tmp2_ = string_substring (_tmp1_ = tracker_sparql_expression_get_last_string (self, 0), (glong) 1, -1))), _g_object_unref0 (variable), _tmp3_);
+		_g_free0 (_tmp2_);
+		_g_free0 (_tmp1_);
+		if (variable->binding == NULL) {
+			char* _tmp4_;
+			GError* _tmp5_;
+			_inner_error_ = (_tmp5_ = tracker_sparql_expression_get_error (self, _tmp4_ = g_strdup_printf ("use of undefined variable `%s'", tracker_sparql_variable_get_name (variable))), _g_free0 (_tmp4_), _tmp5_);
+			{
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					_g_object_unref0 (variable);
+					return 0;
+				} else {
+					_g_object_unref0 (variable);
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+		}
 	} else {
-		gboolean _tmp1_;
-		_tmp1_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_SUM, &_inner_error_);
+		TrackerPropertyType _tmp6_;
+		_tmp6_ = tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 				g_propagate_error (error, _inner_error_);
@@ -807,282 +833,13 @@ TrackerPropertyType tracker_sparql_expression_translate_select_expression (Track
 				return 0;
 			}
 		}
-		if (_tmp1_) {
-			TrackerPropertyType _tmp2_;
-			g_string_append (sql, "SUM(");
-			_tmp2_ = tracker_sparql_expression_translate_aggregate_expression (self, sql, &_inner_error_);
-			if (_inner_error_ != NULL) {
-				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-					g_propagate_error (error, _inner_error_);
-					_g_object_unref0 (variable);
-					return 0;
-				} else {
-					_g_object_unref0 (variable);
-					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-					g_clear_error (&_inner_error_);
-					return 0;
-				}
-			}
-			type = _tmp2_;
-			g_string_append (sql, ")");
-		} else {
-			gboolean _tmp3_;
-			_tmp3_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_AVG, &_inner_error_);
-			if (_inner_error_ != NULL) {
-				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-					g_propagate_error (error, _inner_error_);
-					_g_object_unref0 (variable);
-					return 0;
-				} else {
-					_g_object_unref0 (variable);
-					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-					g_clear_error (&_inner_error_);
-					return 0;
-				}
-			}
-			if (_tmp3_) {
-				TrackerPropertyType _tmp4_;
-				g_string_append (sql, "AVG(");
-				_tmp4_ = tracker_sparql_expression_translate_aggregate_expression (self, sql, &_inner_error_);
-				if (_inner_error_ != NULL) {
-					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-						g_propagate_error (error, _inner_error_);
-						_g_object_unref0 (variable);
-						return 0;
-					} else {
-						_g_object_unref0 (variable);
-						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-						g_clear_error (&_inner_error_);
-						return 0;
-					}
-				}
-				type = _tmp4_;
-				g_string_append (sql, ")");
-			} else {
-				gboolean _tmp5_;
-				_tmp5_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_MIN, &_inner_error_);
-				if (_inner_error_ != NULL) {
-					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-						g_propagate_error (error, _inner_error_);
-						_g_object_unref0 (variable);
-						return 0;
-					} else {
-						_g_object_unref0 (variable);
-						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-						g_clear_error (&_inner_error_);
-						return 0;
-					}
-				}
-				if (_tmp5_) {
-					TrackerPropertyType _tmp6_;
-					g_string_append (sql, "MIN(");
-					_tmp6_ = tracker_sparql_expression_translate_aggregate_expression (self, sql, &_inner_error_);
-					if (_inner_error_ != NULL) {
-						if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-							g_propagate_error (error, _inner_error_);
-							_g_object_unref0 (variable);
-							return 0;
-						} else {
-							_g_object_unref0 (variable);
-							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-							g_clear_error (&_inner_error_);
-							return 0;
-						}
-					}
-					type = _tmp6_;
-					g_string_append (sql, ")");
-				} else {
-					gboolean _tmp7_;
-					_tmp7_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_MAX, &_inner_error_);
-					if (_inner_error_ != NULL) {
-						if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-							g_propagate_error (error, _inner_error_);
-							_g_object_unref0 (variable);
-							return 0;
-						} else {
-							_g_object_unref0 (variable);
-							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-							g_clear_error (&_inner_error_);
-							return 0;
-						}
-					}
-					if (_tmp7_) {
-						TrackerPropertyType _tmp8_;
-						g_string_append (sql, "MAX(");
-						_tmp8_ = tracker_sparql_expression_translate_aggregate_expression (self, sql, &_inner_error_);
-						if (_inner_error_ != NULL) {
-							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-								g_propagate_error (error, _inner_error_);
-								_g_object_unref0 (variable);
-								return 0;
-							} else {
-								_g_object_unref0 (variable);
-								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-								g_clear_error (&_inner_error_);
-								return 0;
-							}
-						}
-						type = _tmp8_;
-						g_string_append (sql, ")");
-					} else {
-						gboolean _tmp9_;
-						_tmp9_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT, &_inner_error_);
-						if (_inner_error_ != NULL) {
-							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-								g_propagate_error (error, _inner_error_);
-								_g_object_unref0 (variable);
-								return 0;
-							} else {
-								_g_object_unref0 (variable);
-								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-								g_clear_error (&_inner_error_);
-								return 0;
-							}
-						}
-						if (_tmp9_) {
-							char* _tmp10_;
-							char* _tmp12_;
-							char* _tmp11_;
-							g_string_append (sql, "GROUP_CONCAT(");
-							tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_OPEN_PARENS, &_inner_error_);
-							if (_inner_error_ != NULL) {
-								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-									g_propagate_error (error, _inner_error_);
-									_g_object_unref0 (variable);
-									return 0;
-								} else {
-									_g_object_unref0 (variable);
-									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-									g_clear_error (&_inner_error_);
-									return 0;
-								}
-							}
-							tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
-							if (_inner_error_ != NULL) {
-								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-									g_propagate_error (error, _inner_error_);
-									_g_object_unref0 (variable);
-									return 0;
-								} else {
-									_g_object_unref0 (variable);
-									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-									g_clear_error (&_inner_error_);
-									return 0;
-								}
-							}
-							g_string_append (sql, ", ");
-							tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
-							if (_inner_error_ != NULL) {
-								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-									g_propagate_error (error, _inner_error_);
-									_g_object_unref0 (variable);
-									return 0;
-								} else {
-									_g_object_unref0 (variable);
-									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-									g_clear_error (&_inner_error_);
-									return 0;
-								}
-							}
-							_tmp10_ = tracker_sparql_expression_parse_string_literal (self, NULL, &_inner_error_);
-							if (_inner_error_ != NULL) {
-								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-									g_propagate_error (error, _inner_error_);
-									_g_object_unref0 (variable);
-									return 0;
-								} else {
-									_g_object_unref0 (variable);
-									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-									g_clear_error (&_inner_error_);
-									return 0;
-								}
-							}
-							g_string_append (sql, _tmp12_ = tracker_sparql_expression_escape_sql_string_literal (self, _tmp11_ = _tmp10_));
-							_g_free0 (_tmp12_);
-							_g_free0 (_tmp11_);
-							g_string_append (sql, ")");
-							tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_CLOSE_PARENS, &_inner_error_);
-							if (_inner_error_ != NULL) {
-								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-									g_propagate_error (error, _inner_error_);
-									_g_object_unref0 (variable);
-									return 0;
-								} else {
-									_g_object_unref0 (variable);
-									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-									g_clear_error (&_inner_error_);
-									return 0;
-								}
-							}
-							type = TRACKER_PROPERTY_TYPE_STRING;
-						} else {
-							if (tracker_sparql_expression_current (self) == TRACKER_SPARQL_TOKEN_TYPE_VAR) {
-								TrackerPropertyType _tmp13_;
-								TrackerSparqlVariable* _tmp16_;
-								char* _tmp15_;
-								char* _tmp14_;
-								_tmp13_ = tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
-								if (_inner_error_ != NULL) {
-									if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-										g_propagate_error (error, _inner_error_);
-										_g_object_unref0 (variable);
-										return 0;
-									} else {
-										_g_object_unref0 (variable);
-										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-										g_clear_error (&_inner_error_);
-										return 0;
-									}
-								}
-								type = _tmp13_;
-								variable = (_tmp16_ = _g_object_ref0 (tracker_sparql_context_get_variable (tracker_sparql_expression_get_context (self), _tmp15_ = string_substring (_tmp14_ = tracker_sparql_expression_get_last_string (self, 0), (glong) 1, -1))), _g_object_unref0 (variable), _tmp16_);
-								_g_free0 (_tmp15_);
-								_g_free0 (_tmp14_);
-								if (variable->binding == NULL) {
-									char* _tmp17_;
-									GError* _tmp18_;
-									_inner_error_ = (_tmp18_ = tracker_sparql_expression_get_error (self, _tmp17_ = g_strdup_printf ("use of undefined variable `%s'", tracker_sparql_variable_get_name (variable))), _g_free0 (_tmp17_), _tmp18_);
-									{
-										if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-											g_propagate_error (error, _inner_error_);
-											_g_object_unref0 (variable);
-											return 0;
-										} else {
-											_g_object_unref0 (variable);
-											g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-											g_clear_error (&_inner_error_);
-											return 0;
-										}
-									}
-								}
-							} else {
-								TrackerPropertyType _tmp19_;
-								_tmp19_ = tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
-								if (_inner_error_ != NULL) {
-									if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-										g_propagate_error (error, _inner_error_);
-										_g_object_unref0 (variable);
-										return 0;
-									} else {
-										_g_object_unref0 (variable);
-										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-										g_clear_error (&_inner_error_);
-										return 0;
-									}
-								}
-								type = _tmp19_;
-							}
-						}
-					}
-				}
-			}
-		}
+		type = _tmp6_;
 	}
 	if (!subquery) {
 		tracker_sparql_expression_convert_expression_to_string (sql, type, begin);
 		type = TRACKER_PROPERTY_TYPE_STRING;
 	}
-	_tmp20_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_AS, &_inner_error_);
+	_tmp7_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_AS, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 			g_propagate_error (error, _inner_error_);
@@ -1095,9 +852,9 @@ TrackerPropertyType tracker_sparql_expression_translate_select_expression (Track
 			return 0;
 		}
 	}
-	if (_tmp20_) {
-		gboolean _tmp21_;
-		_tmp21_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX, &_inner_error_);
+	if (_tmp7_) {
+		gboolean _tmp8_;
+		_tmp8_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX, &_inner_error_);
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 				g_propagate_error (error, _inner_error_);
@@ -1110,15 +867,15 @@ TrackerPropertyType tracker_sparql_expression_translate_select_expression (Track
 				return 0;
 			}
 		}
-		if (_tmp21_) {
-			TrackerSparqlVariable* _tmp23_;
-			char* _tmp22_;
-			variable = (_tmp23_ = _g_object_ref0 (tracker_sparql_context_get_variable (tracker_sparql_expression_get_context (self), _tmp22_ = tracker_sparql_expression_get_last_string (self, 0))), _g_object_unref0 (variable), _tmp23_);
-			_g_free0 (_tmp22_);
+		if (_tmp8_) {
+			TrackerSparqlVariable* _tmp10_;
+			char* _tmp9_;
+			variable = (_tmp10_ = _g_object_ref0 (tracker_sparql_context_get_variable (tracker_sparql_expression_get_context (self), _tmp9_ = tracker_sparql_expression_get_last_string (self, 0))), _g_object_unref0 (variable), _tmp10_);
+			_g_free0 (_tmp9_);
 		} else {
-			TrackerSparqlVariable* _tmp26_;
-			char* _tmp25_;
-			char* _tmp24_;
+			TrackerSparqlVariable* _tmp13_;
+			char* _tmp12_;
+			char* _tmp11_;
 			tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_VAR, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
@@ -1132,20 +889,20 @@ TrackerPropertyType tracker_sparql_expression_translate_select_expression (Track
 					return 0;
 				}
 			}
-			variable = (_tmp26_ = _g_object_ref0 (tracker_sparql_context_get_variable (tracker_sparql_expression_get_context (self), _tmp25_ = string_substring (_tmp24_ = tracker_sparql_expression_get_last_string (self, 0), (glong) 1, -1))), _g_object_unref0 (variable), _tmp26_);
-			_g_free0 (_tmp25_);
-			_g_free0 (_tmp24_);
+			variable = (_tmp13_ = _g_object_ref0 (tracker_sparql_context_get_variable (tracker_sparql_expression_get_context (self), _tmp12_ = string_substring (_tmp11_ = tracker_sparql_expression_get_last_string (self, 0), (glong) 1, -1))), _g_object_unref0 (variable), _tmp13_);
+			_g_free0 (_tmp12_);
+			_g_free0 (_tmp11_);
 		}
 		g_string_append_printf (sql, " AS %s", tracker_sparql_variable_get_sql_expression (variable));
 		if (subquery) {
 			TrackerSparqlVariableBinding* binding;
-			GString* _tmp27_;
+			GString* _tmp14_;
 			binding = tracker_sparql_variable_binding_new ();
 			((TrackerSparqlDataBinding*) binding)->data_type = type;
 			binding->variable = variable;
 			tracker_sparql_data_binding_set_sql_expression ((TrackerSparqlDataBinding*) binding, tracker_sparql_variable_get_sql_expression (variable));
-			tracker_sparql_pattern_add_variable_binding (tracker_sparql_expression_get_pattern (self), _tmp27_ = g_string_new (""), binding, TRACKER_SPARQL_VARIABLE_STATE_BOUND);
-			_g_string_free0 (_tmp27_);
+			tracker_sparql_pattern_add_variable_binding (tracker_sparql_expression_get_pattern (self), _tmp14_ = g_string_new (""), binding, TRACKER_SPARQL_VARIABLE_STATE_BOUND);
+			_g_string_free0 (_tmp14_);
 			_g_object_unref0 (binding);
 		}
 	}
@@ -2562,9 +2319,9 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																			_g_free0 (v);
 																			return result;
 																		} else {
-																			if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "cartesian-distance") == 0) {
-																				g_string_append (sql, "SparqlCartesianDistance(");
-																				tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
+																			if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "id") == 0) {
+																				TrackerPropertyType type;
+																				type = tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
 																				if (_inner_error_ != NULL) {
 																					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 																						g_propagate_error (error, _inner_error_);
@@ -2575,81 +2332,24 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																						return 0;
 																					}
 																				}
-																				g_string_append (sql, ", ");
-																				tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
-																				if (_inner_error_ != NULL) {
-																					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-																						g_propagate_error (error, _inner_error_);
-																						return 0;
-																					} else {
-																						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-																						g_clear_error (&_inner_error_);
-																						return 0;
+																				if (type != TRACKER_PROPERTY_TYPE_RESOURCE) {
+																					_inner_error_ = tracker_sparql_expression_get_error (self, "expected resource");
+																					{
+																						if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																							g_propagate_error (error, _inner_error_);
+																							return 0;
+																						} else {
+																							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																							g_clear_error (&_inner_error_);
+																							return 0;
+																						}
 																					}
 																				}
-																				tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
-																				if (_inner_error_ != NULL) {
-																					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-																						g_propagate_error (error, _inner_error_);
-																						return 0;
-																					} else {
-																						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-																						g_clear_error (&_inner_error_);
-																						return 0;
-																					}
-																				}
-																				g_string_append (sql, ", ");
-																				tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
-																				if (_inner_error_ != NULL) {
-																					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-																						g_propagate_error (error, _inner_error_);
-																						return 0;
-																					} else {
-																						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-																						g_clear_error (&_inner_error_);
-																						return 0;
-																					}
-																				}
-																				tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
-																				if (_inner_error_ != NULL) {
-																					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-																						g_propagate_error (error, _inner_error_);
-																						return 0;
-																					} else {
-																						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-																						g_clear_error (&_inner_error_);
-																						return 0;
-																					}
-																				}
-																				g_string_append (sql, ", ");
-																				tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
-																				if (_inner_error_ != NULL) {
-																					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-																						g_propagate_error (error, _inner_error_);
-																						return 0;
-																					} else {
-																						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-																						g_clear_error (&_inner_error_);
-																						return 0;
-																					}
-																				}
-																				tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
-																				if (_inner_error_ != NULL) {
-																					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-																						g_propagate_error (error, _inner_error_);
-																						return 0;
-																					} else {
-																						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-																						g_clear_error (&_inner_error_);
-																						return 0;
-																					}
-																				}
-																				g_string_append (sql, ")");
-																				result = TRACKER_PROPERTY_TYPE_DOUBLE;
+																				result = TRACKER_PROPERTY_TYPE_INTEGER;
 																				return result;
 																			} else {
-																				if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "haversine-distance") == 0) {
-																					g_string_append (sql, "SparqlHaversineDistance(");
+																				if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "cartesian-distance") == 0) {
+																					g_string_append (sql, "SparqlCartesianDistance(");
 																					tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
 																					if (_inner_error_ != NULL) {
 																						if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
@@ -2734,9 +2434,9 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																					result = TRACKER_PROPERTY_TYPE_DOUBLE;
 																					return result;
 																				} else {
-																					if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "coalesce") == 0) {
-																						g_string_append (sql, "COALESCE(");
-																						tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+																					if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "haversine-distance") == 0) {
+																						g_string_append (sql, "SparqlHaversineDistance(");
+																						tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
 																						if (_inner_error_ != NULL) {
 																							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 																								g_propagate_error (error, _inner_error_);
@@ -2759,7 +2459,7 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																								return 0;
 																							}
 																						}
-																						tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+																						tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
 																						if (_inner_error_ != NULL) {
 																							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 																								g_propagate_error (error, _inner_error_);
@@ -2770,41 +2470,58 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																								return 0;
 																							}
 																						}
-																						while (TRUE) {
-																							gboolean _tmp34_;
-																							_tmp34_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
-																							if (_inner_error_ != NULL) {
-																								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-																									g_propagate_error (error, _inner_error_);
-																									return 0;
-																								} else {
-																									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-																									g_clear_error (&_inner_error_);
-																									return 0;
-																								}
+																						g_string_append (sql, ", ");
+																						tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
+																						if (_inner_error_ != NULL) {
+																							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																								g_propagate_error (error, _inner_error_);
+																								return 0;
+																							} else {
+																								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																								g_clear_error (&_inner_error_);
+																								return 0;
 																							}
-																							if (!_tmp34_) {
-																								break;
+																						}
+																						tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
+																						if (_inner_error_ != NULL) {
+																							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																								g_propagate_error (error, _inner_error_);
+																								return 0;
+																							} else {
+																								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																								g_clear_error (&_inner_error_);
+																								return 0;
 																							}
-																							g_string_append (sql, ", ");
-																							tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
-																							if (_inner_error_ != NULL) {
-																								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-																									g_propagate_error (error, _inner_error_);
-																									return 0;
-																								} else {
-																									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-																									g_clear_error (&_inner_error_);
-																									return 0;
-																								}
+																						}
+																						g_string_append (sql, ", ");
+																						tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
+																						if (_inner_error_ != NULL) {
+																							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																								g_propagate_error (error, _inner_error_);
+																								return 0;
+																							} else {
+																								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																								g_clear_error (&_inner_error_);
+																								return 0;
+																							}
+																						}
+																						tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
+																						if (_inner_error_ != NULL) {
+																							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																								g_propagate_error (error, _inner_error_);
+																								return 0;
+																							} else {
+																								g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																								g_clear_error (&_inner_error_);
+																								return 0;
 																							}
 																						}
 																						g_string_append (sql, ")");
-																						result = TRACKER_PROPERTY_TYPE_STRING;
+																						result = TRACKER_PROPERTY_TYPE_DOUBLE;
 																						return result;
 																					} else {
-																						if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "string-from-filename") == 0) {
-																							g_string_append (sql, "SparqlStringFromFilename(");
+																						if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "coalesce") == 0) {
+																							g_string_append (sql, "COALESCE(");
 																							tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
 																							if (_inner_error_ != NULL) {
 																								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
@@ -2814,74 +2531,226 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 																									g_clear_error (&_inner_error_);
 																									return 0;
+																								}
+																							}
+																							g_string_append (sql, ", ");
+																							tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
+																							if (_inner_error_ != NULL) {
+																								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																									g_propagate_error (error, _inner_error_);
+																									return 0;
+																								} else {
+																									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																									g_clear_error (&_inner_error_);
+																									return 0;
+																								}
+																							}
+																							tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+																							if (_inner_error_ != NULL) {
+																								if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																									g_propagate_error (error, _inner_error_);
+																									return 0;
+																								} else {
+																									g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																									g_clear_error (&_inner_error_);
+																									return 0;
+																								}
+																							}
+																							while (TRUE) {
+																								gboolean _tmp34_;
+																								_tmp34_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
+																								if (_inner_error_ != NULL) {
+																									if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																										g_propagate_error (error, _inner_error_);
+																										return 0;
+																									} else {
+																										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																										g_clear_error (&_inner_error_);
+																										return 0;
+																									}
+																								}
+																								if (!_tmp34_) {
+																									break;
+																								}
+																								g_string_append (sql, ", ");
+																								tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+																								if (_inner_error_ != NULL) {
+																									if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																										g_propagate_error (error, _inner_error_);
+																										return 0;
+																									} else {
+																										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																										g_clear_error (&_inner_error_);
+																										return 0;
+																									}
 																								}
 																							}
 																							g_string_append (sql, ")");
 																							result = TRACKER_PROPERTY_TYPE_STRING;
 																							return result;
 																						} else {
-																							TrackerProperty* prop;
-																							prop = _g_object_ref0 (tracker_ontologies_get_property_by_uri (uri));
-																							if (prop == NULL) {
-																								_inner_error_ = tracker_sparql_expression_get_error (self, "Unknown function");
-																								{
+																							if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "uri-is-parent") == 0) {
+																								g_string_append (sql, "SparqlUriIsParent(");
+																								tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+																								if (_inner_error_ != NULL) {
 																									if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 																										g_propagate_error (error, _inner_error_);
-																										_g_object_unref0 (prop);
 																										return 0;
 																									} else {
-																										_g_object_unref0 (prop);
 																										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 																										g_clear_error (&_inner_error_);
 																										return 0;
 																									}
 																								}
-																							}
-																							if (tracker_property_get_multiple_values (prop)) {
-																								glong begin;
-																								g_string_append (sql, "(SELECT GROUP_CONCAT(");
-																								begin = (glong) sql->len;
-																								g_string_append_printf (sql, "\"%s\"", tracker_property_get_name (prop));
-																								tracker_sparql_expression_convert_expression_to_string (sql, tracker_property_get_data_type (prop), begin);
-																								g_string_append_printf (sql, ",',') FROM \"%s\" WHERE ID = ", tracker_property_get_table_name (prop));
-																								tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
+																								g_string_append (sql, ", ");
+																								tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
 																								if (_inner_error_ != NULL) {
 																									if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 																										g_propagate_error (error, _inner_error_);
-																										_g_object_unref0 (prop);
 																										return 0;
 																									} else {
-																										_g_object_unref0 (prop);
+																										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																										g_clear_error (&_inner_error_);
+																										return 0;
+																									}
+																								}
+																								tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+																								if (_inner_error_ != NULL) {
+																									if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																										g_propagate_error (error, _inner_error_);
+																										return 0;
+																									} else {
 																										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 																										g_clear_error (&_inner_error_);
 																										return 0;
 																									}
 																								}
 																								g_string_append (sql, ")");
-																								result = TRACKER_PROPERTY_TYPE_STRING;
-																								_g_object_unref0 (prop);
+																								result = TRACKER_PROPERTY_TYPE_BOOLEAN;
 																								return result;
 																							} else {
-																								g_string_append_printf (sql, "(SELECT \"%s\" FROM \"%s\" WHERE ID = ", tracker_property_get_name (prop), tracker_property_get_table_name (prop));
-																								tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
-																								if (_inner_error_ != NULL) {
-																									if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-																										g_propagate_error (error, _inner_error_);
-																										_g_object_unref0 (prop);
-																										return 0;
+																								if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "uri-is-descendant") == 0) {
+																									g_string_append (sql, "SparqlUriIsDescendant(");
+																									tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+																									if (_inner_error_ != NULL) {
+																										if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																											g_propagate_error (error, _inner_error_);
+																											return 0;
+																										} else {
+																											g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																											g_clear_error (&_inner_error_);
+																											return 0;
+																										}
+																									}
+																									g_string_append (sql, ", ");
+																									tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
+																									if (_inner_error_ != NULL) {
+																										if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																											g_propagate_error (error, _inner_error_);
+																											return 0;
+																										} else {
+																											g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																											g_clear_error (&_inner_error_);
+																											return 0;
+																										}
+																									}
+																									tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+																									if (_inner_error_ != NULL) {
+																										if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																											g_propagate_error (error, _inner_error_);
+																											return 0;
+																										} else {
+																											g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																											g_clear_error (&_inner_error_);
+																											return 0;
+																										}
+																									}
+																									g_string_append (sql, ")");
+																									result = TRACKER_PROPERTY_TYPE_BOOLEAN;
+																									return result;
+																								} else {
+																									if (_vala_strcmp0 (uri, TRACKER_SPARQL_EXPRESSION_TRACKER_NS "string-from-filename") == 0) {
+																										g_string_append (sql, "SparqlStringFromFilename(");
+																										tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+																										if (_inner_error_ != NULL) {
+																											if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																												g_propagate_error (error, _inner_error_);
+																												return 0;
+																											} else {
+																												g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																												g_clear_error (&_inner_error_);
+																												return 0;
+																											}
+																										}
+																										g_string_append (sql, ")");
+																										result = TRACKER_PROPERTY_TYPE_STRING;
+																										return result;
 																									} else {
+																										TrackerProperty* prop;
+																										prop = _g_object_ref0 (tracker_ontologies_get_property_by_uri (uri));
+																										if (prop == NULL) {
+																											_inner_error_ = tracker_sparql_expression_get_error (self, "Unknown function");
+																											{
+																												if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																													g_propagate_error (error, _inner_error_);
+																													_g_object_unref0 (prop);
+																													return 0;
+																												} else {
+																													_g_object_unref0 (prop);
+																													g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																													g_clear_error (&_inner_error_);
+																													return 0;
+																												}
+																											}
+																										}
+																										if (tracker_property_get_multiple_values (prop)) {
+																											glong begin;
+																											g_string_append (sql, "(SELECT GROUP_CONCAT(");
+																											begin = (glong) sql->len;
+																											g_string_append_printf (sql, "\"%s\"", tracker_property_get_name (prop));
+																											tracker_sparql_expression_convert_expression_to_string (sql, tracker_property_get_data_type (prop), begin);
+																											g_string_append_printf (sql, ",',') FROM \"%s\" WHERE ID = ", tracker_property_get_table_name (prop));
+																											tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
+																											if (_inner_error_ != NULL) {
+																												if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																													g_propagate_error (error, _inner_error_);
+																													_g_object_unref0 (prop);
+																													return 0;
+																												} else {
+																													_g_object_unref0 (prop);
+																													g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																													g_clear_error (&_inner_error_);
+																													return 0;
+																												}
+																											}
+																											g_string_append (sql, ")");
+																											result = TRACKER_PROPERTY_TYPE_STRING;
+																											_g_object_unref0 (prop);
+																											return result;
+																										} else {
+																											g_string_append_printf (sql, "(SELECT \"%s\" FROM \"%s\" WHERE ID = ", tracker_property_get_name (prop), tracker_property_get_table_name (prop));
+																											tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
+																											if (_inner_error_ != NULL) {
+																												if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																													g_propagate_error (error, _inner_error_);
+																													_g_object_unref0 (prop);
+																													return 0;
+																												} else {
+																													_g_object_unref0 (prop);
+																													g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																													g_clear_error (&_inner_error_);
+																													return 0;
+																												}
+																											}
+																											g_string_append (sql, ")");
+																											result = tracker_property_get_data_type (prop);
+																											_g_object_unref0 (prop);
+																											return result;
+																										}
 																										_g_object_unref0 (prop);
-																										g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-																										g_clear_error (&_inner_error_);
-																										return 0;
 																									}
 																								}
-																								g_string_append (sql, ")");
-																								result = tracker_property_get_data_type (prop);
-																								_g_object_unref0 (prop);
-																								return result;
 																							}
-																							_g_object_unref0 (prop);
 																						}
 																					}
 																				}
@@ -3363,6 +3232,7 @@ static TrackerPropertyType tracker_sparql_expression_translate_uri_expression (T
 static TrackerPropertyType tracker_sparql_expression_translate_primary_expression (TrackerSparqlExpression* self, GString* sql, GError** error) {
 	TrackerPropertyType result = 0;
 	GError * _inner_error_;
+	TrackerPropertyType type = 0;
 	g_return_val_if_fail (self != NULL, 0);
 	g_return_val_if_fail (sql != NULL, 0);
 	_inner_error_ = NULL;
@@ -3491,7 +3361,6 @@ static TrackerPropertyType tracker_sparql_expression_translate_primary_expressio
 		case TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG1:
 		case TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG2:
 		{
-			TrackerPropertyType type = 0;
 			TrackerSparqlLiteralBinding* binding;
 			char* _tmp7_;
 			char* _tmp8_;
@@ -3840,14 +3709,247 @@ static TrackerPropertyType tracker_sparql_expression_translate_primary_expressio
 			result = TRACKER_PROPERTY_TYPE_BOOLEAN;
 			return result;
 		}
+		case TRACKER_SPARQL_TOKEN_TYPE_COUNT:
+		{
+			tracker_sparql_expression_next (self, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			g_string_append (sql, "COUNT(");
+			tracker_sparql_expression_translate_aggregate_expression (self, sql, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			g_string_append (sql, ")");
+			result = TRACKER_PROPERTY_TYPE_INTEGER;
+			return result;
+		}
+		case TRACKER_SPARQL_TOKEN_TYPE_SUM:
+		{
+			TrackerPropertyType _tmp12_;
+			tracker_sparql_expression_next (self, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			g_string_append (sql, "SUM(");
+			_tmp12_ = tracker_sparql_expression_translate_aggregate_expression (self, sql, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			type = _tmp12_;
+			g_string_append (sql, ")");
+			result = type;
+			return result;
+		}
+		case TRACKER_SPARQL_TOKEN_TYPE_AVG:
+		{
+			TrackerPropertyType _tmp13_;
+			tracker_sparql_expression_next (self, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			g_string_append (sql, "AVG(");
+			_tmp13_ = tracker_sparql_expression_translate_aggregate_expression (self, sql, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			type = _tmp13_;
+			g_string_append (sql, ")");
+			result = type;
+			return result;
+		}
+		case TRACKER_SPARQL_TOKEN_TYPE_MIN:
+		{
+			TrackerPropertyType _tmp14_;
+			tracker_sparql_expression_next (self, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			g_string_append (sql, "MIN(");
+			_tmp14_ = tracker_sparql_expression_translate_aggregate_expression (self, sql, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			type = _tmp14_;
+			g_string_append (sql, ")");
+			result = type;
+			return result;
+		}
+		case TRACKER_SPARQL_TOKEN_TYPE_MAX:
+		{
+			TrackerPropertyType _tmp15_;
+			tracker_sparql_expression_next (self, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			g_string_append (sql, "MAX(");
+			_tmp15_ = tracker_sparql_expression_translate_aggregate_expression (self, sql, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			type = _tmp15_;
+			g_string_append (sql, ")");
+			result = type;
+			return result;
+		}
+		case TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT:
+		{
+			char* _tmp16_;
+			char* _tmp18_;
+			char* _tmp17_;
+			tracker_sparql_expression_next (self, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			g_string_append (sql, "GROUP_CONCAT(");
+			tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_OPEN_PARENS, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			g_string_append (sql, ", ");
+			tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			_tmp16_ = tracker_sparql_expression_parse_string_literal (self, NULL, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			g_string_append (sql, _tmp18_ = tracker_sparql_expression_escape_sql_string_literal (self, _tmp17_ = _tmp16_));
+			_g_free0 (_tmp18_);
+			_g_free0 (_tmp17_);
+			g_string_append (sql, ")");
+			tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_CLOSE_PARENS, &_inner_error_);
+			if (_inner_error_ != NULL) {
+				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+					g_propagate_error (error, _inner_error_);
+					return 0;
+				} else {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return 0;
+				}
+			}
+			result = TRACKER_PROPERTY_TYPE_STRING;
+			return result;
+		}
 		case TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX:
 		{
 			char* ns;
-			char* _tmp13_;
-			char* _tmp12_;
-			char* _tmp14_;
+			char* _tmp20_;
+			char* _tmp19_;
+			char* _tmp21_;
 			char* uri;
-			TrackerPropertyType _tmp15_;
+			TrackerPropertyType _tmp22_;
 			tracker_sparql_expression_next (self, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
@@ -3873,7 +3975,7 @@ static TrackerPropertyType tracker_sparql_expression_translate_primary_expressio
 					return 0;
 				}
 			}
-			uri = (_tmp14_ = tracker_sparql_query_resolve_prefixed_name (self->priv->query, ns, _tmp13_ = string_substring (_tmp12_ = tracker_sparql_expression_get_last_string (self, 0), (glong) 1, -1), &_inner_error_), _g_free0 (_tmp13_), _g_free0 (_tmp12_), _tmp14_);
+			uri = (_tmp21_ = tracker_sparql_query_resolve_prefixed_name (self->priv->query, ns, _tmp20_ = string_substring (_tmp19_ = tracker_sparql_expression_get_last_string (self, 0), (glong) 1, -1), &_inner_error_), _g_free0 (_tmp20_), _g_free0 (_tmp19_), _tmp21_);
 			if (_inner_error_ != NULL) {
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 					g_propagate_error (error, _inner_error_);
@@ -3886,7 +3988,7 @@ static TrackerPropertyType tracker_sparql_expression_translate_primary_expressio
 					return 0;
 				}
 			}
-			_tmp15_ = tracker_sparql_expression_translate_uri_expression (self, sql, uri, &_inner_error_);
+			_tmp22_ = tracker_sparql_expression_translate_uri_expression (self, sql, uri, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 					g_propagate_error (error, _inner_error_);
@@ -3901,18 +4003,18 @@ static TrackerPropertyType tracker_sparql_expression_translate_primary_expressio
 					return 0;
 				}
 			}
-			result = _tmp15_;
+			result = _tmp22_;
 			_g_free0 (ns);
 			_g_free0 (uri);
 			return result;
 		}
 		case TRACKER_SPARQL_TOKEN_TYPE_COLON:
 		{
-			char* _tmp17_;
-			char* _tmp16_;
-			char* _tmp18_;
+			char* _tmp24_;
+			char* _tmp23_;
+			char* _tmp25_;
 			char* uri;
-			TrackerPropertyType _tmp19_;
+			TrackerPropertyType _tmp26_;
 			tracker_sparql_expression_next (self, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
@@ -3924,7 +4026,7 @@ static TrackerPropertyType tracker_sparql_expression_translate_primary_expressio
 					return 0;
 				}
 			}
-			uri = (_tmp18_ = tracker_sparql_query_resolve_prefixed_name (self->priv->query, "", _tmp17_ = string_substring (_tmp16_ = tracker_sparql_expression_get_last_string (self, 0), (glong) 1, -1), &_inner_error_), _g_free0 (_tmp17_), _g_free0 (_tmp16_), _tmp18_);
+			uri = (_tmp25_ = tracker_sparql_query_resolve_prefixed_name (self->priv->query, "", _tmp24_ = string_substring (_tmp23_ = tracker_sparql_expression_get_last_string (self, 0), (glong) 1, -1), &_inner_error_), _g_free0 (_tmp24_), _g_free0 (_tmp23_), _tmp25_);
 			if (_inner_error_ != NULL) {
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 					g_propagate_error (error, _inner_error_);
@@ -3935,7 +4037,7 @@ static TrackerPropertyType tracker_sparql_expression_translate_primary_expressio
 					return 0;
 				}
 			}
-			_tmp19_ = tracker_sparql_expression_translate_uri_expression (self, sql, uri, &_inner_error_);
+			_tmp26_ = tracker_sparql_expression_translate_uri_expression (self, sql, uri, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 					g_propagate_error (error, _inner_error_);
@@ -3948,7 +4050,7 @@ static TrackerPropertyType tracker_sparql_expression_translate_primary_expressio
 					return 0;
 				}
 			}
-			result = _tmp19_;
+			result = _tmp26_;
 			_g_free0 (uri);
 			return result;
 		}
@@ -4882,12 +4984,9 @@ static TrackerPropertyType tracker_sparql_expression_translate_bracketted_expres
 		}
 	}
 	if (tracker_sparql_expression_current (self) == TRACKER_SPARQL_TOKEN_TYPE_SELECT) {
-		TrackerSparqlContext* _tmp0_;
-		TrackerPropertyType type;
-		tracker_sparql_expression_set_context (self, _tmp0_ = tracker_sparql_context_new_subquery (tracker_sparql_expression_get_context (self)));
-		_tracker_sparql_context_unref0 (_tmp0_);
+		TrackerSparqlSelectContext* select_context;
 		g_string_append (sql, "(");
-		type = tracker_sparql_pattern_translate_select (tracker_sparql_expression_get_pattern (self), sql, TRUE, &_inner_error_);
+		select_context = tracker_sparql_pattern_translate_select (tracker_sparql_expression_get_pattern (self), sql, TRUE, TRUE, &_inner_error_);
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 				g_propagate_error (error, _inner_error_);
@@ -4899,19 +4998,21 @@ static TrackerPropertyType tracker_sparql_expression_translate_bracketted_expres
 			}
 		}
 		g_string_append (sql, ")");
-		tracker_sparql_expression_set_context (self, tracker_sparql_expression_get_context (self)->parent_context);
 		tracker_sparql_expression_expect (self, TRACKER_SPARQL_TOKEN_TYPE_CLOSE_PARENS, &_inner_error_);
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 				g_propagate_error (error, _inner_error_);
+				_tracker_sparql_context_unref0 (select_context);
 				return 0;
 			} else {
+				_tracker_sparql_context_unref0 (select_context);
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 				g_clear_error (&_inner_error_);
 				return 0;
 			}
 		}
-		result = type;
+		result = select_context->type;
+		_tracker_sparql_context_unref0 (select_context);
 		return result;
 	}
 	optype = tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
@@ -5064,18 +5165,6 @@ static TrackerSparqlContext* tracker_sparql_expression_get_context (TrackerSparq
 }
 
 
-static gpointer _tracker_sparql_context_ref0 (gpointer self) {
-	return self ? tracker_sparql_context_ref (self) : NULL;
-}
-
-
-static void tracker_sparql_expression_set_context (TrackerSparqlExpression* self, TrackerSparqlContext* value) {
-	TrackerSparqlContext* _tmp0_;
-	g_return_if_fail (self != NULL);
-	self->priv->query->context = (_tmp0_ = _tracker_sparql_context_ref0 (value), _tracker_sparql_context_unref0 (self->priv->query->context), _tmp0_);
-}
-
-
 static TrackerSparqlPattern* tracker_sparql_expression_get_pattern (TrackerSparqlExpression* self) {
 	TrackerSparqlPattern* result;
 	g_return_val_if_fail (self != NULL, NULL);
@@ -5088,7 +5177,6 @@ static void tracker_sparql_expression_class_init (TrackerSparqlExpressionClass *
 	tracker_sparql_expression_parent_class = g_type_class_peek_parent (klass);
 	g_type_class_add_private (klass, sizeof (TrackerSparqlExpressionPrivate));
 	G_OBJECT_CLASS (klass)->get_property = tracker_sparql_expression_get_property;
-	G_OBJECT_CLASS (klass)->set_property = tracker_sparql_expression_set_property;
 	G_OBJECT_CLASS (klass)->finalize = tracker_sparql_expression_finalize;
 }
 
@@ -5118,17 +5206,6 @@ GType tracker_sparql_expression_get_type (void) {
 
 
 static void tracker_sparql_expression_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
-	TrackerSparqlExpression * self;
-	self = TRACKER_SPARQL_EXPRESSION (object);
-	switch (property_id) {
-		default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-
-static void tracker_sparql_expression_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
 	TrackerSparqlExpression * self;
 	self = TRACKER_SPARQL_EXPRESSION (object);
 	switch (property_id) {

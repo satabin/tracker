@@ -1,3 +1,645 @@
+2010-05-20  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.8.7
+
+	Updated NEWS
+
+	libtracker-data: Fixed make distcheck - missing ontology #90
+
+2010-05-20  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: albumart-quill: Bugfix NB#163155
+
+2010-05-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerMinerFS: Apply to the iri cache the same fix than d3cf67b05a4.
+	This cache has the same flaw, incurring in the same failure if a crawl
+	directory has legitimately changed (for example, a new file has been added).
+
+	TrackerMinerFS: Fix mtime cache for crawl directories themselves.
+	Mtime cache works by querying the parent folder, but for crawl directories
+	there wouldn't be any data for its parent folder, needlessly reindexing
+	these again, and leaving orphaned urns in the database. This problem would
+	add up in consecutive runs, as direct children nfo:belongsToContainer would
+	still point to the orphaned node, thus spreading the problem through the
+	hierarchy.
+
+2010-05-20  Tshepang Lekhonkhobe  <tshepang@gmail.com>
+
+	Fixes GB#619061, add history and auto-completion to t-s-t
+
+2010-05-20  Frederic Crozat  <fcrozat@mandriva.com>
+
+	Fix tracker-miner-fs exiting on non-UTF8 locale (GNOME bug #616535)
+
+2010-05-20  Johannes Buchner  <buchner.johannes@gmx.at>
+
+	Fixes GB614870: added search and pause indexing to left-click menu in tracker-status-icon
+	Note: The menu is a bit wide with the miner progress bars, so it looks a
+	bit odd. Maybe put them in a submenu?
+
+2010-05-20  Aleksander Morgado  <aleksander@lanedo.com>
+
+	configure.ac: fix HAVE_TRACKER_* define values in auto mode
+
+2010-05-20  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Add tracker:id function
+	This returns the internal integer ID to be used as last sort key in
+	queries. This helps retrieving results in stable order which is
+	important for paged queries.
+
+2010-05-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug 614610 - config behaviour regarding xdg-user-dirs doesn't work properly.
+	Make $HOME take precedence over XDG dirs pointing to it when saving
+	directory aliases in the configuration file.
+
+2010-05-20  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Add scalar subquery union test
+	This tests variable handling in scalar subqueries.
+
+	SPARQL: Fix variable handling in scalar subqueries
+	Scalar subqueries may only capture variables of very specific outer
+	scopes.
+
+	SPARQL: Create new context for each triple block
+
+	SPARQL: Refactor use of contexts
+	Create contexts within translate methods as preparation for
+	improvements in variable handling.
+
+2010-05-20  Tshepang Lekhonkhobe  <tshepang@gmail.com>
+
+	TST: fix segfault
+
+2010-05-20  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: albumart: Bugfix NB#169254, critical when album is passed as null
+
+2010-05-20  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes GB#618822 - c&p error for tracker-miner-rss autostart file
+
+2010-05-20  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#618707: tracker preferences shows notification area options even when status icon isn't built
+
+2010-05-20  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: jpeg: Bugfix for NB#169105, critical when IPTC data isn't available
+
+2010-05-20  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes GB#618821 - Wrong X-GNOME-Bugzilla-Components for desktop files
+
+2010-05-20  Koop Mast  <kwm@FreeBSD.org>
+
+	Fixes GB#618544: Only install tracker-search-bar man page when enabled
+
+2010-05-20  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: gstreamer: Bugfix for NB#169119, critical about unref of an object
+
+2010-05-20  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Missing AC_DEFINEs added to fix GB#618011
+
+	Fixes GB#614728 - Define system search icon as window icon for t-s-t
+
+	Fixes GB#618011: Don't show in status icon actions that haven't been compiled
+
+2010-05-20  Martyn Russell  <martyn@lanedo.com>
+
+	squashme: Fixed Makefile.am using poppler to poppler-glib
+
+2010-05-20  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Several modifications in the build structure, including VPATH builds
+		* Also fixed GB#616808: The user can now rebuild PNG files from
+		the sources in the distribution tarball. And PNG files are only
+		removed in make maintainerclean.
+
+		* Same for the ontology XML files, they can now be rebuilt from
+		the sources in the distribution tarball, and will only be
+		removed in make maintainerclean.
+
+		* Support for VPATH builds, where $(srcdir) != $(builddir)
+
+2010-05-20  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Handle single null terminated strings in UCS2 and UTF-16 in mp3 extractor
+
+2010-05-20  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-miner: Fixed usage of a ' where " is needed
+
+	NFO: Document reason why there's an index on nfo:belongsToContainer
+
+	NFO, libtracker-miner: Major performance improvement for crawler
+
+2010-05-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerMinerFS: Use nfo:belongsToContainer when filling in the IRI cache.
+
+2010-05-20  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-tag: Updated man page for --description
+
+	libtracker-data: Fixed broken class file build Priv vs. Private
+
+2010-05-20  Philip Van Hoof  <philip@codeminded.be>
+
+	NFO: Add an index on nfo:fileLastModified for miner-fs's crawling performance
+
+2010-05-20  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-tag: Add support for nao:description
+
+	Support nao:description
+
+2010-05-20  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Code style changes and some refactoring
+
+	libtracker-data: Updated code comment
+
+	libtracker-data: Refactor ontology-change coping, renamed a function
+
+	libtracker-data: Fixed bug in post_check
+
+	libtracker-data: Fixes based on review comments by Jürg
+
+	libtracker-data: Bugfix coping with property ontology changes
+
+	libtracker-data: Do a check for valid range conversion before making any changes
+
+	libtracker-data: Move the range-altering to the post check
+
+	libtracker-data: Introduce allowed-conversions tables
+
+	libtracker-data: Add error reporting to ontology change support
+
+	libtracker-data: Support for range ontology changes
+
+	libtracker-data: Support for ontology change tracker:notify, tracker:writeback and tracker:indexed
+
+	libtracker-data: Rename is_new to in_update which is more accurate
+
+2010-05-16  Petr Kovar  <pknbe@volny.cz>
+
+	Update Czech translation by Marek Cernocky
+
+2010-05-16  Mario Blättermann  <mariobl@gnome.org>
+
+	Updated German translation
+
+2010-05-14  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2010-05-13  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2010-05-13  Martyn Russell  <martyn@lanedo.com>
+
+	Updated NEWS
+
+	Fixed distcheck, for new flickr files which are not available yet
+
+2010-05-13  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Ignore some built files
+
+	service_DATA should list the .service files, not the .service.in files
+
+2010-05-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerStatistics: Do not use DBusGMethodInvocation after freeing it.
+
+2010-05-13  Martyn Russell  <martyn@lanedo.com>
+
+	Bump version
+
+2010-05-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract-gstreamer: Set nmm:albumArtist to nmm:MusicAlbum
+
+	Bug 166638 - Some of the metadata details of " avi " files are not extracted by tracker.
+	Extract "keywords" Gst tag.
+
+2010-05-13  Ivan Frade  <ivan.frade@nokia.com>
+
+	Data generators: move old scripts to 'deprecated' folder
+
+2010-05-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerMinerFS: Plug some memory leaks.
+
+2010-05-13  Kjartan Maraas  <kmaraas@gnome.org>
+
+	Updated Norwegian bokmål translation
+
+2010-05-13  Martyn Russell  <martyn@lanedo.com>
+
+	po: Fixed POTFILES.{in|skip}
+
+	evolution: Move D-Bus service file to same place as other service files
+
+	evolution: Moved miner desktop file to same location as others in data/miners
+
+	libtracker-miner: Removed monitor test, symbols are not exported
+
+	configure: Fix inconsistencies between miners
+	Use the same terminology HAVE_MINER_* everywhere
+
+	Only use conditionals for final .desktop files
+
+	tracker-miner-rss: Fixed desktop file, was using miner file desktop format
+
+	Fixed desktop files which errored for desktop-file-validate
+
+2010-05-13  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Allow aggregate expressions as subexpressions
+	Fixes GB#617515.
+
+2010-05-13  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes GB#617082, RFE Useability - Learning How to Start the Miners was a Little Unintuitive
+
+2010-05-13  Jürg Billeter  <j@bitron.ch>
+
+	Update .gitignore
+
+2010-05-13  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common: NB#167616, Improve error message for invalid xsd:dateTime
+
+2010-05-13  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Add mp4 and 3gpp video files to the writeback xmp module.
+
+2010-05-13  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Remove unused variable
+
+2010-05-13  Ivan Frade  <ivan.frade@nokia.com>
+
+	data-generators: Check if the cfg file has been actually loaded
+
+2010-05-10  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2010-05-08  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2010-05-06  Martyn Russell  <martyn@lanedo.com>
+
+	Updated NEWS
+
+	Fixed make distcheck issues
+
+	Bump version
+
+2010-05-06  Amit Jain  <ext-amit.1.jain@nokia.com>
+
+	functional-tests: journal replay tests added
+
+2010-05-06  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-search: Added received date to --emails and sort by date/subject
+
+	tracker-search: Added --contacts
+
+	tracker-search: Don't show URN for results without --detailed
+
+	tracker-search: Added --emails
+
+2010-05-06  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common: Compilation error fix in validating ints
+
+	libtracker-db: Close journal in case of error
+
+2010-05-06  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug 616548 - DIrectory lists and de-duplication in tracker-preferences
+	Make tracker-preferences show the unfiltered recursive/single directories
+	list, so there is an identical relation between the contents of the
+	configuration file and what the UI offers.
+
+	TrackerConfig: Preserve unfiltered list of recursive/single directories.
+	The final list is post-processed, in order to have items in single dirs
+	removed from the recursive list, two new functions allow getting the
+	unfiltered list.
+
+2010-05-06  Tshepang Lekhonkhobe  <tshepang@gmail.com>
+
+	ontology: typo fix
+
+	data-generators: %u is deprecated in favour of %d in Python
+
+	TST: segfault fix
+
+	TST: consistency fixes for metadata tile
+
+2010-05-06  Amit Jain  <ext-amit.1.jain@nokia.com>
+
+	functional-tests: added test cases for backup-restore feature
+
+2010-05-06  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerXMP: Do not modify setlocale() return value, as it's statically stored.
+	Also, do not perform a setlocale(..., NULL) call on every iteration, instead store
+	the resulting value, as that's more than unlikely to change on runtime.
+
+2010-05-06  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Bugfix for NB#166767, spaces aren't keyword separators
+	*** Updated for 0.8 since we don't have pdf.cpp file to patch
+
+2010-05-06  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerParser: Add /* Fall through */ comments wherever appropriate.
+
+	Add comment in signal handlers to clear up that falling through in switch is on purpose.
+
+	tracker-db-manager: g_open may return -1
+
+	libtracker-extract (tracker_date_guess): Protect against invalid values.
+
+	tracker-extract-mp3.c: Don't run past an array.
+
+2010-05-06  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-info: Show results in shortened form and add -f for long form namespaces
+
+2010-05-06  Tshepang Lekhonkhobe  <tshepang@gmail.com>
+
+	TST: rename Music category to Audio, which is more accurate
+
+	tracker-extract: use nfo:HtmlDocument instead of nfo:Document
+
+	TST: add Folders category; rename 'Office Documents' to 'Documents'
+
+	TST: correct Jamie's email address
+
+2010-05-06  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-extract: Fix fallback for metering mode.
+
+	tracker-data-manager: Remove unused variable.
+
+	TrackerOntologies: Remove unused variable.
+
+	tracker-writeback: Remove unused variable.
+
+	Fix several coverity reports in unit tests.
+
+	libtracker-client: Add missing va_end() call.
+
+	tracker-extract-msoffice: Ensure some vars initialization.
+
+	TrackerMinerObject: Remove unused variables.
+
+	TrackerMinerManager: remove unused variable.
+
+	TrackerConfig: remove unused variable.
+
+	TrackerMinerFiles: Remove unused variables.
+
+	tracker-tag: Fix coverity report
+	urns was possibly uninitialized when used. Also, removed the uris
+	variable declaration inside the if (uris && *uris) block, since
+	it was obviously redeclared and reused for exactly the same purpose.
+
+2010-05-06  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: NB#166717 Combine multiple keywords together for IPTC
+
+2010-05-06  Adrien Bustany  <abustany@gnome.org>
+
+	libtracker-miner: Add missing deps file for Vala bindings
+	This commit adds a .deps file for tracker-miner.vapi. Without this file,
+	Vala doesn't know that the gio-2.0 package is required (for async
+	functions), and fails at compile time.
+
+2010-05-06  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-store: Bugfix for NB#166684, commit each chunk
+
+2010-05-06  Adrien Bustany  <abustany@gnome.org>
+
+	Fix typo in documentation
+	This commit fixes a typo in the doc of tracker_resources_sparql_query in
+	libtracker-client where several braces and parenthesis were missing.
+
+	libtracker-miner: Fix memory leak in vapi file
+	The return type of PasswordProvider.get_name was incorrectly marked as
+	unowned, so it was not freed by Vala.
+
+	libtracker-miner: Fix includes in vapi file
+	This commit sets all the cheader_filename attributes to tracker-miner.h,
+	since it's now the only file that has to be included.
+
+2010-05-06  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Fixed compilation warning
+
+	libtracker-db: Fix for last commit, || should be &&
+
+	libtracker-db: Avoid strstr in uri_is_parent and uri_is_descendant
+
+	tracker-miner-fs, libtracker-db: Performance improvement for tracker:uri-is-parent
+
+2010-05-06  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fix compilation warning
+
+2010-05-06  Ivan Frade  <ivan.frade@nokia.com>
+
+	inotify and tracker-storage are not testeables. Remove from coverage.
+
+2010-05-02  Petr Kovar  <pknbe@volny.cz>
+
+	Update Czech translation by Marek Cernocky
+
+2010-05-01  Mario Blättermann  <mariobl@gnome.org>
+
+	Updated German translation
+
+2010-04-29  Martyn Russell  <martyn@lanedo.com>
+
+	Updated NEWS
+
+	Bump version
+
+2010-04-29  Amit Jain  <ext-amit.1.jain@nokia.com>
+
+	functional-tests: Fixed metadata query for images
+
+2010-04-29  Jean-Luc Lamadon  <jean-luc.lamadon@nokia.com>
+
+	functional-tests: Fix signal handling in miner file operations test suite
+
+2010-04-29  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Don't use isStoredAs in performance test scripts.
+
+2010-04-29  Adrien Bustany  <abustany@gnome.org>
+
+	Desktop files: Add ; to end lists
+	This commit adds a trailing ; to the Categories line for all installed
+	desktop files.
+
+	Files miner: Fix misindentation in tracker-mines-files.c
+
+2010-04-29  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: NB#166080: ignore stuff exiftool adds to Copyright fields
+
+2010-04-29  Ivan Frade  <ivan.frade@nokia.com>
+
+	Tests: initial test to libtracker-client
+
+2010-04-29  Philip Van Hoof  <philip@codeminded.be>
+
+	plugins/evolution: Fixed a race condition, added a lock for it
+
+	plugins/evolution: GB#615930: Fixed a crash in case timeout reached
+
+2010-04-29  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Added updated contacts-related performance queries.
+	Added queries and fixed some issues in the data-generators.
+
+2010-04-29  Ivan Frade  <ivan.frade@nokia.com>
+
+	Doc: tracker structural diagram in graphviz
+
+2010-04-29  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Fixed compilation warning
+
+2010-04-29  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Added updated message-related performance queries.
+	Added queries and fixed some issues in the data-generators.
+
+2010-04-29  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#616493 - Remove dependency of unzip from the OASIS extractor
+
+2010-04-29  Amit Jain  <ext-amit.1.jain@nokia.com>
+
+	functional-tests: wirteback testing support extended for .png , .tif , .mp4
+
+2010-04-29  Tshepang Lekhonkhobe  <tshepang@gmail.com>
+
+	tracker-extract: fixed desciption of -d in manpage
+
+2010-04-29  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-search-tool: Removed --service and updated man page
+
+2010-04-29  Ken Schmedding  <schmedk@gmail.com>
+
+	tracker-search-tool: Accept command line search terms
+
+2010-04-29  Carlos Garnacho  <carlosg@gnome.org>
+
+	libinotify: Add missing header.
+	perror() needs stdio.h
+
+	libinotify: Add perror() calls.
+	This is so we get a clue of what went wrong when adding a monitor,
+	like in bug #615965.
+
+	TrackerMinerFS: Fix typos in query to update children URIs.
+
+2010-04-29  Akos PASZTORY  <ext-akos.pasztory@nokia.com>
+
+	increasing coherency by putting the template near the functions that fill them
+
+	performance enhancements for the datagenerator
+
+2010-04-29  Philip Van Hoof  <philip@codeminded.be>
+
+	miners/fs: GB#615836 remove tracker:mountPoint before setting it
+	This problem made the group of queries, among which was the query unsetting
+	tracker:available, fail. Latter property was the origin of the bug report.
+
+	libstemmer: Bugfix NB#164958, FTS doesn't work for "beautif" and "beautifu"
+
+2010-04-29  Petr Kovar  <pknbe@volny.cz>
+
+	Update Czech translation by Marek Cernocky
+
+2010-04-29  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Fixed double free in Vorbis extractor
+
+2010-04-29  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerMinerFS: always set current_parent in ensure_mtime_cache()
+
+2010-04-29  Amit Jain  <ext-amit.1.jain@nokia.com>
+
+	Functional Tests: Updated to allow writeback completion before extracting
+
+	Functional Tests: Operations of files in multilevel subfolders added
+
+2010-04-29  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerDBInterfaceSqlite: do sanity check on is_parent() and is_descendant().
+
+	TrackerDBInterfaceSqlite: Check more carefully for is_parent().
+	Be more intelligent about trailing slashes and don't take exact string matches as a positive.
+
+	Use tracker:uri-is-descendant() in recursive delete operations.
+
+	TrackerMinerFS: Get rid of slash_uri in queries where we use tracker:uri-is-*()
+	This is already handled in these functions, so no need for that check in the miner.
+
+	TrackerMinerFS: Improve condition in ensure_iri_cache().
+
+	Remove \n from g_debug and g_criticals.
+
+	TrackerMinerFS: Make mtime/iri caches query per folder through tracker:uri-is-*().
+	Also, the query to get all children on directory moving is done through tracker:uri-is-descendant().
+
+	TrackerSparqlExpression: add tracker:uri-is-parent/descendant() sparql functions.
+
+	TrackerDBInterfaceSqlite: Add functions to deal with URIs hierarchy.
+	SparqlUriIsParent and SparqlUriIsDescendant have been added, taking 2 URIs and
+	returning true if the second is a direct/indirect child of the former.
+
+	TrackerMinerFS: Cache URNs for the processed files.
+	This cache is cleared on processing directory change, late additions are also
+	handled, as well as cache invalidation on files being moved/deleted.
+
+	TrackerMinerFS: Do not query parent URN frequently if it doesn't exist.
+	This is specially visible in the applications miner, since the container
+	directories aren't actually stored.
+
+	TrackerMinerFS: Perform one mtime query per folder.
+	Now that crawling/processing order is guaranteed to have all items
+	in one folder to be handled together, perform a mtime query per folder,
+	and compare against these results.
+
+2010-04-29  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Compilation warning fix
+
+2010-04-27  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
 2010-04-22  Martyn Russell  <martyn@lanedo.com>
 
 	Bumped version

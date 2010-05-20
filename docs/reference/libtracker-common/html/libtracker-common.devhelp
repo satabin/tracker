@@ -29,23 +29,23 @@
     </sub>
   </chapters>
   <functions>
-    <function name="TRACKER_RDF_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-RDF-PREFIX--CAPS"/>
-    <function name="TRACKER_RDFS_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-RDFS-PREFIX--CAPS"/>
-    <function name="TRACKER_XSD_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-XSD-PREFIX--CAPS"/>
-    <function name="TRACKER_TRACKER_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-TRACKER-PREFIX--CAPS"/>
-    <function name="TRACKER_DC_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-DC-PREFIX--CAPS"/>
-    <function name="TRACKER_MAEMO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-MAEMO-PREFIX--CAPS"/>
-    <function name="TRACKER_NRL_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NRL-PREFIX--CAPS"/>
-    <function name="TRACKER_NMO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NMO-PREFIX--CAPS"/>
-    <function name="TRACKER_NIE_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NIE-PREFIX--CAPS"/>
-    <function name="TRACKER_NCO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NCO-PREFIX--CAPS"/>
-    <function name="TRACKER_NAO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NAO-PREFIX--CAPS"/>
-    <function name="TRACKER_NID3_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NID3-PREFIX--CAPS"/>
-    <function name="TRACKER_NFO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NFO-PREFIX--CAPS"/>
-    <function name="TRACKER_NMM_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NMM-PREFIX--CAPS"/>
-    <function name="TRACKER_MLO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-MLO-PREFIX--CAPS"/>
-    <function name="TRACKER_DATASOURCE_URN_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-DATASOURCE-URN-PREFIX--CAPS"/>
-    <function name="TRACKER_NON_REMOVABLE_MEDIA_DATASOURCE_URN" link="libtracker-common-tracker-ontologies.html#TRACKER-NON-REMOVABLE-MEDIA-DATASOURCE-URN--CAPS"/>
+    <function name="TRACKER_RDF_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-RDF-PREFIX:CAPS"/>
+    <function name="TRACKER_RDFS_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-RDFS-PREFIX:CAPS"/>
+    <function name="TRACKER_XSD_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-XSD-PREFIX:CAPS"/>
+    <function name="TRACKER_TRACKER_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-TRACKER-PREFIX:CAPS"/>
+    <function name="TRACKER_DC_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-DC-PREFIX:CAPS"/>
+    <function name="TRACKER_MAEMO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-MAEMO-PREFIX:CAPS"/>
+    <function name="TRACKER_NRL_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NRL-PREFIX:CAPS"/>
+    <function name="TRACKER_NMO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NMO-PREFIX:CAPS"/>
+    <function name="TRACKER_NIE_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NIE-PREFIX:CAPS"/>
+    <function name="TRACKER_NCO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NCO-PREFIX:CAPS"/>
+    <function name="TRACKER_NAO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NAO-PREFIX:CAPS"/>
+    <function name="TRACKER_NID3_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NID3-PREFIX:CAPS"/>
+    <function name="TRACKER_NFO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NFO-PREFIX:CAPS"/>
+    <function name="TRACKER_NMM_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NMM-PREFIX:CAPS"/>
+    <function name="TRACKER_MLO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-MLO-PREFIX:CAPS"/>
+    <function name="TRACKER_DATASOURCE_URN_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-DATASOURCE-URN-PREFIX:CAPS"/>
+    <function name="TRACKER_NON_REMOVABLE_MEDIA_DATASOURCE_URN" link="libtracker-common-tracker-ontologies.html#TRACKER-NON-REMOVABLE-MEDIA-DATASOURCE-URN:CAPS"/>
     <function name="TrackerConfigFile" link="TrackerConfigFile.html#TrackerConfigFile-struct"/>
     <function name="TrackerConfigFileClass" link="TrackerConfigFile.html#TrackerConfigFileClass"/>
     <function name="tracker_config_file_save ()" link="TrackerConfigFile.html#tracker-config-file-save"/>
@@ -70,11 +70,11 @@
     <function name="tracker_power_get_on_battery ()" link="libtracker-common-TrackerPower.html#tracker-power-get-on-battery"/>
     <function name="tracker_power_get_on_low_battery ()" link="libtracker-common-TrackerPower.html#tracker-power-get-on-low-battery"/>
     <function name="tracker_power_get_battery_percentage ()" link="libtracker-common-TrackerPower.html#tracker-power-get-battery-percentage"/>
-    <function name="TRACKER_DBUS_ERROR_DOMAIN" link="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR-DOMAIN--CAPS"/>
-    <function name="TRACKER_DBUS_ERROR" link="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR--CAPS"/>
-    <function name="TRACKER_TYPE_G_STRV_ARRAY" link="libtracker-common-tracker-dbus.html#TRACKER-TYPE-G-STRV-ARRAY--CAPS"/>
-    <function name="TRACKER_TYPE_STR_STRV_MAP" link="libtracker-common-tracker-dbus.html#TRACKER-TYPE-STR-STRV-MAP--CAPS"/>
-    <function name="TRACKER_TYPE_EVENT_ARRAY" link="libtracker-common-tracker-dbus.html#TRACKER-TYPE-EVENT-ARRAY--CAPS"/>
+    <function name="TRACKER_DBUS_ERROR_DOMAIN" link="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR-DOMAIN:CAPS"/>
+    <function name="TRACKER_DBUS_ERROR" link="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR:CAPS"/>
+    <function name="TRACKER_TYPE_G_STRV_ARRAY" link="libtracker-common-tracker-dbus.html#TRACKER-TYPE-G-STRV-ARRAY:CAPS"/>
+    <function name="TRACKER_TYPE_STR_STRV_MAP" link="libtracker-common-tracker-dbus.html#TRACKER-TYPE-STR-STRV-MAP:CAPS"/>
+    <function name="TRACKER_TYPE_EVENT_ARRAY" link="libtracker-common-tracker-dbus.html#TRACKER-TYPE-EVENT-ARRAY:CAPS"/>
     <function name="tracker_dbus_async_return_if_fail()" link="libtracker-common-tracker-dbus.html#tracker-dbus-async-return-if-fail"/>
     <function name="tracker_dbus_return_val_if_fail()" link="libtracker-common-tracker-dbus.html#tracker-dbus-return-val-if-fail"/>
     <function name="enum TrackerDBusEventsType" link="libtracker-common-tracker-dbus.html#TrackerDBusEventsType"/>
@@ -125,8 +125,8 @@
     <function name="tracker_gslist_with_string_data_equal ()" link="libtracker-common-tracker-type-utils.html#tracker-gslist-with-string-data-equal"/>
     <function name="tracker_glist_copy_with_string_data ()" link="libtracker-common-tracker-type-utils.html#tracker-glist-copy-with-string-data"/>
     <function name="tracker_string_boolean_to_string_gint ()" link="libtracker-common-tracker-type-utils.html#tracker-string-boolean-to-string-gint"/>
-    <function name="TRACKER_DATE_ERROR" link="libtracker-common-tracker-date-time-utils.html#TRACKER-DATE-ERROR--CAPS"/>
-    <function name="TRACKER_TYPE_DATE_TIME" link="libtracker-common-tracker-date-time-utils.html#TRACKER-TYPE-DATE-TIME--CAPS"/>
+    <function name="TRACKER_DATE_ERROR" link="libtracker-common-tracker-date-time-utils.html#TRACKER-DATE-ERROR:CAPS"/>
+    <function name="TRACKER_TYPE_DATE_TIME" link="libtracker-common-tracker-date-time-utils.html#TRACKER-TYPE-DATE-TIME:CAPS"/>
     <function name="enum TrackerDateError" link="libtracker-common-tracker-date-time-utils.html#TrackerDateError"/>
     <function name="tracker_date_error_quark ()" link="libtracker-common-tracker-date-time-utils.html#tracker-date-error-quark"/>
     <function name="tracker_date_time_get_local_date ()" link="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-local-date"/>

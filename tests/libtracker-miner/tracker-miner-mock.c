@@ -69,7 +69,9 @@ GType tracker_miner_mock_get_type (void);
 enum  {
 	TRACKER_MINER_MOCK_DUMMY_PROPERTY,
 	TRACKER_MINER_MOCK_PAUSE_REASON,
-	TRACKER_MINER_MOCK_NAME
+	TRACKER_MINER_MOCK_NAME,
+	TRACKER_MINER_MOCK_APPS,
+	TRACKER_MINER_MOCK_REASONS
 };
 void tracker_miner_mock_set_name (TrackerMinerMock* self, const char* value);
 TrackerMinerMock* tracker_miner_mock_new (const char* name);
@@ -240,6 +242,8 @@ static void tracker_miner_mock_class_init (TrackerMinerMockClass * klass) {
 	G_OBJECT_CLASS (klass)->finalize = tracker_miner_mock_finalize;
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_MINER_MOCK_PAUSE_REASON, g_param_spec_string ("pause-reason", "pause-reason", "pause-reason", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_MINER_MOCK_NAME, g_param_spec_string ("name", "name", "name", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
+	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_MINER_MOCK_APPS, g_param_spec_boxed ("apps", "apps", "apps", G_TYPE_STRV, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
+	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_MINER_MOCK_REASONS, g_param_spec_boxed ("reasons", "reasons", "reasons", G_TYPE_STRV, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
 	g_signal_new ("progress", TYPE_TRACKER_MINER_MOCK, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_user_marshal_VOID__STRING_STRING_DOUBLE, G_TYPE_NONE, 3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_DOUBLE);
 	g_signal_new ("paused", TYPE_TRACKER_MINER_MOCK, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 	g_signal_new ("resumed", TYPE_TRACKER_MINER_MOCK, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
@@ -278,6 +282,7 @@ GType tracker_miner_mock_get_type (void) {
 
 static void tracker_miner_mock_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
 	TrackerMinerMock * self;
+	int length;
 	self = TRACKER_MINER_MOCK (object);
 	switch (property_id) {
 		case TRACKER_MINER_MOCK_PAUSE_REASON:
@@ -285,6 +290,12 @@ static void tracker_miner_mock_get_property (GObject * object, guint property_id
 		break;
 		case TRACKER_MINER_MOCK_NAME:
 		g_value_set_string (value, tracker_miner_mock_get_name (self));
+		break;
+		case TRACKER_MINER_MOCK_APPS:
+		g_value_set_boxed (value, tracker_miner_mock_get_apps (self, &length));
+		break;
+		case TRACKER_MINER_MOCK_REASONS:
+		g_value_set_boxed (value, tracker_miner_mock_get_reasons (self, &length));
 		break;
 		default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);

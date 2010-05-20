@@ -40,6 +40,7 @@
 #include <libtracker-extract/tracker-extract.h>
 
 #include "tracker-main.h"
+#include "tracker-gsf.h"
 
 /* Powerpoint files comprise of structures. Each structure contains a
  * header. Within that header is a record type that specifies what
@@ -468,7 +469,7 @@ msoffice_convert_and_normalize_chunk (guint8    *buffer,
 		g_free (converted_text);
 		g_free (normalized_chunk);
 	} else {
-		g_warning ("Couldn't convert %d bytes from %s to UTF-8: %s",
+		g_warning ("Couldn't convert %" G_GSIZE_FORMAT " bytes from %s to UTF-8: %s",
 		           chunk_size,
 		           is_ansi ? "CP1252" : "UTF-16",
 		           error ? error->message : "no error given");
@@ -857,7 +858,7 @@ extract_msword_content (GsfInfile *infile,
 	guint8 *piece_table = NULL;
 	guint8 *clx = NULL;
 	gint lcb_piece_table;
-	gint piece_count;
+	gint piece_count = 0;
 	gint32 fc;
 	GString *content = NULL;
 	guint8 *text_buffer = NULL;
@@ -1304,8 +1305,8 @@ xls_get_extended_record_string (GsfInput  *stream,
 	guint parsing_record = 0;
 	guint8 tmp_buffer[4] = { 0 };
 	guint i;
-	guint8 *buffer;
-	gsize buffer_size;
+	guint8 *buffer = NULL;
+	gsize buffer_size = 0;
 
 	/* Parsing the record from the list */
 	record = &g_array_index (list, ExcelExtendedStringRecord, parsing_record);
@@ -2086,116 +2087,6 @@ xml_text_handler_document_data (GMarkupParseContext  *context,
 	}
 }
 
-/**
- * based on find_member() from vsd_utils.c:
- * http://vsdump.sourcearchive.com/documentation/0.0.44/vsd__utils_8c-source.html
- */
-static GsfInput *
-find_member (GsfInfile *arch,
-             char const *name)
-{
-	gchar const *slash = strchr (name, '/');
-
-	if (slash) {
-		gchar *dirname = g_strndup (name, slash - name);
-		GsfInput *member;
-
-		if ((member = gsf_infile_child_by_name (arch, dirname)) != NULL) {
-			GsfInfile *dir = GSF_INFILE (member);
-			member = find_member (dir, slash + 1);
-			g_object_unref (dir);
-		}
-
-		g_free (dirname);
-		return member;
-	} else {
-		return gsf_infile_child_by_name (arch, name);
-	}
-}
-
-
-#define XML_BUFFER_SIZE            8192         /* bytes */
-/* Note: 20 MBytes of max size is really assumed to be a safe limit. */
-#define XML_MAX_BYTES_READ         (20u << 20)  /* bytes */
-
-static void
-parse_xml_contents (const gchar *file_uri,
-                    const gchar *xml_filename,
-                    GMarkupParseContext *context)
-{
-	gchar *filename;
-	GError *error = NULL;
-	GsfInfile *infile = NULL;;
-	GsfInput *src = NULL;
-	GsfInput *member = NULL;
-
-	g_debug ("Parsing '%s' XML file from '%s' zip archive...",
-	         xml_filename, file_uri);
-
-	/* Get filename from the given URI */
-	if ((filename = g_filename_from_uri (file_uri,
-	                                     NULL, &error)) == NULL) {
-		g_warning ("Can't get filename from uri '%s': %s",
-		           file_uri, error ? error->message : "no error given");
-	}
-	/* Create a new Input GSF object for the given file */
-	else if ((src = gsf_input_stdio_new (filename, &error)) == NULL) {
-		g_warning ("Failed creating a GSF Input object for '%s': %s",
-		           filename, error ? error->message : "no error given");
-	}
-	/* Input object is a Zip file */
-	else if ((infile = gsf_infile_zip_new (src, &error)) == NULL) {
-		g_warning ("'%s' Not a zip file: %s",
-		           filename, error ? error->message : "no error given");
-	}
-	/* Look for requested filename inside the ZIP file */
-	else if ((member = find_member (infile, xml_filename)) == NULL) {
-		g_warning ("No member '%s' in zip file '%s'",
-		           xml_filename, filename);
-	}
-	/* Load whole contents of the internal file in the xml buffer */
-	else {
-		guint8 buf[XML_BUFFER_SIZE];
-		size_t remaining_size, chunk_size, accum;
-
-		/* Get whole size of the contents to read */
-		remaining_size = (size_t) gsf_input_size (GSF_INPUT (member));
-
-		/* Note that gsf_input_read() needs to be able to read ALL specified
-		 *  number of bytes, or it will fail */
-		chunk_size = MIN (remaining_size, XML_BUFFER_SIZE);
-
-		accum = 0;
-		while (accum  <= XML_MAX_BYTES_READ &&
-		       chunk_size > 0 &&
-		       gsf_input_read (GSF_INPUT (member), chunk_size, buf) != NULL) {
-
-			/* update accumulated count */
-			accum += chunk_size;
-
-			/* Pass the read stream to the context parser... */
-			g_markup_parse_context_parse (context, buf, chunk_size, NULL);
-
-			/* update bytes to be read */
-			remaining_size -= chunk_size;
-			chunk_size = MIN (remaining_size, XML_BUFFER_SIZE);
-		}
-	}
-
-	/* it's safe to call g_free on NULL pointers */
-	g_free (filename);
-	/* but better don't do it in g_object_unref or g_error_free */
-	if (error)
-		g_error_free (error);
-	if (infile)
-		g_object_unref (infile);
-	if (src)
-		g_object_unref (src);
-	if (member)
-		g_object_unref (member);
-}
-
-
 static gboolean
 xml_read (MsOfficeXMLParserInfo *parser_info,
           const gchar           *xml_filename,
@@ -2254,7 +2145,9 @@ xml_read (MsOfficeXMLParserInfo *parser_info,
 	if (context) {
 		/* Load the internal XML file from the Zip archive, and parse it
 		 * using the given context */
-		parse_xml_contents (parser_info->uri, xml_filename, context);
+		tracker_gsf_parse_xml_in_zip (parser_info->uri,
+		                              xml_filename,
+		                              context);
 		g_markup_parse_context_free (context);
 	}
 
@@ -2395,9 +2288,12 @@ extract_msoffice_xml (const gchar          *uri,
 	info.content = g_string_new ("");
 
 	context = g_markup_parse_context_new (&parser, 0, &info, NULL);
+
 	/* Load the internal XML file from the Zip archive, and parse it
 	 * using the given context */
-	parse_xml_contents (uri, "[Content_Types].xml", context);
+	tracker_gsf_parse_xml_in_zip (uri,
+	                              "[Content_Types].xml",
+	                              context);
 
 	if (info.content) {
 		gchar *content;

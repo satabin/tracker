@@ -19,6 +19,9 @@ tracker-date-time-utils
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO TRACKER_DATE_ERROR ##### -->
 <para>
 
@@ -46,6 +49,7 @@ tracker-date-time-utils
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -90,6 +94,7 @@ tracker-date-time-utils
 
 </para>
 
+@void: 
 @Returns: 
 
 

@@ -19,6 +19,9 @@ tracker-file-utils
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION tracker_file_open ##### -->
 <para>
 
@@ -148,6 +151,7 @@ tracker-file-utils
 
 </para>
 
+@void: 
 @Returns: 
 
 

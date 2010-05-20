@@ -19,6 +19,9 @@ tracker-data
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### USER_FUNCTION TrackerExtractMimeFunc ##### -->
 <para>
 
@@ -34,6 +37,7 @@ tracker-data
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -50,6 +54,7 @@ tracker-data
 
 </para>
 
+@void: 
 @Returns: 
 
 

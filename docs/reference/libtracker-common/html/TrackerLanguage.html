@@ -3,19 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerLanguage</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
 <link rel="up" href="ch02.html" title="Configuration">
 <link rel="prev" href="TrackerConfigFile.html" title="TrackerConfigFile">
 <link rel="next" href="libtracker-common-TrackerPower.html" title="TrackerPower">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libtracker-common.html" title="Part I. Overview">
-<link rel="chapter" href="ch01.html" title="Ontology">
-<link rel="chapter" href="ch02.html" title="Configuration">
-<link rel="chapter" href="ch03.html" title="Communication">
-<link rel="chapter" href="ch04.html" title="Utilities">
-<link rel="chapter" href="ch05.html" title="Performance">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -28,12 +22,12 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#TrackerLanguage.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#TrackerLanguage.description" class="shortcut">Description</a>
-                 | 
-                <a href="#TrackerLanguage.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                 | 
-                <a href="#TrackerLanguage.properties" class="shortcut">Properties</a>
+                   | 
+                  <a href="#TrackerLanguage.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#TrackerLanguage.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#TrackerLanguage.properties" class="shortcut">Properties</a>
 </td></tr>
 </table>
 <div class="refentry" title="TrackerLanguage">
@@ -47,66 +41,35 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="TrackerLanguage.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-                    <a class="link" href="TrackerLanguage.html#TrackerLanguage-struct" title="TrackerLanguage">TrackerLanguage</a>;
+<pre class="synopsis">                    <a class="link" href="TrackerLanguage.html#TrackerLanguage-struct" title="TrackerLanguage">TrackerLanguage</a>;
                     <a class="link" href="TrackerLanguage.html#TrackerLanguageClass" title="TrackerLanguageClass">TrackerLanguageClass</a>;
-<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *   <a class="link" href="TrackerLanguage.html#tracker-language-new" title="tracker_language_new ()">tracker_language_new</a>                (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *language_code);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="TrackerLanguage.html#tracker-language-get-enable-stemmer" title="tracker_language_get_enable_stemmer ()">tracker_language_get_enable_stemmer</a> (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"
->GHashTable</a> *        <a class="link" href="TrackerLanguage.html#tracker-language-get-stop-words" title="tracker_language_get_stop_words ()">tracker_language_get_stop_words</a>     (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language);
-const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *       <a class="link" href="TrackerLanguage.html#tracker-language-get-language-code" title="tracker_language_get_language_code ()">tracker_language_get_language_code</a>  (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language);
-void                <a class="link" href="TrackerLanguage.html#tracker-language-set-enable-stemmer" title="tracker_language_set_enable_stemmer ()">tracker_language_set_enable_stemmer</a> (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> value);
-void                <a class="link" href="TrackerLanguage.html#tracker-language-set-language-code" title="tracker_language_set_language_code ()">tracker_language_set_language_code</a>  (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *language_code);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             <a class="link" href="TrackerLanguage.html#tracker-language-stem-word" title="tracker_language_stem_word ()">tracker_language_stem_word</a>          (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *word,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> word_length);
-const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *       <a class="link" href="TrackerLanguage.html#tracker-language-get-name-by-code" title="tracker_language_get_name_by_code ()">tracker_language_get_name_by_code</a>   (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *language_code);
+<a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="returnvalue">TrackerLanguage</span></a> *   <a class="link" href="TrackerLanguage.html#tracker-language-new" title="tracker_language_new ()">tracker_language_new</a>                (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *language_code</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerLanguage.html#tracker-language-get-enable-stemmer" title="tracker_language_get_enable_stemmer ()">tracker_language_get_enable_stemmer</a> (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        <a class="link" href="TrackerLanguage.html#tracker-language-get-stop-words" title="tracker_language_get_stop_words ()">tracker_language_get_stop_words</a>     (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="TrackerLanguage.html#tracker-language-get-language-code" title="tracker_language_get_language_code ()">tracker_language_get_language_code</a>  (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="TrackerLanguage.html#tracker-language-set-enable-stemmer" title="tracker_language_set_enable_stemmer ()">tracker_language_set_enable_stemmer</a> (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="TrackerLanguage.html#tracker-language-set-language-code" title="tracker_language_set_language_code ()">tracker_language_set_language_code</a>  (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *language_code</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="TrackerLanguage.html#tracker-language-stem-word" title="tracker_language_stem_word ()">tracker_language_stem_word</a>          (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *word</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> word_length</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="TrackerLanguage.html#tracker-language-get-name-by-code" title="tracker_language_get_name_by_code ()">tracker_language_get_name_by_code</a>   (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *language_code</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Object Hierarchy">
 <a name="TrackerLanguage.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
+  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
    +----TrackerLanguage
 </pre>
 </div>
 <div class="refsect1" title="Properties">
 <a name="TrackerLanguage.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="TrackerLanguage.html#TrackerLanguage--enable-stemmer" title='The "enable-stemmer" property'>enable-stemmer</a>"           <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Write / Construct
-  "<a class="link" href="TrackerLanguage.html#TrackerLanguage--language-code" title='The "language-code" property'>language-code</a>"            <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*                : Write / Construct
-  "<a class="link" href="TrackerLanguage.html#TrackerLanguage--stop-words" title='The "stop-words" property'>stop-words</a>"               <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"
->GHashTable</a>*           : Read
+  "<a class="link" href="TrackerLanguage.html#TrackerLanguage--enable-stemmer" title='The "enable-stemmer" property'>enable-stemmer</a>"           <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Write / Construct
+  "<a class="link" href="TrackerLanguage.html#TrackerLanguage--language-code" title='The "language-code" property'>language-code</a>"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Write / Construct
+  "<a class="link" href="TrackerLanguage.html#TrackerLanguage--stop-words" title='The "stop-words" property'>stop-words</a>"               <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a>*           : Read
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -135,19 +98,16 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTa
 <hr>
 <div class="refsect2" title="tracker_language_new ()">
 <a name="tracker-language-new"></a><h3>tracker_language_new ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *   tracker_language_new                (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *language_code);</pre>
+<pre class="programlisting"><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="returnvalue">TrackerLanguage</span></a> *   tracker_language_new                (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *language_code</code></em>);</pre>
 <p>
-Creates a new <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> instance for the passed language code.</p>
-<p>
+Creates a new <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> instance for the passed language code.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>language_code</code></em> :</span></p></td>
-<td> language code in ISO 639-1 format
+<td>language code in ISO 639-1 format
 </td>
 </tr>
 <tr>
@@ -161,24 +121,21 @@ Creates a new <a class="link" href="TrackerLanguage.html" title="TrackerLanguage
 <hr>
 <div class="refsect2" title="tracker_language_get_enable_stemmer ()">
 <a name="tracker-language-get-enable-stemmer"></a><h3>tracker_language_get_enable_stemmer ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            tracker_language_get_enable_stemmer (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_language_get_enable_stemmer (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>);</pre>
 <p>
-Returns whether words stemming is enabled for <em class="parameter"><code>language</code></em>.</p>
-<p>
+Returns whether words stemming is enabled for <em class="parameter"><code>language</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>language</code></em> :</span></p></td>
-<td> a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
+<td>a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if word stemming is enabled.
+<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if word stemming is enabled.
 </td>
 </tr>
 </tbody>
@@ -187,27 +144,22 @@ Returns whether words stemming is enabled for <em class="parameter"><code>langua
 <hr>
 <div class="refsect2" title="tracker_language_get_stop_words ()">
 <a name="tracker-language-get-stop-words"></a><h3>tracker_language_get_stop_words ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"
->GHashTable</a> *        tracker_language_get_stop_words     (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        tracker_language_get_stop_words     (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>);</pre>
 <p>
 Returns the stop words for <em class="parameter"><code>language</code></em>. Stop words are really common
-words that are not worth to index for the language handled by <em class="parameter"><code>language</code></em>.</p>
-<p>
+words that are not worth to index for the language handled by <em class="parameter"><code>language</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>language</code></em> :</span></p></td>
-<td> a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
+<td>a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"
-><span class="type">GHashTable</span></a> with the stop words as the value, this memory
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> with the stop words as the value, this memory
          is owned by <em class="parameter"><code>language</code></em> and should not be modified nor freed.
 </td>
 </tr>
@@ -217,19 +169,16 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTa
 <hr>
 <div class="refsect2" title="tracker_language_get_language_code ()">
 <a name="tracker-language-get-language-code"></a><h3>tracker_language_get_language_code ()</h3>
-<pre class="programlisting">const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *       tracker_language_get_language_code  (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       tracker_language_get_language_code  (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>);</pre>
 <p>
-Returns the language code in ISO 639-1 handled by <em class="parameter"><code>language</code></em>.</p>
-<p>
+Returns the language code in ISO 639-1 handled by <em class="parameter"><code>language</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>language</code></em> :</span></p></td>
-<td> a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
+<td>a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
 </td>
 </tr>
 <tr>
@@ -243,25 +192,23 @@ Returns the language code in ISO 639-1 handled by <em class="parameter"><code>la
 <hr>
 <div class="refsect2" title="tracker_language_set_enable_stemmer ()">
 <a name="tracker-language-set-enable-stemmer"></a><h3>tracker_language_set_enable_stemmer ()</h3>
-<pre class="programlisting">void                tracker_language_set_enable_stemmer (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> value);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_language_set_enable_stemmer (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> value</code></em>);</pre>
 <p>
-Enables or disables word stemming for <em class="parameter"><code>language</code></em>.</p>
-<p>
+Enables or disables word stemming for <em class="parameter"><code>language</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>language</code></em> :</span></p></td>
-<td> a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
+<td>a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td> <code class="literal">TRUE</code> to enable word stemming
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> to enable word stemming
 </td>
 </tr>
 </tbody>
@@ -270,26 +217,23 @@ Enables or disables word stemming for <em class="parameter"><code>language</code
 <hr>
 <div class="refsect2" title="tracker_language_set_language_code ()">
 <a name="tracker-language-set-language-code"></a><h3>tracker_language_set_language_code ()</h3>
-<pre class="programlisting">void                tracker_language_set_language_code  (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *language_code);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_language_set_language_code  (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *language_code</code></em>);</pre>
 <p>
-Sets the <em class="parameter"><code>language</code></em> to <em class="parameter"><code>language_code</code></em>, a <code class="literal">NULL</code> value will reset this
-to "en" (English).</p>
-<p>
+Sets the <em class="parameter"><code>language</code></em> to <em class="parameter"><code>language_code</code></em>, a <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> value will reset this
+to "en" (English).
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>language</code></em> :</span></p></td>
-<td> a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
+<td>a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>language_code</code></em> :</span></p></td>
-<td> an ISO 639-1 language code
+<td>an ISO 639-1 language code
 </td>
 </tr>
 </tbody>
@@ -298,44 +242,35 @@ to "en" (English).</p>
 <hr>
 <div class="refsect2" title="tracker_language_stem_word ()">
 <a name="tracker-language-stem-word"></a><h3>tracker_language_stem_word ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             tracker_language_stem_word          (<a class="link" href="TrackerLanguage.html" title="TrackerLanguage">TrackerLanguage</a> *language,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *word,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> word_length);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_language_stem_word          (<em class="parameter"><code><a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a> *language</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *word</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> word_length</code></em>);</pre>
 <p>
 If the stemmer is enabled, it will return the stem word for <em class="parameter"><code>word</code></em>.
-If it's disabled, it will return the passed word.</p>
-<p>
+If it's disabled, it will return the passed word.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>language</code></em> :</span></p></td>
-<td> a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
+<td>a <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>word</code></em> :</span></p></td>
-<td> string pointing to a word
+<td>string pointing to a word
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>word_length</code></em> :</span></p></td>
-<td> word ascii length
+<td>word ascii length
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a string with the processed word. This string must be
-         freed with <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"
-><code class="function">g_free()</code></a>
+         freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>
 </td>
 </tr>
 </tbody>
@@ -344,22 +279,17 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g
 <hr>
 <div class="refsect2" title="tracker_language_get_name_by_code ()">
 <a name="tracker-language-get-name-by-code"></a><h3>tracker_language_get_name_by_code ()</h3>
-<pre class="programlisting">const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *       tracker_language_get_name_by_code   (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *language_code);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       tracker_language_get_name_by_code   (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *language_code</code></em>);</pre>
 <p>
 Returns a human readable language name for the given
-ISO 639-1 code, if supported by <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a></p>
-<p>
+ISO 639-1 code, if supported by <a class="link" href="TrackerLanguage.html" title="TrackerLanguage"><span class="type">TrackerLanguage</span></a>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>language_code</code></em> :</span></p></td>
-<td> a ISO 639-1 language code.
+<td>a ISO 639-1 language code.
 </td>
 </tr>
 <tr>
@@ -375,33 +305,27 @@ ISO 639-1 code, if supported by <a class="link" href="TrackerLanguage.html" titl
 <a name="TrackerLanguage.property-details"></a><h2>Property Details</h2>
 <div class="refsect2" title='The "enable-stemmer" property'>
 <a name="TrackerLanguage--enable-stemmer"></a><h3>The <code class="literal">"enable-stemmer"</code> property</h3>
-<pre class="programlisting">  "enable-stemmer"           <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Write / Construct</pre>
+<pre class="programlisting">  "enable-stemmer"           <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Write / Construct</pre>
 <p>Enable stemmer.</p>
 <p>Default value: TRUE</p>
 </div>
 <hr>
 <div class="refsect2" title='The "language-code" property'>
 <a name="TrackerLanguage--language-code"></a><h3>The <code class="literal">"language-code"</code> property</h3>
-<pre class="programlisting">  "language-code"            <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*                : Write / Construct</pre>
+<pre class="programlisting">  "language-code"            <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Write / Construct</pre>
 <p>Language code.</p>
 <p>Default value: "en"</p>
 </div>
 <hr>
 <div class="refsect2" title='The "stop-words" property'>
 <a name="TrackerLanguage--stop-words"></a><h3>The <code class="literal">"stop-words"</code> property</h3>
-<pre class="programlisting">  "stop-words"               <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"
->GHashTable</a>*           : Read</pre>
+<pre class="programlisting">  "stop-words"               <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a>*           : Read</pre>
 <p>Stop words.</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.14</div>
 </body>
 </html>

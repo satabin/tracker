@@ -37,6 +37,8 @@ INCLUDES = 								\
 	-DG_LOG_DOMAIN=\"Tracker\"					\
 	-I$(top_srcdir)/src						\
 	-I$(top_srcdir)/tests/common					\
+	-I$(top_builddir)/src						\
+	-I$(top_builddir)/src/libtracker-client				\
 	$(WARN_CFLAGS)							\
 	$(GCOV_CFLAGS)							\
 	$(DBUS_CFLAGS)							\
@@ -91,4 +93,5 @@ EXTRA_DIST = \
 	change/updates/99-example.queries.v3	\
 	change/updates/99-example.queries.v4	\
 	ontologies/20-dc.ontology		\
-	ontologies/31-nao.ontology
+	ontologies/31-nao.ontology		\
+	ontologies/90-tracker.ontology

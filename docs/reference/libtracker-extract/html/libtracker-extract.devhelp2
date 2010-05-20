@@ -4,31 +4,31 @@
   <chapters>
     <sub name="Overview" link="libtracker-extract.html"/>
     <sub name="Core" link="ch01.html">
-      <sub name="How to use libtracker-extract" link="libtracker-extract-tracker-data.html"/>
-      <sub name="Data utilities" link="libtracker-extract-tracker-utils.html"/>
+      <sub name="How to use libtracker-extract" link="libtracker-extract-How-to-use-libtracker-extract.html"/>
+      <sub name="Data utilities" link="libtracker-extract-Data-utilities.html"/>
     </sub>
     <sub name="Common Embedded Support" link="ch02.html">
-      <sub name="XMP" link="libtracker-extract-tracker-xmp.html"/>
-      <sub name="IPTC" link="libtracker-extract-tracker-iptc.html"/>
-      <sub name="Exif" link="libtracker-extract-tracker-exif.html"/>
+      <sub name="XMP" link="libtracker-extract-XMP.html"/>
+      <sub name="IPTC" link="libtracker-extract-IPTC.html"/>
+      <sub name="Exif" link="libtracker-extract-Exif.html"/>
     </sub>
   </chapters>
   <functions>
-    <keyword type="function" name="TrackerExtractMimeFunc ()" link="libtracker-extract-tracker-data.html#TrackerExtractMimeFunc" since="0.8"/>
-    <keyword type="function" name="TrackerExtractDataFunc ()" link="libtracker-extract-tracker-data.html#TrackerExtractDataFunc" since="0.6"/>
-    <keyword type="struct" name="TrackerExtractData" link="libtracker-extract-tracker-data.html#TrackerExtractData" since="0.8"/>
-    <keyword type="function" name="tracker_extract_get_data ()" link="libtracker-extract-tracker-data.html#tracker-extract-get-data" since="0.8"/>
-    <keyword type="function" name="tracker_coalesce ()" link="libtracker-extract-tracker-utils.html#tracker-coalesce" since="0.8"/>
-    <keyword type="function" name="tracker_merge ()" link="libtracker-extract-tracker-utils.html#tracker-merge" since="0.8"/>
-    <keyword type="function" name="tracker_text_normalize ()" link="libtracker-extract-tracker-utils.html#tracker-text-normalize" since="0.8"/>
-    <keyword type="function" name="tracker_date_format_to_iso8601 ()" link="libtracker-extract-tracker-utils.html#tracker-date-format-to-iso8601" since="0.8"/>
-    <keyword type="function" name="tracker_date_guess ()" link="libtracker-extract-tracker-utils.html#tracker-date-guess" since="0.8"/>
-    <keyword type="struct" name="TrackerXmpData" link="libtracker-extract-tracker-xmp.html#TrackerXmpData"/>
-    <keyword type="function" name="tracker_xmp_read ()" link="libtracker-extract-tracker-xmp.html#tracker-xmp-read" since="0.8"/>
-    <keyword type="function" name="tracker_xmp_apply ()" link="libtracker-extract-tracker-xmp.html#tracker-xmp-apply" since="0.8"/>
-    <keyword type="struct" name="TrackerIptcData" link="libtracker-extract-tracker-iptc.html#TrackerIptcData"/>
-    <keyword type="function" name="tracker_iptc_read ()" link="libtracker-extract-tracker-iptc.html#tracker-iptc-read" since="0.8"/>
-    <keyword type="struct" name="TrackerExifData" link="libtracker-extract-tracker-exif.html#TrackerExifData"/>
-    <keyword type="function" name="tracker_exif_read ()" link="libtracker-extract-tracker-exif.html#tracker-exif-read" since="0.8"/>
+    <keyword type="function" name="TrackerExtractMimeFunc ()" link="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractMimeFunc" since="0.8"/>
+    <keyword type="function" name="TrackerExtractDataFunc ()" link="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractDataFunc" since="0.6"/>
+    <keyword type="struct" name="TrackerExtractData" link="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" since="0.8"/>
+    <keyword type="function" name="tracker_extract_get_data ()" link="libtracker-extract-How-to-use-libtracker-extract.html#tracker-extract-get-data" since="0.8"/>
+    <keyword type="function" name="tracker_coalesce ()" link="libtracker-extract-Data-utilities.html#tracker-coalesce" since="0.8"/>
+    <keyword type="function" name="tracker_merge ()" link="libtracker-extract-Data-utilities.html#tracker-merge" since="0.8"/>
+    <keyword type="function" name="tracker_text_normalize ()" link="libtracker-extract-Data-utilities.html#tracker-text-normalize" since="0.8"/>
+    <keyword type="function" name="tracker_date_format_to_iso8601 ()" link="libtracker-extract-Data-utilities.html#tracker-date-format-to-iso8601" since="0.8"/>
+    <keyword type="function" name="tracker_date_guess ()" link="libtracker-extract-Data-utilities.html#tracker-date-guess" since="0.8"/>
+    <keyword type="struct" name="TrackerXmpData" link="libtracker-extract-XMP.html#TrackerXmpData"/>
+    <keyword type="function" name="tracker_xmp_read ()" link="libtracker-extract-XMP.html#tracker-xmp-read" since="0.8"/>
+    <keyword type="function" name="tracker_xmp_apply ()" link="libtracker-extract-XMP.html#tracker-xmp-apply" since="0.8"/>
+    <keyword type="struct" name="TrackerIptcData" link="libtracker-extract-IPTC.html#TrackerIptcData"/>
+    <keyword type="function" name="tracker_iptc_read ()" link="libtracker-extract-IPTC.html#tracker-iptc-read" since="0.8"/>
+    <keyword type="struct" name="TrackerExifData" link="libtracker-extract-Exif.html#TrackerExifData"/>
+    <keyword type="function" name="tracker_exif_read ()" link="libtracker-extract-Exif.html#tracker-exif-read" since="0.8"/>
   </functions>
 </book>

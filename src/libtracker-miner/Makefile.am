@@ -7,6 +7,8 @@ INCLUDES =						\
 	-DTRACKER_COMPILATION				\
 	-DTRACKER_MINERS_DIR=\""$(datadir)/tracker/miners"\" 	\
 	-I$(top_srcdir)/src				\
+	-I$(top_builddir)/src				\
+	-I$(top_builddir)/src/libtracker-client		\
 	$(WARN_CFLAGS)					\
 	$(GLIB2_CFLAGS)					\
 	$(GCOV_CFLAGS)					\
@@ -106,14 +108,14 @@ dbus_sources = 						\
 # Vala bindings
 vapidir = $(datadir)/vala/vapi
 vapi_DATA =                     			\
-	tracker-miner-$(TRACKER_API_VERSION).vapi
+	tracker-miner-$(TRACKER_API_VERSION).vapi	\
+	tracker-miner-$(TRACKER_API_VERSION).deps
 
 tracker-miner-$(TRACKER_API_VERSION).vapi: tracker-miner.vapi
 	cp $< $@
 
-# Web details
-tracker-miner-web-$(TRACKER_API_VERSION).deps: tracker-miner-web.deps.in
-	$(SED) -e "s|@VERSION[@]|${TRACKER_API_VERSION}|" $< > $@
+tracker-miner-$(TRACKER_API_VERSION).deps: tracker-miner.deps
+	cp $< $@
 
 # Custom rule to avoid API duplication. There is also a workaround for bug
 # in dbus-binding-tool where it generates bad code when two files are passed
@@ -137,4 +139,5 @@ DISTCLEANFILES = tracker-miner-web-full.xml
 EXTRA_DIST = 				\
 	tracker-marshal.list		\
 	tracker-miner.vapi		\
+	tracker-miner.deps		\
 	tracker-miner-web-full.xml

@@ -1,7 +1,7 @@
 [indent=4]
 
 /*
- * Copyright (C) 2009, Jamie McCracken (jamiecc at gnome org)
+ * Copyright (C) 2009, Jamie McCracken (jamiemcc at gnome org)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -49,13 +49,18 @@ class TrackerCategoryView : ScrolledWindow
 
         store = new ListStore (CategoryColumns.NumOfCols, typeof (Gdk.Pixbuf), typeof (string), typeof (string))
         iter : TreeIter
+
         store.append (out iter);
         store.set (iter, CategoryColumns.Icon, GetThemePixbufByName ("system-file-manager", icon_size, get_screen ()), \
                    CategoryColumns.Name, "All", CategoryColumns.DisplayName, N_("All Files") , -1);
 
         store.append (out iter);
+        store.set (iter, CategoryColumns.Icon, GetThemePixbufByName ("folder", icon_size, get_screen ()), \
+                   CategoryColumns.Name, "nfo:Folder", CategoryColumns.DisplayName, N_("Folders") , -1);
+
+        store.append (out iter);
         store.set (iter, CategoryColumns.Icon, GetThemePixbufByName ("x-office-document", icon_size, get_screen ()), \
-                   CategoryColumns.Name, "nfo:Document", CategoryColumns.DisplayName, N_("Office Documents") , -1);
+                   CategoryColumns.Name, "nfo:Document", CategoryColumns.DisplayName, N_("Documents") , -1);
 
         store.append (out iter);
         store.set (iter, CategoryColumns.Icon, GetThemePixbufByName ("image-x-generic", icon_size, get_screen ()), \
@@ -77,6 +82,7 @@ class TrackerCategoryView : ScrolledWindow
         treeview.insert_column_with_attributes (-1, "icon", new CellRendererPixbuf (), "pixbuf", 0, null)
         treeview.insert_column_with_attributes (-1, "name", new CellRendererText (), "text", 2, null)
         treeview.set_headers_visible (false)
+        treeview.set_enable_search (false)
 
         var category_selection = treeview.get_selection ()
         category_selection.set_mode (SelectionMode.BROWSE)
@@ -90,12 +96,10 @@ class TrackerCategoryView : ScrolledWindow
     def selection_changed (sel : TreeSelection)
         iter : TreeIter
         model : TreeModel
-
-        sel.get_selected (out model , out iter)
-
         name : weak string
 
-        store.get (iter, CategoryColumns.Name, out name);
+        sel.get_selected (out model, out iter)
+        store.get (iter, CategoryColumns.Name, out name)
 
         if Query is not null
             Query.Category = name

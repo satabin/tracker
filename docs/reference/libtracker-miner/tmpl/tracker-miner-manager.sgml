@@ -19,6 +19,9 @@ tracker-miner-manager
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### TYPEDEF TrackerMinerManager ##### -->
 <para>
 
@@ -73,7 +76,7 @@ tracker-miner-manager
 </para>
 
 
-<!-- ##### FUNCTION miner_progress ##### -->
+<!-- ##### USER_FUNCTION miner_progress ##### -->
 <para>
 
 </para>
@@ -84,7 +87,7 @@ tracker-miner-manager
 @progress: 
 
 
-<!-- ##### FUNCTION miner_paused ##### -->
+<!-- ##### USER_FUNCTION miner_paused ##### -->
 <para>
 
 </para>
@@ -93,7 +96,7 @@ tracker-miner-manager
 @miner_name: 
 
 
-<!-- ##### FUNCTION miner_resumed ##### -->
+<!-- ##### USER_FUNCTION miner_resumed ##### -->
 <para>
 
 </para>
@@ -102,7 +105,7 @@ tracker-miner-manager
 @miner_name: 
 
 
-<!-- ##### FUNCTION miner_activated ##### -->
+<!-- ##### USER_FUNCTION miner_activated ##### -->
 <para>
 
 </para>
@@ -111,7 +114,7 @@ tracker-miner-manager
 @miner_name: 
 
 
-<!-- ##### FUNCTION miner_deactivated ##### -->
+<!-- ##### USER_FUNCTION miner_deactivated ##### -->
 <para>
 
 </para>
@@ -125,6 +128,7 @@ tracker-miner-manager
 
 </para>
 
+@void: 
 @Returns: 
 
 

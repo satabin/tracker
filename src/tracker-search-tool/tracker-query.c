@@ -101,7 +101,8 @@ enum  {
 	TRACKER_QUERY_DUMMY_PROPERTY,
 	TRACKER_QUERY_SEARCH_TERMS,
 	TRACKER_QUERY_CATEGORY,
-	TRACKER_QUERY_SORT_FIELD
+	TRACKER_QUERY_SORT_FIELD,
+	TRACKER_QUERY_FIELDS
 };
 gboolean tracker_query_Connect (TrackerQuery* self);
 const char* tracker_query_get_Category (TrackerQuery* self);
@@ -136,7 +137,7 @@ static const _DBusObjectVTable _resources_dbus_vtable = {resources_dbus_register
 char** resources_SparqlQuery (Resources* self, const char* query, int* result_length1, int* result_length2, GError** error) {
 #line 25 "tracker-query.gs"
 	return RESOURCES_GET_INTERFACE (self)->SparqlQuery (self, query, result_length1, result_length2, error);
-#line 140 "tracker-query.c"
+#line 141 "tracker-query.c"
 }
 
 
@@ -144,7 +145,7 @@ char** resources_SparqlQuery (Resources* self, const char* query, int* result_le
 void resources_SparqlUpdate (Resources* self, const char* query, GError** error) {
 #line 26 "tracker-query.gs"
 	RESOURCES_GET_INTERFACE (self)->SparqlUpdate (self, query, error);
-#line 148 "tracker-query.c"
+#line 149 "tracker-query.c"
 }
 
 
@@ -887,21 +888,21 @@ static void resources_dbus_proxy_set_property (GObject * object, guint property_
 }
 
 
-#line 63 "tracker-query.gs"
+#line 62 "tracker-query.gs"
 gboolean tracker_query_Connect (TrackerQuery* self) {
-#line 893 "tracker-query.c"
+#line 894 "tracker-query.c"
 	gboolean result = FALSE;
 	GError * _inner_error_;
-#line 63 "tracker-query.gs"
+#line 62 "tracker-query.gs"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 898 "tracker-query.c"
+#line 899 "tracker-query.c"
 	_inner_error_ = NULL;
 	{
 		DBusGConnection* conn;
 		Resources* _tmp0_;
-#line 66 "tracker-query.gs"
+#line 65 "tracker-query.gs"
 		conn = dbus_g_bus_get (DBUS_BUS_SESSION, &_inner_error_);
-#line 905 "tracker-query.c"
+#line 906 "tracker-query.c"
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == DBUS_GERROR) {
 				goto __catch0_dbus_gerror;
@@ -910,9 +911,9 @@ gboolean tracker_query_Connect (TrackerQuery* self) {
 			g_clear_error (&_inner_error_);
 			return FALSE;
 		}
-#line 67 "tracker-query.gs"
+#line 66 "tracker-query.gs"
 		self->tracker = (_tmp0_ = resources_dbus_proxy_new (conn, "org.freedesktop.Tracker1", "/org/freedesktop/Tracker1/Resources"), _g_object_unref0 (self->tracker), _tmp0_);
-#line 916 "tracker-query.c"
+#line 917 "tracker-query.c"
 		_dbus_g_connection_unref0 (conn);
 	}
 	goto __finally0;
@@ -922,14 +923,14 @@ gboolean tracker_query_Connect (TrackerQuery* self) {
 		e = _inner_error_;
 		_inner_error_ = NULL;
 		{
-#line 69 "tracker-query.gs"
+#line 68 "tracker-query.gs"
 			g_print ("Cannot connect to Session bus. Error is %s\n", e->message);
-#line 928 "tracker-query.c"
+#line 929 "tracker-query.c"
 			result = FALSE;
 			_g_error_free0 (e);
-#line 70 "tracker-query.gs"
+#line 69 "tracker-query.gs"
 			return result;
-#line 933 "tracker-query.c"
+#line 934 "tracker-query.c"
 		}
 	}
 	__finally0:
@@ -939,15 +940,15 @@ gboolean tracker_query_Connect (TrackerQuery* self) {
 		return FALSE;
 	}
 	result = TRUE;
-#line 72 "tracker-query.gs"
+#line 71 "tracker-query.gs"
 	return result;
-#line 945 "tracker-query.c"
+#line 946 "tracker-query.c"
 }
 
 
-#line 75 "tracker-query.gs"
+#line 74 "tracker-query.gs"
 char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* result_length2) {
-#line 951 "tracker-query.c"
+#line 952 "tracker-query.c"
 	char** result = NULL;
 	GError * _inner_error_;
 	char* cat;
@@ -955,39 +956,39 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 	gboolean _tmp0_ = FALSE;
 	char* _tmp3_;
 	gpointer _tmp9_;
-#line 75 "tracker-query.gs"
+#line 74 "tracker-query.gs"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 961 "tracker-query.c"
+#line 962 "tracker-query.c"
 	_inner_error_ = NULL;
 	cat = NULL;
 	query = NULL;
-#line 79 "tracker-query.gs"
+#line 78 "tracker-query.gs"
 	if (self->priv->_Category == NULL) {
-#line 79 "tracker-query.gs"
+#line 78 "tracker-query.gs"
 		_tmp0_ = TRUE;
-#line 969 "tracker-query.c"
+#line 970 "tracker-query.c"
 	} else {
-#line 79 "tracker-query.gs"
+#line 78 "tracker-query.gs"
 		_tmp0_ = _vala_strcmp0 (self->priv->_Category, "All") == 0;
-#line 973 "tracker-query.c"
+#line 974 "tracker-query.c"
 	}
-#line 79 "tracker-query.gs"
+#line 78 "tracker-query.gs"
 	if (_tmp0_) {
-#line 977 "tracker-query.c"
+#line 978 "tracker-query.c"
 		char* _tmp1_;
-#line 80 "tracker-query.gs"
+#line 79 "tracker-query.gs"
 		cat = (_tmp1_ = g_strdup ("nfo:FileDataObject"), _g_free0 (cat), _tmp1_);
-#line 981 "tracker-query.c"
+#line 982 "tracker-query.c"
 	} else {
 		char* _tmp2_;
-#line 82 "tracker-query.gs"
+#line 81 "tracker-query.gs"
 		cat = (_tmp2_ = g_strdup (self->priv->_Category), _g_free0 (cat), _tmp2_);
-#line 986 "tracker-query.c"
+#line 987 "tracker-query.c"
 	}
-#line 84 "tracker-query.gs"
+#line 83 "tracker-query.gs"
 	query = (_tmp3_ = g_strdup_printf ("SELECT ?s nie:url(?s) nie:mimeType(?s) WHERE { ?s fts:match \"%s\". ?s" \
-" a %s } limit 100 ", tracker_query_get_SearchTerms (self), cat), _g_free0 (query), _tmp3_);
-#line 990 "tracker-query.c"
+" a %s } LIMIT 100 ", tracker_query_get_SearchTerms (self), cat), _g_free0 (query), _tmp3_);
+#line 991 "tracker-query.c"
 	{
 		char** _tmp7_;
 		gint _tmp6__length2;
@@ -1010,9 +1011,9 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 		result = (_tmp8_ = _tmp6_, *result_length1 = _tmp6__length1, *result_length2 = _tmp6__length2, _tmp8_);
 		_g_free0 (cat);
 		_g_free0 (query);
-#line 88 "tracker-query.gs"
+#line 87 "tracker-query.gs"
 		return result;
-#line 1015 "tracker-query.c"
+#line 1016 "tracker-query.c"
 	}
 	goto __finally1;
 	__catch1_dbus_gerror:
@@ -1021,9 +1022,9 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 		e = _inner_error_;
 		_inner_error_ = NULL;
 		{
-#line 90 "tracker-query.gs"
+#line 89 "tracker-query.gs"
 			g_print ("Dbus error : %s\n", e->message);
-#line 1026 "tracker-query.c"
+#line 1027 "tracker-query.c"
 			_g_error_free0 (e);
 		}
 	}
@@ -1038,25 +1039,25 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 	result = (_tmp9_ = NULL, *result_length1 = 0, *result_length2 = 0, _tmp9_);
 	_g_free0 (cat);
 	_g_free0 (query);
-#line 92 "tracker-query.gs"
+#line 91 "tracker-query.gs"
 	return result;
-#line 1043 "tracker-query.c"
+#line 1044 "tracker-query.c"
 	_g_free0 (cat);
 	_g_free0 (query);
 }
 
 
-#line 96 "tracker-query.gs"
+#line 94 "tracker-query.gs"
 char** tracker_query_Query (TrackerQuery* self, const char* sparql, int* result_length1, int* result_length2) {
-#line 1051 "tracker-query.c"
+#line 1052 "tracker-query.c"
 	char** result = NULL;
 	GError * _inner_error_;
 	gpointer _tmp5_;
-#line 96 "tracker-query.gs"
+#line 94 "tracker-query.gs"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 96 "tracker-query.gs"
+#line 94 "tracker-query.gs"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 1059 "tracker-query.c"
+#line 1060 "tracker-query.c"
 	_inner_error_ = NULL;
 	{
 		char** _tmp3_;
@@ -1076,9 +1077,9 @@ char** tracker_query_Query (TrackerQuery* self, const char* sparql, int* result_
 			return NULL;
 		}
 		result = (_tmp4_ = _tmp2_, *result_length1 = _tmp2__length1, *result_length2 = _tmp2__length2, _tmp4_);
-#line 98 "tracker-query.gs"
+#line 96 "tracker-query.gs"
 		return result;
-#line 1081 "tracker-query.c"
+#line 1082 "tracker-query.c"
 	}
 	goto __finally2;
 	__catch2_dbus_gerror:
@@ -1087,9 +1088,9 @@ char** tracker_query_Query (TrackerQuery* self, const char* sparql, int* result_
 		e = _inner_error_;
 		_inner_error_ = NULL;
 		{
-#line 100 "tracker-query.gs"
+#line 98 "tracker-query.gs"
 			g_print ("Dbus error : %s\n", e->message);
-#line 1092 "tracker-query.c"
+#line 1093 "tracker-query.c"
 			_g_error_free0 (e);
 		}
 	}
@@ -1100,15 +1101,15 @@ char** tracker_query_Query (TrackerQuery* self, const char* sparql, int* result_
 		return NULL;
 	}
 	result = (_tmp5_ = NULL, *result_length1 = 0, *result_length2 = 0, _tmp5_);
-#line 102 "tracker-query.gs"
+#line 100 "tracker-query.gs"
 	return result;
-#line 1105 "tracker-query.c"
+#line 1106 "tracker-query.c"
 }
 
 
 #line 29 "tracker-query.gs"
 TrackerQuery* tracker_query_construct (GType object_type) {
-#line 1111 "tracker-query.c"
+#line 1112 "tracker-query.c"
 	TrackerQuery * self;
 	self = g_object_newv (object_type, 0, NULL);
 	return self;
@@ -1119,7 +1120,7 @@ TrackerQuery* tracker_query_construct (GType object_type) {
 TrackerQuery* tracker_query_new (void) {
 #line 29 "tracker-query.gs"
 	return tracker_query_construct (TYPE_TRACKER_QUERY);
-#line 1122 "tracker-query.c"
+#line 1123 "tracker-query.c"
 }
 
 
@@ -1129,7 +1130,7 @@ const char* tracker_query_get_SearchTerms (TrackerQuery* self) {
 	result = self->priv->_SearchTerms;
 #line 39 "tracker-query.gs"
 	return result;
-#line 1132 "tracker-query.c"
+#line 1133 "tracker-query.c"
 }
 
 
@@ -1137,11 +1138,11 @@ void tracker_query_set_SearchTerms (TrackerQuery* self, const char* value) {
 	g_return_if_fail (self != NULL);
 #line 41 "tracker-query.gs"
 	if (value != NULL) {
-#line 1140 "tracker-query.c"
+#line 1141 "tracker-query.c"
 		char* _tmp0_;
 #line 42 "tracker-query.gs"
 		self->priv->_SearchTerms = (_tmp0_ = g_strdup (value), _g_free0 (self->priv->_SearchTerms), _tmp0_);
-#line 1144 "tracker-query.c"
+#line 1145 "tracker-query.c"
 	}
 	g_object_notify ((GObject *) self, "SearchTerms");
 }
@@ -1153,7 +1154,7 @@ const char* tracker_query_get_Category (TrackerQuery* self) {
 	result = self->priv->_Category;
 #line 44 "tracker-query.gs"
 	return result;
-#line 1156 "tracker-query.c"
+#line 1157 "tracker-query.c"
 }
 
 
@@ -1170,7 +1171,7 @@ const char* tracker_query_get_SortField (TrackerQuery* self) {
 	result = self->priv->_SortField;
 #line 45 "tracker-query.gs"
 	return result;
-#line 1173 "tracker-query.c"
+#line 1174 "tracker-query.c"
 }
 
 
@@ -1188,7 +1189,7 @@ char** tracker_query_get_Fields (TrackerQuery* self, int* result_length1) {
 	result = (_tmp0_ = self->priv->_Fields, *result_length1 = self->priv->_Fields_length1, _tmp0_);
 #line 46 "tracker-query.gs"
 	return result;
-#line 1191 "tracker-query.c"
+#line 1192 "tracker-query.c"
 }
 
 
@@ -1196,6 +1197,7 @@ void tracker_query_set_Fields (TrackerQuery* self, char** value, int value_lengt
 	char** _tmp1_;
 	g_return_if_fail (self != NULL);
 	self->priv->_Fields = (_tmp1_ = value, self->priv->_Fields_length1 = value_length1, self->priv->__Fields_size_ = self->priv->_Fields_length1, _tmp1_);
+	g_object_notify ((GObject *) self, "Fields");
 }
 
 
@@ -1205,13 +1207,13 @@ static glong string_get_length (const char* self) {
 	result = g_utf8_strlen (self, -1);
 #line 1062 "glib-2.0.vapi"
 	return result;
-#line 1208 "tracker-query.c"
+#line 1210 "tracker-query.c"
 }
 
 
 #line 52 "tracker-query.gs"
 static void _lambda0_ (TrackerQuery* t, GParamSpec* propety, TrackerQuery* self) {
-#line 1214 "tracker-query.c"
+#line 1216 "tracker-query.c"
 	gboolean _tmp0_ = FALSE;
 	gboolean _tmp1_ = FALSE;
 #line 52 "tracker-query.gs"
@@ -1222,51 +1224,51 @@ static void _lambda0_ (TrackerQuery* t, GParamSpec* propety, TrackerQuery* self)
 	if (_vala_strcmp0 (propety->name, "Category") == 0) {
 #line 53 "tracker-query.gs"
 		_tmp1_ = TRUE;
-#line 1225 "tracker-query.c"
+#line 1227 "tracker-query.c"
 	} else {
 #line 53 "tracker-query.gs"
 		_tmp1_ = _vala_strcmp0 (propety->name, "SortField") == 0;
-#line 1229 "tracker-query.c"
+#line 1231 "tracker-query.c"
 	}
 #line 53 "tracker-query.gs"
 	if (_tmp1_) {
 #line 53 "tracker-query.gs"
 		_tmp0_ = TRUE;
-#line 1235 "tracker-query.c"
+#line 1237 "tracker-query.c"
 	} else {
 #line 53 "tracker-query.gs"
 		_tmp0_ = _vala_strcmp0 (propety->name, "Fields") == 0;
-#line 1239 "tracker-query.c"
+#line 1241 "tracker-query.c"
 	}
 #line 53 "tracker-query.gs"
 	if (_tmp0_) {
 #line 54 "tracker-query.gs"
 		g_signal_emit_by_name (self, "search-settings-changed");
-#line 1245 "tracker-query.c"
+#line 1247 "tracker-query.c"
 	} else {
 #line 56 "tracker-query.gs"
 		if (_vala_strcmp0 (propety->name, "SearchTerms") == 0) {
-#line 1249 "tracker-query.c"
+#line 1251 "tracker-query.c"
 			gboolean _tmp2_ = FALSE;
 #line 57 "tracker-query.gs"
 			if (tracker_query_get_SearchTerms (self) == NULL) {
 #line 57 "tracker-query.gs"
 				_tmp2_ = TRUE;
-#line 1255 "tracker-query.c"
+#line 1257 "tracker-query.c"
 			} else {
 #line 57 "tracker-query.gs"
 				_tmp2_ = string_get_length (tracker_query_get_SearchTerms (self)) < 3;
-#line 1259 "tracker-query.c"
+#line 1261 "tracker-query.c"
 			}
 #line 57 "tracker-query.gs"
 			if (_tmp2_) {
 #line 58 "tracker-query.gs"
 				g_signal_emit_by_name (self, "clear-search-results");
-#line 1265 "tracker-query.c"
+#line 1267 "tracker-query.c"
 			} else {
 #line 60 "tracker-query.gs"
 				g_signal_emit_by_name (self, "search-settings-changed");
-#line 1269 "tracker-query.c"
+#line 1271 "tracker-query.c"
 			}
 		}
 	}
@@ -1275,7 +1277,7 @@ static void _lambda0_ (TrackerQuery* t, GParamSpec* propety, TrackerQuery* self)
 
 #line 52 "tracker-query.gs"
 static void __lambda0__g_object_notify (TrackerQuery* _sender, GParamSpec* pspec, gpointer self) {
-#line 1278 "tracker-query.c"
+#line 1280 "tracker-query.c"
 	_lambda0_ (_sender, pspec, self);
 }
 
@@ -1292,7 +1294,7 @@ static GObject * tracker_query_constructor (GType type, guint n_construct_proper
 		tracker_query_set_Category (self, "All");
 #line 52 "tracker-query.gs"
 		g_signal_connect_object ((GObject*) self, "notify", (GCallback) __lambda0__g_object_notify, self, 0);
-#line 1295 "tracker-query.c"
+#line 1297 "tracker-query.c"
 	}
 	return obj;
 }
@@ -1308,6 +1310,7 @@ static void tracker_query_class_init (TrackerQueryClass * klass) {
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_QUERY_SEARCH_TERMS, g_param_spec_string ("SearchTerms", "SearchTerms", "SearchTerms", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_QUERY_CATEGORY, g_param_spec_string ("Category", "Category", "Category", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_QUERY_SORT_FIELD, g_param_spec_string ("SortField", "SortField", "SortField", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
+	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_QUERY_FIELDS, g_param_spec_boxed ("Fields", "Fields", "Fields", G_TYPE_STRV, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
 	g_signal_new ("search_settings_changed", TYPE_TRACKER_QUERY, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 	g_signal_new ("clear_search_results", TYPE_TRACKER_QUERY, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 }
@@ -1341,6 +1344,7 @@ GType tracker_query_get_type (void) {
 
 static void tracker_query_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
 	TrackerQuery * self;
+	int length;
 	self = TRACKER_QUERY (object);
 	switch (property_id) {
 		case TRACKER_QUERY_SEARCH_TERMS:
@@ -1352,6 +1356,9 @@ static void tracker_query_get_property (GObject * object, guint property_id, GVa
 		case TRACKER_QUERY_SORT_FIELD:
 		g_value_set_string (value, tracker_query_get_SortField (self));
 		break;
+		case TRACKER_QUERY_FIELDS:
+		g_value_set_boxed (value, tracker_query_get_Fields (self, &length));
+		break;
 		default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 		break;
@@ -1361,6 +1368,7 @@ static void tracker_query_get_property (GObject * object, guint property_id, GVa
 
 static void tracker_query_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
 	TrackerQuery * self;
+	gpointer boxed;
 	self = TRACKER_QUERY (object);
 	switch (property_id) {
 		case TRACKER_QUERY_SEARCH_TERMS:
@@ -1371,6 +1379,10 @@ static void tracker_query_set_property (GObject * object, guint property_id, con
 		break;
 		case TRACKER_QUERY_SORT_FIELD:
 		tracker_query_set_SortField (self, g_value_get_string (value));
+		break;
+		case TRACKER_QUERY_FIELDS:
+		boxed = g_value_get_boxed (value);
+		tracker_query_set_Fields (self, boxed, g_strv_length (boxed));
 		break;
 		default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);

@@ -38,6 +38,8 @@ struct _TrackerClassPrivate {
 	gint count;
 	gint id;
 	gboolean is_new;
+	gboolean db_schema_changed;
+	gboolean notify;
 
 	GArray *super_classes;
 };
@@ -167,6 +169,30 @@ tracker_class_get_is_new (TrackerClass *service)
 	return priv->is_new;
 }
 
+gboolean
+tracker_class_get_notify (TrackerClass *service)
+{
+	TrackerClassPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_CLASS (service), FALSE);
+
+	priv = GET_PRIV (service);
+
+	return priv->notify;
+}
+
+gboolean
+tracker_class_get_db_schema_changed (TrackerClass *service)
+{
+	TrackerClassPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_CLASS (service), FALSE);
+
+	priv = GET_PRIV (service);
+
+	return priv->db_schema_changed;
+}
+
 void
 tracker_class_set_uri (TrackerClass *service,
                        const gchar  *value)
@@ -252,7 +278,7 @@ tracker_class_add_super_class (TrackerClass *service,
 
 void
 tracker_class_set_is_new (TrackerClass *service,
-                          gboolean         value)
+                          gboolean      value)
 {
 	TrackerClassPrivate *priv;
 
@@ -261,4 +287,30 @@ tracker_class_set_is_new (TrackerClass *service,
 	priv = GET_PRIV (service);
 
 	priv->is_new = value;
+}
+
+void
+tracker_class_set_notify (TrackerClass *service,
+                          gboolean      value)
+{
+	TrackerClassPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_CLASS (service));
+
+	priv = GET_PRIV (service);
+
+	priv->notify = value;
+}
+
+void
+tracker_class_set_db_schema_changed (TrackerClass *service,
+                                     gboolean      value)
+{
+	TrackerClassPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_CLASS (service));
+
+	priv = GET_PRIV (service);
+
+	priv->db_schema_changed = value;
 }

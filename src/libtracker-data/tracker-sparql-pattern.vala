@@ -198,7 +198,7 @@ class Tracker.Sparql.Pattern : Object {
 		return query.get_last_string (strip);
 	}
 
-	class TripleContext {
+	class TripleContext : Context {
 		// SQL tables
 		public List<DataTable> tables;
 		public HashTable<string,DataTable> table_map;
@@ -206,14 +206,16 @@ class Tracker.Sparql.Pattern : Object {
 		public List<LiteralBinding> bindings;
 		// SPARQL variables
 		public List<Variable> variables;
-		public HashTable<Variable,VariableBindingList> var_map;
+		public HashTable<Variable,VariableBindingList> var_bindings;
 
-		public TripleContext () {
+		public TripleContext (Context parent_context) {
+			base (parent_context);
+
 			tables = new List<DataTable> ();
 			table_map = new HashTable<string,DataTable>.full (str_hash, str_equal, g_free, g_object_unref);
 
 			variables = new List<Variable> ();
-			var_map = new HashTable<Variable,VariableBindingList>.full (direct_hash, direct_equal, g_object_unref, g_object_unref);
+			var_bindings = new HashTable<Variable,VariableBindingList>.full (direct_hash, direct_equal, g_object_unref, g_object_unref);
 
 			bindings = new List<LiteralBinding> ();
 		}
@@ -221,7 +223,14 @@ class Tracker.Sparql.Pattern : Object {
 
 	TripleContext? triple_context;
 
-	internal PropertyType translate_select (StringBuilder sql, bool subquery = false) throws SparqlError {
+	internal SelectContext translate_select (StringBuilder sql, bool subquery = false, bool scalar_subquery = false) throws SparqlError {
+		SelectContext result;
+		if (scalar_subquery) {
+			result = new SelectContext.subquery (context);
+		} else {
+			result = new SelectContext (context);
+		}
+		context = result;
 		var type = PropertyType.UNKNOWN;
 
 		var pattern_sql = new StringBuilder ();
@@ -247,14 +256,17 @@ class Tracker.Sparql.Pattern : Object {
 
 		accept (SparqlTokenType.WHERE);
 
-		translate_group_graph_pattern (pattern_sql);
+		var pattern = translate_group_graph_pattern (pattern_sql);
+		foreach (var key in pattern.var_set.get_keys ()) {
+			context.var_set.insert (key, VariableState.BOUND);
+		}
 
 		// process select variables
 		var after_where = get_location ();
 		set_location (select_variables_location);
 
 		// report use of undefined variables
-		foreach (var variable in context.var_map.get_values ()) {
+		foreach (var variable in context.var_set.get_keys ()) {
 			if (variable.binding == null) {
 				throw get_error ("use of undefined variable `%s'".printf (variable.name));
 			}
@@ -265,7 +277,7 @@ class Tracker.Sparql.Pattern : Object {
 
 		bool first = true;
 		if (accept (SparqlTokenType.STAR)) {
-			foreach (var variable in context.var_map.get_values ()) {
+			foreach (var variable in context.var_set.get_keys ()) {
 				if (!first) {
 					sql.append (", ");
 				} else {
@@ -390,7 +402,11 @@ class Tracker.Sparql.Pattern : Object {
 			query.bindings.append (binding);
 		}
 
-		return type;
+		context = context.parent_context;
+
+		result.type = type;
+
+		return result;
 	}
 
 	internal string parse_var_or_term (StringBuilder? sql, out bool is_var) throws SparqlError {
@@ -560,7 +576,7 @@ class Tracker.Sparql.Pattern : Object {
 	}
 
 	void start_triples_block (StringBuilder sql) throws SparqlError {
-		triple_context = new TripleContext ();
+		context = triple_context = new TripleContext (context);
 
 		sql.append ("SELECT ");
 	}
@@ -589,7 +605,7 @@ class Tracker.Sparql.Pattern : Object {
 			bool maybe_null = true;
 			bool in_simple_optional = false;
 			string last_name = null;
-			foreach (VariableBinding binding in triple_context.var_map.lookup (variable).list) {
+			foreach (VariableBinding binding in triple_context.var_bindings.lookup (variable).list) {
 				string name;
 				if (binding.table != null) {
 					name = binding.sql_expression;
@@ -655,7 +671,12 @@ class Tracker.Sparql.Pattern : Object {
 			sql.append (")");
 		}
 
+		foreach (var v in context.var_set.get_keys ()) {
+			context.parent_context.var_set.insert (v, VariableState.BOUND);
+		}
+
 		triple_context = null;
+		context = context.parent_context;
 	}
 
 	void parse_triples (StringBuilder sql, long group_graph_pattern_start, ref bool in_triples_block, ref bool first_where, ref bool in_group_graph_pattern, bool found_simple_optional) throws SparqlError {
@@ -762,7 +783,7 @@ class Tracker.Sparql.Pattern : Object {
 
 			if (left_variable_state == VariableState.BOUND && !prop.multiple_values && right_variable_state == 0) {
 				bool in_domain = false;
-				foreach (VariableBinding binding in triple_context.var_map.lookup (left_variable).list) {
+				foreach (VariableBinding binding in triple_context.var_bindings.lookup (left_variable).list) {
 					if (binding.type != null && is_subclass (binding.type, prop.domain)) {
 						in_domain = true;
 						break;
@@ -788,19 +809,25 @@ class Tracker.Sparql.Pattern : Object {
 		}
 	}
 
-	internal void translate_group_graph_pattern (StringBuilder sql) throws SparqlError {
+	internal Context translate_group_graph_pattern (StringBuilder sql) throws SparqlError {
 		expect (SparqlTokenType.OPEN_BRACE);
 
 		if (current () == SparqlTokenType.SELECT) {
-			translate_select (sql, true);
+			var result = translate_select (sql, true);
+			context = result;
 
 			// only export selected variables
 			context.var_set = context.select_var_set;
 			context.select_var_set = new HashTable<Variable,int>.full (direct_hash, direct_equal, g_object_unref, null);
 
 			expect (SparqlTokenType.CLOSE_BRACE);
-			return;
+
+			context = context.parent_context;
+			return result;
 		}
+
+		var result = new Context (context);
+		context = result;
 
 		SourceLocation[] filters = { };
 
@@ -846,9 +873,7 @@ class Tracker.Sparql.Pattern : Object {
 
 					sql.append_printf (") AS t%d_g LEFT JOIN (", left_index);
 
-					context = new Context (context);
-
-					translate_group_graph_pattern (sql);
+					context = translate_group_graph_pattern (sql);
 
 					sql.append_printf (") AS t%d_g", right_index);
 
@@ -1000,6 +1025,9 @@ class Tracker.Sparql.Pattern : Object {
 
 			set_location (end);
 		}
+
+		context = context.parent_context;
+		return result;
 	}
 
 	void translate_group_or_union_graph_pattern (StringBuilder sql) throws SparqlError {
@@ -1010,13 +1038,8 @@ class Tracker.Sparql.Pattern : Object {
 		long[] offsets = { };
 
 		do {
-			context = new Context (context);
-
-			contexts += context;
 			offsets += sql.len;
-			translate_group_graph_pattern (sql);
-
-			context = context.parent_context;
+			contexts += translate_group_graph_pattern (sql);
 		} while (accept (SparqlTokenType.UNION));
 
 		if (contexts.length > 1) {
@@ -1066,32 +1089,32 @@ class Tracker.Sparql.Pattern : Object {
 	VariableBindingList? get_variable_binding_list (Variable variable) {
 		VariableBindingList binding_list = null;
 		if (triple_context != null) {
-			binding_list = triple_context.var_map.lookup (variable);
+			binding_list = triple_context.var_bindings.lookup (variable);
 		}
-		if (binding_list == null && context.in_scalar_subquery) {
-			// in scalar subquery: check variables of outer queries
-			var parent_context = context.parent_context;
-			while (parent_context != null) {
-				var outer_var = parent_context.var_map.lookup (variable.name);
-				if (outer_var != null && outer_var.binding != null) {
+		if (binding_list == null && variable.binding != null) {
+			// might be in scalar subquery: check variables of outer queries
+			var current_context = context;
+			while (current_context != null) {
+				// only allow access to variables of immediate parent context of the subquery
+				// allowing access to other variables leads to invalid SQL or wrong results
+				if (current_context.scalar_subquery && current_context.parent_context.var_set.lookup (variable) != 0) {
 					// capture outer variable
 					var binding = new VariableBinding ();
-					binding.data_type = outer_var.binding.data_type;
+					binding.data_type = variable.binding.data_type;
 					binding.variable = context.get_variable (variable.name);
-					binding.type = outer_var.binding.type;
-					binding.sql_expression = outer_var.sql_expression;
+					binding.type = variable.binding.type;
+					binding.sql_expression = variable.sql_expression;
 					binding_list = new VariableBindingList ();
 					if (triple_context != null) {
-						triple_context.variables.append (binding.variable);
-						triple_context.var_map.insert (binding.variable, binding_list);
+						triple_context.variables.append (variable);
+						triple_context.var_bindings.insert (variable, binding_list);
 					}
 
-					context.var_set.insert (binding.variable, VariableState.BOUND);
+					context.var_set.insert (variable, VariableState.BOUND);
 					binding_list.list.append (binding);
-					binding.variable.binding = binding;
 					break;
 				}
-				parent_context = parent_context.parent_context;
+				current_context = current_context.parent_context;
 			}
 		}
 		return binding_list;
@@ -1103,7 +1126,7 @@ class Tracker.Sparql.Pattern : Object {
 			binding_list = new VariableBindingList ();
 			if (triple_context != null) {
 				triple_context.variables.append (binding.variable);
-				triple_context.var_map.insert (binding.variable, binding_list);
+				triple_context.var_bindings.insert (binding.variable, binding_list);
 			}
 
 			sql.append_printf ("%s AS %s, ",
@@ -1196,13 +1219,13 @@ class Tracker.Sparql.Pattern : Object {
 					binding.data_type = PropertyType.RESOURCE;
 					binding.variable = context.get_variable (current_subject);
 
-					assert (triple_context.var_map.lookup (binding.variable) == null);
+					assert (triple_context.var_bindings.lookup (binding.variable) == null);
 					var binding_list = new VariableBindingList ();
 					triple_context.variables.append (binding.variable);
-					triple_context.var_map.insert (binding.variable, binding_list);
+					triple_context.var_bindings.insert (binding.variable, binding_list);
 
 					// need to use table and column name for object, can't refer to variable in nested select
-					var object_binding = triple_context.var_map.lookup (context.get_variable (object)).list.data;
+					var object_binding = triple_context.var_bindings.lookup (context.get_variable (object)).list.data;
 
 					sql.append_printf ("(SELECT ID FROM \"%s\" WHERE \"%s\" = %s) AS %s, ",
 						db_table,

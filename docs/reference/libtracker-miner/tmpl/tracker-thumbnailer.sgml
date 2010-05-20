@@ -19,11 +19,15 @@ tracker-thumbnailer
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION tracker_thumbnailer_init ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -32,6 +36,7 @@ tracker-thumbnailer
 
 </para>
 
+@void: 
 
 
 <!-- ##### FUNCTION tracker_thumbnailer_send ##### -->
@@ -39,6 +44,7 @@ tracker-thumbnailer
 
 </para>
 
+@void: 
 
 
 <!-- ##### FUNCTION tracker_thumbnailer_move_add ##### -->

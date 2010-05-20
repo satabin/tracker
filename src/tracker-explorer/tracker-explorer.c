@@ -1306,7 +1306,7 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-#line 7575 "gtk+-2.0.vapi"
+#line 7712 "gtk+-2.0.vapi"
 static void _gtk_main_quit_gtk_object_destroy (GtkWindow* _sender, gpointer self) {
 #line 1312 "tracker-explorer.c"
 	gtk_main_quit ();

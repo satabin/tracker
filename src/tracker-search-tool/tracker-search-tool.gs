@@ -1,7 +1,7 @@
 [indent=4]
 
 /*
- * Copyright (C) 2009 Mr Jamie McCracken (jamiecc at gnome org)
+ * Copyright (C) 2009 Mr Jamie McCracken (jamiemcc at gnome org)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -35,10 +35,10 @@ const static LICENSE : string =\
 "  http://www.gnu.org/licenses/gpl.txt\n"
 
 window : Window
-service : string?
 terms : array of string?
+search_string : string?
 print_version: bool
-const options : array of OptionEntry = {{"service", 's', 0, OptionArg.STRING, ref service, "Search from a specific service", "SERVICE" }, {"version", 'V', 0, OptionArg.NONE, ref print_version, "Print version", null }, {"", 0, 0, OptionArg.STRING_ARRAY, ref terms, "search terms", null}, { null }}
+const options : array of OptionEntry = { {"version", 'V', 0, OptionArg.NONE, ref print_version, "Print version", null }, {"", 0, 0, OptionArg.STRING_ARRAY, ref terms, "search terms", null}, { null }}
 
 [DBus (name = "org.freedesktop.Tracker1.SearchTool")]
 class TrackerSearchToolServer : GLib.Object
@@ -104,26 +104,23 @@ init
 
         try
             builder.add_from_file (UIDIR + "tst.ui")
-
         except e : GLib.Error
-
             var msg = new MessageDialog (null, DialogFlags.MODAL, \
                                          MessageType.ERROR, ButtonsType.OK, \
                                         N_("Failed to load UI\n%s"), e.message)
             msg.run ()
             Gtk.main_quit()
 
-
     window = builder.get_object ("window") as Window
     window.destroy += Gtk.main_quit
 
-    /* create tracker widgets */
-
+    /* create widgets */
     var
-        accel_group = new AccelGroup
+        accel_group = new AccelGroup ()
+        entry = new Entry ()
 
         query = new TrackerQuery
-        entry = new TrackerSearchEntry ()
+        search_entry = new TrackerSearchEntry ()
         grid = new TrackerResultGrid ()
         categories = new TrackerCategoryView ()
         tile = new TrackerMetadataTile ()
@@ -135,16 +132,18 @@ init
         search_label = builder.get_object ("SearchLabel") as Label
 
     window.add_accel_group (accel_group)
-    search_label.set_mnemonic_widget (entry)
+    search_label.set_mnemonic_widget (search_entry)
 
     query.Connect ()
-    entry.Query = query
-    entry_box.add (entry)
+    search_entry.Query = query
+    entry_box.add (search_entry)
 
     keyval : uint
     mods : Gdk.ModifierType
     accelerator_parse ("<Ctrl>s", out keyval, out mods)
-    entry.add_accelerator ("activate", accel_group, keyval, mods, AccelFlags.VISIBLE | AccelFlags.LOCKED)
+    entry = search_entry.get_child () as Entry
+    entry.add_accelerator ("activate", accel_group, keyval, mods,
+                            AccelFlags.VISIBLE | AccelFlags.LOCKED)
 
     grid.Query = query
     grid_box.add (grid)
@@ -160,5 +159,9 @@ init
     main_box.pack_end (a, false, false, 0)
 
     window.show_all ()
+
+    if (terms is not null)
+        search_string = string.joinv (" ", terms)
+        entry.set_text (search_string)
 
     Gtk.main ()

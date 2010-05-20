@@ -76,6 +76,11 @@ typedef struct {
 
 typedef struct {
 	GMainLoop *main_loop;
+	GHashTable *values;
+} CacheQueryData;
+
+typedef struct {
+	GMainLoop *main_loop;
 	GString   *sparql;
 	const gchar *source_uri;
 	const gchar *uri;
@@ -121,6 +126,12 @@ struct TrackerMinerFSPrivate {
 	/* Parent folder URN cache */
 	GFile          *current_parent;
 	gchar          *current_parent_urn;
+
+	/* Folder contents' mtime cache */
+	GHashTable     *mtime_cache;
+
+	/* File -> iri cache */
+	GHashTable     *iri_cache;
 
 	/* Status */
 	guint           been_started : 1;
@@ -519,6 +530,11 @@ tracker_miner_fs_init (TrackerMinerFS *object)
 	                  object);
 
 	priv->quark_ignore_file = g_quark_from_static_string ("tracker-ignore-file");
+
+	priv->iri_cache = g_hash_table_new_full (g_file_hash,
+	                                         (GEqualFunc) g_file_equal,
+	                                         (GDestroyNotify) g_object_unref,
+	                                         (GDestroyNotify) g_free);
 }
 
 static ProcessData *
@@ -642,6 +658,14 @@ fs_finalize (GObject *object)
 	g_queue_free (priv->items_created);
 
 	g_hash_table_unref (priv->items_ignore_next_update);
+
+	if (priv->mtime_cache) {
+		g_hash_table_unref (priv->mtime_cache);
+	}
+
+	if (priv->iri_cache) {
+		g_hash_table_unref (priv->iri_cache);
+	}
 
 	G_OBJECT_CLASS (tracker_miner_fs_parent_class)->finalize (object);
 }
@@ -954,6 +978,22 @@ sparql_update_cb (GObject      *object,
 			 */
 			tracker_miner_commit (TRACKER_MINER (fs), NULL, commit_cb, NULL);
 		}
+
+		if (fs->private->current_parent) {
+			GFile *parent;
+
+			parent = g_file_get_parent (data->file);
+
+			if (g_file_equal (parent, fs->private->current_parent) &&
+			    g_hash_table_lookup (fs->private->iri_cache, data->file) == NULL) {
+				/* Item is processed, add an empty element for the processed GFile,
+				 * in case it is again processed before the cache expires
+				 */
+				g_hash_table_insert (fs->private->iri_cache, g_object_ref (data->file), NULL);
+			}
+
+			g_object_unref (parent);
+		}
 	}
 
 	priv->processing_pool = g_list_remove (priv->processing_pool, data);
@@ -1049,6 +1089,153 @@ item_query_exists (TrackerMinerFS  *miner,
 	g_free (uri);
 
 	return result;
+}
+
+static void
+cache_query_cb (GObject	     *object,
+		GAsyncResult *result,
+		gpointer      user_data)
+{
+	const GPtrArray *query_results;
+	TrackerMiner *miner;
+	CacheQueryData *data;
+	GError *error = NULL;
+	guint i;
+
+	data = user_data;
+	miner = TRACKER_MINER (object);
+	query_results = tracker_miner_execute_sparql_finish (miner, result, &error);
+
+	g_main_loop_quit (data->main_loop);
+
+	if (G_UNLIKELY (error)) {
+		g_critical ("Could not execute cache query: %s", error->message);
+		g_error_free (error);
+		return;
+	}
+
+	for (i = 0; i < query_results->len; i++) {
+		GFile *file;
+		GStrv strv;
+
+		strv = g_ptr_array_index (query_results, i);
+		file = g_file_new_for_uri (strv[0]);
+
+		g_hash_table_insert (data->values, file, g_strdup (strv[1]));
+	}
+}
+
+static gboolean
+file_is_crawl_directory (TrackerMinerFS *fs,
+                         GFile          *file)
+{
+	GList *dirs;
+
+	/* Check whether file is a crawl directory itself */
+	dirs = fs->private->config_directories;
+
+	while (dirs) {
+		DirectoryData *data;
+
+		data = dirs->data;
+		dirs = dirs->next;
+
+		if (g_file_equal (data->file, file)) {
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+static void
+ensure_iri_cache (TrackerMinerFS *fs,
+                  GFile          *file)
+{
+	gchar *query, *uri;
+	CacheQueryData data;
+	GFile *parent;
+
+	g_hash_table_remove_all (fs->private->iri_cache);
+
+	parent = g_file_get_parent (file);
+	uri = g_file_get_uri (parent);
+
+	g_debug ("Generating IRI cache for folder: %s", uri);
+
+	query = g_strdup_printf ("SELECT ?url ?u { "
+	                         "  ?u nfo:belongsToContainer ?p ; "
+	                         "     nie:url ?url . "
+	                         "  ?p nie:url \"%s\" "
+	                         "}",
+	                         uri);
+	g_free (uri);
+
+	data.main_loop = g_main_loop_new (NULL, FALSE);
+	data.values = g_hash_table_ref (fs->private->iri_cache);
+
+	tracker_miner_execute_sparql (TRACKER_MINER (fs),
+	                              query,
+	                              NULL,
+	                              cache_query_cb,
+	                              &data);
+
+	g_main_loop_run (data.main_loop);
+
+	g_main_loop_unref (data.main_loop);
+	g_hash_table_unref (data.values);
+
+	if (g_hash_table_size (data.values) == 0 &&
+	    file_is_crawl_directory (fs, file)) {
+		gchar *query_iri;
+
+		if (item_query_exists (fs, file, &query_iri, NULL)) {
+			g_hash_table_insert (data.values,
+			                     g_object_ref (file), query_iri);
+		}
+	}
+
+	g_object_unref (parent);
+	g_free (query);
+}
+
+static const gchar *
+iri_cache_lookup (TrackerMinerFS *fs,
+                  GFile          *file)
+{
+	gpointer value;
+	const gchar *iri;
+
+	if (!g_hash_table_lookup_extended (fs->private->iri_cache, file, NULL, &value)) {
+		/* Item doesn't exist in cache */
+		return NULL;
+	}
+
+	iri = value;
+
+	if (!iri) {
+		gchar *query_iri;
+
+		/* Cache miss, this item was added after the last
+		 * iri cache update, so query it independently
+		 */
+		if (item_query_exists (fs, file, &query_iri, NULL)) {
+			g_hash_table_insert (fs->private->iri_cache,
+			                     g_object_ref (file), query_iri);
+		} else {
+			g_hash_table_remove (fs->private->iri_cache, file);
+			iri = NULL;
+		}
+	}
+
+	return iri;
+}
+
+static void
+iri_cache_invalidate (TrackerMinerFS *fs,
+                      GFile          *file)
+{
+	g_hash_table_remove (fs->private->iri_cache, file);
 }
 
 static gboolean
@@ -1164,7 +1351,7 @@ item_add_or_update (TrackerMinerFS *fs,
 	gboolean retval;
 	ProcessData *data;
 	GFile *parent;
-	gchar *urn;
+	const gchar *urn;
 	const gchar *parent_urn = NULL;
 
 	priv = fs->private;
@@ -1173,8 +1360,6 @@ item_add_or_update (TrackerMinerFS *fs,
 	cancellable = g_cancellable_new ();
 	sparql = tracker_sparql_builder_new_update ();
 	g_object_ref (file);
-
-	item_query_exists (fs, file, &urn, NULL);
 
 	parent = g_file_get_parent (file);
 
@@ -1192,17 +1377,20 @@ item_add_or_update (TrackerMinerFS *fs,
 
 			g_free (fs->private->current_parent_urn);
 
-			if (item_query_exists (fs, parent, &fs->private->current_parent_urn, NULL))
-				fs->private->current_parent = g_object_ref (parent);
-			else {
-				fs->private->current_parent = NULL;
+			fs->private->current_parent = g_object_ref (parent);
+
+			if (!item_query_exists (fs, parent, &fs->private->current_parent_urn, NULL)) {
 				fs->private->current_parent_urn = NULL;
 			}
+
+			ensure_iri_cache (fs, file);
 		}
 
 		parent_urn = fs->private->current_parent_urn;
 		g_object_unref (parent);
 	}
+
+	urn = iri_cache_lookup (fs, file);
 
 	data = process_data_new (file, urn, parent_urn, cancellable, sparql);
 	priv->processing_pool = g_list_prepend (priv->processing_pool, data);
@@ -1222,7 +1410,6 @@ item_add_or_update (TrackerMinerFS *fs,
 	g_object_unref (file);
 	g_object_unref (cancellable);
 	g_object_unref (sparql);
-	g_free (urn);
 
 	return retval;
 }
@@ -1232,10 +1419,11 @@ item_remove (TrackerMinerFS *fs,
              GFile          *file)
 {
 	GString *sparql;
-	gchar *uri, *slash_uri;
+	gchar *uri;
 	gchar *mime = NULL;
 	ProcessData *data;
 
+	iri_cache_invalidate (fs, file);
 	uri = g_file_get_uri (file);
 
 	g_debug ("Removing item: '%s' (Deleted from filesystem)",
@@ -1252,12 +1440,6 @@ item_remove (TrackerMinerFS *fs,
 
 	g_free (mime);
 
-	if (!g_str_has_suffix (uri, "/")) {
-		slash_uri = g_strconcat (uri, "/", NULL);
-	} else {
-		slash_uri = g_strdup (uri);
-	}
-
 	sparql = g_string_new ("");
 
 	/* Delete all children */
@@ -1266,9 +1448,9 @@ item_remove (TrackerMinerFS *fs,
 	                        "  ?child a rdfs:Resource "
 	                        "} WHERE {"
 	                        "  ?child nie:url ?u . "
-	                        "  FILTER (fn:starts-with (?u, \"%s\")) "
+	                        "  FILTER (tracker:uri-is-descendant (\"%s\", ?u)) "
 	                        "}",
-	                        slash_uri);
+	                        uri);
 
 	/* Delete resource itself */
 	g_string_append_printf (sparql,
@@ -1289,7 +1471,6 @@ item_remove (TrackerMinerFS *fs,
 	                                    data);
 
 	g_string_free (sparql, TRUE);
-	g_free (slash_uri);
 	g_free (uri);
 
 	return FALSE;
@@ -1448,15 +1629,13 @@ item_update_children_uri (TrackerMinerFS    *fs,
                           const gchar       *source_uri,
                           const gchar       *uri)
 {
-	gchar *slash_uri, *sparql;
-
-	slash_uri = g_strconcat (source_uri, "/", NULL);
+	gchar *sparql;
 
 	sparql = g_strdup_printf ("SELECT ?child ?url nie:mimeType(?child) WHERE { "
 				  "  ?child nie:url ?url . "
-				  "  FILTER (fn:starts-with (?url, \"%s\")) "
+                                  "  FILTER (tracker:uri-is-descendant (\"%s\", ?url)) "
 				  "}",
-				  slash_uri);
+				  source_uri);
 
 	tracker_miner_execute_sparql (TRACKER_MINER (fs),
 	                              sparql,
@@ -1464,7 +1643,6 @@ item_update_children_uri (TrackerMinerFS    *fs,
 	                              item_update_children_uri_cb,
 	                              move_data);
 
-	g_free (slash_uri);
 	g_free (sparql);
 }
 
@@ -1480,6 +1658,9 @@ item_move (TrackerMinerFS *fs,
 	ProcessData *data;
 	gchar *source_iri;
 	gboolean source_exists;
+
+	iri_cache_invalidate (fs, file);
+	iri_cache_invalidate (fs, source_file);
 
 	uri = g_file_get_uri (file);
 	source_uri = g_file_get_uri (source_file);
@@ -2011,17 +2192,105 @@ item_queue_handlers_set_up (TrackerMinerFS *fs)
 		                   fs);
 }
 
+static void
+ensure_mtime_cache (TrackerMinerFS *fs,
+                    GFile          *file)
+{
+	gchar *query, *uri;
+	CacheQueryData data;
+	GFile *parent;
+
+	if (G_UNLIKELY (!fs->private->mtime_cache)) {
+		fs->private->mtime_cache = g_hash_table_new_full (g_file_hash,
+		                                                  (GEqualFunc) g_file_equal,
+		                                                  (GDestroyNotify) g_object_unref,
+		                                                  (GDestroyNotify) g_free);
+	}
+
+	parent = g_file_get_parent (file);
+
+	if (fs->private->current_parent) {
+		if (g_file_equal (parent, fs->private->current_parent)) {
+			/* Cache is still valid */
+			g_object_unref (parent);
+			return;
+		}
+
+		g_object_unref (fs->private->current_parent);
+	}
+
+	fs->private->current_parent = parent;
+
+	g_hash_table_remove_all (fs->private->mtime_cache);
+
+	uri = g_file_get_uri (parent);
+
+	g_debug ("Generating mtime cache for folder: %s", uri);
+
+	query = g_strdup_printf ("SELECT ?url ?last { ?u nfo:belongsToContainer ?p ; "
+	                                                "nie:url ?url ; "
+	                                                "nfo:fileLastModified ?last . "
+	                                             "?p nie:url \"%s\" }", uri);
+
+	g_free (uri);
+
+	data.main_loop = g_main_loop_new (NULL, FALSE);
+	data.values = g_hash_table_ref (fs->private->mtime_cache);
+
+	tracker_miner_execute_sparql (TRACKER_MINER (fs),
+	                              query,
+	                              NULL,
+	                              cache_query_cb,
+	                              &data);
+	g_free (query);
+
+	g_main_loop_run (data.main_loop);
+
+	if (g_hash_table_size (data.values) == 0 &&
+	    file_is_crawl_directory (fs, file)) {
+		/* File is a crawl directory itself, query its mtime directly */
+		uri = g_file_get_uri (file);
+
+		g_debug ("Folder %s is a crawl directory, generating mtime cache for it", uri);
+
+		query = g_strdup_printf ("SELECT ?url ?last "
+		                         "WHERE { "
+		                         "  ?u nfo:fileLastModified ?last ; "
+		                         "     nie:url ?url ; "
+		                         "     nie:url \"%s\" "
+		                         "}", uri);
+		g_free (uri);
+
+		tracker_miner_execute_sparql (TRACKER_MINER (fs),
+		                              query,
+		                              NULL,
+		                              cache_query_cb,
+		                              &data);
+		g_free (query);
+
+		g_main_loop_run (data.main_loop);
+	}
+
+	g_main_loop_unref (data.main_loop);
+	g_hash_table_unref (data.values);
+}
+
 static gboolean
 should_change_index_for_file (TrackerMinerFS *fs,
                               GFile          *file)
 {
-	gboolean            uptodate;
 	GFileInfo          *file_info;
 	guint64             time;
 	time_t              mtime;
 	struct tm           t;
-	gchar              *query, *uri;
-	SparqlQueryData     data = { 0 };
+	gchar              *time_str, *lookup_time;
+
+	ensure_mtime_cache (fs, file);
+	lookup_time = g_hash_table_lookup (fs->private->mtime_cache, file);
+
+	if (!lookup_time) {
+		return TRUE;
+	}
 
 	file_info = g_file_query_info (file,
 	                               G_FILE_ATTRIBUTE_TIME_MODIFIED,
@@ -2039,42 +2308,17 @@ should_change_index_for_file (TrackerMinerFS *fs,
 	mtime = (time_t) time;
 	g_object_unref (file_info);
 
-	uri = g_file_get_uri (file);
-
 	gmtime_r (&mtime, &t);
 
-	query = g_strdup_printf ("SELECT ?file { "
-	                         "  ?file nfo:fileLastModified \"%04d-%02d-%02dT%02d:%02d:%02dZ\" . "
-	                         "  ?file nie:url \"%s\""
-	                         "}",
-	                         t.tm_year + 1900,
-	                         t.tm_mon + 1,
-	                         t.tm_mday,
-	                         t.tm_hour,
-	                         t.tm_min,
-	                         t.tm_sec,
-	                         uri);
+	time_str = g_strdup_printf ("%04d-%02d-%02dT%02d:%02d:%02dZ",
+	                            t.tm_year + 1900,
+	                            t.tm_mon + 1,
+	                            t.tm_mday,
+	                            t.tm_hour,
+	                            t.tm_min,
+	                            t.tm_sec);
 
-	data.get_mime = FALSE;
-	data.main_loop = g_main_loop_new (NULL, FALSE);
-	data.uri = uri;
-
-	tracker_miner_execute_sparql (TRACKER_MINER (fs),
-	                              query,
-	                              NULL,
-	                              sparql_query_cb,
-	                              &data);
-
-	g_main_loop_run (data.main_loop);
-	uptodate = (data.iri != NULL);
-
-	g_main_loop_unref (data.main_loop);
-	g_free (data.iri);
-	g_free (data.mime);
-	g_free (query);
-	g_free (uri);
-
-	if (uptodate) {
+	if (strcmp (time_str, lookup_time) == 0) {
 		/* File already up-to-date in the database */
 		return FALSE;
 	}
@@ -2524,7 +2768,7 @@ static gboolean
 crawl_directories_cb (gpointer user_data)
 {
 	TrackerMinerFS *fs = user_data;
-	gchar *path;
+	gchar *path, *path_utf8;
 	gchar *str;
 
 	if (fs->private->current_directory) {
@@ -2551,12 +2795,15 @@ crawl_directories_cb (gpointer user_data)
 	                                          fs->private->current_directory);
 
 	path = g_file_get_path (fs->private->current_directory->file);
+	path_utf8 = g_filename_to_utf8 (path, -1, NULL, NULL, NULL);
+	g_free (path);
 
 	if (fs->private->current_directory->recurse) {
-		str = g_strdup_printf ("Crawling recursively directory '%s'", path);
+		str = g_strdup_printf ("Crawling recursively directory '%s'", path_utf8);
 	} else {
-		str = g_strdup_printf ("Crawling single directory '%s'", path);
+		str = g_strdup_printf ("Crawling single directory '%s'", path_utf8);
 	}
+	g_free (path_utf8);
 
 	g_message ("%s", str);
 
@@ -2566,7 +2813,6 @@ crawl_directories_cb (gpointer user_data)
 	              "status", str,
 	              NULL);
 	g_free (str);
-	g_free (path);
 
 	if (tracker_crawler_start (fs->private->crawler,
 	                           fs->private->current_directory->file,

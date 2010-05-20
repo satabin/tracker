@@ -5,6 +5,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include <gee.h>
 #include <stdlib.h>
 #include <string.h>
 #include <glib/gi18n-lib.h>
@@ -31,16 +32,19 @@ typedef struct _TrackerSearchEntryPrivate TrackerSearchEntryPrivate;
 
 typedef struct _TrackerQuery TrackerQuery;
 typedef struct _TrackerQueryClass TrackerQueryClass;
+#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 #define _g_free0(var) (var = (g_free (var), NULL))
 
 struct _TrackerSearchEntry {
-	GtkEntry parent_instance;
+	GtkComboBoxEntry parent_instance;
 	TrackerSearchEntryPrivate * priv;
 	guint id_invoker;
+	GtkEntry* entry;
+	GeeArrayList* history;
 };
 
 struct _TrackerSearchEntryClass {
-	GtkEntryClass parent_class;
+	GtkComboBoxEntryClass parent_class;
 };
 
 struct _TrackerSearchEntryPrivate {
@@ -59,22 +63,22 @@ enum  {
 	TRACKER_SEARCH_ENTRY_DUMMY_PROPERTY,
 	TRACKER_SEARCH_ENTRY_QUERY
 };
-TrackerQuery* tracker_search_entry_get_Query (TrackerSearchEntry* self);
 void tracker_query_set_SearchTerms (TrackerQuery* self, const char* value);
+TrackerQuery* tracker_search_entry_get_Query (TrackerSearchEntry* self);
 static gboolean tracker_search_entry_run_query (TrackerSearchEntry* self);
 static gboolean _tracker_search_entry_run_query_gsource_func (gpointer self);
-static void tracker_search_entry_entry_changed (TrackerSearchEntry* self, GtkEditable* editable);
-static void tracker_search_entry_entry_activate (TrackerSearchEntry* self, TrackerSearchEntry* entry);
+static void tracker_search_entry_entry_changed (TrackerSearchEntry* self);
+static void tracker_search_entry_entry_activate (TrackerSearchEntry* self);
 char* tracker_utils_EscapeSparql (const char* sparql, gboolean add_wildcard);
 static void tracker_search_entry_real_sync_action_properties (GtkActivatable* base, GtkAction* action);
 static void tracker_search_entry_real_update (GtkActivatable* base, GtkAction* action, const char* prop);
 TrackerSearchEntry* tracker_search_entry_new (void);
 TrackerSearchEntry* tracker_search_entry_construct (GType object_type);
 void tracker_search_entry_set_Query (TrackerSearchEntry* self, TrackerQuery* value);
-static void _tracker_search_entry_entry_activate_gtk_entry_activate (TrackerSearchEntry* _sender, gpointer self);
-static void _tracker_search_entry_entry_changed_gtk_editable_changed (TrackerSearchEntry* _sender, gpointer self);
-static void _lambda1_ (GtkEntryIconPosition p0, GdkEvent* p1, TrackerSearchEntry* self);
-static void __lambda1__gtk_entry_icon_press (TrackerSearchEntry* _sender, GtkEntryIconPosition p0, GdkEvent* p1, gpointer self);
+static void _tracker_search_entry_entry_activate_gtk_entry_activate (GtkEntry* _sender, gpointer self);
+static void _tracker_search_entry_entry_changed_gtk_editable_changed (GtkEntry* _sender, gpointer self);
+static void _lambda1_ (GtkEntryIconPosition p0, TrackerSearchEntry* self);
+static void __lambda1__gtk_entry_icon_press (GtkEntry* _sender, GtkEntryIconPosition p0, GdkEvent* p1, gpointer self);
 static GObject * tracker_search_entry_constructor (GType type, guint n_construct_properties, GObjectConstructParam * construct_properties);
 static void tracker_search_entry_finalize (GObject* obj);
 static void tracker_search_entry_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
@@ -83,138 +87,301 @@ static int _vala_strcmp0 (const char * str1, const char * str2);
 
 
 
-#line 63 "tracker-entry.gs"
+#line 75 "tracker-entry.gs"
 static gboolean _tracker_search_entry_run_query_gsource_func (gpointer self) {
-#line 89 "tracker-entry.c"
+#line 93 "tracker-entry.c"
 	return tracker_search_entry_run_query (self);
 }
 
 
-#line 47 "tracker-entry.gs"
-static void tracker_search_entry_entry_changed (TrackerSearchEntry* self, GtkEditable* editable) {
-#line 47 "tracker-entry.gs"
+#line 61 "tracker-entry.gs"
+static void tracker_search_entry_entry_changed (TrackerSearchEntry* self) {
+#line 61 "tracker-entry.gs"
 	g_return_if_fail (self != NULL);
-#line 47 "tracker-entry.gs"
-	g_return_if_fail (editable != NULL);
-#line 48 "tracker-entry.gs"
-	if (self->priv->_Query != NULL) {
-#line 49 "tracker-entry.gs"
-		if (gtk_entry_get_text ((GtkEntry*) self) == NULL) {
-#line 50 "tracker-entry.gs"
-			tracker_query_set_SearchTerms (self->priv->_Query, "");
-#line 51 "tracker-entry.gs"
-			if (self->id_invoker != 0) {
-#line 52 "tracker-entry.gs"
-				g_source_remove (self->id_invoker);
-#line 53 "tracker-entry.gs"
-				self->id_invoker = (guint) 0;
+#line 62 "tracker-entry.gs"
+	if (gtk_entry_get_text (self->entry) == NULL) {
+#line 63 "tracker-entry.gs"
+		tracker_query_set_SearchTerms (self->priv->_Query, "");
+#line 64 "tracker-entry.gs"
+		if (self->id_invoker != 0) {
+#line 65 "tracker-entry.gs"
+			g_source_remove (self->id_invoker);
+#line 66 "tracker-entry.gs"
+			self->id_invoker = (guint) 0;
 #line 112 "tracker-entry.c"
-			}
-#line 54 "tracker-entry.gs"
-			gtk_entry_set_icon_sensitive ((GtkEntry*) self, GTK_ENTRY_ICON_SECONDARY, FALSE);
-#line 116 "tracker-entry.c"
-		} else {
-#line 56 "tracker-entry.gs"
-			if (self->id_invoker != 0) {
-#line 57 "tracker-entry.gs"
-				g_source_remove (self->id_invoker);
-#line 122 "tracker-entry.c"
-			}
-#line 58 "tracker-entry.gs"
-			self->id_invoker = g_timeout_add_full (G_PRIORITY_DEFAULT, (guint) RUN_DELAY, _tracker_search_entry_run_query_gsource_func, g_object_ref (self), g_object_unref);
-#line 126 "tracker-entry.c"
 		}
+	} else {
+#line 68 "tracker-entry.gs"
+		if (self->id_invoker != 0) {
+#line 69 "tracker-entry.gs"
+			g_source_remove (self->id_invoker);
+#line 119 "tracker-entry.c"
+		}
+#line 70 "tracker-entry.gs"
+		self->id_invoker = g_timeout_add_full (G_PRIORITY_DEFAULT, (guint) RUN_DELAY, _tracker_search_entry_run_query_gsource_func, g_object_ref (self), g_object_unref);
+#line 123 "tracker-entry.c"
 	}
 }
 
 
-#line 60 "tracker-entry.gs"
-static void tracker_search_entry_entry_activate (TrackerSearchEntry* self, TrackerSearchEntry* entry) {
-#line 60 "tracker-entry.gs"
+#line 72 "tracker-entry.gs"
+static void tracker_search_entry_entry_activate (TrackerSearchEntry* self) {
+#line 72 "tracker-entry.gs"
 	g_return_if_fail (self != NULL);
-#line 60 "tracker-entry.gs"
-	g_return_if_fail (entry != NULL);
-#line 61 "tracker-entry.gs"
-	gtk_widget_grab_focus ((GtkWidget*) entry);
-#line 140 "tracker-entry.c"
+#line 73 "tracker-entry.gs"
+	gtk_widget_grab_focus ((GtkWidget*) self->entry);
+#line 134 "tracker-entry.c"
 }
 
 
-#line 63 "tracker-entry.gs"
+#line 914 "glib-2.0.vapi"
+static char* string_chug (const char* self) {
+#line 140 "tracker-entry.c"
+	char* result = NULL;
+	char* _result_;
+#line 914 "glib-2.0.vapi"
+	g_return_val_if_fail (self != NULL, NULL);
+#line 915 "glib-2.0.vapi"
+	_result_ = g_strdup (self);
+#line 916 "glib-2.0.vapi"
+	g_strchug (_result_);
+#line 149 "tracker-entry.c"
+	result = _result_;
+#line 917 "glib-2.0.vapi"
+	return result;
+#line 153 "tracker-entry.c"
+}
+
+
+#line 997 "glib-2.0.vapi"
+static char* string_slice (const char* self, glong start, glong end) {
+#line 159 "tracker-entry.c"
+	char* result = NULL;
+	glong string_length;
+	gboolean _tmp0_ = FALSE;
+	gboolean _tmp1_ = FALSE;
+	const char* start_string;
+#line 997 "glib-2.0.vapi"
+	g_return_val_if_fail (self != NULL, NULL);
+#line 998 "glib-2.0.vapi"
+	string_length = g_utf8_strlen (self, -1);
+#line 999 "glib-2.0.vapi"
+	if (start < 0) {
+#line 1000 "glib-2.0.vapi"
+		start = string_length + start;
+#line 173 "tracker-entry.c"
+	}
+#line 1002 "glib-2.0.vapi"
+	if (end < 0) {
+#line 1003 "glib-2.0.vapi"
+		end = string_length + end;
+#line 179 "tracker-entry.c"
+	}
+#line 1005 "glib-2.0.vapi"
+	if (start >= 0) {
+#line 1005 "glib-2.0.vapi"
+		_tmp0_ = start <= string_length;
+#line 185 "tracker-entry.c"
+	} else {
+#line 1005 "glib-2.0.vapi"
+		_tmp0_ = FALSE;
+#line 189 "tracker-entry.c"
+	}
+#line 1005 "glib-2.0.vapi"
+	g_return_val_if_fail (_tmp0_, NULL);
+#line 1006 "glib-2.0.vapi"
+	if (end >= 0) {
+#line 1006 "glib-2.0.vapi"
+		_tmp1_ = end <= string_length;
+#line 197 "tracker-entry.c"
+	} else {
+#line 1006 "glib-2.0.vapi"
+		_tmp1_ = FALSE;
+#line 201 "tracker-entry.c"
+	}
+#line 1006 "glib-2.0.vapi"
+	g_return_val_if_fail (_tmp1_, NULL);
+#line 1007 "glib-2.0.vapi"
+	g_return_val_if_fail (start <= end, NULL);
+#line 1008 "glib-2.0.vapi"
+	start_string = g_utf8_offset_to_pointer (self, start);
+#line 209 "tracker-entry.c"
+	result = g_strndup (start_string, ((gchar*) g_utf8_offset_to_pointer (start_string, end - start)) - ((gchar*) start_string));
+#line 1009 "glib-2.0.vapi"
+	return result;
+#line 213 "tracker-entry.c"
+}
+
+
+#line 75 "tracker-entry.gs"
 static gboolean tracker_search_entry_run_query (TrackerSearchEntry* self) {
-#line 146 "tracker-entry.c"
+#line 219 "tracker-entry.c"
 	gboolean result = FALSE;
-#line 63 "tracker-entry.gs"
+	char* txt;
+	gboolean _tmp0_ = FALSE;
+	char* _tmp1_;
+	glong len;
+#line 75 "tracker-entry.gs"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 64 "tracker-entry.gs"
-	if (self->priv->_Query != NULL) {
-#line 152 "tracker-entry.c"
-		gboolean _tmp0_ = FALSE;
-#line 65 "tracker-entry.gs"
-		if (gtk_entry_get_text ((GtkEntry*) self) == NULL) {
-#line 65 "tracker-entry.gs"
-			_tmp0_ = TRUE;
-#line 158 "tracker-entry.c"
-		} else {
-#line 65 "tracker-entry.gs"
-			_tmp0_ = _vala_strcmp0 (gtk_entry_get_text ((GtkEntry*) self), "") == 0;
-#line 162 "tracker-entry.c"
+#line 76 "tracker-entry.gs"
+	txt = g_strdup (gtk_entry_get_text (self->entry));
+#line 77 "tracker-entry.gs"
+	if (txt == NULL) {
+#line 77 "tracker-entry.gs"
+		_tmp0_ = TRUE;
+#line 233 "tracker-entry.c"
+	} else {
+#line 77 "tracker-entry.gs"
+		_tmp0_ = _vala_strcmp0 (txt, "") == 0;
+#line 237 "tracker-entry.c"
+	}
+#line 77 "tracker-entry.gs"
+	if (_tmp0_) {
+#line 78 "tracker-entry.gs"
+		tracker_query_set_SearchTerms (self->priv->_Query, "");
+#line 243 "tracker-entry.c"
+		result = FALSE;
+		_g_free0 (txt);
+#line 79 "tracker-entry.gs"
+		return result;
+#line 248 "tracker-entry.c"
+	}
+#line 82 "tracker-entry.gs"
+	txt = (_tmp1_ = string_chug (txt), _g_free0 (txt), _tmp1_);
+#line 84 "tracker-entry.gs"
+	len = g_utf8_strlen (txt, -1);
+#line 85 "tracker-entry.gs"
+	if (len > 2) {
+#line 256 "tracker-entry.c"
+		char* _tmp4_;
+#line 88 "tracker-entry.gs"
+		while (TRUE) {
+#line 260 "tracker-entry.c"
+			char* _tmp2_;
+#line 88 "tracker-entry.gs"
+			if (!(!g_unichar_isalnum (g_utf8_get_char (g_utf8_offset_to_pointer (txt, 0))))) {
+#line 88 "tracker-entry.gs"
+				break;
+#line 266 "tracker-entry.c"
+			}
+#line 89 "tracker-entry.gs"
+			txt = (_tmp2_ = string_slice (txt, (glong) 1, len--), _g_free0 (txt), _tmp2_);
+#line 90 "tracker-entry.gs"
+			if (len < 3) {
+#line 272 "tracker-entry.c"
+				result = FALSE;
+				_g_free0 (txt);
+#line 91 "tracker-entry.gs"
+				return result;
+#line 277 "tracker-entry.c"
+			}
 		}
-#line 65 "tracker-entry.gs"
-		if (_tmp0_) {
-#line 66 "tracker-entry.gs"
-			gtk_entry_set_icon_sensitive ((GtkEntry*) self, GTK_ENTRY_ICON_SECONDARY, FALSE);
-#line 67 "tracker-entry.gs"
-			tracker_query_set_SearchTerms (self->priv->_Query, "");
-#line 170 "tracker-entry.c"
-		} else {
-			char* _tmp1_;
-#line 69 "tracker-entry.gs"
-			gtk_entry_set_icon_sensitive ((GtkEntry*) self, GTK_ENTRY_ICON_SECONDARY, TRUE);
-#line 70 "tracker-entry.gs"
-			tracker_query_set_SearchTerms (self->priv->_Query, _tmp1_ = tracker_utils_EscapeSparql (gtk_entry_get_text ((GtkEntry*) self), TRUE));
-#line 177 "tracker-entry.c"
-			_g_free0 (_tmp1_);
+#line 94 "tracker-entry.gs"
+		if (!g_unichar_isalnum (g_utf8_get_char (g_utf8_offset_to_pointer (txt, len - 1)))) {
+#line 95 "tracker-entry.gs"
+			while (TRUE) {
+#line 284 "tracker-entry.c"
+				char* _tmp3_;
+#line 95 "tracker-entry.gs"
+				if (!(!g_unichar_isalnum (g_utf8_get_char (g_utf8_offset_to_pointer (txt, len - 2))))) {
+#line 95 "tracker-entry.gs"
+					break;
+#line 290 "tracker-entry.c"
+				}
+#line 96 "tracker-entry.gs"
+				txt = (_tmp3_ = string_slice (txt, (glong) 0, len - 2), _g_free0 (txt), _tmp3_);
+#line 97 "tracker-entry.gs"
+				len--;
+#line 98 "tracker-entry.gs"
+				if (len < 3) {
+#line 298 "tracker-entry.c"
+					result = FALSE;
+					_g_free0 (txt);
+#line 99 "tracker-entry.gs"
+					return result;
+#line 303 "tracker-entry.c"
+				}
+			}
 		}
+#line 102 "tracker-entry.gs"
+		tracker_query_set_SearchTerms (self->priv->_Query, _tmp4_ = tracker_utils_EscapeSparql (txt, TRUE));
+#line 309 "tracker-entry.c"
+		_g_free0 (_tmp4_);
+		{
+			GeeIterator* _item_it;
+			_item_it = gee_abstract_collection_iterator ((GeeAbstractCollection*) self->history);
+#line 105 "tracker-entry.gs"
+			while (TRUE) {
+#line 316 "tracker-entry.c"
+				char* item;
+#line 105 "tracker-entry.gs"
+				if (!gee_iterator_next (_item_it)) {
+#line 105 "tracker-entry.gs"
+					break;
+#line 322 "tracker-entry.c"
+				}
+#line 105 "tracker-entry.gs"
+				item = (char*) gee_iterator_get (_item_it);
+#line 106 "tracker-entry.gs"
+				if (_vala_strcmp0 (txt, item) == 0) {
+#line 328 "tracker-entry.c"
+					result = FALSE;
+					_g_free0 (item);
+					_g_object_unref0 (_item_it);
+					_g_free0 (txt);
+#line 107 "tracker-entry.gs"
+					return result;
+#line 335 "tracker-entry.c"
+				}
+				_g_free0 (item);
+			}
+			_g_object_unref0 (_item_it);
+		}
+#line 109 "tracker-entry.gs"
+		gee_abstract_collection_add ((GeeAbstractCollection*) self->history, txt);
+#line 110 "tracker-entry.gs"
+		gtk_combo_box_prepend_text ((GtkComboBox*) self, txt);
+#line 345 "tracker-entry.c"
 	}
 	result = FALSE;
-#line 71 "tracker-entry.gs"
+	_g_free0 (txt);
+#line 112 "tracker-entry.gs"
 	return result;
-#line 184 "tracker-entry.c"
+#line 351 "tracker-entry.c"
 }
 
 
-#line 73 "tracker-entry.gs"
+#line 114 "tracker-entry.gs"
 static void tracker_search_entry_real_sync_action_properties (GtkActivatable* base, GtkAction* action) {
-#line 190 "tracker-entry.c"
+#line 357 "tracker-entry.c"
 	TrackerSearchEntry * self;
 	self = (TrackerSearchEntry*) base;
-#line 73 "tracker-entry.gs"
+#line 114 "tracker-entry.gs"
 	g_return_if_fail (action != NULL);
-#line 74 "tracker-entry.gs"
+#line 115 "tracker-entry.gs"
 	return;
-#line 197 "tracker-entry.c"
+#line 364 "tracker-entry.c"
 }
 
 
-#line 76 "tracker-entry.gs"
+#line 117 "tracker-entry.gs"
 static void tracker_search_entry_real_update (GtkActivatable* base, GtkAction* action, const char* prop) {
-#line 203 "tracker-entry.c"
+#line 370 "tracker-entry.c"
 	TrackerSearchEntry * self;
 	self = (TrackerSearchEntry*) base;
-#line 76 "tracker-entry.gs"
+#line 117 "tracker-entry.gs"
 	g_return_if_fail (action != NULL);
-#line 76 "tracker-entry.gs"
+#line 117 "tracker-entry.gs"
 	g_return_if_fail (prop != NULL);
-#line 77 "tracker-entry.gs"
+#line 118 "tracker-entry.gs"
 	return;
-#line 212 "tracker-entry.c"
+#line 379 "tracker-entry.c"
 }
 
 
 #line 30 "tracker-entry.gs"
 TrackerSearchEntry* tracker_search_entry_construct (GType object_type) {
-#line 218 "tracker-entry.c"
+#line 385 "tracker-entry.c"
 	TrackerSearchEntry * self;
 	self = g_object_newv (object_type, 0, NULL);
 	return self;
@@ -225,7 +392,7 @@ TrackerSearchEntry* tracker_search_entry_construct (GType object_type) {
 TrackerSearchEntry* tracker_search_entry_new (void) {
 #line 30 "tracker-entry.gs"
 	return tracker_search_entry_construct (TYPE_TRACKER_SEARCH_ENTRY);
-#line 229 "tracker-entry.c"
+#line 396 "tracker-entry.c"
 }
 
 
@@ -233,9 +400,9 @@ TrackerQuery* tracker_search_entry_get_Query (TrackerSearchEntry* self) {
 	TrackerQuery* result;
 	g_return_val_if_fail (self != NULL, NULL);
 	result = self->priv->_Query;
-#line 33 "tracker-entry.gs"
+#line 35 "tracker-entry.gs"
 	return result;
-#line 239 "tracker-entry.c"
+#line 406 "tracker-entry.c"
 }
 
 
@@ -246,37 +413,40 @@ void tracker_search_entry_set_Query (TrackerSearchEntry* self, TrackerQuery* val
 }
 
 
-#line 60 "tracker-entry.gs"
-static void _tracker_search_entry_entry_activate_gtk_entry_activate (TrackerSearchEntry* _sender, gpointer self) {
-#line 252 "tracker-entry.c"
-	tracker_search_entry_entry_activate (self, _sender);
+static gpointer _g_object_ref0 (gpointer self) {
+	return self ? g_object_ref (self) : NULL;
 }
 
 
-#line 47 "tracker-entry.gs"
-static void _tracker_search_entry_entry_changed_gtk_editable_changed (TrackerSearchEntry* _sender, gpointer self) {
-#line 259 "tracker-entry.c"
-	tracker_search_entry_entry_changed (self, _sender);
+#line 72 "tracker-entry.gs"
+static void _tracker_search_entry_entry_activate_gtk_entry_activate (GtkEntry* _sender, gpointer self) {
+#line 424 "tracker-entry.c"
+	tracker_search_entry_entry_activate (self);
 }
 
 
-#line 42 "tracker-entry.gs"
-static void _lambda1_ (GtkEntryIconPosition p0, GdkEvent* p1, TrackerSearchEntry* self) {
-#line 42 "tracker-entry.gs"
-	g_return_if_fail (p1 != NULL);
-#line 43 "tracker-entry.gs"
+#line 61 "tracker-entry.gs"
+static void _tracker_search_entry_entry_changed_gtk_editable_changed (GtkEntry* _sender, gpointer self) {
+#line 431 "tracker-entry.c"
+	tracker_search_entry_entry_changed (self);
+}
+
+
+#line 55 "tracker-entry.gs"
+static void _lambda1_ (GtkEntryIconPosition p0, TrackerSearchEntry* self) {
+#line 56 "tracker-entry.gs"
 	if (p0 == GTK_ENTRY_ICON_SECONDARY) {
-#line 44 "tracker-entry.gs"
-		gtk_entry_set_text ((GtkEntry*) self, "");
-#line 272 "tracker-entry.c"
+#line 57 "tracker-entry.gs"
+		gtk_entry_set_text (self->entry, "");
+#line 442 "tracker-entry.c"
 	}
 }
 
 
-#line 42 "tracker-entry.gs"
-static void __lambda1__gtk_entry_icon_press (TrackerSearchEntry* _sender, GtkEntryIconPosition p0, GdkEvent* p1, gpointer self) {
-#line 279 "tracker-entry.c"
-	_lambda1_ (p0, p1, self);
+#line 55 "tracker-entry.gs"
+static void __lambda1__gtk_entry_icon_press (GtkEntry* _sender, GtkEntryIconPosition p0, GdkEvent* p1, gpointer self) {
+#line 449 "tracker-entry.c"
+	_lambda1_ (p0, self);
 }
 
 
@@ -288,21 +458,44 @@ static GObject * tracker_search_entry_constructor (GType type, guint n_construct
 	obj = parent_class->constructor (type, n_construct_properties, construct_properties);
 	self = TRACKER_SEARCH_ENTRY (obj);
 	{
-#line 36 "tracker-entry.gs"
-		gtk_entry_set_icon_from_stock ((GtkEntry*) self, GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_CLEAR);
-#line 37 "tracker-entry.gs"
-		gtk_entry_set_icon_sensitive ((GtkEntry*) self, GTK_ENTRY_ICON_PRIMARY, FALSE);
+		GtkEntry* _tmp1_;
+		GtkWidget* _tmp0_;
+		GtkListStore* model;
+		GtkEntryCompletion* completion;
+		GeeArrayList* _tmp2_;
 #line 38 "tracker-entry.gs"
-		gtk_entry_set_icon_sensitive ((GtkEntry*) self, GTK_ENTRY_ICON_SECONDARY, FALSE);
+		self->entry = (_tmp1_ = _g_object_ref0 ((_tmp0_ = gtk_bin_get_child ((GtkBin*) self), GTK_IS_ENTRY (_tmp0_) ? ((GtkEntry*) _tmp0_) : NULL)), _g_object_unref0 (self->entry), _tmp1_);
 #line 39 "tracker-entry.gs"
-		gtk_entry_set_icon_tooltip_text ((GtkEntry*) self, GTK_ENTRY_ICON_SECONDARY, _ ("Clear the search text"));
+		gtk_entry_set_icon_from_stock (self->entry, GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_CLEAR);
 #line 40 "tracker-entry.gs"
-		g_signal_connect_object ((GtkEntry*) self, "activate", (GCallback) _tracker_search_entry_entry_activate_gtk_entry_activate, self, 0);
+		gtk_entry_set_icon_sensitive (self->entry, GTK_ENTRY_ICON_SECONDARY, TRUE);
 #line 41 "tracker-entry.gs"
-		g_signal_connect_object ((GtkEditable*) self, "changed", (GCallback) _tracker_search_entry_entry_changed_gtk_editable_changed, self, 0);
-#line 42 "tracker-entry.gs"
-		g_signal_connect_object ((GtkEntry*) self, "icon-press", (GCallback) __lambda1__gtk_entry_icon_press, self, 0);
-#line 306 "tracker-entry.c"
+		gtk_entry_set_icon_tooltip_text (self->entry, GTK_ENTRY_ICON_SECONDARY, _ ("Clear the search text"));
+#line 44 "tracker-entry.gs"
+		model = gtk_list_store_new (1, G_TYPE_STRING, NULL);
+#line 45 "tracker-entry.gs"
+		gtk_combo_box_set_model ((GtkComboBox*) self, (GtkTreeModel*) model);
+#line 46 "tracker-entry.gs"
+		gtk_combo_box_entry_set_text_column ((GtkComboBoxEntry*) self, 0);
+#line 48 "tracker-entry.gs"
+		completion = gtk_entry_completion_new ();
+#line 49 "tracker-entry.gs"
+		gtk_entry_completion_set_model (completion, (GtkTreeModel*) model);
+#line 50 "tracker-entry.gs"
+		gtk_entry_completion_set_text_column (completion, 0);
+#line 51 "tracker-entry.gs"
+		gtk_entry_set_completion (self->entry, completion);
+#line 53 "tracker-entry.gs"
+		g_signal_connect_object (self->entry, "activate", (GCallback) _tracker_search_entry_entry_activate_gtk_entry_activate, self, 0);
+#line 54 "tracker-entry.gs"
+		g_signal_connect_object ((GtkEditable*) self->entry, "changed", (GCallback) _tracker_search_entry_entry_changed_gtk_editable_changed, self, 0);
+#line 55 "tracker-entry.gs"
+		g_signal_connect_object (self->entry, "icon-press", (GCallback) __lambda1__gtk_entry_icon_press, self, 0);
+#line 59 "tracker-entry.gs"
+		self->history = (_tmp2_ = gee_array_list_new (G_TYPE_STRING, (GBoxedCopyFunc) g_strdup, g_free, g_str_equal), _g_object_unref0 (self->history), _tmp2_);
+#line 497 "tracker-entry.c"
+		_g_object_unref0 (model);
+		_g_object_unref0 (completion);
 	}
 	return obj;
 }
@@ -335,6 +528,8 @@ static void tracker_search_entry_instance_init (TrackerSearchEntry * self) {
 static void tracker_search_entry_finalize (GObject* obj) {
 	TrackerSearchEntry * self;
 	self = TRACKER_SEARCH_ENTRY (obj);
+	_g_object_unref0 (self->entry);
+	_g_object_unref0 (self->history);
 	G_OBJECT_CLASS (tracker_search_entry_parent_class)->finalize (obj);
 }
 
@@ -345,7 +540,7 @@ GType tracker_search_entry_get_type (void) {
 		static const GTypeInfo g_define_type_info = { sizeof (TrackerSearchEntryClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) tracker_search_entry_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof (TrackerSearchEntry), 0, (GInstanceInitFunc) tracker_search_entry_instance_init, NULL };
 		static const GInterfaceInfo gtk_activatable_info = { (GInterfaceInitFunc) tracker_search_entry_gtk_activatable_interface_init, (GInterfaceFinalizeFunc) NULL, NULL};
 		GType tracker_search_entry_type_id;
-		tracker_search_entry_type_id = g_type_register_static (GTK_TYPE_ENTRY, "TrackerSearchEntry", &g_define_type_info, 0);
+		tracker_search_entry_type_id = g_type_register_static (GTK_TYPE_COMBO_BOX_ENTRY, "TrackerSearchEntry", &g_define_type_info, 0);
 		g_type_add_interface_static (tracker_search_entry_type_id, GTK_TYPE_ACTIVATABLE, &gtk_activatable_info);
 		g_once_init_leave (&tracker_search_entry_type_id__volatile, tracker_search_entry_type_id);
 	}

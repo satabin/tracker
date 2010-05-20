@@ -1,3 +1,266 @@
+NEW in 0.8.7 - 2010-05-20
+=========================
+
+Improvements / New:
+
+  General:
+  * Fixed building with VPATHS where $srcdir != $builddir
+
+  SPARQL:
+  * Added tracker:id function to return the integer ID used as last sort key in queries
+
+  Ontology:
+  * Added ontology change support for properties
+  * Added ontology change error reporting
+  * Added tracker:indexed for nfo:belongsToContainer
+  * Added nao:deprecated to the ontology
+
+  libtracker-data:
+  * Added ontology change support for tracker:notify, tracker:writeback and tracker:indexed
+  * Create new contexts per tripple now, improves variable handling
+
+  libtracker-miner:
+  * Fixed IRI cache
+  * Fixed mtime cache for config directories themselves
+  * Updated nfo:fileLastModified query to use nfo:belongsToContainer, much faster
+
+  tracker-extract: 
+  * Handle single null terminated strings in UCS2 and UTF-16 in mp3 extractor
+
+  tracker-search-tool:
+  * Fixed segfault when entering text while categories are selected
+
+  tracker-tag:
+  * Support nao:description with --description when using --add
+
+Bugs:
+
+  * NB#163155 - tracker-extract is crashing while extracting album art of a mp3 file
+  * NB#169254 - GLIB CRITICAL ** GLib - g_utf8_strdown: assertion `str != NULL' failed
+  * NB#169105 - GLIB CRITICAL ** Tracker - tracker_iptc_new: assertion `len > 0' failed
+  * NB#169119 - GLIB CRITICAL ** GLib-GObject - g_object_unref: assertion `G_IS_OBJECT (object)' failed
+  * GB#619061 - add search history and auto-completion
+  * GB#616535 - miner-fs stops after crawling a little (no crash). maybe non-utf8 locale related.
+  * GB#614870 - Open t-s-t on left click
+  * GB#614610 - config behaviour regarding xdg-user-dirs doesn't work properly
+  * GB#618821 - Wrong X-GNOME-Bugzilla-Components for desktop files
+  * GB#618544 - Only install tracker-search-bar man page when enabled
+  * GB#618011 - UI problems with tracker tray icon
+  * GB#616808 - dist tarball fails to build twice in a row if --enable-gtk-doc is selected
+  * GB#491850 - Allow option to ignore stopwords
+  * GB#503366 - Cannot search number in text files
+  * GB#579756 - Unicode Normalization is broken in Indexer and/or Search
+
+Translations:
+
+  * Updated cs: Petr Kovar
+  * Updated de: Mario Blättermann
+  * Updated sl: Andrej Žnidaršič
+  * Updated es: Jorge González
+
+Notes:
+
+  None
+
+
+NEW in 0.8.6 - 2010-05-13
+=========================
+
+Improvements / New:
+
+  General:
+  * Fixed some inconsistencies in the miner configuration
+  * Use conditionals for final .desktop files only (simplifies Makefile.am)
+
+  Data Generators:
+  * Moved deprecated scripts to a deprecated/ directory
+  * Added check to make sure config has been loaded when run
+
+  libtracker-common:
+  * Removed call to g_get_current_time() in log_output(), was unused
+
+  libtracker-miner:
+  * Removed monitor test, symbols are no longer exported and was disabled
+
+  tracker-store:
+  * Do not use DBusGMethodInvocation after freeing it
+
+  tracker-miner-fs:
+  * Fixed memory leak when finalizing TrackerMinerFS
+  * Fixed memory leak when called back after SPARQL update
+  * Fixed memory leak when ensuring IRI cache
+
+  tracker-miner-rss:
+  * Fixed .desktop file, was using miner file format
+
+  tracker-extract:
+  * Set nmm:albumArtist to nmm:MusicAlbum for GStreamer extractor
+
+  tracker-writeback:
+  * Support MP4 and 3GPP formats
+
+  evolution:
+  * Moved .desktop file to same location as others in data/dbus/
+
+Bugs:
+
+  * GB#617082 - RFE Useability - Learning How to Start the Miners was a Little Unintuitive
+  * GB#617515 - SPARQL query: SELECT MAX(?something)+1 { ... } creates wrong native SQLite query
+  * NB#166638 - Some of the metadata details of " avi " files are not extracted by tracker.
+  * NB#167616 - Tracker's ISO 8601 timestamp implementation is not correct
+
+Translations:
+
+  * Updated nb: Kjartan Maraas
+
+Notes:
+
+  None
+
+NEW in 0.8.5 - 2010-05-06
+=========================
+
+Improvements / New:
+
+  General:
+  * Removed many unused variables from coverity reports
+  * Various other fixes picked up from coverity reports
+
+  Functional Tests:
+  * Added for journal replay
+  * Added for backup-restore
+
+  Ontology:
+  * Fixed typo for nfo:softwareCmdLine comment
+
+  Data Generators:
+  * Fixed %u use since it is deprecated in favour of %d in Python
+
+  libtracker-common:
+  * Fixed compilation error in validating ints for tracker-keyfile-object
+
+  libtracker-db:
+  * Don't fsync/close already open databases if g_open() succeeds
+  * Avoid strstr in uri_is_{parent|descendant} functions
+  * Performance improvement for tracker:uri-is-parent function
+
+  libtracker-extract:
+  * Don't modify setlocale() return value, as it's statically stored
+  * Protect against invalid values in tracker_date_guess()
+
+  libtracker-miner:
+  * Added missing .deps file for Vala bindings
+  * Fixed memory leak in VAPI file
+  * Fixed includes for libtracker-client in VAPI file
+
+  libtracker-client:
+  * Fixed typo in documentation for tracker_resources_sparql_query()
+
+  tracker-store:
+  * Handle commit transaction error when importing turtle files and rollback
+
+  tracker-extract:
+  * Don't run past genre array in mp3 extractor
+  * Use nfo:HtmlDocument instead of nfo:Document in html extractor
+  * Fixed compilation warning for msoffice extractor, use G_GSIZE_FORMAT not %d
+
+  tracker-search:
+  * Added --emails and list subjects/dates
+  * Added --contacts and list names/addresses
+  * Updated --detailed so we only report URNs if this is supplied
+
+  tracker-tag:
+  * Fixed possible use of uninitialised memory
+
+  tracker-info:
+  * Show results in shortened form, added --full-namespaces for old behaviour
+
+  tracker-search-tool:
+  * Fixed segmentation fault when there are no results
+  * Added "Folders" category
+  * Renamed "Office Documents" category to "Documents"
+
+Bugs:
+
+  * GB#616548 - DIrectory lists and de-duplication in tracker-preferences
+  * NB#166767 - Every word in a long tag is indexed separately
+
+Translations:
+
+  * Updated cs: Petr Kovar
+  * Updated de: Mario Blättermann
+
+Notes:
+
+  Due to the HTML extractor changing the document type from
+  nfo:Document to nfo:HtmlDocument, we would advise anyone with these
+  files indexed to use:
+
+    tracker-control --reindex-mime-type text/html
+
+  This should make sure all indexed files are correctly adjusted.
+
+
+NEW in 0.8.4 - 2010-04-29
+=========================
+
+Improvements / New:
+
+  General:
+  * Fixed miner desktop files so they have trailing ; for Categories
+  * Added structural view design document
+  * Added queries for contact data generation scripts
+  * Added queries for message data generation scripts
+  * Added debugging to libinotify to assist in fixing GB#615965
+  * Updated data generation scripts and templates quite heavily
+
+  Functional Tests:
+  * Fixed query used for getting image metdata
+  * Fixed signal handling in miner file operations test
+  * Fixed performance scripts to not use isStoredAs
+  * Updated contact related performance queries
+  * Updated message related performance queries
+  * Added writeback support for PNG, TIFF, MP4
+
+  libtracker-db:
+  * Added tracker:uri-is-parent SQLite functions (for crawling improvements)
+  * Added tracker:uri-is-descendant SQLite functions (for crawling improvements)
+
+  libtracker-miner:
+  * Improve crawling queries (3693 dirs, 27678 files, was 651s, now 166s)
+
+  libtracker-client:
+  * Added initial test cases
+
+  tracker-extract:
+  * Fixed man page for -d
+  * Fixed double free in Vorbis extractor, caused timeouts in miner-fs logs
+
+  evolution:
+  * Fixed race condition
+
+  tracker-search-tool:
+  * Removed --service (old 0.6 option which is unused)
+  * Added support for starting queries using command line arguments
+
+Bugs:
+
+  * GB#615930 - crash in evolution caused by tracker plugin
+  * GB#616493 - Remove unzip dependency from the OASIS extractor
+  * GB#615836 - tracker:available doesnt work: wrong dataSource for removeable drives
+  * NB#166080 - extraction of copyright for jpg image is partially correct
+  * NB#164958 - tracker-search for a default song doesn't work for "beautif" and "beautifu"
+
+Translations:
+
+  * Updated cs: Petr Kovar
+  * Updated sl: Andrej Žnidaršič
+
+Notes:
+
+  None
+
+
 NEW in 0.8.3 - 2010-04-22
 =========================
 

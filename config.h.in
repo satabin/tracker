@@ -154,6 +154,21 @@
 /* Define if we have Totem PL parser */
 #undef HAVE_TOTEM_PL_PARSER
 
+/* Define to 0 if tracker explorer is not compiled */
+#undef HAVE_TRACKER_EXPLORER
+
+/* Define to 0 if tracker preferences is not compiled */
+#undef HAVE_TRACKER_PREFERENCES
+
+/* Define to 0 if t-s-b is not compiled */
+#undef HAVE_TRACKER_SEARCH_BAR
+
+/* Define to 0 if t-s-t is not compiled */
+#undef HAVE_TRACKER_SEARCH_TOOL
+
+/* Define to 0 if status icon is not compiled */
+#undef HAVE_TRACKER_STATUS_ICON
+
 /* Define if we have UNAC for accent stripping */
 #undef HAVE_UNAC
 

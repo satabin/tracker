@@ -1,7 +1,7 @@
 [indent=4]
 
 /*
- * Copyright (C) 2009, Jamie McCracken (jamiecc at gnome org)
+ * Copyright (C) 2009, Jamie McCracken (jamiemcc at gnome org)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@ interface Resources : GLib.Object
 
 class TrackerQuery : Object
 
-    tracker : Resources;
+    tracker : Resources
     _SearchTerms : string
 
     event SearchSettingsChanged ()
@@ -49,7 +49,7 @@ class TrackerQuery : Object
     init
         Category = "All"
 
-         self.notify += def (t, propety)
+        notify += def (t, propety)
             if propety.name is "Category" or  propety.name is "SortField" or propety.name is "Fields"
                 SearchSettingsChanged ()
             else
@@ -58,7 +58,6 @@ class TrackerQuery : Object
                         ClearSearchResults ()
                     else
                         SearchSettingsChanged ()
-
 
     def Connect () : bool
 
@@ -81,7 +80,7 @@ class TrackerQuery : Object
         else
             cat = Category
 
-        query = "SELECT ?s nie:url(?s) nie:mimeType(?s) WHERE { ?s fts:match \"%s\". ?s a %s } limit 100 ".printf (SearchTerms, cat)
+        query = "SELECT ?s nie:url(?s) nie:mimeType(?s) WHERE { ?s fts:match \"%s\". ?s a %s } LIMIT 100 ".printf (SearchTerms, cat)
 
         // to do : add Fields, Category and SortField
         try
@@ -90,7 +89,6 @@ class TrackerQuery : Object
             print "Dbus error : %s", e.message
 
         return null
-
 
 
     def Query (sparql : string) : array of string[,]?

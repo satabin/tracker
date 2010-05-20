@@ -109,9 +109,9 @@ insert_keywords (TrackerSparqlBuilder *metadata,
 		keywords[len - 1] = '\0';
 	}
 
-	for (p = strtok_r (keywords, ",; ", &saveptr);
+	for (p = strtok_r (keywords, ",;", &saveptr);
 	     p;
-	     p = strtok_r (NULL, ",; ", &saveptr)) {
+	     p = strtok_r (NULL, ",;", &saveptr)) {
 		tracker_sparql_builder_predicate (metadata, "nao:hasTag");
 
 		tracker_sparql_builder_object_blank_open (metadata);
@@ -240,9 +240,9 @@ extract_jpeg (const gchar          *uri,
 			str = (gchar*) marker->data;
 			len = marker->data_length;
 #ifdef HAVE_LIBIPTCDATA
-			if (strncmp (PS3_NAMESPACE, str, PS3_NAMESPACE_LENGTH) == 0) {
+			if (len > 0 && strncmp (PS3_NAMESPACE, str, PS3_NAMESPACE_LENGTH) == 0) {
 				offset = iptc_jpeg_ps3_find_iptc (str, len, &sublen);
-				if (offset > 0) {
+				if (offset > 0 && sublen > 0) {
 					tracker_iptc_read (str + offset,
 					                   sublen,
 					                   uri,

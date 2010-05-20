@@ -3,17 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Utilities</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Client Library Reference Manual">
 <link rel="up" href="ch01.html" title="General">
 <link rel="prev" href="libtracker-client-Cancellations.html" title="Cancellations">
 <link rel="next" href="ch02.html" title="Querying">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libtracker-client.html" title="Part I. Overview">
-<link rel="chapter" href="ch01.html" title="General">
-<link rel="chapter" href="ch02.html" title="Querying">
-<link rel="chapter" href="ch03.html" title="Building Queries">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -26,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libtracker-client-Utilities.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libtracker-client-Utilities.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libtracker-client-Utilities.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="Utilities">
@@ -42,63 +38,42 @@
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libtracker-client-Utilities.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
 #include &lt;libtracker-client/tracker-client.h&gt;
 
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             <a class="link" href="libtracker-client-Utilities.html#tracker-sparql-escape" title="tracker_sparql_escape ()">tracker_sparql_escape</a>               (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *str);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             <a class="link" href="libtracker-client-Utilities.html#tracker-uri-printf-escaped" title="tracker_uri_printf_escaped ()">tracker_uri_printf_escaped</a>          (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             <a class="link" href="libtracker-client-Utilities.html#tracker-uri-vprintf-escaped" title="tracker_uri_vprintf_escaped ()">tracker_uri_vprintf_escaped</a>         (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         va_list args);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-client-Utilities.html#tracker-sparql-escape" title="tracker_sparql_escape ()">tracker_sparql_escape</a>               (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-client-Utilities.html#tracker-uri-printf-escaped" title="tracker_uri_printf_escaped ()">tracker_uri_printf_escaped</a>          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-client-Utilities.html#tracker-uri-vprintf-escaped" title="tracker_uri_vprintf_escaped ()">tracker_uri_vprintf_escaped</a>         (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code><span class="type">va_list</span> args</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
 <a name="libtracker-client-Utilities.description"></a><h2>Description</h2>
 <p>
-This is miscellaneous API that may be useful to users.</p>
-<p>
+This is miscellaneous API that may be useful to users.
 </p>
 </div>
 <div class="refsect1" title="Details">
 <a name="libtracker-client-Utilities.details"></a><h2>Details</h2>
 <div class="refsect2" title="tracker_sparql_escape ()">
 <a name="tracker-sparql-escape"></a><h3>tracker_sparql_escape ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             tracker_sparql_escape               (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *str);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_sparql_escape               (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);</pre>
 <p>
 Escapes a string so it can be passed as a SPARQL parameter in
-any query/update.</p>
-<p>
+any query/update.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
-<td> a string to escape.
+<td>a string to escape.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> the newly allocated escaped string which must be freed
-using <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"
-><code class="function">g_free()</code></a>.
+using <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>.
 
 </td>
 </tr>
@@ -109,36 +84,29 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g
 <hr>
 <div class="refsect2" title="tracker_uri_printf_escaped ()">
 <a name="tracker-uri-printf-escaped"></a><h3>tracker_uri_printf_escaped ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             tracker_uri_printf_escaped          (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_uri_printf_escaped          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
-Calls <a class="link" href="libtracker-client-Utilities.html#tracker-uri-vprintf-escaped" title="tracker_uri_vprintf_escaped ()"><code class="function">tracker_uri_vprintf_escaped()</code></a> with the <em class="parameter"><code>Varargs</code></em> supplied.</p>
-<p>
+Calls <a class="link" href="libtracker-client-Utilities.html#tracker-uri-vprintf-escaped" title="tracker_uri_vprintf_escaped ()"><code class="function">tracker_uri_vprintf_escaped()</code></a> with the <em class="parameter"><code>Varargs</code></em> supplied.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
-<td> a standard <code class="function">printf()</code> format string, but notice
+<td>a standard <code class="function">printf()</code> format string, but notice
     string precision pitfalls
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td> the parameters to insert into the format string
+<td>the parameters to insert into the format string
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a newly-allocated string holding the result which should
-be freed with <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"
-><code class="function">g_free()</code></a> when finished with.
+be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when finished with.
 
 </td>
 </tr>
@@ -149,43 +117,34 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g
 <hr>
 <div class="refsect2" title="tracker_uri_vprintf_escaped ()">
 <a name="tracker-uri-vprintf-escaped"></a><h3>tracker_uri_vprintf_escaped ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             tracker_uri_vprintf_escaped         (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         va_list args);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_uri_vprintf_escaped         (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code><span class="type">va_list</span> args</code></em>);</pre>
 <p>
 Similar to the standard C <code class="function">vsprintf()</code> function but safer, since it 
 calculates the maximum space required and allocates memory to hold 
 the result. 
 </p>
 <p>
-The result is escaped using <a
-href="http://library.gnome.org/devel/glib/unstable/glib-URI-Functions.html#g-uri-escape-string"
-><code class="function">g_uri_escape_string()</code></a>.</p>
-<p>
+The result is escaped using <a href="http://library.gnome.org/devel/glib/unstable/glib-URI-Functions.html#g-uri-escape-string"><code class="function">g_uri_escape_string()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
-<td> a standard <code class="function">printf()</code> format string, but notice
+<td>a standard <code class="function">printf()</code> format string, but notice
     string precision pitfalls
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>args</code></em> :</span></p></td>
-<td> the list of parameters to insert into the format string
+<td>the list of parameters to insert into the format string
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a newly-allocated string holding the result which should
-be freed with <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"
-><code class="function">g_free()</code></a> when finished with.
+be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when finished with.
 
 </td>
 </tr>
@@ -197,6 +156,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.14</div>
 </body>
 </html>

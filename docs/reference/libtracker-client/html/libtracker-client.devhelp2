@@ -4,7 +4,7 @@
   <chapters>
     <sub name="Overview" link="libtracker-client.html"/>
     <sub name="General" link="ch01.html">
-      <sub name="TrackerClient" link="TrackerClient.html"/>
+      <sub name="TrackerClient" link="libtracker-client-tracker.html"/>
       <sub name="Cancellations" link="libtracker-client-Cancellations.html"/>
       <sub name="Utilities" link="libtracker-client-Utilities.html"/>
     </sub>
@@ -18,16 +18,16 @@
     </sub>
   </chapters>
   <functions>
-    <keyword type="macro" name="TRACKER_DBUS_SERVICE" link="TrackerClient.html#TRACKER-DBUS-SERVICE--CAPS"/>
-    <keyword type="macro" name="TRACKER_DBUS_OBJECT" link="TrackerClient.html#TRACKER-DBUS-OBJECT--CAPS"/>
-    <keyword type="macro" name="TRACKER_DBUS_INTERFACE_RESOURCES" link="TrackerClient.html#TRACKER-DBUS-INTERFACE-RESOURCES--CAPS"/>
-    <keyword type="macro" name="TRACKER_DBUS_INTERFACE_STATISTICS" link="TrackerClient.html#TRACKER-DBUS-INTERFACE-STATISTICS--CAPS"/>
-    <keyword type="struct" name="TrackerClient" link="TrackerClient.html#TrackerClient-struct"/>
-    <keyword type="struct" name="TrackerClientClass" link="TrackerClient.html#TrackerClientClass"/>
-    <keyword type="enum" name="enum TrackerClientFlags" link="TrackerClient.html#TrackerClientFlags"/>
-    <keyword type="function" name="tracker_client_new ()" link="TrackerClient.html#tracker-client-new"/>
-    <keyword type="property" name="The &quot;enable-warnings&quot; property" link="TrackerClient.html#TrackerClient--enable-warnings"/>
-    <keyword type="property" name="The &quot;timeout&quot; property" link="TrackerClient.html#TrackerClient--timeout"/>
+    <keyword type="macro" name="TRACKER_DBUS_SERVICE" link="libtracker-client-tracker.html#TRACKER-DBUS-SERVICE:CAPS"/>
+    <keyword type="macro" name="TRACKER_DBUS_OBJECT" link="libtracker-client-tracker.html#TRACKER-DBUS-OBJECT:CAPS"/>
+    <keyword type="macro" name="TRACKER_DBUS_INTERFACE_RESOURCES" link="libtracker-client-tracker.html#TRACKER-DBUS-INTERFACE-RESOURCES:CAPS"/>
+    <keyword type="macro" name="TRACKER_DBUS_INTERFACE_STATISTICS" link="libtracker-client-tracker.html#TRACKER-DBUS-INTERFACE-STATISTICS:CAPS"/>
+    <keyword type="struct" name="TrackerClient" link="libtracker-client-tracker.html#TrackerClient-struct"/>
+    <keyword type="struct" name="TrackerClientClass" link="libtracker-client-tracker.html#TrackerClientClass"/>
+    <keyword type="enum" name="enum TrackerClientFlags" link="libtracker-client-tracker.html#TrackerClientFlags"/>
+    <keyword type="function" name="tracker_client_new ()" link="libtracker-client-tracker.html#tracker-client-new"/>
+    <keyword type="property" name="The &quot;enable-warnings&quot; property" link="libtracker-client-tracker.html#TrackerClient--enable-warnings"/>
+    <keyword type="property" name="The &quot;timeout&quot; property" link="libtracker-client-tracker.html#TrackerClient--timeout"/>
     <keyword type="function" name="tracker_cancel_call ()" link="libtracker-client-Cancellations.html#tracker-cancel-call"/>
     <keyword type="function" name="tracker_cancel_last_call ()" link="libtracker-client-Cancellations.html#tracker-cancel-last-call"/>
     <keyword type="function" name="tracker_sparql_escape ()" link="libtracker-client-Utilities.html#tracker-sparql-escape" since="0.8"/>
@@ -95,6 +95,6 @@
     <keyword type="function" name="tracker_sparql_builder_object_blank_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-open"/>
     <keyword type="function" name="tracker_sparql_builder_object_blank_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-close"/>
     <keyword type="function" name="tracker_sparql_builder_object_unvalidated ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-unvalidated"/>
-    <keyword type="constant" name="TRACKER_CLIENT_ENABLE_WARNINGS" link="TrackerClient.html#TRACKER-CLIENT-ENABLE-WARNINGS--CAPS"/>
+    <keyword type="constant" name="TRACKER_CLIENT_ENABLE_WARNINGS" link="libtracker-client-tracker.html#TRACKER-CLIENT-ENABLE-WARNINGS:CAPS"/>
   </functions>
 </book>

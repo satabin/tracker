@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>How to use libtracker-extract</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Tracker Extract Library Reference Manual">
+<link rel="up" href="ch01.html" title="Core">
+<link rel="prev" href="ch01.html" title="Core">
+<link rel="next" href="libtracker-extract-Data-utilities.html" title="Data utilities">
+<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch01.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Extract Library Reference Manual</th>
+<td><a accesskey="n" href="libtracker-extract-Data-utilities.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libtracker-extract-How-to-use-libtracker-extract.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libtracker-extract-How-to-use-libtracker-extract.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="How to use libtracker-extract">
+<a name="libtracker-extract-How-to-use-libtracker-extract"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libtracker-extract-How-to-use-libtracker-extract.top_of_page"></a>How to use libtracker-extract</span></h2>
+<p>How to use libtracker-extract — The essentials by example</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libtracker-extract-How-to-use-libtracker-extract.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libtracker-extract-How-to-use-libtracker-extract.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#include &lt;libtracker-extract/tracker-extract.h&gt;
+
+<span class="returnvalue">void</span>                (<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractMimeFunc" title="TrackerExtractMimeFunc ()">*TrackerExtractMimeFunc</a>)           (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>);
+<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="returnvalue">TrackerExtractData</span></a> * (<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractDataFunc" title="TrackerExtractDataFunc ()">*TrackerExtractDataFunc</a>)          (<em class="parameter"><code><span class="type">void</span></code></em>);
+                    <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData">TrackerExtractData</a>;
+<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="returnvalue">TrackerExtractData</span></a> * <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#tracker-extract-get-data" title="tracker_extract_get_data ()">tracker_extract_get_data</a>           (<em class="parameter"><code><span class="type">void</span></code></em>);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libtracker-extract-How-to-use-libtracker-extract.description"></a><h2>Description</h2>
+<p>
+The libtracker-extract library is the foundation for Tracker
+metadata extraction of embedded data in files.
+</p>
+<p>
+Tracker comes with extractors written for the most common file
+types (like MP3, JPEG, PNG, etc.), however, for more special cases,
+3rd party applications may want to write their own plugin to
+extract their own file formats. This documentation describes how to
+do that.
+</p>
+<p>
+</p>
+<div class="example">
+<a name="id433827"></a><p class="title"><b>Example 1. Basic extractor example</b></p>
+<div class="example-contents">
+An example of how to write an extractor to retrieve PNG embedded
+metadata.
+<pre class="programlisting">
+ static void extract_png (const gchar          *filename,
+                          TrackerSparqlBuilder *preupdate,
+                          TrackerSparqlBuilder *metadata);
+
+ /* Set functions to use to extract different mime types. */
+ static TrackerExtractData extract_data[] = {
+         { "image/png",  extract_png },
+         { "sketch/png", extract_png },
+         { NULL, NULL }
+ };
+
+ static void
+ extract_png (const gchar          *uri,
+              TrackerSparqlBuilder *preupdate,
+              TrackerSparqlBuilder *metadata)
+ {
+         gint height, width;
+
+         /* Do data extraction. */
+         height = ...
+         width = ...
+
+         /* Insert data into TrackerSparqlBuilder object. */
+         tracker_sparql_builder_predicate (metadata, "a");
+         tracker_sparql_builder_object (metadata, "nfo:Image");
+         tracker_sparql_builder_object (metadata, "nmm:Photo");
+
+         tracker_sparql_builder_predicate (metadata, "nfo:width");
+         tracker_sparql_builder_object_int64 (metadata, width);
+
+         tracker_sparql_builder_predicate (metadata, "nfo:height");
+         tracker_sparql_builder_object_int64 (metadata, height);
+
+         g_free (filename);
+ }
+
+ TrackerExtractData *
+ tracker_extract_get_data (void)
+ {
+         return extract_data;
+ }
+</pre>
+</div>
+</div>
+<p><br class="example-break">
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libtracker-extract-How-to-use-libtracker-extract.details"></a><h2>Details</h2>
+<div class="refsect2" title="TrackerExtractMimeFunc ()">
+<a name="TrackerExtractMimeFunc"></a><h3>TrackerExtractMimeFunc ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerExtractMimeFunc)           (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>);</pre>
+<p>
+Extracts metadata from a file, and inserts it into <em class="parameter"><code>metadata</code></em>.
+</p>
+<p>
+The <em class="parameter"><code>metadata</code></em> parameter is a <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> constructed
+through <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert"><code class="function">tracker_sparql_builder_new_embedded_insert()</code></a>, the subject
+is already set to be the file URN, so implementations of this
+function should just provide predicate/object(s) pairs. the data
+triples contained in there at the end of the function will be
+merged with further file information from miners.
+</p>
+<p>
+Whenever any of the inserted triples rely on entities that
+should also be provided by this extractor (for example, album
+or artist information from a song), such insertions should be
+added to <em class="parameter"><code>preupdate</code></em>, which is a <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> constructed.
+through <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-update"><code class="function">tracker_sparql_builder_new_update()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
+<td>a string representing a URI.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>preupdate</code></em> :</span></p></td>
+<td>used to populate with data updates that
+            are a prerequisite for the actual file
+            metadata insertion.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>metadata</code></em> :</span></p></td>
+<td>used to populate with file metadata predicate/object(s).
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2" title="TrackerExtractDataFunc ()">
+<a name="TrackerExtractDataFunc"></a><h3>TrackerExtractDataFunc ()</h3>
+<pre class="programlisting"><a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="returnvalue">TrackerExtractData</span></a> * (*TrackerExtractDataFunc)          (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+This function is used by by tracker-extract to call into each
+extractor to get a list of mime type and TrackerExtractMimeFunc
+combinations.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> an array of <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="type">TrackerExtractData</span></a> which must be NULL
+terminated and must NOT be freed.
+
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 0.6</p>
+</div>
+<hr>
+<div class="refsect2" title="TrackerExtractData">
+<a name="TrackerExtractData"></a><h3>TrackerExtractData</h3>
+<pre class="programlisting">typedef struct {
+	const gchar *mime;
+	TrackerExtractMimeFunc func;
+} TrackerExtractData;
+</pre>
+<p>
+The <em class="parameter"><code>mime</code></em> is usually in the format of "image/png" for example.
+</p>
+<p>
+The <em class="parameter"><code>func</code></em> is called by tracker-extract if an extractor plugin
+matches the <em class="parameter"><code>mime</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExtractData.mime"></a>mime</code></em>;</span></p></td>
+<td>a string pointer representing a mime type.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractMimeFunc" title="TrackerExtractMimeFunc ()"><span class="type">TrackerExtractMimeFunc</span></a> <em class="structfield"><code><a name="TrackerExtractData.func"></a>func</code></em>;</span></p></td>
+<td>a function to extract extract the data in.
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2" title="tracker_extract_get_data ()">
+<a name="tracker-extract-get-data"></a><h3>tracker_extract_get_data ()</h3>
+<pre class="programlisting"><a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="returnvalue">TrackerExtractData</span></a> * tracker_extract_get_data           (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+This function must be provided by ALL extractors. This is merely
+the declaration of the function which must be written by each
+extractor. 
+</p>
+<p>
+This is checked by tracker-extract by looking up the symbols for
+each plugin and making sure this function exists. This is only
+called by tracker-extract if a mime type in any of the
+<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="type">TrackerExtractData</span></a> structures returned matches the mime type of
+the file being handled.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="type">TrackerExtractData</span></a> pointer which should not be freed.
+This pointer can be an array of <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="type">TrackerExtractData</span></a> structures
+where multiple mime types are supported.
+
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.14</div>
+</body>
+</html>

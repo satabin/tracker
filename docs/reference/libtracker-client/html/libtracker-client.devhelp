@@ -4,7 +4,7 @@
   <chapters>
     <sub name="Overview" link="libtracker-client.html"/>
     <sub name="General" link="ch01.html">
-      <sub name="TrackerClient" link="TrackerClient.html"/>
+      <sub name="TrackerClient" link="libtracker-client-tracker.html"/>
       <sub name="Cancellations" link="libtracker-client-Cancellations.html"/>
       <sub name="Utilities" link="libtracker-client-Utilities.html"/>
     </sub>
@@ -18,16 +18,16 @@
     </sub>
   </chapters>
   <functions>
-    <function name="TRACKER_DBUS_SERVICE" link="TrackerClient.html#TRACKER-DBUS-SERVICE--CAPS"/>
-    <function name="TRACKER_DBUS_OBJECT" link="TrackerClient.html#TRACKER-DBUS-OBJECT--CAPS"/>
-    <function name="TRACKER_DBUS_INTERFACE_RESOURCES" link="TrackerClient.html#TRACKER-DBUS-INTERFACE-RESOURCES--CAPS"/>
-    <function name="TRACKER_DBUS_INTERFACE_STATISTICS" link="TrackerClient.html#TRACKER-DBUS-INTERFACE-STATISTICS--CAPS"/>
-    <function name="TrackerClient" link="TrackerClient.html#TrackerClient-struct"/>
-    <function name="TrackerClientClass" link="TrackerClient.html#TrackerClientClass"/>
-    <function name="enum TrackerClientFlags" link="TrackerClient.html#TrackerClientFlags"/>
-    <function name="tracker_client_new ()" link="TrackerClient.html#tracker-client-new"/>
-    <function name="The &quot;enable-warnings&quot; property" link="TrackerClient.html#TrackerClient--enable-warnings"/>
-    <function name="The &quot;timeout&quot; property" link="TrackerClient.html#TrackerClient--timeout"/>
+    <function name="TRACKER_DBUS_SERVICE" link="libtracker-client-tracker.html#TRACKER-DBUS-SERVICE:CAPS"/>
+    <function name="TRACKER_DBUS_OBJECT" link="libtracker-client-tracker.html#TRACKER-DBUS-OBJECT:CAPS"/>
+    <function name="TRACKER_DBUS_INTERFACE_RESOURCES" link="libtracker-client-tracker.html#TRACKER-DBUS-INTERFACE-RESOURCES:CAPS"/>
+    <function name="TRACKER_DBUS_INTERFACE_STATISTICS" link="libtracker-client-tracker.html#TRACKER-DBUS-INTERFACE-STATISTICS:CAPS"/>
+    <function name="TrackerClient" link="libtracker-client-tracker.html#TrackerClient-struct"/>
+    <function name="TrackerClientClass" link="libtracker-client-tracker.html#TrackerClientClass"/>
+    <function name="enum TrackerClientFlags" link="libtracker-client-tracker.html#TrackerClientFlags"/>
+    <function name="tracker_client_new ()" link="libtracker-client-tracker.html#tracker-client-new"/>
+    <function name="The &quot;enable-warnings&quot; property" link="libtracker-client-tracker.html#TrackerClient--enable-warnings"/>
+    <function name="The &quot;timeout&quot; property" link="libtracker-client-tracker.html#TrackerClient--timeout"/>
     <function name="tracker_cancel_call ()" link="libtracker-client-Cancellations.html#tracker-cancel-call"/>
     <function name="tracker_cancel_last_call ()" link="libtracker-client-Cancellations.html#tracker-cancel-last-call"/>
     <function name="tracker_sparql_escape ()" link="libtracker-client-Utilities.html#tracker-sparql-escape"/>

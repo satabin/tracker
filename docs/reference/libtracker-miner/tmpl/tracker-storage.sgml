@@ -19,6 +19,9 @@ TrackerStorage
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT TrackerStorage ##### -->
 <para>
 
@@ -46,6 +49,7 @@ TrackerStorage
 
 </para>
 
+@void: 
 @Returns: 
 
 

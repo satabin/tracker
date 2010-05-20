@@ -19,6 +19,9 @@ tracker-log
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION tracker_log_init ##### -->
 <para>
 
@@ -34,6 +37,7 @@ tracker-log
 
 </para>
 
+@void: 
 
 
 <!-- ##### FUNCTION tracker_log_should_handle ##### -->

@@ -64,8 +64,8 @@ struct TrackerMinerFilesPrivate {
 
 	GVolumeMonitor *volume_monitor;
 
-        GSList *index_recursive_directories;
-        GSList *index_single_directories;
+	GSList *index_recursive_directories;
+	GSList *index_single_directories;
 
 	guint disk_space_check_id;
 	guint disk_space_pause_cookie;
@@ -552,6 +552,15 @@ set_up_mount_point (TrackerMinerFiles *miner,
 			uri = g_file_get_uri (file);
 
 			g_string_append_printf (queries,
+			                        "DELETE FROM <%s> { "
+			                        "  <%s> tracker:mountPoint ?u "
+			                        "} WHERE { "
+			                        "  ?u a nfo:FileDataObject; "
+			                        "     nie:url \"%s\" "
+			                        "} ",
+			                        removable_device_urn, removable_device_urn, uri);
+
+			g_string_append_printf (queries,
 			                        "DROP GRAPH <%s> "
 			                        "INSERT INTO <%s> { "
 			                        "  <%s> a tracker:Volume; "
@@ -560,7 +569,7 @@ set_up_mount_point (TrackerMinerFiles *miner,
 			                        "  ?u a nfo:FileDataObject; "
 			                        "     nie:url \"%s\" "
 			                        "}",
-						removable_device_urn, removable_device_urn, removable_device_urn, uri);
+			                        removable_device_urn, removable_device_urn, removable_device_urn, uri);
 
 			g_object_unref (file);
 			g_free (uri);
@@ -1365,11 +1374,8 @@ extractor_get_embedded_metadata_cb (DBusGProxy *proxy,
                                     GError     *error,
                                     gpointer    user_data)
 {
-	TrackerMinerFilesPrivate *priv;
 	ProcessFileData *data = user_data;
 	const gchar *uuid;
-
-	priv = TRACKER_MINER_FILES_GET_PRIVATE (data->miner);
 
 	if (error) {
 		/* Something bad happened, notify about the error */
@@ -1433,7 +1439,7 @@ extractor_get_embedded_metadata_cb (DBusGProxy *proxy,
 		                        "} WHERE { "
 		                        "  ?u a nfo:FileDataObject; "
 		                        "     nie:url \"%s\" "
-		                        "}",
+		                        "} ",
 		                        removable_device_urn, removable_device_urn, uri);
 
 		tracker_sparql_builder_append (data->sparql, queries->str);
@@ -1486,7 +1492,6 @@ process_file_cb (GObject      *object,
                  GAsyncResult *result,
                  gpointer      user_data)
 {
-	TrackerMinerFilesPrivate *priv;
 	TrackerSparqlBuilder *sparql;
 	ProcessFileData *data;
 	const gchar *mime_type, *urn, *parent_urn;
@@ -1500,7 +1505,6 @@ process_file_cb (GObject      *object,
 	data = user_data;
 	file = G_FILE (object);
 	sparql = data->sparql;
-	priv = TRACKER_MINER_FILES_GET_PRIVATE (data->miner);
 	file_info = g_file_query_info_finish (file, result, &error);
 
 	if (error) {

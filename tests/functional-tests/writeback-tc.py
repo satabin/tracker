@@ -25,10 +25,18 @@ import random
 import configuration
 import commands
 import signal
+import shutil
+from dbus.mainloop.glib import DBusGMainLoop
+import gobject
 
 TRACKER = 'org.freedesktop.Tracker1'
 TRACKER_OBJ = '/org/freedesktop/Tracker1/Resources'
 RESOURCES_IFACE = "org.freedesktop.Tracker1.Resources"
+
+MINER = "org.freedesktop.Tracker1.Miner.Files"
+MINER_OBJ = "/org/freedesktop/Tracker1/Miner/Files"
+MINER_IFACE = "org.freedesktop.Tracker1.Miner"
+
 
 target = configuration.check_target()
 print target
@@ -45,6 +53,7 @@ elif target == configuration.DESKTOP:
 	dir_path = configuration.WB_TEST_DIR_HOST
 
 print dir_path
+TARGET_VIDEO = dir_path + "/" + configuration.TEST_VIDEO
 
 """ run the tracker-writeback """
 pid = int(commands.getoutput('pidof tracker-writeback | wc -w'))
@@ -53,13 +62,49 @@ if not pid:
 	os.system(tracker_wb + ' -v 3 &')
 	time.sleep(5)
 
-def copy_file():
-	src = configuration.VCS_TEST_DATA_IMAGES + configuration.TEST_IMAGE
-	dest = dir_path
-	print 'Copying '+src+' to '+dest
-	commands.getoutput('cp '+src + ' '+dest)
 
-def create_file_list_in_dir() :
+
+class TDCopy():
+
+    def miner_processing_cb (self,status,handle):
+        print "GOT PROGRESS FROM MINER"
+
+        if (status == "Processing Files") :
+            print "Miner started"
+        elif (status == "Idle" ):
+            """if the string is "Idle" quit the loop """
+            print "Miner Idle"
+            self.loop.quit()
+        else :
+            print "No specific Signal"
+
+
+    def set_test_data(self):
+
+        bus = dbus.SessionBus()
+        tracker = bus.get_object(TRACKER, TRACKER_OBJ)
+        self.resources = dbus.Interface (tracker,
+                        dbus_interface=RESOURCES_IFACE)
+
+        miner_obj= bus.get_object(MINER,MINER_OBJ)
+        self.miner=dbus.Interface (miner_obj,dbus_interface=MINER_IFACE)
+
+
+        self.loop = gobject.MainLoop()
+        self.dbus_loop = DBusGMainLoop(set_as_default=True)
+        self.bus = dbus.SessionBus (self.dbus_loop)
+
+	self.bus.add_signal_receiver (self.miner_processing_cb,
+                                  signal_name="Progress",
+                                  dbus_interface=MINER_IFACE,
+                                  path=MINER_OBJ)
+
+
+    def copy_file(self, src, dest):
+	shutil.copy2( src, dest)
+	self.loop.run()
+
+    def create_file_list_in_dir(self) :
 	"""
 	1. create a test directory
 	2. copy images to test directory
@@ -68,7 +113,13 @@ def create_file_list_in_dir() :
 
 	commands.getoutput('mkdir ' + dir_path)
 
-	copy_file()
+	self.set_test_data()
+
+	self.copy_file (configuration.TEST_DATA_IMAGES + configuration.TEST_IMAGE, dir_path)
+	self.copy_file (configuration.TEST_DATA_IMAGES + configuration.TEST_IMAGE_PNG, dir_path)
+	self.copy_file (configuration.TEST_DATA_IMAGES + configuration.TEST_IMAGE_TIF, dir_path)
+	#TODO: uncomment once video writeback is supported
+	#self.copy_file (configuration.TEST_DATA_VIDEO + configuration.TEST_VIDEO, dir_path)
 
         fileList = []
         dirpathList = []
@@ -79,8 +130,11 @@ def create_file_list_in_dir() :
 
         return fileList
 
-""" get the list of files present in the test data directory """
-file_list = create_file_list_in_dir()
+
+""" prepare the test data and get the list of files present in the test data directory """
+tdcpy = TDCopy()
+file_list = tdcpy.create_file_list_in_dir()
+
 
 
 class TestWriteback (unittest.TestCase):
@@ -90,6 +144,31 @@ class TestWriteback (unittest.TestCase):
                 tracker = bus.get_object(TRACKER, TRACKER_OBJ)
                 self.resources = dbus.Interface (tracker,
                                                  dbus_interface=RESOURCES_IFACE)
+
+                self.loop = gobject.MainLoop()
+		self.dbus_loop=DBusGMainLoop(set_as_default=True)
+                self.bus = dbus.SessionBus (self.dbus_loop)
+
+                self.bus.add_signal_receiver (self.writeback_started,
+					      signal_name="Writeback",
+					      dbus_interface=RESOURCES_IFACE,
+					      path=TRACKER_OBJ)
+
+                self.bus.add_signal_receiver (self.writeback_ends,
+					      signal_name="Progress",
+					      dbus_interface=MINER_IFACE,
+					      path=MINER_OBJ)
+
+        def writeback_started (self, subject) :
+               print "Writeback is started"
+
+	def writeback_ends (self, status, handle) :
+	       if status == "Processing Files" :
+		   print "Writeback in Process"
+	       elif status == "Idle" :
+                   print "Writeback is Done"
+		   self.loop.quit()
+
 
 
         def sparql_update(self,query):
@@ -130,7 +209,12 @@ class writeback(TestWriteback):
 				WHERE { ?file nie:url <%s> }
                 		""" %(uri, uri)
 			print insert
+
+			start  = time.time ()
                 	self.sparql_update (insert)
+			self.loop.run()
+			elapse = time.time ()-start
+			print "===== Writeback is completed in %s secs ======== " %elapse
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nie:description')
@@ -184,6 +268,7 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			self.loop.run()
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nie:copyright')
@@ -230,6 +315,7 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			self.loop.run()
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nie:title')
@@ -276,6 +362,7 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			self.loop.run()
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nie:contentCreated')
@@ -323,6 +410,7 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			self.loop.run()
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nao:prefLabel')
@@ -369,6 +457,7 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			self.loop.run()
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nco:fullname')
@@ -413,6 +502,7 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			self.loop.run()
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nco:fullname')
@@ -445,6 +535,10 @@ class writeback(TestWriteback):
 
 		for i in range(len(file_list)) :
 			"""browse through each file """
+			if (file_list[i] == TARGET_VIDEO) :
+				print "video file detected"
+				continue
+
 			uri = 'file://'+file_list[i]
 			print uri
 			Results = {}
@@ -457,6 +551,7 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			self.loop.run()
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nmm:camera')
@@ -490,6 +585,10 @@ class writeback(TestWriteback):
 
 		for i in range(len(file_list)) :
 			"""browse through each file """
+			if (file_list[i] == TARGET_VIDEO) :
+				print "video file detected"
+				continue
+
 			uri = 'file://'+file_list[i]
 			print uri
 			Results = {}
@@ -502,16 +601,21 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			time.sleep (2)
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nmm:exposureTime')
 			print result
+			if not (result):
+				print "property is NOT set"
+				continue
+
                 	value=result.split()
 			if (result.find('nmm:exposureTime')!=-1)  and (value[1]=='44') :
 				print "property is set"
+				Results[uri]='nmm:exposureTime'
                 	else:
 				print "property is NOT set"
-				Results[uri]='nmm:exposureTime'
 
 			overallRes.append(Results)
                 for Result_dict in overallRes:
@@ -535,6 +639,10 @@ class writeback(TestWriteback):
 
 		for i in range(len(file_list)) :
 			"""browse through each file """
+			if (file_list[i] == TARGET_VIDEO) :
+				print "video file detected"
+				continue
+
 			uri = 'file://'+file_list[i]
 			print uri
 			Results = {}
@@ -547,16 +655,21 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			time.sleep (2)
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nmm:fnumber')
 			print result
+			if not (result):
+				print "property is NOT set"
+				continue
+
                 	value=result.split()
 			if (result.find('nmm:fnumber')!=-1)  and (value[1]=='707') :
 				print "property is set"
+				Results[uri]='nmm:fnumber'
                 	else:
 				print "property is NOT set"
-				Results[uri]='nmm:fnumber'
 
 			overallRes.append(Results)
                 for Result_dict in overallRes:
@@ -581,6 +694,10 @@ class writeback(TestWriteback):
 
 		for i in range(len(file_list)) :
 			"""browse through each file """
+			if (file_list[i] == TARGET_VIDEO) :
+				print "video file detected"
+				continue
+
 			uri = 'file://'+file_list[i]
 			print uri
 			Results = {}
@@ -593,16 +710,21 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			time.sleep (2)
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nmm:flash')
 			print result
+			if not (result):
+				print "property is NOT set"
+				continue
+
                 	value=result.split()
 			if (result.find('nmm:flash')!=-1)  and (value[1]=='nmm:flash-off') :
 				print "property is set"
+				Results[uri]='nmm:flash'
                 	else:
 				print "property is NOT set"
-				Results[uri]='nmm:flash'
 
 			overallRes.append(Results)
                 for Result_dict in overallRes:
@@ -626,6 +748,10 @@ class writeback(TestWriteback):
 
 		for i in range(len(file_list)) :
 			"""browse through each file """
+			if (file_list[i] == TARGET_VIDEO) :
+				print "video file detected"
+				continue
+
 			uri = 'file://'+file_list[i]
 			print uri
 			Results = {}
@@ -638,16 +764,21 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			time.sleep (2)
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nmm:flash')
 			print result
+			if not (result):
+				print "property is NOT set"
+				continue
+
                 	value=result.split()
 			if (result.find('nmm:flash')!=-1)  and (value[1]=='nmm:flash-on') :
 				print "property is set"
+				Results[uri]='nmm:flash'
                 	else:
 				print "property is NOT set"
-				Results[uri]='nmm:flash'
 
 			overallRes.append(Results)
                 for Result_dict in overallRes:
@@ -672,6 +803,10 @@ class writeback(TestWriteback):
 
 		for i in range(len(file_list)) :
 			"""browse through each file """
+			if (file_list[i] == TARGET_VIDEO) :
+				print "video file detected"
+				continue
+
 			uri = 'file://'+file_list[i]
 			print uri
 			Results = {}
@@ -684,16 +819,21 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			time.sleep (2)
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nmm:focalLength')
 			print result
+			if not (result):
+				print "property is NOT set"
+				continue
+
                 	value=result.split()
 			if (result.find('nmm:focalLength')!=-1)  and (value[1]=='44') :
 				print "property is set"
+				Results[uri]='nmm:focalLength'
                 	else:
 				print "property is NOT set"
-				Results[uri]='nmm:focalLength'
 
 			overallRes.append(Results)
                 for Result_dict in overallRes:
@@ -717,6 +857,10 @@ class writeback(TestWriteback):
 
 		for i in range(len(file_list)) :
 			"""browse through each file """
+			if (file_list[i] == TARGET_VIDEO) :
+				print "video file detected"
+				continue
+
 			uri = 'file://'+file_list[i]
 			print uri
 			Results = {}
@@ -729,16 +873,21 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			time.sleep (2)
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nmm:isoSpeed')
 			print result
+			if not (result):
+				print "property is NOT set"
+				continue
+
                 	value=result.split()
 			if (result.find('nmm:isoSpeed')!=-1)  and (value[1]=='44') :
 				print "property is set"
+				Results[uri]='nmm:isoSpeed'
                 	else:
 				print "property is NOT set"
-				Results[uri]='nmm:isoSpeed'
 
 			overallRes.append(Results)
                 for Result_dict in overallRes:
@@ -762,6 +911,10 @@ class writeback(TestWriteback):
 
 		for i in range(len(file_list)) :
 			"""browse through each file """
+			if (file_list[i] == TARGET_VIDEO) :
+				print "video file detected"
+				continue
+
 			uri = 'file://'+file_list[i]
 			print uri
 			Results = {}
@@ -774,16 +927,21 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			time.sleep (2)
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nmm:meteringMode')
 			print result
+			if not (result):
+				print "property is NOT set"
+				continue
+
                 	value=result.split()
 			if (result.find('nmm:meteringMode')!=-1)  and (value[1]=='nmm:metering-mode-multispot') :
 				print "property is set"
+				Results[uri]='nmm:meteringMode'
                 	else:
 				print "property is NOT set"
-				Results[uri]='nmm:meteringMode'
 
 			overallRes.append(Results)
                 for Result_dict in overallRes:
@@ -807,6 +965,10 @@ class writeback(TestWriteback):
 
 		for i in range(len(file_list)) :
 			"""browse through each file """
+			if (file_list[i] == TARGET_VIDEO) :
+				print "video file detected"
+				continue
+
 			uri = 'file://'+file_list[i]
 			print uri
 			Results = {}
@@ -819,16 +981,21 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			time.sleep (2)
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep nmm:whiteBalance')
 			print result
+			if not (result):
+				print "property is NOT set"
+				continue
+
                 	value=result.split()
 			if (result.find('nmm:whiteBalance')!=-1)  and (value[1]=='nmm:white-balance-auto') :
 				print "property is set"
+				Results[uri]='nmm:whiteBalance'
                 	else:
 				print "property is NOT set"
-				Results[uri]='nmm:whiteBalance'
 
 			overallRes.append(Results)
                 for Result_dict in overallRes:
@@ -864,6 +1031,7 @@ class writeback(TestWriteback):
                 		""" %(uri, uri)
 			print insert
                 	self.sparql_update (insert)
+			self.loop.run()
 
                 	""" verify the inserted item """
 			result=commands.getoutput(tracker_ext + ' -f' +' ' + uri +' | grep mlo:*')

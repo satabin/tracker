@@ -3,19 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>tracker-dbus</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
 <link rel="up" href="ch03.html" title="Communication">
 <link rel="prev" href="ch03.html" title="Communication">
 <link rel="next" href="libtracker-common-tracker-log.html" title="tracker-log">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libtracker-common.html" title="Part I. Overview">
-<link rel="chapter" href="ch01.html" title="Ontology">
-<link rel="chapter" href="ch02.html" title="Configuration">
-<link rel="chapter" href="ch03.html" title="Communication">
-<link rel="chapter" href="ch04.html" title="Utilities">
-<link rel="chapter" href="ch05.html" title="Performance">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -28,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libtracker-common-tracker-dbus.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libtracker-common-tracker-dbus.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libtracker-common-tracker-dbus.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="tracker-dbus">
@@ -43,143 +37,65 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libtracker-common-tracker-dbus.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR-DOMAIN--CAPS" title="TRACKER_DBUS_ERROR_DOMAIN">TRACKER_DBUS_ERROR_DOMAIN</a>
-#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR--CAPS" title="TRACKER_DBUS_ERROR">TRACKER_DBUS_ERROR</a>
-#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-TYPE-G-STRV-ARRAY--CAPS" title="TRACKER_TYPE_G_STRV_ARRAY">TRACKER_TYPE_G_STRV_ARRAY</a>
-#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-TYPE-STR-STRV-MAP--CAPS" title="TRACKER_TYPE_STR_STRV_MAP">TRACKER_TYPE_STR_STRV_MAP</a>
-#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-TYPE-EVENT-ARRAY--CAPS" title="TRACKER_TYPE_EVENT_ARRAY">TRACKER_TYPE_EVENT_ARRAY</a>
-#define             <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-async-return-if-fail" title="tracker_dbus_async_return_if_fail()">tracker_dbus_async_return_if_fail</a>   (expr,context)
-#define             <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-return-val-if-fail" title="tracker_dbus_return_val_if_fail()">tracker_dbus_return_val_if_fail</a>     (expr,val,error)
+<pre class="synopsis">#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR-DOMAIN:CAPS" title="TRACKER_DBUS_ERROR_DOMAIN">TRACKER_DBUS_ERROR_DOMAIN</a>
+#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR:CAPS" title="TRACKER_DBUS_ERROR">TRACKER_DBUS_ERROR</a>
+#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-TYPE-G-STRV-ARRAY:CAPS" title="TRACKER_TYPE_G_STRV_ARRAY">TRACKER_TYPE_G_STRV_ARRAY</a>
+#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-TYPE-STR-STRV-MAP:CAPS" title="TRACKER_TYPE_STR_STRV_MAP">TRACKER_TYPE_STR_STRV_MAP</a>
+#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-TYPE-EVENT-ARRAY:CAPS" title="TRACKER_TYPE_EVENT_ARRAY">TRACKER_TYPE_EVENT_ARRAY</a>
+#define             <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-async-return-if-fail" title="tracker_dbus_async_return_if_fail()">tracker_dbus_async_return_if_fail</a>   (expr,
+                                                         context)
+#define             <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-return-val-if-fail" title="tracker_dbus_return_val_if_fail()">tracker_dbus_return_val_if_fail</a>     (expr,
+                                                         val,
+                                                         error)
 enum                <a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusEventsType" title="enum TrackerDBusEventsType">TrackerDBusEventsType</a>;
 typedef             <a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler">TrackerDBusRequestHandler</a>;
-void                (<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()">*TrackerDBusRequestFunc</a>)           (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
->guint</a> request_id,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);
+<span class="returnvalue">void</span>                (<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()">*TrackerDBusRequestFunc</a>)           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
                     <a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusData" title="TrackerDBusData">TrackerDBusData</a>;
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"
->GQuark</a>              <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-error-quark" title="tracker_dbus_error_quark ()">tracker_dbus_error_quark</a>            (void);
-<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusData" title="TrackerDBusData">TrackerDBusData</a> *   <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-data-new" title="tracker_dbus_data_new ()">tracker_dbus_data_new</a>               (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> arg1,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> arg2);
-<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-Generic-values.html#GValue"
->GValue</a> *            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-gvalue-slice-new" title="tracker_dbus_gvalue_slice_new ()">tracker_dbus_gvalue_slice_new</a>       (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"
->GType</a> type);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-gvalue-slice-free" title="tracker_dbus_gvalue_slice_free ()">tracker_dbus_gvalue_slice_free</a>      (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-Generic-values.html#GValue"
->GValue</a> *value);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-slist-to-strv" title="tracker_dbus_slist_to_strv ()">tracker_dbus_slist_to_strv</a>          (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"
->GSList</a> *list);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-str-to-strv" title="tracker_dbus_str_to_strv ()">tracker_dbus_str_to_strv</a>            (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *str);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-queue-str-to-strv" title="tracker_dbus_queue_str_to_strv ()">tracker_dbus_queue_str_to_strv</a>      (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Double-ended-Queues.html#GQueue"
->GQueue</a> *queue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-queue-gfile-to-strv" title="tracker_dbus_queue_gfile_to_strv ()">tracker_dbus_queue_gfile_to_strv</a>    (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Double-ended-Queues.html#GQueue"
->GQueue</a> *queue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-results-ptr-array-free" title="tracker_dbus_results_ptr_array_free ()">tracker_dbus_results_ptr_array_free</a> (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"
->GPtrArray</a> **ptr_array);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
->guint</a>               <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-get-next-request-id" title="tracker_dbus_get_next_request_id ()">tracker_dbus_get_next_request_id</a>    (void);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-enable-client-lookup" title="tracker_dbus_enable_client_lookup ()">tracker_dbus_enable_client_lookup</a>   (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> enable);
-<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler">TrackerDBusRequestHandler</a> * <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-add-hook" title="tracker_dbus_request_add_hook ()">tracker_dbus_request_add_hook</a>
-                                                        (<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()">TrackerDBusRequestFunc</a> new,
-                                                         <a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()">TrackerDBusRequestFunc</a> done,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-remove-hook" title="tracker_dbus_request_remove_hook ()">tracker_dbus_request_remove_hook</a>    (<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler">TrackerDBusRequestHandler</a> *handler);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-new" title="tracker_dbus_request_new ()">tracker_dbus_request_new</a>            (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-success" title="tracker_dbus_request_success ()">tracker_dbus_request_success</a>        (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-failed" title="tracker_dbus_request_failed ()">tracker_dbus_request_failed</a>         (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"
->GError</a> **error,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-comment" title="tracker_dbus_request_comment ()">tracker_dbus_request_comment</a>        (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-info" title="tracker_dbus_request_info ()">tracker_dbus_request_info</a>           (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-debug" title="tracker_dbus_request_debug ()">tracker_dbus_request_debug</a>          (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-block-hooks" title="tracker_dbus_request_block_hooks ()">tracker_dbus_request_block_hooks</a>    (void);
-void                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-unblock-hooks" title="tracker_dbus_request_unblock_hooks ()">tracker_dbus_request_unblock_hooks</a>  (void);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-error-quark" title="tracker_dbus_error_quark ()">tracker_dbus_error_quark</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusData" title="TrackerDBusData"><span class="returnvalue">TrackerDBusData</span></a> *   <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-data-new" title="tracker_dbus_data_new ()">tracker_dbus_data_new</a>               (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> arg1</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> arg2</code></em>);
+<a href="http://library.gnome.org/devel/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-gvalue-slice-new" title="tracker_dbus_gvalue_slice_new ()">tracker_dbus_gvalue_slice_new</a>       (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> type</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-gvalue-slice-free" title="tracker_dbus_gvalue_slice_free ()">tracker_dbus_gvalue_slice_free</a>      (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> *value</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-slist-to-strv" title="tracker_dbus_slist_to_strv ()">tracker_dbus_slist_to_strv</a>          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> *list</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-str-to-strv" title="tracker_dbus_str_to_strv ()">tracker_dbus_str_to_strv</a>            (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-queue-str-to-strv" title="tracker_dbus_queue_str_to_strv ()">tracker_dbus_queue_str_to_strv</a>      (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Double-ended-Queues.html#GQueue"><span class="type">GQueue</span></a> *queue</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-queue-gfile-to-strv" title="tracker_dbus_queue_gfile_to_strv ()">tracker_dbus_queue_gfile_to_strv</a>    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Double-ended-Queues.html#GQueue"><span class="type">GQueue</span></a> *queue</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-results-ptr-array-free" title="tracker_dbus_results_ptr_array_free ()">tracker_dbus_results_ptr_array_free</a> (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> **ptr_array</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-get-next-request-id" title="tracker_dbus_get_next_request_id ()">tracker_dbus_get_next_request_id</a>    (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-enable-client-lookup" title="tracker_dbus_enable_client_lookup ()">tracker_dbus_enable_client_lookup</a>   (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable</code></em>);
+<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler"><span class="returnvalue">TrackerDBusRequestHandler</span></a> * <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-add-hook" title="tracker_dbus_request_add_hook ()">tracker_dbus_request_add_hook</a>
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()"><span class="type">TrackerDBusRequestFunc</span></a> new</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()"><span class="type">TrackerDBusRequestFunc</span></a> done</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-remove-hook" title="tracker_dbus_request_remove_hook ()">tracker_dbus_request_remove_hook</a>    (<em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler"><span class="type">TrackerDBusRequestHandler</span></a> *handler</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-new" title="tracker_dbus_request_new ()">tracker_dbus_request_new</a>            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-success" title="tracker_dbus_request_success ()">tracker_dbus_request_success</a>        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-failed" title="tracker_dbus_request_failed ()">tracker_dbus_request_failed</a>         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-comment" title="tracker_dbus_request_comment ()">tracker_dbus_request_comment</a>        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-info" title="tracker_dbus_request_info ()">tracker_dbus_request_info</a>           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-debug" title="tracker_dbus_request_debug ()">tracker_dbus_request_debug</a>          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-block-hooks" title="tracker_dbus_request_block_hooks ()">tracker_dbus_request_block_hooks</a>    (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-unblock-hooks" title="tracker_dbus_request_unblock_hooks ()">tracker_dbus_request_unblock_hooks</a>  (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -190,7 +106,7 @@ void                <a class="link" href="libtracker-common-tracker-dbus.html#tr
 <div class="refsect1" title="Details">
 <a name="libtracker-common-tracker-dbus.details"></a><h2>Details</h2>
 <div class="refsect2" title="TRACKER_DBUS_ERROR_DOMAIN">
-<a name="TRACKER-DBUS-ERROR-DOMAIN--CAPS"></a><h3>TRACKER_DBUS_ERROR_DOMAIN</h3>
+<a name="TRACKER-DBUS-ERROR-DOMAIN:CAPS"></a><h3>TRACKER_DBUS_ERROR_DOMAIN</h3>
 <pre class="programlisting">#define TRACKER_DBUS_ERROR_DOMAIN "TrackerDBus"
 </pre>
 <p>
@@ -198,7 +114,7 @@ void                <a class="link" href="libtracker-common-tracker-dbus.html#tr
 </div>
 <hr>
 <div class="refsect2" title="TRACKER_DBUS_ERROR">
-<a name="TRACKER-DBUS-ERROR--CAPS"></a><h3>TRACKER_DBUS_ERROR</h3>
+<a name="TRACKER-DBUS-ERROR:CAPS"></a><h3>TRACKER_DBUS_ERROR</h3>
 <pre class="programlisting">#define TRACKER_DBUS_ERROR        tracker_dbus_error_quark()
 </pre>
 <p>
@@ -206,14 +122,14 @@ void                <a class="link" href="libtracker-common-tracker-dbus.html#tr
 </div>
 <hr>
 <div class="refsect2" title="TRACKER_TYPE_G_STRV_ARRAY">
-<a name="TRACKER-TYPE-G-STRV-ARRAY--CAPS"></a><h3>TRACKER_TYPE_G_STRV_ARRAY</h3>
+<a name="TRACKER-TYPE-G-STRV-ARRAY:CAPS"></a><h3>TRACKER_TYPE_G_STRV_ARRAY</h3>
 <pre class="programlisting">#define             TRACKER_TYPE_G_STRV_ARRAY</pre>
 <p>
 </p>
 </div>
 <hr>
 <div class="refsect2" title="TRACKER_TYPE_STR_STRV_MAP">
-<a name="TRACKER-TYPE-STR-STRV-MAP--CAPS"></a><h3>TRACKER_TYPE_STR_STRV_MAP</h3>
+<a name="TRACKER-TYPE-STR-STRV-MAP:CAPS"></a><h3>TRACKER_TYPE_STR_STRV_MAP</h3>
 <pre class="programlisting">#define TRACKER_TYPE_STR_STRV_MAP (dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_STRV))
 </pre>
 <p>
@@ -221,7 +137,7 @@ void                <a class="link" href="libtracker-common-tracker-dbus.html#tr
 </div>
 <hr>
 <div class="refsect2" title="TRACKER_TYPE_EVENT_ARRAY">
-<a name="TRACKER-TYPE-EVENT-ARRAY--CAPS"></a><h3>TRACKER_TYPE_EVENT_ARRAY</h3>
+<a name="TRACKER-TYPE-EVENT-ARRAY:CAPS"></a><h3>TRACKER_TYPE_EVENT_ARRAY</h3>
 <pre class="programlisting">#define             TRACKER_TYPE_EVENT_ARRAY</pre>
 <p>
 </p>
@@ -298,12 +214,8 @@ void                <a class="link" href="libtracker-common-tracker-dbus.html#tr
 <hr>
 <div class="refsect2" title="TrackerDBusRequestFunc ()">
 <a name="TrackerDBusRequestFunc"></a><h3>TrackerDBusRequestFunc ()</h3>
-<pre class="programlisting">void                (*TrackerDBusRequestFunc)           (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
->guint</a> request_id,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerDBusRequestFunc)           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -337,9 +249,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="tracker_dbus_error_quark ()">
 <a name="tracker-dbus-error-quark"></a><h3>tracker_dbus_error_quark ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"
->GQuark</a>              tracker_dbus_error_quark            (void);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              tracker_dbus_error_quark            (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -354,12 +264,8 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"
 <hr>
 <div class="refsect2" title="tracker_dbus_data_new ()">
 <a name="tracker-dbus-data-new"></a><h3>tracker_dbus_data_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusData" title="TrackerDBusData">TrackerDBusData</a> *   tracker_dbus_data_new               (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> arg1,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> arg2);</pre>
+<pre class="programlisting"><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusData" title="TrackerDBusData"><span class="returnvalue">TrackerDBusData</span></a> *   tracker_dbus_data_new               (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> arg1</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> arg2</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -386,11 +292,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="tracker_dbus_gvalue_slice_new ()">
 <a name="tracker-dbus-gvalue-slice-new"></a><h3>tracker_dbus_gvalue_slice_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-Generic-values.html#GValue"
->GValue</a> *            tracker_dbus_gvalue_slice_new       (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"
->GType</a> type);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *            tracker_dbus_gvalue_slice_new       (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> type</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -412,9 +314,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.h
 <hr>
 <div class="refsect2" title="tracker_dbus_gvalue_slice_free ()">
 <a name="tracker-dbus-gvalue-slice-free"></a><h3>tracker_dbus_gvalue_slice_free ()</h3>
-<pre class="programlisting">void                tracker_dbus_gvalue_slice_free      (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-Generic-values.html#GValue"
->GValue</a> *value);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_gvalue_slice_free      (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> *value</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -429,11 +329,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Generic-values.htm
 <hr>
 <div class="refsect2" title="tracker_dbus_slist_to_strv ()">
 <a name="tracker-dbus-slist-to-strv"></a><h3>tracker_dbus_slist_to_strv ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **            tracker_dbus_slist_to_strv          (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"
->GSList</a> *list);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            tracker_dbus_slist_to_strv          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> *list</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -455,11 +351,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html
 <hr>
 <div class="refsect2" title="tracker_dbus_str_to_strv ()">
 <a name="tracker-dbus-str-to-strv"></a><h3>tracker_dbus_str_to_strv ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **            tracker_dbus_str_to_strv            (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *str);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            tracker_dbus_str_to_strv            (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -481,14 +373,8 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" title="tracker_dbus_queue_str_to_strv ()">
 <a name="tracker-dbus-queue-str-to-strv"></a><h3>tracker_dbus_queue_str_to_strv ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **            tracker_dbus_queue_str_to_strv      (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Double-ended-Queues.html#GQueue"
->GQueue</a> *queue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            tracker_dbus_queue_str_to_strv      (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Double-ended-Queues.html#GQueue"><span class="type">GQueue</span></a> *queue</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -515,14 +401,8 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <hr>
 <div class="refsect2" title="tracker_dbus_queue_gfile_to_strv ()">
 <a name="tracker-dbus-queue-gfile-to-strv"></a><h3>tracker_dbus_queue_gfile_to_strv ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **            tracker_dbus_queue_gfile_to_strv    (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Double-ended-Queues.html#GQueue"
->GQueue</a> *queue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            tracker_dbus_queue_gfile_to_strv    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Double-ended-Queues.html#GQueue"><span class="type">GQueue</span></a> *queue</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -549,9 +429,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <hr>
 <div class="refsect2" title="tracker_dbus_results_ptr_array_free ()">
 <a name="tracker-dbus-results-ptr-array-free"></a><h3>tracker_dbus_results_ptr_array_free ()</h3>
-<pre class="programlisting">void                tracker_dbus_results_ptr_array_free (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"
->GPtrArray</a> **ptr_array);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_results_ptr_array_free (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> **ptr_array</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -566,9 +444,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtr
 <hr>
 <div class="refsect2" title="tracker_dbus_get_next_request_id ()">
 <a name="tracker-dbus-get-next-request-id"></a><h3>tracker_dbus_get_next_request_id ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
->guint</a>               tracker_dbus_get_next_request_id    (void);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_dbus_get_next_request_id    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -583,9 +459,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 <hr>
 <div class="refsect2" title="tracker_dbus_enable_client_lookup ()">
 <a name="tracker-dbus-enable-client-lookup"></a><h3>tracker_dbus_enable_client_lookup ()</h3>
-<pre class="programlisting">void                tracker_dbus_enable_client_lookup   (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> enable);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_enable_client_lookup   (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -600,12 +474,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <hr>
 <div class="refsect2" title="tracker_dbus_request_add_hook ()">
 <a name="tracker-dbus-request-add-hook"></a><h3>tracker_dbus_request_add_hook ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler">TrackerDBusRequestHandler</a> * tracker_dbus_request_add_hook
-                                                        (<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()">TrackerDBusRequestFunc</a> new,
-                                                         <a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()">TrackerDBusRequestFunc</a> done,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);</pre>
+<pre class="programlisting"><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler"><span class="returnvalue">TrackerDBusRequestHandler</span></a> * tracker_dbus_request_add_hook
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()"><span class="type">TrackerDBusRequestFunc</span></a> new</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()"><span class="type">TrackerDBusRequestFunc</span></a> done</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -637,7 +509,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="tracker_dbus_request_remove_hook ()">
 <a name="tracker-dbus-request-remove-hook"></a><h3>tracker_dbus_request_remove_hook ()</h3>
-<pre class="programlisting">void                tracker_dbus_request_remove_hook    (<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler">TrackerDBusRequestHandler</a> *handler);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_remove_hook    (<em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler"><span class="type">TrackerDBusRequestHandler</span></a> *handler</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -652,16 +524,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="tracker_dbus_request_new ()">
 <a name="tracker-dbus-request-new"></a><h3>tracker_dbus_request_new ()</h3>
-<pre class="programlisting">void                tracker_dbus_request_new            (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_new            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -693,12 +559,8 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" title="tracker_dbus_request_success ()">
 <a name="tracker-dbus-request-success"></a><h3>tracker_dbus_request_success ()</h3>
-<pre class="programlisting">void                tracker_dbus_request_success        (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_success        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -720,19 +582,11 @@ href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodIn
 <hr>
 <div class="refsect2" title="tracker_dbus_request_failed ()">
 <a name="tracker-dbus-request-failed"></a><h3>tracker_dbus_request_failed ()</h3>
-<pre class="programlisting">void                tracker_dbus_request_failed         (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"
->GError</a> **error,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_failed         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -769,16 +623,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" title="tracker_dbus_request_comment ()">
 <a name="tracker-dbus-request-comment"></a><h3>tracker_dbus_request_comment ()</h3>
-<pre class="programlisting">void                tracker_dbus_request_comment        (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_comment        (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -810,16 +658,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" title="tracker_dbus_request_info ()">
 <a name="tracker-dbus-request-info"></a><h3>tracker_dbus_request_info ()</h3>
-<pre class="programlisting">void                tracker_dbus_request_info           (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_info           (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -851,16 +693,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" title="tracker_dbus_request_debug ()">
 <a name="tracker-dbus-request-debug"></a><h3>tracker_dbus_request_debug ()</h3>
-<pre class="programlisting">void                tracker_dbus_request_debug          (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> request_id,
-                                                         <a
-href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"
->DBusGMethodInvocation</a> *context,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *format,
-                                                         ...);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_debug          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -892,14 +728,14 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" title="tracker_dbus_request_block_hooks ()">
 <a name="tracker-dbus-request-block-hooks"></a><h3>tracker_dbus_request_block_hooks ()</h3>
-<pre class="programlisting">void                tracker_dbus_request_block_hooks    (void);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_block_hooks    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
 <div class="refsect2" title="tracker_dbus_request_unblock_hooks ()">
 <a name="tracker-dbus-request-unblock-hooks"></a><h3>tracker_dbus_request_unblock_hooks ()</h3>
-<pre class="programlisting">void                tracker_dbus_request_unblock_hooks  (void);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_unblock_hooks  (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
 </div>
@@ -907,6 +743,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.14</div>
 </body>
 </html>

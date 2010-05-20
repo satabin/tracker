@@ -2630,7 +2630,7 @@
 
 <refsect2 id='nfo-softwareCmdLine'>
 <title>nfo:softwareCmdLine</title>
-<para>Commando to launch the software</para>
+<para>Command to launch the software</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>

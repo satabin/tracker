@@ -259,11 +259,11 @@ class rtcom(TestUpdate):
 		result=self.resources.SparqlQuery(query)
 
         	elapse =time.time()-start
-        	print "Time taken for querying conversation list view  = %s " %elapse
+        	print "Time taken for querying (old) conversation list view  = %s " %elapse
 		print "no. of items retrieved: %d" %len(result)
 
 
-        def test_rtcom_02(self):
+        def p_test_rtcom_02(self):
 
 		# A version of the next one that skips the contact parts that are not generated properly
 
@@ -291,10 +291,10 @@ class rtcom(TestUpdate):
 		result=self.resources.SparqlQuery(query)
 
         	elapse =time.time()-start
-        	print "Time taken for querying conversation view (without contact info)  = %s " %elapse
+        	print "Time taken for querying (old) conversation view (without contact info)  = %s " %elapse
 		print "no. of items retrieved: %d" %len(result)
 
-        def test_rtcom_03(self):
+        def p_test_rtcom_03(self):
 
 		query = "SELECT ?msg ?date ?text ?contact \
 			WHERE { \
@@ -322,9 +322,193 @@ class rtcom(TestUpdate):
 		result=self.resources.SparqlQuery(query)
 
         	elapse =time.time()-start
+        	print "Time taken for querying (old) conversation view  = %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+        def p_test_rtcom_04(self):
+
+#
+# Current rtcom queries, please do not "quietly optimize".
+#
+
+		query = " \
+SELECT ?message ?date ?from ?to \
+     rdf:type(?message) \
+     tracker:coalesce(fn:concat(nco:nameGiven(?contact), ' ', nco:nameFamily(?contact)), nco:nickname(?contact)) \
+     nco:contactUID(?contact) \
+     nmo:communicationChannel(?message) \
+     nmo:isSent(?message) \
+     nmo:isDraft(?message) \
+     nmo:isRead(?message) \
+     nmo:isAnswered(?message) \
+     nmo:isDeleted(?message) \
+     nmo:messageId(?message) \
+     nmo:smsId(?message) \
+     nmo:sentDate(?message) \
+     nmo:receivedDate(?message) \
+     nie:contentLastModified(?message) \
+     nmo:messageSubject(?message) \
+     nie:plainTextContent(?message) \
+     nmo:deliveryStatus(?message) \
+     nmo:reportDelivery(?message) \
+     nie:url(?message) \
+     nfo:fileName(nmo:fromVCard(?message)) \
+     rdfs:label(nmo:fromVCard(?message)) \
+     nfo:fileName(nmo:toVCard(?message)) \
+     rdfs:label(nmo:toVCard(?message)) \
+     nmo:encoding(?message) \
+     nie:characterSet(?message) \
+     nie:language(?message) \
+WHERE \
+{ \
+  { \
+    ?message a nmo:Message . \
+    ?message nmo:isDraft false . \
+    ?message nmo:isDeleted false . \
+    ?message nmo:receivedDate ?date . \
+    ?message nmo:from ?fromContact . \
+    ?message nmo:to ?toContact . \
+    ?fromContact nco:hasContactMedium ?from . \
+    ?toContact nco:hasContactMedium ?to . \
+    ?message nmo:communicationChannel <urn:channel:1> . \
+    <urn:channel:1> nmo:hasParticipant ?participant . \
+      OPTIONAL \
+      { \
+        ?contact a nco:PersonContact . \
+          { \
+            ?participant nco:hasIMAddress ?imaddress . \
+            ?contact nco:hasIMAddress ?imaddress . \
+          } \
+          UNION \
+          { \
+            ?participant nco:hasPhoneNumber ?participantNumber . \
+            ?participantNumber maemo:localPhoneNumber ?number . \
+            ?contact nco:hasPhoneNumber ?contactNumber . \
+            ?contactNumber maemo:localPhoneNumber ?number . \
+          } \
+      } \
+  } \
+} \
+ORDER BY DESC(?date) LIMIT 50\
+"
+
+        	start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+        	elapse =time.time()-start
         	print "Time taken for querying conversation view  = %s " %elapse
 		print "no. of items retrieved: %d" %len(result)
 
+        def p_test_rtcom_05(self):
+#
+# Current rtcom queries, please do not "quietly optimize".
+#
+		query = " \
+SELECT ?channel ?participant ?subject nie:generator(?channel) ?contactName ?contactUID ?lastDate ?lastMessage nie:plainTextContent(?lastMessage) \
+  nfo:fileName(nmo:fromVCard(?lastMessage)) \
+  rdfs:label(nmo:fromVCard(?lastMessage)) \
+  ( SELECT COUNT(?message) AS ?total_messages WHERE { ?message nmo:communicationChannel ?channel . }) \
+  ( SELECT COUNT(?message) AS ?total_unread   WHERE { ?message nmo:communicationChannel ?channel . ?message nmo:isRead false  .}) \
+  ( SELECT COUNT(?message) AS ?_total_sent    WHERE { ?message nmo:communicationChannel ?channel . ?message nmo:isSent true . }) \
+WHERE { \
+  SELECT ?channel ?participant nco:contactUID(?contact) AS ?contactUID ?subject  ?lastDate \
+         tracker:coalesce(fn:concat(nco:nameGiven(?contact), ' ', nco:nameFamily(?contact)), nco:nickname(?contact)) AS ?contactName \
+         ( SELECT ?message WHERE {?message nmo:communicationChannel ?channel . ?message nmo:sentDate ?sentDate .} ORDER BY DESC(?sentDate) LIMIT 1) AS ?lastMessage \
+  WHERE { \
+      ?channel a nmo:CommunicationChannel . \
+      ?channel nmo:hasParticipant ?participant . \
+      ?channel nie:subject ?subject . \
+      ?channel nmo:lastMessageDate ?lastDate . \
+      OPTIONAL { \
+            ?contact a nco:PersonContact . \
+            { \
+              ?participant nco:hasIMAddress ?imaddress . \
+              ?contact nco:hasIMAddress ?imaddress . \
+            } \
+            UNION \
+            { \
+              ?participant nco:hasPhoneNumber ?participantNumber . \
+              ?number maemo:localPhoneNumber ?localNumber . \
+              ?contact nco:hasPhoneNumber ?contactNumber . \
+              ?contactNumber maemo:localPhoneNumber ?localNumber . \
+            } \
+        } \
+    } \
+} \
+ORDER BY DESC(?lastDate) LIMIT 50\
+"
+
+
+        	start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+        	elapse =time.time()-start
+        	print "Time taken for querying conversation list  = %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+        def p_test_rtcom_06(self):
+#
+# Current rtcom queries, please do not "quietly optimize".
+#
+		query = " \
+SELECT ?call ?date ?from ?to \
+     rdf:type(?call) \
+     tracker:coalesce(fn:concat(nco:nameGiven(?contact), ' ', nco:nameFamily(?contact)), nco:nickname(?contact)) \
+     ?contactId \
+     nmo:isSent(?call) \
+     nmo:isAnswered(?call) \
+     nmo:isRead(?call) \
+     nmo:sentDate(?call) \
+     nmo:receivedDate(?call) \
+     nmo:duration(?call) \
+     nie:contentLastModified(?call) \
+WHERE \
+{ \
+  { \
+    ?call a nmo:Call . \
+    ?call nmo:receivedDate ?date . \
+    ?call nmo:from ?fromContact . \
+    ?call nmo:to ?toContact . \
+    ?fromContact nco:hasContactMedium ?from . \
+    ?toContact nco:hasContactMedium ?to . \
+      OPTIONAL \
+      { \
+        ?contact a nco:PersonContact . \
+        ?contact nco:contactUID ?contactId . \
+          { \
+            ?call nmo:to ?address . \
+          } \
+          UNION \
+          { \
+            ?call nmo:from ?address . \
+          } \
+          { \
+            ?address nco:hasIMAddress ?imaddress . \
+            ?contact nco:hasIMAddress ?imaddress . \
+          } \
+          UNION \
+          { \
+            ?address nco:hasPhoneNumber ?addressNumber . \
+            ?addressNumber maemo:localPhoneNumber ?number . \
+            ?contact nco:hasPhoneNumber ?contactNumber . \
+            ?contactNumber maemo:localPhoneNumber ?number . \
+          } \
+      } \
+  } \
+} \
+ORDER BY DESC(?date) LIMIT 50\
+"
+
+
+        	start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+        	elapse =time.time()-start
+        	print "Time taken for querying call history  = %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
 
 """ Audio, Video, Images  performance  test cases """
 class audio(TestUpdate):
@@ -531,10 +715,9 @@ class gallery(TestUpdate):
 
 		""" Querying for all Images and Videos """
 
-		query = "SELECT ?url ?filename ?modified ?_width ?_height ?is \
+		query = "SELECT ?url ?filename ?modified ?_width ?_height \
                     WHERE { \
                      ?media a nfo:Visual; \
-                     nie:isStoredAs  ?is ;\
                      nie:url ?url;\
                      nfo:fileName ?filename ;\
                      nfo:fileLastModified ?modified .\
@@ -554,10 +737,9 @@ class gallery(TestUpdate):
 
 		""" Querying for all Images and Videos without OPTIONALS"""
 
-		query = "SELECT ?url ?filename ?modified ?is \
+		query = "SELECT ?url ?filename ?modified \
                     WHERE { \
                      ?media a nfo:Visual; \
-                     nie:isStoredAs  ?is ;\
                      nie:url ?url;\
                      nfo:fileName ?filename ;\
                      nfo:fileLastModified ?modified .}\
@@ -575,10 +757,9 @@ class gallery(TestUpdate):
 
 		""" Querying for 500 Images and Videos """
 
-		query = "SELECT ?url ?filename ?modified ?_width ?_height ?is \
+		query = "SELECT ?url ?filename ?modified ?_width ?_height \
                     WHERE { \
                      ?media a nfo:Visual; \
-                     nie:isStoredAs  ?is ;\
                      nie:url ?url;\
                      nfo:fileName ?filename ;\
                      nfo:fileLastModified ?modified .\
@@ -598,10 +779,9 @@ class gallery(TestUpdate):
 
 		""" Querying for 500 Images and Videos without OPTIONALS"""
 
-		query = "SELECT ?url ?filename ?modified ?is \
+		query = "SELECT ?url ?filename ?modified \
                     WHERE { \
                      ?media a nfo:Visual; \
-                     nie:isStoredAs  ?is ;\
                      nie:url ?url;\
                      nfo:fileName ?filename ;\
                      nfo:fileLastModified ?modified .} \
@@ -743,10 +923,9 @@ class gallery(TestUpdate):
 
 		""" Querying for 500 Images and Videos with UNION for them """
 
-		query = "SELECT ?url ?filename ?modified ?_width ?_height ?is \
+		query = "SELECT ?url ?filename ?modified ?_width ?_height \
                     WHERE { \
                      {?media a nmm:Photo.} UNION {?media a nmm:Video.} \
-                     ?media nie:isStoredAs  ?is .\
                      ?media nie:url ?url.\
                      ?media nfo:fileName ?filename .\
                      ?media nfo:fileLastModified ?modified .\
@@ -755,7 +934,7 @@ class gallery(TestUpdate):
                      ORDER BY ?modified LIMIT 500"
 		start=time.time()
 
-            	result=self.resources.SparqlQuery(query, timeout=25)
+            	result=self.resources.SparqlQuery(query,timeout=1000)
 
         	elapse =time.time()-start
         	print "Time taken for querying 500 images and videos  = %s " %elapse
@@ -1169,6 +1348,533 @@ class content_manager (TestUpdate) :
 		print "Time taken to get 100 content items that match fts and get relevant UI info for them %s " %elapse
 		print "no. of items retrieved: %d" %len(result)
 
+
+class contacts (TestUpdate) :
+
+        def p_test_contacts_01 (self):
+
+		query = " \
+SELECT DISTINCT \
+  ?_contact \
+  ?_Avatar_ImageUrl \
+  ?_Birthday_Birthday \
+  bound(?_Gender_Gender) AS ?_Gender_Gender_IsBound \
+  (?_Gender_Gender = nco:gender-female) AS ?_Gender_Gender_IsEqual_Female \
+  (?_Gender_Gender = nco:gender-male) AS ?_Gender_Gender_IsEqual_Male \
+  ?_Guid_Guid \
+  ?_Name_Prefix \
+  ?_Name_FirstName \
+  ?_Name_MiddleName \
+  ?_Name_LastName \
+  ?_Name_Suffix \
+  ?_Nickname_Nickname \
+  ?_Note_Note \
+  ?_Timestamp_CreationTimestamp \
+  ?_Timestamp_ModificationTimestamp \
+WHERE \
+{ \
+  { \
+    ?_contact rdf:type nco:PersonContact . \
+    OPTIONAL { ?_contact nco:photo ?__1 . ?__1 nfo:fileUrl ?_Avatar_ImageUrl . } \
+    OPTIONAL { ?_contact nco:birthDate ?_Birthday_Birthday . } \
+    OPTIONAL { ?_contact nco:gender ?_Gender_Gender . } \
+    OPTIONAL { ?_contact nco:contactUID ?_Guid_Guid . } \
+    OPTIONAL { ?_contact nco:nameHonorificPrefix ?_Name_Prefix . } \
+    OPTIONAL { ?_contact nco:nameGiven ?_Name_FirstName . } \
+    OPTIONAL { ?_contact nco:nameAdditional ?_Name_MiddleName . } \
+    OPTIONAL { ?_contact nco:nameFamily ?_Name_LastName . } \
+    OPTIONAL { ?_contact nco:nameHonorificSuffix ?_Name_Suffix . } \
+    OPTIONAL { ?_contact nco:nickname ?_Nickname_Nickname . } \
+    OPTIONAL { ?_contact nco:note ?_Note_Note . } \
+    OPTIONAL { ?_contact nie:contentCreated ?_Timestamp_CreationTimestamp . } \
+    OPTIONAL { ?_contact nie:contentLastModified ?_Timestamp_ModificationTimestamp . } \
+  } \
+} \
+ORDER BY ?_contact LIMIT 50 \
+"
+
+		start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+		elapse =time.time()-start
+		print "Time taken to get 50 contacts basic information (original) %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+
+	def p_test_contacts_02 (self):
+		query = " \
+SELECT DISTINCT \
+  ?_contact \
+  ?_Avatar_ImageUrl \
+  nco:birthDate(?_contact) \
+  bound(?_Gender_Gender) \
+  (?_Gender_Gender = nco:gender-female) \
+  (?_Gender_Gender = nco:gender-male) \
+  nco:contactUID(?_contact) \
+  nco:nameHonorificPrefix(?_contact) \
+  nco:nameGiven(?_contact) \
+  nco:nameAdditional(?_contact) \
+  nco:nameFamily(?_contact) \
+  nco:nameHonorificSuffix(?_contact) \
+  nco:nickname(?_contact) \
+  nco:note(?_contact) \
+  nie:contentCreated(?_contact) \
+  nie:contentLastModified(?_contact) \
+WHERE \
+{ \
+  { \
+    ?_contact rdf:type nco:PersonContact . \
+    OPTIONAL { ?_contact nco:photo ?__1 . ?__1 nfo:fileUrl ?_Avatar_ImageUrl . } \
+    OPTIONAL { ?_contact nco:gender ?_Gender_Gender . } \
+  } \
+} \
+ORDER BY ?_contact LIMIT 50 \
+"
+
+		start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+		elapse =time.time()-start
+		print "Time taken to get 50 contacts basic information (modified) %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+
+	def p_test_contacts_03 (self):
+		query = " \
+SELECT DISTINCT \
+  ?_contact \
+  ?_Address_Country \
+  ?_Address_Locality \
+  ?_Address_PostOfficeBox \
+  ?_Address_Postcode \
+  ?_Address_Region \
+  ?_Address_Street \
+  bound(?_Address_SubTypes_Domestic) AS ?_Address_SubTypes_Domestic_IsBound \
+  bound(?_Address_SubTypes_International) AS ?_Address_SubTypes_International_IsBound \
+  bound(?_Address_SubTypes_Parcel) AS ?_Address_SubTypes_Parcel_IsBound \
+  bound(?_Address_SubTypes_Postal) AS ?_Address_SubTypes_Postal_IsBound \
+  bound(?_Address_Context_Work) AS ?_Address_Context_Work_IsBound \
+WHERE \
+{ \
+  { \
+    ?_contact rdf:type nco:PersonContact . \
+    { \
+      ?_contact nco:hasPostalAddress ?__1 . \
+      ?__1 nco:country ?_Address_Country . \
+      ?__1 nco:locality ?_Address_Locality . \
+      ?__1 nco:pobox ?_Address_PostOfficeBox . \
+      ?__1 nco:postalcode ?_Address_Postcode . \
+      ?__1 nco:region ?_Address_Region . \
+      ?__1 nco:streetAddress ?_Address_Street . \
+      OPTIONAL { \
+        ?__1 rdf:type ?_Address_SubTypes_Domestic . \
+        FILTER((?_Address_SubTypes_Domestic = nco:DomesticDeliveryAddress)) . \
+      } \
+      OPTIONAL { \
+        ?__1 rdf:type ?_Address_SubTypes_International . \
+        FILTER((?_Address_SubTypes_International = nco:InternationalDeliveryAddress)) . \
+      } \
+      OPTIONAL { \
+        ?__1 rdf:type ?_Address_SubTypes_Parcel . \
+        FILTER((?_Address_SubTypes_Parcel = nco:ParcelDeliveryAddress)) . \
+      } \
+      OPTIONAL { \
+        ?__1 rdf:type ?_Address_SubTypes_Postal . \
+        FILTER((?_Address_SubTypes_Postal = nco:PostalAddress)) . \
+      } \
+    } \
+    UNION \
+    { \
+      ?_contact nco:hasAffiliation ?_Address_Context_Work . \
+      ?_Address_Context_Work nco:hasPostalAddress ?__2 . \
+      ?__2 nco:country ?_Address_Country . \
+      ?__2 nco:locality ?_Address_Locality . \
+      ?__2 nco:pobox ?_Address_PostOfficeBox . \
+      ?__2 nco:postalcode ?_Address_Postcode . \
+      ?__2 nco:region ?_Address_Region . \
+      ?__2 nco:streetAddress ?_Address_Street . \
+      OPTIONAL { \
+        ?__2 rdf:type ?_Address_SubTypes_Domestic . \
+        FILTER((?_Address_SubTypes_Domestic = nco:DomesticDeliveryAddress)) . \
+      } \
+      OPTIONAL { \
+        ?__2 rdf:type ?_Address_SubTypes_International . \
+        FILTER((?_Address_SubTypes_International = nco:InternationalDeliveryAddress)) . \
+      } \
+      OPTIONAL { \
+        ?__2 rdf:type ?_Address_SubTypes_Parcel . \
+        FILTER((?_Address_SubTypes_Parcel = nco:ParcelDeliveryAddress)) . \
+      } \
+      OPTIONAL { \
+        ?__2 rdf:type ?_Address_SubTypes_Postal . \
+        FILTER((?_Address_SubTypes_Postal = nco:PostalAddress)) . \
+      } \
+    } \
+  } \
+} \
+ORDER BY ?_contact LIMIT 50 \
+"
+
+		start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+		elapse =time.time()-start
+		print "Time taken to get 50 contacts address information (original) %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+
+	def p_test_contacts_04 (self):
+		query = " \
+SELECT \
+  ?contact \
+  nco:country(?postal) \
+  nco:locality(?postal) \
+  nco:pobox(?postal) \
+  nco:postalcode(?postal) \
+  nco:region(?postal) \
+  nco:streetAddress(?postal) \
+  bound(?work) \
+WHERE \
+{ \
+  ?contact rdf:type nco:PersonContact . \
+  { ?contact nco:hasPostalAddress ?postal . } \
+  UNION \
+  { ?contact nco:hasAffiliation ?work . \
+      ?work nco:hasPostalAddress ?postal . \
+  } \
+} \
+ORDER BY ?contact LIMIT 50 \
+"
+
+		start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+		elapse =time.time()-start
+		print "Time taken to get 50 contacts address information (modified) %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+	def p_test_contacts_05 (self):
+		query = " \
+SELECT DISTINCT \
+  ?_contact ?_EmailAddress ?_EmailAddress_EmailAddress \
+  bound(?_EmailAddress_Context_Work) AS ?_EmailAddress_Context_Work_IsBound \
+WHERE \
+{ \
+  { \
+    ?_contact rdf:type nco:PersonContact . \
+    { \
+      ?_contact nco:hasEmailAddress ?_EmailAddress . \
+      ?_EmailAddress nco:emailAddress ?_EmailAddress_EmailAddress . \
+    } \
+    UNION \
+    { \
+      ?_contact nco:hasAffiliation ?_EmailAddress_Context_Work . \
+      ?_EmailAddress_Context_Work nco:hasEmailAddress ?_EmailAddress . \
+      ?_EmailAddress nco:emailAddress ?_EmailAddress_EmailAddress . \
+    } \
+  } \
+} \
+ORDER BY ?_contact LIMIT 50 \
+"
+
+		start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+		elapse =time.time()-start
+		print "Time taken to get 50 contacts email information (original) %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+	def p_test_contacts_06 (self):
+		query = " \
+SELECT \
+  ?contact \
+  ?email \
+  nco:emailAddress(?email) \
+  bound(?work) \
+WHERE \
+{ \
+  { \
+    ?contact rdf:type nco:PersonContact . \
+    { \
+      ?contact nco:hasEmailAddress ?email . \
+    } \
+    UNION \
+    { \
+      ?contact nco:hasAffiliation ?work . \
+      ?work nco:hasEmailAddress ?email . \
+    } \
+  } \
+} \
+ORDER BY ?_contact LIMIT 50 \
+"
+
+		start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+		elapse =time.time()-start
+		print "Time taken to get 50 contacts email information (modified) %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+	def p_test_contacts_07 (self):
+		query = " \
+SELECT DISTINCT \
+  ?_contact \
+  ?_OnlineAccount \
+  ?_OnlineAccount_AccountUri \
+  ?_OnlineAccount_ServiceProvider \
+  bound(?_OnlineAccount_Capabilities) \
+  AS ?_OnlineAccount_Capabilities_IsBound \
+  (?_OnlineAccount_Capabilities = nco:im-capability-text-chat) \
+  AS ?_OnlineAccount_Capabilities_IsEqual_TextChat \
+  (?_OnlineAccount_Capabilities = nco:im-capability-media-calls) \
+  AS ?_OnlineAccount_Capabilities_IsEqual_MediaCalls \
+  (?_OnlineAccount_Capabilities = nco:im-capability-audio-calls) \
+  AS ?_OnlineAccount_Capabilities_IsEqual_AudioCalls \
+  (?_OnlineAccount_Capabilities = nco:im-capability-video-calls) \
+  AS ?_OnlineAccount_Capabilities_IsEqual_VideoCalls \
+  (?_OnlineAccount_Capabilities = nco:im-capability-upgrading-calls) \
+  AS ?_OnlineAccount_Capabilities_IsEqual_UpgradingCalls \
+  (?_OnlineAccount_Capabilities = nco:im-capability-file-transfers) \
+  AS ?_OnlineAccount_Capabilities_IsEqual_FileTransfers \
+  (?_OnlineAccount_Capabilities = nco:im-capability-stream-tubes) \
+  AS ?_OnlineAccount_Capabilities_IsEqual_StreamTubes \
+  (?_OnlineAccount_Capabilities = nco:im-capability-dbus-tubes) \
+  AS ?_OnlineAccount_Capabilities_IsEqual_DBusTubes \
+  bound(?_OnlineAccount_Context_Work) \
+  AS ?_OnlineAccount_Context_Work_IsBound \
+WHERE \
+{ \
+  { \
+    ?_contact rdf:type nco:PersonContact . \
+      { \
+        ?_contact nco:hasIMAddress ?_OnlineAccount . \
+        ?_OnlineAccount nco:imID ?_OnlineAccount_AccountUri . \
+        ?_OnlineAccount nco:imCapability ?_OnlineAccount_Capabilities . \
+        OPTIONAL { ?_OnlineAccount_ServiceProvider nco:hasIMContact ?_OnlineAccount . } \
+      } \
+      UNION \
+      { \
+        ?_contact nco:hasAffiliation ?_OnlineAccount_Context_Work . \
+        ?_OnlineAccount_Context_Work nco:hasIMAddress ?_OnlineAccount .\
+        ?_OnlineAccount nco:imID ?_OnlineAccount_AccountUri . \
+        ?_OnlineAccount nco:imCapability ?_OnlineAccount_Capabilities . \
+        OPTIONAL { ?_OnlineAccount_ServiceProvider nco:hasIMContact ?_OnlineAccount . } \
+      } \
+  } \
+} \
+ORDER BY ?_contact LIMIT 50 \
+"
+
+		start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+		elapse =time.time()-start
+		print "Time taken to get 50 contacts online information (original) %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+
+	def p_test_contacts_08 (self):
+		query = " \
+SELECT DISTINCT \
+  ?_contact \
+  ?_OnlineAccount \
+  ?_OnlineAccount_AccountUri \
+  ?_OnlineAccount_ServiceProvider \
+  bound(?ork) \
+WHERE \
+{ \
+    ?_contact rdf:type nco:PersonContact . \
+      { \
+        ?_contact nco:hasIMAddress ?_OnlineAccount . \
+        ?_OnlineAccount nco:imID ?_OnlineAccount_AccountUri . \
+        OPTIONAL { ?_OnlineAccount_ServiceProvider nco:hasIMContact ?_OnlineAccount . } \
+      } \
+      UNION \
+      { \
+        ?_contact nco:hasAffiliation ?_OnlineAccount_Context_Work . \
+        ?_OnlineAccount_Context_Work nco:hasIMAddress ?_OnlineAccount . \
+        ?_OnlineAccount nco:imID ?_OnlineAccount_AccountUri . \
+        OPTIONAL { ?_OnlineAccount_ServiceProvider nco:hasIMContact ?_OnlineAccount . } \
+      } \
+} \
+ORDER BY ?_contact LIMIT 50 \
+"
+
+		start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+		elapse =time.time()-start
+		print "Time taken to get 50 contacts online information (modified) %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+	def p_test_contacts_09 (self):
+		query = " \
+SELECT DISTINCT \
+  ?_contact ?_PhoneNumber ?_PhoneNumber_PhoneNumber \
+  bound(?_PhoneNumber_SubTypes_BulletinBoardSystem) AS ?_PhoneNumber_SubTypes_BulletinBoardSystem_IsBound \
+  bound(?_PhoneNumber_SubTypes_Car) AS ?_PhoneNumber_SubTypes_Car_IsBound \
+  bound(?_PhoneNumber_SubTypes_Fax) AS ?_PhoneNumber_SubTypes_Fax_IsBound \
+  bound(?_PhoneNumber_SubTypes_MessagingCapable) AS ?_PhoneNumber_SubTypes_MessagingCapable_IsBound \
+  bound(?_PhoneNumber_SubTypes_Mobile) AS ?_PhoneNumber_SubTypes_Mobile_IsBound \
+  bound(?_PhoneNumber_SubTypes_Modem) AS ?_PhoneNumber_SubTypes_Modem_IsBound \
+  bound(?_PhoneNumber_SubTypes_Pager) AS ?_PhoneNumber_SubTypes_Pager_IsBound \
+  bound(?_PhoneNumber_SubTypes_Video) AS ?_PhoneNumber_SubTypes_Video_IsBound \
+  bound(?_PhoneNumber_SubTypes_Voice) AS ?_PhoneNumber_SubTypes_Voice_IsBound \
+  bound(?_PhoneNumber_Context_Work) AS ?_PhoneNumber_Context_Work_IsBound \
+WHERE \
+{ \
+  { \
+    ?_contact rdf:type nco:PersonContact . \
+      { \
+        ?_contact nco:hasPhoneNumber ?_PhoneNumber . \
+        ?_PhoneNumber nco:phoneNumber ?_PhoneNumber_PhoneNumber . \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_BulletinBoardSystem . \
+            FILTER((?_PhoneNumber_SubTypes_BulletinBoardSystem = nco:BbsNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Car . \
+            FILTER((?_PhoneNumber_SubTypes_Car = nco:CarPhoneNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Fax . \
+            FILTER((?_PhoneNumber_SubTypes_Fax = nco:FaxNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+             ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_MessagingCapable . \
+             FILTER((?_PhoneNumber_SubTypes_MessagingCapable = nco:MessagingNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Mobile . \
+            FILTER((?_PhoneNumber_SubTypes_Mobile = nco:CellPhoneNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Modem . \
+            FILTER((?_PhoneNumber_SubTypes_Modem = nco:ModemNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Pager . \
+            FILTER((?_PhoneNumber_SubTypes_Pager = nco:PagerNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Video . \
+            FILTER((?_PhoneNumber_SubTypes_Video = nco:VideoTelephoneNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Voice . \
+            FILTER((?_PhoneNumber_SubTypes_Voice = nco:VoicePhoneNumber)) . \
+          } \
+      } \
+      UNION \
+      { \
+        ?_contact nco:hasAffiliation ?_PhoneNumber_Context_Work . \
+        ?_PhoneNumber_Context_Work nco:hasPhoneNumber ?_PhoneNumber . \
+        ?_PhoneNumber nco:phoneNumber ?_PhoneNumber_PhoneNumber . \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_BulletinBoardSystem . \
+            FILTER((?_PhoneNumber_SubTypes_BulletinBoardSystem = nco:BbsNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Car . \
+            FILTER((?_PhoneNumber_SubTypes_Car = nco:CarPhoneNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Fax . \
+            FILTER((?_PhoneNumber_SubTypes_Fax = nco:FaxNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_MessagingCapable . \
+            FILTER((?_PhoneNumber_SubTypes_MessagingCapable = nco:MessagingNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Mobile . \
+            FILTER((?_PhoneNumber_SubTypes_Mobile = nco:CellPhoneNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Modem . \
+            FILTER((?_PhoneNumber_SubTypes_Modem = nco:ModemNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Pager . \
+            FILTER((?_PhoneNumber_SubTypes_Pager = nco:PagerNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Video . \
+            FILTER((?_PhoneNumber_SubTypes_Video = nco:VideoTelephoneNumber)) . \
+          } \
+          OPTIONAL \
+          { \
+            ?_PhoneNumber rdf:type ?_PhoneNumber_SubTypes_Voice . \
+            FILTER((?_PhoneNumber_SubTypes_Voice = nco:VoicePhoneNumber)) . \
+          } \
+      } \
+  } \
+} \
+ORDER BY ?_contact LIMIT 50 \
+"
+
+		start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+		elapse =time.time()-start
+		print "Time taken to get 50 contacts phone number information (original) %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
+
+	def p_test_contacts_10 (self):
+		query = " \
+SELECT DISTINCT \
+  ?contact \
+  ?phoneNumber \
+  nco:phoneNumber(?phoneNumber) \
+  bound(?work) \
+WHERE \
+{ \
+    ?contact rdf:type nco:PersonContact . \
+    { \
+        ?contact nco:hasPhoneNumber ?phoneNumber . \
+    } \
+    UNION \
+    { \
+        ?contact nco:hasAffiliation ?work . \
+        ?work nco:hasPhoneNumber ?phoneNumber . \
+    } \
+} \
+ORDER BY ?_contact LIMIT 50 \
+"
+
+		start=time.time()
+
+		result=self.resources.SparqlQuery(query)
+
+		elapse =time.time()-start
+		print "Time taken to get 50 contacts phone number information (modified) %s " %elapse
+		print "no. of items retrieved: %d" %len(result)
 
 if __name__ == "__main__":
         unittest.main()

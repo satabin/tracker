@@ -79,6 +79,7 @@ typedef struct _TrackerCategoryViewClass TrackerCategoryViewClass;
 
 typedef struct _TrackerMetadataTile TrackerMetadataTile;
 typedef struct _TrackerMetadataTileClass TrackerMetadataTileClass;
+#define _g_free0(var) (var = (g_free (var), NULL))
 typedef struct _DBusObjectVTable _DBusObjectVTable;
 
 struct _TrackerSearchToolServer {
@@ -97,12 +98,12 @@ struct _DBusObjectVTable {
 
 extern GtkWindow* window;
 GtkWindow* window = NULL;
-extern char* service;
-char* service = NULL;
 extern char** terms;
 extern gint terms_length1;
 char** terms = NULL;
 gint terms_length1 = 0;
+extern char* search_string;
+char* search_string = NULL;
 extern gboolean print_version;
 gboolean print_version = FALSE;
 static gpointer tracker_search_tool_server_parent_class = NULL;
@@ -150,7 +151,7 @@ void _vala_main (char** args, int args_length1);
 static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
 static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
 
-const GOptionEntry options[4] = {{"service", 's', 0, G_OPTION_ARG_STRING, &service, "Search from a specific service", "SERVICE"}, {"version", 'V', 0, G_OPTION_ARG_NONE, &print_version, "Print version", NULL}, {"", (gchar) 0, 0, G_OPTION_ARG_STRING_ARRAY, &terms, "search terms", NULL}, {NULL}};
+const GOptionEntry options[3] = {{"version", 'V', 0, G_OPTION_ARG_NONE, &print_version, "Print version", NULL}, {"", (gchar) 0, 0, G_OPTION_ARG_STRING_ARRAY, &terms, "search terms", NULL}, {NULL}};
 static const DBusObjectPathVTable _tracker_search_tool_server_dbus_path_vtable = {_tracker_search_tool_server_dbus_unregister, tracker_search_tool_server_dbus_message};
 static const _DBusObjectVTable _tracker_search_tool_server_dbus_vtable = {tracker_search_tool_server_dbus_register_object};
 
@@ -161,17 +162,17 @@ void tracker_search_tool_server_Show (TrackerSearchToolServer* self) {
 	g_return_if_fail (self != NULL);
 #line 46 "tracker-search-tool.gs"
 	gtk_window_present (window);
-#line 165 "tracker-search-tool.c"
+#line 166 "tracker-search-tool.c"
 }
 
 
 #line 44 "tracker-search-tool.gs"
 TrackerSearchToolServer* tracker_search_tool_server_construct (GType object_type) {
-#line 171 "tracker-search-tool.c"
+#line 172 "tracker-search-tool.c"
 	TrackerSearchToolServer * self;
 #line 44 "tracker-search-tool.gs"
 	self = (TrackerSearchToolServer*) g_object_new (object_type, NULL);
-#line 175 "tracker-search-tool.c"
+#line 176 "tracker-search-tool.c"
 	return self;
 }
 
@@ -180,7 +181,7 @@ TrackerSearchToolServer* tracker_search_tool_server_construct (GType object_type
 TrackerSearchToolServer* tracker_search_tool_server_new (void) {
 #line 44 "tracker-search-tool.gs"
 	return tracker_search_tool_server_construct (TYPE_TRACKER_SEARCH_TOOL_SERVER);
-#line 184 "tracker-search-tool.c"
+#line 185 "tracker-search-tool.c"
 }
 
 
@@ -342,16 +343,16 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-#line 7575 "gtk+-2.0.vapi"
+#line 7712 "gtk+-2.0.vapi"
 static void _gtk_main_quit_gtk_object_destroy (GtkWindow* _sender, gpointer self) {
-#line 348 "tracker-search-tool.c"
+#line 349 "tracker-search-tool.c"
 	gtk_main_quit ();
 }
 
 
 #line 48 "tracker-search-tool.gs"
 void _vala_main (char** args, int args_length1) {
-#line 355 "tracker-search-tool.c"
+#line 356 "tracker-search-tool.c"
 	GError * _inner_error_;
 	GOptionContext* option_context;
 	TrackerSearchToolServer* server;
@@ -359,8 +360,9 @@ void _vala_main (char** args, int args_length1) {
 	GtkWindow* _tmp4_;
 	GObject* _tmp3_;
 	GtkAccelGroup* accel_group;
+	GtkEntry* entry;
 	TrackerQuery* query;
-	TrackerSearchEntry* entry;
+	TrackerSearchEntry* search_entry;
 	TrackerResultGrid* grid;
 	TrackerCategoryView* categories;
 	TrackerMetadataTile* tile;
@@ -376,6 +378,8 @@ void _vala_main (char** args, int args_length1) {
 	GtkLabel* search_label;
 	guint keyval = 0U;
 	GdkModifierType mods = 0;
+	GtkEntry* _tmp11_;
+	GtkWidget* _tmp10_;
 	GtkAlignment* a;
 	_inner_error_ = NULL;
 #line 49 "tracker-search-tool.gs"
@@ -386,11 +390,11 @@ void _vala_main (char** args, int args_length1) {
 	g_option_context_set_help_enabled (option_context, TRUE);
 #line 55 "tracker-search-tool.gs"
 	g_option_context_add_main_entries (option_context, options, NULL);
-#line 390 "tracker-search-tool.c"
+#line 394 "tracker-search-tool.c"
 	{
 #line 58 "tracker-search-tool.gs"
 		g_option_context_parse (option_context, &args_length1, &args, &_inner_error_);
-#line 394 "tracker-search-tool.c"
+#line 398 "tracker-search-tool.c"
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == G_OPTION_ERROR) {
 				goto __catch4_g_option_error;
@@ -412,12 +416,12 @@ void _vala_main (char** args, int args_length1) {
 			fprintf (stdout, "%s\n", e->message);
 #line 63 "tracker-search-tool.gs"
 			fprintf (stdout, "Run '%s --help' to see a full list of available command line options.\n", args[0]);
-#line 416 "tracker-search-tool.c"
+#line 420 "tracker-search-tool.c"
 			_g_error_free0 (e);
 			_g_option_context_free0 (option_context);
 #line 64 "tracker-search-tool.gs"
 			return;
-#line 421 "tracker-search-tool.c"
+#line 425 "tracker-search-tool.c"
 		}
 	}
 	__finally4:
@@ -431,15 +435,15 @@ void _vala_main (char** args, int args_length1) {
 	if (print_version) {
 #line 67 "tracker-search-tool.gs"
 		fprintf (stdout, "%s", "\n" ABOUT "\n" LICENSE "\n");
-#line 435 "tracker-search-tool.c"
+#line 439 "tracker-search-tool.c"
 		_g_option_context_free0 (option_context);
 #line 68 "tracker-search-tool.gs"
 		return;
-#line 439 "tracker-search-tool.c"
+#line 443 "tracker-search-tool.c"
 	}
 #line 70 "tracker-search-tool.gs"
 	server = tracker_search_tool_server_new ();
-#line 443 "tracker-search-tool.c"
+#line 447 "tracker-search-tool.c"
 	{
 		DBusGProxy* bus;
 		guint _result_ = 0U;
@@ -449,7 +453,7 @@ void _vala_main (char** args, int args_length1) {
 		bus = NULL;
 #line 76 "tracker-search-tool.gs"
 		conn = dbus_g_bus_get (DBUS_BUS_SESSION, &_inner_error_);
-#line 453 "tracker-search-tool.c"
+#line 457 "tracker-search-tool.c"
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (bus);
 			if (_inner_error_->domain == DBUS_GERROR) {
@@ -466,7 +470,7 @@ void _vala_main (char** args, int args_length1) {
 		bus = (_tmp0_ = dbus_g_proxy_new_for_name (conn, "org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus"), _g_object_unref0 (bus), _tmp0_);
 #line 82 "tracker-search-tool.gs"
 		_tmp1_ = _dynamic_request_name0 (bus, "org.freedesktop.Tracker1.SearchTool", (guint) 0, &_inner_error_);
-#line 470 "tracker-search-tool.c"
+#line 474 "tracker-search-tool.c"
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (bus);
 			_dbus_g_connection_unref0 (conn);
@@ -481,7 +485,7 @@ void _vala_main (char** args, int args_length1) {
 		if (_result_ == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {
 #line 85 "tracker-search-tool.gs"
 			_vala_dbus_register_object (dbus_g_connection_get_connection (conn), "/org/freedesktop/Tracker1/SearchTool", (GObject*) server);
-#line 485 "tracker-search-tool.c"
+#line 489 "tracker-search-tool.c"
 		} else {
 			DBusGProxy* remote;
 			DBusGProxy* _tmp2_;
@@ -490,7 +494,7 @@ void _vala_main (char** args, int args_length1) {
 			remote = (_tmp2_ = dbus_g_proxy_new_for_name (conn, "org.freedesktop.Tracker1.SearchTool", "/org/freedesktop/Tracker1/SearchTool", "org.freedesktop.Tracker1.SearchTool"), _g_object_unref0 (remote), _tmp2_);
 #line 93 "tracker-search-tool.gs"
 			_dynamic_show1 (remote, &_inner_error_);
-#line 494 "tracker-search-tool.c"
+#line 498 "tracker-search-tool.c"
 			if (_inner_error_ != NULL) {
 				_g_object_unref0 (remote);
 				_g_object_unref0 (bus);
@@ -507,7 +511,7 @@ void _vala_main (char** args, int args_length1) {
 			_g_object_unref0 (server);
 #line 94 "tracker-search-tool.gs"
 			return;
-#line 511 "tracker-search-tool.c"
+#line 515 "tracker-search-tool.c"
 		}
 		_g_object_unref0 (bus);
 		_dbus_g_connection_unref0 (conn);
@@ -521,7 +525,7 @@ void _vala_main (char** args, int args_length1) {
 		{
 #line 96 "tracker-search-tool.gs"
 			g_warning ("tracker-search-tool.gs:96: %s", e->message);
-#line 525 "tracker-search-tool.c"
+#line 529 "tracker-search-tool.c"
 			_g_error_free0 (e);
 		}
 	}
@@ -535,11 +539,11 @@ void _vala_main (char** args, int args_length1) {
 	}
 #line 98 "tracker-search-tool.gs"
 	builder = gtk_builder_new ();
-#line 539 "tracker-search-tool.c"
+#line 543 "tracker-search-tool.c"
 	{
 #line 101 "tracker-search-tool.gs"
 		gtk_builder_add_from_file (builder, SRCDIR "tst.ui", &_inner_error_);
-#line 543 "tracker-search-tool.c"
+#line 547 "tracker-search-tool.c"
 		if (_inner_error_ != NULL) {
 			goto __catch6_g_error;
 		}
@@ -554,7 +558,7 @@ void _vala_main (char** args, int args_length1) {
 			{
 #line 106 "tracker-search-tool.gs"
 				gtk_builder_add_from_file (builder, TRACKER_UI_DIR "tst.ui", &_inner_error_);
-#line 558 "tracker-search-tool.c"
+#line 562 "tracker-search-tool.c"
 				if (_inner_error_ != NULL) {
 					goto __catch7_g_error;
 				}
@@ -567,13 +571,13 @@ void _vala_main (char** args, int args_length1) {
 				_inner_error_ = NULL;
 				{
 					GtkMessageDialog* msg;
-#line 110 "tracker-search-tool.gs"
+#line 108 "tracker-search-tool.gs"
 					msg = g_object_ref_sink ((GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, N_ ("Failed to load UI\n%s"), e->message));
-#line 113 "tracker-search-tool.gs"
+#line 111 "tracker-search-tool.gs"
 					gtk_dialog_run ((GtkDialog*) msg);
-#line 114 "tracker-search-tool.gs"
+#line 112 "tracker-search-tool.gs"
 					gtk_main_quit ();
-#line 577 "tracker-search-tool.c"
+#line 581 "tracker-search-tool.c"
 					_g_error_free0 (e);
 					_g_object_unref0 (msg);
 				}
@@ -604,75 +608,90 @@ void _vala_main (char** args, int args_length1) {
 		g_clear_error (&_inner_error_);
 		return;
 	}
-#line 117 "tracker-search-tool.gs"
+#line 114 "tracker-search-tool.gs"
 	window = (_tmp4_ = _g_object_ref0 ((_tmp3_ = gtk_builder_get_object (builder, "window"), GTK_IS_WINDOW (_tmp3_) ? ((GtkWindow*) _tmp3_) : NULL)), _g_object_unref0 (window), _tmp4_);
-#line 118 "tracker-search-tool.gs"
+#line 115 "tracker-search-tool.gs"
 	g_signal_connect ((GtkObject*) window, "destroy", (GCallback) _gtk_main_quit_gtk_object_destroy, NULL);
-#line 123 "tracker-search-tool.gs"
+#line 119 "tracker-search-tool.gs"
 	accel_group = gtk_accel_group_new ();
-#line 125 "tracker-search-tool.gs"
+#line 120 "tracker-search-tool.gs"
+	entry = g_object_ref_sink ((GtkEntry*) gtk_entry_new ());
+#line 122 "tracker-search-tool.gs"
 	query = tracker_query_new ();
-#line 126 "tracker-search-tool.gs"
-	entry = g_object_ref_sink (tracker_search_entry_new ());
-#line 127 "tracker-search-tool.gs"
+#line 123 "tracker-search-tool.gs"
+	search_entry = g_object_ref_sink (tracker_search_entry_new ());
+#line 124 "tracker-search-tool.gs"
 	grid = g_object_ref_sink (tracker_result_grid_new ());
-#line 128 "tracker-search-tool.gs"
+#line 125 "tracker-search-tool.gs"
 	categories = g_object_ref_sink (tracker_category_view_new ());
-#line 129 "tracker-search-tool.gs"
+#line 126 "tracker-search-tool.gs"
 	tile = g_object_ref_sink (tracker_metadata_tile_new ());
-#line 131 "tracker-search-tool.gs"
+#line 128 "tracker-search-tool.gs"
 	entry_box = _g_object_ref0 ((_tmp5_ = gtk_builder_get_object (builder, "EntryBox"), GTK_IS_CONTAINER (_tmp5_) ? ((GtkContainer*) _tmp5_) : NULL));
-#line 132 "tracker-search-tool.gs"
+#line 129 "tracker-search-tool.gs"
 	grid_box = _g_object_ref0 ((_tmp6_ = gtk_builder_get_object (builder, "GridBox"), GTK_IS_CONTAINER (_tmp6_) ? ((GtkContainer*) _tmp6_) : NULL));
-#line 133 "tracker-search-tool.gs"
+#line 130 "tracker-search-tool.gs"
 	category_box = _g_object_ref0 ((_tmp7_ = gtk_builder_get_object (builder, "CategoryBox"), GTK_IS_CONTAINER (_tmp7_) ? ((GtkContainer*) _tmp7_) : NULL));
-#line 134 "tracker-search-tool.gs"
+#line 131 "tracker-search-tool.gs"
 	main_box = _g_object_ref0 ((_tmp8_ = gtk_builder_get_object (builder, "MainBox"), GTK_IS_VBOX (_tmp8_) ? ((GtkVBox*) _tmp8_) : NULL));
-#line 135 "tracker-search-tool.gs"
+#line 132 "tracker-search-tool.gs"
 	search_label = _g_object_ref0 ((_tmp9_ = gtk_builder_get_object (builder, "SearchLabel"), GTK_IS_LABEL (_tmp9_) ? ((GtkLabel*) _tmp9_) : NULL));
-#line 137 "tracker-search-tool.gs"
+#line 134 "tracker-search-tool.gs"
 	gtk_window_add_accel_group (window, accel_group);
-#line 138 "tracker-search-tool.gs"
-	gtk_label_set_mnemonic_widget (search_label, (GtkWidget*) entry);
-#line 140 "tracker-search-tool.gs"
+#line 135 "tracker-search-tool.gs"
+	gtk_label_set_mnemonic_widget (search_label, (GtkWidget*) search_entry);
+#line 137 "tracker-search-tool.gs"
 	tracker_query_Connect (query);
-#line 141 "tracker-search-tool.gs"
-	tracker_search_entry_set_Query (entry, query);
-#line 142 "tracker-search-tool.gs"
-	gtk_container_add (entry_box, (GtkWidget*) entry);
-#line 146 "tracker-search-tool.gs"
+#line 138 "tracker-search-tool.gs"
+	tracker_search_entry_set_Query (search_entry, query);
+#line 139 "tracker-search-tool.gs"
+	gtk_container_add (entry_box, (GtkWidget*) search_entry);
+#line 143 "tracker-search-tool.gs"
 	gtk_accelerator_parse ("<Ctrl>s", &keyval, &mods);
-#line 147 "tracker-search-tool.gs"
+#line 144 "tracker-search-tool.gs"
+	entry = (_tmp11_ = _g_object_ref0 ((_tmp10_ = gtk_bin_get_child ((GtkBin*) search_entry), GTK_IS_ENTRY (_tmp10_) ? ((GtkEntry*) _tmp10_) : NULL)), _g_object_unref0 (entry), _tmp11_);
+#line 145 "tracker-search-tool.gs"
 	gtk_widget_add_accelerator ((GtkWidget*) entry, "activate", accel_group, keyval, mods, GTK_ACCEL_VISIBLE | GTK_ACCEL_LOCKED);
-#line 149 "tracker-search-tool.gs"
+#line 148 "tracker-search-tool.gs"
 	tracker_result_grid_set_Query (grid, query);
-#line 150 "tracker-search-tool.gs"
+#line 149 "tracker-search-tool.gs"
 	gtk_container_add (grid_box, (GtkWidget*) grid);
-#line 152 "tracker-search-tool.gs"
+#line 151 "tracker-search-tool.gs"
 	tracker_category_view_set_Query (categories, query);
-#line 153 "tracker-search-tool.gs"
+#line 152 "tracker-search-tool.gs"
 	gtk_container_add (category_box, (GtkWidget*) categories);
-#line 155 "tracker-search-tool.gs"
+#line 154 "tracker-search-tool.gs"
 	tracker_metadata_tile_set_ResultGrid (tile, grid);
-#line 156 "tracker-search-tool.gs"
+#line 155 "tracker-search-tool.gs"
 	tracker_metadata_tile_set_Query (tile, query);
-#line 158 "tracker-search-tool.gs"
+#line 157 "tracker-search-tool.gs"
 	a = g_object_ref_sink ((GtkAlignment*) gtk_alignment_new (0.5f, 0.5f, 1.0f, 0.5f));
-#line 159 "tracker-search-tool.gs"
+#line 158 "tracker-search-tool.gs"
 	gtk_container_add ((GtkContainer*) a, (GtkWidget*) tile);
-#line 160 "tracker-search-tool.gs"
+#line 159 "tracker-search-tool.gs"
 	gtk_box_pack_end ((GtkBox*) main_box, (GtkWidget*) a, FALSE, FALSE, (guint) 0);
-#line 162 "tracker-search-tool.gs"
+#line 161 "tracker-search-tool.gs"
 	gtk_widget_show_all ((GtkWidget*) window);
+#line 163 "tracker-search-tool.gs"
+	if (terms != NULL) {
+#line 678 "tracker-search-tool.c"
+		char* _tmp12_;
 #line 164 "tracker-search-tool.gs"
+		search_string = (_tmp12_ = g_strjoinv (" ", terms), _g_free0 (search_string), _tmp12_);
+#line 165 "tracker-search-tool.gs"
+		gtk_entry_set_text (entry, search_string);
+#line 684 "tracker-search-tool.c"
+	}
+#line 167 "tracker-search-tool.gs"
 	gtk_main ();
-#line 670 "tracker-search-tool.c"
+#line 688 "tracker-search-tool.c"
 	_g_option_context_free0 (option_context);
 	_g_object_unref0 (server);
 	_g_object_unref0 (builder);
 	_g_object_unref0 (accel_group);
-	_g_object_unref0 (query);
 	_g_object_unref0 (entry);
+	_g_object_unref0 (query);
+	_g_object_unref0 (search_entry);
 	_g_object_unref0 (grid);
 	_g_object_unref0 (categories);
 	_g_object_unref0 (tile);
@@ -693,7 +712,7 @@ int main (int argc, char ** argv) {
 	_vala_main (argv, argc);
 #line 48 "tracker-search-tool.gs"
 	return 0;
-#line 697 "tracker-search-tool.c"
+#line 716 "tracker-search-tool.c"
 }
 
 

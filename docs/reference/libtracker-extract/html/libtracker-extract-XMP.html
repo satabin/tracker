@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>XMP</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Tracker Extract Library Reference Manual">
+<link rel="up" href="ch02.html" title="Common Embedded Support">
+<link rel="prev" href="ch02.html" title="Common Embedded Support">
+<link rel="next" href="libtracker-extract-IPTC.html" title="IPTC">
+<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch02.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Extract Library Reference Manual</th>
+<td><a accesskey="n" href="libtracker-extract-IPTC.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libtracker-extract-XMP.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libtracker-extract-XMP.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="XMP">
+<a name="libtracker-extract-XMP"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libtracker-extract-XMP.top_of_page"></a>XMP</span></h2>
+<p>XMP — Extensible Metadata Platform (XMP)</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1" title="Stability Level">
+<a name="libtracker-extract-XMP.stability-level"></a><h2>Stability Level</h2>
+Stable, unless otherwise indicated
+</div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libtracker-extract-XMP.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#include &lt;libtracker-extract/tracker-extract.h&gt;
+
+                    <a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData">TrackerXmpData</a>;
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-read" title="tracker_xmp_read ()">tracker_xmp_read</a>                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-apply" title="tracker_xmp_apply ()">tracker_xmp_apply</a>                   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libtracker-extract-XMP.description"></a><h2>Description</h2>
+<p>
+The Adobe Extensible Metadata Platform (XMP) is a standard, created
+by Adobe Systems Inc., for processing and storing standardized and
+proprietary information relating to the contents of a file.
+</p>
+<p>
+XMP standardizes the definition, creation, and processing of
+extensible metadata. Serialized XMP can be embedded into a
+significant number of popular file formats, without breaking their
+readability by non-XMP-aware applications. Embedding metadata ("the
+truth is in the file") avoids many problems that occur when
+metadata is stored separately. XMP is used in PDF, photography and
+photo editing applications.
+</p>
+<p>
+This API is provided to remove code duplication between extractors
+using these standards.
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libtracker-extract-XMP.details"></a><h2>Details</h2>
+<div class="refsect2" title="TrackerXmpData">
+<a name="TrackerXmpData"></a><h3>TrackerXmpData</h3>
+<pre class="programlisting">typedef struct {
+	/* NS_DC */
+	gchar *title;
+	gchar *rights;
+	gchar *creator;
+	gchar *description;
+	gchar *date;
+	gchar *keywords;
+	gchar *subject;
+
+	gchar *publisher;
+	gchar *contributor;
+	gchar *type;
+	gchar *format;
+	gchar *identifier;
+	gchar *source;
+	gchar *language;
+	gchar *relation;
+	gchar *coverage;
+
+	/* NS_CC */
+	gchar *license;
+
+	/* NS_PDF */
+	gchar *pdf_title;
+	gchar *pdf_keywords;
+
+	/* NS_EXIF */
+	gchar *title2;
+	gchar *time_original;
+	gchar *artist;
+	gchar *make;
+	gchar *model;
+	gchar *orientation;
+	gchar *flash;
+	gchar *metering_mode;
+	gchar *exposure_time;
+	gchar *fnumber;
+	gchar *focal_length;
+
+	gchar *iso_speed_ratings;
+	gchar *white_balance;
+	gchar *copyright;
+
+	/* TODO NS_XAP*/
+	gchar *rating;
+
+	/* TODO NS_IPTC4XMP */
+	/* TODO NS_PHOTOSHOP */
+	gchar *address;
+	gchar *country;
+	gchar *state;
+	gchar *city;
+} TrackerXmpData;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="tracker_xmp_read ()">
+<a name="tracker-xmp-read"></a><h3>tracker_xmp_read ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_xmp_read                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);</pre>
+<p>
+This function takes <em class="parameter"><code>len</code></em> bytes of <em class="parameter"><code>buffer</code></em> and runs it through the
+XMP library. The result is that <em class="parameter"><code>data</code></em> is populated with the XMP
+data found in <em class="parameter"><code>uri</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
+<td>a chunk of data with xmp data in it.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
+<td>the size of <em class="parameter"><code>buffer</code></em>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
+<td>the URI this is related to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>a pointer to a TrackerXmpData structure to populate.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2" title="tracker_xmp_apply ()">
+<a name="tracker-xmp-apply"></a><h3>tracker_xmp_apply ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_xmp_apply                   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);</pre>
+<p>
+This function applies all data in <em class="parameter"><code>data</code></em> to <em class="parameter"><code>metadata</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>metadata</code></em> :</span></p></td>
+<td>the metadata object to apply XMP data to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
+<td>the URI this is related to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>the data to push into <em class="parameter"><code>metadata</code></em>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>data</code></em> was applied to <em class="parameter"><code>metadata</code></em> successfully,
+otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.14</div>
+</body>
+</html>

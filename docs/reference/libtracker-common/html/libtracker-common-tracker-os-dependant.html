@@ -3,19 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>tracker-os-dependant</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
 <link rel="up" href="ch04.html" title="Utilities">
 <link rel="prev" href="libtracker-common-tracker-keyfile-object.html" title="tracker-keyfile-object">
 <link rel="next" href="ch05.html" title="Performance">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libtracker-common.html" title="Part I. Overview">
-<link rel="chapter" href="ch01.html" title="Ontology">
-<link rel="chapter" href="ch02.html" title="Configuration">
-<link rel="chapter" href="ch03.html" title="Communication">
-<link rel="chapter" href="ch04.html" title="Utilities">
-<link rel="chapter" href="ch05.html" title="Performance">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -28,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libtracker-common-tracker-os-dependant.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libtracker-common-tracker-os-dependant.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libtracker-common-tracker-os-dependant.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="tracker-os-dependant">
@@ -43,50 +37,19 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libtracker-common-tracker-os-dependant.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn" title="tracker_spawn ()">tracker_spawn</a>                       (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **argv,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> timeout,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **tmp_stdout,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *exit_status);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn-async-with-channels" title="tracker_spawn_async_with_channels ()">tracker_spawn_async_with_channels</a>   (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **argv,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> timeout,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GPid"
->GPid</a> *pid,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"
->GIOChannel</a> **stdin_channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"
->GIOChannel</a> **stdout_channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"
->GIOChannel</a> **stderr_channel);
-void                <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn-child-func" title="tracker_spawn_child_func ()">tracker_spawn_child_func</a>            (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-create-permission-string" title="tracker_create_permission_string ()">tracker_create_permission_string</a>    (struct stat finfo);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-memory-setrlimits" title="tracker_memory_setrlimits ()">tracker_memory_setrlimits</a>           (void);
+<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn" title="tracker_spawn ()">tracker_spawn</a>                       (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **argv</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **tmp_stdout</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *exit_status</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn-async-with-channels" title="tracker_spawn_async_with_channels ()">tracker_spawn_async_with_channels</a>   (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **argv</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GPid"><span class="type">GPid</span></a> *pid</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stdin_channel</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stdout_channel</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stderr_channel</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn-child-func" title="tracker_spawn_child_func ()">tracker_spawn_child_func</a>            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-create-permission-string" title="tracker_create_permission_string ()">tracker_create_permission_string</a>    (<em class="parameter"><code><span class="type">struct stat</span> finfo</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-memory-setrlimits" title="tracker_memory_setrlimits ()">tracker_memory_setrlimits</a>           (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -98,20 +61,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <a name="libtracker-common-tracker-os-dependant.details"></a><h2>Details</h2>
 <div class="refsect2" title="tracker_spawn ()">
 <a name="tracker-spawn"></a><h3>tracker_spawn ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            tracker_spawn                       (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **argv,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> timeout,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **tmp_stdout,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *exit_status);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_spawn                       (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **argv</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **tmp_stdout</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *exit_status</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -148,26 +101,12 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <hr>
 <div class="refsect2" title="tracker_spawn_async_with_channels ()">
 <a name="tracker-spawn-async-with-channels"></a><h3>tracker_spawn_async_with_channels ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            tracker_spawn_async_with_channels   (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> **argv,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> timeout,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GPid"
->GPid</a> *pid,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"
->GIOChannel</a> **stdin_channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"
->GIOChannel</a> **stdout_channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"
->GIOChannel</a> **stderr_channel);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_spawn_async_with_channels   (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **argv</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GPid"><span class="type">GPid</span></a> *pid</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stdin_channel</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stdout_channel</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stderr_channel</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -214,9 +153,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-IO-Channels.html#GIOChan
 <hr>
 <div class="refsect2" title="tracker_spawn_child_func ()">
 <a name="tracker-spawn-child-func"></a><h3>tracker_spawn_child_func ()</h3>
-<pre class="programlisting">void                tracker_spawn_child_func            (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_spawn_child_func            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -231,9 +168,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="tracker_create_permission_string ()">
 <a name="tracker-create-permission-string"></a><h3>tracker_create_permission_string ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             tracker_create_permission_string    (struct stat finfo);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_create_permission_string    (<em class="parameter"><code><span class="type">struct stat</span> finfo</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -255,9 +190,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" title="tracker_memory_setrlimits ()">
 <a name="tracker-memory-setrlimits"></a><h3>tracker_memory_setrlimits ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            tracker_memory_setrlimits           (void);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_memory_setrlimits           (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -273,6 +206,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.14</div>
 </body>
 </html>

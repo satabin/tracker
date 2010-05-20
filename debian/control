@@ -187,7 +187,8 @@ Architecture: any
 Section: gnome
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         tracker (= ${binary:Version})
+         tracker (= ${binary:Version}),
+         gnome-icon-theme
 Conflicts: tracker-search-tool (<< 0.8.1-1),
            tracker (<< 0.8.1-1)
 Replaces: tracker-search-tool (<< 0.8.1-1),

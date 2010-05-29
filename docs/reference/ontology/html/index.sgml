@@ -374,6 +374,7 @@
 <ANCHOR id="nao-propertyName" href="ontology/nao-properties.html#nao-propertyName">
 <ANCHOR id="nao-prefLabel" href="ontology/nao-properties.html#nao-prefLabel">
 <ANCHOR id="nao-hasTag" href="ontology/nao-properties.html#nao-hasTag">
+<ANCHOR id="nao-description" href="ontology/nao-properties.html#nao-description">
 <ANCHOR id="nao-hasProperty" href="ontology/nao-properties.html#nao-hasProperty">
 <ANCHOR id="nao-propertyValue" href="ontology/nao-properties.html#nao-propertyValue">
 <ANCHOR id="nao-lastModified" href="ontology/nao-properties.html#nao-lastModified">
@@ -753,3 +754,18 @@
 <ANCHOR id="scal-end" href="ontology/scal-properties.html#scal-end">
 <ANCHOR id="scal-member" href="ontology/scal-properties.html#scal-member">
 <ANCHOR id="scal-dateTime" href="ontology/scal-properties.html#scal-dateTime">
+<ANCHOR id="dc-creator" href="ontology/dc-properties.html#dc-creator">
+<ANCHOR id="dc-contributor" href="ontology/dc-properties.html#dc-contributor">
+<ANCHOR id="dc-relation" href="ontology/dc-properties.html#dc-relation">
+<ANCHOR id="dc-source" href="ontology/dc-properties.html#dc-source">
+<ANCHOR id="dc-description" href="ontology/dc-properties.html#dc-description">
+<ANCHOR id="dc-identifier" href="ontology/dc-properties.html#dc-identifier">
+<ANCHOR id="dc-type" href="ontology/dc-properties.html#dc-type">
+<ANCHOR id="dc-date" href="ontology/dc-properties.html#dc-date">
+<ANCHOR id="dc-subject" href="ontology/dc-properties.html#dc-subject">
+<ANCHOR id="dc-rights" href="ontology/dc-properties.html#dc-rights">
+<ANCHOR id="dc-format" href="ontology/dc-properties.html#dc-format">
+<ANCHOR id="dc-coverage" href="ontology/dc-properties.html#dc-coverage">
+<ANCHOR id="dc-publisher" href="ontology/dc-properties.html#dc-publisher">
+<ANCHOR id="dc-language" href="ontology/dc-properties.html#dc-language">
+<ANCHOR id="dc-title" href="ontology/dc-properties.html#dc-title">

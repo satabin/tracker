@@ -65,6 +65,10 @@
         <sub name="SCAL Ontology Classes" link="scal-ontology.html#scal-classes"/>
         <sub name="SCAL Ontology Properties" link="scal-properties.html"/>
       </sub>
+      <sub name="DC Ontology" link="dc-ontology.html">
+        <sub name="DC Ontology Classes" link="dc-ontology.html#dc-classes"/>
+        <sub name="DC Ontology Properties" link="dc-properties.html"/>
+      </sub>
       <sub name="Full-text indexed properties in the ontology" link="fts-properties.html"/>
     </sub>
     <sub name="Notation" link="ontology-notation-description.html"/>
@@ -447,6 +451,7 @@
     <keyword type="" name="nao:propertyName" link="nao-properties.html#nao-propertyName"/>
     <keyword type="" name="nao:prefLabel" link="nao-properties.html#nao-prefLabel"/>
     <keyword type="" name="nao:hasTag" link="nao-properties.html#nao-hasTag"/>
+    <keyword type="" name="nao:description" link="nao-properties.html#nao-description"/>
     <keyword type="" name="nao:hasProperty" link="nao-properties.html#nao-hasProperty"/>
     <keyword type="" name="nao:propertyValue" link="nao-properties.html#nao-propertyValue"/>
     <keyword type="" name="nao:lastModified" link="nao-properties.html#nao-lastModified"/>
@@ -826,5 +831,20 @@
     <keyword type="" name="scal:end" link="scal-properties.html#scal-end"/>
     <keyword type="" name="scal:member" link="scal-properties.html#scal-member"/>
     <keyword type="" name="scal:dateTime" link="scal-properties.html#scal-dateTime"/>
+    <keyword type="" name="dc:creator" link="dc-properties.html#dc-creator"/>
+    <keyword type="" name="dc:contributor" link="dc-properties.html#dc-contributor"/>
+    <keyword type="" name="dc:relation" link="dc-properties.html#dc-relation"/>
+    <keyword type="" name="dc:source" link="dc-properties.html#dc-source"/>
+    <keyword type="" name="dc:description" link="dc-properties.html#dc-description"/>
+    <keyword type="" name="dc:identifier" link="dc-properties.html#dc-identifier"/>
+    <keyword type="" name="dc:type" link="dc-properties.html#dc-type"/>
+    <keyword type="" name="dc:date" link="dc-properties.html#dc-date"/>
+    <keyword type="" name="dc:subject" link="dc-properties.html#dc-subject"/>
+    <keyword type="" name="dc:rights" link="dc-properties.html#dc-rights"/>
+    <keyword type="" name="dc:format" link="dc-properties.html#dc-format"/>
+    <keyword type="" name="dc:coverage" link="dc-properties.html#dc-coverage"/>
+    <keyword type="" name="dc:publisher" link="dc-properties.html#dc-publisher"/>
+    <keyword type="" name="dc:language" link="dc-properties.html#dc-language"/>
+    <keyword type="" name="dc:title" link="dc-properties.html#dc-title"/>
   </functions>
 </book>

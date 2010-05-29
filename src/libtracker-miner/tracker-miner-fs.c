@@ -1651,12 +1651,13 @@ item_move (TrackerMinerFS *fs,
            GFile          *file,
            GFile          *source_file)
 {
-	gchar     *uri, *source_uri, *escaped_filename;
+	gchar     *uri, *source_uri;
 	GFileInfo *file_info;
 	GString   *sparql;
 	RecursiveMoveData move_data;
 	ProcessData *data;
 	gchar *source_iri;
+	gchar *display_name;
 	gboolean source_exists;
 
 	iri_cache_invalidate (fs, file);
@@ -1745,7 +1746,7 @@ item_move (TrackerMinerFS *fs,
 	                        "} ",
 	                        source_iri, source_iri, source_iri);
 
-	escaped_filename = g_strescape (g_file_info_get_display_name (file_info), NULL);
+	display_name = tracker_sparql_escape (g_file_info_get_display_name (file_info));
 
 	g_string_append_printf (sparql,
 	                        "INSERT INTO <%s> {"
@@ -1754,10 +1755,10 @@ item_move (TrackerMinerFS *fs,
 	                        "       nie:isStoredAs <%s> "
 	                        "} ",
 	                        source_iri, source_iri,
-	                        escaped_filename, uri,
+	                        display_name, uri,
 	                        source_iri);
 
-	g_free (escaped_filename);
+	g_free (display_name);
 
 	move_data.main_loop = g_main_loop_new (NULL, FALSE);
 	move_data.sparql = sparql;

@@ -1,3 +1,100 @@
+2010-05-27  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.8.9
+
+	Updated NEWS
+
+	Fixed changes made to cherry-picked f27579c768e2e86c431dcbfac59dfdc51554b5a4
+	upower/devkit #define breakage
+
+	Release 0.8.8
+
+	Updated NEWS
+
+	Fixed GB#619801 - We need SPARQL escaping for cases where we use g_file_info_get_display_name()
+	This was partially broken by commit b724b6128124f53d8a4053674df7a19ffebe566b
+
+	tracker-search: Don't append "*" to all fts:match queries
+	This means that less results will be returned generally, but it also
+	means the user has the option to add it when they want instead of
+	never be able to remove it.
+
+	tracker-utils: Fixed libtracker-client header includes
+
+	Fixes NB#170915 - tracker-search for snippet is resulting in errors
+
+	tracker-extract: PDF: Don't let the PDF extractor work for more than 5s
+	Fixes NB#167449, don't allow PDF extractor to consume more than 5s
+
+2010-05-27  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#619615: Include DC ontology in gtk-doc documentation
+
+	Fixes GB#619630: HTML extractor inserts several nie:title if title has an ampersand character
+
+2010-05-27  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: TIFF: Bugfix NB#168740, uri used as fullname for artists in tiff
+
+2010-05-27  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-data: minor improvement in error reporting
+
+2010-05-27  Jürg Billeter  <j@bitron.ch>
+
+	Update .gitignore
+
+	libtracker-data: Fix backup test to properly shutdown libtracker-data
+
+	tests: Do not remove temporary data asynchronously
+	Removing temporary data asynchronously can lead to race conditions.
+
+2010-05-27  Frederic Crozat  <fcrozat@mandriva.com>
+
+	Fixes GB#616540: Add missing conversion to UTF-8 for directory names
+
+2010-05-27  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#617812: Tracker not disabled when started on battery power
+		* FS miner reads battery-related conf and acts based on the configured
+		parameters.
+
+		* The first index done is detected based on a new .firstindex stamp
+		file created in $cachedir/tracker/ when the FS miner finishes a full
+		index (only if the file is not already there). When a re-index is
+		forced or database files removed, that file is also removed so that
+		the miner detects it and a new first full index is done.
+
+		* Miner-FS is now linked to libtracker-db, so that it can use the new
+		API methods to check if the first index was done, and to set the first
+		index as done.
+
+2010-05-27  Tshepang Lekhonkhobe  <tshepang@gmail.com>
+
+	Fixes GB#619487: re-enable search with terms that got _underscores
+
+2010-05-27  Frederic Crozat  <fcrozat@mandriva.com>
+
+	do not escape display_name, it is already encoded in UTF-8
+	https://bugzilla.gnome.org/show_bug.cgi?id=619280
+
+2010-05-27  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-extract: XMP: Protect against division by zero
+
+	tracker-writeback: XMP: Don't writeback fields that are typically set by the camera itself
+
+	tracker-extract: XMP: Fix strings that go like "n1/n2" that are xsd:double
+
+	tracker-extract: playlist: Bugfix NB#169460, nmm:PlayList is the highest level
+	nmm:PlayList is the highest level for playlists for music pieces, not just
+	nfo:MediaList
+
+2010-05-26  Claude Paroz  <claude@2xlibre.net>
+
+	Updated French translation
+	Contributed by Claude Paroz and Bruno Brouard
+
 2010-05-20  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.8.7

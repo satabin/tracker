@@ -265,123 +265,135 @@ static gboolean tracker_search_entry_run_query (TrackerSearchEntry* self) {
 #line 266 "tracker-entry.c"
 			}
 #line 89 "tracker-entry.gs"
-			txt = (_tmp2_ = string_slice (txt, (glong) 1, len--), _g_free0 (txt), _tmp2_);
+			if (g_utf8_get_char (g_utf8_offset_to_pointer (txt, 0)) == '_') {
 #line 90 "tracker-entry.gs"
-			if (len < 3) {
+				break;
 #line 272 "tracker-entry.c"
+			}
+#line 91 "tracker-entry.gs"
+			txt = (_tmp2_ = string_slice (txt, (glong) 1, len--), _g_free0 (txt), _tmp2_);
+#line 92 "tracker-entry.gs"
+			if (len < 3) {
+#line 278 "tracker-entry.c"
 				result = FALSE;
 				_g_free0 (txt);
-#line 91 "tracker-entry.gs"
+#line 93 "tracker-entry.gs"
 				return result;
-#line 277 "tracker-entry.c"
+#line 283 "tracker-entry.c"
 			}
 		}
-#line 94 "tracker-entry.gs"
-		if (!g_unichar_isalnum (g_utf8_get_char (g_utf8_offset_to_pointer (txt, len - 1)))) {
-#line 95 "tracker-entry.gs"
-			while (TRUE) {
-#line 284 "tracker-entry.c"
-				char* _tmp3_;
-#line 95 "tracker-entry.gs"
-				if (!(!g_unichar_isalnum (g_utf8_get_char (g_utf8_offset_to_pointer (txt, len - 2))))) {
-#line 95 "tracker-entry.gs"
-					break;
-#line 290 "tracker-entry.c"
-				}
 #line 96 "tracker-entry.gs"
-				txt = (_tmp3_ = string_slice (txt, (glong) 0, len - 2), _g_free0 (txt), _tmp3_);
+		if (!g_unichar_isalnum (g_utf8_get_char (g_utf8_offset_to_pointer (txt, len - 1)))) {
 #line 97 "tracker-entry.gs"
-				len--;
+			while (TRUE) {
+#line 290 "tracker-entry.c"
+				char* _tmp3_;
+#line 97 "tracker-entry.gs"
+				if (!(!g_unichar_isalnum (g_utf8_get_char (g_utf8_offset_to_pointer (txt, len - 2))))) {
+#line 97 "tracker-entry.gs"
+					break;
+#line 296 "tracker-entry.c"
+				}
 #line 98 "tracker-entry.gs"
+				if (g_utf8_get_char (g_utf8_offset_to_pointer (txt, len - 2)) == '_') {
+#line 99 "tracker-entry.gs"
+					break;
+#line 302 "tracker-entry.c"
+				}
+#line 100 "tracker-entry.gs"
+				txt = (_tmp3_ = string_slice (txt, (glong) 0, len - 2), _g_free0 (txt), _tmp3_);
+#line 101 "tracker-entry.gs"
+				len--;
+#line 102 "tracker-entry.gs"
 				if (len < 3) {
-#line 298 "tracker-entry.c"
+#line 310 "tracker-entry.c"
 					result = FALSE;
 					_g_free0 (txt);
-#line 99 "tracker-entry.gs"
+#line 103 "tracker-entry.gs"
 					return result;
-#line 303 "tracker-entry.c"
+#line 315 "tracker-entry.c"
 				}
 			}
 		}
-#line 102 "tracker-entry.gs"
+#line 106 "tracker-entry.gs"
 		tracker_query_set_SearchTerms (self->priv->_Query, _tmp4_ = tracker_utils_EscapeSparql (txt, TRUE));
-#line 309 "tracker-entry.c"
+#line 321 "tracker-entry.c"
 		_g_free0 (_tmp4_);
 		{
 			GeeIterator* _item_it;
 			_item_it = gee_abstract_collection_iterator ((GeeAbstractCollection*) self->history);
-#line 105 "tracker-entry.gs"
+#line 109 "tracker-entry.gs"
 			while (TRUE) {
-#line 316 "tracker-entry.c"
-				char* item;
-#line 105 "tracker-entry.gs"
-				if (!gee_iterator_next (_item_it)) {
-#line 105 "tracker-entry.gs"
-					break;
-#line 322 "tracker-entry.c"
-				}
-#line 105 "tracker-entry.gs"
-				item = (char*) gee_iterator_get (_item_it);
-#line 106 "tracker-entry.gs"
-				if (_vala_strcmp0 (txt, item) == 0) {
 #line 328 "tracker-entry.c"
+				char* item;
+#line 109 "tracker-entry.gs"
+				if (!gee_iterator_next (_item_it)) {
+#line 109 "tracker-entry.gs"
+					break;
+#line 334 "tracker-entry.c"
+				}
+#line 109 "tracker-entry.gs"
+				item = (char*) gee_iterator_get (_item_it);
+#line 110 "tracker-entry.gs"
+				if (_vala_strcmp0 (txt, item) == 0) {
+#line 340 "tracker-entry.c"
 					result = FALSE;
 					_g_free0 (item);
 					_g_object_unref0 (_item_it);
 					_g_free0 (txt);
-#line 107 "tracker-entry.gs"
+#line 111 "tracker-entry.gs"
 					return result;
-#line 335 "tracker-entry.c"
+#line 347 "tracker-entry.c"
 				}
 				_g_free0 (item);
 			}
 			_g_object_unref0 (_item_it);
 		}
-#line 109 "tracker-entry.gs"
+#line 113 "tracker-entry.gs"
 		gee_abstract_collection_add ((GeeAbstractCollection*) self->history, txt);
-#line 110 "tracker-entry.gs"
+#line 114 "tracker-entry.gs"
 		gtk_combo_box_prepend_text ((GtkComboBox*) self, txt);
-#line 345 "tracker-entry.c"
+#line 357 "tracker-entry.c"
 	}
 	result = FALSE;
 	_g_free0 (txt);
-#line 112 "tracker-entry.gs"
+#line 116 "tracker-entry.gs"
 	return result;
-#line 351 "tracker-entry.c"
+#line 363 "tracker-entry.c"
 }
 
 
-#line 114 "tracker-entry.gs"
-static void tracker_search_entry_real_sync_action_properties (GtkActivatable* base, GtkAction* action) {
-#line 357 "tracker-entry.c"
-	TrackerSearchEntry * self;
-	self = (TrackerSearchEntry*) base;
-#line 114 "tracker-entry.gs"
-	g_return_if_fail (action != NULL);
-#line 115 "tracker-entry.gs"
-	return;
-#line 364 "tracker-entry.c"
-}
-
-
-#line 117 "tracker-entry.gs"
-static void tracker_search_entry_real_update (GtkActivatable* base, GtkAction* action, const char* prop) {
-#line 370 "tracker-entry.c"
-	TrackerSearchEntry * self;
-	self = (TrackerSearchEntry*) base;
-#line 117 "tracker-entry.gs"
-	g_return_if_fail (action != NULL);
-#line 117 "tracker-entry.gs"
-	g_return_if_fail (prop != NULL);
 #line 118 "tracker-entry.gs"
+static void tracker_search_entry_real_sync_action_properties (GtkActivatable* base, GtkAction* action) {
+#line 369 "tracker-entry.c"
+	TrackerSearchEntry * self;
+	self = (TrackerSearchEntry*) base;
+#line 118 "tracker-entry.gs"
+	g_return_if_fail (action != NULL);
+#line 119 "tracker-entry.gs"
 	return;
-#line 379 "tracker-entry.c"
+#line 376 "tracker-entry.c"
+}
+
+
+#line 121 "tracker-entry.gs"
+static void tracker_search_entry_real_update (GtkActivatable* base, GtkAction* action, const char* prop) {
+#line 382 "tracker-entry.c"
+	TrackerSearchEntry * self;
+	self = (TrackerSearchEntry*) base;
+#line 121 "tracker-entry.gs"
+	g_return_if_fail (action != NULL);
+#line 121 "tracker-entry.gs"
+	g_return_if_fail (prop != NULL);
+#line 122 "tracker-entry.gs"
+	return;
+#line 391 "tracker-entry.c"
 }
 
 
 #line 30 "tracker-entry.gs"
 TrackerSearchEntry* tracker_search_entry_construct (GType object_type) {
-#line 385 "tracker-entry.c"
+#line 397 "tracker-entry.c"
 	TrackerSearchEntry * self;
 	self = g_object_newv (object_type, 0, NULL);
 	return self;
@@ -392,7 +404,7 @@ TrackerSearchEntry* tracker_search_entry_construct (GType object_type) {
 TrackerSearchEntry* tracker_search_entry_new (void) {
 #line 30 "tracker-entry.gs"
 	return tracker_search_entry_construct (TYPE_TRACKER_SEARCH_ENTRY);
-#line 396 "tracker-entry.c"
+#line 408 "tracker-entry.c"
 }
 
 
@@ -402,7 +414,7 @@ TrackerQuery* tracker_search_entry_get_Query (TrackerSearchEntry* self) {
 	result = self->priv->_Query;
 #line 35 "tracker-entry.gs"
 	return result;
-#line 406 "tracker-entry.c"
+#line 418 "tracker-entry.c"
 }
 
 
@@ -420,14 +432,14 @@ static gpointer _g_object_ref0 (gpointer self) {
 
 #line 72 "tracker-entry.gs"
 static void _tracker_search_entry_entry_activate_gtk_entry_activate (GtkEntry* _sender, gpointer self) {
-#line 424 "tracker-entry.c"
+#line 436 "tracker-entry.c"
 	tracker_search_entry_entry_activate (self);
 }
 
 
 #line 61 "tracker-entry.gs"
 static void _tracker_search_entry_entry_changed_gtk_editable_changed (GtkEntry* _sender, gpointer self) {
-#line 431 "tracker-entry.c"
+#line 443 "tracker-entry.c"
 	tracker_search_entry_entry_changed (self);
 }
 
@@ -438,14 +450,14 @@ static void _lambda1_ (GtkEntryIconPosition p0, TrackerSearchEntry* self) {
 	if (p0 == GTK_ENTRY_ICON_SECONDARY) {
 #line 57 "tracker-entry.gs"
 		gtk_entry_set_text (self->entry, "");
-#line 442 "tracker-entry.c"
+#line 454 "tracker-entry.c"
 	}
 }
 
 
 #line 55 "tracker-entry.gs"
 static void __lambda1__gtk_entry_icon_press (GtkEntry* _sender, GtkEntryIconPosition p0, GdkEvent* p1, gpointer self) {
-#line 449 "tracker-entry.c"
+#line 461 "tracker-entry.c"
 	_lambda1_ (p0, self);
 }
 
@@ -493,7 +505,7 @@ static GObject * tracker_search_entry_constructor (GType type, guint n_construct
 		g_signal_connect_object (self->entry, "icon-press", (GCallback) __lambda1__gtk_entry_icon_press, self, 0);
 #line 59 "tracker-entry.gs"
 		self->history = (_tmp2_ = gee_array_list_new (G_TYPE_STRING, (GBoxedCopyFunc) g_strdup, g_free, g_str_equal), _g_object_unref0 (self->history), _tmp2_);
-#line 497 "tracker-entry.c"
+#line 509 "tracker-entry.c"
 		_g_object_unref0 (model);
 		_g_object_unref0 (completion);
 	}

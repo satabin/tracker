@@ -606,7 +606,6 @@ static void tracker_metadata_tile_DisplayFileDetails (TrackerMetadataTile* self,
 #line 607 "tracker-metadata-tile.c"
 	GError * _inner_error_;
 	GFile* file;
-	char* filepath;
 	GFile* displaypath;
 	char* _tmp0_;
 	char* _tmp1_;
@@ -619,59 +618,57 @@ static void tracker_metadata_tile_DisplayFileDetails (TrackerMetadataTile* self,
 	g_return_if_fail (uri != NULL);
 #line 273 "tracker-metadata-tile.gs"
 	g_return_if_fail (mime != NULL);
-#line 623 "tracker-metadata-tile.c"
+#line 622 "tracker-metadata-tile.c"
 	_inner_error_ = NULL;
 #line 274 "tracker-metadata-tile.gs"
 	file = g_file_new_for_uri (uri);
 #line 275 "tracker-metadata-tile.gs"
-	filepath = g_file_get_basename (file);
-#line 276 "tracker-metadata-tile.gs"
 	displaypath = g_file_get_parent (file);
-#line 278 "tracker-metadata-tile.gs"
+#line 277 "tracker-metadata-tile.gs"
 	gtk_link_button_set_uri (self->name_link, uri);
-#line 279 "tracker-metadata-tile.gs"
-	gtk_button_set_label ((GtkButton*) self->name_link, filepath);
-#line 280 "tracker-metadata-tile.gs"
+#line 278 "tracker-metadata-tile.gs"
 	gtk_link_button_set_uri (self->path_link, _tmp0_ = g_file_get_uri (displaypath));
-#line 637 "tracker-metadata-tile.c"
+#line 632 "tracker-metadata-tile.c"
 	_g_free0 (_tmp0_);
-#line 281 "tracker-metadata-tile.gs"
-	gtk_button_set_label ((GtkButton*) self->path_link, _tmp1_ = g_file_get_path (displaypath));
-#line 641 "tracker-metadata-tile.c"
+#line 279 "tracker-metadata-tile.gs"
+	gtk_button_set_label ((GtkButton*) self->path_link, _tmp1_ = g_file_get_parse_name (displaypath));
+#line 636 "tracker-metadata-tile.c"
 	_g_free0 (_tmp1_);
 	link_label = NULL;
-#line 284 "tracker-metadata-tile.gs"
+#line 282 "tracker-metadata-tile.gs"
 	link_label = (_tmp2_ = _g_object_ref0 (GTK_LABEL (gtk_bin_get_child ((GtkBin*) self->path_link))), _g_object_unref0 (link_label), _tmp2_);
+#line 283 "tracker-metadata-tile.gs"
+	gtk_label_set_ellipsize (link_label, PANGO_ELLIPSIZE_MIDDLE);
 #line 285 "tracker-metadata-tile.gs"
-	gtk_label_set_ellipsize (link_label, PANGO_ELLIPSIZE_MIDDLE);
-#line 287 "tracker-metadata-tile.gs"
 	link_label = (_tmp3_ = _g_object_ref0 (GTK_LABEL (gtk_bin_get_child ((GtkBin*) self->name_link))), _g_object_unref0 (link_label), _tmp3_);
-#line 288 "tracker-metadata-tile.gs"
+#line 286 "tracker-metadata-tile.gs"
 	gtk_label_set_ellipsize (link_label, PANGO_ELLIPSIZE_MIDDLE);
-#line 290 "tracker-metadata-tile.gs"
+#line 288 "tracker-metadata-tile.gs"
 	tracker_metadata_tile_SetLabelValue (self, self->info_value1, mime);
-#line 654 "tracker-metadata-tile.c"
+#line 649 "tracker-metadata-tile.c"
 	{
 		GFileInfo* info;
 		GTimeVal tm = {0};
 		char* _tmp4_;
 		char* _tmp5_;
 		char* val3;
-#line 293 "tracker-metadata-tile.gs"
-		info = g_file_query_info (file, "standard::size,time::modified", G_FILE_QUERY_INFO_NONE, NULL, &_inner_error_);
-#line 663 "tracker-metadata-tile.c"
+#line 291 "tracker-metadata-tile.gs"
+		info = g_file_query_info (file, "standard::size,time::modified,standard::display-name", G_FILE_QUERY_INFO_NONE, NULL, &_inner_error_);
+#line 658 "tracker-metadata-tile.c"
 		if (_inner_error_ != NULL) {
 			goto __catch8_g_error;
 		}
-#line 296 "tracker-metadata-tile.gs"
+#line 294 "tracker-metadata-tile.gs"
 		tracker_metadata_tile_SetLabelSizeValue (self, self->info_value2, g_file_info_get_size (info));
-#line 299 "tracker-metadata-tile.gs"
+#line 295 "tracker-metadata-tile.gs"
+		gtk_button_set_label ((GtkButton*) self->name_link, g_file_info_get_display_name (info));
+#line 298 "tracker-metadata-tile.gs"
 		g_file_info_get_modification_time (info, &tm);
-#line 301 "tracker-metadata-tile.gs"
+#line 300 "tracker-metadata-tile.gs"
 		val3 = (_tmp5_ = g_strdup_printf ("<b>%s</b>", _tmp4_ = g_time_val_to_iso8601 (&tm)), _g_free0 (_tmp4_), _tmp5_);
-#line 303 "tracker-metadata-tile.gs"
+#line 302 "tracker-metadata-tile.gs"
 		gtk_label_set_markup (self->info_value3, val3);
-#line 675 "tracker-metadata-tile.c"
+#line 672 "tracker-metadata-tile.c"
 		_g_object_unref0 (info);
 		_g_free0 (val3);
 	}
@@ -682,16 +679,21 @@ static void tracker_metadata_tile_DisplayFileDetails (TrackerMetadataTile* self,
 		e = _inner_error_;
 		_inner_error_ = NULL;
 		{
+			char* filepath;
+#line 305 "tracker-metadata-tile.gs"
+			filepath = g_file_get_basename (file);
 #line 306 "tracker-metadata-tile.gs"
+			gtk_button_set_label ((GtkButton*) self->name_link, filepath);
+#line 307 "tracker-metadata-tile.gs"
 			g_print ("Could not get file info for %s\n", uri);
-#line 688 "tracker-metadata-tile.c"
+#line 690 "tracker-metadata-tile.c"
 			_g_error_free0 (e);
+			_g_free0 (filepath);
 		}
 	}
 	__finally8:
 	if (_inner_error_ != NULL) {
 		_g_object_unref0 (file);
-		_g_free0 (filepath);
 		_g_object_unref0 (displaypath);
 		_g_object_unref0 (link_label);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -699,15 +701,14 @@ static void tracker_metadata_tile_DisplayFileDetails (TrackerMetadataTile* self,
 		return;
 	}
 	_g_object_unref0 (file);
-	_g_free0 (filepath);
 	_g_object_unref0 (displaypath);
 	_g_object_unref0 (link_label);
 }
 
 
-#line 309 "tracker-metadata-tile.gs"
+#line 310 "tracker-metadata-tile.gs"
 static void tracker_metadata_tile_DisplayImageDetails (TrackerMetadataTile* self, const char* uri) {
-#line 711 "tracker-metadata-tile.c"
+#line 712 "tracker-metadata-tile.c"
 	char* query;
 	char** _tmp2_;
 	gint _result__length2;
@@ -715,34 +716,34 @@ static void tracker_metadata_tile_DisplayImageDetails (TrackerMetadataTile* self
 	gint _tmp1_;
 	gint _tmp0_;
 	char** _result_;
-#line 309 "tracker-metadata-tile.gs"
-	g_return_if_fail (self != NULL);
-#line 309 "tracker-metadata-tile.gs"
-	g_return_if_fail (uri != NULL);
 #line 310 "tracker-metadata-tile.gs"
+	g_return_if_fail (self != NULL);
+#line 310 "tracker-metadata-tile.gs"
+	g_return_if_fail (uri != NULL);
+#line 311 "tracker-metadata-tile.gs"
 	query = g_strdup_printf ("SELECT nfo:height(?s) nfo:width(?s) WHERE { ?s nie:url \"%s\" }", uri);
-#line 725 "tracker-metadata-tile.c"
+#line 726 "tracker-metadata-tile.c"
 	_result_ = (_tmp2_ = tracker_query_Query (self->priv->_Query, query, &_tmp0_, &_tmp1_), _result__length1 = _tmp0_, _result__length2 = _tmp1_, _tmp2_);
-#line 313 "tracker-metadata-tile.gs"
-	gtk_label_set_text (self->info_label4, N_ ("Height:"));
 #line 314 "tracker-metadata-tile.gs"
+	gtk_label_set_text (self->info_label4, N_ ("Height:"));
+#line 315 "tracker-metadata-tile.gs"
 	gtk_label_set_text (self->info_label5, N_ ("Width:"));
-#line 316 "tracker-metadata-tile.gs"
-	if (_result_ != NULL) {
 #line 317 "tracker-metadata-tile.gs"
-		tracker_metadata_tile_SetLabelValue (self, self->info_value4, _result_[0]);
+	if (_result_ != NULL) {
 #line 318 "tracker-metadata-tile.gs"
+		tracker_metadata_tile_SetLabelValue (self, self->info_value4, _result_[0]);
+#line 319 "tracker-metadata-tile.gs"
 		tracker_metadata_tile_SetLabelValue (self, self->info_value5, _result_[1]);
-#line 737 "tracker-metadata-tile.c"
+#line 738 "tracker-metadata-tile.c"
 	}
 	_g_free0 (query);
 	_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
 }
 
 
-#line 321 "tracker-metadata-tile.gs"
+#line 322 "tracker-metadata-tile.gs"
 static void tracker_metadata_tile_DisplayAudioDetails (TrackerMetadataTile* self, const char* uri) {
-#line 746 "tracker-metadata-tile.c"
+#line 747 "tracker-metadata-tile.c"
 	char* query;
 	char** _tmp2_;
 	gint _result__length2;
@@ -750,39 +751,39 @@ static void tracker_metadata_tile_DisplayAudioDetails (TrackerMetadataTile* self
 	gint _tmp1_;
 	gint _tmp0_;
 	char** _result_;
-#line 321 "tracker-metadata-tile.gs"
-	g_return_if_fail (self != NULL);
-#line 321 "tracker-metadata-tile.gs"
-	g_return_if_fail (uri != NULL);
 #line 322 "tracker-metadata-tile.gs"
+	g_return_if_fail (self != NULL);
+#line 322 "tracker-metadata-tile.gs"
+	g_return_if_fail (uri != NULL);
+#line 323 "tracker-metadata-tile.gs"
 	query = g_strdup_printf ("SELECT nie:title(?s) nmm:performer(?s) nmm:musicAlbum(?s) WHERE { ?s n" \
 "ie:url \"%s\" }", uri);
-#line 760 "tracker-metadata-tile.c"
+#line 761 "tracker-metadata-tile.c"
 	_result_ = (_tmp2_ = tracker_query_Query (self->priv->_Query, query, &_tmp0_, &_tmp1_), _result__length1 = _tmp0_, _result__length2 = _tmp1_, _tmp2_);
-#line 325 "tracker-metadata-tile.gs"
-	gtk_label_set_text (self->info_label4, N_ ("Title:"));
 #line 326 "tracker-metadata-tile.gs"
-	gtk_label_set_text (self->info_label5, N_ ("Artist:"));
+	gtk_label_set_text (self->info_label4, N_ ("Title:"));
 #line 327 "tracker-metadata-tile.gs"
+	gtk_label_set_text (self->info_label5, N_ ("Artist:"));
+#line 328 "tracker-metadata-tile.gs"
 	gtk_label_set_text (self->info_label6, N_ ("Album:"));
-#line 329 "tracker-metadata-tile.gs"
-	if (_result_ != NULL) {
 #line 330 "tracker-metadata-tile.gs"
-		tracker_metadata_tile_SetLabelValue (self, self->info_value4, _result_[0]);
+	if (_result_ != NULL) {
 #line 331 "tracker-metadata-tile.gs"
-		tracker_metadata_tile_SetLabelUrnValue (self, self->info_value5, _result_[1]);
+		tracker_metadata_tile_SetLabelValue (self, self->info_value4, _result_[0]);
 #line 332 "tracker-metadata-tile.gs"
+		tracker_metadata_tile_SetLabelUrnValue (self, self->info_value5, _result_[1]);
+#line 333 "tracker-metadata-tile.gs"
 		tracker_metadata_tile_SetLabelUrnValue (self, self->info_value6, _result_[2]);
-#line 776 "tracker-metadata-tile.c"
+#line 777 "tracker-metadata-tile.c"
 	}
 	_g_free0 (query);
 	_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
 }
 
 
-#line 335 "tracker-metadata-tile.gs"
+#line 336 "tracker-metadata-tile.gs"
 static void tracker_metadata_tile_DisplayVideoDetails (TrackerMetadataTile* self, const char* uri) {
-#line 785 "tracker-metadata-tile.c"
+#line 786 "tracker-metadata-tile.c"
 	char* query;
 	char** _tmp2_;
 	gint _result__length2;
@@ -790,39 +791,39 @@ static void tracker_metadata_tile_DisplayVideoDetails (TrackerMetadataTile* self
 	gint _tmp1_;
 	gint _tmp0_;
 	char** _result_;
-#line 335 "tracker-metadata-tile.gs"
-	g_return_if_fail (self != NULL);
-#line 335 "tracker-metadata-tile.gs"
-	g_return_if_fail (uri != NULL);
 #line 336 "tracker-metadata-tile.gs"
+	g_return_if_fail (self != NULL);
+#line 336 "tracker-metadata-tile.gs"
+	g_return_if_fail (uri != NULL);
+#line 337 "tracker-metadata-tile.gs"
 	query = g_strdup_printf ("SELECT nfo:height(?s) nfo:width(?s) nfo:duration (?s) WHERE { ?s nie:u" \
 "rl \"%s\" }", uri);
-#line 799 "tracker-metadata-tile.c"
+#line 800 "tracker-metadata-tile.c"
 	_result_ = (_tmp2_ = tracker_query_Query (self->priv->_Query, query, &_tmp0_, &_tmp1_), _result__length1 = _tmp0_, _result__length2 = _tmp1_, _tmp2_);
-#line 339 "tracker-metadata-tile.gs"
-	gtk_label_set_text (self->info_label4, N_ ("Height:"));
 #line 340 "tracker-metadata-tile.gs"
-	gtk_label_set_text (self->info_label5, N_ ("Width:"));
+	gtk_label_set_text (self->info_label4, N_ ("Height:"));
 #line 341 "tracker-metadata-tile.gs"
+	gtk_label_set_text (self->info_label5, N_ ("Width:"));
+#line 342 "tracker-metadata-tile.gs"
 	gtk_label_set_text (self->info_label6, N_ ("Duration:"));
-#line 343 "tracker-metadata-tile.gs"
-	if (_result_ != NULL) {
 #line 344 "tracker-metadata-tile.gs"
-		tracker_metadata_tile_SetLabelValue (self, self->info_value4, _result_[0]);
+	if (_result_ != NULL) {
 #line 345 "tracker-metadata-tile.gs"
-		tracker_metadata_tile_SetLabelValue (self, self->info_value5, _result_[1]);
+		tracker_metadata_tile_SetLabelValue (self, self->info_value4, _result_[0]);
 #line 346 "tracker-metadata-tile.gs"
+		tracker_metadata_tile_SetLabelValue (self, self->info_value5, _result_[1]);
+#line 347 "tracker-metadata-tile.gs"
 		tracker_metadata_tile_SetLabelValue (self, self->info_value6, _result_[2]);
-#line 815 "tracker-metadata-tile.c"
+#line 816 "tracker-metadata-tile.c"
 	}
 	_g_free0 (query);
 	_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
 }
 
 
-#line 349 "tracker-metadata-tile.gs"
+#line 350 "tracker-metadata-tile.gs"
 static void tracker_metadata_tile_DisplayDocumentDetails (TrackerMetadataTile* self, const char* uri) {
-#line 824 "tracker-metadata-tile.c"
+#line 825 "tracker-metadata-tile.c"
 	char* query;
 	char** _tmp2_;
 	gint _result__length2;
@@ -830,123 +831,123 @@ static void tracker_metadata_tile_DisplayDocumentDetails (TrackerMetadataTile* s
 	gint _tmp1_;
 	gint _tmp0_;
 	char** _result_;
-#line 349 "tracker-metadata-tile.gs"
-	g_return_if_fail (self != NULL);
-#line 349 "tracker-metadata-tile.gs"
-	g_return_if_fail (uri != NULL);
 #line 350 "tracker-metadata-tile.gs"
+	g_return_if_fail (self != NULL);
+#line 350 "tracker-metadata-tile.gs"
+	g_return_if_fail (uri != NULL);
+#line 351 "tracker-metadata-tile.gs"
 	query = g_strdup_printf ("SELECT nie:title(?s) nco:creator(?s) nfo:pageCount (?s) WHERE { ?s nie" \
 ":url \"%s\" }", uri);
-#line 838 "tracker-metadata-tile.c"
+#line 839 "tracker-metadata-tile.c"
 	_result_ = (_tmp2_ = tracker_query_Query (self->priv->_Query, query, &_tmp0_, &_tmp1_), _result__length1 = _tmp0_, _result__length2 = _tmp1_, _tmp2_);
-#line 353 "tracker-metadata-tile.gs"
-	gtk_label_set_text (self->info_label4, N_ ("Title:"));
 #line 354 "tracker-metadata-tile.gs"
-	gtk_label_set_text (self->info_label5, N_ ("Author:"));
+	gtk_label_set_text (self->info_label4, N_ ("Title:"));
 #line 355 "tracker-metadata-tile.gs"
+	gtk_label_set_text (self->info_label5, N_ ("Author:"));
+#line 356 "tracker-metadata-tile.gs"
 	gtk_label_set_text (self->info_label6, N_ ("Page count:"));
-#line 357 "tracker-metadata-tile.gs"
-	if (_result_ != NULL) {
 #line 358 "tracker-metadata-tile.gs"
-		tracker_metadata_tile_SetLabelValue (self, self->info_value4, _result_[0]);
+	if (_result_ != NULL) {
 #line 359 "tracker-metadata-tile.gs"
-		tracker_metadata_tile_SetLabelValue (self, self->info_value5, _result_[1]);
+		tracker_metadata_tile_SetLabelValue (self, self->info_value4, _result_[0]);
 #line 360 "tracker-metadata-tile.gs"
+		tracker_metadata_tile_SetLabelValue (self, self->info_value5, _result_[1]);
+#line 361 "tracker-metadata-tile.gs"
 		tracker_metadata_tile_SetLabelValue (self, self->info_value6, _result_[2]);
-#line 854 "tracker-metadata-tile.c"
+#line 855 "tracker-metadata-tile.c"
 	}
 	_g_free0 (query);
 	_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
 }
 
 
-#line 363 "tracker-metadata-tile.gs"
+#line 364 "tracker-metadata-tile.gs"
 void tracker_metadata_tile_LoadUri (TrackerMetadataTile* self, GtkTreePath* path) {
-#line 863 "tracker-metadata-tile.c"
+#line 864 "tracker-metadata-tile.c"
 	GtkTreeIter iter = {0};
 	const char* id;
 	const char* uri;
 	const char* mime;
 	GdkPixbuf* icon;
 	Categories cat;
-#line 363 "tracker-metadata-tile.gs"
-	g_return_if_fail (self != NULL);
 #line 364 "tracker-metadata-tile.gs"
+	g_return_if_fail (self != NULL);
+#line 365 "tracker-metadata-tile.gs"
 	tracker_metadata_tile_ClearLabels (self);
-#line 366 "tracker-metadata-tile.gs"
-	if (path == NULL) {
 #line 367 "tracker-metadata-tile.gs"
-		gtk_image_set_from_icon_name (self->image, "text-x-generic", GTK_ICON_SIZE_DIALOG);
+	if (path == NULL) {
 #line 368 "tracker-metadata-tile.gs"
+		gtk_image_set_from_icon_name (self->image, "text-x-generic", GTK_ICON_SIZE_DIALOG);
+#line 369 "tracker-metadata-tile.gs"
 		return;
-#line 880 "tracker-metadata-tile.c"
+#line 881 "tracker-metadata-tile.c"
 	}
-#line 370 "tracker-metadata-tile.gs"
-	gtk_widget_set_sensitive ((GtkWidget*) self->name_link, TRUE);
 #line 371 "tracker-metadata-tile.gs"
+	gtk_widget_set_sensitive ((GtkWidget*) self->name_link, TRUE);
+#line 372 "tracker-metadata-tile.gs"
 	gtk_widget_set_sensitive ((GtkWidget*) self->path_link, TRUE);
-#line 886 "tracker-metadata-tile.c"
+#line 887 "tracker-metadata-tile.c"
 	id = NULL;
 	uri = NULL;
 	mime = NULL;
 	icon = NULL;
-#line 377 "tracker-metadata-tile.gs"
-	gtk_tree_model_get_iter ((GtkTreeModel*) self->priv->_result_grid->store, &iter, path);
 #line 378 "tracker-metadata-tile.gs"
+	gtk_tree_model_get_iter ((GtkTreeModel*) self->priv->_result_grid->store, &iter, path);
+#line 379 "tracker-metadata-tile.gs"
 	gtk_tree_model_get ((GtkTreeModel*) self->priv->_result_grid->store, &iter, RESULT_COLUMNS_Id, &id, RESULT_COLUMNS_Uri, &uri, RESULT_COLUMNS_Mime, &mime, RESULT_COLUMNS_Icon, &icon, -1);
-#line 381 "tracker-metadata-tile.gs"
+#line 382 "tracker-metadata-tile.gs"
 	cat = tracker_metadata_tile_GetCategory (self, uri);
-#line 383 "tracker-metadata-tile.gs"
-	if (cat != CATEGORIES_Application) {
 #line 384 "tracker-metadata-tile.gs"
-		tracker_metadata_tile_DisplayFileDetails (self, uri, mime);
+	if (cat != CATEGORIES_Application) {
 #line 385 "tracker-metadata-tile.gs"
+		tracker_metadata_tile_DisplayFileDetails (self, uri, mime);
+#line 386 "tracker-metadata-tile.gs"
 		gtk_image_set_from_pixbuf (self->image, icon);
-#line 903 "tracker-metadata-tile.c"
+#line 904 "tracker-metadata-tile.c"
 	}
-#line 387 "tracker-metadata-tile.gs"
+#line 388 "tracker-metadata-tile.gs"
 	switch (cat) {
-#line 907 "tracker-metadata-tile.c"
+#line 908 "tracker-metadata-tile.c"
 		case CATEGORIES_Audio:
 		{
-#line 388 "tracker-metadata-tile.gs"
+#line 389 "tracker-metadata-tile.gs"
 			tracker_metadata_tile_DisplayAudioDetails (self, uri);
-#line 387 "tracker-metadata-tile.gs"
+#line 388 "tracker-metadata-tile.gs"
 			break;
-#line 914 "tracker-metadata-tile.c"
+#line 915 "tracker-metadata-tile.c"
 		}
 		case CATEGORIES_Video:
 		{
-#line 389 "tracker-metadata-tile.gs"
+#line 390 "tracker-metadata-tile.gs"
 			tracker_metadata_tile_DisplayVideoDetails (self, uri);
-#line 387 "tracker-metadata-tile.gs"
+#line 388 "tracker-metadata-tile.gs"
 			break;
-#line 922 "tracker-metadata-tile.c"
+#line 923 "tracker-metadata-tile.c"
 		}
 		case CATEGORIES_Image:
 		{
-#line 390 "tracker-metadata-tile.gs"
+#line 391 "tracker-metadata-tile.gs"
 			tracker_metadata_tile_DisplayImageDetails (self, uri);
-#line 387 "tracker-metadata-tile.gs"
+#line 388 "tracker-metadata-tile.gs"
 			break;
-#line 930 "tracker-metadata-tile.c"
+#line 931 "tracker-metadata-tile.c"
 		}
 		case CATEGORIES_Document:
 		{
-#line 391 "tracker-metadata-tile.gs"
+#line 392 "tracker-metadata-tile.gs"
 			tracker_metadata_tile_DisplayDocumentDetails (self, uri);
-#line 387 "tracker-metadata-tile.gs"
+#line 388 "tracker-metadata-tile.gs"
 			break;
-#line 938 "tracker-metadata-tile.c"
+#line 939 "tracker-metadata-tile.c"
 		}
 		default:
 		{
 			_g_object_unref0 (icon);
-#line 392 "tracker-metadata-tile.gs"
+#line 393 "tracker-metadata-tile.gs"
 			return;
-#line 387 "tracker-metadata-tile.gs"
+#line 388 "tracker-metadata-tile.gs"
 			break;
-#line 947 "tracker-metadata-tile.c"
+#line 948 "tracker-metadata-tile.c"
 		}
 	}
 	_g_object_unref0 (icon);
@@ -955,7 +956,7 @@ void tracker_metadata_tile_LoadUri (TrackerMetadataTile* self, GtkTreePath* path
 
 #line 30 "tracker-metadata-tile.gs"
 TrackerMetadataTile* tracker_metadata_tile_construct (GType object_type) {
-#line 956 "tracker-metadata-tile.c"
+#line 957 "tracker-metadata-tile.c"
 	TrackerMetadataTile * self;
 	self = g_object_newv (object_type, 0, NULL);
 	return self;
@@ -966,7 +967,7 @@ TrackerMetadataTile* tracker_metadata_tile_construct (GType object_type) {
 TrackerMetadataTile* tracker_metadata_tile_new (void) {
 #line 30 "tracker-metadata-tile.gs"
 	return tracker_metadata_tile_construct (TYPE_TRACKER_METADATA_TILE);
-#line 967 "tracker-metadata-tile.c"
+#line 968 "tracker-metadata-tile.c"
 }
 
 
@@ -976,7 +977,7 @@ TrackerQuery* tracker_metadata_tile_get_Query (TrackerMetadataTile* self) {
 	result = self->priv->_Query;
 #line 62 "tracker-metadata-tile.gs"
 	return result;
-#line 977 "tracker-metadata-tile.c"
+#line 978 "tracker-metadata-tile.c"
 }
 
 
@@ -993,7 +994,7 @@ TrackerResultGrid* tracker_metadata_tile_get_ResultGrid (TrackerMetadataTile* se
 	result = self->priv->_result_grid;
 #line 66 "tracker-metadata-tile.gs"
 	return result;
-#line 994 "tracker-metadata-tile.c"
+#line 995 "tracker-metadata-tile.c"
 }
 
 
@@ -1001,13 +1002,13 @@ TrackerResultGrid* tracker_metadata_tile_get_ResultGrid (TrackerMetadataTile* se
 static void _lambda6_ (GtkTreePath* path, TrackerMetadataTile* self) {
 #line 72 "tracker-metadata-tile.gs"
 	tracker_metadata_tile_LoadUri (self, path);
-#line 1002 "tracker-metadata-tile.c"
+#line 1003 "tracker-metadata-tile.c"
 }
 
 
 #line 71 "tracker-metadata-tile.gs"
 static void __lambda6__tracker_result_grid_selection_changed (TrackerResultGrid* _sender, GtkTreePath* path, gpointer self) {
-#line 1008 "tracker-metadata-tile.c"
+#line 1009 "tracker-metadata-tile.c"
 	_lambda6_ (path, self);
 }
 
@@ -1016,13 +1017,13 @@ void tracker_metadata_tile_set_ResultGrid (TrackerMetadataTile* self, TrackerRes
 	g_return_if_fail (self != NULL);
 #line 68 "tracker-metadata-tile.gs"
 	if (value != NULL) {
-#line 1017 "tracker-metadata-tile.c"
+#line 1018 "tracker-metadata-tile.c"
 		TrackerResultGrid* _tmp0_;
 #line 69 "tracker-metadata-tile.gs"
 		self->priv->_result_grid = (_tmp0_ = _g_object_ref0 (value), _g_object_unref0 (self->priv->_result_grid), _tmp0_);
 #line 71 "tracker-metadata-tile.gs"
 		g_signal_connect_object (self->priv->_result_grid, "selection-changed", (GCallback) __lambda6__tracker_result_grid_selection_changed, self, 0);
-#line 1023 "tracker-metadata-tile.c"
+#line 1024 "tracker-metadata-tile.c"
 	}
 	g_object_notify ((GObject *) self, "ResultGrid");
 }
@@ -1030,7 +1031,7 @@ void tracker_metadata_tile_set_ResultGrid (TrackerMetadataTile* self, TrackerRes
 
 #line 138 "tracker-metadata-tile.gs"
 static gboolean _tracker_metadata_tile_expose_gtk_widget_expose_event (TrackerMetadataTile* _sender, GdkEventExpose* event, gpointer self) {
-#line 1031 "tracker-metadata-tile.c"
+#line 1032 "tracker-metadata-tile.c"
 	return tracker_metadata_tile_expose (self, event);
 }
 
@@ -1151,7 +1152,7 @@ static GObject * tracker_metadata_tile_constructor (GType type, guint n_construc
 		tracker_metadata_tile_AttachToTable (self, self->info_value6, 6, 7, 2, 3, TRUE);
 #line 135 "tracker-metadata-tile.gs"
 		tracker_metadata_tile_ClearLabels (self);
-#line 1152 "tracker-metadata-tile.c"
+#line 1153 "tracker-metadata-tile.c"
 	}
 	return obj;
 }

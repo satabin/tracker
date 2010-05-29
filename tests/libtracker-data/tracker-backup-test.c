@@ -170,6 +170,8 @@ test_backup_and_restore_helper (gboolean journal)
 	g_free (test_schemas[1]);
 
 	g_assert_cmpint (backup_calls, ==, 2);
+
+	tracker_data_manager_shutdown ();
 }
 
 static void
@@ -220,7 +222,7 @@ main (int argc, char **argv)
 
 	/* clean up */
 	g_print ("Removing temporary data\n");
-	g_spawn_command_line_async ("rm -R tracker/", NULL);
+	g_spawn_command_line_sync ("rm -R tracker/", NULL, NULL, NULL, NULL);
 
 	return result;
 }

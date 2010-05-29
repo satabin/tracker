@@ -65,6 +65,10 @@
         <sub name="SCAL Ontology Classes" link="scal-ontology.html#scal-classes"/>
         <sub name="SCAL Ontology Properties" link="scal-properties.html"/>
       </sub>
+      <sub name="DC Ontology" link="dc-ontology.html">
+        <sub name="DC Ontology Classes" link="dc-ontology.html#dc-classes"/>
+        <sub name="DC Ontology Properties" link="dc-properties.html"/>
+      </sub>
       <sub name="Full-text indexed properties in the ontology" link="fts-properties.html"/>
     </sub>
     <sub name="Notation" link="ontology-notation-description.html"/>
@@ -447,6 +451,7 @@
     <function name="nao:propertyName" link="nao-properties.html#nao-propertyName"/>
     <function name="nao:prefLabel" link="nao-properties.html#nao-prefLabel"/>
     <function name="nao:hasTag" link="nao-properties.html#nao-hasTag"/>
+    <function name="nao:description" link="nao-properties.html#nao-description"/>
     <function name="nao:hasProperty" link="nao-properties.html#nao-hasProperty"/>
     <function name="nao:propertyValue" link="nao-properties.html#nao-propertyValue"/>
     <function name="nao:lastModified" link="nao-properties.html#nao-lastModified"/>
@@ -826,5 +831,20 @@
     <function name="scal:end" link="scal-properties.html#scal-end"/>
     <function name="scal:member" link="scal-properties.html#scal-member"/>
     <function name="scal:dateTime" link="scal-properties.html#scal-dateTime"/>
+    <function name="dc:creator" link="dc-properties.html#dc-creator"/>
+    <function name="dc:contributor" link="dc-properties.html#dc-contributor"/>
+    <function name="dc:relation" link="dc-properties.html#dc-relation"/>
+    <function name="dc:source" link="dc-properties.html#dc-source"/>
+    <function name="dc:description" link="dc-properties.html#dc-description"/>
+    <function name="dc:identifier" link="dc-properties.html#dc-identifier"/>
+    <function name="dc:type" link="dc-properties.html#dc-type"/>
+    <function name="dc:date" link="dc-properties.html#dc-date"/>
+    <function name="dc:subject" link="dc-properties.html#dc-subject"/>
+    <function name="dc:rights" link="dc-properties.html#dc-rights"/>
+    <function name="dc:format" link="dc-properties.html#dc-format"/>
+    <function name="dc:coverage" link="dc-properties.html#dc-coverage"/>
+    <function name="dc:publisher" link="dc-properties.html#dc-publisher"/>
+    <function name="dc:language" link="dc-properties.html#dc-language"/>
+    <function name="dc:title" link="dc-properties.html#dc-title"/>
   </functions>
 </book>

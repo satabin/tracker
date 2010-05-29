@@ -2,63 +2,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>NAO Ontology Properties</title>
+<title>DC Ontology Properties</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
-<link rel="up" href="nao-ontology.html" title="NAO Ontology">
-<link rel="prev" href="nao-ontology.html" title="NAO Ontology">
-<link rel="next" href="mto-ontology.html" title="MTO Ontology">
+<link rel="up" href="dc-ontology.html" title="DC Ontology">
+<link rel="prev" href="dc-ontology.html" title="DC Ontology">
+<link rel="next" href="fts-properties.html" title="Full-text indexed properties in the ontology">
 <meta name="generator" content="GTK-Doc V1.14 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="nao-ontology.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="nao-ontology.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="dc-ontology.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="dc-ontology.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Tracker Ontology Reference Manual</th>
-<td><a accesskey="n" href="mto-ontology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="fts-properties.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="section" title="NAO Ontology Properties">
+<div class="section" title="DC Ontology Properties">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="nao-properties"></a>NAO Ontology Properties</h2></div></div></div>
-<div class="refsect2" title="nao:numericRating">
-<a name="nao-numericRating"></a><h3>nao:numericRating</h3>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-rdfs:Resource, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-double" title="xsd:double">xsd:double</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="nao:identifier">
-<a name="nao-identifier"></a><h3>nao:identifier</h3>
+<a name="dc-properties"></a>DC Ontology Properties</h2></div></div></div>
+<div class="refsect2" title="dc:creator">
+<a name="dc-creator"></a><h3>dc:creator</h3>
+<p>An entity primarily responsible for making the resource.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -92,9 +58,9 @@ rdfs:Resource, </td>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nao:isRelated">
-<a name="nao-isRelated"></a><h3>nao:isRelated</h3>
-<p>This property defines a symmetric relation between any two resources. In order for this property to be used legally, the relationship must be symmetric.</p>
+<div class="refsect2" title="dc:contributor">
+<a name="dc-contributor"></a><h3>dc:contributor</h3>
+<p>An entity responsible for making contributions to the resource.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -106,69 +72,6 @@ rdfs:Resource, </td>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
 rdfs:Resource, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-rdfs:Resource, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="nao:deprecated">
-<a name="nao-deprecated"></a><h3>nao:deprecated</h3>
-<p>If this property is assigned, the subject class, property, or resource, is deprecated and should not be used in production systems any longer. It may be removed without further notice.</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-rdfs:Resource, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-boolean" title="xsd:boolean">xsd:boolean</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="nao:propertyName">
-<a name="nao-propertyName"></a><h3>nao:propertyName</h3>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nao-ontology.html#nao-Property" title="nao:Property">nao:Property</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -187,8 +90,9 @@ rdfs:Resource, </td>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nao:prefLabel">
-<a name="nao-prefLabel"></a><h3>nao:prefLabel</h3>
+<div class="refsect2" title="dc:relation">
+<a name="dc-relation"></a><h3>dc:relation</h3>
+<p>A related resource.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -199,7 +103,71 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nao-ontology.html#nao-Tag" title="nao:Tag">nao:Tag</a>, </td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="dc:source">
+<a name="dc-source"></a><h3>dc:source</h3>
+<p>A related resource from which the described resource is derived.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="dc:description">
+<a name="dc-description"></a><h3>dc:description</h3>
+<p>An account of the resource.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -218,16 +186,13 @@ rdfs:Resource, </td>
 <td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
 <td>1</td>
 </tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Text indexed</code></em> :</span></p></td>
-<td>This property is indexed, so it can provide results on text search</td>
-</tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nao:hasTag">
-<a name="nao-hasTag"></a><h3>nao:hasTag</h3>
+<div class="refsect2" title="dc:identifier">
+<a name="dc-identifier"></a><h3>dc:identifier</h3>
+<p>An unambiguous reference to the resource within a given context.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -239,38 +204,6 @@ rdfs:Resource, </td>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
 rdfs:Resource, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-rdfs:Resource, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="nao:description">
-<a name="nao-description"></a><h3>nao:description</h3>
-<p>In the context of the social semantic desktop the textual annotation provided via rdfs:comment is meant for technical users, the textual annotation here is aimed at average users and is meant to be used to define custom descriptions of resources on the desktop</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nao-ontology.html#nao-Tag" title="nao:Tag">nao:Tag</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -279,8 +212,7 @@ rdfs:Resource, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>
-rdfs:comment, </td>
+<td>--</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
@@ -290,16 +222,13 @@ rdfs:comment, </td>
 <td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
 <td>1</td>
 </tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Text indexed</code></em> :</span></p></td>
-<td>This property is indexed, so it can provide results on text search</td>
-</tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nao:hasProperty">
-<a name="nao-hasProperty"></a><h3>nao:hasProperty</h3>
+<div class="refsect2" title="dc:type">
+<a name="dc-type"></a><h3>dc:type</h3>
+<p>The nature or genre of the resource.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -310,38 +239,7 @@ rdfs:comment, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="nao-ontology.html#nao-Property" title="nao:Property">nao:Property</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="nao:propertyValue">
-<a name="nao-propertyValue"></a><h3>nao:propertyValue</h3>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nao-ontology.html#nao-Property" title="nao:Property">nao:Property</a>, </td>
+rdfs:Resource, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -356,13 +254,17 @@ rdfs:comment, </td>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
 <td>--</td>
 </tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nao:lastModified">
-<a name="nao-lastModified"></a><h3>nao:lastModified</h3>
-<p>last modification date</p>
+<div class="refsect2" title="dc:date">
+<a name="dc-date"></a><h3>dc:date</h3>
+<p>A point or period of time associated with an event in the lifecycle of the resource.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -382,8 +284,255 @@ rdfs:Resource, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="dc:subject">
+<a name="dc-subject"></a><h3>dc:subject</h3>
+<p>The topic of the resource.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="dc-properties.html#dc-date" title="dc:date">dc:date</a>, </td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="dc:rights">
+<a name="dc-rights"></a><h3>dc:rights</h3>
+<p>Information about rights held in and over the resource.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="dc:format">
+<a name="dc-format"></a><h3>dc:format</h3>
+<p>The file format, physical medium, or dimensions of the resource.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="dc:coverage">
+<a name="dc-coverage"></a><h3>dc:coverage</h3>
+<p>The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="dc:publisher">
+<a name="dc-publisher"></a><h3>dc:publisher</h3>
+<p>An entity responsible for making the resource available.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="dc:language">
+<a name="dc-language"></a><h3>dc:language</h3>
+<p>A language of the resource.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="dc:title">
+<a name="dc-title"></a><h3>dc:title</h3>
+<p>A name given to the resource.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+rdfs:Resource, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>

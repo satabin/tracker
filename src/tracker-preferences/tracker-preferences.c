@@ -563,8 +563,10 @@ void togglebutton_home_toggled_cb (GtkToggleButton* source) {
 
 
 void fill_in_model (GtkListStore* model, GSList* list) {
+	GError * _inner_error_;
 	gint position;
 	g_return_if_fail (model != NULL);
+	_inner_error_ = NULL;
 	position = 0;
 	{
 		GSList* str_collection;
@@ -574,7 +576,17 @@ void fill_in_model (GtkListStore* model, GSList* list) {
 			char* str;
 			str = g_strdup ((const char*) str_it->data);
 			{
-				gtk_list_store_insert_with_values (model, NULL, position++, 0, str, -1);
+				char* _tmp0_;
+				char* _tmp1_;
+				_tmp0_ = g_filename_to_utf8 (str, (gssize) (-1), NULL, NULL, &_inner_error_);
+				if (_inner_error_ != NULL) {
+					_g_free0 (str);
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return;
+				}
+				gtk_list_store_insert_with_values (model, NULL, position++, 0, _tmp1_ = _tmp0_, -1);
+				_g_free0 (_tmp1_);
 				_g_free0 (str);
 			}
 		}

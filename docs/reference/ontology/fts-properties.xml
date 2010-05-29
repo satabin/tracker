@@ -20,6 +20,11 @@
 </tr>
 <tr>
   <td>
+<link linkend='nao-description'>nao:description</link>,   </td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>
 <link linkend='mtp-creator'>mtp:creator</link>,   </td>
   <td>3</td>
 </tr>

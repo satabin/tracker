@@ -53,21 +53,21 @@ data in Tracker.</p>
                     <a class="link" href="libtracker-client-tracker.html#TrackerClientClass" title="TrackerClientClass">TrackerClientClass</a>;
 enum                <a class="link" href="libtracker-client-tracker.html#TrackerClientFlags" title="enum TrackerClientFlags">TrackerClientFlags</a>;
 <a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="returnvalue">TrackerClient</span></a> *     <a class="link" href="libtracker-client-tracker.html#tracker-client-new" title="tracker_client_new ()">tracker_client_new</a>                  (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClientFlags" title="enum TrackerClientFlags"><span class="type">TrackerClientFlags</span></a> flags</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>);
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Object Hierarchy">
 <a name="libtracker-client-tracker.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
    +----TrackerClient
 </pre>
 </div>
 <div class="refsect1" title="Properties">
 <a name="libtracker-client-tracker.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="libtracker-client-tracker.html#TrackerClient--enable-warnings" title='The "enable-warnings" property'>enable-warnings</a>"          <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write / Construct
-  "<a class="link" href="libtracker-client-tracker.html#TrackerClient--timeout" title='The "timeout" property'>timeout</a>"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write / Construct
+  "<a class="link" href="libtracker-client-tracker.html#TrackerClient--enable-warnings" title='The "enable-warnings" property'>enable-warnings</a>"          <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write / Construct
+  "<a class="link" href="libtracker-client-tracker.html#TrackerClient--timeout" title='The "timeout" property'>timeout</a>"                  <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write / Construct
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -151,7 +151,7 @@ applications that want to provide their own error reporting.
 <div class="refsect2" title="tracker_client_new ()">
 <a name="tracker-client-new"></a><h3>tracker_client_new ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="returnvalue">TrackerClient</span></a> *     tracker_client_new                  (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClientFlags" title="enum TrackerClientFlags"><span class="type">TrackerClientFlags</span></a> flags</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>);</pre>
 <p>
 Creates a connection over D-Bus to the Tracker store for doing data
 querying and inserting.
@@ -170,13 +170,13 @@ with <code class="function">dbus_g_proxy_set_default_timeout()</code>.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>timeout</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> used for D-Bus call timeouts.
+<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> used for D-Bus call timeouts.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> the <a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> which should be freed with
-<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> when finished with.
+<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> when finished with.
 </td>
 </tr>
 </tbody>
@@ -187,14 +187,14 @@ with <code class="function">dbus_g_proxy_set_default_timeout()</code>.
 <a name="libtracker-client-tracker.property-details"></a><h2>Property Details</h2>
 <div class="refsect2" title='The "enable-warnings" property'>
 <a name="TrackerClient--enable-warnings"></a><h3>The <code class="literal">"enable-warnings"</code> property</h3>
-<pre class="programlisting">  "enable-warnings"          <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write / Construct</pre>
+<pre class="programlisting">  "enable-warnings"          <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write / Construct</pre>
 <p>Enable warnings.</p>
 <p>Default value: TRUE</p>
 </div>
 <hr>
 <div class="refsect2" title='The "timeout" property'>
 <a name="TrackerClient--timeout"></a><h3>The <code class="literal">"timeout"</code> property</h3>
-<pre class="programlisting">  "timeout"                  <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write / Construct</pre>
+<pre class="programlisting">  "timeout"                  <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a>                  : Read / Write / Construct</pre>
 <p>Timeout.</p>
 <p>Allowed values: &gt;= G_MAXULONG</p>
 <p>Default value: -1</p>

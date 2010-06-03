@@ -1,3 +1,39 @@
+2010-06-03  Martyn Russell  <martyn@lanedo.com>
+
+	Released 0.8.10
+
+	Updated NEWS
+
+2010-06-03  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixes NB#167647, Packaged depend on python2.5 but call python
+	The fix is in the previous commit but forgot the changelog entry.
+	This is a blank line commit to fix add the entry.
+
+	Use python instead of python2.5 in the scripts
+
+2010-06-03  Adrien Bustany  <abustany@gnome.org>
+
+	libtracker-common: Add config file Vala bindings
+	This commit adds bindings for both TrackerConfigFile and
+	TrackerKeyfileObject in libtracker-common.vapi
+
+2010-06-03  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#619929: tracker-search shouldn't quit if stopword found
+
+	tracker-language: new method to check if a word is a stopword
+
+2010-05-29  Michael Biebl  <biebl@debian.org>
+
+	tracker-miner-rss: Link against libtracker-client
+	tracker-miner-rss uses API from libtracker-client so we need to link
+	against. Build fails otherwise with binutils-gold
+
+2010-05-27  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
+
 2010-05-27  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.8.9
@@ -284,7 +320,7 @@
 
 	libtracker-data: Rename is_new to in_update which is more accurate
 
-2010-05-16  Petr Kovar  <pknbe@volny.cz>
+2010-05-17  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -566,7 +602,7 @@
 
 	Update Czech translation by Marek Cernocky
 
-2010-05-01  Mario Blättermann  <mariobl@gnome.org>
+2010-05-02  Mario Blättermann  <mariobl@gnome.org>
 
 	Updated German translation
 
@@ -1009,7 +1045,7 @@
 
 	tracker-extract: This symbol got renamed earlier
 
-2010-04-08  Debarshi Ray  <debarshir@src.gnome.org>
+2010-04-09  Debarshi Ray  <debarshir@src.gnome.org>
 
 	tracker-miner-rss: Implicitly link the RSS miner against GTHREAD_LIBS
 
@@ -1243,17 +1279,19 @@
 
 	libtracker-miner: Don't install tracker-miner-dbus.h to /usr/include
 
-2010-03-31  Aurimas Černius  <aurisc4@gmail.com>
+2010-04-01  Aurimas Černius  <aurisc4@gmail.com>
 
 	Updated Lithuanian translation
 
-2010-03-31  Mario Blättermann  <mariobl@gnome.org>
+2010-04-01  Mario Blättermann  <mariobl@gnome.org>
 
 	Updated German translation
 
-2010-03-31  Martyn Russell  <martyn@lanedo.com>
+2010-04-01  Martyn Russell  <martyn@lanedo.com>
 
 	Fixes NB#162585, tracker-extract is crashing for mp3s with id3v24 tags
+
+2010-03-31  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-search: Sort results for docs, images, videos, files & folders
 
@@ -1483,7 +1521,7 @@
 
 	Updated Slovenian translation
 
-2010-03-28  Marek Černocký  <marek@manet.cz>
+2010-03-29  Marek Černocký  <marek@manet.cz>
 
 	Update Czech translation
 
@@ -2301,7 +2339,7 @@
 
 	Fixes GB#612749, Fix include of libtracker-client/tracker-client.h in libtracker-miner/tracker-miner.h
 
-2010-03-14  Jorge González  <jorgegonz@svn.gnome.org>
+2010-03-15  Jorge González  <jorgegonz@svn.gnome.org>
 
 	Updated Spanish translation
 
@@ -2366,7 +2404,7 @@
 
 	NCO: Mark nco:hasIMAddress as subproperty of nco:hasContactMedium
 
-2010-03-11  Daniel Nylander  <po@danielnylander.se>
+2010-03-12  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -2562,7 +2600,7 @@
 
 	libtracker-fts: Prefix searches must ignore stop words
 
-2010-03-08  Jorge González  <jorgegonz@svn.gnome.org>
+2010-03-09  Jorge González  <jorgegonz@svn.gnome.org>
 
 	Updated Spanish translation
 
@@ -3071,8 +3109,6 @@
 	Fixes make dist(check)
 
 	Export tracker_storage_* symbols in libtracker-miner
-
-2010-02-24  Michael Biebl  <biebl@debian.org>
 
 	Fix broken libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS
 	introduced in 5588a7bb7ff7e529b263c0463185dc4b1a509bb1
@@ -3744,7 +3780,7 @@
 
 	Updated Norwegian bokmål translation
 
-2010-02-09  Martyn Russell  <martyn@lanedo.com>
+2010-02-10  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Removed tracker_miner_fs_get_directories()
 	This is no longer needed.
@@ -4158,11 +4194,13 @@
 
 	tracker-search: Fix duration calculation for album listing
 
-2010-01-28  Ivan Frade  <ivan.frade@nokia.com>
+2010-01-29  Ivan Frade  <ivan.frade@nokia.com>
 
 	MLO: diagram and more explanations
 
 	MLO: GeoPoint is subclass of IE and not GeoLocation
+
+2010-01-28  Ivan Frade  <ivan.frade@nokia.com>
 
 	MLO: Verbose description of the ontology
 
@@ -5449,7 +5487,7 @@
 
 	Fix crash when EXIF focal length value is empty
 
-2009-11-29  Jorge González  <jorgegonz@svn.gnome.org>
+2009-11-30  Jorge González  <jorgegonz@svn.gnome.org>
 
 	Updated Spanish translation
 
@@ -6463,7 +6501,7 @@
 
 	libtracker-fts: Fix reading rank and offset information
 
-2009-10-26  Lucian Grijincu  <lucian.grijincu@gmail.com>
+2009-10-27  Lucian Grijincu  <lucian.grijincu@gmail.com>
 
 	Added Romanian translation
 
@@ -7472,7 +7510,7 @@
 	 --image-files to --images
 	 --music-files to --music
 
-2009-09-23  Michael Biebl  <biebl@debian.org>
+2009-09-24  Michael Biebl  <biebl@debian.org>
 
 	Add missing files to POTFILES.in
 	According to 4ddf3304d4c3909ab9ec9cf56edcb495e1d634c3 the miner desktop
@@ -7482,6 +7520,8 @@
 	This reverts commit 336b0bff94af3e96e1d5722ff1cd2e9cfa559b6c.
 
 	Add missing "\"
+
+2009-09-23  Michael Biebl  <biebl@debian.org>
 
 	Fix a few typos in the man pages
 
@@ -7580,7 +7620,7 @@
 
 	Fixes bug #584607, Search does not work for Hungarian
 
-2009-09-20  Daniel Nylander  <po@danielnylander.se>
+2009-09-21  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -10048,7 +10088,7 @@
 
 	Timeouts for DBusGProxy connections to Tracker
 
-2009-07-13  Ivan Frade  <ivan.frade@gmail.com>
+2009-07-14  Ivan Frade  <ivan.frade@gmail.com>
 
 	Add util to generate real webhistory
 	Added program that reads epiphany web browsing history and print it
@@ -10128,7 +10168,7 @@
 
 	Reenable default plugins, as agreed at teamlevel
 
-2009-07-08  Jorge González  <jorgegonz@svn.gnome.org>
+2009-07-09  Jorge González  <jorgegonz@svn.gnome.org>
 
 	Updated Spanish translation
 
@@ -10534,8 +10574,6 @@
 
 	Arbitrary lowering priority of SetMany() items
 
-2009-06-14  Philip Van Hoof  <philip@codeminded.be>
-
 	Don't do all the g_idle_add nonsense in the push modules
 	These were causing a GSource source for each 2000 items being pushed using the
 	DBus SetMany() call. Making it actually worse than better. I just removed them
@@ -10543,6 +10581,8 @@
 	the module, queue (not a queue per SetMany, like what is being removed here).
 
 	Fixed push modules, bugfix closing the query
+
+2009-06-14  Philip Van Hoof  <philip@codeminded.be>
 
 	Let tracker:transient use temporary tables in sqlite3
 
@@ -10698,13 +10738,11 @@
 	branch tracker-0.6 on 2009-05-20 16:15:16 (GMT) to master where tracker-hal.c
 	is split into tracker-power-hal.c and tracker-store-hal.c.
 
-2009-06-01  Philip Van Hoof  <philip@codeminded.be>
-
 	Removed the queue_statement API of TrackerStore. Not used anymore
 
 	Ported the push modules to TrackerSparqlBuilder usage
 
-2009-06-01  Gabor Kelemen  <kelemeng@gnome.hu>
+2009-06-02  Gabor Kelemen  <kelemeng@gnome.hu>
 
 	Correct the utf encoding, fixes bug #584547
 
@@ -11273,8 +11311,6 @@
 	Another include path fix
 	libtracker-gtk uses <tracker.h>, so we also need to add
 	$(top_srcdir)/src/libtracker for tracker-search-tool.
-
-2009-05-11  Michael Biebl  <biebl@debian.org>
 
 	Fix include path
 	tracker-search-tool-callbacks.c uses
@@ -12071,7 +12107,7 @@
 	Add gitlog-to-changelog script from gnulib and a dist-hook to
 	generate ChangeLog file when creating tarballs.
 
-2009-04-13  Khaled Hosny  <khaledhosny@eglug.org>
+2009-04-14  Khaled Hosny  <khaledhosny@eglug.org>
 
 	Updated Arabic translaion
 

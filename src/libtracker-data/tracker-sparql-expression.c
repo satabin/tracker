@@ -3218,7 +3218,7 @@ static TrackerPropertyType tracker_sparql_expression_translate_uri_expression (T
 	} else {
 		TrackerSparqlLiteralBinding* binding;
 		char* _tmp1_;
-		g_string_append (sql, "(SELECT ID FROM Resource WHERE Uri = ?)");
+		g_string_append (sql, "COALESCE((SELECT ID FROM Resource WHERE Uri = ?), 0)");
 		binding = tracker_sparql_literal_binding_new ();
 		binding->literal = (_tmp1_ = g_strdup (uri), _g_free0 (binding->literal), _tmp1_);
 		self->priv->query->bindings = g_list_append (self->priv->query->bindings, _g_object_ref0 (binding));

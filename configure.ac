@@ -13,7 +13,7 @@ AC_PREREQ(2.59)
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [8])
-m4_define([tracker_micro_version], [10])
+m4_define([tracker_micro_version], [11])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -398,9 +398,10 @@ AM_CONDITIONAL(HAVE_UNIT_TESTS, test "x$have_unit_tests" = "xyes")
 ####################################################################
 
 AC_ARG_ENABLE(maemo,
-	      AS_HELP_STRING([--enable-maemo],
-			     [enable maemo ontology [[default=no]]]), ,
-	      [enable_maemo=no])
+	         AS_HELP_STRING([--enable-maemo],
+			                [enable maemo ontology [[default=no]]]), 
+             [enable_maemo="$enableval"],
+	         [enable_maemo=no])
 
 AM_CONDITIONAL(HAVE_MAEMO, test "x$enable_maemo" = "xyes")
 
@@ -1838,6 +1839,10 @@ Writeback:
 
 	MP3:                                    $have_id3lib
 	XMP:                                    $have_exempi
+
+Frameworks:
+
+	Support Maemo                           $enable_maemo
 
 Warning:
 

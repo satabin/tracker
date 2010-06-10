@@ -1818,6 +1818,11 @@ TrackerDBResultSet* tracker_sparql_query_execute (TrackerSparqlQuery* self, GErr
 			TrackerNamespace* ns;
 			ns = _g_object_ref0 (ns_collection[ns_it]);
 			{
+				if (tracker_namespace_get_prefix (ns) == NULL) {
+					g_critical ("tracker-sparql-query.vala:386: Namespace does not specify a prefix: %s", tracker_namespace_get_uri (ns));
+					_g_object_unref0 (ns);
+					continue;
+				}
 				g_hash_table_insert (self->priv->prefix_map, g_strdup (tracker_namespace_get_prefix (ns)), g_strdup (tracker_namespace_get_uri (ns)));
 				_g_object_unref0 (ns);
 			}
@@ -1963,6 +1968,11 @@ GPtrArray* tracker_sparql_query_execute_update (TrackerSparqlQuery* self, gboole
 			TrackerNamespace* ns;
 			ns = _g_object_ref0 (ns_collection[ns_it]);
 			{
+				if (tracker_namespace_get_prefix (ns) == NULL) {
+					g_critical ("tracker-sparql-query.vala:423: Namespace does not specify a prefix: %s", tracker_namespace_get_uri (ns));
+					_g_object_unref0 (ns);
+					continue;
+				}
 				g_hash_table_insert (self->priv->prefix_map, g_strdup (tracker_namespace_get_prefix (ns)), g_strdup (tracker_namespace_get_uri (ns)));
 				_g_object_unref0 (ns);
 			}

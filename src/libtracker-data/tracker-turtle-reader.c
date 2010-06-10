@@ -27,6 +27,7 @@
 #include <libtracker-data/tracker-data-query.h>
 #include <libtracker-data/tracker-data-update.h>
 #include <libtracker-db/tracker-db-interface.h>
+#include <libtracker-common/tracker-date-time.h>
 
 
 #define TRACKER_TYPE_TURTLE_READER (tracker_turtle_reader_get_type ())
@@ -1713,10 +1714,7 @@ void tracker_turtle_reader_load (const char* path, GError** error) {
 					if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
 						goto __catch3_tracker_db_interface_error;
 					}
-					_g_object_unref0 (reader);
-					g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-					g_clear_error (&_inner_error_);
-					return;
+					goto __finally3;
 				}
 			}
 		}
@@ -1770,7 +1768,7 @@ void tracker_turtle_reader_load (const char* path, GError** error) {
 	}
 	__finally3:
 	if (_inner_error_ != NULL) {
-		if ((((_inner_error_->domain == G_FILE_ERROR) || (_inner_error_->domain == TRACKER_SPARQL_ERROR)) || (_inner_error_->domain == TRACKER_DATA_ERROR)) || (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR)) {
+		if (((((_inner_error_->domain == G_FILE_ERROR) || (_inner_error_->domain == TRACKER_SPARQL_ERROR)) || (_inner_error_->domain == TRACKER_DATA_ERROR)) || (_inner_error_->domain == TRACKER_DATE_ERROR)) || (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR)) {
 			g_propagate_error (error, _inner_error_);
 			return;
 		} else {

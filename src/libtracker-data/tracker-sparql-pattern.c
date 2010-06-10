@@ -3849,6 +3849,7 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 				}
 				if (_tmp16_) {
 					in_group_graph_pattern = TRUE;
+					g_string_insert (sql, (gssize) group_graph_pattern_start, "SELECT * FROM (");
 					tracker_sparql_pattern_translate_group_or_union_graph_pattern (self, sql, &_inner_error_);
 					if (_inner_error_ != NULL) {
 						if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
@@ -3866,6 +3867,7 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 							return NULL;
 						}
 					}
+					g_string_append (sql, ")");
 				} else {
 					if (in_triples_block) {
 						tracker_sparql_pattern_end_triples_block (self, sql, &first_where, in_group_graph_pattern, &_inner_error_);
@@ -3924,6 +3926,7 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 					}
 					if (_tmp18_) {
 						in_group_graph_pattern = TRUE;
+						g_string_insert (sql, (gssize) group_graph_pattern_start, "SELECT * FROM (");
 						tracker_sparql_pattern_translate_group_or_union_graph_pattern (self, sql, &_inner_error_);
 						if (_inner_error_ != NULL) {
 							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
@@ -3939,6 +3942,7 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 								return NULL;
 							}
 						}
+						g_string_append (sql, ")");
 					} else {
 						if (in_triples_block) {
 							tracker_sparql_pattern_end_triples_block (self, sql, &first_where, in_group_graph_pattern, &_inner_error_);

@@ -1,3 +1,180 @@
+2010-06-17  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.8.12
+
+	Updated NEWS
+
+	NMO: Fixed Ivan's commit by updating lastChanged change in commit ded355
+
+2010-06-17  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-miner: Indentation fixes
+
+2010-06-17  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes NB#174333 - Each file is listed twice in tracker search results
+	Unset parent folder so caches are regenerated.
+
+	The issue was due to priv->current_folder being reused for both mtime
+	cache (for crawling stage) and iri cache (for indexing stage). So when
+	recrawling, the miner changes current_folder without invalidating the
+	iri cache, so there could be a mismatch when it enters the indexing
+	stage again.
+
+2010-06-17  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-miner-fs: Fix compilation when no upower and no hal
+
+2010-06-17  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug 621547 - inconsistent messages on hard-reset
+	Make message about storage files deletion more generic.
+
+	TrackerStatusIcon: Query initial state for active miners.
+
+	Bug 621126 - Status icon's progress bars should be at 0% on init
+	Hide progress bar/label for non-initialized miners on startup, also
+	set initial progress to 0% so there are no glitches.
+
+	Bug 620094 - tracker-status-icon shows "search" menu item even though t-s-t is not installed.
+	Locate application in path before showing the menu items.
+
+2010-06-17  Jürg Billeter  <j@bitron.ch>
+
+	NMO: Fix syntax error
+
+2010-06-17  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Fixes NB#174591, Throw error on undefined variable in expressions
+
+2010-06-17  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Added some comments to the content guessing code()
+	- Added information about WHERE we got the code from - GIO
+	- Added reasoning for why we have the is_multimedia check
+
+2010-06-17  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fixes NB#173673, SMS validity period property needed in nmo ontology
+
+2010-06-17  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: support GMounts without GVolume in mount_guess_content_type()
+
+	libtracker-miner, miner-fs: remove trailing whitespaces
+
+2010-06-17  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Fixed broken is_optical detection
+	Previously we used content type guessing, this isn't full proof as I
+	discovered during testing this branch. Now we use the same method GIO
+	uses by looking at the filesystem type/device/mount point (in that
+	order).
+
+	Seems to work for all the formats tested here for me:
+	- Compaq flash (EOS Canon card)
+	- USB stick
+	- CD (audio)
+	- CD (game)
+	- DVD (movie)
+	- MMC (SD)
+	- USB hard disk
+
+	libtracker-miner: Cleaned up logging
+	Be a bit more consistent and don't duplicate log data in places
+
+2010-06-17  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-miner-fs: check for first index run no longer needed in mount_added_cb
+
+	libtracker-miner: minor indentation fixes
+
+	libtracker-miner: don't consider shadowed GMounts
+
+	libtracker-miner: avoid checking if removed files without mtime in the store
+
+	libtracker-miner: minor indentation fixes
+
+	libtracker-miner: Support crawl directories with NULL parent
+
+	Fixes GB#621183: When mounting volume 2nd time, inotify watches don't work any more
+	* src/libtracker-miner/tracker-miner-fs.c: Make sure all monitors are removed
+	when a directory is no longer watched.
+
+	* src/miners/fs/tracker-miner-files.c: Make sure directory is no longer
+	watched when unmounting (in case we didn't get a pre-unmount signal)
+
+	libtracker-miner: Consider mounts inside recursively indexed locations
+	* Also, don't add a location to re-check if already there or if a parent
+	location to be recursively indexed is also there.
+
+	tracker-miner-fs: small indentation fix
+
+	libtracker-miner: Only re-check directories affected by the new mount point
+
+2010-06-17  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Queue deleted items instead of removing in a tight loop.
+
+2010-06-17  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-miner-fs: Only check if exist those files which didn't have mtime check
+
+	Fixes GB#621112: Resources not deleted from store when files removed from removable media
+	* As soon as mtime cache is updated with the contents of a given directory,
+	check if any element in the mtime cache no longer exists in the FS, and remove
+	it from the store if so.
+
+	tracker-miner-fs: only force recheck if mounted path contains one indexed location
+
+	libtracker-miner: properly detect removable media
+
+	Fixes GB#621001: don't allow whitespaces in UUIDs
+	* Using MD5 of the mount name for the UUID of optical media
+	* Using MD5 of the mount path for the UUID of GMounts without
+	a corresponding GVolume
+
+	libtracker-miner: Use GMounts instead of GVolumes
+	(as not all GMounts have a corresponding GVolume)
+
+	Fixes NB#172818: Tracker is not indexing new content on EMMC
+	* If the mount point detected doesn't setup a GVolume (as it
+	is in fstab), then just force a re-check of the directories
+	indexed to see if anything changed.
+
+2010-06-17  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Fixes NB#174248, type conversions for boolean using ^^ notation
+
+	tracker-store: Memory optimization in class signals, avoid duplicate strings
+
+	tracker-store: Optimized use of the gstringchunk for class signals
+
+	tracker-store: Compress the SubjectsChanged signal for multivalue fields
+
+	tracker-store: Optimize sending of class signals, avoid dbus-glib
+
+	tracker-store: Optimize memory use for class signals
+
+2010-06-17  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Make sure update buffer does not grow without limits
+	Large INSERTs with thousands of resources could lead to high peak
+	memory usage without this.
+
+	Fixes NB#173589.
+
+	tracker-extract-playlist: Slightly reduce SPARQL update size
+	This reduces memory usage in tracker-store a bit for long playlists.
+
+2010-06-12  Mario Blättermann  <mariobl@gnome.org>
+
+	Updated German translation
+
+2010-06-11  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
 2010-06-10  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.8.11

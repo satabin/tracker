@@ -294,6 +294,7 @@
     <function name="nmo:conversation" link="nmo-properties.html#nmo-conversation"/>
     <function name="nmo:sender" link="nmo-properties.html#nmo-sender"/>
     <function name="nmo:isAnswered" link="nmo-properties.html#nmo-isAnswered"/>
+    <function name="nmo:validityPeriod" link="nmo-properties.html#nmo-validityPeriod"/>
     <function name="nmo:contentMimeType" link="nmo-properties.html#nmo-contentMimeType"/>
     <function name="nmo:containsSMSFolder" link="nmo-properties.html#nmo-containsSMSFolder"/>
     <function name="nmo:isDeleted" link="nmo-properties.html#nmo-isDeleted"/>

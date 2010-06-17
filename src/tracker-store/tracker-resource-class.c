@@ -40,12 +40,15 @@
 
 typedef struct {
 	gchar *rdf_class;
+	gchar *dbus_path;
 	GPtrArray *adds, *ups, *dels;
 	GStringChunk *changed_strings;
+	DBusConnection *connection;
 } TrackerResourceClassPrivate;
 
 typedef struct {
-	gchar *uri, *predicate;
+	gchar *uri;
+	TrackerProperty *predicate;
 } ChangedItem;
 
 enum {
@@ -69,6 +72,9 @@ tracker_resource_class_class_init (TrackerResourceClassClass *klass)
 	object_class = G_OBJECT_CLASS (klass);
 
 	object_class->finalize = tracker_resource_class_finalize;
+
+	/* Not used by the code, but left here for the D-Bus introspection to work
+	 * right (for our beloved d-feet users) */
 
 	signals[SUBJECTS_ADDED] =
 		g_signal_new ("subjects-added",
@@ -116,50 +122,86 @@ tracker_resource_class_init (TrackerResourceClass *object)
 }
 
 static void
-emit_strings (TrackerResourceClass *object, gint signal_, GPtrArray *array)
+emit_strings (TrackerResourceClass *object,
+              const gchar *signal_name,
+              GPtrArray *array)
 {
-	GStrv strings_to_emit;
-	guint i;
+	TrackerResourceClassPrivate *priv;
+
+	priv = TRACKER_RESOURCE_CLASS_GET_PRIVATE (object);
 
 	if (array->len > 0) {
-		strings_to_emit = (GStrv) g_malloc0  (sizeof (gchar *) * (array->len + 1));
+		DBusMessageIter iter;
+		DBusMessageIter strv_iter;
+		DBusMessage *message;
+		guint i;
+
+		message = dbus_message_new_signal (priv->dbus_path,
+		                                   TRACKER_RESOURCES_CLASS_INTERFACE,
+		                                   signal_name);
+
+		dbus_message_iter_init_append (message, &iter);
+
+		dbus_message_iter_open_container (&iter, DBUS_TYPE_ARRAY, 
+		                                  DBUS_TYPE_STRING_AS_STRING, &strv_iter);
 
 		for (i = 0; i < array->len; i++) {
-			strings_to_emit[i] = array->pdata [i];
+			dbus_message_iter_append_basic (&strv_iter, DBUS_TYPE_STRING, &array->pdata [i]);
 		}
 
-		g_signal_emit (object, signal_, 0, strings_to_emit);
+		dbus_message_iter_close_container (&iter, &strv_iter);
 
-		/* Normal free, not a GStrv free, we free the strings later */
-		g_free (strings_to_emit);
+		dbus_connection_send (priv->connection, message, NULL);
+
+		dbus_message_unref (message);
 	}
 }
 
 static void
-emit_changed_strings (TrackerResourceClass *object, GPtrArray *array)
+emit_changed_strings (TrackerResourceClass *object,
+                      GPtrArray *array)
 {
-	GStrv stringsa_to_emit;
-	GStrv stringsb_to_emit;
+	TrackerResourceClassPrivate *priv;
 
-	guint i;
+	priv = TRACKER_RESOURCE_CLASS_GET_PRIVATE (object);
 
 	if (array->len > 0) {
-		stringsa_to_emit = (GStrv) g_malloc0  (sizeof (gchar *) * (array->len + 1));
-		stringsb_to_emit = (GStrv) g_malloc0  (sizeof (gchar *) * (array->len + 1));
+		DBusMessageIter iter;
+		DBusMessageIter strv1_iter;
+		DBusMessageIter strv2_iter;
+		DBusMessage *message;
+		guint i;
+
+		message = dbus_message_new_signal (priv->dbus_path,
+		                                   TRACKER_RESOURCES_CLASS_INTERFACE,
+		                                   "SubjectsChanged");
+
+		dbus_message_iter_init_append (message, &iter);
+
+		dbus_message_iter_open_container (&iter, DBUS_TYPE_ARRAY, 
+		                                  DBUS_TYPE_STRING_AS_STRING, &strv1_iter);
 
 		for (i = 0; i < array->len; i++) {
 			ChangedItem *item = array->pdata [i];
-
-			stringsa_to_emit[i] = item->uri;
-			stringsb_to_emit[i] = item->predicate;
+			dbus_message_iter_append_basic (&strv1_iter, DBUS_TYPE_STRING, &item->uri);
 		}
 
-		g_signal_emit (object, signals[SUBJECTS_CHANGED], 0,
-		               stringsa_to_emit, stringsb_to_emit);
+		dbus_message_iter_close_container (&iter, &strv1_iter);
 
-		/* Normal free, not a GStrv free, we free the items later */
-		g_free (stringsa_to_emit);
-		g_free (stringsb_to_emit);
+		dbus_message_iter_open_container (&iter, DBUS_TYPE_ARRAY, 
+		                                  DBUS_TYPE_STRING_AS_STRING, &strv2_iter);
+
+		for (i = 0; i < array->len; i++) {
+			ChangedItem *item = array->pdata [i];
+			const gchar *predicate = tracker_property_get_uri (item->predicate);
+			dbus_message_iter_append_basic (&strv2_iter, DBUS_TYPE_STRING, &predicate);
+		}
+
+		dbus_message_iter_close_container (&iter, &strv2_iter);
+
+		dbus_connection_send (priv->connection, message, NULL);
+
+		dbus_message_unref (message);
 	}
 }
 
@@ -168,7 +210,9 @@ free_changed_array (GPtrArray *array)
 {
 	guint i;
 	for (i = 0; i < array->len; i++) {
-		g_slice_free (ChangedItem, array->pdata [i]);
+		ChangedItem *item = array->pdata [i];
+		g_object_unref (item->predicate);
+		g_slice_free (ChangedItem, item);
 	}
 	g_ptr_array_free (array, TRUE);
 }
@@ -181,7 +225,7 @@ tracker_resource_class_emit_events (TrackerResourceClass  *object)
 	priv = TRACKER_RESOURCE_CLASS_GET_PRIVATE (object);
 
 	if (priv->adds) {
-		emit_strings (object, signals[SUBJECTS_ADDED], priv->adds);
+		emit_strings (object, "SubjectsAdded", priv->adds);
 		g_ptr_array_free (priv->adds, TRUE);
 		priv->adds = NULL;
 	}
@@ -193,7 +237,7 @@ tracker_resource_class_emit_events (TrackerResourceClass  *object)
 	}
 
 	if (priv->dels) {
-		emit_strings (object, signals[SUBJECTS_REMOVED], priv->dels);
+		emit_strings (object, "SubjectsRemoved", priv->dels);
 		g_ptr_array_free (priv->dels, TRUE);
 		priv->dels = NULL;
 	}
@@ -217,12 +261,16 @@ tracker_resource_class_finalize (GObject *object)
 	tracker_resource_class_emit_events ((TrackerResourceClass *) object);
 
 	g_free (priv->rdf_class);
+	g_free (priv->dbus_path);
+	dbus_connection_unref (priv->connection);
 
 	G_OBJECT_CLASS (tracker_resource_class_parent_class)->finalize (object);
 }
 
 TrackerResourceClass *
-tracker_resource_class_new (const gchar *rdf_class)
+tracker_resource_class_new (const gchar     *rdf_class,
+                            const gchar     *dbus_path,
+                            DBusGConnection *connection)
 {
 	TrackerResourceClass         *object;
 	TrackerResourceClassPrivate *priv;
@@ -232,6 +280,8 @@ tracker_resource_class_new (const gchar *rdf_class)
 	priv = TRACKER_RESOURCE_CLASS_GET_PRIVATE (object);
 
 	priv->rdf_class = g_strdup (rdf_class);
+	priv->dbus_path = g_strdup (dbus_path);
+	priv->connection = dbus_connection_ref (dbus_g_connection_get_connection (connection));
 
 	return object;
 }
@@ -257,7 +307,10 @@ has_already (GPtrArray *array, const gchar *uri)
 	}
 
 	for (i = 0; i < array->len; i++) {
-		if (g_strcmp0 (g_ptr_array_index (array, i), uri) == 0) {
+		const gchar *a_uri = g_ptr_array_index (array, i);
+
+		/* This works because of how we use the GStringChunk */
+		if (a_uri == uri) {
 			return TRUE;
 		}
 	}
@@ -265,34 +318,37 @@ has_already (GPtrArray *array, const gchar *uri)
 	return FALSE;
 }
 
-/*
-  static gboolean
-  changed_has_already (GPtrArray *array, const gchar *uri, const gchar *predicate)
-  {
-  guint i;
+static gboolean
+has_already_updated (GPtrArray *array,
+                     const gchar *uri,
+                     TrackerProperty *predicate)
+{
+	guint i;
 
-  if (!array) {
-  return FALSE;
-  }
+	if (!array) {
+		return FALSE;
+	}
 
-  for (i = 0; i < array->len; i++) {
-  ChangedItem *item = g_ptr_array_index (array, i);
-  if (g_strcmp0 (item->uri, uri) == 0 && g_strcmp0 (item->predicate, predicate) == 0) {
-  return TRUE;
-  }
-  }
+	for (i = 0; i < array->len; i++) {
+		ChangedItem *item = array->pdata[i];
 
-  return FALSE;
-  }
-*/
+		/* This works for uri because of how we use the GStringChunk */
+		if (item->predicate == predicate && item->uri == uri) {
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
 
 void
 tracker_resource_class_add_event (TrackerResourceClass  *object,
                                   const gchar           *uri,
-                                  const gchar           *predicate,
+                                  TrackerProperty       *predicate,
                                   TrackerDBusEventsType type)
 {
 	TrackerResourceClassPrivate *priv;
+	gchar *n_uri;
 
 	priv = TRACKER_RESOURCE_CLASS_GET_PRIVATE (object);
 
@@ -303,32 +359,40 @@ tracker_resource_class_add_event (TrackerResourceClass  *object,
 
 	switch (type) {
 	case TRACKER_DBUS_EVENTS_TYPE_ADD:
-		if (!has_already (priv->adds, uri)) {
+
+		n_uri = g_string_chunk_insert_const (priv->changed_strings, uri);
+
+		if (!has_already (priv->adds, n_uri)) {
 			if (!priv->adds)
 				priv->adds = g_ptr_array_new ();
-			g_ptr_array_add (priv->adds, g_string_chunk_insert_const (priv->changed_strings, uri));
+			g_ptr_array_add (priv->adds, n_uri);
 		}
 		break;
-	case TRACKER_DBUS_EVENTS_TYPE_UPDATE: {
-		/* Duplicate checking slows down too much
-		   if (!changed_has_already (priv->ups, uri, predicate)) { */
-		ChangedItem *item;
+	case TRACKER_DBUS_EVENTS_TYPE_UPDATE:
 
-		item = g_slice_new (ChangedItem);
+		n_uri = g_string_chunk_insert_const (priv->changed_strings, uri);
 
-		item->uri = g_string_chunk_insert_const (priv->changed_strings, uri);
-		item->predicate = g_string_chunk_insert_const (priv->changed_strings, predicate);
+		if (!has_already_updated (priv->ups, n_uri, predicate)) {
+			ChangedItem *item;
 
-		if (!priv->ups)
-			priv->ups = g_ptr_array_new ();
-		g_ptr_array_add (priv->ups, item);
-	}
+			item = g_slice_new (ChangedItem);
+
+			item->uri = n_uri;
+			item->predicate = g_object_ref (predicate);
+
+			if (!priv->ups)
+				priv->ups = g_ptr_array_new ();
+			g_ptr_array_add (priv->ups, item);
+		}
 		break;
 	case TRACKER_DBUS_EVENTS_TYPE_DELETE:
-		if (!has_already (priv->dels, uri)) {
+
+		n_uri = g_string_chunk_insert_const (priv->changed_strings, uri);
+
+		if (!has_already (priv->dels, n_uri)) {
 			if (!priv->dels)
 				priv->dels = g_ptr_array_new ();
-			g_ptr_array_add (priv->dels, g_string_chunk_insert_const (priv->changed_strings, uri));
+			g_ptr_array_add (priv->dels, n_uri);
 		}
 		break;
 	default:

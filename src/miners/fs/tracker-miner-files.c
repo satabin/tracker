@@ -75,8 +75,8 @@ struct TrackerMinerFilesPrivate {
 
 #if defined(HAVE_DEVKIT_POWER) || defined(HAVE_HAL)
 	TrackerPower *power;
-	gulong finished_handler;
 #endif /* defined(HAVE_DEVKIT_POWER) || defined(HAVE_HAL) */
+	gulong finished_handler;
 
 	DBusGProxy *extractor_proxy;
 
@@ -139,6 +139,7 @@ static void        index_recursive_directories_cb       (GObject              *g
 static void        index_single_directories_cb          (GObject              *gobject,
                                                          GParamSpec           *arg1,
                                                          gpointer              user_data);
+static gboolean    miner_files_force_recheck_idle       (gpointer user_data);
 static void        ignore_directories_cb                (GObject              *gobject,
 							 GParamSpec           *arg1,
 							 gpointer              user_data);
@@ -230,12 +231,11 @@ tracker_miner_files_init (TrackerMinerFiles *mf)
 	g_signal_connect (priv->power, "notify::on-battery",
 	                  G_CALLBACK (battery_status_cb),
 	                  mf);
+#endif /* defined(HAVE_DEVKIT_POWER) || defined(HAVE_HAL) */
 
 	priv->finished_handler = g_signal_connect_after (mf, "finished",
 							 G_CALLBACK (miner_finished_cb),
 							 NULL);
-
-#endif /* defined(HAVE_DEVKIT_POWER) || defined(HAVE_HAL) */
 
 	priv->volume_monitor = g_volume_monitor_get ();
 	g_signal_connect (priv->volume_monitor, "mount-pre-unmount",
@@ -544,15 +544,16 @@ set_up_mount_point_cb (GObject      *source,
                        gpointer      user_data)
 {
 	gchar *removable_device_urn = user_data;
-
 	GError *error = NULL;
+
 	tracker_miner_execute_update_finish (TRACKER_MINER (source),
 	                                     result,
 	                                     &error);
 
 	if (error) {
-		g_critical ("Could not set up mount point '%s': %s",
-		            removable_device_urn, error->message);
+		g_critical ("Could not set mount point in database '%s', %s",
+		            removable_device_urn,
+			    error->message);
 		g_error_free (error);
 	}
 
@@ -568,8 +569,7 @@ set_up_mount_point (TrackerMinerFiles *miner,
 {
 	GString *queries;
 
-	g_debug ("Setting mount point '%s' state in database (URN '%s')",
-	         mount_point,
+	g_debug ("Mount point state being set in DB for URN '%s'",
 	         removable_device_urn);
 
 	queries = g_string_new (NULL);
@@ -765,18 +765,33 @@ query_mount_points_cb (GObject      *source,
 
 			if (urn) {
 				if (mount_point) {
-					g_debug ("URN '%s' (mount point: %s) was not reported to be mounted, but now it is, updating state",
-					         urn, mount_point);
+					g_debug ("Mount point state incorrect in DB for URN '%s', "
+						 "currently it is mounted on '%s'",
+					         urn,
+						 mount_point);
 				} else {
-					g_debug ("URN '%s' was not reported to be mounted, but now it is, updating state", urn);
+					g_debug ("Mount point state incorrect in DB for URN '%s', "
+						 "currently it is mounted",
+					         urn);
 				}
-				set_up_mount_point (TRACKER_MINER_FILES (miner), urn, mount_point, TRUE, accumulator);
+
+				set_up_mount_point (TRACKER_MINER_FILES (miner),
+						    urn,
+						    mount_point,
+						    TRUE,
+						    accumulator);
 			}
 		} else if (!(state & VOLUME_MOUNTED) &&
 		           (state & VOLUME_MOUNTED_IN_STORE)) {
 			if (urn) {
-				g_debug ("URN '%s' was reported to be mounted, but it isn't anymore, updating state", urn);
-				set_up_mount_point (TRACKER_MINER_FILES (miner), urn, NULL, FALSE, accumulator);
+				g_debug ("Mount pont state incorrect in DB for URN '%s', "
+					 "currently it is NOT mounted",
+					 urn);
+				set_up_mount_point (TRACKER_MINER_FILES (miner),
+						    urn,
+						    NULL,
+						    FALSE,
+						    accumulator);
 			}
 		}
 	}
@@ -814,13 +829,22 @@ mount_point_removed_cb (TrackerStorage *storage,
 {
 	TrackerMinerFiles *miner = user_data;
 	gchar *urn;
-
-	g_debug ("Removing mount point '%s'", mount_point);
+	GFile *mount_point_file;
 
 	urn = g_strdup_printf (TRACKER_DATASOURCE_URN_PREFIX "%s", uuid);
+	g_debug ("Mount point removed for URN '%s'", urn);
 
+	mount_point_file = g_file_new_for_path (mount_point);
+
+	/* Set mount point status in tracker-store */
 	set_up_mount_point (miner, urn, mount_point, FALSE, NULL);
+
+	/* Tell TrackerMinerFS to skip monitoring everything under the mount
+	 *  point (in case there was no pre-unmount notification) */
+	tracker_miner_fs_directory_remove (TRACKER_MINER_FS (miner), mount_point_file);
+
 	g_free (urn);
+	g_object_unref (mount_point_file);
 }
 
 static void
@@ -833,33 +857,84 @@ mount_point_added_cb (TrackerStorage *storage,
 {
 	TrackerMinerFiles *miner = user_data;
 	TrackerMinerFilesPrivate *priv;
-	GFile *file;
 	gchar *urn;
 	gboolean index_removable_devices;
 	gboolean index_optical_discs;
-	gboolean should_crawl;
 
 	priv = TRACKER_MINER_FILES_GET_PRIVATE (miner);
 
 	index_removable_devices = tracker_config_get_index_removable_devices (priv->config);
 	index_optical_discs = tracker_config_get_index_optical_discs (priv->config);
 
-	g_message ("Added mount point '%s'", mount_point);
+	urn = g_strdup_printf (TRACKER_DATASOURCE_URN_PREFIX "%s", uuid);
+	g_message ("Mount point added for URN '%s'", urn);
 
-	should_crawl = TRUE;
-
-	if (removable && !tracker_config_get_index_removable_devices (priv->config)) {
+	if (removable && !index_removable_devices) {
 		g_message ("  Not crawling, removable devices disabled in config");
-		should_crawl = FALSE;
-	}
-
-	if (optical && !tracker_config_get_index_optical_discs (priv->config)) {
+	} else if (optical && !index_optical_discs) {
 		g_message ("  Not crawling, optical devices discs disabled in config");
-		should_crawl = FALSE;
-	}
+	} else if (!removable && !optical) {
+		GFile *mount_point_file;
+		GSList *l;
 
-	if (should_crawl) {
-		g_message ("  Adding directory to crawler's queue");
+		mount_point_file = g_file_new_for_path (mount_point);
+
+		/* Check if one of the recursively indexed locations is in
+		 *   the mounted path, or if the mounted path is inside
+		 *   a recursively indexed directory... */
+		for (l = tracker_config_get_index_recursive_directories (miner->private->config);
+		     l;
+		     l = g_slist_next (l)) {
+			GFile *config_file;
+
+			config_file = g_file_new_for_path (l->data);
+
+			if (g_file_equal (config_file, mount_point_file) ||
+			    g_file_has_prefix (config_file, mount_point_file)) {
+				/* If the config path is contained inside the mount path,
+				 *  then add the config path to re-check */
+				g_message ("  Re-check of configured path '%s' needed (recursively)",
+				           (gchar *) l->data);
+				tracker_miner_fs_directory_add (TRACKER_MINER_FS (user_data),
+				                                config_file,
+				                                TRUE);
+			} else if (g_file_has_prefix (mount_point_file, config_file)) {
+				/* If the mount path is contained inside the config path,
+				 *  then add the mount path to re-check */
+				g_message ("  Re-check of path '%s' needed (inside configured path '%s')",
+				           mount_point,
+				           (gchar *) l->data);
+				tracker_miner_fs_directory_add (TRACKER_MINER_FS (user_data),
+				                                mount_point_file,
+				                                TRUE);
+			}
+			g_object_unref (config_file);
+		}
+
+		/* Check if one of the non-recursively indexed locations is in
+		 *  the mount path... */
+		for (l = tracker_config_get_index_single_directories (miner->private->config);
+		     l;
+		     l = g_slist_next (l)) {
+			GFile *config_file;
+
+			config_file = g_file_new_for_path (l->data);
+			if (g_file_equal (config_file, mount_point_file) ||
+			    g_file_has_prefix (config_file, mount_point_file)) {
+				g_message ("  Re-check of configured path '%s' needed (non-recursively)",
+				           (gchar *) l->data);
+				tracker_miner_fs_directory_add (TRACKER_MINER_FS (user_data),
+				                                config_file,
+				                                FALSE);
+			}
+			g_object_unref (config_file);
+		}
+
+		g_object_unref (mount_point_file);
+	} else {
+		GFile *file;
+
+		g_message ("  Adding directories in removable/optical media to crawler's queue");
 
 		file = g_file_new_for_path (mount_point);
 		g_object_set_qdata_full (G_OBJECT (file),
@@ -877,7 +952,6 @@ mount_point_added_cb (TrackerStorage *storage,
 		g_object_unref (file);
 	}
 
-	urn = g_strdup_printf (TRACKER_DATASOURCE_URN_PREFIX "%s", uuid);
 	set_up_mount_point (miner, urn, mount_point, TRUE, NULL);
 	g_free (urn);
 }
@@ -986,6 +1060,8 @@ index_on_battery_cb (GObject    *object,
 	check_battery_status (mf);
 }
 
+#endif /* defined(HAVE_DEVKIT_POWER) || defined(HAVE_HAL) */
+
 /* Called when mining has finished the first time */
 static void
 miner_finished_cb (TrackerMinerFS *fs,
@@ -1010,10 +1086,10 @@ miner_finished_cb (TrackerMinerFS *fs,
 		mf->private->finished_handler = 0;
 	}
 
+#if defined(HAVE_DEVKIT_POWER) || defined(HAVE_HAL)
 	check_battery_status (mf);
-}
-
 #endif /* defined(HAVE_DEVKIT_POWER) || defined(HAVE_HAL) */
+}
 
 static void
 mount_pre_unmount_cb (GVolumeMonitor    *volume_monitor,
@@ -1021,10 +1097,14 @@ mount_pre_unmount_cb (GVolumeMonitor    *volume_monitor,
                       TrackerMinerFiles *mf)
 {
 	GFile *mount_root;
+	gchar *uri;
 
 	mount_root = g_mount_get_root (mount);
+	uri = g_file_get_uri (mount_root);
+	g_message ("Pre-unmount requested for '%s'", uri);
 	tracker_miner_fs_directory_remove (TRACKER_MINER_FS (mf), mount_root);
 	g_object_unref (mount_root);
+	g_free (uri);
 }
 
 static gboolean

@@ -294,6 +294,7 @@
     <keyword type="" name="nmo:conversation" link="nmo-properties.html#nmo-conversation"/>
     <keyword type="" name="nmo:sender" link="nmo-properties.html#nmo-sender"/>
     <keyword type="" name="nmo:isAnswered" link="nmo-properties.html#nmo-isAnswered"/>
+    <keyword type="" name="nmo:validityPeriod" link="nmo-properties.html#nmo-validityPeriod"/>
     <keyword type="" name="nmo:contentMimeType" link="nmo-properties.html#nmo-contentMimeType"/>
     <keyword type="" name="nmo:containsSMSFolder" link="nmo-properties.html#nmo-containsSMSFolder"/>
     <keyword type="" name="nmo:isDeleted" link="nmo-properties.html#nmo-isDeleted"/>

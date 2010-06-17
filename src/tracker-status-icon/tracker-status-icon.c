@@ -599,14 +599,14 @@ miner_menu_entry_add (TrackerStatusIcon *icon,
 	gtk_misc_set_alignment (GTK_MISC (entry->name), 0.0, 0.5);
 	gtk_box_pack_start (GTK_BOX (entry->box), entry->name, TRUE, TRUE, 0);
 
-	entry->progress_percentage = gtk_label_new ("100%");
+	entry->progress_percentage = gtk_label_new ("0%");
 	gtk_misc_set_alignment (GTK_MISC (entry->progress_percentage), 1.0, 0.5);
 	gtk_box_pack_start (GTK_BOX (entry->box), entry->progress_percentage, FALSE, TRUE, 0);
 
 	entry->progress_bar = gtk_progress_bar_new ();
 	gtk_progress_bar_set_pulse_step (GTK_PROGRESS_BAR (entry->progress_bar), 0.02);
 	gtk_progress_bar_set_ellipsize (GTK_PROGRESS_BAR (entry->progress_bar), PANGO_ELLIPSIZE_END);
-	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (entry->progress_bar), 1.00);
+	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (entry->progress_bar), 0.00);
 
 	/* Get the font ascent for the current font and language */
 	context = gtk_widget_get_pango_context (entry->progress_bar);
@@ -640,6 +640,19 @@ miner_menu_entry_add (TrackerStatusIcon *icon,
 		gtk_widget_set_sensitive (entry->menu_item, FALSE);
 		gtk_widget_hide (entry->progress_bar);
 		gtk_widget_hide (entry->progress_percentage);
+	} else {
+		gdouble progress;
+		gchar *status;
+
+		tracker_miner_manager_get_status (priv->manager, miner, &status, &progress);
+
+		entry->status = status;
+		entry->progress = progress;
+
+		gtk_widget_show (entry->progress_bar);
+		gtk_widget_show (entry->progress_percentage);
+
+		status_icon_miner_progress_set (entry);
 	}
 
 	g_hash_table_replace (priv->miners, str, entry);
@@ -816,16 +829,18 @@ status_icon_initialize_miners_menu (TrackerStatusIcon *icon)
 	priv = TRACKER_STATUS_ICON_GET_PRIVATE (icon);
 
 #if HAVE_TRACKER_SEARCH_TOOL
-	item = gtk_image_menu_item_new_with_mnemonic (_("_Search"));
-	image = gtk_image_new_from_icon_name (GTK_STOCK_FIND,
-	                                      GTK_ICON_SIZE_MENU);
-	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
-	gtk_menu_shell_append (GTK_MENU_SHELL (priv->miner_menu), item);
-	g_signal_connect (G_OBJECT (item), "activate",
-	                  G_CALLBACK (context_menu_search_cb), icon);
+	if (g_find_program_in_path ("tracker-search-tool")) {
+		item = gtk_image_menu_item_new_with_mnemonic (_("_Search"));
+		image = gtk_image_new_from_icon_name (GTK_STOCK_FIND,
+						      GTK_ICON_SIZE_MENU);
+		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+		gtk_menu_shell_append (GTK_MENU_SHELL (priv->miner_menu), item);
+		g_signal_connect (G_OBJECT (item), "activate",
+				  G_CALLBACK (context_menu_search_cb), icon);
 
-	item = gtk_separator_menu_item_new ();
-	gtk_menu_shell_append (GTK_MENU_SHELL (priv->miner_menu), item);
+		item = gtk_separator_menu_item_new ();
+		gtk_menu_shell_append (GTK_MENU_SHELL (priv->miner_menu), item);
+	}
 #endif
 
 	/* miner entries */
@@ -846,7 +861,7 @@ status_icon_initialize_miners_menu (TrackerStatusIcon *icon)
 	g_signal_connect (G_OBJECT (item), "toggled",
 	                  G_CALLBACK (context_menu_pause_cb), icon);
 
-	gtk_widget_show_all (priv->miner_menu);
+	gtk_widget_show (priv->miner_menu);
 }
 
 static GtkWidget *
@@ -857,14 +872,16 @@ status_icon_create_context_menu (TrackerStatusIcon *icon)
 	menu = gtk_menu_new ();
 
 #if HAVE_TRACKER_PREFERENCES
-	item = gtk_image_menu_item_new_with_mnemonic (_("_Preferences"));
-	image = gtk_image_new_from_icon_name (GTK_STOCK_PREFERENCES,
-	                                      GTK_ICON_SIZE_MENU);
-	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-	g_signal_connect (G_OBJECT (item), "activate",
-	                  G_CALLBACK (context_menu_preferences_cb),
-	                  icon);
+	if (g_find_program_in_path ("tracker-preferences")) {
+		item = gtk_image_menu_item_new_with_mnemonic (_("_Preferences"));
+		image = gtk_image_new_from_icon_name (GTK_STOCK_PREFERENCES,
+						      GTK_ICON_SIZE_MENU);
+		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+		g_signal_connect (G_OBJECT (item), "activate",
+				  G_CALLBACK (context_menu_preferences_cb),
+				  icon);
+	}
 #endif
 
 	/*

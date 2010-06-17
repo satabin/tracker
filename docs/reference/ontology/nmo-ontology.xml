@@ -490,7 +490,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-smsId'>nmo:smsId</link>, <link linkend='nmo-encoding'>nmo:encoding</link>, <link linkend='nmo-fromVCard'>nmo:fromVCard</link>, <link linkend='nmo-toVCard'>nmo:toVCard</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmo-validityPeriod'>nmo:validityPeriod</link>, <link linkend='nmo-smsId'>nmo:smsId</link>, <link linkend='nmo-encoding'>nmo:encoding</link>, <link linkend='nmo-fromVCard'>nmo:fromVCard</link>, <link linkend='nmo-toVCard'>nmo:toVCard</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -1940,6 +1940,37 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nmo-validityPeriod'>
+<title>nmo:validityPeriod</title>
+<para>Validity period of an SMS in seconds. It is a value coming from the network.</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nmo-SMSMessage'>nmo:SMSMessage</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>

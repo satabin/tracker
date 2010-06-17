@@ -838,6 +838,7 @@ class Tracker.Sparql.Expression : Object {
 
 			switch (type) {
 			case PropertyType.INTEGER:
+			case PropertyType.BOOLEAN:
 				sql.append ("?");
 				binding.data_type = type;
 				return type;
@@ -863,7 +864,9 @@ class Tracker.Sparql.Expression : Object {
 			sql.append (variable.sql_expression);
 
 			if (variable.binding == null) {
-				return PropertyType.UNKNOWN;
+				// NB#174591, I replaced `return PropertyType.UNKNOWN` with throw
+				// make-test still works and the query now returns this error.
+				throw get_error ("use of undefined variable `%s'".printf (variable.name));
 			} else {
 				return variable.binding.data_type;
 			}

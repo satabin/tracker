@@ -13,7 +13,7 @@ AC_PREREQ(2.59)
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [8])
-m4_define([tracker_micro_version], [11])
+m4_define([tracker_micro_version], [12])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -181,7 +181,8 @@ PKG_CHECK_MODULES(GMODULE, [gmodule-2.0 >= $GLIB_REQUIRED])
 AC_SUBST(GMODULE_CFLAGS)
 AC_SUBST(GMODULE_LIBS)
 
-PKG_CHECK_MODULES(GIO, [gio-2.0 >= $GLIB_REQUIRED])
+# Check for GIO 2.0
+PKG_CHECK_MODULES(GIO, [gio-2.0 >= $GLIB_REQUIRED gio-unix-2.0 >= $GLIB_REQUIRED])
 AC_SUBST(GIO_CFLAGS)
 AC_SUBST(GIO_LIBS)
 

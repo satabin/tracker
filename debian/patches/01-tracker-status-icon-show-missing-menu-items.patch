@@ -1,0 +1,13 @@
+diff --git a/src/tracker-status-icon/tracker-status-icon.c b/src/tracker-status-icon/tracker-status-icon.c
+index 6913aa8..8a7f8b4 100644
+--- a/src/tracker-status-icon/tracker-status-icon.c
++++ b/src/tracker-status-icon/tracker-status-icon.c
+@@ -861,7 +861,7 @@ status_icon_initialize_miners_menu (TrackerStatusIcon *icon)
+ 	g_signal_connect (G_OBJECT (item), "toggled",
+ 	                  G_CALLBACK (context_menu_pause_cb), icon);
+ 
+-	gtk_widget_show (priv->miner_menu);
++	gtk_widget_show_all (priv->miner_menu);
+ }
+ 
+ static GtkWidget *

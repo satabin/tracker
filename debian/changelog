@@ -3,6 +3,8 @@ tracker (0.8.12-1) UNRELEASED; urgency=low
   * New upstream release.
   * debian/libtracker-miner-0.8-dev.install
     - Install vapi helper file /usr/share/vala/vapi/tracker-miner-0.8.deps.
+  * debian/patches/01-tracker-status-icon-show-missing-menu-items.patch
+    - Show missing menu items in tracker-status-icon's context menu.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 17 Jun 2010 22:59:16 +0200
 

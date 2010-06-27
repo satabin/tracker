@@ -7,9 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
+#include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n-lib.h>
-#include <gdk/gdk.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
 #include <float.h>
 #include <math.h>
@@ -30,8 +31,8 @@ typedef struct _TrackerUtilsClass TrackerUtilsClass;
 typedef struct _TrackerUtilsPrivate TrackerUtilsPrivate;
 #define _g_string_free0(var) ((var == NULL) ? NULL : (var = (g_string_free (var, TRUE), NULL)))
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
-#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 #define _g_free0(var) (var = (g_free (var), NULL))
+#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 #define _gtk_icon_info_free0(var) ((var == NULL) ? NULL : (var = (gtk_icon_info_free (var), NULL)))
 typedef struct _ParamSpecTrackerUtils ParamSpecTrackerUtils;
 
@@ -83,6 +84,7 @@ enum  {
 };
 char* tracker_utils_EscapeSparql (const char* sparql, gboolean add_wildcard);
 gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir);
+gboolean tracker_utils_LaunchApp (const char* uri);
 GdkPixbuf* tracker_utils_GetThemeIconPixbuf (GIcon* icon, gint size, GdkScreen* screen);
 GdkPixbuf* tracker_utils_GetThemePixbufByName (const char* icon_name, gint size, GdkScreen* screen);
 GdkPixbuf* tracker_utils_GetThumbNail (GFileInfo* info, gint thumb_size, gint icon_size, GdkScreen* screen);
@@ -109,15 +111,15 @@ static glong string_get_length (const char* self) {
 	glong result;
 	g_return_val_if_fail (self != NULL, 0L);
 	result = g_utf8_strlen (self, -1);
-#line 1062 "glib-2.0.vapi"
+#line 1154 "glib-2.0.vapi"
 	return result;
-#line 115 "tracker-utils.c"
+#line 117 "tracker-utils.c"
 }
 
 
 #line 54 "tracker-utils.gs"
 char* tracker_utils_EscapeSparql (const char* sparql, gboolean add_wildcard) {
-#line 121 "tracker-utils.c"
+#line 123 "tracker-utils.c"
 	char* result = NULL;
 	GString* str;
 	glong len;
@@ -128,23 +130,23 @@ char* tracker_utils_EscapeSparql (const char* sparql, gboolean add_wildcard) {
 	str = g_string_new ("");
 #line 57 "tracker-utils.gs"
 	if (sparql == NULL) {
-#line 132 "tracker-utils.c"
+#line 134 "tracker-utils.c"
 		result = g_strdup ("");
 		_g_string_free0 (str);
 #line 58 "tracker-utils.gs"
 		return result;
-#line 137 "tracker-utils.c"
+#line 139 "tracker-utils.c"
 	}
 #line 60 "tracker-utils.gs"
 	len = string_get_length (sparql);
 #line 62 "tracker-utils.gs"
 	if (len < 3) {
-#line 143 "tracker-utils.c"
+#line 145 "tracker-utils.c"
 		result = g_strdup (sparql);
 		_g_string_free0 (str);
 #line 63 "tracker-utils.gs"
 		return result;
-#line 148 "tracker-utils.c"
+#line 150 "tracker-utils.c"
 	}
 #line 65 "tracker-utils.gs"
 	p = sparql;
@@ -154,28 +156,28 @@ char* tracker_utils_EscapeSparql (const char* sparql, gboolean add_wildcard) {
 		if (!((*p) != '\0')) {
 #line 67 "tracker-utils.gs"
 			break;
-#line 158 "tracker-utils.c"
+#line 160 "tracker-utils.c"
 		}
 #line 68 "tracker-utils.gs"
 		if ((*p) == '"') {
 #line 69 "tracker-utils.gs"
 			g_string_append (str, "\\\"");
-#line 164 "tracker-utils.c"
+#line 166 "tracker-utils.c"
 		} else {
 #line 70 "tracker-utils.gs"
 			if ((*p) == '\\') {
 #line 71 "tracker-utils.gs"
 				g_string_append (str, "\\\\");
-#line 170 "tracker-utils.c"
+#line 172 "tracker-utils.c"
 			} else {
 #line 73 "tracker-utils.gs"
 				g_string_append_c (str, *p);
-#line 174 "tracker-utils.c"
+#line 176 "tracker-utils.c"
 			}
 		}
 #line 74 "tracker-utils.gs"
 		p++;
-#line 179 "tracker-utils.c"
+#line 181 "tracker-utils.c"
 	}
 #line 76 "tracker-utils.gs"
 	if (add_wildcard) {
@@ -185,44 +187,61 @@ char* tracker_utils_EscapeSparql (const char* sparql, gboolean add_wildcard) {
 		if ((*p) != ' ') {
 #line 79 "tracker-utils.gs"
 			g_string_append_c (str, '*');
-#line 189 "tracker-utils.c"
+#line 191 "tracker-utils.c"
 		}
 	}
 	result = g_strdup (str->str);
 	_g_string_free0 (str);
 #line 82 "tracker-utils.gs"
 	return result;
-#line 196 "tracker-utils.c"
+#line 198 "tracker-utils.c"
 }
 
 
-#line 87 "tracker-utils.gs"
-gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir) {
-#line 202 "tracker-utils.c"
+#line 86 "tracker-utils.gs"
+gboolean tracker_utils_LaunchApp (const char* uri) {
+#line 204 "tracker-utils.c"
 	gboolean result = FALSE;
 	GError * _inner_error_;
 	GAppInfo* app_info;
+	GAppLaunchContext* context;
 	GFile* file;
-#line 87 "tracker-utils.gs"
+	GAppInfo* _tmp1_;
+	char* _tmp0_;
+	GAppLaunchContext* _tmp2_;
+#line 86 "tracker-utils.gs"
 	g_return_val_if_fail (uri != NULL, FALSE);
-#line 209 "tracker-utils.c"
+#line 215 "tracker-utils.c"
 	_inner_error_ = NULL;
 	app_info = NULL;
+	context = NULL;
 #line 90 "tracker-utils.gs"
 	file = g_file_new_for_uri (uri);
-#line 214 "tracker-utils.c"
-	{
-		GAppInfo* _tmp0_;
-		GAppInfo* _tmp1_;
+#line 92 "tracker-utils.gs"
+	app_info = (_tmp1_ = (GAppInfo*) g_desktop_app_info_new_from_filename (_tmp0_ = g_file_get_path (file)), _g_object_unref0 (app_info), _tmp1_);
+#line 223 "tracker-utils.c"
+	_g_free0 (_tmp0_);
 #line 93 "tracker-utils.gs"
-		_tmp0_ = g_file_query_default_handler (file, NULL, &_inner_error_);
-#line 220 "tracker-utils.c"
+	if (app_info == NULL) {
+#line 227 "tracker-utils.c"
+		result = tracker_utils_OpenUri (uri, FALSE);
+		_g_object_unref0 (app_info);
+		_g_object_unref0 (context);
+		_g_object_unref0 (file);
+#line 94 "tracker-utils.gs"
+		return result;
+#line 234 "tracker-utils.c"
+	}
+#line 96 "tracker-utils.gs"
+	context = (_tmp2_ = (GAppLaunchContext*) gdk_app_launch_context_new (), _g_object_unref0 (context), _tmp2_);
+#line 238 "tracker-utils.c"
+	{
+#line 98 "tracker-utils.gs"
+		g_app_info_launch (app_info, NULL, context, &_inner_error_);
+#line 242 "tracker-utils.c"
 		if (_inner_error_ != NULL) {
 			goto __catch9_g_error;
 		}
-#line 93 "tracker-utils.gs"
-		app_info = (_tmp1_ = _tmp0_, _g_object_unref0 (app_info), _tmp1_);
-#line 226 "tracker-utils.c"
 	}
 	goto __finally9;
 	__catch9_g_error:
@@ -232,36 +251,68 @@ gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir) {
 		_inner_error_ = NULL;
 		{
 			GtkMessageDialog* msg;
-#line 95 "tracker-utils.gs"
-			msg = g_object_ref_sink ((GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, N_ ("Could not get application info for %s\nError: %s\n"), uri, e->message));
-#line 97 "tracker-utils.gs"
+#line 100 "tracker-utils.gs"
+			msg = g_object_ref_sink ((GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, N_ ("Could not launch \"%s\"\nError: %s\n"), g_app_info_get_display_name (app_info), e->message));
+#line 102 "tracker-utils.gs"
 			gtk_dialog_run ((GtkDialog*) msg);
-#line 240 "tracker-utils.c"
+#line 259 "tracker-utils.c"
 			result = FALSE;
 			_g_error_free0 (e);
 			_g_object_unref0 (msg);
 			_g_object_unref0 (app_info);
+			_g_object_unref0 (context);
 			_g_object_unref0 (file);
-#line 98 "tracker-utils.gs"
+#line 103 "tracker-utils.gs"
 			return result;
-#line 248 "tracker-utils.c"
+#line 268 "tracker-utils.c"
 		}
 	}
 	__finally9:
 	if (_inner_error_ != NULL) {
 		_g_object_unref0 (app_info);
+		_g_object_unref0 (context);
 		_g_object_unref0 (file);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return FALSE;
 	}
+	result = TRUE;
+	_g_object_unref0 (app_info);
+	_g_object_unref0 (context);
+	_g_object_unref0 (file);
+#line 105 "tracker-utils.gs"
+	return result;
+#line 286 "tracker-utils.c"
+}
+
+
+#line 108 "tracker-utils.gs"
+gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir) {
+#line 292 "tracker-utils.c"
+	gboolean result = FALSE;
+	GError * _inner_error_;
+	GAppInfo* app_info;
+	GFile* file;
+#line 108 "tracker-utils.gs"
+	g_return_val_if_fail (uri != NULL, FALSE);
+#line 299 "tracker-utils.c"
+	_inner_error_ = NULL;
+	app_info = NULL;
+#line 111 "tracker-utils.gs"
+	file = g_file_new_for_uri (uri);
+#line 304 "tracker-utils.c"
 	{
-#line 101 "tracker-utils.gs"
-		g_app_info_launch_default_for_uri (uri, NULL, &_inner_error_);
-#line 262 "tracker-utils.c"
+		GAppInfo* _tmp0_;
+		GAppInfo* _tmp1_;
+#line 114 "tracker-utils.gs"
+		_tmp0_ = g_file_query_default_handler (file, NULL, &_inner_error_);
+#line 310 "tracker-utils.c"
 		if (_inner_error_ != NULL) {
 			goto __catch10_g_error;
 		}
+#line 114 "tracker-utils.gs"
+		app_info = (_tmp1_ = _tmp0_, _g_object_unref0 (app_info), _tmp1_);
+#line 316 "tracker-utils.c"
 	}
 	goto __finally10;
 	__catch10_g_error:
@@ -271,19 +322,19 @@ gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir) {
 		_inner_error_ = NULL;
 		{
 			GtkMessageDialog* msg;
-#line 103 "tracker-utils.gs"
-			msg = g_object_ref_sink ((GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, N_ ("Could not lauch %s\nError: %s\n"), uri, e->message));
-#line 105 "tracker-utils.gs"
+#line 116 "tracker-utils.gs"
+			msg = g_object_ref_sink ((GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, N_ ("Could not get application info for %s\nError: %s\n"), uri, e->message));
+#line 118 "tracker-utils.gs"
 			gtk_dialog_run ((GtkDialog*) msg);
-#line 279 "tracker-utils.c"
+#line 330 "tracker-utils.c"
 			result = FALSE;
 			_g_error_free0 (e);
 			_g_object_unref0 (msg);
 			_g_object_unref0 (app_info);
 			_g_object_unref0 (file);
-#line 106 "tracker-utils.gs"
+#line 119 "tracker-utils.gs"
 			return result;
-#line 287 "tracker-utils.c"
+#line 338 "tracker-utils.c"
 		}
 	}
 	__finally10:
@@ -294,74 +345,113 @@ gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir) {
 		g_clear_error (&_inner_error_);
 		return FALSE;
 	}
-	result = TRUE;
-	_g_object_unref0 (app_info);
-	_g_object_unref0 (file);
-#line 108 "tracker-utils.gs"
-	return result;
-#line 303 "tracker-utils.c"
-}
-
-
-#line 111 "tracker-utils.gs"
-inline GdkPixbuf* tracker_utils_GetThemePixbufByName (const char* icon_name, gint size, GdkScreen* screen) {
-#line 309 "tracker-utils.c"
-	GdkPixbuf* result = NULL;
-	GThemedIcon* icon;
-#line 111 "tracker-utils.gs"
-	g_return_val_if_fail (icon_name != NULL, NULL);
-#line 111 "tracker-utils.gs"
-	g_return_val_if_fail (screen != NULL, NULL);
-#line 113 "tracker-utils.gs"
-	icon = (GThemedIcon*) g_themed_icon_new (icon_name);
-#line 318 "tracker-utils.c"
-	result = tracker_utils_GetThemeIconPixbuf ((GIcon*) icon, size, screen);
-	_g_object_unref0 (icon);
-#line 115 "tracker-utils.gs"
-	return result;
-#line 323 "tracker-utils.c"
-}
-
-
-#line 118 "tracker-utils.gs"
-GdkPixbuf* tracker_utils_GetThumbNail (GFileInfo* info, gint thumb_size, gint icon_size, GdkScreen* screen) {
-#line 329 "tracker-utils.c"
-	GdkPixbuf* result = NULL;
-	GError * _inner_error_;
-	GdkPixbuf* pixbuf;
-#line 118 "tracker-utils.gs"
-	g_return_val_if_fail (info != NULL, NULL);
-#line 118 "tracker-utils.gs"
-	g_return_val_if_fail (screen != NULL, NULL);
-#line 337 "tracker-utils.c"
-	_inner_error_ = NULL;
-#line 120 "tracker-utils.gs"
-	pixbuf = NULL;
-#line 341 "tracker-utils.c"
 	{
-		char* thumbpath;
-#line 123 "tracker-utils.gs"
-		thumbpath = g_strdup (g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH));
-#line 125 "tracker-utils.gs"
-		if (thumbpath != NULL) {
-#line 348 "tracker-utils.c"
-			GdkPixbuf* _tmp0_;
-			GdkPixbuf* _tmp1_;
-#line 126 "tracker-utils.gs"
-			_tmp0_ = gdk_pixbuf_new_from_file_at_size (thumbpath, thumb_size, thumb_size, &_inner_error_);
-#line 353 "tracker-utils.c"
-			if (_inner_error_ != NULL) {
-				_g_free0 (thumbpath);
-				goto __catch11_g_error;
-			}
-#line 126 "tracker-utils.gs"
-			pixbuf = (_tmp1_ = _tmp0_, _g_object_unref0 (pixbuf), _tmp1_);
-#line 360 "tracker-utils.c"
+#line 122 "tracker-utils.gs"
+		g_app_info_launch_default_for_uri (uri, NULL, &_inner_error_);
+#line 352 "tracker-utils.c"
+		if (_inner_error_ != NULL) {
+			goto __catch11_g_error;
 		}
-		_g_free0 (thumbpath);
 	}
 	goto __finally11;
 	__catch11_g_error:
+	{
+		GError * e;
+		e = _inner_error_;
+		_inner_error_ = NULL;
+		{
+			GtkMessageDialog* msg;
+#line 124 "tracker-utils.gs"
+			msg = g_object_ref_sink ((GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, N_ ("Could not lauch %s\nError: %s\n"), uri, e->message));
+#line 126 "tracker-utils.gs"
+			gtk_dialog_run ((GtkDialog*) msg);
+#line 369 "tracker-utils.c"
+			result = FALSE;
+			_g_error_free0 (e);
+			_g_object_unref0 (msg);
+			_g_object_unref0 (app_info);
+			_g_object_unref0 (file);
+#line 127 "tracker-utils.gs"
+			return result;
+#line 377 "tracker-utils.c"
+		}
+	}
+	__finally11:
+	if (_inner_error_ != NULL) {
+		_g_object_unref0 (app_info);
+		_g_object_unref0 (file);
+		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
+		return FALSE;
+	}
+	result = TRUE;
+	_g_object_unref0 (app_info);
+	_g_object_unref0 (file);
+#line 129 "tracker-utils.gs"
+	return result;
+#line 393 "tracker-utils.c"
+}
+
+
+#line 132 "tracker-utils.gs"
+inline GdkPixbuf* tracker_utils_GetThemePixbufByName (const char* icon_name, gint size, GdkScreen* screen) {
+#line 399 "tracker-utils.c"
+	GdkPixbuf* result = NULL;
+	GThemedIcon* icon;
+#line 132 "tracker-utils.gs"
+	g_return_val_if_fail (icon_name != NULL, NULL);
+#line 132 "tracker-utils.gs"
+	g_return_val_if_fail (screen != NULL, NULL);
+#line 134 "tracker-utils.gs"
+	icon = (GThemedIcon*) g_themed_icon_new (icon_name);
+#line 408 "tracker-utils.c"
+	result = tracker_utils_GetThemeIconPixbuf ((GIcon*) icon, size, screen);
+	_g_object_unref0 (icon);
+#line 136 "tracker-utils.gs"
+	return result;
+#line 413 "tracker-utils.c"
+}
+
+
+#line 139 "tracker-utils.gs"
+GdkPixbuf* tracker_utils_GetThumbNail (GFileInfo* info, gint thumb_size, gint icon_size, GdkScreen* screen) {
+#line 419 "tracker-utils.c"
+	GdkPixbuf* result = NULL;
+	GError * _inner_error_;
+	GdkPixbuf* pixbuf;
+#line 139 "tracker-utils.gs"
+	g_return_val_if_fail (info != NULL, NULL);
+#line 139 "tracker-utils.gs"
+	g_return_val_if_fail (screen != NULL, NULL);
+#line 427 "tracker-utils.c"
+	_inner_error_ = NULL;
+#line 141 "tracker-utils.gs"
+	pixbuf = NULL;
+#line 431 "tracker-utils.c"
+	{
+		char* thumbpath;
+#line 144 "tracker-utils.gs"
+		thumbpath = g_strdup (g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH));
+#line 146 "tracker-utils.gs"
+		if (thumbpath != NULL) {
+#line 438 "tracker-utils.c"
+			GdkPixbuf* _tmp0_;
+			GdkPixbuf* _tmp1_;
+#line 147 "tracker-utils.gs"
+			_tmp0_ = gdk_pixbuf_new_from_file_at_size (thumbpath, thumb_size, thumb_size, &_inner_error_);
+#line 443 "tracker-utils.c"
+			if (_inner_error_ != NULL) {
+				_g_free0 (thumbpath);
+				goto __catch12_g_error;
+			}
+#line 147 "tracker-utils.gs"
+			pixbuf = (_tmp1_ = _tmp0_, _g_object_unref0 (pixbuf), _tmp1_);
+#line 450 "tracker-utils.c"
+		}
+		_g_free0 (thumbpath);
+	}
+	goto __finally12;
+	__catch12_g_error:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -371,33 +461,33 @@ GdkPixbuf* tracker_utils_GetThumbNail (GFileInfo* info, gint thumb_size, gint ic
 			_g_error_free0 (e);
 		}
 	}
-	__finally11:
+	__finally12:
 	if (_inner_error_ != NULL) {
 		_g_object_unref0 (pixbuf);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return NULL;
 	}
-#line 130 "tracker-utils.gs"
+#line 151 "tracker-utils.gs"
 	if (pixbuf == NULL) {
-#line 384 "tracker-utils.c"
+#line 474 "tracker-utils.c"
 		GdkPixbuf* _tmp2_;
-#line 131 "tracker-utils.gs"
+#line 152 "tracker-utils.gs"
 		pixbuf = (_tmp2_ = tracker_utils_GetThemeIconPixbuf (g_file_info_get_icon (info), icon_size, screen), _g_object_unref0 (pixbuf), _tmp2_);
-#line 388 "tracker-utils.c"
+#line 478 "tracker-utils.c"
 	}
-#line 133 "tracker-utils.gs"
+#line 154 "tracker-utils.gs"
 	if (pixbuf == NULL) {
-#line 392 "tracker-utils.c"
+#line 482 "tracker-utils.c"
 		GdkPixbuf* _tmp3_;
-#line 134 "tracker-utils.gs"
+#line 155 "tracker-utils.gs"
 		pixbuf = (_tmp3_ = tracker_utils_GetThemePixbufByName ("text-x-generic", icon_size, screen), _g_object_unref0 (pixbuf), _tmp3_);
-#line 396 "tracker-utils.c"
+#line 486 "tracker-utils.c"
 	}
 	result = pixbuf;
-#line 136 "tracker-utils.gs"
+#line 157 "tracker-utils.gs"
 	return result;
-#line 401 "tracker-utils.c"
+#line 491 "tracker-utils.c"
 }
 
 
@@ -406,43 +496,43 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-#line 139 "tracker-utils.gs"
+#line 160 "tracker-utils.gs"
 GdkPixbuf* tracker_utils_GetThemeIconPixbuf (GIcon* icon, gint size, GdkScreen* screen) {
-#line 412 "tracker-utils.c"
+#line 502 "tracker-utils.c"
 	GdkPixbuf* result = NULL;
 	GError * _inner_error_;
 	GtkIconInfo* icon_info;
 	GtkIconTheme* theme;
 	GtkIconInfo* _tmp0_;
-#line 139 "tracker-utils.gs"
+#line 160 "tracker-utils.gs"
 	g_return_val_if_fail (icon != NULL, NULL);
-#line 139 "tracker-utils.gs"
+#line 160 "tracker-utils.gs"
 	g_return_val_if_fail (screen != NULL, NULL);
-#line 422 "tracker-utils.c"
+#line 512 "tracker-utils.c"
 	_inner_error_ = NULL;
 	icon_info = NULL;
-#line 143 "tracker-utils.gs"
+#line 164 "tracker-utils.gs"
 	theme = _g_object_ref0 (gtk_icon_theme_get_for_screen (screen));
-#line 145 "tracker-utils.gs"
+#line 166 "tracker-utils.gs"
 	icon_info = (_tmp0_ = gtk_icon_theme_lookup_by_gicon (theme, icon, size, GTK_ICON_LOOKUP_USE_BUILTIN), _gtk_icon_info_free0 (icon_info), _tmp0_);
-#line 429 "tracker-utils.c"
+#line 519 "tracker-utils.c"
 	{
 		GdkPixbuf* _tmp1_;
-#line 148 "tracker-utils.gs"
+#line 169 "tracker-utils.gs"
 		_tmp1_ = gtk_icon_info_load_icon (icon_info, &_inner_error_);
-#line 434 "tracker-utils.c"
+#line 524 "tracker-utils.c"
 		if (_inner_error_ != NULL) {
-			goto __catch12_g_error;
+			goto __catch13_g_error;
 		}
 		result = _tmp1_;
 		_gtk_icon_info_free0 (icon_info);
 		_g_object_unref0 (theme);
-#line 148 "tracker-utils.gs"
+#line 169 "tracker-utils.gs"
 		return result;
-#line 443 "tracker-utils.c"
+#line 533 "tracker-utils.c"
 	}
-	goto __finally12;
-	__catch12_g_error:
+	goto __finally13;
+	__catch13_g_error:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -452,12 +542,12 @@ GdkPixbuf* tracker_utils_GetThemeIconPixbuf (GIcon* icon, gint size, GdkScreen* 
 			_g_error_free0 (e);
 			_gtk_icon_info_free0 (icon_info);
 			_g_object_unref0 (theme);
-#line 150 "tracker-utils.gs"
+#line 171 "tracker-utils.gs"
 			return result;
-#line 458 "tracker-utils.c"
+#line 548 "tracker-utils.c"
 		}
 	}
-	__finally12:
+	__finally13:
 	{
 		_gtk_icon_info_free0 (icon_info);
 		_g_object_unref0 (theme);
@@ -470,52 +560,52 @@ GdkPixbuf* tracker_utils_GetThemeIconPixbuf (GIcon* icon, gint size, GdkScreen* 
 }
 
 
-#line 154 "tracker-utils.gs"
+#line 175 "tracker-utils.gs"
 char* tracker_utils_FormatFileSize (gint64 size) {
-#line 476 "tracker-utils.c"
+#line 566 "tracker-utils.c"
 	char* result = NULL;
 	double displayed_size = 0.0;
-#line 157 "tracker-utils.gs"
+#line 178 "tracker-utils.gs"
 	if (size < 1024) {
-#line 481 "tracker-utils.c"
+#line 571 "tracker-utils.c"
 		result = g_strdup_printf ("%u bytes", (guint) size);
-#line 158 "tracker-utils.gs"
+#line 179 "tracker-utils.gs"
 		return result;
-#line 485 "tracker-utils.c"
+#line 575 "tracker-utils.c"
 	}
-#line 160 "tracker-utils.gs"
+#line 181 "tracker-utils.gs"
 	if (size < 1048576) {
-#line 161 "tracker-utils.gs"
+#line 182 "tracker-utils.gs"
 		displayed_size = ((double) size) / 1024;
-#line 491 "tracker-utils.c"
+#line 581 "tracker-utils.c"
 		result = g_strdup_printf ("%.1f KB", displayed_size);
-#line 162 "tracker-utils.gs"
+#line 183 "tracker-utils.gs"
 		return result;
-#line 495 "tracker-utils.c"
+#line 585 "tracker-utils.c"
 	}
-#line 164 "tracker-utils.gs"
+#line 185 "tracker-utils.gs"
 	if (size < 1073741824) {
-#line 165 "tracker-utils.gs"
+#line 186 "tracker-utils.gs"
 		displayed_size = ((double) size) / 1048576;
-#line 501 "tracker-utils.c"
+#line 591 "tracker-utils.c"
 		result = g_strdup_printf ("%.1f MB", displayed_size);
-#line 166 "tracker-utils.gs"
+#line 187 "tracker-utils.gs"
 		return result;
-#line 505 "tracker-utils.c"
+#line 595 "tracker-utils.c"
 	}
-#line 168 "tracker-utils.gs"
+#line 189 "tracker-utils.gs"
 	displayed_size = ((double) size) / 1073741824;
-#line 509 "tracker-utils.c"
+#line 599 "tracker-utils.c"
 	result = g_strdup_printf ("%.1f GB", displayed_size);
-#line 169 "tracker-utils.gs"
+#line 190 "tracker-utils.gs"
 	return result;
-#line 513 "tracker-utils.c"
+#line 603 "tracker-utils.c"
 }
 
 
 #line 51 "tracker-utils.gs"
 TrackerUtils* tracker_utils_construct (GType object_type) {
-#line 519 "tracker-utils.c"
+#line 609 "tracker-utils.c"
 	TrackerUtils* self;
 	self = (TrackerUtils*) g_type_create_instance (object_type);
 	return self;
@@ -526,7 +616,7 @@ TrackerUtils* tracker_utils_construct (GType object_type) {
 TrackerUtils* tracker_utils_new (void) {
 #line 51 "tracker-utils.gs"
 	return tracker_utils_construct (TYPE_TRACKER_UTILS);
-#line 530 "tracker-utils.c"
+#line 620 "tracker-utils.c"
 }
 
 

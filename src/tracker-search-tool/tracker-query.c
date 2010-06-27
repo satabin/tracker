@@ -1205,7 +1205,7 @@ static glong string_get_length (const char* self) {
 	glong result;
 	g_return_val_if_fail (self != NULL, 0L);
 	result = g_utf8_strlen (self, -1);
-#line 1062 "glib-2.0.vapi"
+#line 1154 "glib-2.0.vapi"
 	return result;
 #line 1210 "tracker-query.c"
 }

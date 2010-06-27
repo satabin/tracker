@@ -2963,6 +2963,7 @@ static void tracker_sparql_pattern_parse_triples (TrackerSparqlPattern* self, GS
 				}
 			}
 			*in_triples_block = FALSE;
+			*in_group_graph_pattern = TRUE;
 		}
 		if (!(*in_triples_block)) {
 			if (*in_group_graph_pattern) {

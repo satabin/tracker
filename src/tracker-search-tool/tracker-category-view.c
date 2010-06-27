@@ -124,7 +124,7 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-#line 96 "tracker-category-view.gs"
+#line 100 "tracker-category-view.gs"
 void tracker_category_view_selection_changed (TrackerCategoryView* self, GtkTreeSelection* sel) {
 #line 130 "tracker-category-view.c"
 	GtkTreeIter iter = {0};
@@ -132,22 +132,22 @@ void tracker_category_view_selection_changed (TrackerCategoryView* self, GtkTree
 	const char* name;
 	GtkTreeModel* _tmp1_;
 	GtkTreeModel* _tmp0_ = NULL;
-#line 96 "tracker-category-view.gs"
+#line 100 "tracker-category-view.gs"
 	g_return_if_fail (self != NULL);
-#line 96 "tracker-category-view.gs"
+#line 100 "tracker-category-view.gs"
 	g_return_if_fail (sel != NULL);
 #line 140 "tracker-category-view.c"
 	model = NULL;
 	name = NULL;
-#line 101 "tracker-category-view.gs"
-	gtk_tree_selection_get_selected (sel, &_tmp0_, &iter);
-#line 101 "tracker-category-view.gs"
-	model = (_tmp1_ = _g_object_ref0 (_tmp0_), _g_object_unref0 (model), _tmp1_);
-#line 102 "tracker-category-view.gs"
-	gtk_tree_model_get ((GtkTreeModel*) self->store, &iter, CATEGORY_COLUMNS_Name, &name, -1);
-#line 104 "tracker-category-view.gs"
-	if (self->priv->_Query != NULL) {
 #line 105 "tracker-category-view.gs"
+	gtk_tree_selection_get_selected (sel, &_tmp0_, &iter);
+#line 105 "tracker-category-view.gs"
+	model = (_tmp1_ = _g_object_ref0 (_tmp0_), _g_object_unref0 (model), _tmp1_);
+#line 106 "tracker-category-view.gs"
+	gtk_tree_model_get ((GtkTreeModel*) self->store, &iter, CATEGORY_COLUMNS_Name, &name, -1);
+#line 108 "tracker-category-view.gs"
+	if (self->priv->_Query != NULL) {
+#line 109 "tracker-category-view.gs"
 		tracker_query_set_Category (self->priv->_Query, name);
 #line 153 "tracker-category-view.c"
 	}
@@ -189,7 +189,7 @@ void tracker_category_view_set_Query (TrackerCategoryView* self, TrackerQuery* v
 }
 
 
-#line 96 "tracker-category-view.gs"
+#line 100 "tracker-category-view.gs"
 static void _tracker_category_view_selection_changed_gtk_tree_selection_changed (GtkTreeSelection* _sender, gpointer self) {
 #line 195 "tracker-category-view.c"
 	tracker_category_view_selection_changed (self, _sender);
@@ -213,9 +213,10 @@ static GObject * tracker_category_view_constructor (GType type, guint n_construc
 		GdkPixbuf* _tmp5_;
 		GdkPixbuf* _tmp6_;
 		GdkPixbuf* _tmp7_;
-		GtkTreeView* _tmp8_;
-		GtkCellRendererPixbuf* _tmp9_;
-		GtkCellRendererText* _tmp10_;
+		GdkPixbuf* _tmp8_;
+		GtkTreeView* _tmp9_;
+		GtkCellRendererPixbuf* _tmp10_;
+		GtkCellRendererText* _tmp11_;
 		GtkTreeSelection* category_selection;
 #line 46 "tracker-category-view.gs"
 		g_object_set ((GtkScrolledWindow*) self, "hscrollbar-policy", GTK_POLICY_NEVER, NULL);
@@ -229,69 +230,75 @@ static GObject * tracker_category_view_constructor (GType type, guint n_construc
 		gtk_list_store_append (self->store, &iter);
 #line 54 "tracker-category-view.gs"
 		gtk_list_store_set (self->store, &iter, CATEGORY_COLUMNS_Icon, _tmp1_ = tracker_utils_GetThemePixbufByName ("system-file-manager", icon_size, gtk_widget_get_screen ((GtkWidget*) self)), CATEGORY_COLUMNS_Name, "All", CATEGORY_COLUMNS_DisplayName, N_ ("All Files"), -1, -1);
-#line 233 "tracker-category-view.c"
+#line 234 "tracker-category-view.c"
 		_g_object_unref0 (_tmp1_);
 #line 57 "tracker-category-view.gs"
 		gtk_list_store_append (self->store, &iter);
 #line 58 "tracker-category-view.gs"
 		gtk_list_store_set (self->store, &iter, CATEGORY_COLUMNS_Icon, _tmp2_ = tracker_utils_GetThemePixbufByName ("folder", icon_size, gtk_widget_get_screen ((GtkWidget*) self)), CATEGORY_COLUMNS_Name, "nfo:Folder", CATEGORY_COLUMNS_DisplayName, N_ ("Folders"), -1, -1);
-#line 239 "tracker-category-view.c"
+#line 240 "tracker-category-view.c"
 		_g_object_unref0 (_tmp2_);
 #line 61 "tracker-category-view.gs"
 		gtk_list_store_append (self->store, &iter);
 #line 62 "tracker-category-view.gs"
 		gtk_list_store_set (self->store, &iter, CATEGORY_COLUMNS_Icon, _tmp3_ = tracker_utils_GetThemePixbufByName ("x-office-document", icon_size, gtk_widget_get_screen ((GtkWidget*) self)), CATEGORY_COLUMNS_Name, "nfo:Document", CATEGORY_COLUMNS_DisplayName, N_ ("Documents"), -1, -1);
-#line 245 "tracker-category-view.c"
+#line 246 "tracker-category-view.c"
 		_g_object_unref0 (_tmp3_);
 #line 65 "tracker-category-view.gs"
 		gtk_list_store_append (self->store, &iter);
 #line 66 "tracker-category-view.gs"
 		gtk_list_store_set (self->store, &iter, CATEGORY_COLUMNS_Icon, _tmp4_ = tracker_utils_GetThemePixbufByName ("image-x-generic", icon_size, gtk_widget_get_screen ((GtkWidget*) self)), CATEGORY_COLUMNS_Name, "nfo:Image", CATEGORY_COLUMNS_DisplayName, N_ ("Images"), -1, -1);
-#line 251 "tracker-category-view.c"
+#line 252 "tracker-category-view.c"
 		_g_object_unref0 (_tmp4_);
 #line 69 "tracker-category-view.gs"
 		gtk_list_store_append (self->store, &iter);
 #line 70 "tracker-category-view.gs"
 		gtk_list_store_set (self->store, &iter, CATEGORY_COLUMNS_Icon, _tmp5_ = tracker_utils_GetThemePixbufByName ("audio-x-generic", icon_size, gtk_widget_get_screen ((GtkWidget*) self)), CATEGORY_COLUMNS_Name, "nmm:MusicPiece", CATEGORY_COLUMNS_DisplayName, N_ ("Music"), -1, -1);
-#line 257 "tracker-category-view.c"
+#line 258 "tracker-category-view.c"
 		_g_object_unref0 (_tmp5_);
 #line 73 "tracker-category-view.gs"
 		gtk_list_store_append (self->store, &iter);
 #line 74 "tracker-category-view.gs"
 		gtk_list_store_set (self->store, &iter, CATEGORY_COLUMNS_Icon, _tmp6_ = tracker_utils_GetThemePixbufByName ("video-x-generic", icon_size, gtk_widget_get_screen ((GtkWidget*) self)), CATEGORY_COLUMNS_Name, "nmm:Video", CATEGORY_COLUMNS_DisplayName, N_ ("Videos"), -1, -1);
-#line 263 "tracker-category-view.c"
+#line 264 "tracker-category-view.c"
 		_g_object_unref0 (_tmp6_);
 #line 77 "tracker-category-view.gs"
 		gtk_list_store_append (self->store, &iter);
 #line 78 "tracker-category-view.gs"
 		gtk_list_store_set (self->store, &iter, CATEGORY_COLUMNS_Icon, _tmp7_ = tracker_utils_GetThemePixbufByName ("system-run", icon_size, gtk_widget_get_screen ((GtkWidget*) self)), CATEGORY_COLUMNS_Name, "nfo:SoftwareApplication", CATEGORY_COLUMNS_DisplayName, N_ ("Applications"), -1, -1);
-#line 269 "tracker-category-view.c"
+#line 270 "tracker-category-view.c"
 		_g_object_unref0 (_tmp7_);
 #line 81 "tracker-category-view.gs"
-		self->treeview = (_tmp8_ = g_object_ref_sink ((GtkTreeView*) gtk_tree_view_new_with_model ((GtkTreeModel*) self->store)), _g_object_unref0 (self->treeview), _tmp8_);
+		gtk_list_store_append (self->store, &iter);
 #line 82 "tracker-category-view.gs"
-		gtk_tree_view_insert_column_with_attributes (self->treeview, -1, "icon", (GtkCellRenderer*) (_tmp9_ = g_object_ref_sink ((GtkCellRendererPixbuf*) gtk_cell_renderer_pixbuf_new ())), "pixbuf", 0, NULL, NULL);
-#line 275 "tracker-category-view.c"
-		_g_object_unref0 (_tmp9_);
-#line 83 "tracker-category-view.gs"
-		gtk_tree_view_insert_column_with_attributes (self->treeview, -1, "name", (GtkCellRenderer*) (_tmp10_ = g_object_ref_sink ((GtkCellRendererText*) gtk_cell_renderer_text_new ())), "text", 2, NULL, NULL);
-#line 279 "tracker-category-view.c"
-		_g_object_unref0 (_tmp10_);
-#line 84 "tracker-category-view.gs"
-		gtk_tree_view_set_headers_visible (self->treeview, FALSE);
+		gtk_list_store_set (self->store, &iter, CATEGORY_COLUMNS_Icon, _tmp8_ = tracker_utils_GetThemePixbufByName ("evolution-mail", icon_size, gtk_widget_get_screen ((GtkWidget*) self)), CATEGORY_COLUMNS_Name, "nmo:Email", CATEGORY_COLUMNS_DisplayName, N_ ("Emails"), -1, -1);
+#line 276 "tracker-category-view.c"
+		_g_object_unref0 (_tmp8_);
 #line 85 "tracker-category-view.gs"
-		gtk_tree_view_set_enable_search (self->treeview, FALSE);
+		self->treeview = (_tmp9_ = g_object_ref_sink ((GtkTreeView*) gtk_tree_view_new_with_model ((GtkTreeModel*) self->store)), _g_object_unref0 (self->treeview), _tmp9_);
+#line 86 "tracker-category-view.gs"
+		gtk_tree_view_insert_column_with_attributes (self->treeview, -1, "icon", (GtkCellRenderer*) (_tmp10_ = g_object_ref_sink ((GtkCellRendererPixbuf*) gtk_cell_renderer_pixbuf_new ())), "pixbuf", 0, NULL, NULL);
+#line 282 "tracker-category-view.c"
+		_g_object_unref0 (_tmp10_);
 #line 87 "tracker-category-view.gs"
-		category_selection = _g_object_ref0 (gtk_tree_view_get_selection (self->treeview));
+		gtk_tree_view_insert_column_with_attributes (self->treeview, -1, "name", (GtkCellRenderer*) (_tmp11_ = g_object_ref_sink ((GtkCellRendererText*) gtk_cell_renderer_text_new ())), "text", 2, NULL, NULL);
+#line 286 "tracker-category-view.c"
+		_g_object_unref0 (_tmp11_);
 #line 88 "tracker-category-view.gs"
-		gtk_tree_selection_set_mode (category_selection, GTK_SELECTION_BROWSE);
-#line 90 "tracker-category-view.gs"
-		g_signal_connect_object (category_selection, "changed", (GCallback) _tracker_category_view_selection_changed_gtk_tree_selection_changed, self, 0);
+		gtk_tree_view_set_headers_visible (self->treeview, FALSE);
+#line 89 "tracker-category-view.gs"
+		gtk_tree_view_set_enable_search (self->treeview, FALSE);
+#line 91 "tracker-category-view.gs"
+		category_selection = _g_object_ref0 (gtk_tree_view_get_selection (self->treeview));
 #line 92 "tracker-category-view.gs"
-		gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->treeview);
+		gtk_tree_selection_set_mode (category_selection, GTK_SELECTION_BROWSE);
 #line 94 "tracker-category-view.gs"
+		g_signal_connect_object (category_selection, "changed", (GCallback) _tracker_category_view_selection_changed_gtk_tree_selection_changed, self, 0);
+#line 96 "tracker-category-view.gs"
+		gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->treeview);
+#line 98 "tracker-category-view.gs"
 		gtk_widget_show_all ((GtkWidget*) self);
-#line 295 "tracker-category-view.c"
+#line 302 "tracker-category-view.c"
 		_g_object_unref0 (category_selection);
 	}
 	return obj;

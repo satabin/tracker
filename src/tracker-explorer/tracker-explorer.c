@@ -1615,41 +1615,41 @@ static GtkTreeView* explorer_setup_reverserelationships (Explorer* self) {
 }
 
 
-#line 981 "glib-2.0.vapi"
+#line 1073 "glib-2.0.vapi"
 static char* string_substring (const char* self, glong offset, glong len) {
 #line 1621 "tracker-explorer.c"
 	char* result = NULL;
 	glong string_length;
 	const char* start;
-#line 981 "glib-2.0.vapi"
+#line 1073 "glib-2.0.vapi"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 982 "glib-2.0.vapi"
+#line 1074 "glib-2.0.vapi"
 	string_length = g_utf8_strlen (self, -1);
-#line 983 "glib-2.0.vapi"
+#line 1075 "glib-2.0.vapi"
 	if (offset < 0) {
-#line 984 "glib-2.0.vapi"
+#line 1076 "glib-2.0.vapi"
 		offset = string_length + offset;
-#line 985 "glib-2.0.vapi"
+#line 1077 "glib-2.0.vapi"
 		g_return_val_if_fail (offset >= 0, NULL);
 #line 1635 "tracker-explorer.c"
 	} else {
-#line 987 "glib-2.0.vapi"
+#line 1079 "glib-2.0.vapi"
 		g_return_val_if_fail (offset <= string_length, NULL);
 #line 1639 "tracker-explorer.c"
 	}
-#line 989 "glib-2.0.vapi"
+#line 1081 "glib-2.0.vapi"
 	if (len < 0) {
-#line 990 "glib-2.0.vapi"
+#line 1082 "glib-2.0.vapi"
 		len = string_length - offset;
 #line 1645 "tracker-explorer.c"
 	}
-#line 992 "glib-2.0.vapi"
+#line 1084 "glib-2.0.vapi"
 	g_return_val_if_fail ((offset + len) <= string_length, NULL);
-#line 993 "glib-2.0.vapi"
+#line 1085 "glib-2.0.vapi"
 	start = g_utf8_offset_to_pointer (self, offset);
 #line 1651 "tracker-explorer.c"
 	result = g_strndup (start, ((gchar*) g_utf8_offset_to_pointer (start, len)) - ((gchar*) start));
-#line 994 "glib-2.0.vapi"
+#line 1086 "glib-2.0.vapi"
 	return result;
 #line 1655 "tracker-explorer.c"
 }

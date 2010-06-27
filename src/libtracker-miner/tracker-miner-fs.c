@@ -589,21 +589,31 @@ process_data_free (ProcessData *data)
 
 static ProcessData *
 process_data_find (TrackerMinerFS *fs,
-                   GFile          *file)
+                   GFile          *file,
+                   gboolean        path_search)
 {
 	GList *l;
 
 	for (l = fs->private->processing_pool; l; l = l->next) {
 		ProcessData *data = l->data;
 
-		/* Different operations for the same file URI could be
-		 * piled up here, each being a different GFile object.
-		 * Miner implementations should really notify on the
-		 * same GFile object that's being passed, so we check for
-		 * pointer equality here, rather than doing path comparisons
-		 */
-		if (data->file == file) {
-			return data;
+		if (!path_search) {
+			/* Different operations for the same file URI could be
+			 * piled up here, each being a different GFile object.
+			 * Miner implementations should really notify on the
+			 * same GFile object that's being passed, so we check for
+			 * pointer equality here, rather than doing path comparisons
+			 */
+			if(data->file == file)
+				return data;
+		} else {
+			/* Note that if there are different GFiles being
+			 * processed for the same file path, we are actually
+			 * returning the first one found, If you want exactly
+			 * the same GFile as the one as input, use the
+			 * process_data_find() method instead */
+			if (g_file_equal (data->file, file))
+				return data;
 		}
 	}
 
@@ -1286,7 +1296,7 @@ do_process_file (TrackerMinerFS *fs,
 		/* Re-fetch data, since it might have been
 		 * removed in broken implementations
 		 */
-		data = process_data_find (fs, data->file);
+		data = process_data_find (fs, data->file, FALSE);
 
 		g_message ("%s refused to process '%s'", G_OBJECT_TYPE_NAME (fs), uri);
 
@@ -1915,10 +1925,20 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 	queue_file = g_queue_pop_head (fs->private->items_deleted);
 	if (queue_file) {
 		*source_file = NULL;
+
 		if (check_ignore_next_update (fs, queue_file)) {
 			*file = NULL;
 			return QUEUE_IGNORE_NEXT_UPDATE;
 		}
+
+		if (process_data_find (fs, queue_file, TRUE)) {
+			*file = NULL;
+			/* Need to postpone event... */
+			g_queue_push_head (fs->private->items_deleted,
+			                   queue_file);
+			return QUEUE_WAIT;
+		}
+
 		*file = queue_file;
 		return QUEUE_DELETED;
 	}
@@ -1956,6 +1976,15 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 			*source_file = queue_file;
 			return QUEUE_IGNORE_NEXT_UPDATE;
 		}
+
+		if (process_data_find (fs, queue_file, TRUE)) {
+			*file = NULL;
+			/* Need to postpone event... */
+			g_queue_push_head (fs->private->items_created,
+			                   queue_file);
+			return QUEUE_WAIT;
+		}
+
 		*file = queue_file;
 		*source_file = NULL;
 		return QUEUE_CREATED;
@@ -1966,19 +1995,44 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 	if (queue_file) {
 		*file = queue_file;
 		*source_file = NULL;
+
 		if (check_ignore_next_update (fs, queue_file))
 			return QUEUE_IGNORE_NEXT_UPDATE;
+
+		if (process_data_find (fs, queue_file, TRUE)) {
+			*file = NULL;
+			/* Need to postpone event... */
+			g_queue_push_head (fs->private->items_updated,
+			                   queue_file);
+			return QUEUE_WAIT;
+		}
+
 		return QUEUE_UPDATED;
 	}
 
 	/* Moved items next */
 	data = g_queue_pop_head (fs->private->items_moved);
 	if (data) {
+		if (check_ignore_next_update (fs, data->file)) {
+			*file = g_object_ref (data->file);
+			*source_file = g_object_ref (data->source_file);
+			item_moved_data_free (data);
+			return QUEUE_IGNORE_NEXT_UPDATE;
+		}
+
+		if (process_data_find (fs, data->file, TRUE) ||
+		    process_data_find (fs, data->source_file, TRUE)) {
+			*file = NULL;
+			*source_file = NULL;
+			/* Need to postpone event... */
+			g_queue_push_head (fs->private->items_moved,
+			                   data); /* no need to create again */
+			return QUEUE_WAIT;
+		}
+
 		*file = g_object_ref (data->file);
 		*source_file = g_object_ref (data->source_file);
 		item_moved_data_free (data);
-		if (check_ignore_next_update (fs, *file))
-			return QUEUE_IGNORE_NEXT_UPDATE;
 		return QUEUE_MOVED;
 	}
 
@@ -2420,8 +2474,11 @@ should_change_index_for_file (TrackerMinerFS *fs,
 
 	if (strcmp (time_str, lookup_time) == 0) {
 		/* File already up-to-date in the database */
+		g_free (time_str);
 		return FALSE;
 	}
+
+	g_free (time_str);
 
 	/* File either not yet in the database or mtime is different
 	 * Update in database required
@@ -2451,6 +2508,16 @@ should_process_file (TrackerMinerFS *fs,
                      gboolean        is_dir)
 {
 	if (!should_check_file (fs, file, is_dir)) {
+		ensure_mtime_cache (fs, file);
+
+		if (g_hash_table_lookup (fs->private->mtime_cache, file) != NULL) {
+			/* File is told not to be checked, but exists
+			 * in the store, put in deleted queue.
+			 */
+			g_queue_push_tail (fs->private->items_deleted,
+			                   g_object_ref (file));
+		}
+
 		return FALSE;
 	}
 
@@ -2681,6 +2748,17 @@ crawler_check_directory_cb (TrackerCrawler *crawler,
 	if (!should_check) {
 		/* Remove monitors if any */
 		tracker_monitor_remove (fs->private->monitor, file);
+
+		/* Put item in deleted queue if it existed in the store */
+		ensure_mtime_cache (fs, file);
+
+		if (g_hash_table_lookup (fs->private->mtime_cache, file) != NULL) {
+			/* File is told not to be checked, but exists
+			 * in the store, put in deleted queue.
+			 */
+			g_queue_push_tail (fs->private->items_deleted,
+			                   g_object_ref (file));
+		}
 	} else {
                 gboolean should_change_index;
 
@@ -3270,7 +3348,7 @@ tracker_miner_fs_file_notify (TrackerMinerFS *fs,
 
 	fs->private->total_files_notified++;
 
-	data = process_data_find (fs, file);
+	data = process_data_find (fs, file, FALSE);
 
 	if (!data) {
 		gchar *uri;
@@ -3372,7 +3450,7 @@ tracker_miner_fs_get_urn (TrackerMinerFS *fs,
 	g_return_val_if_fail (TRACKER_IS_MINER_FS (fs), NULL);
 	g_return_val_if_fail (G_IS_FILE (file), NULL);
 
-	data = process_data_find (fs, file);
+	data = process_data_find (fs, file, FALSE);
 
 	if (!data) {
 		gchar *uri;
@@ -3413,7 +3491,7 @@ tracker_miner_fs_get_parent_urn (TrackerMinerFS *fs,
 	g_return_val_if_fail (TRACKER_IS_MINER_FS (fs), NULL);
 	g_return_val_if_fail (G_IS_FILE (file), NULL);
 
-	data = process_data_find (fs, file);
+	data = process_data_find (fs, file, FALSE);
 
 	if (!data) {
 		gchar *uri;

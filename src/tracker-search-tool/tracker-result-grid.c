@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
 #include <gdk/gdk.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
 
@@ -37,8 +38,8 @@ typedef struct _TrackerQueryClass TrackerQueryClass;
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 #define __g_list_free_gtk_tree_path_free0(var) ((var == NULL) ? NULL : (var = (_g_list_free_gtk_tree_path_free (var), NULL)))
 #define _gtk_tree_path_free0(var) ((var == NULL) ? NULL : (var = (gtk_tree_path_free (var), NULL)))
-#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 #define _g_free0(var) (var = (g_free (var), NULL))
+#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 
 typedef enum  {
 	RESULT_COLUMNS_Id,
@@ -83,13 +84,17 @@ static void _g_list_free_gtk_tree_path_free (GList* self);
 GtkTreePath* tracker_result_grid_GetSelectedPath (TrackerResultGrid* self);
 const char* tracker_result_grid_GetSelectedUri (TrackerResultGrid* self);
 char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* result_length2);
+TrackerQuery* tracker_result_grid_get_Query (TrackerResultGrid* self);
+char** tracker_query_Query (TrackerQuery* self, const char* sparql, int* result_length1, int* result_length2);
+GdkPixbuf* tracker_utils_GetThemeIconPixbuf (GIcon* icon, gint size, GdkScreen* screen);
 GdkPixbuf* tracker_utils_GetThumbNail (GFileInfo* info, gint thumb_size, gint icon_size, GdkScreen* screen);
+GdkPixbuf* tracker_utils_GetThemePixbufByName (const char* icon_name, gint size, GdkScreen* screen);
 void tracker_result_grid_RefreshQuery (TrackerResultGrid* self);
+gboolean tracker_utils_LaunchApp (const char* uri);
 gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir);
 void tracker_result_grid_ActivateUri (TrackerResultGrid* self, GtkTreePath* path);
 TrackerResultGrid* tracker_result_grid_new (void);
 TrackerResultGrid* tracker_result_grid_construct (GType object_type);
-TrackerQuery* tracker_result_grid_get_Query (TrackerResultGrid* self);
 static void _lambda2_ (TrackerResultGrid* self);
 static void __lambda2__tracker_query_search_settings_changed (TrackerQuery* _sender, gpointer self);
 static void _lambda3_ (TrackerResultGrid* self);
@@ -136,7 +141,7 @@ static gpointer _gtk_tree_path_copy0 (gpointer self) {
 
 #line 62 "tracker-result-grid.gs"
 GtkTreePath* tracker_result_grid_GetSelectedPath (TrackerResultGrid* self) {
-#line 140 "tracker-result-grid.c"
+#line 145 "tracker-result-grid.c"
 	GtkTreePath* result = NULL;
 	GList* _tmp0_;
 	gboolean _tmp1_;
@@ -144,31 +149,31 @@ GtkTreePath* tracker_result_grid_GetSelectedPath (TrackerResultGrid* self) {
 	g_return_val_if_fail (self != NULL, NULL);
 #line 63 "tracker-result-grid.gs"
 	if ((_tmp1_ = (_tmp0_ = gtk_icon_view_get_selected_items (self->iconview)) != NULL, __g_list_free_gtk_tree_path_free0 (_tmp0_), _tmp1_)) {
-#line 148 "tracker-result-grid.c"
+#line 153 "tracker-result-grid.c"
 		GList* _tmp2_;
 		GtkTreePath* _tmp3_;
 		result = (_tmp3_ = _gtk_tree_path_copy0 ((GtkTreePath*) ((GtkTreePath*) (_tmp2_ = gtk_icon_view_get_selected_items (self->iconview))->data)), __g_list_free_gtk_tree_path_free0 (_tmp2_), _tmp3_);
 #line 64 "tracker-result-grid.gs"
 		return result;
-#line 154 "tracker-result-grid.c"
+#line 159 "tracker-result-grid.c"
 	}
 	result = NULL;
 #line 66 "tracker-result-grid.gs"
 	return result;
-#line 159 "tracker-result-grid.c"
+#line 164 "tracker-result-grid.c"
 }
 
 
 #line 69 "tracker-result-grid.gs"
 const char* tracker_result_grid_GetSelectedUri (TrackerResultGrid* self) {
-#line 165 "tracker-result-grid.c"
+#line 170 "tracker-result-grid.c"
 	const char* result = NULL;
 	GtkTreeIter iter = {0};
 	const char* uri;
 	GtkTreePath* path;
 #line 69 "tracker-result-grid.gs"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 172 "tracker-result-grid.c"
+#line 177 "tracker-result-grid.c"
 	uri = NULL;
 #line 73 "tracker-result-grid.gs"
 	path = tracker_result_grid_GetSelectedPath (self);
@@ -178,32 +183,48 @@ const char* tracker_result_grid_GetSelectedUri (TrackerResultGrid* self) {
 		gtk_tree_model_get_iter ((GtkTreeModel*) self->store, &iter, path);
 #line 76 "tracker-result-grid.gs"
 		gtk_tree_model_get ((GtkTreeModel*) self->store, &iter, RESULT_COLUMNS_Uri, &uri, -1);
-#line 182 "tracker-result-grid.c"
+#line 187 "tracker-result-grid.c"
 		result = uri;
 		_gtk_tree_path_free0 (path);
 #line 77 "tracker-result-grid.gs"
 		return result;
-#line 187 "tracker-result-grid.c"
+#line 192 "tracker-result-grid.c"
 	}
 	result = "";
 	_gtk_tree_path_free0 (path);
 #line 79 "tracker-result-grid.gs"
 	return result;
-#line 193 "tracker-result-grid.c"
+#line 198 "tracker-result-grid.c"
+}
+
+
+#line 1140 "glib-2.0.vapi"
+static gboolean string_contains (const char* self, const char* needle) {
+#line 204 "tracker-result-grid.c"
+	gboolean result = FALSE;
+#line 1140 "glib-2.0.vapi"
+	g_return_val_if_fail (self != NULL, FALSE);
+#line 1140 "glib-2.0.vapi"
+	g_return_val_if_fail (needle != NULL, FALSE);
+#line 210 "tracker-result-grid.c"
+	result = strstr (self, needle) != NULL;
+#line 1141 "glib-2.0.vapi"
+	return result;
+#line 214 "tracker-result-grid.c"
 }
 
 
 #line 118 "tracker-result-grid.gs"
 void tracker_result_grid_RefreshQuery (TrackerResultGrid* self) {
-#line 199 "tracker-result-grid.c"
+#line 220 "tracker-result-grid.c"
 	GError * _inner_error_;
 #line 118 "tracker-result-grid.gs"
 	g_return_if_fail (self != NULL);
-#line 203 "tracker-result-grid.c"
+#line 224 "tracker-result-grid.c"
 	_inner_error_ = NULL;
 #line 119 "tracker-result-grid.gs"
 	if (self->priv->_query != NULL) {
-#line 207 "tracker-result-grid.c"
+#line 228 "tracker-result-grid.c"
 		char** _tmp2_;
 		gint results_length2;
 		gint results_length1;
@@ -220,17 +241,17 @@ void tracker_result_grid_RefreshQuery (TrackerResultGrid* self) {
 		gtk_list_store_clear (self->store);
 #line 126 "tracker-result-grid.gs"
 		if (results == NULL) {
-#line 224 "tracker-result-grid.c"
+#line 245 "tracker-result-grid.c"
 			results = (_vala_array_free (results, results_length1 * results_length2, (GDestroyNotify) g_free), NULL);
 #line 126 "tracker-result-grid.gs"
 			return;
-#line 228 "tracker-result-grid.c"
+#line 249 "tracker-result-grid.c"
 		}
 #line 128 "tracker-result-grid.gs"
 		i = 0;
 #line 129 "tracker-result-grid.gs"
 		while (TRUE) {
-#line 234 "tracker-result-grid.c"
+#line 255 "tracker-result-grid.c"
 			char* uri;
 			char* id;
 			char* mime;
@@ -238,7 +259,7 @@ void tracker_result_grid_RefreshQuery (TrackerResultGrid* self) {
 			if (!(results[i] != NULL)) {
 #line 129 "tracker-result-grid.gs"
 				break;
-#line 242 "tracker-result-grid.c"
+#line 263 "tracker-result-grid.c"
 			}
 #line 130 "tracker-result-grid.gs"
 			uri = g_strdup (results[i + 1]);
@@ -250,74 +271,158 @@ void tracker_result_grid_RefreshQuery (TrackerResultGrid* self) {
 			i = i + 3;
 #line 137 "tracker-result-grid.gs"
 			if (g_str_has_prefix (uri, "file://")) {
-#line 254 "tracker-result-grid.c"
+#line 275 "tracker-result-grid.c"
+				gboolean handled;
 				GFile* file;
+				char* query;
+				char** _tmp5_;
+				gint qresults_length2;
+				gint qresults_length1;
+				gint _tmp4_;
+				gint _tmp3_;
+				char** qresults;
+				gboolean _tmp6_ = FALSE;
 #line 139 "tracker-result-grid.gs"
 				has_results = TRUE;
-#line 141 "tracker-result-grid.gs"
+#line 140 "tracker-result-grid.gs"
+				handled = FALSE;
+#line 142 "tracker-result-grid.gs"
 				file = g_file_new_for_uri (uri);
-#line 260 "tracker-result-grid.c"
-				{
-					GFileInfo* info;
-					GFileType filetype;
-					GdkPixbuf* _tmp3_;
 #line 144 "tracker-result-grid.gs"
-					info = g_file_query_info (file, "standard::display-name,standard::icon,thumbnail::path", G_FILE_QUERY_INFO_NONE, NULL, &_inner_error_);
-#line 267 "tracker-result-grid.c"
-					if (_inner_error_ != NULL) {
-						goto __catch3_g_error;
-					}
+				query = g_strdup_printf ("SELECT rdf:type(?s) where { ?s nie:url \"%s\" }", uri);
+#line 294 "tracker-result-grid.c"
+				qresults = (_tmp5_ = tracker_query_Query (tracker_result_grid_get_Query (self), query, &_tmp3_, &_tmp4_), qresults_length1 = _tmp3_, qresults_length2 = _tmp4_, _tmp5_);
 #line 147 "tracker-result-grid.gs"
-					filetype = g_file_info_get_file_type (info);
-#line 148 "tracker-result-grid.gs"
-					gtk_list_store_append (self->store, &iter);
+				if (qresults != NULL) {
+#line 147 "tracker-result-grid.gs"
+					_tmp6_ = string_contains (qresults[0], "nfo#Software");
+#line 300 "tracker-result-grid.c"
+				} else {
+#line 147 "tracker-result-grid.gs"
+					_tmp6_ = FALSE;
+#line 304 "tracker-result-grid.c"
+				}
+#line 147 "tracker-result-grid.gs"
+				if (_tmp6_) {
+#line 308 "tracker-result-grid.c"
+					GAppInfo* app_info;
+					GAppInfo* _tmp8_;
+					char* _tmp7_;
+					app_info = NULL;
 #line 149 "tracker-result-grid.gs"
-					gtk_list_store_set (self->store, &iter, RESULT_COLUMNS_Id, id, RESULT_COLUMNS_Uri, uri, RESULT_COLUMNS_Mime, mime, RESULT_COLUMNS_Icon, _tmp3_ = tracker_utils_GetThumbNail (info, 64, 48, gtk_widget_get_screen ((GtkWidget*) self)), RESULT_COLUMNS_DisplayName, g_file_info_get_display_name (info), RESULT_COLUMNS_IsDirectory, filetype == G_FILE_TYPE_DIRECTORY, -1, -1);
-#line 277 "tracker-result-grid.c"
-					_g_object_unref0 (_tmp3_);
-					_g_object_unref0 (info);
-				}
-				goto __finally3;
-				__catch3_g_error:
-				{
-					GError * e;
-					e = _inner_error_;
-					_inner_error_ = NULL;
-					{
-#line 154 "tracker-result-grid.gs"
-						g_print ("Could not get file info for %s\n", uri);
-#line 290 "tracker-result-grid.c"
-						_g_error_free0 (e);
+					app_info = (_tmp8_ = (GAppInfo*) g_desktop_app_info_new_from_filename (_tmp7_ = g_file_get_path (file)), _g_object_unref0 (app_info), _tmp8_);
+#line 315 "tracker-result-grid.c"
+					_g_free0 (_tmp7_);
+#line 151 "tracker-result-grid.gs"
+					if (app_info != NULL) {
+#line 319 "tracker-result-grid.c"
+						GdkPixbuf* _tmp9_;
+#line 152 "tracker-result-grid.gs"
+						gtk_list_store_append (self->store, &iter);
+#line 153 "tracker-result-grid.gs"
+						gtk_list_store_set (self->store, &iter, RESULT_COLUMNS_Id, id, RESULT_COLUMNS_Uri, uri, RESULT_COLUMNS_Mime, mime, RESULT_COLUMNS_Icon, _tmp9_ = tracker_utils_GetThemeIconPixbuf (g_app_info_get_icon (app_info), 48, gtk_widget_get_screen ((GtkWidget*) self)), RESULT_COLUMNS_DisplayName, g_app_info_get_display_name (app_info), RESULT_COLUMNS_IsDirectory, FALSE, -1, -1);
+#line 325 "tracker-result-grid.c"
+						_g_object_unref0 (_tmp9_);
+#line 156 "tracker-result-grid.gs"
+						handled = TRUE;
+#line 329 "tracker-result-grid.c"
 					}
+					_g_object_unref0 (app_info);
 				}
-				__finally3:
-				if (_inner_error_ != NULL) {
-					_g_object_unref0 (file);
-					_g_free0 (uri);
-					_g_free0 (id);
-					_g_free0 (mime);
-					results = (_vala_array_free (results, results_length1 * results_length2, (GDestroyNotify) g_free), NULL);
-					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-					g_clear_error (&_inner_error_);
-					return;
+#line 158 "tracker-result-grid.gs"
+				if (!handled) {
+#line 335 "tracker-result-grid.c"
+					{
+						GFileInfo* info;
+						GFileType filetype;
+						GdkPixbuf* _tmp10_;
+#line 160 "tracker-result-grid.gs"
+						info = g_file_query_info (file, "standard::display-name,standard::icon,thumbnail::path", G_FILE_QUERY_INFO_NONE, NULL, &_inner_error_);
+#line 342 "tracker-result-grid.c"
+						if (_inner_error_ != NULL) {
+							goto __catch3_g_error;
+						}
+#line 163 "tracker-result-grid.gs"
+						filetype = g_file_info_get_file_type (info);
+#line 164 "tracker-result-grid.gs"
+						gtk_list_store_append (self->store, &iter);
+#line 165 "tracker-result-grid.gs"
+						gtk_list_store_set (self->store, &iter, RESULT_COLUMNS_Id, id, RESULT_COLUMNS_Uri, uri, RESULT_COLUMNS_Mime, mime, RESULT_COLUMNS_Icon, _tmp10_ = tracker_utils_GetThumbNail (info, 64, 48, gtk_widget_get_screen ((GtkWidget*) self)), RESULT_COLUMNS_DisplayName, g_file_info_get_display_name (info), RESULT_COLUMNS_IsDirectory, filetype == G_FILE_TYPE_DIRECTORY, -1, -1);
+#line 352 "tracker-result-grid.c"
+						_g_object_unref0 (_tmp10_);
+						_g_object_unref0 (info);
+					}
+					goto __finally3;
+					__catch3_g_error:
+					{
+						GError * e;
+						e = _inner_error_;
+						_inner_error_ = NULL;
+						{
+#line 170 "tracker-result-grid.gs"
+							g_print ("Could not get file info for %s\n", uri);
+#line 365 "tracker-result-grid.c"
+							_g_error_free0 (e);
+						}
+					}
+					__finally3:
+					if (_inner_error_ != NULL) {
+						_g_object_unref0 (file);
+						_g_free0 (query);
+						qresults = (_vala_array_free (qresults, qresults_length1 * qresults_length2, (GDestroyNotify) g_free), NULL);
+						_g_free0 (uri);
+						_g_free0 (id);
+						_g_free0 (mime);
+						results = (_vala_array_free (results, results_length1 * results_length2, (GDestroyNotify) g_free), NULL);
+						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+						g_clear_error (&_inner_error_);
+						return;
+					}
 				}
 				_g_object_unref0 (file);
+				_g_free0 (query);
+				qresults = (_vala_array_free (qresults, qresults_length1 * qresults_length2, (GDestroyNotify) g_free), NULL);
+			} else {
+#line 173 "tracker-result-grid.gs"
+				if (g_str_has_prefix (uri, "email://")) {
+#line 389 "tracker-result-grid.c"
+					char* query;
+					char** _tmp13_;
+					gint qresults_length2;
+					gint qresults_length1;
+					gint _tmp12_;
+					gint _tmp11_;
+					char** qresults;
+					GdkPixbuf* _tmp14_;
+#line 175 "tracker-result-grid.gs"
+					query = g_strdup_printf ("SELECT nmo:messageSubject(?s) where { ?s nie:url \"%s\" }", uri);
+#line 400 "tracker-result-grid.c"
+					qresults = (_tmp13_ = tracker_query_Query (tracker_result_grid_get_Query (self), query, &_tmp11_, &_tmp12_), qresults_length1 = _tmp11_, qresults_length2 = _tmp12_, _tmp13_);
+#line 178 "tracker-result-grid.gs"
+					gtk_list_store_append (self->store, &iter);
+#line 179 "tracker-result-grid.gs"
+					gtk_list_store_set (self->store, &iter, RESULT_COLUMNS_Id, id, RESULT_COLUMNS_Uri, uri, RESULT_COLUMNS_Mime, mime, RESULT_COLUMNS_Icon, _tmp14_ = tracker_utils_GetThemePixbufByName ("evolution-mail", 48, gtk_widget_get_screen ((GtkWidget*) self)), RESULT_COLUMNS_DisplayName, qresults[0], RESULT_COLUMNS_IsDirectory, FALSE, -1, -1);
+#line 406 "tracker-result-grid.c"
+					_g_object_unref0 (_tmp14_);
+					_g_free0 (query);
+					qresults = (_vala_array_free (qresults, qresults_length1 * qresults_length2, (GDestroyNotify) g_free), NULL);
+				}
 			}
 			_g_free0 (uri);
 			_g_free0 (id);
 			_g_free0 (mime);
 		}
-#line 157 "tracker-result-grid.gs"
+#line 184 "tracker-result-grid.gs"
 		if (has_results) {
-#line 313 "tracker-result-grid.c"
+#line 418 "tracker-result-grid.c"
 			GtkTreePath* path;
-#line 158 "tracker-result-grid.gs"
+#line 185 "tracker-result-grid.gs"
 			path = gtk_tree_path_new_from_string ("0:0:0");
-#line 159 "tracker-result-grid.gs"
+#line 186 "tracker-result-grid.gs"
 			if (path != NULL) {
-#line 160 "tracker-result-grid.gs"
+#line 187 "tracker-result-grid.gs"
 				gtk_icon_view_select_path (self->iconview, path);
-#line 321 "tracker-result-grid.c"
+#line 426 "tracker-result-grid.c"
 			}
 			_gtk_tree_path_free0 (path);
 		}
@@ -326,35 +431,66 @@ void tracker_result_grid_RefreshQuery (TrackerResultGrid* self) {
 }
 
 
-#line 165 "tracker-result-grid.gs"
+#line 192 "tracker-result-grid.gs"
 void tracker_result_grid_ActivateUri (TrackerResultGrid* self, GtkTreePath* path) {
-#line 332 "tracker-result-grid.c"
+#line 437 "tracker-result-grid.c"
 	GtkTreeIter iter = {0};
 	gboolean is_dir;
 	const char* uri;
-#line 165 "tracker-result-grid.gs"
+	char* query;
+	char** _tmp2_;
+	gint results_length2;
+	gint results_length1;
+	gint _tmp1_;
+	gint _tmp0_;
+	char** results;
+	gboolean _tmp3_ = FALSE;
+#line 192 "tracker-result-grid.gs"
 	g_return_if_fail (self != NULL);
-#line 165 "tracker-result-grid.gs"
+#line 192 "tracker-result-grid.gs"
 	g_return_if_fail (path != NULL);
-#line 167 "tracker-result-grid.gs"
+#line 194 "tracker-result-grid.gs"
 	is_dir = FALSE;
-#line 169 "tracker-result-grid.gs"
+#line 196 "tracker-result-grid.gs"
 	gtk_tree_model_get_iter ((GtkTreeModel*) self->store, &iter, path);
-#line 344 "tracker-result-grid.c"
+#line 457 "tracker-result-grid.c"
 	uri = NULL;
-#line 171 "tracker-result-grid.gs"
+#line 198 "tracker-result-grid.gs"
 	gtk_tree_model_get ((GtkTreeModel*) self->store, &iter, RESULT_COLUMNS_Uri, &uri, -1);
-#line 172 "tracker-result-grid.gs"
+#line 199 "tracker-result-grid.gs"
 	gtk_tree_model_get ((GtkTreeModel*) self->store, &iter, RESULT_COLUMNS_IsDirectory, &is_dir, -1);
-#line 174 "tracker-result-grid.gs"
-	tracker_utils_OpenUri (uri, is_dir);
-#line 352 "tracker-result-grid.c"
+#line 201 "tracker-result-grid.gs"
+	query = g_strdup_printf ("SELECT rdf:type(?s) where { ?s nie:url \"%s\" }", uri);
+#line 465 "tracker-result-grid.c"
+	results = (_tmp2_ = tracker_query_Query (tracker_result_grid_get_Query (self), query, &_tmp0_, &_tmp1_), results_length1 = _tmp0_, results_length2 = _tmp1_, _tmp2_);
+#line 203 "tracker-result-grid.gs"
+	if (results != NULL) {
+#line 203 "tracker-result-grid.gs"
+		_tmp3_ = string_contains (results[0], "nfo#Software");
+#line 471 "tracker-result-grid.c"
+	} else {
+#line 203 "tracker-result-grid.gs"
+		_tmp3_ = FALSE;
+#line 475 "tracker-result-grid.c"
+	}
+#line 203 "tracker-result-grid.gs"
+	if (_tmp3_) {
+#line 204 "tracker-result-grid.gs"
+		tracker_utils_LaunchApp (uri);
+#line 481 "tracker-result-grid.c"
+	} else {
+#line 206 "tracker-result-grid.gs"
+		tracker_utils_OpenUri (uri, is_dir);
+#line 485 "tracker-result-grid.c"
+	}
+	_g_free0 (query);
+	results = (_vala_array_free (results, results_length1 * results_length2, (GDestroyNotify) g_free), NULL);
 }
 
 
 #line 44 "tracker-result-grid.gs"
 TrackerResultGrid* tracker_result_grid_construct (GType object_type) {
-#line 358 "tracker-result-grid.c"
+#line 494 "tracker-result-grid.c"
 	TrackerResultGrid * self;
 	self = g_object_newv (object_type, 0, NULL);
 	return self;
@@ -365,7 +501,7 @@ TrackerResultGrid* tracker_result_grid_construct (GType object_type) {
 TrackerResultGrid* tracker_result_grid_new (void) {
 #line 44 "tracker-result-grid.gs"
 	return tracker_result_grid_construct (TYPE_TRACKER_RESULT_GRID);
-#line 369 "tracker-result-grid.c"
+#line 505 "tracker-result-grid.c"
 }
 
 
@@ -375,7 +511,7 @@ TrackerQuery* tracker_result_grid_get_Query (TrackerResultGrid* self) {
 	result = self->priv->_query;
 #line 53 "tracker-result-grid.gs"
 	return result;
-#line 379 "tracker-result-grid.c"
+#line 515 "tracker-result-grid.c"
 }
 
 
@@ -388,13 +524,13 @@ static gpointer _g_object_ref0 (gpointer self) {
 static void _lambda2_ (TrackerResultGrid* self) {
 #line 58 "tracker-result-grid.gs"
 	tracker_result_grid_RefreshQuery (self);
-#line 392 "tracker-result-grid.c"
+#line 528 "tracker-result-grid.c"
 }
 
 
 #line 57 "tracker-result-grid.gs"
 static void __lambda2__tracker_query_search_settings_changed (TrackerQuery* _sender, gpointer self) {
-#line 398 "tracker-result-grid.c"
+#line 534 "tracker-result-grid.c"
 	_lambda2_ (self);
 }
 
@@ -403,13 +539,13 @@ static void __lambda2__tracker_query_search_settings_changed (TrackerQuery* _sen
 static void _lambda3_ (TrackerResultGrid* self) {
 #line 60 "tracker-result-grid.gs"
 	gtk_list_store_clear (self->store);
-#line 407 "tracker-result-grid.c"
+#line 543 "tracker-result-grid.c"
 }
 
 
 #line 59 "tracker-result-grid.gs"
 static void __lambda3__tracker_query_clear_search_results (TrackerQuery* _sender, gpointer self) {
-#line 413 "tracker-result-grid.c"
+#line 549 "tracker-result-grid.c"
 	_lambda3_ (self);
 }
 
@@ -418,7 +554,7 @@ void tracker_result_grid_set_Query (TrackerResultGrid* self, TrackerQuery* value
 	g_return_if_fail (self != NULL);
 #line 55 "tracker-result-grid.gs"
 	if (value != NULL) {
-#line 422 "tracker-result-grid.c"
+#line 558 "tracker-result-grid.c"
 		TrackerQuery* _tmp0_;
 #line 56 "tracker-result-grid.gs"
 		self->priv->_query = (_tmp0_ = _g_object_ref0 (value), _g_object_unref0 (self->priv->_query), _tmp0_);
@@ -426,42 +562,42 @@ void tracker_result_grid_set_Query (TrackerResultGrid* self, TrackerQuery* value
 		g_signal_connect_object (self->priv->_query, "search-settings-changed", (GCallback) __lambda2__tracker_query_search_settings_changed, self, 0);
 #line 59 "tracker-result-grid.gs"
 		g_signal_connect_object (self->priv->_query, "clear-search-results", (GCallback) __lambda3__tracker_query_clear_search_results, self, 0);
-#line 430 "tracker-result-grid.c"
+#line 566 "tracker-result-grid.c"
 	}
 	g_object_notify ((GObject *) self, "Query");
 }
 
 
-#line 165 "tracker-result-grid.gs"
+#line 192 "tracker-result-grid.gs"
 static void _tracker_result_grid_ActivateUri_gtk_icon_view_item_activated (GtkIconView* _sender, GtkTreePath* path, gpointer self) {
-#line 438 "tracker-result-grid.c"
+#line 574 "tracker-result-grid.c"
 	tracker_result_grid_ActivateUri (self, path);
 }
 
 
 #line 102 "tracker-result-grid.gs"
 static void _lambda4_ (TrackerResultGrid* self) {
-#line 445 "tracker-result-grid.c"
+#line 581 "tracker-result-grid.c"
 	GtkTreePath* path;
 #line 103 "tracker-result-grid.gs"
 	path = tracker_result_grid_GetSelectedPath (self);
 #line 104 "tracker-result-grid.gs"
 	g_signal_emit_by_name (self, "selection-changed", path);
-#line 451 "tracker-result-grid.c"
+#line 587 "tracker-result-grid.c"
 	_gtk_tree_path_free0 (path);
 }
 
 
 #line 102 "tracker-result-grid.gs"
 static void __lambda4__gtk_icon_view_selection_changed (GtkIconView* _sender, gpointer self) {
-#line 458 "tracker-result-grid.c"
+#line 594 "tracker-result-grid.c"
 	_lambda4_ (self);
 }
 
 
 #line 107 "tracker-result-grid.gs"
 static void _lambda5_ (GdkDragContext* context, GtkSelectionData* data, guint info, guint time, TrackerResultGrid* self) {
-#line 465 "tracker-result-grid.c"
+#line 601 "tracker-result-grid.c"
 	char* uri;
 #line 107 "tracker-result-grid.gs"
 	g_return_if_fail (context != NULL);
@@ -471,7 +607,7 @@ static void _lambda5_ (GdkDragContext* context, GtkSelectionData* data, guint in
 	uri = g_strdup (tracker_result_grid_GetSelectedUri (self));
 #line 109 "tracker-result-grid.gs"
 	if (uri != NULL) {
-#line 475 "tracker-result-grid.c"
+#line 611 "tracker-result-grid.c"
 		char** _tmp0_;
 		gint _s_size_;
 		gint s_length1;
@@ -482,7 +618,7 @@ static void _lambda5_ (GdkDragContext* context, GtkSelectionData* data, guint in
 		s[0] = (_tmp1_ = g_strdup (uri), _g_free0 (s[0]), _tmp1_);
 #line 112 "tracker-result-grid.gs"
 		gtk_selection_data_set_uris (data, s);
-#line 486 "tracker-result-grid.c"
+#line 622 "tracker-result-grid.c"
 		s = (_vala_array_free (s, s_length1, (GDestroyNotify) g_free), NULL);
 	}
 	_g_free0 (uri);
@@ -491,7 +627,7 @@ static void _lambda5_ (GdkDragContext* context, GtkSelectionData* data, guint in
 
 #line 107 "tracker-result-grid.gs"
 static void __lambda5__gtk_widget_drag_data_get (GtkIconView* _sender, GdkDragContext* context, GtkSelectionData* selection_data, guint info, guint time_, gpointer self) {
-#line 495 "tracker-result-grid.c"
+#line 631 "tracker-result-grid.c"
 	_lambda5_ (context, selection_data, info, time_, self);
 }
 
@@ -538,7 +674,7 @@ static GObject * tracker_result_grid_constructor (GType type, guint n_construct_
 		gtk_container_add ((GtkContainer*) self, (GtkWidget*) self->iconview);
 #line 115 "tracker-result-grid.gs"
 		gtk_widget_show_all ((GtkWidget*) self);
-#line 542 "tracker-result-grid.c"
+#line 678 "tracker-result-grid.c"
 	}
 	return obj;
 }

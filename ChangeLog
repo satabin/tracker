@@ -1,3 +1,106 @@
+2010-06-24  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.8.13
+
+	Updated NEWS
+
+2010-06-24  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug 620828 - returns no e-mail results
+	Make tracker-search-tool search e-mails as well, the information provided
+	is a bit basic at the moment.
+
+2010-06-24  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Add test for triple block following simple optional
+
+	SPARQL: Fix generated SQL for triple block following simple optional
+
+2010-06-24  Vincent Untz  <vuntz@gnome.org>
+
+	Fixes GB#621987, Correctly handle applications in results
+	Improves Application category support in tracker-search-tool
+
+2010-06-24  Martyn Russell  <martyn@lanedo.com>
+
+	Fixes GB#620362, mp3 extraction crashes if year string is NULL before using atoi() with libenca enabled
+	This was first reported to Red Hat's Bugzilla (#596764)
+
+2010-06-24  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: minor style changes
+
+	Fixes NB#175723: Avoid duplicates if several monitor events arrive together and store is slow
+	 * If a given file is being currently processed (in the processing_pool), a new event
+	   on the same file must not be launched. Instead, the event is put back to the original
+	   queue and QUEUE_WAIT returned.
+
+2010-06-24  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerMinerFiles: Force recheck on IgnoredFiles changes.
+	This was working before commit 063355f410 because recheck was issued
+	inconditionally.
+
+	TrackerMinerFS: Plug a leak.
+
+	Indentation fixes.
+	doh!
+
+	Bug 619868 - don't recheck all monitored directories needlessly
+	All string (not dir) lists in the config would call
+	tracker_keyfile_object_load_string_list() with NULL return_instead, so
+	g_object_set()/g_object_notify() were inconditionally called. Check for
+	list equality before notifying the property change.
+
+	Bug 620486 - Ignored files can still be found after changing tracker-miner-fs.cfg
+	Put items in deleted queue if they're in the store and check-[file|directory]
+	returns FALSE.
+
+2010-06-24  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#622351: Wrong initial detection of mounted state of the root partition
+
+	Fixes NB#170915: tracker-search for snippet is resulting in errors
+
+2010-06-24  Philip Van Hoof  <philip@codeminded.be>
+
+	tests/libtracker-data: Added unit test for a regression that we had
+
+2010-06-24  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes NB#175957: Properly setup non-removable mounts at startup
+
+2010-06-24  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug NB#175712 - tracker is listing the files under Ignore directories.
+	Make ignored-directories property also go through path expansion, since
+	directories there could be $HOME prefixed. This is also bug #621568.
+
+2010-06-24  Philip Van Hoof  <philip@codeminded.be>
+
+	NFO: After careful measuring we noticed that this index isn't faster
+	The index for nfo:belongsToContainer was not faster while testing with
+	the Linux source code directory. We did several runs to avoid hot vs.
+	cold cache measurement differences. We also tried removing the index
+	on nfo:fileLastModified but this didn't result in a significant
+	difference (so we're leaving that index for now).
+
+2010-06-24  Jürg Billeter  <j@bitron.ch>
+
+	Revert "libtracker-data: Fixes NB#174591, Throw error on undefined variable in expressions"
+	This reverts commit ff52af3dc6b72350f08f034d6e4245a6c54221b2.
+
+	This broke queries that used SELECT variables in ORDERY BY clauses.
+
+2010-06-18  Adrien Bustany  <abustany@gnome.org>
+
+	Remote stale file tracker-miner-0.7.deps
+
+2010-06-17  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-status-icon: show missing menu items.
+	There was a show_all() call that got removed, some widgets relied on it...
+
 2010-06-17  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.8.12

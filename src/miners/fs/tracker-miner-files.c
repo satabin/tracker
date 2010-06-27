@@ -140,9 +140,9 @@ static void        index_single_directories_cb          (GObject              *g
                                                          GParamSpec           *arg1,
                                                          gpointer              user_data);
 static gboolean    miner_files_force_recheck_idle       (gpointer user_data);
-static void        ignore_directories_cb                (GObject              *gobject,
-							 GParamSpec           *arg1,
-							 gpointer              user_data);
+static void        trigger_recheck_cb                   (GObject              *gobject,
+                                                         GParamSpec           *arg1,
+                                                         gpointer              user_data);
 static DBusGProxy *extractor_create_proxy               (void);
 static gboolean    miner_files_check_file               (TrackerMinerFS       *fs,
                                                          GFile                *file);
@@ -515,10 +515,13 @@ miner_files_constructed (GObject *object)
 	                  G_CALLBACK (index_single_directories_cb),
 	                  mf);
 	g_signal_connect (mf->private->config, "notify::ignored-directories",
-	                  G_CALLBACK (ignore_directories_cb),
+	                  G_CALLBACK (trigger_recheck_cb),
 	                  mf);
 	g_signal_connect (mf->private->config, "notify::ignored-directories-with-content",
-	                  G_CALLBACK (ignore_directories_cb),
+	                  G_CALLBACK (trigger_recheck_cb),
+	                  mf);
+	g_signal_connect (mf->private->config, "notify::ignored-files",
+	                  G_CALLBACK (trigger_recheck_cb),
 	                  mf);
 
 #if defined(HAVE_DEVKIT_POWER) || defined(HAVE_HAL)
@@ -706,27 +709,49 @@ query_mount_points_cb (GObject      *source,
 	                                 (GDestroyNotify) g_free,
 	                                 NULL);
 
+	/* Make sure the root partition is always set to mounted, as GIO won't
+	 * report it as a proper mount */
+	g_hash_table_insert (volumes,
+	                     g_strdup (TRACKER_NON_REMOVABLE_MEDIA_DATASOURCE_URN),
+	                     GINT_TO_POINTER (VOLUME_MOUNTED));
+
+	/* Get mounted status from store */
 	for (i = 0; i < query_results->len; i++) {
 		gchar **row;
-		gint state;
 
 		row = g_ptr_array_index (query_results, i);
-		state = VOLUME_MOUNTED_IN_STORE;
 
 		if (strcmp (row[0], TRACKER_NON_REMOVABLE_MEDIA_DATASOURCE_URN) == 0) {
-			/* Report non-removable media to be mounted by HAL as well */
-			state |= VOLUME_MOUNTED;
+			/* Update root partition to set also mounted in store */
+			g_hash_table_replace (volumes,
+			                     g_strdup (TRACKER_NON_REMOVABLE_MEDIA_DATASOURCE_URN),
+			                     GINT_TO_POINTER (VOLUME_MOUNTED | VOLUME_MOUNTED_IN_STORE));
+		} else {
+			/* Set status of known volumes in store */
+			g_hash_table_insert (volumes,
+			                     g_strdup (row[0]),
+			                     GINT_TO_POINTER (VOLUME_MOUNTED_IN_STORE));
 		}
-
-		g_hash_table_insert (volumes, g_strdup (row[0]), GINT_TO_POINTER (state));
 	}
 
-	g_hash_table_replace (volumes, g_strdup (TRACKER_NON_REMOVABLE_MEDIA_DATASOURCE_URN),
-	                      GINT_TO_POINTER (VOLUME_MOUNTED));
+	/* Then, get all currently mounted non-REMOVABLE volumes, according to GIO */
+	uuids = tracker_storage_get_device_uuids (priv->storage, 0, TRUE);
+	for (u = uuids; u; u = u->next) {
+		const gchar *uuid;
+		gchar *non_removable_device_urn;
+		gint state;
 
+		uuid = u->data;
+		non_removable_device_urn = g_strdup_printf (TRACKER_DATASOURCE_URN_PREFIX "%s", uuid);
+
+		state = GPOINTER_TO_INT (g_hash_table_lookup (volumes, non_removable_device_urn));
+		state |= VOLUME_MOUNTED;
+
+		g_hash_table_replace (volumes, non_removable_device_urn, GINT_TO_POINTER (state));
+	}
+
+	/* Then, get all currently mounted REMOVABLE volumes, according to GIO */
 	uuids = tracker_storage_get_device_uuids (priv->storage, TRACKER_STORAGE_REMOVABLE, FALSE);
-
-	/* Then, get all currently mounted volumes, according to GIO */
 	for (u = uuids; u; u = u->next) {
 		const gchar *uuid;
 		gchar *removable_device_urn;
@@ -1337,9 +1362,9 @@ miner_files_force_recheck_idle (gpointer user_data)
 }
 
 static void
-ignore_directories_cb (GObject    *gobject,
-                       GParamSpec *arg1,
-                       gpointer    user_data)
+trigger_recheck_cb (GObject    *gobject,
+                    GParamSpec *arg1,
+                    gpointer    user_data)
 {
 	TrackerMinerFiles *miner_files = user_data;
 

@@ -13,7 +13,7 @@ AC_PREREQ(2.59)
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [8])
-m4_define([tracker_micro_version], [12])
+m4_define([tracker_micro_version], [13])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -923,6 +923,7 @@ AM_CONDITIONAL(HAVE_MINER_RSS, test "x$have_miner_rss" = "xyes")
 ####################################################################
 
 APP_REQUIREMENTS="glib-2.0    >= $GLIB_REQUIRED
+                  gio-unix-2.0 >= $GLIB_REQUIRED
                   gthread-2.0 >= $GLIB_REQUIRED
                   gmodule-2.0 >= $GLIB_REQUIRED
                   gtk+-2.0    >= $GTK_REQUIRED

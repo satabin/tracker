@@ -3,6 +3,9 @@ tracker (0.8.13-1) UNRELEASED; urgency=low
   * New upstream release.
   * debian/patches/01-tracker-status-icon-show-missing-menu-items.patch
     - Removed, fixed upstream.
+  * debian/patches/01-nfo-belongsToContainer-index.patch
+    - Keep index for nfo:belongsToContainer as otherwise the initial crawling
+      suffers a serious performance regression.
 
  -- Michael Biebl <biebl@debian.org>  Mon, 28 Jun 2010 00:27:45 +0200
 

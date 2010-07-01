@@ -1,4 +1,4 @@
-tracker (0.8.13-1) UNRELEASED; urgency=low
+tracker (0.8.14-1) UNRELEASED; urgency=low
 
   * New upstream release.
   * debian/patches/01-tracker-status-icon-show-missing-menu-items.patch

@@ -1,6 +1,7 @@
 tracker (0.8.14-1) UNRELEASED; urgency=low
 
   * New upstream release.
+    - Show email search results in tracker-search-tool. (Closes: #584895)
   * debian/patches/01-tracker-status-icon-show-missing-menu-items.patch
     - Removed, fixed upstream.
   * debian/patches/01-nfo-belongsToContainer-index.patch

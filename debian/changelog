@@ -6,6 +6,8 @@ tracker (0.8.14-1) UNRELEASED; urgency=low
   * debian/patches/01-nfo-belongsToContainer-index.patch
     - Keep index for nfo:belongsToContainer as otherwise the initial crawling
       suffers a serious performance regression.
+  * debian/control
+    - Bump Build-Depends on libglib2.0-dev to (>= 2.24.0).
 
  -- Michael Biebl <biebl@debian.org>  Mon, 28 Jun 2010 00:27:45 +0200
 

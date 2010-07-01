@@ -8,6 +8,8 @@ tracker (0.8.14-1) UNRELEASED; urgency=low
       suffers a serious performance regression.
   * debian/control
     - Bump Build-Depends on libglib2.0-dev to (>= 2.24.0).
+    - Bump Standards-Version to 3.9.0.
+    - Use Breaks instead of Conflicts as recommended by the new policy.
 
  -- Michael Biebl <biebl@debian.org>  Mon, 28 Jun 2010 00:27:45 +0200
 

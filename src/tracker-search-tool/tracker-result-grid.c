@@ -198,17 +198,17 @@ const char* tracker_result_grid_GetSelectedUri (TrackerResultGrid* self) {
 }
 
 
-#line 1140 "glib-2.0.vapi"
+#line 1150 "glib-2.0.vapi"
 static gboolean string_contains (const char* self, const char* needle) {
 #line 204 "tracker-result-grid.c"
 	gboolean result = FALSE;
-#line 1140 "glib-2.0.vapi"
+#line 1150 "glib-2.0.vapi"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 1140 "glib-2.0.vapi"
+#line 1150 "glib-2.0.vapi"
 	g_return_val_if_fail (needle != NULL, FALSE);
 #line 210 "tracker-result-grid.c"
 	result = strstr (self, needle) != NULL;
-#line 1141 "glib-2.0.vapi"
+#line 1151 "glib-2.0.vapi"
 	return result;
 #line 214 "tracker-result-grid.c"
 }

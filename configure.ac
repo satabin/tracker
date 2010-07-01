@@ -13,7 +13,7 @@ AC_PREREQ(2.59)
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [8])
-m4_define([tracker_micro_version], [13])
+m4_define([tracker_micro_version], [14])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -48,7 +48,7 @@ AC_CONFIG_SRCDIR([src/tracker-store/tracker-main.c])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 
-AM_INIT_AUTOMAKE([no-define tar-ustar])
+AM_INIT_AUTOMAKE([no-define tar-ustar -Wno-portability])
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
@@ -133,7 +133,7 @@ fi
 # Library required versions
 DBUS_REQUIRED=1.0
 DBUS_GLIB_REQUIRED=0.78
-GLIB_REQUIRED=2.20.0
+GLIB_REQUIRED=2.24.0
 PANGO_REQUIRED=1.0.0
 GTK_REQUIRED=2.18.0
 LIBXML2_REQUIRED=2.6

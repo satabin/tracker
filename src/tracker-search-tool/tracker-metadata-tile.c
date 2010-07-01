@@ -495,17 +495,17 @@ void tracker_metadata_tile_SetLabelUrnValue (TrackerMetadataTile* self, GtkLabel
 }
 
 
-#line 1140 "glib-2.0.vapi"
+#line 1150 "glib-2.0.vapi"
 static gboolean string_contains (const char* self, const char* needle) {
 #line 501 "tracker-metadata-tile.c"
 	gboolean result = FALSE;
-#line 1140 "glib-2.0.vapi"
+#line 1150 "glib-2.0.vapi"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 1140 "glib-2.0.vapi"
+#line 1150 "glib-2.0.vapi"
 	g_return_val_if_fail (needle != NULL, FALSE);
 #line 507 "tracker-metadata-tile.c"
 	result = strstr (self, needle) != NULL;
-#line 1141 "glib-2.0.vapi"
+#line 1151 "glib-2.0.vapi"
 	return result;
 #line 511 "tracker-metadata-tile.c"
 }
@@ -916,8 +916,8 @@ static void tracker_metadata_tile_DisplayDocumentDetails (TrackerMetadataTile* s
 #line 381 "tracker-metadata-tile.gs"
 	g_return_if_fail (uri != NULL);
 #line 382 "tracker-metadata-tile.gs"
-	query = g_strdup_printf ("SELECT nie:title(?s) nco:creator(?s) nfo:pageCount (?s) WHERE { ?s nie" \
-":url \"%s\" }", uri);
+	query = g_strdup_printf ("SELECT nie:title(?s) nco:fullname(?c) nfo:pageCount (?s) WHERE { ?s ni" \
+"e:url \"%s\" ; nco:creator ?c }", uri);
 #line 918 "tracker-metadata-tile.c"
 	_result_ = (_tmp2_ = tracker_query_Query (self->priv->_Query, query, &_tmp0_, &_tmp1_), _result__length1 = _tmp0_, _result__length2 = _tmp1_, _tmp2_);
 #line 385 "tracker-metadata-tile.gs"

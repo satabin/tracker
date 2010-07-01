@@ -90,7 +90,6 @@ enum {
 	PAUSED,
 	RESUMED,
 	PROGRESS,
-	ERROR,
 	IGNORE_NEXT_UPDATE,
 	LAST_SIGNAL
 };
@@ -221,23 +220,6 @@ tracker_miner_class_init (TrackerMinerClass *klass)
 		              G_TYPE_NONE, 2,
 		              G_TYPE_STRING,
 		              G_TYPE_DOUBLE);
-	/**
-	 * TrackerMiner::error:
-	 * @miner: the #TrackerMiner
-	 * @error: the error that happened
-	 *
-	 * The ::error signal will be emitted by TrackerMiner implementations to
-	 * indicate some error in the data mining process.
-	 **/
-	signals[ERROR] =
-		g_signal_new ("error",
-		              G_OBJECT_CLASS_TYPE (object_class),
-		              G_SIGNAL_RUN_LAST,
-		              G_STRUCT_OFFSET (TrackerMinerClass, error),
-		              NULL, NULL,
-		              g_cclosure_marshal_VOID__POINTER,
-		              G_TYPE_NONE, 1,
-		              G_TYPE_POINTER);
 
 	/**
 	 * TrackerMiner::ignore-next-update:
@@ -440,7 +422,7 @@ store_name_monitor_cb (TrackerMiner *miner,
 {
 	GError *error = NULL;
 
-	g_debug ("Store availability has changed to %s", 
+	g_debug ("Store availability has changed to %s",
 		 available ? "AVAILABLE" : "UNAVAILABLE");
 
 	if (available && miner->private->availability_cookie != 0) {
@@ -1133,9 +1115,8 @@ _tracker_miner_dbus_get_progress (TrackerMiner           *miner,
 
 	tracker_dbus_request_new (request_id, context, "%s()", __PRETTY_FUNCTION__);
 
-	dbus_g_method_return (context, miner->private->progress);
-
 	tracker_dbus_request_success (request_id, context);
+	dbus_g_method_return (context, miner->private->progress);
 }
 
 void

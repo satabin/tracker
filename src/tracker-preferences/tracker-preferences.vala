@@ -34,7 +34,6 @@ public static CheckButton checkbutton_enable_index_on_battery_first_time;
 public static CheckButton checkbutton_enable_index_on_battery;
 public static SpinButton spinbutton_delay;
 public static CheckButton checkbutton_enable_monitoring;
-public static CheckButton checkbutton_index_mounted_directories;
 public static CheckButton checkbutton_index_removable_media;
 public static CheckButton checkbutton_index_optical_discs;
 public static Scale hscale_disk_space_limit;
@@ -90,10 +89,6 @@ public static void checkbutton_enable_index_on_battery_toggled_cb (CheckButton s
 
 public static void checkbutton_enable_index_on_battery_first_time_toggled_cb (CheckButton source) {
 	config.index_on_battery_first_time = source.active;
-}
-
-public static void checkbutton_index_mounted_directories_toggled_cb (CheckButton source) {
-	config.index_mounted_directories = source.active;
 }
 
 public static void checkbutton_index_removable_media_toggled_cb (CheckButton source) {
@@ -322,13 +317,17 @@ fill_in_model (ListStore model, SList<string> list)
 {
 	int position = 0;
 	foreach (string str in list) {
-		model.insert_with_values (null,
-		                          position++,
-		                          0,
-		                          Filename.to_utf8 (str,
-		                                            -1,
-		                                            null,
-		                                            null));
+		try {
+			model.insert_with_values (null,
+			                          position++,
+			                          0,
+			                          Filename.to_utf8 (str,
+			                                            -1,
+			                                            null,
+			                                            null));
+		} catch (GLib.ConvertError e) {
+			print ("%s", e.message);
+		}
 	}
 }
 
@@ -362,8 +361,6 @@ static int main (string[] args) {
 		spinbutton_delay.value = (double) config.initial_sleep;
 		checkbutton_enable_monitoring = builder.get_object ("checkbutton_enable_monitoring") as CheckButton;
 		checkbutton_enable_monitoring.active = config.enable_monitors;
-		checkbutton_index_mounted_directories = builder.get_object ("checkbutton_index_mounted_directories") as CheckButton;
-		checkbutton_index_mounted_directories.active = config.index_mounted_directories;
 		checkbutton_index_removable_media = builder.get_object ("checkbutton_index_removable_media") as CheckButton;
 		checkbutton_index_removable_media.active = config.index_removable_devices;
 		checkbutton_index_optical_discs = builder.get_object ("checkbutton_index_optical_discs") as CheckButton;

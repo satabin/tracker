@@ -136,26 +136,26 @@ static void tracker_search_entry_entry_activate (TrackerSearchEntry* self) {
 }
 
 
-#line 1006 "glib-2.0.vapi"
+#line 1016 "glib-2.0.vapi"
 static char* string_chug (const char* self) {
 #line 142 "tracker-entry.c"
 	char* result = NULL;
 	char* _result_;
-#line 1006 "glib-2.0.vapi"
+#line 1016 "glib-2.0.vapi"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 1007 "glib-2.0.vapi"
+#line 1017 "glib-2.0.vapi"
 	_result_ = g_strdup (self);
-#line 1008 "glib-2.0.vapi"
+#line 1018 "glib-2.0.vapi"
 	g_strchug (_result_);
 #line 151 "tracker-entry.c"
 	result = _result_;
-#line 1009 "glib-2.0.vapi"
+#line 1019 "glib-2.0.vapi"
 	return result;
 #line 155 "tracker-entry.c"
 }
 
 
-#line 1089 "glib-2.0.vapi"
+#line 1099 "glib-2.0.vapi"
 static char* string_slice (const char* self, glong start, glong end) {
 #line 161 "tracker-entry.c"
 	char* result = NULL;
@@ -163,53 +163,53 @@ static char* string_slice (const char* self, glong start, glong end) {
 	gboolean _tmp0_ = FALSE;
 	gboolean _tmp1_ = FALSE;
 	const char* start_string;
-#line 1089 "glib-2.0.vapi"
+#line 1099 "glib-2.0.vapi"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 1090 "glib-2.0.vapi"
+#line 1100 "glib-2.0.vapi"
 	string_length = g_utf8_strlen (self, -1);
-#line 1091 "glib-2.0.vapi"
+#line 1101 "glib-2.0.vapi"
 	if (start < 0) {
-#line 1092 "glib-2.0.vapi"
+#line 1102 "glib-2.0.vapi"
 		start = string_length + start;
 #line 175 "tracker-entry.c"
 	}
-#line 1094 "glib-2.0.vapi"
+#line 1104 "glib-2.0.vapi"
 	if (end < 0) {
-#line 1095 "glib-2.0.vapi"
+#line 1105 "glib-2.0.vapi"
 		end = string_length + end;
 #line 181 "tracker-entry.c"
 	}
-#line 1097 "glib-2.0.vapi"
+#line 1107 "glib-2.0.vapi"
 	if (start >= 0) {
-#line 1097 "glib-2.0.vapi"
+#line 1107 "glib-2.0.vapi"
 		_tmp0_ = start <= string_length;
 #line 187 "tracker-entry.c"
 	} else {
-#line 1097 "glib-2.0.vapi"
+#line 1107 "glib-2.0.vapi"
 		_tmp0_ = FALSE;
 #line 191 "tracker-entry.c"
 	}
-#line 1097 "glib-2.0.vapi"
+#line 1107 "glib-2.0.vapi"
 	g_return_val_if_fail (_tmp0_, NULL);
-#line 1098 "glib-2.0.vapi"
+#line 1108 "glib-2.0.vapi"
 	if (end >= 0) {
-#line 1098 "glib-2.0.vapi"
+#line 1108 "glib-2.0.vapi"
 		_tmp1_ = end <= string_length;
 #line 199 "tracker-entry.c"
 	} else {
-#line 1098 "glib-2.0.vapi"
+#line 1108 "glib-2.0.vapi"
 		_tmp1_ = FALSE;
 #line 203 "tracker-entry.c"
 	}
-#line 1098 "glib-2.0.vapi"
+#line 1108 "glib-2.0.vapi"
 	g_return_val_if_fail (_tmp1_, NULL);
-#line 1099 "glib-2.0.vapi"
+#line 1109 "glib-2.0.vapi"
 	g_return_val_if_fail (start <= end, NULL);
-#line 1100 "glib-2.0.vapi"
+#line 1110 "glib-2.0.vapi"
 	start_string = g_utf8_offset_to_pointer (self, start);
 #line 211 "tracker-entry.c"
 	result = g_strndup (start_string, ((gchar*) g_utf8_offset_to_pointer (start_string, end - start)) - ((gchar*) start_string));
-#line 1101 "glib-2.0.vapi"
+#line 1111 "glib-2.0.vapi"
 	return result;
 #line 215 "tracker-entry.c"
 }
@@ -323,29 +323,30 @@ static gboolean tracker_search_entry_run_query (TrackerSearchEntry* self) {
 		_g_free0 (_tmp4_);
 		{
 			GeeIterator* _item_it;
+#line 109 "tracker-entry.gs"
 			_item_it = gee_abstract_collection_iterator ((GeeAbstractCollection*) self->history);
 #line 109 "tracker-entry.gs"
 			while (TRUE) {
-#line 330 "tracker-entry.c"
+#line 331 "tracker-entry.c"
 				char* item;
 #line 109 "tracker-entry.gs"
 				if (!gee_iterator_next (_item_it)) {
 #line 109 "tracker-entry.gs"
 					break;
-#line 336 "tracker-entry.c"
+#line 337 "tracker-entry.c"
 				}
 #line 109 "tracker-entry.gs"
 				item = (char*) gee_iterator_get (_item_it);
 #line 110 "tracker-entry.gs"
 				if (_vala_strcmp0 (txt, item) == 0) {
-#line 342 "tracker-entry.c"
+#line 343 "tracker-entry.c"
 					result = FALSE;
 					_g_free0 (item);
 					_g_object_unref0 (_item_it);
 					_g_free0 (txt);
 #line 111 "tracker-entry.gs"
 					return result;
-#line 349 "tracker-entry.c"
+#line 350 "tracker-entry.c"
 				}
 				_g_free0 (item);
 			}
@@ -355,32 +356,32 @@ static gboolean tracker_search_entry_run_query (TrackerSearchEntry* self) {
 		gee_abstract_collection_add ((GeeAbstractCollection*) self->history, txt);
 #line 114 "tracker-entry.gs"
 		gtk_combo_box_prepend_text ((GtkComboBox*) self, txt);
-#line 359 "tracker-entry.c"
+#line 360 "tracker-entry.c"
 	}
 	result = FALSE;
 	_g_free0 (txt);
 #line 116 "tracker-entry.gs"
 	return result;
-#line 365 "tracker-entry.c"
+#line 366 "tracker-entry.c"
 }
 
 
 #line 118 "tracker-entry.gs"
 static void tracker_search_entry_real_sync_action_properties (GtkActivatable* base, GtkAction* action) {
-#line 371 "tracker-entry.c"
+#line 372 "tracker-entry.c"
 	TrackerSearchEntry * self;
 	self = (TrackerSearchEntry*) base;
 #line 118 "tracker-entry.gs"
 	g_return_if_fail (action != NULL);
 #line 119 "tracker-entry.gs"
 	return;
-#line 378 "tracker-entry.c"
+#line 379 "tracker-entry.c"
 }
 
 
 #line 121 "tracker-entry.gs"
 static void tracker_search_entry_real_update (GtkActivatable* base, GtkAction* action, const char* prop) {
-#line 384 "tracker-entry.c"
+#line 385 "tracker-entry.c"
 	TrackerSearchEntry * self;
 	self = (TrackerSearchEntry*) base;
 #line 121 "tracker-entry.gs"
@@ -389,13 +390,13 @@ static void tracker_search_entry_real_update (GtkActivatable* base, GtkAction* a
 	g_return_if_fail (prop != NULL);
 #line 122 "tracker-entry.gs"
 	return;
-#line 393 "tracker-entry.c"
+#line 394 "tracker-entry.c"
 }
 
 
 #line 30 "tracker-entry.gs"
 TrackerSearchEntry* tracker_search_entry_construct (GType object_type) {
-#line 399 "tracker-entry.c"
+#line 400 "tracker-entry.c"
 	TrackerSearchEntry * self;
 	self = g_object_newv (object_type, 0, NULL);
 	return self;
@@ -406,7 +407,7 @@ TrackerSearchEntry* tracker_search_entry_construct (GType object_type) {
 TrackerSearchEntry* tracker_search_entry_new (void) {
 #line 30 "tracker-entry.gs"
 	return tracker_search_entry_construct (TYPE_TRACKER_SEARCH_ENTRY);
-#line 410 "tracker-entry.c"
+#line 411 "tracker-entry.c"
 }
 
 
@@ -416,7 +417,7 @@ TrackerQuery* tracker_search_entry_get_Query (TrackerSearchEntry* self) {
 	result = self->priv->_Query;
 #line 35 "tracker-entry.gs"
 	return result;
-#line 420 "tracker-entry.c"
+#line 421 "tracker-entry.c"
 }
 
 
@@ -434,14 +435,14 @@ static gpointer _g_object_ref0 (gpointer self) {
 
 #line 72 "tracker-entry.gs"
 static void _tracker_search_entry_entry_activate_gtk_entry_activate (GtkEntry* _sender, gpointer self) {
-#line 438 "tracker-entry.c"
+#line 439 "tracker-entry.c"
 	tracker_search_entry_entry_activate (self);
 }
 
 
 #line 61 "tracker-entry.gs"
 static void _tracker_search_entry_entry_changed_gtk_editable_changed (GtkEntry* _sender, gpointer self) {
-#line 445 "tracker-entry.c"
+#line 446 "tracker-entry.c"
 	tracker_search_entry_entry_changed (self);
 }
 
@@ -452,14 +453,14 @@ static void _lambda1_ (GtkEntryIconPosition p0, TrackerSearchEntry* self) {
 	if (p0 == GTK_ENTRY_ICON_SECONDARY) {
 #line 57 "tracker-entry.gs"
 		gtk_entry_set_text (self->entry, "");
-#line 456 "tracker-entry.c"
+#line 457 "tracker-entry.c"
 	}
 }
 
 
 #line 55 "tracker-entry.gs"
 static void __lambda1__gtk_entry_icon_press (GtkEntry* _sender, GtkEntryIconPosition p0, GdkEvent* p1, gpointer self) {
-#line 463 "tracker-entry.c"
+#line 464 "tracker-entry.c"
 	_lambda1_ (p0, self);
 }
 
@@ -507,7 +508,7 @@ static GObject * tracker_search_entry_constructor (GType type, guint n_construct
 		g_signal_connect_object (self->entry, "icon-press", (GCallback) __lambda1__gtk_entry_icon_press, self, 0);
 #line 59 "tracker-entry.gs"
 		self->history = (_tmp2_ = gee_array_list_new (G_TYPE_STRING, (GBoxedCopyFunc) g_strdup, g_free, g_str_equal), _g_object_unref0 (self->history), _tmp2_);
-#line 511 "tracker-entry.c"
+#line 512 "tracker-entry.c"
 		_g_object_unref0 (model);
 		_g_object_unref0 (completion);
 	}

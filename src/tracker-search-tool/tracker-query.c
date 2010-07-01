@@ -18,6 +18,7 @@
 
 typedef struct _Resources Resources;
 typedef struct _ResourcesIface ResourcesIface;
+typedef struct _DBusObjectVTable _DBusObjectVTable;
 #define _g_free0(var) (var = (g_free (var), NULL))
 typedef struct _ResourcesDBusProxy ResourcesDBusProxy;
 typedef DBusGProxyClass ResourcesDBusProxyClass;
@@ -35,12 +36,15 @@ typedef struct _TrackerQueryPrivate TrackerQueryPrivate;
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 #define _dbus_g_connection_unref0(var) ((var == NULL) ? NULL : (var = (dbus_g_connection_unref (var), NULL)))
 #define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
-typedef struct _DBusObjectVTable _DBusObjectVTable;
 
 struct _ResourcesIface {
 	GTypeInterface parent_iface;
 	char** (*SparqlQuery) (Resources* self, const char* query, int* result_length1, int* result_length2, GError** error);
 	void (*SparqlUpdate) (Resources* self, const char* query, GError** error);
+};
+
+struct _DBusObjectVTable {
+	void (*register_object) (DBusConnection*, const char*, void*);
 };
 
 struct _ResourcesDBusProxy {
@@ -67,16 +71,15 @@ struct _TrackerQueryPrivate {
 	gint __Fields_size_;
 };
 
-struct _DBusObjectVTable {
-	void (*register_object) (DBusConnection*, const char*, void*);
-};
-
 
 static gpointer tracker_query_parent_class = NULL;
 
+Resources* resources_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
 GType resources_get_type (void);
 char** resources_SparqlQuery (Resources* self, const char* query, int* result_length1, int* result_length2, GError** error);
 void resources_SparqlUpdate (Resources* self, const char* query, GError** error);
+static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
+static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
 void resources_dbus_register_object (DBusConnection* connection, const char* path, void* object);
 void _resources_dbus_unregister (DBusConnection* connection, void* _user_data_);
 DBusHandlerResult resources_dbus_message (DBusConnection* connection, DBusMessage* message, void* object);
@@ -85,7 +88,6 @@ static DBusHandlerResult _dbus_resources_property_get_all (Resources* self, DBus
 static DBusHandlerResult _dbus_resources_SparqlQuery (Resources* self, DBusConnection* connection, DBusMessage* message);
 static DBusHandlerResult _dbus_resources_SparqlUpdate (Resources* self, DBusConnection* connection, DBusMessage* message);
 GType resources_dbus_proxy_get_type (void);
-Resources* resources_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
 DBusHandlerResult resources_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data);
 enum  {
 	RESOURCES_DBUS_PROXY_DUMMY_PROPERTY
@@ -126,8 +128,6 @@ static void tracker_query_set_property (GObject * object, guint property_id, con
 static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func);
 static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
 static int _vala_strcmp0 (const char * str1, const char * str2);
-static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
-static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
 
 static const DBusObjectPathVTable _resources_dbus_path_vtable = {_resources_dbus_unregister, resources_dbus_message};
 static const _DBusObjectVTable _resources_dbus_vtable = {resources_dbus_register_object};
@@ -146,6 +146,25 @@ void resources_SparqlUpdate (Resources* self, const char* query, GError** error)
 #line 26 "tracker-query.gs"
 	RESOURCES_GET_INTERFACE (self)->SparqlUpdate (self, query, error);
 #line 149 "tracker-query.c"
+}
+
+
+static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
+	const _DBusObjectVTable * vtable;
+	vtable = g_type_get_qdata (G_TYPE_FROM_INSTANCE (object), g_quark_from_static_string ("DBusObjectVTable"));
+	if (vtable) {
+		vtable->register_object (connection, path, object);
+	} else {
+		g_warning ("Object does not implement any D-Bus interface");
+	}
+}
+
+
+static void _vala_dbus_unregister_object (gpointer connection, GObject* object) {
+	char* path;
+	path = g_object_steal_data ((GObject*) object, "dbus_object_path");
+	dbus_connection_unregister_object_path (connection, path);
+	g_free (path);
 }
 
 
@@ -890,19 +909,19 @@ static void resources_dbus_proxy_set_property (GObject * object, guint property_
 
 #line 62 "tracker-query.gs"
 gboolean tracker_query_Connect (TrackerQuery* self) {
-#line 894 "tracker-query.c"
+#line 913 "tracker-query.c"
 	gboolean result = FALSE;
 	GError * _inner_error_;
 #line 62 "tracker-query.gs"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 899 "tracker-query.c"
+#line 918 "tracker-query.c"
 	_inner_error_ = NULL;
 	{
 		DBusGConnection* conn;
 		Resources* _tmp0_;
 #line 65 "tracker-query.gs"
 		conn = dbus_g_bus_get (DBUS_BUS_SESSION, &_inner_error_);
-#line 906 "tracker-query.c"
+#line 925 "tracker-query.c"
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == DBUS_GERROR) {
 				goto __catch0_dbus_gerror;
@@ -913,7 +932,7 @@ gboolean tracker_query_Connect (TrackerQuery* self) {
 		}
 #line 66 "tracker-query.gs"
 		self->tracker = (_tmp0_ = resources_dbus_proxy_new (conn, "org.freedesktop.Tracker1", "/org/freedesktop/Tracker1/Resources"), _g_object_unref0 (self->tracker), _tmp0_);
-#line 917 "tracker-query.c"
+#line 936 "tracker-query.c"
 		_dbus_g_connection_unref0 (conn);
 	}
 	goto __finally0;
@@ -925,12 +944,12 @@ gboolean tracker_query_Connect (TrackerQuery* self) {
 		{
 #line 68 "tracker-query.gs"
 			g_print ("Cannot connect to Session bus. Error is %s\n", e->message);
-#line 929 "tracker-query.c"
+#line 948 "tracker-query.c"
 			result = FALSE;
 			_g_error_free0 (e);
 #line 69 "tracker-query.gs"
 			return result;
-#line 934 "tracker-query.c"
+#line 953 "tracker-query.c"
 		}
 	}
 	__finally0:
@@ -942,13 +961,13 @@ gboolean tracker_query_Connect (TrackerQuery* self) {
 	result = TRUE;
 #line 71 "tracker-query.gs"
 	return result;
-#line 946 "tracker-query.c"
+#line 965 "tracker-query.c"
 }
 
 
 #line 74 "tracker-query.gs"
 char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* result_length2) {
-#line 952 "tracker-query.c"
+#line 971 "tracker-query.c"
 	char** result = NULL;
 	GError * _inner_error_;
 	char* cat;
@@ -958,7 +977,7 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 	gpointer _tmp9_;
 #line 74 "tracker-query.gs"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 962 "tracker-query.c"
+#line 981 "tracker-query.c"
 	_inner_error_ = NULL;
 	cat = NULL;
 	query = NULL;
@@ -966,29 +985,29 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 	if (self->priv->_Category == NULL) {
 #line 78 "tracker-query.gs"
 		_tmp0_ = TRUE;
-#line 970 "tracker-query.c"
+#line 989 "tracker-query.c"
 	} else {
 #line 78 "tracker-query.gs"
 		_tmp0_ = _vala_strcmp0 (self->priv->_Category, "All") == 0;
-#line 974 "tracker-query.c"
+#line 993 "tracker-query.c"
 	}
 #line 78 "tracker-query.gs"
 	if (_tmp0_) {
-#line 978 "tracker-query.c"
+#line 997 "tracker-query.c"
 		char* _tmp1_;
 #line 79 "tracker-query.gs"
 		cat = (_tmp1_ = g_strdup ("nfo:FileDataObject"), _g_free0 (cat), _tmp1_);
-#line 982 "tracker-query.c"
+#line 1001 "tracker-query.c"
 	} else {
 		char* _tmp2_;
 #line 81 "tracker-query.gs"
 		cat = (_tmp2_ = g_strdup (self->priv->_Category), _g_free0 (cat), _tmp2_);
-#line 987 "tracker-query.c"
+#line 1006 "tracker-query.c"
 	}
 #line 83 "tracker-query.gs"
 	query = (_tmp3_ = g_strdup_printf ("SELECT ?s nie:url(?s) nie:mimeType(?s) WHERE { ?s fts:match \"%s\". ?s" \
 " a %s } LIMIT 100 ", tracker_query_get_SearchTerms (self), cat), _g_free0 (query), _tmp3_);
-#line 991 "tracker-query.c"
+#line 1010 "tracker-query.c"
 	{
 		char** _tmp7_;
 		gint _tmp6__length2;
@@ -1013,7 +1032,7 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 		_g_free0 (query);
 #line 87 "tracker-query.gs"
 		return result;
-#line 1016 "tracker-query.c"
+#line 1035 "tracker-query.c"
 	}
 	goto __finally1;
 	__catch1_dbus_gerror:
@@ -1024,7 +1043,7 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 		{
 #line 89 "tracker-query.gs"
 			g_print ("Dbus error : %s\n", e->message);
-#line 1027 "tracker-query.c"
+#line 1046 "tracker-query.c"
 			_g_error_free0 (e);
 		}
 	}
@@ -1041,7 +1060,7 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 	_g_free0 (query);
 #line 91 "tracker-query.gs"
 	return result;
-#line 1044 "tracker-query.c"
+#line 1063 "tracker-query.c"
 	_g_free0 (cat);
 	_g_free0 (query);
 }
@@ -1049,7 +1068,7 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 
 #line 94 "tracker-query.gs"
 char** tracker_query_Query (TrackerQuery* self, const char* sparql, int* result_length1, int* result_length2) {
-#line 1052 "tracker-query.c"
+#line 1071 "tracker-query.c"
 	char** result = NULL;
 	GError * _inner_error_;
 	gpointer _tmp5_;
@@ -1057,7 +1076,7 @@ char** tracker_query_Query (TrackerQuery* self, const char* sparql, int* result_
 	g_return_val_if_fail (self != NULL, NULL);
 #line 94 "tracker-query.gs"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 1060 "tracker-query.c"
+#line 1079 "tracker-query.c"
 	_inner_error_ = NULL;
 	{
 		char** _tmp3_;
@@ -1079,7 +1098,7 @@ char** tracker_query_Query (TrackerQuery* self, const char* sparql, int* result_
 		result = (_tmp4_ = _tmp2_, *result_length1 = _tmp2__length1, *result_length2 = _tmp2__length2, _tmp4_);
 #line 96 "tracker-query.gs"
 		return result;
-#line 1082 "tracker-query.c"
+#line 1101 "tracker-query.c"
 	}
 	goto __finally2;
 	__catch2_dbus_gerror:
@@ -1090,7 +1109,7 @@ char** tracker_query_Query (TrackerQuery* self, const char* sparql, int* result_
 		{
 #line 98 "tracker-query.gs"
 			g_print ("Dbus error : %s\n", e->message);
-#line 1093 "tracker-query.c"
+#line 1112 "tracker-query.c"
 			_g_error_free0 (e);
 		}
 	}
@@ -1103,13 +1122,13 @@ char** tracker_query_Query (TrackerQuery* self, const char* sparql, int* result_
 	result = (_tmp5_ = NULL, *result_length1 = 0, *result_length2 = 0, _tmp5_);
 #line 100 "tracker-query.gs"
 	return result;
-#line 1106 "tracker-query.c"
+#line 1125 "tracker-query.c"
 }
 
 
 #line 29 "tracker-query.gs"
 TrackerQuery* tracker_query_construct (GType object_type) {
-#line 1112 "tracker-query.c"
+#line 1131 "tracker-query.c"
 	TrackerQuery * self;
 	self = g_object_newv (object_type, 0, NULL);
 	return self;
@@ -1120,7 +1139,7 @@ TrackerQuery* tracker_query_construct (GType object_type) {
 TrackerQuery* tracker_query_new (void) {
 #line 29 "tracker-query.gs"
 	return tracker_query_construct (TYPE_TRACKER_QUERY);
-#line 1123 "tracker-query.c"
+#line 1142 "tracker-query.c"
 }
 
 
@@ -1130,7 +1149,7 @@ const char* tracker_query_get_SearchTerms (TrackerQuery* self) {
 	result = self->priv->_SearchTerms;
 #line 39 "tracker-query.gs"
 	return result;
-#line 1133 "tracker-query.c"
+#line 1152 "tracker-query.c"
 }
 
 
@@ -1138,11 +1157,11 @@ void tracker_query_set_SearchTerms (TrackerQuery* self, const char* value) {
 	g_return_if_fail (self != NULL);
 #line 41 "tracker-query.gs"
 	if (value != NULL) {
-#line 1141 "tracker-query.c"
+#line 1160 "tracker-query.c"
 		char* _tmp0_;
 #line 42 "tracker-query.gs"
 		self->priv->_SearchTerms = (_tmp0_ = g_strdup (value), _g_free0 (self->priv->_SearchTerms), _tmp0_);
-#line 1145 "tracker-query.c"
+#line 1164 "tracker-query.c"
 	}
 	g_object_notify ((GObject *) self, "SearchTerms");
 }
@@ -1154,7 +1173,7 @@ const char* tracker_query_get_Category (TrackerQuery* self) {
 	result = self->priv->_Category;
 #line 44 "tracker-query.gs"
 	return result;
-#line 1157 "tracker-query.c"
+#line 1176 "tracker-query.c"
 }
 
 
@@ -1171,7 +1190,7 @@ const char* tracker_query_get_SortField (TrackerQuery* self) {
 	result = self->priv->_SortField;
 #line 45 "tracker-query.gs"
 	return result;
-#line 1174 "tracker-query.c"
+#line 1193 "tracker-query.c"
 }
 
 
@@ -1189,7 +1208,7 @@ char** tracker_query_get_Fields (TrackerQuery* self, int* result_length1) {
 	result = (_tmp0_ = self->priv->_Fields, *result_length1 = self->priv->_Fields_length1, _tmp0_);
 #line 46 "tracker-query.gs"
 	return result;
-#line 1192 "tracker-query.c"
+#line 1211 "tracker-query.c"
 }
 
 
@@ -1205,15 +1224,15 @@ static glong string_get_length (const char* self) {
 	glong result;
 	g_return_val_if_fail (self != NULL, 0L);
 	result = g_utf8_strlen (self, -1);
-#line 1154 "glib-2.0.vapi"
+#line 1164 "glib-2.0.vapi"
 	return result;
-#line 1210 "tracker-query.c"
+#line 1229 "tracker-query.c"
 }
 
 
 #line 52 "tracker-query.gs"
 static void _lambda0_ (TrackerQuery* t, GParamSpec* propety, TrackerQuery* self) {
-#line 1216 "tracker-query.c"
+#line 1235 "tracker-query.c"
 	gboolean _tmp0_ = FALSE;
 	gboolean _tmp1_ = FALSE;
 #line 52 "tracker-query.gs"
@@ -1224,51 +1243,51 @@ static void _lambda0_ (TrackerQuery* t, GParamSpec* propety, TrackerQuery* self)
 	if (_vala_strcmp0 (propety->name, "Category") == 0) {
 #line 53 "tracker-query.gs"
 		_tmp1_ = TRUE;
-#line 1227 "tracker-query.c"
+#line 1246 "tracker-query.c"
 	} else {
 #line 53 "tracker-query.gs"
 		_tmp1_ = _vala_strcmp0 (propety->name, "SortField") == 0;
-#line 1231 "tracker-query.c"
+#line 1250 "tracker-query.c"
 	}
 #line 53 "tracker-query.gs"
 	if (_tmp1_) {
 #line 53 "tracker-query.gs"
 		_tmp0_ = TRUE;
-#line 1237 "tracker-query.c"
+#line 1256 "tracker-query.c"
 	} else {
 #line 53 "tracker-query.gs"
 		_tmp0_ = _vala_strcmp0 (propety->name, "Fields") == 0;
-#line 1241 "tracker-query.c"
+#line 1260 "tracker-query.c"
 	}
 #line 53 "tracker-query.gs"
 	if (_tmp0_) {
 #line 54 "tracker-query.gs"
 		g_signal_emit_by_name (self, "search-settings-changed");
-#line 1247 "tracker-query.c"
+#line 1266 "tracker-query.c"
 	} else {
 #line 56 "tracker-query.gs"
 		if (_vala_strcmp0 (propety->name, "SearchTerms") == 0) {
-#line 1251 "tracker-query.c"
+#line 1270 "tracker-query.c"
 			gboolean _tmp2_ = FALSE;
 #line 57 "tracker-query.gs"
 			if (tracker_query_get_SearchTerms (self) == NULL) {
 #line 57 "tracker-query.gs"
 				_tmp2_ = TRUE;
-#line 1257 "tracker-query.c"
+#line 1276 "tracker-query.c"
 			} else {
 #line 57 "tracker-query.gs"
 				_tmp2_ = string_get_length (tracker_query_get_SearchTerms (self)) < 3;
-#line 1261 "tracker-query.c"
+#line 1280 "tracker-query.c"
 			}
 #line 57 "tracker-query.gs"
 			if (_tmp2_) {
 #line 58 "tracker-query.gs"
 				g_signal_emit_by_name (self, "clear-search-results");
-#line 1267 "tracker-query.c"
+#line 1286 "tracker-query.c"
 			} else {
 #line 60 "tracker-query.gs"
 				g_signal_emit_by_name (self, "search-settings-changed");
-#line 1271 "tracker-query.c"
+#line 1290 "tracker-query.c"
 			}
 		}
 	}
@@ -1277,7 +1296,7 @@ static void _lambda0_ (TrackerQuery* t, GParamSpec* propety, TrackerQuery* self)
 
 #line 52 "tracker-query.gs"
 static void __lambda0__g_object_notify (TrackerQuery* _sender, GParamSpec* pspec, gpointer self) {
-#line 1280 "tracker-query.c"
+#line 1299 "tracker-query.c"
 	_lambda0_ (_sender, pspec, self);
 }
 
@@ -1294,7 +1313,7 @@ static GObject * tracker_query_constructor (GType type, guint n_construct_proper
 		tracker_query_set_Category (self, "All");
 #line 52 "tracker-query.gs"
 		g_signal_connect_object ((GObject*) self, "notify", (GCallback) __lambda0__g_object_notify, self, 0);
-#line 1297 "tracker-query.c"
+#line 1316 "tracker-query.c"
 	}
 	return obj;
 }
@@ -1417,25 +1436,6 @@ static int _vala_strcmp0 (const char * str1, const char * str2) {
 		return str1 != str2;
 	}
 	return strcmp (str1, str2);
-}
-
-
-static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
-	const _DBusObjectVTable * vtable;
-	vtable = g_type_get_qdata (G_TYPE_FROM_INSTANCE (object), g_quark_from_static_string ("DBusObjectVTable"));
-	if (vtable) {
-		vtable->register_object (connection, path, object);
-	} else {
-		g_warning ("Object does not implement any D-Bus interface");
-	}
-}
-
-
-static void _vala_dbus_unregister_object (gpointer connection, GObject* object) {
-	char* path;
-	path = g_object_steal_data ((GObject*) object, "dbus_object_path");
-	dbus_connection_unregister_object_path (connection, path);
-	g_free (path);
 }
 
 

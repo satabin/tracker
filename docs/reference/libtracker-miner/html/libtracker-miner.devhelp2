@@ -43,7 +43,6 @@
     <keyword type="property" name="The &quot;name&quot; property" link="libtracker-miner-tracker-miner.html#TrackerMiner--name"/>
     <keyword type="property" name="The &quot;progress&quot; property" link="libtracker-miner-tracker-miner.html#TrackerMiner--progress"/>
     <keyword type="property" name="The &quot;status&quot; property" link="libtracker-miner-tracker-miner.html#TrackerMiner--status"/>
-    <keyword type="signal" name="The &quot;error&quot; signal" link="libtracker-miner-tracker-miner.html#TrackerMiner-error"/>
     <keyword type="signal" name="The &quot;ignore-next-update&quot; signal" link="libtracker-miner-tracker-miner.html#TrackerMiner-ignore-next-update"/>
     <keyword type="signal" name="The &quot;paused&quot; signal" link="libtracker-miner-tracker-miner.html#TrackerMiner-paused"/>
     <keyword type="signal" name="The &quot;progress&quot; signal" link="libtracker-miner-tracker-miner.html#TrackerMiner-progress"/>

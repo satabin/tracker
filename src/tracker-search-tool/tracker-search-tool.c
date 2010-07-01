@@ -7,12 +7,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
-#include <stdio.h>
-#include <dbus/dbus-glib-lowlevel.h>
+#include <dbus/dbus.h>
 #include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-lowlevel.h>
+#include <stdio.h>
 #include <glib/gi18n-lib.h>
 #include <gdk/gdk.h>
-#include <dbus/dbus.h>
 
 
 #define TYPE_TRACKER_SEARCH_TOOL_SERVER (tracker_search_tool_server_get_type ())
@@ -25,6 +25,7 @@
 typedef struct _TrackerSearchToolServer TrackerSearchToolServer;
 typedef struct _TrackerSearchToolServerClass TrackerSearchToolServerClass;
 typedef struct _TrackerSearchToolServerPrivate TrackerSearchToolServerPrivate;
+typedef struct _DBusObjectVTable _DBusObjectVTable;
 #define _g_option_context_free0(var) ((var == NULL) ? NULL : (var = (g_option_context_free (var), NULL)))
 #define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
@@ -80,7 +81,6 @@ typedef struct _TrackerCategoryViewClass TrackerCategoryViewClass;
 typedef struct _TrackerMetadataTile TrackerMetadataTile;
 typedef struct _TrackerMetadataTileClass TrackerMetadataTileClass;
 #define _g_free0(var) (var = (g_free (var), NULL))
-typedef struct _DBusObjectVTable _DBusObjectVTable;
 
 struct _TrackerSearchToolServer {
 	GObject parent_instance;
@@ -117,6 +117,8 @@ enum  {
 void tracker_search_tool_server_Show (TrackerSearchToolServer* self);
 TrackerSearchToolServer* tracker_search_tool_server_new (void);
 TrackerSearchToolServer* tracker_search_tool_server_construct (GType object_type);
+static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
+static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
 void tracker_search_tool_server_dbus_register_object (DBusConnection* connection, const char* path, void* object);
 void _tracker_search_tool_server_dbus_unregister (DBusConnection* connection, void* _user_data_);
 DBusHandlerResult tracker_search_tool_server_dbus_message (DBusConnection* connection, DBusMessage* message, void* object);
@@ -148,8 +150,6 @@ void tracker_category_view_set_Query (TrackerCategoryView* self, TrackerQuery* v
 void tracker_metadata_tile_set_ResultGrid (TrackerMetadataTile* self, TrackerResultGrid* value);
 void tracker_metadata_tile_set_Query (TrackerMetadataTile* self, TrackerQuery* value);
 void _vala_main (char** args, int args_length1);
-static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
-static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
 
 const GOptionEntry options[3] = {{"version", 'V', 0, G_OPTION_ARG_NONE, &print_version, "Print version", NULL}, {"", (gchar) 0, 0, G_OPTION_ARG_STRING_ARRAY, &terms, "search terms", NULL}, {NULL}};
 static const DBusObjectPathVTable _tracker_search_tool_server_dbus_path_vtable = {_tracker_search_tool_server_dbus_unregister, tracker_search_tool_server_dbus_message};
@@ -182,6 +182,25 @@ TrackerSearchToolServer* tracker_search_tool_server_new (void) {
 #line 44 "tracker-search-tool.gs"
 	return tracker_search_tool_server_construct (TYPE_TRACKER_SEARCH_TOOL_SERVER);
 #line 185 "tracker-search-tool.c"
+}
+
+
+static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
+	const _DBusObjectVTable * vtable;
+	vtable = g_type_get_qdata (G_TYPE_FROM_INSTANCE (object), g_quark_from_static_string ("DBusObjectVTable"));
+	if (vtable) {
+		vtable->register_object (connection, path, object);
+	} else {
+		g_warning ("Object does not implement any D-Bus interface");
+	}
+}
+
+
+static void _vala_dbus_unregister_object (gpointer connection, GObject* object) {
+	char* path;
+	path = g_object_steal_data ((GObject*) object, "dbus_object_path");
+	dbus_connection_unregister_object_path (connection, path);
+	g_free (path);
 }
 
 
@@ -343,16 +362,16 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-#line 7712 "gtk+-2.0.vapi"
+#line 7714 "gtk+-2.0.vapi"
 static void _gtk_main_quit_gtk_object_destroy (GtkWindow* _sender, gpointer self) {
-#line 349 "tracker-search-tool.c"
+#line 368 "tracker-search-tool.c"
 	gtk_main_quit ();
 }
 
 
 #line 48 "tracker-search-tool.gs"
 void _vala_main (char** args, int args_length1) {
-#line 356 "tracker-search-tool.c"
+#line 375 "tracker-search-tool.c"
 	GError * _inner_error_;
 	GOptionContext* option_context;
 	TrackerSearchToolServer* server;
@@ -390,11 +409,11 @@ void _vala_main (char** args, int args_length1) {
 	g_option_context_set_help_enabled (option_context, TRUE);
 #line 55 "tracker-search-tool.gs"
 	g_option_context_add_main_entries (option_context, options, NULL);
-#line 394 "tracker-search-tool.c"
+#line 413 "tracker-search-tool.c"
 	{
 #line 58 "tracker-search-tool.gs"
 		g_option_context_parse (option_context, &args_length1, &args, &_inner_error_);
-#line 398 "tracker-search-tool.c"
+#line 417 "tracker-search-tool.c"
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == G_OPTION_ERROR) {
 				goto __catch4_g_option_error;
@@ -416,12 +435,12 @@ void _vala_main (char** args, int args_length1) {
 			fprintf (stdout, "%s\n", e->message);
 #line 63 "tracker-search-tool.gs"
 			fprintf (stdout, "Run '%s --help' to see a full list of available command line options.\n", args[0]);
-#line 420 "tracker-search-tool.c"
+#line 439 "tracker-search-tool.c"
 			_g_error_free0 (e);
 			_g_option_context_free0 (option_context);
 #line 64 "tracker-search-tool.gs"
 			return;
-#line 425 "tracker-search-tool.c"
+#line 444 "tracker-search-tool.c"
 		}
 	}
 	__finally4:
@@ -435,15 +454,15 @@ void _vala_main (char** args, int args_length1) {
 	if (print_version) {
 #line 67 "tracker-search-tool.gs"
 		fprintf (stdout, "%s", "\n" ABOUT "\n" LICENSE "\n");
-#line 439 "tracker-search-tool.c"
+#line 458 "tracker-search-tool.c"
 		_g_option_context_free0 (option_context);
 #line 68 "tracker-search-tool.gs"
 		return;
-#line 443 "tracker-search-tool.c"
+#line 462 "tracker-search-tool.c"
 	}
 #line 70 "tracker-search-tool.gs"
 	server = tracker_search_tool_server_new ();
-#line 447 "tracker-search-tool.c"
+#line 466 "tracker-search-tool.c"
 	{
 		DBusGProxy* bus;
 		guint _result_ = 0U;
@@ -453,7 +472,7 @@ void _vala_main (char** args, int args_length1) {
 		bus = NULL;
 #line 76 "tracker-search-tool.gs"
 		conn = dbus_g_bus_get (DBUS_BUS_SESSION, &_inner_error_);
-#line 457 "tracker-search-tool.c"
+#line 476 "tracker-search-tool.c"
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (bus);
 			if (_inner_error_->domain == DBUS_GERROR) {
@@ -470,7 +489,7 @@ void _vala_main (char** args, int args_length1) {
 		bus = (_tmp0_ = dbus_g_proxy_new_for_name (conn, "org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus"), _g_object_unref0 (bus), _tmp0_);
 #line 82 "tracker-search-tool.gs"
 		_tmp1_ = _dynamic_request_name0 (bus, "org.freedesktop.Tracker1.SearchTool", (guint) 0, &_inner_error_);
-#line 474 "tracker-search-tool.c"
+#line 493 "tracker-search-tool.c"
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (bus);
 			_dbus_g_connection_unref0 (conn);
@@ -485,7 +504,7 @@ void _vala_main (char** args, int args_length1) {
 		if (_result_ == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {
 #line 85 "tracker-search-tool.gs"
 			_vala_dbus_register_object (dbus_g_connection_get_connection (conn), "/org/freedesktop/Tracker1/SearchTool", (GObject*) server);
-#line 489 "tracker-search-tool.c"
+#line 508 "tracker-search-tool.c"
 		} else {
 			DBusGProxy* remote;
 			DBusGProxy* _tmp2_;
@@ -494,7 +513,7 @@ void _vala_main (char** args, int args_length1) {
 			remote = (_tmp2_ = dbus_g_proxy_new_for_name (conn, "org.freedesktop.Tracker1.SearchTool", "/org/freedesktop/Tracker1/SearchTool", "org.freedesktop.Tracker1.SearchTool"), _g_object_unref0 (remote), _tmp2_);
 #line 93 "tracker-search-tool.gs"
 			_dynamic_show1 (remote, &_inner_error_);
-#line 498 "tracker-search-tool.c"
+#line 517 "tracker-search-tool.c"
 			if (_inner_error_ != NULL) {
 				_g_object_unref0 (remote);
 				_g_object_unref0 (bus);
@@ -511,7 +530,7 @@ void _vala_main (char** args, int args_length1) {
 			_g_object_unref0 (server);
 #line 94 "tracker-search-tool.gs"
 			return;
-#line 515 "tracker-search-tool.c"
+#line 534 "tracker-search-tool.c"
 		}
 		_g_object_unref0 (bus);
 		_dbus_g_connection_unref0 (conn);
@@ -525,7 +544,7 @@ void _vala_main (char** args, int args_length1) {
 		{
 #line 96 "tracker-search-tool.gs"
 			g_warning ("tracker-search-tool.gs:96: %s", e->message);
-#line 529 "tracker-search-tool.c"
+#line 548 "tracker-search-tool.c"
 			_g_error_free0 (e);
 		}
 	}
@@ -539,11 +558,11 @@ void _vala_main (char** args, int args_length1) {
 	}
 #line 98 "tracker-search-tool.gs"
 	builder = gtk_builder_new ();
-#line 543 "tracker-search-tool.c"
+#line 562 "tracker-search-tool.c"
 	{
 #line 101 "tracker-search-tool.gs"
 		gtk_builder_add_from_file (builder, SRCDIR "tst.ui", &_inner_error_);
-#line 547 "tracker-search-tool.c"
+#line 566 "tracker-search-tool.c"
 		if (_inner_error_ != NULL) {
 			goto __catch6_g_error;
 		}
@@ -558,7 +577,7 @@ void _vala_main (char** args, int args_length1) {
 			{
 #line 106 "tracker-search-tool.gs"
 				gtk_builder_add_from_file (builder, TRACKER_UI_DIR "tst.ui", &_inner_error_);
-#line 562 "tracker-search-tool.c"
+#line 581 "tracker-search-tool.c"
 				if (_inner_error_ != NULL) {
 					goto __catch7_g_error;
 				}
@@ -577,7 +596,7 @@ void _vala_main (char** args, int args_length1) {
 					gtk_dialog_run ((GtkDialog*) msg);
 #line 112 "tracker-search-tool.gs"
 					gtk_main_quit ();
-#line 581 "tracker-search-tool.c"
+#line 600 "tracker-search-tool.c"
 					_g_error_free0 (e);
 					_g_object_unref0 (msg);
 				}
@@ -674,17 +693,17 @@ void _vala_main (char** args, int args_length1) {
 	gtk_widget_show_all ((GtkWidget*) window);
 #line 163 "tracker-search-tool.gs"
 	if (terms != NULL) {
-#line 678 "tracker-search-tool.c"
+#line 697 "tracker-search-tool.c"
 		char* _tmp12_;
 #line 164 "tracker-search-tool.gs"
 		search_string = (_tmp12_ = g_strjoinv (" ", terms), _g_free0 (search_string), _tmp12_);
 #line 165 "tracker-search-tool.gs"
 		gtk_entry_set_text (entry, search_string);
-#line 684 "tracker-search-tool.c"
+#line 703 "tracker-search-tool.c"
 	}
 #line 167 "tracker-search-tool.gs"
 	gtk_main ();
-#line 688 "tracker-search-tool.c"
+#line 707 "tracker-search-tool.c"
 	_g_option_context_free0 (option_context);
 	_g_object_unref0 (server);
 	_g_object_unref0 (builder);
@@ -712,26 +731,7 @@ int main (int argc, char ** argv) {
 	_vala_main (argv, argc);
 #line 48 "tracker-search-tool.gs"
 	return 0;
-#line 716 "tracker-search-tool.c"
-}
-
-
-static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
-	const _DBusObjectVTable * vtable;
-	vtable = g_type_get_qdata (G_TYPE_FROM_INSTANCE (object), g_quark_from_static_string ("DBusObjectVTable"));
-	if (vtable) {
-		vtable->register_object (connection, path, object);
-	} else {
-		g_warning ("Object does not implement any D-Bus interface");
-	}
-}
-
-
-static void _vala_dbus_unregister_object (gpointer connection, GObject* object) {
-	char* path;
-	path = g_object_steal_data ((GObject*) object, "dbus_object_path");
-	dbus_connection_unregister_object_path (connection, path);
-	g_free (path);
+#line 735 "tracker-search-tool.c"
 }
 
 

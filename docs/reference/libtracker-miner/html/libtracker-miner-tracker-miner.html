@@ -116,7 +116,6 @@ const <a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray">
 <div class="refsect1" title="Signals">
 <a name="libtracker-miner-tracker-miner.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-  "<a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner-error" title='The "error" signal'>error</a>"                                          : Run Last
   "<a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner-ignore-next-update" title='The "ignore-next-update" signal'>ignore-next-update</a>"                             : Run Last
   "<a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner-paused" title='The "paused" signal'>paused</a>"                                         : Run Last
   "<a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner-progress" title='The "progress" signal'>progress</a>"                                       : Run Last
@@ -186,9 +185,6 @@ Abstract miner object.
 	                             const gchar  *status,
 	                             gdouble       progress);
 
-	void (* error)              (TrackerMiner *miner,
-	                             GError       *error);
-
 	void (* ignore_next_update) (TrackerMiner *miner,
 	                             const GStrv   urls);
 } TrackerMinerClass;
@@ -227,11 +223,6 @@ Virtual methods left to implement.
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerClass.progress"></a>progress</code></em> ()</span></p></td>
 <td>progress.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerClass.error"></a>error</code></em> ()</span></p></td>
-<td>error.
 </td>
 </tr>
 <tr>
@@ -771,36 +762,6 @@ Finishes the async comit operation. If an error occured during the commit,
 </div>
 <div class="refsect1" title="Signal Details">
 <a name="libtracker-miner-tracker-miner.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" title='The "error" signal'>
-<a name="TrackerMiner-error"></a><h3>The <code class="literal">"error"</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a> *miner,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      error,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>      user_data)      : Run Last</pre>
-<p>
-The ::error signal will be emitted by TrackerMiner implementations to
-indicate some error in the data mining process.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>the <a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>the error that happened
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>user data set when the signal handler was connected.</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
 <div class="refsect2" title='The "ignore-next-update" signal'>
 <a name="TrackerMiner-ignore-next-update"></a><h3>The <code class="literal">"ignore-next-update"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a> *miner,

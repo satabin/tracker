@@ -59,8 +59,6 @@ extern GtkSpinButton* spinbutton_delay;
 GtkSpinButton* spinbutton_delay = NULL;
 extern GtkCheckButton* checkbutton_enable_monitoring;
 GtkCheckButton* checkbutton_enable_monitoring = NULL;
-extern GtkCheckButton* checkbutton_index_mounted_directories;
-GtkCheckButton* checkbutton_index_mounted_directories = NULL;
 extern GtkCheckButton* checkbutton_index_removable_media;
 GtkCheckButton* checkbutton_index_removable_media = NULL;
 extern GtkCheckButton* checkbutton_index_optical_discs;
@@ -107,7 +105,6 @@ void spinbutton_delay_value_changed_cb (GtkSpinButton* source);
 void checkbutton_enable_monitoring_toggled_cb (GtkCheckButton* source);
 void checkbutton_enable_index_on_battery_toggled_cb (GtkCheckButton* source);
 void checkbutton_enable_index_on_battery_first_time_toggled_cb (GtkCheckButton* source);
-void checkbutton_index_mounted_directories_toggled_cb (GtkCheckButton* source);
 void checkbutton_index_removable_media_toggled_cb (GtkCheckButton* source);
 void checkbutton_index_optical_discs_toggled_cb (GtkCheckButton* source);
 char* hscale_disk_space_limit_format_value_cb (GtkScale* source, double value);
@@ -189,12 +186,6 @@ void checkbutton_enable_index_on_battery_toggled_cb (GtkCheckButton* source) {
 void checkbutton_enable_index_on_battery_first_time_toggled_cb (GtkCheckButton* source) {
 	g_return_if_fail (source != NULL);
 	tracker_config_set_index_on_battery_first_time (config, gtk_toggle_button_get_active ((GtkToggleButton*) source));
-}
-
-
-void checkbutton_index_mounted_directories_toggled_cb (GtkCheckButton* source) {
-	g_return_if_fail (source != NULL);
-	tracker_config_set_index_mounted_directories (config, gtk_toggle_button_get_active ((GtkToggleButton*) source));
 }
 
 
@@ -576,17 +567,40 @@ void fill_in_model (GtkListStore* model, GSList* list) {
 			char* str;
 			str = g_strdup ((const char*) str_it->data);
 			{
-				char* _tmp0_;
-				char* _tmp1_;
-				_tmp0_ = g_filename_to_utf8 (str, (gssize) (-1), NULL, NULL, &_inner_error_);
+				{
+					char* _tmp0_;
+					char* _tmp1_;
+					_tmp0_ = g_filename_to_utf8 (str, (gssize) (-1), NULL, NULL, &_inner_error_);
+					if (_inner_error_ != NULL) {
+						if (_inner_error_->domain == G_CONVERT_ERROR) {
+							goto __catch0_g_convert_error;
+						}
+						_g_free0 (str);
+						g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+						g_clear_error (&_inner_error_);
+						return;
+					}
+					gtk_list_store_insert_with_values (model, NULL, position++, 0, _tmp1_ = _tmp0_, -1);
+					_g_free0 (_tmp1_);
+				}
+				goto __finally0;
+				__catch0_g_convert_error:
+				{
+					GError * e;
+					e = _inner_error_;
+					_inner_error_ = NULL;
+					{
+						g_print ("%s", e->message);
+						_g_error_free0 (e);
+					}
+				}
+				__finally0:
 				if (_inner_error_ != NULL) {
 					_g_free0 (str);
 					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 					g_clear_error (&_inner_error_);
 					return;
 				}
-				gtk_list_store_insert_with_values (model, NULL, position++, 0, _tmp1_ = _tmp0_, -1);
-				_g_free0 (_tmp1_);
 				_g_free0 (str);
 			}
 		}
@@ -629,21 +643,21 @@ gint _vala_main (char** args, int args_length1) {
 		GObject* _tmp12_;
 		GtkCheckButton* _tmp15_;
 		GObject* _tmp14_;
-		GtkCheckButton* _tmp17_;
+		GtkScale* _tmp17_;
 		GObject* _tmp16_;
 		GtkScale* _tmp19_;
 		GObject* _tmp18_;
-		GtkScale* _tmp21_;
+		GtkToggleButton* _tmp21_;
 		GObject* _tmp20_;
-		GtkToggleButton* _tmp23_;
+		GtkNotebook* _tmp23_;
 		GObject* _tmp22_;
-		GtkNotebook* _tmp25_;
+		GtkRadioButton* _tmp25_;
 		GObject* _tmp24_;
 		GtkRadioButton* _tmp27_;
 		GObject* _tmp26_;
 		GtkRadioButton* _tmp29_;
 		GObject* _tmp28_;
-		GtkRadioButton* _tmp31_;
+		GtkTreeView* _tmp31_;
 		GObject* _tmp30_;
 		GtkTreeView* _tmp33_;
 		GObject* _tmp32_;
@@ -653,7 +667,7 @@ gint _vala_main (char** args, int args_length1) {
 		GObject* _tmp36_;
 		GtkTreeView* _tmp39_;
 		GObject* _tmp38_;
-		GtkTreeView* _tmp41_;
+		GtkListStore* _tmp41_;
 		GObject* _tmp40_;
 		GtkListStore* _tmp43_;
 		GObject* _tmp42_;
@@ -663,15 +677,13 @@ gint _vala_main (char** args, int args_length1) {
 		GObject* _tmp46_;
 		GtkListStore* _tmp49_;
 		GObject* _tmp48_;
-		GtkListStore* _tmp51_;
-		GObject* _tmp50_;
 		config = (_tmp0_ = tracker_config_new_with_domain ("tracker-miner-fs"), _g_object_unref0 (config), _tmp0_);
 		icon_config = (_tmp1_ = tracker_icon_config_new_with_domain ("tracker-status-icon"), _g_object_unref0 (icon_config), _tmp1_);
 		builder = gtk_builder_new ();
 		gtk_builder_add_from_file (builder, TRACKER_DATADIR G_DIR_SEPARATOR_S "tracker-preferences.ui", &_inner_error_);
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (builder);
-			goto __catch0_g_error;
+			goto __catch1_g_error;
 		}
 		window = (_tmp3_ = _g_object_ref0 ((_tmp2_ = gtk_builder_get_object (builder, "tracker-preferences"), GTK_IS_WINDOW (_tmp2_) ? ((GtkWindow*) _tmp2_) : NULL)), _g_object_unref0 (window), _tmp3_);
 		checkbutton_enable_index_on_battery = (_tmp5_ = _g_object_ref0 ((_tmp4_ = gtk_builder_get_object (builder, "checkbutton_enable_index_on_battery"), GTK_IS_CHECK_BUTTON (_tmp4_) ? ((GtkCheckButton*) _tmp4_) : NULL)), _g_object_unref0 (checkbutton_enable_index_on_battery), _tmp5_);
@@ -684,54 +696,52 @@ gint _vala_main (char** args, int args_length1) {
 		gtk_spin_button_set_value (spinbutton_delay, (double) tracker_config_get_initial_sleep (config));
 		checkbutton_enable_monitoring = (_tmp11_ = _g_object_ref0 ((_tmp10_ = gtk_builder_get_object (builder, "checkbutton_enable_monitoring"), GTK_IS_CHECK_BUTTON (_tmp10_) ? ((GtkCheckButton*) _tmp10_) : NULL)), _g_object_unref0 (checkbutton_enable_monitoring), _tmp11_);
 		gtk_toggle_button_set_active ((GtkToggleButton*) checkbutton_enable_monitoring, tracker_config_get_enable_monitors (config));
-		checkbutton_index_mounted_directories = (_tmp13_ = _g_object_ref0 ((_tmp12_ = gtk_builder_get_object (builder, "checkbutton_index_mounted_directories"), GTK_IS_CHECK_BUTTON (_tmp12_) ? ((GtkCheckButton*) _tmp12_) : NULL)), _g_object_unref0 (checkbutton_index_mounted_directories), _tmp13_);
-		gtk_toggle_button_set_active ((GtkToggleButton*) checkbutton_index_mounted_directories, tracker_config_get_index_mounted_directories (config));
-		checkbutton_index_removable_media = (_tmp15_ = _g_object_ref0 ((_tmp14_ = gtk_builder_get_object (builder, "checkbutton_index_removable_media"), GTK_IS_CHECK_BUTTON (_tmp14_) ? ((GtkCheckButton*) _tmp14_) : NULL)), _g_object_unref0 (checkbutton_index_removable_media), _tmp15_);
+		checkbutton_index_removable_media = (_tmp13_ = _g_object_ref0 ((_tmp12_ = gtk_builder_get_object (builder, "checkbutton_index_removable_media"), GTK_IS_CHECK_BUTTON (_tmp12_) ? ((GtkCheckButton*) _tmp12_) : NULL)), _g_object_unref0 (checkbutton_index_removable_media), _tmp13_);
 		gtk_toggle_button_set_active ((GtkToggleButton*) checkbutton_index_removable_media, tracker_config_get_index_removable_devices (config));
-		checkbutton_index_optical_discs = (_tmp17_ = _g_object_ref0 ((_tmp16_ = gtk_builder_get_object (builder, "checkbutton_index_optical_discs"), GTK_IS_CHECK_BUTTON (_tmp16_) ? ((GtkCheckButton*) _tmp16_) : NULL)), _g_object_unref0 (checkbutton_index_optical_discs), _tmp17_);
+		checkbutton_index_optical_discs = (_tmp15_ = _g_object_ref0 ((_tmp14_ = gtk_builder_get_object (builder, "checkbutton_index_optical_discs"), GTK_IS_CHECK_BUTTON (_tmp14_) ? ((GtkCheckButton*) _tmp14_) : NULL)), _g_object_unref0 (checkbutton_index_optical_discs), _tmp15_);
 		gtk_widget_set_sensitive ((GtkWidget*) checkbutton_index_optical_discs, gtk_toggle_button_get_active ((GtkToggleButton*) checkbutton_index_removable_media));
 		gtk_toggle_button_set_active ((GtkToggleButton*) checkbutton_index_optical_discs, tracker_config_get_index_optical_discs (config));
-		hscale_disk_space_limit = (_tmp19_ = _g_object_ref0 ((_tmp18_ = gtk_builder_get_object (builder, "hscale_disk_space_limit"), GTK_IS_SCALE (_tmp18_) ? ((GtkScale*) _tmp18_) : NULL)), _g_object_unref0 (hscale_disk_space_limit), _tmp19_);
+		hscale_disk_space_limit = (_tmp17_ = _g_object_ref0 ((_tmp16_ = gtk_builder_get_object (builder, "hscale_disk_space_limit"), GTK_IS_SCALE (_tmp16_) ? ((GtkScale*) _tmp16_) : NULL)), _g_object_unref0 (hscale_disk_space_limit), _tmp17_);
 		gtk_range_set_value ((GtkRange*) hscale_disk_space_limit, (double) tracker_config_get_low_disk_space_limit (config));
-		hscale_throttle = (_tmp21_ = _g_object_ref0 ((_tmp20_ = gtk_builder_get_object (builder, "hscale_throttle"), GTK_IS_SCALE (_tmp20_) ? ((GtkScale*) _tmp20_) : NULL)), _g_object_unref0 (hscale_throttle), _tmp21_);
+		hscale_throttle = (_tmp19_ = _g_object_ref0 ((_tmp18_ = gtk_builder_get_object (builder, "hscale_throttle"), GTK_IS_SCALE (_tmp18_) ? ((GtkScale*) _tmp18_) : NULL)), _g_object_unref0 (hscale_throttle), _tmp19_);
 		gtk_range_set_value ((GtkRange*) hscale_throttle, (double) tracker_config_get_throttle (config));
-		togglebutton_home = (_tmp23_ = _g_object_ref0 ((_tmp22_ = gtk_builder_get_object (builder, "togglebutton_home"), GTK_IS_TOGGLE_BUTTON (_tmp22_) ? ((GtkToggleButton*) _tmp22_) : NULL)), _g_object_unref0 (togglebutton_home), _tmp23_);
-		notebook = (_tmp25_ = _g_object_ref0 ((_tmp24_ = gtk_builder_get_object (builder, "notebook"), GTK_IS_NOTEBOOK (_tmp24_) ? ((GtkNotebook*) _tmp24_) : NULL)), _g_object_unref0 (notebook), _tmp25_);
-		radiobutton_display_never = (_tmp27_ = _g_object_ref0 ((_tmp26_ = gtk_builder_get_object (builder, "radiobutton_display_never"), GTK_IS_RADIO_BUTTON (_tmp26_) ? ((GtkRadioButton*) _tmp26_) : NULL)), _g_object_unref0 (radiobutton_display_never), _tmp27_);
-		radiobutton_display_active = (_tmp29_ = _g_object_ref0 ((_tmp28_ = gtk_builder_get_object (builder, "radiobutton_display_active"), GTK_IS_RADIO_BUTTON (_tmp28_) ? ((GtkRadioButton*) _tmp28_) : NULL)), _g_object_unref0 (radiobutton_display_active), _tmp29_);
-		radiobutton_display_always = (_tmp31_ = _g_object_ref0 ((_tmp30_ = gtk_builder_get_object (builder, "radiobutton_display_always"), GTK_IS_RADIO_BUTTON (_tmp30_) ? ((GtkRadioButton*) _tmp30_) : NULL)), _g_object_unref0 (radiobutton_display_always), _tmp31_);
+		togglebutton_home = (_tmp21_ = _g_object_ref0 ((_tmp20_ = gtk_builder_get_object (builder, "togglebutton_home"), GTK_IS_TOGGLE_BUTTON (_tmp20_) ? ((GtkToggleButton*) _tmp20_) : NULL)), _g_object_unref0 (togglebutton_home), _tmp21_);
+		notebook = (_tmp23_ = _g_object_ref0 ((_tmp22_ = gtk_builder_get_object (builder, "notebook"), GTK_IS_NOTEBOOK (_tmp22_) ? ((GtkNotebook*) _tmp22_) : NULL)), _g_object_unref0 (notebook), _tmp23_);
+		radiobutton_display_never = (_tmp25_ = _g_object_ref0 ((_tmp24_ = gtk_builder_get_object (builder, "radiobutton_display_never"), GTK_IS_RADIO_BUTTON (_tmp24_) ? ((GtkRadioButton*) _tmp24_) : NULL)), _g_object_unref0 (radiobutton_display_never), _tmp25_);
+		radiobutton_display_active = (_tmp27_ = _g_object_ref0 ((_tmp26_ = gtk_builder_get_object (builder, "radiobutton_display_active"), GTK_IS_RADIO_BUTTON (_tmp26_) ? ((GtkRadioButton*) _tmp26_) : NULL)), _g_object_unref0 (radiobutton_display_active), _tmp27_);
+		radiobutton_display_always = (_tmp29_ = _g_object_ref0 ((_tmp28_ = gtk_builder_get_object (builder, "radiobutton_display_always"), GTK_IS_RADIO_BUTTON (_tmp28_) ? ((GtkRadioButton*) _tmp28_) : NULL)), _g_object_unref0 (radiobutton_display_always), _tmp29_);
 		initialize_visibility_radiobutton ();
 		if (!HAVE_TRACKER_STATUS_ICON) {
 			gtk_notebook_remove_page (notebook, 0);
 		}
-		treeview_index_recursively = (_tmp33_ = _g_object_ref0 ((_tmp32_ = gtk_builder_get_object (builder, "treeview_index_recursively"), GTK_IS_TREE_VIEW (_tmp32_) ? ((GtkTreeView*) _tmp32_) : NULL)), _g_object_unref0 (treeview_index_recursively), _tmp33_);
-		treeview_index_single = (_tmp35_ = _g_object_ref0 ((_tmp34_ = gtk_builder_get_object (builder, "treeview_index_single"), GTK_IS_TREE_VIEW (_tmp34_) ? ((GtkTreeView*) _tmp34_) : NULL)), _g_object_unref0 (treeview_index_single), _tmp35_);
-		treeview_ignored_directories = (_tmp37_ = _g_object_ref0 ((_tmp36_ = gtk_builder_get_object (builder, "treeview_ignored_directories"), GTK_IS_TREE_VIEW (_tmp36_) ? ((GtkTreeView*) _tmp36_) : NULL)), _g_object_unref0 (treeview_ignored_directories), _tmp37_);
-		treeview_ignored_directories_with_content = (_tmp39_ = _g_object_ref0 ((_tmp38_ = gtk_builder_get_object (builder, "treeview_ignored_directories_with_content"), GTK_IS_TREE_VIEW (_tmp38_) ? ((GtkTreeView*) _tmp38_) : NULL)), _g_object_unref0 (treeview_ignored_directories_with_content), _tmp39_);
-		treeview_ignored_files = (_tmp41_ = _g_object_ref0 ((_tmp40_ = gtk_builder_get_object (builder, "treeview_ignored_files"), GTK_IS_TREE_VIEW (_tmp40_) ? ((GtkTreeView*) _tmp40_) : NULL)), _g_object_unref0 (treeview_ignored_files), _tmp41_);
+		treeview_index_recursively = (_tmp31_ = _g_object_ref0 ((_tmp30_ = gtk_builder_get_object (builder, "treeview_index_recursively"), GTK_IS_TREE_VIEW (_tmp30_) ? ((GtkTreeView*) _tmp30_) : NULL)), _g_object_unref0 (treeview_index_recursively), _tmp31_);
+		treeview_index_single = (_tmp33_ = _g_object_ref0 ((_tmp32_ = gtk_builder_get_object (builder, "treeview_index_single"), GTK_IS_TREE_VIEW (_tmp32_) ? ((GtkTreeView*) _tmp32_) : NULL)), _g_object_unref0 (treeview_index_single), _tmp33_);
+		treeview_ignored_directories = (_tmp35_ = _g_object_ref0 ((_tmp34_ = gtk_builder_get_object (builder, "treeview_ignored_directories"), GTK_IS_TREE_VIEW (_tmp34_) ? ((GtkTreeView*) _tmp34_) : NULL)), _g_object_unref0 (treeview_ignored_directories), _tmp35_);
+		treeview_ignored_directories_with_content = (_tmp37_ = _g_object_ref0 ((_tmp36_ = gtk_builder_get_object (builder, "treeview_ignored_directories_with_content"), GTK_IS_TREE_VIEW (_tmp36_) ? ((GtkTreeView*) _tmp36_) : NULL)), _g_object_unref0 (treeview_ignored_directories_with_content), _tmp37_);
+		treeview_ignored_files = (_tmp39_ = _g_object_ref0 ((_tmp38_ = gtk_builder_get_object (builder, "treeview_ignored_files"), GTK_IS_TREE_VIEW (_tmp38_) ? ((GtkTreeView*) _tmp38_) : NULL)), _g_object_unref0 (treeview_ignored_files), _tmp39_);
 		setup_standard_treeview (treeview_index_recursively, _ ("Directory"));
 		setup_standard_treeview (treeview_index_single, _ ("Directory"));
 		setup_standard_treeview (treeview_ignored_directories, _ ("Directory"));
 		setup_standard_treeview (treeview_ignored_directories_with_content, _ ("Directory"));
 		setup_standard_treeview (treeview_ignored_files, _ ("File"));
-		liststore_index_recursively = (_tmp43_ = _g_object_ref0 ((_tmp42_ = gtk_builder_get_object (builder, "liststore_index_recursively"), GTK_IS_LIST_STORE (_tmp42_) ? ((GtkListStore*) _tmp42_) : NULL)), _g_object_unref0 (liststore_index_recursively), _tmp43_);
+		liststore_index_recursively = (_tmp41_ = _g_object_ref0 ((_tmp40_ = gtk_builder_get_object (builder, "liststore_index_recursively"), GTK_IS_LIST_STORE (_tmp40_) ? ((GtkListStore*) _tmp40_) : NULL)), _g_object_unref0 (liststore_index_recursively), _tmp41_);
 		fill_in_model (liststore_index_recursively, tracker_config_get_index_recursive_directories_unfiltered (config));
 		gtk_toggle_button_set_active (togglebutton_home, model_contains ((GtkTreeModel*) liststore_index_recursively, HOME_STRING));
-		liststore_index_single = (_tmp45_ = _g_object_ref0 ((_tmp44_ = gtk_builder_get_object (builder, "liststore_index_single"), GTK_IS_LIST_STORE (_tmp44_) ? ((GtkListStore*) _tmp44_) : NULL)), _g_object_unref0 (liststore_index_single), _tmp45_);
+		liststore_index_single = (_tmp43_ = _g_object_ref0 ((_tmp42_ = gtk_builder_get_object (builder, "liststore_index_single"), GTK_IS_LIST_STORE (_tmp42_) ? ((GtkListStore*) _tmp42_) : NULL)), _g_object_unref0 (liststore_index_single), _tmp43_);
 		fill_in_model (liststore_index_single, tracker_config_get_index_single_directories_unfiltered (config));
-		liststore_ignored_directories = (_tmp47_ = _g_object_ref0 ((_tmp46_ = gtk_builder_get_object (builder, "liststore_ignored_directories"), GTK_IS_LIST_STORE (_tmp46_) ? ((GtkListStore*) _tmp46_) : NULL)), _g_object_unref0 (liststore_ignored_directories), _tmp47_);
+		liststore_ignored_directories = (_tmp45_ = _g_object_ref0 ((_tmp44_ = gtk_builder_get_object (builder, "liststore_ignored_directories"), GTK_IS_LIST_STORE (_tmp44_) ? ((GtkListStore*) _tmp44_) : NULL)), _g_object_unref0 (liststore_ignored_directories), _tmp45_);
 		fill_in_model (liststore_ignored_directories, tracker_config_get_ignored_directories (config));
-		liststore_ignored_files = (_tmp49_ = _g_object_ref0 ((_tmp48_ = gtk_builder_get_object (builder, "liststore_ignored_files"), GTK_IS_LIST_STORE (_tmp48_) ? ((GtkListStore*) _tmp48_) : NULL)), _g_object_unref0 (liststore_ignored_files), _tmp49_);
+		liststore_ignored_files = (_tmp47_ = _g_object_ref0 ((_tmp46_ = gtk_builder_get_object (builder, "liststore_ignored_files"), GTK_IS_LIST_STORE (_tmp46_) ? ((GtkListStore*) _tmp46_) : NULL)), _g_object_unref0 (liststore_ignored_files), _tmp47_);
 		fill_in_model (liststore_ignored_files, tracker_config_get_ignored_files (config));
-		liststore_gnored_directories_with_content = (_tmp51_ = _g_object_ref0 ((_tmp50_ = gtk_builder_get_object (builder, "liststore_gnored_directories_with_content"), GTK_IS_LIST_STORE (_tmp50_) ? ((GtkListStore*) _tmp50_) : NULL)), _g_object_unref0 (liststore_gnored_directories_with_content), _tmp51_);
+		liststore_gnored_directories_with_content = (_tmp49_ = _g_object_ref0 ((_tmp48_ = gtk_builder_get_object (builder, "liststore_gnored_directories_with_content"), GTK_IS_LIST_STORE (_tmp48_) ? ((GtkListStore*) _tmp48_) : NULL)), _g_object_unref0 (liststore_gnored_directories_with_content), _tmp49_);
 		fill_in_model (liststore_gnored_directories_with_content, tracker_config_get_ignored_directories_with_content (config));
 		gtk_builder_connect_signals (builder, NULL);
 		gtk_widget_show_all ((GtkWidget*) window);
 		gtk_main ();
 		_g_object_unref0 (builder);
 	}
-	goto __finally0;
-	__catch0_g_error:
+	goto __finally1;
+	__catch1_g_error:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -743,7 +753,7 @@ gint _vala_main (char** args, int args_length1) {
 			return result;
 		}
 	}
-	__finally0:
+	__finally1:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);

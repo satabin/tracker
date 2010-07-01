@@ -1,3 +1,120 @@
+2010-07-01  Martyn Russell  <martyn@lanedo.com>
+
+	Released 0.8.14
+
+	Updated NEWS
+
+	Fixes: GB#622702 - 0.8.13 does not build with gio 2.22 anymore
+	Bumped version of GLib required from 2.20 to 2.24
+
+	This is due to commit d0f60bf212624de4aa41a01ab6d5cd7257e5ea50
+	Unfortunately, this could not be reverted because other code has been
+	applied on top of it. For now, the easiest thing to do is to bump the
+	GLib version. Version 2.24 should be quite available now.
+
+2010-07-01  amit  <amit@esdhcp035176.research.nokia.com>
+
+	function-tests : added mass storage mode test cases
+
+2010-07-01  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes NB#177447: Remove the 'error' signal from TrackerMiner object
+	 * The 'error' signal in TrackerMiner object was setup to return a gpointer
+	   via dbus, which glib-dbus didn't like, and thus it was dumping a critical
+	   message: g_string_append: assertion `val != NULL' failed
+
+	 * That 'error' signal was actually nowhere used...
+
+	libtracker-miner: Fix potential invalid read error
+
+	libtracker-miner: small alignment fixes
+
+	Fixes GB#623203: Fix segfault when guessing content type in mounts without path
+
+2010-07-01  Jürg Billeter  <j@bitron.ch>
+
+	tracker-store: Reuse string chunk during event handling
+
+	tracker-store: Drop GArray use for change events
+
+	tracker-store: Use hash tables to check for event duplicates
+
+	tracker-store: Improve memory allocation for change events
+
+	tracker-store: Use more reasonable chunk size for event subjects
+
+2010-07-01  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Added -Wno-portability to AM_INIT_AUTOMAKE
+	 * This option is already used in the gnome-autogen.sh, so there shouldn't be
+	   any problem in adding it also in our automake initialization. This change
+	   will avoid portability warnings when re-compiling the project after some
+	   Makefile.am changes (the option from gnome-autogen.sh only applies to the
+	   first bootstrap).
+
+2010-07-01  Carlos Garnacho  <carlosg@gnome.org>
+
+	Plug leaks in GStreamer extractor on pipeline creation errors.
+
+	Plug leaks in XMP extractor.
+
+	Bug 622734 - too many open files error / possible file descriptor leak
+	Free up resources on GStreamer error.
+
+2010-07-01  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-control: Fixed typo in --help
+
+2010-07-01  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-preferences: Fixed compilation warnings
+
+2010-07-01  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerMinerFS: Take into account first crawl directories when generating mtime cache.
+	g_file_get_parent() will return non-NULL for most of these, so 2 queries were performed
+	on crawl dirs.
+
+2010-07-01  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes NB#174202 and NB#176932: A file with 'video/x-ms-asf' mimetype may actually be audio-only.
+
+	Update Authors
+
+	t-s-b, t-s-i: Update copyright year to 2010
+
+	Fixes GB#616809: t-s-t shows Author as urn:uuid: in metadata bar
+
+	t-s-t: remove trailing whitespaces
+
+2010-07-01  Carlos Garnacho  <carlosg@gnome.org>
+
+	Evolution: Don't fail to add mails with spaces in the folder name.
+
+2010-07-01  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#511474: Remove the option to index remote mounted directories
+
+2010-07-01  Martyn Russell  <martyn@lanedo.com>
+
+	Updated .gitignore for .tar.gz
+
+2010-06-28  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2010-06-27  Mario Blättermann  <mariobl@gnome.org>
+
+	[i18n] Updated German translation
+
+2010-06-26  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2010-06-26  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
+
 2010-06-24  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.8.13

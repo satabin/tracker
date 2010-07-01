@@ -26,10 +26,10 @@
 #include <string.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus-glib.h>
+#include <dbus/dbus.h>
 #include <gtk/gtk.h>
 #include <gee.h>
 #include <gobject/gvaluecollector.h>
-#include <dbus/dbus.h>
 
 
 #define TYPE_RESOURCES (resources_get_type ())
@@ -39,6 +39,7 @@
 
 typedef struct _Resources Resources;
 typedef struct _ResourcesIface ResourcesIface;
+typedef struct _DBusObjectVTable _DBusObjectVTable;
 #define _g_free0(var) (var = (g_free (var), NULL))
 typedef struct _ResourcesDBusProxy ResourcesDBusProxy;
 typedef DBusGProxyClass ResourcesDBusProxyClass;
@@ -84,11 +85,14 @@ typedef struct _ExplorerPrivate ExplorerPrivate;
 #define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 typedef struct _ParamSpecExplorer ParamSpecExplorer;
 #define _explorer_unref0(var) ((var == NULL) ? NULL : (var = (explorer_unref (var), NULL)))
-typedef struct _DBusObjectVTable _DBusObjectVTable;
 
 struct _ResourcesIface {
 	GTypeInterface parent_iface;
 	char** (*SparqlQuery) (Resources* self, const char* query, int* result_length1, int* result_length2, GError** error);
+};
+
+struct _DBusObjectVTable {
+	void (*register_object) (DBusConnection*, const char*, void*);
 };
 
 struct _ResourcesDBusProxy {
@@ -161,17 +165,16 @@ struct _ParamSpecExplorer {
 	GParamSpec parent_instance;
 };
 
-struct _DBusObjectVTable {
-	void (*register_object) (DBusConnection*, const char*, void*);
-};
-
 
 static gpointer history_item_parent_class = NULL;
 static gpointer history_parent_class = NULL;
 static gpointer explorer_parent_class = NULL;
 
+Resources* resources_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
 GType resources_get_type (void);
 char** resources_SparqlQuery (Resources* self, const char* query, int* result_length1, int* result_length2, GError** error);
+static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
+static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
 void resources_dbus_register_object (DBusConnection* connection, const char* path, void* object);
 void _resources_dbus_unregister (DBusConnection* connection, void* _user_data_);
 DBusHandlerResult resources_dbus_message (DBusConnection* connection, DBusMessage* message, void* object);
@@ -179,7 +182,6 @@ static DBusHandlerResult _dbus_resources_introspect (Resources* self, DBusConnec
 static DBusHandlerResult _dbus_resources_property_get_all (Resources* self, DBusConnection* connection, DBusMessage* message);
 static DBusHandlerResult _dbus_resources_SparqlQuery (Resources* self, DBusConnection* connection, DBusMessage* message);
 GType resources_dbus_proxy_get_type (void);
-Resources* resources_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
 DBusHandlerResult resources_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data);
 enum  {
 	RESOURCES_DBUS_PROXY_DUMMY_PROPERTY
@@ -262,8 +264,6 @@ static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNoti
 static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
 static gint _vala_array_length (gpointer array);
 static int _vala_strcmp0 (const char * str1, const char * str2);
-static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
-static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
 
 static const DBusObjectPathVTable _resources_dbus_path_vtable = {_resources_dbus_unregister, resources_dbus_message};
 static const _DBusObjectVTable _resources_dbus_vtable = {resources_dbus_register_object};
@@ -274,6 +274,25 @@ char** resources_SparqlQuery (Resources* self, const char* query, int* result_le
 #line 30 "tracker-explorer.vala"
 	return RESOURCES_GET_INTERFACE (self)->SparqlQuery (self, query, result_length1, result_length2, error);
 #line 277 "tracker-explorer.c"
+}
+
+
+static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
+	const _DBusObjectVTable * vtable;
+	vtable = g_type_get_qdata (G_TYPE_FROM_INSTANCE (object), g_quark_from_static_string ("DBusObjectVTable"));
+	if (vtable) {
+		vtable->register_object (connection, path, object);
+	} else {
+		g_warning ("Object does not implement any D-Bus interface");
+	}
+}
+
+
+static void _vala_dbus_unregister_object (gpointer connection, GObject* object) {
+	char* path;
+	path = g_object_steal_data ((GObject*) object, "dbus_object_path");
+	dbus_connection_unregister_object_path (connection, path);
+	g_free (path);
 }
 
 
@@ -771,16 +790,16 @@ static void resources_dbus_proxy_set_property (GObject * object, guint property_
 
 #line 34 "tracker-explorer.vala"
 HistoryItem* history_item_construct (GType object_type, const char* uri) {
-#line 775 "tracker-explorer.c"
+#line 794 "tracker-explorer.c"
 	HistoryItem* self;
 	char* _tmp0_;
 #line 34 "tracker-explorer.vala"
 	g_return_val_if_fail (uri != NULL, NULL);
-#line 780 "tracker-explorer.c"
+#line 799 "tracker-explorer.c"
 	self = (HistoryItem*) g_type_create_instance (object_type);
 #line 35 "tracker-explorer.vala"
 	self->uri = (_tmp0_ = g_strdup (uri), _g_free0 (self->uri), _tmp0_);
-#line 784 "tracker-explorer.c"
+#line 803 "tracker-explorer.c"
 	return self;
 }
 
@@ -789,7 +808,7 @@ HistoryItem* history_item_construct (GType object_type, const char* uri) {
 HistoryItem* history_item_new (const char* uri) {
 #line 34 "tracker-explorer.vala"
 	return history_item_construct (TYPE_HISTORY_ITEM, uri);
-#line 793 "tracker-explorer.c"
+#line 812 "tracker-explorer.c"
 }
 
 
@@ -959,29 +978,29 @@ void history_item_unref (gpointer instance) {
 
 #line 46 "tracker-explorer.vala"
 char* history_current_uri (History* self) {
-#line 963 "tracker-explorer.c"
+#line 982 "tracker-explorer.c"
 	char* result = NULL;
 #line 46 "tracker-explorer.vala"
 	g_return_val_if_fail (self != NULL, NULL);
 #line 47 "tracker-explorer.vala"
 	if (self->priv->current != NULL) {
-#line 969 "tracker-explorer.c"
+#line 988 "tracker-explorer.c"
 		result = g_strdup (self->priv->current->uri);
 #line 48 "tracker-explorer.vala"
 		return result;
-#line 973 "tracker-explorer.c"
+#line 992 "tracker-explorer.c"
 	} else {
 		result = NULL;
 #line 50 "tracker-explorer.vala"
 		return result;
-#line 978 "tracker-explorer.c"
+#line 997 "tracker-explorer.c"
 	}
 }
 
 
 #line 54 "tracker-explorer.vala"
 gboolean history_can_go_forward (History* self) {
-#line 985 "tracker-explorer.c"
+#line 1004 "tracker-explorer.c"
 	gboolean result = FALSE;
 	gboolean _tmp0_ = FALSE;
 #line 54 "tracker-explorer.vala"
@@ -990,22 +1009,22 @@ gboolean history_can_go_forward (History* self) {
 	if (self->priv->current != NULL) {
 #line 55 "tracker-explorer.vala"
 		_tmp0_ = self->priv->current->next != NULL;
-#line 994 "tracker-explorer.c"
+#line 1013 "tracker-explorer.c"
 	} else {
 #line 55 "tracker-explorer.vala"
 		_tmp0_ = FALSE;
-#line 998 "tracker-explorer.c"
+#line 1017 "tracker-explorer.c"
 	}
 	result = _tmp0_;
 #line 55 "tracker-explorer.vala"
 	return result;
-#line 1003 "tracker-explorer.c"
+#line 1022 "tracker-explorer.c"
 }
 
 
 #line 58 "tracker-explorer.vala"
 gboolean history_can_go_back (History* self) {
-#line 1009 "tracker-explorer.c"
+#line 1028 "tracker-explorer.c"
 	gboolean result = FALSE;
 	gboolean _tmp0_ = FALSE;
 #line 58 "tracker-explorer.vala"
@@ -1014,16 +1033,16 @@ gboolean history_can_go_back (History* self) {
 	if (self->priv->current != NULL) {
 #line 59 "tracker-explorer.vala"
 		_tmp0_ = self->priv->current->prev != NULL;
-#line 1018 "tracker-explorer.c"
+#line 1037 "tracker-explorer.c"
 	} else {
 #line 59 "tracker-explorer.vala"
 		_tmp0_ = FALSE;
-#line 1022 "tracker-explorer.c"
+#line 1041 "tracker-explorer.c"
 	}
 	result = _tmp0_;
 #line 59 "tracker-explorer.vala"
 	return result;
-#line 1027 "tracker-explorer.c"
+#line 1046 "tracker-explorer.c"
 }
 
 
@@ -1034,57 +1053,57 @@ static gpointer _history_item_ref0 (gpointer self) {
 
 #line 62 "tracker-explorer.vala"
 gboolean history_forward (History* self) {
-#line 1038 "tracker-explorer.c"
+#line 1057 "tracker-explorer.c"
 	gboolean result = FALSE;
 #line 62 "tracker-explorer.vala"
 	g_return_val_if_fail (self != NULL, FALSE);
 #line 63 "tracker-explorer.vala"
 	if (history_can_go_forward (self)) {
-#line 1044 "tracker-explorer.c"
+#line 1063 "tracker-explorer.c"
 		HistoryItem* _tmp0_;
 #line 64 "tracker-explorer.vala"
 		self->priv->current = (_tmp0_ = _history_item_ref0 (self->priv->current->next), _history_item_unref0 (self->priv->current), _tmp0_);
-#line 1048 "tracker-explorer.c"
+#line 1067 "tracker-explorer.c"
 		result = TRUE;
 #line 65 "tracker-explorer.vala"
 		return result;
-#line 1052 "tracker-explorer.c"
+#line 1071 "tracker-explorer.c"
 	}
 	result = FALSE;
 #line 67 "tracker-explorer.vala"
 	return result;
-#line 1057 "tracker-explorer.c"
+#line 1076 "tracker-explorer.c"
 }
 
 
 #line 70 "tracker-explorer.vala"
 gboolean history_back (History* self) {
-#line 1063 "tracker-explorer.c"
+#line 1082 "tracker-explorer.c"
 	gboolean result = FALSE;
 #line 70 "tracker-explorer.vala"
 	g_return_val_if_fail (self != NULL, FALSE);
 #line 71 "tracker-explorer.vala"
 	if (history_can_go_back (self)) {
-#line 1069 "tracker-explorer.c"
+#line 1088 "tracker-explorer.c"
 		HistoryItem* _tmp0_;
 #line 72 "tracker-explorer.vala"
 		self->priv->current = (_tmp0_ = _history_item_ref0 (self->priv->current->prev), _history_item_unref0 (self->priv->current), _tmp0_);
-#line 1073 "tracker-explorer.c"
+#line 1092 "tracker-explorer.c"
 		result = TRUE;
 #line 73 "tracker-explorer.vala"
 		return result;
-#line 1077 "tracker-explorer.c"
+#line 1096 "tracker-explorer.c"
 	}
 	result = FALSE;
 #line 75 "tracker-explorer.vala"
 	return result;
-#line 1082 "tracker-explorer.c"
+#line 1101 "tracker-explorer.c"
 }
 
 
 #line 78 "tracker-explorer.vala"
 void history_add (History* self, const char* uri) {
-#line 1088 "tracker-explorer.c"
+#line 1107 "tracker-explorer.c"
 	HistoryItem* hi;
 	HistoryItem* _tmp4_;
 #line 78 "tracker-explorer.vala"
@@ -1095,14 +1114,14 @@ void history_add (History* self, const char* uri) {
 	hi = history_item_new (uri);
 #line 80 "tracker-explorer.vala"
 	if (self->priv->current == NULL) {
-#line 1099 "tracker-explorer.c"
+#line 1118 "tracker-explorer.c"
 		HistoryItem* _tmp0_;
 		HistoryItem* _tmp1_;
 #line 81 "tracker-explorer.vala"
 		self->priv->items = (_tmp0_ = _history_item_ref0 (hi), _history_item_unref0 (self->priv->items), _tmp0_);
 #line 82 "tracker-explorer.vala"
 		self->priv->current = (_tmp1_ = _history_item_ref0 (self->priv->items), _history_item_unref0 (self->priv->current), _tmp1_);
-#line 1106 "tracker-explorer.c"
+#line 1125 "tracker-explorer.c"
 	} else {
 		HistoryItem* _tmp2_;
 		HistoryItem* _tmp3_;
@@ -1110,18 +1129,18 @@ void history_add (History* self, const char* uri) {
 		self->priv->current->next = (_tmp2_ = _history_item_ref0 (hi), _history_item_unref0 (self->priv->current->next), _tmp2_);
 #line 85 "tracker-explorer.vala"
 		hi->prev = (_tmp3_ = _history_item_ref0 (self->priv->current), _history_item_unref0 (hi->prev), _tmp3_);
-#line 1114 "tracker-explorer.c"
+#line 1133 "tracker-explorer.c"
 	}
 #line 87 "tracker-explorer.vala"
 	self->priv->current = (_tmp4_ = _history_item_ref0 (hi), _history_item_unref0 (self->priv->current), _tmp4_);
-#line 1118 "tracker-explorer.c"
+#line 1137 "tracker-explorer.c"
 	_history_item_unref0 (hi);
 }
 
 
 #line 42 "tracker-explorer.vala"
 History* history_construct (GType object_type) {
-#line 1125 "tracker-explorer.c"
+#line 1144 "tracker-explorer.c"
 	History* self;
 	self = (History*) g_type_create_instance (object_type);
 	return self;
@@ -1132,7 +1151,7 @@ History* history_construct (GType object_type) {
 History* history_new (void) {
 #line 42 "tracker-explorer.vala"
 	return history_construct (TYPE_HISTORY);
-#line 1136 "tracker-explorer.c"
+#line 1155 "tracker-explorer.c"
 }
 
 
@@ -1306,44 +1325,44 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-#line 7712 "gtk+-2.0.vapi"
+#line 7714 "gtk+-2.0.vapi"
 static void _gtk_main_quit_gtk_object_destroy (GtkWindow* _sender, gpointer self) {
-#line 1312 "tracker-explorer.c"
+#line 1331 "tracker-explorer.c"
 	gtk_main_quit ();
 }
 
 
 #line 217 "tracker-explorer.vala"
 static void _explorer_entry_changed_gtk_editable_changed (GtkEntry* _sender, gpointer self) {
-#line 1319 "tracker-explorer.c"
+#line 1338 "tracker-explorer.c"
 	explorer_entry_changed (self, _sender);
 }
 
 
 #line 258 "tracker-explorer.vala"
 static void _explorer_update_types_page_gtk_container_set_focus_child (GtkNotebook* _sender, GtkWidget* widget, gpointer self) {
-#line 1326 "tracker-explorer.c"
+#line 1345 "tracker-explorer.c"
 	explorer_update_types_page (self, widget);
 }
 
 
 #line 307 "tracker-explorer.vala"
 static void _explorer_forward_clicked_gtk_button_clicked (GtkButton* _sender, gpointer self) {
-#line 1333 "tracker-explorer.c"
+#line 1352 "tracker-explorer.c"
 	explorer_forward_clicked (self);
 }
 
 
 #line 313 "tracker-explorer.vala"
 static void _explorer_back_clicked_gtk_button_clicked (GtkButton* _sender, gpointer self) {
-#line 1340 "tracker-explorer.c"
+#line 1359 "tracker-explorer.c"
 	explorer_back_clicked (self);
 }
 
 
 #line 107 "tracker-explorer.vala"
 void explorer_show (Explorer* self) {
-#line 1347 "tracker-explorer.c"
+#line 1366 "tracker-explorer.c"
 	GError * _inner_error_;
 	GtkBuilder* builder;
 	GObject* _tmp1_;
@@ -1364,14 +1383,14 @@ void explorer_show (Explorer* self) {
 	GObject* _tmp11_;
 #line 107 "tracker-explorer.vala"
 	g_return_if_fail (self != NULL);
-#line 1368 "tracker-explorer.c"
+#line 1387 "tracker-explorer.c"
 	_inner_error_ = NULL;
 	{
 		DBusGConnection* conn;
 		Resources* _tmp0_;
 #line 110 "tracker-explorer.vala"
 		conn = dbus_g_bus_get (DBUS_BUS_SESSION, &_inner_error_);
-#line 1375 "tracker-explorer.c"
+#line 1394 "tracker-explorer.c"
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == DBUS_GERROR) {
 				goto __catch0_dbus_gerror;
@@ -1382,7 +1401,7 @@ void explorer_show (Explorer* self) {
 		}
 #line 111 "tracker-explorer.vala"
 		self->priv->tracker = (_tmp0_ = resources_dbus_proxy_new (conn, "org.freedesktop.Tracker1", "/org/freedesktop/Tracker1/Resources"), _g_object_unref0 (self->priv->tracker), _tmp0_);
-#line 1386 "tracker-explorer.c"
+#line 1405 "tracker-explorer.c"
 		_dbus_g_connection_unref0 (conn);
 	}
 	goto __finally0;
@@ -1399,7 +1418,7 @@ void explorer_show (Explorer* self) {
 			gtk_dialog_run ((GtkDialog*) msg);
 #line 119 "tracker-explorer.vala"
 			gtk_main_quit ();
-#line 1403 "tracker-explorer.c"
+#line 1422 "tracker-explorer.c"
 			_g_error_free0 (e);
 			_g_object_unref0 (msg);
 		}
@@ -1412,11 +1431,11 @@ void explorer_show (Explorer* self) {
 	}
 #line 123 "tracker-explorer.vala"
 	builder = gtk_builder_new ();
-#line 1416 "tracker-explorer.c"
+#line 1435 "tracker-explorer.c"
 	{
 #line 127 "tracker-explorer.vala"
 		gtk_builder_add_from_file (builder, SRCDIR EXPLORER_UI_FILE, &_inner_error_);
-#line 1420 "tracker-explorer.c"
+#line 1439 "tracker-explorer.c"
 		if (_inner_error_ != NULL) {
 			goto __catch1_g_error;
 		}
@@ -1431,7 +1450,7 @@ void explorer_show (Explorer* self) {
 			{
 #line 131 "tracker-explorer.vala"
 				gtk_builder_add_from_file (builder, TRACKER_UI_DIR EXPLORER_UI_FILE, &_inner_error_);
-#line 1435 "tracker-explorer.c"
+#line 1454 "tracker-explorer.c"
 				if (_inner_error_ != NULL) {
 					goto __catch2_g_error;
 				}
@@ -1450,7 +1469,7 @@ void explorer_show (Explorer* self) {
 					gtk_dialog_run ((GtkDialog*) msg);
 #line 137 "tracker-explorer.vala"
 					gtk_main_quit ();
-#line 1454 "tracker-explorer.c"
+#line 1473 "tracker-explorer.c"
 					_g_error_free0 (e);
 					_g_object_unref0 (msg);
 				}
@@ -1513,7 +1532,7 @@ void explorer_show (Explorer* self) {
 	explorer_fetch_prefixes (self);
 #line 169 "tracker-explorer.vala"
 	gtk_widget_show_all ((GtkWidget*) window);
-#line 1517 "tracker-explorer.c"
+#line 1536 "tracker-explorer.c"
 	_g_object_unref0 (builder);
 	_g_object_unref0 (window);
 	_g_object_unref0 (entry);
@@ -1524,14 +1543,14 @@ void explorer_show (Explorer* self) {
 
 #line 349 "tracker-explorer.vala"
 static void _explorer_row_selected_gtk_tree_view_row_activated (GtkTreeView* _sender, GtkTreePath* path, GtkTreeViewColumn* column, gpointer self) {
-#line 1528 "tracker-explorer.c"
+#line 1547 "tracker-explorer.c"
 	explorer_row_selected (self, _sender, path, column);
 }
 
 
 #line 172 "tracker-explorer.vala"
 static void explorer_setup_uris (Explorer* self, GtkTreeView* urisview) {
-#line 1535 "tracker-explorer.c"
+#line 1554 "tracker-explorer.c"
 	GtkListStore* _tmp0_;
 	GtkCellRendererText* _tmp1_;
 #line 172 "tracker-explorer.vala"
@@ -1544,17 +1563,17 @@ static void explorer_setup_uris (Explorer* self, GtkTreeView* urisview) {
 	gtk_tree_view_set_model (urisview, (GtkTreeModel*) self->priv->uris);
 #line 176 "tracker-explorer.vala"
 	gtk_tree_view_insert_column_with_attributes (urisview, -1, "URI", (GtkCellRenderer*) (_tmp1_ = g_object_ref_sink ((GtkCellRendererText*) gtk_cell_renderer_text_new ())), "text", 0, NULL, NULL);
-#line 1548 "tracker-explorer.c"
+#line 1567 "tracker-explorer.c"
 	_g_object_unref0 (_tmp1_);
 #line 177 "tracker-explorer.vala"
 	g_signal_connect (urisview, "row-activated", (GCallback) _explorer_row_selected_gtk_tree_view_row_activated, self);
-#line 1552 "tracker-explorer.c"
+#line 1571 "tracker-explorer.c"
 }
 
 
 #line 180 "tracker-explorer.vala"
 static void explorer_setup_relationships (Explorer* self, GtkTreeView* relationshipsview) {
-#line 1558 "tracker-explorer.c"
+#line 1577 "tracker-explorer.c"
 	GtkListStore* _tmp0_;
 	GtkCellRendererText* _tmp1_;
 	GtkCellRendererText* _tmp2_;
@@ -1568,21 +1587,21 @@ static void explorer_setup_relationships (Explorer* self, GtkTreeView* relations
 	gtk_tree_view_set_model (relationshipsview, (GtkTreeModel*) self->priv->relationships);
 #line 184 "tracker-explorer.vala"
 	gtk_tree_view_insert_column_with_attributes (relationshipsview, -1, "Relationship", (GtkCellRenderer*) (_tmp1_ = g_object_ref_sink ((GtkCellRendererText*) gtk_cell_renderer_text_new ())), "text", 1, NULL, NULL);
-#line 1572 "tracker-explorer.c"
+#line 1591 "tracker-explorer.c"
 	_g_object_unref0 (_tmp1_);
 #line 185 "tracker-explorer.vala"
 	gtk_tree_view_insert_column_with_attributes (relationshipsview, -1, "Object", (GtkCellRenderer*) (_tmp2_ = g_object_ref_sink ((GtkCellRendererText*) gtk_cell_renderer_text_new ())), "text", 2, NULL, NULL);
-#line 1576 "tracker-explorer.c"
+#line 1595 "tracker-explorer.c"
 	_g_object_unref0 (_tmp2_);
 #line 186 "tracker-explorer.vala"
 	g_signal_connect (relationshipsview, "row-activated", (GCallback) _explorer_row_selected_gtk_tree_view_row_activated, self);
-#line 1580 "tracker-explorer.c"
+#line 1599 "tracker-explorer.c"
 }
 
 
 #line 189 "tracker-explorer.vala"
 static GtkTreeView* explorer_setup_reverserelationships (Explorer* self) {
-#line 1586 "tracker-explorer.c"
+#line 1605 "tracker-explorer.c"
 	GtkTreeView* result = NULL;
 	GtkListStore* reverserelationships;
 	GtkTreeView* reverserelationshipsview;
@@ -1598,76 +1617,76 @@ static GtkTreeView* explorer_setup_reverserelationships (Explorer* self) {
 	gtk_tree_view_set_model (reverserelationshipsview, (GtkTreeModel*) reverserelationships);
 #line 196 "tracker-explorer.vala"
 	gtk_tree_view_insert_column_with_attributes (reverserelationshipsview, -1, "Subject", (GtkCellRenderer*) (_tmp0_ = g_object_ref_sink ((GtkCellRendererText*) gtk_cell_renderer_text_new ())), "text", 1, NULL, NULL);
-#line 1602 "tracker-explorer.c"
+#line 1621 "tracker-explorer.c"
 	_g_object_unref0 (_tmp0_);
 #line 197 "tracker-explorer.vala"
 	gtk_tree_view_insert_column_with_attributes (reverserelationshipsview, -1, "Relationship", (GtkCellRenderer*) (_tmp1_ = g_object_ref_sink ((GtkCellRendererText*) gtk_cell_renderer_text_new ())), "text", 2, NULL, NULL);
-#line 1606 "tracker-explorer.c"
+#line 1625 "tracker-explorer.c"
 	_g_object_unref0 (_tmp1_);
 #line 198 "tracker-explorer.vala"
 	g_signal_connect (reverserelationshipsview, "row-activated", (GCallback) _explorer_row_selected_gtk_tree_view_row_activated, self);
-#line 1610 "tracker-explorer.c"
+#line 1629 "tracker-explorer.c"
 	result = reverserelationshipsview;
 	_g_object_unref0 (reverserelationships);
 #line 200 "tracker-explorer.vala"
 	return result;
-#line 1615 "tracker-explorer.c"
+#line 1634 "tracker-explorer.c"
 }
 
 
-#line 1073 "glib-2.0.vapi"
+#line 1083 "glib-2.0.vapi"
 static char* string_substring (const char* self, glong offset, glong len) {
-#line 1621 "tracker-explorer.c"
+#line 1640 "tracker-explorer.c"
 	char* result = NULL;
 	glong string_length;
 	const char* start;
-#line 1073 "glib-2.0.vapi"
+#line 1083 "glib-2.0.vapi"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 1074 "glib-2.0.vapi"
-	string_length = g_utf8_strlen (self, -1);
-#line 1075 "glib-2.0.vapi"
-	if (offset < 0) {
-#line 1076 "glib-2.0.vapi"
-		offset = string_length + offset;
-#line 1077 "glib-2.0.vapi"
-		g_return_val_if_fail (offset >= 0, NULL);
-#line 1635 "tracker-explorer.c"
-	} else {
-#line 1079 "glib-2.0.vapi"
-		g_return_val_if_fail (offset <= string_length, NULL);
-#line 1639 "tracker-explorer.c"
-	}
-#line 1081 "glib-2.0.vapi"
-	if (len < 0) {
-#line 1082 "glib-2.0.vapi"
-		len = string_length - offset;
-#line 1645 "tracker-explorer.c"
-	}
 #line 1084 "glib-2.0.vapi"
-	g_return_val_if_fail ((offset + len) <= string_length, NULL);
+	string_length = g_utf8_strlen (self, -1);
 #line 1085 "glib-2.0.vapi"
-	start = g_utf8_offset_to_pointer (self, offset);
-#line 1651 "tracker-explorer.c"
-	result = g_strndup (start, ((gchar*) g_utf8_offset_to_pointer (start, len)) - ((gchar*) start));
+	if (offset < 0) {
 #line 1086 "glib-2.0.vapi"
+		offset = string_length + offset;
+#line 1087 "glib-2.0.vapi"
+		g_return_val_if_fail (offset >= 0, NULL);
+#line 1654 "tracker-explorer.c"
+	} else {
+#line 1089 "glib-2.0.vapi"
+		g_return_val_if_fail (offset <= string_length, NULL);
+#line 1658 "tracker-explorer.c"
+	}
+#line 1091 "glib-2.0.vapi"
+	if (len < 0) {
+#line 1092 "glib-2.0.vapi"
+		len = string_length - offset;
+#line 1664 "tracker-explorer.c"
+	}
+#line 1094 "glib-2.0.vapi"
+	g_return_val_if_fail ((offset + len) <= string_length, NULL);
+#line 1095 "glib-2.0.vapi"
+	start = g_utf8_offset_to_pointer (self, offset);
+#line 1670 "tracker-explorer.c"
+	result = g_strndup (start, ((gchar*) g_utf8_offset_to_pointer (start, len)) - ((gchar*) start));
+#line 1096 "glib-2.0.vapi"
 	return result;
-#line 1655 "tracker-explorer.c"
+#line 1674 "tracker-explorer.c"
 }
 
 
 #line 204 "tracker-explorer.vala"
 static void explorer_fetch_prefixes (Explorer* self) {
-#line 1661 "tracker-explorer.c"
+#line 1680 "tracker-explorer.c"
 	GError * _inner_error_;
 	char* query;
 #line 204 "tracker-explorer.vala"
 	g_return_if_fail (self != NULL);
-#line 1666 "tracker-explorer.c"
+#line 1685 "tracker-explorer.c"
 	_inner_error_ = NULL;
 #line 205 "tracker-explorer.vala"
 	query = g_strdup ("SELECT ?s ?prefix WHERE { ?s a tracker:Namespace ; tracker:prefix ?pre" \
 "fix }");
-#line 1670 "tracker-explorer.c"
+#line 1689 "tracker-explorer.c"
 	{
 		char** _tmp2_;
 		gint _result__length2;
@@ -1689,21 +1708,21 @@ static void explorer_fetch_prefixes (Explorer* self) {
 			gint i;
 #line 208 "tracker-explorer.vala"
 			i = 0;
-#line 1692 "tracker-explorer.c"
+#line 1711 "tracker-explorer.c"
 			{
 				gboolean _tmp3_;
 #line 208 "tracker-explorer.vala"
 				_tmp3_ = TRUE;
 #line 208 "tracker-explorer.vala"
 				while (TRUE) {
-#line 1699 "tracker-explorer.c"
+#line 1718 "tracker-explorer.c"
 					char* _namespace;
 					char* _tmp4_;
 #line 208 "tracker-explorer.vala"
 					if (!_tmp3_) {
 #line 208 "tracker-explorer.vala"
 						i++;
-#line 1706 "tracker-explorer.c"
+#line 1725 "tracker-explorer.c"
 					}
 #line 208 "tracker-explorer.vala"
 					_tmp3_ = FALSE;
@@ -1711,7 +1730,7 @@ static void explorer_fetch_prefixes (Explorer* self) {
 					if (!(i < _result__length1)) {
 #line 208 "tracker-explorer.vala"
 						break;
-#line 1714 "tracker-explorer.c"
+#line 1733 "tracker-explorer.c"
 					}
 #line 209 "tracker-explorer.vala"
 					_namespace = g_strdup (_result_[(i * _result__length2) + 0]);
@@ -1719,7 +1738,7 @@ static void explorer_fetch_prefixes (Explorer* self) {
 					_namespace = (_tmp4_ = string_substring (_namespace, (glong) 0, g_utf8_strlen (_namespace, -1) - 1), _g_free0 (_namespace), _tmp4_);
 #line 211 "tracker-explorer.vala"
 					gee_abstract_map_set ((GeeAbstractMap*) self->priv->namespaces, _namespace, _result_[(i * _result__length2) + 1]);
-#line 1722 "tracker-explorer.c"
+#line 1741 "tracker-explorer.c"
 					_g_free0 (_namespace);
 				}
 			}
@@ -1749,18 +1768,18 @@ static void explorer_fetch_prefixes (Explorer* self) {
 
 #line 217 "tracker-explorer.vala"
 static void explorer_entry_changed (Explorer* self, GtkEditable* editable) {
-#line 1752 "tracker-explorer.c"
+#line 1771 "tracker-explorer.c"
 	GError * _inner_error_;
 	char* query;
 #line 217 "tracker-explorer.vala"
 	g_return_if_fail (self != NULL);
 #line 217 "tracker-explorer.vala"
 	g_return_if_fail (editable != NULL);
-#line 1759 "tracker-explorer.c"
+#line 1778 "tracker-explorer.c"
 	_inner_error_ = NULL;
 #line 218 "tracker-explorer.vala"
 	query = g_strdup_printf ("SELECT ?s WHERE { ?s fts:match \"%s*\" }", gtk_entry_get_text (GTK_ENTRY (editable)));
-#line 1763 "tracker-explorer.c"
+#line 1782 "tracker-explorer.c"
 	{
 		char** _tmp2_;
 		gint _result__length2;
@@ -1780,14 +1799,14 @@ static void explorer_entry_changed (Explorer* self, GtkEditable* editable) {
 		}
 #line 223 "tracker-explorer.vala"
 		gtk_list_store_clear (self->priv->uris);
-#line 1783 "tracker-explorer.c"
+#line 1802 "tracker-explorer.c"
 		{
 			char** s_collection;
 			int s_collection_length1;
 			int s_it;
 #line 224 "tracker-explorer.vala"
 			s_collection = _result_;
-#line 1790 "tracker-explorer.c"
+#line 1809 "tracker-explorer.c"
 			s_collection_length1 = _result__length1 * _result__length2;
 			for (s_it = 0; s_it < (_result__length1 * _result__length2); s_it = s_it + 1) {
 				char* s;
@@ -1798,7 +1817,7 @@ static void explorer_entry_changed (Explorer* self, GtkEditable* editable) {
 					gtk_list_store_append (self->priv->uris, &iter);
 #line 228 "tracker-explorer.vala"
 					gtk_list_store_set (self->priv->uris, &iter, 0, s, -1, -1);
-#line 1801 "tracker-explorer.c"
+#line 1820 "tracker-explorer.c"
 					_g_free0 (s);
 				}
 			}
@@ -1828,7 +1847,7 @@ static void explorer_entry_changed (Explorer* self, GtkEditable* editable) {
 
 #line 237 "tracker-explorer.vala"
 static char* explorer_subst_prefix (Explorer* self, const char* uri) {
-#line 1831 "tracker-explorer.c"
+#line 1850 "tracker-explorer.c"
 	char* result = NULL;
 	char** _tmp1_;
 	gint _parts_size_;
@@ -1841,46 +1860,46 @@ static char* explorer_subst_prefix (Explorer* self, const char* uri) {
 	g_return_val_if_fail (self != NULL, NULL);
 #line 237 "tracker-explorer.vala"
 	g_return_val_if_fail (uri != NULL, NULL);
-#line 1844 "tracker-explorer.c"
+#line 1863 "tracker-explorer.c"
 	parts = (_tmp1_ = _tmp0_ = g_strsplit (uri, "#", 0), parts_length1 = _vala_array_length (_tmp0_), _parts_size_ = parts_length1, _tmp1_);
 	prefix = (char*) gee_abstract_map_get ((GeeAbstractMap*) self->priv->namespaces, parts[0]);
 	relationship = NULL;
 #line 242 "tracker-explorer.vala"
 	if (prefix != NULL) {
-#line 1850 "tracker-explorer.c"
+#line 1869 "tracker-explorer.c"
 		char* _tmp2_;
 #line 243 "tracker-explorer.vala"
 		relationship = (_tmp2_ = g_strjoin (":", prefix, parts[1], NULL), _g_free0 (relationship), _tmp2_);
-#line 1854 "tracker-explorer.c"
+#line 1873 "tracker-explorer.c"
 	} else {
 		char* _tmp3_;
 #line 245 "tracker-explorer.vala"
 		relationship = (_tmp3_ = g_strdup (uri), _g_free0 (relationship), _tmp3_);
-#line 1859 "tracker-explorer.c"
+#line 1878 "tracker-explorer.c"
 	}
 	result = relationship;
 	parts = (_vala_array_free (parts, parts_length1, (GDestroyNotify) g_free), NULL);
 	_g_free0 (prefix);
 #line 246 "tracker-explorer.vala"
 	return result;
-#line 1866 "tracker-explorer.c"
+#line 1885 "tracker-explorer.c"
 }
 
 
 #line 249 "tracker-explorer.vala"
 static void explorer_clear_types (Explorer* self) {
-#line 1872 "tracker-explorer.c"
+#line 1891 "tracker-explorer.c"
 	gint npages;
 #line 249 "tracker-explorer.vala"
 	g_return_if_fail (self != NULL);
 #line 250 "tracker-explorer.vala"
 	npages = gtk_notebook_get_n_pages (self->priv->types);
-#line 1878 "tracker-explorer.c"
+#line 1897 "tracker-explorer.c"
 	{
 		gint i;
 #line 251 "tracker-explorer.vala"
 		i = 0;
-#line 1883 "tracker-explorer.c"
+#line 1902 "tracker-explorer.c"
 		{
 			gboolean _tmp0_;
 #line 251 "tracker-explorer.vala"
@@ -1891,7 +1910,7 @@ static void explorer_clear_types (Explorer* self) {
 				if (!_tmp0_) {
 #line 251 "tracker-explorer.vala"
 					i++;
-#line 1894 "tracker-explorer.c"
+#line 1913 "tracker-explorer.c"
 				}
 #line 251 "tracker-explorer.vala"
 				_tmp0_ = FALSE;
@@ -1899,11 +1918,11 @@ static void explorer_clear_types (Explorer* self) {
 				if (!(i < npages)) {
 #line 251 "tracker-explorer.vala"
 					break;
-#line 1902 "tracker-explorer.c"
+#line 1921 "tracker-explorer.c"
 				}
 #line 253 "tracker-explorer.vala"
 				gtk_notebook_remove_page (self->priv->types, 0);
-#line 1906 "tracker-explorer.c"
+#line 1925 "tracker-explorer.c"
 			}
 		}
 	}
@@ -1912,7 +1931,7 @@ static void explorer_clear_types (Explorer* self) {
 
 #line 258 "tracker-explorer.vala"
 static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
-#line 1915 "tracker-explorer.c"
+#line 1934 "tracker-explorer.c"
 	GError * _inner_error_;
 	gint page_num;
 	GtkWidget* _tmp0_;
@@ -1924,7 +1943,7 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 	GtkListStore* model;
 #line 258 "tracker-explorer.vala"
 	g_return_if_fail (self != NULL);
-#line 1927 "tracker-explorer.c"
+#line 1946 "tracker-explorer.c"
 	_inner_error_ = NULL;
 #line 259 "tracker-explorer.vala"
 	page_num = gtk_notebook_get_current_page (self->priv->types);
@@ -1932,7 +1951,7 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 	if (page_num < 0) {
 #line 261 "tracker-explorer.vala"
 		return;
-#line 1935 "tracker-explorer.c"
+#line 1954 "tracker-explorer.c"
 	}
 #line 264 "tracker-explorer.vala"
 	sw = _g_object_ref0 ((_tmp0_ = gtk_notebook_get_nth_page (self->priv->types, page_num), GTK_IS_SCROLLED_WINDOW (_tmp0_) ? ((GtkScrolledWindow*) _tmp0_) : NULL));
@@ -1940,7 +1959,7 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 	type = g_strdup (gtk_label_get_text ((_tmp1_ = gtk_notebook_get_tab_label (self->priv->types, (GtkWidget*) sw), GTK_IS_LABEL (_tmp1_) ? ((GtkLabel*) _tmp1_) : NULL)));
 #line 267 "tracker-explorer.vala"
 	model = _g_object_ref0 ((_tmp3_ = gtk_tree_view_get_model ((_tmp2_ = gtk_bin_get_child ((GtkBin*) sw), GTK_IS_TREE_VIEW (_tmp2_) ? ((GtkTreeView*) _tmp2_) : NULL)), GTK_IS_LIST_STORE (_tmp3_) ? ((GtkListStore*) _tmp3_) : NULL));
-#line 1943 "tracker-explorer.c"
+#line 1962 "tracker-explorer.c"
 	{
 		char* query;
 		char** _tmp6_;
@@ -1952,7 +1971,7 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 		GtkTreeIter iter = {0};
 #line 269 "tracker-explorer.vala"
 		query = g_strdup_printf ("SELECT ?r WHERE { ?r rdfs:range %s }", type);
-#line 1955 "tracker-explorer.c"
+#line 1974 "tracker-explorer.c"
 		_result_ = (_tmp6_ = resources_SparqlQuery (self->priv->tracker, query, &_tmp4_, &_tmp5_, &_inner_error_), _result__length1 = _tmp4_, _result__length2 = _tmp5_, _tmp6_);
 		if (_inner_error_ != NULL) {
 			_g_free0 (query);
@@ -1969,19 +1988,19 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 		}
 #line 272 "tracker-explorer.vala"
 		gtk_list_store_clear (model);
-#line 1972 "tracker-explorer.c"
+#line 1991 "tracker-explorer.c"
 		{
 			gint i;
 #line 275 "tracker-explorer.vala"
 			i = 0;
-#line 1977 "tracker-explorer.c"
+#line 1996 "tracker-explorer.c"
 			{
 				gboolean _tmp7_;
 #line 275 "tracker-explorer.vala"
 				_tmp7_ = TRUE;
 #line 275 "tracker-explorer.vala"
 				while (TRUE) {
-#line 1984 "tracker-explorer.c"
+#line 2003 "tracker-explorer.c"
 					char* relation;
 					char* _tmp8_;
 					char* _tmp9_;
@@ -1996,7 +2015,7 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 					if (!_tmp7_) {
 #line 275 "tracker-explorer.vala"
 						i++;
-#line 1999 "tracker-explorer.c"
+#line 2018 "tracker-explorer.c"
 					}
 #line 275 "tracker-explorer.vala"
 					_tmp7_ = FALSE;
@@ -2004,13 +2023,13 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 					if (!(i < _result__length1)) {
 #line 275 "tracker-explorer.vala"
 						break;
-#line 2007 "tracker-explorer.c"
+#line 2026 "tracker-explorer.c"
 					}
 #line 276 "tracker-explorer.vala"
 					relation = explorer_subst_prefix (self, _result_[(i * _result__length2) + 0]);
 #line 277 "tracker-explorer.vala"
 					query2 = (_tmp9_ = g_strdup_printf ("SELECT ?s WHERE { ?s %s <%s>}", relation, _tmp8_ = history_current_uri (self->priv->history)), _g_free0 (_tmp8_), _tmp9_);
-#line 2013 "tracker-explorer.c"
+#line 2032 "tracker-explorer.c"
 					result2 = (_tmp12_ = resources_SparqlQuery (self->priv->tracker, query2, &_tmp10_, &_tmp11_, &_inner_error_), result2_length1 = _tmp10_, result2_length2 = _tmp11_, _tmp12_);
 					if (_inner_error_ != NULL) {
 						_g_free0 (relation);
@@ -2035,20 +2054,20 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 						gint j;
 #line 280 "tracker-explorer.vala"
 						j = 0;
-#line 2038 "tracker-explorer.c"
+#line 2057 "tracker-explorer.c"
 						{
 							gboolean _tmp13_;
 #line 280 "tracker-explorer.vala"
 							_tmp13_ = TRUE;
 #line 280 "tracker-explorer.vala"
 							while (TRUE) {
-#line 2045 "tracker-explorer.c"
+#line 2064 "tracker-explorer.c"
 								char* subject;
 #line 280 "tracker-explorer.vala"
 								if (!_tmp13_) {
 #line 280 "tracker-explorer.vala"
 									j++;
-#line 2051 "tracker-explorer.c"
+#line 2070 "tracker-explorer.c"
 								}
 #line 280 "tracker-explorer.vala"
 								_tmp13_ = FALSE;
@@ -2056,7 +2075,7 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 								if (!(j < result2_length1)) {
 #line 280 "tracker-explorer.vala"
 									break;
-#line 2059 "tracker-explorer.c"
+#line 2078 "tracker-explorer.c"
 								}
 #line 281 "tracker-explorer.vala"
 								subject = explorer_subst_prefix (self, result2[(j * result2_length2) + 0]);
@@ -2068,7 +2087,7 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 								gtk_list_store_set (model, &iter, 1, subject, -1, -1);
 #line 285 "tracker-explorer.vala"
 								gtk_list_store_set (model, &iter, 2, relation, -1, -1);
-#line 2071 "tracker-explorer.c"
+#line 2090 "tracker-explorer.c"
 								_g_free0 (subject);
 							}
 						}
@@ -2109,7 +2128,7 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 
 #line 293 "tracker-explorer.vala"
 static void explorer_add_type (Explorer* self, const char* type) {
-#line 2112 "tracker-explorer.c"
+#line 2131 "tracker-explorer.c"
 	GtkLabel* tab_label;
 	GtkScrolledWindow* child;
 	GtkTreeView* tv;
@@ -2129,7 +2148,7 @@ static void explorer_add_type (Explorer* self, const char* type) {
 	gtk_notebook_append_page (self->priv->types, (GtkWidget*) child, (GtkWidget*) tab_label);
 #line 299 "tracker-explorer.vala"
 	gtk_widget_show_all ((GtkWidget*) child);
-#line 2132 "tracker-explorer.c"
+#line 2151 "tracker-explorer.c"
 	_g_object_unref0 (tab_label);
 	_g_object_unref0 (child);
 	_g_object_unref0 (tv);
@@ -2146,7 +2165,7 @@ static void explorer_set_current_uri (Explorer* self, const char* uri) {
 	history_add (self->priv->history, uri);
 #line 304 "tracker-explorer.vala"
 	explorer_update_pane (self);
-#line 2149 "tracker-explorer.c"
+#line 2168 "tracker-explorer.c"
 }
 
 
@@ -2158,7 +2177,7 @@ static void explorer_forward_clicked (Explorer* self) {
 	if (history_forward (self->priv->history)) {
 #line 309 "tracker-explorer.vala"
 		explorer_update_pane (self);
-#line 2161 "tracker-explorer.c"
+#line 2180 "tracker-explorer.c"
 	}
 }
 
@@ -2171,20 +2190,20 @@ static void explorer_back_clicked (Explorer* self) {
 	if (history_back (self->priv->history)) {
 #line 315 "tracker-explorer.vala"
 		explorer_update_pane (self);
-#line 2174 "tracker-explorer.c"
+#line 2193 "tracker-explorer.c"
 	}
 }
 
 
 #line 319 "tracker-explorer.vala"
 static void explorer_update_pane (Explorer* self) {
-#line 2181 "tracker-explorer.c"
+#line 2200 "tracker-explorer.c"
 	GError * _inner_error_;
 	char* _tmp1_;
 	char* _tmp0_;
 #line 319 "tracker-explorer.vala"
 	g_return_if_fail (self != NULL);
-#line 2187 "tracker-explorer.c"
+#line 2206 "tracker-explorer.c"
 	_inner_error_ = NULL;
 #line 320 "tracker-explorer.vala"
 	gtk_widget_set_sensitive ((GtkWidget*) self->priv->forward, history_can_go_forward (self->priv->history));
@@ -2192,7 +2211,7 @@ static void explorer_update_pane (Explorer* self) {
 	gtk_widget_set_sensitive ((GtkWidget*) self->priv->back, history_can_go_back (self->priv->history));
 #line 322 "tracker-explorer.vala"
 	gtk_label_set_text (self->priv->current_uri_label, _tmp1_ = explorer_subst_prefix (self, _tmp0_ = history_current_uri (self->priv->history)));
-#line 2195 "tracker-explorer.c"
+#line 2214 "tracker-explorer.c"
 	_g_free0 (_tmp1_);
 	_g_free0 (_tmp0_);
 	{
@@ -2208,7 +2227,7 @@ static void explorer_update_pane (Explorer* self) {
 		char** _result_;
 #line 324 "tracker-explorer.vala"
 		query = (_tmp3_ = g_strdup_printf ("SELECT ?r ?o  WHERE { <%s> ?r ?o }", _tmp2_ = history_current_uri (self->priv->history)), _g_free0 (_tmp2_), _tmp3_);
-#line 2211 "tracker-explorer.c"
+#line 2230 "tracker-explorer.c"
 		_result_ = (_tmp6_ = resources_SparqlQuery (self->priv->tracker, query, &_tmp4_, &_tmp5_, &_inner_error_), _result__length1 = _tmp4_, _result__length2 = _tmp5_, _tmp6_);
 		if (_inner_error_ != NULL) {
 			_g_free0 (query);
@@ -2224,19 +2243,19 @@ static void explorer_update_pane (Explorer* self) {
 		gtk_list_store_clear (self->priv->relationships);
 #line 328 "tracker-explorer.vala"
 		explorer_clear_types (self);
-#line 2227 "tracker-explorer.c"
+#line 2246 "tracker-explorer.c"
 		{
 			gint i;
 #line 330 "tracker-explorer.vala"
 			i = 0;
-#line 2232 "tracker-explorer.c"
+#line 2251 "tracker-explorer.c"
 			{
 				gboolean _tmp7_;
 #line 330 "tracker-explorer.vala"
 				_tmp7_ = TRUE;
 #line 330 "tracker-explorer.vala"
 				while (TRUE) {
-#line 2239 "tracker-explorer.c"
+#line 2258 "tracker-explorer.c"
 					char* relationship;
 					char* obj;
 					gboolean _tmp8_ = FALSE;
@@ -2244,7 +2263,7 @@ static void explorer_update_pane (Explorer* self) {
 					if (!_tmp7_) {
 #line 330 "tracker-explorer.vala"
 						i++;
-#line 2247 "tracker-explorer.c"
+#line 2266 "tracker-explorer.c"
 					}
 #line 330 "tracker-explorer.vala"
 					_tmp7_ = FALSE;
@@ -2252,7 +2271,7 @@ static void explorer_update_pane (Explorer* self) {
 					if (!(i < _result__length1)) {
 #line 330 "tracker-explorer.vala"
 						break;
-#line 2255 "tracker-explorer.c"
+#line 2274 "tracker-explorer.c"
 					}
 #line 331 "tracker-explorer.vala"
 					relationship = explorer_subst_prefix (self, _result_[(i * _result__length2) + 0]);
@@ -2270,17 +2289,17 @@ static void explorer_update_pane (Explorer* self) {
 					if (_vala_strcmp0 (relationship, "rdf:type") == 0) {
 #line 338 "tracker-explorer.vala"
 						_tmp8_ = _vala_strcmp0 (obj, "rdfs:Resource") != 0;
-#line 2273 "tracker-explorer.c"
+#line 2292 "tracker-explorer.c"
 					} else {
 #line 338 "tracker-explorer.vala"
 						_tmp8_ = FALSE;
-#line 2277 "tracker-explorer.c"
+#line 2296 "tracker-explorer.c"
 					}
 #line 338 "tracker-explorer.vala"
 					if (_tmp8_) {
 #line 339 "tracker-explorer.vala"
 						explorer_add_type (self, obj);
-#line 2283 "tracker-explorer.c"
+#line 2302 "tracker-explorer.c"
 					}
 					_g_free0 (relationship);
 					_g_free0 (obj);
@@ -2291,7 +2310,7 @@ static void explorer_update_pane (Explorer* self) {
 		gtk_notebook_set_current_page (self->priv->types, gtk_notebook_get_n_pages (self->priv->types) - 1);
 #line 343 "tracker-explorer.vala"
 		explorer_update_types_page (self, NULL);
-#line 2294 "tracker-explorer.c"
+#line 2313 "tracker-explorer.c"
 		_g_free0 (query);
 		_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
 	}
@@ -2316,7 +2335,7 @@ static void explorer_update_pane (Explorer* self) {
 
 #line 349 "tracker-explorer.vala"
 static void explorer_row_selected (Explorer* self, GtkTreeView* view, GtkTreePath* path, GtkTreeViewColumn* column) {
-#line 2319 "tracker-explorer.c"
+#line 2338 "tracker-explorer.c"
 	GtkTreeIter iter = {0};
 	GtkTreeModel* model;
 	const char* uri;
@@ -2332,20 +2351,20 @@ static void explorer_row_selected (Explorer* self, GtkTreeView* view, GtkTreePat
 	model = _g_object_ref0 (gtk_tree_view_get_model (view));
 #line 352 "tracker-explorer.vala"
 	gtk_tree_model_get_iter (model, &iter, path);
-#line 2335 "tracker-explorer.c"
+#line 2354 "tracker-explorer.c"
 	uri = NULL;
 #line 354 "tracker-explorer.vala"
 	gtk_tree_model_get (model, &iter, 0, &uri, -1);
 #line 355 "tracker-explorer.vala"
 	explorer_set_current_uri (self, uri);
-#line 2341 "tracker-explorer.c"
+#line 2360 "tracker-explorer.c"
 	_g_object_unref0 (model);
 }
 
 
 #line 93 "tracker-explorer.vala"
 Explorer* explorer_construct (GType object_type) {
-#line 2348 "tracker-explorer.c"
+#line 2367 "tracker-explorer.c"
 	Explorer* self;
 	self = (Explorer*) g_type_create_instance (object_type);
 	return self;
@@ -2356,7 +2375,7 @@ Explorer* explorer_construct (GType object_type) {
 Explorer* explorer_new (void) {
 #line 93 "tracker-explorer.vala"
 	return explorer_construct (TYPE_EXPLORER);
-#line 2359 "tracker-explorer.c"
+#line 2378 "tracker-explorer.c"
 }
 
 
@@ -2534,7 +2553,7 @@ void explorer_unref (gpointer instance) {
 
 #line 363 "tracker-explorer.vala"
 gint _vala_main (char** args, int args_length1) {
-#line 2537 "tracker-explorer.c"
+#line 2556 "tracker-explorer.c"
 	gint result = 0;
 	Explorer* s;
 #line 364 "tracker-explorer.vala"
@@ -2545,12 +2564,12 @@ gint _vala_main (char** args, int args_length1) {
 	explorer_show (s);
 #line 368 "tracker-explorer.vala"
 	gtk_main ();
-#line 2548 "tracker-explorer.c"
+#line 2567 "tracker-explorer.c"
 	result = 0;
 	_explorer_unref0 (s);
 #line 369 "tracker-explorer.vala"
 	return result;
-#line 2553 "tracker-explorer.c"
+#line 2572 "tracker-explorer.c"
 }
 
 
@@ -2560,7 +2579,7 @@ int main (int argc, char ** argv) {
 	g_type_init ();
 #line 363 "tracker-explorer.vala"
 	return _vala_main (argv, argc);
-#line 2563 "tracker-explorer.c"
+#line 2582 "tracker-explorer.c"
 }
 
 
@@ -2602,25 +2621,6 @@ static int _vala_strcmp0 (const char * str1, const char * str2) {
 		return str1 != str2;
 	}
 	return strcmp (str1, str2);
-}
-
-
-static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
-	const _DBusObjectVTable * vtable;
-	vtable = g_type_get_qdata (G_TYPE_FROM_INSTANCE (object), g_quark_from_static_string ("DBusObjectVTable"));
-	if (vtable) {
-		vtable->register_object (connection, path, object);
-	} else {
-		g_warning ("Object does not implement any D-Bus interface");
-	}
-}
-
-
-static void _vala_dbus_unregister_object (gpointer connection, GObject* object) {
-	char* path;
-	path = g_object_steal_data ((GObject*) object, "dbus_object_path");
-	dbus_connection_unregister_object_path (connection, path);
-	g_free (path);
 }
 
 

@@ -9,12 +9,10 @@ TrackerMiner
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -47,14 +45,6 @@ TrackerMiner
 
 </para>
 
-
-<!-- ##### SIGNAL TrackerMiner::error ##### -->
-<para>
-
-</para>
-
-@trackerminer: the object which received the signal.
-@arg1: 
 
 <!-- ##### SIGNAL TrackerMiner::ignore-next-update ##### -->
 <para>
@@ -127,7 +117,6 @@ TrackerMiner
 @paused: 
 @resumed: 
 @progress: 
-@error: 
 @ignore_next_update: 
 
 <!-- ##### FUNCTION tracker_miner_error_quark ##### -->

@@ -43,7 +43,6 @@
     <function name="The &quot;name&quot; property" link="libtracker-miner-tracker-miner.html#TrackerMiner--name"/>
     <function name="The &quot;progress&quot; property" link="libtracker-miner-tracker-miner.html#TrackerMiner--progress"/>
     <function name="The &quot;status&quot; property" link="libtracker-miner-tracker-miner.html#TrackerMiner--status"/>
-    <function name="The &quot;error&quot; signal" link="libtracker-miner-tracker-miner.html#TrackerMiner-error"/>
     <function name="The &quot;ignore-next-update&quot; signal" link="libtracker-miner-tracker-miner.html#TrackerMiner-ignore-next-update"/>
     <function name="The &quot;paused&quot; signal" link="libtracker-miner-tracker-miner.html#TrackerMiner-paused"/>
     <function name="The &quot;progress&quot; signal" link="libtracker-miner-tracker-miner.html#TrackerMiner-progress"/>

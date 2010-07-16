@@ -166,18 +166,18 @@ typedef enum  {
 
 static gpointer tracker_sparql_scanner_parent_class = NULL;
 
-GType tracker_sparql_scanner_get_type (void);
+GType tracker_sparql_scanner_get_type (void) G_GNUC_CONST;
 #define TRACKER_SPARQL_SCANNER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_SPARQL_SCANNER, TrackerSparqlScannerPrivate))
 enum  {
 	TRACKER_SPARQL_SCANNER_DUMMY_PROPERTY
 };
 TrackerSparqlScanner* tracker_sparql_scanner_new (gchar* input, gsize len);
 TrackerSparqlScanner* tracker_sparql_scanner_construct (GType object_type, gchar* input, gsize len);
-GType tracker_source_location_get_type (void);
+GType tracker_source_location_get_type (void) G_GNUC_CONST;
 TrackerSourceLocation* tracker_source_location_dup (const TrackerSourceLocation* self);
 void tracker_source_location_free (TrackerSourceLocation* self);
 void tracker_sparql_scanner_seek (TrackerSparqlScanner* self, TrackerSourceLocation* location);
-GType tracker_sparql_token_type_get_type (void);
+GType tracker_sparql_token_type_get_type (void) G_GNUC_CONST;
 static gboolean tracker_sparql_scanner_matches (TrackerSparqlScanner* self, gchar* begin, const char* keyword);
 static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (TrackerSparqlScanner* self, gchar* begin, gint len);
 static TrackerSparqlTokenType tracker_sparql_scanner_read_number (TrackerSparqlScanner* self);

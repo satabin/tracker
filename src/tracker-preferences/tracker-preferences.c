@@ -266,9 +266,9 @@ void add_freevalue (GtkListStore* model) {
 		_g_free0 (text);
 	}
 	gtk_object_destroy ((GtkObject*) dialog);
-	_g_object_unref0 (dialog);
-	_g_object_unref0 (entry);
 	_g_object_unref0 (content_area);
+	_g_object_unref0 (entry);
+	_g_object_unref0 (dialog);
 }
 
 
@@ -289,8 +289,8 @@ void add_dir (GtkListStore* model) {
 		g_value_set_string (&v, _tmp1_ = g_file_get_path (dir));
 		_g_free0 (_tmp1_);
 		gtk_list_store_set_value (model, &iter, 0, &v);
-		_g_object_unref0 (dir);
 		G_IS_VALUE (&v) ? (g_value_unset (&v), NULL) : NULL;
+		_g_object_unref0 (dir);
 	}
 	gtk_object_destroy ((GtkObject*) dialog);
 	_g_object_unref0 (dialog);
@@ -341,10 +341,10 @@ void del_dir (GtkTreeView* view) {
 			}
 		}
 	}
-	__g_list_free_gtk_tree_path_free0 (list);
-	_g_object_unref0 (store);
-	_g_object_unref0 (model);
 	_g_object_unref0 (selection);
+	_g_object_unref0 (model);
+	_g_object_unref0 (store);
+	__g_list_free_gtk_tree_path_free0 (list);
 }
 
 

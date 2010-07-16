@@ -171,7 +171,7 @@ static gpointer history_parent_class = NULL;
 static gpointer explorer_parent_class = NULL;
 
 Resources* resources_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
-GType resources_get_type (void);
+GType resources_get_type (void) G_GNUC_CONST;
 char** resources_SparqlQuery (Resources* self, const char* query, int* result_length1, int* result_length2, GError** error);
 static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
 static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
@@ -181,7 +181,7 @@ DBusHandlerResult resources_dbus_message (DBusConnection* connection, DBusMessag
 static DBusHandlerResult _dbus_resources_introspect (Resources* self, DBusConnection* connection, DBusMessage* message);
 static DBusHandlerResult _dbus_resources_property_get_all (Resources* self, DBusConnection* connection, DBusMessage* message);
 static DBusHandlerResult _dbus_resources_SparqlQuery (Resources* self, DBusConnection* connection, DBusMessage* message);
-GType resources_dbus_proxy_get_type (void);
+GType resources_dbus_proxy_get_type (void) G_GNUC_CONST;
 DBusHandlerResult resources_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data);
 enum  {
 	RESOURCES_DBUS_PROXY_DUMMY_PROPERTY
@@ -196,7 +196,7 @@ GParamSpec* param_spec_history_item (const gchar* name, const gchar* nick, const
 void value_set_history_item (GValue* value, gpointer v_object);
 void value_take_history_item (GValue* value, gpointer v_object);
 gpointer value_get_history_item (const GValue* value);
-GType history_item_get_type (void);
+GType history_item_get_type (void) G_GNUC_CONST;
 enum  {
 	HISTORY_ITEM_DUMMY_PROPERTY
 };
@@ -209,7 +209,7 @@ GParamSpec* param_spec_history (const gchar* name, const gchar* nick, const gcha
 void value_set_history (GValue* value, gpointer v_object);
 void value_take_history (GValue* value, gpointer v_object);
 gpointer value_get_history (const GValue* value);
-GType history_get_type (void);
+GType history_get_type (void) G_GNUC_CONST;
 #define HISTORY_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_HISTORY, HistoryPrivate))
 enum  {
 	HISTORY_DUMMY_PROPERTY
@@ -229,7 +229,7 @@ GParamSpec* param_spec_explorer (const gchar* name, const gchar* nick, const gch
 void value_set_explorer (GValue* value, gpointer v_object);
 void value_take_explorer (GValue* value, gpointer v_object);
 gpointer value_get_explorer (const GValue* value);
-GType explorer_get_type (void);
+GType explorer_get_type (void) G_GNUC_CONST;
 #define EXPLORER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_EXPLORER, ExplorerPrivate))
 enum  {
 	EXPLORER_DUMMY_PROPERTY
@@ -1419,8 +1419,8 @@ void explorer_show (Explorer* self) {
 #line 119 "tracker-explorer.vala"
 			gtk_main_quit ();
 #line 1422 "tracker-explorer.c"
-			_g_error_free0 (e);
 			_g_object_unref0 (msg);
+			_g_error_free0 (e);
 		}
 	}
 	__finally0:
@@ -1470,8 +1470,8 @@ void explorer_show (Explorer* self) {
 #line 137 "tracker-explorer.vala"
 					gtk_main_quit ();
 #line 1473 "tracker-explorer.c"
-					_g_error_free0 (e);
 					_g_object_unref0 (msg);
+					_g_error_free0 (e);
 				}
 			}
 			__finally2:
@@ -1533,11 +1533,11 @@ void explorer_show (Explorer* self) {
 #line 169 "tracker-explorer.vala"
 	gtk_widget_show_all ((GtkWidget*) window);
 #line 1536 "tracker-explorer.c"
-	_g_object_unref0 (builder);
-	_g_object_unref0 (window);
-	_g_object_unref0 (entry);
-	_g_object_unref0 (urisview);
 	_g_object_unref0 (relationshipsview);
+	_g_object_unref0 (urisview);
+	_g_object_unref0 (entry);
+	_g_object_unref0 (window);
+	_g_object_unref0 (builder);
 }
 
 
@@ -1634,41 +1634,41 @@ static GtkTreeView* explorer_setup_reverserelationships (Explorer* self) {
 }
 
 
-#line 1083 "glib-2.0.vapi"
+#line 1085 "glib-2.0.vapi"
 static char* string_substring (const char* self, glong offset, glong len) {
 #line 1640 "tracker-explorer.c"
 	char* result = NULL;
 	glong string_length;
 	const char* start;
-#line 1083 "glib-2.0.vapi"
-	g_return_val_if_fail (self != NULL, NULL);
-#line 1084 "glib-2.0.vapi"
-	string_length = g_utf8_strlen (self, -1);
 #line 1085 "glib-2.0.vapi"
-	if (offset < 0) {
+	g_return_val_if_fail (self != NULL, NULL);
 #line 1086 "glib-2.0.vapi"
-		offset = string_length + offset;
+	string_length = g_utf8_strlen (self, -1);
 #line 1087 "glib-2.0.vapi"
+	if (offset < 0) {
+#line 1088 "glib-2.0.vapi"
+		offset = string_length + offset;
+#line 1089 "glib-2.0.vapi"
 		g_return_val_if_fail (offset >= 0, NULL);
 #line 1654 "tracker-explorer.c"
 	} else {
-#line 1089 "glib-2.0.vapi"
+#line 1091 "glib-2.0.vapi"
 		g_return_val_if_fail (offset <= string_length, NULL);
 #line 1658 "tracker-explorer.c"
 	}
-#line 1091 "glib-2.0.vapi"
+#line 1093 "glib-2.0.vapi"
 	if (len < 0) {
-#line 1092 "glib-2.0.vapi"
+#line 1094 "glib-2.0.vapi"
 		len = string_length - offset;
 #line 1664 "tracker-explorer.c"
 	}
-#line 1094 "glib-2.0.vapi"
+#line 1096 "glib-2.0.vapi"
 	g_return_val_if_fail ((offset + len) <= string_length, NULL);
-#line 1095 "glib-2.0.vapi"
+#line 1097 "glib-2.0.vapi"
 	start = g_utf8_offset_to_pointer (self, offset);
 #line 1670 "tracker-explorer.c"
 	result = g_strndup (start, ((gchar*) g_utf8_offset_to_pointer (start, len)) - ((gchar*) start));
-#line 1096 "glib-2.0.vapi"
+#line 1098 "glib-2.0.vapi"
 	return result;
 #line 1674 "tracker-explorer.c"
 }
@@ -1878,8 +1878,8 @@ static char* explorer_subst_prefix (Explorer* self, const char* uri) {
 #line 1878 "tracker-explorer.c"
 	}
 	result = relationship;
-	parts = (_vala_array_free (parts, parts_length1, (GDestroyNotify) g_free), NULL);
 	_g_free0 (prefix);
+	parts = (_vala_array_free (parts, parts_length1, (GDestroyNotify) g_free), NULL);
 #line 246 "tracker-explorer.vala"
 	return result;
 #line 1885 "tracker-explorer.c"
@@ -1979,9 +1979,9 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 				goto __catch5_dbus_gerror;
 			}
 			_g_free0 (query);
-			_g_object_unref0 (sw);
-			_g_free0 (type);
 			_g_object_unref0 (model);
+			_g_free0 (type);
+			_g_object_unref0 (sw);
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 			g_clear_error (&_inner_error_);
 			return;
@@ -2032,20 +2032,20 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 #line 2032 "tracker-explorer.c"
 					result2 = (_tmp12_ = resources_SparqlQuery (self->priv->tracker, query2, &_tmp10_, &_tmp11_, &_inner_error_), result2_length1 = _tmp10_, result2_length2 = _tmp11_, _tmp12_);
 					if (_inner_error_ != NULL) {
-						_g_free0 (relation);
 						_g_free0 (query2);
-						_g_free0 (query);
+						_g_free0 (relation);
 						_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
+						_g_free0 (query);
 						if (_inner_error_->domain == DBUS_GERROR) {
 							goto __catch5_dbus_gerror;
 						}
-						_g_free0 (relation);
 						_g_free0 (query2);
-						_g_free0 (query);
+						_g_free0 (relation);
 						_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
-						_g_object_unref0 (sw);
-						_g_free0 (type);
+						_g_free0 (query);
 						_g_object_unref0 (model);
+						_g_free0 (type);
+						_g_object_unref0 (sw);
 						g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 						g_clear_error (&_inner_error_);
 						return;
@@ -2092,14 +2092,14 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 							}
 						}
 					}
-					_g_free0 (relation);
-					_g_free0 (query2);
 					result2 = (_vala_array_free (result2, result2_length1 * result2_length2, (GDestroyNotify) g_free), NULL);
+					_g_free0 (query2);
+					_g_free0 (relation);
 				}
 			}
 		}
-		_g_free0 (query);
 		_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
+		_g_free0 (query);
 	}
 	goto __finally5;
 	__catch5_dbus_gerror:
@@ -2113,16 +2113,16 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 	}
 	__finally5:
 	if (_inner_error_ != NULL) {
-		_g_object_unref0 (sw);
-		_g_free0 (type);
 		_g_object_unref0 (model);
+		_g_free0 (type);
+		_g_object_unref0 (sw);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return;
 	}
-	_g_object_unref0 (sw);
-	_g_free0 (type);
 	_g_object_unref0 (model);
+	_g_free0 (type);
+	_g_object_unref0 (sw);
 }
 
 
@@ -2149,9 +2149,9 @@ static void explorer_add_type (Explorer* self, const char* type) {
 #line 299 "tracker-explorer.vala"
 	gtk_widget_show_all ((GtkWidget*) child);
 #line 2151 "tracker-explorer.c"
-	_g_object_unref0 (tab_label);
-	_g_object_unref0 (child);
 	_g_object_unref0 (tv);
+	_g_object_unref0 (child);
+	_g_object_unref0 (tab_label);
 }
 
 
@@ -2301,8 +2301,8 @@ static void explorer_update_pane (Explorer* self) {
 						explorer_add_type (self, obj);
 #line 2302 "tracker-explorer.c"
 					}
-					_g_free0 (relationship);
 					_g_free0 (obj);
+					_g_free0 (relationship);
 				}
 			}
 		}
@@ -2311,8 +2311,8 @@ static void explorer_update_pane (Explorer* self) {
 #line 343 "tracker-explorer.vala"
 		explorer_update_types_page (self, NULL);
 #line 2313 "tracker-explorer.c"
-		_g_free0 (query);
 		_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
+		_g_free0 (query);
 	}
 	goto __finally6;
 	__catch6_dbus_gerror:

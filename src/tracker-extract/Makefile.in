@@ -699,17 +699,19 @@ GTESTER_REPORT = gtester-report
 TEST_PROGS = 
 module_flags = -module -avoid-version -no-undefined
 modulesdir = $(libdir)/tracker-$(TRACKER_API_VERSION)/extract-modules
+AM_CFLAGS = $(WARN_CFLAGS)
+AM_CXXFLAGS = $(WARN_CXXFLAGS)
 INCLUDES = -DLOCALEDIR=\""$(localedir)"\" \
 	-DTRACKER_EXTRACTORS_DIR=\"$(modulesdir)\" \
 	-DG_LOG_DOMAIN=\"Tracker\" -DTRACKER_COMPILATION \
 	-I$(top_srcdir)/src -I$(top_builddir)/src \
-	-I$(top_builddir)/src/libtracker-client $(WARN_CFLAGS) \
-	$(GLIB2_CFLAGS) $(GCOV_CFLAGS) $(GDKPIXBUF_CFLAGS) \
-	$(GMODULE_CFLAGS) $(DBUS_CFLAGS) $(LIBJPEG_CFLAGS) \
-	$(LIBTIFF_CFLAGS) $(LIBGSF_CFLAGS) $(LIBXML2_CFLAGS) \
-	$(LIBPNG_CFLAGS) $(POPPLER_GLIB_CFLAGS) $(GSTREAMER_CFLAGS) \
-	$(XINE_CFLAGS) $(TOTEM_PL_PARSER_CFLAGS) $(am__append_1) \
-	$(am__append_2) $(am__append_23)
+	-I$(top_builddir)/src/libtracker-client $(GLIB2_CFLAGS) \
+	$(GCOV_CFLAGS) $(GDKPIXBUF_CFLAGS) $(GMODULE_CFLAGS) \
+	$(DBUS_CFLAGS) $(LIBJPEG_CFLAGS) $(LIBTIFF_CFLAGS) \
+	$(LIBGSF_CFLAGS) $(LIBXML2_CFLAGS) $(LIBPNG_CFLAGS) \
+	$(POPPLER_GLIB_CFLAGS) $(GSTREAMER_CFLAGS) $(XINE_CFLAGS) \
+	$(TOTEM_PL_PARSER_CFLAGS) $(am__append_1) $(am__append_2) \
+	$(am__append_23)
 
 # NOTE:
 # We don't always link with libtracker-common, we only link

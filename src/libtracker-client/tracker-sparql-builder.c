@@ -76,8 +76,8 @@ struct _TrackerSparqlBuilderPrivate {
 
 static gpointer tracker_sparql_builder_parent_class = NULL;
 
-GType tracker_sparql_builder_get_type (void);
-GType tracker_sparql_builder_state_get_type (void);
+GType tracker_sparql_builder_get_type (void) G_GNUC_CONST;
+GType tracker_sparql_builder_state_get_type (void) G_GNUC_CONST;
 #define TRACKER_SPARQL_BUILDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_SPARQL_BUILDER, TrackerSparqlBuilderPrivate))
 enum  {
 	TRACKER_SPARQL_BUILDER_DUMMY_PROPERTY,

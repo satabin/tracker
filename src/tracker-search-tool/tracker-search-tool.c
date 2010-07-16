@@ -110,7 +110,7 @@ static gpointer tracker_search_tool_server_parent_class = NULL;
 
 #define ABOUT "Tracker " PACKAGE_VERSION "\n"
 #define LICENSE "This program is free software and comes without any warranty.\n" "It is licensed under version 2 or later of the General Public " "License which can be viewed at:\n" "\n" "  http://www.gnu.org/licenses/gpl.txt\n"
-GType tracker_search_tool_server_get_type (void);
+GType tracker_search_tool_server_get_type (void) G_GNUC_CONST;
 enum  {
 	TRACKER_SEARCH_TOOL_SERVER_DUMMY_PROPERTY
 };
@@ -130,19 +130,19 @@ static void _dynamic_show1 (DBusGProxy* self, GError** error);
 static void _gtk_main_quit_gtk_object_destroy (GtkWindow* _sender, gpointer self);
 TrackerQuery* tracker_query_new (void);
 TrackerQuery* tracker_query_construct (GType object_type);
-GType tracker_query_get_type (void);
+GType tracker_query_get_type (void) G_GNUC_CONST;
 TrackerSearchEntry* tracker_search_entry_new (void);
 TrackerSearchEntry* tracker_search_entry_construct (GType object_type);
-GType tracker_search_entry_get_type (void);
+GType tracker_search_entry_get_type (void) G_GNUC_CONST;
 TrackerResultGrid* tracker_result_grid_new (void);
 TrackerResultGrid* tracker_result_grid_construct (GType object_type);
-GType tracker_result_grid_get_type (void);
+GType tracker_result_grid_get_type (void) G_GNUC_CONST;
 TrackerCategoryView* tracker_category_view_new (void);
 TrackerCategoryView* tracker_category_view_construct (GType object_type);
-GType tracker_category_view_get_type (void);
+GType tracker_category_view_get_type (void) G_GNUC_CONST;
 TrackerMetadataTile* tracker_metadata_tile_new (void);
 TrackerMetadataTile* tracker_metadata_tile_construct (GType object_type);
-GType tracker_metadata_tile_get_type (void);
+GType tracker_metadata_tile_get_type (void) G_GNUC_CONST;
 gboolean tracker_query_Connect (TrackerQuery* self);
 void tracker_search_entry_set_Query (TrackerSearchEntry* self, TrackerQuery* value);
 void tracker_result_grid_set_Query (TrackerResultGrid* self, TrackerQuery* value);
@@ -479,8 +479,8 @@ void _vala_main (char** args, int args_length1) {
 				goto __catch5_dbus_gerror;
 			}
 			_g_object_unref0 (bus);
-			_g_option_context_free0 (option_context);
 			_g_object_unref0 (server);
+			_g_option_context_free0 (option_context);
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 			g_clear_error (&_inner_error_);
 			return;
@@ -491,8 +491,8 @@ void _vala_main (char** args, int args_length1) {
 		_tmp1_ = _dynamic_request_name0 (bus, "org.freedesktop.Tracker1.SearchTool", (guint) 0, &_inner_error_);
 #line 493 "tracker-search-tool.c"
 		if (_inner_error_ != NULL) {
-			_g_object_unref0 (bus);
 			_dbus_g_connection_unref0 (conn);
+			_g_object_unref0 (bus);
 			if (_inner_error_->domain == DBUS_GERROR) {
 				goto __catch5_dbus_gerror;
 			}
@@ -516,24 +516,24 @@ void _vala_main (char** args, int args_length1) {
 #line 517 "tracker-search-tool.c"
 			if (_inner_error_ != NULL) {
 				_g_object_unref0 (remote);
-				_g_object_unref0 (bus);
 				_dbus_g_connection_unref0 (conn);
+				_g_object_unref0 (bus);
 				if (_inner_error_->domain == DBUS_GERROR) {
 					goto __catch5_dbus_gerror;
 				}
 				goto __finally5;
 			}
 			_g_object_unref0 (remote);
-			_g_object_unref0 (bus);
 			_dbus_g_connection_unref0 (conn);
-			_g_option_context_free0 (option_context);
+			_g_object_unref0 (bus);
 			_g_object_unref0 (server);
+			_g_option_context_free0 (option_context);
 #line 94 "tracker-search-tool.gs"
 			return;
 #line 534 "tracker-search-tool.c"
 		}
-		_g_object_unref0 (bus);
 		_dbus_g_connection_unref0 (conn);
+		_g_object_unref0 (bus);
 	}
 	goto __finally5;
 	__catch5_dbus_gerror:
@@ -550,8 +550,8 @@ void _vala_main (char** args, int args_length1) {
 	}
 	__finally5:
 	if (_inner_error_ != NULL) {
-		_g_option_context_free0 (option_context);
 		_g_object_unref0 (server);
+		_g_option_context_free0 (option_context);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return;
@@ -597,20 +597,20 @@ void _vala_main (char** args, int args_length1) {
 #line 112 "tracker-search-tool.gs"
 					gtk_main_quit ();
 #line 600 "tracker-search-tool.c"
-					_g_error_free0 (e);
 					_g_object_unref0 (msg);
+					_g_error_free0 (e);
 				}
 			}
 			__finally7:
 			if (_inner_error_ != NULL) {
 				_g_error_free0 (e);
-				_g_option_context_free0 (option_context);
-				_g_object_unref0 (server);
 				_g_object_unref0 (builder);
+				_g_object_unref0 (server);
+				_g_option_context_free0 (option_context);
 				_g_error_free0 (e);
-				_g_option_context_free0 (option_context);
-				_g_object_unref0 (server);
 				_g_object_unref0 (builder);
+				_g_object_unref0 (server);
+				_g_option_context_free0 (option_context);
 				g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 				g_clear_error (&_inner_error_);
 				return;
@@ -620,9 +620,9 @@ void _vala_main (char** args, int args_length1) {
 	}
 	__finally6:
 	if (_inner_error_ != NULL) {
-		_g_option_context_free0 (option_context);
-		_g_object_unref0 (server);
 		_g_object_unref0 (builder);
+		_g_object_unref0 (server);
+		_g_option_context_free0 (option_context);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return;
@@ -704,22 +704,22 @@ void _vala_main (char** args, int args_length1) {
 #line 167 "tracker-search-tool.gs"
 	gtk_main ();
 #line 707 "tracker-search-tool.c"
-	_g_option_context_free0 (option_context);
-	_g_object_unref0 (server);
-	_g_object_unref0 (builder);
-	_g_object_unref0 (accel_group);
-	_g_object_unref0 (entry);
-	_g_object_unref0 (query);
-	_g_object_unref0 (search_entry);
-	_g_object_unref0 (grid);
-	_g_object_unref0 (categories);
-	_g_object_unref0 (tile);
-	_g_object_unref0 (entry_box);
-	_g_object_unref0 (grid_box);
-	_g_object_unref0 (category_box);
-	_g_object_unref0 (main_box);
-	_g_object_unref0 (search_label);
 	_g_object_unref0 (a);
+	_g_object_unref0 (search_label);
+	_g_object_unref0 (main_box);
+	_g_object_unref0 (category_box);
+	_g_object_unref0 (grid_box);
+	_g_object_unref0 (entry_box);
+	_g_object_unref0 (tile);
+	_g_object_unref0 (categories);
+	_g_object_unref0 (grid);
+	_g_object_unref0 (search_entry);
+	_g_object_unref0 (query);
+	_g_object_unref0 (entry);
+	_g_object_unref0 (accel_group);
+	_g_object_unref0 (builder);
+	_g_object_unref0 (server);
+	_g_option_context_free0 (option_context);
 }
 
 

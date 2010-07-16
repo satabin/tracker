@@ -226,11 +226,11 @@ typedef enum  {
 
 static gpointer tracker_turtle_reader_parent_class = NULL;
 
-GType tracker_turtle_reader_get_type (void);
-GType tracker_sparql_scanner_get_type (void);
-static GType tracker_turtle_reader_token_info_get_type (void) G_GNUC_UNUSED;
-GType tracker_sparql_token_type_get_type (void);
-GType tracker_source_location_get_type (void);
+GType tracker_turtle_reader_get_type (void) G_GNUC_CONST;
+GType tracker_sparql_scanner_get_type (void) G_GNUC_CONST;
+static GType tracker_turtle_reader_token_info_get_type (void) G_GNUC_CONST G_GNUC_UNUSED;
+GType tracker_sparql_token_type_get_type (void) G_GNUC_CONST;
+GType tracker_source_location_get_type (void) G_GNUC_CONST;
 TrackerSourceLocation* tracker_source_location_dup (const TrackerSourceLocation* self);
 void tracker_source_location_free (TrackerSourceLocation* self);
 static TrackerTurtleReaderTokenInfo* tracker_turtle_reader_token_info_dup (const TrackerTurtleReaderTokenInfo* self);
@@ -312,7 +312,7 @@ TrackerTurtleReader* tracker_turtle_reader_construct (GType object_type, const c
 	if (_inner_error_ != NULL) {
 		if (_inner_error_->domain == G_FILE_ERROR) {
 			g_propagate_error (error, _inner_error_);
-			g_object_unref (self);
+			_g_object_unref0 (self);
 			return NULL;
 		} else {
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -349,8 +349,8 @@ static char* tracker_turtle_reader_generate_bnodeid (TrackerTurtleReader* self, 
 		g_checksum_update (checksum, (guchar*) user_bnodeid, (gsize) (-1));
 		sha1 = g_strdup (g_checksum_get_string (checksum));
 		result = g_strdup_printf ("urn:uuid:%.8s-%.4s-%.4s-%.4s-%.12s", sha1, g_utf8_offset_to_pointer (sha1, (glong) 8), g_utf8_offset_to_pointer (sha1, (glong) 12), g_utf8_offset_to_pointer (sha1, (glong) 16), g_utf8_offset_to_pointer (sha1, (glong) 20));
-		_g_checksum_free0 (checksum);
 		_g_free0 (sha1);
+		_g_checksum_free0 (checksum);
 		return result;
 	}
 }
@@ -645,19 +645,19 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 					if (_inner_error_ != NULL) {
 						if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 							g_propagate_error (error, _inner_error_);
-							_g_free0 (ns);
 							_g_free0 (uri);
+							_g_free0 (ns);
 							return FALSE;
 						} else {
-							_g_free0 (ns);
 							_g_free0 (uri);
+							_g_free0 (ns);
 							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 							g_clear_error (&_inner_error_);
 							return FALSE;
 						}
 					}
-					_g_free0 (ns);
 					_g_free0 (uri);
+					_g_free0 (ns);
 					continue;
 				} else {
 					gboolean _tmp3_;
@@ -1263,12 +1263,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 										if (_inner_error_ != NULL) {
 											if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 												g_propagate_error (error, _inner_error_);
-												_g_string_free0 (sb);
 												_g_free0 (s);
+												_g_string_free0 (sb);
 												return FALSE;
 											} else {
-												_g_string_free0 (sb);
 												_g_free0 (s);
+												_g_string_free0 (sb);
 												g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 												g_clear_error (&_inner_error_);
 												return FALSE;
@@ -1280,12 +1280,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 											if (_inner_error_ != NULL) {
 												if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 													g_propagate_error (error, _inner_error_);
-													_g_string_free0 (sb);
 													_g_free0 (s);
+													_g_string_free0 (sb);
 													return FALSE;
 												} else {
-													_g_string_free0 (sb);
 													_g_free0 (s);
+													_g_string_free0 (sb);
 													g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 													g_clear_error (&_inner_error_);
 													return FALSE;
@@ -1296,12 +1296,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 												if (_inner_error_ != NULL) {
 													if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 														g_propagate_error (error, _inner_error_);
-														_g_string_free0 (sb);
 														_g_free0 (s);
+														_g_string_free0 (sb);
 														return FALSE;
 													} else {
-														_g_string_free0 (sb);
 														_g_free0 (s);
+														_g_string_free0 (sb);
 														g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 														g_clear_error (&_inner_error_);
 														return FALSE;
@@ -1311,12 +1311,12 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 												if (_inner_error_ != NULL) {
 													if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 														g_propagate_error (error, _inner_error_);
-														_g_string_free0 (sb);
 														_g_free0 (s);
+														_g_string_free0 (sb);
 														return FALSE;
 													} else {
-														_g_string_free0 (sb);
 														_g_free0 (s);
+														_g_string_free0 (sb);
 														g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 														g_clear_error (&_inner_error_);
 														return FALSE;
@@ -1325,8 +1325,8 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 											}
 										}
 										result = TRUE;
-										_g_string_free0 (sb);
 										_g_free0 (s);
+										_g_string_free0 (sb);
 										return result;
 									} else {
 										gboolean _tmp62_ = FALSE;

@@ -420,9 +420,11 @@ msoffice_convert_and_normalize_chunk (guint8    *buffer,
 	g_return_if_fail (p_content != NULL);
 
 	/* chunks can have different encoding
-	 *  TODO: Using g_iconv, this extra heap allocation could be
-	 *   avoided, re-using over and over again the same output buffer
-	 *   for the UTF-8 encoded string */
+	 *
+	 * TODO: Using g_iconv, this extra heap allocation could be
+	 * avoided, re-using over and over again the same output buffer
+	 * for the UTF-8 encoded string
+	 */
 	converted_text = g_convert (buffer,
 	                            chunk_size,
 	                            "UTF-8",
@@ -913,6 +915,14 @@ extract_msword_content (GsfInfile *infile,
 	fcClx = read_32bit (tmp_buffer);
 	gsf_input_read (document_stream, 4, tmp_buffer);
 	lcbClx = read_32bit (tmp_buffer);
+
+	/* If we got an invalid or empty length of piece table, just return
+	 * as we cannot iterate over pieces */
+	if (lcbClx <= 0) {
+		g_object_unref (document_stream);
+		g_object_unref (table_stream);
+		return NULL;
+	}
 
 	/* copy the structure holding the piece table into the clx array. */
 	clx = g_malloc (lcbClx);
@@ -2183,6 +2193,14 @@ xml_start_element_handler_content_types (GMarkupParseContext  *context,
 		} else if (g_ascii_strcasecmp (attribute_names[i], "ContentType") == 0) {
 			content_type = attribute_values[i];
 		}
+	}
+
+	/* Both part_name and content_type MUST be NON-NULL */
+	if (!part_name || !content_type) {
+		g_message ("Invalid file (part_name:%s, content_type:%s)",
+		           part_name ? part_name : "none",
+		           content_type ? content_type : "none");
+		return;
 	}
 
 	if ((g_ascii_strcasecmp (content_type, "application/vnd.openxmlformats-package.core-properties+xml") == 0) ||

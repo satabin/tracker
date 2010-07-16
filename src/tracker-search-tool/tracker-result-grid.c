@@ -72,9 +72,9 @@ struct _TrackerResultGridPrivate {
 
 static gpointer tracker_result_grid_parent_class = NULL;
 
-GType result_columns_get_type (void);
-GType tracker_result_grid_get_type (void);
-GType tracker_query_get_type (void);
+GType result_columns_get_type (void) G_GNUC_CONST;
+GType tracker_result_grid_get_type (void) G_GNUC_CONST;
+GType tracker_query_get_type (void) G_GNUC_CONST;
 #define TRACKER_RESULT_GRID_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_TRACKER_RESULT_GRID, TrackerResultGridPrivate))
 enum  {
 	TRACKER_RESULT_GRID_DUMMY_PROPERTY,
@@ -198,17 +198,17 @@ const char* tracker_result_grid_GetSelectedUri (TrackerResultGrid* self) {
 }
 
 
-#line 1150 "glib-2.0.vapi"
+#line 1152 "glib-2.0.vapi"
 static gboolean string_contains (const char* self, const char* needle) {
 #line 204 "tracker-result-grid.c"
 	gboolean result = FALSE;
-#line 1150 "glib-2.0.vapi"
+#line 1152 "glib-2.0.vapi"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 1150 "glib-2.0.vapi"
+#line 1152 "glib-2.0.vapi"
 	g_return_val_if_fail (needle != NULL, FALSE);
 #line 210 "tracker-result-grid.c"
 	result = strstr (self, needle) != NULL;
-#line 1151 "glib-2.0.vapi"
+#line 1153 "glib-2.0.vapi"
 	return result;
 #line 214 "tracker-result-grid.c"
 }
@@ -367,21 +367,21 @@ void tracker_result_grid_RefreshQuery (TrackerResultGrid* self) {
 					}
 					__finally3:
 					if (_inner_error_ != NULL) {
-						_g_object_unref0 (file);
-						_g_free0 (query);
 						qresults = (_vala_array_free (qresults, qresults_length1 * qresults_length2, (GDestroyNotify) g_free), NULL);
-						_g_free0 (uri);
-						_g_free0 (id);
+						_g_free0 (query);
+						_g_object_unref0 (file);
 						_g_free0 (mime);
+						_g_free0 (id);
+						_g_free0 (uri);
 						results = (_vala_array_free (results, results_length1 * results_length2, (GDestroyNotify) g_free), NULL);
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 						g_clear_error (&_inner_error_);
 						return;
 					}
 				}
-				_g_object_unref0 (file);
-				_g_free0 (query);
 				qresults = (_vala_array_free (qresults, qresults_length1 * qresults_length2, (GDestroyNotify) g_free), NULL);
+				_g_free0 (query);
+				_g_object_unref0 (file);
 			} else {
 #line 173 "tracker-result-grid.gs"
 				if (g_str_has_prefix (uri, "email://")) {
@@ -404,13 +404,13 @@ void tracker_result_grid_RefreshQuery (TrackerResultGrid* self) {
 					gtk_list_store_set (self->store, &iter, RESULT_COLUMNS_Id, id, RESULT_COLUMNS_Uri, uri, RESULT_COLUMNS_Mime, mime, RESULT_COLUMNS_Icon, _tmp14_ = tracker_utils_GetThemePixbufByName ("evolution-mail", 48, gtk_widget_get_screen ((GtkWidget*) self)), RESULT_COLUMNS_DisplayName, qresults[0], RESULT_COLUMNS_IsDirectory, FALSE, -1, -1);
 #line 406 "tracker-result-grid.c"
 					_g_object_unref0 (_tmp14_);
-					_g_free0 (query);
 					qresults = (_vala_array_free (qresults, qresults_length1 * qresults_length2, (GDestroyNotify) g_free), NULL);
+					_g_free0 (query);
 				}
 			}
-			_g_free0 (uri);
-			_g_free0 (id);
 			_g_free0 (mime);
+			_g_free0 (id);
+			_g_free0 (uri);
 		}
 #line 184 "tracker-result-grid.gs"
 		if (has_results) {
@@ -483,8 +483,8 @@ void tracker_result_grid_ActivateUri (TrackerResultGrid* self, GtkTreePath* path
 		tracker_utils_OpenUri (uri, is_dir);
 #line 485 "tracker-result-grid.c"
 	}
-	_g_free0 (query);
 	results = (_vala_array_free (results, results_length1 * results_length2, (GDestroyNotify) g_free), NULL);
+	_g_free0 (query);
 }
 
 

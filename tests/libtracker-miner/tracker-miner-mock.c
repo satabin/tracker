@@ -64,7 +64,7 @@ struct _TrackerMinerMockPrivate {
 
 static gpointer tracker_miner_mock_parent_class = NULL;
 
-GType tracker_miner_mock_get_type (void);
+GType tracker_miner_mock_get_type (void) G_GNUC_CONST;
 #define TRACKER_MINER_MOCK_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_TRACKER_MINER_MOCK, TrackerMinerMockPrivate))
 enum  {
 	TRACKER_MINER_MOCK_DUMMY_PROPERTY,

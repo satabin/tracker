@@ -1,4 +1,4 @@
-tracker (0.8.15-1) UNRELEASED; urgency=low
+tracker (0.8.15-1) unstable; urgency=low
 
   * New upstream release.
     - Show email search results in tracker-search-tool. (Closes: #584895)
@@ -12,7 +12,7 @@ tracker (0.8.15-1) UNRELEASED; urgency=low
     - Bump Standards-Version to 3.9.0.
     - Use Breaks instead of Conflicts as recommended by the new policy.
 
- -- Michael Biebl <biebl@debian.org>  Mon, 28 Jun 2010 00:27:45 +0200
+ -- Michael Biebl <biebl@debian.org>  Fri, 16 Jul 2010 13:57:26 +0200
 
 tracker (0.8.12-1) unstable; urgency=low
 

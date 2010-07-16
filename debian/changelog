@@ -1,4 +1,4 @@
-tracker (0.8.14-1) UNRELEASED; urgency=low
+tracker (0.8.15-1) UNRELEASED; urgency=low
 
   * New upstream release.
     - Show email search results in tracker-search-tool. (Closes: #584895)

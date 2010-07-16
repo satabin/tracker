@@ -1,3 +1,132 @@
+2010-07-16  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.8.15
+
+	Updated NEWS
+
+2010-07-16  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#624071, t-s-t: Query results is always a 2 dimensional array.
+	  * So when query returns no results, 'results' will be not NULL, but
+	    results[0] will be NULL. We need to check for this latter case as
+	    well before using the results array or we end up reading garbage.
+
+	libtracker-fts: Fix NEAR/XX operator with more than 2 digits
+
+	libtracker-fts: useful debugging log included, disabled by default
+
+	Fixes NB#176090, libtracker-miner: Don't use same parent GFile for both mtime and iri caches
+	 * If the same GFile parent is used to check if cache corresponds to that given
+	   parent GFile, it may happen that while ensuring mtime cache, parent is updated
+	   but IRI cache is untouched, so that when a new file is inserted the parent of
+	   the IRI cache is no longer the one in the parent GFile. Instead of cleaning
+	   both caches when the common parent changes, it seems better to have a specific
+	   parent for each one.
+
+2010-07-16  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: NB#178599, extra checks for finding the problem
+
+2010-07-16  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes NB#178825: New --feeds option in tracker-search to look for feeds
+
+	libtracker-fts: Avoid possible NULL dereference
+
+	tracker-extract, msoffice-xml: Avoid possible NULL dereference
+
+	libtracker-miner tests: Avoid unused variable warning
+
+	Fixes NB#178808: Default verbosity should be errors-only in tracker-store
+
+	tracker-miner-fs: Use 60s as default DBus timeout for requests to extractor
+
+	tracker-extract: avoid warnings when compiling C++ code with C-only warning flags
+
+	Fixes GB#623836: Avoid crashing if table of pieces is empty in the msword file
+
+	libtracker-miner, storage: if mount without volume, don't rely on is_blank
+
+	libtracker-miner, storage: improve logging
+
+2010-07-16  Adrien Bustany  <abustany@gnome.org>
+
+	libtracker-client: Fix object_date proto in vapi
+
+2010-07-16  Aleksander Morgado  <aleksander@lanedo.com>
+
+	bump glib requirement to 2.24
+
+	libtracker-fts: initialize all buffers before using them
+
+	libtracker-db, journal: Remove unreachable code
+
+	libtracker-db, journal: remove trailing whitespaces
+
+	libtracker-common tests: Avoid unused variable warnings
+
+	libtracker-common tests: proper file indentation
+
+	libtracker-miner tests: Avoid unused variable warnings
+
+	libtracker-miner tests: proper file indentation
+
+	libtracker-miner tests: proper file indentation
+
+	libtracker-miner tests: Avoid unused variable warning
+
+	tracker-writeback: Avoid unused variable warning
+
+	tracker-store: Avoid unused variable warning
+
+2010-07-16  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-store: Silence compiler for no-problem warnings
+
+2010-07-16  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: avoid dead code in mount_guess_content_type()
+
+2010-07-16  Adrien Bustany  <abustany@gnome.org>
+
+	libtracker-client: mark graph as nullable in vapi
+	This commit fixes the prototypes of the SparqlBuilder functions
+	insert_open and delete_open, marking the graph parameter as nullable.
+
+2010-07-16  Jürg Billeter  <j@bitron.ch>
+
+	build: Drop unused PKGLIBDIR defines
+
+	libtracker-common: Always set last_time in D-Bus client data
+
+2010-07-15  Petr Kovar  <pknbe@volny.cz>
+
+	Update Czech translation by Marek Cernocky
+
+2010-07-12  Nicolau Gonçalves  <excentriko@gmail.com>
+
+	Updated Portuguese translation
+
+2010-07-11  Petr Kovar  <pknbe@volny.cz>
+
+	Update Czech translation by Marek Cernocky
+
+2010-07-05  Mario Blättermann  <mariobl@gnome.org>
+
+	[i18n] Updated German translation
+
+2010-07-04  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2010-07-03  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
+
+2010-07-02  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
 2010-07-01  Martyn Russell  <martyn@lanedo.com>
 
 	Released 0.8.14

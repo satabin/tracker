@@ -357,7 +357,6 @@ mount_guess_content_type (GFile    *mount_root,
 	gchar *content_type = NULL;
 	gchar *mount_path;
 	gchar **guess_type;
-	gint i;
 
 	/* This function has 2 purposes:
 	 *
@@ -455,52 +454,54 @@ mount_guess_content_type (GFile    *mount_root,
 	 * the media.
 	 */
 	guess_type = g_content_type_guess_for_tree (mount_root);
-
-	for (i = 0; guess_type && guess_type[i]; i++) {
-		if (!g_strcmp0 (guess_type[i], "x-content/image-picturecd")) {
-			/* Images */
-			content_type = g_strdup (guess_type[i]);
-			break;
-		} else if (!g_strcmp0 (guess_type[i], "x-content/video-bluray") ||
-			   !g_strcmp0 (guess_type[i], "x-content/video-dvd") ||
-			   !g_strcmp0 (guess_type[i], "x-content/video-hddvd") ||
-			   !g_strcmp0 (guess_type[i], "x-content/video-svcd") ||
-			   !g_strcmp0 (guess_type[i], "x-content/video-vcd")) {
-			/* Videos */
-			*is_multimedia = TRUE;
-			content_type = g_strdup (guess_type[i]);
-			break;
-		} else if (!g_strcmp0 (guess_type[i], "x-content/audio-cdda") ||
-			   !g_strcmp0 (guess_type[i], "x-content/audio-dvd") ||
-			   !g_strcmp0 (guess_type[i], "x-content/audio-player")) {
-			/* Audios */
-			*is_multimedia = TRUE;
-			content_type = g_strdup (guess_type[i]);
-			break;
-		} else if (!g_strcmp0 (guess_type[i], "x-content/blank-bd") ||
-			   !g_strcmp0 (guess_type[i], "x-content/blank-cd") ||
-			   !g_strcmp0 (guess_type[i], "x-content/blank-dvd") ||
-			   !g_strcmp0 (guess_type[i], "x-content/blank-hddvd")) {
-			/* Blank */
-			*is_blank = TRUE;
-			content_type = g_strdup (guess_type[i]);
-			break;
-		} else if (!g_strcmp0 (guess_type[i], "x-content/software") ||
-			   !g_strcmp0 (guess_type[i], "x-content/unix-software") ||
-			   !g_strcmp0 (guess_type[i], "x-content/win32-software")) {
-			/* NOTE: This one is a guess, can we
-			 * have this content type on
-			 * none-optical mount points?
-			 */
-			content_type = g_strdup (guess_type[i]);
-			break;
-		} else if (!content_type) {
-			content_type = g_strdup (guess_type[i]);
-			break;
-		}
-	}
-
 	if (guess_type) {
+		gint i = 0;
+
+		while (!content_type && guess_type[i]) {
+			if (!g_strcmp0 (guess_type[i], "x-content/image-picturecd")) {
+				/* Images */
+				content_type = g_strdup (guess_type[i]);
+			} else if (!g_strcmp0 (guess_type[i], "x-content/video-bluray") ||
+			           !g_strcmp0 (guess_type[i], "x-content/video-dvd") ||
+			           !g_strcmp0 (guess_type[i], "x-content/video-hddvd") ||
+			           !g_strcmp0 (guess_type[i], "x-content/video-svcd") ||
+			           !g_strcmp0 (guess_type[i], "x-content/video-vcd")) {
+				/* Videos */
+				*is_multimedia = TRUE;
+				content_type = g_strdup (guess_type[i]);
+			} else if (!g_strcmp0 (guess_type[i], "x-content/audio-cdda") ||
+			           !g_strcmp0 (guess_type[i], "x-content/audio-dvd") ||
+			           !g_strcmp0 (guess_type[i], "x-content/audio-player")) {
+				/* Audios */
+				*is_multimedia = TRUE;
+				content_type = g_strdup (guess_type[i]);
+			} else if (!g_strcmp0 (guess_type[i], "x-content/blank-bd") ||
+			           !g_strcmp0 (guess_type[i], "x-content/blank-cd") ||
+			           !g_strcmp0 (guess_type[i], "x-content/blank-dvd") ||
+			           !g_strcmp0 (guess_type[i], "x-content/blank-hddvd")) {
+				/* Blank */
+				*is_blank = TRUE;
+				content_type = g_strdup (guess_type[i]);
+			} else if (!g_strcmp0 (guess_type[i], "x-content/software") ||
+			           !g_strcmp0 (guess_type[i], "x-content/unix-software") ||
+			           !g_strcmp0 (guess_type[i], "x-content/win32-software")) {
+				/* NOTE: This one is a guess, can we
+				 * have this content type on
+				 * none-optical mount points?
+				 */
+				content_type = g_strdup (guess_type[i]);
+			} else {
+				/* else, keep on with the next guess, if any */
+				i++;
+			}
+		}
+
+		/* If we didn't have an exact match on possible guessed content types,
+		 *  then use the first one returned (best guess always first) if any */
+		if (!content_type && guess_type[0]) {
+			content_type = g_strdup (guess_type[0]);
+		}
+
 		g_strfreev (guess_type);
 	}
 
@@ -575,8 +576,12 @@ mount_add (TrackerStorage *storage,
 				         "content type is '%s'",
 				         content_type);
 			} else {
-				g_debug ("  Being ignored because mount is music/video/blank, content type is '%s'",
-					 content_type);
+				g_debug ("  Being ignored because mount with volume is music/video/blank "
+				         "(content type:%s, optical:%s, multimedia:%s, blank:%s)",
+				         content_type,
+				         is_optical ? "yes" : "no",
+				         is_multimedia ? "yes" : "no",
+				         is_blank ? "yes" : "no");
 			}
 
 			g_free (content_type);
@@ -613,14 +618,19 @@ mount_add (TrackerStorage *storage,
 
 				content_type = mount_guess_content_type (root, volume, &is_optical, &is_multimedia, &is_blank);
 
-				if (!is_multimedia && !is_blank) {
+				/* Note: for GMounts without GVolume, is_blank should NOT be considered,
+				 * as it may give unwanted results... */
+				if (!is_multimedia) {
 					uuid = g_compute_checksum_for_string (G_CHECKSUM_MD5,
 									      mount_path,
 									      -1);
 					g_debug ("  No UUID, generated:'%s' (based on mount path)", uuid);
 				} else {
-					g_debug ("  Being ignored because mount is music/video/blank, content type is '%s'",
-						 content_type);
+					g_debug ("  Being ignored because mount is music/video "
+					         "(content type:%s, optical:%s, multimedia:%s)",
+					         content_type,
+					         is_optical ? "yes" : "no",
+					         is_multimedia ? "yes" : "no");
 				}
 
 				g_free (content_type);

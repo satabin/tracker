@@ -50,8 +50,8 @@ typedef enum  {
 } TrackerSparqlBuilderState;
 
 
-GType tracker_sparql_builder_get_type (void);
-GType tracker_sparql_builder_state_get_type (void);
+GType tracker_sparql_builder_get_type (void) G_GNUC_CONST;
+GType tracker_sparql_builder_state_get_type (void) G_GNUC_CONST;
 TrackerSparqlBuilder* tracker_sparql_builder_new_update (void);
 TrackerSparqlBuilder* tracker_sparql_builder_construct_update (GType object_type);
 TrackerSparqlBuilder* tracker_sparql_builder_new_embedded_insert (void);

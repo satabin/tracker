@@ -34,7 +34,7 @@ struct _TrackerMinerMockClass {
 };
 
 
-GType tracker_miner_mock_get_type (void);
+GType tracker_miner_mock_get_type (void) G_GNUC_CONST;
 TrackerMinerMock* tracker_miner_mock_new (const char* name);
 TrackerMinerMock* tracker_miner_mock_construct (GType object_type, const char* name);
 void tracker_miner_mock_set_paused (TrackerMinerMock* self, gboolean paused);

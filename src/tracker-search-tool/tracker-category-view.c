@@ -82,11 +82,11 @@ struct _TrackerCategoryViewPrivate {
 
 static gpointer tracker_category_view_parent_class = NULL;
 
-GType category_columns_get_type (void);
+GType category_columns_get_type (void) G_GNUC_CONST;
 #define icon_size 16
-GType tracker_category_view_get_type (void);
-GType categories_get_type (void);
-GType tracker_query_get_type (void);
+GType tracker_category_view_get_type (void) G_GNUC_CONST;
+GType categories_get_type (void) G_GNUC_CONST;
+GType tracker_query_get_type (void) G_GNUC_CONST;
 #define TRACKER_CATEGORY_VIEW_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_TRACKER_CATEGORY_VIEW, TrackerCategoryViewPrivate))
 enum  {
 	TRACKER_CATEGORY_VIEW_DUMMY_PROPERTY,

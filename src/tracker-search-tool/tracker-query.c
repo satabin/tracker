@@ -75,7 +75,7 @@ struct _TrackerQueryPrivate {
 static gpointer tracker_query_parent_class = NULL;
 
 Resources* resources_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
-GType resources_get_type (void);
+GType resources_get_type (void) G_GNUC_CONST;
 char** resources_SparqlQuery (Resources* self, const char* query, int* result_length1, int* result_length2, GError** error);
 void resources_SparqlUpdate (Resources* self, const char* query, GError** error);
 static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
@@ -87,7 +87,7 @@ static DBusHandlerResult _dbus_resources_introspect (Resources* self, DBusConnec
 static DBusHandlerResult _dbus_resources_property_get_all (Resources* self, DBusConnection* connection, DBusMessage* message);
 static DBusHandlerResult _dbus_resources_SparqlQuery (Resources* self, DBusConnection* connection, DBusMessage* message);
 static DBusHandlerResult _dbus_resources_SparqlUpdate (Resources* self, DBusConnection* connection, DBusMessage* message);
-GType resources_dbus_proxy_get_type (void);
+GType resources_dbus_proxy_get_type (void) G_GNUC_CONST;
 DBusHandlerResult resources_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data);
 enum  {
 	RESOURCES_DBUS_PROXY_DUMMY_PROPERTY
@@ -97,7 +97,7 @@ static void resources_dbus_proxy_SparqlUpdate (Resources* self, const char* quer
 static void resources_dbus_proxy_resources__interface_init (ResourcesIface* iface);
 static void resources_dbus_proxy_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
 static void resources_dbus_proxy_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
-GType tracker_query_get_type (void);
+GType tracker_query_get_type (void) G_GNUC_CONST;
 #define TRACKER_QUERY_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_TRACKER_QUERY, TrackerQueryPrivate))
 enum  {
 	TRACKER_QUERY_DUMMY_PROPERTY,
@@ -1021,15 +1021,15 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 			if (_inner_error_->domain == DBUS_GERROR) {
 				goto __catch1_dbus_gerror;
 			}
-			_g_free0 (cat);
 			_g_free0 (query);
+			_g_free0 (cat);
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 			g_clear_error (&_inner_error_);
 			return NULL;
 		}
 		result = (_tmp8_ = _tmp6_, *result_length1 = _tmp6__length1, *result_length2 = _tmp6__length2, _tmp8_);
-		_g_free0 (cat);
 		_g_free0 (query);
+		_g_free0 (cat);
 #line 87 "tracker-query.gs"
 		return result;
 #line 1035 "tracker-query.c"
@@ -1049,20 +1049,20 @@ char** tracker_query_Search (TrackerQuery* self, int* result_length1, int* resul
 	}
 	__finally1:
 	if (_inner_error_ != NULL) {
-		_g_free0 (cat);
 		_g_free0 (query);
+		_g_free0 (cat);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return NULL;
 	}
 	result = (_tmp9_ = NULL, *result_length1 = 0, *result_length2 = 0, _tmp9_);
-	_g_free0 (cat);
 	_g_free0 (query);
+	_g_free0 (cat);
 #line 91 "tracker-query.gs"
 	return result;
 #line 1063 "tracker-query.c"
-	_g_free0 (cat);
 	_g_free0 (query);
+	_g_free0 (cat);
 }
 
 
@@ -1224,7 +1224,7 @@ static glong string_get_length (const char* self) {
 	glong result;
 	g_return_val_if_fail (self != NULL, 0L);
 	result = g_utf8_strlen (self, -1);
-#line 1164 "glib-2.0.vapi"
+#line 1166 "glib-2.0.vapi"
 	return result;
 #line 1229 "tracker-query.c"
 }

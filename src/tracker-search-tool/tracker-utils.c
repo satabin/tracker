@@ -71,14 +71,14 @@ struct _ParamSpecTrackerUtils {
 
 static gpointer tracker_utils_parent_class = NULL;
 
-GType categories_get_type (void);
+GType categories_get_type (void) G_GNUC_CONST;
 gpointer tracker_utils_ref (gpointer instance);
 void tracker_utils_unref (gpointer instance);
 GParamSpec* param_spec_tracker_utils (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags);
 void value_set_tracker_utils (GValue* value, gpointer v_object);
 void value_take_tracker_utils (GValue* value, gpointer v_object);
 gpointer value_get_tracker_utils (const GValue* value);
-GType tracker_utils_get_type (void);
+GType tracker_utils_get_type (void) G_GNUC_CONST;
 enum  {
 	TRACKER_UTILS_DUMMY_PROPERTY
 };
@@ -111,7 +111,7 @@ static glong string_get_length (const char* self) {
 	glong result;
 	g_return_val_if_fail (self != NULL, 0L);
 	result = g_utf8_strlen (self, -1);
-#line 1164 "glib-2.0.vapi"
+#line 1166 "glib-2.0.vapi"
 	return result;
 #line 117 "tracker-utils.c"
 }
@@ -225,9 +225,9 @@ gboolean tracker_utils_LaunchApp (const char* uri) {
 	if (app_info == NULL) {
 #line 227 "tracker-utils.c"
 		result = tracker_utils_OpenUri (uri, FALSE);
-		_g_object_unref0 (app_info);
-		_g_object_unref0 (context);
 		_g_object_unref0 (file);
+		_g_object_unref0 (context);
+		_g_object_unref0 (app_info);
 #line 94 "tracker-utils.gs"
 		return result;
 #line 234 "tracker-utils.c"
@@ -257,11 +257,11 @@ gboolean tracker_utils_LaunchApp (const char* uri) {
 			gtk_dialog_run ((GtkDialog*) msg);
 #line 259 "tracker-utils.c"
 			result = FALSE;
-			_g_error_free0 (e);
 			_g_object_unref0 (msg);
-			_g_object_unref0 (app_info);
-			_g_object_unref0 (context);
+			_g_error_free0 (e);
 			_g_object_unref0 (file);
+			_g_object_unref0 (context);
+			_g_object_unref0 (app_info);
 #line 103 "tracker-utils.gs"
 			return result;
 #line 268 "tracker-utils.c"
@@ -269,17 +269,17 @@ gboolean tracker_utils_LaunchApp (const char* uri) {
 	}
 	__finally9:
 	if (_inner_error_ != NULL) {
-		_g_object_unref0 (app_info);
-		_g_object_unref0 (context);
 		_g_object_unref0 (file);
+		_g_object_unref0 (context);
+		_g_object_unref0 (app_info);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return FALSE;
 	}
 	result = TRUE;
-	_g_object_unref0 (app_info);
-	_g_object_unref0 (context);
 	_g_object_unref0 (file);
+	_g_object_unref0 (context);
+	_g_object_unref0 (app_info);
 #line 105 "tracker-utils.gs"
 	return result;
 #line 286 "tracker-utils.c"
@@ -328,10 +328,10 @@ gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir) {
 			gtk_dialog_run ((GtkDialog*) msg);
 #line 330 "tracker-utils.c"
 			result = FALSE;
-			_g_error_free0 (e);
 			_g_object_unref0 (msg);
-			_g_object_unref0 (app_info);
+			_g_error_free0 (e);
 			_g_object_unref0 (file);
+			_g_object_unref0 (app_info);
 #line 119 "tracker-utils.gs"
 			return result;
 #line 338 "tracker-utils.c"
@@ -339,8 +339,8 @@ gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir) {
 	}
 	__finally10:
 	if (_inner_error_ != NULL) {
-		_g_object_unref0 (app_info);
 		_g_object_unref0 (file);
+		_g_object_unref0 (app_info);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return FALSE;
@@ -367,10 +367,10 @@ gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir) {
 			gtk_dialog_run ((GtkDialog*) msg);
 #line 369 "tracker-utils.c"
 			result = FALSE;
-			_g_error_free0 (e);
 			_g_object_unref0 (msg);
-			_g_object_unref0 (app_info);
+			_g_error_free0 (e);
 			_g_object_unref0 (file);
+			_g_object_unref0 (app_info);
 #line 127 "tracker-utils.gs"
 			return result;
 #line 377 "tracker-utils.c"
@@ -378,15 +378,15 @@ gboolean tracker_utils_OpenUri (const char* uri, gboolean is_dir) {
 	}
 	__finally11:
 	if (_inner_error_ != NULL) {
-		_g_object_unref0 (app_info);
 		_g_object_unref0 (file);
+		_g_object_unref0 (app_info);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return FALSE;
 	}
 	result = TRUE;
-	_g_object_unref0 (app_info);
 	_g_object_unref0 (file);
+	_g_object_unref0 (app_info);
 #line 129 "tracker-utils.gs"
 	return result;
 #line 393 "tracker-utils.c"
@@ -525,8 +525,8 @@ GdkPixbuf* tracker_utils_GetThemeIconPixbuf (GIcon* icon, gint size, GdkScreen* 
 			goto __catch13_g_error;
 		}
 		result = _tmp1_;
-		_gtk_icon_info_free0 (icon_info);
 		_g_object_unref0 (theme);
+		_gtk_icon_info_free0 (icon_info);
 #line 169 "tracker-utils.gs"
 		return result;
 #line 533 "tracker-utils.c"
@@ -540,8 +540,8 @@ GdkPixbuf* tracker_utils_GetThemeIconPixbuf (GIcon* icon, gint size, GdkScreen* 
 		{
 			result = NULL;
 			_g_error_free0 (e);
-			_gtk_icon_info_free0 (icon_info);
 			_g_object_unref0 (theme);
+			_gtk_icon_info_free0 (icon_info);
 #line 171 "tracker-utils.gs"
 			return result;
 #line 548 "tracker-utils.c"
@@ -549,14 +549,14 @@ GdkPixbuf* tracker_utils_GetThemeIconPixbuf (GIcon* icon, gint size, GdkScreen* 
 	}
 	__finally13:
 	{
-		_gtk_icon_info_free0 (icon_info);
 		_g_object_unref0 (theme);
+		_gtk_icon_info_free0 (icon_info);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return NULL;
 	}
-	_gtk_icon_info_free0 (icon_info);
 	_g_object_unref0 (theme);
+	_gtk_icon_info_free0 (icon_info);
 }
 
 

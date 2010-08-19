@@ -1,3 +1,143 @@
+2010-08-19  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.8.16
+
+	Updated NEWS
+
+2010-08-19  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#627281: Crash in msoffice extractor
+	 * Length of PRC structure was wrongly read when greater than 256 bytes.
+
+2010-08-19  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Improve lexer performance for strings with ASCII characters
+
+2010-08-19  Martyn Russell  <martyn@lanedo.com>
+
+	Revert "plugins/evolution: Make it possible to compile the evolution plugin, not working yet"
+	This reverts commit b997f5c4780b03dbf7c30d0629e856e36e87781c.
+
+2010-08-19  Philip Van Hoof  <philip@codeminded.be>
+
+	plugins/evolution: Make it possible to compile the evolution plugin, not working yet
+
+	tracker-writeback: NB#185070: Loop over all subjects in the Writeback signal's array
+
+	tracker-writeback: Don't just process the first row of results for file writebacks
+
+	tracker-writeback: XMP: NB#182948: Added nao:hasTag for keywords writeback
+
+	plugins/evolution: GB#623207: Fix compilation problems
+
+2010-08-19  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes NB#181421: Duplicates when monitor events processed before directory is created in store
+
+	libtracker-miner: If parent being processed, wait.
+
+	Revert "libtracker-miner: Improve logs"
+	This reverts commit 1db1243f8e6daec9bd364336da68691f7e03d7c2.
+
+	This log doesn't seem very useful, so will keep it only in the miner-paranoid-logs branch
+
+	libtracker-miner: Print uri always instead of path, as path may not be UTF-8
+
+	libtracker-miner: Improve logs
+
+2010-08-19  Jürg Billeter  <j@bitron.ch>
+
+	tracker-extract-gstreamer: Fix pipeline error handling
+	Fixes NB#181112.
+
+2010-08-19  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: NB#183307, Crash in quit_timeout_cb when signal_handler calls it
+
+	tracker-extract: NB#172390, Tracker doesn't return any content from m3u playlists
+
+2010-08-19  Aleksander Morgado  <aleksander@lanedo.com>
+
+	VPATH build issues fixed
+
+	Possibly fixes NB#182788: segfault during opendir()
+	  * The only application-level problem that may cause this issue seems
+	    to be a wrong GFile being used when getting the path for opendir().
+	    Thus, adding an extra reference during the g_file_enumerate_children_async()
+	    for the specific GFile being used.
+
+2010-08-19  Maitrey Mishra  <ext-maitrey.mishra@nokia.com>
+
+	First version of fts functional test cases
+
+2010-08-19  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Fix generated SQL when not retrieving actual data
+
+2010-08-19  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes NB#180679: Make sure DBusGProxy is destroyed when destroying miner
+	  * It's quite a race condition, but could happen that the miner object
+	    gets fully disposed, but the DBusGProxy was still alive as there was
+	    an extra reference of it. In this case, if receiving a new message
+	    in the filter for NameOwnerChanged, we were calling g_object_get_qdata()
+	    on an already destroyed GObject.
+
+2010-08-19  Jürg Billeter  <j@bitron.ch>
+
+	tracker-extract: Fix crash in albumart when pixbuf cannot be created
+
+	Update .gitignore
+
+2010-08-19  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Probably fixes GB#616199: Avoid second nie:title in msoffice/xml and oasis documents
+
+	coverage: excluded several files in libtracker-miner which are difficult to test with unit-tests
+
+	libtracker-miner: Fix memleak in item_move()
+
+	libtracker-miner, storage: Fix memleak, GUnixMountEntry was not being disposed
+
+	Fixes GB#624346, libtracker-miner: Proper tracker:mountPoint set for volumes
+	  * Before creating a tracker:Volume, we will first check that the specified
+	    tracker:mountPoint exists in the store. If it does not exist, we will
+	    create a dummy nfo:Folder for that mount point. But, in order to get it
+	    populated with the proper information when crawling it, we need to hack
+	    the mtime and iri caches, so that if cache is empty after querying the
+	    store with nfo:belongsToContainer; we do a second query using a FILTER
+	    with fn:start-with(uri). The dummy nfo:Folder we're inserting won't have
+	    initially the proper nfo:belongsToContainer property, that's why we need
+	    this hack.
+
+	libtracker-miner: Fix alignment and some missing semicolons
+
+	tracker-miner-fs: Improve logs
+
+2010-08-04  Petr Kovar  <pknbe@volny.cz>
+
+	Update Czech translation by Marek Cernocky
+
+2010-08-01  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	Updated Hungarian translation
+
+2010-07-18  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2010-07-17  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2010-07-17  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
+
+2010-07-16  Mario Blättermann  <mariobl@gnome.org>
+
+	[i18n] Updated German translation
+
 2010-07-16  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.8.15

@@ -28,6 +28,9 @@
 /* Define if we have eds 2.29.1 or newer */
 #undef HAVE_EDS_2_29_1
 
+/* Define if we have eds 2.31.2 or newer */
+#undef HAVE_EDS_2_31_2
+
 /* Enca language detection aid */
 #undef HAVE_ENCA
 

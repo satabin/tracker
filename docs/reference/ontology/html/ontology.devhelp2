@@ -394,12 +394,12 @@
     <keyword type="" name="nfo:fileUrl" link="nfo-properties.html#nfo-fileUrl"/>
     <keyword type="" name="nfo:colorDepth" link="nfo-properties.html#nfo-colorDepth"/>
     <keyword type="" name="nfo:height" link="nfo-properties.html#nfo-height"/>
-    <keyword type="" name="nfo:averageVideoBitrate" link="nfo-properties.html#nfo-averageVideoBitrate"/>
-    <keyword type="" name="nfo:averageBitrate" link="nfo-properties.html#nfo-averageBitrate"/>
     <keyword type="" name="nfo:permissions" link="nfo-properties.html#nfo-permissions"/>
+    <keyword type="" name="nfo:averageBitrate" link="nfo-properties.html#nfo-averageBitrate"/>
+    <keyword type="" name="nfo:averageVideoBitrate" link="nfo-properties.html#nfo-averageVideoBitrate"/>
     <keyword type="" name="nfo:fileSize" link="nfo-properties.html#nfo-fileSize"/>
-    <keyword type="" name="nfo:fileOwner" link="nfo-properties.html#nfo-fileOwner"/>
     <keyword type="" name="nfo:originalLocation" link="nfo-properties.html#nfo-originalLocation"/>
+    <keyword type="" name="nfo:fileOwner" link="nfo-properties.html#nfo-fileOwner"/>
     <keyword type="" name="nfo:tableOfContents" link="nfo-properties.html#nfo-tableOfContents"/>
     <keyword type="" name="nfo:verticalResolution" link="nfo-properties.html#nfo-verticalResolution"/>
     <keyword type="" name="nfo:averageAudioBitrate" link="nfo-properties.html#nfo-averageAudioBitrate"/>
@@ -410,7 +410,7 @@
     <keyword type="" name="nfo:uncompressedSize" link="nfo-properties.html#nfo-uncompressedSize"/>
     <keyword type="" name="nfo:bitDepth" link="nfo-properties.html#nfo-bitDepth"/>
     <keyword type="" name="nfo:entryCounter" link="nfo-properties.html#nfo-entryCounter"/>
-    <keyword type="" name="nfo:uri" link="nfo-properties.html#nfo-uri"/>
+    <keyword type="" name="nfo:entryUrl" link="nfo-properties.html#nfo-entryUrl"/>
     <keyword type="" name="nfo:commentCharacterCount" link="nfo-properties.html#nfo-commentCharacterCount"/>
     <keyword type="" name="nfo:listPosition" link="nfo-properties.html#nfo-listPosition"/>
     <keyword type="" name="nfo:softwareCategoryIcon" link="nfo-properties.html#nfo-softwareCategoryIcon"/>
@@ -420,6 +420,7 @@
     <keyword type="" name="nfo:peakGain" link="nfo-properties.html#nfo-peakGain"/>
     <keyword type="" name="nfo:sampleRate" link="nfo-properties.html#nfo-sampleRate"/>
     <keyword type="" name="nfo:listDuration" link="nfo-properties.html#nfo-listDuration"/>
+    <keyword type="" name="nfo:uri" link="nfo-properties.html#nfo-uri"/>
     <keyword type="" name="nfo:fileLastModified" link="nfo-properties.html#nfo-fileLastModified"/>
     <keyword type="" name="nfo:characterCount" link="nfo-properties.html#nfo-characterCount"/>
     <keyword type="" name="nfo:definesFunction" link="nfo-properties.html#nfo-definesFunction"/>

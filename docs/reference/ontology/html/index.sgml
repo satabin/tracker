@@ -317,12 +317,12 @@
 <ANCHOR id="nfo-fileUrl" href="ontology/nfo-properties.html#nfo-fileUrl">
 <ANCHOR id="nfo-colorDepth" href="ontology/nfo-properties.html#nfo-colorDepth">
 <ANCHOR id="nfo-height" href="ontology/nfo-properties.html#nfo-height">
-<ANCHOR id="nfo-averageVideoBitrate" href="ontology/nfo-properties.html#nfo-averageVideoBitrate">
-<ANCHOR id="nfo-averageBitrate" href="ontology/nfo-properties.html#nfo-averageBitrate">
 <ANCHOR id="nfo-permissions" href="ontology/nfo-properties.html#nfo-permissions">
+<ANCHOR id="nfo-averageBitrate" href="ontology/nfo-properties.html#nfo-averageBitrate">
+<ANCHOR id="nfo-averageVideoBitrate" href="ontology/nfo-properties.html#nfo-averageVideoBitrate">
 <ANCHOR id="nfo-fileSize" href="ontology/nfo-properties.html#nfo-fileSize">
-<ANCHOR id="nfo-fileOwner" href="ontology/nfo-properties.html#nfo-fileOwner">
 <ANCHOR id="nfo-originalLocation" href="ontology/nfo-properties.html#nfo-originalLocation">
+<ANCHOR id="nfo-fileOwner" href="ontology/nfo-properties.html#nfo-fileOwner">
 <ANCHOR id="nfo-tableOfContents" href="ontology/nfo-properties.html#nfo-tableOfContents">
 <ANCHOR id="nfo-verticalResolution" href="ontology/nfo-properties.html#nfo-verticalResolution">
 <ANCHOR id="nfo-averageAudioBitrate" href="ontology/nfo-properties.html#nfo-averageAudioBitrate">
@@ -333,7 +333,7 @@
 <ANCHOR id="nfo-uncompressedSize" href="ontology/nfo-properties.html#nfo-uncompressedSize">
 <ANCHOR id="nfo-bitDepth" href="ontology/nfo-properties.html#nfo-bitDepth">
 <ANCHOR id="nfo-entryCounter" href="ontology/nfo-properties.html#nfo-entryCounter">
-<ANCHOR id="nfo-uri" href="ontology/nfo-properties.html#nfo-uri">
+<ANCHOR id="nfo-entryUrl" href="ontology/nfo-properties.html#nfo-entryUrl">
 <ANCHOR id="nfo-commentCharacterCount" href="ontology/nfo-properties.html#nfo-commentCharacterCount">
 <ANCHOR id="nfo-listPosition" href="ontology/nfo-properties.html#nfo-listPosition">
 <ANCHOR id="nfo-softwareCategoryIcon" href="ontology/nfo-properties.html#nfo-softwareCategoryIcon">
@@ -343,6 +343,7 @@
 <ANCHOR id="nfo-peakGain" href="ontology/nfo-properties.html#nfo-peakGain">
 <ANCHOR id="nfo-sampleRate" href="ontology/nfo-properties.html#nfo-sampleRate">
 <ANCHOR id="nfo-listDuration" href="ontology/nfo-properties.html#nfo-listDuration">
+<ANCHOR id="nfo-uri" href="ontology/nfo-properties.html#nfo-uri">
 <ANCHOR id="nfo-fileLastModified" href="ontology/nfo-properties.html#nfo-fileLastModified">
 <ANCHOR id="nfo-characterCount" href="ontology/nfo-properties.html#nfo-characterCount">
 <ANCHOR id="nfo-definesFunction" href="ontology/nfo-properties.html#nfo-definesFunction">

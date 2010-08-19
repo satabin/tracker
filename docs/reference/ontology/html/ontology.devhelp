@@ -394,12 +394,12 @@
     <function name="nfo:fileUrl" link="nfo-properties.html#nfo-fileUrl"/>
     <function name="nfo:colorDepth" link="nfo-properties.html#nfo-colorDepth"/>
     <function name="nfo:height" link="nfo-properties.html#nfo-height"/>
-    <function name="nfo:averageVideoBitrate" link="nfo-properties.html#nfo-averageVideoBitrate"/>
-    <function name="nfo:averageBitrate" link="nfo-properties.html#nfo-averageBitrate"/>
     <function name="nfo:permissions" link="nfo-properties.html#nfo-permissions"/>
+    <function name="nfo:averageBitrate" link="nfo-properties.html#nfo-averageBitrate"/>
+    <function name="nfo:averageVideoBitrate" link="nfo-properties.html#nfo-averageVideoBitrate"/>
     <function name="nfo:fileSize" link="nfo-properties.html#nfo-fileSize"/>
-    <function name="nfo:fileOwner" link="nfo-properties.html#nfo-fileOwner"/>
     <function name="nfo:originalLocation" link="nfo-properties.html#nfo-originalLocation"/>
+    <function name="nfo:fileOwner" link="nfo-properties.html#nfo-fileOwner"/>
     <function name="nfo:tableOfContents" link="nfo-properties.html#nfo-tableOfContents"/>
     <function name="nfo:verticalResolution" link="nfo-properties.html#nfo-verticalResolution"/>
     <function name="nfo:averageAudioBitrate" link="nfo-properties.html#nfo-averageAudioBitrate"/>
@@ -410,7 +410,7 @@
     <function name="nfo:uncompressedSize" link="nfo-properties.html#nfo-uncompressedSize"/>
     <function name="nfo:bitDepth" link="nfo-properties.html#nfo-bitDepth"/>
     <function name="nfo:entryCounter" link="nfo-properties.html#nfo-entryCounter"/>
-    <function name="nfo:uri" link="nfo-properties.html#nfo-uri"/>
+    <function name="nfo:entryUrl" link="nfo-properties.html#nfo-entryUrl"/>
     <function name="nfo:commentCharacterCount" link="nfo-properties.html#nfo-commentCharacterCount"/>
     <function name="nfo:listPosition" link="nfo-properties.html#nfo-listPosition"/>
     <function name="nfo:softwareCategoryIcon" link="nfo-properties.html#nfo-softwareCategoryIcon"/>
@@ -420,6 +420,7 @@
     <function name="nfo:peakGain" link="nfo-properties.html#nfo-peakGain"/>
     <function name="nfo:sampleRate" link="nfo-properties.html#nfo-sampleRate"/>
     <function name="nfo:listDuration" link="nfo-properties.html#nfo-listDuration"/>
+    <function name="nfo:uri" link="nfo-properties.html#nfo-uri"/>
     <function name="nfo:fileLastModified" link="nfo-properties.html#nfo-fileLastModified"/>
     <function name="nfo:characterCount" link="nfo-properties.html#nfo-characterCount"/>
     <function name="nfo:definesFunction" link="nfo-properties.html#nfo-definesFunction"/>

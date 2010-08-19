@@ -420,47 +420,47 @@ tracker_miner_fs_class_init (TrackerMinerFSClass *klass)
 		              NULL, NULL,
 		              tracker_marshal_BOOLEAN__OBJECT_OBJECT_OBJECT,
 		              G_TYPE_BOOLEAN,
-		              3, G_TYPE_FILE, TRACKER_TYPE_SPARQL_BUILDER, G_TYPE_CANCELLABLE),
+		              3, G_TYPE_FILE, TRACKER_TYPE_SPARQL_BUILDER, G_TYPE_CANCELLABLE);
 
-		/**
-		 * TrackerMinerFS::ignore-next-update-file:
-		 * @miner_fs: the #TrackerMinerFS
-		 * @file: a #GFile
-		 * @builder: a #TrackerSparqlBuilder
-		 * @cancellable: a #GCancellable
-		 *
-		 * The ::ignore-next-update-file signal is emitted whenever a file should
-		 * be marked as to ignore on next update, and it's metadata prepared for that.
-		 *
-		 * @builder is the #TrackerSparqlBuilder where all sparql updates
-		 * to be performed for @file will be appended.
-		 *
-		 * Returns: %TRUE on success
-		 *          %FALSE on failure
-		 **/
-		signals[IGNORE_NEXT_UPDATE_FILE] =
+	/**
+	 * TrackerMinerFS::ignore-next-update-file:
+	 * @miner_fs: the #TrackerMinerFS
+	 * @file: a #GFile
+	 * @builder: a #TrackerSparqlBuilder
+	 * @cancellable: a #GCancellable
+	 *
+	 * The ::ignore-next-update-file signal is emitted whenever a file should
+	 * be marked as to ignore on next update, and it's metadata prepared for that.
+	 *
+	 * @builder is the #TrackerSparqlBuilder where all sparql updates
+	 * to be performed for @file will be appended.
+	 *
+	 * Returns: %TRUE on success
+	 *          %FALSE on failure
+	 **/
+	signals[IGNORE_NEXT_UPDATE_FILE] =
 		g_signal_new ("ignore-next-update-file",
-		              G_OBJECT_CLASS_TYPE (object_class),
-		              G_SIGNAL_RUN_LAST,
-		              G_STRUCT_OFFSET (TrackerMinerFSClass, ignore_next_update_file),
-		              NULL, NULL,
-		              tracker_marshal_BOOLEAN__OBJECT_OBJECT_OBJECT,
-		              G_TYPE_BOOLEAN,
-		              3, G_TYPE_FILE, TRACKER_TYPE_SPARQL_BUILDER, G_TYPE_CANCELLABLE),
+			      G_OBJECT_CLASS_TYPE (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (TrackerMinerFSClass, ignore_next_update_file),
+			      NULL, NULL,
+			      tracker_marshal_BOOLEAN__OBJECT_OBJECT_OBJECT,
+			      G_TYPE_BOOLEAN,
+			      3, G_TYPE_FILE, TRACKER_TYPE_SPARQL_BUILDER, G_TYPE_CANCELLABLE);
 
-		/**
-		 * TrackerMinerFS::finished:
-		 * @miner_fs: the #TrackerMinerFS
-		 * @elapsed: elapsed time since mining was started
-		 * @directories_found: number of directories found
-		 * @directories_ignored: number of ignored directories
-		 * @files_found: number of files found
-		 * @files_ignored: number of ignored files
-		 *
-		 * The ::finished signal is emitted when @miner_fs has finished
-		 * all pending processing.
-		 **/
-		signals[FINISHED] =
+	/**
+	 * TrackerMinerFS::finished:
+	 * @miner_fs: the #TrackerMinerFS
+	 * @elapsed: elapsed time since mining was started
+	 * @directories_found: number of directories found
+	 * @directories_ignored: number of ignored directories
+	 * @files_found: number of files found
+	 * @files_ignored: number of ignored files
+	 *
+	 * The ::finished signal is emitted when @miner_fs has finished
+	 * all pending processing.
+	 **/
+	signals[FINISHED] =
 		g_signal_new ("finished",
 		              G_TYPE_FROM_CLASS (object_class),
 		              G_SIGNAL_RUN_LAST,
@@ -1183,6 +1183,7 @@ ensure_iri_cache (TrackerMinerFS *fs,
 	gchar *query, *uri;
 	CacheQueryData data;
 	GFile *parent;
+	guint cache_size;
 
 	g_hash_table_remove_all (fs->private->iri_cache);
 
@@ -1205,7 +1206,6 @@ ensure_iri_cache (TrackerMinerFS *fs,
 	                         "  ?p nie:url \"%s\" "
 	                         "}",
 	                         uri);
-	g_free (uri);
 
 	data.main_loop = g_main_loop_new (NULL, FALSE);
 	data.values = g_hash_table_ref (fs->private->iri_cache);
@@ -1215,24 +1215,67 @@ ensure_iri_cache (TrackerMinerFS *fs,
 	                              NULL,
 	                              cache_query_cb,
 	                              &data);
+	g_free (query);
 
 	g_main_loop_run (data.main_loop);
 
 	g_main_loop_unref (data.main_loop);
 	g_hash_table_unref (data.values);
 
-	if (g_hash_table_size (data.values) == 0 &&
-	    file_is_crawl_directory (fs, file)) {
-		gchar *query_iri;
+	cache_size = g_hash_table_size (fs->private->iri_cache);
 
-		if (item_query_exists (fs, file, &query_iri, NULL)) {
-			g_hash_table_insert (data.values,
-			                     g_object_ref (file), query_iri);
+	if (cache_size == 0) {
+		if (file_is_crawl_directory (fs, file)) {
+			gchar *query_iri;
+
+			if (item_query_exists (fs, file, &query_iri, NULL)) {
+				g_hash_table_insert (data.values,
+				                     g_object_ref (file), query_iri);
+				cache_size++;
+			}
+		} else {
+			/* Quite ugly hack: If mtime_cache is found EMPTY after the query, still, we
+			 * may have a nfo:Folder where nfo:belogsToContainer was not yet set (when
+			 * generating the dummy nfo:Folder for mount points). In this case, make a
+			 * new query not using nfo:belongsToContainer, and using fn:starts-with
+			 * instead. Any better solution is highly appreciated */
+
+			/* Initialize data contents */
+			data.main_loop = g_main_loop_new (NULL, FALSE);
+			data.values = g_hash_table_ref (fs->private->iri_cache);
+
+			g_debug ("Generating iri cache for URI '%s' (fn:starts-with)", uri);
+
+			query = g_strdup_printf ("SELECT ?url ?u "
+			                         "WHERE { ?u a nfo:Folder ; "
+			                         "           nie:url ?url . "
+			                         "        FILTER (fn:starts-with (?url,\"%s\"))"
+			                         "}",
+			                         uri);
+
+			tracker_miner_execute_sparql (TRACKER_MINER (fs),
+			                              query,
+			                              NULL,
+			                              cache_query_cb,
+			                              &data);
+			g_free (query);
+
+			g_main_loop_run (data.main_loop);
+			g_main_loop_unref (data.main_loop);
+			g_hash_table_unref (data.values);
+
+			/* Note that in this case, the cache may be actually populated with items
+			 * which are not direct children of this parent, but doesn't seem a big
+			 * issue right now. In the best case, the dummy item that we created will
+			 * be there with a proper mtime set. */
+			cache_size = g_hash_table_size (fs->private->iri_cache);
 		}
 	}
 
+	g_debug ("Populated IRI cache with '%u' items", cache_size);
+
 	g_object_unref (parent);
-	g_free (query);
+	g_free (uri);
 }
 
 static const gchar *
@@ -1751,6 +1794,7 @@ item_move (TrackerMinerFS *fs,
 
 		g_free (source_uri);
 		g_free (uri);
+		g_object_unref (file_info);
 
 		return retval;
 	}
@@ -1916,6 +1960,35 @@ fill_in_queue (TrackerMinerFS       *fs,
 	}
 }
 
+
+static gboolean
+should_wait (TrackerMinerFS *fs,
+             GFile          *file)
+{
+	GFile *parent;
+
+	/* Is the item already being processed? */
+	if (process_data_find (fs, file, TRUE)) {
+		/* Yes, a previous event on same item currently
+		 * being processed */
+		return TRUE;
+	}
+
+	/* Is the item's parent being processed right now? */
+	parent = g_file_get_parent (file);
+	if (parent) {
+		if (process_data_find (fs, parent, TRUE)) {
+			/* Yes, a previous event on the parent of this item
+			 * currently being processed */
+			g_object_unref (parent);
+			return TRUE;
+		}
+
+		g_object_unref (parent);
+	}
+	return FALSE;
+}
+
 static QueueState
 item_queue_get_next_file (TrackerMinerFS  *fs,
                           GFile          **file,
@@ -1934,7 +2007,9 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 			return QUEUE_IGNORE_NEXT_UPDATE;
 		}
 
-		if (process_data_find (fs, queue_file, TRUE)) {
+		/* If the same item OR its first parent is currently being processed,
+		 * we need to wait for this event */
+		if (should_wait (fs, queue_file)) {
 			*file = NULL;
 			/* Need to postpone event... */
 			g_queue_push_head (fs->private->items_deleted,
@@ -1980,7 +2055,9 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 			return QUEUE_IGNORE_NEXT_UPDATE;
 		}
 
-		if (process_data_find (fs, queue_file, TRUE)) {
+		/* If the same item OR its first parent is currently being processed,
+		 * we need to wait for this event */
+		if (should_wait (fs, queue_file)) {
 			*file = NULL;
 			/* Need to postpone event... */
 			g_queue_push_head (fs->private->items_created,
@@ -2002,7 +2079,9 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 		if (check_ignore_next_update (fs, queue_file))
 			return QUEUE_IGNORE_NEXT_UPDATE;
 
-		if (process_data_find (fs, queue_file, TRUE)) {
+		/* If the same item OR its first parent is currently being processed,
+		 * we need to wait for this event */
+		if (should_wait (fs, queue_file)) {
 			*file = NULL;
 			/* Need to postpone event... */
 			g_queue_push_head (fs->private->items_updated,
@@ -2023,8 +2102,10 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 			return QUEUE_IGNORE_NEXT_UPDATE;
 		}
 
-		if (process_data_find (fs, data->file, TRUE) ||
-		    process_data_find (fs, data->source_file, TRUE)) {
+		/* If the same item OR its first parent is currently being processed,
+		 * we need to wait for this event */
+		if (should_wait (fs, data->file) ||
+		    should_wait (fs, data->source_file)) {
 			*file = NULL;
 			*source_file = NULL;
 			/* Need to postpone event... */
@@ -2333,6 +2414,7 @@ ensure_mtime_cache (TrackerMinerFS *fs,
 	gchar *query, *uri;
 	CacheQueryData data;
 	GFile *parent;
+	guint cache_size;
 
 	if (G_UNLIKELY (!fs->private->mtime_cache)) {
 		fs->private->mtime_cache = g_hash_table_new_full (g_file_hash,
@@ -2400,13 +2482,54 @@ ensure_mtime_cache (TrackerMinerFS *fs,
 		                              cache_query_cb,
 		                              &data);
 		g_free (query);
-
-
 		g_main_loop_run (data.main_loop);
 	}
 
 	g_main_loop_unref (data.main_loop);
 	g_hash_table_unref (data.values);
+
+	cache_size = g_hash_table_size (fs->private->mtime_cache);
+
+	/* Quite ugly hack: If mtime_cache is found EMPTY after the query, still, we
+	 * may have a nfo:Folder where nfo:belogsToContainer was not yet set (when
+	 * generating the dummy nfo:Folder for mount points). In this case, make a
+	 * new query not using nfo:belongsToContainer, and using fn:starts-with
+	 * instead. Any better solution is highly appreciated */
+	if (parent && cache_size == 0) {
+		/* Initialize data contents */
+		data.main_loop = g_main_loop_new (NULL, FALSE);
+		data.values = g_hash_table_ref (fs->private->mtime_cache);
+		uri = g_file_get_uri (parent);
+
+		g_debug ("Generating mtime cache for URI '%s' (fn:starts-with)", uri);
+
+		query = g_strdup_printf ("SELECT ?url ?last "
+		                         "WHERE { ?u a nfo:Folder ; "
+		                         "           nie:url ?url ; "
+		                         "           nfo:fileLastModified ?last . "
+		                         "        FILTER (fn:starts-with (?url,\"%s\"))"
+		                         "}",
+		                         uri);
+		g_free (uri);
+
+		tracker_miner_execute_sparql (TRACKER_MINER (fs),
+		                              query,
+		                              NULL,
+		                              cache_query_cb,
+		                              &data);
+		g_free (query);
+		g_main_loop_run (data.main_loop);
+		g_main_loop_unref (data.main_loop);
+		g_hash_table_unref (data.values);
+
+		/* Note that in this case, the cache may be actually populated with items
+		 * which are not direct children of this parent, but doesn't seem a big
+		 * issue right now. In the best case, the dummy item that we created will
+		 * be there with a proper mtime set. */
+		cache_size = g_hash_table_size (fs->private->mtime_cache);
+	}
+
+	g_debug ("Populated mtime cache with '%u' items", cache_size);
 
 	/* Iterate repopulated HT and add all to the check_removed HT */
 	g_hash_table_foreach (fs->private->mtime_cache,
@@ -2493,7 +2616,6 @@ should_check_file (TrackerMinerFS *fs,
 	} else {
 		g_signal_emit (fs, signals[CHECK_FILE], 0, file, &should_check);
 	}
-
 	return should_check;
 }
 
@@ -2528,16 +2650,16 @@ monitor_item_created_cb (TrackerMonitor *monitor,
 {
 	TrackerMinerFS *fs;
 	gboolean should_process = TRUE;
-	gchar *path;
+	gchar *uri;
 
 	fs = user_data;
 	should_process = should_check_file (fs, file, is_directory);
 
-	path = g_file_get_path (file);
+	uri = g_file_get_uri (file);
 
 	g_debug ("%s:'%s' (%s) (create monitor event or user request)",
 	         should_process ? "Found " : "Ignored",
-	         path,
+	         uri,
 	         is_directory ? "DIR" : "FILE");
 
 	if (should_process) {
@@ -2552,7 +2674,7 @@ monitor_item_created_cb (TrackerMonitor *monitor,
 		}
 	}
 
-	g_free (path);
+	g_free (uri);
 }
 
 static void
@@ -2563,16 +2685,16 @@ monitor_item_updated_cb (TrackerMonitor *monitor,
 {
 	TrackerMinerFS *fs;
 	gboolean should_process;
-	gchar *path;
+	gchar *uri;
 
 	fs = user_data;
 	should_process = should_check_file (fs, file, is_directory);
 
-	path = g_file_get_path (file);
+	uri = g_file_get_uri (file);
 
 	g_debug ("%s:'%s' (%s) (update monitor event or user request)",
 	         should_process ? "Found " : "Ignored",
-	         path,
+	         uri,
 	         is_directory ? "DIR" : "FILE");
 
 	if (should_process) {
@@ -2582,7 +2704,7 @@ monitor_item_updated_cb (TrackerMonitor *monitor,
 		item_queue_handlers_set_up (fs);
 	}
 
-	g_free (path);
+	g_free (uri);
 }
 
 static void
@@ -2593,15 +2715,16 @@ monitor_item_deleted_cb (TrackerMonitor *monitor,
 {
 	TrackerMinerFS *fs;
 	gboolean should_process;
-	gchar *path;
+	gchar *uri;
 
 	fs = user_data;
 	should_process = should_check_file (fs, file, is_directory);
-	path = g_file_get_path (file);
+
+	uri = g_file_get_uri (file);
 
 	g_debug ("%s:'%s' (%s) (delete monitor event or user request)",
 	         should_process ? "Found " : "Ignored",
-	         path,
+	         uri,
 	         is_directory ? "DIR" : "FILE");
 
 	if (should_process) {
@@ -2632,7 +2755,7 @@ monitor_item_deleted_cb (TrackerMonitor *monitor,
 	}
 #endif
 
-	g_free (path);
+	g_free (uri);
 }
 
 static void
@@ -2801,6 +2924,19 @@ crawler_check_directory_contents_cb (TrackerCrawler *crawler,
 	 * the finished sig?
 	 */
 	if (add_monitor) {
+		/* Before adding the monitor, start notifying the store
+		 * about the new directory, so that if any file event comes
+		 * afterwards, the directory is already in store. */
+		g_queue_push_tail (fs->private->items_created,
+		                   g_object_ref (parent));
+		item_queue_handlers_set_up (fs);
+
+		/* As we already added here, specify that it shouldn't be added
+		 * any more */
+		g_object_set_qdata (G_OBJECT (parent),
+		                    fs->private->quark_ignore_file,
+		                    GINT_TO_POINTER (TRUE));
+
 		tracker_monitor_add (fs->private->monitor, parent);
 	} else {
 		tracker_monitor_remove (fs->private->monitor, parent);

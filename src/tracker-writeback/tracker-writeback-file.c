@@ -88,7 +88,7 @@ tracker_writeback_file_update_metadata (TrackerWriteback *writeback,
 		return FALSE;
 	}
 
-	/* Get the file from the first row */
+	/* Get the file from the row */
 	row = g_ptr_array_index (values, 0);
 	file = g_file_new_for_uri (row[0]);
 
@@ -101,7 +101,6 @@ tracker_writeback_file_update_metadata (TrackerWriteback *writeback,
 		if (file) {
 			g_object_unref (file);
 		}
-
 		return FALSE;
 	}
 

@@ -13,7 +13,7 @@ AC_PREREQ(2.59)
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [8])
-m4_define([tracker_micro_version], [15])
+m4_define([tracker_micro_version], [16])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -841,7 +841,9 @@ if test "x$enable_miner_evolution" != "xno"; then
 		     have_miner_evolution=no)
 
    PKG_CHECK_EXISTS([evolution-data-server-1.2 >= 2.29.1],
-		    [AC_DEFINE(HAVE_EDS_2_29_1, 1, [Define if we have eds 2.29.1 or newer])])
+                    [AC_DEFINE(HAVE_EDS_2_29_1, 1, [Define if we have eds 2.29.1 or newer])])
+   PKG_CHECK_EXISTS([evolution-data-server-1.2 >= 2.31.2],
+                    [AC_DEFINE(HAVE_EDS_2_31_2, 1, [Define if we have eds 2.31.2 or newer])])
 
    AC_SUBST(EVOLUTION_PLUGIN_CFLAGS)
    AC_SUBST(EVOLUTION_PLUGIN_LIBS)
@@ -1760,6 +1762,7 @@ AC_CONFIG_FILES([
 	tests/functional-tests/data/Music/Makefile
 	tests/functional-tests/data/Images/Makefile
 	tests/functional-tests/data/Video/Makefile
+	tests/functional-tests/data/Text/Makefile
 	tests/Makefile
 	tests/tracker-miner-fs/Makefile
 	tests/tracker-extract/Makefile

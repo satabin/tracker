@@ -387,7 +387,8 @@ TEST_PROGS =
 SUBDIRS = \
 	Music		\
 	Video		\
-	Images
+	Images		\
+	Text		
 
 configdir = $(datadir)/tracker-tests/data
 config_DATA = \

@@ -46,8 +46,7 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-noinst_PROGRAMS = $(am__EXEEXT_1)
-subdir = tests/libtracker-miner
+subdir = tests/functional-tests/data/Text
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
@@ -60,72 +59,37 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__EXEEXT_1 = tracker-crawler-test$(EXEEXT) \
-	tracker-miner-manager-test$(EXEEXT) \
-	tracker-password-provider-test$(EXEEXT) \
-	tracker-thumbnailer-test$(EXEEXT)
-PROGRAMS = $(noinst_PROGRAMS)
-am_tracker_crawler_test_OBJECTS = tracker-crawler-test.$(OBJEXT)
-tracker_crawler_test_OBJECTS = $(am_tracker_crawler_test_OBJECTS)
-tracker_crawler_test_LDADD = $(LDADD)
-AM_V_lt = $(am__v_lt_$(V))
-am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
-am__v_lt_0 = --silent
-am__objects_1 = tracker-miner-mock.$(OBJEXT)
-am__objects_2 =
-am_tracker_miner_manager_test_OBJECTS =  \
-	tracker-miner-manager-test.$(OBJEXT) miners-mock.$(OBJEXT) \
-	$(am__objects_1) $(am__objects_2) empty-gobject.$(OBJEXT)
-tracker_miner_manager_test_OBJECTS =  \
-	$(am_tracker_miner_manager_test_OBJECTS)
-tracker_miner_manager_test_LDADD = $(LDADD)
-am_tracker_password_provider_test_OBJECTS =  \
-	tracker-password-provider-test.$(OBJEXT)
-tracker_password_provider_test_OBJECTS =  \
-	$(am_tracker_password_provider_test_OBJECTS)
-tracker_password_provider_test_LDADD = $(LDADD)
-am_tracker_thumbnailer_test_OBJECTS =  \
-	tracker-thumbnailer-test.$(OBJEXT) thumbnailer-mock.$(OBJEXT) \
-	empty-gobject.$(OBJEXT)
-tracker_thumbnailer_test_OBJECTS =  \
-	$(am_tracker_thumbnailer_test_OBJECTS)
-tracker_thumbnailer_test_LDADD = $(LDADD)
-DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
-depcomp = $(SHELL) $(top_srcdir)/depcomp
-am__depfiles_maybe = depfiles
-am__mv = mv -f
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
-	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	$(AM_CFLAGS) $(CFLAGS)
-AM_V_CC = $(am__v_CC_$(V))
-am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
-am__v_CC_0 = @echo "  CC    " $@;
-AM_V_at = $(am__v_at_$(V))
-am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
-am__v_at_0 = @
-CCLD = $(CC)
-LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-AM_V_CCLD = $(am__v_CCLD_$(V))
-am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
-am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(tracker_crawler_test_SOURCES) \
-	$(tracker_miner_manager_test_SOURCES) \
-	$(tracker_password_provider_test_SOURCES) \
-	$(tracker_thumbnailer_test_SOURCES)
-DIST_SOURCES = $(tracker_crawler_test_SOURCES) \
-	$(tracker_miner_manager_test_SOURCES) \
-	$(tracker_password_provider_test_SOURCES) \
-	$(tracker_thumbnailer_test_SOURCES)
-ETAGS = etags
-CTAGS = ctags
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
+SOURCES =
+DIST_SOURCES =
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
+am__install_max = 40
+am__nobase_strip_setup = \
+  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
+am__nobase_strip = \
+  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
+am__nobase_list = $(am__nobase_strip_setup); \
+  for p in $$list; do echo "$$p $$p"; done | \
+  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
+  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
+    if (++n[$$2] == $(am__install_max)) \
+      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
+    END { for (dir in files) print dir, files[dir] }'
+am__base_list = \
+  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
+  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
+am__installdirs = "$(DESTDIR)$(configdir)"
+DATA = $(config_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 ALL_LINGUAS = @ALL_LINGUAS@
@@ -233,17 +197,7 @@ LIBJPEG_LIBS = @LIBJPEG_LIBS@
 LIBOBJS = @LIBOBJS@
 LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
 LIBPNG_LIBS = @LIBPNG_LIBS@
-LIBS = \
-	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la		\
-	$(DBUS_LIBS)                                                            \
-	$(GCOV_LIBS)                                                            \
-	$(GMODULE_LIBS)                                                         \
-	$(GTHREAD_LIBS)                                                         \
-	$(GIO_LIBS)                                                             \
-	$(GLIB2_LIBS)
-
+LIBS = @LIBS@
 LIBSTREAMANALYZER_CFLAGS = @LIBSTREAMANALYZER_CFLAGS@
 LIBSTREAMANALYZER_LIBS = @LIBSTREAMANALYZER_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
@@ -389,75 +343,13 @@ GTESTER = gtester 			# for non-GLIB packages
 GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
-TEST_PROGS = tracker-crawler-test tracker-miner-manager-test \
-	tracker-password-provider-test tracker-thumbnailer-test
-INCLUDES = \
-	-DTEST									\
-	-DG_LOG_DOMAIN=\"Tracker\"						\
-	-DLIBEXEC_PATH=\""$(libexecdir)"\"					\
-	-DTRACKER_COMPILATION							\
-	-DTEST_DATA_DIR=\""$(abs_top_srcdir)/tests/libtracker-miner/data"\"	\
-	-DTEST_MINERS_DIR=\""$(abs_top_srcdir)/tests/libtracker-miner/mock-miners"\"	\
-	-I$(top_srcdir)/src							\
-	-I$(top_builddir)/src							\
-	-I$(top_srcdir)/tests/common						\
-	-I$(top_srcdir)/src/libtracker-client					\
-	-I$(top_builddir)/src/libtracker-client					\
-	-I$(top_srcdir)/src/libtracker-miner					\
-	-I$(top_builddir)/src/libtracker-miner					\
-	$(WARN_CFLAGS)								\
-	$(GCOV_CFLAGS)								\
-	$(GLIB2_CFLAGS)								\
-	$(GIO_CFLAGS)								\
-	$(GMODULE_CFLAGS)							\
-	$(GTHREAD_CFLAGS)							\
-	$(DBUS_CFLAGS)
-
-tracker_crawler_test_SOURCES = \
-	tracker-crawler-test.c
-
-tracker_thumbnailer_test_SOURCES = \
-	tracker-thumbnailer-test.c						\
-	thumbnailer-mock.h							\
-	thumbnailer-mock.c							\
-	empty-gobject.h								\
-	empty-gobject.c
-
-tracker_miner_manager_test_VALASOURCES = \
-	tracker-miner-mock.vala
-
-tracker_miner_manager_test_SOURCES = \
-	tracker-miner-manager-test.c						\
-	miners-mock.c								\
-	miners-mock.h								\
-	$(tracker_miner_manager_test_VALASOURCES:.vala=.c)			\
-	$(tracker_miner_manager_test_VALASOURCES:.vala=.h)			\
-	empty-gobject.h								\
-	empty-gobject.c
-
-tracker_password_provider_test_SOURCES = \
-	tracker-password-provider-test.c
-
-BUILT_SOURCES = libtracker-miner-test.vala.stamp
-MAINTAINERCLEANFILES = \
-	libtracker-miner-test.vala.stamp					\
-	$(tracker_miner_manager_test_VALASOURCES:.vala=.c)
-
-EXTRA_DIST = $(tracker_miner_manager_test_VALASOURCES)				\
-	libtracker-miner-test.vala.stamp					\
-	data/empty-dir/.hidden							\
-	data/file1								\
-	data/dir/empty-dir/.hidden						\
-	data/dir/file1								\
-	data/dir/file2								\
-	mock-miners/mock-miner-1.desktop					\
-	mock-miners/mock-miner-2.desktop
-
-all: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-am
+TEST_PROGS = 
+configdir = $(datadir)/tracker-tests/data/Text
+config_DATA = 
+EXTRA_DIST = $(config_DATA)
+all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -467,9 +359,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu tests/libtracker-miner/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu tests/functional-tests/data/Text/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu tests/libtracker-miner/Makefile
+	  $(AUTOMAKE) --gnu tests/functional-tests/data/Text/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -489,123 +381,37 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
 
-clean-noinstPROGRAMS:
-	@list='$(noinst_PROGRAMS)'; test -n "$$list" || exit 0; \
-	echo " rm -f" $$list; \
-	rm -f $$list || exit $$?; \
-	test -n "$(EXEEXT)" || exit 0; \
-	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
-	echo " rm -f" $$list; \
-	rm -f $$list
-tracker-crawler-test$(EXEEXT): $(tracker_crawler_test_OBJECTS) $(tracker_crawler_test_DEPENDENCIES) 
-	@rm -f tracker-crawler-test$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(tracker_crawler_test_OBJECTS) $(tracker_crawler_test_LDADD) $(LIBS)
-tracker-miner-manager-test$(EXEEXT): $(tracker_miner_manager_test_OBJECTS) $(tracker_miner_manager_test_DEPENDENCIES) 
-	@rm -f tracker-miner-manager-test$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(tracker_miner_manager_test_OBJECTS) $(tracker_miner_manager_test_LDADD) $(LIBS)
-tracker-password-provider-test$(EXEEXT): $(tracker_password_provider_test_OBJECTS) $(tracker_password_provider_test_DEPENDENCIES) 
-	@rm -f tracker-password-provider-test$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(tracker_password_provider_test_OBJECTS) $(tracker_password_provider_test_LDADD) $(LIBS)
-tracker-thumbnailer-test$(EXEEXT): $(tracker_thumbnailer_test_OBJECTS) $(tracker_thumbnailer_test_DEPENDENCIES) 
-	@rm -f tracker-thumbnailer-test$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(tracker_thumbnailer_test_OBJECTS) $(tracker_thumbnailer_test_LDADD) $(LIBS)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT)
-
-distclean-compile:
-	-rm -f *.tab.c
-
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/empty-gobject.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/miners-mock.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/thumbnailer-mock.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crawler-test.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-manager-test.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-mock.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-password-provider-test.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-thumbnailer-test.Po@am__quote@
-
-.c.o:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c $<
-
-.c.obj:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
-
-.c.lo:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
-@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
-
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-configDATA: $(config_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(configdir)" || $(MKDIR_P) "$(DESTDIR)$(configdir)"
+	@list='$(config_DATA)'; test -n "$(configdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(configdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(configdir)" || exit $$?; \
+	done
 
-ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
-	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
-	      END { if (nonempty) { for (i in files) print i; }; }'`; \
-	mkid -fID $$unique
+uninstall-configDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(config_DATA)'; test -n "$(configdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(configdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(configdir)" && rm -f $$files
 tags: TAGS
+TAGS:
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
-		$(TAGS_FILES) $(LISP)
-	set x; \
-	here=`pwd`; \
-	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
-	      END { if (nonempty) { for (i in files) print i; }; }'`; \
-	shift; \
-	if test -z "$(ETAGS_ARGS)$$*$$unique"; then :; else \
-	  test -n "$$unique" || unique=$$empty_fix; \
-	  if test $$# -gt 0; then \
-	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
-	      "$$@" $$unique; \
-	  else \
-	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
-	      $$unique; \
-	  fi; \
-	fi
 ctags: CTAGS
-CTAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
-		$(TAGS_FILES) $(LISP)
-	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
-	      END { if (nonempty) { for (i in files) print i; }; }'`; \
-	test -z "$(CTAGS_ARGS)$$unique" \
-	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
-	     $$unique
+CTAGS:
 
-GTAGS:
-	here=`$(am__cd) $(top_builddir) && pwd` \
-	  && $(am__cd) $(top_srcdir) \
-	  && gtags -i $(GTAGS_ARGS) "$$here"
-
-distclean-tags:
-	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 distdir: $(DISTFILES)
 	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
@@ -639,12 +445,13 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) check-local
-check: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) check-am
-all-am: Makefile $(PROGRAMS)
+check: check-am
+all-am: Makefile $(DATA)
 installdirs:
-install: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) install-am
+	for dir in "$(DESTDIR)$(configdir)"; do \
+	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+	done
+install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -669,18 +476,13 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
-	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-noinstPROGRAMS \
-	mostlyclean-am
+clean-am: clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
-distclean-am: clean-am distclean-compile distclean-generic \
-	distclean-tags
+distclean-am: clean-am distclean-generic
 
 dvi: dvi-am
 
@@ -694,7 +496,7 @@ info: info-am
 
 info-am:
 
-install-data-am:
+install-data-am: install-configDATA
 
 install-dvi: install-dvi-am
 
@@ -723,14 +525,12 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool
+mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
 pdf: pdf-am
 
@@ -740,23 +540,21 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am:
+uninstall-am: uninstall-configDATA
 
-.MAKE: all check check-am install install-am install-strip
+.MAKE: check-am install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-am check-local clean \
-	clean-generic clean-libtool clean-noinstPROGRAMS ctags \
-	distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am
+.PHONY: all all-am check check-am check-local clean clean-generic \
+	clean-libtool distclean distclean-generic distclean-libtool \
+	distdir dvi dvi-am html html-am info info-am install \
+	install-am install-configDATA install-data install-data-am \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
+	ps ps-am uninstall uninstall-am uninstall-configDATA
 
 
 ### testing rules
@@ -807,10 +605,6 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
-
-libtracker-miner-test.vala.stamp: $(tracker_miner_manager_test_VALASOURCES)
-	$(AM_V_GEN)$(VALAC) $(GCOV_VALAFLAGS) --pkg glib-2.0 -C $(VALAFLAGS) -H $(<:.vala=.h) $<
-	touch $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

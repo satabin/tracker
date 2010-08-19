@@ -681,7 +681,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-entryContent'>nfo:entryContent</link>, <link linkend='nfo-listPosition'>nfo:listPosition</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-entryUrl'>nfo:entryUrl</link>, <link linkend='nfo-entryContent'>nfo:entryContent</link>, <link linkend='nfo-listPosition'>nfo:listPosition</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -1385,6 +1385,10 @@
 <listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
+<note>
+<title>Note:</title>
+<para>This property is deprecated</para>
+</note>
 </refsect2>
 
 <refsect2 id='nfo-isPasswordProtected'>
@@ -2283,9 +2287,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-averageVideoBitrate'>
-<title>nfo:averageVideoBitrate</title>
-<para>The average overall bitrate of a media container. (i.e. the size of the piece of media in bits, divided by it's duration expressed in seconds).</para>
+<refsect2 id='nfo-permissions'>
+<title>nfo:permissions</title>
+<para>A string containing the permissions of a file. A feature common in many UNIX-like operating systems.</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -2293,11 +2297,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Video'>nfo:Video</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-FileDataObject'>nfo:FileDataObject</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -2345,9 +2349,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-permissions'>
-<title>nfo:permissions</title>
-<para>A string containing the permissions of a file. A feature common in many UNIX-like operating systems.</para>
+<refsect2 id='nfo-averageVideoBitrate'>
+<title>nfo:averageVideoBitrate</title>
+<para>The average overall bitrate of a media container. (i.e. the size of the piece of media in bits, divided by it's duration expressed in seconds).</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -2355,11 +2359,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-FileDataObject'>nfo:FileDataObject</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-Video'>nfo:Video</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -2407,9 +2411,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-fileOwner'>
-<title>nfo:fileOwner</title>
-<para>The owner of the file as defined by the file system access rights feature.</para>
+<refsect2 id='nfo-originalLocation'>
+<title>nfo:originalLocation</title>
+<para>The original location of the deleted resource.</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -2417,11 +2421,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-FileDataObject'>nfo:FileDataObject</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-DeletedResource'>nfo:DeletedResource</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nco-Contact'>nco:Contact</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -2438,9 +2442,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-originalLocation'>
-<title>nfo:originalLocation</title>
-<para>The original location of the deleted resource.</para>
+<refsect2 id='nfo-fileOwner'>
+<title>nfo:fileOwner</title>
+<para>The owner of the file as defined by the file system access rights feature.</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -2448,11 +2452,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-DeletedResource'>nfo:DeletedResource</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-FileDataObject'>nfo:FileDataObject</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nco-Contact'>nco:Contact</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -2783,8 +2787,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-uri'>
-<title>nfo:uri</title>
+<refsect2 id='nfo-entryUrl'>
+<title>nfo:entryUrl</title>
+<para>URI to the element in certain position of the list</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -2792,7 +2797,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-WebHistory'>nfo:WebHistory</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-MediaFileListEntry'>nfo:MediaFileListEntry</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -3075,6 +3080,36 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-uri'>
+<title>nfo:uri</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-WebHistory'>nfo:WebHistory</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>

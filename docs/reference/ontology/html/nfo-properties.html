@@ -159,6 +159,10 @@
 </tr>
 </tbody>
 </table></div>
+<div class="note" title="Note:" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note:</h3>
+<p>This property is deprecated</p>
+</div>
 </div>
 <hr>
 <div class="refsect2" title="nfo:isPasswordProtected">
@@ -1212,9 +1216,9 @@ rdfs:Resource, </td>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nfo:averageVideoBitrate">
-<a name="nfo-averageVideoBitrate"></a><h3>nfo:averageVideoBitrate</h3>
-<p>The average overall bitrate of a media container. (i.e. the size of the piece of media in bits, divided by it's duration expressed in seconds).</p>
+<div class="refsect2" title="nfo:permissions">
+<a name="nfo-permissions"></a><h3>nfo:permissions</h3>
+<p>A string containing the permissions of a file. A feature common in many UNIX-like operating systems.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -1225,12 +1229,12 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-ontology.html#nfo-Video" title="nfo:Video">nfo:Video</a>, </td>
+<a class="link" href="nfo-ontology.html#nfo-FileDataObject" title="nfo:FileDataObject">nfo:FileDataObject</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="xsd-classes.html#xsd-double" title="xsd:double">xsd:double</a>, </td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1284,9 +1288,9 @@ rdfs:Resource, </td>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nfo:permissions">
-<a name="nfo-permissions"></a><h3>nfo:permissions</h3>
-<p>A string containing the permissions of a file. A feature common in many UNIX-like operating systems.</p>
+<div class="refsect2" title="nfo:averageVideoBitrate">
+<a name="nfo-averageVideoBitrate"></a><h3>nfo:averageVideoBitrate</h3>
+<p>The average overall bitrate of a media container. (i.e. the size of the piece of media in bits, divided by it's duration expressed in seconds).</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -1297,12 +1301,12 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-ontology.html#nfo-FileDataObject" title="nfo:FileDataObject">nfo:FileDataObject</a>, </td>
+<a class="link" href="nfo-ontology.html#nfo-Video" title="nfo:Video">nfo:Video</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+<a class="link" href="xsd-classes.html#xsd-double" title="xsd:double">xsd:double</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1357,42 +1361,6 @@ rdfs:Resource, </td>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nfo:fileOwner">
-<a name="nfo-fileOwner"></a><h3>nfo:fileOwner</h3>
-<p>The owner of the file as defined by the file system access rights feature.</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nfo-ontology.html#nfo-FileDataObject" title="nfo:FileDataObject">nfo:FileDataObject</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
 <div class="refsect2" title="nfo:originalLocation">
 <a name="nfo-originalLocation"></a><h3>nfo:originalLocation</h3>
 <p>The original location of the deleted resource.</p>
@@ -1412,6 +1380,42 @@ rdfs:Resource, </td>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
 <a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nfo:fileOwner">
+<a name="nfo-fileOwner"></a><h3>nfo:fileOwner</h3>
+<p>The owner of the file as defined by the file system access rights feature.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-FileDataObject" title="nfo:FileDataObject">nfo:FileDataObject</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1796,8 +1800,9 @@ rdfs:Literal, </td>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nfo:uri">
-<a name="nfo-uri"></a><h3>nfo:uri</h3>
+<div class="refsect2" title="nfo:entryUrl">
+<a name="nfo-entryUrl"></a><h3>nfo:entryUrl</h3>
+<p>URI to the element in certain position of the list</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -1808,7 +1813,7 @@ rdfs:Literal, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-ontology.html#nfo-WebHistory" title="nfo:WebHistory">nfo:WebHistory</a>, </td>
+<a class="link" href="nfo-ontology.html#nfo-MediaFileListEntry" title="nfo:MediaFileListEntry">nfo:MediaFileListEntry</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -2138,6 +2143,41 @@ rdfs:Literal, </td>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
 <a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nfo:uri">
+<a name="nfo-uri"></a><h3>nfo:uri</h3>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-WebHistory" title="nfo:WebHistory">nfo:WebHistory</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>

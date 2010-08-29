@@ -40,7 +40,7 @@ Build-Depends: cdbs,
                valac,
                gtk-doc-tools,
                graphviz
-Standards-Version: 3.9.0
+Standards-Version: 3.9.1
 Vcs-Git: git://git.debian.org/git/users/biebl/tracker.git
 Vcs-Browser: http://git.debian.org/?p=users/biebl/tracker.git;a=summary
 Homepage: http://www.tracker-project.org/

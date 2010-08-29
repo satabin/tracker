@@ -1,6 +1,9 @@
 tracker (0.8.16-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * debian/patches/01-nfo-belongsToContainer-index.patch
+    - Don't change nao:lastModified so it applies cleanly to the new upstream
+      release.
 
  -- Michael Biebl <biebl@debian.org>  Sun, 22 Aug 2010 17:22:38 +0200
 

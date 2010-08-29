@@ -14,15 +14,6 @@ diff --git a/data/ontologies/33-nfo.ontology b/data/ontologies/33-nfo.ontology
 index 6a60098..4e0e4f2 100644
 --- a/data/ontologies/33-nfo.ontology
 +++ b/data/ontologies/33-nfo.ontology
-@@ -12,7 +12,7 @@
- 
- nfo: a tracker:Namespace, tracker:Ontology ;
- 	tracker:prefix "nfo" ;
--	nao:lastModified "2010-06-17T17:06:00Z" .
-+	nao:lastModified "2010-04-30T16:12:00Z" .
- 
- nfo:Document a rdfs:Class ;
- 	rdfs:label "Document" ;
 @@ -330,6 +330,7 @@ nfo:belongsToContainer a rdf:Property ;
  	rdfs:subPropertyOf nie:isPartOf ;
  	nrl:maxCardinality 1 ;

@@ -463,7 +463,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-reportDelivery'>nmo:reportDelivery</link>, <link linkend='nmo-deliveryStatus'>nmo:deliveryStatus</link>, <link linkend='nmo-hasAttachment'>nmo:hasAttachment</link>, <link linkend='nmo-communicationChannel'>nmo:communicationChannel</link>, <link linkend='nmo-conversation'>nmo:conversation</link>, <link linkend='nmo-cc'>nmo:cc</link>, <link linkend='nmo-bcc'>nmo:bcc</link>, <link linkend='nmo-to'>nmo:to</link>, <link linkend='nmo-sentDate'>nmo:sentDate</link>, <link linkend='nmo-sender'>nmo:sender</link>, <link linkend='nmo-replyTo'>nmo:replyTo</link>, <link linkend='nmo-receivedDate'>nmo:receivedDate</link>, <link linkend='nmo-messageSubject'>nmo:messageSubject</link>, <link linkend='nmo-messageId'>nmo:messageId</link>, <link linkend='nmo-messageHeader'>nmo:messageHeader</link>, <link linkend='nmo-inReplyTo'>nmo:inReplyTo</link>, <link linkend='nmo-references'>nmo:references</link>, <link linkend='nmo-htmlMessageContent'>nmo:htmlMessageContent</link>, <link linkend='nmo-plainTextMessageContent'>nmo:plainTextMessageContent</link>, <link linkend='nmo-isSent'>nmo:isSent</link>, <link linkend='nmo-isRead'>nmo:isRead</link>, <link linkend='nmo-isDraft'>nmo:isDraft</link>, <link linkend='nmo-isDeleted'>nmo:isDeleted</link>, <link linkend='nmo-isAnswered'>nmo:isAnswered</link>, <link linkend='nmo-from'>nmo:from</link>, <link linkend='nmo-recipient'>nmo:recipient</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmo-reportDelivery'>nmo:reportDelivery</link>, <link linkend='nmo-deliveryStatus'>nmo:deliveryStatus</link>, <link linkend='nmo-hasAttachment'>nmo:hasAttachment</link>, <link linkend='nmo-communicationChannel'>nmo:communicationChannel</link>, <link linkend='nmo-conversation'>nmo:conversation</link>, <link linkend='nmo-cc'>nmo:cc</link>, <link linkend='nmo-bcc'>nmo:bcc</link>, <link linkend='nmo-to'>nmo:to</link>, <link linkend='nmo-sentDate'>nmo:sentDate</link>, <link linkend='nmo-sender'>nmo:sender</link>, <link linkend='nmo-replyTo'>nmo:replyTo</link>, <link linkend='nmo-receivedDate'>nmo:receivedDate</link>, <link linkend='nmo-messageSubject'>nmo:messageSubject</link>, <link linkend='nmo-messageId'>nmo:messageId</link>, <link linkend='nmo-messageHeader'>nmo:messageHeader</link>, <link linkend='nmo-inReplyTo'>nmo:inReplyTo</link>, <link linkend='nmo-references'>nmo:references</link>, <link linkend='nmo-htmlMessageContent'>nmo:htmlMessageContent</link>, <link linkend='nmo-plainTextMessageContent'>nmo:plainTextMessageContent</link>, <link linkend='nmo-isEmergency'>nmo:isEmergency</link>, <link linkend='nmo-isSent'>nmo:isSent</link>, <link linkend='nmo-isRead'>nmo:isRead</link>, <link linkend='nmo-isDraft'>nmo:isDraft</link>, <link linkend='nmo-isDeleted'>nmo:isDeleted</link>, <link linkend='nmo-isAnswered'>nmo:isAnswered</link>, <link linkend='nmo-from'>nmo:from</link>, <link linkend='nmo-recipient'>nmo:recipient</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -854,8 +854,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmo-hasContent'>
-<title>nmo:hasContent</title>
+<refsect2 id='nmo-isEmergency'>
+<title>nmo:isEmergency</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -863,11 +863,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-Email'>nmo:Email</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmo-Message'>nmo:Message</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-MimePart'>nmo:MimePart</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -884,8 +884,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmo-headerName'>
-<title>nmo:headerName</title>
+<refsect2 id='nmo-hasContent'>
+<title>nmo:hasContent</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -893,11 +893,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-MessageHeader'>nmo:MessageHeader</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmo-Email'>nmo:Email</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmo-MimePart'>nmo:MimePart</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -948,8 +948,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmo-recipient'>
-<title>nmo:recipient</title>
+<refsect2 id='nmo-headerName'>
+<title>nmo:headerName</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -957,11 +957,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-Message'>nmo:Message</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmo-MessageHeader'>nmo:MessageHeader</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nco-Contact'>nco:Contact</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -969,7 +969,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-sender'>nmo:sender</link>, </simpara></listitem>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -1031,8 +1035,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmo-signature'>
-<title>nmo:signature</title>
+<refsect2 id='nmo-recipient'>
+<title>nmo:recipient</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -1040,11 +1044,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-MailAccount'>nmo:MailAccount</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmo-Message'>nmo:Message</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nco-Contact'>nco:Contact</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -1052,11 +1056,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
+<listitem><simpara><link linkend='nmo-sender'>nmo:sender</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -1126,9 +1126,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmo-smsId'>
-<title>nmo:smsId</title>
-<para>Id assigned in the system when the sms is received</para>
+<refsect2 id='nmo-signature'>
+<title>nmo:signature</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -1136,11 +1135,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-SMSMessage'>nmo:SMSMessage</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmo-MailAccount'>nmo:MailAccount</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -1461,9 +1460,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmo-reportDelivery'>
-<title>nmo:reportDelivery</title>
-<para>Report delivery has been requested for the message</para>
+<refsect2 id='nmo-smsId'>
+<title>nmo:smsId</title>
+<para>Id assigned in the system when the sms is received</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -1471,11 +1470,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-Message'>nmo:Message</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmo-SMSMessage'>nmo:SMSMessage</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -1744,6 +1743,37 @@
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
 <listitem><simpara><link linkend='nie-identifier'>nie:identifier</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nmo-reportDelivery'>
+<title>nmo:reportDelivery</title>
+<para>Report delivery has been requested for the message</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nmo-Message'>nmo:Message</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>

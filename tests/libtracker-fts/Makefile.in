@@ -67,8 +67,8 @@ tracker_fts_OBJECTS = $(am_tracker_fts_OBJECTS)
 am__DEPENDENCIES_1 =
 am__DEPENDENCIES_2 =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -424,8 +424,8 @@ INCLUDES = \
 
 common_ldadd = \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
-	$(top_builddir)/src/libtracker-db/libtracker-db.la	 	\
 	$(top_builddir)/src/libtracker-data/libtracker-data.la	 	\
+	$(top_builddir)/src/libtracker-db/libtracker-db.la	 	\
 	$(top_builddir)/tests/common/libtracker-testcommon.la 		\
 	$(GCOV_LIBS)							\
 	$(GMODULE_LIBS)							\

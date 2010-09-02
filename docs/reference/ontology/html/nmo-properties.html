@@ -266,6 +266,41 @@
 </table></div>
 </div>
 <hr>
+<div class="refsect2" title="nmo:isEmergency">
+<a name="nmo-isEmergency"></a><h3>nmo:isEmergency</h3>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmo-classes.html#nmo-Message" title="nmo:Message">nmo:Message</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-boolean" title="xsd:boolean">xsd:boolean</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
 <div class="refsect2" title="nmo:hasContent">
 <a name="nmo-hasContent"></a><h3>nmo:hasContent</h3>
 <div class="variablelist"><table border="0">
@@ -284,41 +319,6 @@
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
 <a class="link" href="nmo-classes.html#nmo-MimePart" title="nmo:MimePart">nmo:MimePart</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="nmo:headerName">
-<a name="nmo-headerName"></a><h3>nmo:headerName</h3>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nmo-classes.html#nmo-MessageHeader" title="nmo:MessageHeader">nmo:MessageHeader</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -375,8 +375,8 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmo:recipient">
-<a name="nmo-recipient"></a><h3>nmo:recipient</h3>
+<div class="refsect2" title="nmo:headerName">
+<a name="nmo-headerName"></a><h3>nmo:headerName</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -387,12 +387,12 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmo-classes.html#nmo-Message" title="nmo:Message">nmo:Message</a>, </td>
+<a class="link" href="nmo-classes.html#nmo-MessageHeader" title="nmo:MessageHeader">nmo:MessageHeader</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -400,8 +400,11 @@
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>
-<a class="link" href="nmo-properties.html#nmo-sender" title="nmo:sender">nmo:sender</a>, </td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
 </tr>
 </tbody>
 </table></div>
@@ -474,8 +477,8 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmo:signature">
-<a name="nmo-signature"></a><h3>nmo:signature</h3>
+<div class="refsect2" title="nmo:recipient">
+<a name="nmo-recipient"></a><h3>nmo:recipient</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -486,12 +489,12 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmo-classes.html#nmo-MailAccount" title="nmo:MailAccount">nmo:MailAccount</a>, </td>
+<a class="link" href="nmo-classes.html#nmo-Message" title="nmo:Message">nmo:Message</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -499,11 +502,8 @@
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
+<td>
+<a class="link" href="nmo-properties.html#nmo-sender" title="nmo:sender">nmo:sender</a>, </td>
 </tr>
 </tbody>
 </table></div>
@@ -584,9 +584,8 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmo:smsId">
-<a name="nmo-smsId"></a><h3>nmo:smsId</h3>
-<p>Id assigned in the system when the sms is received</p>
+<div class="refsect2" title="nmo:signature">
+<a name="nmo-signature"></a><h3>nmo:signature</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -597,12 +596,12 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmo-classes.html#nmo-SMSMessage" title="nmo:SMSMessage">nmo:SMSMessage</a>, </td>
+<a class="link" href="nmo-classes.html#nmo-MailAccount" title="nmo:MailAccount">nmo:MailAccount</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -974,9 +973,9 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmo:reportDelivery">
-<a name="nmo-reportDelivery"></a><h3>nmo:reportDelivery</h3>
-<p>Report delivery has been requested for the message</p>
+<div class="refsect2" title="nmo:smsId">
+<a name="nmo-smsId"></a><h3>nmo:smsId</h3>
+<p>Id assigned in the system when the sms is received</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -987,12 +986,12 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmo-classes.html#nmo-Message" title="nmo:Message">nmo:Message</a>, </td>
+<a class="link" href="nmo-classes.html#nmo-SMSMessage" title="nmo:SMSMessage">nmo:SMSMessage</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="xsd-classes.html#xsd-boolean" title="xsd:boolean">xsd:boolean</a>, </td>
+<a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1307,6 +1306,42 @@
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
 <td>
 <a class="link" href="nie-properties.html#nie-identifier" title="nie:identifier">nie:identifier</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nmo:reportDelivery">
+<a name="nmo-reportDelivery"></a><h3>nmo:reportDelivery</h3>
+<p>Report delivery has been requested for the message</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmo-classes.html#nmo-Message" title="nmo:Message">nmo:Message</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-boolean" title="xsd:boolean">xsd:boolean</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>

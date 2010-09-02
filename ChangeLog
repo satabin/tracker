@@ -1,3 +1,63 @@
+2010-09-02  Martyn Russell  <martyn@lanedo.com>
+
+	Updated NEWS
+
+2010-09-02  Murugappan Nataraj  <murugappan.nataraj@nokia.com>
+
+	Fixes GB#628090: Tracker plugin for PPSX files
+
+2010-09-02  Aleksander Morgado  <aleksander@lanedo.com>
+
+	Fixes GB#628535: 'make check' fails with LDFLAGS=-Wl,--as-needed -Wl,-Bsymbolic
+	 * Issue with order of libraries when using --as-needed linker option.
+	   See http://www.gentoo.org/proj/en/qa/asneeded.xml
+
+	Fixes GB#628537: toplevel Makefile.am references non-existing files
+
+	Fixes GB#628536: Don't install ui files for example utils
+
+2010-09-02  Martyn Russell  <martyn@lanedo.com>
+
+	Updated NEWS
+
+2010-09-02  Carlos Garnacho  <carlosg@gnome.org>
+
+	TrackerMinerFS: Do not index dirs inconditionally when adding monitors.
+
+2010-09-02  Martyn Russell  <martyn@lanedo.com>
+
+	Updated NEWS
+
+	tracker-extract: Fixed xine, mplayer and totem backends
+	Were calling old APIs that no longer exist or that have been updated
+
+2010-09-02  Aleksander Morgado  <aleksander@lanedo.com>
+
+	ttl_sgml: avoid compiler warning
+
+	libtracker-miner: Improved fix in commit 0581f68, so that regeneration is not done in initial crawling
+
+2010-09-02  Jürg Billeter  <j@bitron.ch>
+
+	NMO: Add nmo:isEmergency property
+
+2010-09-02  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: if CREATED event is received from the monitor, force IRI cache update
+	 * The issue comes from NB#188494, but it doesn't fully fix it. The issue seems
+	   to be that the camera application is also inserting a new element in the store
+	   and doesn't check if it already exists before.
+
+2010-09-02  Carlos Garnacho  <carlosg@gnome.org>
+
+	NB#184505 - Video files without audio are listed as music clips.
+	Do not extract the album tag if the file is not an audio file, the ontology
+	only applies to audio albums anyway.
+
+2010-08-20  Bruno Brouard  <annoa.b@gmail.com>
+
+	Updated French translation
+
 2010-08-19  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.8.16

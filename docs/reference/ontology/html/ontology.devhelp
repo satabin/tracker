@@ -257,16 +257,16 @@
     <function name="nmo:isRecent" link="nmo-properties.html#nmo-isRecent"/>
     <function name="nmo:sentDate" link="nmo-properties.html#nmo-sentDate"/>
     <function name="nmo:isSent" link="nmo-properties.html#nmo-isSent"/>
+    <function name="nmo:isEmergency" link="nmo-properties.html#nmo-isEmergency"/>
     <function name="nmo:hasContent" link="nmo-properties.html#nmo-hasContent"/>
-    <function name="nmo:headerName" link="nmo-properties.html#nmo-headerName"/>
     <function name="nmo:messageSubject" link="nmo-properties.html#nmo-messageSubject"/>
-    <function name="nmo:recipient" link="nmo-properties.html#nmo-recipient"/>
+    <function name="nmo:headerName" link="nmo-properties.html#nmo-headerName"/>
     <function name="nmo:bcc" link="nmo-properties.html#nmo-bcc"/>
     <function name="nmo:fromAddress" link="nmo-properties.html#nmo-fromAddress"/>
-    <function name="nmo:signature" link="nmo-properties.html#nmo-signature"/>
+    <function name="nmo:recipient" link="nmo-properties.html#nmo-recipient"/>
     <function name="nmo:plainTextMessageContent" link="nmo-properties.html#nmo-plainTextMessageContent"/>
     <function name="nmo:charSet" link="nmo-properties.html#nmo-charSet"/>
-    <function name="nmo:smsId" link="nmo-properties.html#nmo-smsId"/>
+    <function name="nmo:signature" link="nmo-properties.html#nmo-signature"/>
     <function name="nmo:duration" link="nmo-properties.html#nmo-duration"/>
     <function name="nmo:isDraft" link="nmo-properties.html#nmo-isDraft"/>
     <function name="nmo:from" link="nmo-properties.html#nmo-from"/>
@@ -277,7 +277,7 @@
     <function name="nmo:status" link="nmo-properties.html#nmo-status"/>
     <function name="nmo:serverCount" link="nmo-properties.html#nmo-serverCount"/>
     <function name="nmo:deliveryStatus" link="nmo-properties.html#nmo-deliveryStatus"/>
-    <function name="nmo:reportDelivery" link="nmo-properties.html#nmo-reportDelivery"/>
+    <function name="nmo:smsId" link="nmo-properties.html#nmo-smsId"/>
     <function name="nmo:to" link="nmo-properties.html#nmo-to"/>
     <function name="nmo:headerValue" link="nmo-properties.html#nmo-headerValue"/>
     <function name="nmo:replyTo" link="nmo-properties.html#nmo-replyTo"/>
@@ -287,6 +287,7 @@
     <function name="nmo:encoding" link="nmo-properties.html#nmo-encoding"/>
     <function name="nmo:folderName" link="nmo-properties.html#nmo-folderName"/>
     <function name="nmo:smsFolderId" link="nmo-properties.html#nmo-smsFolderId"/>
+    <function name="nmo:reportDelivery" link="nmo-properties.html#nmo-reportDelivery"/>
     <function name="nmo:cc" link="nmo-properties.html#nmo-cc"/>
     <function name="nmo:references" link="nmo-properties.html#nmo-references"/>
     <function name="nmo:messageId" link="nmo-properties.html#nmo-messageId"/>

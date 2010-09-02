@@ -107,6 +107,7 @@ struct TrackerMinerFSPrivate {
 	GHashTable     *items_ignore_next_update;
 
 	GQuark          quark_ignore_file;
+	GQuark          quark_force_cache_regeneration;
 
 	GList          *config_directories;
 
@@ -532,6 +533,8 @@ tracker_miner_fs_init (TrackerMinerFS *object)
 	                  object);
 
 	priv->quark_ignore_file = g_quark_from_static_string ("tracker-ignore-file");
+	priv->quark_force_cache_regeneration =
+		g_quark_from_static_string ("tracker-force-cache-regeneration");
 
 	priv->iri_cache = g_hash_table_new_full (g_file_hash,
 	                                         (GEqualFunc) g_file_equal,
@@ -1444,7 +1447,8 @@ item_add_or_update (TrackerMinerFS *fs,
 	parent = g_file_get_parent (file);
 
 	if (parent) {
-		if (!fs->private->current_iri_cache_parent ||
+		if (g_object_steal_qdata (G_OBJECT (file), fs->private->quark_force_cache_regeneration) ||
+		    !fs->private->current_iri_cache_parent ||
 		    !g_file_equal (parent, fs->private->current_iri_cache_parent)) {
 			/* Cache the URN for the new current parent, processing
 			 * order guarantees that all contents for a folder are
@@ -2667,6 +2671,15 @@ monitor_item_created_cb (TrackerMonitor *monitor,
 		    should_recurse_for_directory (fs, file)) {
 			tracker_miner_fs_directory_add_internal (fs, file);
 		} else {
+			/* On new item events, force a cache regeneration.
+			 * This is done to avoid issues when other applications
+			 * insert resources in the store, then we get the created
+			 * events, and we assume the previous cache was still
+			 * valid. */
+			g_object_set_qdata (G_OBJECT (file),
+			                    fs->private->quark_force_cache_regeneration,
+			                    GINT_TO_POINTER (TRUE));
+
 			g_queue_push_tail (fs->private->items_created,
 			                   g_object_ref (file));
 
@@ -2924,12 +2937,14 @@ crawler_check_directory_contents_cb (TrackerCrawler *crawler,
 	 * the finished sig?
 	 */
 	if (add_monitor) {
-		/* Before adding the monitor, start notifying the store
-		 * about the new directory, so that if any file event comes
-		 * afterwards, the directory is already in store. */
-		g_queue_push_tail (fs->private->items_created,
-		                   g_object_ref (parent));
-		item_queue_handlers_set_up (fs);
+		if (!item_query_exists (fs, parent, NULL, NULL)) {
+			/* Before adding the monitor, start notifying the store
+			 * about the new directory, so that if any file event comes
+			 * afterwards, the directory is already in store. */
+			g_queue_push_tail (fs->private->items_created,
+			                   g_object_ref (parent));
+			item_queue_handlers_set_up (fs);
+		}
 
 		/* As we already added here, specify that it shouldn't be added
 		 * any more */

@@ -11,6 +11,8 @@ tracker (0.8.17-1) UNRELEASED; urgency=low
     - Update build system for 01-upower.patch.
   * debian/control
     - Bump Standards-Version to 3.9.1. No further changes.
+    - Change Build-Depends on libdevkit-power-gobject-dev to
+      libupower-glib-dev (>= 0.9.0).
 
  -- Michael Biebl <biebl@debian.org>  Thu, 02 Sep 2010 18:42:12 +0200
 

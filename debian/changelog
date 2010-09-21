@@ -4,6 +4,9 @@ tracker (0.8.17-1) UNRELEASED; urgency=low
   * debian/patches/01-nfo-belongsToContainer-index.patch
     - Remove this patch as the performance regressions have been mostly fixed
       upstream by making the crawling more efficient.
+  * debian/patches/01-upower.patch
+    - Port tracker from deprecated libdevkit-power-gobject to libupower-glib.
+      Patch cherry-picked from upstream. (Closes: #595085)
   * debian/control
     - Bump Standards-Version to 3.9.1. No further changes.
 

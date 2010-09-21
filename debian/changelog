@@ -2,8 +2,8 @@ tracker (0.8.17-1) UNRELEASED; urgency=low
 
   * New upstream release.
   * debian/patches/01-nfo-belongsToContainer-index.patch
-    - Don't change nao:lastModified so it applies cleanly to the new upstream
-      release.
+    - Remove this patch as the performance regressions have been mostly fixed
+      upstream by making the crawling more efficient.
   * debian/control
     - Bump Standards-Version to 3.9.1. No further changes.
 

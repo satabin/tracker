@@ -7,6 +7,8 @@ tracker (0.8.17-1) UNRELEASED; urgency=low
   * debian/patches/01-upower.patch
     - Port tracker from deprecated libdevkit-power-gobject to libupower-glib.
       Patch cherry-picked from upstream. (Closes: #595085)
+  * debian/patches/99-autoreconf.patch
+    - Update build system for 01-upower.patch.
   * debian/control
     - Bump Standards-Version to 3.9.1. No further changes.
 

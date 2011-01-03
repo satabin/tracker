@@ -88,6 +88,36 @@ Description: metadata database, indexer and search tool - development files
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
+Package: libtracker-sparql-0.10-0
+Architecture: any
+Section: libs
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Description: metadata database, indexer and search tool - library
+ This package contains a library to perform SPARQL queries and updates in the
+ Tracker store.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
+Package: libtracker-sparql-0.10-dev
+Architecture: any
+Section: libdevel
+Depends: libtracker-sparql-0.10-0 (= ${binary:Version}),
+         ${misc:Depends},
+         libglib2.0-dev
+Description: metadata database, indexer and search tool - development files
+ This package contains the static libraries and header files needed to link
+ applications with libtracker-sparql.
+ .
+ libtracker-sparql provides a library to perform SPARQL queries and updates in
+ the Tracker store.
+ .
+ Tracker is an advanced framework for first class objects with associated
+ metadata and tags. It provides a one stop solution for all metadata, tags,
+ shared object databases, search tools and indexing.
+
 Package: libtracker-miner-0.10-0
 Architecture: any
 Section: libs

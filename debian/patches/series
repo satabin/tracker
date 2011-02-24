@@ -1,3 +1,4 @@
 # Debian patches for tracker
 01-upower.patch
+02-require_eds_2_32.patch
 99-autoreconf.patch

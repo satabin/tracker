@@ -21,14 +21,22 @@
 
 #include <stdlib.h>
 
+#include <glib/gi18n.h>
+
 #include <libtracker-common/tracker-dbus.h>
-#include <libtracker-client/tracker.h>
+#include <libtracker-sparql/tracker-sparql.h>
 
 #include "tracker-writeback-consumer.h"
 #include "tracker-writeback-dbus.h"
 #include "tracker-writeback-glue.h"
 #include "tracker-writeback-module.h"
 #include "tracker-marshal.h"
+
+/* Known exception for which linking with libtracker-miner isn't necessary,
+ * include is needed for the TRACKER_MINER_FS_GRAPH_URN define which is shared
+ * between tracker-writeback and tracker-miner-fs */
+
+#include "libtracker-miner/tracker-miner-common.h"
 
 #define TRACKER_WRITEBACK_CONSUMER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_WRITEBACK_CONSUMER, TrackerWritebackConsumerPrivate))
 
@@ -37,13 +45,14 @@
 #define TRACKER_INTERFACE_RESOURCES "org.freedesktop.Tracker1.Resources"
 
 typedef struct {
-	gchar *subject;
-	GStrv rdf_types;
+	gint    subject;
+	GStrv   rdf_types;
+	GArray *rdf_types_int;
 } QueryData;
 
 typedef struct {
 	GHashTable *modules;
-	TrackerClient *client;
+	TrackerSparqlConnection *connection;
 	TrackerMinerManager *manager;
 	GQueue *process_queue;
 	guint idle_id;
@@ -77,10 +86,19 @@ static void
 tracker_writeback_consumer_init (TrackerWritebackConsumer *consumer)
 {
 	TrackerWritebackConsumerPrivate *priv;
+	GError *error = NULL;
 
 	priv = TRACKER_WRITEBACK_CONSUMER_GET_PRIVATE (consumer);
 
-	priv->client = tracker_client_new (TRACKER_CLIENT_ENABLE_WARNINGS, G_MAXINT);
+	priv->connection = tracker_sparql_connection_get (NULL, &error);
+
+	if (!priv->connection) {
+		g_printerr ("%s: %s\n",
+		            _("Could not establish a connection to Tracker"),
+		            error ? error->message : _("No error given"));
+		g_clear_error (&error);
+	}
+
 	priv->modules = g_hash_table_new_full (g_str_hash,
 	                                       g_str_equal,
 	                                       (GDestroyNotify) g_free,
@@ -98,8 +116,8 @@ tracker_writeback_consumer_finalize (GObject *object)
 
 	priv = TRACKER_WRITEBACK_CONSUMER_GET_PRIVATE (object);
 
-	if (priv->client) {
-		g_object_unref (priv->client);
+	if (priv->connection) {
+		g_object_unref (priv->connection);
 	}
 
 	g_object_unref (priv->manager);
@@ -157,55 +175,172 @@ sparql_rdf_types_match (const gchar * const *module_types,
 }
 
 static void
-sparql_query_cb (GPtrArray *result,
-                 GError    *error,
-                 gpointer   user_data)
+sparql_query_cb (GObject      *object,
+                 GAsyncResult *result,
+                 gpointer      user_data)
 {
 	TrackerWritebackConsumerPrivate *priv;
 	TrackerWritebackConsumer *consumer;
 	QueryData *data;
+	GError *error = NULL;
+	TrackerSparqlCursor *cursor;
 
 	consumer = TRACKER_WRITEBACK_CONSUMER (user_data);
 	priv = TRACKER_WRITEBACK_CONSUMER_GET_PRIVATE (consumer);
 	data = g_queue_pop_head (priv->process_queue);
 
-	if (!error && result && result->len > 0) {
-		GHashTableIter iter;
-		gpointer key, value;
-		GStrv rdf_types;
+	cursor = tracker_sparql_connection_query_finish (TRACKER_SPARQL_CONNECTION (object), result, &error);
 
-		rdf_types = data->rdf_types;
+	if (!error) {
+		GPtrArray *results = g_ptr_array_new_with_free_func ((GDestroyNotify) g_strfreev);
+		guint cols = tracker_sparql_cursor_get_n_columns (cursor);
 
-		g_hash_table_iter_init (&iter, priv->modules);
-
-		while (g_hash_table_iter_next (&iter, &key, &value)) {
-			TrackerWritebackModule *module;
-			const gchar * const *module_types;
-
-			module = value;
-			module_types = tracker_writeback_module_get_rdf_types (module);
-
-			if (sparql_rdf_types_match (module_types, (const gchar * const *) rdf_types)) {
-				TrackerWriteback *writeback;
-
-				g_message ("  Updating metadata for subject:'%s' using module:'%s'",
-				           data->subject,
-				           module->name);
-
-				writeback = tracker_writeback_module_create (module);
-				tracker_writeback_update_metadata (writeback, result, priv->client);
-				g_object_unref (writeback);
-			}
+		while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+			GStrv row = g_new0 (gchar*, cols);
+			guint i;
+			for (i = 0; i < cols; i++)
+				row[i] = g_strdup (tracker_sparql_cursor_get_string (cursor, i, NULL));
+			g_ptr_array_add (results, row);
 		}
+
+		if (results->len > 0) {
+			GHashTableIter iter;
+			gpointer key, value;
+			GStrv rdf_types;
+
+			rdf_types = data->rdf_types;
+
+			g_hash_table_iter_init (&iter, priv->modules);
+
+			while (g_hash_table_iter_next (&iter, &key, &value)) {
+				TrackerWritebackModule *module;
+				const gchar * const *module_types;
+
+				module = value;
+				module_types = tracker_writeback_module_get_rdf_types (module);
+
+				if (sparql_rdf_types_match (module_types, (const gchar * const *) rdf_types)) {
+					TrackerWriteback *writeback;
+
+					g_message ("  Updating metadata for subject:'%d' using module:'%s'",
+					           data->subject,
+					           module->name);
+
+					writeback = tracker_writeback_module_create (module);
+					tracker_writeback_update_metadata (writeback, results, priv->connection);
+					g_object_unref (writeback);
+				}
+			}
+		} else {
+			g_message ("  No files qualify for updates");
+		}
+		g_ptr_array_unref (results);
+		g_object_unref (cursor);
 	} else {
-		g_message ("  No files qualify for updates");
+		g_message ("  No files qualify for updates (%s)", error->message);
+		g_error_free (error);
 	}
 
-	g_free (data->subject);
 	g_strfreev (data->rdf_types);
 	g_slice_free (QueryData, data);
 
 	priv->idle_id = g_idle_add (process_queue_cb, consumer);
+}
+
+static void
+rdf_types_to_uris_cb (GObject      *object,
+                      GAsyncResult *result,
+                      gpointer      user_data)
+{
+	TrackerWritebackConsumerPrivate *priv;
+	TrackerWritebackConsumer *consumer;
+	QueryData *data;
+	GError *error = NULL;
+	TrackerSparqlCursor *cursor;
+	TrackerSparqlConnection *connection;
+
+	consumer = TRACKER_WRITEBACK_CONSUMER (user_data);
+	priv = TRACKER_WRITEBACK_CONSUMER_GET_PRIVATE (consumer);
+	connection = TRACKER_SPARQL_CONNECTION (object);
+
+	data = g_queue_peek_head (priv->process_queue);
+
+	cursor = tracker_sparql_connection_query_finish (connection, result, &error);
+
+	if (!error) {
+		gchar *query;
+		const gchar *subject;
+		GArray *rdf_types;
+		guint i;
+
+		rdf_types = g_array_new (TRUE, TRUE, sizeof (gchar *));
+
+		while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+			gchar *uri = g_strdup (tracker_sparql_cursor_get_string (cursor, 0, NULL));
+			g_array_append_val (rdf_types, uri);
+		}
+
+		data->rdf_types = g_strdupv ((gchar **) rdf_types->data);
+
+		for (i = 0; i < rdf_types->len; i++)
+			g_free (g_array_index (rdf_types, gchar*, i));
+		g_array_free (rdf_types, TRUE);
+
+		g_object_unref (cursor);
+
+		query = g_strdup_printf ("SELECT tracker:uri (%d) {}", data->subject);
+		cursor = tracker_sparql_connection_query (connection, query, NULL, NULL);
+		g_free (query);
+
+		if (cursor && tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+			subject = tracker_sparql_cursor_get_string (cursor, 0, NULL);
+			if (!subject) {
+				g_object_unref (cursor);
+				goto trouble;
+			}
+		} else {
+			if (cursor)
+				g_object_unref (cursor);
+			goto trouble;
+		}
+
+		query = g_strdup_printf ("SELECT ?url '%s' ?predicate ?object { "
+		                            "<%s> a nfo:FileDataObject . "
+		                            "<%s> ?predicate ?object ; nie:url ?url . "
+		                            "?predicate tracker:writeback true . "
+		                            "FILTER (NOT EXISTS { GRAPH <"TRACKER_MINER_FS_GRAPH_URN"> "
+		                              "{ <%s> ?predicate ?object } }) } ",
+		                         subject, subject, subject, subject);
+
+		tracker_sparql_connection_query_async (priv->connection,
+		                                       query,
+		                                       NULL,
+		                                       sparql_query_cb,
+		                                       consumer);
+
+		g_free (query);
+		g_object_unref (cursor);
+
+	} else {
+		goto trouble;
+	}
+
+	g_array_free (data->rdf_types_int, TRUE);
+
+	return;
+
+trouble:
+		if (error) {
+			g_message ("  No files qualify for updates (%s)", error->message);
+			g_error_free (error);
+		}
+		g_array_free (data->rdf_types_int, TRUE);
+		data = g_queue_pop_head (priv->process_queue);
+		g_strfreev (data->rdf_types);
+		g_slice_free (QueryData, data);
+
+		priv->idle_id = g_idle_add (process_queue_cb, consumer);
+
 }
 
 static gboolean
@@ -214,7 +349,8 @@ process_queue_cb (gpointer user_data)
 	TrackerWritebackConsumerPrivate *priv;
 	TrackerWritebackConsumer *consumer;
 	QueryData *data;
-	gchar *query;
+	GString *query;
+	guint i;
 
 	consumer = TRACKER_WRITEBACK_CONSUMER (user_data);
 	priv = TRACKER_WRITEBACK_CONSUMER_GET_PRIVATE (consumer);
@@ -227,19 +363,27 @@ process_queue_cb (gpointer user_data)
 		return FALSE;
 	}
 
-	query = g_strdup_printf ("SELECT ?url '%s' ?predicate ?object {"
-	                         "  <%s> ?predicate ?object ; "
-	                         "       nie:url ?url ."
-	                         "  ?predicate tracker:writeback true "
-	                         "}",
-	                         data->subject, data->subject);
+	query = g_string_new ("SELECT ?resource { ?resource a rdfs:Class . "
+	                      "FILTER (tracker:id (?resource) IN (");
 
-	tracker_resources_sparql_query_async (priv->client,
-	                                      query,
-	                                      sparql_query_cb,
-	                                      consumer);
+	for (i = 0; i < data->rdf_types_int->len; i++) {
+		gint id = g_array_index (data->rdf_types_int, gint, i);
+		if (i != 0) {
+			g_string_append_printf (query, ", %d", id);
+		} else {
+			g_string_append_printf (query, "%d", id);
+		}
+	}
 
-	g_free (query);
+	g_string_append (query, ")) }");
+
+	tracker_sparql_connection_query_async (priv->connection,
+	                                       query->str,
+	                                       NULL,
+	                                       rdf_types_to_uris_cb,
+	                                       consumer);
+
+	g_string_free (query, TRUE);
 
 	/* Keep "processing" state */
 	priv->idle_id = 0;
@@ -248,21 +392,27 @@ process_queue_cb (gpointer user_data)
 
 void
 tracker_writeback_consumer_add_subject (TrackerWritebackConsumer *consumer,
-                                        const gchar              *subject,
-                                        const GStrv               rdf_types)
+                                        gint                      subject,
+                                        GArray                   *rdf_types)
 {
 	TrackerWritebackConsumerPrivate *priv;
 	QueryData *data;
+	guint i;
 
 	g_return_if_fail (TRACKER_IS_WRITEBACK_CONSUMER (consumer));
-	g_return_if_fail (subject != NULL);
 	g_return_if_fail (rdf_types != NULL);
 
 	priv = TRACKER_WRITEBACK_CONSUMER_GET_PRIVATE (consumer);
 
 	data = g_slice_new (QueryData);
-	data->subject = g_strdup (subject);
-	data->rdf_types = g_strdupv (rdf_types);
+	data->subject = subject;
+
+	data->rdf_types_int = g_array_sized_new (FALSE, FALSE, sizeof (gint), rdf_types->len);
+
+	for (i = 0; i < rdf_types->len; i++) {
+		gint id = g_array_index (rdf_types, gint, i);
+		g_array_append_val (data->rdf_types_int, id);
+	}
 
 	g_queue_push_tail (priv->process_queue, data);
 

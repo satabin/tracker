@@ -23,7 +23,6 @@
 
 #include <glib-object.h>
 #include <gio/gio.h>
-#include <libtracker-client/tracker.h>
 
 G_BEGIN_DECLS
 
@@ -45,8 +44,8 @@ struct TrackerWritebackDispatcherClass {
 	GObjectClass parent_class;
 
 	void (* writeback) (TrackerWritebackDispatcher *dispatcher,
-	                    const gchar                *subject,
-	                    const GStrv                 rdf_types);
+	                    gint                        subject,
+	                    GArray                     *rdf_types);
 };
 
 GType                        tracker_writeback_dispatcher_get_type (void) G_GNUC_CONST;

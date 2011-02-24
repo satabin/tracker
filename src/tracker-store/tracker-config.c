@@ -33,9 +33,8 @@
 
 /* GKeyFile defines */
 #define GROUP_GENERAL     "General"
-#define GROUP_INDEXING    "Indexing"
 
-/* Default values */
+/* Default values (only critical logs by default) */
 #define DEFAULT_VERBOSITY 0
 
 /* typedef struct TrackerConfigPrivate TrackerConfigPrivate; */
@@ -43,7 +42,7 @@
 typedef struct {
 	/* General */
 	gint verbosity;
-}  TrackerConfigPrivate;
+} TrackerConfigPrivate;
 
 typedef struct {
 	GType type;
@@ -71,11 +70,11 @@ enum {
 	PROP_0,
 
 	/* General */
-	PROP_VERBOSITY
+	PROP_VERBOSITY,
 };
 
 static ObjectToKeyFile conversions[] = {
-	{ G_TYPE_INT,     "verbosity",          GROUP_GENERAL,  "Verbosity"       },
+	{ G_TYPE_INT, "verbosity", GROUP_GENERAL,  "Verbosity" },
 };
 
 G_DEFINE_TYPE (TrackerConfig, tracker_config, TRACKER_TYPE_CONFIG_FILE);
@@ -121,7 +120,6 @@ config_set_property (GObject      *object,
 		tracker_config_set_verbosity (TRACKER_CONFIG (object),
 		                              g_value_get_int (value));
 		break;
-
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
 		break;
@@ -143,7 +141,6 @@ config_get_property (GObject    *object,
 	case PROP_VERBOSITY:
 		g_value_set_int (value, priv->verbosity);
 		break;
-
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
 		break;
@@ -350,3 +347,4 @@ tracker_config_set_verbosity (TrackerConfig *config,
 	priv->verbosity = value;
 	g_object_notify (G_OBJECT (config), "verbosity");
 }
+

@@ -5,17 +5,17 @@
 <title>How to use libtracker-extract</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Extract Library Reference Manual">
-<link rel="up" href="ch01.html" title="Core">
-<link rel="prev" href="ch01.html" title="Core">
+<link rel="up" href="ch02.html" title="Core API">
+<link rel="prev" href="ch02.html" title="Core API">
 <link rel="next" href="libtracker-extract-Data-utilities.html" title="Data utilities">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="ch01.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="ch02.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Tracker Extract Library Reference Manual</th>
 <td><a accesskey="n" href="libtracker-extract-Data-utilities.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
@@ -44,7 +44,7 @@ Stable, unless otherwise indicated
 <pre class="synopsis">
 #include &lt;libtracker-extract/tracker-extract.h&gt;
 
-<span class="returnvalue">void</span>                (<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractMimeFunc" title="TrackerExtractMimeFunc ()">*TrackerExtractMimeFunc</a>)           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+<span class="returnvalue">void</span>                (<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractMimeFunc" title="TrackerExtractMimeFunc ()">*TrackerExtractMimeFunc</a>)           (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
                                                          <em class="parameter"><code><a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>);
 <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="returnvalue">TrackerExtractData</span></a> * (<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractDataFunc" title="TrackerExtractDataFunc ()">*TrackerExtractDataFunc</a>)          (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -68,7 +68,7 @@ do that.
 <p>
 </p>
 <div class="example">
-<a name="id514723"></a><p class="title"><b>Example 1. Basic extractor example</b></p>
+<a name="id376388"></a><p class="title"><b>Example 1. Basic extractor example</b></p>
 <div class="example-contents">
 An example of how to write an extractor to retrieve PNG embedded
 metadata.
@@ -124,7 +124,7 @@ metadata.
 <a name="libtracker-extract-How-to-use-libtracker-extract.details"></a><h2>Details</h2>
 <div class="refsect2" title="TrackerExtractMimeFunc ()">
 <a name="TrackerExtractMimeFunc"></a><h3>TrackerExtractMimeFunc ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerExtractMimeFunc)           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerExtractMimeFunc)           (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
                                                          <em class="parameter"><code><a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>);</pre>
 <p>
@@ -209,7 +209,7 @@ matches the <em class="parameter"><code>mime</code></em>.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term">const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExtractData.mime"></a>mime</code></em>;</span></p></td>
+<td><p><span class="term">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExtractData.mime"></a>mime</code></em>;</span></p></td>
 <td>a string pointer representing a mime type.
 </td>
 </tr>
@@ -255,6 +255,6 @@ where multiple mime types are supported.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

@@ -40,6 +40,25 @@ tracker-iptc
 @country_name: 
 @contact: 
 
+<!-- ##### FUNCTION tracker_iptc_new ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@len: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_iptc_free ##### -->
+<para>
+
+</para>
+
+@data: 
+
+
 <!-- ##### FUNCTION tracker_iptc_read ##### -->
 <para>
 

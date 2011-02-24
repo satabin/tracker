@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="General">
 <link rel="prev" href="libtracker-client-tracker.html" title="TrackerClient">
 <link rel="next" href="libtracker-client-Utilities.html" title="Utilities">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -40,9 +40,9 @@
 <pre class="synopsis">
 #include &lt;libtracker-client/tracker-client.h&gt;
 
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()">tracker_cancel_call</a>                 (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> call_id</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-last-call" title="tracker_cancel_last_call ()">tracker_cancel_last_call</a>            (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()">tracker_cancel_call</a>                 (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> call_id</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-last-call" title="tracker_cancel_last_call ()">tracker_cancel_last_call</a>            (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -57,10 +57,14 @@ API to cancel the last request.
 <a name="libtracker-client-Cancellations.details"></a><h2>Details</h2>
 <div class="refsect2" title="tracker_cancel_call ()">
 <a name="tracker-cancel-call"></a><h3>tracker_cancel_call ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_cancel_call                 (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> call_id</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_cancel_call                 (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> call_id</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_cancel_call</code> has been deprecated since version 0.10 and should not be used in newly-written code. There is no replacement for this in libtracker-sparql</p>
+</div>
 <p>
-The <em class="parameter"><code>call_id</code></em> is a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> which increments with each asynchronous
+The <em class="parameter"><code>call_id</code></em> is a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> which increments with each asynchronous
 API call made using libtracker-client. For synchronous API calls,
 see <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-last-call" title="tracker_cancel_last_call ()"><code class="function">tracker_cancel_last_call()</code></a> which is more useful.
 </p>
@@ -74,7 +78,7 @@ see <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-la
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>call_id</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> id for the API call you want to cancel.
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> id for the API call you want to cancel.
 </td>
 </tr>
 <tr>
@@ -88,7 +92,11 @@ see <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-la
 <hr>
 <div class="refsect2" title="tracker_cancel_last_call ()">
 <a name="tracker-cancel-last-call"></a><h3>tracker_cancel_last_call ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_cancel_last_call            (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_cancel_last_call            (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_cancel_last_call</code> has been deprecated since version 0.10 and should not be used in newly-written code. There is no replacement for this in libtracker-sparql</p>
+</div>
 <p>
 Cancels the last API call made using <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()"><code class="function">tracker_cancel_call()</code></a>. the
 last API call ID is always tracked so you don't have to provide it
@@ -104,7 +112,7 @@ with this API.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> indicating if the call was cancelled or not.
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> indicating if the call was cancelled or not.
 </td>
 </tr>
 </tbody>
@@ -114,6 +122,6 @@ with this API.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

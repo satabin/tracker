@@ -5,10 +5,10 @@
 <title>NIE Ontology Properties</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
-<link rel="up" href="nie-ontology.html" title="NIE Ontology">
+<link rel="up" href="nie-ontology.html" title="Nepomuk Information Element (NIE): Top classes in the ontology. Almost everything else is subclass of these.">
 <link rel="prev" href="nie-classes.html" title="NIE Ontology Classes">
-<link rel="next" href="nco-ontology.html" title="NCO Ontology">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<link rel="next" href="nao-ontology.html" title="Nepomuk Annotation Ontology (NAO): Tags, ratings and other common annotations to all classes">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -17,7 +17,7 @@
 <td><a accesskey="u" href="nie-ontology.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Tracker Ontology Reference Manual</th>
-<td><a accesskey="n" href="nco-ontology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="nao-ontology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="section" title="NIE Ontology Properties">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -476,6 +476,10 @@
 <td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
 <td>1</td>
 </tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Text indexed</code></em> :</span></p></td>
+<td>This property is indexed, so it can provide results on text search</td>
+</tr>
 </tbody>
 </table></div>
 </div>
@@ -726,6 +730,45 @@
 </table></div>
 </div>
 <hr>
+<div class="refsect2" title="nie:comment">
+<a name="nie-comment"></a><h3>nie:comment</h3>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Text indexed</code></em> :</span></p></td>
+<td>This property is indexed, so it can provide results on text search</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
 <div class="refsect2" title="nie:interpretedAs">
 <a name="nie-interpretedAs"></a><h3>nie:interpretedAs</h3>
 <div class="variablelist"><table border="0">
@@ -748,42 +791,6 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
 <td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="nie:disclaimer">
-<a name="nie-disclaimer"></a><h3>nie:disclaimer</h3>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>
-<a class="link" href="nie-properties.html#nie-legal" title="nie:legal">nie:legal</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
@@ -830,47 +837,8 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nie:comment">
-<a name="nie-comment"></a><h3>nie:comment</h3>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Text indexed</code></em> :</span></p></td>
-<td>This property is indexed, so it can provide results on text search</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="nie:identifier">
-<a name="nie-identifier"></a><h3>nie:identifier</h3>
+<div class="refsect2" title="nie:disclaimer">
+<a name="nie-disclaimer"></a><h3>nie:disclaimer</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -891,7 +859,7 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
 <td>
-<a class="link" href="dc-properties.html#dc-identifier" title="dc:identifier">dc:identifier</a>, </td>
+<a class="link" href="nie-properties.html#nie-legal" title="nie:legal">nie:legal</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
@@ -928,6 +896,42 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
 <td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nie:identifier">
+<a name="nie-identifier"></a><h3>nie:identifier</h3>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>
+<a class="link" href="dc-properties.html#dc-identifier" title="dc:identifier">dc:identifier</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
@@ -1379,6 +1383,6 @@
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2007, Jason Kivlighn <jkivlighn@gmail.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
@@ -133,8 +133,8 @@ extract_xmp (const gchar          *uri,
              TrackerSparqlBuilder *preupdate,
              TrackerSparqlBuilder *metadata)
 {
-	TrackerXmpData xd = { 0 };
-	GError *error;
+	TrackerXmpData *xd = NULL;
+	GError *error = NULL;
 	gchar *filename;
 	gchar *contents;
 	gsize length;
@@ -149,19 +149,20 @@ extract_xmp (const gchar          *uri,
 		/* If no orig file is found for the sidekick, we use the sidekick to
 		 * describe itself instead, falling back to uri 
 		 */
-		tracker_xmp_read (contents,
-		                  length,
-		                  original_uri ? original_uri : uri,
-		                  &xd);
+		xd = tracker_xmp_new (contents,
+		                      length,
+		                      original_uri ? original_uri : uri);
 
-		tracker_xmp_apply (metadata, uri, &xd);
+		if (xd) {
+			tracker_xmp_apply (preupdate, metadata, uri, xd);
+		}
 
 		g_free (original_uri);
+		tracker_xmp_free (xd);
 		g_free (contents);
 	}
 
 	g_free (filename);
-
 }
 
 TrackerExtractData *

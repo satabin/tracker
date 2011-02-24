@@ -8,7 +8,7 @@
 <link rel="up" href="ch02.html" title="Querying">
 <link rel="prev" href="libtracker-client-Resources.html" title="Resources">
 <link rel="next" href="ch03.html" title="Building Queries">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -40,36 +40,36 @@
 <pre class="synopsis">
 #include &lt;libtracker-client/tracker-client.h&gt;
 
-<span class="returnvalue">void</span>                (<a class="link" href="libtracker-client-Search.html#TrackerReplyArray" title="TrackerReplyArray ()">*TrackerReplyArray</a>)                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **result</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="returnvalue">TrackerClient</span></a> *     <a class="link" href="libtracker-client-Search.html#tracker-connect" title="tracker_connect ()">tracker_connect</a>                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable_warnings</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="libtracker-client-Search.html#TrackerReplyArray" title="TrackerReplyArray ()">*TrackerReplyArray</a>)                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **result</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="returnvalue">TrackerClient</span></a> *     <a class="link" href="libtracker-client-Search.html#tracker-connect" title="tracker_connect ()">tracker_connect</a>                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable_warnings</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-Search.html#tracker-disconnect" title="tracker_disconnect ()">tracker_disconnect</a>                  (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Search.html#tracker-search-metadata-by-text-async" title="tracker_search_metadata_by_text_async ()">tracker_search_metadata_by_text_async</a>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Search.html#tracker-search-metadata-by-text-async" title="tracker_search_metadata_by_text_async ()">tracker_search_metadata_by_text_async</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Search.html#TrackerReplyArray" title="TrackerReplyArray ()"><span class="type">TrackerReplyArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Search.html#tracker-search-metadata-by-text-and-location-async" title="tracker_search_metadata_by_text_and_location_async ()">tracker_search_metadata_by_text_and_location_async</a>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Search.html#tracker-search-metadata-by-text-and-location-async" title="tracker_search_metadata_by_text_and_location_async ()">tracker_search_metadata_by_text_and_location_async</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *location</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *location</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Search.html#TrackerReplyArray" title="TrackerReplyArray ()"><span class="type">TrackerReplyArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Search.html#tracker-search-metadata-by-text-and-mime-async" title="tracker_search_metadata_by_text_and_mime_async ()">tracker_search_metadata_by_text_and_mime_async</a>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Search.html#tracker-search-metadata-by-text-and-mime-async" title="tracker_search_metadata_by_text_and_mime_async ()">tracker_search_metadata_by_text_and_mime_async</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimes</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimes</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Search.html#TrackerReplyArray" title="TrackerReplyArray ()"><span class="type">TrackerReplyArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Search.html#tracker-search-metadata-by-text-and-mime-and-location-async" title="tracker_search_metadata_by_text_and_mime_and_location_async ()">tracker_search_metadata_by_text_and_mime_and_location_async</a>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Search.html#tracker-search-metadata-by-text-and-mime-and-location-async" title="tracker_search_metadata_by_text_and_mime_and_location_async ()">tracker_search_metadata_by_text_and_mime_and_location_async</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimes</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *location</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimes</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *location</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Search.html#TrackerReplyArray" title="TrackerReplyArray ()"><span class="type">TrackerReplyArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -82,9 +82,9 @@ Simple search API.
 <a name="libtracker-client-Search.details"></a><h2>Details</h2>
 <div class="refsect2" title="TrackerReplyArray ()">
 <a name="TrackerReplyArray"></a><h3>TrackerReplyArray ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerReplyArray)                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **result</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerReplyArray)                (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **result</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">TrackerReplyArray</code> has been deprecated since version 0.8 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()"><span class="type">TrackerReplyVoid</span></a> and <a class="link" href="libtracker-client-Statistics.html#TrackerReplyGPtrArray" title="TrackerReplyGPtrArray ()"><span class="type">TrackerReplyGPtrArray</span></a>
@@ -121,8 +121,8 @@ This is used by the 0.6 Tracker APIs:
 <hr>
 <div class="refsect2" title="tracker_connect ()">
 <a name="tracker-connect"></a><h3>tracker_connect ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="returnvalue">TrackerClient</span></a> *     tracker_connect                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable_warnings</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="returnvalue">TrackerClient</span></a> *     tracker_connect                     (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable_warnings</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>);</pre>
 <div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_connect</code> has been deprecated since version 0.8 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-tracker.html#tracker-client-new" title="tracker_client_new ()"><code class="function">tracker_client_new()</code></a> instead.</p>
@@ -135,19 +135,19 @@ This function calls <a class="link" href="libtracker-client-tracker.html#tracker
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enable_warnings</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> to determine if warnings are issued in
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> to determine if warnings are issued in
 cases where they are found.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>timeout</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> used for D-Bus call timeouts.
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> used for D-Bus call timeouts.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> which must be freed with
-<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.
+<td> a <a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> which must be freed with
+<a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a>.
 </td>
 </tr>
 </tbody>
@@ -159,7 +159,7 @@ cases where they are found.
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_disconnect                  (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>);</pre>
 <div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">tracker_disconnect</code> has been deprecated since version 0.8 and should not be used in newly-written code. Use <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> instead.</p>
+<p><code class="literal">tracker_disconnect</code> has been deprecated since version 0.8 and should not be used in newly-written code. Use <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> instead.</p>
 </div>
 <p>
 This will disconnect the D-Bus connections to Tracker services and
@@ -177,11 +177,11 @@ free the allocated <a class="link" href="libtracker-client-tracker.html#TrackerC
 <hr>
 <div class="refsect2" title="tracker_search_metadata_by_text_async ()">
 <a name="tracker-search-metadata-by-text-async"></a><h3>tracker_search_metadata_by_text_async ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_search_metadata_by_text_async
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_search_metadata_by_text_async
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Search.html#TrackerReplyArray" title="TrackerReplyArray ()"><span class="type">TrackerReplyArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_search_metadata_by_text_async</code> has been deprecated since version 0.8 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-query" title="tracker_resources_sparql_query ()"><code class="function">tracker_resources_sparql_query()</code></a> instead.</p>
@@ -217,7 +217,7 @@ NOTE: <em class="parameter"><code>query</code></em> is found using FTS (Full Tex
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
 <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()"><code class="function">tracker_cancel_call()</code></a>. In the event of failure, 0 is returned.
 
 </td>
@@ -228,12 +228,12 @@ NOTE: <em class="parameter"><code>query</code></em> is found using FTS (Full Tex
 <hr>
 <div class="refsect2" title="tracker_search_metadata_by_text_and_location_async ()">
 <a name="tracker-search-metadata-by-text-and-location-async"></a><h3>tracker_search_metadata_by_text_and_location_async ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_search_metadata_by_text_and_location_async
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_search_metadata_by_text_and_location_async
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *location</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *location</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Search.html#TrackerReplyArray" title="TrackerReplyArray ()"><span class="type">TrackerReplyArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_search_metadata_by_text_and_location_async</code> has been deprecated since version 0.8 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-query" title="tracker_resources_sparql_query ()"><code class="function">tracker_resources_sparql_query()</code></a> instead.</p>
@@ -274,7 +274,7 @@ NOTE: <em class="parameter"><code>query</code></em> is found using FTS (Full Tex
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
 <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()"><code class="function">tracker_cancel_call()</code></a>. In the event of failure, 0 is returned.
 
 </td>
@@ -285,12 +285,12 @@ NOTE: <em class="parameter"><code>query</code></em> is found using FTS (Full Tex
 <hr>
 <div class="refsect2" title="tracker_search_metadata_by_text_and_mime_async ()">
 <a name="tracker-search-metadata-by-text-and-mime-async"></a><h3>tracker_search_metadata_by_text_and_mime_async ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_search_metadata_by_text_and_mime_async
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_search_metadata_by_text_and_mime_async
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimes</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimes</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Search.html#TrackerReplyArray" title="TrackerReplyArray ()"><span class="type">TrackerReplyArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_search_metadata_by_text_and_mime_async</code> has been deprecated since version 0.8 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-query" title="tracker_resources_sparql_query ()"><code class="function">tracker_resources_sparql_query()</code></a> instead.</p>
@@ -317,7 +317,7 @@ NOTE: <em class="parameter"><code>query</code></em> is found using FTS (Full Tex
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mimes</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/gobject/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> representing mime types.
+<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> representing mime types.
 </td>
 </tr>
 <tr>
@@ -332,7 +332,7 @@ NOTE: <em class="parameter"><code>query</code></em> is found using FTS (Full Tex
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
 <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()"><code class="function">tracker_cancel_call()</code></a>. In the event of failure, 0 is returned.
 
 </td>
@@ -343,13 +343,13 @@ NOTE: <em class="parameter"><code>query</code></em> is found using FTS (Full Tex
 <hr>
 <div class="refsect2" title="tracker_search_metadata_by_text_and_mime_and_location_async ()">
 <a name="tracker-search-metadata-by-text-and-mime-and-location-async"></a><h3>tracker_search_metadata_by_text_and_mime_and_location_async ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_search_metadata_by_text_and_mime_and_location_async
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_search_metadata_by_text_and_mime_and_location_async
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimes</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *location</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **mimes</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *location</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Search.html#TrackerReplyArray" title="TrackerReplyArray ()"><span class="type">TrackerReplyArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_search_metadata_by_text_and_mime_and_location_async</code> has been deprecated since version 0.8 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-query" title="tracker_resources_sparql_query ()"><code class="function">tracker_resources_sparql_query()</code></a> instead.</p>
@@ -376,7 +376,7 @@ NOTE: <em class="parameter"><code>query</code></em> is found using FTS (Full Tex
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mimes</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/gobject/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> representing mime types.
+<td>a <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> representing mime types.
 </td>
 </tr>
 <tr>
@@ -396,7 +396,7 @@ NOTE: <em class="parameter"><code>query</code></em> is found using FTS (Full Tex
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
 <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()"><code class="function">tracker_cancel_call()</code></a>. In the event of failure, 0 is returned.
 
 </td>
@@ -408,6 +408,6 @@ NOTE: <em class="parameter"><code>query</code></em> is found using FTS (Full Tex
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

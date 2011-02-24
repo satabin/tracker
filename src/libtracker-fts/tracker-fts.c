@@ -279,8 +279,8 @@
 #include <ctype.h>
 #include <sqlite3.h>
 
-#include <libtracker-common/tracker-common.h>
-#include <libtracker-db/tracker-db-manager.h>
+#include <libtracker-common/tracker-language.h>
+#include <libtracker-data/tracker-db-manager.h>
 
 #include "tracker-fts.h"
 #include "tracker-fts-config.h"
@@ -2131,9 +2131,7 @@ static int sql_prepare(sqlite3 *db, const char *zDb, const char *zName,
 
 /* Forward reference */
 typedef struct fulltext_vtab fulltext_vtab;
-
-static fulltext_vtab *tracker_fts_vtab = NULL;
-static TrackerFtsMapFunc map_function = NULL;
+typedef struct fulltext_sqlite_vtab fulltext_sqlite_vtab;
 
 /* A single term in a query is represented by an instances of
 ** the following structure. Each word which may match against
@@ -2271,6 +2269,8 @@ typedef enum fulltext_statement {
   SEGDIR_DELETE_ALL_STMT,
   SEGDIR_COUNT_STMT,
 
+  PROPERTY_WEIGHT_STMT,
+
   MAX_STMT                     /* Always at end! */
 } fulltext_statement;
 
@@ -2314,6 +2314,8 @@ static const char *const fulltext_zStatement[MAX_STMT] = {
   " order by level desc, idx asc",
   /* SEGDIR_DELETE_ALL */ "delete from %_segdir",
   /* SEGDIR_COUNT */ "select count(*), ifnull(max(level),0) from %_segdir",
+
+  /* PROPERTY_WEIGHT */ "SELECT \"tracker:weight\", (SELECT Uri FROM Resource WHERE ID = \"rdf:Property\".ID) FROM \"rdf:Property\" WHERE ID = ?",
 };
 
 /*
@@ -2323,15 +2325,24 @@ static const char *const fulltext_zStatement[MAX_STMT] = {
 ** All other methods receive a pointer to the structure as one of their
 ** arguments.
 */
+struct fulltext_sqlite_vtab {
+  sqlite3_vtab base;               /* Base class used by SQLite core */
+  fulltext_vtab *fulltext;
+};
+
 struct fulltext_vtab {
   sqlite3 *db;			   /* The database connection */
   const char *zDb;		   /* logical database name */
   const char *zName;		   /* virtual table name */
   int nColumn;			   /* number of columns in virtual table */
   TrackerParser *parser;	   /* tokenizer for inserts and queries */
-  gboolean stop_words;
+  gboolean enable_stemmer;
+  gboolean enable_unaccent;
+  gboolean ignore_numbers;
+  gboolean ignore_stop_words;
   int max_words;
   int min_word_length;
+  int max_word_length;
 
   /* Precompiled statements which we keep as long as the table is
   ** open.
@@ -2383,8 +2394,12 @@ typedef struct fulltext_cursor {
   double  rank;		  	  /* (tracker) pre computed rank from position data in index */
 } fulltext_cursor;
 
+static fulltext_vtab *get_fulltext_vtab (sqlite3_vtab *sqlite_vtab){
+  return ((fulltext_sqlite_vtab *) sqlite_vtab)->fulltext;
+}
+
 static struct fulltext_vtab *cursor_vtab(fulltext_cursor *c){
-  return (fulltext_vtab *) c->base.pVtab;
+  return get_fulltext_vtab (c->base.pVtab);
 }
 
 static const sqlite3_module fts3Module;   /* forward declaration */
@@ -2401,41 +2416,6 @@ static const char *contentInsertStatement(fulltext_vtab *v){
   return stringBufferData(&sb);
 }
 #endif
-
-
-/* Functions from Tracker */
-static inline int
-get_metadata_weight (int id)
-{
-  static sqlite3_stmt *stmt = NULL;
-
-  int rc;
-  int weight;
-
-  weight = 1;
-
-  /* We may want to cache this if this proofs to be a performance issue */
-
-  if (!stmt) {
-    rc = sqlite3_prepare_v2 (tracker_fts_vtab->db, "SELECT \"tracker:weight\" FROM \"rdf:Property\" WHERE ID = ?", -1, &stmt, NULL);
-    if (rc != SQLITE_OK) return weight;
-  } else {
-    sqlite3_reset (stmt);
-  }
-
-  rc = sqlite3_bind_int (stmt, 1, id);
-  if (rc != SQLITE_OK) return weight;
-
-  rc = sqlite3_step (stmt);
-  if (rc != SQLITE_ROW) return weight;
-
-  weight = sqlite3_column_int (stmt, 0);
-  if (weight == 0) {
-    weight = 1;
-  }
-
-  return weight;
-}
 
 
 #if 0
@@ -2491,6 +2471,40 @@ static int sql_get_statement(fulltext_vtab *v, fulltext_statement iStmt,
 
   *ppStmt = v->pFulltextStatements[iStmt];
   return SQLITE_OK;
+}
+
+
+/* Function from Tracker */
+static inline int
+get_metadata_weight (fulltext_vtab *v, int id, gchar **uri)
+{
+  sqlite3_stmt *stmt;
+  int rc;
+  int weight;
+
+  weight = 1;
+
+  rc = sql_get_statement(v, PROPERTY_WEIGHT_STMT, &stmt);
+  if (rc != SQLITE_OK) return weight;
+
+  rc = sqlite3_bind_int (stmt, 1, id);
+  if (rc != SQLITE_OK) return weight;
+
+  rc = sqlite3_step (stmt);
+  if (rc != SQLITE_ROW) return weight;
+
+  weight = sqlite3_column_int (stmt, 0);
+  if (weight == 0) {
+    weight = 1;
+  }
+
+  *uri = g_strdup (sqlite3_column_text (stmt, 1));
+
+  /* We expect only one row.  We must execute another sqlite3_step()
+   * to complete the iteration; otherwise the table will remain locked. */
+  sqlite3_step (stmt);
+
+  return weight;
 }
 
 /* Like sqlite3_step(), but convert SQLITE_DONE to SQLITE_OK and
@@ -3307,7 +3321,7 @@ static char *fulltextSchema(
 ** Build a new sqlite3_vtab structure that will describe the
 ** fulltext index defined by spec.
 */
-static int constructVtab(
+static fulltext_vtab *constructVtab(
   sqlite3 *db,		    /* The SQLite database connection */
   const char *zDb,
   const char *zName,
@@ -3316,10 +3330,9 @@ static int constructVtab(
   fulltext_vtab *v = 0;
   TrackerFTSConfig *config;
   TrackerLanguage *language;
-  int min_len, max_len;
 
   v = (fulltext_vtab *) sqlite3_malloc(sizeof(fulltext_vtab));
-  if( v==0 ) return SQLITE_NOMEM;
+  if( v==0 ) return NULL;
   CLEAR(v);
   /* sqlite will initialize v->base */
   v->db = db;
@@ -3362,15 +3375,20 @@ static int constructVtab(
 
   language = tracker_language_new (NULL);
 
-  min_len = tracker_fts_config_get_min_word_length (config);
-  max_len = tracker_fts_config_get_max_word_length (config);
+  v->min_word_length = tracker_fts_config_get_min_word_length (config);
+  v->max_word_length = tracker_fts_config_get_max_word_length (config);
+  v->enable_stemmer = tracker_fts_config_get_enable_stemmer (config);
+  v->enable_unaccent = tracker_fts_config_get_enable_unaccent (config);
+  v->ignore_numbers = tracker_fts_config_get_ignore_numbers (config);
+
+  /* disable stop words if TRACKER_FTS_STOP_WORDS is set to 0 - used by tests
+   *  otherwise, get value from the conf file */
+  v->ignore_stop_words = (g_strcmp0 (g_getenv ("TRACKER_FTS_STOP_WORDS"), "0") == 0 ?
+			  FALSE : tracker_fts_config_get_ignore_stop_words (config));
 
   v->max_words = tracker_fts_config_get_max_words_to_index (config);
-  v->min_word_length = min_len;
-  v->parser = tracker_parser_new (language, max_len);
 
-  /* disable stop words if TRACKER_FTS_STOP_WORDS is set to 0 - used by tests */
-  v->stop_words = g_strcmp0 (g_getenv ("TRACKER_FTS_STOP_WORDS"), "0") != 0;
+  v->parser = tracker_parser_new (language);
 
   g_object_unref (language);
 
@@ -3382,25 +3400,29 @@ static int constructVtab(
 
   FTSTRACE(("FTS3 Connect %p\n", v));
 
-  tracker_fts_vtab = v;
+  /* Config no longer needed */
+  g_object_unref (config);
 
-  return SQLITE_OK;
+  return v;
 }
 
 static int constructSqliteVtab(
   sqlite3 *db,		    /* The SQLite database connection */
+  void *pAux,
   const char *zDb,
   const char *zName,
   sqlite3_vtab **ppVTab,    /* Write the resulting vtab structure here */
   char **pzErr              /* Write any error message here */
 ){
   int rc;
-  sqlite3_vtab *v = 0;
+  fulltext_sqlite_vtab *v = 0;
   char *schema;
 
-  v = sqlite3_malloc(sizeof(sqlite3_vtab));
+  v = sqlite3_malloc(sizeof(fulltext_sqlite_vtab));
   if( v==0 ) return SQLITE_NOMEM;
   CLEAR(v);
+
+  v->fulltext = pAux;
 
   schema = fulltextSchema(0, NULL,
                           zName);
@@ -3408,7 +3430,7 @@ static int constructSqliteVtab(
   sqlite3_free(schema);
   if( rc!=SQLITE_OK ) goto err;
 
-  *ppVTab = v;
+  *ppVTab = (sqlite3_vtab *) v;
   FTSTRACE(("FTS3 Connect %p\n", v));
 
   return rc;
@@ -3430,7 +3452,7 @@ static int fulltextConnect(
   zDb = argv[1];
   zName = argv[2];
 
-  return constructSqliteVtab(db, zDb, zName, ppVTab, pzErr);
+  return constructSqliteVtab(db, pAux, zDb, zName, ppVTab, pzErr);
 }
 
 /* The %_content table holds the text of each document, with
@@ -3485,12 +3507,12 @@ static int fulltextCreate(sqlite3 *db, void *pAux,
   zDb = argv[1];
   zName = argv[2];
 
-  return constructSqliteVtab(db, zDb, zName, ppVTab, pzErr);
+  return constructSqliteVtab(db, pAux, zDb, zName, ppVTab, pzErr);
 }
 
 /* Decide how to handle an SQL query. */
 static int fulltextBestIndex(sqlite3_vtab *pVTab, sqlite3_index_info *pInfo){
-  fulltext_vtab *v = tracker_fts_vtab;
+  fulltext_vtab *v = get_fulltext_vtab (pVTab);
   int i;
   int iCons = -1;                 /* Index of constraint to use */
   FTSTRACE(("FTS3 BestIndex\n"));
@@ -3533,7 +3555,7 @@ static int fulltextDisconnect(sqlite3_vtab *pVTab){
 }
 
 static int fulltextDestroy(sqlite3_vtab *pVTab){
-  fulltext_vtab *v = tracker_fts_vtab;
+  fulltext_vtab *v = get_fulltext_vtab (pVTab);
   int rc;
 
   FTSTRACE(("FTS3 Destroy %p\n", pVTab));
@@ -3655,11 +3677,23 @@ static void snippetOffsetsOfColumn(
   unsigned int iRotor = 0;             /* Index of current token */
   int iRotorBegin[FTS3_ROTOR_SZ];      /* Beginning offset of token */
   int iRotorLen[FTS3_ROTOR_SZ];        /* Length of token */
+  int nWords;
 
   pVtab = pQuery->pFts;
   nColumn = pVtab->nColumn;
 
-  tracker_parser_reset (pVtab->parser, zDoc, nDoc, FALSE, TRUE, pVtab->stop_words, FALSE);
+  FTSTRACE (("FTS parsing started for Snippets, limiting '%d' bytes to '%d' words",
+             nDoc, pVtab->max_words));
+
+  tracker_parser_reset (pVtab->parser,
+                        zDoc,
+                        nDoc,
+                        pVtab->max_word_length,
+                        pVtab->enable_stemmer,
+                        pVtab->enable_unaccent,
+                        pVtab->ignore_stop_words,
+                        TRUE,
+                        pVtab->ignore_numbers);
 
   aTerm = pQuery->pTerms;
   nTerm = pQuery->nTerms;
@@ -3669,8 +3703,8 @@ static void snippetOffsetsOfColumn(
   }
 
   prevMatch = 0;
-
-  while(1){
+  nWords = 0;
+  while(nWords < pVtab->max_words){
 //    rc = pTModule->xNext(pTCursor, &zToken, &nToken, &iBegin, &iEnd, &iPos);
 
 
@@ -3683,10 +3717,11 @@ static void snippetOffsetsOfColumn(
 
     if (!zToken) break;
 
-    if (stop_word) {
+    if (pVtab->ignore_stop_words && stop_word) {
       continue;
     }
 
+    nWords++;
 
     iRotorBegin[iRotor&FTS3_ROTOR_MASK] = iBegin;
     iRotorLen[iRotor&FTS3_ROTOR_MASK] = iEnd-iBegin;
@@ -4138,6 +4173,7 @@ static int fulltextClose(sqlite3_vtab_cursor *pCursor){
 
 static int fulltextNext(sqlite3_vtab_cursor *pCursor){
   fulltext_cursor *c = (fulltext_cursor *) pCursor;
+  fulltext_vtab *v = cursor_vtab (c);
   int rc;
   PLReader plReader;
   gboolean first_pos = TRUE;
@@ -4181,11 +4217,10 @@ static int fulltextNext(sqlite3_vtab_cursor *pCursor){
 
 
     for ( ; !plrAtEnd(&plReader); plrStep(&plReader) ){
-      const gchar *uri;
+      gchar *uri = NULL;
       int col = plrColumn (&plReader);
 
-      uri = map_function (col);
-      c->rank += get_metadata_weight (col);
+      c->rank += get_metadata_weight (v, col, &uri);
 
       if (uri && first_pos) {
         g_string_append_printf (c->offsets, "%s,%d", uri, plrPosition (&plReader));
@@ -4195,13 +4230,14 @@ static int fulltextNext(sqlite3_vtab_cursor *pCursor){
       } else {
         g_warning ("Type '%d' for FTS offset doesn't exist in ontology", col);
       }
+
+      g_free (uri);
     }
 
     plrDestroy(&plReader);
 
     dlrStep(&c->reader);
 
-    if( rc!=SQLITE_OK ) return rc;
     c->eof = 0;
     return SQLITE_OK;
   }
@@ -4354,10 +4390,24 @@ static int tokenizeSegment(
   TrackerParser *parser = v->parser;
   int firstIndex = pQuery->nTerms;
   int nTerm = 1;
+  int nWords;
+  int last_near_offset = -1;
 
-  tracker_parser_reset (parser, pSegment, nSegment, FALSE, TRUE, v->stop_words, TRUE);
+  FTSTRACE (("FTS parsing started for Segments, limiting '%d' bytes to '%d' words",
+             nSegment, v->max_words));
 
-  while( 1 ){
+  tracker_parser_reset (parser,
+                        pSegment,
+                        nSegment,
+                        v->max_word_length,
+                        v->enable_stemmer,
+                        v->enable_unaccent,
+                        v->ignore_stop_words,
+                        FALSE,
+                        v->ignore_numbers);
+
+  nWords = 0;
+  while(nWords < v->max_words){
     const char *pToken;
     int nToken, iBegin, iEnd, iPos, stop_word;
 
@@ -4370,6 +4420,13 @@ static int tokenizeSegment(
     if (!pToken) {
       break;
      }
+
+    if (last_near_offset > 0 && iEnd <= last_near_offset) {
+      /* Skip this word */
+      continue;
+    }
+
+    nWords ++;
 
 //   printf("token being indexed  is %s, pos is %d, begin is %d, end is %d and length is %d\n", pToken, iPos, iBegin, iEnd, nToken);
 
@@ -4389,6 +4446,7 @@ static int tokenizeSegment(
 	}
     }
 #endif
+
     if( !inPhrase && pQuery->nTerms>0 && nToken==2
      && pToken[0] == 'o' && pToken[1] == 'r'
     ){
@@ -4415,18 +4473,14 @@ static int tokenizeSegment(
 	nToken += 2;
 	if( pSegment[iBegin+6]>='0' && pSegment[iBegin+6]<='9' ){
 	  pTerm->nNear = pTerm->nNear * 10 + (pSegment[iBegin+6] - '0');
-	  iEnd++;
-	}
-	pToken = tracker_parser_next (parser, &iPos,
-				      &iBegin,
-				      &iEnd,
-				      &stop_word,
-				      &nToken);
-	if (!pToken) {
-	  break;
+	  nToken++;
 	}
 
-
+	/* Set last near offset, so that any new word that comes
+	 * after the near which ends before this last near offset is
+	 * discarded. This is done because NEAR/10 will actually get
+	 * split into 3 words, "NEAR", "/" and "10" */
+	last_near_offset = iBegin + nToken;
       } else {
 	pTerm->nNear = SQLITE_FTS3_DEFAULT_NEAR_PARAM;
       }
@@ -4439,7 +4493,7 @@ static int tokenizeSegment(
       if (nToken < v->min_word_length) {
         continue;
       }
-      if (stop_word != 0) {
+      if (v->ignore_stop_words && stop_word) {
         continue;
       }
     }
@@ -4528,9 +4582,14 @@ static int parseQuery(
     */
     aTerm = pQuery->pTerms;
     for(ii=0; ii<pQuery->nTerms; ii++){
-
+      if( aTerm[ii].nNear || aTerm[ii].nPhrase ){
+        while (aTerm[ii+aTerm[ii].nPhrase].nNear) {
+          aTerm[ii].nPhrase += (1 + aTerm[ii+aTerm[ii].nPhrase+1].nPhrase);
+        }
+      }
 #if PRINT_PARSED_QUERY
-      g_debug ("  [Term %d] '%s' (%d)\n"
+      g_debug ("\n"
+               "[Term %d] '%s' (%d)\n"
                "      nPhrase:  %d\n"
                "      iPhrase:  %d\n"
                "      iColumn:  %d\n"
@@ -4547,12 +4606,6 @@ static int parseQuery(
                aTerm[ii].isNot ? "yes" : "no",
                aTerm[ii].isPrefix ? "yes" : "no");
 #endif /* PRINT_PARSED_QUERY */
-
-      if( aTerm[ii].nNear || aTerm[ii].nPhrase ){
-        while (aTerm[ii+aTerm[ii].nPhrase].nNear) {
-          aTerm[ii].nPhrase += (1 + aTerm[ii+aTerm[ii].nPhrase+1].nPhrase);
-        }
-      }
     }
   }
 
@@ -4707,7 +4760,7 @@ static int fulltextFilter(
   int argc, sqlite3_value **argv    /* Arguments for the indexing scheme */
 ){
   fulltext_cursor *c = (fulltext_cursor *) pCursor;
-  fulltext_vtab *v = tracker_fts_vtab;
+  fulltext_vtab *v = cursor_vtab (c);
   int rc;
   int i;
   StringBuffer sb;
@@ -4788,7 +4841,7 @@ static int fulltextEof(sqlite3_vtab_cursor *pCursor){
 static int fulltextColumn(sqlite3_vtab_cursor *pCursor,
                           sqlite3_context *pContext, int idxCol){
   fulltext_cursor *c = (fulltext_cursor *) pCursor;
-  fulltext_vtab *v = tracker_fts_vtab;
+  fulltext_vtab *v = cursor_vtab (c);
 
 #ifdef STORE_CATEGORY
   if (idxCol == 0) {
@@ -4844,12 +4897,29 @@ int Catid,
   TrackerParser *parser = v->parser;
   DLCollector *p;
   int nData;			 /* Size of doclist before our update. */
+  gint nText;
+  gint nWords;
 
   if (!zText) return SQLITE_OK;
 
-  tracker_parser_reset (parser, zText, strlen (zText), FALSE, TRUE, v->stop_words, FALSE);
+  nText = strlen (zText);
 
-  while( 1 ){
+  if (!nText) return SQLITE_OK;
+
+  FTSTRACE (("FTS parsing started for Terms, limiting '%d' bytes to '%d' words",
+             nText, v->max_words));
+
+  tracker_parser_reset (parser,
+                        zText,
+                        nText,
+                        v->max_word_length,
+                        v->enable_stemmer,
+                        v->enable_unaccent,
+                        v->ignore_stop_words,
+                        TRUE,
+                        v->ignore_numbers);
+  nWords = 0;
+  while(nWords < v->max_words){
 
     pToken = tracker_parser_next (parser, &iPosition,
 				  &iStartOffset,
@@ -4864,9 +4934,11 @@ int Catid,
 	continue;
    }
 
+   nWords++;
+
   // printf("token being indexed  is %s, begin is %d, end is %d and length is %d\n", pToken, iStartOffset, iEndOffset, nTokenBytes);
 
-   if (stop_word) {
+   if (v->ignore_stop_words && stop_word) {
 	continue;
    }
 
@@ -6960,12 +7032,14 @@ static int fulltextUpdate(sqlite3_vtab *pVtab, int nArg, sqlite3_value **ppArg,
 #endif
 
 static int fulltextSync(sqlite3_vtab *pVtab){
+  fulltext_vtab *v = get_fulltext_vtab (pVtab);
+
   FTSTRACE(("FTS3 xSync()\n"));
-  return flushPendingTerms(tracker_fts_vtab);
+  return flushPendingTerms(v);
 }
 
 static int fulltextBegin(sqlite3_vtab *pVtab){
-  fulltext_vtab *v = tracker_fts_vtab;
+  fulltext_vtab *v = get_fulltext_vtab (pVtab);
   FTSTRACE(("FTS3 xBegin()\n"));
 
   /* Any buffered updates should have been cleared by the previous
@@ -6976,7 +7050,7 @@ static int fulltextBegin(sqlite3_vtab *pVtab){
 }
 
 static int fulltextCommit(sqlite3_vtab *pVtab){
-  fulltext_vtab *v = tracker_fts_vtab;
+  fulltext_vtab *v = get_fulltext_vtab (pVtab);
   FTSTRACE(("FTS3 xCommit()\n"));
 
   /* Buffered updates should have been cleared by fulltextSync(). */
@@ -6985,8 +7059,9 @@ static int fulltextCommit(sqlite3_vtab *pVtab){
 }
 
 static int fulltextRollback(sqlite3_vtab *pVtab){
+  fulltext_vtab *v = get_fulltext_vtab (pVtab);
   FTSTRACE(("FTS3 xRollback()\n"));
-  return clearPendingTerms(tracker_fts_vtab);
+  return clearPendingTerms(v);
 }
 
 /*
@@ -7778,7 +7853,7 @@ static int fulltextRename(
   sqlite3_vtab *pVtab,
   const char *zName
 ){
-  fulltext_vtab *p = tracker_fts_vtab;
+  fulltext_vtab *p = get_fulltext_vtab (pVtab);
   int rc = SQLITE_NOMEM;
   char *zSql = sqlite3_mprintf(
     "ALTER TABLE %Q.'%q_content'  RENAME TO '%q_content';"
@@ -7826,14 +7901,19 @@ int sqlite3Fts3InitHashTable(sqlite3 *, fts3Hash *, const char *);
 ** SQLite. If fts3 is built as a dynamically loadable extension, this
 ** function is called by the sqlite3_extension_init() entry point.
 */
-int tracker_fts_init(sqlite3 *db, int create){
+TrackerFts *tracker_fts_new(sqlite3 *db, int create){
   int rc = SQLITE_OK;
+  fulltext_vtab *v;
 
   if (create){
-    createTables (db, "fulltext", "fts");
+    createTables (db, "main", "fts");
   }
 
-  constructVtab(db, "fulltext", "fts", NULL);
+  v = constructVtab(db, "main", "fts", NULL);
+
+  if (v == NULL) {
+    return NULL;
+  }
 
   /* Create the virtual table wrapper around the hash-table and overload
   ** the two scalar functions. If this is successful, register the
@@ -7850,43 +7930,45 @@ int tracker_fts_init(sqlite3 *db, int create){
 #endif
   ){
     rc = sqlite3_create_module_v2(
-	db, "trackerfts", &fts3Module, 0, 0
+	db, "trackerfts", &fts3Module, v, NULL
     );
-    if (SQLITE_OK != rc)
-      return rc;
+    if (SQLITE_OK != rc){
+      fulltext_vtab_destroy (v);
+      return NULL;
+    }
 
     if (create){
-        rc = sqlite3_exec(db, "CREATE VIRTUAL TABLE fulltext.fts USING trackerfts", NULL, 0, NULL);
+        rc = sqlite3_exec(db, "CREATE VIRTUAL TABLE fts USING trackerfts", NULL, 0, NULL);
     }
   }
 
-  return rc;
+  if (SQLITE_OK != rc){
+    fulltext_vtab_destroy (v);
+    return NULL;
+  }
+
+  return v;
 }
 
-void tracker_fts_shutdown (void){
-  fulltext_vtab_destroy(tracker_fts_vtab);
+void tracker_fts_free (TrackerFts *fts){
+  fulltext_vtab_destroy (fts);
 }
 
-void tracker_fts_set_map_function(TrackerFtsMapFunc map_func){
-  map_function = map_func;
+int tracker_fts_update_init(TrackerFts *fts, int id){
+  return initPendingTerms(fts, id);
 }
 
-int tracker_fts_update_init(int id){
-  return initPendingTerms(tracker_fts_vtab, id);
-}
-
-int tracker_fts_update_text(int id, int column_id,
+int tracker_fts_update_text(TrackerFts *fts, int id, int column_id,
 			    const char *text, gboolean limit_word_length){
-	return buildTerms(tracker_fts_vtab, id, text,
-			  column_id, limit_word_length);
+  return buildTerms(fts, id, text, column_id, limit_word_length);
 }
 
-void tracker_fts_update_commit(void){
-  fulltextSync((sqlite3_vtab *) tracker_fts_vtab);
-  fulltextCommit((sqlite3_vtab *) tracker_fts_vtab);
+void tracker_fts_update_commit(TrackerFts *fts){
+  flushPendingTerms(fts);
+  clearPendingTerms(fts);
 }
 
-void tracker_fts_update_rollback(void){
-  fulltextRollback((sqlite3_vtab *) tracker_fts_vtab);
+void tracker_fts_update_rollback(TrackerFts *fts){
+  clearPendingTerms(fts);
 }
 

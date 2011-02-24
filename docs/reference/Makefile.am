@@ -1,9 +1,9 @@
 include $(top_srcdir)/Makefile.decl
 
-SUBDIRS = 			\
-	libtracker-client	\
-	libtracker-common	\
-	libtracker-extract	\
-	libtracker-miner	\
+SUBDIRS =                                              \
+	libtracker-sparql                              \
+	libtracker-client                              \
+	libtracker-extract                             \
+	libtracker-miner                               \
 	ontology
 

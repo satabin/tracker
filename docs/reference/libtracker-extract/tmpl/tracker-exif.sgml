@@ -48,6 +48,28 @@ tracker-exif
 @white_balance: 
 @copyright: 
 @software: 
+@x_resolution: 
+@y_resolution: 
+@resolution_unit: 
+
+<!-- ##### FUNCTION tracker_exif_new ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@len: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_exif_free ##### -->
+<para>
+
+</para>
+
+@data: 
+
 
 <!-- ##### FUNCTION tracker_exif_read ##### -->
 <para>

@@ -42,15 +42,13 @@
 
 #include <libtracker-miner/tracker-miner.h>
 
-#include <libtracker-db/tracker-db-manager.h>
-#include <libtracker-db/tracker-db-dbus.h>
+#include <libtracker-data/tracker-db-manager.h>
 
 #include "tracker-config.h"
-#include "tracker-dbus.h"
 #include "tracker-marshal.h"
 #include "tracker-miner-applications.h"
 #include "tracker-miner-files.h"
-#include "tracker-miner-files-reindex.h"
+#include "tracker-miner-files-index.h"
 
 #define ABOUT	  \
 	"Tracker " PACKAGE_VERSION "\n"
@@ -62,6 +60,8 @@
 	"\n" \
 	"  http://www.gnu.org/licenses/gpl.txt\n"
 
+#define SECONDS_PER_DAY 60 * 60 * 24
+
 static GMainLoop *main_loop;
 static GSList *miners;
 static GSList *current_miner;
@@ -70,7 +70,6 @@ static gboolean finished_miners;
 static gint verbosity = -1;
 static gint initial_sleep = -1;
 static gchar *eligible;
-static gchar *add_file;
 static gboolean version;
 
 static GOptionEntry entries[] = {
@@ -87,10 +86,6 @@ static GOptionEntry entries[] = {
 	{ "eligible", 'e', 0,
 	  G_OPTION_ARG_FILENAME, &eligible,
 	  N_("Checks if FILE is eligible for being mined based on configuration"),
-	  N_("FILE") },
-	{ "add-file", 'a', 0,
-	  G_OPTION_ARG_FILENAME, &add_file,
-	  N_("Forces the insertion of FILE into the store"),
 	  N_("FILE") },
 	{ "version", 'V', 0,
 	  G_OPTION_ARG_NONE, &version,
@@ -192,6 +187,51 @@ initialize_priority (void)
 	}
 }
 
+static gboolean
+should_crawl (TrackerConfig *config,
+              gboolean      *forced)
+{
+	gint crawling_interval;
+
+	crawling_interval = tracker_config_get_crawling_interval (config);
+
+	g_message ("Checking whether to crawl file system based on configured crawling interval:");
+
+	if (crawling_interval == -2) {
+		g_message ("  Disabled");
+		return FALSE;
+	} else if (crawling_interval == -1) {
+		g_message ("  Maybe (depends on a clean last shutdown)");
+		return TRUE;
+	} else if (crawling_interval == 0) {
+		g_message ("  Forced");
+
+		if (forced) {
+			*forced = TRUE;
+		}
+
+		return TRUE;
+	} else {
+		guint64 then, now;
+
+		then = tracker_db_manager_get_last_crawl_done ();
+
+		if (then < 1) {
+			return TRUE;
+		}
+
+		now = (guint64) time (NULL);
+
+		if (now < then + (crawling_interval * SECONDS_PER_DAY)) {
+			g_message ("  Postponed");
+			return FALSE;
+		} else {
+			g_message ("  (More than) %d days after last crawling, enabled", crawling_interval);
+			return FALSE;
+		}
+	}
+}
+
 static void
 miner_handle_next (void)
 {
@@ -228,18 +268,14 @@ miner_finished_cb (TrackerMinerFS *fs,
                    guint           total_files_ignored,
                    gpointer        user_data)
 {
-	GMainLoop *main_loop = user_data;
+	tracker_info ("Finished mining in seconds:%f, total directories:%d, total files:%d",
+	              seconds_elapsed,
+	              total_directories_found,
+	              total_files_found);
 
-	g_message ("Finished mining in seconds:%f, total directories:%d, total files:%d",
-	           seconds_elapsed,
-	           total_directories_found,
-	           total_files_found);
-
-	if (add_file && main_loop) {
-		/* We were waiting for a file to be processed, now it's safe to quit */
-		GMainLoop *main_loop = user_data;
-		g_main_loop_quit (main_loop);
-		return;
+	if (TRACKER_IS_MINER_FILES (fs) &&
+	    tracker_miner_fs_get_initial_crawling (fs)) {
+		tracker_db_manager_set_last_crawl_done (TRUE);
 	}
 
 	miner_handle_next ();
@@ -248,7 +284,6 @@ miner_finished_cb (TrackerMinerFS *fs,
 static void
 finalize_miner (TrackerMiner *miner)
 {
-	g_object_run_dispose (G_OBJECT (miner));
 	g_object_unref (G_OBJECT (miner));
 }
 
@@ -503,10 +538,13 @@ main (gint argc, gchar *argv[])
 {
 	TrackerConfig *config;
 	TrackerMiner *miner_applications, *miner_files;
-	TrackerMinerFilesReindex *object;
+	TrackerMinerFilesIndex *miner_files_index;
 	GOptionContext *context;
 	GError *error = NULL;
 	gchar *log_filename = NULL;
+	gboolean do_mtime_checking;
+	gboolean do_crawling;
+	gboolean force_mtime_checking = FALSE;
 
 	g_type_init ();
 
@@ -572,86 +610,112 @@ main (gint argc, gchar *argv[])
 
 	sanity_check_option_values (config);
 
-	/* Make sure we initialize DBus, this shows we are started
-	 * successfully when called upon from the daemon.
-	 */
-	if (!tracker_dbus_init ()) {
-		g_object_unref (config);
-		tracker_log_shutdown ();
-
-		return EXIT_FAILURE;
-	}
-
 	main_loop = g_main_loop_new (NULL, FALSE);
 
-	if (!add_file) {
-		miner_files = tracker_miner_files_new (config);
+	/* Check if we should crawl and if we should force mtime
+	 * checking based on the config.
+	 */
+	do_crawling = should_crawl (config, &force_mtime_checking);
+
+	/* Get the last shutdown state to see if we need to perform a
+	 * full mtime check against the db or not.
+	 *
+	 * Set to TRUE here in case we crash and miss file system
+	 * events.
+	 */
+	g_message ("Checking whether to force mtime checking during crawling (based on last clean shutdown):");
+
+	/* Override the shutdown state decision based on the config */
+	if (force_mtime_checking) {
+		do_mtime_checking = TRUE;
 	} else {
-		GFile *file;
-
-		file = g_file_new_for_commandline_arg (add_file);
-		miner_files = tracker_miner_files_new (NULL);
-
-		tracker_miner_fs_file_add (TRACKER_MINER_FS (miner_files), file);
-		g_object_unref (file);
+		do_mtime_checking = tracker_db_manager_get_need_mtime_check ();
 	}
 
+	g_message ("  %s %s",
+	           do_mtime_checking ? "Yes" : "No",
+	           force_mtime_checking ? "(forced from config)" : "");
+
+	/* Set the need for an mtime check to TRUE so we check in the
+	 * event of a crash, this is changed back on shutdown if
+	 * everything appears to be fine.
+	 */
+	tracker_db_manager_set_need_mtime_check (TRUE);
+
+	/* Create new TrackerMinerFiles object */
+	miner_files = tracker_miner_files_new (config, &error);
+	if (!miner_files) {
+		g_critical ("Couldn't create new Files miner: '%s'",
+		            error ? error->message : "unknown error");
+		g_object_unref (config);
+		tracker_log_shutdown ();
+		return EXIT_FAILURE;
+	}
+	tracker_miner_fs_set_initial_crawling (TRACKER_MINER_FS (miner_files), do_crawling);
+	tracker_miner_fs_set_mtime_checking (TRACKER_MINER_FS (miner_files), do_mtime_checking);
 	g_signal_connect (miner_files, "finished",
 			  G_CALLBACK (miner_finished_cb),
-			  main_loop);
+			  NULL);
 
-	object = tracker_miner_files_reindex_new (TRACKER_MINER_FILES (miner_files));
-
-	if (!object) {
+	/* Create new TrackerMinerFilesIndex object */
+	miner_files_index = tracker_miner_files_index_new (TRACKER_MINER_FILES (miner_files));
+	if (!miner_files_index) {
 		g_object_unref (miner_files);
 		g_object_unref (config);
-		tracker_dbus_shutdown ();
 		tracker_log_shutdown ();
-
 		return EXIT_FAILURE;
 	}
 
-	/* Make Tracker available for introspection */
-	if (!tracker_dbus_register_objects (object)) {
+	/* Create miner for applications */
+	miner_applications = tracker_miner_applications_new (&error);
+	if (!miner_applications) {
+		g_critical ("Couldn't create new Applications miner: '%s'",
+		            error ? error->message : "unknown error");
+		g_object_unref (miner_files_index);
 		g_object_unref (miner_files);
-		g_object_unref (object);
 		g_object_unref (config);
-		tracker_dbus_shutdown ();
 		tracker_log_shutdown ();
-
 		return EXIT_FAILURE;
 	}
+	tracker_miner_fs_set_initial_crawling (TRACKER_MINER_FS (miner_applications), do_crawling);
+	tracker_miner_fs_set_mtime_checking (TRACKER_MINER_FS (miner_applications), do_mtime_checking);
+	g_signal_connect (miner_applications, "finished",
+	                  G_CALLBACK (miner_finished_cb),
+	                  NULL);
 
-	if (!add_file) {
-		/* Create miner for applications */
-		miner_applications = tracker_miner_applications_new ();
-		miners = g_slist_append (miners, miner_applications);
-
-		g_signal_connect (miner_applications, "finished",
-				  G_CALLBACK (miner_finished_cb),
-				  NULL);
-
-		/* Create miner for files */
-		miners = g_slist_append (miners, miner_files);
-	}
+	/* Setup miners, applications first in list */
+	miners = g_slist_prepend (miners, miner_files);
+	miners = g_slist_prepend (miners, miner_applications);
 
 	tracker_thumbnailer_init ();
 
 	miner_handle_next ();
 
+	/* Go, go, go! */
 	g_main_loop_run (main_loop);
 
 	g_message ("Shutdown started");
 
+	/* Reasons to not mark ourselves as cleanly shutdown include:
+	 *
+	 * 1. Still have files to process in our queues.
+	 * 2. We crash (out of our control usually anyway).
+	 * 3. At least one of the miners is PAUSED.
+	 */
+	if (!tracker_miner_fs_has_items_to_process (TRACKER_MINER_FS (miner_files)) &&
+	    !tracker_miner_is_paused (miner_applications) &&
+	    !tracker_miner_is_paused (miner_files)) {
+		tracker_db_manager_set_need_mtime_check (FALSE);
+	}
+
 	g_main_loop_unref (main_loop);
 	g_object_unref (config);
+	g_object_unref (miner_files_index);
 
 	tracker_thumbnailer_shutdown ();
 
 	g_slist_foreach (miners, (GFunc) finalize_miner, NULL);
 	g_slist_free (miners);
-
-	tracker_dbus_shutdown ();
 
 	tracker_log_shutdown ();
 

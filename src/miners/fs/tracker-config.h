@@ -54,8 +54,6 @@ gboolean       tracker_config_save                                 (TrackerConfi
 gint           tracker_config_get_verbosity                        (TrackerConfig *config);
 gint           tracker_config_get_initial_sleep                    (TrackerConfig *config);
 gboolean       tracker_config_get_enable_monitors                  (TrackerConfig *config);
-gint           tracker_config_get_scan_timeout                     (TrackerConfig *config);
-gint           tracker_config_get_cache_timeout                    (TrackerConfig *config);
 gint           tracker_config_get_throttle                         (TrackerConfig *config);
 gboolean       tracker_config_get_index_on_battery                 (TrackerConfig *config);
 gboolean       tracker_config_get_index_on_battery_first_time      (TrackerConfig *config);
@@ -70,6 +68,8 @@ GSList *       tracker_config_get_index_single_directories_unfiltered    (Tracke
 GSList *       tracker_config_get_ignored_directories              (TrackerConfig *config);
 GSList *       tracker_config_get_ignored_directories_with_content (TrackerConfig *config);
 GSList *       tracker_config_get_ignored_files                    (TrackerConfig *config);
+gint           tracker_config_get_crawling_interval                (TrackerConfig *config);
+gint           tracker_config_get_removable_days_threshold         (TrackerConfig *config);
 
 void           tracker_config_set_verbosity                        (TrackerConfig *config,
                                                                     gint           value);
@@ -77,10 +77,6 @@ void           tracker_config_set_initial_sleep                    (TrackerConfi
                                                                     gint           value);
 void           tracker_config_set_enable_monitors                  (TrackerConfig *config,
                                                                     gboolean       value);
-void           tracker_config_set_scan_timeout                     (TrackerConfig *config,
-                                                                    gint           value);
-void           tracker_config_set_cache_timeout                    (TrackerConfig *config,
-                                                                    gint           value);
 void           tracker_config_set_throttle                         (TrackerConfig *config,
                                                                     gint           value);
 void           tracker_config_set_index_on_battery                 (TrackerConfig *config,
@@ -105,6 +101,10 @@ void           tracker_config_set_ignored_directories_with_content (TrackerConfi
                                                                     GSList        *files);
 void           tracker_config_set_ignored_files                    (TrackerConfig *config,
                                                                     GSList        *files);
+void           tracker_config_set_crawling_interval                (TrackerConfig *config,
+                                                                    gint           interval);
+void           tracker_config_set_removable_days_threshold         (TrackerConfig *config,
+                                                                    gint           value);
 
 /*
  * Convenience functions:

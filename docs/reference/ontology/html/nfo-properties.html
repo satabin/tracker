@@ -5,10 +5,10 @@
 <title>NFO Ontology Properties</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
-<link rel="up" href="nfo-ontology.html" title="NFO Ontology">
-<link rel="prev" href="nfo-ontology.html" title="NFO Ontology">
-<link rel="next" href="nao-ontology.html" title="NAO Ontology">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<link rel="up" href="nfo-ontology.html" title="Nepomuk File Ontology (NFO): About files and other desktop resources.">
+<link rel="prev" href="nfo-ontology.html" title="Nepomuk File Ontology (NFO): About files and other desktop resources.">
+<link rel="next" href="nco-ontology.html" title="Nepomuk Contacts Ontology (NCO): All about contacts. Rough equivalent of the VCARD standard.">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -17,7 +17,7 @@
 <td><a accesskey="u" href="nfo-ontology.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Tracker Ontology Reference Manual</th>
-<td><a accesskey="n" href="nao-ontology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="nco-ontology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="section" title="NFO Ontology Properties">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -125,46 +125,6 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nfo:entryContent">
-<a name="nfo-entryContent"></a><h3>nfo:entryContent</h3>
-<p>URI to the element in certain position of the list</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nfo-ontology.html#nfo-MediaFileListEntry" title="nfo:MediaFileListEntry">nfo:MediaFileListEntry</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-<div class="note" title="Note:" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note:</h3>
-<p>This property is deprecated</p>
-</div>
-</div>
-<hr>
 <div class="refsect2" title="nfo:isPasswordProtected">
 <a name="nfo-isPasswordProtected"></a><h3>nfo:isPasswordProtected</h3>
 <p>States if a given resource is password-protected.</p>
@@ -262,6 +222,42 @@
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
 <td>
 <a class="link" href="nfo-properties.html#nfo-channels" title="nfo:channels">nfo:channels</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nfo:tilt">
+<a name="nfo-tilt"></a><h3>nfo:tilt</h3>
+<p>Vertical inclination of the camera while capturing the image, in angles starting on 0 as horizontal, positive numbers pointing up, negative angles pointing down</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Visual" title="nfo:Visual">nfo:Visual</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-double" title="xsd:double">xsd:double</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
@@ -671,9 +667,9 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nfo:softwareIcon">
-<a name="nfo-softwareIcon"></a><h3>nfo:softwareIcon</h3>
-<p>Icon of the software</p>
+<div class="refsect2" title="nfo:encodedBy">
+<a name="nfo-encodedBy"></a><h3>nfo:encodedBy</h3>
+<p>The contains the name of the person or organisation that encoded the media</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -684,12 +680,12 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-ontology.html#nfo-Software" title="nfo:Software">nfo:Software</a>, </td>
+<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-ontology.html#nfo-Image" title="nfo:Image">nfo:Image</a>, </td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1071,6 +1067,42 @@
 </table></div>
 </div>
 <hr>
+<div class="refsect2" title="nfo:equipment">
+<a name="nfo-equipment"></a><h3>nfo:equipment</h3>
+<p>Equipment used to create the media</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Equipment" title="nfo:Equipment">nfo:Equipment</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
 <div class="refsect2" title="nfo:mediaListEntry">
 <a name="nfo-mediaListEntry"></a><h3>nfo:mediaListEntry</h3>
 <p>A certain item belongs to a media list. This can reflect that a song is in a playlist, an image or video in an Album</p>
@@ -1103,9 +1135,9 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nfo:fileUrl">
-<a name="nfo-fileUrl"></a><h3>nfo:fileUrl</h3>
-<p>URL of the file. It points at the location of the file. In cases where creating a simple file:// or http:// URL for a file is difficult (e.g. for files inside compressed archives) the applications are encouraged to use conventions defined by Apache Commons VFS Project at http://jakarta.apache.org/  commons/ vfs/ filesystems.html.</p>
+<div class="refsect2" title="nfo:heading">
+<a name="nfo-heading"></a><h3>nfo:heading</h3>
+<p>Specifies the direction of travelling while capturing image/video. The range of values from 0.00 to 359.99 (where 0 is due North, 90 is East, 180 South and 270 is West)</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -1116,12 +1148,12 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-ontology.html#nfo-FileDataObject" title="nfo:FileDataObject">nfo:FileDataObject</a>, </td>
+<a class="link" href="nfo-ontology.html#nfo-Visual" title="nfo:Visual">nfo:Visual</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-rdfs:Resource, </td>
+<a class="link" href="xsd-classes.html#xsd-double" title="xsd:double">xsd:double</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1137,10 +1169,6 @@ rdfs:Resource, </td>
 </tr>
 </tbody>
 </table></div>
-<div class="note" title="Note:" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note:</h3>
-<p>This property is deprecated</p>
-</div>
 </div>
 <hr>
 <div class="refsect2" title="nfo:colorDepth">
@@ -1235,6 +1263,42 @@ rdfs:Resource, </td>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
 <a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nfo:verticalResolution">
+<a name="nfo-verticalResolution"></a><h3>nfo:verticalResolution</h3>
+<p>Vertical resolution of an Image (if printed). Expressed in DPI</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Image" title="nfo:Image">nfo:Image</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1415,7 +1479,7 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
+<a class="link" href="nco-classes.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1473,42 +1537,6 @@ rdfs:Resource, </td>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nfo:verticalResolution">
-<a name="nfo-verticalResolution"></a><h3>nfo:verticalResolution</h3>
-<p>Vertical resolution of an Image (if printed). Expressed in DPI</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nfo-ontology.html#nfo-Image" title="nfo:Image">nfo:Image</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
 <div class="refsect2" title="nfo:averageAudioBitrate">
 <a name="nfo-averageAudioBitrate"></a><h3>nfo:averageAudioBitrate</h3>
 <p>The average overall bitrate of a media container. (i.e. the size of the piece of media in bits, divided by it's duration expressed in seconds).</p>
@@ -1545,9 +1573,45 @@ rdfs:Resource, </td>
 </table></div>
 </div>
 <hr>
+<div class="refsect2" title="nfo:softwareIcon">
+<a name="nfo-softwareIcon"></a><h3>nfo:softwareIcon</h3>
+<p>Icon of the software</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Software" title="nfo:Software">nfo:Software</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Image" title="nfo:Image">nfo:Image</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
 <div class="refsect2" title="nfo:bookmarks">
 <a name="nfo-bookmarks"></a><h3>nfo:bookmarks</h3>
-<p>The address of the linked object. Usually a web URI.</p>
+<p>The address of the linked object. Usually a web URL.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -1802,7 +1866,7 @@ rdfs:Literal, </td>
 <hr>
 <div class="refsect2" title="nfo:entryUrl">
 <a name="nfo-entryUrl"></a><h3>nfo:entryUrl</h3>
-<p>URI to the element in certain position of the list</p>
+<p>URL to the element in certain position of the list</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -2143,6 +2207,114 @@ rdfs:Literal, </td>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
 <a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nfo:manufacturer">
+<a name="nfo-manufacturer"></a><h3>nfo:manufacturer</h3>
+<p>The manufacturer of the equipment</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Equipment" title="nfo:Equipment">nfo:Equipment</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nfo:equipmentSoftware">
+<a name="nfo-equipmentSoftware"></a><h3>nfo:equipmentSoftware</h3>
+<p>The software of the equipment</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Equipment" title="nfo:Equipment">nfo:Equipment</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nfo:model">
+<a name="nfo-model"></a><h3>nfo:model</h3>
+<p>The model of the equipment</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Equipment" title="nfo:Equipment">nfo:Equipment</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -2616,7 +2788,7 @@ rdfs:Literal, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
+<a class="link" href="nco-classes.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -3028,6 +3200,6 @@ rdfs:Literal, </td>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

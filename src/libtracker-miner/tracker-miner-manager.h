@@ -35,24 +35,49 @@ G_BEGIN_DECLS
 #define TRACKER_IS_MINER_MANAGER_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE ((c),    TRACKER_TYPE_MINER_MANAGER))
 #define TRACKER_MINER_MANAGER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o),  TRACKER_TYPE_MINER_MANAGER, TrackerMinerManagerClass))
 
-typedef struct TrackerMinerManager TrackerMinerManager;
-typedef struct TrackerMinerManagerClass TrackerMinerManagerClass;
+#define TRACKER_MINER_MANAGER_ERROR tracker_miner_manager_error_quark ()
+
+typedef struct _TrackerMinerManager TrackerMinerManager;
+typedef struct _TrackerMinerManagerClass TrackerMinerManagerClass;
+
+/**
+ * TrackerMinerManagerError:
+ * @TRACKER_MINER_MANAGER_ERROR_NOT_AVAILABLE: The miner in question
+ * is not active and can so can not be used.
+ * @TRACKER_MINER_MANAGER_ERROR_NOENT: The resource that the
+ * miner is handling (for example a file or URI) does not exist.
+ *
+ * Enumeration values used in errors returned by the
+ * #TrackerMinerManager API.
+ *
+ * Since: 0.8
+ **/
+typedef enum {
+	TRACKER_MINER_MANAGER_ERROR_NOT_AVAILABLE,
+	TRACKER_MINER_MANAGER_ERROR_NOENT
+} TrackerMinerManagerError;
 
 /**
  * TrackerMinerManager:
  *
  * Object to query and control miners.
  **/
-struct TrackerMinerManager {
+struct _TrackerMinerManager {
 	GObject parent_instance;
 };
 
 /**
  * TrackerMinerManagerClass:
- *
- * #TrackerMinerManager class.
+ * @miner_progress: The progress signal for all miners including name,
+ * status and progress as a percentage between 0 and 1.
+ * @miner_paused: The paused signal for all miners known about.
+ * @miner_resumed: The resumed signal for all miners known about.
+ * @miner_activated: The activated signal for all miners which
+ * indicates the miner is available on d-bus.
+ * @miner_deactivated: The deactivate for all miners which indicates
+ * the miner is no longer available on d-bus.
  **/
-struct TrackerMinerManagerClass {
+struct _TrackerMinerManagerClass {
 	GObjectClass parent_class;
 
 	void (* miner_progress)    (TrackerMinerManager *manager,
@@ -70,6 +95,7 @@ struct TrackerMinerManagerClass {
 };
 
 GType                tracker_miner_manager_get_type           (void) G_GNUC_CONST;
+GQuark               tracker_miner_manager_error_quark        (void) G_GNUC_CONST;
 
 TrackerMinerManager *tracker_miner_manager_new                (void);
 GSList *             tracker_miner_manager_get_running        (TrackerMinerManager  *manager);
@@ -98,6 +124,13 @@ const gchar *        tracker_miner_manager_get_display_name   (TrackerMinerManag
                                                                const gchar          *miner);
 const gchar *        tracker_miner_manager_get_description    (TrackerMinerManager  *manager,
                                                                const gchar          *miner);
+
+gboolean             tracker_miner_manager_reindex_by_mimetype (TrackerMinerManager  *manager,
+                                                                const GStrv           mimetypes,
+                                                                GError              **error);
+gboolean             tracker_miner_manager_index_file          (TrackerMinerManager  *manager,
+                                                                GFile                *file,
+                                                                GError              **error);
 
 G_END_DECLS
 

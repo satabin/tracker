@@ -46,17 +46,29 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(top_srcdir)/Makefile.decl COPYING.LIB
+	$(srcdir)/Makefile.in $(top_srcdir)/Makefile.decl COPYING.LIB \
+	libtracker_data_la_vala.stamp tracker-sparql-expression.c \
+	tracker-sparql-pattern.c tracker-sparql-query.c \
+	tracker-sparql-scanner.c tracker-turtle-reader.c
+@HAVE_TRACKER_FTS_TRUE@am__append_1 = \
+@HAVE_TRACKER_FTS_TRUE@	$(top_builddir)/src/libtracker-fts/libtracker-fts.la
+
 subdir = src/libtracker-data
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
-	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
+	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/iconv.m4 \
+	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/intltool.m4 \
+	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
+	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
 	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
@@ -84,19 +96,20 @@ am__base_list = \
 am__installdirs = "$(DESTDIR)$(libtracker_datadir)"
 LTLIBRARIES = $(libtracker_data_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libtracker_data_la_DEPENDENCIES =  \
+libtracker_data_la_DEPENDENCIES = $(top_builddir)/src/gvdb/libgvdb.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-db/libtracker-db.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am__objects_1 = tracker-sparql-expression.lo tracker-sparql-pattern.lo \
-	tracker-sparql-query.lo tracker-sparql-scanner.lo \
-	tracker-turtle-reader.lo
-am_libtracker_data_la_OBJECTS = tracker-class.lo \
-	tracker-data-backup.lo tracker-data-manager.lo \
-	tracker-data-query.lo tracker-data-update.lo \
+	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) $(am__append_1)
+am_libtracker_data_la_OBJECTS = tracker-sparql-expression.lo \
+	tracker-sparql-pattern.lo tracker-sparql-query.lo \
+	tracker-sparql-scanner.lo tracker-turtle-reader.lo \
+	tracker-class.lo tracker-collation.lo tracker-data-backup.lo \
+	tracker-data-manager.lo tracker-data-query.lo \
+	tracker-data-update.lo tracker-db-config.lo \
+	tracker-db-interface.lo tracker-db-interface-sqlite.lo \
+	tracker-db-manager.lo tracker-db-journal.lo \
 	tracker-namespace.lo tracker-ontology.lo tracker-ontologies.lo \
-	tracker-property.lo $(am__objects_1)
+	tracker-property.lo
 libtracker_data_la_OBJECTS = $(am_libtracker_data_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -128,6 +141,13 @@ LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 AM_V_CCLD = $(am__v_CCLD_$(V))
 am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD  " $@;
+VALACOMPILE = $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS)
+LTVALACOMPILE = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(VALAC) $(AM_VALAFLAGS) \
+	$(VALAFLAGS)
+AM_V_VALAC = $(am__v_VALAC_$(V))
+am__v_VALAC_ = $(am__v_VALAC_$(AM_DEFAULT_VERBOSITY))
+am__v_VALAC_0 = @echo "  VALAC " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
@@ -146,8 +166,9 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-CATALOGS = @CATALOGS@
-CATOBJEXT = @CATOBJEXT@
+BUILD_CFLAGS = @BUILD_CFLAGS@
+BUILD_LIBS = @BUILD_LIBS@
+BUILD_VALAFLAGS = @BUILD_VALAFLAGS@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -160,13 +181,10 @@ CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
 DBUSBINDINGTOOL = @DBUSBINDINGTOOL@
-DBUS_CFLAGS = @DBUS_CFLAGS@
-DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DEVKIT_POWER_CFLAGS = @DEVKIT_POWER_CFLAGS@
-DEVKIT_POWER_LIBS = @DEVKIT_POWER_LIBS@
+DIA = @DIA@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -175,67 +193,61 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENCA_CFLAGS = @ENCA_CFLAGS@
 ENCA_LIBS = @ENCA_LIBS@
-EVOLUTION_PLUGIN_CFLAGS = @EVOLUTION_PLUGIN_CFLAGS@
-EVOLUTION_PLUGIN_INSTALL_DIR = @EVOLUTION_PLUGIN_INSTALL_DIR@
-EVOLUTION_PLUGIN_LIBS = @EVOLUTION_PLUGIN_LIBS@
 EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
+GCONF_CFLAGS = @GCONF_CFLAGS@
+GCONF_LIBS = @GCONF_LIBS@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
+GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
-GIO_CFLAGS = @GIO_CFLAGS@
-GIO_LIBS = @GIO_LIBS@
-GLIB2_CFLAGS = @GLIB2_CFLAGS@
-GLIB2_LIBS = @GLIB2_LIBS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
-GMODULE_CFLAGS = @GMODULE_CFLAGS@
-GMODULE_LIBS = @GMODULE_LIBS@
-GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GMSGFMT_015 = @GMSGFMT_015@
 GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
 GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
-GOBJECT_CFLAGS = @GOBJECT_CFLAGS@
-GOBJECT_LIBS = @GOBJECT_LIBS@
 GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
-GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
-GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
+GUPNP_DLNA_CFLAGS = @GUPNP_DLNA_CFLAGS@
+GUPNP_DLNA_LIBS = @GUPNP_DLNA_LIBS@
+GVDB_CFLAGS = @GVDB_CFLAGS@
+GVDB_LIBS = @GVDB_LIBS@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HTML_DIR = @HTML_DIR@
-ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
-ID3LIB_LIBS = @ID3LIB_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
+INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
 LIBFLAC_CFLAGS = @LIBFLAC_CFLAGS@
 LIBFLAC_LIBS = @LIBFLAC_LIBS@
-LIBGRSS_CFLAGS = @LIBGRSS_CFLAGS@
-LIBGRSS_LIBS = @LIBGRSS_LIBS@
+LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
+LIBGIF_LIBS = @LIBGIF_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBICONV = @LIBICONV@
+LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
 LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
@@ -249,12 +261,32 @@ LIBSTREAMANALYZER_LIBS = @LIBSTREAMANALYZER_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
 LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
+LIBTRACKER_BUS_CFLAGS = @LIBTRACKER_BUS_CFLAGS@
+LIBTRACKER_BUS_LIBS = @LIBTRACKER_BUS_LIBS@
+LIBTRACKER_CLIENT_CFLAGS = @LIBTRACKER_CLIENT_CFLAGS@
+LIBTRACKER_CLIENT_LIBS = @LIBTRACKER_CLIENT_LIBS@
+LIBTRACKER_COMMON_CFLAGS = @LIBTRACKER_COMMON_CFLAGS@
+LIBTRACKER_COMMON_LIBS = @LIBTRACKER_COMMON_LIBS@
+LIBTRACKER_DATA_CFLAGS = @LIBTRACKER_DATA_CFLAGS@
+LIBTRACKER_DATA_LIBS = @LIBTRACKER_DATA_LIBS@
+LIBTRACKER_DIRECT_CFLAGS = @LIBTRACKER_DIRECT_CFLAGS@
+LIBTRACKER_DIRECT_LIBS = @LIBTRACKER_DIRECT_LIBS@
+LIBTRACKER_EXTRACT_CFLAGS = @LIBTRACKER_EXTRACT_CFLAGS@
+LIBTRACKER_EXTRACT_LIBS = @LIBTRACKER_EXTRACT_LIBS@
+LIBTRACKER_FTS_CFLAGS = @LIBTRACKER_FTS_CFLAGS@
+LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
+LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
+LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
+LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
+LIBTRACKER_SPARQL_LIBS = @LIBTRACKER_SPARQL_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
 LIBVORBIS_LIBS = @LIBVORBIS_LIBS@
 LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
 LIBXML2_LIBS = @LIBXML2_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
+LTLIBICONV = @LTLIBICONV@
+LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -262,16 +294,14 @@ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
 LT_RELEASE = @LT_RELEASE@
 LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
-MINER_RSS_CFLAGS = @MINER_RSS_CFLAGS@
-MINER_RSS_LIBS = @MINER_RSS_LIBS@
+MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
+MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
 MKDIR_P = @MKDIR_P@
-MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
-MSGFMT_OPTS = @MSGFMT_OPTS@
+MSGFMT_015 = @MSGFMT_015@
 MSGMERGE = @MSGMERGE@
-NAUTILUS_EXTENSION_CFLAGS = @NAUTILUS_EXTENSION_CFLAGS@
-NAUTILUS_EXTENSION_INSTALL_DIR = @NAUTILUS_EXTENSION_INSTALL_DIR@
-NAUTILUS_EXTENSION_LIBS = @NAUTILUS_EXTENSION_LIBS@
+NETWORK_MANAGER_CFLAGS = @NETWORK_MANAGER_CFLAGS@
+NETWORK_MANAGER_LIBS = @NETWORK_MANAGER_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -289,14 +319,14 @@ PANGO_CFLAGS = @PANGO_CFLAGS@
 PANGO_LIBS = @PANGO_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
-POFILES = @POFILES@
-POPPLER_GLIB_CFLAGS = @POPPLER_GLIB_CFLAGS@
-POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
+POPPLER_CFLAGS = @POPPLER_CFLAGS@
+POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
-PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
-PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-QUILL_CFLAGS = @QUILL_CFLAGS@
-QUILL_LIBS = @QUILL_LIBS@
+PYTHON = @PYTHON@
+QT_CFLAGS = @QT_CFLAGS@
+QT_LIBS = @QT_LIBS@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -304,31 +334,59 @@ SHELL = @SHELL@
 SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
 SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
+TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
+TAGLIB_LIBS = @TAGLIB_LIBS@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
-TRACKER_APPLETS_CFLAGS = @TRACKER_APPLETS_CFLAGS@
-TRACKER_APPLETS_LIBS = @TRACKER_APPLETS_LIBS@
-TRACKER_APPS_CFLAGS = @TRACKER_APPS_CFLAGS@
-TRACKER_APPS_LIBS = @TRACKER_APPS_LIBS@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
+TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
+TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_EXPLORER_CFLAGS = @TRACKER_EXPLORER_CFLAGS@
+TRACKER_EXPLORER_LIBS = @TRACKER_EXPLORER_LIBS@
+TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
+TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
+TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
+TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
+TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
+TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
+TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
+TRACKER_MINER_FLICKR_CFLAGS = @TRACKER_MINER_FLICKR_CFLAGS@
+TRACKER_MINER_FLICKR_LIBS = @TRACKER_MINER_FLICKR_LIBS@
+TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
+TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
+TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
+TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
-TRACKER_VALA_CFLAGS = @TRACKER_VALA_CFLAGS@
-TRACKER_VALA_LIBS = @TRACKER_VALA_LIBS@
+TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
+TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
+TRACKER_NAUTILUS_EXTENSION_LIBS = @TRACKER_NAUTILUS_EXTENSION_LIBS@
+TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
+TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
+TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
+TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
+TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
+TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
+TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
+TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
+TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
+TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
-UNAC_CFLAGS = @UNAC_CFLAGS@
-UNAC_LIBS = @UNAC_LIBS@
+TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
+TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
+UPOWER_CFLAGS = @UPOWER_CFLAGS@
+UPOWER_LIBS = @UPOWER_LIBS@
 USE_NLS = @USE_NLS@
-UUID_CFLAGS = @UUID_CFLAGS@
-UUID_LIBS = @UUID_LIBS@
 VALAC = @VALAC@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 XGETTEXT = @XGETTEXT@
+XGETTEXT_015 = @XGETTEXT_015@
+XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
 abs_builddir = @abs_builddir@
@@ -390,83 +448,79 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-INCLUDES = \
-	-DSHAREDIR=\""$(datadir)"\"					\
-	-DG_LOG_DOMAIN=\"Tracker\"					\
-	-DTRACKER_COMPILATION						\
-	-I$(top_srcdir)/src						\
-	-I$(top_builddir)/src						\
-	-I$(top_builddir)/src/libtracker-client				\
-	$(WARN_CFLAGS)							\
-	$(GLIB2_CFLAGS)							\
-	$(DBUS_CFLAGS)							\
-	$(UUID_CFLAGS)							\
-	$(GCOV_CFLAGS)							\
-	$(SQLITE3_CFLAGS)
-
-BUILT_SOURCES = libtracker-data.vala.stamp
-libtracker_datadir = $(libdir)/tracker-$(TRACKER_API_VERSION)
-libtracker_data_LTLIBRARIES = libtracker-data.la
-libtracker_data_la_VALASOURCES = \
-	tracker-sparql-expression.vala					\
-	tracker-sparql-pattern.vala					\
-	tracker-sparql-query.vala					\
-	tracker-sparql-scanner.vala					\
-	tracker-turtle-reader.vala
-
-libtracker_data_la_SOURCES = \
-	tracker-class.c							\
-	tracker-data-backup.c						\
-	tracker-data-manager.c						\
-	tracker-data-query.c						\
-	tracker-data-update.c						\
-	tracker-namespace.c						\
-	tracker-ontology.c						\
-	tracker-ontologies.c						\
-	tracker-property.c						\
-	libtracker-data.vala.stamp					\
-	$(libtracker_data_la_VALASOURCES:.vala=.c)
-
-noinst_HEADERS = \
-	tracker-class.h							\
-	tracker-data.h							\
-	tracker-data-backup.h						\
-	tracker-data-manager.h						\
-	tracker-data-query.h						\
-	tracker-data-update.h						\
-	tracker-namespace.h						\
-	tracker-ontology.h						\
-	tracker-ontologies.h						\
-	tracker-property.h						\
-	tracker-sparql-query.h
-
-vapi_sources = \
-	$(top_srcdir)/src/vapi/posix.vapi				\
-	$(top_srcdir)/src/vapi/glib-2.0-fixes.vapi			\
-	$(top_srcdir)/src/libtracker-common/libtracker-common.vapi	\
-	$(top_srcdir)/src/libtracker-db/libtracker-db.vapi		\
+AM_VALAFLAGS = \
+	--includedir=libtracker-data                   \
+	--header tracker-sparql-query.h                \
+	--vapi tracker-sparql-query.vapi               \
+	--pkg gio-2.0                                  \
+	$(BUILD_VALAFLAGS)                             \
+	$(top_srcdir)/src/vapi/posix.vapi              \
+	$(top_srcdir)/src/vapi/glib-2.0-fixes.vapi     \
+	$(top_srcdir)/src/libtracker-common/libtracker-common.vapi \
+	$(top_srcdir)/src/libtracker-sparql/tracker-sparql-$(TRACKER_API_VERSION).vapi \
 	libtracker-data.vapi
 
+AM_CPPFLAGS = \
+	$(BUILD_CFLAGS)                                \
+	-I$(top_srcdir)/src                            \
+	-I$(top_builddir)/src                          \
+	-DSHAREDIR=\""$(datadir)"\"                    \
+	$(LIBTRACKER_DATA_CFLAGS)
+
+libtracker_datadir = $(libdir)/tracker-$(TRACKER_API_VERSION)
+libtracker_data_LTLIBRARIES = libtracker-data.la
+libtracker_data_la_SOURCES = \
+	tracker-sparql-expression.vala                 \
+	tracker-sparql-pattern.vala                    \
+	tracker-sparql-query.vala                      \
+	tracker-sparql-scanner.vala                    \
+	tracker-turtle-reader.vala                     \
+	tracker-class.c                                \
+	tracker-collation.c                            \
+	tracker-data-backup.c                          \
+	tracker-data-manager.c                         \
+	tracker-data-query.c                           \
+	tracker-data-update.c                          \
+	tracker-db-config.c                            \
+	tracker-db-interface.c                         \
+	tracker-db-interface-sqlite.c                  \
+	tracker-db-manager.c                           \
+	tracker-db-journal.c                           \
+	tracker-namespace.c                            \
+	tracker-ontology.c                             \
+	tracker-ontologies.c                           \
+	tracker-property.c
+
+libtracker_data_la_LIBADD = $(top_builddir)/src/gvdb/libgvdb.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(BUILD_LIBS) $(LIBTRACKER_DATA_LIBS) $(am__append_1)
 libtracker_data_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
-libtracker_data_la_LIBADD = \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
-	$(top_builddir)/src/libtracker-db/libtracker-db.la		\
-	$(DBUS_LIBS)							\
-	$(GLIB2_LIBS)							\
-	$(UUID_LIBS)							\
-	$(GCOV_LIBS)							\
-	-lz
+noinst_HEADERS = \
+	tracker-class.h                                \
+	tracker-data.h                                 \
+	tracker-collation.h                            \
+	tracker-data-backup.h                          \
+	tracker-data-manager.h                         \
+	tracker-data-query.h                           \
+	tracker-data-update.h                          \
+	tracker-db-config.h                            \
+	tracker-db-interface.h                         \
+	tracker-db-interface-sqlite.h                  \
+	tracker-db-manager.h                           \
+	tracker-db-journal.h                           \
+	tracker-namespace.h                            \
+	tracker-ontology.h                             \
+	tracker-ontologies.h                           \
+	tracker-property.h                             \
+	tracker-sparql-query.h
 
-MAINTAINERCLEANFILES = \
-	libtracker-data.vala.stamp					\
-	$(libtracker_data_la_VALASOURCES:.vala=.c)			\
-	tracker-sparql-query.h						\
-	$(NULL)
+BUILT_SOURCES = \
+	libtracker_data_la_vala.stamp
 
-EXTRA_DIST = $(libtracker_data_la_VALASOURCES)				\
-	libtracker-data.vala.stamp					\
+EXTRA_DIST = \
 	libtracker-data.vapi
 
 all: $(BUILT_SOURCES)
@@ -545,10 +599,16 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-class.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-collation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-backup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-query.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-update.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-config.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-interface-sqlite.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-interface.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-journal.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-namespace.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ontologies.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ontology.Plo@am__quote@
@@ -582,6 +642,34 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+$(srcdir)/tracker-sparql-expression.c: $(srcdir)/libtracker_data_la_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/libtracker_data_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_data_la_vala.stamp; \
+	fi
+$(srcdir)/tracker-sparql-pattern.c: $(srcdir)/libtracker_data_la_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/libtracker_data_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_data_la_vala.stamp; \
+	fi
+$(srcdir)/tracker-sparql-query.c: $(srcdir)/libtracker_data_la_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/libtracker_data_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_data_la_vala.stamp; \
+	fi
+$(srcdir)/tracker-sparql-scanner.c: $(srcdir)/libtracker_data_la_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/libtracker_data_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_data_la_vala.stamp; \
+	fi
+$(srcdir)/tracker-turtle-reader.c: $(srcdir)/libtracker_data_la_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/libtracker_data_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_data_la_vala.stamp; \
+	fi
+libtracker_data_la_vala.stamp: $(libtracker_data_la_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(libtracker_data_la_SOURCES)
+	$(AM_V_at)touch $@
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -706,8 +794,13 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-rm -f libtracker_data_la_vala.stamp
+	-rm -f tracker-sparql-expression.c
+	-rm -f tracker-sparql-pattern.c
+	-rm -f tracker-sparql-query.c
+	-rm -f tracker-sparql-scanner.c
+	-rm -f tracker-turtle-reader.c
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
-	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
 clean-am: clean-generic clean-libtool clean-libtracker_dataLTLIBRARIES \
@@ -845,10 +938,6 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
-
-libtracker-data.vala.stamp: $(libtracker_data_la_VALASOURCES) $(vapi_sources)
-	$(AM_V_GEN)$(VALAC) $(GCOV_VALAFLAGS) -C $(VALAFLAGS) -H tracker-sparql-query.h --pkg gio-2.0 $^
-	touch $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

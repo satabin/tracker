@@ -46,36 +46,39 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(top_srcdir)/Makefile.decl
+	$(top_srcdir)/Makefile.decl tracker-explorer.c \
+	tracker_explorer_vala.stamp
 bin_PROGRAMS = tracker-explorer$(EXEEXT)
 subdir = src/tracker-explorer
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
-	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
+	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/iconv.m4 \
+	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/intltool.m4 \
+	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
+	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
 	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(uidir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__objects_1 = tracker_explorer-tracker-explorer.$(OBJEXT)
-am_tracker_explorer_OBJECTS = $(am__objects_1)
+am_tracker_explorer_OBJECTS = tracker-explorer.$(OBJEXT)
 tracker_explorer_OBJECTS = $(am_tracker_explorer_OBJECTS)
+tracker_explorer_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
 tracker_explorer_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
-tracker_explorer_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(tracker_explorer_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
-	-o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -99,6 +102,13 @@ LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 AM_V_CCLD = $(am__v_CCLD_$(V))
 am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD  " $@;
+VALACOMPILE = $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS)
+LTVALACOMPILE = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(VALAC) $(AM_VALAFLAGS) \
+	$(VALAFLAGS)
+AM_V_VALAC = $(am__v_VALAC_$(V))
+am__v_VALAC_ = $(am__v_VALAC_$(AM_DEFAULT_VERBOSITY))
+am__v_VALAC_0 = @echo "  VALAC " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
@@ -138,8 +148,9 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-CATALOGS = @CATALOGS@
-CATOBJEXT = @CATOBJEXT@
+BUILD_CFLAGS = @BUILD_CFLAGS@
+BUILD_LIBS = @BUILD_LIBS@
+BUILD_VALAFLAGS = @BUILD_VALAFLAGS@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -152,13 +163,10 @@ CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
 DBUSBINDINGTOOL = @DBUSBINDINGTOOL@
-DBUS_CFLAGS = @DBUS_CFLAGS@
-DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DEVKIT_POWER_CFLAGS = @DEVKIT_POWER_CFLAGS@
-DEVKIT_POWER_LIBS = @DEVKIT_POWER_LIBS@
+DIA = @DIA@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -167,67 +175,61 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENCA_CFLAGS = @ENCA_CFLAGS@
 ENCA_LIBS = @ENCA_LIBS@
-EVOLUTION_PLUGIN_CFLAGS = @EVOLUTION_PLUGIN_CFLAGS@
-EVOLUTION_PLUGIN_INSTALL_DIR = @EVOLUTION_PLUGIN_INSTALL_DIR@
-EVOLUTION_PLUGIN_LIBS = @EVOLUTION_PLUGIN_LIBS@
 EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
+GCONF_CFLAGS = @GCONF_CFLAGS@
+GCONF_LIBS = @GCONF_LIBS@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
+GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
-GIO_CFLAGS = @GIO_CFLAGS@
-GIO_LIBS = @GIO_LIBS@
-GLIB2_CFLAGS = @GLIB2_CFLAGS@
-GLIB2_LIBS = @GLIB2_LIBS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
-GMODULE_CFLAGS = @GMODULE_CFLAGS@
-GMODULE_LIBS = @GMODULE_LIBS@
-GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GMSGFMT_015 = @GMSGFMT_015@
 GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
 GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
-GOBJECT_CFLAGS = @GOBJECT_CFLAGS@
-GOBJECT_LIBS = @GOBJECT_LIBS@
 GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
-GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
-GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
+GUPNP_DLNA_CFLAGS = @GUPNP_DLNA_CFLAGS@
+GUPNP_DLNA_LIBS = @GUPNP_DLNA_LIBS@
+GVDB_CFLAGS = @GVDB_CFLAGS@
+GVDB_LIBS = @GVDB_LIBS@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HTML_DIR = @HTML_DIR@
-ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
-ID3LIB_LIBS = @ID3LIB_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
+INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
 LIBFLAC_CFLAGS = @LIBFLAC_CFLAGS@
 LIBFLAC_LIBS = @LIBFLAC_LIBS@
-LIBGRSS_CFLAGS = @LIBGRSS_CFLAGS@
-LIBGRSS_LIBS = @LIBGRSS_LIBS@
+LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
+LIBGIF_LIBS = @LIBGIF_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
+LIBICONV = @LIBICONV@
+LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
 LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
@@ -241,12 +243,32 @@ LIBSTREAMANALYZER_LIBS = @LIBSTREAMANALYZER_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
 LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
+LIBTRACKER_BUS_CFLAGS = @LIBTRACKER_BUS_CFLAGS@
+LIBTRACKER_BUS_LIBS = @LIBTRACKER_BUS_LIBS@
+LIBTRACKER_CLIENT_CFLAGS = @LIBTRACKER_CLIENT_CFLAGS@
+LIBTRACKER_CLIENT_LIBS = @LIBTRACKER_CLIENT_LIBS@
+LIBTRACKER_COMMON_CFLAGS = @LIBTRACKER_COMMON_CFLAGS@
+LIBTRACKER_COMMON_LIBS = @LIBTRACKER_COMMON_LIBS@
+LIBTRACKER_DATA_CFLAGS = @LIBTRACKER_DATA_CFLAGS@
+LIBTRACKER_DATA_LIBS = @LIBTRACKER_DATA_LIBS@
+LIBTRACKER_DIRECT_CFLAGS = @LIBTRACKER_DIRECT_CFLAGS@
+LIBTRACKER_DIRECT_LIBS = @LIBTRACKER_DIRECT_LIBS@
+LIBTRACKER_EXTRACT_CFLAGS = @LIBTRACKER_EXTRACT_CFLAGS@
+LIBTRACKER_EXTRACT_LIBS = @LIBTRACKER_EXTRACT_LIBS@
+LIBTRACKER_FTS_CFLAGS = @LIBTRACKER_FTS_CFLAGS@
+LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
+LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
+LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
+LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
+LIBTRACKER_SPARQL_LIBS = @LIBTRACKER_SPARQL_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
 LIBVORBIS_LIBS = @LIBVORBIS_LIBS@
 LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
 LIBXML2_LIBS = @LIBXML2_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
+LTLIBICONV = @LTLIBICONV@
+LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -254,16 +276,14 @@ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
 LT_RELEASE = @LT_RELEASE@
 LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
-MINER_RSS_CFLAGS = @MINER_RSS_CFLAGS@
-MINER_RSS_LIBS = @MINER_RSS_LIBS@
+MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
+MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
 MKDIR_P = @MKDIR_P@
-MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
-MSGFMT_OPTS = @MSGFMT_OPTS@
+MSGFMT_015 = @MSGFMT_015@
 MSGMERGE = @MSGMERGE@
-NAUTILUS_EXTENSION_CFLAGS = @NAUTILUS_EXTENSION_CFLAGS@
-NAUTILUS_EXTENSION_INSTALL_DIR = @NAUTILUS_EXTENSION_INSTALL_DIR@
-NAUTILUS_EXTENSION_LIBS = @NAUTILUS_EXTENSION_LIBS@
+NETWORK_MANAGER_CFLAGS = @NETWORK_MANAGER_CFLAGS@
+NETWORK_MANAGER_LIBS = @NETWORK_MANAGER_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -281,14 +301,14 @@ PANGO_CFLAGS = @PANGO_CFLAGS@
 PANGO_LIBS = @PANGO_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
-POFILES = @POFILES@
-POPPLER_GLIB_CFLAGS = @POPPLER_GLIB_CFLAGS@
-POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
+POPPLER_CFLAGS = @POPPLER_CFLAGS@
+POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
-PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
-PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-QUILL_CFLAGS = @QUILL_CFLAGS@
-QUILL_LIBS = @QUILL_LIBS@
+PYTHON = @PYTHON@
+QT_CFLAGS = @QT_CFLAGS@
+QT_LIBS = @QT_LIBS@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -296,31 +316,59 @@ SHELL = @SHELL@
 SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
 SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
+TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
+TAGLIB_LIBS = @TAGLIB_LIBS@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
-TRACKER_APPLETS_CFLAGS = @TRACKER_APPLETS_CFLAGS@
-TRACKER_APPLETS_LIBS = @TRACKER_APPLETS_LIBS@
-TRACKER_APPS_CFLAGS = @TRACKER_APPS_CFLAGS@
-TRACKER_APPS_LIBS = @TRACKER_APPS_LIBS@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
+TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
+TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
+TRACKER_EXPLORER_CFLAGS = @TRACKER_EXPLORER_CFLAGS@
+TRACKER_EXPLORER_LIBS = @TRACKER_EXPLORER_LIBS@
+TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
+TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
+TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
+TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
+TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
+TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
+TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
+TRACKER_MINER_FLICKR_CFLAGS = @TRACKER_MINER_FLICKR_CFLAGS@
+TRACKER_MINER_FLICKR_LIBS = @TRACKER_MINER_FLICKR_LIBS@
+TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
+TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
+TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
+TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
-TRACKER_VALA_CFLAGS = @TRACKER_VALA_CFLAGS@
-TRACKER_VALA_LIBS = @TRACKER_VALA_LIBS@
+TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
+TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
+TRACKER_NAUTILUS_EXTENSION_LIBS = @TRACKER_NAUTILUS_EXTENSION_LIBS@
+TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
+TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
+TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
+TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
+TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
+TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
+TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
+TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
+TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
+TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
-UNAC_CFLAGS = @UNAC_CFLAGS@
-UNAC_LIBS = @UNAC_LIBS@
+TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
+TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
+UPOWER_CFLAGS = @UPOWER_CFLAGS@
+UPOWER_LIBS = @UPOWER_LIBS@
 USE_NLS = @USE_NLS@
-UUID_CFLAGS = @UUID_CFLAGS@
-UUID_LIBS = @UUID_LIBS@
 VALAC = @VALAC@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 XGETTEXT = @XGETTEXT@
+XGETTEXT_015 = @XGETTEXT_015@
+XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
 abs_builddir = @abs_builddir@
@@ -382,41 +430,29 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-tracker_explorer_VALASOURCES = \
-	tracker-explorer.vala
+AM_VALAFLAGS = \
+	--pkg gio-2.0 --pkg gee-1.0 --pkg gtk+-2.0 \
+	$(BUILD_VALAFLAGS)
+
+AM_CPPFLAGS = \
+	$(BUILD_CFLAGS)                                \
+	-DTRACKER_UI_DIR=\"$(datadir)/tracker/\"       \
+	-DSRCDIR=\"$(abs_srcdir)/\"                    \
+	$(TRACKER_EXPLORER_CFLAGS)
+
+LDADD = \
+	$(BUILD_LIBS)                                  \
+	$(TRACKER_EXPLORER_LIBS)
 
 tracker_explorer_SOURCES = \
-	$(tracker_explorer_VALASOURCES:.vala=.c)
-
-tracker_explorer_CFLAGS = \
-	-DTRACKER_UI_DIR=\"$(datadir)/tracker/\"		\
-	-DSRCDIR=\"$(abs_srcdir)/\"				\
-	$(TRACKER_APPS_CFLAGS)					\
-	$(TRACKER_VALA_CFLAGS)					\
-	$(WARN_CFLAGS)						\
-	$(GCOV_CFLAGS)
-
-tracker_explorer_LDADD = \
-	$(TRACKER_APPS_LIBS)					\
-	$(TRACKER_VALA_LIBS)					\
-	$(GCOV_LIBS)
+	tracker-explorer.vala
 
 uidir = $(datadir)/tracker
 ui_DATA = tracker-explorer.ui
 EXTRA_DIST = \
-	$(tracker_explorer_VALASOURCES) 			\
-	$(ui_DATA)						\
-	tracker_explorer.vala.stamp
+	$(ui_DATA)
 
-MAINTAINERCLEANFILES = \
-	tracker_explorer.vala.stamp 				\
-	$(tracker_explorer_VALASOURCES:.vala=.c)
-
-BUILT_SOURCES = \
-	tracker_explorer.vala.stamp
-
-all: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-am
+all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
@@ -495,7 +531,7 @@ clean-binPROGRAMS:
 	rm -f $$list
 tracker-explorer$(EXEEXT): $(tracker_explorer_OBJECTS) $(tracker_explorer_DEPENDENCIES) 
 	@rm -f tracker-explorer$(EXEEXT)
-	$(AM_V_CCLD)$(tracker_explorer_LINK) $(tracker_explorer_OBJECTS) $(tracker_explorer_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(LINK) $(tracker_explorer_OBJECTS) $(tracker_explorer_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -503,7 +539,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_explorer-tracker-explorer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-explorer.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -528,22 +564,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
-
-tracker_explorer-tracker-explorer.o: tracker-explorer.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_explorer_CFLAGS) $(CFLAGS) -MT tracker_explorer-tracker-explorer.o -MD -MP -MF $(DEPDIR)/tracker_explorer-tracker-explorer.Tpo -c -o tracker_explorer-tracker-explorer.o `test -f 'tracker-explorer.c' || echo '$(srcdir)/'`tracker-explorer.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_explorer-tracker-explorer.Tpo $(DEPDIR)/tracker_explorer-tracker-explorer.Po
-@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-explorer.c' object='tracker_explorer-tracker-explorer.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_explorer_CFLAGS) $(CFLAGS) -c -o tracker_explorer-tracker-explorer.o `test -f 'tracker-explorer.c' || echo '$(srcdir)/'`tracker-explorer.c
-
-tracker_explorer-tracker-explorer.obj: tracker-explorer.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_explorer_CFLAGS) $(CFLAGS) -MT tracker_explorer-tracker-explorer.obj -MD -MP -MF $(DEPDIR)/tracker_explorer-tracker-explorer.Tpo -c -o tracker_explorer-tracker-explorer.obj `if test -f 'tracker-explorer.c'; then $(CYGPATH_W) 'tracker-explorer.c'; else $(CYGPATH_W) '$(srcdir)/tracker-explorer.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_explorer-tracker-explorer.Tpo $(DEPDIR)/tracker_explorer-tracker-explorer.Po
-@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-explorer.c' object='tracker_explorer-tracker-explorer.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_explorer_CFLAGS) $(CFLAGS) -c -o tracker_explorer-tracker-explorer.obj `if test -f 'tracker-explorer.c'; then $(CYGPATH_W) 'tracker-explorer.c'; else $(CYGPATH_W) '$(srcdir)/tracker-explorer.c'; fi`
+$(srcdir)/tracker-explorer.c: $(srcdir)/tracker_explorer_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/tracker_explorer_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) tracker_explorer_vala.stamp; \
+	fi
+tracker_explorer_vala.stamp: $(tracker_explorer_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_explorer_SOURCES)
+	$(AM_V_at)touch $@
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -655,15 +683,13 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) check-local
-check: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) check-am
+check: check-am
 all-am: Makefile $(PROGRAMS) $(DATA)
 installdirs:
 	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(uidir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) install-am
+install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -688,8 +714,8 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
-	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
+	-rm -f tracker-explorer.c
+	-rm -f tracker_explorer_vala.stamp
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
@@ -760,7 +786,7 @@ ps-am:
 
 uninstall-am: uninstall-binPROGRAMS uninstall-uiDATA
 
-.MAKE: all check check-am install install-am install-strip
+.MAKE: check-am install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am check-local clean \
 	clean-binPROGRAMS clean-generic clean-libtool ctags distclean \
@@ -826,10 +852,6 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
-
-tracker_explorer.vala.stamp: $(tracker_explorer_VALASOURCES)
-	$(VALAC) -C -g --pkg dbus-glib-1 --pkg gee-1.0 --pkg gtk+-2.0 $^
-	touch tracker_explorer.vala.stamp
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

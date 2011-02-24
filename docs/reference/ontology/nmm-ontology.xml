@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <chapter id='nmm-ontology'>
-<title>NMM Ontology</title>
+<title>Nepomuk MultiMedia (NMM): Description of multimedia objects like Music, Video and Images</title>
 <varlistentry>
   <term>Authors:</term>
   <listitem>
@@ -100,7 +100,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-trackNumber'>nmm:trackNumber</link>, <link linkend='nmm-lyrics'>nmm:lyrics</link>, <link linkend='nmm-lyricist'>nmm:lyricist</link>, <link linkend='nmm-composer'>nmm:composer</link>, <link linkend='nmm-length'>nmm:length</link>, <link linkend='nmm-performer'>nmm:performer</link>, <link linkend='nmm-beatsPerMinute'>nmm:beatsPerMinute</link>, <link linkend='nmm-musicAlbum'>nmm:musicAlbum</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-internationalStandardRecordingCode'>nmm:internationalStandardRecordingCode</link>, <link linkend='nmm-trackNumber'>nmm:trackNumber</link>, <link linkend='nmm-lyrics'>nmm:lyrics</link>, <link linkend='nmm-lyricist'>nmm:lyricist</link>, <link linkend='nmm-composer'>nmm:composer</link>, <link linkend='nmm-performer'>nmm:performer</link>, <link linkend='nmm-beatsPerMinute'>nmm:beatsPerMinute</link>, <link linkend='nmm-musicAlbumDisc'>nmm:musicAlbumDisc</link>, <link linkend='nmm-musicAlbum'>nmm:musicAlbum</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -140,6 +140,28 @@
 </note>
 </refsect2>
 
+<refsect2 id='nmm-MusicAlbumDisc'>
+<title>nmm:MusicAlbumDisc</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nmm-setNumber'>nmm:setNumber</link>, <link linkend='nmm-musicCDIdentifier'>nmm:musicCDIdentifier</link>, <link linkend='nmm-albumDiscAlbum'>nmm:albumDiscAlbum</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nmm-musicAlbumDisc'>nmm:musicAlbumDisc</link>, </simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nmm-AnalogRadio'>
 <title>nmm:AnalogRadio</title>
 <para>FM Radio carrier signal data. Basically the frequency</para>
@@ -169,7 +191,7 @@
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -203,13 +225,17 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-setNumber'>nmm:setNumber</link>, <link linkend='nmm-albumPeakGain'>nmm:albumPeakGain</link>, <link linkend='nmm-albumGain'>nmm:albumGain</link>, <link linkend='nmm-albumDuration'>nmm:albumDuration</link>, <link linkend='nmm-albumTitle'>nmm:albumTitle</link>, <link linkend='nmm-albumTrackCount'>nmm:albumTrackCount</link>, <link linkend='nmm-internationalStandardRecordingCode'>nmm:internationalStandardRecordingCode</link>, <link linkend='nmm-musicCDIdentifier'>nmm:musicCDIdentifier</link>, <link linkend='nmm-albumArtist'>nmm:albumArtist</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-albumPeakGain'>nmm:albumPeakGain</link>, <link linkend='nmm-albumGain'>nmm:albumGain</link>, <link linkend='nmm-albumDuration'>nmm:albumDuration</link>, <link linkend='nmm-albumTitle'>nmm:albumTitle</link>, <link linkend='nmm-albumTrackCount'>nmm:albumTrackCount</link>, <link linkend='nmm-albumArtist'>nmm:albumArtist</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-musicAlbum'>nmm:musicAlbum</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-musicAlbum'>nmm:musicAlbum</link>, <link linkend='nmm-albumDiscAlbum'>nmm:albumDiscAlbum</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
+<note>
+<title>Note:</title>
+<para>This class notifies about changes</para>
+</note>
 </refsect2>
 
 <refsect2 id='nmm-MeteringMode'>
@@ -218,7 +244,7 @@
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -260,6 +286,10 @@
 <listitem><simpara>--</simpara></listitem>
 </varlistentry>
 </variablelist>
+<note>
+<title>Note:</title>
+<para>This class notifies about changes</para>
+</note>
 </refsect2>
 
 <refsect2 id='nmm-Artist'>
@@ -283,6 +313,10 @@
 <listitem><simpara><link linkend='nmm-leadActor'>nmm:leadActor</link>, <link linkend='nmm-producedBy'>nmm:producedBy</link>, <link linkend='nmm-director'>nmm:director</link>, <link linkend='nmm-lyricist'>nmm:lyricist</link>, <link linkend='nmm-composer'>nmm:composer</link>, <link linkend='nmm-performer'>nmm:performer</link>, <link linkend='nmm-albumArtist'>nmm:albumArtist</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
+<note>
+<title>Note:</title>
+<para>This class notifies about changes</para>
+</note>
 </refsect2>
 
 <refsect2 id='nmm-Playlist'>
@@ -318,7 +352,7 @@
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -368,7 +402,7 @@
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -411,33 +445,6 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-Photo'>
-<title>nmm:Photo</title>
-<para>A photo</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Image'>nfo:Image</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-isColorCorrected'>nmm:isColorCorrected</link>, <link linkend='nmm-isCropped'>nmm:isCropped</link>, <link linkend='nmm-whiteBalance'>nmm:whiteBalance</link>, <link linkend='nmm-meteringMode'>nmm:meteringMode</link>, <link linkend='nmm-isoSpeed'>nmm:isoSpeed</link>, <link linkend='nmm-focalLength'>nmm:focalLength</link>, <link linkend='nmm-fnumber'>nmm:fnumber</link>, <link linkend='nmm-flash'>nmm:flash</link>, <link linkend='nmm-exposureTime'>nmm:exposureTime</link>, <link linkend='nmm-camera'>nmm:camera</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-<note>
-<title>Note:</title>
-<para>This class notifies about changes</para>
-</note>
-</refsect2>
-
 <refsect2 id='nmm-Video'>
 <title>nmm:Video</title>
 <variablelist>
@@ -452,6 +459,33 @@
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
 <listitem><simpara><link linkend='nmm-isContentEncrypted'>nmm:isContentEncrypted</link>, <link linkend='nmm-subtitle'>nmm:subtitle</link>, <link linkend='nmm-hasSubtitle'>nmm:hasSubtitle</link>, <link linkend='nmm-leadActor'>nmm:leadActor</link>, <link linkend='nmm-producedBy'>nmm:producedBy</link>, <link linkend='nmm-director'>nmm:director</link>, <link linkend='nmm-category'>nmm:category</link>, <link linkend='nmm-MPAARating'>nmm:MPAARating</link>, <link linkend='nmm-synopsis'>nmm:synopsis</link>, <link linkend='nmm-runTime'>nmm:runTime</link>, <link linkend='nmm-episodeNumber'>nmm:episodeNumber</link>, <link linkend='nmm-season'>nmm:season</link>, <link linkend='nmm-isSeries'>nmm:isSeries</link>, <link linkend='nmm-videoAlbum'>nmm:videoAlbum</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+<note>
+<title>Note:</title>
+<para>This class notifies about changes</para>
+</note>
+</refsect2>
+
+<refsect2 id='nmm-Photo'>
+<title>nmm:Photo</title>
+<para>A photo</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Image'>nfo:Image</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nmm-isColorCorrected'>nmm:isColorCorrected</link>, <link linkend='nmm-isCropped'>nmm:isCropped</link>, <link linkend='nmm-whiteBalance'>nmm:whiteBalance</link>, <link linkend='nmm-meteringMode'>nmm:meteringMode</link>, <link linkend='nmm-isoSpeed'>nmm:isoSpeed</link>, <link linkend='nmm-focalLength'>nmm:focalLength</link>, <link linkend='nmm-fnumber'>nmm:fnumber</link>, <link linkend='nmm-flash'>nmm:flash</link>, <link linkend='nmm-exposureTime'>nmm:exposureTime</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -491,32 +525,9 @@
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
 </varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='nmm-uPnPShared'>
-<title>nmm:uPnPShared</title>
-<para>Tells the uPnP MediaServer (e.g. Rygel) whether to export/share the resource or not</para>
-<variablelist>
 <varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -578,8 +589,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-producedBy'>
-<title>nmm:producedBy</title>
+<refsect2 id='nmm-episodeNumber'>
+<title>nmm:episodeNumber</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -591,7 +602,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-Artist'>nmm:Artist</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -608,8 +619,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-episodeNumber'>
-<title>nmm:episodeNumber</title>
+<refsect2 id='nmm-producedBy'>
+<title>nmm:producedBy</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -621,7 +632,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-Artist'>nmm:Artist</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -662,16 +673,12 @@
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-alternativeMedia'>
-<title>nmm:alternativeMedia</title>
-<para>Link between to different version of the same media. This is used for instances in uPnp where the server can provide the same video in different resolutions and codecs</para>
+<refsect2 id='nmm-albumDiscAlbum'>
+<title>nmm:albumDiscAlbum</title>
+<para>Album of the disc</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -679,11 +686,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-MusicAlbumDisc'>nmm:MusicAlbumDisc</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-MusicAlbum'>nmm:MusicAlbum</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -692,6 +699,10 @@
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -767,7 +778,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-MusicAlbum'>nmm:MusicAlbum</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-MusicPiece'>nmm:MusicPiece</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -979,7 +990,7 @@
 
 <refsect2 id='nmm-setNumber'>
 <title>nmm:setNumber</title>
-<para>Disk number of album</para>
+<para>Disc number of album disc</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -987,7 +998,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-MusicAlbum'>nmm:MusicAlbum</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-MusicAlbumDisc'>nmm:MusicAlbumDisc</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -1018,7 +1029,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-MusicAlbum'>nmm:MusicAlbum</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-MusicAlbumDisc'>nmm:MusicAlbumDisc</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -1070,32 +1081,6 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-leadActor'>
-<title>nmm:leadActor</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-Video'>nmm:Video</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-Artist'>nmm:Artist</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
 <refsect2 id='nmm-synopsis'>
 <title>nmm:synopsis</title>
 <variablelist>
@@ -1126,9 +1111,35 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nmm-leadActor'>
+<title>nmm:leadActor</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nmm-Video'>nmm:Video</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nmm-Artist'>nmm:Artist</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nmm-albumTitle'>
 <title>nmm:albumTitle</title>
-<para>The title of the album</para>
+<para>nmm:albumTitle is deprecated, use nie:title instead, extractors still need updating</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -1159,11 +1170,15 @@
 <listitem><simpara>This property is indexed, so it can provide results on text search</simpara></listitem>
 </varlistentry>
 </variablelist>
+<note>
+<title>Note:</title>
+<para>This property is deprecated</para>
+</note>
 </refsect2>
 
-<refsect2 id='nmm-flash'>
-<title>nmm:flash</title>
-<para>Specifies whether flash was used</para>
+<refsect2 id='nmm-musicAlbumDisc'>
+<title>nmm:musicAlbumDisc</title>
+<para>album disc the music belongs to</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -1171,15 +1186,15 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-Photo'>nmm:Photo</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-MusicPiece'>nmm:MusicPiece</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-Flash'>nmm:Flash</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-MusicAlbumDisc'>nmm:MusicAlbumDisc</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='nie-isLogicalPartOf'>nie:isLogicalPartOf</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
@@ -1280,8 +1295,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-whiteBalance'>
-<title>nmm:whiteBalance</title>
+<refsect2 id='nmm-flash'>
+<title>nmm:flash</title>
+<para>Specifies whether flash was used</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -1293,7 +1309,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-WhiteBalance'>nmm:WhiteBalance</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-Flash'>nmm:Flash</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -1345,9 +1361,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-frequency'>
-<title>nmm:frequency</title>
-<para>Frequency in the Radio spectrum in Khz (note that usually FM frequencies are in MHz)</para>
+<refsect2 id='nmm-whiteBalance'>
+<title>nmm:whiteBalance</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -1355,11 +1370,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-AnalogRadio'>nmm:AnalogRadio</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-Photo'>nmm:Photo</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-WhiteBalance'>nmm:WhiteBalance</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -1482,6 +1497,37 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nmm-frequency'>
+<title>nmm:frequency</title>
+<para>Frequency in the Radio spectrum in Khz (note that usually FM frequencies are in MHz)</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nmm-AnalogRadio'>nmm:AnalogRadio</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -1715,9 +1761,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-length'>
-<title>nmm:length</title>
-<para>Length or duration (in seconds)</para>
+<refsect2 id='nmm-runTime'>
+<title>nmm:runTime</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -1725,7 +1770,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-MusicPiece'>nmm:MusicPiece</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-Video'>nmm:Video</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -1744,14 +1789,10 @@
 <listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
-<note>
-<title>Note:</title>
-<para>This property is deprecated</para>
-</note>
 </refsect2>
 
-<refsect2 id='nmm-runTime'>
-<title>nmm:runTime</title>
+<refsect2 id='nmm-skipCounter'>
+<title>nmm:skipCounter</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -1759,7 +1800,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-Video'>nmm:Video</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -1811,36 +1852,6 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-skipCounter'>
-<title>nmm:skipCounter</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
 <refsect2 id='nmm-carrier'>
 <title>nmm:carrier</title>
 <para>Signal where a radio can be tuned in. There can be more than one.</para>
@@ -1864,6 +1875,37 @@
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nmm-uPnPShared'>
+<title>nmm:uPnPShared</title>
+<para>Tells the uPnP MediaServer (e.g. Rygel) whether to export/share the resource or not</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -1960,37 +2002,6 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-camera'>
-<title>nmm:camera</title>
-<para>The maker and model of the camera used to take the photograph</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-Photo'>nmm:Photo</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
 <refsect2 id='nmm-trackNumber'>
 <title>nmm:trackNumber</title>
 <para>Track number of the music in its album</para>
@@ -2052,6 +2063,32 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nmm-director'>
+<title>nmm:director</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nmm-Video'>nmm:Video</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nmm-Artist'>nmm:Artist</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nmm-albumPeakGain'>
 <title>nmm:albumPeakGain</title>
 <para>Peak Gain of album</para>
@@ -2063,37 +2100,6 @@
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
 <listitem><simpara><link linkend='nmm-MusicAlbum'>nmm:MusicAlbum</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='nmm-beatsPerMinute'>
-<title>nmm:beatsPerMinute</title>
-<para>beats per minute</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-MusicPiece'>nmm:MusicPiece</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -2145,8 +2151,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nmm-director'>
-<title>nmm:director</title>
+<refsect2 id='nmm-beatsPerMinute'>
+<title>nmm:beatsPerMinute</title>
+<para>beats per minute</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -2154,11 +2161,42 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-Video'>nmm:Video</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmm-MusicPiece'>nmm:MusicPiece</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmm-Artist'>nmm:Artist</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nmm-alternativeMedia'>
+<title>nmm:alternativeMedia</title>
+<para>Link between to different version of the same media. This is used for instances in uPnp where the server can provide the same video in different resolutions and codecs</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>

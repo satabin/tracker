@@ -42,8 +42,12 @@ namespace Tracker {
 		public void load_async (string uri, Tracker.ReplyVoid callback);
 		[CCode (cname = "tracker_resources_sparql_query")]
 		public GLib.PtrArray sparql_query (string query) throws GLib.Error;
+		[CCode (cname = "tracker_resources_sparql_query_iterate")]
+		public Tracker.ResultIterator sparql_query_iterate (string query) throws GLib.Error;
 		[CCode (cname = "tracker_resources_sparql_query_async")]
 		public void sparql_query_async (string query, Tracker.ReplyGPtrArray callback);
+		[CCode (cname = "tracker_resources_sparql_query_iterate_async")]
+		public void sparql_query_iterate_async (string query, Tracker.ReplyIterator callback);
 		[CCode (cname = "tracker_resources_sparql_update")]
 		public void sparql_update (string query) throws GLib.Error;
 		[CCode (cname = "tracker_resources_sparql_update_async")]
@@ -56,6 +60,10 @@ namespace Tracker {
 		public GLib.PtrArray statistics_get () throws GLib.Error;
 		[CCode (cname = "tracker_statistics_get_async")]
 		public void statistics_get_async (Tracker.ReplyGPtrArray callback);
+		[CCode (cname = "tracker_resources_writeback_connect")]
+		public void writeback_connect (Tracker.WritebackCallback callback);
+		[CCode (cname = "tracker_resources_writeback_disconnect")]
+		public void writeback_disconnect ();
 	}
 	[Compact]
 	[CCode (free_function = "g_object_unref", cheader_filename = "libtracker-client/tracker-sparql-builder.h")]
@@ -102,12 +110,24 @@ namespace Tracker {
 		WARNINGS
 	}
 
+	[Compact]
+	[CCode (cheader_filename = "libtracker-client/tracker-client.h")]
+	public class ResultIterator {
+		public int n_columns ();
+		public bool next ();
+		public unowned string value (uint column);
+	}
+
 	[CCode (cheader_filename = "libtracker-client/tracker-client.h", instance_pos = -2)]
 	public delegate void ReplyArray (string result, GLib.Error error);
 	[CCode (cheader_filename = "libtracker-client/tracker-client.h", instance_pos = -2)]
 	public delegate void ReplyGPtrArray (GLib.PtrArray result, GLib.Error error);
 	[CCode (cheader_filename = "libtracker-client/tracker-client.h", instance_pos = -2)]
+	public delegate void ReplyIterator (Tracker.ResultIterator iterator, GLib.Error error);
+	[CCode (cheader_filename = "libtracker-client/tracker-client.h", instance_pos = -2)]
 	public delegate void ReplyVoid (GLib.Error error);
+	[CCode (cheader_filename = "libtracker-client/tracker.h", instance_pos = -2)]
+	public delegate void WritebackCallback (GLib.HashTable resources);
 
 	[CCode (cheader_filename = "libtracker-client/tracker-client.h")]
 	public const string DBUS_INTERFACE_RESOURCES;

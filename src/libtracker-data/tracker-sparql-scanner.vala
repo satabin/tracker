@@ -59,6 +59,19 @@ public class Tracker.SparqlScanner : Object {
 			case 'b':
 				if (matches (begin, "BY")) return SparqlTokenType.BY;
 				break;
+			case 'i':
+			case 'I':
+				switch (begin[1]) {
+				case 'F':
+				case 'f':
+					if (matches (begin, "IF")) return SparqlTokenType.IF;
+					break;
+				case 'N':
+				case 'n':
+					if (matches (begin, "IN")) return SparqlTokenType.OP_IN;
+					break;
+				}
+				break;
 			}
 			break;
 		case 3:
@@ -98,6 +111,10 @@ public class Tracker.SparqlScanner : Object {
 					break;
 				}
 				break;
+			case 'N':
+			case 'n':
+				if (matches (begin, "NOT")) return SparqlTokenType.NOT;
+				break;
 			case 'S':
 			case 's':
 				switch (begin[1]) {
@@ -122,6 +139,10 @@ public class Tracker.SparqlScanner : Object {
 			case 'D':
 			case 'd':
 				switch (begin[1]) {
+				case 'A':
+				case 'a':
+					if (matches (begin, "DATA")) return SparqlTokenType.DATA;
+					break;
 				case 'E':
 				case 'e':
 					if (matches (begin, "DESC")) return SparqlTokenType.DESC;
@@ -147,6 +168,10 @@ public class Tracker.SparqlScanner : Object {
 			case 'T':
 			case 't':
 				if (matches (begin, "TRUE")) return SparqlTokenType.TRUE;
+				break;
+			case 'W':
+			case 'w':
+				if (matches (begin, "WITH")) return SparqlTokenType.WITH;
 				break;
 			}
 			break;
@@ -195,16 +220,7 @@ public class Tracker.SparqlScanner : Object {
 				break;
 			case 'W':
 			case 'w':
-				switch (begin[1]) {
-				case 'H':
-				case 'h':
-					if (matches (begin, "WHERE")) return SparqlTokenType.WHERE;
-					break;
-				case 'I':
-				case 'i':
-					if (matches (begin, "WITH")) return SparqlTokenType.WITH;
-					break;
-				}
+				if (matches (begin, "WHERE")) return SparqlTokenType.WHERE;
 				break;
 			case 'F':
 			case 'f':
@@ -236,6 +252,10 @@ public class Tracker.SparqlScanner : Object {
 			case 'd':
 				if (matches (begin, "DELETE")) return SparqlTokenType.DELETE;
 				break;
+			case 'E':
+			case 'e':
+				if (matches (begin, "EXISTS")) return SparqlTokenType.EXISTS;
+				break;
 			case 'F':
 			case 'f':
 				if (matches (begin, "FILTER")) return SparqlTokenType.FILTER;
@@ -254,7 +274,16 @@ public class Tracker.SparqlScanner : Object {
 				break;
 			case 'S':
 			case 's':
-				if (matches (begin, "SELECT")) return SparqlTokenType.SELECT;
+				switch (begin[1]) {
+				case 'E':
+				case 'e':
+					if (matches (begin, "SELECT")) return SparqlTokenType.SELECT;
+					break;
+				case 'I':
+				case 'i':
+					if (matches (begin, "SILENT")) return SparqlTokenType.SILENT;
+					break;
+				}
 				break;
 			}
 			break;
@@ -409,7 +438,7 @@ public class Tracker.SparqlScanner : Object {
 		return (c.isalnum () || c == '_');
 	}
 
-	public SparqlTokenType read_token (out SourceLocation token_begin, out SourceLocation token_end) throws SparqlError {
+	public SparqlTokenType read_token (out SourceLocation token_begin, out SourceLocation token_end) throws Sparql.Error {
 		space ();
 
 		SparqlTokenType type;
@@ -493,12 +522,12 @@ public class Tracker.SparqlScanner : Object {
 			case '@':
 				type = SparqlTokenType.NONE;
 				current++;
-				if (current < end - "prefix".size () && matches (current, "PREFIX")) {
+				if (current < end - "prefix".length && matches (current, "PREFIX")) {
 					type = SparqlTokenType.ATPREFIX;
-					current += "prefix".size ();
-				} else if (current < end - "base".size () && matches (current, "BASE")) {
+					current += "prefix".length;
+				} else if (current < end - "base".length && matches (current, "BASE")) {
 					type = SparqlTokenType.ATBASE;
-					current += "base".size ();
+					current += "base".length;
 				}
 				break;
 			case '|':
@@ -624,7 +653,7 @@ public class Tracker.SparqlScanner : Object {
 							line++;
 							column = 1;
 							token_length_in_chars = 3;
-						} else if (current[0] <= 0x7f) {
+						} else if ((uchar) current[0] <= 0x7f) {
 							// ASCII
 							current++;
 							token_length_in_chars++;
@@ -634,14 +663,14 @@ public class Tracker.SparqlScanner : Object {
 								current += u.to_utf8 (null);
 								token_length_in_chars++;
 							} else {
-								throw new SparqlError.PARSE ("%d.%d: invalid UTF-8 character", line, column + token_length_in_chars);
+								throw new Sparql.Error.PARSE ("%d.%d: invalid UTF-8 character", line, column + token_length_in_chars);
 							}
 						}
 					}
 					if (current[0] == begin[0] && current[1] == begin[0] && current[2] == begin[0]) {
 						current += 3;
 					} else {
-						throw new SparqlError.PARSE ("%d.%d: syntax error, expected \"\"\"", line, column + token_length_in_chars);
+						throw new Sparql.Error.PARSE ("%d.%d: syntax error, expected \"\"\"", line, column + token_length_in_chars);
 					}
 					break;
 				}
@@ -674,12 +703,21 @@ public class Tracker.SparqlScanner : Object {
 							current++;
 							token_length_in_chars++;
 							break;
+						case 'u':
+							for (int i = 0; i < 4; i++) {
+								if (current + i + 1 >= end || !current[i + 1].isxdigit ()) {
+									throw new Sparql.Error.PARSE ("%d.%d: invalid escape sequence", line, column + token_length_in_chars);
+								}
+							}
+							current += 5;
+							token_length_in_chars += 5;
+							break;
 						default:
-							throw new SparqlError.PARSE ("%d.%d: invalid escape sequence", line, column + token_length_in_chars);
+							throw new Sparql.Error.PARSE ("%d.%d: invalid escape sequence", line, column + token_length_in_chars);
 						}
 					} else if (current[0] == '\n') {
 						break;
-					} else if (current[0] <= 0x7f) {
+					} else if ((uchar) current[0] <= 0x7f) {
 						// ASCII
 						current++;
 						token_length_in_chars++;
@@ -690,14 +728,14 @@ public class Tracker.SparqlScanner : Object {
 							token_length_in_chars++;
 						} else {
 							current++;
-							throw new SparqlError.PARSE ("%d.%d: invalid UTF-8 character", line, column + token_length_in_chars);
+							throw new Sparql.Error.PARSE ("%d.%d: invalid UTF-8 character", line, column + token_length_in_chars);
 						}
 					}
 				}
 				if (current < end && current[0] != '\n') {
 					current++;
 				} else {
-					throw new SparqlError.PARSE ("%d.%d: syntax error, expected %c", line, column + token_length_in_chars, begin[0]);
+					throw new Sparql.Error.PARSE ("%d.%d: syntax error, expected %c", line, column + token_length_in_chars, begin[0]);
 				}
 				break;
 			case '^':
@@ -706,7 +744,7 @@ public class Tracker.SparqlScanner : Object {
 					type = SparqlTokenType.DOUBLE_CIRCUMFLEX;
 					current += 2;
 				} else {
-					throw new SparqlError.PARSE ("%d.%d: syntax error, unexpected character", line, column);
+					throw new Sparql.Error.PARSE ("%d.%d: syntax error, unexpected character", line, column);
 				}
 				break;
 			case '_':
@@ -716,9 +754,9 @@ public class Tracker.SparqlScanner : Object {
 			default:
 				unichar u = ((string) current).get_char_validated ((long) (end - current));
 				if (u != (unichar) (-1)) {
-					throw new SparqlError.PARSE ("%d.%d: syntax error, unexpected character", line, column);
+					throw new Sparql.Error.PARSE ("%d.%d: syntax error, unexpected character", line, column);
 				} else {
-					throw new SparqlError.PARSE ("%d.%d: invalid UTF-8 character", line, column);
+					throw new Sparql.Error.PARSE ("%d.%d: invalid UTF-8 character", line, column);
 				}
 			}
 		}
@@ -809,6 +847,7 @@ public enum Tracker.SparqlTokenType {
 	COMMA,
 	CONSTRUCT,
 	COUNT,
+	DATA,
 	DATATYPE,
 	DECIMAL,
 	DELETE,
@@ -821,12 +860,14 @@ public enum Tracker.SparqlTokenType {
 	DOUBLE_CIRCUMFLEX,
 	DROP,
 	EOF,
+	EXISTS,
 	FALSE,
 	FILTER,
 	FROM,
 	GRAPH,
 	GROUP,
 	GROUP_CONCAT,
+	IF,
 	INSERT,
 	INTEGER,
 	INTO,
@@ -842,6 +883,7 @@ public enum Tracker.SparqlTokenType {
 	MIN,
 	MINUS,
 	NAMED,
+	NOT,
 	OFFSET,
 	OP_AND,
 	OP_EQ,
@@ -852,6 +894,7 @@ public enum Tracker.SparqlTokenType {
 	OP_NE,
 	OP_NEG,
 	OP_OR,
+	OP_IN,
 	OPEN_BRACE,
 	OPEN_BRACKET,
 	OPEN_PARENS,
@@ -865,6 +908,7 @@ public enum Tracker.SparqlTokenType {
 	SAMETERM,
 	SELECT,
 	SEMICOLON,
+	SILENT,
 	STAR,
 	STR,
 	STRING_LITERAL1,
@@ -908,12 +952,14 @@ public enum Tracker.SparqlTokenType {
 		case DOUBLE_CIRCUMFLEX: return "`^^'";
 		case DROP: return "`DROP'";
 		case EOF: return "end of file";
+		case EXISTS: return "`EXISTS'";
 		case FALSE: return "`false'";
 		case FILTER: return "`FILTER'";
 		case FROM: return "`FROM'";
 		case GRAPH: return "`GRAPH'";
 		case GROUP: return "`GROUP'";
 		case GROUP_CONCAT: return "`GROUP_CONCAT'";
+		case IF: return "`IF'";
 		case INSERT: return "`INSERT'";
 		case INTEGER: return "`INTEGER'";
 		case INTO: return "`INTO'";
@@ -929,6 +975,7 @@ public enum Tracker.SparqlTokenType {
 		case MIN: return "`MIN'";
 		case MINUS: return "`-'";
 		case NAMED: return "`NAMED'";
+		case NOT: return "`NOT'";
 		case OFFSET: return "`OFFSET'";
 		case OP_AND: return "`&&'";
 		case OP_EQ: return "`='";
@@ -939,6 +986,7 @@ public enum Tracker.SparqlTokenType {
 		case OP_NE: return "`!='";
 		case OP_NEG: return "`!'";
 		case OP_OR: return "`||'";
+		case OP_IN: return "`IN'";
 		case OPEN_BRACE: return "`{'";
 		case OPEN_BRACKET: return "`['";
 		case OPEN_PARENS: return "`('";
@@ -952,6 +1000,7 @@ public enum Tracker.SparqlTokenType {
 		case SAMETERM: return "`SAMETERM'";
 		case SELECT: return "`SELECT'";
 		case SEMICOLON: return "`;'";
+		case SILENT: return "`SILENT'";
 		case STAR: return "`*'";
 		case STR: return "`STR'";
 		case STRING_LITERAL1: return "string literal";

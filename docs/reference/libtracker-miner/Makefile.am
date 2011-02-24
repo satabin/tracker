@@ -22,36 +22,33 @@ HFILE_GLOB=$(top_srcdir)/src/libtracker-miner/*.h
 CFILE_GLOB=$(top_srcdir)/src/libtracker-miner/*.c
 
 # Header files to ignore when scanning
-IGNORE_HFILES=								\
-	tracker-crawler.h						\
-	tracker-dbus.h							\
-	tracker-marshal.h						\
-	tracker-miner-client.h						\
-	tracker-miner-dbus.h						\
-	tracker-miner-glue.h						\
-	tracker-miner-web-dbus.h					\
-	tracker-miner-web-glue.h					\
-	tracker-miner-web-glue.h					\
-	tracker-monitor.h						\
+IGNORE_HFILES=                                         \
+	tracker-crawler.h                              \
+	tracker-dbus.h                                 \
+	tracker-marshal.h                              \
+	tracker-miner-client.h                         \
+	tracker-miner-dbus.h                           \
+	tracker-miner-glue.h                           \
+	tracker-miner-files-index-client.h             \
+	tracker-miner-fs-processing-pool.h             \
+	tracker-miner-web-dbus.h                       \
+	tracker-miner-web-glue.h                       \
+	tracker-miner-web-glue.h                       \
+	tracker-monitor.h                              \
 	tracker-utils.h
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
-INCLUDES = 								\
-	-DTRACKER_COMPILATION						\
-	-I$(top_srcdir)/src						\
-	$(GLIB2_CFLAGS)							\
-	$(GIO_CFLAGS)							\
-	$(DBUS_CFLAGS)
+AM_CPPFLAGS =                                          \
+	-DTRACKER_COMPILATION                          \
+	-I$(top_srcdir)/src                            \
+	$(LIBTRACKER_MINER_CFLAGS)
 
-GTKDOC_LIBS =								\
-	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la	 \
-	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
-	$(DBUS_LIBS)							\
-	$(GIO_LIBS)							\
-	$(GLIB2_LIBS)
-
+GTKDOC_LIBS =                                          \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(LIBTRACKER_MINER_LIBS)
 
 # Extra options to supply to gtkdoc-mkdb
 MKDB_OPTIONS=--sgml-mode --output-format=xml
@@ -60,8 +57,7 @@ MKDB_OPTIONS=--sgml-mode --output-format=xml
 MKHTML_OPTIONS=--path="$(abs_builddir)"
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
-content_files =						\
-	version.xml
+content_files = version.xml overview.sgml
 
 expand_content_files =
 

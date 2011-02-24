@@ -8,7 +8,7 @@
 <link rel="up" href="ch02.html" title="Querying">
 <link rel="prev" href="libtracker-client-Statistics.html" title="Statistics">
 <link rel="next" href="libtracker-client-Search.html" title="Search">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -40,80 +40,84 @@
 <pre class="synopsis">
 #include &lt;libtracker-client/tracker-client.h&gt;
 
-<span class="returnvalue">void</span>                (<a class="link" href="libtracker-client-Statistics.html#TrackerReplyGPtrArray" title="TrackerReplyGPtrArray ()">*TrackerReplyGPtrArray</a>)            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> *result</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<span class="returnvalue">void</span>                (<a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()">*TrackerReplyVoid</a>)                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *         <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-query" title="tracker_resources_sparql_query ()">tracker_resources_sparql_query</a>      (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-query-async" title="tracker_resources_sparql_query_async ()">tracker_resources_sparql_query_async</a>
+<span class="returnvalue">void</span>                (<a class="link" href="libtracker-client-Statistics.html#TrackerReplyGPtrArray" title="TrackerReplyGPtrArray ()">*TrackerReplyGPtrArray</a>)            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> *result</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()">*TrackerReplyVoid</a>)                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *         <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-query" title="tracker_resources_sparql_query ()">tracker_resources_sparql_query</a>      (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-query-async" title="tracker_resources_sparql_query_async ()">tracker_resources_sparql_query_async</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Statistics.html#TrackerReplyGPtrArray" title="TrackerReplyGPtrArray ()"><span class="type">TrackerReplyGPtrArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-update" title="tracker_resources_sparql_update ()">tracker_resources_sparql_update</a>     (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-update-async" title="tracker_resources_sparql_update_async ()">tracker_resources_sparql_update_async</a>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-update-async" title="tracker_resources_sparql_update_async ()">tracker_resources_sparql_update_async</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()"><span class="type">TrackerReplyVoid</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *         <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-update-blank" title="tracker_resources_sparql_update_blank ()">tracker_resources_sparql_update_blank</a>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *         <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-update-blank" title="tracker_resources_sparql_update_blank ()">tracker_resources_sparql_update_blank</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-update-blank-async" title="tracker_resources_sparql_update_blank_async ()">tracker_resources_sparql_update_blank_async</a>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-update-blank-async" title="tracker_resources_sparql_update_blank_async ()">tracker_resources_sparql_update_blank_async</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Statistics.html#TrackerReplyGPtrArray" title="TrackerReplyGPtrArray ()"><span class="type">TrackerReplyGPtrArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-Resources.html#tracker-resources-batch-sparql-update" title="tracker_resources_batch_sparql_update ()">tracker_resources_batch_sparql_update</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-batch-sparql-update-async" title="tracker_resources_batch_sparql_update_async ()">tracker_resources_batch_sparql_update_async</a>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-batch-sparql-update-async" title="tracker_resources_batch_sparql_update_async ()">tracker_resources_batch_sparql_update_async</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()"><span class="type">TrackerReplyVoid</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-Resources.html#tracker-resources-batch-commit" title="tracker_resources_batch_commit ()">tracker_resources_batch_commit</a>      (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-batch-commit-async" title="tracker_resources_batch_commit_async ()">tracker_resources_batch_commit_async</a>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-batch-commit-async" title="tracker_resources_batch_commit_async ()">tracker_resources_batch_commit_async</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()"><span class="type">TrackerReplyVoid</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-Resources.html#tracker-resources-load" title="tracker_resources_load ()">tracker_resources_load</a>              (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-load-async" title="tracker_resources_load_async ()">tracker_resources_load_async</a>        (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-client-Resources.html#tracker-resources-load-async" title="tracker_resources_load_async ()">tracker_resources_load_async</a>        (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()"><span class="type">TrackerReplyVoid</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
 <a name="libtracker-client-Resources.description"></a><h2>Description</h2>
 <p>
 Tracker uses the SPARQL query language
-<sup>[<a name="id367701" href="#ftn.id367701" class="footnote">1</a>]</sup>
+<sup>[<a name="id446392" href="#ftn.id446392" class="footnote">1</a>]</sup>
 to retrieve data from tracker-store, and the stored information applies to the Nepomuk
 ontology
-<sup>[<a name="id367710" href="#ftn.id367710" class="footnote">2</a>]</sup>.
+<sup>[<a name="id446401" href="#ftn.id446401" class="footnote">2</a>]</sup>.
 </p>
 </div>
 <div class="refsect1" title="Details">
 <a name="libtracker-client-Resources.details"></a><h2>Details</h2>
 <div class="refsect2" title="TrackerReplyGPtrArray ()">
 <a name="TrackerReplyGPtrArray"></a><h3>TrackerReplyGPtrArray ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerReplyGPtrArray)            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> *result</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerReplyGPtrArray)            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> *result</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">TrackerReplyGPtrArray</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
-The <em class="parameter"><code>result</code></em> is returned as a <a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> containing an array of
-<a href="/usr/share/gtk-doc/html/gobject/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> with the results from the query unless there is an error. If
+The <em class="parameter"><code>result</code></em> is returned as a <a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> containing an array of
+<a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> with the results from the query unless there is an error. If
 there is an error the <em class="parameter"><code>error</code></em> is populated with the details. The
 <em class="parameter"><code>user_data</code></em> is provided in the callback.
 </p>
@@ -141,8 +145,12 @@ there is an error the <em class="parameter"><code>error</code></em> is populated
 <hr>
 <div class="refsect2" title="TrackerReplyVoid ()">
 <a name="TrackerReplyVoid"></a><h3>TrackerReplyVoid ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerReplyVoid)                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerReplyVoid)                 (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> *error</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">TrackerReplyVoid</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 The <em class="parameter"><code>user_data</code></em> is returned when the query has completed. If there
 is an error the <em class="parameter"><code>error</code></em> is populated with the details.
@@ -166,16 +174,21 @@ is an error the <em class="parameter"><code>error</code></em> is populated with 
 <hr>
 <div class="refsect2" title="tracker_resources_sparql_query ()">
 <a name="tracker-resources-sparql-query"></a><h3>tracker_resources_sparql_query ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *         tracker_resources_sparql_query      (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *         tracker_resources_sparql_query      (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_sparql_query</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <code class="function">tracker_sparql_query()</code> in libtracker-sparql
+instead.</p>
+</div>
 <p>
 Queries the database using SPARQL. An example query would be:
 </p>
 <p>
 </p>
 <div class="example">
-<a name="id368031"></a><p class="title"><b>Example 1. Using tracker_resource_sparql_query()</b></p>
+<a name="id446776"></a><p class="title"><b>Example 1. Using tracker_resource_sparql_query()</b></p>
 <div class="example-contents">
 An example of using <code class="function">tracker_resource_sparql_query()</code> to list all
 albums by title and include their song count and song total length.
@@ -235,13 +248,13 @@ This API call is completely synchronous so it may block.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>.
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> with the query results which must be freed
-using <a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#g-ptr-array-free"><code class="function">g_ptr_array_free()</code></a>.
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> with the query results which must be freed
+using <a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#g-ptr-array-free"><code class="function">g_ptr_array_free()</code></a>.
 
 </td>
 </tr>
@@ -252,11 +265,16 @@ using <a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#g-ptr-array
 <hr>
 <div class="refsect2" title="tracker_resources_sparql_query_async ()">
 <a name="tracker-resources-sparql-query-async"></a><h3>tracker_resources_sparql_query_async ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_sparql_query_async
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_sparql_query_async
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Statistics.html#TrackerReplyGPtrArray" title="TrackerReplyGPtrArray ()"><span class="type">TrackerReplyGPtrArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_sparql_query_async</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <code class="function">tracker_sparql_query_async()</code> in libtracker-sparql
+instead.</p>
+</div>
 <p>
 Does an asynchronous SPARQL query. See <a class="link" href="libtracker-client-Resources.html#tracker-resources-sparql-query" title="tracker_resources_sparql_query ()"><code class="function">tracker_resources_sparql_query()</code></a>
 to see how an SPARLQL query should be like.
@@ -286,7 +304,7 @@ to see how an SPARLQL query should be like.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
 <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()"><code class="function">tracker_cancel_call()</code></a>. In the event of failure, 0 is returned.
 
 </td>
@@ -299,8 +317,13 @@ to see how an SPARLQL query should be like.
 <div class="refsect2" title="tracker_resources_sparql_update ()">
 <a name="tracker-resources-sparql-update"></a><h3>tracker_resources_sparql_update ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_resources_sparql_update     (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_sparql_update</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <code class="function">tracker_sparql_update()</code> in libtracker-sparql
+instead.</p>
+</div>
 <p>
 Updates the database using SPARQL.
 </p>
@@ -327,7 +350,7 @@ This API call is completely synchronous so it may block.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>.
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>.
 </td>
 </tr>
 </tbody>
@@ -337,14 +360,16 @@ This API call is completely synchronous so it may block.
 <hr>
 <div class="refsect2" title="tracker_resources_sparql_update_async ()">
 <a name="tracker-resources-sparql-update-async"></a><h3>tracker_resources_sparql_update_async ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_sparql_update_async
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_sparql_update_async
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()"><span class="type">TrackerReplyVoid</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
-<p>
-Does an asynchronous SPARQL update.
-</p>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_sparql_update_async</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <code class="function">tracker_sparql_update_async()</code> in libtracker-sparql
+instead.</p>
+</div>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -355,12 +380,12 @@ Does an asynchronous SPARQL update.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>query</code></em> :</span></p></td>
-<td>a string representing an SPARQL update.
+<td>a string representing SPARQL.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>callback function to be called when the update has been processed.
+<td>function to be called when the blank update has been performed.
 </td>
 </tr>
 <tr>
@@ -370,7 +395,7 @@ Does an asynchronous SPARQL update.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
 <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()"><code class="function">tracker_cancel_call()</code></a>. In the event of failure, 0 is returned.
 
 </td>
@@ -382,28 +407,30 @@ Does an asynchronous SPARQL update.
 <hr>
 <div class="refsect2" title="tracker_resources_sparql_update_blank ()">
 <a name="tracker-resources-sparql-update-blank"></a><h3>tracker_resources_sparql_update_blank ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *         tracker_resources_sparql_update_blank
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *         tracker_resources_sparql_update_blank
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
-<p>
-</p>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_sparql_update_blank</code> has been deprecated since version 0.10 and should not be used in newly-written code. There is no replacement for this in libtracker-sparql</p>
+</div>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
-<td>
+<td>a <a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>query</code></em> :</span></p></td>
-<td>
+<td>a string representing SPARQL.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>
+<td>return location for errors.
 </td>
 </tr>
 <tr>
@@ -413,55 +440,66 @@ Does an asynchronous SPARQL update.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.8</p>
 </div>
 <hr>
 <div class="refsect2" title="tracker_resources_sparql_update_blank_async ()">
 <a name="tracker-resources-sparql-update-blank-async"></a><h3>tracker_resources_sparql_update_blank_async ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_sparql_update_blank_async
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_sparql_update_blank_async
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Statistics.html#TrackerReplyGPtrArray" title="TrackerReplyGPtrArray ()"><span class="type">TrackerReplyGPtrArray</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
-<p>
-</p>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_sparql_update_blank_async</code> has been deprecated since version 0.10 and should not be used in newly-written code. There is no replacement for this in libtracker-sparql</p>
+</div>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
-<td>
+<td>a <a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>query</code></em> :</span></p></td>
-<td>
+<td>a string representing SPARQL.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>
+<td>function to be called when the blank update has been performed.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>
+<td>user data to pass to <em class="parameter"><code>callback</code></em>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
+<a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()"><code class="function">tracker_cancel_call()</code></a>. In the event of failure, 0 is returned.
+
 </td>
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.8</p>
 </div>
 <hr>
 <div class="refsect2" title="tracker_resources_batch_sparql_update ()">
 <a name="tracker-resources-batch-sparql-update"></a><h3>tracker_resources_batch_sparql_update ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_resources_batch_sparql_update
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_batch_sparql_update</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <code class="function">tracker_sparql_update()</code> in libtracker-sparql
+instead.</p>
+</div>
 <p>
 Updates the database using SPARQL. Updates done this way have to be committed
 explicitly through <a class="link" href="libtracker-client-Resources.html#tracker-resources-batch-commit" title="tracker_resources_batch_commit ()"><code class="function">tracker_resources_batch_commit()</code></a> or
@@ -493,11 +531,16 @@ block.
 <hr>
 <div class="refsect2" title="tracker_resources_batch_sparql_update_async ()">
 <a name="tracker-resources-batch-sparql-update-async"></a><h3>tracker_resources_batch_sparql_update_async ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_batch_sparql_update_async
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_batch_sparql_update_async
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *query</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()"><span class="type">TrackerReplyVoid</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_batch_sparql_update_async</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <code class="function">tracker_sparql_update_async()</code> in libtracker-sparql
+instead.</p>
+</div>
 <p>
 Updates the database using SPARQL. see <a class="link" href="libtracker-client-Resources.html#tracker-resources-batch-sparql-update" title="tracker_resources_batch_sparql_update ()"><code class="function">tracker_resources_batch_sparql_update()</code></a>.
 </p>
@@ -526,7 +569,7 @@ Updates the database using SPARQL. see <a class="link" href="libtracker-client-R
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
 <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()"><code class="function">tracker_cancel_call()</code></a>. In the event of failure, 0 is returned.
 
 </td>
@@ -539,7 +582,12 @@ Updates the database using SPARQL. see <a class="link" href="libtracker-client-R
 <div class="refsect2" title="tracker_resources_batch_commit ()">
 <a name="tracker-resources-batch-commit"></a><h3>tracker_resources_batch_commit ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_resources_batch_commit      (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_batch_commit</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <code class="function">tracker_sparql_update_commit()</code> in libtracker-sparql
+instead.</p>
+</div>
 <p>
 Commits a batch of already issued SPARQL updates. This API call is
 synchronous so it may block.
@@ -564,10 +612,15 @@ synchronous so it may block.
 <hr>
 <div class="refsect2" title="tracker_resources_batch_commit_async ()">
 <a name="tracker-resources-batch-commit-async"></a><h3>tracker_resources_batch_commit_async ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_batch_commit_async
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_batch_commit_async
                                                         (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()"><span class="type">TrackerReplyVoid</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_batch_commit_async</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <code class="function">tracker_sparql_update_commit_async()</code> in libtracker-sparql
+instead.</p>
+</div>
 <p>
 Commits a batch of already issued SPARQL updates.
 </p>
@@ -591,7 +644,7 @@ Commits a batch of already issued SPARQL updates.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
+<td> A <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> representing the operation ID. See
 <a class="link" href="libtracker-client-Cancellations.html#tracker-cancel-call" title="tracker_cancel_call ()"><code class="function">tracker_cancel_call()</code></a>. In the event of failure, 0 is returned.
 
 </td>
@@ -604,38 +657,49 @@ Commits a batch of already issued SPARQL updates.
 <div class="refsect2" title="tracker_resources_load ()">
 <a name="tracker-resources-load"></a><h3>tracker_resources_load ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_resources_load              (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_load</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <code class="function">tracker_sparql_import()</code> in libtracker-sparql
+instead.</p>
+</div>
 <p>
+Imports SPARQL into the database from a file specified by <em class="parameter"><code>uri</code></em>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
-<td>
+<td>a <a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
-<td>
+<td>a string representing a Turtle file
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>.
 </td>
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.8</p>
 </div>
 <hr>
 <div class="refsect2" title="tracker_resources_load_async ()">
 <a name="tracker-resources-load-async"></a><h3>tracker_resources_load_async ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_load_async        (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_resources_load_async        (<em class="parameter"><code><a class="link" href="libtracker-client-tracker.html#TrackerClient"><span class="type">TrackerClient</span></a> *client</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-client-Resources.html#TrackerReplyVoid" title="TrackerReplyVoid ()"><span class="type">TrackerReplyVoid</span></a> callback</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_resources_load_async</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -672,12 +736,12 @@ Commits a batch of already issued SPARQL updates.
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id367701" href="#id367701" class="para">1</a>] </sup><a class="ulink" href="http://www.w3.org/TR/rdf-sparql-query/" target="_top">SPARQL</a> query language for RDF (W3C)</p></div>
-<div class="footnote"><p><sup>[<a name="ftn.id367710" href="#id367710" class="para">2</a>] </sup><a class="ulink" href="http://nepomuk.semanticdesktop.org/" target="_top">Nepomuk</a> - The social semantic desktop</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id446392" href="#id446392" class="para">1</a>] </sup><a class="ulink" href="http://www.w3.org/TR/rdf-sparql-query/" target="_top">SPARQL</a> query language for RDF (W3C)</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id446401" href="#id446401" class="para">2</a>] </sup><a class="ulink" href="http://nepomuk.semanticdesktop.org/" target="_top">Nepomuk</a> - The social semantic desktop</p></div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

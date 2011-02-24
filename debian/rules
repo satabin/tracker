@@ -28,3 +28,6 @@ override_dh_makeshlibs:
 		-X/usr/lib/tracker-0.8/libtracker-data \
 		-X/usr/lib/evolution/ \
 		-X/usr/lib/nautilus/extensions-2.0/
+
+override_dh_strip:
+	dh_strip --dbg-package=tracker-dbg

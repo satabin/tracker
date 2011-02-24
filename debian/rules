@@ -22,10 +22,7 @@ override_dh_auto_configure:
 # Enforce tight shlibs dependencies
 override_dh_makeshlibs:
 	dh_makeshlibs -V \
-		-X/usr/lib/tracker-0.8/writeback-modules/ \
-		-X/usr/lib/tracker-0.8/extract-modules/ \
-		-X/usr/lib/tracker-0.8/push-modules/ \
-		-X/usr/lib/tracker-0.8/libtracker-data \
+		-X/usr/lib/tracker-0.8/ \
 		-X/usr/lib/evolution/ \
 		-X/usr/lib/nautilus/extensions-2.0/
 

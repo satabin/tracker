@@ -1,29 +1,30 @@
 #!/usr/bin/make -f
-  
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/class/gnome.mk
-include /usr/share/cdbs/1/rules/utils.mk
 
-DEB_CONFIGURE_EXTRA_FLAGS := \
-	--enable-unac \
-	--disable-unit-tests \
-	--enable-tracker-status-icon \
-	--enable-tracker-explorer \
-	--enable-tracker-search-bar \
-	--enable-tracker-search-tool \
-	--enable-tracker-preferences \
-	--enable-nautilus-extension \
-	--enable-libvorbis \
-	--enable-libflac \
-	--enable-gtk-doc
+%:
+	dh $@
 
-LDFLAGS += -Wl,--as-needed -Wl,-Bsymbolic
+export LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed -Wl,-Bsymbolic
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		--enable-unac \
+		--disable-unit-tests \
+		--enable-tracker-status-icon \
+		--enable-tracker-explorer \
+		--enable-tracker-search-bar \
+		--enable-tracker-search-tool \
+		--enable-tracker-preferences \
+		--enable-nautilus-extension \
+		--enable-libvorbis \
+		--enable-libflac \
+		--enable-gtk-doc
 
 # Enforce tight shlibs dependencies
-DEB_DH_MAKESHLIBS_ARGS_ALL := -V -X/usr/lib/tracker-0.8/writeback-modules/ \
-                                 -X/usr/lib/tracker-0.8/extract-modules/ \
-                                 -X/usr/lib/tracker-0.8/push-modules/ \
-                                 -X/usr/lib/tracker-0.8/libtracker-data \
-                                 -X/usr/lib/evolution/ \
-                                 -X/usr/lib/nautilus/extensions-2.0/
-
+override_dh_makeshlibs:
+	dh_makeshlibs -V \
+		-X/usr/lib/tracker-0.8/writeback-modules/ \
+		-X/usr/lib/tracker-0.8/extract-modules/ \
+		-X/usr/lib/tracker-0.8/push-modules/ \
+		-X/usr/lib/tracker-0.8/libtracker-data \
+		-X/usr/lib/evolution/ \
+		-X/usr/lib/nautilus/extensions-2.0/

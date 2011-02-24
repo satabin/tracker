@@ -22,8 +22,6 @@
 
 #include <glib-object.h>
 
-#include <dbus/dbus-glib-bindings.h>
-
 #define TRACKER_EXTRACT_SERVICE        "org.freedesktop.Tracker1.Extract"
 #define TRACKER_EXTRACT_PATH           "/org/freedesktop/Tracker1/Extract"
 #define TRACKER_EXTRACT_INTERFACE      "org.freedesktop.Tracker1.Extract"
@@ -52,14 +50,9 @@ GType           tracker_extract_get_type                (void);
 TrackerExtract *tracker_extract_new                     (gboolean                disable_shutdown,
                                                          gboolean                force_internal_extractors,
                                                          const gchar            *force_module);
-void            tracker_extract_get_pid                 (TrackerExtract         *object,
-                                                         DBusGMethodInvocation  *context,
-                                                         GError                **error);
-void            tracker_extract_get_metadata            (TrackerExtract         *object,
-                                                         const gchar            *uri,
-                                                         const gchar            *mime,
-                                                         DBusGMethodInvocation  *context,
-                                                         GError                **error);
+
+void            tracker_extract_dbus_start              (TrackerExtract         *extract);
+void            tracker_extract_dbus_stop               (TrackerExtract         *extract);
 
 /* Not DBus API */
 void            tracker_extract_get_metadata_by_cmdline (TrackerExtract         *object,

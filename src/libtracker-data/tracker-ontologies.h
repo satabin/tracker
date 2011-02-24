@@ -34,8 +34,11 @@ G_BEGIN_DECLS
 #error "only <libtracker-data/tracker-data.h> must be included directly."
 #endif
 
+#define TRACKER_ONTOLOGIES_MAX_ID 100000
+
 void               tracker_ontologies_init                 (void);
 void               tracker_ontologies_shutdown             (void);
+void               tracker_ontologies_sort                 (void);
 
 /* Service mechanics */
 void               tracker_ontologies_add_class            (TrackerClass     *service);
@@ -44,6 +47,7 @@ TrackerNamespace **tracker_ontologies_get_namespaces       (guint *length);
 TrackerOntology  **tracker_ontologies_get_ontologies       (guint *length);
 TrackerClass  **   tracker_ontologies_get_classes          (guint *length);
 TrackerProperty ** tracker_ontologies_get_properties       (guint *length);
+TrackerProperty *  tracker_ontologies_get_rdf_type         (void);
 
 /* Field mechanics */
 void               tracker_ontologies_add_property         (TrackerProperty  *field);
@@ -55,6 +59,23 @@ TrackerOntology  * tracker_ontologies_get_ontology_by_uri  (const gchar      *na
 const gchar*       tracker_ontologies_get_uri_by_id        (gint              id);
 void               tracker_ontologies_add_id_uri_pair      (gint              id,
                                                             const gchar      *uri);
+
+void               tracker_ontologies_write_gvdb           (const gchar      *filename,
+                                                            GError          **error);
+void               tracker_ontologies_load_gvdb            (const gchar      *filename,
+                                                            GError          **error);
+GVariant *         tracker_ontologies_get_namespace_value_gvdb  (const gchar      *uri,
+                                                                 const gchar      *predicate);
+const gchar *      tracker_ontologies_get_namespace_string_gvdb (const gchar      *uri,
+                                                                 const gchar      *predicate);
+GVariant *         tracker_ontologies_get_class_value_gvdb      (const gchar      *uri,
+                                                                 const gchar      *predicate);
+const gchar *      tracker_ontologies_get_class_string_gvdb     (const gchar      *uri,
+                                                                 const gchar      *predicate);
+GVariant *         tracker_ontologies_get_property_value_gvdb   (const gchar      *uri,
+                                                                 const gchar      *predicate);
+const gchar *      tracker_ontologies_get_property_string_gvdb  (const gchar      *uri,
+                                                                 const gchar      *predicate);
 
 G_END_DECLS
 

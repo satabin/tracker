@@ -20,13 +20,33 @@
 #include "config.h"
 
 #define _XOPEN_SOURCE
+
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <time.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <libtracker-common/tracker-utils.h>
 #include <libtracker-common/tracker-date-time.h>
 
 #include "tracker-utils.h"
+
+#ifndef HAVE_GETLINE
+
+#include <stddef.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <errno.h>
+
+#undef getdelim
+#undef getline
+
+#define GROW_BY 80
+
+#endif /* HAVE_GETLINE */
 
 #define DATE_FORMAT_ISO8601 "%Y-%m-%dT%H:%M:%S%z"
 
@@ -53,6 +73,49 @@ static const char imonths[] = {
 	'6', '7', '8', '9', '0', '1', '2'
 };
 
+
+/**
+ * tracker_coalesce_strip:
+ * @n_values: the number of @Varargs supplied
+ * @Varargs: the string pointers to coalesce
+ *
+ * This function iterates through a series of string pointers passed
+ * using @Varargs and returns the first which is not %NULL, not empty
+ * (i.e. "") and not comprised of one or more spaces (i.e. " ").
+ *
+ * The returned value is stripped using g_strstrip(). It is MOST
+ * important NOT to pass constant string pointers to this function!
+ *
+ * Returns: the first string pointer from those provided which
+ * matches, otherwise %NULL.
+ *
+ * Since: 0.10
+ **/
+const gchar *
+tracker_coalesce_strip (gint n_values,
+                        ...)
+{
+	va_list args;
+	gint    i;
+	const gchar *result = NULL;
+
+	va_start (args, n_values);
+
+	for (i = 0; i < n_values; i++) {
+		gchar *value;
+
+		value = va_arg (args, gchar *);
+		if (!result && !tracker_is_blank_string (value)) {
+			result = (const gchar *) g_strstrip (value);
+			break;
+		}
+	}
+
+	va_end (args);
+
+	return result;
+}
+
 /**
  * tracker_coalesce:
  * @n_values: the number of @Varargs supplied
@@ -70,6 +133,9 @@ static const char imonths[] = {
  * matches, otherwise %NULL.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.0: Use tracker_coalesce_strip() instead.
+ *
  **/
 gchar *
 tracker_coalesce (gint n_values,
@@ -97,8 +163,9 @@ tracker_coalesce (gint n_values,
 	return result;
 }
 
+
 /**
- * tracker_merge:
+ * tracker_merge_const:
  * @delimiter: the delimiter to use when merging
  * @n_values: the number of @Varargs supplied
  * @Varargs: the string pointers to merge
@@ -113,10 +180,66 @@ tracker_coalesce (gint n_values,
  * Returns: a newly-allocated string holding the result which should
  * be freed with g_free() when finished with, otherwise %NULL.
  *
- * Since: 0.8
+ * Since: 0.10
  **/
 gchar *
-tracker_merge (const gchar *delimiter, 
+tracker_merge_const (const gchar *delimiter,
+                     gint         n_values,
+                     ...)
+{
+	va_list args;
+	gint    i;
+	GString *str = NULL;
+
+	va_start (args, n_values);
+
+	for (i = 0; i < n_values; i++) {
+		gchar *value;
+
+		value = va_arg (args, gchar *);
+		if (value) {
+			if (!str) {
+				str = g_string_new (value);
+			} else {
+				if (delimiter) {
+					g_string_append (str, delimiter);
+				}
+				g_string_append (str, value);
+			}
+		}
+	}
+
+	va_end (args);
+
+	if (!str) {
+		return NULL;
+	}
+
+	return g_string_free (str, FALSE);
+}
+
+/**
+ * tracker_merge:
+ * @delimiter: the delimiter to use when merging
+ * @n_values: the number of @Varargs supplied
+ * @Varargs: the string pointers to merge
+ *
+ * This function iterates through a series of string pointers passed
+ * using @Varargs and returns a newly allocated string of the merged
+ * strings. All passed strings are freed (don't pass const values)/
+ *
+ * The @delimiter can be %NULL. If specified, it will be used in
+ * between each merged string in the result.
+ *
+ * Returns: a newly-allocated string holding the result which should
+ * be freed with g_free() when finished with, otherwise %NULL.
+ *
+ * Since: 0.8
+ *
+ * Deprecated: 1.0: Use tracker_merge_const() instead.
+ **/
+gchar *
+tracker_merge (const gchar *delimiter,
                gint         n_values,
                ...)
 {
@@ -181,6 +304,8 @@ tracker_merge (const gchar *delimiter,
  * be freed with g_free() when finished with, otherwise %NULL.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.0: Use tracker_text_validate_utf8() instead.
  **/
 gchar *
 tracker_text_normalize (const gchar *text,
@@ -222,14 +347,69 @@ tracker_text_normalize (const gchar *text,
 	}
 
 	if (n_words) {
-                if (!in_break) {
-                        /* Count the last word */
-                        words += 1;
-                }
+		if (!in_break) {
+			/* Count the last word */
+			words += 1;
+		}
 		*n_words = words;
 	}
 
 	return g_string_free (string, FALSE);
+}
+
+/**
+ * tracker_text_validate_utf8:
+ * @text: the text to validate
+ * @text_len: length of @text, or -1 if NUL-terminated
+ * @str: the string where to place the validated UTF-8 characters, or %NULL if
+ *  not needed.
+ * @valid_len: Output number of valid UTF-8 bytes found, or %NULL if not needed
+ *
+ * This function iterates through @text checking for UTF-8 validity
+ * using g_utf8_validate(), appends the first chunk of valid characters
+ * to @str, and gives the number of valid UTF-8 bytes in @valid_len.
+ *
+ * Returns: %TRUE if some bytes were found to be valid, %FALSE otherwise.
+ *
+ * Since: 0.10
+ **/
+gboolean
+tracker_text_validate_utf8 (const gchar  *text,
+                            gssize        text_len,
+                            GString     **str,
+                            gsize        *valid_len)
+{
+	gsize len_to_validate;
+
+	g_return_val_if_fail (text, FALSE);
+
+	len_to_validate = text_len >= 0 ? text_len : strlen (text);
+
+	if (len_to_validate > 0) {
+		const gchar *end = text;
+
+		/* Validate string, getting the pointer to first non-valid character
+		 *  (if any) or to the end of the string. */
+		g_utf8_validate (text, len_to_validate, &end);
+		if (end > text) {
+			/* If str output required... */
+			if (str) {
+				/* Create string to output if not already as input */
+				*str = (*str == NULL ?
+				        g_string_new_len (text, end - text) :
+				        g_string_append_len (*str, text, end - text));
+			}
+
+			/* If utf8 len output required... */
+			if (valid_len) {
+				*valid_len = end - text;
+			}
+
+			return TRUE;
+		}
+	}
+
+	return FALSE;
 }
 
 /**
@@ -652,4 +832,183 @@ tracker_date_guess (const gchar *date_string)
 	}
 
 	return g_strdup (date_string);
+}
+
+#ifndef HAVE_GETLINE
+
+static gint
+my_igetdelim (gchar  **linebuf,
+              guint   *linebufsz,
+              gint     delimiter,
+              FILE    *file)
+{
+	gint ch;
+	gint idx;
+
+	if ((file == NULL || linebuf == NULL || *linebuf == NULL || *linebufsz == 0) &&
+	    !(*linebuf == NULL && *linebufsz == 0)) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	if (*linebuf == NULL && *linebufsz == 0) {
+		*linebuf = g_malloc (GROW_BY);
+
+		if (!*linebuf) {
+			errno = ENOMEM;
+			return -1;
+		}
+
+		*linebufsz += GROW_BY;
+	}
+
+	idx = 0;
+
+	while ((ch = fgetc (file)) != EOF) {
+		/* Grow the line buffer as necessary */
+		while (idx > *linebufsz - 2) {
+			*linebuf = g_realloc (*linebuf, *linebufsz += GROW_BY);
+
+			if (!*linebuf) {
+				errno = ENOMEM;
+				return -1;
+			}
+		}
+		(*linebuf)[idx++] = (gchar) ch;
+
+		if ((gchar) ch == delimiter) {
+			break;
+		}
+	}
+
+	if (idx != 0) {
+		(*linebuf)[idx] = 0;
+	} else if ( ch == EOF ) {
+		return -1;
+	}
+
+	return idx;
+}
+
+/**
+ * tracker_getline:
+ * @lineptr: Buffer to write into
+ * @n: Max bytes of linebuf
+ * @stream: Filestream to read from
+ *
+ * Reads an entire line from stream, storing the address of the buffer
+ * containing  the  text into *lineptr.  The buffer is null-terminated
+ * and includes the newline character, if one was found.
+ *
+ * Read GNU getline()'s manpage for more information
+ *
+ * Returns: the number of characters read, including the delimiter
+ * character, but not including the terminating %NULL byte. This value
+ * can be used to handle embedded %NULL bytes in the line read. Upon
+ * failure, -1 is returned.
+ *
+ * Since: 0.10
+ **/
+gssize
+tracker_getline (gchar **lineptr,
+                 gsize  *n,
+                 FILE   *stream)
+{
+	return my_igetdelim (lineptr, n, '\n', stream);
+}
+
+#else
+
+/**
+ * tracker_getline:
+ * @lineptr: Buffer to write into
+ * @n: Max bytes of linebuf
+ * @stream: Filestream to read from
+ *
+ * Reads an entire line from stream, storing the address of the buffer
+ * containing  the  text into *lineptr.  The buffer is null-terminated
+ * and includes the newline character, if one was found.
+ *
+ * Read GNU getline()'s manpage for more information
+ *
+ * Returns: the number of characters read, including the delimiter
+ * character, but not including the terminating %NULL byte. This value
+ * can be used to handle embedded %NULL bytes in the line read. Upon
+ * failure, -1 is returned.
+ *
+ * Since: 0.10
+ **/
+gssize
+tracker_getline (gchar **lineptr,
+                 gsize  *n,
+                 FILE *stream)
+{
+	return getline (lineptr, n, stream);
+}
+
+#endif /* HAVE_GETLINE */
+
+
+/**
+ * tracker_keywords_parse:
+ * @store: Array where to store the keywords
+ * @keywords: Keywords line to parse
+ *
+ * Parses a keywords line into store, avoiding duplicates and stripping leading
+ * and trailing spaces from keywords. Allowed delimiters are , and ;
+ *
+ * Since: 0.10
+ **/
+void
+tracker_keywords_parse (GPtrArray   *store,
+                        const gchar *keywords)
+{
+	gchar *keywords_d = g_strdup (keywords);
+	char *saveptr, *p;
+	size_t len;
+
+	p = keywords_d;
+	keywords_d = strchr (keywords_d, '"');
+
+	if (keywords_d) {
+		keywords_d++;
+	} else {
+		keywords_d = p;
+	}
+
+	len = strlen (keywords_d);
+	if (keywords_d[len - 1] == '"') {
+		keywords_d[len - 1] = '\0';
+	}
+
+	for (p = strtok_r (keywords_d, ",;", &saveptr); p;
+	     p = strtok_r (NULL, ",;", &saveptr)) {
+		guint i;
+		gboolean found = FALSE;
+		gchar *p_do = g_strdup (p);
+		gchar *p_dup = p_do;
+		guint len = strlen (p_dup);
+
+		if (*p_dup == ' ')
+			p_dup++;
+
+		if (p_dup[len-1] == ' ')
+			p_dup[len-1] = '\0';
+
+		for (i = 0; i < store->len; i++) {
+			const gchar *earlier = g_ptr_array_index (store, i);
+			if (g_strcmp0 (earlier, p_dup) == 0) {
+				found = TRUE;
+				break;
+			}
+		}
+
+		if (!found) {
+			g_ptr_array_add (store, g_strdup (p_dup));
+		}
+
+		g_free (p_do);
+	}
+
+	g_free (keywords_d);
 }

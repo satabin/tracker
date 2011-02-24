@@ -22,13 +22,13 @@ TrackerMinerFS
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### TYPEDEF TrackerMinerFSPrivate ##### -->
+<!-- ##### STRUCT TrackerMinerFSPrivate ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### TYPEDEF TrackerMinerFS ##### -->
+<!-- ##### STRUCT TrackerMinerFS ##### -->
 <para>
 
 </para>
@@ -105,7 +105,33 @@ TrackerMinerFS
 @arg3: 
 @Returns: 
 
-<!-- ##### ARG TrackerMinerFS:process-pool-limit ##### -->
+<!-- ##### SIGNAL TrackerMinerFS::process-file-attributes ##### -->
+<para>
+
+</para>
+
+@trackerminerfs: the object which received the signal.
+@arg1: 
+@arg2: 
+@arg3: 
+@Returns: 
+
+<!-- ##### ARG TrackerMinerFS:initial-crawling ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerMinerFS:mtime-checking ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerMinerFS:processing-pool-ready-limit ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG TrackerMinerFS:processing-pool-wait-limit ##### -->
 <para>
 
 </para>
@@ -128,6 +154,27 @@ TrackerMinerFS
 @ignore_next_update_file: 
 @monitor_directory: 
 @finished: 
+@process_file_attributes: 
+
+<!-- ##### FUNCTION tracker_miner_fs_check_directory ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@check_parents: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_check_file ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@check_parents: 
+
 
 <!-- ##### FUNCTION tracker_miner_fs_directory_add ##### -->
 <para>
@@ -149,13 +196,14 @@ TrackerMinerFS
 @Returns: 
 
 
-<!-- ##### FUNCTION tracker_miner_fs_file_add ##### -->
+<!-- ##### FUNCTION tracker_miner_fs_directory_remove_full ##### -->
 <para>
 
 </para>
 
 @fs: 
 @file: 
+@Returns: 
 
 
 <!-- ##### FUNCTION tracker_miner_fs_file_notify ##### -->
@@ -212,5 +260,42 @@ TrackerMinerFS
 @fs: 
 @file: 
 @Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_query_urn ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_add_directory_without_parent ##### -->
+<para>
+
+</para>
+
+@fs: 
+@file: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_get_initial_crawling ##### -->
+<para>
+
+</para>
+
+@fs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_set_initial_crawling ##### -->
+<para>
+
+</para>
+
+@fs: 
+@do_initial_crawling: 
 
 

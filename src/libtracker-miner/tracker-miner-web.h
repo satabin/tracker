@@ -38,9 +38,6 @@ G_BEGIN_DECLS
 typedef struct TrackerMinerWeb TrackerMinerWeb;
 typedef struct TrackerMinerWebPrivate TrackerMinerWebPrivate;
 
-/**
- * The name of the DBus interface exposed by the web miners
- **/
 #define TRACKER_MINER_WEB_DBUS_INTERFACE "org.freedesktop.Tracker1.MinerWeb"
 
 /**
@@ -75,6 +72,7 @@ typedef enum {
 
 struct TrackerMinerWeb {
 	TrackerMiner            parent_instance;
+	TrackerMinerWebPrivate *private;
 };
 
 /**

@@ -2,32 +2,31 @@
  * Copyright (C) 2006, Edward Duffy <eduffy@gmail.com>
  * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
+
+#include "config.h"
 
 #include <string.h>
 
 #include <glib.h>
 
-#include <libtracker-common/tracker-os-dependant.h>
-#include <libtracker-common/tracker-ontologies.h>
-#include <libtracker-common/tracker-utils.h>
+#include <libtracker-common/tracker-common.h>
 
 #include <libtracker-extract/tracker-extract.h>
-#include <libtracker-client/tracker.h>
 
 static void extract_totem (const gchar          *uri,
                            TrackerSparqlBuilder *preupdate,
@@ -105,10 +104,10 @@ extract_totem (const gchar          *uri,
 
 					if (g_strcmp0 (tags[i][0], "TOTEM_INFO_ARTIST") == 0) {
 						artist = g_strdup (value);
-						artist_uri = tracker_uri_printf_escaped ("urn:artist:%s", artist);
+						artist_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", artist);
 					} else if (g_strcmp0 (tags[i][0], "TOTEM_INFO_ALBUM") == 0) {
 						album = g_strdup (value);
-						album_uri = tracker_uri_printf_escaped ("urn:album:%s", album);
+						album_uri = tracker_sparql_escape_uri_printf ("urn:album:%s", album);
 					} else {
 						g_hash_table_insert (tmp_metadata, g_strdup (tags[i][1]), g_strdup (value));
 					}
@@ -142,6 +141,9 @@ extract_totem (const gchar          *uri,
 			tracker_sparql_builder_subject_iri (preupdate, album_uri);
 			tracker_sparql_builder_predicate (preupdate, "a");
 			tracker_sparql_builder_object (preupdate, "nmm:MusicAlbum");
+			/* FIXME: nmm:albumTitle is now deprecated
+			 * tracker_sparql_builder_predicate (preupdate, "nie:title");
+			 */
 			tracker_sparql_builder_predicate (preupdate, "nmm:albumTitle");
 			tracker_sparql_builder_object_unvalidated (preupdate, album);
 

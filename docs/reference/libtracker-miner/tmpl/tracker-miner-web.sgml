@@ -22,6 +22,12 @@ TrackerMinerWeb
 <!-- ##### SECTION Image ##### -->
 
 
+<!-- ##### TYPEDEF TrackerMinerWebPrivate ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO TRACKER_MINER_WEB_ERROR_DOMAIN ##### -->
 <para>
 
@@ -36,17 +42,32 @@ TrackerMinerWeb
 
 
 
+<!-- ##### ENUM TrackerMinerWebError ##### -->
+<para>
+
+</para>
+
+@TRACKER_MINER_WEB_ERROR_WRONG_CREDENTIALS: 
+@TRACKER_MINER_WEB_ERROR_TOKEN_EXPIRED: 
+@TRACKER_MINER_WEB_ERROR_NO_CREDENTIALS: 
+@TRACKER_MINER_WEB_ERROR_KEYRING: 
+@TRACKER_MINER_WEB_ERROR_SERVICE: 
+@TRACKER_MINER_WEB_ERROR_TRACKER: 
+
+<!-- ##### FUNCTION tracker_miner_web_error_quark ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
 <!-- ##### MACRO TRACKER_MINER_WEB_DBUS_INTERFACE ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### TYPEDEF TrackerMinerWebPrivate ##### -->
-<para>
-
-</para>
 
 
 <!-- ##### TYPEDEF TrackerMinerWeb ##### -->
@@ -65,27 +86,6 @@ TrackerMinerWeb
 @get_association_data: 
 @associate: 
 @dissociate: 
-
-<!-- ##### FUNCTION tracker_miner_web_error_quark ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### ENUM TrackerMinerWebError ##### -->
-<para>
-
-</para>
-
-@TRACKER_MINER_WEB_ERROR_WRONG_CREDENTIALS: 
-@TRACKER_MINER_WEB_ERROR_TOKEN_EXPIRED: 
-@TRACKER_MINER_WEB_ERROR_NO_CREDENTIALS: 
-@TRACKER_MINER_WEB_ERROR_KEYRING: 
-@TRACKER_MINER_WEB_ERROR_SERVICE: 
-@TRACKER_MINER_WEB_ERROR_TRACKER: 
 
 <!-- ##### FUNCTION tracker_miner_web_associate ##### -->
 <para>

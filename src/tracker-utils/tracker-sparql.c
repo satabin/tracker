@@ -1,5 +1,4 @@
 /*
- * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
  * Copyright (C) 2009, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -28,13 +27,12 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-#include <libtracker-client/tracker-client.h>
-#include <libtracker-common/tracker-common.h>
+#include <libtracker-sparql/tracker-sparql.h>
 
-#define ABOUT	  \
+#define ABOUT \
 	"Tracker " PACKAGE_VERSION "\n"
 
-#define LICENSE	  \
+#define LICENSE \
 	"This program is free software and comes without any warranty.\n" \
 	"It is licensed under version 2 or later of the General Public " \
 	"License which can be viewed at:\n" \
@@ -42,6 +40,10 @@
 	"  http://www.gnu.org/licenses/gpl.txt\n"
 
 static gboolean parse_list_notifies (const gchar  *option_name,
+                                     const gchar  *value,
+                                     gpointer      data,
+                                     GError      **error);
+static gboolean parse_list_indexes  (const gchar  *option_name,
                                      const gchar  *value,
                                      gpointer      data,
                                      GError      **error);
@@ -53,6 +55,7 @@ static gboolean list_classes;
 static gboolean list_class_prefixes;
 static gchar *list_properties;
 static gchar *list_notifies;
+static gchar *list_indexes;
 static gboolean print_version;
 static gchar *search;
 
@@ -85,6 +88,10 @@ static GOptionEntry   entries[] = {
 	  N_("Retrieve classes which notify changes in the database (CLASS is optional)"),
 	  N_("CLASS"),
 	},
+	{ "list-indexes", 'i', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, parse_list_indexes,
+	  N_("Retrieve indexes used in database to improve performance (PROPERTY is optional) "),
+	  N_("PROPERTY"),
+	},
 	{ "search", 's', 0, G_OPTION_ARG_STRING, &search,
 	  N_("Search for a class or property and display more information (e.g. Document)"),
 	  N_("CLASS/PROPERTY"),
@@ -97,14 +104,13 @@ static GOptionEntry   entries[] = {
 };
 
 static gchar *
-get_class_from_prefix (TrackerClient *client,
-                       const gchar   *prefix)
+get_class_from_prefix (TrackerSparqlConnection *connection,
+                       const gchar             *prefix)
 {
 	GError *error = NULL;
-	GPtrArray *results;
+	TrackerSparqlCursor *cursor;
 	const gchar *query;
-	gchar *found;
-	gint i;
+	gchar *found = NULL;
 
 	query = "SELECT ?prefix ?ns "
 		"WHERE {"
@@ -113,7 +119,7 @@ get_class_from_prefix (TrackerClient *client,
 		"}";
 
 	/* We have namespace prefix, get full name */
-	results = tracker_resources_sparql_query (client, query, &error);
+	cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
 
 	if (error) {
 		g_printerr ("%s, %s\n",
@@ -124,51 +130,27 @@ get_class_from_prefix (TrackerClient *client,
 		return NULL;
 	}
 
-	if (!results) {
+	if (!cursor) {
 		g_printerr ("%s\n",
 		            _("No namespace prefixes were found"));
 
 		return NULL;
 	}
 
-	for (i = 0, found = NULL; i < results->len && !found; i++) {
-		gchar **data;
-		gchar *class_prefix, *class_name;
+	while (tracker_sparql_cursor_next (cursor, NULL, NULL) && !found) {
+		const gchar *class_prefix, *class_name;
 
-		data = g_ptr_array_index (results, i);
-		class_prefix = data[0];
-		class_name = data[1];
+		class_prefix = tracker_sparql_cursor_get_string (cursor, 0, NULL);
+		class_name = tracker_sparql_cursor_get_string (cursor, 1, NULL);
 
 		if (strcmp (class_prefix, prefix) == 0) {
 			found = g_strdup (class_name);
 		}
 	}
 
-	g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
-	g_ptr_array_free (results, TRUE);
+	g_object_unref (cursor);
 
 	return found;
-}
-
-static void
-results_foreach (gpointer value,
-                 gpointer user_data)
-{
-	gchar **data;
-	gchar **p;
-	gint i;
-
-	data = value;
-
-	for (p = data, i = 0; *p; p++, i++) {
-		if (i == 0) {
-			g_print ("  %s", *p);
-		} else {
-			g_print (", %s", *p);
-		}
-	}
-
-	g_print ("\n");
 }
 
 static gboolean
@@ -177,22 +159,81 @@ parse_list_notifies (const gchar  *option_name,
                      gpointer      data,
                      GError      **error)
 {
-        if (!value) {
-	        list_notifies = g_strdup ("");
-        } else {
-	        list_notifies = g_strdup (value);
-        }
+	if (!value) {
+		list_notifies = g_strdup ("");
+	} else {
+		list_notifies = g_strdup (value);
+	}
 
-        return TRUE;
+	return TRUE;
+}
+
+static gboolean
+parse_list_indexes (const gchar  *option_name,
+                    const gchar  *value,
+                    gpointer      data,
+                    GError      **error)
+{
+	if (!value) {
+		list_indexes = g_strdup ("");
+	} else {
+		list_indexes = g_strdup (value);
+	}
+
+	return TRUE;
+}
+
+static void
+print_cursor (TrackerSparqlCursor *cursor,
+              const gchar         *none_found,
+              const gchar         *heading,
+              gboolean             only_first_col)
+{
+	if (!cursor) {
+		g_print ("%s\n", none_found);
+	} else {
+		gint count = 0;
+
+		g_print ("%s:\n", heading);
+
+		if (only_first_col) {
+			while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+				g_print ("  %s\n", tracker_sparql_cursor_get_string (cursor, 0, NULL));
+				count++;
+			}
+		} else {
+			while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+				gint col;
+
+				for (col = 0; col < tracker_sparql_cursor_get_n_columns (cursor); col++) {
+					g_print ("%c %s",
+					         col == 0 ? ' ' : ',',
+					         tracker_sparql_cursor_get_string (cursor, col, NULL));
+				}
+
+				g_print ("\n");
+
+				count++;
+			}
+		}
+
+		if (count == 0) {
+			g_print ("  %s\n", _("None"));
+		}
+
+		g_print ("\n");
+
+		g_object_unref (cursor);
+	}
 }
 
 int
 main (int argc, char **argv)
 {
-	TrackerClient *client;
+	TrackerSparqlConnection *connection;
+	TrackerSparqlCursor *cursor;
 	GOptionContext *context;
 	GError *error = NULL;
-	GPtrArray *results;
 	const gchar *error_message;
 
 	setlocale (LC_ALL, "");
@@ -213,8 +254,8 @@ main (int argc, char **argv)
 		return EXIT_SUCCESS;
 	}
 
-	if (!list_classes && !list_class_prefixes && !list_properties && 
-	    !list_notifies && !search && !file && !query) {
+	if (!list_classes && !list_class_prefixes && !list_properties &&
+	    !list_notifies && !list_indexes && !search && !file && !query) {
 		error_message = _("An argument must be supplied");
 	} else if (file && query) {
 		error_message = _("File and query can not be used together");
@@ -237,11 +278,19 @@ main (int argc, char **argv)
 
 	g_option_context_free (context);
 
-	client = tracker_client_new (0, G_MAXINT);
+	g_type_init ();
 
-	if (!client) {
-		g_printerr ("%s\n",
-		            _("Could not establish a D-Bus connection to Tracker"));
+	if (!g_thread_supported ()) {
+		g_thread_init (NULL);
+	}
+
+	connection = tracker_sparql_connection_get (NULL, &error);
+
+	if (!connection) {
+		g_printerr ("%s: %s\n",
+		            _("Could not establish a connection to Tracker"),
+		            error ? error->message : _("No error given"));
+		g_clear_error (&error);
 		return EXIT_FAILURE;
 	}
 
@@ -249,71 +298,43 @@ main (int argc, char **argv)
 		const gchar *query;
 
 		query = "SELECT ?c WHERE { ?c a rdfs:Class }";
-		results = tracker_resources_sparql_query (client, query, &error);
+		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
 
 		if (error) {
 			g_printerr ("%s, %s\n",
 			            _("Could not list classes"),
 			            error->message);
 			g_error_free (error);
-			g_object_unref (client);
+			g_object_unref (connection);
 
 			return EXIT_FAILURE;
 		}
 
-		if (!results) {
-			g_print ("%s\n",
-			         _("No classes were found"));
-		} else {
-			g_print (g_dngettext (NULL,
-			                      "Class: %d",
-			                      "Classes: %d",
-			                      results->len),
-			         results->len);
-			g_print ("\n");
-
-			g_ptr_array_foreach (results, results_foreach, NULL);
-			g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
-			g_ptr_array_free (results, TRUE);
-		}
+		print_cursor (cursor, _("No classes were found"), _("Classes"), TRUE);
 	}
 
 	if (list_class_prefixes) {
 		const gchar *query;
 
 		query = "SELECT ?prefix ?ns "
-			"WHERE {"
-			"  ?ns a tracker:Namespace ;"
-			"  tracker:prefix ?prefix "
-			"}";
+		        "WHERE {"
+		        "  ?ns a tracker:Namespace ;"
+		        "  tracker:prefix ?prefix "
+		        "}";
 
-		results = tracker_resources_sparql_query (client, query, &error);
+		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
 
 		if (error) {
 			g_printerr ("%s, %s\n",
 			            _("Could not list class prefixes"),
 			            error->message);
 			g_error_free (error);
-			g_object_unref (client);
+			g_object_unref (connection);
 
 			return EXIT_FAILURE;
 		}
 
-		if (!results) {
-			g_print ("%s\n",
-			         _("No class prefixes were found"));
-		} else {
-			g_print (g_dngettext (NULL,
-			                      "Prefix: %d",
-			                      "Prefixes: %d",
-			                      results->len),
-			         results->len);
-			g_print ("\n");
-
-			g_ptr_array_foreach (results, results_foreach, NULL);
-			g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
-			g_ptr_array_free (results, TRUE);
-		}
+		print_cursor (cursor, _("No class prefixes were found"), _("Prefixes"), FALSE);
 	}
 
 	if (list_properties) {
@@ -336,7 +357,7 @@ main (int argc, char **argv)
 				            _("Could not find property for class prefix, "
 				              "e.g. :Resource in 'rdfs:Resource'"));
 				g_free (prefix);
-				g_object_unref (client);
+				g_object_unref (connection);
 
 				return EXIT_FAILURE;
 			}
@@ -344,12 +365,12 @@ main (int argc, char **argv)
 			property = g_strdup (p + 1);
 			*p = '\0';
 
-			class_name_no_property = get_class_from_prefix (client, prefix);
+			class_name_no_property = get_class_from_prefix (connection, prefix);
 			g_free (prefix);
 
 			if (!class_name_no_property) {
 				g_free (property);
-				g_object_unref (client);
+				g_object_unref (connection);
 
 				return EXIT_FAILURE;
 			}
@@ -366,7 +387,7 @@ main (int argc, char **argv)
 		                         "}",
 		                         class_name);
 
-		results = tracker_resources_sparql_query (client, query, &error);
+		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
 		g_free (query);
 		g_free (class_name);
 
@@ -375,26 +396,12 @@ main (int argc, char **argv)
 			            _("Could not list properties"),
 			            error->message);
 			g_error_free (error);
-			g_object_unref (client);
+			g_object_unref (connection);
 
 			return EXIT_FAILURE;
 		}
 
-		if (!results) {
-			g_print ("%s\n",
-			         _("No properties were found"));
-		} else {
-			g_print (g_dngettext (NULL,
-			                      "Property: %d",
-			                      "Properties: %d",
-			                      results->len),
-			         results->len);
-			g_print ("\n");
-
-			g_ptr_array_foreach (results, results_foreach, NULL);
-			g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
-			g_ptr_array_free (results, TRUE);
-		}
+		print_cursor (cursor, _("No properties were found"), _("Properties"), TRUE);
 	}
 
 	if (list_notifies) {
@@ -417,31 +424,54 @@ main (int argc, char **argv)
 			                         list_notifies);
 		}
 
-		results = tracker_resources_sparql_query (client, query, &error);
+		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
 		g_free (query);
 
 		if (error) {
 			g_printerr ("%s, %s\n",
 			            _("Could not find notify classes"),
 			            error->message);
-			g_clear_error (&error);
-		} else {
-			if (!results) {
-				g_print ("%s\n",
-				         _("No notifies were found"));
-			} else {
-				g_print (g_dngettext (NULL,
-				                      "Notify: %d",
-				                      "Notifies: %d",
-				                      results->len),
-				         results->len);
-				g_print ("\n");
+			g_error_free (error);
+			g_object_unref (connection);
 
-				g_ptr_array_foreach (results, results_foreach, NULL);
-				g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
-				g_ptr_array_free (results, TRUE);
-			}
+			return EXIT_FAILURE;
 		}
+
+		print_cursor (cursor, _("No notifies were found"), _("Notifies"), TRUE);
+	}
+
+	if (list_indexes) {
+		gchar *query;
+
+		/* First list classes */
+		if (*list_indexes == '\0') {
+			query = g_strdup_printf ("SELECT ?p "
+			                         "WHERE {"
+			                         "  ?p tracker:indexed true ."
+			                         "}");
+		} else {
+			query = g_strdup_printf ("SELECT ?p "
+			                         "WHERE {"
+			                         "  ?p tracker:indexed true "
+			                         "  FILTER regex (?p, \"%s\", \"i\") "
+			                         "}",
+			                         list_indexes);
+		}
+
+		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
+		g_free (query);
+
+		if (error) {
+			g_printerr ("%s, %s\n",
+			            _("Could not find indexed properties"),
+			            error->message);
+			g_error_free (error);
+			g_object_unref (connection);
+
+			return EXIT_FAILURE;
+		}
+
+		print_cursor (cursor, _("No indexes were found"), _("Indexes"), TRUE);
 	}
 
 	if (search) {
@@ -454,31 +484,20 @@ main (int argc, char **argv)
 		                         "  FILTER regex (?c, \"%s\", \"i\") "
 		                         "}",
 		                         search);
-		results = tracker_resources_sparql_query (client, query, &error);
+		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
 		g_free (query);
 
 		if (error) {
 			g_printerr ("%s, %s\n",
 			            _("Could not search classes"),
 			            error->message);
-			g_clear_error (&error);
-		} else {
-			if (!results) {
-				g_print ("%s\n",
-				         _("No classes were found to match search term"));
-			} else {
-				g_print (g_dngettext (NULL,
-				                      "Class: %d",
-				                      "Classes: %d",
-				                      results->len),
-				         results->len);
-				g_print ("\n");
+			g_error_free (error);
+			g_object_unref (connection);
 
-				g_ptr_array_foreach (results, results_foreach, NULL);
-				g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
-				g_ptr_array_free (results, TRUE);
-			}
+			return EXIT_FAILURE;
 		}
+
+		print_cursor (cursor, _("No classes were found to match search term"), _("Classes"), TRUE);
 
 		/* Second list properties */
 		query = g_strdup_printf ("SELECT ?p "
@@ -488,31 +507,20 @@ main (int argc, char **argv)
 		                         "}",
 		                         search);
 
-		results = tracker_resources_sparql_query (client, query, &error);
+		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
 		g_free (query);
 
 		if (error) {
-			g_printerr ("  %s, %s\n",
+			g_printerr ("%s, %s\n",
 			            _("Could not search properties"),
 			            error->message);
-			g_clear_error (&error);
-		} else {
-			if (!results) {
-				g_print ("%s\n",
-				         _("No properties were found to match search term"));
-			} else {
-				g_print (g_dngettext (NULL,
-				                      "Property: %d",
-				                      "Properties: %d",
-				                      results->len),
-				         results->len);
-				g_print ("\n");
+			g_error_free (error);
+			g_object_unref (connection);
 
-				g_ptr_array_foreach (results, results_foreach, NULL);
-				g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
-				g_ptr_array_free (results, TRUE);
-			}
+			return EXIT_FAILURE;
 		}
+
+		print_cursor (cursor, _("No properties were found to match search term"), _("Properties"), TRUE);
 	}
 
 	if (file) {
@@ -526,7 +534,7 @@ main (int argc, char **argv)
 			            file,
 			            error->message);
 			g_error_free (error);
-			g_object_unref (client);
+			g_object_unref (connection);
 
 			return EXIT_FAILURE;
 		}
@@ -539,7 +547,7 @@ main (int argc, char **argv)
 			            error->message);
 			g_error_free (error);
 			g_free (path_in_utf8);
-			g_object_unref (client);
+			g_object_unref (connection);
 
 			return EXIT_FAILURE;
 		}
@@ -549,7 +557,7 @@ main (int argc, char **argv)
 
 	if (query) {
 		if (G_UNLIKELY (update)) {
-			results = tracker_resources_sparql_update_blank (client, query, &error);
+			tracker_sparql_connection_update (connection, query, 0, NULL, &error);
 
 			if (error) {
 				g_printerr ("%s, %s\n",
@@ -560,6 +568,9 @@ main (int argc, char **argv)
 				return EXIT_FAILURE;
 			}
 
+			g_print ("%s\n", _("Done"));
+
+#if 0
 			if (results) {
 				GPtrArray *insert;
 				GHashTable *solution;
@@ -576,9 +587,9 @@ main (int argc, char **argv)
 						g_hash_table_iter_init (&iter, solution);
 						n = 0;
 						while (g_hash_table_iter_next (&iter, &key, &value)) {
-							g_print ("%s%s: %s", 
-							         n > 0 ? ", " : "", 
-							         (const gchar *) key, 
+							g_print ("%s%s: %s",
+							         n > 0 ? ", " : "",
+							         (const gchar *) key,
 							         (const gchar *) value);
 							n++;
 						}
@@ -586,8 +597,9 @@ main (int argc, char **argv)
 					}
 				}
 			}
+#endif
 		} else {
-			results = tracker_resources_sparql_query (client, query, &error);
+			cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
 
 			if (error) {
 				g_printerr ("%s, %s\n",
@@ -598,25 +610,11 @@ main (int argc, char **argv)
 				return EXIT_FAILURE;
 			}
 
-			if (!results) {
-				g_print ("%s\n",
-				         _("No results found matching your query"));
-			} else {
-				g_print (g_dngettext (NULL,
-				                      "Result: %d",
-				                      "Results: %d",
-				                      results->len),
-				         results->len);
-				g_print ("\n");
-
-				g_ptr_array_foreach (results, results_foreach, NULL);
-				g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
-				g_ptr_array_free (results, TRUE);
-			}
+			print_cursor (cursor, _("No results found matching your query"), _("Results"), FALSE);
 		}
 	}
 
-	g_object_unref (client);
+	g_object_unref (connection);
 
 	return EXIT_SUCCESS;
 }

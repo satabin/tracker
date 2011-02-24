@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <chapter id='nfo-ontology'>
-<title>NFO Ontology</title>
+<title>Nepomuk File Ontology (NFO): About files and other desktop resources.</title>
 <varlistentry>
   <term>Authors:</term>
   <listitem>
@@ -125,7 +125,7 @@
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -175,7 +175,7 @@
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -210,7 +210,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-genre'>nfo:genre</link>, <link linkend='nfo-averageBitrate'>nfo:averageBitrate</link>, <link linkend='nfo-bitrateType'>nfo:bitrateType</link>, <link linkend='nfo-codec'>nfo:codec</link>, <link linkend='nfo-bitDepth'>nfo:bitDepth</link>, <link linkend='nfo-hasMediaStream'>nfo:hasMediaStream</link>, <link linkend='nfo-compressionType'>nfo:compressionType</link>, <link linkend='nfo-duration'>nfo:duration</link>, <link linkend='nfo-count'>nfo:count</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-equipment'>nfo:equipment</link>, <link linkend='nfo-genre'>nfo:genre</link>, <link linkend='nfo-averageBitrate'>nfo:averageBitrate</link>, <link linkend='nfo-bitrateType'>nfo:bitrateType</link>, <link linkend='nfo-encodedBy'>nfo:encodedBy</link>, <link linkend='nfo-codec'>nfo:codec</link>, <link linkend='nfo-bitDepth'>nfo:bitDepth</link>, <link linkend='nfo-hasMediaStream'>nfo:hasMediaStream</link>, <link linkend='nfo-compressionType'>nfo:compressionType</link>, <link linkend='nfo-duration'>nfo:duration</link>, <link linkend='nfo-count'>nfo:count</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -328,7 +328,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-fileLastModified'>nfo:fileLastModified</link>, <link linkend='nfo-fileOwner'>nfo:fileOwner</link>, <link linkend='nfo-hasHash'>nfo:hasHash</link>, <link linkend='nfo-fileUrl'>nfo:fileUrl</link>, <link linkend='nfo-fileName'>nfo:fileName</link>, <link linkend='nfo-permissions'>nfo:permissions</link>, <link linkend='nfo-fileSize'>nfo:fileSize</link>, <link linkend='nfo-fileCreated'>nfo:fileCreated</link>, <link linkend='nfo-fileLastAccessed'>nfo:fileLastAccessed</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-fileLastModified'>nfo:fileLastModified</link>, <link linkend='nfo-fileOwner'>nfo:fileOwner</link>, <link linkend='nfo-hasHash'>nfo:hasHash</link>, <link linkend='nfo-fileName'>nfo:fileName</link>, <link linkend='nfo-permissions'>nfo:permissions</link>, <link linkend='nfo-fileSize'>nfo:fileSize</link>, <link linkend='nfo-fileCreated'>nfo:fileCreated</link>, <link linkend='nfo-fileLastAccessed'>nfo:fileLastAccessed</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -525,6 +525,29 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nfo-HelpDocument'>
+<title>nfo:HelpDocument</title>
+<para>User guides and similar to assist the user</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Document'>nfo:Document</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nfo-WebHistory'>
 <title>nfo:WebHistory</title>
 <para>A web history entry</para>
@@ -589,7 +612,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-colorDepth'>nfo:colorDepth</link>, <link linkend='nfo-width'>nfo:width</link>, <link linkend='nfo-height'>nfo:height</link>, <link linkend='nfo-interlaceMode'>nfo:interlaceMode</link>, <link linkend='nfo-aspectRatio'>nfo:aspectRatio</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-colorDepth'>nfo:colorDepth</link>, <link linkend='nfo-width'>nfo:width</link>, <link linkend='nfo-height'>nfo:height</link>, <link linkend='nfo-interlaceMode'>nfo:interlaceMode</link>, <link linkend='nfo-tilt'>nfo:tilt</link>, <link linkend='nfo-heading'>nfo:heading</link>, <link linkend='nfo-aspectRatio'>nfo:aspectRatio</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -681,7 +704,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-entryUrl'>nfo:entryUrl</link>, <link linkend='nfo-entryContent'>nfo:entryContent</link>, <link linkend='nfo-listPosition'>nfo:listPosition</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-entryUrl'>nfo:entryUrl</link>, <link linkend='nfo-listPosition'>nfo:listPosition</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -780,6 +803,10 @@
 <listitem><simpara>--</simpara></listitem>
 </varlistentry>
 </variablelist>
+<note>
+<title>Note:</title>
+<para>This class notifies about changes</para>
+</note>
 </refsect2>
 
 <refsect2 id='nfo-PlainTextDocument'>
@@ -884,7 +911,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-MindMap'>nfo:MindMap</link>, <link linkend='nfo-Spreadsheet'>nfo:Spreadsheet</link>, <link linkend='nfo-Presentation'>nfo:Presentation</link>, <link linkend='nfo-TextDocument'>nfo:TextDocument</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-HelpDocument'>nfo:HelpDocument</link>, <link linkend='nfo-MindMap'>nfo:MindMap</link>, <link linkend='nfo-Spreadsheet'>nfo:Spreadsheet</link>, <link linkend='nfo-Presentation'>nfo:Presentation</link>, <link linkend='nfo-TextDocument'>nfo:TextDocument</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
@@ -895,6 +922,10 @@
 <listitem><simpara>--</simpara></listitem>
 </varlistentry>
 </variablelist>
+<note>
+<title>Note:</title>
+<para>This class notifies about changes</para>
+</note>
 </refsect2>
 
 <refsect2 id='nfo-Executable'>
@@ -1100,6 +1131,29 @@
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-Equipment'>
+<title>nfo:Equipment</title>
+<para>The equipment used to create media</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-equipmentSoftware'>nfo:equipmentSoftware</link>, <link linkend='nfo-model'>nfo:model</link>, <link linkend='nfo-manufacturer'>nfo:manufacturer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-equipment'>nfo:equipment</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -1356,41 +1410,6 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-entryContent'>
-<title>nfo:entryContent</title>
-<para>URI to the element in certain position of the list</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-MediaFileListEntry'>nfo:MediaFileListEntry</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-<note>
-<title>Note:</title>
-<para>This property is deprecated</para>
-</note>
-</refsect2>
-
 <refsect2 id='nfo-isPasswordProtected'>
 <title>nfo:isPasswordProtected</title>
 <para>States if a given resource is password-protected.</para>
@@ -1472,6 +1491,37 @@
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
 <listitem><simpara><link linkend='nfo-channels'>nfo:channels</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-tilt'>
+<title>nfo:tilt</title>
+<para>Vertical inclination of the camera while capturing the image, in angles starting on 0 as horizontal, positive numbers pointing up, negative angles pointing down</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Visual'>nfo:Visual</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
@@ -1822,9 +1872,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-softwareIcon'>
-<title>nfo:softwareIcon</title>
-<para>Icon of the software</para>
+<refsect2 id='nfo-encodedBy'>
+<title>nfo:encodedBy</title>
+<para>The contains the name of the person or organisation that encoded the media</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -1832,11 +1882,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Software'>nfo:Software</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Image'>nfo:Image</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -2163,6 +2213,37 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nfo-equipment'>
+<title>nfo:equipment</title>
+<para>Equipment used to create the media</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Equipment'>nfo:Equipment</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nfo-mediaListEntry'>
 <title>nfo:mediaListEntry</title>
 <para>A certain item belongs to a media list. This can reflect that a song is in a playlist, an image or video in an Album</para>
@@ -2190,9 +2271,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-fileUrl'>
-<title>nfo:fileUrl</title>
-<para>URL of the file. It points at the location of the file. In cases where creating a simple file:// or http:// URL for a file is difficult (e.g. for files inside compressed archives) the applications are encouraged to use conventions defined by Apache Commons VFS Project at http://jakarta.apache.org/  commons/ vfs/ filesystems.html.</para>
+<refsect2 id='nfo-heading'>
+<title>nfo:heading</title>
+<para>Specifies the direction of travelling while capturing image/video. The range of values from 0.00 to 359.99 (where 0 is due North, 90 is East, 180 South and 270 is West)</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -2200,11 +2281,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-FileDataObject'>nfo:FileDataObject</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-Visual'>nfo:Visual</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -2219,10 +2300,6 @@
 <listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
-<note>
-<title>Note:</title>
-<para>This property is deprecated</para>
-</note>
 </refsect2>
 
 <refsect2 id='nfo-colorDepth'>
@@ -2302,6 +2379,37 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-verticalResolution'>
+<title>nfo:verticalResolution</title>
+<para>Vertical resolution of an Image (if printed). Expressed in DPI</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Image'>nfo:Image</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -2508,37 +2616,6 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='nfo-verticalResolution'>
-<title>nfo:verticalResolution</title>
-<para>Vertical resolution of an Image (if printed). Expressed in DPI</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Image'>nfo:Image</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
 <refsect2 id='nfo-averageAudioBitrate'>
 <title>nfo:averageAudioBitrate</title>
 <para>The average overall bitrate of a media container. (i.e. the size of the piece of media in bits, divided by it's duration expressed in seconds).</para>
@@ -2570,9 +2647,40 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nfo-softwareIcon'>
+<title>nfo:softwareIcon</title>
+<para>Icon of the software</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Software'>nfo:Software</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Image'>nfo:Image</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nfo-bookmarks'>
 <title>nfo:bookmarks</title>
-<para>The address of the linked object. Usually a web URI.</para>
+<para>The address of the linked object. Usually a web URL.</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -2789,7 +2897,7 @@
 
 <refsect2 id='nfo-entryUrl'>
 <title>nfo:entryUrl</title>
-<para>URI to the element in certain position of the list</para>
+<para>URL to the element in certain position of the list</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -3080,6 +3188,99 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-manufacturer'>
+<title>nfo:manufacturer</title>
+<para>The manufacturer of the equipment</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Equipment'>nfo:Equipment</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-equipmentSoftware'>
+<title>nfo:equipmentSoftware</title>
+<para>The software of the equipment</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Equipment'>nfo:Equipment</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-model'>
+<title>nfo:model</title>
+<para>The model of the equipment</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Equipment'>nfo:Equipment</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>

@@ -32,6 +32,16 @@ tracker-utils
 @Returns: 
 
 
+<!-- ##### FUNCTION tracker_coalesce_strip ##### -->
+<para>
+
+</para>
+
+@n_values: 
+@Varargs: 
+@Returns: 
+
+
 <!-- ##### FUNCTION tracker_merge ##### -->
 <para>
 
@@ -43,6 +53,28 @@ tracker-utils
 @Returns: 
 
 
+<!-- ##### FUNCTION tracker_merge_const ##### -->
+<para>
+
+</para>
+
+@delimiter: 
+@n_values: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_getline ##### -->
+<para>
+
+</para>
+
+@lineptr: 
+@n: 
+@stream: 
+@Returns: 
+
+
 <!-- ##### FUNCTION tracker_text_normalize ##### -->
 <para>
 
@@ -51,6 +83,18 @@ tracker-utils
 @text: 
 @max_words: 
 @n_words: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_text_validate_utf8 ##### -->
+<para>
+
+</para>
+
+@text: 
+@text_len: 
+@str: 
+@valid_len: 
 @Returns: 
 
 
@@ -71,5 +115,14 @@ tracker-utils
 
 @date_string: 
 @Returns: 
+
+
+<!-- ##### FUNCTION tracker_keywords_parse ##### -->
+<para>
+
+</para>
+
+@store: 
+@keywords: 
 
 

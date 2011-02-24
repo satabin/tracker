@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <chapter id='nie-ontology'>
-<title>NIE Ontology</title>
+<title>Nepomuk Information Element (NIE): Top classes in the ontology. Almost everything else is subclass of these.</title>
 <varlistentry>
   <term>Authors:</term>
   <listitem>
@@ -176,18 +176,18 @@ its album).
 
 <programlisting>
 &lt;urn:uuid:10293801928301293&gt; a nmm:Photo, nfo:FileDataObject ;
-         # Properties as nmm:Photo
+	# Properties as nmm:Photo
 	 nfo:width 49 ;
 	 nfo:height 36 ;
-         nmm:flash &lt;nmm:flash-off&gt;;
-         nmm:whiteBalance &lt;nmm:white-balance-automatic&gt; ;
-         nmm:camera "Tracknon N900" ;
+	nmm:flash &lt;nmm:flash-off&gt;;
+	nmm:whiteBalance &lt;nmm:white-balance-automatic&gt; ;
+	nfo:equipment [ a nfo:Equipment ; nfo:make 'Nokia'; nfo:model 'N900'; nfo:equipmentSoftware 'Tracknon' ] ;
 
-         # Properties from nfo:FileDataObject
-         nfo:fileSize 12341234 ;
+	# Properties from nfo:FileDataObject
+	nfo:fileSize 12341234 ;
 
-         # Mandatory for any nfo:DataObject
-         nie:url &lt;file:///home/ivan/test/CC-test-big.png&gt; .
+	# Mandatory for any nfo:DataObject
+	nie:url &lt;file:///home/ivan/test/CC-test-big.png&gt; .
 
 </programlisting>
 
@@ -249,7 +249,7 @@ its album).
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-usageCounter'>nie:usageCounter</link>, <link linkend='nie-rootElementOf'>nie:rootElementOf</link>, <link linkend='nie-contentSize'>nie:contentSize</link>, <link linkend='nie-isLogicalPartOf'>nie:isLogicalPartOf</link>, <link linkend='nie-characterSet'>nie:characterSet</link>, <link linkend='nie-licenseType'>nie:licenseType</link>, <link linkend='nie-hasPart'>nie:hasPart</link>, <link linkend='nie-hasLogicalPart'>nie:hasLogicalPart</link>, <link linkend='nie-keyword'>nie:keyword</link>, <link linkend='nie-identifier'>nie:identifier</link>, <link linkend='nie-license'>nie:license</link>, <link linkend='nie-contentAccessed'>nie:contentAccessed</link>, <link linkend='nie-contentCreated'>nie:contentCreated</link>, <link linkend='nie-version'>nie:version</link>, <link linkend='nie-contentLastModified'>nie:contentLastModified</link>, <link linkend='nie-isStoredAs'>nie:isStoredAs</link>, <link linkend='nie-comment'>nie:comment</link>, <link linkend='nie-copyright'>nie:copyright</link>, <link linkend='nie-links'>nie:links</link>, <link linkend='nie-depends'>nie:depends</link>, <link linkend='nie-disclaimer'>nie:disclaimer</link>, <link linkend='nie-description'>nie:description</link>, <link linkend='nie-generator'>nie:generator</link>, <link linkend='nie-relatedTo'>nie:relatedTo</link>, <link linkend='nie-legal'>nie:legal</link>, <link linkend='nie-informationElementDate'>nie:informationElementDate</link>, <link linkend='nie-plainTextContent'>nie:plainTextContent</link>, <link linkend='nie-language'>nie:language</link>, <link linkend='nie-mimeType'>nie:mimeType</link>, <link linkend='nie-subject'>nie:subject</link>, <link linkend='nie-title'>nie:title</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nie-usageCounter'>nie:usageCounter</link>, <link linkend='nie-rootElementOf'>nie:rootElementOf</link>, <link linkend='nie-contentSize'>nie:contentSize</link>, <link linkend='nie-isLogicalPartOf'>nie:isLogicalPartOf</link>, <link linkend='nie-characterSet'>nie:characterSet</link>, <link linkend='nie-licenseType'>nie:licenseType</link>, <link linkend='nie-hasPart'>nie:hasPart</link>, <link linkend='nie-hasLogicalPart'>nie:hasLogicalPart</link>, <link linkend='nie-keyword'>nie:keyword</link>, <link linkend='nie-identifier'>nie:identifier</link>, <link linkend='nie-license'>nie:license</link>, <link linkend='nie-contentAccessed'>nie:contentAccessed</link>, <link linkend='nie-contentCreated'>nie:contentCreated</link>, <link linkend='nie-version'>nie:version</link>, <link linkend='nie-isStoredAs'>nie:isStoredAs</link>, <link linkend='nie-comment'>nie:comment</link>, <link linkend='nie-copyright'>nie:copyright</link>, <link linkend='nie-links'>nie:links</link>, <link linkend='nie-depends'>nie:depends</link>, <link linkend='nie-disclaimer'>nie:disclaimer</link>, <link linkend='nie-description'>nie:description</link>, <link linkend='nie-generator'>nie:generator</link>, <link linkend='nie-relatedTo'>nie:relatedTo</link>, <link linkend='nie-legal'>nie:legal</link>, <link linkend='nie-plainTextContent'>nie:plainTextContent</link>, <link linkend='nie-language'>nie:language</link>, <link linkend='nie-mimeType'>nie:mimeType</link>, <link linkend='nie-subject'>nie:subject</link>, <link linkend='nie-contentLastModified'>nie:contentLastModified</link>, <link linkend='nie-informationElementDate'>nie:informationElementDate</link>, <link linkend='nie-title'>nie:title</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -272,7 +272,7 @@ its album).
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-url'>nie:url</link>, <link linkend='nie-isPartOf'>nie:isPartOf</link>, <link linkend='nie-created'>nie:created</link>, <link linkend='nie-lastRefreshed'>nie:lastRefreshed</link>, <link linkend='nie-interpretedAs'>nie:interpretedAs</link>, <link linkend='nie-dataSource'>nie:dataSource</link>, <link linkend='nie-byteSize'>nie:byteSize</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nie-isPartOf'>nie:isPartOf</link>, <link linkend='nie-created'>nie:created</link>, <link linkend='nie-lastRefreshed'>nie:lastRefreshed</link>, <link linkend='nie-interpretedAs'>nie:interpretedAs</link>, <link linkend='nie-dataSource'>nie:dataSource</link>, <link linkend='nie-byteSize'>nie:byteSize</link>, <link linkend='nie-url'>nie:url</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -671,6 +671,10 @@ its album).
 <term><parameter>Cardinality</parameter>&#160;:</term>
 <listitem><simpara>1</simpara></listitem>
 </varlistentry>
+<varlistentry>
+<term><parameter>Text indexed</parameter>&#160;:</term>
+<listitem><simpara>This property is indexed, so it can provide results on text search</simpara></listitem>
+</varlistentry>
 </variablelist>
 </refsect2>
 
@@ -881,6 +885,40 @@ its album).
 </variablelist>
 </refsect2>
 
+<refsect2 id='nie-comment'>
+<title>nie:comment</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Text indexed</parameter>&#160;:</term>
+<listitem><simpara>This property is indexed, so it can provide results on text search</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nie-interpretedAs'>
 <title>nie:interpretedAs</title>
 <variablelist>
@@ -899,36 +937,6 @@ its album).
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='nie-disclaimer'>
-<title>nie:disclaimer</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-legal'>nie:legal</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
@@ -967,8 +975,8 @@ its album).
 </variablelist>
 </refsect2>
 
-<refsect2 id='nie-comment'>
-<title>nie:comment</title>
+<refsect2 id='nie-disclaimer'>
+<title>nie:disclaimer</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -984,41 +992,7 @@ its album).
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Text indexed</parameter>&#160;:</term>
-<listitem><simpara>This property is indexed, so it can provide results on text search</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='nie-identifier'>
-<title>nie:identifier</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara><link linkend='dc-identifier'>dc:identifier</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nie-legal'>nie:legal</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
@@ -1050,6 +1024,36 @@ its album).
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nie-identifier'>
+<title>nie:identifier</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara><link linkend='dc-identifier'>dc:identifier</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>

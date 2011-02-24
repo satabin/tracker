@@ -5,10 +5,10 @@
 <title>NMM Ontology Properties</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
-<link rel="up" href="nmm-ontology.html" title="NMM Ontology">
+<link rel="up" href="nmm-ontology.html" title="Nepomuk MultiMedia (NMM): Description of multimedia objects like Music, Video and Images">
 <link rel="prev" href="nmm-classes.html" title="NMM Ontology Classes">
-<link rel="next" href="mfo-ontology.html" title="MFO Ontology">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<link rel="next" href="mto-ontology.html" title="Maemo Transfer Ontology (MTO): Representation of download and upload operations in the system">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -17,7 +17,7 @@
 <td><a accesskey="u" href="nmm-ontology.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Tracker Ontology Reference Manual</th>
-<td><a accesskey="n" href="mfo-ontology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="mto-ontology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="section" title="NMM Ontology Properties">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -50,37 +50,9 @@
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
 <td>--</td>
 </tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="nmm:uPnPShared">
-<a name="nmm-uPnPShared"></a><h3>nmm:uPnPShared</h3>
-<p>Tells the uPnP MediaServer (e.g. Rygel) whether to export/share the resource or not</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-boolean" title="xsd:boolean">xsd:boolean</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
 </tr>
 </tbody>
 </table></div>
@@ -153,41 +125,6 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:producedBy">
-<a name="nmm-producedBy"></a><h3>nmm:producedBy</h3>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="nmm-classes.html#nmm-Artist" title="nmm:Artist">nmm:Artist</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
 <div class="refsect2" title="nmm:episodeNumber">
 <a name="nmm-episodeNumber"></a><h3>nmm:episodeNumber</h3>
 <div class="variablelist"><table border="0">
@@ -206,6 +143,41 @@
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
 <a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nmm:producedBy">
+<a name="nmm-producedBy"></a><h3>nmm:producedBy</h3>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmm-classes.html#nmm-Artist" title="nmm:Artist">nmm:Artist</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -251,17 +223,13 @@
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
 <td>--</td>
 </tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:alternativeMedia">
-<a name="nmm-alternativeMedia"></a><h3>nmm:alternativeMedia</h3>
-<p>Link between to different version of the same media. This is used for instances in uPnp where the server can provide the same video in different resolutions and codecs</p>
+<div class="refsect2" title="nmm:albumDiscAlbum">
+<a name="nmm-albumDiscAlbum"></a><h3>nmm:albumDiscAlbum</h3>
+<p>Album of the disc</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -272,12 +240,12 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-MusicAlbumDisc" title="nmm:MusicAlbumDisc">nmm:MusicAlbumDisc</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-MusicAlbum" title="nmm:MusicAlbum">nmm:MusicAlbum</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -286,6 +254,10 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
 <td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
 </tr>
 </tbody>
 </table></div>
@@ -375,7 +347,7 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-MusicAlbum" title="nmm:MusicAlbum">nmm:MusicAlbum</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-MusicPiece" title="nmm:MusicPiece">nmm:MusicPiece</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -621,7 +593,7 @@
 <hr>
 <div class="refsect2" title="nmm:setNumber">
 <a name="nmm-setNumber"></a><h3>nmm:setNumber</h3>
-<p>Disk number of album</p>
+<p>Disc number of album disc</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -632,7 +604,7 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-MusicAlbum" title="nmm:MusicAlbum">nmm:MusicAlbum</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-MusicAlbumDisc" title="nmm:MusicAlbumDisc">nmm:MusicAlbumDisc</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -668,7 +640,7 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-MusicAlbum" title="nmm:MusicAlbum">nmm:MusicAlbum</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-MusicAlbumDisc" title="nmm:MusicAlbumDisc">nmm:MusicAlbumDisc</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -729,37 +701,6 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:leadActor">
-<a name="nmm-leadActor"></a><h3>nmm:leadActor</h3>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="nmm-classes.html#nmm-Artist" title="nmm:Artist">nmm:Artist</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
 <div class="refsect2" title="nmm:synopsis">
 <a name="nmm-synopsis"></a><h3>nmm:synopsis</h3>
 <div class="variablelist"><table border="0">
@@ -795,9 +736,40 @@
 </table></div>
 </div>
 <hr>
+<div class="refsect2" title="nmm:leadActor">
+<a name="nmm-leadActor"></a><h3>nmm:leadActor</h3>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmm-classes.html#nmm-Artist" title="nmm:Artist">nmm:Artist</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
 <div class="refsect2" title="nmm:albumTitle">
 <a name="nmm-albumTitle"></a><h3>nmm:albumTitle</h3>
-<p>The title of the album</p>
+<p>nmm:albumTitle is deprecated, use nie:title instead, extractors still need updating</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -834,11 +806,15 @@
 </tr>
 </tbody>
 </table></div>
+<div class="note" title="Note:" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note:</h3>
+<p>This property is deprecated</p>
+</div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:flash">
-<a name="nmm-flash"></a><h3>nmm:flash</h3>
-<p>Specifies whether flash was used</p>
+<div class="refsect2" title="nmm:musicAlbumDisc">
+<a name="nmm-musicAlbumDisc"></a><h3>nmm:musicAlbumDisc</h3>
+<p>album disc the music belongs to</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -849,16 +825,17 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-Photo" title="nmm:Photo">nmm:Photo</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-MusicPiece" title="nmm:MusicPiece">nmm:MusicPiece</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-Flash" title="nmm:Flash">nmm:Flash</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-MusicAlbumDisc" title="nmm:MusicAlbumDisc">nmm:MusicAlbumDisc</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
+<td>
+<a class="link" href="nie-properties.html#nie-isLogicalPartOf" title="nie:isLogicalPartOf">nie:isLogicalPartOf</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
@@ -977,8 +954,9 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:whiteBalance">
-<a name="nmm-whiteBalance"></a><h3>nmm:whiteBalance</h3>
+<div class="refsect2" title="nmm:flash">
+<a name="nmm-flash"></a><h3>nmm:flash</h3>
+<p>Specifies whether flash was used</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -994,7 +972,7 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-WhiteBalance" title="nmm:WhiteBalance">nmm:WhiteBalance</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-Flash" title="nmm:Flash">nmm:Flash</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1053,9 +1031,8 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:frequency">
-<a name="nmm-frequency"></a><h3>nmm:frequency</h3>
-<p>Frequency in the Radio spectrum in Khz (note that usually FM frequencies are in MHz)</p>
+<div class="refsect2" title="nmm:whiteBalance">
+<a name="nmm-whiteBalance"></a><h3>nmm:whiteBalance</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -1066,12 +1043,12 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-AnalogRadio" title="nmm:AnalogRadio">nmm:AnalogRadio</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-Photo" title="nmm:Photo">nmm:Photo</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-WhiteBalance" title="nmm:WhiteBalance">nmm:WhiteBalance</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1214,6 +1191,42 @@
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
 <a class="link" href="xsd-classes.html#xsd-boolean" title="xsd:boolean">xsd:boolean</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nmm:frequency">
+<a name="nmm-frequency"></a><h3>nmm:frequency</h3>
+<p>Frequency in the Radio spectrum in Khz (note that usually FM frequencies are in MHz)</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmm-classes.html#nmm-AnalogRadio" title="nmm:AnalogRadio">nmm:AnalogRadio</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -1483,9 +1496,8 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:length">
-<a name="nmm-length"></a><h3>nmm:length</h3>
-<p>Length or duration (in seconds)</p>
+<div class="refsect2" title="nmm:runTime">
+<a name="nmm-runTime"></a><h3>nmm:runTime</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -1496,7 +1508,7 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-MusicPiece" title="nmm:MusicPiece">nmm:MusicPiece</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -1517,14 +1529,10 @@
 </tr>
 </tbody>
 </table></div>
-<div class="note" title="Note:" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note:</h3>
-<p>This property is deprecated</p>
-</div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:runTime">
-<a name="nmm-runTime"></a><h3>nmm:runTime</h3>
+<div class="refsect2" title="nmm:skipCounter">
+<a name="nmm-skipCounter"></a><h3>nmm:skipCounter</h3>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -1535,7 +1543,7 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
+<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -1594,41 +1602,6 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:skipCounter">
-<a name="nmm-skipCounter"></a><h3>nmm:skipCounter</h3>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
 <div class="refsect2" title="nmm:carrier">
 <a name="nmm-carrier"></a><h3>nmm:carrier</h3>
 <p>Signal where a radio can be tuned in. There can be more than one.</p>
@@ -1656,6 +1629,42 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
 <td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nmm:uPnPShared">
+<a name="nmm-uPnPShared"></a><h3>nmm:uPnPShared</h3>
+<p>Tells the uPnP MediaServer (e.g. Rygel) whether to export/share the resource or not</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-boolean" title="xsd:boolean">xsd:boolean</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
 </tr>
 </tbody>
 </table></div>
@@ -1768,42 +1777,6 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:camera">
-<a name="nmm-camera"></a><h3>nmm:camera</h3>
-<p>The maker and model of the camera used to take the photograph</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nmm-classes.html#nmm-Photo" title="nmm:Photo">nmm:Photo</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
 <div class="refsect2" title="nmm:trackNumber">
 <a name="nmm-trackNumber"></a><h3>nmm:trackNumber</h3>
 <p>Track number of the music in its album</p>
@@ -1875,6 +1848,37 @@
 </table></div>
 </div>
 <hr>
+<div class="refsect2" title="nmm:director">
+<a name="nmm-director"></a><h3>nmm:director</h3>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmm-classes.html#nmm-Artist" title="nmm:Artist">nmm:Artist</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
 <div class="refsect2" title="nmm:albumPeakGain">
 <a name="nmm-albumPeakGain"></a><h3>nmm:albumPeakGain</h3>
 <p>Peak Gain of album</p>
@@ -1889,42 +1893,6 @@
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
 <a class="link" href="nmm-classes.html#nmm-MusicAlbum" title="nmm:MusicAlbum">nmm:MusicAlbum</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="nmm:beatsPerMinute">
-<a name="nmm-beatsPerMinute"></a><h3>nmm:beatsPerMinute</h3>
-<p>beats per minute</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nmm-classes.html#nmm-MusicPiece" title="nmm:MusicPiece">nmm:MusicPiece</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
@@ -1983,8 +1951,9 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="nmm:director">
-<a name="nmm-director"></a><h3>nmm:director</h3>
+<div class="refsect2" title="nmm:beatsPerMinute">
+<a name="nmm-beatsPerMinute"></a><h3>nmm:beatsPerMinute</h3>
+<p>beats per minute</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -1995,12 +1964,48 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
+<a class="link" href="nmm-classes.html#nmm-MusicPiece" title="nmm:MusicPiece">nmm:MusicPiece</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nmm-classes.html#nmm-Artist" title="nmm:Artist">nmm:Artist</a>, </td>
+<a class="link" href="xsd-classes.html#xsd-integer" title="xsd:integer">xsd:integer</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="nmm:alternativeMedia">
+<a name="nmm-alternativeMedia"></a><h3>nmm:alternativeMedia</h3>
+<p>Link between to different version of the same media. This is used for instances in uPnp where the server can provide the same video in different resolutions and codecs</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -2016,6 +2021,6 @@
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

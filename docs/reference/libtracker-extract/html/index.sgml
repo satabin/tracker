@@ -1,3 +1,4 @@
+<ONLINE href="http://library.gnome.org/devel/libtracker-extract/unstable/">
 <ANCHOR id="libtracker-extract-How-to-use-libtracker-extract" href="libtracker-extract/libtracker-extract-How-to-use-libtracker-extract.html">
 <ANCHOR id="libtracker-extract-How-to-use-libtracker-extract.stability-level" href="libtracker-extract/libtracker-extract-How-to-use-libtracker-extract.html#libtracker-extract-How-to-use-libtracker-extract.stability-level">
 <ANCHOR id="libtracker-extract-How-to-use-libtracker-extract.synopsis" href="libtracker-extract/libtracker-extract-How-to-use-libtracker-extract.html#libtracker-extract-How-to-use-libtracker-extract.synopsis">
@@ -13,16 +14,23 @@
 <ANCHOR id="libtracker-extract-Data-utilities.description" href="libtracker-extract/libtracker-extract-Data-utilities.html#libtracker-extract-Data-utilities.description">
 <ANCHOR id="libtracker-extract-Data-utilities.details" href="libtracker-extract/libtracker-extract-Data-utilities.html#libtracker-extract-Data-utilities.details">
 <ANCHOR id="tracker-coalesce" href="libtracker-extract/libtracker-extract-Data-utilities.html#tracker-coalesce">
+<ANCHOR id="tracker-coalesce-strip" href="libtracker-extract/libtracker-extract-Data-utilities.html#tracker-coalesce-strip">
 <ANCHOR id="tracker-merge" href="libtracker-extract/libtracker-extract-Data-utilities.html#tracker-merge">
+<ANCHOR id="tracker-merge-const" href="libtracker-extract/libtracker-extract-Data-utilities.html#tracker-merge-const">
+<ANCHOR id="tracker-getline" href="libtracker-extract/libtracker-extract-Data-utilities.html#tracker-getline">
 <ANCHOR id="tracker-text-normalize" href="libtracker-extract/libtracker-extract-Data-utilities.html#tracker-text-normalize">
+<ANCHOR id="tracker-text-validate-utf8" href="libtracker-extract/libtracker-extract-Data-utilities.html#tracker-text-validate-utf8">
 <ANCHOR id="tracker-date-format-to-iso8601" href="libtracker-extract/libtracker-extract-Data-utilities.html#tracker-date-format-to-iso8601">
 <ANCHOR id="tracker-date-guess" href="libtracker-extract/libtracker-extract-Data-utilities.html#tracker-date-guess">
+<ANCHOR id="tracker-keywords-parse" href="libtracker-extract/libtracker-extract-Data-utilities.html#tracker-keywords-parse">
 <ANCHOR id="libtracker-extract-XMP" href="libtracker-extract/libtracker-extract-XMP.html">
 <ANCHOR id="libtracker-extract-XMP.stability-level" href="libtracker-extract/libtracker-extract-XMP.html#libtracker-extract-XMP.stability-level">
 <ANCHOR id="libtracker-extract-XMP.synopsis" href="libtracker-extract/libtracker-extract-XMP.html#libtracker-extract-XMP.synopsis">
 <ANCHOR id="libtracker-extract-XMP.description" href="libtracker-extract/libtracker-extract-XMP.html#libtracker-extract-XMP.description">
 <ANCHOR id="libtracker-extract-XMP.details" href="libtracker-extract/libtracker-extract-XMP.html#libtracker-extract-XMP.details">
 <ANCHOR id="TrackerXmpData" href="libtracker-extract/libtracker-extract-XMP.html#TrackerXmpData">
+<ANCHOR id="tracker-xmp-new" href="libtracker-extract/libtracker-extract-XMP.html#tracker-xmp-new">
+<ANCHOR id="tracker-xmp-free" href="libtracker-extract/libtracker-extract-XMP.html#tracker-xmp-free">
 <ANCHOR id="tracker-xmp-read" href="libtracker-extract/libtracker-extract-XMP.html#tracker-xmp-read">
 <ANCHOR id="tracker-xmp-apply" href="libtracker-extract/libtracker-extract-XMP.html#tracker-xmp-apply">
 <ANCHOR id="libtracker-extract-IPTC" href="libtracker-extract/libtracker-extract-IPTC.html">
@@ -31,6 +39,8 @@
 <ANCHOR id="libtracker-extract-IPTC.description" href="libtracker-extract/libtracker-extract-IPTC.html#libtracker-extract-IPTC.description">
 <ANCHOR id="libtracker-extract-IPTC.details" href="libtracker-extract/libtracker-extract-IPTC.html#libtracker-extract-IPTC.details">
 <ANCHOR id="TrackerIptcData" href="libtracker-extract/libtracker-extract-IPTC.html#TrackerIptcData">
+<ANCHOR id="tracker-iptc-new" href="libtracker-extract/libtracker-extract-IPTC.html#tracker-iptc-new">
+<ANCHOR id="tracker-iptc-free" href="libtracker-extract/libtracker-extract-IPTC.html#tracker-iptc-free">
 <ANCHOR id="tracker-iptc-read" href="libtracker-extract/libtracker-extract-IPTC.html#tracker-iptc-read">
 <ANCHOR id="libtracker-extract-Exif" href="libtracker-extract/libtracker-extract-Exif.html">
 <ANCHOR id="libtracker-extract-Exif.stability-level" href="libtracker-extract/libtracker-extract-Exif.html#libtracker-extract-Exif.stability-level">
@@ -38,4 +48,6 @@
 <ANCHOR id="libtracker-extract-Exif.description" href="libtracker-extract/libtracker-extract-Exif.html#libtracker-extract-Exif.description">
 <ANCHOR id="libtracker-extract-Exif.details" href="libtracker-extract/libtracker-extract-Exif.html#libtracker-extract-Exif.details">
 <ANCHOR id="TrackerExifData" href="libtracker-extract/libtracker-extract-Exif.html#TrackerExifData">
+<ANCHOR id="tracker-exif-new" href="libtracker-extract/libtracker-extract-Exif.html#tracker-exif-new">
+<ANCHOR id="tracker-exif-free" href="libtracker-extract/libtracker-extract-Exif.html#tracker-exif-free">
 <ANCHOR id="tracker-exif-read" href="libtracker-extract/libtracker-extract-Exif.html#tracker-exif-read">

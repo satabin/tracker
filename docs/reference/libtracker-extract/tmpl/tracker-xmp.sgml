@@ -66,6 +66,25 @@ tracker-xmp
 @state: 
 @city: 
 
+<!-- ##### FUNCTION tracker_xmp_new ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@len: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_xmp_free ##### -->
+<para>
+
+</para>
+
+@data: 
+
+
 <!-- ##### FUNCTION tracker_xmp_read ##### -->
 <para>
 
@@ -83,6 +102,7 @@ tracker-xmp
 
 </para>
 
+@preupdate: 
 @metadata: 
 @uri: 
 @data: 

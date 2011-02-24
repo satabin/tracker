@@ -13,20 +13,36 @@
 
 nmm: a tracker:Namespace, tracker:Ontology ;
 	tracker:prefix "nmm" ;
-	nao:lastModified "2010-02-16T11:00:00Z" .
+	nao:lastModified "2011-01-25T13:30:00Z" .
 
 nmm:MusicPiece a rdfs:Class ;
 	rdfs:label "Music" ;
 	tracker:notify true ;
+	tracker:domainIndex nie:title ;
 	rdfs:subClassOf nfo:Media .
+
+nmm:MusicAlbum a rdfs:Class ;
+	rdfs:label "Music album" ;
+	tracker:notify true ;
+	tracker:domainIndex nie:title ;
+	rdfs:subClassOf nfo:MediaList .
+
+# Added Dec 1 2010
+nmm:MusicAlbumDisc a rdfs:Class ;
+	rdfs:label "Music album Disc" ;
+	rdfs:subClassOf nie:InformationElement .
+
+# Added Dec 1 2010
+nmm:albumDiscAlbum a rdf:Property ;
+	rdfs:label "album disc's album" ;
+	rdfs:comment "Album of the disc" ;
+	rdfs:range nmm:MusicAlbum ;
+	nrl:maxCardinality 1 ;
+	rdfs:domain nmm:MusicAlbumDisc .
 
 nmm:SynchronizedText a rdfs:Class ;
 	rdfs:label "Synchronized text (use nie:language to set the language). Valid for subtitles and lyrics" ;
 	rdfs:subClassOf nfo:PlainTextDocument .
-
-nmm:MusicAlbum a rdfs:Class ;
-	rdfs:label "Music album" ;
-	rdfs:subClassOf nfo:MediaList .
 
 nmm:Video a rdfs:Class ;
 	rdfs:label "Video" ;
@@ -37,12 +53,13 @@ nmm:Video a rdfs:Class ;
 nmm:Artist a rdfs:Class ;
 	rdfs:label "Artist" ;
 	rdfs:comment "An artist." ;
+	tracker:notify true ;
 	rdfs:subClassOf nie:InformationElement , nco:Role .
 
 nmm:Playlist a rdfs:Class ;
 	rdfs:label "Media playlist" ;
 	rdfs:comment "Specific class to split MediaList in Albums and playlists." ;
-        tracker:notify true ;
+	tracker:notify true ;
 	rdfs:subClassOf nfo:MediaList .
 
 nmm:artistName a rdf:Property ;
@@ -52,6 +69,7 @@ nmm:artistName a rdf:Property ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nmm:Artist ;
 	rdfs:range xsd:string ;
+	tracker:indexed true ;
 	tracker:fulltextIndexed true ;
 	tracker:fulltextNoLimit true ;
 	tracker:weight 6 .
@@ -63,13 +81,22 @@ nmm:musicAlbum a rdf:Property ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nmm:MusicPiece ;
 	rdfs:range nmm:MusicAlbum ;
+	tracker:writeback true ;
+	tracker:indexed true ;
 	tracker:weight 6 .
 
-# Cardinality could be > 1 if we create one for album collectiosn
+nmm:musicAlbumDisc a rdf:Property ;
+	rdfs:label "is part of album disc" ;
+	rdfs:comment "album disc the music belongs to" ;
+	rdfs:subPropertyOf nie:isLogicalPartOf ;
+	nrl:maxCardinality 1 ;
+	rdfs:domain nmm:MusicPiece ;
+	rdfs:range nmm:MusicAlbumDisc .
+
+# Cardinality could be > 1 if we create one for album collections
 nmm:albumArtist a rdf:Property ;
 	rdfs:label "artist" ;
 	rdfs:comment "main artists of the album" ;
-	nrl:maxCardinality 1 ;
 	rdfs:domain nmm:MusicAlbum ;
 	rdfs:range nmm:Artist ;
 	tracker:weight 6 .
@@ -81,6 +108,7 @@ nmm:beatsPerMinute a rdf:Property ;
 	rdfs:domain nmm:MusicPiece ;
 	rdfs:range xsd:integer .
 
+# Todo: change cardinality
 nmm:performer a rdf:Property ;
 	rdfs:label "Performer" ;
 	rdfs:comment "Performer" ;
@@ -88,15 +116,9 @@ nmm:performer a rdf:Property ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nmm:MusicPiece ;
 	rdfs:range nmm:Artist ;
-	tracker:weight 4 .
-
-nmm:length a rdf:Property ;
-	rdfs:label "Length" ;
-	rdfs:comment "Length or duration (in seconds)" ;
-	nrl:maxCardinality 1 ;
-	rdfs:domain nmm:MusicPiece ;
-	nao:deprecated true ;
-	rdfs:range xsd:integer .
+	tracker:weight 4 ;
+	tracker:writeback true ;
+	tracker:indexed true .
 
 nmm:composer a rdf:Property ;
 	rdfs:label "Composer" ;
@@ -140,7 +162,7 @@ nmm:musicCDIdentifier a rdf:Property ;
 	rdfs:comment "Music CD identifier to for databases like FreeDB.org. This frame is intended for music that comes from a CD, so that the CD can be identified in databases such as the CDDB. The frame consists of a binary dump of the Table Of Contents, TOC, from the CD, which is a header of 4 bytes and then 8 bytes/track on the CD plus 8 bytes for the 'lead out' making a maximum of 804 bytes. The offset to the beginning of every track on the CD should be described with a four bytes absolute CD-frame address per track, and not with absolute time." ;
 	rdfs:subPropertyOf nie:identifier ;
 	nrl:maxCardinality 1 ;
-	rdfs:domain nmm:MusicAlbum ;
+	rdfs:domain nmm:MusicAlbumDisc ;
 	rdfs:range xsd:string .
 
 nmm:internationalStandardRecordingCode a rdf:Property ;
@@ -148,7 +170,7 @@ nmm:internationalStandardRecordingCode a rdf:Property ;
 	rdfs:comment "ISRC ID. Format: 'CC-XXX-YY-NNNNN'" ;
 	rdfs:subPropertyOf nie:identifier ;
 	nrl:maxCardinality 1 ;
-	rdfs:domain nmm:MusicAlbum ;
+	rdfs:domain nmm:MusicPiece ;
 	rdfs:range xsd:string .
 
 nmm:albumTrackCount a rdf:Property ;
@@ -160,11 +182,12 @@ nmm:albumTrackCount a rdf:Property ;
 
 nmm:albumTitle a rdf:Property ;
 	rdfs:label "Title" ;
-	rdfs:comment "The title of the album" ;
+	rdfs:comment "nmm:albumTitle is deprecated, use nie:title instead, extractors still need updating" ;
 	rdfs:subPropertyOf nie:title ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nmm:MusicAlbum ;
 	rdfs:range xsd:string ;
+	nao:deprecated true ;
 	tracker:fulltextIndexed true ;
 	tracker:fulltextNoLimit true ;
 	tracker:weight 6 .
@@ -191,10 +214,10 @@ nmm:albumPeakGain a rdf:Property ;
 	rdfs:range xsd:integer .
 
 nmm:setNumber a rdf:Property ;
-	rdfs:label "Disk number" ;
-	rdfs:comment "Disk number of album" ;
+	rdfs:label "Disc number" ;
+	rdfs:comment "Disc number of album disc" ;
 	nrl:maxCardinality 1 ;
-	rdfs:domain nmm:MusicAlbum ;
+	rdfs:domain nmm:MusicAlbumDisc ;
 	rdfs:range xsd:integer .
 
 # This property doesn't make sense... it is the other way around
@@ -305,6 +328,7 @@ nmm:skipCounter a rdf:Property ;
 nmm:ImageList a rdfs:Class ;
 	rdfs:subClassOf nfo:MediaList ;
 	rdfs:label "Image album" ;
+	tracker:notify true ;
 	rdfs:comment "An album of images" .
 
 nmm:Photo a rdfs:Class ;
@@ -316,15 +340,6 @@ nmm:Photo a rdfs:Class ;
 # Properties
 # Photo location is waiting for the Location ontology
 
-nmm:camera a rdf:Property ;
-	rdfs:label "Camera" ;
-	rdfs:comment "The maker and model of the camera used to take the photograph" ;
-	nrl:maxCardinality 1 ;
-	rdfs:domain nmm:Photo ;
-	rdfs:range xsd:string ;
-	tracker:weight 3 ;
-	tracker:writeback true .
-
 nmm:exposureTime a rdf:Property ;
 	rdfs:label "Exposure time" ;
 	rdfs:comment "Exposure time of the photo" ;
@@ -335,7 +350,8 @@ nmm:exposureTime a rdf:Property ;
 
 nmm:Flash a rdfs:Class ;
 	rdfs:label "Flash values" ;
-	rdfs:comment "Enumeration of the possible values of flash property" .
+	rdfs:comment "Enumeration of the possible values of flash property" ;
+	rdfs:subClassOf rdfs:Resource .
 
 nmm:flash-on a nmm:Flash .
 nmm:flash-off a nmm:Flash .
@@ -374,7 +390,8 @@ nmm:isoSpeed a rdf:Property ;
 
 nmm:MeteringMode a rdfs:Class ;
 	rdfs:label "Metering mode values" ;
-	rdfs:comment "Enumeration of different ways a camera determines exposure." .
+	rdfs:comment "Enumeration of different ways a camera determines exposure." ;
+	rdfs:subClassOf rdfs:Resource .
 
 nmm:metering-mode-average a nmm:MeteringMode .
 nmm:metering-mode-center-weighted-average a nmm:MeteringMode .
@@ -393,7 +410,8 @@ nmm:meteringMode a rdf:Property ;
 
 nmm:WhiteBalance a rdfs:Class ;
 	rdfs:label "White balance" ;
-	rdfs:comment "Camera's white balance setting" .
+	rdfs:comment "Camera's white balance setting" ;
+	rdfs:subClassOf rdfs:Resource .
 
 nmm:white-balance-auto a nmm:WhiteBalance .
 nmm:white-balance-manual a nmm:WhiteBalance .
@@ -422,7 +440,7 @@ nmm:RadioStation a rdfs:Class ;
 	tracker:notify true .
 
 nmm:radioIcon a rdf:Property ;
-        rdfs:label "Radio station icon" ;
+	rdfs:label "Radio station icon" ;
 	rdfs:comment "Image used as logo for a radio station" ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nmm:RadioStation ;
@@ -443,7 +461,7 @@ nmm:carrier a rdf:Property ;
 
 # Radio (DO part)
 nmm:DigitalRadio a rdfs:Class ;
-        rdfs:label "Online Radio Stream" ;
+	rdfs:label "Online Radio Stream" ;
 	rdfs:comment "Online Radio Stream data object (i.e. as a raw flow of bytes)" ;
 	rdfs:subClassOf nfo:MediaStream .
 
@@ -454,7 +472,8 @@ nmm:AnalogRadio a rdfs:Class ;
 
 nmm:RadioModulation a rdfs:Class ;
  	rdfs:label "Radio modulation" ;
-	rdfs:comment "Set of instances for analog radio modulation".
+	rdfs:comment "Set of instances for analog radio modulation";
+	rdfs:subClassOf rdfs:Resource .
 
 nmm:radio-modulation-am a nmm:RadioModulation.
 nmm:radio-modulation-fm a nmm:RadioModulation.
@@ -475,7 +494,7 @@ nmm:frequency a rdf:Property ;
 
 
 nmm:streamingBitrate a rdf:Property ;
- 	rdfs:label "Streaming bitrate" ;
+	rdfs:label "Streaming bitrate" ;
 	rdfs:comment "Bitrate indicating the quality of the stream in Kbits (usual values 32, 64, 128...)" ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nmm:DigitalRadio ;
@@ -499,7 +518,7 @@ nmm:protocol a rdf:Property ;
 
 # Upnp related resources
 nmm:alternativeMedia a rdf:Property ;
-        rdfs:label "Alternative media" ;
+	rdfs:label "Alternative media" ;
 	rdfs:comment "Link between to different version of the same media. This is used for instances in uPnp where the server can provide the same video in different resolutions and codecs" ;
 	rdfs:domain nfo:Media ;
 	rdfs:range nfo:Media .
@@ -507,11 +526,13 @@ nmm:alternativeMedia a rdf:Property ;
 nmm:dlnaProfile a rdf:Property ;
 	rdfs:label "DLNA profile" ;
 	rdfs:comment "DLNA profile of the content, like MP3, MPEG_TS_HD_US, LPCM etc" ;
+	nrl:maxCardinality 1 ;
 	rdfs:domain nfo:Media ;
 	rdfs:range xsd:string .
 
 nmm:uPnPShared a rdf:Property ;
 	rdfs:label "uPnP shared" ;
 	rdfs:comment "Tells the uPnP MediaServer (e.g. Rygel) whether to export/share the resource or not" ;
+	nrl:maxCardinality 1 ;
 	rdfs:domain nfo:Media ;
 	rdfs:range xsd:boolean .

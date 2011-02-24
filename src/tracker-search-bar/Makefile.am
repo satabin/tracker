@@ -2,60 +2,71 @@ include $(top_srcdir)/Makefile.decl
 
 libexec_PROGRAMS = tracker-search-bar
 
-tracker_search_bar_SOURCES = 					\
-	tracker-applet.c 					\
-	tracker-applet.h					\
-	tracker-aligned-window.c				\
-	tracker-aligned-window.h				\
-	tracker-results-window.c				\
-	tracker-results-window.h				\
-	tracker-utils.c						\
+tracker_search_bar_SOURCES =                           \
+	tracker-applet.c                               \
+	tracker-applet.h                               \
+	tracker-aligned-window.c                       \
+	tracker-aligned-window.h                       \
+	tracker-results-window.c                       \
+	tracker-results-window.h                       \
+	tracker-utils.c                                \
 	tracker-utils.h
 
-tracker_search_bar_CFLAGS = \
-	-DPKGDATADIR=\""$(pkgdatadir)"\"	 		\
-	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" 	\
-	-I$(top_srcdir)/src					\
-	-I$(top_builddir)/src					\
-	-I$(top_builddir)/src/libtracker-client			\
-	$(TRACKER_APPS_CFLAGS)					\
-	$(TRACKER_APPLETS_CFLAGS)				\
-	$(GDKPIXBUF_CFLAGS)					\
-	$(WARN_CFLAGS)						\
-	$(GCOV_CFLAGS)
+# -DMENU_UI_DIR=\""$(xmluidir)"\"
 
-tracker_search_bar_LDADD = 					\
-	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
-	$(TRACKER_APPS_LIBS)					\
-	$(TRACKER_APPLETS_LIBS)					\
-	$(GDKPIXBUF_LIBS)					\
-	$(GCOV_LIBS)
+tracker_search_bar_CFLAGS =                            \
+	$(BUILD_CFLAGS)                                \
+	-I$(top_srcdir)/src                            \
+	-I$(top_builddir)/src                          \
+	-DPKGDATADIR=\""$(pkgdatadir)"\"               \
+	-DGNOMELOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	$(TRACKER_SEARCH_BAR_CFLAGS)
 
-uidir = $(datadir)/tracker
-ui_DATA = tracker-search-bar.ui
+tracker_search_bar_LDADD =                             \
+	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(BUILD_LIBS)                                  \
+	$(TRACKER_SEARCH_BAR_LIBS)
 
-# Panel applet bonobo stuff
-serverdir = $(libdir)/bonobo/servers
-server_in_files = GNOME_Search_Bar_Applet.server.in
-server_DATA = $(server_in_files:.server.in=.server)
+# Panel applet
+appletdir = $(datadir)/gnome-panel/4.0/applets
+applet_in_files = org.gnome.panel.SearchBar.panel-applet.in
+applet_DATA = $(applet_in_files:.panel-applet.in=.panel-applet)
 
-# Misc data
-resourcesdir = $(pkgdatadir)
-resources_DATA =						\
-	GNOME_Search_Bar_Applet.xml
+$(applet_in_files): $(applet_in_files).in Makefile
+	$(AM_V_GEN)sed                                 \
+	  -e "s|\@LIBEXECDIR\@|$(libexecdir)|"         \
+	  -e "s|\@VERSION\@|$(PACKAGE_VERSION)|"       \
+	  $< > $@
 
-# Build rules
-@INTLTOOL_SERVER_RULE@
+%.panel-applet: %.panel-applet.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*po) ; $(INTLTOOL_MERGE) $(top_srcdir)/po $< $@ -d -u -c $(top_builddir)/po/.intltool-merge-cache
+
+# Applet UIs and menu
+uidir = $(pkgdatadir)
+ui_DATA =                                             \
+	tracker-search-bar.ui                         \
+	tracker-search-bar-menu.xml
+
+# DBus service file
+servicedir = $(datadir)/dbus-1/services
+service_in_files = org.gnome.panel.applet.SearchBarFactory.service.in
+service_DATA = $(service_in_files:.service.in=.service)
+
+org.gnome.panel.applet.SearchBarFactory.service: $(service_in_files)
+	$(AM_V_GEN)sed                                \
+	  -e "s|\@LIBEXECDIR\@|$(libexecdir)|"        \
+	  $< > $@
+
+# Distribution details
+EXTRA_DIST = \
+	org.gnome.panel.SearchBar.panel-applet.in.in \
+	$(applet_DATA) \
+	$(ui_DATA) \
+	$(service_in_files)
+
+CLEANFILES = \
+	$(applet_DATA) \
+	$(applet_DATA).in \
+	$(service_DATA)
+
 @INTLTOOL_SCHEMAS_RULE@
-
-$(server_in_files): $(server_in_files:.server.in=.server.in.in)
-	$(AM_V_GEN)sed -e "s|\@LIBEXECDIR\@|$(libexecdir)|" $< > $@
-
-EXTRA_DIST = 							\
-	$(resources_DATA)					\
-	tracker-search-bar.ui					\
-	GNOME_Search_Bar_Applet.server.in.in
-
-DISTCLEANFILES = 						\
-	$(server_DATA) 						\
-	$(server_in_files)

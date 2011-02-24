@@ -2,18 +2,18 @@
  * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
  * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
@@ -50,7 +50,6 @@
 #include "tracker-albumart.h"
 #include "tracker-config.h"
 #include "tracker-main.h"
-#include "tracker-dbus.h"
 #include "tracker-extract.h"
 
 #define ABOUT	  \
@@ -76,7 +75,7 @@ static gboolean force_internal_extractors;
 static gchar *force_module;
 static gboolean version;
 
-static TrackerFTSConfig *fts_config;
+static TrackerConfig *config;
 
 static GOptionEntry entries[] = {
 	{ "verbosity", 'v', 0,
@@ -241,10 +240,6 @@ log_handler (const gchar    *domain,
              const gchar    *message,
              gpointer        user_data)
 {
-	if (!tracker_log_should_handle (log_level, verbosity)) {
-		return;
-	}
-
 	switch (log_level) {
 	case G_LOG_LEVEL_WARNING:
 	case G_LOG_LEVEL_CRITICAL:
@@ -265,14 +260,10 @@ log_handler (const gchar    *domain,
 	}
 }
 
-TrackerFTSConfig *
-tracker_main_get_fts_config (void)
+TrackerConfig *
+tracker_main_get_config (void)
 {
-	if (G_UNLIKELY (!fts_config)) {
-		fts_config = tracker_fts_config_new ();
-	}
-
-	return fts_config;
+	return config;
 }
 
 
@@ -282,14 +273,8 @@ run_standalone (void)
 	TrackerExtract *object;
 	GFile *file;
 	gchar *uri;
-	guint log_handler_id;
 
 	/* Set log handler for library messages */
-	log_handler_id = g_log_set_handler (NULL,
-	                                    G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL,
-	                                    log_handler,
-	                                    NULL);
-
 	g_log_set_default_handler (log_handler, NULL);
 
 	/* Set the default verbosity if unset */
@@ -322,11 +307,6 @@ run_standalone (void)
 	g_object_unref (file);
 	g_free (uri);
 
-	if (log_handler_id != 0) {
-		/* Unset log handler */
-		g_log_remove_handler (NULL, log_handler_id);
-	}
-
 	tracker_albumart_shutdown ();
 
 	return EXIT_SUCCESS;
@@ -337,7 +317,6 @@ main (int argc, char *argv[])
 {
 	GOptionContext *context;
 	GError         *error = NULL;
-	TrackerConfig  *config;
 	TrackerExtract *object;
 	gchar          *log_filename = NULL;
 	GMainLoop      *my_main_loop;
@@ -403,11 +382,11 @@ main (int argc, char *argv[])
 		g_thread_init (NULL);
 	}
 
-	dbus_g_thread_init ();
-
 	g_set_application_name ("tracker-extract");
 
 	setlocale (LC_ALL, "");
+
+	config = tracker_config_new ();
 
 	/* Set conditions when we use stand alone settings */
 	if (filename) {
@@ -416,8 +395,6 @@ main (int argc, char *argv[])
 
 	/* Initialize subsystems */
 	initialize_directories ();
-
-	config = tracker_config_new ();
 
 	/* Extractor command line arguments */
 	if (verbosity > -1) {
@@ -431,13 +408,6 @@ main (int argc, char *argv[])
 	/* This makes sure we don't steal all the system's resources */
 	initialize_priority ();
 
-	if (!tracker_dbus_init ()) {
-		g_object_unref (config);
-		tracker_log_shutdown ();
-
-		return EXIT_FAILURE;
-	}
-
 	object = tracker_extract_new (disable_shutdown,
 	                              force_internal_extractors,
 	                              force_module);
@@ -445,20 +415,12 @@ main (int argc, char *argv[])
 	if (!object) {
 		g_object_unref (config);
 		tracker_log_shutdown ();
-
 		return EXIT_FAILURE;
 	}
 
 	tracker_memory_setrlimits ();
 
-	/* Make Tracker available for introspection */
-	if (!tracker_dbus_register_objects (object)) {
-		g_object_unref (object);
-		g_object_unref (config);
-		tracker_log_shutdown ();
-
-		return EXIT_FAILURE;
-	}
+	tracker_extract_dbus_start (object);
 
 	g_message ("Waiting for D-Bus requests...");
 
@@ -477,7 +439,10 @@ main (int argc, char *argv[])
 
 	/* Shutdown subsystems */
 	tracker_albumart_shutdown ();
-	tracker_dbus_shutdown ();
+
+	tracker_extract_dbus_stop (object);
+	g_object_unref (object);
+
 	tracker_log_shutdown ();
 
 	g_object_unref (config);

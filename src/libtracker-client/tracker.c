@@ -1,6 +1,7 @@
-/* 
+/*
  * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
  * Copyright (C) 2008-2010, Nokia <ivan.frade@nokia.com>
+ * Copyright (C) 2010, Codeminded BVBA <abustany@gnome.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,16 +21,45 @@
 
 #include "config.h"
 
+#ifndef TRACKER_DISABLE_DEPRECATED
+
 #include <string.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <dbus/dbus-glib-bindings.h>
 
-#include "tracker.h"
+#include <gio/gio.h>
+#include <gio/gunixinputstream.h>
+#include <gio/gunixoutputstream.h>
 
+#include <dbus/dbus-glib-bindings.h>
+
+#include <libtracker-common/tracker-dbus.h>
+
+#include "tracker.h"
 #include "tracker-resources-glue.h"
 #include "tracker-statistics-glue.h"
+
+/* Size of buffers used when sending data over a pipe, using DBus FD passing */
+/* NOTE: This was copied here from libtracker-common/tracker-dbus.h
+ * because it is only needed in one place now, tracker-miner-fs and
+ * libtracker-client is going to be deprecated fairly soon, -mr.
+ */
+#define TRACKER_DBUS_PIPE_BUFFER_SIZE     65536
+
+/* Are defined in src/tracker-store/tracker-steroids.h */
+#define TRACKER_STEROIDS_BUFFER_SIZE      65536
+
+#define TRACKER_DBUS_OBJECT_STEROIDS      "/org/freedesktop/Tracker1/Steroids"
+#define TRACKER_DBUS_INTERFACE_STEROIDS   "org.freedesktop.Tracker1.Steroids"
+
+
+#define TRACKER_TYPE_INT_ARRAY_MAP	\
+	dbus_g_type_get_map ("GHashTable", G_TYPE_INT, DBUS_TYPE_G_INT_ARRAY)
 
 /**
  * SECTION:tracker
@@ -41,6 +71,13 @@
  * either by storing their data or by querying it. They are also not
  * limited to their application's data. Other data mined by other
  * applications is also available in some cases.
+ *
+ * Deprecated: 0.10: This whole library has been replaced by libtracker-sparql
+ * in its entirity to provide a cleaner and much more usable API using GLib's
+ * asynchronous and cancellable APIS and a foundation Cursor API shared by both
+ * a direct and d-bus approach. Additionally all escaping and SPARQL building
+ * functionality has moved to this new library and is shared across the Tracker
+ * platform.
  **/
 
 /**
@@ -89,15 +126,36 @@
  * Simple search API.
  **/
 
+typedef void (*TrackerClientSendAndSpliceCallback) (void     *buffer,
+                                                    gssize    buffer_size,
+                                                    GStrv     variable_names,
+                                                    GError   *error,
+                                                    gpointer  user_data);
+
 typedef struct {
+	GInputStream *unix_input_stream;
+	GInputStream *buffered_input_stream;
+	GOutputStream *output_stream;
+	DBusPendingCall *call;
+	TrackerClientSendAndSpliceCallback callback;
+	gpointer user_data;
+	gboolean expect_variable_names;
+} SendAndSpliceData;
+
+typedef struct {
+	DBusGConnection *connection;
 	DBusGProxy *proxy_statistics;
 	DBusGProxy *proxy_resources;
 
-	GHashTable *pending_calls;
+	GHashTable *slow_pending_calls;
+	GHashTable *fast_pending_calls;
+
 	guint last_call;
 
 	gint timeout;
 	gboolean enable_warnings;
+
+	GList *writeback_callbacks;
 
 	gboolean is_constructed;
 } TrackerClientPrivate;
@@ -105,7 +163,7 @@ typedef struct {
 typedef struct {
 	DBusGProxy *proxy;
 	DBusGProxyCall *pending_call;
-} PendingCallData;
+} SlowPendingCallData;
 
 typedef struct {
 	TrackerReplyGPtrArray func;
@@ -121,6 +179,12 @@ typedef struct {
 	guint id;
 } CallbackVoid;
 
+typedef struct {
+	guint id;
+	TrackerWritebackCallback func;
+	gpointer data;
+} WritebackCallback;
+
 #ifndef TRACKER_DISABLE_DEPRECATED
 
 /* Deprecated and only used for 0.6 API */
@@ -132,6 +196,48 @@ typedef struct {
 } CallbackArray;
 
 #endif /* TRACKER_DISABLE_DEPRECATED */
+
+struct TrackerResultIterator {
+	gchar *buffer;
+	gint buffer_index;
+	gssize buffer_size;
+
+	guint n_columns;
+	gint *offsets;
+	gint *types;
+	gchar *data;
+};
+
+typedef enum {
+	FAST_QUERY,
+	FAST_UPDATE,
+	FAST_UPDATE_BLANK,
+	FAST_UPDATE_BATCH
+} FastOperationType;
+
+typedef struct {
+	TrackerClient *client;
+	guint request_id;
+	FastOperationType operation_type;
+
+	GCancellable *cancellable;
+
+	DBusPendingCall *dbus_call;
+
+	union {
+		TrackerReplyGPtrArray gptrarray_callback;
+		TrackerReplyVoid void_callback;
+		TrackerReplyArray array_callback;
+		TrackerReplyIterator iterator_callback;
+	};
+
+	gpointer user_data;
+} FastAsyncData;
+
+typedef struct {
+	GCancellable *cancellable;
+	FastAsyncData *data;
+} FastPendingCallData;
 
 static gboolean is_service_available (void);
 static void     client_finalize      (GObject      *object);
@@ -151,42 +257,454 @@ enum {
 	PROP_TIMEOUT,
 };
 
-static guint pending_call_id = 0;
+static guint writeback_callback_id = 0;
 
 G_DEFINE_TYPE(TrackerClient, tracker_client, G_TYPE_OBJECT)
 
 #define TRACKER_CLIENT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TRACKER_TYPE_CLIENT, TrackerClientPrivate))
 
-static void
-pending_call_free (PendingCallData *data)
+
+static GStrv
+dbus_send_and_splice_get_variable_names (DBusMessage *message,
+                                         gboolean     copy_strings)
 {
-	g_slice_free (PendingCallData, data);
+	GPtrArray *found;
+	DBusMessageIter iter, arr;
+
+	dbus_message_iter_init (message, &iter);
+	dbus_message_iter_recurse (&iter, &arr);
+
+	found = g_ptr_array_new ();
+
+	while (dbus_message_iter_get_arg_type (&arr) != DBUS_TYPE_INVALID) {
+		gchar *str;
+
+		dbus_message_iter_get_basic (&arr, &str);
+		g_ptr_array_add (found, copy_strings ? g_strdup (str) : str);
+		dbus_message_iter_next (&arr);
+	}
+
+	g_ptr_array_add (found, NULL);
+
+	return (GStrv) g_ptr_array_free (found, FALSE);
+}
+
+/*
+ * /!\ BIG FAT WARNING /!\
+ * The message must be destroyed for this function to succeed, so pass a
+ * message with a refcount of 1 (and say goodbye to it, 'cause you'll never
+ * see it again
+ */
+static gboolean
+tracker_client_dbus_send_and_splice (DBusConnection  *connection,
+                                     DBusMessage     *message,
+                                     int              fd,
+                                     GCancellable    *cancellable,
+                                     void           **dest_buffer,
+                                     gssize          *dest_buffer_size,
+                                     GStrv           *variable_names,
+                                     GError         **error)
+{
+	DBusPendingCall *call;
+	DBusMessage *reply = NULL;
+	GInputStream *unix_input_stream;
+	GInputStream *buffered_input_stream;
+	GOutputStream *output_stream;
+	GError *inner_error = NULL;
+	gboolean ret_value = FALSE;
+
+	g_return_val_if_fail (connection != NULL, FALSE);
+	g_return_val_if_fail (message != NULL, FALSE);
+	g_return_val_if_fail (fd > 0, FALSE);
+	g_return_val_if_fail (dest_buffer != NULL, FALSE);
+
+	dbus_connection_send_with_reply (connection,
+	                                 message,
+	                                 &call,
+	                                 -1);
+	dbus_message_unref (message);
+
+	if (!call) {
+		g_set_error (error,
+		             TRACKER_DBUS_ERROR,
+		             TRACKER_DBUS_ERROR_UNSUPPORTED,
+		             "FD passing unsupported or connection disconnected");
+		return FALSE;
+	}
+
+	unix_input_stream = g_unix_input_stream_new (fd, TRUE);
+	buffered_input_stream = g_buffered_input_stream_new_sized (unix_input_stream,
+	                                                           TRACKER_DBUS_PIPE_BUFFER_SIZE);
+	output_stream = g_memory_output_stream_new (NULL, 0, g_realloc, NULL);
+
+	g_output_stream_splice (output_stream,
+	                        buffered_input_stream,
+	                        G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE |
+	                        G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET,
+	                        cancellable,
+	                        &inner_error);
+
+	if (G_LIKELY (!inner_error)) {
+		/* Wait for any current d-bus call to finish */
+		dbus_pending_call_block (call);
+
+		/* Check we didn't get an error */
+		reply = dbus_pending_call_steal_reply (call);
+
+		if (G_UNLIKELY (dbus_message_get_type (reply) == DBUS_MESSAGE_TYPE_ERROR)) {
+			DBusError dbus_error;
+
+			dbus_error_init (&dbus_error);
+			dbus_set_error_from_message (&dbus_error, reply);
+			dbus_set_g_error (error, &dbus_error);
+			dbus_error_free (&dbus_error);
+
+			/* If any error happened, we're not passing any received data, so we
+			 * need to free it */
+			g_free (g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (output_stream)));
+		} else {
+			*dest_buffer = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (output_stream));
+
+			if (dest_buffer_size) {
+				*dest_buffer_size = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (output_stream));
+			}
+
+			if (variable_names) {
+				*variable_names = dbus_send_and_splice_get_variable_names (reply, TRUE);
+			}
+
+			ret_value = TRUE;
+		}
+	} else {
+		g_set_error (error,
+		             TRACKER_DBUS_ERROR,
+		             TRACKER_DBUS_ERROR_BROKEN_PIPE,
+		             "Couldn't get results from server");
+		g_error_free (inner_error);
+		/* If any error happened, we're not passing any received data, so we
+		 * need to free it */
+		g_free (g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (output_stream)));
+	}
+
+	g_object_unref (output_stream);
+	g_object_unref (buffered_input_stream);
+	g_object_unref (unix_input_stream);
+
+	if (reply) {
+		dbus_message_unref (reply);
+	}
+
+	dbus_pending_call_unref (call);
+
+	return ret_value;
+}
+
+static SendAndSpliceData *
+send_and_splice_data_new (GInputStream                       *unix_input_stream,
+                          GInputStream                       *buffered_input_stream,
+                          GOutputStream                      *output_stream,
+                          gboolean                            expect_variable_names,
+                          DBusPendingCall                    *call,
+                          TrackerClientSendAndSpliceCallback  callback,
+                          gpointer                            user_data)
+{
+	SendAndSpliceData *data;
+
+	data = g_slice_new0 (SendAndSpliceData);
+	data->unix_input_stream = unix_input_stream;
+	data->buffered_input_stream = buffered_input_stream;
+	data->output_stream = output_stream;
+	data->call = call;
+	data->callback = callback;
+	data->user_data = user_data;
+	data->expect_variable_names = expect_variable_names;
+
+	return data;
+}
+
+static void
+send_and_splice_data_free (SendAndSpliceData *data)
+{
+	g_object_unref (data->unix_input_stream);
+	g_object_unref (data->buffered_input_stream);
+	g_object_unref (data->output_stream);
+	dbus_pending_call_unref (data->call);
+	g_slice_free (SendAndSpliceData, data);
+}
+
+static void
+send_and_splice_async_callback (GObject      *source,
+                                GAsyncResult *result,
+                                gpointer      user_data)
+{
+	SendAndSpliceData *data = user_data;
+	DBusMessage *reply = NULL;
+	GError *error = NULL;
+
+	g_output_stream_splice_finish (data->output_stream,
+	                               result,
+	                               &error);
+
+	if (G_LIKELY (!error)) {
+		dbus_pending_call_block (data->call);
+		reply = dbus_pending_call_steal_reply (data->call);
+
+		if (G_UNLIKELY (dbus_message_get_type (reply) == DBUS_MESSAGE_TYPE_ERROR)) {
+			DBusError dbus_error;
+
+			/* If any error happened, we're not passing any received data, so we
+			 * need to free it */
+			g_free (g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (data->output_stream)));
+
+			dbus_error_init (&dbus_error);
+			dbus_set_error_from_message (&dbus_error, reply);
+			dbus_set_g_error (&error, &dbus_error);
+			dbus_error_free (&dbus_error);
+
+			(* data->callback) (NULL, -1, NULL, error, data->user_data);
+
+			/* Note: GError should be freed by callback. We do this to be aligned
+			 * with the behavior of dbus-glib, where if an error happens, the
+			 * GError passed to the callback is supposed to be disposed by the
+			 * callback itself. */
+		} else {
+			GStrv v_names = NULL;
+
+			if (data->expect_variable_names) {
+				v_names = dbus_send_and_splice_get_variable_names (reply, FALSE);
+			}
+
+			dbus_pending_call_cancel (data->call);
+
+			(* data->callback) (g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (data->output_stream)),
+			                    g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (data->output_stream)),
+			                    v_names,
+			                    NULL,
+			                    data->user_data);
+
+			/* Don't use g_strfreev here, see above */
+			g_free (v_names);
+		}
+	} else {
+		/* If any error happened, we're not passing any received data, so we
+		 * need to free it */
+		g_free (g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (data->output_stream)));
+
+		(* data->callback) (NULL, -1, NULL, error, data->user_data);
+
+		/* Note: GError should be freed by callback. We do this to be aligned
+		 * with the behavior of dbus-glib, where if an error happens, the
+		 * GError passed to the callback is supposed to be disposed by the
+		 * callback itself. */
+	}
+
+	if (reply) {
+		dbus_message_unref (reply);
+	}
+
+	send_and_splice_data_free (data);
+}
+
+static gboolean
+tracker_client_dbus_send_and_splice_async (DBusConnection                     *connection,
+                                           DBusMessage                        *message,
+                                           int                                 fd,
+                                           gboolean                            expect_variable_names,
+                                           GCancellable                       *cancellable,
+                                           TrackerClientSendAndSpliceCallback  callback,
+                                           gpointer                            user_data)
+{
+	DBusPendingCall *call;
+	GInputStream *unix_input_stream;
+	GInputStream *buffered_input_stream;
+	GOutputStream *output_stream;
+	SendAndSpliceData *data;
+
+	g_return_val_if_fail (connection != NULL, FALSE);
+	g_return_val_if_fail (message != NULL, FALSE);
+	g_return_val_if_fail (fd > 0, FALSE);
+	g_return_val_if_fail (callback != NULL, FALSE);
+
+	dbus_connection_send_with_reply (connection,
+	                                 message,
+	                                 &call,
+	                                 -1);
+	dbus_message_unref (message);
+
+	if (!call) {
+		g_critical ("FD passing unsupported or connection disconnected");
+		return FALSE;
+	}
+
+	unix_input_stream = g_unix_input_stream_new (fd, TRUE);
+	buffered_input_stream = g_buffered_input_stream_new_sized (unix_input_stream,
+	                                                           TRACKER_DBUS_PIPE_BUFFER_SIZE);
+	output_stream = g_memory_output_stream_new (NULL, 0, g_realloc, NULL);
+
+	data = send_and_splice_data_new (unix_input_stream,
+	                                 buffered_input_stream,
+	                                 output_stream,
+	                                 expect_variable_names,
+	                                 call,
+	                                 callback,
+	                                 user_data);
+
+	g_output_stream_splice_async (output_stream,
+	                              buffered_input_stream,
+	                              G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE |
+	                              G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET,
+	                              0,
+	                              cancellable,
+	                              send_and_splice_async_callback,
+	                              data);
+
+	return TRUE;
+}
+
+/* This ID is shared between both fast and slow pending call hash
+ * tables and is guaranteed to be unique.
+ */
+inline static guint
+pending_call_get_next_id (void)
+{
+	static guint pending_call_id = 0;
+
+	return ++pending_call_id;
+}
+
+static void
+slow_pending_call_destroy (gpointer data)
+{
+	SlowPendingCallData *spcd = data;
+
+	if (spcd) {
+		if (spcd->proxy) {
+			g_object_unref (spcd->proxy);
+		}
+
+		g_slice_free (SlowPendingCallData, spcd);
+	}
 }
 
 static guint
-pending_call_new (TrackerClient  *client,
-                  DBusGProxy     *proxy,
-                  DBusGProxyCall *pending_call)
+slow_pending_call_new (TrackerClient  *client,
+                       DBusGProxy     *proxy,
+                       DBusGProxyCall *pending_call)
 {
 	TrackerClientPrivate *private;
-	PendingCallData *data;
+	SlowPendingCallData *data;
 	guint id;
 
 	private = TRACKER_CLIENT_GET_PRIVATE (client);
 
-	id = ++pending_call_id;
+	id = pending_call_get_next_id ();
 
-	data = g_slice_new (PendingCallData);
-	data->proxy = proxy;
+	data = g_slice_new0 (SlowPendingCallData);
+	data->proxy = g_object_ref (proxy);
 	data->pending_call = pending_call;
 
-	g_hash_table_insert (private->pending_calls,
+	g_hash_table_insert (private->slow_pending_calls,
 	                     GUINT_TO_POINTER (id),
 	                     data);
 
 	private->last_call = id;
 
 	return id;
+}
+
+static void
+fast_pending_call_destroy (gpointer data)
+{
+	FastPendingCallData *fpcd = data;
+
+	if (fpcd) {
+		g_slice_free (FastPendingCallData, fpcd);
+	}
+}
+
+static guint
+fast_pending_call_new (TrackerClient *client,
+                       GCancellable  *cancellable,
+                       FastAsyncData *async_data)
+{
+	TrackerClientPrivate *private;
+	FastPendingCallData *data;
+	guint id;
+
+	private = TRACKER_CLIENT_GET_PRIVATE (client);
+
+	id = pending_call_get_next_id ();
+
+	data = g_slice_new0 (FastPendingCallData);
+	data->cancellable = cancellable;
+	data->data = async_data;
+
+	g_hash_table_insert (private->fast_pending_calls,
+	                     GUINT_TO_POINTER (id),
+	                     data);
+
+	private->last_call = id;
+
+	return id;
+}
+
+static void
+fast_async_data_free (gpointer data)
+{
+	FastAsyncData *fad = data;
+
+	if (fad) {
+		if (fad->cancellable) {
+			g_object_unref (fad->cancellable);
+		}
+
+		if (fad->client) {
+			g_object_unref (fad->client);
+		}
+
+		g_slice_free (FastAsyncData, fad);
+	}
+}
+
+static FastAsyncData *
+fast_async_data_new (TrackerClient     *client,
+                     FastOperationType  operation_type,
+                     GCancellable      *cancellable,
+                     gpointer           user_data)
+{
+	FastAsyncData *data;
+
+	data = g_slice_new0 (FastAsyncData);
+
+	data->client = g_object_ref (client);
+	data->request_id = fast_pending_call_new (client, cancellable, data);
+	data->operation_type = operation_type;
+	data->cancellable = cancellable;
+	data->user_data = user_data;
+
+	return data;
+}
+
+static void
+writeback_cb (DBusGProxy       *proxy,
+              const GHashTable *resources,
+              gpointer          user_data)
+{
+	TrackerClientPrivate *private;
+	WritebackCallback *cb;
+	GList *current_callback;
+
+	g_return_if_fail (resources != NULL);
+	g_return_if_fail (user_data != NULL);
+
+	private = user_data;
+
+	for (current_callback = private->writeback_callbacks;
+	     current_callback;
+	     current_callback = g_list_next (current_callback)) {
+		cb = current_callback->data;
+		cb->func (resources, cb->data);
+	}
 }
 
 static void
@@ -227,8 +745,15 @@ tracker_client_init (TrackerClient *client)
 	TrackerClientPrivate *private = TRACKER_CLIENT_GET_PRIVATE (client);
 
 	private->timeout = -1;
-	private->pending_calls = g_hash_table_new_full (NULL, NULL, NULL,
-	                                               (GDestroyNotify) pending_call_free);
+	private->slow_pending_calls = g_hash_table_new_full (NULL,
+	                                                     NULL,
+	                                                     NULL,
+	                                                     (GDestroyNotify) slow_pending_call_destroy);
+
+	private->fast_pending_calls = g_hash_table_new_full (NULL,
+	                                                     NULL,
+	                                                     NULL,
+	                                                     (GDestroyNotify) fast_pending_call_destroy);
 }
 
 static void
@@ -244,8 +769,12 @@ client_finalize (GObject *object)
 		g_object_unref (private->proxy_resources);
 	}
 
-	if (private->pending_calls) {
-		g_hash_table_unref (private->pending_calls);
+	if (private->slow_pending_calls) {
+		g_hash_table_unref (private->slow_pending_calls);
+	}
+
+	if (private->fast_pending_calls) {
+		g_hash_table_unref (private->fast_pending_calls);
 	}
 }
 
@@ -274,7 +803,7 @@ client_set_property (GObject      *object,
 		}
 
 		if (private->is_constructed) {
-			dbus_g_proxy_set_default_timeout (private->proxy_resources, 
+			dbus_g_proxy_set_default_timeout (private->proxy_resources,
 			                                  private->timeout);
 		}
 
@@ -327,6 +856,8 @@ client_constructed (GObject *object)
 		return;
 	}
 
+	private->connection = connection;
+
 	private->proxy_statistics =
 		dbus_g_proxy_new_for_name (connection,
 		                           TRACKER_DBUS_SERVICE,
@@ -342,10 +873,21 @@ client_constructed (GObject *object)
 	/* NOTE: We don't need to set this for the stats proxy, the
 	 * query takes no arguments and is generally really fast.
 	 */
-	dbus_g_proxy_set_default_timeout (private->proxy_resources, 
+	dbus_g_proxy_set_default_timeout (private->proxy_resources,
 	                                  private->timeout);
 
+	dbus_g_proxy_add_signal (private->proxy_resources,
+	                         "Writeback",
+	                         TRACKER_TYPE_INT_ARRAY_MAP,
+	                         G_TYPE_INVALID);
+
 	private->is_constructed = TRUE;
+}
+
+GQuark
+tracker_client_error_quark (void)
+{
+	return g_quark_from_static_string (TRACKER_CLIENT_ERROR_DOMAIN);
 }
 
 static void
@@ -358,7 +900,7 @@ callback_with_gptrarray (DBusGProxy *proxy,
 	CallbackGPtrArray *cb = user_data;
 
 	private = TRACKER_CLIENT_GET_PRIVATE (cb->client);
-	g_hash_table_remove (private->pending_calls,
+	g_hash_table_remove (private->slow_pending_calls,
 	                     GUINT_TO_POINTER (cb->id));
 
 	(*(TrackerReplyGPtrArray) cb->func) (OUT_result, error, cb->data);
@@ -376,13 +918,74 @@ callback_with_void (DBusGProxy *proxy,
 	CallbackVoid *cb = user_data;
 
 	private = TRACKER_CLIENT_GET_PRIVATE (cb->client);
-	g_hash_table_remove (private->pending_calls,
+	g_hash_table_remove (private->slow_pending_calls,
 	                     GUINT_TO_POINTER (cb->id));
-	
+
 	(*(TrackerReplyVoid) cb->func) (error, cb->data);
 
 	g_object_unref (cb->client);
 	g_slice_free (CallbackVoid, cb);
+}
+
+static inline int
+iterator_buffer_read_int (TrackerResultIterator *iterator)
+{
+	int v = *((int *)(iterator->buffer + iterator->buffer_index));
+
+	iterator->buffer_index += 4;
+
+	return v;
+}
+
+static void
+callback_iterator (void     *buffer,
+                   gssize    buffer_size,
+                   GStrv     variable_names,
+                   GError   *error,
+                   gpointer  user_data)
+{
+	TrackerClientPrivate *private;
+	FastAsyncData *fad;
+	TrackerResultIterator *iterator;
+
+	fad = user_data;
+
+	private = TRACKER_CLIENT_GET_PRIVATE (fad->client);
+	g_hash_table_remove (private->fast_pending_calls,
+	                     GUINT_TO_POINTER (fad->request_id));
+
+
+	/* Check for errors */
+	if (G_LIKELY (!error)) {
+		iterator = g_slice_new0 (TrackerResultIterator);
+
+		iterator->buffer = buffer;
+		iterator->buffer_size = buffer_size;
+		iterator->buffer_index = 0;
+
+		(* fad->iterator_callback) (iterator, NULL, fad->user_data);
+
+		tracker_result_iterator_free (iterator);
+	} else {
+		if (error->code != G_IO_ERROR_CANCELLED) {
+			GError *iterator_error;
+
+			iterator_error = g_error_new (TRACKER_CLIENT_ERROR,
+			                              TRACKER_CLIENT_ERROR_BROKEN_PIPE,
+			                              "Couldn't get results from server");
+
+			(* fad->iterator_callback) (NULL, iterator_error, fad->user_data);
+
+			/* iterator_error was passed to the callback and should be
+			 * disposed there */
+		}
+
+		/* Always free input GError. We want to behave exactly as if this
+		 * callback were one used in an async dbus-glib query.  */
+		g_error_free (error);
+	}
+
+	fast_async_data_free (fad);
 }
 
 /* Deprecated and only used for 0.6 API */
@@ -398,19 +1001,19 @@ callback_with_array (DBusGProxy *proxy,
 	gint i;
 
 	private = TRACKER_CLIENT_GET_PRIVATE (cb->client);
-	g_hash_table_remove (private->pending_calls,
+	g_hash_table_remove (private->slow_pending_calls,
 	                     GUINT_TO_POINTER (cb->id));
-	
+
 	uris = g_new0 (gchar *, OUT_result->len + 1);
 	for (i = 0; i < OUT_result->len; i++) {
 		uris[i] = ((gchar **) OUT_result->pdata[i])[0];
 	}
-	
+
 	(*(TrackerReplyArray) cb->func) (uris, error, cb->data);
-	
+
 	g_ptr_array_foreach (OUT_result, (GFunc) g_free, NULL);
 	g_ptr_array_free (OUT_result, TRUE);
-	
+
 	g_object_unref (cb->client);
 	g_slice_free (CallbackArray, cb);
 }
@@ -478,6 +1081,9 @@ is_service_available (void)
  *
  * Escapes a string so it can be passed as a SPARQL parameter in
  * any query/update.
+ *
+ * Deprecated: 0.10: Use tracker_sparql_escape_string() in libtracker-sparql
+ * instead.
  *
  * Returns: the newly allocated escaped string which must be freed
  * using g_free().
@@ -639,17 +1245,298 @@ find_conversion (const char  *format,
 	return start;
 }
 
+static GHashTable *
+unmarshal_hash_table (DBusMessageIter *iter)
+{
+	GHashTable *result;
+	DBusMessageIter subiter, subsubiter;
+
+	result = g_hash_table_new_full (g_str_hash,
+	                                g_str_equal,
+	                                (GDestroyNotify) g_free,
+	                                (GDestroyNotify) g_free);
+
+	dbus_message_iter_recurse (iter, &subiter);
+
+	while (dbus_message_iter_get_arg_type (&subiter) != DBUS_TYPE_INVALID) {
+		const gchar *key, *value;
+
+		dbus_message_iter_recurse (&subiter, &subsubiter);
+		dbus_message_iter_get_basic (&subsubiter, &key);
+		dbus_message_iter_next (&subsubiter);
+		dbus_message_iter_get_basic (&subsubiter, &value);
+		g_hash_table_insert (result, g_strdup (key), g_strdup (value));
+
+		dbus_message_iter_next (&subiter);
+	}
+
+	return result;
+}
+
+static void
+sparql_update_fast_callback (DBusPendingCall *call,
+                             void            *user_data)
+{
+	TrackerClientPrivate *private;
+	FastAsyncData *fad = user_data;
+	DBusMessage *reply;
+	GError *error = NULL;
+	DBusMessageIter iter, subiter, subsubiter;
+	GPtrArray *result;
+
+	/* Clean up pending calls */
+	private = TRACKER_CLIENT_GET_PRIVATE (fad->client);
+	g_hash_table_remove (private->fast_pending_calls,
+	                     GUINT_TO_POINTER (fad->request_id));
+
+	/* Check for errors */
+	reply = dbus_pending_call_steal_reply (call);
+
+	if (dbus_message_get_type (reply) == DBUS_MESSAGE_TYPE_ERROR) {
+		DBusError dbus_error;
+
+		dbus_error_init (&dbus_error);
+		dbus_set_error_from_message (&dbus_error, reply);
+		dbus_set_g_error (&error, &dbus_error);
+		dbus_error_free (&dbus_error);
+
+		switch (fad->operation_type) {
+		case FAST_UPDATE:
+		case FAST_UPDATE_BATCH:
+			(* fad->void_callback) (error, fad->user_data);
+			break;
+		case FAST_UPDATE_BLANK:
+			(* fad->gptrarray_callback) (NULL, error, fad->user_data);
+			break;
+		default:
+			g_assert_not_reached ();
+			break;
+		}
+
+		dbus_message_unref (reply);
+
+		fast_async_data_free (fad);
+
+		dbus_pending_call_unref (call);
+		return;
+	}
+
+	/* Call iterator callback */
+	switch (fad->operation_type) {
+	case FAST_UPDATE:
+	case FAST_UPDATE_BATCH:
+		(* fad->void_callback) (NULL, fad->user_data);
+		break;
+	case FAST_UPDATE_BLANK:
+		result = g_ptr_array_new ();
+		dbus_message_iter_init (reply, &iter);
+		dbus_message_iter_recurse (&iter, &subiter);
+
+		while (dbus_message_iter_get_arg_type (&subiter) != DBUS_TYPE_INVALID) {
+			GPtrArray *inner_array;
+
+			inner_array = g_ptr_array_new ();
+			g_ptr_array_add (result, inner_array);
+			dbus_message_iter_recurse (&subiter, &subsubiter);
+
+			while (dbus_message_iter_get_arg_type (&subsubiter) != DBUS_TYPE_INVALID) {
+				g_ptr_array_add (inner_array, unmarshal_hash_table (&subsubiter));
+				dbus_message_iter_next (&subsubiter);
+			}
+
+			dbus_message_iter_next (&subiter);
+		}
+
+		(* fad->gptrarray_callback) (result, error, fad->user_data);
+
+		break;
+	default:
+		g_assert_not_reached ();
+		break;
+	}
+
+	/* Clean up */
+	dbus_message_unref (reply);
+
+	fast_async_data_free (fad);
+
+	dbus_pending_call_unref (call);
+}
+
+static DBusPendingCall *
+sparql_update_fast_send (TrackerClient      *client,
+                         const gchar        *query,
+                         FastOperationType   type,
+                         GError            **error)
+{
+	TrackerClientPrivate *private;
+	DBusConnection *connection;
+	const gchar *dbus_method;
+	DBusMessage *message;
+	DBusMessageIter iter;
+	DBusPendingCall *call;
+	int pipefd[2];
+	GOutputStream *output_stream;
+	GOutputStream *buffered_output_stream;
+	GDataOutputStream *data_output_stream;
+	GError *inner_error = NULL;
+
+	g_return_val_if_fail (TRACKER_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (query != NULL, NULL);
+
+	if (pipe (pipefd) < 0) {
+		g_set_error (error,
+		             TRACKER_CLIENT_ERROR,
+		             TRACKER_CLIENT_ERROR_UNSUPPORTED,
+		             "Cannot open pipe");
+		return NULL;
+	}
+
+	private = TRACKER_CLIENT_GET_PRIVATE (client);
+	connection = dbus_g_connection_get_connection (private->connection);
+
+	switch (type) {
+	case FAST_UPDATE:
+		dbus_method = "Update";
+		break;
+	case FAST_UPDATE_BLANK:
+		dbus_method = "UpdateBlank";
+		break;
+	case FAST_UPDATE_BATCH:
+		dbus_method = "BatchUpdate";
+		break;
+	default:
+		g_assert_not_reached ();
+	}
+
+	message = dbus_message_new_method_call (TRACKER_DBUS_SERVICE,
+	                                        TRACKER_DBUS_OBJECT_STEROIDS,
+	                                        TRACKER_DBUS_INTERFACE_STEROIDS,
+	                                        dbus_method);
+	dbus_message_iter_init_append (message, &iter);
+	dbus_message_iter_append_basic (&iter, DBUS_TYPE_UNIX_FD, &pipefd[0]);
+	dbus_connection_send_with_reply (connection,
+	                                 message,
+	                                 &call,
+	                                 -1);
+	dbus_message_unref (message);
+	close (pipefd[0]);
+
+	if (!call) {
+		g_set_error (error,
+		             TRACKER_CLIENT_ERROR,
+		             TRACKER_CLIENT_ERROR_UNSUPPORTED,
+		             "FD passing unsupported or connection disconnected");
+		return NULL;
+	}
+
+	output_stream = g_unix_output_stream_new (pipefd[1], TRUE);
+	buffered_output_stream = g_buffered_output_stream_new_sized (output_stream,
+	                                                             TRACKER_STEROIDS_BUFFER_SIZE);
+	data_output_stream = g_data_output_stream_new (buffered_output_stream);
+	g_data_output_stream_set_byte_order (data_output_stream, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
+
+	g_data_output_stream_put_int32 (data_output_stream,
+	                                strlen (query),
+	                                NULL,
+	                                &inner_error);
+
+	if (inner_error) {
+		g_propagate_error (error, inner_error);
+		g_object_unref (data_output_stream);
+		g_object_unref (buffered_output_stream);
+		g_object_unref (output_stream);
+		return NULL;
+	}
+
+	g_data_output_stream_put_string (data_output_stream,
+	                                 query,
+	                                 NULL,
+	                                 &inner_error);
+
+	if (inner_error) {
+		g_propagate_error (error, inner_error);
+		g_object_unref (data_output_stream);
+		g_object_unref (buffered_output_stream);
+		g_object_unref (output_stream);
+		return NULL;
+	}
+
+	g_object_unref (data_output_stream);
+	g_object_unref (buffered_output_stream);
+	g_object_unref (output_stream);
+
+	return call;
+}
+
+static DBusMessage *
+sparql_update_fast (TrackerClient      *client,
+                    const gchar        *query,
+                    FastOperationType   type,
+                    GError            **error)
+{
+	DBusPendingCall *call;
+	DBusMessage *reply;
+
+	call = sparql_update_fast_send (client, query, type, error);
+	if (!call) {
+		return NULL;
+	}
+
+	dbus_pending_call_block (call);
+
+	reply = dbus_pending_call_steal_reply (call);
+
+	if (dbus_message_get_type (reply) == DBUS_MESSAGE_TYPE_ERROR) {
+		DBusError dbus_error;
+
+		dbus_error_init (&dbus_error);
+		dbus_set_error_from_message (&dbus_error, reply);
+		dbus_set_g_error (error, &dbus_error);
+		dbus_pending_call_unref (call);
+		dbus_error_free (&dbus_error);
+
+		return NULL;
+	}
+
+	dbus_pending_call_unref (call);
+
+	return reply;
+}
+
+static void
+sparql_update_fast_async (TrackerClient  *client,
+                          const gchar    *query,
+                          FastAsyncData  *fad,
+                          GError        **error)
+{
+	DBusPendingCall *call;
+
+	call = sparql_update_fast_send (client, query, fad->operation_type, error);
+	if (!call) {
+		/* Do some clean up ?*/
+		return;
+	}
+
+	fad->dbus_call = call;
+
+	dbus_pending_call_set_notify (call, sparql_update_fast_callback, fad, NULL);
+}
+
 /**
  * tracker_uri_vprintf_escaped:
  * @format: a standard printf() format string, but notice
  *     <link linkend="string-precision">string precision pitfalls</link>
  * @args: the list of parameters to insert into the format string
- * 
- * Similar to the standard C vsprintf() function but safer, since it 
- * calculates the maximum space required and allocates memory to hold 
- * the result. 
+ *
+ * Similar to the standard C vsprintf() function but safer, since it
+ * calculates the maximum space required and allocates memory to hold
+ * the result.
  *
  * The result is escaped using g_uri_escape_string().
+ *
+ * Deprecated: 0.10: Use tracker_sparql_escape_uri_vprintf() in libtracker-sparql
+ * instead.
  *
  * Returns: a newly-allocated string holding the result which should
  * be freed with g_free() when finished with.
@@ -695,7 +1582,7 @@ tracker_uri_vprintf_escaped (const gchar *format,
 	if (!output1) {
 		va_end (args2);
 		goto cleanup;
-        }
+	}
 
 	output2 = g_strdup_vprintf (format2->str, args2);
 	va_end (args2);
@@ -726,7 +1613,7 @@ tracker_uri_vprintf_escaped (const gchar *format,
 		}
 
 		*op1 = '\0';
-		escaped = g_uri_escape_string (output_start, NULL, FALSE);
+		escaped = g_uri_escape_string (output_start, G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT, FALSE);
 		g_string_append (result, escaped);
 		g_free (escaped);
 
@@ -735,7 +1622,7 @@ tracker_uri_vprintf_escaped (const gchar *format,
 		op2++;
 	}
 
- cleanup:
+cleanup:
 	g_string_free (format1, TRUE);
 	g_string_free (format2, TRUE);
 	g_free (output1);
@@ -754,7 +1641,10 @@ tracker_uri_vprintf_escaped (const gchar *format,
  * @Varargs: the parameters to insert into the format string
  *
  * Calls tracker_uri_vprintf_escaped() with the @Varargs supplied.
- 
+ *
+ * Deprecated: 0.10: Use tracker_sparql_escape_uri_printf() in libtracker-sparql
+ * instead.
+ *
  * Returns: a newly-allocated string holding the result which should
  * be freed with g_free() when finished with.
  *
@@ -783,6 +1673,9 @@ tracker_uri_printf_escaped (const gchar *format, ...)
  *
  * The @timeout is only used if it is > 0. If it is, then it is used
  * with dbus_g_proxy_set_default_timeout().
+ *
+ * Deprecated: 0.10: Use tracker_bus_connection_new() or
+ * tracker_direct_connection_new() in libtracker-sparql instead
  *
  * Returns: the #TrackerClient which should be freed with
  * g_object_unref() when finished with.
@@ -816,6 +1709,8 @@ tracker_client_new (TrackerClientFlags flags,
  * API call made using libtracker-client. For synchronous API calls,
  * see tracker_cancel_last_call() which is more useful.
  *
+ * Deprecated: 0.10: There is no replacement for this in libtracker-sparql
+ *
  * Returns: A @gboolean indicating if the call was cancelled or not.
  **/
 gboolean
@@ -823,25 +1718,70 @@ tracker_cancel_call (TrackerClient *client,
                      guint          call_id)
 {
 	TrackerClientPrivate *private;
-	PendingCallData *data;
+	gpointer data;
 
 	g_return_val_if_fail (TRACKER_IS_CLIENT (client), FALSE);
 	g_return_val_if_fail (call_id >= 1, FALSE);
 
 	private = TRACKER_CLIENT_GET_PRIVATE (client);
 
-	data = g_hash_table_lookup (private->pending_calls,
+	/* Check slow pending data first */
+	data = g_hash_table_lookup (private->slow_pending_calls,
 	                            GUINT_TO_POINTER (call_id));
+	if (data) {
+		SlowPendingCallData *slow_data = data;
 
-	if (!data) {
-		return FALSE;
+		dbus_g_proxy_cancel_call (slow_data->proxy, slow_data->pending_call);
+		g_hash_table_remove (private->slow_pending_calls,
+		                     GUINT_TO_POINTER (call_id));
+		return TRUE;
 	}
 
-	dbus_g_proxy_cancel_call (data->proxy, data->pending_call);
-	g_hash_table_remove (private->pending_calls,
-	                     GUINT_TO_POINTER (call_id));
+	/* Check fast pending data last */
+	data = g_hash_table_lookup (private->fast_pending_calls,
+	                            GUINT_TO_POINTER (call_id));
 
-	return TRUE;
+	if (data) {
+		FastPendingCallData *fast_data = data;
+		FastAsyncData *fad = fast_data->data;
+
+		if (fad->dbus_call) {
+			dbus_pending_call_cancel (fad->dbus_call);
+			dbus_pending_call_unref (fad->dbus_call);
+			fad->dbus_call = NULL;
+		}
+
+		switch (fad->operation_type) {
+		case FAST_QUERY:
+			/* When cancelling a GIO call, the callback is called with an
+			 * error, so we do the cleanup there
+			 */
+			if (fad->cancellable) {
+				g_cancellable_cancel (fad->cancellable);
+				g_object_unref (fad->cancellable);
+				fad->cancellable = NULL;
+			}
+			break;
+
+		case FAST_UPDATE:
+		case FAST_UPDATE_BLANK:
+		case FAST_UPDATE_BATCH:
+			/* dbus_pending_call_cancel does unref the call, so no need to
+			 * unref it here
+			 */
+			fast_async_data_free (fad);
+			break;
+
+		default:
+			g_assert_not_reached ();
+		}
+
+		g_hash_table_remove (private->fast_pending_calls,
+		                     GUINT_TO_POINTER (call_id));
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 /**
@@ -851,6 +1791,8 @@ tracker_cancel_call (TrackerClient *client,
  * Cancels the last API call made using tracker_cancel_call(). the
  * last API call ID is always tracked so you don't have to provide it
  * with this API.
+ *
+ * Deprecated: 0.10: There is no replacement for this in libtracker-sparql
  *
  * Returns: A #gboolean indicating if the call was cancelled or not.
  **/
@@ -868,7 +1810,7 @@ tracker_cancel_last_call (TrackerClient *client)
 
 	cancelled = tracker_cancel_call (client, private->last_call);
 	private->last_call = 0;
-	
+
 	return cancelled;
 }
 
@@ -886,6 +1828,9 @@ tracker_cancel_last_call (TrackerClient *client)
  * count for that class.
  *
  * This API call is completely synchronous so it may block.
+ *
+ * Deprecated: 0.10: Use tracker_sparql_stats() in libtracker-sparql
+ * instead.
  *
  * Returns: A #GPtrArray with the statistics which must be freed using
  * g_ptr_array_free().
@@ -912,6 +1857,19 @@ tracker_statistics_get (TrackerClient  *client,
 	return table;
 }
 
+/**
+ * tracker_resources_load:
+ * @client: a #TrackerClient.
+ * @uri: a string representing a Turtle file
+ * @error: a #GError.
+ *
+ * Imports SPARQL into the database from a file specified by @uri
+ *
+ * Deprecated: 0.10: Use tracker_sparql_import() in libtracker-sparql
+ * instead.
+ *
+ * Since: 0.8
+ **/
 void
 tracker_resources_load (TrackerClient  *client,
                         const gchar    *uri,
@@ -979,6 +1937,9 @@ tracker_resources_load (TrackerClient  *client,
  *
  * This API call is completely synchronous so it may block.
  *
+ * Deprecated: 0.10: Use tracker_sparql_query() in libtracker-sparql
+ * instead.
+ *
  * Returns: A #GPtrArray with the query results which must be freed
  * using g_ptr_array_free().
  *
@@ -1008,6 +1969,246 @@ tracker_resources_sparql_query (TrackerClient  *client,
 }
 
 /**
+ * tracker_resources_sparql_query_iterate:
+ * @client: a #TrackerClient.
+ * @query: a string representing SPARQL.
+ * @error: a #GError.
+ *
+ * Queries the database using SPARQL, and returns an iterator instead of an
+ * array with all the results inside.
+ *
+ * Using an iterator will lower the memory usage. Additionally, this function
+ * uses a pipe when available get the results from Tracker store, which is
+ * roughly two times faster than using DBus.
+ *
+ * This API call is completely synchronous so it may block.
+ *
+ * <example>
+ * <title>Using tracker_resources_sparql_query_iterate(<!-- -->)</title>
+ * An example of using tracker_resources_sparql_query_iterate() to list all
+ * albums by title and include their song count and song total length.
+ * <programlisting>
+ *  TrackerClient *client;
+ *  TrackerResultIterator *iterator;
+ *  GError *error = NULL;
+ *  const gchar *query;
+ *
+ *  /&ast; Create D-Bus connection with no warnings and maximum timeout. &ast;/
+ *  client = tracker_client_new (0, G_MAXINT);
+ *  query = "SELECT {"
+ *          "  ?album"
+ *          "  ?title"
+ *          "  COUNT(?song) AS songs"
+ *          "  SUM(?length) AS totallength"
+ *          "} WHERE {"
+ *          "  ?album a nmm:MusicAlbum ;"
+ *          "  nie:title ?title ."
+ *          "  ?song nmm:musicAlbum ?album ;"
+ *          "  nfo:duration ?length"
+ *          "} "
+ *          "GROUP BY (?album");
+ *
+ *  iterator = tracker_resources_sparql_query_iterate (client, query, &error);
+ *
+ *  if (error) {
+ *          g_warning ("Could not query Tracker, %s", error->message);
+ *          g_error_free (error);
+ *          g_object_unref (client);
+ *          return;
+ *  }
+ *
+ *  while (tracker_result_iterator_next (iterator)) {
+ *          g_message ("Album: %s, Title: %s",
+ *                     tracker_result_iterator_value (iterator, 0),
+ *                     tracker_result_iterator_value (iterator, 1));
+ *  }
+ *
+ *  tracker_result_iterator_free (iterator);
+ *
+ * </programlisting>
+ * </example>
+ *
+ * Deprecated: 0.10: Use tracker_sparql_query() in libtracker-sparql
+ * instead.
+ *
+ * Returns: A #TrackerResultIterator pointing before the first result row. This
+ * iterator must be disposed when done using tracker_result_iterator_free().
+ *
+ * Since: 0.10
+ **/
+TrackerResultIterator *
+tracker_resources_sparql_query_iterate (TrackerClient  *client,
+                                        const gchar    *query,
+                                        GError        **error)
+{
+	TrackerClientPrivate *private;
+	TrackerResultIterator *iterator;
+	DBusConnection *connection;
+	DBusMessage *message;
+	DBusMessageIter iter;
+	int pipefd[2];
+	GError *inner_error = NULL;
+
+	g_return_val_if_fail (TRACKER_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (query, NULL);
+
+	if (pipe (pipefd) < 0) {
+		g_set_error (error,
+		             TRACKER_CLIENT_ERROR,
+		             TRACKER_CLIENT_ERROR_UNSUPPORTED,
+		             "Cannot open pipe");
+		return NULL;
+	}
+
+	private = TRACKER_CLIENT_GET_PRIVATE (client);
+
+	connection = dbus_g_connection_get_connection (private->connection);
+
+	message = dbus_message_new_method_call (TRACKER_DBUS_SERVICE,
+	                                        TRACKER_DBUS_OBJECT_STEROIDS,
+	                                        TRACKER_DBUS_INTERFACE_STEROIDS,
+	                                        "Query");
+
+	dbus_message_iter_init_append (message, &iter);
+	dbus_message_iter_append_basic (&iter, DBUS_TYPE_STRING, &query);
+	dbus_message_iter_append_basic (&iter, DBUS_TYPE_UNIX_FD, &pipefd[1]);
+	close (pipefd[1]);
+
+
+	iterator = g_slice_new0 (TrackerResultIterator);
+
+	tracker_client_dbus_send_and_splice (connection,
+	                                     message,
+	                                     pipefd[0],
+	                                     NULL,
+	                                     (void **) &iterator->buffer,
+	                                     &iterator->buffer_size,
+	                                     NULL /* Not interested in variable_names */,
+	                                     &inner_error);
+	/* message is destroyed by tracker_dbus_send_and_splice */
+
+	if (G_UNLIKELY (inner_error)) {
+		g_propagate_error (error, inner_error);
+		tracker_result_iterator_free (iterator);
+		iterator = NULL;
+	}
+
+	return iterator;
+}
+
+/**
+ * tracker_result_iterator_free:
+ * @iterator: A TrackerResultIterator
+ *
+ * Frees a TrackerResultIterator and its associated resources
+ *
+ * Deprecated: 0.10: Use g_object_unref() instead.
+ *
+ * Since: 0.10
+ **/
+void
+tracker_result_iterator_free (TrackerResultIterator *iterator)
+{
+	g_return_if_fail (iterator != NULL);
+
+	g_free (iterator->buffer);
+	g_slice_free (TrackerResultIterator, iterator);
+}
+
+/**
+ * tracker_result_iterator_n_columns:
+ * @iterator: A TrackerResultIterator
+ *
+ * Deprecated: 0.10: Use tracker_cursor_n_columns() in libtracker-sparql
+ * instead.
+ *
+ * Returns: the number of columns in the row pointed by @iterator
+ *
+ * Since: 0.10
+ **/
+guint
+tracker_result_iterator_n_columns (TrackerResultIterator *iterator)
+{
+	g_return_val_if_fail (iterator != NULL, 0);
+
+	return iterator->n_columns;
+}
+
+/**
+ * tracker_result_iterator_next:
+ * @iterator: A TrackerResultIterator
+ *
+ * Fetches the next row for the results.
+ *
+ * Deprecated: 0.10: Use tracker_cursor_next() in libtracker-sparql
+ * instead.
+ *
+ * Returns: %TRUE if a rows was fetched, otherwise %FALSE.
+ *
+ * Since: 0.10
+ **/
+gboolean
+tracker_result_iterator_next (TrackerResultIterator *iterator)
+{
+	int last_offset;
+
+	g_return_val_if_fail (iterator != NULL, FALSE);
+
+	if (iterator->buffer_index >= iterator->buffer_size) {
+		return FALSE;
+	}
+
+	/* So, the make up on each iterator segment is:
+	 *
+	 * iteration = [4 bytes for number of columns,
+	 *              columns x 4 bytes for types
+	 *              columns x 4 bytes for offsets]
+	 */
+	iterator->n_columns = iterator_buffer_read_int (iterator);
+
+	iterator->types = (int*) (iterator->buffer + iterator->buffer_index);
+	iterator->buffer_index += sizeof (int) * (iterator->n_columns);
+
+	iterator->offsets = (int*) (iterator->buffer + iterator->buffer_index);
+	iterator->buffer_index += sizeof (int) * (iterator->n_columns - 1);
+
+	last_offset = iterator_buffer_read_int (iterator);
+	iterator->data = iterator->buffer + iterator->buffer_index;
+	iterator->buffer_index += last_offset + 1;
+
+	return TRUE;
+}
+
+/**
+ * tracker_result_iterator_value:
+ * @iterator: A TrackerResultIterator
+ * @column: the column with the data
+ *
+ * Get a column's value as a string
+ *
+ * Returns: the value of the column as a string. The returned string belongs to
+ * the iterator and should not be freed.
+ *
+ * Deprecated: 0.10: Use tracker_cursor_get_string() in libtracker-sparql
+ * instead.
+ *
+ * Since: 0.10
+ **/
+const gchar *
+tracker_result_iterator_value (TrackerResultIterator *iterator,
+                               guint                  column)
+{
+	g_return_val_if_fail (iterator != NULL, NULL);
+	g_return_val_if_fail (column < tracker_result_iterator_n_columns (iterator), NULL);
+
+	if (column == 0) {
+		return iterator->data;
+	} else {
+		return iterator->data + iterator->offsets[column - 1] + 1;
+	}
+}
+
+/**
  * tracker_resources_sparql_update:
  * @client: a #TrackerClient.
  * @query: a string representing SPARQL.
@@ -1021,6 +2222,9 @@ tracker_resources_sparql_query (TrackerClient  *client,
  *
  * This API call is completely synchronous so it may block.
  *
+ * Deprecated: 0.10: Use tracker_sparql_update() in libtracker-sparql
+ * instead.
+ *
  * Since: 0.8
  **/
 void
@@ -1028,37 +2232,77 @@ tracker_resources_sparql_update (TrackerClient  *client,
                                  const gchar    *query,
                                  GError        **error)
 {
-	TrackerClientPrivate *private;
+	DBusMessage *reply;
 
 	g_return_if_fail (TRACKER_IS_CLIENT (client));
 	g_return_if_fail (query != NULL);
 
-	private = TRACKER_CLIENT_GET_PRIVATE (client);
+	reply = sparql_update_fast (client, query, FAST_UPDATE, error);
 
-	org_freedesktop_Tracker1_Resources_sparql_update (private->proxy_resources,
-	                                                  query,
-	                                                  error);
+	if (!reply) {
+		return;
+	}
+
+	dbus_message_unref (reply);
 }
 
+/**
+ * tracker_resources_sparql_update_blank:
+ * @client: a #TrackerClient.
+ * @query: a string representing SPARQL.
+ * @error: return location for errors.
+ *
+ * Deprecated: 0.10: There is no replacement for this in libtracker-sparql
+ *
+ * Since: 0.8
+ **/
 GPtrArray *
 tracker_resources_sparql_update_blank (TrackerClient  *client,
                                        const gchar    *query,
                                        GError        **error)
 {
-	TrackerClientPrivate *private;
+	DBusMessage *reply;
+	DBusMessageIter iter, subiter, subsubiter;
 	GPtrArray *result;
 
 	g_return_val_if_fail (TRACKER_IS_CLIENT (client), NULL);
 	g_return_val_if_fail (query != NULL, NULL);
 
-	private = TRACKER_CLIENT_GET_PRIVATE (client);
+	reply = sparql_update_fast (client, query, FAST_UPDATE_BLANK, error);
 
-	if (!org_freedesktop_Tracker1_Resources_sparql_update_blank (private->proxy_resources,
-	                                                             query,
-	                                                             &result,
-	                                                             error)) {
+	if (!reply) {
 		return NULL;
 	}
+
+	if (g_strcmp0 (dbus_message_get_signature (reply), "aaa{ss}")) {
+		g_set_error (error,
+		             TRACKER_CLIENT_ERROR,
+		             TRACKER_CLIENT_ERROR_UNSUPPORTED,
+		             "Server returned invalid results");
+		dbus_message_unref (reply);
+		return NULL;
+	}
+
+	result = g_ptr_array_new ();
+	dbus_message_iter_init (reply, &iter);
+	dbus_message_iter_recurse (&iter, &subiter);
+
+	while (dbus_message_iter_get_arg_type (&subiter) != DBUS_TYPE_INVALID) {
+		GPtrArray *inner_array;
+
+		inner_array = g_ptr_array_new ();
+		g_ptr_array_add (result, inner_array);
+		dbus_message_iter_recurse (&subiter, &subsubiter);
+
+		while (dbus_message_iter_get_arg_type (&subsubiter) != DBUS_TYPE_INVALID) {
+			g_ptr_array_add (inner_array, unmarshal_hash_table (&subsubiter));
+			dbus_message_iter_next (&subsubiter);
+		}
+
+		dbus_message_iter_next (&subiter);
+	}
+
+	dbus_message_unref (reply);
 
 	return result;
 }
@@ -1074,6 +2318,9 @@ tracker_resources_sparql_update_blank (TrackerClient  *client,
  * tracker_resources_batch_commit_async(). This API call is synchronous so it may
  * block.
  *
+ * Deprecated: 0.10: Use tracker_sparql_update() in libtracker-sparql
+ * instead.
+ *
  * Since: 0.8
  **/
 void
@@ -1081,16 +2328,15 @@ tracker_resources_batch_sparql_update (TrackerClient  *client,
                                        const gchar    *query,
                                        GError        **error)
 {
-	TrackerClientPrivate *private;
+	DBusMessage *reply;
 
-	g_return_if_fail (TRACKER_IS_CLIENT (client));
-	g_return_if_fail (query != NULL);
+	reply = sparql_update_fast (client, query, FAST_UPDATE_BATCH, error);
 
-	private = TRACKER_CLIENT_GET_PRIVATE (client);
+	if (!reply) {
+		return;
+	}
 
-	org_freedesktop_Tracker1_Resources_batch_sparql_update (private->proxy_resources,
-	                                                        query,
-	                                                        error);
+	dbus_message_unref (reply);
 }
 
 /**
@@ -1100,6 +2346,9 @@ tracker_resources_batch_sparql_update (TrackerClient  *client,
  *
  * Commits a batch of already issued SPARQL updates. This API call is
  * synchronous so it may block.
+ *
+ * Deprecated: 0.10: Use tracker_sparql_update_commit() in libtracker-sparql
+ * instead.
  *
  * Since: 0.8
  **/
@@ -1125,6 +2374,9 @@ tracker_resources_batch_commit (TrackerClient  *client,
  * @user_data: user data to pass to @callback.
  *
  * This behaves exactly as tracker_statistics_get() but asynchronously.
+ *
+ * Deprecated: 0.10: Use tracker_sparql_stats_async() in libtracker-sparql
+ * instead.
  *
  * Returns: A #guint representing the operation ID. See
  * tracker_cancel_call(). In the event of failure, 0 is returned.
@@ -1154,7 +2406,7 @@ tracker_statistics_get_async (TrackerClient         *client,
 	                                                      callback_with_gptrarray,
 	                                                      cb);
 
-	cb->id = pending_call_new (client, private->proxy_statistics, call);
+	cb->id = slow_pending_call_new (client, private->proxy_statistics, call);
 
 	return cb->id;
 }
@@ -1185,7 +2437,7 @@ tracker_resources_load_async (TrackerClient    *client,
 	                                                      callback_with_void,
 	                                                      cb);
 
-	cb->id = pending_call_new (client, private->proxy_resources, call);
+	cb->id = slow_pending_call_new (client, private->proxy_resources, call);
 
 	return cb->id;
 }
@@ -1199,6 +2451,9 @@ tracker_resources_load_async (TrackerClient    *client,
  *
  * Does an asynchronous SPARQL query. See tracker_resources_sparql_query()
  * to see how an SPARLQL query should be like.
+ *
+ * Deprecated: 0.10: Use tracker_sparql_query_async() in libtracker-sparql
+ * instead.
  *
  * Returns: A #guint representing the operation ID. See
  * tracker_cancel_call(). In the event of failure, 0 is returned.
@@ -1231,19 +2486,105 @@ tracker_resources_sparql_query_async (TrackerClient         *client,
 	                                                              callback_with_gptrarray,
 	                                                              cb);
 
-	cb->id = pending_call_new (client, private->proxy_resources, call);
+	cb->id = slow_pending_call_new (client, private->proxy_resources, call);
 
 	return cb->id;
 }
 
 /**
- * tracker_resources_sparql_update_async:
+ * tracker_resources_sparql_query_iterate_async
  * @client: a #TrackerClient.
- * @query: a string representing an SPARQL update.
- * @callback: callback function to be called when the update has been processed.
+ * @query: a string representing SPARQL.
+ * @callback: function to be called when the blank update has been performed.
  * @user_data: user data to pass to @callback.
  *
- * Does an asynchronous SPARQL update.
+ * Deprecated: 0.10: Use tracker_sparql_query_async() in libtracker-sparql
+ * instead.
+ *
+ * Returns: A #guint representing the operation ID. See
+ * tracker_cancel_call(). In the event of failure, 0 is returned.
+ *
+ * Since: 0.10
+ **/
+guint
+tracker_resources_sparql_query_iterate_async (TrackerClient         *client,
+                                              const gchar           *query,
+                                              TrackerReplyIterator   callback,
+                                              gpointer               user_data)
+{
+	TrackerClientPrivate *private;
+	DBusConnection *connection;
+	DBusMessage *message;
+	DBusMessageIter iter;
+	int pipefd[2];
+	GCancellable *cancellable;
+	FastAsyncData *fad;
+
+	g_return_val_if_fail (TRACKER_IS_CLIENT (client), 0);
+	g_return_val_if_fail (query, 0);
+
+	private = TRACKER_CLIENT_GET_PRIVATE (client);
+
+	if (pipe (pipefd) < 0) {
+		g_critical ("Cannot open pipe");
+		return 0;
+	}
+
+	connection = dbus_g_connection_get_connection (private->connection);
+
+	message = dbus_message_new_method_call (TRACKER_DBUS_SERVICE,
+	                                        TRACKER_DBUS_OBJECT_STEROIDS,
+	                                        TRACKER_DBUS_INTERFACE_STEROIDS,
+	                                        "Query");
+
+	/* FIXME: This at least returns FALSE where append_basic()
+	 * silently fails when actually sending the message and
+	 * DBUS_TYPE_UNIX_FD is not supported.
+	 *
+	 * No error handling though :(
+	 */
+	/* if (!dbus_message_append_args (message, */
+	/*                                DBUS_TYPE_STRING, &query, */
+	/*                                DBUS_TYPE_UNIX_FD, &pipefd[1], */
+	/*                                DBUS_TYPE_INVALID)) { */
+	/* 	g_critical ("Could not append arguments to DBusMessage"); */
+	/* 	return 0; */
+	/* } */
+
+	dbus_message_iter_init_append (message, &iter);
+	dbus_message_iter_append_basic (&iter, DBUS_TYPE_STRING, &query);
+	dbus_message_iter_append_basic (&iter, DBUS_TYPE_UNIX_FD, &pipefd[1]);
+
+	close (pipefd[1]);
+
+	cancellable = g_cancellable_new ();
+
+	fad = fast_async_data_new (client,
+	                           FAST_QUERY,
+	                           cancellable,
+	                           user_data);
+	fad->iterator_callback = callback;
+
+	tracker_client_dbus_send_and_splice_async (connection,
+	                                           message,
+	                                           pipefd[0],
+	                                           TRUE,
+	                                           cancellable,
+	                                           callback_iterator,
+	                                           fad);
+
+	return fad->request_id;
+}
+
+/**
+ * tracker_resources_sparql_update_async
+ * @client: a #TrackerClient.
+ * @query: a string representing SPARQL.
+ * @callback: function to be called when the blank update has been performed.
+ * @user_data: user data to pass to @callback.
+ *
+ * Deprecated: 0.10: Use tracker_sparql_update_async() in libtracker-sparql
+ * instead.
  *
  * Returns: A #guint representing the operation ID. See
  * tracker_cancel_call(). In the event of failure, 0 is returned.
@@ -1256,60 +2597,78 @@ tracker_resources_sparql_update_async (TrackerClient    *client,
                                        TrackerReplyVoid  callback,
                                        gpointer          user_data)
 {
-	TrackerClientPrivate *private;
-	CallbackVoid *cb;
-	DBusGProxyCall *call;
+	FastAsyncData *fad;
+	GError *error = NULL;
 
 	g_return_val_if_fail (TRACKER_IS_CLIENT (client), 0);
 	g_return_val_if_fail (query != NULL, 0);
 	g_return_val_if_fail (callback != NULL, 0);
 
-	private = TRACKER_CLIENT_GET_PRIVATE (client);
+	fad = fast_async_data_new (client,
+	                           FAST_UPDATE,
+	                           NULL,
+	                           user_data);
+	fad->void_callback = callback;
 
-	cb = g_slice_new0 (CallbackVoid);
-	cb->func = callback;
-	cb->data = user_data;
-	cb->client = g_object_ref (client);
+	sparql_update_fast_async (client, query, fad, &error);
 
-	call = org_freedesktop_Tracker1_Resources_sparql_update_async (private->proxy_resources,
-	                                                               query,
-	                                                               callback_with_void,
-	                                                               cb);
+	if (error) {
+		g_critical ("Could not initiate update: %s", error->message);
+		g_error_free (error);
 
-	cb->id = pending_call_new (client, private->proxy_resources, call);
+		fast_async_data_free (fad);
 
-	return cb->id;
+		return 0;
+	}
+
+	return fad->request_id;
 }
 
+/**
+ * tracker_resources_sparql_update_blank_async
+ * @client: a #TrackerClient.
+ * @query: a string representing SPARQL.
+ * @callback: function to be called when the blank update has been performed.
+ * @user_data: user data to pass to @callback.
+ *
+ * Deprecated: 0.10: There is no replacement for this in libtracker-sparql
+ *
+ * Returns: A #guint representing the operation ID. See
+ * tracker_cancel_call(). In the event of failure, 0 is returned.
+ *
+ * Since: 0.8
+ **/
 guint
 tracker_resources_sparql_update_blank_async (TrackerClient         *client,
                                              const gchar           *query,
                                              TrackerReplyGPtrArray  callback,
                                              gpointer               user_data)
 {
-	TrackerClientPrivate *private;
-	CallbackGPtrArray *cb;
-	DBusGProxyCall *call;
+	FastAsyncData *fad;
+	GError *error = NULL;
 
 	g_return_val_if_fail (TRACKER_IS_CLIENT (client), 0);
 	g_return_val_if_fail (query != NULL, 0);
 	g_return_val_if_fail (callback != NULL, 0);
 
-	private = TRACKER_CLIENT_GET_PRIVATE (client);
+	fad = fast_async_data_new (client,
+	                           FAST_UPDATE_BLANK,
+	                           NULL,
+	                           user_data);
+	fad->gptrarray_callback = callback;
 
-	cb = g_slice_new0 (CallbackGPtrArray);
-	cb->func = callback;
-	cb->data = user_data;
-	cb->client = g_object_ref (client);
+	sparql_update_fast_async (client, query, fad, &error);
 
-	call = org_freedesktop_Tracker1_Resources_sparql_update_blank_async (private->proxy_resources,
-	                                                                     query,
-	                                                                     callback_with_gptrarray,
-	                                                                     callback);
+	if (error) {
+		g_critical ("Could not initiate update: %s", error->message);
+		g_error_free (error);
 
-	cb->id = pending_call_new (client, private->proxy_resources, call);
+		fast_async_data_free (fad);
 
-	return cb->id;
+		return 0;
+	}
+
+	return fad->request_id;
 }
 
 /**
@@ -1320,6 +2679,9 @@ tracker_resources_sparql_update_blank_async (TrackerClient         *client,
  * @user_data: user data to pass to @callback.
  *
  * Updates the database using SPARQL. see tracker_resources_batch_sparql_update().
+ *
+ * Deprecated: 0.10: Use tracker_sparql_update_async() in libtracker-sparql
+ * instead.
  *
  * Returns: A #guint representing the operation ID. See
  * tracker_cancel_call(). In the event of failure, 0 is returned.
@@ -1332,29 +2694,31 @@ tracker_resources_batch_sparql_update_async (TrackerClient    *client,
                                              TrackerReplyVoid  callback,
                                              gpointer          user_data)
 {
-	TrackerClientPrivate *private;
-	CallbackVoid *cb;
-	DBusGProxyCall *call;
+	FastAsyncData *fad;
+	GError *error = NULL;
 
 	g_return_val_if_fail (TRACKER_IS_CLIENT (client), 0);
 	g_return_val_if_fail (query != NULL, 0);
 	g_return_val_if_fail (callback != NULL, 0);
 
-	private = TRACKER_CLIENT_GET_PRIVATE (client);
+	fad = fast_async_data_new (client,
+	                           FAST_UPDATE_BATCH,
+	                           NULL,
+	                           user_data);
+	fad->void_callback = callback;
 
-	cb = g_slice_new0 (CallbackVoid);
-	cb->func = callback;
-	cb->data = user_data;
-	cb->client = g_object_ref (client);
+	sparql_update_fast_async (client, query, fad, &error);
 
-	call = org_freedesktop_Tracker1_Resources_batch_sparql_update_async (private->proxy_resources,
-	                                                                     query,
-	                                                                     callback_with_void,
-	                                                                     cb);
+	if (error) {
+		g_critical ("Could not initiate update: %s", error->message);
+		g_error_free (error);
 
-	cb->id = pending_call_new (client, private->proxy_resources, call);
+		fast_async_data_free (fad);
 
-	return cb->id;
+		return 0;
+	}
+
+	return fad->request_id;
 }
 
 /**
@@ -1364,6 +2728,9 @@ tracker_resources_batch_sparql_update_async (TrackerClient    *client,
  * @user_data: user data to pass to @callback.
  *
  * Commits a batch of already issued SPARQL updates.
+ *
+ * Deprecated: 0.10: Use tracker_sparql_update_commit_async() in libtracker-sparql
+ * instead.
  *
  * Returns: A #guint representing the operation ID. See
  * tracker_cancel_call(). In the event of failure, 0 is returned.
@@ -1393,9 +2760,103 @@ tracker_resources_batch_commit_async (TrackerClient    *client,
 	                                                              callback_with_void,
 	                                                              cb);
 
-	cb->id = pending_call_new (client, private->proxy_resources, call);
+	cb->id = slow_pending_call_new (client, private->proxy_resources, call);
 
 	return cb->id;
+}
+
+/**
+ * tracker_resources_writeback_connect:
+ * @client: a #TrackerClient
+ * @callback: a #TrackerWritebackCallback to call when the writeback signal is
+ *            emitted
+ * @user_data: user data to pass to @callback
+ *
+ * Registers a callback to be called when the writeback signal is emitted by
+ * the store.
+ *
+ * The writeback signal is emitted by the store everytime a property annotated
+ * with tracker:writeback is changed. This annotation means that whenever
+ * possible the changes in the RDF store should be reflected in the metadata of
+ * the original file.
+ *
+ * Deprecated: 0.10: There is no replacement for this in libtracker-sparql
+ *
+ * Returns: a handle that can be used to disconnect the signal later using
+ *          tracker_resources_writeback_disconnect. The handle will always be
+ *          greater than 0 on success.
+ */
+guint
+tracker_resources_writeback_connect (TrackerClient            *client,
+                                     TrackerWritebackCallback  callback,
+                                     gpointer                  user_data)
+{
+	TrackerClientPrivate *private;
+	WritebackCallback *cb;
+
+	g_return_val_if_fail (TRACKER_IS_CLIENT (client), 0);
+	g_return_val_if_fail (callback != NULL, 0);
+
+	private = TRACKER_CLIENT_GET_PRIVATE (client);
+
+	/* Connect the DBus signal if needed */
+	if (!private->writeback_callbacks) {
+		dbus_g_proxy_connect_signal (private->proxy_resources,
+		                             "Writeback",
+		                             G_CALLBACK (writeback_cb),
+		                             private,
+		                             NULL);
+	}
+
+	cb = g_slice_new0 (WritebackCallback);
+	cb->id = ++writeback_callback_id;
+	cb->func = callback;
+	cb->data = user_data;
+
+	private->writeback_callbacks = g_list_prepend (private->writeback_callbacks,
+	                                               cb);
+
+	return cb->id;
+}
+
+/**
+ * tracker_resources_writeback_disconnect:
+ * @client: a #TrackerClient
+ * @handle: a handle identifying a callback
+ *
+ * Deprecated: 0.10: There is no replacement for this in libtracker-sparql
+ *
+ * Removes the callback identified by @handle from the writeback callbacks.
+ **/
+void
+tracker_resources_writeback_disconnect (TrackerClient *client,
+                                        guint          handle)
+{
+	TrackerClientPrivate *private;
+	GList *current_callback;
+
+	g_return_if_fail (TRACKER_IS_CLIENT (client));
+
+	private = TRACKER_CLIENT_GET_PRIVATE (client);
+
+	for (current_callback = private->writeback_callbacks;
+	     current_callback;
+	     current_callback = g_list_next (current_callback)) {
+		if (((WritebackCallback*) current_callback->data)->id == handle) {
+			g_slice_free (WritebackCallback, current_callback->data);
+			private->writeback_callbacks = g_list_remove (private->writeback_callbacks,
+			                                              current_callback);
+			break;
+		}
+	}
+
+	/* Disconnect the DBus signal if not needed anymore */
+	if (!private->writeback_callbacks) {
+		dbus_g_proxy_disconnect_signal (private->proxy_resources,
+		                                "Writeback",
+		                                G_CALLBACK (writeback_cb),
+		                                private);
+	}
 }
 
 /* tracker_search_metadata_by_text_async is used by GTK+ */
@@ -1434,8 +2895,6 @@ sparql_append_string_literal (GString     *sparql,
 
 	g_string_append_c (sparql, '"');
 }
-
-#ifndef TRACKER_DISABLE_DEPRECATED
 
 /**
  * tracker_connect:
@@ -1526,9 +2985,9 @@ tracker_search_metadata_by_text_async (TrackerClient     *client,
 	                                                              sparql->str,
 	                                                              callback_with_array,
 	                                                              cb);
-	cb->id = pending_call_new (client, private->proxy_resources, call);
+	cb->id = slow_pending_call_new (client, private->proxy_resources, call);
 
- 	g_string_free (sparql, TRUE);
+	g_string_free (sparql, TRUE);
 
 	return cb->id;
 }
@@ -1585,7 +3044,7 @@ tracker_search_metadata_by_text_and_location_async (TrackerClient     *client,
 	                                                              callback_with_array,
 	                                                              cb);
 
-	cb->id = pending_call_new (client, private->proxy_resources, call);
+	cb->id = slow_pending_call_new (client, private->proxy_resources, call);
 
 	g_string_free (sparql, TRUE);
 
@@ -1654,7 +3113,7 @@ tracker_search_metadata_by_text_and_mime_async (TrackerClient      *client,
 	                                                              callback_with_array,
 	                                                              cb);
 
-	cb->id = pending_call_new (client, private->proxy_resources, call);
+	cb->id = slow_pending_call_new (client, private->proxy_resources, call);
 
 	g_string_free (sparql, TRUE);
 
@@ -1733,7 +3192,7 @@ tracker_search_metadata_by_text_and_mime_and_location_async (TrackerClient      
 	                                                              callback_with_array,
 	                                                              cb);
 
-	cb->id = pending_call_new (client, private->proxy_resources, call);
+	cb->id = slow_pending_call_new (client, private->proxy_resources, call);
 
 	g_string_free (sparql, TRUE);
 

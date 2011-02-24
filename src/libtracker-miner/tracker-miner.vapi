@@ -20,18 +20,16 @@
 [CCode (cprefix = "Tracker", lower_case_cprefix = "tracker_")]
 namespace Tracker {
 	[CCode (cheader_filename = "libtracker-miner/tracker-miner.h")]
-	public class Miner : GLib.Object {
+	public class Miner : GLib.Object, GLib.Initable {
+		[CCode (has_construct_function = false)]
+		public Miner ();
 		[NoAccessorMethod]
 		public string name { get; construct; }
 		[NoAccessorMethod]
 		public string status { get; set; }
 		[NoAccessorMethod]
 		public double progress { get; set; }
-		public async void commit (GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public static GLib.Quark error_quark ();
-		public async void execute_batch_update (string sparql, GLib.Cancellable? cancellable = null) throws GLib.Error;
-		public async unowned GLib.PtrArray execute_sparql (string sparql, GLib.Cancellable? cancellable = null) throws GLib.Error;
-		public async void execute_update (string sparql, GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public void ignore_next_update (string[] urls);
 		public bool is_started ();
 		public int pause (string reason) throws GLib.Error;
@@ -43,6 +41,10 @@ namespace Tracker {
 		public void stop ();
 		public virtual void stopped ();
 		public signal void error (GLib.Error e);
+		public unowned Tracker.Sparql.Connection? get_connection ();
+		public unowned GLib.DBusConnection? get_dbus_connection ();
+		public unowned string get_dbus_full_name ();
+		public unowned string get_dbus_full_path ();
 	}
 	[CCode (ref_function = "tracker_miner_fs_ref", unref_function = "tracker_miner_fs_unref", cheader_filename = "libtracker-miner/tracker-miner.h")]
 	public class MinerFS {
@@ -81,7 +83,9 @@ namespace Tracker {
 		public virtual void miner_progress (string miner_name, string status, double progress);
 	}
 	[CCode (cheader_filename = "libtracker-miner/tracker-miner.h")]
-	public class MinerWeb : Tracker.Miner {
+	public class MinerWeb : Tracker.Miner, GLib.Initable {
+		[CCode (has_construct_function = false)]
+		public MinerWeb ();
 		[NoAccessorMethod]
 		public bool associated { get; set; }
 		public virtual void associate (GLib.HashTable association_data) throws Tracker.MinerWebError;
@@ -97,6 +101,22 @@ namespace Tracker {
 		public string get_name ();
 		public string get_password (string service, out string username) throws GLib.Error;
 		public void store_password (string service, string description, string username, string password) throws GLib.Error;
+	}
+	[CCode (cheader_filename = "libtracker-miner/tracker-miner.h")]
+	public interface NetworkProvider : GLib.Object {
+		public string get_name ();
+		public NetworkProviderStatus get_status ();
+		public signal void status_changed (NetworkProviderStatus status);
+		public static unowned Tracker.NetworkProvider @get ();
+	}
+	[CCode (cprefix = "TRACKER_NETWORK_PROVIDER_", cheader_filename = "libtracker-miner/tracker-miner.h")]
+	public enum NetworkProviderStatus {
+		DISCONNECTED,
+		UNKNOWN,
+		GPRS,
+		EDGE,
+		@3G,
+		LAN
 	}
 	[CCode (cprefix = "TRACKER_MINER_WEB_ERROR_", cheader_filename = "libtracker-miner/tracker-miner.h")]
 	public errordomain MinerWebError {

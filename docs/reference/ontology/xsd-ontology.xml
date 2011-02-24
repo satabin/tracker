@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <chapter id='xsd-ontology'>
-<title>XSD Ontology</title>
+<title>XML schema (XSD): Basic types definitions (int, double,...)</title>
 <varlistentry>
   <term>Authors:</term>
   <listitem>

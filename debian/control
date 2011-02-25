@@ -36,10 +36,12 @@ Build-Depends: debhelper (>= 8),
                libiptcdata0-dev,
                uuid-dev,
                libgee-dev (>= 0.3),
-               libunistring-dev,
                valac,
                gtk-doc-tools,
-               graphviz
+               graphviz,
+               dia,
+               libunistring-dev,
+               libgif-dev
 Standards-Version: 3.9.1
 Vcs-Git: git://git.debian.org/git/users/biebl/tracker.git
 Vcs-Browser: http://git.debian.org/?p=users/biebl/tracker.git;a=summary

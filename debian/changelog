@@ -1,4 +1,4 @@
-tracker (0.10.0-1) experimental; urgency=low
+tracker (0.10.0-1) UNRELEASED; urgency=low
 
   * New major upstream release.
   * Update build dependencies

@@ -10,7 +10,7 @@ override_dh_auto_configure:
 		--disable-unit-tests \
 		--enable-tracker-status-icon \
 		--enable-tracker-explorer \
-		--enable-tracker-search-bar \
+		--disable-tracker-search-bar \
 		--enable-tracker-needle \
 		--enable-tracker-preferences \
 		--enable-nautilus-extension \

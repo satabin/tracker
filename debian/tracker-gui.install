@@ -7,19 +7,19 @@ usr/share/tracker/icons/
 usr/share/icons/
 
 usr/share/tracker/tracker-preferences.ui
-usr/share/tracker/tracker-search-bar.ui
+#usr/share/tracker/tracker-search-bar.ui
 usr/share/tracker/tracker-needle.ui
-usr/share/tracker/GNOME_Search_Bar_Applet.xml
+#usr/share/tracker/GNOME_Search_Bar_Applet.xml
 
 etc/xdg/autostart/tracker-status-icon.desktop
 
 usr/share/man/man1/tracker-needle.1
 usr/share/man/man1/tracker-status-icon.1
 usr/share/man/man1/tracker-preferences.1
-usr/share/man/man1/tracker-search-bar.1
+#usr/share/man/man1/tracker-search-bar.1
 
-usr/lib/bonobo/servers/GNOME_Search_Bar_Applet.server
-usr/lib/tracker/tracker-search-bar
+#usr/lib/bonobo/servers/GNOME_Search_Bar_Applet.server
+#usr/lib/tracker/tracker-search-bar
 
 # Nautilus extension for now in tracker-gui
 usr/lib/nautilus/extensions-2.0/libnautilus-tracker-tags.so

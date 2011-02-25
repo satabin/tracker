@@ -1,6 +1,7 @@
 libtracker-client-0.10.so.0 libtracker-client-0.10-0 #MINVER#
  tracker_cancel_call@Base 0.8.0
  tracker_cancel_last_call@Base 0.8.0
+ tracker_client_error_quark@Base 0.10.0
  tracker_client_get_type@Base 0.8.0
  tracker_client_new@Base 0.8.0
  tracker_connect@Base 0.8.0
@@ -13,10 +14,18 @@ libtracker-client-0.10.so.0 libtracker-client-0.10-0 #MINVER#
  tracker_resources_load_async@Base 0.8.0
  tracker_resources_sparql_query@Base 0.8.0
  tracker_resources_sparql_query_async@Base 0.8.0
+ tracker_resources_sparql_query_iterate@Base 0.10.0
+ tracker_resources_sparql_query_iterate_async@Base 0.10.0
  tracker_resources_sparql_update@Base 0.8.0
  tracker_resources_sparql_update_async@Base 0.8.0
  tracker_resources_sparql_update_blank@Base 0.8.0
  tracker_resources_sparql_update_blank_async@Base 0.8.0
+ tracker_resources_writeback_connect@Base 0.10.0
+ tracker_resources_writeback_disconnect@Base 0.10.0
+ tracker_result_iterator_free@Base 0.10.0
+ tracker_result_iterator_n_columns@Base 0.10.0
+ tracker_result_iterator_next@Base 0.10.0
+ tracker_result_iterator_value@Base 0.10.0
  tracker_search_metadata_by_text_and_location_async@Base 0.8.0
  tracker_search_metadata_by_text_and_mime_and_location_async@Base 0.8.0
  tracker_search_metadata_by_text_and_mime_async@Base 0.8.0
@@ -34,6 +43,7 @@ libtracker-client-0.10.so.0 libtracker-client-0.10-0 #MINVER#
  tracker_sparql_builder_get_type@Base 0.8.0
  tracker_sparql_builder_insert_close@Base 0.8.0
  tracker_sparql_builder_insert_open@Base 0.8.0
+ tracker_sparql_builder_insert_silent_open@Base 0.10.0
  tracker_sparql_builder_new@Base 0.8.0
  tracker_sparql_builder_new_embedded_insert@Base 0.8.0
  tracker_sparql_builder_new_update@Base 0.8.0

@@ -256,8 +256,6 @@ Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          tracker (= ${binary:Version})
-Recommends: unzip,
-            odt2txt
 Description: metadata database, indexer and search tool - metadata extractors
  This package contains the metadata extractors.
  .

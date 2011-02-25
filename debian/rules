@@ -12,7 +12,7 @@ override_dh_auto_configure:
 		--enable-tracker-status-icon \
 		--enable-tracker-explorer \
 		--enable-tracker-search-bar \
-		--enable-tracker-search-tool \
+		--enable-tracker-needle \
 		--enable-tracker-preferences \
 		--enable-nautilus-extension \
 		--enable-libvorbis \

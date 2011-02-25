@@ -225,7 +225,7 @@ Replaces: tracker-search-tool (<< 0.8.1-1),
           tracker (<< 0.8.1-1)
 Description: metadata database, indexer and search tool - GNOME frontends
  Included in this package:
-  * tracker-search-tool: standard search tool
+  * tracker-needle: standard search tool
   * tracker-search-bar: search applet for the GNOME panel
   * tracker-status-icon: GNOME status icon
   * tracker-preferences: preferences editor

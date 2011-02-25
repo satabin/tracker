@@ -28,6 +28,7 @@ tracker (0.10.0-1) UNRELEASED; urgency=low
     Debian yet.
   * Remove tracker-status-icon as it is no longer shipped upstream. Clean up
     autostart file on upgrades.
+  * Update install files.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 25 Feb 2011 00:11:10 +0100
 

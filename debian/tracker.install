@@ -6,11 +6,8 @@ usr/share/tracker/tracker-miner.xml
 usr/share/tracker/tracker-miner-web.xml
 usr/share/tracker/tracker-statistics.xml
 usr/share/tracker/tracker-backup.xml
-usr/share/tracker/tracker-resources-class.xml
 usr/share/tracker/tracker-resources.xml
 usr/share/tracker/tracker-status.xml
-
-usr/share/tracker/*.sql
 
 usr/lib/tracker/tracker-store
 
@@ -25,4 +22,4 @@ usr/share/tracker/languages/
 etc/xdg/autostart/tracker-store.desktop
 
 usr/lib/tracker-0.10/libtracker-data.so.*
-usr/lib/tracker-0.10/push-modules/daemon/*.so
+usr/lib/tracker-0.10/sparql-modules/*.so

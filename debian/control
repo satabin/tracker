@@ -61,7 +61,7 @@ Description: metadata database, indexer and search tool
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-client-0.8-0
+Package: libtracker-client-0.10-0
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends},
@@ -74,10 +74,10 @@ Description: metadata database, indexer and search tool - library
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-client-0.8-dev
+Package: libtracker-client-0.10-dev
 Architecture: any
 Section: libdevel
-Depends: libtracker-client-0.8-0 (= ${binary:Version}),
+Depends: libtracker-client-0.10-0 (= ${binary:Version}),
          ${misc:Depends},
          libglib2.0-dev
 Description: metadata database, indexer and search tool - development files
@@ -88,7 +88,7 @@ Description: metadata database, indexer and search tool - development files
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-miner-0.8-0
+Package: libtracker-miner-0.10-0
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends},
@@ -101,12 +101,12 @@ Description: tracker data miner library
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-miner-0.8-dev
+Package: libtracker-miner-0.10-dev
 Architecture: any
 Section: libdevel
-Depends: libtracker-miner-0.8-0 (= ${binary:Version}),
+Depends: libtracker-miner-0.10-0 (= ${binary:Version}),
          ${misc:Depends},
-         libtracker-client-0.8-dev,
+         libtracker-client-0.10-dev,
          libglib2.0-dev
 Description: tracker data miner library - development files
  This package contains the static libraries and header files needed to link
@@ -118,7 +118,7 @@ Description: tracker data miner library - development files
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-extract-0.8-0
+Package: libtracker-extract-0.10-0
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends},
@@ -131,12 +131,12 @@ Description: tracker extractor library
  metadata and tags. It provides a one stop solution for all metadata, tags,
  shared object databases, search tools and indexing.
 
-Package: libtracker-extract-0.8-dev
+Package: libtracker-extract-0.10-dev
 Architecture: any
 Section: libdevel
-Depends: libtracker-extract-0.8-0 (= ${binary:Version}),
+Depends: libtracker-extract-0.10-0 (= ${binary:Version}),
          ${misc:Depends},
-         libtracker-client-0.8-dev,
+         libtracker-client-0.10-dev,
          libglib2.0-dev
 Description: tracker extractor library - development files
  This package contains the static libraries and header files needed to link

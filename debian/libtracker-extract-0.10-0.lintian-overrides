@@ -1,1 +1,1 @@
-libtracker-extract-0.8-0: binary-or-shlib-defines-rpath * /usr/lib/tracker-0.8
+libtracker-extract-0.10-0: binary-or-shlib-defines-rpath * /usr/lib/tracker-0.10

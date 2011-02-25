@@ -1,4 +1,4 @@
-usr/lib/libtracker-extract-0.8.so
-usr/lib/pkgconfig/tracker-extract-0.8.pc
-usr/include/tracker-0.8/libtracker-extract/*.h
+usr/lib/libtracker-extract-0.10.so
+usr/lib/pkgconfig/tracker-extract-0.10.pc
+usr/include/tracker-0.10/libtracker-extract/*.h
 usr/share/gtk-doc/html/libtracker-extract/

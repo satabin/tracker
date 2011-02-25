@@ -1,4 +1,4 @@
-libtracker-client-0.8.so.0 libtracker-client-0.8-0 #MINVER#
+libtracker-client-0.10.so.0 libtracker-client-0.10-0 #MINVER#
  tracker_cancel_call@Base 0.8.0
  tracker_cancel_last_call@Base 0.8.0
  tracker_client_get_type@Base 0.8.0

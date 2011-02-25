@@ -24,5 +24,5 @@ usr/share/tracker/languages/
 
 etc/xdg/autostart/tracker-store.desktop
 
-usr/lib/tracker-0.8/libtracker-data.so.*
-usr/lib/tracker-0.8/push-modules/daemon/*.so
+usr/lib/tracker-0.10/libtracker-data.so.*
+usr/lib/tracker-0.10/push-modules/daemon/*.so

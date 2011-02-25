@@ -7,7 +7,6 @@ export LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed -Wl,-Bs
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-		--enable-unac \
 		--disable-unit-tests \
 		--enable-tracker-status-icon \
 		--enable-tracker-explorer \

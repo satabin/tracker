@@ -31,6 +31,9 @@ tracker (0.10.0-1) UNRELEASED; urgency=low
   * Update install files.
   * Move libtracker-common, libtracker-data and sparql-modules into
     libtracker-sparql-0.10-0 package. Update shlibs.local accordingly.
+  * Add lintian override for binary-or-shlib-defines-rpath for the tracker
+    package. The rpath is used by tracker-store to load the private libraries
+    in /usr/lib/tracker-0.10.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 25 Feb 2011 14:05:25 +0100
 

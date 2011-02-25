@@ -1,5 +1,4 @@
 usr/bin/tracker-needle
-usr/bin/tracker-status-icon
 usr/bin/tracker-preferences
 
 usr/share/applications/tracker-*.desktop
@@ -11,10 +10,7 @@ usr/share/tracker/tracker-preferences.ui
 usr/share/tracker/tracker-needle.ui
 #usr/share/tracker/GNOME_Search_Bar_Applet.xml
 
-etc/xdg/autostart/tracker-status-icon.desktop
-
 usr/share/man/man1/tracker-needle.1
-usr/share/man/man1/tracker-status-icon.1
 usr/share/man/man1/tracker-preferences.1
 #usr/share/man/man1/tracker-search-bar.1
 

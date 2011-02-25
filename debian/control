@@ -217,7 +217,6 @@ Description: metadata database, indexer and search tool - GNOME frontends
  Included in this package:
   * tracker-needle: standard search tool
   * tracker-search-bar: search applet for the GNOME panel
-  * tracker-status-icon: GNOME status icon
   * tracker-preferences: preferences editor
   * nautilus-extension: nautilus extension for tag editing
  .

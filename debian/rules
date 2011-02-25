@@ -8,7 +8,6 @@ export LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed -Wl,-Bs
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		--disable-unit-tests \
-		--enable-tracker-status-icon \
 		--enable-tracker-explorer \
 		--disable-tracker-search-bar \
 		--enable-tracker-needle \

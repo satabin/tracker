@@ -27,6 +27,9 @@ install|upgrade)
     if dpkg --compare-versions "$2" lt "0.8.1-1"; then
         rm_conffile tracker-search-tool "/etc/xdg/autostart/tracker-applet.desktop"
     fi
+    if dpkg --compare-versions "$2" lt "0.10.0-1"; then
+        rm_conffile tracker-gui "/etc/xdg/autostart/tracker-status-icon.desktop"
+    fi
 esac
 
 #DEBHELPER#

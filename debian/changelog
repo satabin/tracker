@@ -9,6 +9,9 @@ tracker (0.10.1-1) UNRELEASED; urgency=low
   * debian/control
     - Remove tracker-status from package description. Its functionality has
       been merged into tracker-control. (See tracker-control --help-status)
+    - Replace Build-Depends on libpoppler-dev with
+      libpoppler-glib-dev (>= 0.16.0). The newer version of poppler-glib
+      provides all necessary features and has a stable API.
 
  -- Michael Biebl <biebl@debian.org>  Sat, 05 Mar 2011 02:27:46 +0100
 

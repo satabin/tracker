@@ -10,11 +10,11 @@ Date:   Fri Feb 25 01:57:50 2011 +0100
     
     This reverts commit 87a5064e3033e1521b3ba01c63a5667bde231a82.
 
-diff --git a/configure.ac b/configure.ac
-index 48c1989..f447f53 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -186,10 +186,9 @@ LIBFLAC_REQUIRED=1.2.1
+Index: tracker/configure.ac
+===================================================================
+--- tracker.orig/configure.ac	2011-03-05 02:28:16.808297000 +0100
++++ tracker/configure.ac	2011-03-05 02:28:18.495453000 +0100
+@@ -186,10 +186,9 @@
  LIBEXIF_REQUIRED=0.6
  LIBGSF_REQUIRED=1.13
  EXEMPI_REQUIRED=2.1.0
@@ -28,7 +28,7 @@ index 48c1989..f447f53 100644
  # Unlikely version for now, Nepomuk integration isn't finished in streamanalyzer atm
  LIBSTREAMANALYZER_REQUIRED=0.7.0
  GEE_REQUIRED=0.3
-@@ -353,7 +352,6 @@ TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS -lz -lm"
+@@ -360,7 +359,6 @@
  evolution_plugin_name="evolution-plugin"
  
  TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
@@ -36,10 +36,10 @@ index 48c1989..f447f53 100644
                                    evolution-plugin          >= $EVO_REQUIRED
                                    evolution-data-server-1.2 >= $EDS_REQUIRED
                                    camel-1.2                 >= $CAMEL_REQUIRED"
-diff --git a/src/plugins/evolution/tracker-evolution-plugin.c b/src/plugins/evolution/tracker-evolution-plugin.c
-index c12a237..c6f1a87 100644
---- a/src/plugins/evolution/tracker-evolution-plugin.c
-+++ b/src/plugins/evolution/tracker-evolution-plugin.c
+Index: tracker/src/plugins/evolution/tracker-evolution-plugin.c
+===================================================================
+--- tracker.orig/src/plugins/evolution/tracker-evolution-plugin.c	2011-03-05 02:28:16.788307000 +0100
++++ tracker/src/plugins/evolution/tracker-evolution-plugin.c	2011-03-05 02:28:18.499451000 +0100
 @@ -43,13 +43,10 @@
  #include <camel/camel.h>
  
@@ -55,7 +55,7 @@ index c12a237..c6f1a87 100644
  #include <e-util/e-config.h>
  #include <e-util/e-account-utils.h>
  
-@@ -186,7 +183,6 @@ static TrackerEvolutionPlugin *manager = NULL;
+@@ -186,7 +183,6 @@
  static GStaticRecMutex glock = G_STATIC_REC_MUTEX_INIT;
  static guint register_count = 0, walk_count = 0;
  static ThreadPool *folder_pool = NULL;
@@ -63,7 +63,7 @@ index c12a237..c6f1a87 100644
  
  /* Prototype declarations */
  static void register_account (TrackerEvolutionPlugin *self, EAccount *account);
-@@ -1250,10 +1246,7 @@ get_last_deleted_time (TrackerEvolutionPlugin *self)
+@@ -1250,10 +1246,7 @@
  				continue;
  			}
  
@@ -75,7 +75,7 @@ index c12a237..c6f1a87 100644
  				continue;
  			}
  
-@@ -1364,11 +1357,7 @@ register_walk_folders_in_folder (TrackerEvolutionPlugin *self,
+@@ -1364,11 +1357,7 @@
  		/* This is asynchronous and hooked to the mail/ API, so nicely
  		 * integrated with the Evolution UI application */
  
@@ -88,7 +88,7 @@ index c12a237..c6f1a87 100644
  		                 mail_msg_unordered_push);
  
  		if (iter->child) {
-@@ -1438,11 +1427,7 @@ unregister_walk_folders_in_folder (TrackerEvolutionPlugin *self,
+@@ -1438,11 +1427,7 @@
  		/* This is asynchronous and hooked to the mail/ API, so nicely
  		 * integrated with the Evolution UI application */
  
@@ -101,7 +101,7 @@ index c12a237..c6f1a87 100644
  		                 mail_msg_unordered_push);
  
  		if (titer->child) {
-@@ -1603,10 +1588,7 @@ introduce_account_to (TrackerEvolutionPlugin *self,
+@@ -1603,10 +1588,7 @@
  	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
  		return;
  
@@ -113,7 +113,7 @@ index c12a237..c6f1a87 100644
  		return;
  	}
  
-@@ -1902,10 +1884,7 @@ register_account (TrackerEvolutionPlugin *self,
+@@ -1902,10 +1884,7 @@
  	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
  		return;
  
@@ -125,7 +125,7 @@ index c12a237..c6f1a87 100644
  		return;
  	}
  
-@@ -1970,10 +1949,7 @@ unregister_account (TrackerEvolutionPlugin *self,
+@@ -1970,10 +1949,7 @@
  	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
  		return;
  
@@ -137,7 +137,7 @@ index c12a237..c6f1a87 100644
  		return;
  	}
  
-@@ -2194,15 +2170,6 @@ tracker_evolution_plugin_init (TrackerEvolutionPlugin *plugin)
+@@ -2194,15 +2170,6 @@
  	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (plugin);
  	EIterator *it;
  

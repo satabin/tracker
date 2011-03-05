@@ -15,7 +15,8 @@ override_dh_auto_configure:
 		--enable-nautilus-extension \
 		--enable-libvorbis \
 		--enable-libflac \
-		--enable-gtk-doc
+		--enable-gtk-doc \
+		--disable-network-manager
 
 # Enforce tight shlibs dependencies
 override_dh_makeshlibs:

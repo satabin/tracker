@@ -195,7 +195,6 @@ Description: metadata database, indexer and search tool - commandline tools
     metadata
   * tracker-sparql: query or update Tracker database using SPARQL
   * tracker-stats: retrieve some statistics
-  * tracker-status: report status of tracker-store and running miners
   * tracker-tag: tool to manage tags on files
  .
  Tracker is an advanced framework for first class objects with associated

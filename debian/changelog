@@ -6,6 +6,9 @@ tracker (0.10.1-1) UNRELEASED; urgency=low
     - Explicitly disable network-manager support to not pick up any additional
       dependencies by accident. Network status detection support is not really
       useful anyway as long as we don't build any web miners.
+  * debian/control
+    - Remove tracker-status from package description. Its functionality has
+      been merged into tracker-control. (See tracker-control --help-status)
 
  -- Michael Biebl <biebl@debian.org>  Sat, 05 Mar 2011 02:27:46 +0100
 

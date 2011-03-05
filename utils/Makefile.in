@@ -46,6 +46,7 @@ host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
 @HAVE_TOTEM_PL_PARSER_TRUE@am__append_1 = playlists
+@HAVE_TRACKER_RESDUMP_TRUE@am__append_2 = tracker-resdump
 subdir = utils
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -88,7 +89,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = gtk-sparql lyrics services data-generators mtp \
-	tracker-sql playlists
+	tracker-sql playlists tracker-resdump
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \
@@ -327,6 +328,8 @@ TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
 TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
 TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
 TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
+TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
+TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
 TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
@@ -407,7 +410,7 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 SUBDIRS = gtk-sparql lyrics services data-generators mtp tracker-sql \
-	$(am__append_1)
+	$(am__append_1) $(am__append_2)
 all: all-recursive
 
 .SUFFIXES:

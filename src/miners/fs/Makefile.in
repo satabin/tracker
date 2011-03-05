@@ -47,7 +47,10 @@ host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
 libexec_PROGRAMS = tracker-miner-fs$(EXEEXT)
-@HAVE_MEEGOTOUCH_TRUE@am__append_1 = tracker-miner-applications-meego.cpp
+@HAVE_MEEGOTOUCH_TRUE@am__append_1 = \
+@HAVE_MEEGOTOUCH_TRUE@	tracker-miner-applications-meego.cpp \
+@HAVE_MEEGOTOUCH_TRUE@	tracker-miner-applications-meego.h
+
 subdir = src/miners/fs
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -77,7 +80,8 @@ am__tracker_miner_fs_SOURCES_DIST = tracker-power-hal.c \
 	tracker-miner-applications-locale.h tracker-miner-files.c \
 	tracker-miner-files.h tracker-miner-files-index.c \
 	tracker-miner-files-index.h \
-	tracker-miner-applications-meego.cpp
+	tracker-miner-applications-meego.cpp \
+	tracker-miner-applications-meego.h
 @HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@am__objects_1 =  \
 @HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@	tracker-power-hal.$(OBJEXT)
 @HAVE_UPOWER_TRUE@am__objects_1 = tracker-power-upower.$(OBJEXT)
@@ -358,6 +362,8 @@ TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
 TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
 TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
 TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
+TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
+TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
 TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@

@@ -1,3 +1,222 @@
+2011-03-03  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.1
+
+2011-03-03  Vincent Untz  <vuntz@gnome.org>
+
+	tracker-needle: Make title-only searches non case sensitive
+	Fixes GB#642774, Make "title-only" search non-case sensitive (Normal / normal)
+
+2011-03-03  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Don't use unsupported C++ constructors
+	Fixes NB#232981.
+
+2011-03-03  Dan Williams  <dcbw@redhat.com>
+
+	libtracker-miner: Update network provider to work with NetworkManager 0.9
+	Fixes GB#643739, [PATCH] fixes for NetworkManager 0.9
+
+2011-03-03  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Simplify provider inclusion in Makefile.am
+
+2011-03-03  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Make connection_get and connection_get_async robuster
+	With this it should be possible to mix using tracker_sparql_connection_get
+	and tracker_sparql_connection_get_async without having to worry about
+	concurrency.
+
+2011-03-02  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-fs: Include tracker-miner-applications-meego.h in SOURCES
+
+	tracker-extract,pdf: Updated copyright
+
+2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-extract,pdf: Improve logging
+
+	tracker-extract,pdf: If no text found, unref page before continuing
+	Spotted by Carlos García Campos
+
+	tracker-extract,pdf: Port 'Fixed slo:location to be a slo:GeoLocation'
+	Original commit ID: 5186259e8d966ba8c6fe0c989bed6e098d09c42e
+
+	tracker-extract,pdf: Port 'SLO ontology porting'
+	Original commit ID: 2b0e002a41982f4373b06e882a08ca2123f515af
+
+	tracker-extract,pdf: Port 'Fixed nested use of anonymous blank nodes'
+	Original commit ID: 37cc69997955dd379f16ddd77380ff226f71286b
+
+	tracker-extract,pdf: Port 'Add mlo:asPostalAddress'
+	Original commit ID: 0dffb95fa28bb61efb998d48785fc573ad986f64
+
+	tracker-extract,pdf: Port 'Change nfo:Equipment to use canonical uris'
+	Original commit ID: 3d0203cb46fbc6518203e13b44574fabbd85e461
+
+	tracker-extract,pdf: Port 'Adapted extractors to nfo:Equipment ontology change'
+	Original commit ID: dfdca96df57fe2c2b04743a646c61a3dcc0d09b5
+
+	tracker-extract,pdf: Fix action type struct used in POPPLER_ACTION_MOVIE
+
+	tracker-extract,pdf: Small style changes
+
+	tracker-extract,pdf: Port 'Use nfo:device and merge make and model correct for videos'
+	Original commit ID: bf1cc140b35d87a3a0ac11c9b39f87e3b842ff84
+
+	tracker-extract,pdf: Port 'Avoid duplicate tags'
+	Original commit ID: 39d7aa2ac913a10195a3f2ceacfa54a9be930247
+
+	tracker-extract,pdf: Port 'Spaces aren't keyword separators'
+	Original commit ID: 54083f8acc85ba83e4117f1ee1984686ab3b9072
+
+	tracker-extract,pdf: Port 'Small fix to the pdf extractor'
+	Original commit ID: 4d13d69364c2da6560f00f9450d89b7f992bf091
+
+2011-03-02  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract,pdf: Use poppler-glib again for PDF extraction
+	The old code has been resurrected with a few changes to
+	have it work on Poppler 0.16.0, Now that poppler_page_get_text()
+	uses TextOutputDev underneath there's no need anymore to
+	use the C++ interface directly anymore, which is not guaranteed
+	to be API compatible.
+
+	Fixes Bug GB#636375 - 0.9.30: tracker-extract-pdf.cpp:
+	error: GlobalParams.h: No such file or directory, reported
+	by Andre Klapper.
+
+2011-03-02  Martyn Russell  <martyn@lanedo.com>
+
+	examples: Don't forget to free structure in async-connection
+
+2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Lock data-manager-init for concurrent async init
+
+2011-03-02  Martyn Russell  <martyn@lanedo.com>
+
+	examples: Don't forget class-signal.c
+
+	examples: Move async-connection and class-signal to libtracker-sparql subdir
+
+	examples/async-connection: Updated to be fully async
+
+2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Remove ] character from previous commit, oeps
+
+	libtracker-data: More clear error messages when they come from SQLite
+
+	tracker-writeback: Make dispatcher's finalize cope with incomplete init
+
+	tracker-writeback: Cleanly handle errors of dispatcher's construction
+	Fixes NB#231631.
+
+	tracker-writeback: Make dispatcher GInitable
+
+2011-03-02  Gabriel F. Vilar  <cogumm@gmail.com>
+
+	Updated Brazilian Portuguese translation
+
+2011-03-02  Lionel Landwerling  <lionel.g.landwerlin@linux.intel.com>
+
+	libtracker-miner: Add mount-name to tracker:Volume as nie:title Author:    Lionel Landwerling <lionel.g.landwerlin@linux.intel.com>
+
+2011-03-02  Joe Hansen  <joedalton2@yahoo.dk>
+
+	Updated Danish translation
+
+2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-control: let --detailed imply --follow
+
+2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common: Missing glib includes for G_BEGIN_DECLS
+
+2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-extract,gstreamer: On _DECRYPT errors, keep on reading tags
+	Fixes NB#230255
+
+	tracker-miner-fs: Avoid trying to extract embedded metadata from directories
+
+	build: Always include all man pages in dist
+	Fixes GB#643140
+
+	tracker-albumart: Simplify uri vs mtime logic
+
+	libtracker-common: Don't print paths, print uris which are always UTF-8
+
+2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common, libtracker-extract: Don't confuse uri with path
+
+	libtracker-common, tracker-extract: Use of path vs. uri is wrong here
+
+2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: When reporting progress, ensure items processed <= total items
+	Fixes GB#642581
+
+2011-03-02  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	nautilus-extension: don't implement _get_toolbar_items()
+	It got removed from nautilus 2.91.90, and that code does nothing anyway.
+
+2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-extract: Initialize to zero the module data, to fix the statistics
+	Fixes GB#643090
+
+	libtracker-miner: Update processing pool explanation with new default queue sizes
+
+2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+
+	miners/fs, applications: Use the processing-pool for .desktop files too
+
+	examples: Added an example that uses async connection construction
+
+	libtracker-data, -bus, -sparql: Asynchronous init of direct backend
+
+2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-common: Fix comment, date specs is ISO 8601
+
+2011-03-02  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	data-generators:Add slo scripts to data generators
+
+2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-miner-fs,applications: Chain up parent's finalize
+
+2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+
+	utils/tracker-resdump: Added tool to dump a resource as TTL
+
+	utils: Fix compiler warning in tracker-sql.c
+
+	libtracker-common: Fix compiler warning if HAVE_IOPRIO not defined
+
+	miners/fs: Initialize QApplication object only once
+	Fixes NB#228760.
+
+2011-03-02  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-03-02  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-02-23  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	Updated Hungarian translation
+
 2011-02-17  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.0

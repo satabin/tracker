@@ -296,9 +296,9 @@ libextract_pdf_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtrack
 am_libextract_pdf_la_OBJECTS =  \
 	libextract_pdf_la-tracker-extract-pdf.lo
 libextract_pdf_la_OBJECTS = $(am_libextract_pdf_la_OBJECTS)
-libextract_pdf_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
-	$(libextract_pdf_la_CXXFLAGS) $(CXXFLAGS) \
+libextract_pdf_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libextract_pdf_la_CFLAGS) $(CFLAGS) \
 	$(libextract_pdf_la_LDFLAGS) $(LDFLAGS) -o $@
 @HAVE_POPPLER_TRUE@am_libextract_pdf_la_rpath = -rpath $(modulesdir)
 libextract_playlist_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
@@ -723,6 +723,8 @@ TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
 TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
 TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
 TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
+TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
+TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
 TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
@@ -986,8 +988,8 @@ libextract_msoffice_xml_la_LIBADD = \
 
 
 # PDF
-libextract_pdf_la_SOURCES = tracker-extract-pdf.cpp
-libextract_pdf_la_CXXFLAGS = \
+libextract_pdf_la_SOURCES = tracker-extract-pdf.c
+libextract_pdf_la_CFLAGS = \
 	$(TRACKER_EXTRACT_MODULES_CFLAGS) \
 	$(POPPLER_CFLAGS)
 
@@ -1249,7 +1251,7 @@ libextract-msoffice.la: $(libextract_msoffice_la_OBJECTS) $(libextract_msoffice_
 libextract-oasis.la: $(libextract_oasis_la_OBJECTS) $(libextract_oasis_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libextract_oasis_la_LINK) $(am_libextract_oasis_la_rpath) $(libextract_oasis_la_OBJECTS) $(libextract_oasis_la_LIBADD) $(LIBS)
 libextract-pdf.la: $(libextract_pdf_la_OBJECTS) $(libextract_pdf_la_DEPENDENCIES) 
-	$(AM_V_CXXLD)$(libextract_pdf_la_LINK) $(am_libextract_pdf_la_rpath) $(libextract_pdf_la_OBJECTS) $(libextract_pdf_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libextract_pdf_la_LINK) $(am_libextract_pdf_la_rpath) $(libextract_pdf_la_OBJECTS) $(libextract_pdf_la_LIBADD) $(LIBS)
 libextract-playlist.la: $(libextract_playlist_la_OBJECTS) $(libextract_playlist_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libextract_playlist_la_LINK) $(am_libextract_playlist_la_rpath) $(libextract_playlist_la_OBJECTS) $(libextract_playlist_la_LIBADD) $(LIBS)
 libextract-png.la: $(libextract_png_la_OBJECTS) $(libextract_png_la_DEPENDENCIES) 
@@ -1493,6 +1495,14 @@ libextract_oasis_la-tracker-extract-oasis.lo: tracker-extract-oasis.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_oasis_la_CFLAGS) $(CFLAGS) -c -o libextract_oasis_la-tracker-extract-oasis.lo `test -f 'tracker-extract-oasis.c' || echo '$(srcdir)/'`tracker-extract-oasis.c
 
+libextract_pdf_la-tracker-extract-pdf.lo: tracker-extract-pdf.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_pdf_la_CFLAGS) $(CFLAGS) -MT libextract_pdf_la-tracker-extract-pdf.lo -MD -MP -MF $(DEPDIR)/libextract_pdf_la-tracker-extract-pdf.Tpo -c -o libextract_pdf_la-tracker-extract-pdf.lo `test -f 'tracker-extract-pdf.c' || echo '$(srcdir)/'`tracker-extract-pdf.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libextract_pdf_la-tracker-extract-pdf.Tpo $(DEPDIR)/libextract_pdf_la-tracker-extract-pdf.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-extract-pdf.c' object='libextract_pdf_la-tracker-extract-pdf.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_pdf_la_CFLAGS) $(CFLAGS) -c -o libextract_pdf_la-tracker-extract-pdf.lo `test -f 'tracker-extract-pdf.c' || echo '$(srcdir)/'`tracker-extract-pdf.c
+
 libextract_playlist_la-tracker-extract-playlist.lo: tracker-extract-playlist.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_playlist_la_CFLAGS) $(CFLAGS) -MT libextract_playlist_la-tracker-extract-playlist.lo -MD -MP -MF $(DEPDIR)/libextract_playlist_la-tracker-extract-playlist.Tpo -c -o libextract_playlist_la-tracker-extract-playlist.lo `test -f 'tracker-extract-playlist.c' || echo '$(srcdir)/'`tracker-extract-playlist.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libextract_playlist_la-tracker-extract-playlist.Tpo $(DEPDIR)/libextract_playlist_la-tracker-extract-playlist.Plo
@@ -1732,14 +1742,6 @@ tracker_extract-tracker-albumart-dummy.obj: tracker-albumart-dummy.c
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
-
-libextract_pdf_la-tracker-extract-pdf.lo: tracker-extract-pdf.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_pdf_la_CXXFLAGS) $(CXXFLAGS) -MT libextract_pdf_la-tracker-extract-pdf.lo -MD -MP -MF $(DEPDIR)/libextract_pdf_la-tracker-extract-pdf.Tpo -c -o libextract_pdf_la-tracker-extract-pdf.lo `test -f 'tracker-extract-pdf.cpp' || echo '$(srcdir)/'`tracker-extract-pdf.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libextract_pdf_la-tracker-extract-pdf.Tpo $(DEPDIR)/libextract_pdf_la-tracker-extract-pdf.Plo
-@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='tracker-extract-pdf.cpp' object='libextract_pdf_la-tracker-extract-pdf.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_pdf_la_CXXFLAGS) $(CXXFLAGS) -c -o libextract_pdf_la-tracker-extract-pdf.lo `test -f 'tracker-extract-pdf.cpp' || echo '$(srcdir)/'`tracker-extract-pdf.cpp
 
 mostlyclean-libtool:
 	-rm -f *.lo

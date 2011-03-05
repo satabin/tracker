@@ -38,7 +38,7 @@
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-DataSource'>nie:DataSource</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nie-DataSource'>nie:DataSource</link>, <link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>

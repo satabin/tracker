@@ -13,7 +13,7 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [0])
+m4_define([tracker_micro_version], [1])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -178,7 +178,7 @@ UPOWER_REQUIRED=0.9.0
 GDKPIXBUF_REQUIRED=2.12.0
 QT_REQUIRED=4.7.1
 MEEGOTOUCH_REQUIRED=0.20
-POPPLER_REQUIRED=0.12.2
+POPPLER_REQUIRED=0.16.0
 CAIRO_REQUIRED=1.0
 GDK_REQUIRED=1.0
 LIBVORBIS_REQUIRED=0.22
@@ -304,6 +304,13 @@ TRACKER_EXPLORER_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
 PKG_CHECK_MODULES(TRACKER_EXPLORER, [$TRACKER_EXPLORER_REQUIRED],
                   [have_tracker_explorer=yes],
                   [have_tracker_explorer=no])
+
+TRACKER_RESDUMP_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
+                          gee-1.0      >= $GEE_REQUIRED"
+
+PKG_CHECK_MODULES(TRACKER_RESDUMP, [$TRACKER_RESDUMP_REQUIRED],
+                  [have_tracker_resdump=yes],
+                  [have_tracker_resdump=no])
 
 # Check requirements for tracker-store
 TRACKER_STORE_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
@@ -1290,6 +1297,12 @@ fi
 
 AM_CONDITIONAL(HAVE_TRACKER_EXPLORER, test "$have_tracker_explorer" = "yes")
 
+##################################################################
+# Check for tracker-resdump
+##################################################################
+
+AM_CONDITIONAL(HAVE_TRACKER_RESDUMP, test "$have_tracker_resdump" = "yes")
+
 ####################################################################
 ####################################################################
 ####################################################################
@@ -1625,7 +1638,7 @@ AC_ARG_ENABLE(poppler,
 
 if test "x$enable_poppler" != "xno" ; then
    PKG_CHECK_MODULES(POPPLER,
-                     [poppler >= $POPPLER_REQUIRED],
+                     [poppler-glib >= $POPPLER_REQUIRED],
                      [have_poppler=yes],
                      [have_poppler=no])
 
@@ -1633,7 +1646,7 @@ if test "x$enable_poppler" != "xno" ; then
    AC_SUBST(POPPLER_LIBS)
 
    if test "x$have_poppler" = "xyes"; then
-      AC_DEFINE(HAVE_POPPLER, [], [Define if we have poppler])
+      AC_DEFINE(HAVE_POPPLER, [], [Define if we have poppler-glib])
    fi
 else
    have_poppler="no  (disabled)"
@@ -1641,7 +1654,7 @@ fi
 
 if test "x$enable_poppler" = "xyes"; then
    if test "x$have_poppler" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find poppler >= $POPPLER_REQUIRED.])
+      AC_MSG_ERROR([Couldn't find poppler-glib >= $POPPLER_REQUIRED.])
    fi
 fi
 
@@ -2093,11 +2106,12 @@ AC_CONFIG_FILES([
         utils/data-generators/cc/Makefile
 	utils/mtp/Makefile
 	utils/tracker-sql/Makefile
+	utils/tracker-resdump/Makefile
 	examples/Makefile
 	examples/libtracker-extract/Makefile
 	examples/libtracker-miner/Makefile
+	examples/libtracker-sparql/Makefile
 	examples/rss-reader/Makefile
-	examples/class-signal/Makefile
 ])
 
 AC_OUTPUT

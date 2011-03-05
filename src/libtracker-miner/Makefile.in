@@ -52,10 +52,6 @@ host_triplet = @host@
 DIST_COMMON = $(libtracker_minerinclude_HEADERS) \
 	$(srcdir)/Makefile-shared-sources.decl $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/Makefile.decl COPYING.LIB
-@HAVE_GNOME_KEYRING_TRUE@am__append_1 = tracker-password-provider-gnome.c
-@HAVE_GNOME_KEYRING_FALSE@am__append_2 = tracker-password-provider-keyfile.c
-@HAVE_NETWORK_MANAGER_TRUE@am__append_3 = tracker-network-provider-network-manager.c
-@HAVE_NETWORK_MANAGER_FALSE@am__append_4 = tracker-network-provider-dummy.c
 subdir = src/libtracker-miner
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -109,34 +105,33 @@ am__libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES_DIST =  \
 	$(top_builddir)/src/libtracker-miner/tracker-marshal.h \
 	$(top_srcdir)/src/libtracker-miner/tracker-monitor.c \
 	$(top_srcdir)/src/libtracker-miner/tracker-monitor.h \
-	tracker-crawler.c tracker-miner-dbus.h tracker-miner-object.c \
-	tracker-miner-fs.c tracker-miner-fs-processing-pool.h \
+	tracker-network-provider-dummy.c \
+	tracker-network-provider-network-manager.c \
+	tracker-password-provider-keyfile.c \
+	tracker-password-provider-gnome.c tracker-crawler.c \
+	tracker-miner-dbus.h tracker-miner-object.c tracker-miner-fs.c \
+	tracker-miner-fs-processing-pool.h \
 	tracker-miner-fs-processing-pool.c tracker-miner-manager.c \
 	tracker-miner-web.c tracker-network-provider.c \
 	tracker-password-provider.c tracker-storage.c \
-	tracker-thumbnailer.c tracker-utils.c tracker-utils.h \
-	tracker-password-provider-gnome.c \
-	tracker-password-provider-keyfile.c \
-	tracker-network-provider-network-manager.c \
-	tracker-network-provider-dummy.c
+	tracker-thumbnailer.c tracker-utils.c tracker-utils.h
 am__objects_1 = tracker-marshal.lo
 am__objects_2 =
 am__objects_3 = tracker-monitor.lo
-@HAVE_GNOME_KEYRING_TRUE@am__objects_4 =  \
-@HAVE_GNOME_KEYRING_TRUE@	tracker-password-provider-gnome.lo
-@HAVE_GNOME_KEYRING_FALSE@am__objects_5 = tracker-password-provider-keyfile.lo
-@HAVE_NETWORK_MANAGER_TRUE@am__objects_6 = tracker-network-provider-network-manager.lo
-@HAVE_NETWORK_MANAGER_FALSE@am__objects_7 =  \
+@HAVE_NETWORK_MANAGER_FALSE@am__objects_4 =  \
 @HAVE_NETWORK_MANAGER_FALSE@	tracker-network-provider-dummy.lo
+@HAVE_NETWORK_MANAGER_TRUE@am__objects_4 = tracker-network-provider-network-manager.lo
+@HAVE_GNOME_KEYRING_FALSE@am__objects_5 = tracker-password-provider-keyfile.lo
+@HAVE_GNOME_KEYRING_TRUE@am__objects_5 =  \
+@HAVE_GNOME_KEYRING_TRUE@	tracker-password-provider-gnome.lo
 am_libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	$(am__objects_1) $(am__objects_2) $(am__objects_3) \
-	$(am__objects_2) tracker-crawler.lo tracker-miner-object.lo \
-	tracker-miner-fs.lo tracker-miner-fs-processing-pool.lo \
-	tracker-miner-manager.lo tracker-miner-web.lo \
-	tracker-network-provider.lo tracker-password-provider.lo \
-	tracker-storage.lo tracker-thumbnailer.lo tracker-utils.lo \
-	$(am__objects_4) $(am__objects_5) $(am__objects_6) \
-	$(am__objects_7)
+	$(am__objects_2) $(am__objects_4) $(am__objects_5) \
+	tracker-crawler.lo tracker-miner-object.lo tracker-miner-fs.lo \
+	tracker-miner-fs-processing-pool.lo tracker-miner-manager.lo \
+	tracker-miner-web.lo tracker-network-provider.lo \
+	tracker-password-provider.lo tracker-storage.lo \
+	tracker-thumbnailer.lo tracker-utils.lo
 libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	$(am_libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -393,6 +388,8 @@ TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
 TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
 TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
 TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
+TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
+TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
 TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
@@ -506,19 +503,28 @@ AM_CPPFLAGS = \
 lib_LTLIBRARIES = libtracker-miner-@TRACKER_API_VERSION@.la
 libtracker_minerdir = $(libdir)/tracker-$(TRACKER_API_VERSION)
 libtracker_minerincludedir = $(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-miner/
-libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES =  \
-	$(libtracker_miner_marshal_sources) \
-	$(libtracker_miner_marshal_headers) \
-	$(libtracker_miner_monitor_sources) \
-	$(libtracker_miner_monitor_headers) tracker-crawler.c \
-	tracker-miner-dbus.h tracker-miner-object.c tracker-miner-fs.c \
-	tracker-miner-fs-processing-pool.h \
-	tracker-miner-fs-processing-pool.c tracker-miner-manager.c \
-	tracker-miner-web.c tracker-network-provider.c \
-	tracker-password-provider.c tracker-storage.c \
-	tracker-thumbnailer.c tracker-utils.c tracker-utils.h \
-	$(am__append_1) $(am__append_2) $(am__append_3) \
-	$(am__append_4)
+libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES = \
+	$(libtracker_miner_marshal_sources)            \
+	$(libtracker_miner_marshal_headers)            \
+	$(libtracker_miner_monitor_sources)            \
+	$(libtracker_miner_monitor_headers)            \
+	$(network_provider_sources)                    \
+	$(password_provider_sources)                   \
+	tracker-crawler.c                              \
+	tracker-miner-dbus.h                           \
+	tracker-miner-object.c                         \
+	tracker-miner-fs.c                             \
+	tracker-miner-fs-processing-pool.h             \
+	tracker-miner-fs-processing-pool.c             \
+	tracker-miner-manager.c                        \
+	tracker-miner-web.c                            \
+	tracker-network-provider.c                     \
+	tracker-password-provider.c                    \
+	tracker-storage.c                              \
+	tracker-thumbnailer.c                          \
+	tracker-utils.c                                \
+	tracker-utils.h
+
 libtracker_minerinclude_HEADERS = \
 	tracker-crawler.h                              \
 	tracker-miner.h                                \
@@ -543,6 +549,10 @@ libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD = \
 	$(BUILD_LIBS)                                  \
 	$(LIBTRACKER_MINER_LIBS)
 
+@HAVE_GNOME_KEYRING_FALSE@password_provider_sources = tracker-password-provider-keyfile.c
+@HAVE_GNOME_KEYRING_TRUE@password_provider_sources = tracker-password-provider-gnome.c
+@HAVE_NETWORK_MANAGER_FALSE@network_provider_sources = tracker-network-provider-dummy.c
+@HAVE_NETWORK_MANAGER_TRUE@network_provider_sources = tracker-network-provider-network-manager.c
 
 # Vala bindings
 vapidir = $(datadir)/vala/vapi

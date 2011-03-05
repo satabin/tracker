@@ -311,6 +311,8 @@ TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
 TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
 TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
 TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
+TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
+TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
 TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
@@ -393,27 +395,39 @@ TEST_PROGS =
 @HAVE_TRACKER_SEARCH_BAR_TRUE@tsb = tracker-search-bar.1
 @HAVE_TRACKER_PREFERENCES_TRUE@tp = tracker-preferences.1
 @HAVE_TRACKER_NEEDLE_TRUE@tn = tracker-needle.1
+common = \
+	tracker-extract.1 \
+	tracker-extract.cfg.5 \
+	tracker-fts.cfg.5 \
+	tracker-import.1 \
+	tracker-info.1 \
+	tracker-miner-fs.1 \
+	tracker-miner-fs.cfg.5 \
+	tracker-control.1 \
+	tracker-search.1 \
+	tracker-sparql.1 \
+	tracker-stats.1 \
+	tracker-store.1 \
+	tracker-store.cfg.5 \
+	tracker-tag.1
+
+
+# Install only common and enabled manpages
 man_MANS = \
-	tracker-extract.1                              \
-	tracker-extract.cfg.5                          \
-	tracker-fts.cfg.5                              \
-	tracker-import.1                               \
-	tracker-info.1                                 \
-	tracker-miner-fs.1                             \
-	tracker-miner-fs.cfg.5                         \
-	tracker-control.1                              \
-	tracker-search.1                               \
-	tracker-sparql.1                               \
-	tracker-stats.1                                \
-	tracker-store.1                                \
-	tracker-store.cfg.5                            \
-	tracker-tag.1                                  \
-	$(tsb)                                         \
-	$(tn)                                          \
-	$(ta)                                          \
+	$(common) \
+	$(tsb) \
+	$(tn) \
+	$(ta) \
 	$(tp)
 
-EXTRA_DIST = $(man_MANS)
+
+# Make sure even disabled manpages get distributed
+EXTRA_DIST = \
+	$(common) \
+	tracker-search-bar.1 \
+	tracker-preferences.1 \
+	tracker-needle.1
+
 all: all-am
 
 .SUFFIXES:

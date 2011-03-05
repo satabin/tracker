@@ -789,13 +789,13 @@ tracker_albumart_process (const unsigned char *buffer,
 	         filename,
 	         mime);
 
-	if (strstr (filename, "://")) {
-		filename_uri = g_strdup (filename);
-	} else {
-		filename_uri = g_filename_to_uri (filename, NULL, NULL);
-	}
+	/* TODO: We can definitely work with GFiles better here */
 
-	mtime = tracker_file_get_mtime (filename);
+	filename_uri = (strstr (filename, "://") ?
+	                g_strdup (filename) :
+	                g_filename_to_uri (filename, NULL, NULL));
+
+	mtime = tracker_file_get_mtime_uri (filename_uri);
 
 	albumart_get_path (artist,
 	                   album,

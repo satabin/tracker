@@ -1148,7 +1148,7 @@ execute_stmt (TrackerDBInterface  *interface,
 				             errno != ENOSPC ? TRACKER_DB_QUERY_ERROR : TRACKER_DB_NO_SPACE,
 				             "%s%s%s%s",
 				             sqlite3_errmsg (interface->db),
-				             errno != 0 ? " (" : "",
+				             errno != 0 ? " (strerror of errno (not necessarily related): " : "",
 				             errno != 0 ? g_strerror (errno) : "",
 				             errno != 0 ? ")" : "");
 			}

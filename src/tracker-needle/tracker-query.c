@@ -106,86 +106,88 @@ struct _TrackerQueryPerformAsyncData {
 	gchar* _tmp10_;
 	gchar* _tmp11_;
 	gchar* _tmp12_;
-	const gchar* _tmp13_;
+	gchar* _tmp13_;
+	gchar* criteria_escaped_down;
 	const gchar* _tmp14_;
-	gchar* _tmp15_;
+	const gchar* _tmp15_;
 	gchar* _tmp16_;
 	gchar* _tmp17_;
 	gchar* _tmp18_;
 	gchar* _tmp19_;
 	gchar* _tmp20_;
-	const gchar* _tmp21_;
+	gchar* _tmp21_;
 	const gchar* _tmp22_;
-	gchar* _tmp23_;
+	const gchar* _tmp23_;
 	gchar* _tmp24_;
 	gchar* _tmp25_;
 	gchar* _tmp26_;
 	gchar* _tmp27_;
 	gchar* _tmp28_;
-	const gchar* _tmp29_;
+	gchar* _tmp29_;
 	const gchar* _tmp30_;
-	gchar* _tmp31_;
+	const gchar* _tmp31_;
 	gchar* _tmp32_;
 	gchar* _tmp33_;
 	gchar* _tmp34_;
 	gchar* _tmp35_;
 	gchar* _tmp36_;
-	const gchar* _tmp37_;
+	gchar* _tmp37_;
 	const gchar* _tmp38_;
-	gchar* _tmp39_;
+	const gchar* _tmp39_;
 	gchar* _tmp40_;
 	gchar* _tmp41_;
 	gchar* _tmp42_;
 	gchar* _tmp43_;
 	gchar* _tmp44_;
-	const gchar* _tmp45_;
+	gchar* _tmp45_;
 	const gchar* _tmp46_;
-	gchar* _tmp47_;
+	const gchar* _tmp47_;
 	gchar* _tmp48_;
 	gchar* _tmp49_;
 	gchar* _tmp50_;
 	gchar* _tmp51_;
 	gchar* _tmp52_;
-	const gchar* _tmp53_;
-	gchar* _tmp54_;
+	gchar* _tmp53_;
+	const gchar* _tmp54_;
+	gchar* _tmp55_;
 	gchar* pages;
-	const gchar* _tmp55_;
 	const gchar* _tmp56_;
 	const gchar* _tmp57_;
-	gchar* _tmp58_;
+	const gchar* _tmp58_;
 	gchar* _tmp59_;
 	gchar* _tmp60_;
 	gchar* _tmp61_;
 	gchar* _tmp62_;
 	gchar* _tmp63_;
-	const gchar* _tmp64_;
-	gchar* _tmp65_;
+	gchar* _tmp64_;
+	const gchar* _tmp65_;
+	gchar* _tmp66_;
 	gchar* no_subject;
-	const gchar* _tmp66_;
-	gchar* _tmp67_;
+	const gchar* _tmp67_;
+	gchar* _tmp68_;
 	gchar* to;
-	const gchar* _tmp68_;
 	const gchar* _tmp69_;
 	const gchar* _tmp70_;
 	const gchar* _tmp71_;
 	const gchar* _tmp72_;
-	gchar* _tmp73_;
+	const gchar* _tmp73_;
 	gchar* _tmp74_;
 	gchar* _tmp75_;
 	gchar* _tmp76_;
 	gchar* _tmp77_;
 	gchar* _tmp78_;
-	const gchar* _tmp79_;
+	gchar* _tmp79_;
 	const gchar* _tmp80_;
-	gchar* _tmp81_;
+	const gchar* _tmp81_;
 	gchar* _tmp82_;
 	gchar* _tmp83_;
 	gchar* _tmp84_;
 	gchar* _tmp85_;
 	gchar* _tmp86_;
-	TrackerSparqlCursor* _tmp87_;
+	gchar* _tmp87_;
 	TrackerSparqlCursor* _tmp88_;
 	TrackerSparqlCursor* _tmp89_;
+	TrackerSparqlCursor* _tmp90_;
 	GError * ea;
 	GError * eb;
 	GError * ec;
@@ -451,81 +453,85 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 		case TRACKER_QUERY_TYPE_ALL_ONLY_IN_TITLES:
 		{
 			data->_tmp13_ = NULL;
-			data->_tmp13_ = string_to_string (data->unknown);
+			data->_tmp13_ = g_utf8_strdown (data->criteria_escaped, (gssize) (-1));
+			data->criteria_escaped_down = data->_tmp13_;
 			data->_tmp14_ = NULL;
-			data->_tmp14_ = string_to_string (data->criteria_escaped);
+			data->_tmp14_ = string_to_string (data->unknown);
 			data->_tmp15_ = NULL;
-			data->_tmp15_ = g_strdup_printf ("%u", data->self->priv->_offset);
-			data->_tmp16_ = data->_tmp15_;
-			data->_tmp17_ = NULL;
-			data->_tmp17_ = g_strdup_printf ("%u", data->self->priv->_limit);
-			data->_tmp18_ = data->_tmp17_;
-			data->_tmp19_ = NULL;
-			data->_tmp19_ = g_strconcat ("SELECT ?u nie:url(?u) tracker:coalesce(nfo:fileName(?u), \"", data->_tmp13_, "\") nfo:fileLastModified(?u) nfo:fileSize(?u) nie:url(?c) WHERE { ?u a" \
+			data->_tmp15_ = string_to_string (data->criteria_escaped_down);
+			data->_tmp16_ = NULL;
+			data->_tmp16_ = g_strdup_printf ("%u", data->self->priv->_offset);
+			data->_tmp17_ = data->_tmp16_;
+			data->_tmp18_ = NULL;
+			data->_tmp18_ = g_strdup_printf ("%u", data->self->priv->_limit);
+			data->_tmp19_ = data->_tmp18_;
+			data->_tmp20_ = NULL;
+			data->_tmp20_ = g_strconcat ("SELECT ?u nie:url(?u) tracker:coalesce(nfo:fileName(?u), \"", data->_tmp14_, "\") nfo:fileLastModified(?u) nfo:fileSize(?u) nie:url(?c) WHERE { ?u a" \
 " nfo:FileDataObject ; nfo:belongsToContainer ?c ; tracker:available tr" \
-"ue . FILTER(fn:contains(nfo:fileName(?u), \"", data->_tmp14_, "\")) } ORDER BY DESC(nfo:fileName(?u)) OFFSET ", data->_tmp16_, " LIMIT ", data->_tmp18_, NULL);
-			data->_tmp20_ = data->_tmp19_;
-			tracker_query_set_query (data->self, data->_tmp20_);
-			_g_free0 (data->_tmp20_);
-			_g_free0 (data->_tmp18_);
-			_g_free0 (data->_tmp16_);
+"ue . FILTER(fn:contains(fn:lower-case(nfo:fileName(?u)), \"", data->_tmp15_, "\")) } ORDER BY DESC(nfo:fileName(?u)) OFFSET ", data->_tmp17_, " LIMIT ", data->_tmp19_, NULL);
+			data->_tmp21_ = data->_tmp20_;
+			tracker_query_set_query (data->self, data->_tmp21_);
+			_g_free0 (data->_tmp21_);
+			_g_free0 (data->_tmp19_);
+			_g_free0 (data->_tmp17_);
+			_g_free0 (data->criteria_escaped_down);
 			break;
 		}
 		case TRACKER_QUERY_TYPE_APPLICATIONS:
 		{
-			data->_tmp21_ = NULL;
-			data->_tmp21_ = string_to_string (data->unknown);
 			data->_tmp22_ = NULL;
-			data->_tmp22_ = string_to_string (data->criteria_escaped);
+			data->_tmp22_ = string_to_string (data->unknown);
 			data->_tmp23_ = NULL;
-			data->_tmp23_ = g_strdup_printf ("%u", data->self->priv->_offset);
-			data->_tmp24_ = data->_tmp23_;
-			data->_tmp25_ = NULL;
-			data->_tmp25_ = g_strdup_printf ("%u", data->self->priv->_limit);
-			data->_tmp26_ = data->_tmp25_;
-			data->_tmp27_ = NULL;
-			data->_tmp27_ = g_strconcat ("\n" \
+			data->_tmp23_ = string_to_string (data->criteria_escaped);
+			data->_tmp24_ = NULL;
+			data->_tmp24_ = g_strdup_printf ("%u", data->self->priv->_offset);
+			data->_tmp25_ = data->_tmp24_;
+			data->_tmp26_ = NULL;
+			data->_tmp26_ = g_strdup_printf ("%u", data->self->priv->_limit);
+			data->_tmp27_ = data->_tmp26_;
+			data->_tmp28_ = NULL;
+			data->_tmp28_ = g_strconcat ("\n" \
 "			        SELECT\n" \
 "			          ?urn\n" \
 "			          tracker:coalesce(nfo:softwareCmdLine(?urn), ?urn)\n" \
-"			          tracker:coalesce(nie:title(?urn), nfo:fileName(?urn), \"", data->_tmp21_, "\")\n" \
+"			          tracker:coalesce(nie:title(?urn), nfo:fileName(?urn), \"", data->_tmp22_, "\")\n" \
 "			          nie:comment(?urn)\n" \
 "			        WHERE {\n" \
 "			          ?urn a nfo:Software ;\n" \
-"			               fts:match \"", data->_tmp22_, "\"\n" \
+"			               fts:match \"", data->_tmp23_, "\"\n" \
 "			        }\n" \
 "			        ORDER BY DESC(fts:rank(?urn)) DESC(nie:title(?urn))\n" \
-"			        OFFSET ", data->_tmp24_, " LIMIT ", data->_tmp26_, "\n			        ", NULL);
-			data->_tmp28_ = data->_tmp27_;
-			tracker_query_set_query (data->self, data->_tmp28_);
-			_g_free0 (data->_tmp28_);
-			_g_free0 (data->_tmp26_);
-			_g_free0 (data->_tmp24_);
+"			        OFFSET ", data->_tmp25_, " LIMIT ", data->_tmp27_, "\n			        ", NULL);
+			data->_tmp29_ = data->_tmp28_;
+			tracker_query_set_query (data->self, data->_tmp29_);
+			_g_free0 (data->_tmp29_);
+			_g_free0 (data->_tmp27_);
+			_g_free0 (data->_tmp25_);
 			break;
 		}
 		case TRACKER_QUERY_TYPE_MUSIC:
 		{
-			data->_tmp29_ = NULL;
-			data->_tmp29_ = string_to_string (data->unknown);
 			data->_tmp30_ = NULL;
-			data->_tmp30_ = string_to_string (data->criteria_escaped);
+			data->_tmp30_ = string_to_string (data->unknown);
 			data->_tmp31_ = NULL;
-			data->_tmp31_ = g_strdup_printf ("%u", data->self->priv->_offset);
-			data->_tmp32_ = data->_tmp31_;
-			data->_tmp33_ = NULL;
-			data->_tmp33_ = g_strdup_printf ("%u", data->self->priv->_limit);
-			data->_tmp34_ = data->_tmp33_;
-			data->_tmp35_ = NULL;
-			data->_tmp35_ = g_strconcat ("\n" \
+			data->_tmp31_ = string_to_string (data->criteria_escaped);
+			data->_tmp32_ = NULL;
+			data->_tmp32_ = g_strdup_printf ("%u", data->self->priv->_offset);
+			data->_tmp33_ = data->_tmp32_;
+			data->_tmp34_ = NULL;
+			data->_tmp34_ = g_strdup_printf ("%u", data->self->priv->_limit);
+			data->_tmp35_ = data->_tmp34_;
+			data->_tmp36_ = NULL;
+			data->_tmp36_ = g_strconcat ("\n" \
 "			        SELECT\n" \
 "			          ?song\n" \
 "			          nie:url(?song)\n" \
-"			          tracker:coalesce(nie:title(?song), nfo:fileName(?song), \"", data->_tmp29_, "\")\n" \
+"			          tracker:coalesce(nie:title(?song), nfo:fileName(?song), \"", data->_tmp30_, "\")\n" \
 "			          fn:string-join((?performer, ?album), \" - \")\n" \
 "			          nfo:duration(?song)\n" \
 "			          ?tooltip\n" \
 "			        WHERE {\n" \
-"			          ?match fts:match \"", data->_tmp30_, "\"\n" \
+"			          ?match fts:match \"", data->_tmp31_, "\"\n" \
 "			          {\n" \
 "			            ?song nmm:musicAlbum ?match\n" \
 "			          } UNION {\n" \
@@ -540,32 +546,32 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 "			                nie:url ?tooltip\n" \
 "			        }\n" \
 "			        ORDER BY DESC(fts:rank(?song)) DESC(nie:title(?song))\n" \
-"			        OFFSET ", data->_tmp32_, " LIMIT ", data->_tmp34_, "\n			        ", NULL);
-			data->_tmp36_ = data->_tmp35_;
-			tracker_query_set_query (data->self, data->_tmp36_);
-			_g_free0 (data->_tmp36_);
-			_g_free0 (data->_tmp34_);
-			_g_free0 (data->_tmp32_);
+"			        OFFSET ", data->_tmp33_, " LIMIT ", data->_tmp35_, "\n			        ", NULL);
+			data->_tmp37_ = data->_tmp36_;
+			tracker_query_set_query (data->self, data->_tmp37_);
+			_g_free0 (data->_tmp37_);
+			_g_free0 (data->_tmp35_);
+			_g_free0 (data->_tmp33_);
 			break;
 		}
 		case TRACKER_QUERY_TYPE_IMAGES:
 		{
-			data->_tmp37_ = NULL;
-			data->_tmp37_ = string_to_string (data->unknown);
 			data->_tmp38_ = NULL;
-			data->_tmp38_ = string_to_string (data->criteria_escaped);
+			data->_tmp38_ = string_to_string (data->unknown);
 			data->_tmp39_ = NULL;
-			data->_tmp39_ = g_strdup_printf ("%u", data->self->priv->_offset);
-			data->_tmp40_ = data->_tmp39_;
-			data->_tmp41_ = NULL;
-			data->_tmp41_ = g_strdup_printf ("%u", data->self->priv->_limit);
-			data->_tmp42_ = data->_tmp41_;
-			data->_tmp43_ = NULL;
-			data->_tmp43_ = g_strconcat ("\n" \
+			data->_tmp39_ = string_to_string (data->criteria_escaped);
+			data->_tmp40_ = NULL;
+			data->_tmp40_ = g_strdup_printf ("%u", data->self->priv->_offset);
+			data->_tmp41_ = data->_tmp40_;
+			data->_tmp42_ = NULL;
+			data->_tmp42_ = g_strdup_printf ("%u", data->self->priv->_limit);
+			data->_tmp43_ = data->_tmp42_;
+			data->_tmp44_ = NULL;
+			data->_tmp44_ = g_strconcat ("\n" \
 "			        SELECT\n" \
 "			          ?urn \n" \
 "			          nie:url(?urn) \n" \
-"			          tracker:coalesce(nie:title(?urn), nfo:fileName(?urn), \"", data->_tmp37_, "\") \n" \
+"			          tracker:coalesce(nie:title(?urn), nfo:fileName(?urn), \"", data->_tmp38_, "\") \n" \
 "			          fn:string-join((nfo:height(?urn), nfo:width(?urn)), \" x " \
 "\") \n" \
 "			          nfo:fileSize(?urn)\n" \
@@ -573,84 +579,84 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 "			        WHERE {\n" \
 "			          ?urn a nfo:Image ;\n" \
 "			          nie:url ?tooltip ;\n" \
-"			          fts:match \"", data->_tmp38_, "\" \n" \
+"			          fts:match \"", data->_tmp39_, "\" \n" \
 "			        }\n" \
 "			        ORDER BY DESC(fts:rank(?urn)) DESC(nie:title(?urn)) \n" \
-"			        OFFSET ", data->_tmp40_, " LIMIT ", data->_tmp42_, "\n			        ", NULL);
-			data->_tmp44_ = data->_tmp43_;
-			tracker_query_set_query (data->self, data->_tmp44_);
-			_g_free0 (data->_tmp44_);
-			_g_free0 (data->_tmp42_);
-			_g_free0 (data->_tmp40_);
+"			        OFFSET ", data->_tmp41_, " LIMIT ", data->_tmp43_, "\n			        ", NULL);
+			data->_tmp45_ = data->_tmp44_;
+			tracker_query_set_query (data->self, data->_tmp45_);
+			_g_free0 (data->_tmp45_);
+			_g_free0 (data->_tmp43_);
+			_g_free0 (data->_tmp41_);
 			break;
 		}
 		case TRACKER_QUERY_TYPE_VIDEOS:
 		{
-			data->_tmp45_ = NULL;
-			data->_tmp45_ = string_to_string (data->unknown);
 			data->_tmp46_ = NULL;
-			data->_tmp46_ = string_to_string (data->criteria_escaped);
+			data->_tmp46_ = string_to_string (data->unknown);
 			data->_tmp47_ = NULL;
-			data->_tmp47_ = g_strdup_printf ("%u", data->self->priv->_offset);
-			data->_tmp48_ = data->_tmp47_;
-			data->_tmp49_ = NULL;
-			data->_tmp49_ = g_strdup_printf ("%u", data->self->priv->_limit);
-			data->_tmp50_ = data->_tmp49_;
-			data->_tmp51_ = NULL;
-			data->_tmp51_ = g_strconcat ("\n" \
+			data->_tmp47_ = string_to_string (data->criteria_escaped);
+			data->_tmp48_ = NULL;
+			data->_tmp48_ = g_strdup_printf ("%u", data->self->priv->_offset);
+			data->_tmp49_ = data->_tmp48_;
+			data->_tmp50_ = NULL;
+			data->_tmp50_ = g_strdup_printf ("%u", data->self->priv->_limit);
+			data->_tmp51_ = data->_tmp50_;
+			data->_tmp52_ = NULL;
+			data->_tmp52_ = g_strconcat ("\n" \
 "			        SELECT\n" \
 "			          ?urn \n" \
 "			          nie:url(?urn) \n" \
-"			          tracker:coalesce(nie:title(?urn), nfo:fileName(?urn), \"", data->_tmp45_, "\") \n" \
+"			          tracker:coalesce(nie:title(?urn), nfo:fileName(?urn), \"", data->_tmp46_, "\") \n" \
 "			          \"\"\n" \
 "			          nfo:duration(?urn)\n" \
 "			          ?tooltip\n" \
 "			        WHERE {\n" \
 "			          ?urn a nfo:Video ;\n" \
 "			          nie:url ?tooltip ;\n" \
-"			          fts:match \"", data->_tmp46_, "\" .\n" \
+"			          fts:match \"", data->_tmp47_, "\" .\n" \
 "			        }\n" \
 "			        ORDER BY DESC(fts:rank(?urn)) DESC(nie:title(?urn)) \n" \
-"			        OFFSET ", data->_tmp48_, " LIMIT ", data->_tmp50_, "\n			        ", NULL);
-			data->_tmp52_ = data->_tmp51_;
-			tracker_query_set_query (data->self, data->_tmp52_);
-			_g_free0 (data->_tmp52_);
-			_g_free0 (data->_tmp50_);
-			_g_free0 (data->_tmp48_);
+"			        OFFSET ", data->_tmp49_, " LIMIT ", data->_tmp51_, "\n			        ", NULL);
+			data->_tmp53_ = data->_tmp52_;
+			tracker_query_set_query (data->self, data->_tmp53_);
+			_g_free0 (data->_tmp53_);
+			_g_free0 (data->_tmp51_);
+			_g_free0 (data->_tmp49_);
 			break;
 		}
 		case TRACKER_QUERY_TYPE_DOCUMENTS:
 		{
-			data->_tmp53_ = NULL;
-			data->_tmp53_ = _ ("Pages");
-			data->_tmp54_ = g_strdup (data->_tmp53_);
-			data->pages = data->_tmp54_;
-			data->_tmp55_ = NULL;
-			data->_tmp55_ = string_to_string (data->unknown);
+			data->_tmp54_ = NULL;
+			data->_tmp54_ = _ ("Pages");
+			data->_tmp55_ = g_strdup (data->_tmp54_);
+			data->pages = data->_tmp55_;
 			data->_tmp56_ = NULL;
-			data->_tmp56_ = string_to_string (data->pages);
+			data->_tmp56_ = string_to_string (data->unknown);
 			data->_tmp57_ = NULL;
-			data->_tmp57_ = string_to_string (data->criteria_escaped);
+			data->_tmp57_ = string_to_string (data->pages);
 			data->_tmp58_ = NULL;
-			data->_tmp58_ = g_strdup_printf ("%u", data->self->priv->_offset);
-			data->_tmp59_ = data->_tmp58_;
-			data->_tmp60_ = NULL;
-			data->_tmp60_ = g_strdup_printf ("%u", data->self->priv->_limit);
-			data->_tmp61_ = data->_tmp60_;
-			data->_tmp62_ = NULL;
-			data->_tmp62_ = g_strconcat ("\n" \
+			data->_tmp58_ = string_to_string (data->criteria_escaped);
+			data->_tmp59_ = NULL;
+			data->_tmp59_ = g_strdup_printf ("%u", data->self->priv->_offset);
+			data->_tmp60_ = data->_tmp59_;
+			data->_tmp61_ = NULL;
+			data->_tmp61_ = g_strdup_printf ("%u", data->self->priv->_limit);
+			data->_tmp62_ = data->_tmp61_;
+			data->_tmp63_ = NULL;
+			data->_tmp63_ = g_strconcat ("\n" \
 "			        SELECT\n" \
 "			          ?urn \n" \
 "			          nie:url(?urn) \n" \
-"			          tracker:coalesce(nie:title(?urn), nfo:fileName(?urn), \"", data->_tmp55_, "\") \n" \
+"			          tracker:coalesce(nie:title(?urn), nfo:fileName(?urn), \"", data->_tmp56_, "\") \n" \
 "			          tracker:coalesce(nco:fullname(?creator), nco:fullname(?pu" \
 "blisher), \"\")\n" \
-"			          fn:concat(nfo:pageCount(?urn), \" ", data->_tmp56_, "\")\n" \
+"			          fn:concat(nfo:pageCount(?urn), \" ", data->_tmp57_, "\")\n" \
 "			          ?tooltip\n" \
 "			        WHERE {\n" \
 "			          ?urn a nfo:Document ;\n" \
 "			          nie:url ?tooltip ;\n" \
-"			          fts:match \"", data->_tmp57_, "\" .\n" \
+"			          fts:match \"", data->_tmp58_, "\" .\n" \
 "			          OPTIONAL {\n" \
 "			            ?urn nco:creator ?creator .\n" \
 "			          }\n" \
@@ -659,103 +665,103 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 "			          }\n" \
 "			        }\n" \
 "			        ORDER BY DESC(fts:rank(?urn)) DESC(nie:title(?urn)) \n" \
-"			        OFFSET ", data->_tmp59_, " LIMIT ", data->_tmp61_, "\n			        ", NULL);
-			data->_tmp63_ = data->_tmp62_;
-			tracker_query_set_query (data->self, data->_tmp63_);
-			_g_free0 (data->_tmp63_);
-			_g_free0 (data->_tmp61_);
-			_g_free0 (data->_tmp59_);
+"			        OFFSET ", data->_tmp60_, " LIMIT ", data->_tmp62_, "\n			        ", NULL);
+			data->_tmp64_ = data->_tmp63_;
+			tracker_query_set_query (data->self, data->_tmp64_);
+			_g_free0 (data->_tmp64_);
+			_g_free0 (data->_tmp62_);
+			_g_free0 (data->_tmp60_);
 			_g_free0 (data->pages);
 			break;
 		}
 		case TRACKER_QUERY_TYPE_MAIL:
 		{
-			data->_tmp64_ = NULL;
-			data->_tmp64_ = _ ("No Subject");
-			data->_tmp65_ = g_strdup (data->_tmp64_);
-			data->no_subject = data->_tmp65_;
-			data->_tmp66_ = NULL;
-			data->_tmp66_ = _ ("To");
-			data->_tmp67_ = g_strdup (data->_tmp66_);
-			data->to = data->_tmp67_;
-			data->_tmp68_ = NULL;
-			data->_tmp68_ = string_to_string (data->unknown);
+			data->_tmp65_ = NULL;
+			data->_tmp65_ = _ ("No Subject");
+			data->_tmp66_ = g_strdup (data->_tmp65_);
+			data->no_subject = data->_tmp66_;
+			data->_tmp67_ = NULL;
+			data->_tmp67_ = _ ("To");
+			data->_tmp68_ = g_strdup (data->_tmp67_);
+			data->to = data->_tmp68_;
 			data->_tmp69_ = NULL;
-			data->_tmp69_ = string_to_string (data->no_subject);
+			data->_tmp69_ = string_to_string (data->unknown);
 			data->_tmp70_ = NULL;
-			data->_tmp70_ = string_to_string (data->to);
+			data->_tmp70_ = string_to_string (data->no_subject);
 			data->_tmp71_ = NULL;
-			data->_tmp71_ = string_to_string (data->unknown);
+			data->_tmp71_ = string_to_string (data->to);
 			data->_tmp72_ = NULL;
-			data->_tmp72_ = string_to_string (data->criteria_escaped);
+			data->_tmp72_ = string_to_string (data->unknown);
 			data->_tmp73_ = NULL;
-			data->_tmp73_ = g_strdup_printf ("%u", data->self->priv->_offset);
-			data->_tmp74_ = data->_tmp73_;
-			data->_tmp75_ = NULL;
-			data->_tmp75_ = g_strdup_printf ("%u", data->self->priv->_limit);
-			data->_tmp76_ = data->_tmp75_;
-			data->_tmp77_ = NULL;
-			data->_tmp77_ = g_strconcat ("\n" \
+			data->_tmp73_ = string_to_string (data->criteria_escaped);
+			data->_tmp74_ = NULL;
+			data->_tmp74_ = g_strdup_printf ("%u", data->self->priv->_offset);
+			data->_tmp75_ = data->_tmp74_;
+			data->_tmp76_ = NULL;
+			data->_tmp76_ = g_strdup_printf ("%u", data->self->priv->_limit);
+			data->_tmp77_ = data->_tmp76_;
+			data->_tmp78_ = NULL;
+			data->_tmp78_ = g_strconcat ("\n" \
 "			        SELECT\n" \
 "			          ?urn\n" \
 "			          nie:url(?urn)\n" \
 "			          tracker:coalesce(nco:fullname(?sender), nco:nickname(?sen" \
-"der), nco:emailAddress(?sender), \"", data->_tmp68_, "\")\n			          tracker:coalesce(nmo:messageSubject(?urn), \"", data->_tmp69_, "\")\n			          nmo:receivedDate(?urn)\n			          fn:concat(\"", data->_tmp70_, ": \", tracker:coalesce(nco:fullname(?to), nco:nickname(?to), nco:email" \
-"Address(?to), \"", data->_tmp71_, "\"))\n" \
+"der), nco:emailAddress(?sender), \"", data->_tmp69_, "\")\n			          tracker:coalesce(nmo:messageSubject(?urn), \"", data->_tmp70_, "\")\n			          nmo:receivedDate(?urn)\n			          fn:concat(\"", data->_tmp71_, ": \", tracker:coalesce(nco:fullname(?to), nco:nickname(?to), nco:email" \
+"Address(?to), \"", data->_tmp72_, "\"))\n" \
 "			        WHERE {\n" \
 "			          ?urn a nmo:Email ;\n" \
 "			          nmo:from ?sender ;\n" \
 "			          nmo:to ?to ;\n" \
-"			          fts:match \"", data->_tmp72_, "\" .\n" \
+"			          fts:match \"", data->_tmp73_, "\" .\n" \
 "			        }\n" \
 "			        ORDER BY DESC(fts:rank(?urn)) DESC(nmo:messageSubject(?urn)" \
 ") DESC(nmo:receivedDate(?urn))\n" \
-"			        OFFSET ", data->_tmp74_, " LIMIT ", data->_tmp76_, "\n			        ", NULL);
-			data->_tmp78_ = data->_tmp77_;
-			tracker_query_set_query (data->self, data->_tmp78_);
-			_g_free0 (data->_tmp78_);
-			_g_free0 (data->_tmp76_);
-			_g_free0 (data->_tmp74_);
+"			        OFFSET ", data->_tmp75_, " LIMIT ", data->_tmp77_, "\n			        ", NULL);
+			data->_tmp79_ = data->_tmp78_;
+			tracker_query_set_query (data->self, data->_tmp79_);
+			_g_free0 (data->_tmp79_);
+			_g_free0 (data->_tmp77_);
+			_g_free0 (data->_tmp75_);
 			_g_free0 (data->to);
 			_g_free0 (data->no_subject);
 			break;
 		}
 		case TRACKER_QUERY_TYPE_FOLDERS:
 		{
-			data->_tmp79_ = NULL;
-			data->_tmp79_ = string_to_string (data->unknown);
 			data->_tmp80_ = NULL;
-			data->_tmp80_ = string_to_string (data->criteria_escaped);
+			data->_tmp80_ = string_to_string (data->unknown);
 			data->_tmp81_ = NULL;
-			data->_tmp81_ = g_strdup_printf ("%u", data->self->priv->_offset);
-			data->_tmp82_ = data->_tmp81_;
-			data->_tmp83_ = NULL;
-			data->_tmp83_ = g_strdup_printf ("%u", data->self->priv->_limit);
-			data->_tmp84_ = data->_tmp83_;
-			data->_tmp85_ = NULL;
-			data->_tmp85_ = g_strconcat ("\n" \
+			data->_tmp81_ = string_to_string (data->criteria_escaped);
+			data->_tmp82_ = NULL;
+			data->_tmp82_ = g_strdup_printf ("%u", data->self->priv->_offset);
+			data->_tmp83_ = data->_tmp82_;
+			data->_tmp84_ = NULL;
+			data->_tmp84_ = g_strdup_printf ("%u", data->self->priv->_limit);
+			data->_tmp85_ = data->_tmp84_;
+			data->_tmp86_ = NULL;
+			data->_tmp86_ = g_strconcat ("\n" \
 "			        SELECT\n" \
 "			          ?urn\n" \
 "			          nie:url(?urn)\n" \
-"			          tracker:coalesce(nie:title(?urn), nfo:fileName(?urn), \"", data->_tmp79_, "\")\n" \
+"			          tracker:coalesce(nie:title(?urn), nfo:fileName(?urn), \"", data->_tmp80_, "\")\n" \
 "			          tracker:coalesce(nie:url(?parent), \"\")\n" \
 "			          nfo:fileLastModified(?urn)\n" \
 "			          ?tooltip\n" \
 "			        WHERE {\n" \
 "			          ?urn a nfo:Folder ;\n" \
 "			          nie:url ?tooltip ;\n" \
-"			          fts:match \"", data->_tmp80_, "\" .\n" \
+"			          fts:match \"", data->_tmp81_, "\" .\n" \
 "			          OPTIONAL {\n" \
 "			            ?urn nfo:belongsToContainer ?parent .\n" \
 "			          }\n" \
 "			        }\n" \
 "			        ORDER BY DESC(fts:rank(?urn)) DESC(nie:title(?urn))\n" \
-"			        OFFSET ", data->_tmp82_, " LIMIT ", data->_tmp84_, "\n			        ", NULL);
-			data->_tmp86_ = data->_tmp85_;
-			tracker_query_set_query (data->self, data->_tmp86_);
-			_g_free0 (data->_tmp86_);
-			_g_free0 (data->_tmp84_);
-			_g_free0 (data->_tmp82_);
+"			        OFFSET ", data->_tmp83_, " LIMIT ", data->_tmp85_, "\n			        ", NULL);
+			data->_tmp87_ = data->_tmp86_;
+			tracker_query_set_query (data->self, data->_tmp87_);
+			_g_free0 (data->_tmp87_);
+			_g_free0 (data->_tmp85_);
+			_g_free0 (data->_tmp83_);
 			break;
 		}
 		default:
@@ -763,14 +769,14 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 			g_assert_not_reached ();
 		}
 	}
-	g_debug ("tracker-query.vala:242: Running query: '%s'", data->self->priv->_query);
+	g_debug ("tracker-query.vala:244: Running query: '%s'", data->self->priv->_query);
 	data->_state_ = 1;
 	tracker_sparql_connection_query_async (tracker_query_connection, data->self->priv->_query, NULL, tracker_query_perform_async_ready, data);
 	return FALSE;
 	_state_1:
-	data->_tmp87_ = NULL;
-	data->_tmp87_ = tracker_sparql_connection_query_finish (tracker_query_connection, data->_res_, &data->_inner_error_);
-	data->_tmp88_ = data->_tmp87_;
+	data->_tmp88_ = NULL;
+	data->_tmp88_ = tracker_sparql_connection_query_finish (tracker_query_connection, data->_res_, &data->_inner_error_);
+	data->_tmp89_ = data->_tmp88_;
 	if (data->_inner_error_ != NULL) {
 		if (data->_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 			goto __catch4_tracker_sparql_error;
@@ -788,15 +794,15 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 		g_clear_error (&data->_inner_error_);
 		return FALSE;
 	}
-	data->_tmp89_ = data->_tmp88_;
+	data->_tmp90_ = data->_tmp89_;
 	_g_object_unref0 (data->cursor);
-	data->cursor = data->_tmp89_;
+	data->cursor = data->_tmp90_;
 	goto __finally4;
 	__catch4_tracker_sparql_error:
 	{
 		data->ea = data->_inner_error_;
 		data->_inner_error_ = NULL;
-		g_warning ("tracker-query.vala:247: Could not run Sparql query: %s", data->ea->message);
+		g_warning ("tracker-query.vala:249: Could not run Sparql query: %s", data->ea->message);
 		_g_error_free0 (data->ea);
 	}
 	goto __finally4;
@@ -804,7 +810,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 	{
 		data->eb = data->_inner_error_;
 		data->_inner_error_ = NULL;
-		g_warning ("tracker-query.vala:249: Could not run Sparql query: %s", data->eb->message);
+		g_warning ("tracker-query.vala:251: Could not run Sparql query: %s", data->eb->message);
 		_g_error_free0 (data->eb);
 	}
 	goto __finally4;
@@ -812,7 +818,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 	{
 		data->ec = data->_inner_error_;
 		data->_inner_error_ = NULL;
-		g_warning ("tracker-query.vala:251: Could not run Sparql query: %s", data->ec->message);
+		g_warning ("tracker-query.vala:253: Could not run Sparql query: %s", data->ec->message);
 		_g_error_free0 (data->ec);
 	}
 	__finally4:
@@ -839,7 +845,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 			return FALSE;
 		}
 	}
-	g_debug ("tracker-query.vala:254: Done");
+	g_debug ("tracker-query.vala:256: Done");
 	data->result = data->cursor;
 	_g_free0 (data->unknown);
 	_g_free0 (data->criteria_escaped);

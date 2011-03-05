@@ -131,7 +131,7 @@
 /* Define if we have NetworkManager for network status detection */
 #undef HAVE_NETWORK_MANAGER
 
-/* Define if we have poppler */
+/* Define if we have poppler-glib */
 #undef HAVE_POPPLER
 
 /* Define to 1 if you have the `posix_fadvise' function. */

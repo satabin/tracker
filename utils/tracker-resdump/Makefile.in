@@ -45,9 +45,10 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(top_srcdir)/Makefile.decl
-noinst_PROGRAMS = class-signal$(EXEEXT)
-subdir = examples/class-signal
+	$(top_srcdir)/Makefile.decl tracker-resdump.c \
+	tracker_resdump_vala.stamp
+noinst_PROGRAMS = tracker-resdump$(EXEEXT)
+subdir = utils/tracker-resdump
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
 	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/iconv.m4 \
@@ -67,15 +68,26 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
-am_class_signal_OBJECTS = class-signal.$(OBJEXT)
-class_signal_OBJECTS = $(am_class_signal_OBJECTS)
-class_signal_LDADD = $(LDADD)
+am_tracker_resdump_OBJECTS =  \
+	tracker_resdump-tracker-resdump.$(OBJEXT)
+tracker_resdump_OBJECTS = $(am_tracker_resdump_OBJECTS)
 am__DEPENDENCIES_1 =
-class_signal_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql/libtracker-sparql-$(TRACKER_API_VERSION).la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am__DEPENDENCIES_2 =  \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+	$(top_builddir)/src/libtracker-direct/libtracker-direct.la \
+	$(top_builddir)/src/libtracker-bus/libtracker-bus.la \
+	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-$(TRACKER_API_VERSION).la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+tracker_resdump_DEPENDENCIES = $(am__DEPENDENCIES_2)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
+tracker_resdump_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(tracker_resdump_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+	-o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -99,11 +111,18 @@ LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 AM_V_CCLD = $(am__v_CCLD_$(V))
 am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD  " $@;
+VALACOMPILE = $(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS)
+LTVALACOMPILE = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(VALAC) $(AM_VALAFLAGS) \
+	$(VALAFLAGS)
+AM_V_VALAC = $(am__v_VALAC_$(V))
+am__v_VALAC_ = $(am__v_VALAC_$(AM_DEFAULT_VERBOSITY))
+am__v_VALAC_0 = @echo "  VALAC " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(class_signal_SOURCES)
-DIST_SOURCES = $(class_signal_SOURCES)
+SOURCES = $(tracker_resdump_SOURCES)
+DIST_SOURCES = $(tracker_resdump_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -319,6 +338,8 @@ TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
 TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
 TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
 TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
+TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
+TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
 TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
 TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
 TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
@@ -398,17 +419,34 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
+AM_VALAFLAGS = \
+	--pkg gio-2.0 \
+	--pkg gee-1.0 \
+	$(BUILD_VALAFLAGS) \
+	$(top_srcdir)/src/libtracker-sparql/tracker-sparql-$(TRACKER_API_VERSION).vapi \
+	$(top_srcdir)/src/libtracker-bus/tracker-bus.vapi
+
 AM_CPPFLAGS = \
 	$(BUILD_CFLAGS) \
 	-I$(top_srcdir)/src \
-	$(LIBTRACKER_SPARQL_CFLAGS)
+	-I$(top_builddir)/src \
+	$(LIBTRACKER_SPARQL_CFLAGS) \
+	$(TRACKER_RESDUMP_CFLAGS)
 
 LDADD = \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+	$(top_builddir)/src/libtracker-direct/libtracker-direct.la \
+	$(top_builddir)/src/libtracker-bus/libtracker-bus.la \
 	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-$(TRACKER_API_VERSION).la \
-	$(BUILD_LIBS) \
-	$(LIBTRACKER_SPARQL_LIBS)
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(BUILD_LIBS)\
+	$(LIBTRACKER_SPARQL_LIBS) \
+	$(TRACKER_RESDUMP_LIBS)
 
-class_signal_SOURCES = class-signal.c
+tracker_resdump_SOURCES = tracker-resdump.vala
+tracker_resdump_CFLAGS = $(AM_CPPFLAGS)
+tracker_resdump_VALAFLAGS = $(AM_VALAFLAGS)
+tracker_resdump_LDADD = $(LDADD)
 all: all-am
 
 .SUFFIXES:
@@ -422,9 +460,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu examples/class-signal/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu utils/tracker-resdump/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu examples/class-signal/Makefile
+	  $(AUTOMAKE) --gnu utils/tracker-resdump/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -452,9 +490,9 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-class-signal$(EXEEXT): $(class_signal_OBJECTS) $(class_signal_DEPENDENCIES) 
-	@rm -f class-signal$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(class_signal_OBJECTS) $(class_signal_LDADD) $(LIBS)
+tracker-resdump$(EXEEXT): $(tracker_resdump_OBJECTS) $(tracker_resdump_DEPENDENCIES) 
+	@rm -f tracker-resdump$(EXEEXT)
+	$(AM_V_CCLD)$(tracker_resdump_LINK) $(tracker_resdump_OBJECTS) $(tracker_resdump_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -462,7 +500,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/class-signal.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_resdump-tracker-resdump.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -487,6 +525,30 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+tracker_resdump-tracker-resdump.o: tracker-resdump.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_resdump_CFLAGS) $(CFLAGS) -MT tracker_resdump-tracker-resdump.o -MD -MP -MF $(DEPDIR)/tracker_resdump-tracker-resdump.Tpo -c -o tracker_resdump-tracker-resdump.o `test -f 'tracker-resdump.c' || echo '$(srcdir)/'`tracker-resdump.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_resdump-tracker-resdump.Tpo $(DEPDIR)/tracker_resdump-tracker-resdump.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-resdump.c' object='tracker_resdump-tracker-resdump.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_resdump_CFLAGS) $(CFLAGS) -c -o tracker_resdump-tracker-resdump.o `test -f 'tracker-resdump.c' || echo '$(srcdir)/'`tracker-resdump.c
+
+tracker_resdump-tracker-resdump.obj: tracker-resdump.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_resdump_CFLAGS) $(CFLAGS) -MT tracker_resdump-tracker-resdump.obj -MD -MP -MF $(DEPDIR)/tracker_resdump-tracker-resdump.Tpo -c -o tracker_resdump-tracker-resdump.obj `if test -f 'tracker-resdump.c'; then $(CYGPATH_W) 'tracker-resdump.c'; else $(CYGPATH_W) '$(srcdir)/tracker-resdump.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_resdump-tracker-resdump.Tpo $(DEPDIR)/tracker_resdump-tracker-resdump.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-resdump.c' object='tracker_resdump-tracker-resdump.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_resdump_CFLAGS) $(CFLAGS) -c -o tracker_resdump-tracker-resdump.obj `if test -f 'tracker-resdump.c'; then $(CYGPATH_W) 'tracker-resdump.c'; else $(CYGPATH_W) '$(srcdir)/tracker-resdump.c'; fi`
+$(srcdir)/tracker-resdump.c: $(srcdir)/tracker_resdump_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/tracker_resdump_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) tracker_resdump_vala.stamp; \
+	fi
+tracker_resdump_vala.stamp: $(tracker_resdump_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(tracker_resdump_VALAFLAGS) $(VALAFLAGS) -C $(tracker_resdump_SOURCES)
+	$(AM_V_at)touch $@
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -606,6 +668,8 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-rm -f tracker-resdump.c
+	-rm -f tracker_resdump_vala.stamp
 clean: clean-am
 
 clean-am: clean-generic clean-libtool clean-noinstPROGRAMS \

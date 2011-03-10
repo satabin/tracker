@@ -1,3 +1,105 @@
+2011-03-10  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.2
+
+	libtracker-miner: Don't delete nie:contentCreated when updating files
+	Fixes NB#232574, nie::ContentCreated is updated when the mtime of a file changes
+
+2011-03-10  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-miner-fs,applications: If locale change detected always do mtime checks during crawling
+	Fixes NB#235118
+
+2011-03-10  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2011-03-10  Tshepang Lekhonkhobe  <tshepang@gmail.com>
+
+	functional-tests: Fixed scripts first lines to include #!/usr/bin/python
+	This is from 2 patches which MeeGo is using #004 and #005 here:
+
+	  http://build.meego.com/package/files?package=tracker&project=Trunk
+
+2011-03-10  Ivan Frade  <ivan.frade@nokia.com>
+
+	ontologies (NFO): new Note class to store Tomboy-alike notes
+
+2011-03-10  Carlos Garnacho  <carlosg@gnome.org>
+
+	processing-pool: Map correctly errors to tasks after array updates
+	An error map is now passed, so the error position in the returned
+	array can be guessed for all tasks.
+
+2011-03-10  Kjartan Maraas  <kmaraas@gnome.org>
+
+	Adjust to API change in libpanel-applet
+
+2011-03-10  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: Avoid use of already disposed memory
+
+2011-03-10  Carlos Garnacho  <carlosg@gnome.org>
+
+	miner-fs: Make use of bulk operations when deleting resources.
+	As a consequence, delete operations aren't flushed immediately anymore,
+	instead item_queues_handler_id is left in charge of flushing when finished.
+
+	libtracker-miner: Add bulk operations to the MinerFS processing pool
+	These bulk operations are grouped when flushing the processing queue, so
+	several operations are send as a single sparql expression.
+
+	libtracker-data: Modify Sparql parser to have tracker:uri-is-descendant() take varargs
+
+	libtracker-data: Make SparqlUriIsDescendant() Sql function take varargs
+	Now the parameters are (parent1, parent2, ..., parentN, child), so
+	it stays compatible with the older behavior.
+
+2011-03-09  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract,mp3: Add comment and fix size param of get_encoding
+
+	tracker-extract,mp3: Take into account \0 bytes in the fields
+
+	tracker-extract: Don't read the last two bytes if trackn. is there
+
+	tracker-extract,mp3: Add comment and genre for encoding detection
+	Fixes NB#229713.
+
+2011-03-09  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-common: Improve logging when guessing charsets
+
+	libtracker-common: New meegotouch-based encoding detector
+
+	libtracker-common: move enca encoding detector to separate files
+
+	tracker-extract,mp3: Use encoding detection from libtracker-common
+
+	libtracker-common: Added libenca-based encoding detection method
+
+2011-03-09  Ivan Frade  <ivan.frade@nokia.com>
+
+	functional-tests: Allow whitespaces in the tags and creators labels
+	More flexible parsing the results coming from the extractor, to allow
+	tags like "test 1" or creators as "Bob Dylan"
+
+	functional-tests: Force english locale for the tests
+
+2011-03-09  Michael Biebl  <biebl@debian.org>
+
+	tracker-preferences: Enable gettext translations
+	While at it, clean up unused defines.
+
+2011-03-09  Ivan Frade  <ivan.frade@nokia.com>
+
+	functional-tests: Fix expectations for audio extractions
+	Template values where still in the file making the test fail
+
+2011-03-09  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Fix tracker_ namespace use for non-publ. function
+
 2011-03-03  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.1

@@ -3261,6 +3261,37 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																													return 0;
 																												}
 																											}
+																											while (TRUE) {
+																												gboolean _tmp109_;
+																												gboolean _tmp110_;
+																												_tmp109_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
+																												_tmp110_ = _tmp109_;
+																												if (_inner_error_ != NULL) {
+																													if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																														g_propagate_error (error, _inner_error_);
+																														return 0;
+																													} else {
+																														g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																														g_clear_error (&_inner_error_);
+																														return 0;
+																													}
+																												}
+																												if (!_tmp110_) {
+																													break;
+																												}
+																												g_string_append (sql, ", ");
+																												tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
+																												if (_inner_error_ != NULL) {
+																													if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+																														g_propagate_error (error, _inner_error_);
+																														return 0;
+																													} else {
+																														g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+																														g_clear_error (&_inner_error_);
+																														return 0;
+																													}
+																												}
+																											}
 																											g_string_append (sql, ")");
 																											result = TRACKER_PROPERTY_TYPE_BOOLEAN;
 																											return result;
@@ -3282,24 +3313,24 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																												result = TRACKER_PROPERTY_TYPE_STRING;
 																												return result;
 																											} else {
-																												TrackerProperty* _tmp109_ = NULL;
-																												TrackerProperty* _tmp110_;
+																												TrackerProperty* _tmp111_ = NULL;
+																												TrackerProperty* _tmp112_;
 																												TrackerProperty* prop;
-																												GString* _tmp112_ = NULL;
+																												GString* _tmp114_ = NULL;
 																												GString* expr;
-																												gchar* _tmp113_;
+																												gchar* _tmp115_;
 																												gchar* value_separator;
 																												gchar* graph_separator;
-																												gboolean _tmp114_;
-																												gboolean _tmp115_;
-																												gboolean _tmp124_;
-																												_tmp109_ = tracker_ontologies_get_property_by_uri (uri);
-																												_tmp110_ = _g_object_ref0 (_tmp109_);
-																												prop = _tmp110_;
+																												gboolean _tmp116_;
+																												gboolean _tmp117_;
+																												gboolean _tmp126_;
+																												_tmp111_ = tracker_ontologies_get_property_by_uri (uri);
+																												_tmp112_ = _g_object_ref0 (_tmp111_);
+																												prop = _tmp112_;
 																												if (prop == NULL) {
-																													GError* _tmp111_ = NULL;
-																													_tmp111_ = tracker_sparql_expression_get_error (self, "Unknown function");
-																													_inner_error_ = _tmp111_;
+																													GError* _tmp113_ = NULL;
+																													_tmp113_ = tracker_sparql_expression_get_error (self, "Unknown function");
+																													_inner_error_ = _tmp113_;
 																													if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 																														g_propagate_error (error, _inner_error_);
 																														_g_object_unref0 (prop);
@@ -3311,8 +3342,8 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																														return 0;
 																													}
 																												}
-																												_tmp112_ = g_string_new ("");
-																												expr = _tmp112_;
+																												_tmp114_ = g_string_new ("");
+																												expr = _tmp114_;
 																												tracker_sparql_expression_translate_expression (self, expr, &_inner_error_);
 																												if (_inner_error_ != NULL) {
 																													if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
@@ -3328,11 +3359,11 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																														return 0;
 																													}
 																												}
-																												_tmp113_ = g_strdup (",");
-																												value_separator = _tmp113_;
+																												_tmp115_ = g_strdup (",");
+																												value_separator = _tmp115_;
 																												graph_separator = NULL;
-																												_tmp114_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
-																												_tmp115_ = _tmp114_;
+																												_tmp116_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
+																												_tmp117_ = _tmp116_;
 																												if (_inner_error_ != NULL) {
 																													if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 																														g_propagate_error (error, _inner_error_);
@@ -3351,14 +3382,14 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																														return 0;
 																													}
 																												}
-																												if (_tmp115_) {
-																													gchar* _tmp116_ = NULL;
-																													gchar* _tmp117_;
-																													gchar* _tmp118_;
-																													gboolean _tmp119_;
-																													gboolean _tmp120_;
-																													_tmp116_ = tracker_sparql_expression_parse_string_literal (self, NULL, &_inner_error_);
-																													_tmp117_ = _tmp116_;
+																												if (_tmp117_) {
+																													gchar* _tmp118_ = NULL;
+																													gchar* _tmp119_;
+																													gchar* _tmp120_;
+																													gboolean _tmp121_;
+																													gboolean _tmp122_;
+																													_tmp118_ = tracker_sparql_expression_parse_string_literal (self, NULL, &_inner_error_);
+																													_tmp119_ = _tmp118_;
 																													if (_inner_error_ != NULL) {
 																														if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 																															g_propagate_error (error, _inner_error_);
@@ -3377,11 +3408,11 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																															return 0;
 																														}
 																													}
-																													_tmp118_ = _tmp117_;
-																													_g_free0 (value_separator);
-																													value_separator = _tmp118_;
-																													_tmp119_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
 																													_tmp120_ = _tmp119_;
+																													_g_free0 (value_separator);
+																													value_separator = _tmp120_;
+																													_tmp121_ = tracker_sparql_expression_accept (self, TRACKER_SPARQL_TOKEN_TYPE_COMMA, &_inner_error_);
+																													_tmp122_ = _tmp121_;
 																													if (_inner_error_ != NULL) {
 																														if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 																															g_propagate_error (error, _inner_error_);
@@ -3400,12 +3431,12 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																															return 0;
 																														}
 																													}
-																													if (_tmp120_) {
-																														gchar* _tmp121_ = NULL;
-																														gchar* _tmp122_;
-																														gchar* _tmp123_;
-																														_tmp121_ = tracker_sparql_expression_parse_string_literal (self, NULL, &_inner_error_);
-																														_tmp122_ = _tmp121_;
+																													if (_tmp122_) {
+																														gchar* _tmp123_ = NULL;
+																														gchar* _tmp124_;
+																														gchar* _tmp125_;
+																														_tmp123_ = tracker_sparql_expression_parse_string_literal (self, NULL, &_inner_error_);
+																														_tmp124_ = _tmp123_;
 																														if (_inner_error_ != NULL) {
 																															if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 																																g_propagate_error (error, _inner_error_);
@@ -3424,42 +3455,42 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																																return 0;
 																															}
 																														}
-																														_tmp123_ = _tmp122_;
+																														_tmp125_ = _tmp124_;
 																														_g_free0 (graph_separator);
-																														graph_separator = _tmp123_;
+																														graph_separator = _tmp125_;
 																													}
 																												}
-																												_tmp124_ = tracker_property_get_multiple_values (prop);
-																												if (_tmp124_) {
+																												_tmp126_ = tracker_property_get_multiple_values (prop);
+																												if (_tmp126_) {
 																													glong begin;
-																													const gchar* _tmp125_ = NULL;
-																													TrackerPropertyType _tmp126_;
-																													gchar* _tmp130_ = NULL;
-																													gchar* _tmp131_;
-																													const gchar* _tmp132_ = NULL;
+																													const gchar* _tmp127_ = NULL;
+																													TrackerPropertyType _tmp128_;
+																													gchar* _tmp132_ = NULL;
+																													gchar* _tmp133_;
+																													const gchar* _tmp134_ = NULL;
 																													g_string_append (sql, "(SELECT GROUP_CONCAT(");
 																													begin = (glong) sql->len;
-																													_tmp125_ = tracker_property_get_name (prop);
-																													g_string_append_printf (sql, "\"%s\"", _tmp125_);
-																													_tmp126_ = tracker_property_get_data_type (prop);
-																													tracker_sparql_expression_convert_expression_to_string (sql, _tmp126_, begin);
+																													_tmp127_ = tracker_property_get_name (prop);
+																													g_string_append_printf (sql, "\"%s\"", _tmp127_);
+																													_tmp128_ = tracker_property_get_data_type (prop);
+																													tracker_sparql_expression_convert_expression_to_string (sql, _tmp128_, begin);
 																													if (graph_separator != NULL) {
-																														gchar* _tmp127_ = NULL;
-																														gchar* _tmp128_;
-																														const gchar* _tmp129_ = NULL;
-																														_tmp127_ = tracker_sparql_expression_escape_sql_string_literal (self, graph_separator);
-																														_tmp128_ = _tmp127_;
-																														_tmp129_ = tracker_property_get_name (prop);
+																														gchar* _tmp129_ = NULL;
+																														gchar* _tmp130_;
+																														const gchar* _tmp131_ = NULL;
+																														_tmp129_ = tracker_sparql_expression_escape_sql_string_literal (self, graph_separator);
+																														_tmp130_ = _tmp129_;
+																														_tmp131_ = tracker_property_get_name (prop);
 																														g_string_append_printf (sql, " || %s || COALESCE((SELECT Uri FROM Resource WHERE ID = \"%s:graph\")," \
-" '')", _tmp128_, _tmp129_);
-																														_g_free0 (_tmp128_);
+" '')", _tmp130_, _tmp131_);
+																														_g_free0 (_tmp130_);
 																													}
-																													_tmp130_ = tracker_sparql_expression_escape_sql_string_literal (self, value_separator);
-																													_tmp131_ = _tmp130_;
-																													g_string_append_printf (sql, ",%s)", _tmp131_);
-																													_g_free0 (_tmp131_);
-																													_tmp132_ = tracker_property_get_table_name (prop);
-																													g_string_append_printf (sql, " FROM \"%s\" WHERE ID = %s)", _tmp132_, expr->str);
+																													_tmp132_ = tracker_sparql_expression_escape_sql_string_literal (self, value_separator);
+																													_tmp133_ = _tmp132_;
+																													g_string_append_printf (sql, ",%s)", _tmp133_);
+																													_g_free0 (_tmp133_);
+																													_tmp134_ = tracker_property_get_table_name (prop);
+																													g_string_append_printf (sql, " FROM \"%s\" WHERE ID = %s)", _tmp134_, expr->str);
 																													result = TRACKER_PROPERTY_TYPE_STRING;
 																													_g_free0 (graph_separator);
 																													_g_free0 (value_separator);
@@ -3468,19 +3499,19 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																													return result;
 																												} else {
 																													if (graph_separator == NULL) {
-																														const gchar* _tmp133_ = NULL;
-																														const gchar* _tmp134_ = NULL;
-																														TrackerPropertyType _tmp135_;
-																														TrackerPropertyType _tmp136_;
-																														_tmp133_ = tracker_property_get_name (prop);
-																														_tmp134_ = tracker_property_get_table_name (prop);
-																														g_string_append_printf (sql, "(SELECT \"%s\" FROM \"%s\" WHERE ID = %s)", _tmp133_, _tmp134_, expr->str);
-																														_tmp135_ = tracker_property_get_data_type (prop);
-																														if (_tmp135_ == TRACKER_PROPERTY_TYPE_STRING) {
+																														const gchar* _tmp135_ = NULL;
+																														const gchar* _tmp136_ = NULL;
+																														TrackerPropertyType _tmp137_;
+																														TrackerPropertyType _tmp138_;
+																														_tmp135_ = tracker_property_get_name (prop);
+																														_tmp136_ = tracker_property_get_table_name (prop);
+																														g_string_append_printf (sql, "(SELECT \"%s\" FROM \"%s\" WHERE ID = %s)", _tmp135_, _tmp136_, expr->str);
+																														_tmp137_ = tracker_property_get_data_type (prop);
+																														if (_tmp137_ == TRACKER_PROPERTY_TYPE_STRING) {
 																															tracker_sparql_expression_append_collate (self, sql);
 																														}
-																														_tmp136_ = tracker_property_get_data_type (prop);
-																														result = _tmp136_;
+																														_tmp138_ = tracker_property_get_data_type (prop);
+																														result = _tmp138_;
 																														_g_free0 (graph_separator);
 																														_g_free0 (value_separator);
 																														_g_string_free0 (expr);
@@ -3488,26 +3519,26 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 																														return result;
 																													} else {
 																														glong begin;
-																														const gchar* _tmp137_ = NULL;
-																														TrackerPropertyType _tmp138_;
-																														gchar* _tmp139_ = NULL;
-																														gchar* _tmp140_;
-																														const gchar* _tmp141_ = NULL;
-																														const gchar* _tmp142_ = NULL;
+																														const gchar* _tmp139_ = NULL;
+																														TrackerPropertyType _tmp140_;
+																														gchar* _tmp141_ = NULL;
+																														gchar* _tmp142_;
+																														const gchar* _tmp143_ = NULL;
+																														const gchar* _tmp144_ = NULL;
 																														g_string_append (sql, "(SELECT ");
 																														begin = (glong) sql->len;
-																														_tmp137_ = tracker_property_get_name (prop);
-																														g_string_append_printf (sql, "\"%s\"", _tmp137_);
-																														_tmp138_ = tracker_property_get_data_type (prop);
-																														tracker_sparql_expression_convert_expression_to_string (sql, _tmp138_, begin);
-																														_tmp139_ = tracker_sparql_expression_escape_sql_string_literal (self, graph_separator);
-																														_tmp140_ = _tmp139_;
-																														_tmp141_ = tracker_property_get_name (prop);
+																														_tmp139_ = tracker_property_get_name (prop);
+																														g_string_append_printf (sql, "\"%s\"", _tmp139_);
+																														_tmp140_ = tracker_property_get_data_type (prop);
+																														tracker_sparql_expression_convert_expression_to_string (sql, _tmp140_, begin);
+																														_tmp141_ = tracker_sparql_expression_escape_sql_string_literal (self, graph_separator);
+																														_tmp142_ = _tmp141_;
+																														_tmp143_ = tracker_property_get_name (prop);
 																														g_string_append_printf (sql, " || %s || COALESCE((SELECT Uri FROM Resource WHERE ID = \"%s:graph\")," \
-" '')", _tmp140_, _tmp141_);
-																														_g_free0 (_tmp140_);
-																														_tmp142_ = tracker_property_get_table_name (prop);
-																														g_string_append_printf (sql, " FROM \"%s\" WHERE ID = %s)", _tmp142_, expr->str);
+" '')", _tmp142_, _tmp143_);
+																														_g_free0 (_tmp142_);
+																														_tmp144_ = tracker_property_get_table_name (prop);
+																														g_string_append_printf (sql, " FROM \"%s\" WHERE ID = %s)", _tmp144_, expr->str);
 																														result = TRACKER_PROPERTY_TYPE_STRING;
 																														_g_free0 (graph_separator);
 																														_g_free0 (value_separator);

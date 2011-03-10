@@ -809,6 +809,29 @@
 </note>
 </refsect2>
 
+<refsect2 id='nfo-Note'>
+<title>nfo:Note</title>
+<para>Usually small document with snippets, reminders or frequenly used content.</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Document'>nfo:Document</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nfo-PlainTextDocument'>
 <title>nfo:PlainTextDocument</title>
 <para>A file containing plain text (ASCII, Unicode or other encodings). Examples may include TXT, HTML, XML, program source code etc.</para>
@@ -911,7 +934,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-HelpDocument'>nfo:HelpDocument</link>, <link linkend='nfo-MindMap'>nfo:MindMap</link>, <link linkend='nfo-Spreadsheet'>nfo:Spreadsheet</link>, <link linkend='nfo-Presentation'>nfo:Presentation</link>, <link linkend='nfo-TextDocument'>nfo:TextDocument</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-HelpDocument'>nfo:HelpDocument</link>, <link linkend='nfo-Note'>nfo:Note</link>, <link linkend='nfo-MindMap'>nfo:MindMap</link>, <link linkend='nfo-Spreadsheet'>nfo:Spreadsheet</link>, <link linkend='nfo-Presentation'>nfo:Presentation</link>, <link linkend='nfo-TextDocument'>nfo:TextDocument</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>

@@ -13,7 +13,7 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [1])
+m4_define([tracker_micro_version], [2])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -1042,6 +1042,9 @@ if test "x$enable_maemo" != "xno"; then
                      [have_meegotouch=yes],
                      [have_meegotouch=no])
 
+   LIBTRACKER_COMMON_CFLAGS="$LIBTRACKER_COMMON_CFLAGS $MEEGOTOUCH_CFLAGS"
+   LIBTRACKER_COMMON_LIBS="$LIBTRACKER_COMMON_LIBS $MEEGOTOUCH_LIBS"
+
    TRACKER_MINER_FS_CFLAGS="$TRACKER_MINER_FS_CFLAGS $MEEGOTOUCH_CFLAGS"
    TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS $MEEGOTOUCH_LIBS"
 
@@ -1323,8 +1326,8 @@ AC_ARG_WITH(enca,
 if test "x$enable_enca" != "xno" ; then
    PKG_CHECK_MODULES(ENCA, [enca >= 1.9], have_enca=yes, have_enca=no)
 
-   AC_SUBST(ENCA_CFLAGS)
-   AC_SUBST(ENCA_LIBS)
+   LIBTRACKER_COMMON_CFLAGS="$LIBTRACKER_COMMON_CFLAGS $ENCA_CFLAGS"
+   LIBTRACKER_COMMON_LIBS="$LIBTRACKER_COMMON_LIBS $ENCA_LIBS"
 
    if test "x$have_enca" = "xyes"; then
      AC_DEFINE(HAVE_ENCA, [], [Enca language detection aid])

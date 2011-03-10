@@ -68,15 +68,13 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 @USING_EXTERNAL_VIDEO_PLAYER_TRUE@			libextract-totem.la
 
 @HAVE_TOTEM_PL_PARSER_TRUE@am__append_15 = libextract-playlist.la
-@HAVE_ENCA_TRUE@am__append_16 = $(ENCA_CFLAGS)
-@HAVE_ENCA_TRUE@am__append_17 = $(ENCA_LIBS)
 libexec_PROGRAMS = tracker-extract$(EXEEXT)
-@HAVE_LIBGSF_TRUE@am__append_18 = tracker-gsf.c tracker-gsf.h
-@HAVE_LIBGSF_TRUE@am__append_19 = $(LIBGSF_LIBS)
-@HAVE_LIBSTREAMANALYZER_TRUE@am__append_20 = tracker-topanalyzer.cpp tracker-topanalyzer.h
-@HAVE_GDKPIXBUF_TRUE@am__append_21 = tracker-albumart-pixbuf.c
-@HAVE_GDKPIXBUF_FALSE@@HAVE_QT_TRUE@am__append_22 = tracker-albumart-qt.cpp
-@HAVE_GDKPIXBUF_FALSE@@HAVE_QT_FALSE@am__append_23 = tracker-albumart-dummy.c
+@HAVE_LIBGSF_TRUE@am__append_16 = tracker-gsf.c tracker-gsf.h
+@HAVE_LIBGSF_TRUE@am__append_17 = $(LIBGSF_LIBS)
+@HAVE_LIBSTREAMANALYZER_TRUE@am__append_18 = tracker-topanalyzer.cpp tracker-topanalyzer.h
+@HAVE_GDKPIXBUF_TRUE@am__append_19 = tracker-albumart-pixbuf.c
+@HAVE_GDKPIXBUF_FALSE@@HAVE_QT_TRUE@am__append_20 = tracker-albumart-qt.cpp
+@HAVE_GDKPIXBUF_FALSE@@HAVE_QT_FALSE@am__append_21 = tracker-albumart-dummy.c
 subdir = src/tracker-extract
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -227,11 +225,9 @@ libextract_jpeg_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(libextract_jpeg_la_CFLAGS) $(CFLAGS) \
 	$(libextract_jpeg_la_LDFLAGS) $(LDFLAGS) -o $@
 @HAVE_LIBJPEG_TRUE@am_libextract_jpeg_la_rpath = -rpath $(modulesdir)
-@HAVE_ENCA_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
 libextract_mp3_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libextract_mp3_la_OBJECTS =  \
 	libextract_mp3_la-tracker-extract-mp3.lo
 libextract_mp3_la_OBJECTS = $(am_libextract_mp3_la_OBJECTS)
@@ -426,13 +422,13 @@ am_tracker_extract_OBJECTS = $(am__objects_1) \
 	$(am__objects_3) $(am__objects_4) $(am__objects_5) \
 	$(am__objects_6)
 tracker_extract_OBJECTS = $(am_tracker_extract_OBJECTS)
-@HAVE_LIBGSF_TRUE@am__DEPENDENCIES_3 = $(am__DEPENDENCIES_1)
+@HAVE_LIBGSF_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
 tracker_extract_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_3)
+	$(am__DEPENDENCIES_2)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -840,12 +836,14 @@ libextract_abw_la_LIBADD = \
 
 # MP3
 libextract_mp3_la_SOURCES = tracker-extract-mp3.c
-libextract_mp3_la_CFLAGS = $(TRACKER_EXTRACT_MODULES_CFLAGS) \
-	$(am__append_16)
+libextract_mp3_la_CFLAGS = $(TRACKER_EXTRACT_MODULES_CFLAGS)
 libextract_mp3_la_LDFLAGS = $(module_flags)
-libextract_mp3_la_LIBADD = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+libextract_mp3_la_LIBADD = \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS) $(TRACKER_EXTRACT_MODULES_LIBS) $(am__append_17)
+	$(BUILD_LIBS) \
+	$(TRACKER_EXTRACT_MODULES_LIBS)
+
 
 # Vorbis (OGG)
 libextract_vorbis_la_SOURCES = tracker-extract-vorbis.c $(escape_sources)
@@ -1141,13 +1139,13 @@ tracker_extract_SOURCES = $(marshal_sources) tracker-albumart.c \
 	tracker-albumart.h tracker-config.c tracker-config.h \
 	tracker-extract.c tracker-extract.h tracker-read.c \
 	tracker-read.h tracker-main.c tracker-main.h \
-	tracker-albumart-generic.h $(am__append_18) $(am__append_20) \
-	$(am__append_21) $(am__append_22) $(am__append_23)
+	tracker-albumart-generic.h $(am__append_16) $(am__append_18) \
+	$(am__append_19) $(am__append_20) $(am__append_21)
 tracker_extract_LDADD = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS) $(TRACKER_EXTRACT_LIBS) $(am__append_19)
+	$(BUILD_LIBS) $(TRACKER_EXTRACT_LIBS) $(am__append_17)
 @HAVE_LIBGSF_TRUE@tracker_extract_CFLAGS = $(LIBGSF_CFLAGS)
 marshal_sources = \
         tracker-marshal.h \

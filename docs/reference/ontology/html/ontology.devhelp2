@@ -218,6 +218,7 @@
     <keyword type="" name="nfo:Filesystem" link="nfo-ontology.html#nfo-Filesystem"/>
     <keyword type="" name="nfo:FileHash" link="nfo-ontology.html#nfo-FileHash"/>
     <keyword type="" name="nfo:SoftwareApplication" link="nfo-ontology.html#nfo-SoftwareApplication"/>
+    <keyword type="" name="nfo:Note" link="nfo-ontology.html#nfo-Note"/>
     <keyword type="" name="nfo:PlainTextDocument" link="nfo-ontology.html#nfo-PlainTextDocument"/>
     <keyword type="" name="nfo:Presentation" link="nfo-ontology.html#nfo-Presentation"/>
     <keyword type="" name="nfo:RemotePortAddress" link="nfo-ontology.html#nfo-RemotePortAddress"/>

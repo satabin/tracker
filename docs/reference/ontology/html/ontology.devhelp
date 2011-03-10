@@ -218,6 +218,7 @@
     <function name="nfo:Filesystem" link="nfo-ontology.html#nfo-Filesystem"/>
     <function name="nfo:FileHash" link="nfo-ontology.html#nfo-FileHash"/>
     <function name="nfo:SoftwareApplication" link="nfo-ontology.html#nfo-SoftwareApplication"/>
+    <function name="nfo:Note" link="nfo-ontology.html#nfo-Note"/>
     <function name="nfo:PlainTextDocument" link="nfo-ontology.html#nfo-PlainTextDocument"/>
     <function name="nfo:Presentation" link="nfo-ontology.html#nfo-Presentation"/>
     <function name="nfo:RemotePortAddress" link="nfo-ontology.html#nfo-RemotePortAddress"/>

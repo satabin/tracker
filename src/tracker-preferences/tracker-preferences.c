@@ -897,6 +897,9 @@ gint _vala_main (gchar** args, int args_length1) {
 	GSList* _tmp112_ = NULL;
 	GError * _inner_error_ = NULL;
 	gtk_init (&args_length1, &args);
+	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
 	_tmp0_ = tracker_config_new_with_domain ("tracker-miner-fs");
 	_tmp1_ = _tmp0_;
 	_g_object_unref0 (config);

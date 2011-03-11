@@ -176,6 +176,14 @@ static const gchar* tracker_bus_fd_cursor_real_get_string (TrackerSparqlCursor* 
 	_tmp0_ = tracker_sparql_cursor_get_n_columns ((TrackerSparqlCursor*) self);
 	g_return_val_if_fail ((column < _tmp0_) && (self->data != NULL), NULL);
 	str = NULL;
+	if (self->types[column] == TRACKER_SPARQL_VALUE_TYPE_UNBOUND) {
+		_length = (glong) 0;
+		result = NULL;
+		if (length) {
+			*length = _length;
+		}
+		return result;
+	}
 	if (column == 0) {
 		str = (const gchar*) self->data;
 	} else {

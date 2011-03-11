@@ -1,3 +1,18 @@
+2011-03-11  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.3
+
+2011-03-11  Carlos Garnacho  <carlosg@gnome.org>
+
+	Bug 644484 - miner-fs not removing files from the store
+	Fix silly typo that made uri-is-descendant() not work as expected.
+	Reported by Lionel Landwerlin.
+
+2011-03-11  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-bus: Let get_string return null for unbound values
+	Fixes GB#642868.
+
 2011-03-10  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.2

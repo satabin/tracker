@@ -83,6 +83,9 @@
     <function name="tracker_miner_fs_add_directory_without_parent ()" link="libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-add-directory-without-parent"/>
     <function name="tracker_miner_fs_get_initial_crawling ()" link="libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-get-initial-crawling"/>
     <function name="tracker_miner_fs_set_initial_crawling ()" link="libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-set-initial-crawling"/>
+    <function name="tracker_miner_fs_get_mtime_checking ()" link="libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-get-mtime-checking"/>
+    <function name="tracker_miner_fs_set_mtime_checking ()" link="libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-set-mtime-checking"/>
+    <function name="tracker_miner_fs_has_items_to_process ()" link="libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-has-items-to-process"/>
     <function name="The &quot;initial-crawling&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--initial-crawling"/>
     <function name="The &quot;mtime-checking&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--mtime-checking"/>
     <function name="The &quot;processing-pool-ready-limit&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--processing-pool-ready-limit"/>

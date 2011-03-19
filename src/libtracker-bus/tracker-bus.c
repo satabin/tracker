@@ -81,7 +81,6 @@ typedef GDBusProxyClass TrackerBusStatisticsProxyClass;
 typedef struct _TrackerBusConnection TrackerBusConnection;
 typedef struct _TrackerBusConnectionClass TrackerBusConnectionClass;
 typedef struct _TrackerBusConnectionPrivate TrackerBusConnectionPrivate;
-typedef struct _TrackerBusConnectionInitAsyncData TrackerBusConnectionInitAsyncData;
 #define _g_main_loop_unref0(var) ((var == NULL) ? NULL : (var = (g_main_loop_unref (var), NULL)))
 typedef struct _Block1Data Block1Data;
 #define _g_main_context_unref0(var) ((var == NULL) ? NULL : (var = (g_main_context_unref (var), NULL)))
@@ -157,14 +156,6 @@ struct _TrackerBusConnection {
 
 struct _TrackerBusConnectionClass {
 	TrackerSparqlConnectionClass parent_class;
-};
-
-struct _TrackerBusConnectionInitAsyncData {
-	int _state_;
-	GObject* _source_object_;
-	GAsyncResult* _res_;
-	GSimpleAsyncResult* _async_result;
-	TrackerBusConnection* self;
 };
 
 struct _Block1Data {
@@ -488,9 +479,6 @@ enum  {
 TrackerBusConnection* tracker_bus_connection_new (GError** error);
 TrackerBusConnection* tracker_bus_connection_construct (GType object_type, GError** error);
 static void tracker_bus_connection_real_init (TrackerSparqlConnection* base, GError** error);
-static void tracker_bus_connection_real_init_async_data_free (gpointer _data);
-static void tracker_bus_connection_real_init_async (TrackerSparqlConnection* base, GAsyncReadyCallback _callback_, gpointer _user_data_);
-static gboolean tracker_bus_connection_real_init_async_co (TrackerBusConnectionInitAsyncData* data);
 static void tracker_bus_connection_pipe (TrackerBusConnection* self, GUnixInputStream** input, GUnixOutputStream** output, GError** error);
 static TrackerSparqlCursor* tracker_bus_connection_real_query (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GError** error);
 static Block1Data* block1_data_ref (Block1Data* _data1_);
@@ -2019,58 +2007,6 @@ static void tracker_bus_connection_real_init (TrackerSparqlConnection* base, GEr
 }
 
 
-static void tracker_bus_connection_real_init_async_data_free (gpointer _data) {
-	TrackerBusConnectionInitAsyncData* data;
-	data = _data;
-	_g_object_unref0 (data->self);
-	g_slice_free (TrackerBusConnectionInitAsyncData, data);
-}
-
-
-static gpointer _g_object_ref0 (gpointer self) {
-	return self ? g_object_ref (self) : NULL;
-}
-
-
-static void tracker_bus_connection_real_init_async (TrackerSparqlConnection* base, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	TrackerBusConnection * self;
-	TrackerBusConnectionInitAsyncData* _data_;
-	self = (TrackerBusConnection*) base;
-	_data_ = g_slice_new0 (TrackerBusConnectionInitAsyncData);
-	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_bus_connection_real_init_async);
-	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_bus_connection_real_init_async_data_free);
-	_data_->self = _g_object_ref0 (self);
-	tracker_bus_connection_real_init_async_co (_data_);
-}
-
-
-static void tracker_bus_connection_real_init_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
-	TrackerBusConnectionInitAsyncData* _data_;
-	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-		return;
-	}
-	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-}
-
-
-static gboolean tracker_bus_connection_real_init_async_co (TrackerBusConnectionInitAsyncData* data) {
-	switch (data->_state_) {
-		case 0:
-		goto _state_0;
-		default:
-		g_assert_not_reached ();
-	}
-	_state_0:
-	if (data->_state_ == 0) {
-		g_simple_async_result_complete_in_idle (data->_async_result);
-	} else {
-		g_simple_async_result_complete (data->_async_result);
-	}
-	g_object_unref (data->_async_result);
-	return FALSE;
-}
-
-
 static void tracker_bus_connection_pipe (TrackerBusConnection* self, GUnixInputStream** input, GUnixOutputStream** output, GError** error) {
 	GUnixInputStream* _input = NULL;
 	GUnixOutputStream* _output = NULL;
@@ -2130,6 +2066,11 @@ static void block1_data_unref (Block1Data* _data1_) {
 		_g_main_loop_unref0 (_data1_->loop);
 		g_slice_free (Block1Data, _data1_);
 	}
+}
+
+
+static gpointer _g_object_ref0 (gpointer self) {
+	return self ? g_object_ref (self) : NULL;
 }
 
 
@@ -3888,8 +3829,6 @@ static gboolean tracker_bus_connection_real_statistics_async_co (TrackerBusConne
 static void tracker_bus_connection_class_init (TrackerBusConnectionClass * klass) {
 	tracker_bus_connection_parent_class = g_type_class_peek_parent (klass);
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->init = tracker_bus_connection_real_init;
-	TRACKER_SPARQL_CONNECTION_CLASS (klass)->init_async = tracker_bus_connection_real_init_async;
-	TRACKER_SPARQL_CONNECTION_CLASS (klass)->init_finish = tracker_bus_connection_real_init_finish;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query = tracker_bus_connection_real_query;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_async = tracker_bus_connection_real_query_async;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_finish = tracker_bus_connection_real_query_finish;

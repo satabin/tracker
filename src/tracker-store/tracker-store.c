@@ -551,17 +551,17 @@ static void tracker_store_sched (void) {
 		tracker_store_n_queries_running++;
 		g_thread_pool_push (tracker_store_query_pool, task, &_inner_error_);
 		if (_inner_error_ != NULL) {
-			goto __catch18_g_error;
+			goto __catch17_g_error;
 		}
-		goto __finally18;
-		__catch18_g_error:
+		goto __finally17;
+		__catch17_g_error:
 		{
 			GError * e;
 			e = _inner_error_;
 			_inner_error_ = NULL;
 			_g_error_free0 (e);
 		}
-		__finally18:
+		__finally17:
 		if (_inner_error_ != NULL) {
 			_tracker_store_task_unref0 (task);
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -600,17 +600,17 @@ static void tracker_store_sched (void) {
 			tracker_store_update_running = TRUE;
 			g_thread_pool_push (tracker_store_update_pool, task, &_inner_error_);
 			if (_inner_error_ != NULL) {
-				goto __catch19_g_error;
+				goto __catch18_g_error;
 			}
-			goto __finally19;
-			__catch19_g_error:
+			goto __finally18;
+			__catch18_g_error:
 			{
 				GError * e;
 				e = _inner_error_;
 				_inner_error_ = NULL;
 				_g_error_free0 (e);
 			}
-			__finally19:
+			__finally18:
 			if (_inner_error_ != NULL) {
 				_tracker_store_task_unref0 (task);
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -681,10 +681,10 @@ static gboolean tracker_store_task_finish_cb (TrackerStoreTask* task) {
 		if (task->error == NULL) {
 			g_cancellable_set_error_if_cancelled (query_task->cancellable, &_inner_error_);
 			if (_inner_error_ != NULL) {
-				goto __catch20_g_error;
+				goto __catch19_g_error;
 			}
-			goto __finally20;
-			__catch20_g_error:
+			goto __finally19;
+			__catch19_g_error:
 			{
 				GError * e;
 				GError* _tmp1_;
@@ -697,7 +697,7 @@ static gboolean tracker_store_task_finish_cb (TrackerStoreTask* task) {
 				task->error = _tmp2_;
 				_g_error_free0 (e);
 			}
-			__finally20:
+			__finally19:
 			if (_inner_error_ != NULL) {
 				_tracker_store_task_unref0 (query_task);
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -813,13 +813,13 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 		cursor = _tmp1_;
 		if (_inner_error_ != NULL) {
 			_tracker_store_task_unref0 (query_task);
-			goto __catch21_g_error;
+			goto __catch20_g_error;
 		}
 		query_task->in_thread (cursor, query_task->in_thread_target, &_inner_error_);
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (cursor);
 			_tracker_store_task_unref0 (query_task);
-			goto __catch21_g_error;
+			goto __catch20_g_error;
 		}
 		_g_object_unref0 (cursor);
 		_tracker_store_task_unref0 (query_task);
@@ -832,7 +832,7 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 			tracker_data_update_sparql (update_task->query, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				_tracker_store_task_unref0 (update_task);
-				goto __catch21_g_error;
+				goto __catch20_g_error;
 			}
 			_tracker_store_task_unref0 (update_task);
 		} else {
@@ -848,7 +848,7 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 				_tmp5_ = _tmp4_;
 				if (_inner_error_ != NULL) {
 					_tracker_store_task_unref0 (update_task);
-					goto __catch21_g_error;
+					goto __catch20_g_error;
 				}
 				_tmp6_ = _tmp5_;
 				_g_variant_unref0 (update_task->blank_nodes);
@@ -869,7 +869,7 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 					if (_inner_error_ != NULL) {
 						_g_object_unref0 (file);
 						_tracker_store_task_unref0 (turtle_task);
-						goto __catch21_g_error;
+						goto __catch20_g_error;
 					}
 					tracker_events_reset_pending ();
 					_g_object_unref0 (file);
@@ -878,8 +878,8 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 			}
 		}
 	}
-	goto __finally21;
-	__catch21_g_error:
+	goto __finally20;
+	__catch20_g_error:
 	{
 		GError * e;
 		GError* _tmp9_;
@@ -892,7 +892,7 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 		_data8_->task->error = _tmp10_;
 		_g_error_free0 (e);
 	}
-	__finally21:
+	__finally20:
 	if (_inner_error_ != NULL) {
 		block8_data_unref (_data8_);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -973,7 +973,7 @@ void tracker_store_init (void) {
 	_tmp10_ = g_thread_pool_new (_tracker_store_pool_dispatch_cb_gfunc, NULL, 1, TRUE, &_inner_error_);
 	_tmp11_ = _tmp10_;
 	if (_inner_error_ != NULL) {
-		goto __catch22_g_error;
+		goto __catch21_g_error;
 	}
 	_tmp12_ = _tmp11_;
 	_g_thread_pool_free0 (tracker_store_update_pool);
@@ -981,13 +981,13 @@ void tracker_store_init (void) {
 	_tmp13_ = g_thread_pool_new (_tracker_store_pool_dispatch_cb_gfunc, NULL, TRACKER_STORE_MAX_CONCURRENT_QUERIES, TRUE, &_inner_error_);
 	_tmp14_ = _tmp13_;
 	if (_inner_error_ != NULL) {
-		goto __catch22_g_error;
+		goto __catch21_g_error;
 	}
 	_tmp15_ = _tmp14_;
 	_g_thread_pool_free0 (tracker_store_query_pool);
 	tracker_store_query_pool = _tmp15_;
-	goto __finally22;
-	__catch22_g_error:
+	goto __finally21;
+	__catch21_g_error:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -995,7 +995,7 @@ void tracker_store_init (void) {
 		g_warning ("%s", e->message);
 		_g_error_free0 (e);
 	}
-	__finally22:
+	__finally21:
 	if (_inner_error_ != NULL) {
 		_g_free0 (max_task_time_env);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);

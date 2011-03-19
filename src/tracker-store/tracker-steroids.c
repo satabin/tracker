@@ -752,7 +752,7 @@ static gboolean tracker_steroids_query_co (TrackerSteroidsQueryData* data) {
 	tracker_store_sparql_query_finish (data->_res_, &data->_inner_error_);
 	if (data->_inner_error_ != NULL) {
 		block6_data_unref (data->_data6_);
-		goto __catch14_g_error;
+		goto __catch13_g_error;
 	}
 	tracker_dbus_request_end (data->request, NULL);
 	data->_tmp2_ = (data->_tmp3_ = data->_data6_->variable_names, (data->_tmp3_ == NULL) ? ((gpointer) data->_tmp3_) : _vala_array_dup1 (data->_tmp3_, data->_data6_->variable_names_length1));
@@ -769,8 +769,8 @@ static gboolean tracker_steroids_query_co (TrackerSteroidsQueryData* data) {
 	g_object_unref (data->_async_result);
 	return FALSE;
 	block6_data_unref (data->_data6_);
-	goto __finally14;
-	__catch14_g_error:
+	goto __finally13;
+	__catch13_g_error:
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -779,17 +779,17 @@ static gboolean tracker_steroids_query_co (TrackerSteroidsQueryData* data) {
 			data->_tmp5_ = _g_error_copy0 (data->e);
 			data->_inner_error_ = data->_tmp5_;
 			_g_error_free0 (data->e);
-			goto __finally14;
+			goto __finally13;
 		} else {
 			data->_tmp6_ = NULL;
 			data->_tmp6_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, data->e->message);
 			data->_inner_error_ = data->_tmp6_;
 			_g_error_free0 (data->e);
-			goto __finally14;
+			goto __finally13;
 		}
 		_g_error_free0 (data->e);
 	}
-	__finally14:
+	__finally13:
 	g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
 	g_error_free (data->_inner_error_);
 	block5_data_unref (data->_data5_);
@@ -893,9 +893,9 @@ static gboolean tracker_steroids_update_internal_co (TrackerSteroidsUpdateIntern
 	if (data->_inner_error_ != NULL) {
 		_g_object_unref0 (data->data_input_stream);
 		if (g_error_matches (data->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-			goto __catch15_tracker_db_no_space;
+			goto __catch14_tracker_db_no_space;
 		}
-		goto __catch15_g_error;
+		goto __catch14_g_error;
 	}
 	data->_tmp5_ = NULL;
 	data->_tmp5_ = g_new0 (guint8, data->query_size + 1);
@@ -909,9 +909,9 @@ static gboolean tracker_steroids_update_internal_co (TrackerSteroidsUpdateIntern
 		data->query = (g_free (data->query), NULL);
 		_g_object_unref0 (data->data_input_stream);
 		if (g_error_matches (data->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-			goto __catch15_tracker_db_no_space;
+			goto __catch14_tracker_db_no_space;
 		}
-		goto __catch15_g_error;
+		goto __catch14_g_error;
 	}
 	data->_tmp8_ = NULL;
 	_g_object_unref0 (data->data_input_stream);
@@ -928,9 +928,9 @@ static gboolean tracker_steroids_update_internal_co (TrackerSteroidsUpdateIntern
 			data->query = (g_free (data->query), NULL);
 			_g_object_unref0 (data->data_input_stream);
 			if (g_error_matches (data->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-				goto __catch15_tracker_db_no_space;
+				goto __catch14_tracker_db_no_space;
 			}
-			goto __catch15_g_error;
+			goto __catch14_g_error;
 		}
 		tracker_dbus_request_end (data->request, NULL);
 		data->result = NULL;
@@ -955,9 +955,9 @@ static gboolean tracker_steroids_update_internal_co (TrackerSteroidsUpdateIntern
 			data->query = (g_free (data->query), NULL);
 			_g_object_unref0 (data->data_input_stream);
 			if (g_error_matches (data->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-				goto __catch15_tracker_db_no_space;
+				goto __catch14_tracker_db_no_space;
 			}
-			goto __catch15_g_error;
+			goto __catch14_g_error;
 		}
 		data->result = data->_tmp10_;
 		data->query = (g_free (data->query), NULL);
@@ -972,8 +972,8 @@ static gboolean tracker_steroids_update_internal_co (TrackerSteroidsUpdateIntern
 	}
 	data->query = (g_free (data->query), NULL);
 	_g_object_unref0 (data->data_input_stream);
-	goto __finally15;
-	__catch15_tracker_db_no_space:
+	goto __finally14;
+	__catch14_tracker_db_no_space:
 	{
 		data->ie = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -981,10 +981,10 @@ static gboolean tracker_steroids_update_internal_co (TrackerSteroidsUpdateIntern
 		data->_tmp11_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, data->ie->message);
 		data->_inner_error_ = data->_tmp11_;
 		_g_error_free0 (data->ie);
-		goto __finally15;
+		goto __finally14;
 	}
-	goto __finally15;
-	__catch15_g_error:
+	goto __finally14;
+	__catch14_g_error:
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -993,17 +993,17 @@ static gboolean tracker_steroids_update_internal_co (TrackerSteroidsUpdateIntern
 			data->_tmp12_ = _g_error_copy0 (data->e);
 			data->_inner_error_ = data->_tmp12_;
 			_g_error_free0 (data->e);
-			goto __finally15;
+			goto __finally14;
 		} else {
 			data->_tmp13_ = NULL;
 			data->_tmp13_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, data->e->message);
 			data->_inner_error_ = data->_tmp13_;
 			_g_error_free0 (data->e);
-			goto __finally15;
+			goto __finally14;
 		}
 		_g_error_free0 (data->e);
 	}
-	__finally15:
+	__finally14:
 	g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
 	g_error_free (data->_inner_error_);
 	if (data->_state_ == 0) {
@@ -1430,7 +1430,7 @@ static gboolean tracker_steroids_update_array_co (TrackerSteroidsUpdateArrayData
 	data->query_count = (gint) data->_tmp2_;
 	if (data->_inner_error_ != NULL) {
 		_g_object_unref0 (data->data_input_stream);
-		goto __catch16_g_error;
+		goto __catch15_g_error;
 	}
 	data->_tmp3_ = NULL;
 	data->_tmp3_ = g_new0 (gchar*, data->query_count + 1);
@@ -1454,7 +1454,7 @@ static gboolean tracker_steroids_update_array_co (TrackerSteroidsUpdateArrayData
 			if (data->_inner_error_ != NULL) {
 				data->query_array = (_vala_array_free (data->query_array, data->query_array_length1, (GDestroyNotify) g_free), NULL);
 				_g_object_unref0 (data->data_input_stream);
-				goto __catch16_g_error;
+				goto __catch15_g_error;
 			}
 			data->_tmp7_ = NULL;
 			data->_tmp7_ = g_new0 (guint8, data->query_size + 1);
@@ -1466,7 +1466,7 @@ static gboolean tracker_steroids_update_array_co (TrackerSteroidsUpdateArrayData
 			if (data->_inner_error_ != NULL) {
 				data->query_array = (_vala_array_free (data->query_array, data->query_array_length1, (GDestroyNotify) g_free), NULL);
 				_g_object_unref0 (data->data_input_stream);
-				goto __catch16_g_error;
+				goto __catch15_g_error;
 			}
 		}
 	}
@@ -1495,12 +1495,12 @@ static gboolean tracker_steroids_update_array_co (TrackerSteroidsUpdateArrayData
 			_state_1:
 			tracker_store_sparql_update_finish (data->_res_, &data->_inner_error_);
 			if (data->_inner_error_ != NULL) {
-				goto __catch17_g_error;
+				goto __catch16_g_error;
 			}
 			g_variant_builder_add (data->builder, "s", "", NULL);
 			g_variant_builder_add (data->builder, "s", "", NULL);
-			goto __finally17;
-			__catch17_g_error:
+			goto __finally16;
+			__catch16_g_error:
 			{
 				data->e1 = data->_inner_error_;
 				data->_inner_error_ = NULL;
@@ -1508,12 +1508,12 @@ static gboolean tracker_steroids_update_array_co (TrackerSteroidsUpdateArrayData
 				g_variant_builder_add (data->builder, "s", data->e1->message, NULL);
 				_g_error_free0 (data->e1);
 			}
-			__finally17:
+			__finally16:
 			if (data->_inner_error_ != NULL) {
 				_g_variant_builder_unref0 (data->builder);
 				data->query_array = (_vala_array_free (data->query_array, data->query_array_length1, (GDestroyNotify) g_free), NULL);
 				_g_object_unref0 (data->data_input_stream);
-				goto __catch16_g_error;
+				goto __catch15_g_error;
 			}
 		}
 	}
@@ -1534,8 +1534,8 @@ static gboolean tracker_steroids_update_array_co (TrackerSteroidsUpdateArrayData
 	_g_variant_builder_unref0 (data->builder);
 	data->query_array = (_vala_array_free (data->query_array, data->query_array_length1, (GDestroyNotify) g_free), NULL);
 	_g_object_unref0 (data->data_input_stream);
-	goto __finally16;
-	__catch16_g_error:
+	goto __finally15;
+	__catch15_g_error:
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -1544,17 +1544,17 @@ static gboolean tracker_steroids_update_array_co (TrackerSteroidsUpdateArrayData
 			data->_tmp14_ = _g_error_copy0 (data->e);
 			data->_inner_error_ = data->_tmp14_;
 			_g_error_free0 (data->e);
-			goto __finally16;
+			goto __finally15;
 		} else {
 			data->_tmp15_ = NULL;
 			data->_tmp15_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, data->e->message);
 			data->_inner_error_ = data->_tmp15_;
 			_g_error_free0 (data->e);
-			goto __finally16;
+			goto __finally15;
 		}
 		_g_error_free0 (data->e);
 	}
-	__finally16:
+	__finally15:
 	g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
 	g_error_free (data->_inner_error_);
 	if (data->_state_ == 0) {

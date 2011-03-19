@@ -3,8 +3,6 @@ libtracker-sparql-0.10.so.0 libtracker-sparql-0.10-0 #MINVER#
  tracker_backend_status_proxy_get_type@Base 0.10.0
  tracker_backend_status_register_object@Base 0.10.0
  tracker_backend_status_wait@Base 0.10.0
- tracker_backend_status_wait_async@Base 0.10.0
- tracker_backend_status_wait_finish@Base 0.10.0
  tracker_sparql_backend_construct@Base 0.10.0
  tracker_sparql_backend_get_type@Base 0.10.0
  tracker_sparql_backend_new@Base 0.10.0
@@ -56,8 +54,6 @@ libtracker-sparql-0.10.so.0 libtracker-sparql-0.10-0 #MINVER#
  tracker_sparql_connection_get_finish@Base 0.10.0
  tracker_sparql_connection_get_type@Base 0.10.0
  tracker_sparql_connection_init@Base 0.10.0
- tracker_sparql_connection_init_async@Base 0.10.0
- tracker_sparql_connection_init_finish@Base 0.10.0
  tracker_sparql_connection_load@Base 0.10.0
  tracker_sparql_connection_load_async@Base 0.10.0
  tracker_sparql_connection_load_finish@Base 0.10.0

@@ -444,14 +444,14 @@ static gboolean tracker_resources_load_co (TrackerResourcesLoadData* data) {
 	if (data->_inner_error_ != NULL) {
 		_g_object_unref0 (data->file);
 		if (g_error_matches (data->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-			goto __catch9_tracker_db_no_space;
+			goto __catch8_tracker_db_no_space;
 		}
-		goto __catch9_g_error;
+		goto __catch8_g_error;
 	}
 	tracker_dbus_request_end (data->request, NULL);
 	_g_object_unref0 (data->file);
-	goto __finally9;
-	__catch9_tracker_db_no_space:
+	goto __finally8;
+	__catch8_tracker_db_no_space:
 	{
 		data->ie = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -459,10 +459,10 @@ static gboolean tracker_resources_load_co (TrackerResourcesLoadData* data) {
 		data->_tmp2_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, data->ie->message);
 		data->_inner_error_ = data->_tmp2_;
 		_g_error_free0 (data->ie);
-		goto __finally9;
+		goto __finally8;
 	}
-	goto __finally9;
-	__catch9_g_error:
+	goto __finally8;
+	__catch8_g_error:
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -471,17 +471,17 @@ static gboolean tracker_resources_load_co (TrackerResourcesLoadData* data) {
 			data->_tmp3_ = _g_error_copy0 (data->e);
 			data->_inner_error_ = data->_tmp3_;
 			_g_error_free0 (data->e);
-			goto __finally9;
+			goto __finally8;
 		} else {
 			data->_tmp4_ = NULL;
 			data->_tmp4_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, data->e->message);
 			data->_inner_error_ = data->_tmp4_;
 			_g_error_free0 (data->e);
-			goto __finally9;
+			goto __finally8;
 		}
 		_g_error_free0 (data->e);
 	}
-	__finally9:
+	__finally8:
 	if (data->_inner_error_ != NULL) {
 		g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
 		g_error_free (data->_inner_error_);
@@ -645,7 +645,7 @@ static gboolean tracker_resources_sparql_query_co (TrackerResourcesSparqlQueryDa
 	tracker_store_sparql_query_finish (data->_res_, &data->_inner_error_);
 	if (data->_inner_error_ != NULL) {
 		block3_data_unref (data->_data3_);
-		goto __catch10_g_error;
+		goto __catch9_g_error;
 	}
 	data->_tmp2_ = NULL;
 	data->_tmp2_ = g_variant_builder_end (data->_data3_->builder);
@@ -657,7 +657,7 @@ static gboolean tracker_resources_sparql_query_co (TrackerResourcesSparqlQueryDa
 		data->_inner_error_ = data->_tmp4_;
 		_g_variant_unref0 (data->_result_);
 		block3_data_unref (data->_data3_);
-		goto __catch10_g_error;
+		goto __catch9_g_error;
 	}
 	tracker_dbus_request_end (data->request, NULL);
 	data->result = data->_result_;
@@ -671,8 +671,8 @@ static gboolean tracker_resources_sparql_query_co (TrackerResourcesSparqlQueryDa
 	return FALSE;
 	_g_variant_unref0 (data->_result_);
 	block3_data_unref (data->_data3_);
-	goto __finally10;
-	__catch10_g_error:
+	goto __finally9;
+	__catch9_g_error:
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -681,17 +681,17 @@ static gboolean tracker_resources_sparql_query_co (TrackerResourcesSparqlQueryDa
 			data->_tmp5_ = _g_error_copy0 (data->e);
 			data->_inner_error_ = data->_tmp5_;
 			_g_error_free0 (data->e);
-			goto __finally10;
+			goto __finally9;
 		} else {
 			data->_tmp6_ = NULL;
 			data->_tmp6_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, data->e->message);
 			data->_inner_error_ = data->_tmp6_;
 			_g_error_free0 (data->e);
-			goto __finally10;
+			goto __finally9;
 		}
 		_g_error_free0 (data->e);
 	}
-	__finally10:
+	__finally9:
 	g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
 	g_error_free (data->_inner_error_);
 	if (data->_state_ == 0) {
@@ -772,13 +772,13 @@ static gboolean tracker_resources_sparql_update_co (TrackerResourcesSparqlUpdate
 	tracker_store_sparql_update_finish (data->_res_, &data->_inner_error_);
 	if (data->_inner_error_ != NULL) {
 		if (g_error_matches (data->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-			goto __catch11_tracker_db_no_space;
+			goto __catch10_tracker_db_no_space;
 		}
-		goto __catch11_g_error;
+		goto __catch10_g_error;
 	}
 	tracker_dbus_request_end (data->request, NULL);
-	goto __finally11;
-	__catch11_tracker_db_no_space:
+	goto __finally10;
+	__catch10_tracker_db_no_space:
 	{
 		data->ie = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -786,10 +786,10 @@ static gboolean tracker_resources_sparql_update_co (TrackerResourcesSparqlUpdate
 		data->_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, data->ie->message);
 		data->_inner_error_ = data->_tmp1_;
 		_g_error_free0 (data->ie);
-		goto __finally11;
+		goto __finally10;
 	}
-	goto __finally11;
-	__catch11_g_error:
+	goto __finally10;
+	__catch10_g_error:
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -798,17 +798,17 @@ static gboolean tracker_resources_sparql_update_co (TrackerResourcesSparqlUpdate
 			data->_tmp2_ = _g_error_copy0 (data->e);
 			data->_inner_error_ = data->_tmp2_;
 			_g_error_free0 (data->e);
-			goto __finally11;
+			goto __finally10;
 		} else {
 			data->_tmp3_ = NULL;
 			data->_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, data->e->message);
 			data->_inner_error_ = data->_tmp3_;
 			_g_error_free0 (data->e);
-			goto __finally11;
+			goto __finally10;
 		}
 		_g_error_free0 (data->e);
 	}
-	__finally11:
+	__finally10:
 	if (data->_inner_error_ != NULL) {
 		g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
 		g_error_free (data->_inner_error_);
@@ -898,9 +898,9 @@ static gboolean tracker_resources_sparql_update_blank_co (TrackerResourcesSparql
 	data->_tmp2_ = data->_tmp1_;
 	if (data->_inner_error_ != NULL) {
 		if (g_error_matches (data->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-			goto __catch12_tracker_db_no_space;
+			goto __catch11_tracker_db_no_space;
 		}
-		goto __catch12_g_error;
+		goto __catch11_g_error;
 	}
 	data->result = data->_tmp2_;
 	if (data->_state_ == 0) {
@@ -910,8 +910,8 @@ static gboolean tracker_resources_sparql_update_blank_co (TrackerResourcesSparql
 	}
 	g_object_unref (data->_async_result);
 	return FALSE;
-	goto __finally12;
-	__catch12_tracker_db_no_space:
+	goto __finally11;
+	__catch11_tracker_db_no_space:
 	{
 		data->ie = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -919,10 +919,10 @@ static gboolean tracker_resources_sparql_update_blank_co (TrackerResourcesSparql
 		data->_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, data->ie->message);
 		data->_inner_error_ = data->_tmp3_;
 		_g_error_free0 (data->ie);
-		goto __finally12;
+		goto __finally11;
 	}
-	goto __finally12;
-	__catch12_g_error:
+	goto __finally11;
+	__catch11_g_error:
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -931,17 +931,17 @@ static gboolean tracker_resources_sparql_update_blank_co (TrackerResourcesSparql
 			data->_tmp4_ = _g_error_copy0 (data->e);
 			data->_inner_error_ = data->_tmp4_;
 			_g_error_free0 (data->e);
-			goto __finally12;
+			goto __finally11;
 		} else {
 			data->_tmp5_ = NULL;
 			data->_tmp5_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, data->e->message);
 			data->_inner_error_ = data->_tmp5_;
 			_g_error_free0 (data->e);
-			goto __finally12;
+			goto __finally11;
 		}
 		_g_error_free0 (data->e);
 	}
-	__finally12:
+	__finally11:
 	g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
 	g_error_free (data->_inner_error_);
 	if (data->_state_ == 0) {
@@ -1034,13 +1034,13 @@ static gboolean tracker_resources_batch_sparql_update_co (TrackerResourcesBatchS
 	tracker_store_sparql_update_finish (data->_res_, &data->_inner_error_);
 	if (data->_inner_error_ != NULL) {
 		if (g_error_matches (data->_inner_error_, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
-			goto __catch13_tracker_db_no_space;
+			goto __catch12_tracker_db_no_space;
 		}
-		goto __catch13_g_error;
+		goto __catch12_g_error;
 	}
 	tracker_dbus_request_end (data->request, NULL);
-	goto __finally13;
-	__catch13_tracker_db_no_space:
+	goto __finally12;
+	__catch12_tracker_db_no_space:
 	{
 		data->ie = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -1048,10 +1048,10 @@ static gboolean tracker_resources_batch_sparql_update_co (TrackerResourcesBatchS
 		data->_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_NO_SPACE, data->ie->message);
 		data->_inner_error_ = data->_tmp1_;
 		_g_error_free0 (data->ie);
-		goto __finally13;
+		goto __finally12;
 	}
-	goto __finally13;
-	__catch13_g_error:
+	goto __finally12;
+	__catch12_g_error:
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
@@ -1060,17 +1060,17 @@ static gboolean tracker_resources_batch_sparql_update_co (TrackerResourcesBatchS
 			data->_tmp2_ = _g_error_copy0 (data->e);
 			data->_inner_error_ = data->_tmp2_;
 			_g_error_free0 (data->e);
-			goto __finally13;
+			goto __finally12;
 		} else {
 			data->_tmp3_ = NULL;
 			data->_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, data->e->message);
 			data->_inner_error_ = data->_tmp3_;
 			_g_error_free0 (data->e);
-			goto __finally13;
+			goto __finally12;
 		}
 		_g_error_free0 (data->e);
 	}
-	__finally13:
+	__finally12:
 	if (data->_inner_error_ != NULL) {
 		g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
 		g_error_free (data->_inner_error_);
@@ -1197,60 +1197,60 @@ static gpointer _g_hash_table_ref0 (gpointer self) {
 static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 	gboolean result = FALSE;
 	gboolean had_any;
-	GHashTableIter _tmp0_ = {0};
-	GHashTableIter _tmp1_ = {0};
-	GHashTableIter iter;
-	TrackerClass* cl;
-	gboolean value = FALSE;
-	GHashTable* _tmp6_ = NULL;
-	GHashTable* _tmp7_;
+	gint _tmp0_;
+	TrackerClass** _tmp1_ = NULL;
+	GHashTable* _tmp4_ = NULL;
+	GHashTable* _tmp5_;
 	GHashTable* writebacks;
 	g_return_val_if_fail (self != NULL, FALSE);
 	had_any = FALSE;
-	_tmp1_ = (tracker_events_classes_iter (&_tmp0_), _tmp0_);
-	iter = _tmp1_;
-	cl = NULL;
-	while (TRUE) {
-		gconstpointer _tmp2_ = NULL;
-		gconstpointer _tmp3_ = NULL;
-		gboolean _tmp4_;
-		gboolean _tmp5_;
-		_tmp4_ = g_hash_table_iter_next (&iter, &_tmp2_, &_tmp3_);
-		cl = _tmp2_;
-		value = _tmp3_;
-		if (!_tmp4_) {
-			break;
-		}
-		_tmp5_ = tracker_resources_emit_graph_updated (self, cl);
-		if (_tmp5_) {
-			had_any = TRUE;
+	_tmp1_ = tracker_events_get_classes (&_tmp0_);
+	{
+		TrackerClass** cl_collection;
+		int cl_collection_length1;
+		int cl_it;
+		cl_collection = _tmp1_;
+		cl_collection_length1 = _tmp0_;
+		for (cl_it = 0; cl_it < _tmp0_; cl_it = cl_it + 1) {
+			TrackerClass* _tmp2_;
+			TrackerClass* cl;
+			_tmp2_ = _g_object_ref0 (cl_collection[cl_it]);
+			cl = _tmp2_;
+			{
+				gboolean _tmp3_;
+				_tmp3_ = tracker_resources_emit_graph_updated (self, cl);
+				if (_tmp3_) {
+					had_any = TRUE;
+				}
+				_g_object_unref0 (cl);
+			}
 		}
 	}
 	tracker_events_get_total (TRUE);
-	_tmp6_ = tracker_writeback_get_ready ();
-	_tmp7_ = _g_hash_table_ref0 (_tmp6_);
-	writebacks = _tmp7_;
+	_tmp4_ = tracker_writeback_get_ready ();
+	_tmp5_ = _g_hash_table_ref0 (_tmp4_);
+	writebacks = _tmp5_;
 	if (writebacks != NULL) {
-		GVariantBuilder* _tmp8_ = NULL;
+		GVariantBuilder* _tmp6_ = NULL;
 		GVariantBuilder* builder;
 		GHashTableIter wb_iter = {0};
 		gint subject_id = 0;
 		GArray* types;
-		GVariant* _tmp14_ = NULL;
-		GVariant* _tmp15_;
+		GVariant* _tmp12_ = NULL;
+		GVariant* _tmp13_;
 		had_any = TRUE;
-		_tmp8_ = g_variant_builder_new ((GVariantType*) "a{iai}");
-		builder = _tmp8_;
+		_tmp6_ = g_variant_builder_new ((GVariantType*) "a{iai}");
+		builder = _tmp6_;
 		g_hash_table_iter_init (&wb_iter, writebacks);
 		types = NULL;
 		while (TRUE) {
-			gconstpointer _tmp9_ = NULL;
-			gconstpointer _tmp10_ = NULL;
-			gboolean _tmp11_;
-			_tmp11_ = g_hash_table_iter_next (&wb_iter, &_tmp9_, &_tmp10_);
-			subject_id = _tmp9_;
-			types = _tmp10_;
-			if (!_tmp11_) {
+			gconstpointer _tmp7_ = NULL;
+			gconstpointer _tmp8_ = NULL;
+			gboolean _tmp9_;
+			_tmp9_ = g_hash_table_iter_next (&wb_iter, &_tmp7_, &_tmp8_);
+			subject_id = _tmp7_;
+			types = _tmp8_;
+			if (!_tmp9_) {
 				break;
 			}
 			g_variant_builder_open (builder, (GVariantType*) "{iai}");
@@ -1260,29 +1260,29 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 				gint i;
 				i = 0;
 				{
-					gboolean _tmp12_;
-					_tmp12_ = TRUE;
+					gboolean _tmp10_;
+					_tmp10_ = TRUE;
 					while (TRUE) {
-						gint _tmp13_;
-						if (!_tmp12_) {
+						gint _tmp11_;
+						if (!_tmp10_) {
 							i++;
 						}
-						_tmp12_ = FALSE;
+						_tmp10_ = FALSE;
 						if (!(i < types->len)) {
 							break;
 						}
-						_tmp13_ = g_array_index (types, gint, (guint) i);
-						g_variant_builder_add (builder, "i", _tmp13_, NULL);
+						_tmp11_ = g_array_index (types, gint, (guint) i);
+						g_variant_builder_add (builder, "i", _tmp11_, NULL);
 					}
 				}
 			}
 			g_variant_builder_close (builder);
 			g_variant_builder_close (builder);
 		}
-		_tmp14_ = g_variant_builder_end (builder);
-		_tmp15_ = g_variant_ref_sink (_tmp14_);
-		g_signal_emit_by_name (self, "writeback", _tmp15_);
-		_g_variant_unref0 (_tmp15_);
+		_tmp12_ = g_variant_builder_end (builder);
+		_tmp13_ = g_variant_ref_sink (_tmp12_);
+		g_signal_emit_by_name (self, "writeback", _tmp13_);
+		_g_variant_unref0 (_tmp13_);
 		_g_variant_builder_unref0 (builder);
 	}
 	tracker_writeback_reset_ready ();
@@ -1303,37 +1303,37 @@ static gboolean _tracker_resources_on_emit_signals_gsource_func (gpointer self) 
 
 
 static void tracker_resources_on_statements_committed (TrackerResources* self, gboolean start_timer) {
-	GHashTableIter _tmp0_ = {0};
-	GHashTableIter _tmp1_ = {0};
-	GHashTableIter iter;
-	TrackerClass* cl;
-	gboolean value = FALSE;
-	gboolean _tmp5_ = FALSE;
+	gint _tmp0_;
+	TrackerClass** _tmp1_ = NULL;
+	gboolean _tmp3_ = FALSE;
 	g_return_if_fail (self != NULL);
-	_tmp1_ = (tracker_events_classes_iter (&_tmp0_), _tmp0_);
-	iter = _tmp1_;
-	cl = NULL;
-	while (TRUE) {
-		gconstpointer _tmp2_ = NULL;
-		gconstpointer _tmp3_ = NULL;
-		gboolean _tmp4_;
-		_tmp4_ = g_hash_table_iter_next (&iter, &_tmp2_, &_tmp3_);
-		cl = _tmp2_;
-		value = _tmp3_;
-		if (!_tmp4_) {
-			break;
+	_tmp1_ = tracker_events_get_classes (&_tmp0_);
+	{
+		TrackerClass** cl_collection;
+		int cl_collection_length1;
+		int cl_it;
+		cl_collection = _tmp1_;
+		cl_collection_length1 = _tmp0_;
+		for (cl_it = 0; cl_it < _tmp0_; cl_it = cl_it + 1) {
+			TrackerClass* _tmp2_;
+			TrackerClass* cl;
+			_tmp2_ = _g_object_ref0 (cl_collection[cl_it]);
+			cl = _tmp2_;
+			{
+				tracker_class_transact_events (cl);
+				_g_object_unref0 (cl);
+			}
 		}
-		tracker_class_transact_events (cl);
 	}
 	if (start_timer) {
-		_tmp5_ = self->priv->signal_timeout == 0;
+		_tmp3_ = self->priv->signal_timeout == 0;
 	} else {
-		_tmp5_ = FALSE;
+		_tmp3_ = FALSE;
 	}
-	if (_tmp5_) {
-		guint _tmp6_;
-		_tmp6_ = g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, (guint) TRACKER_RESOURCES_SIGNALS_SECONDS_PER_EMIT, _tracker_resources_on_emit_signals_gsource_func, g_object_ref (self), g_object_unref);
-		self->priv->signal_timeout = _tmp6_;
+	if (_tmp3_) {
+		guint _tmp4_;
+		_tmp4_ = g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, (guint) TRACKER_RESOURCES_SIGNALS_SECONDS_PER_EMIT, _tracker_resources_on_emit_signals_gsource_func, g_object_ref (self), g_object_unref);
+		self->priv->signal_timeout = _tmp4_;
 	}
 	tracker_writeback_transact ();
 }
@@ -1351,25 +1351,25 @@ static void tracker_resources_check_graph_updated_signal (TrackerResources* self
 	g_return_if_fail (self != NULL);
 	_tmp0_ = tracker_events_get_total (FALSE);
 	if (_tmp0_ > TRACKER_RESOURCES_GRAPH_UPDATED_IMMEDIATE_EMIT_AT) {
-		GHashTableIter _tmp1_ = {0};
-		GHashTableIter _tmp2_ = {0};
-		GHashTableIter iter;
-		TrackerClass* cl;
-		gboolean value = FALSE;
-		_tmp2_ = (tracker_events_classes_iter (&_tmp1_), _tmp1_);
-		iter = _tmp2_;
-		cl = NULL;
-		while (TRUE) {
-			gconstpointer _tmp3_ = NULL;
-			gconstpointer _tmp4_ = NULL;
-			gboolean _tmp5_;
-			_tmp5_ = g_hash_table_iter_next (&iter, &_tmp3_, &_tmp4_);
-			cl = _tmp3_;
-			value = _tmp4_;
-			if (!_tmp5_) {
-				break;
+		gint _tmp1_;
+		TrackerClass** _tmp2_ = NULL;
+		_tmp2_ = tracker_events_get_classes (&_tmp1_);
+		{
+			TrackerClass** cl_collection;
+			int cl_collection_length1;
+			int cl_it;
+			cl_collection = _tmp2_;
+			cl_collection_length1 = _tmp1_;
+			for (cl_it = 0; cl_it < _tmp1_; cl_it = cl_it + 1) {
+				TrackerClass* _tmp3_;
+				TrackerClass* cl;
+				_tmp3_ = _g_object_ref0 (cl_collection[cl_it]);
+				cl = _tmp3_;
+				{
+					tracker_resources_emit_graph_updated (self, cl);
+					_g_object_unref0 (cl);
+				}
 			}
-			tracker_resources_emit_graph_updated (self, cl);
 		}
 		tracker_events_get_total (TRUE);
 	}

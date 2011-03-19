@@ -101,18 +101,16 @@ struct _TrackerBackupSaveData {
 	char* sender;
 	gchar* destination_uri;
 	Block1Data* _data1_;
-	TrackerNotifyClassGetter getter;
 	GObject* _tmp0_;
 	TrackerResources* resources;
-	TrackerNotifyClassGetter _tmp1_;
-	TrackerDBusRequest* _tmp2_;
+	TrackerDBusRequest* _tmp1_;
 	TrackerDBusRequest* request;
 	Block2Data* _data2_;
-	GFile* _tmp3_;
+	GFile* _tmp2_;
 	GFile* destination;
-	GError* _tmp4_;
+	GError* _tmp3_;
 	GError * e;
-	GError* _tmp5_;
+	GError* _tmp4_;
 	GError * _inner_error_;
 };
 
@@ -124,25 +122,23 @@ struct _TrackerBackupRestoreData {
 	TrackerBackup* self;
 	char* sender;
 	gchar* journal_uri;
-	TrackerNotifyClassGetter getter;
 	GObject* _tmp0_;
 	TrackerResources* resources;
-	TrackerNotifyClassGetter _tmp1_;
-	TrackerDBusRequest* _tmp2_;
+	TrackerDBusRequest* _tmp1_;
 	TrackerDBusRequest* request;
-	GFile* _tmp3_;
+	GFile* _tmp2_;
 	GFile* journal;
-	GObject* _tmp4_;
+	GObject* _tmp3_;
 	TrackerStatus* notifier;
-	void* _tmp5_;
-	GDestroyNotify _tmp6_;
-	TrackerBusyCallback _tmp7_;
+	void* _tmp4_;
+	GDestroyNotify _tmp5_;
+	TrackerBusyCallback _tmp6_;
 	void* busy_callback_target;
 	GDestroyNotify busy_callback_target_destroy_notify;
-	TrackerBusyCallback _tmp8_;
+	TrackerBusyCallback _tmp7_;
 	TrackerBusyCallback busy_callback;
 	GError * e;
-	GError* _tmp9_;
+	GError* _tmp8_;
 	GError * _inner_error_;
 };
 
@@ -322,26 +318,22 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* data) {
 	data->_data1_->_ref_count_ = 1;
 	data->_data1_->self = g_object_ref (data->self);
 	data->_data1_->_async_data_ = data;
-	data->getter = NULL;
 	data->_tmp0_ = NULL;
 	data->_tmp0_ = tracker_dbus_get_object (TRACKER_TYPE_RESOURCES);
 	data->resources = TRACKER_RESOURCES (data->_tmp0_);
 	if (data->resources != NULL) {
 		tracker_resources_disable_signals (data->resources);
-		data->_tmp1_ = NULL;
-		data->_tmp1_ = tracker_events_get_class_getter ();
-		data->getter = data->_tmp1_;
 		tracker_events_shutdown ();
 	}
-	data->_tmp2_ = NULL;
-	data->_tmp2_ = tracker_dbus_request_begin ((const gchar*) data->sender, "D-Bus request to save backup into '%s'", data->destination_uri, NULL);
-	data->request = data->_tmp2_;
+	data->_tmp1_ = NULL;
+	data->_tmp1_ = tracker_dbus_request_begin ((const gchar*) data->sender, "D-Bus request to save backup into '%s'", data->destination_uri, NULL);
+	data->request = data->_tmp1_;
 	data->_data2_ = g_slice_new0 (Block2Data);
 	data->_data2_->_ref_count_ = 1;
 	data->_data2_->_data1_ = block1_data_ref (data->_data1_);
-	data->_tmp3_ = NULL;
-	data->_tmp3_ = g_file_new_for_uri (data->destination_uri);
-	data->destination = data->_tmp3_;
+	data->_tmp2_ = NULL;
+	data->_tmp2_ = g_file_new_for_uri (data->destination_uri);
+	data->destination = data->_tmp2_;
 	data->_state_ = 1;
 	tracker_store_pause (tracker_backup_save_ready, data);
 	return FALSE;
@@ -354,8 +346,8 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* data) {
 	_state_2:
 	;
 	if (data->_data2_->backup_error != NULL) {
-		data->_tmp4_ = _g_error_copy0 (data->_data2_->backup_error);
-		data->_inner_error_ = data->_tmp4_;
+		data->_tmp3_ = _g_error_copy0 (data->_data2_->backup_error);
+		data->_inner_error_ = data->_tmp3_;
 		_g_object_unref0 (data->destination);
 		block2_data_unref (data->_data2_);
 		goto __catch0_g_error;
@@ -369,14 +361,14 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* data) {
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
 		tracker_dbus_request_end (data->request, data->e);
-		data->_tmp5_ = _g_error_copy0 (data->e);
-		data->_inner_error_ = data->_tmp5_;
+		data->_tmp4_ = _g_error_copy0 (data->e);
+		data->_inner_error_ = data->_tmp4_;
 		_g_error_free0 (data->e);
 		goto __finally0;
 	}
 	__finally0:
 	if (data->resources != NULL) {
-		tracker_events_init (data->getter);
+		tracker_events_init ();
 		tracker_resources_enable_signals (data->resources);
 	}
 	tracker_store_resume ();
@@ -455,41 +447,37 @@ static gboolean tracker_backup_restore_co (TrackerBackupRestoreData* data) {
 		g_assert_not_reached ();
 	}
 	_state_0:
-	data->getter = NULL;
 	data->_tmp0_ = NULL;
 	data->_tmp0_ = tracker_dbus_get_object (TRACKER_TYPE_RESOURCES);
 	data->resources = TRACKER_RESOURCES (data->_tmp0_);
 	if (data->resources != NULL) {
 		tracker_resources_disable_signals (data->resources);
-		data->_tmp1_ = NULL;
-		data->_tmp1_ = tracker_events_get_class_getter ();
-		data->getter = data->_tmp1_;
 		tracker_events_shutdown ();
 	}
-	data->_tmp2_ = NULL;
-	data->_tmp2_ = tracker_dbus_request_begin ((const gchar*) data->sender, "D-Bus request to restore backup from '%s'", data->journal_uri, NULL);
-	data->request = data->_tmp2_;
+	data->_tmp1_ = NULL;
+	data->_tmp1_ = tracker_dbus_request_begin ((const gchar*) data->sender, "D-Bus request to restore backup from '%s'", data->journal_uri, NULL);
+	data->request = data->_tmp1_;
 	data->_state_ = 1;
 	tracker_store_pause (tracker_backup_restore_ready, data);
 	return FALSE;
 	_state_1:
 	tracker_store_pause_finish (data->_res_);
+	data->_tmp2_ = NULL;
+	data->_tmp2_ = g_file_new_for_uri (data->journal_uri);
+	data->journal = data->_tmp2_;
 	data->_tmp3_ = NULL;
-	data->_tmp3_ = g_file_new_for_uri (data->journal_uri);
-	data->journal = data->_tmp3_;
+	data->_tmp3_ = tracker_dbus_get_object (TRACKER_TYPE_STATUS);
+	data->notifier = TRACKER_STATUS (data->_tmp3_);
 	data->_tmp4_ = NULL;
-	data->_tmp4_ = tracker_dbus_get_object (TRACKER_TYPE_STATUS);
-	data->notifier = TRACKER_STATUS (data->_tmp4_);
 	data->_tmp5_ = NULL;
 	data->_tmp6_ = NULL;
-	data->_tmp7_ = NULL;
-	data->_tmp7_ = tracker_status_get_callback (data->notifier, &data->_tmp5_, &data->_tmp6_);
+	data->_tmp6_ = tracker_status_get_callback (data->notifier, &data->_tmp4_, &data->_tmp5_);
 	data->busy_callback_target = NULL;
 	data->busy_callback_target_destroy_notify = NULL;
-	data->_tmp8_ = data->_tmp7_;
-	data->busy_callback_target = data->_tmp5_;
-	data->busy_callback_target_destroy_notify = data->_tmp6_;
-	data->busy_callback = data->_tmp8_;
+	data->_tmp7_ = data->_tmp6_;
+	data->busy_callback_target = data->_tmp4_;
+	data->busy_callback_target_destroy_notify = data->_tmp5_;
+	data->busy_callback = data->_tmp7_;
 	tracker_data_backup_restore (data->journal, NULL, data->busy_callback, data->busy_callback_target, &data->_inner_error_);
 	if (data->_inner_error_ != NULL) {
 		(data->busy_callback_target_destroy_notify == NULL) ? NULL : (data->busy_callback_target_destroy_notify (data->busy_callback_target), NULL);
@@ -513,14 +501,14 @@ static gboolean tracker_backup_restore_co (TrackerBackupRestoreData* data) {
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
 		tracker_dbus_request_end (data->request, data->e);
-		data->_tmp9_ = _g_error_copy0 (data->e);
-		data->_inner_error_ = data->_tmp9_;
+		data->_tmp8_ = _g_error_copy0 (data->e);
+		data->_inner_error_ = data->_tmp8_;
 		_g_error_free0 (data->e);
 		goto __finally1;
 	}
 	__finally1:
 	if (data->resources != NULL) {
-		tracker_events_init (data->getter);
+		tracker_events_init ();
 		tracker_resources_enable_signals (data->resources);
 	}
 	tracker_store_resume ();

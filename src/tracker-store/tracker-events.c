@@ -27,11 +27,9 @@
 #include "tracker-events.h"
 
 typedef struct {
-	GHashTable *allowances_id;
-	GHashTable *allowances;
 	gboolean frozen;
 	guint total;
-	TrackerNotifyClassGetter getter;
+	GPtrArray *notify_classes;
 } EventsPrivate;
 
 static EventsPrivate *private;
@@ -50,19 +48,6 @@ tracker_events_get_total (gboolean and_reset)
 	}
 
 	return total;
-}
-
-static gboolean
-is_allowed (EventsPrivate *private, TrackerClass *rdf_class, gint class_id)
-{
-	gboolean ret;
-
-	if (rdf_class != NULL) {
-		ret = (g_hash_table_lookup (private->allowances, rdf_class) != NULL) ? TRUE : FALSE;
-	} else {
-		ret = (g_hash_table_lookup (private->allowances_id, GINT_TO_POINTER (class_id)) != NULL) ? TRUE : FALSE;
-	}
-	return ret;
 }
 
 void
@@ -84,7 +69,7 @@ tracker_events_add_insert (gint         graph_id,
 	}
 
 	for (i = 0; i < rdf_types->len; i++) {
-		if (is_allowed (private, rdf_types->pdata[i], 0)) {
+		if (tracker_class_get_notify (rdf_types->pdata[i])) {
 			tracker_class_add_insert_event (rdf_types->pdata[i],
 			                                graph_id,
 			                                subject_id,
@@ -114,7 +99,7 @@ tracker_events_add_delete (gint         graph_id,
 	}
 
 	for (i = 0; i < rdf_types->len; i++) {
-		if (is_allowed (private, rdf_types->pdata[i], 0)) {
+		if (tracker_class_get_notify (rdf_types->pdata[i])) {
 			tracker_class_add_delete_event (rdf_types->pdata[i],
 			                                graph_id,
 			                                subject_id,
@@ -128,15 +113,12 @@ tracker_events_add_delete (gint         graph_id,
 void
 tracker_events_reset_pending (void)
 {
-	GHashTableIter iter;
-	gpointer key, value;
+	guint i;
 
 	g_return_if_fail (private != NULL);
 
-	g_hash_table_iter_init (&iter, private->allowances);
-
-	while (g_hash_table_iter_next (&iter, &key, &value)) {
-		TrackerClass *class = key;
+	for (i = 0; i < private->notify_classes->len; i++) {
+		TrackerClass *class = g_ptr_array_index (private->notify_classes, i);
 
 		tracker_class_reset_pending_events (class);
 	}
@@ -155,80 +137,54 @@ tracker_events_freeze (void)
 static void
 free_private (EventsPrivate *private)
 {
-	GHashTableIter iter;
-	gpointer key, value;
+	guint i;
 
-	g_hash_table_iter_init (&iter, private->allowances);
-
-	while (g_hash_table_iter_next (&iter, &key, &value)) {
-		TrackerClass *class = key;
+	for (i = 0; i < private->notify_classes->len; i++) {
+		TrackerClass *class = g_ptr_array_index (private->notify_classes, i);
 
 		tracker_class_reset_pending_events (class);
 
 		/* Perhaps hurry an emit of the ready events here? We're shutting down,
 		 * so I guess we're not required to do that here ... ? */
 		tracker_class_reset_ready_events (class);
-
 	}
 
-	g_hash_table_unref (private->allowances);
-	g_hash_table_unref (private->allowances_id);
+	g_ptr_array_unref (private->notify_classes);
 
 	g_free (private);
 }
 
-TrackerNotifyClassGetter
-tracker_events_get_class_getter (void)
+TrackerClass **
+tracker_events_get_classes (guint *length)
 {
 	g_return_val_if_fail (private != NULL, NULL);
-	return private->getter;
+
+	*length = private->notify_classes->len;
+
+	return (TrackerClass **) (private->notify_classes->pdata);
 }
 
 void
-tracker_events_init (TrackerNotifyClassGetter callback)
+tracker_events_init (void)
 {
-	GStrv classes_to_signal;
-	gint  i, count;
-
-	if (!callback) {
-		return;
-	}
+	TrackerClass **classes;
+	guint length = 0, i;
 
 	private = g_new0 (EventsPrivate, 1);
 
-	private->allowances = g_hash_table_new (g_direct_hash, g_direct_equal);
-	private->allowances_id = g_hash_table_new (g_direct_hash, g_direct_equal);
-	private->getter = callback;
+	classes = tracker_ontologies_get_classes (&length);
 
-	classes_to_signal = (*callback)();
+	private->notify_classes = g_ptr_array_sized_new (length);
+	g_ptr_array_set_free_func (private->notify_classes, (GDestroyNotify) g_object_unref);
 
-	if (!classes_to_signal)
-		return;
+	for (i = 0; i < length; i++) {
+		TrackerClass *class = classes[i];
 
-	count = g_strv_length (classes_to_signal);
-	for (i = 0; i < count; i++) {
-		TrackerClass *class = tracker_ontologies_get_class_by_uri (classes_to_signal[i]);
-		if (class != NULL) {
-			g_hash_table_insert (private->allowances,
-			                     class,
-			                     GINT_TO_POINTER (TRUE));
-			g_hash_table_insert (private->allowances_id,
-			                     GINT_TO_POINTER (tracker_class_get_id (class)),
-			                     GINT_TO_POINTER (TRUE));
-			g_debug ("GraphUpdated allowance: %s has ID %d",
-			         tracker_class_get_name (class),
-			         tracker_class_get_id (class));
+		if (tracker_class_get_notify (class)) {
+			g_ptr_array_add (private->notify_classes, g_object_ref (class));
 		}
 	}
-	g_strfreev (classes_to_signal);
-}
 
-void
-tracker_events_classes_iter (GHashTableIter *iter)
-{
-	g_return_if_fail (private != NULL);
-
-	g_hash_table_iter_init (iter, private->allowances);
 }
 
 void

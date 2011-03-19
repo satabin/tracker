@@ -299,3 +299,30 @@ TrackerMinerFS
 @do_initial_crawling: 
 
 
+<!-- ##### FUNCTION tracker_miner_fs_get_mtime_checking ##### -->
+<para>
+
+</para>
+
+@fs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_set_mtime_checking ##### -->
+<para>
+
+</para>
+
+@fs: 
+@mtime_checking: 
+
+
+<!-- ##### FUNCTION tracker_miner_fs_has_items_to_process ##### -->
+<para>
+
+</para>
+
+@fs: 
+@Returns: 
+
+

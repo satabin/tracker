@@ -212,10 +212,6 @@ When calling either <a class="link" href="TrackerSparqlConnection.html#tracker-s
 these functions, a mutex is used to protect the loading of backends
 against potential race conditions. For synchronous calls, this function
 will always block if a previous connection get method has been called.
-For asynchronous calls, this <span class="emphasis"><em>may</em></span> block if another
-synchronous or asynchronous call has been previously dispatched and is
-still pending. We don't expect this to be a normal programming model when
-using this API.
 </p>
 <p>
 All backends will call the D-Bus tracker-store API <code class="function">Wait()</code> to make sure
@@ -765,7 +761,7 @@ Finishes the asynchronous SPARQL update_array operation.
 <p>
 </p>
 <div class="example">
-<a name="id374468"></a><p class="title"><b>Example 1. </b></p>
+<a name="id556974"></a><p class="title"><b>Example 1. </b></p>
 <div class="example-contents"><pre class="programlisting">
 static void
 async_update_array_callback (GObject      *source_object,

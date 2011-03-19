@@ -129,10 +129,8 @@ static void tracker_main_signal_handler (gint signo);
 static void tracker_main_initialize_signal_handler (void);
 static void _tracker_main_signal_handler_sighandler_t (gint signal);
 static void tracker_main_initialize_priority (void);
-static gchar** tracker_main_get_notifiable_classes (void);
-static void _vala_array_add1 (gchar*** array, int* length, int* size, gchar* value);
 static gchar** tracker_main_get_writeback_predicates (void);
-static void _vala_array_add2 (gchar*** array, int* length, int* size, gchar* value);
+static void _vala_array_add1 (gchar*** array, int* length, int* size, gchar* value);
 static void tracker_main_config_verbosity_changed_cb (GObject* object, GParamSpec* spec);
 static gint tracker_main_main (gchar** args, int args_length1);
 void tzset (void);
@@ -146,7 +144,6 @@ void tracker_store_init (void);
 gboolean tracker_dbus_register_objects (void);
 gboolean tracker_dbus_register_names (void);
 gboolean tracker_dbus_register_prepare_class_signal (void);
-static gchar** _tracker_main_get_notifiable_classes_tracker_notify_class_getter (int* result_length1);
 static gchar** _tracker_main_get_writeback_predicates_tracker_writeback_get_predicates_func (int* result_length1);
 void tracker_store_resume (void);
 void tracker_store_shutdown (void);
@@ -266,20 +263,20 @@ static void _vala_array_add1 (gchar*** array, int* length, int* size, gchar* val
 }
 
 
-static gchar** tracker_main_get_notifiable_classes (void) {
+static gchar** tracker_main_get_writeback_predicates (void) {
 	gchar** result = NULL;
-	gint classes_to_signal_length1;
-	gint _classes_to_signal_size_;
+	gint predicates_to_signal_length1;
+	gint _predicates_to_signal_size_;
 	gchar** _tmp0_;
-	gchar** classes_to_signal;
+	gchar** predicates_to_signal;
 	TrackerDBCursor* _tmp1_ = NULL;
 	TrackerDBCursor* cursor;
 	GError * _inner_error_ = NULL;
 	_tmp0_ = NULL;
-	classes_to_signal_length1 = 0;
-	_classes_to_signal_size_ = classes_to_signal_length1;
-	classes_to_signal = _tmp0_;
-	_tmp1_ = tracker_data_query_sparql_cursor ("SELECT ?class WHERE { ?class tracker:notify true }", &_inner_error_);
+	predicates_to_signal_length1 = 0;
+	_predicates_to_signal_size_ = predicates_to_signal_length1;
+	predicates_to_signal = _tmp0_;
+	_tmp1_ = tracker_data_query_sparql_cursor ("SELECT ?predicate WHERE { ?predicate tracker:writeback true }", &_inner_error_);
 	cursor = _tmp1_;
 	if (_inner_error_ != NULL) {
 		goto __catch5_g_error;
@@ -300,7 +297,7 @@ static gchar** tracker_main_get_notifiable_classes (void) {
 		}
 		_tmp4_ = tracker_sparql_cursor_get_string ((TrackerSparqlCursor*) cursor, 0, NULL);
 		_tmp5_ = g_strdup (_tmp4_);
-		_vala_array_add1 (&classes_to_signal, &classes_to_signal_length1, &_classes_to_signal_size_, _tmp5_);
+		_vala_array_add1 (&predicates_to_signal, &predicates_to_signal_length1, &_predicates_to_signal_size_, _tmp5_);
 	}
 	_g_object_unref0 (cursor);
 	goto __finally5;
@@ -309,78 +306,10 @@ static gchar** tracker_main_get_notifiable_classes (void) {
 		GError * e;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		g_critical ("Unable to retrieve tracker:notify classes: %s", e->message);
-		_g_error_free0 (e);
-	}
-	__finally5:
-	if (_inner_error_ != NULL) {
-		classes_to_signal = (_vala_array_free (classes_to_signal, classes_to_signal_length1, (GDestroyNotify) g_free), NULL);
-		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-		g_clear_error (&_inner_error_);
-		return NULL;
-	}
-	result = classes_to_signal;
-	return result;
-}
-
-
-static void _vala_array_add2 (gchar*** array, int* length, int* size, gchar* value) {
-	if ((*length) == (*size)) {
-		*size = (*size) ? (2 * (*size)) : 4;
-		*array = g_renew (gchar*, *array, (*size) + 1);
-	}
-	(*array)[(*length)++] = value;
-	(*array)[*length] = NULL;
-}
-
-
-static gchar** tracker_main_get_writeback_predicates (void) {
-	gchar** result = NULL;
-	gint predicates_to_signal_length1;
-	gint _predicates_to_signal_size_;
-	gchar** _tmp0_;
-	gchar** predicates_to_signal;
-	TrackerDBCursor* _tmp1_ = NULL;
-	TrackerDBCursor* cursor;
-	GError * _inner_error_ = NULL;
-	_tmp0_ = NULL;
-	predicates_to_signal_length1 = 0;
-	_predicates_to_signal_size_ = predicates_to_signal_length1;
-	predicates_to_signal = _tmp0_;
-	_tmp1_ = tracker_data_query_sparql_cursor ("SELECT ?predicate WHERE { ?predicate tracker:writeback true }", &_inner_error_);
-	cursor = _tmp1_;
-	if (_inner_error_ != NULL) {
-		goto __catch6_g_error;
-	}
-	while (TRUE) {
-		gboolean _tmp2_;
-		gboolean _tmp3_;
-		const gchar* _tmp4_ = NULL;
-		gchar* _tmp5_;
-		_tmp2_ = tracker_sparql_cursor_next ((TrackerSparqlCursor*) cursor, NULL, &_inner_error_);
-		_tmp3_ = _tmp2_;
-		if (_inner_error_ != NULL) {
-			_g_object_unref0 (cursor);
-			goto __catch6_g_error;
-		}
-		if (!_tmp3_) {
-			break;
-		}
-		_tmp4_ = tracker_sparql_cursor_get_string ((TrackerSparqlCursor*) cursor, 0, NULL);
-		_tmp5_ = g_strdup (_tmp4_);
-		_vala_array_add2 (&predicates_to_signal, &predicates_to_signal_length1, &_predicates_to_signal_size_, _tmp5_);
-	}
-	_g_object_unref0 (cursor);
-	goto __finally6;
-	__catch6_g_error:
-	{
-		GError * e;
-		e = _inner_error_;
-		_inner_error_ = NULL;
 		g_critical ("Unable to retrieve tracker:writeback properties: %s", e->message);
 		_g_error_free0 (e);
 	}
-	__finally6:
+	__finally5:
 	if (_inner_error_ != NULL) {
 		predicates_to_signal = (_vala_array_free (predicates_to_signal, predicates_to_signal_length1, (GDestroyNotify) g_free), NULL);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -412,13 +341,6 @@ static void tracker_main_config_verbosity_changed_cb (GObject* object, GParamSpe
 
 static void _tracker_main_config_verbosity_changed_cb_g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self) {
 	tracker_main_config_verbosity_changed_cb (_sender, pspec);
-}
-
-
-static gchar** _tracker_main_get_notifiable_classes_tracker_notify_class_getter (int* result_length1) {
-	gchar** result;
-	result = tracker_main_get_notifiable_classes ();
-	return result;
 }
 
 
@@ -502,11 +424,11 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	g_option_context_parse (context, &args_length1, &args, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		_g_option_context_free0 (context);
-		goto __catch7_g_error;
+		goto __catch6_g_error;
 	}
 	_g_option_context_free0 (context);
-	goto __finally7;
-	__catch7_g_error:
+	goto __finally6;
+	__catch6_g_error:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -516,7 +438,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		_g_error_free0 (e);
 		return result;
 	}
-	__finally7:
+	__finally6:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -648,7 +570,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	is_first_time_index = _tmp30_;
 	if (_inner_error_ != NULL) {
 		if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-			goto __catch8_tracker_db_interface_error;
+			goto __catch7_tracker_db_interface_error;
 		}
 		_g_free0 (cache_size_s);
 		_g_free0 (rotate_to);
@@ -663,8 +585,8 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		g_clear_error (&_inner_error_);
 		return 0;
 	}
-	goto __finally8;
-	__catch8_tracker_db_interface_error:
+	goto __finally7;
+	__catch7_tracker_db_interface_error:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -683,7 +605,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		_g_object_unref0 (config);
 		return result;
 	}
-	__finally8:
+	__finally7:
 	if (_inner_error_ != NULL) {
 		_g_free0 (cache_size_s);
 		_g_free0 (rotate_to);
@@ -707,7 +629,7 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	if (!tracker_main_shutdown) {
 		tracker_locale_change_initialize_subscription ();
 		tracker_dbus_register_prepare_class_signal ();
-		tracker_events_init (_tracker_main_get_notifiable_classes_tracker_notify_class_getter);
+		tracker_events_init ();
 		tracker_writeback_init (_tracker_main_get_writeback_predicates_tracker_writeback_get_predicates_func);
 		tracker_store_resume ();
 		g_message ("Waiting for D-Bus requests...");

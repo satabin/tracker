@@ -1,3 +1,66 @@
+2011-03-17  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.4
+
+2011-03-17  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-extract: free of a pointer that got offset by strchr
+	Fixes NB#237582.
+
+2011-03-17  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-sparql: Add test case for the bug this fixes.
+	Fixes NB#237150, Second tracker_sparql_connection_get_async never returns
+
+2011-03-17  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Remove unused tracker_data_manager_init_async
+
+	libtracker-sparql: Fix deadlock on initialization
+	Calling Connection.get_async followed by Connection.get in the same
+	thread led to a deadlock. This moves all initialization into a separate
+	thread when invoked asynchronously instead of just initializing the
+	database in a separate thread.
+
+	libtracker-sparql: Fix race between unlock and return in get_internal
+
+2011-03-17  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner,miner-fs,extract: Don't assume g_dbus_info_new_for_xml() never fails
+	Not a big deal because the introspection XML is hardcoded and thus shouldn't
+	break g_dbus_info_new_for_xml(), but anyway, better get an error message than
+	a segfault if the xml is ever broken...
+
+2011-03-15  Jürg Billeter  <j@bitron.ch>
+
+	functional-tests: Fix XDG dir handling
+
+	libtracker-data: Do not share anonymous blank nodes between graphs
+	Fixes NB#236387.
+
+2011-03-15  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-store: Rename cache to notify_classes for code clarity
+
+	tracker-store: Use a cache of tracker:notify classes in tracker-events.c
+
+	libtracker-data, tracker-store: Performance improvement for class signals
+
+2011-03-15  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: Remove unneeded methods from processing pool
+
+	doc: Add missing libtracker-miner API methods to documentation
+
+	build: ignore some built files in git
+
+	libtracker-extract: Fix usage of strptime() when parsing dates without timezone
+	Input dates without timezone should be treated as localtime, not as UTC.
+
+	Fixes NB#233828
+
+	libtracker-extract: Improve some comments
+
 2011-03-11  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.3

@@ -217,12 +217,7 @@ public class Tracker.Resources : Object {
 	bool on_emit_signals () {
 		bool had_any = false;
 
-		/* Class signal feature */
-		var iter = Tracker.Events.classes_iter ();
-
-		unowned Class cl;
-		bool value;
-		while (iter.next (out cl, out value)) {
+		foreach (var cl in Tracker.Events.get_classes ()) {
 			if (emit_graph_updated (cl)) {
 				had_any = true;
 			}
@@ -230,7 +225,6 @@ public class Tracker.Resources : Object {
 
 		/* Reset counter */
 		Tracker.Events.get_total (true);
-
 
 		/* Writeback feature */
 		var writebacks = Tracker.Writeback.get_ready ();
@@ -272,11 +266,7 @@ public class Tracker.Resources : Object {
 	void on_statements_committed (bool start_timer) {
 		/* Class signal feature */
 
-		var iter = Tracker.Events.classes_iter ();
-
-		unowned Class cl;
-		bool value;
-		while (iter.next (out cl, out value)) {
+		foreach (var cl in Tracker.Events.get_classes ()) {
 			cl.transact_events ();
 		}
 
@@ -296,11 +286,8 @@ public class Tracker.Resources : Object {
 	void check_graph_updated_signal () {
 		/* Check for whether we need an immediate emit */
 		if (Tracker.Events.get_total (false) > GRAPH_UPDATED_IMMEDIATE_EMIT_AT) {
-			var iter = Tracker.Events.classes_iter ();
 
-			unowned Class cl;
-			bool value;
-			while (iter.next (out cl, out value)) {
+			foreach (var cl in Tracker.Events.get_classes ()) {
 				emit_graph_updated (cl);
 			}
 

@@ -1,11 +1,11 @@
 libtracker-sparql-0.10.so.0 libtracker-sparql-0.10-0 #MINVER#
- tracker_backend_status_get_type@Base 0.10.0
- tracker_backend_status_proxy_get_type@Base 0.10.0
- tracker_backend_status_register_object@Base 0.10.0
- tracker_backend_status_wait@Base 0.10.0
- tracker_sparql_backend_construct@Base 0.10.0
- tracker_sparql_backend_get_type@Base 0.10.0
- tracker_sparql_backend_new@Base 0.10.0
+ (optional)tracker_backend_status_get_type@Base 0.10.0
+ (optional)tracker_backend_status_proxy_get_type@Base 0.10.0
+ (optional)tracker_backend_status_register_object@Base 0.10.0
+ (optional)tracker_backend_status_wait@Base 0.10.0
+ (optional)tracker_sparql_backend_construct@Base 0.10.0
+ (optional)tracker_sparql_backend_get_type@Base 0.10.0
+ (optional)tracker_sparql_backend_new@Base 0.10.0
  tracker_sparql_builder_append@Base 0.10.0
  tracker_sparql_builder_construct@Base 0.10.0
  tracker_sparql_builder_construct_embedded_insert@Base 0.10.0

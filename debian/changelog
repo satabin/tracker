@@ -1,4 +1,4 @@
-tracker (0.10.4-1) UNRELEASED; urgency=low
+tracker (0.10.4-1) experimental; urgency=low
 
   * New upstream release.
   * debian/libtracker-sparql-0.10-0.symbols
@@ -9,7 +9,7 @@ tracker (0.10.4-1) UNRELEASED; urgency=low
   * debian/libtracker-miner-0.10-0.symbols
     - Mark private symbols as optional.
 
- -- Michael Biebl <biebl@debian.org>  Sat, 19 Mar 2011 17:15:29 +0100
+ -- Michael Biebl <biebl@debian.org>  Sat, 19 Mar 2011 17:31:38 +0100
 
 tracker (0.10.3-1) experimental; urgency=low
 

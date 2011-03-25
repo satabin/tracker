@@ -106,6 +106,8 @@
 <ANCHOR id="TrackerMinerManager" href="libtracker-miner/TrackerMinerManager.html">
 <ANCHOR id="TrackerMinerManager.synopsis" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.synopsis">
 <ANCHOR id="TrackerMinerManager.object-hierarchy" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.object-hierarchy">
+<ANCHOR id="TrackerMinerManager.implemented-interfaces" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.implemented-interfaces">
+<ANCHOR id="TrackerMinerManager.properties" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.properties">
 <ANCHOR id="TrackerMinerManager.signals" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.signals">
 <ANCHOR id="TrackerMinerManager.description" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.description">
 <ANCHOR id="TrackerMinerManager.details" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.details">
@@ -117,6 +119,7 @@
 <ANCHOR id="TrackerMinerManager-struct" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager-struct">
 <ANCHOR id="TrackerMinerManagerClass" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManagerClass">
 <ANCHOR id="tracker-miner-manager-new" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-new">
+<ANCHOR id="tracker-miner-manager-new-full" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-new-full">
 <ANCHOR id="tracker-miner-manager-get-running" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-get-running">
 <ANCHOR id="tracker-miner-manager-get-available" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-get-available">
 <ANCHOR id="tracker-miner-manager-pause" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-pause">
@@ -129,6 +132,8 @@
 <ANCHOR id="tracker-miner-manager-index-file" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-index-file">
 <ANCHOR id="tracker-miner-manager-ignore-next-update" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-ignore-next-update">
 <ANCHOR id="tracker-miner-manager-reindex-by-mimetype" href="libtracker-miner/TrackerMinerManager.html#tracker-miner-manager-reindex-by-mimetype">
+<ANCHOR id="TrackerMinerManager.property-details" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.property-details">
+<ANCHOR id="TrackerMinerManager--auto-start" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager--auto-start">
 <ANCHOR id="TrackerMinerManager.signal-details" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager.signal-details">
 <ANCHOR id="TrackerMinerManager-miner-activated" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager-miner-activated">
 <ANCHOR id="TrackerMinerManager-miner-deactivated" href="libtracker-miner/TrackerMinerManager.html#TrackerMinerManager-miner-deactivated">

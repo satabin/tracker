@@ -28,7 +28,8 @@ libtracker_sparql_@TRACKER_API_VERSION@_la_SOURCES =   \
 	tracker-cursor.vala                            \
 	tracker-backend.vala                           \
 	tracker-utils.vala                             \
-	tracker-uri.c
+	tracker-uri.c                                  \
+	tracker-init.c
 
 libtracker_sparql_@TRACKER_API_VERSION@_la_LIBADD =    \
 	$(BUILD_LIBS)                                  \
@@ -36,6 +37,7 @@ libtracker_sparql_@TRACKER_API_VERSION@_la_LIBADD =    \
 
 libtracker_sparql_@TRACKER_API_VERSION@_la_LDFLAGS =   \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+	-export-symbols-regex '^tracker_sparql_(connection|cursor|builder|escape|error|value|get)_.*'
 
 libtracker_sparqlinclude_HEADERS =                     \
 	tracker-sparql.h

@@ -105,6 +105,7 @@
     <function name="TrackerMinerManager" link="TrackerMinerManager.html#TrackerMinerManager-struct"/>
     <function name="TrackerMinerManagerClass" link="TrackerMinerManager.html#TrackerMinerManagerClass"/>
     <function name="tracker_miner_manager_new ()" link="TrackerMinerManager.html#tracker-miner-manager-new"/>
+    <function name="tracker_miner_manager_new_full ()" link="TrackerMinerManager.html#tracker-miner-manager-new-full"/>
     <function name="tracker_miner_manager_get_running ()" link="TrackerMinerManager.html#tracker-miner-manager-get-running"/>
     <function name="tracker_miner_manager_get_available ()" link="TrackerMinerManager.html#tracker-miner-manager-get-available"/>
     <function name="tracker_miner_manager_pause ()" link="TrackerMinerManager.html#tracker-miner-manager-pause"/>
@@ -117,6 +118,7 @@
     <function name="tracker_miner_manager_index_file ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file"/>
     <function name="tracker_miner_manager_ignore_next_update ()" link="TrackerMinerManager.html#tracker-miner-manager-ignore-next-update"/>
     <function name="tracker_miner_manager_reindex_by_mimetype ()" link="TrackerMinerManager.html#tracker-miner-manager-reindex-by-mimetype"/>
+    <function name="The &quot;auto-start&quot; property" link="TrackerMinerManager.html#TrackerMinerManager--auto-start"/>
     <function name="The &quot;miner-activated&quot; signal" link="TrackerMinerManager.html#TrackerMinerManager-miner-activated"/>
     <function name="The &quot;miner-deactivated&quot; signal" link="TrackerMinerManager.html#TrackerMinerManager-miner-deactivated"/>
     <function name="The &quot;miner-paused&quot; signal" link="TrackerMinerManager.html#TrackerMinerManager-miner-paused"/>

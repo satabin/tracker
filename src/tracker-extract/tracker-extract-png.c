@@ -107,6 +107,7 @@ read_metadata (TrackerSparqlBuilder *preupdate,
 	gint i;
 	gint found;
 	GPtrArray *keywords;
+	GString *where = NULL;
 
 	info_ptrs[0] = info_ptr;
 	info_ptrs[1] = end_ptr;
@@ -121,7 +122,7 @@ read_metadata (TrackerSparqlBuilder *preupdate,
 			if (!text_ptr[i].key || !text_ptr[i].text || text_ptr[i].text[0] == '\0') {
 				continue;
 			}
-		
+
 	#if defined(HAVE_EXEMPI) && defined(PNG_iTXt_SUPPORTED)
 			if (g_strcmp0 ("XML:com.adobe.xmp", text_ptr[i].key) == 0) {
 				/* ATM tracker_extract_xmp_read supports setting xd
@@ -470,7 +471,7 @@ read_metadata (TrackerSparqlBuilder *preupdate,
 	if (ed->x_resolution) {
 		gdouble value;
 
-		value = ed->resolution_unit == 1 ? g_strtod (ed->x_resolution, NULL) : g_strtod (ed->x_resolution, NULL) * CM_TO_INCH;
+		value = ed->resolution_unit != 3 ? g_strtod (ed->x_resolution, NULL) : g_strtod (ed->x_resolution, NULL) * CM_TO_INCH;
 		tracker_sparql_builder_predicate (metadata, "nfo:horizontalResolution");
 		tracker_sparql_builder_object_double (metadata, value);
 	}
@@ -478,27 +479,49 @@ read_metadata (TrackerSparqlBuilder *preupdate,
 	if (ed->y_resolution) {
 		gdouble value;
 
-		value = ed->resolution_unit == 1 ? g_strtod (ed->y_resolution, NULL) : g_strtod (ed->y_resolution, NULL) * CM_TO_INCH;
+		value = ed->resolution_unit != 3 ? g_strtod (ed->y_resolution, NULL) : g_strtod (ed->y_resolution, NULL) * CM_TO_INCH;
 		tracker_sparql_builder_predicate (metadata, "nfo:verticalResolution");
 		tracker_sparql_builder_object_double (metadata, value);
 	}
 
 	for (i = 0; i < keywords->len; i++) {
-		gchar *p;
+		gchar *p, *escaped, *var;
 
 		p = g_ptr_array_index (keywords, i);
+		escaped = tracker_sparql_escape_string (p);
+		var = g_strdup_printf ("tag%d", i + 1);
 
+		/* ensure tag with specified label exists */
+		tracker_sparql_builder_append (preupdate,
+		                               "INSERT { _:tag a nao:Tag ; nao:prefLabel \"");
+		tracker_sparql_builder_append (preupdate, escaped);
+		tracker_sparql_builder_append (preupdate,
+		                               "\" }\nWHERE { FILTER (NOT EXISTS { "
+		                               "?tag a nao:Tag ; nao:prefLabel \"");
+		tracker_sparql_builder_append (preupdate, escaped);
+		tracker_sparql_builder_append (preupdate,
+		                               "\" }) }\n");
+
+		/* associate file with tag */
 		tracker_sparql_builder_predicate (metadata, "nao:hasTag");
+		tracker_sparql_builder_object_variable (metadata, var);
 
-		tracker_sparql_builder_object_blank_open (metadata);
-		tracker_sparql_builder_predicate (metadata, "a");
-		tracker_sparql_builder_object (metadata, "nao:Tag");
-		tracker_sparql_builder_predicate (metadata, "nao:prefLabel");
-		tracker_sparql_builder_object_unvalidated (metadata, p);
-		tracker_sparql_builder_object_blank_close (metadata);
+		if (where == NULL) {
+			where = g_string_new ("} } WHERE { {\n");
+		}
+
+		g_string_append_printf (where, "?%s a nao:Tag ; nao:prefLabel \"%s\" .\n", var, escaped);
+
+		g_free (var);
+		g_free (escaped);
 		g_free (p);
 	}
 	g_ptr_array_free (keywords, TRUE);
+
+	if (where != NULL) {
+		tracker_sparql_builder_append (metadata, where->str);
+		g_string_free (where, TRUE);
+	}
 
 	tracker_exif_free (ed);
 	tracker_xmp_free (xd);

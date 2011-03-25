@@ -46,7 +46,12 @@
 #include <mail/em-utils.h>
 #include <mail/mail-ops.h>
 
+#ifdef EVOLUTION_SHELL_2_91
 #include <mail/e-mail-session.h>
+#else
+#include <mail/mail-session.h>
+#endif
+
 #include <mail/e-mail-backend.h>
 #include <shell/e-shell.h>
 
@@ -78,6 +83,8 @@
 
 #define TRACKER_SERVICE                 "org.freedesktop.Tracker1"
 #define DATASOURCE_URN                  "urn:nepomuk:datasource:1cb1eb90-1241-11de-8c30-0800200c9a66"
+#define TRACKER_EVOLUTION_GRAPH_URN     "urn:uuid:9a96d750-5182-11e0-b8af-0800200c9a66"
+
 
 G_DEFINE_TYPE (TrackerEvolutionPlugin, tracker_evolution_plugin, TRACKER_TYPE_MINER)
 
@@ -186,7 +193,9 @@ static TrackerEvolutionPlugin *manager = NULL;
 static GStaticRecMutex glock = G_STATIC_REC_MUTEX_INIT;
 static guint register_count = 0, walk_count = 0;
 static ThreadPool *folder_pool = NULL;
+#ifdef EVOLUTION_SHELL_2_91
 static EMailSession *session = NULL;
+#endif
 
 /* Prototype declarations */
 static void register_account (TrackerEvolutionPlugin *self, EAccount *account);
@@ -411,9 +420,9 @@ send_sparql_commit (TrackerEvolutionPlugin *self, gboolean update)
 			 * finished don't have to be repeated next time. Right now an interrupt
 			 * means starting over from scratch. */
 
-			gchar *update = g_strdup_printf ("DELETE FROM <"DATASOURCE_URN"> { <" DATASOURCE_URN "> nie:contentLastModified ?d } "
-			                                 "WHERE { <" DATASOURCE_URN "> a nie:InformationElement ; nie:contentLastModified ?d } \n"
-			                                 "INSERT INTO <"DATASOURCE_URN"> { <" DATASOURCE_URN "> a nie:InformationElement ; nie:contentLastModified \"%s\" }",
+			gchar *update = g_strdup_printf ("DELETE { <" DATASOURCE_URN "> nie:contentLastModified ?d } "
+			                                 "WHERE { <"  DATASOURCE_URN "> a nie:InformationElement ; nie:contentLastModified ?d } \n"
+			                                 "INSERT { <" DATASOURCE_URN "> a nie:InformationElement ; nie:contentLastModified \"%s\" }",
 			                                 date_s);
 
 			send_sparql_update (self, update, 0);
@@ -720,7 +729,8 @@ on_folder_summary_changed (CamelFolder *folder,
 		CamelMessageInfo *linfo;
 		const CamelTag *ctags;
 		const CamelFlag *cflags;
-
+		gchar *full_sparql;
+	
 		linfo = camel_folder_summary_uid (summary, merged->pdata[i]);
 
 		if (linfo) {
@@ -751,9 +761,8 @@ on_folder_summary_changed (CamelFolder *folder,
 
 			sparql = tracker_sparql_builder_new_update ();
 
-			tracker_sparql_builder_drop_graph (sparql, uri);
-
-			tracker_sparql_builder_insert_open (sparql, uri);
+			tracker_sparql_builder_insert_silent_open (sparql, NULL);
+			tracker_sparql_builder_graph_open (sparql, TRACKER_EVOLUTION_GRAPH_URN);
 
 			process_fields (sparql, uid, flags, sent, subject,
 			                from, to, cc, size, folder, uri);
@@ -795,9 +804,30 @@ on_folder_summary_changed (CamelFolder *folder,
 				ctags = ctags->next;
 			}
 
+			tracker_sparql_builder_graph_close (sparql);
 			tracker_sparql_builder_insert_close (sparql);
 
-			send_sparql_update (info->self, tracker_sparql_builder_get_result (sparql), 100);
+			full_sparql = g_strdup_printf ("DELETE {"
+			                               "  GRAPH <%s> {"
+			                               "    <%s> ?p ?o"
+			                               "  } "
+			                               "} "
+			                               "WHERE {"
+			                               "  GRAPH <%s> {"
+			                               "    <%s> ?p ?o"
+			                               "    FILTER (?p != rdf:type && ?p != nie:contentCreated)"
+			                               "  } "
+			                               "} "
+			                               "%s",
+			                               TRACKER_EVOLUTION_GRAPH_URN,
+			                               uri,
+			                               TRACKER_EVOLUTION_GRAPH_URN,
+			                               uri,
+			                               tracker_sparql_builder_get_result (sparql));
+
+			send_sparql_update (info->self, full_sparql, 100);
+
+			g_free (full_sparql);
 
 			g_object_set (info->self, "progress",
 			              (gdouble) i / merged->len,
@@ -981,11 +1011,11 @@ introduce_walk_folders_in_folder (TrackerEvolutionPlugin *self,
 				uid = (gchar *) sqlite3_column_text (stmt, 0);
 
 				if (uid) {
-					const gchar *query;
 					CamelFolder *folder;
 					guint max = 0, j;
 					gchar *uri;
 					gboolean opened = FALSE;
+					gchar *full_sparql;
 
 					flags =   (guint  ) sqlite3_column_int  (stmt, 1);
 					size =    (gchar *) sqlite3_column_text (stmt, 8);
@@ -1003,9 +1033,8 @@ introduce_walk_folders_in_folder (TrackerEvolutionPlugin *self,
 						sparql = tracker_sparql_builder_new_update ();
 					}
 
-					tracker_sparql_builder_drop_graph (sparql, uri);
-
-					tracker_sparql_builder_insert_open (sparql, uri);
+					tracker_sparql_builder_insert_silent_open (sparql, NULL);
+					tracker_sparql_builder_graph_open (sparql, TRACKER_EVOLUTION_GRAPH_URN);
 
 					process_fields (sparql, uid, flags, sent,
 					                subject, from, to, cc, size,
@@ -1074,13 +1103,33 @@ introduce_walk_folders_in_folder (TrackerEvolutionPlugin *self,
 							g_free(value);
 						}
 
-					g_free (uri);
 					g_free (p);
 
+					tracker_sparql_builder_graph_close (sparql);
 					tracker_sparql_builder_insert_close (sparql);
-					query = tracker_sparql_builder_get_result (sparql);
+
+					full_sparql = g_strdup_printf ("DELETE {"
+					                               "  GRAPH <%s> {"
+					                               "    <%s> ?p ?o"
+					                               "  } "
+					                               "} "
+					                               "WHERE {"
+					                               "  GRAPH <%s> {"
+					                               "    <%s> ?p ?o"
+					                               "    FILTER (?p != rdf:type && ?p != nie:contentCreated)"
+					                               "  } "
+					                               "} "
+					                               "%s",
+					                               TRACKER_EVOLUTION_GRAPH_URN,
+					                               uri,
+					                               TRACKER_EVOLUTION_GRAPH_URN,
+					                               uri,
+					                               tracker_sparql_builder_get_result (sparql));
+
+					g_free (uri);
 					count++;
-					send_sparql_update (self, query, 0);
+					send_sparql_update (self, full_sparql, 0);
+					g_free (full_sparql);
 					g_object_unref (sparql);
 				}
 			}
@@ -1364,7 +1413,10 @@ register_walk_folders_in_folder (TrackerEvolutionPlugin *self,
 		/* This is asynchronous and hooked to the mail/ API, so nicely
 		 * integrated with the Evolution UI application */
 
-		mail_get_folder (session,
+		mail_get_folder (
+#ifdef EVOLUTION_SHELL_2_91
+		                 session,
+#endif
 		                 iter->uri,
 		                 0,
 		                 register_on_get_folder,
@@ -1438,7 +1490,10 @@ unregister_walk_folders_in_folder (TrackerEvolutionPlugin *self,
 		/* This is asynchronous and hooked to the mail/ API, so nicely
 		 * integrated with the Evolution UI application */
 
-		mail_get_folder (session,
+		mail_get_folder (
+#ifdef EVOLUTION_SHELL_2_91
+		                 session,
+#endif
 		                 titer->uri,
 		                 0,
 		                 unregister_on_get_folder,
@@ -1672,7 +1727,7 @@ register_client_second_half (ClientRegistry *info)
 
 	if (info->last_checkout < too_old) {
 
-		send_sparql_update (info->self, "DELETE FROM <"DATASOURCE_URN"> { ?s a rdfs:Resource } "
+		send_sparql_update (info->self, "DELETE { ?s a rdfs:Resource } "
 		                    "WHERE { ?s nie:dataSource <" DATASOURCE_URN "> }", 0);
 		send_sparql_commit (info->self, FALSE);
 
@@ -2194,6 +2249,7 @@ tracker_evolution_plugin_init (TrackerEvolutionPlugin *plugin)
 	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (plugin);
 	EIterator *it;
 
+#ifdef EVOLUTION_SHELL_2_91
 	if (!session) {
 		EShell *shell;
 		EShellBackend *shell_backend;
@@ -2202,6 +2258,7 @@ tracker_evolution_plugin_init (TrackerEvolutionPlugin *plugin)
 		shell_backend = e_shell_get_backend_by_name (shell, "mail");
 		session = e_mail_backend_get_session (E_MAIL_BACKEND (shell_backend));
 	}
+#endif
 
 	priv->connection = NULL;
 	priv->last_time = 0;

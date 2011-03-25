@@ -7,6 +7,9 @@
    language is requested. */
 #undef ENABLE_NLS
 
+/* Use new evolution-shell API */
+#undef EVOLUTION_SHELL_2_91
+
 /* The gettext translation domain */
 #undef GETTEXT_PACKAGE
 

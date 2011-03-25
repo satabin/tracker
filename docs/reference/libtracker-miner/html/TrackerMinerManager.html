@@ -27,6 +27,10 @@
                    | 
                   <a href="#TrackerMinerManager.object-hierarchy" class="shortcut">Object Hierarchy</a>
                    | 
+                  <a href="#TrackerMinerManager.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                   | 
+                  <a href="#TrackerMinerManager.properties" class="shortcut">Properties</a>
+                   | 
                   <a href="#TrackerMinerManager.signals" class="shortcut">Signals</a>
 </td></tr>
 </table>
@@ -50,6 +54,8 @@ enum                <a class="link" href="TrackerMinerManager.html#TrackerMinerM
                     <a class="link" href="TrackerMinerManager.html#TrackerMinerManager-struct" title="TrackerMinerManager">TrackerMinerManager</a>;
                     <a class="link" href="TrackerMinerManager.html#TrackerMinerManagerClass" title="TrackerMinerManagerClass">TrackerMinerManagerClass</a>;
 <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-new" title="tracker_miner_manager_new ()">tracker_miner_manager_new</a>         (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-new-full" title="tracker_miner_manager_new_full ()">tracker_miner_manager_new_full</a>    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> auto_start</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-running" title="tracker_miner_manager_get_running ()">tracker_miner_manager_get_running</a>   (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-available" title="tracker_miner_manager_get_available ()">tracker_miner_manager_get_available</a> (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-pause" title="tracker_miner_manager_pause ()">tracker_miner_manager_pause</a>         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
@@ -93,6 +99,18 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 <pre class="synopsis">
   <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
    +----TrackerMinerManager
+</pre>
+</div>
+<div class="refsect1" title="Implemented Interfaces">
+<a name="TrackerMinerManager.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+TrackerMinerManager implements
+ <a href="http://library.gnome.org/devel/gio/unstable/GInitable.html">GInitable</a>.</p>
+</div>
+<div class="refsect1" title="Properties">
+<a name="TrackerMinerManager.properties"></a><h2>Properties</h2>
+<pre class="synopsis">
+  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager--auto-start" title='The "auto-start" property'>auto-start</a>"               <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1" title="Signals">
@@ -243,16 +261,51 @@ the miner is no longer available on d-bus.
 <p>
 Creates a new <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> instance.
 </p>
+<p>
+Note: Auto-starting miners when querying status will be enabled.
+</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a>.
+<td> a <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if an error happened.
 
 </td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2" title="tracker_miner_manager_new_full ()">
+<a name="tracker-miner-manager-new-full"></a><h3>tracker_miner_manager_new_full ()</h3>
+<pre class="programlisting"><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * tracker_miner_manager_new_full    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> auto_start</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Creates a new <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>auto_start</code></em> :</span></p></td>
+<td>Flag to disable auto-starting the miners when querying status
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> to report errors.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a>. On error, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and <em class="parameter"><code>error</code></em> is set
+accordingly.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.10.5</p>
 </div>
 <hr>
 <div class="refsect2" title="tracker_miner_manager_get_running ()">
@@ -705,6 +758,15 @@ with a mimetype in that list will be reindexed.
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
+</div>
+</div>
+<div class="refsect1" title="Property Details">
+<a name="TrackerMinerManager.property-details"></a><h2>Property Details</h2>
+<div class="refsect2" title='The "auto-start" property'>
+<a name="TrackerMinerManager--auto-start"></a><h3>The <code class="literal">"auto-start"</code> property</h3>
+<pre class="programlisting">  "auto-start"               <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write / Construct Only</pre>
+<p>If set, auto starts miners when querying their status.</p>
+<p>Default value: TRUE</p>
 </div>
 </div>
 <div class="refsect1" title="Signal Details">

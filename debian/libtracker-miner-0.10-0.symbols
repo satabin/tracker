@@ -46,6 +46,7 @@ libtracker-miner-0.10.so.0 libtracker-miner-0.10-0 #MINVER#
  tracker_miner_manager_is_active@Base 0.8.0
  tracker_miner_manager_is_paused@Base 0.8.0
  tracker_miner_manager_new@Base 0.8.0
+ tracker_miner_manager_new_full@Base 0.10.5
  tracker_miner_manager_pause@Base 0.8.0
  tracker_miner_manager_reindex_by_mimetype@Base 0.10.0
  tracker_miner_manager_resume@Base 0.8.0

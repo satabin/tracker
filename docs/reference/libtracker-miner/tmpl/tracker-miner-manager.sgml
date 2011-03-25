@@ -94,6 +94,11 @@ TrackerMinerManager
 @trackerminermanager: the object which received the signal.
 @arg1: 
 
+<!-- ##### ARG TrackerMinerManager:auto-start ##### -->
+<para>
+
+</para>
+
 <!-- ##### STRUCT TrackerMinerManagerClass ##### -->
 <para>
 
@@ -112,6 +117,16 @@ TrackerMinerManager
 </para>
 
 @void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION tracker_miner_manager_new_full ##### -->
+<para>
+
+</para>
+
+@auto_start: 
+@error: 
 @Returns: 
 
 

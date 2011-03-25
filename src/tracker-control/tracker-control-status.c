@@ -36,22 +36,18 @@ static gint paused_length = 0;
 
 /* Note:
  * Every time a new option is added, make sure it is considered in the
- * 'ENABLED' macro below
+ * 'STATUS_OPTIONS_ENABLED' macro below
  */
 static gboolean status;
 static gboolean follow;
-static gboolean detailed;
 static gboolean list_common_statuses;
 
-#define ENABLED()	  \
-	(status || \
-	 follow || \
-	 detailed || \
-	 list_common_statuses)
+#define STATUS_OPTIONS_ENABLED() \
+	(status || follow || list_common_statuses)
 
-
-/* Make sure our statuses are translated (all from libtracker-miner except one) */
-static const gchar *statuses[7] = {
+/* Make sure our statuses are translated (most from libtracker-miner) */
+static const gchar *statuses[8] = {
+	N_("Unavailable"), /* generic */
 	N_("Initializing"),
 	N_("Processing…"),
 	N_("Fetching…"), /* miner/rss */
@@ -70,10 +66,6 @@ static GOptionEntry entries[] = {
 	  N_("Follow status changes as they happen"),
 	  NULL
 	},
-	{ "detailed", 'D', 0, G_OPTION_ARG_NONE, &detailed,
-	  N_("Include details with state updates (only applies to --follow)"),
-	  NULL
-	},
 	{ "list-common-statuses", 'C', 0, G_OPTION_ARG_NONE, &list_common_statuses,
 	  N_("List common statuses for miners and the store"),
 	  NULL
@@ -84,7 +76,7 @@ static GOptionEntry entries[] = {
 gboolean
 tracker_control_status_options_enabled (void)
 {
-	return ENABLED ();
+	return STATUS_OPTIONS_ENABLED ();
 }
 
 static void
@@ -168,17 +160,13 @@ miner_print_state (TrackerMinerManager *manager,
 	struct tm *local_time;
 	gchar *progress_str;
 
-	if (detailed) {
-		now = time ((time_t *) NULL);
-		local_time = localtime (&now);
-		len = strftime (time_str,
-		                sizeof (time_str) - 1,
-		                "%d %b %Y, %H:%M:%S:",
-		                local_time);
-		time_str[len] = '\0';
-	} else {
-		time_str[0] = '\0';
-	}
+	now = time ((time_t *) NULL);
+	local_time = localtime (&now);
+	len = strftime (time_str,
+	                sizeof (time_str) - 1,
+	                "%d %b %Y, %H:%M:%S:",
+	                local_time);
+	time_str[len] = '\0';
 
 	name = tracker_miner_manager_get_display_name (manager, miner_name);
 
@@ -224,60 +212,62 @@ static void
 store_print_state (const gchar *status,
                    gdouble      progress)
 {
-	gchar *operation = NULL;
-	gchar *operation_status = NULL;
 	gchar time_str[64];
-	gchar *progress_str;
+	struct tm *local_time;
+	time_t now;
+	size_t len;
 
-	if (status && strstr (status, "-")) {
-		gchar **status_split;
+	now = time ((time_t *) NULL);
+	local_time = localtime (&now);
+	len = strftime (time_str,
+	                sizeof (time_str) - 1,
+	                "%d %b %Y, %H:%M:%S:",
+	                local_time);
+	time_str[len] = '\0';
 
-		status_split = g_strsplit (status, "-", 2);
-		if (status_split[0] && status_split[1]) {
-			operation = status_split[0];
-			operation_status = status_split[1];
-			/* Free the array, not the contents */
-			g_free (status_split);
-		} else {
-			/* Free everything */
-			g_strfreev (status_split);
+	if (status) {
+		gchar *operation = NULL;
+		gchar *operation_status = NULL;
+		gchar *progress_str;
+
+		if (strstr (status, "-")) {
+			gchar **status_split;
+
+			status_split = g_strsplit (status, "-", 2);
+			if (status_split[0] && status_split[1]) {
+				operation = status_split[0];
+				operation_status = status_split[1];
+				/* Free the array, not the contents */
+				g_free (status_split);
+			} else {
+				/* Free everything */
+				g_strfreev (status_split);
+			}
 		}
-	}
 
-	if (detailed) {
-		struct tm *local_time;
-		time_t now;
-		size_t len;
+		if (progress > 0.0 && progress < 1.0) {
+			progress_str = g_strdup_printf ("%-3.0f%%", progress * 100);
+		} else {
+			progress_str = g_strdup_printf ("✓   ");
+		}
 
-		now = time ((time_t *) NULL);
-		local_time = localtime (&now);
-		len = strftime (time_str,
-		                sizeof (time_str) - 1,
-		                "%d %b %Y, %H:%M:%S:",
-		                local_time);
-		time_str[len] = '\0';
+		g_print ("%s  %s  %-*.*s    %s %s\n",
+		         time_str,
+		         progress_str ? progress_str : "    ",
+		         longest_miner_name_length + paused_length,
+		         longest_miner_name_length + paused_length,
+		         (operation ? _(operation) : _(status)),
+		         operation_status ? "-" : "",
+		         operation_status ? _(operation_status) : "");
+
+		g_free (progress_str);
+		g_free (operation);
+		g_free (operation_status);
 	} else {
-		time_str[0] = '\0';
+		g_print ("%s        %s\n",
+		         time_str,
+		         _("Unavailable"));
 	}
-
-	if (progress > 0.0 && progress < 1.0) {
-		progress_str = g_strdup_printf ("%-3.0f%%", progress * 100);
-	} else {
-		progress_str = g_strdup_printf ("✓   ");
-	}
-
-	g_print ("%s  %s  %-*.*s    %s %s\n",
-	         time_str,
-	         progress_str,
-	         longest_miner_name_length + paused_length,
-	         longest_miner_name_length + paused_length,
-	         operation ? _(operation) : _(status),
-	         operation_status ? "-" : "",
-	         operation_status ? _(operation_status) : "");
-
-	g_free (progress_str);
-	g_free (operation);
-	g_free (operation_status);
 }
 
 static void
@@ -287,6 +277,15 @@ store_get_and_print_state (void)
 	const gchar *status = NULL;
 	gdouble progress = -1.0;
 	GError *error = NULL;
+	gchar *owner;
+
+	owner = g_dbus_proxy_get_name_owner (proxy);
+	if (!owner) {
+		/* Name is not owned yet, store is not running */
+		store_print_state (NULL, -1);
+		return;
+	}
+	g_free (owner);
 
 	/* Status */
 	v_status = g_dbus_proxy_call_sync (proxy,
@@ -297,14 +296,14 @@ store_get_and_print_state (void)
 	                                   NULL,
 	                                   &error);
 
-	g_variant_get (v_status, "(&s)", &status);
-
-	if (!status || error) {
+	if (!v_status || error) {
 		g_critical ("Could not retrieve tracker-store status: %s",
 		            error ? error->message : "no error given");
 		g_clear_error (&error);
 		return;
 	}
+
+	g_variant_get (v_status, "(&s)", &status);
 
 	/* Progress */
 	v_progress = g_dbus_proxy_call_sync (proxy,
@@ -429,7 +428,7 @@ store_init (void)
 	}
 
 	proxy = g_dbus_proxy_new_sync (connection,
-	                               G_DBUS_PROXY_FLAGS_NONE,
+	                               G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
 	                               NULL,
 	                               "org.freedesktop.Tracker1",
 	                               "/org/freedesktop/Tracker1/Status",
@@ -458,34 +457,31 @@ store_init (void)
 	return TRUE;
 }
 
+void
+tracker_control_status_run_default (void)
+{
+	/* Enable status output in the default run */
+	status = TRUE;
+
+	tracker_control_status_run ();
+}
+
 gint
 tracker_control_status_run (void)
 {
 	TrackerMinerManager *manager;
-	GSList *miners_available;
-	GSList *miners_running;
-	GSList *l;
-
-	/* --detailed implies --follow */
-	if (detailed) {
-		follow = TRUE;
-	}
 
 	/* --follow implies --status */
 	if (follow) {
 		status = TRUE;
 	}
 
-	manager = tracker_miner_manager_new ();
-	miners_available = tracker_miner_manager_get_available (manager);
-	miners_running = tracker_miner_manager_get_running (manager);
-
 	if (list_common_statuses) {
 		gint i;
 
 		g_print ("%s:\n", _("Common statuses include"));
 
-		for (i = 0; i < G_N_ELEMENTS(statuses); i++) {
+		for (i = 0; i < G_N_ELEMENTS (statuses); i++) {
 			g_print ("  %s\n", _(statuses[i]));
 		}
 
@@ -493,6 +489,21 @@ tracker_control_status_run (void)
 	}
 
 	if (status) {
+		GError *error = NULL;
+		GSList *miners_available;
+		GSList *miners_running;
+		GSList *l;
+
+		manager = tracker_miner_manager_new_full (FALSE, &error);
+		if (!manager) {
+			g_printerr ("Couldn't create manager: '%s'\n",
+			            error ? error->message : "unknown error");
+			return EXIT_FAILURE;
+		}
+
+		miners_available = tracker_miner_manager_get_available (manager);
+		miners_running = tracker_miner_manager_get_running (manager);
+
 		/* Work out lengths for output spacing */
 		paused_length = strlen (_("PAUSED"));
 

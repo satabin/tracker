@@ -117,6 +117,7 @@ extract_jpeg (const gchar          *uri,
 	gchar *comment = NULL;
 	GPtrArray *keywords;
 	guint i;
+	GString *where = NULL;
 
 	filename = g_filename_from_uri (uri, NULL, NULL);
 
@@ -361,18 +362,35 @@ extract_jpeg (const gchar          *uri,
 	}
 
 	for (i = 0; i < keywords->len; i++) {
-		gchar *p;
+		gchar *p, *escaped, *var;
 
 		p = g_ptr_array_index (keywords, i);
+		escaped = tracker_sparql_escape_string (p);
+		var = g_strdup_printf ("tag%d", i + 1);
 
+		/* ensure tag with specified label exists */
+		tracker_sparql_builder_append (preupdate,
+		                               "INSERT { _:tag a nao:Tag ; nao:prefLabel \"");
+		tracker_sparql_builder_append (preupdate, escaped);
+		tracker_sparql_builder_append (preupdate,
+		                               "\" }\nWHERE { FILTER (NOT EXISTS { "
+		                               "?tag a nao:Tag ; nao:prefLabel \"");
+		tracker_sparql_builder_append (preupdate, escaped);
+		tracker_sparql_builder_append (preupdate,
+		                               "\" }) }\n");
+
+		/* associate file with tag */
 		tracker_sparql_builder_predicate (metadata, "nao:hasTag");
+		tracker_sparql_builder_object_variable (metadata, var);
 
-		tracker_sparql_builder_object_blank_open (metadata);
-		tracker_sparql_builder_predicate (metadata, "a");
-		tracker_sparql_builder_object (metadata, "nao:Tag");
-		tracker_sparql_builder_predicate (metadata, "nao:prefLabel");
-		tracker_sparql_builder_object_unvalidated (metadata, p);
-		tracker_sparql_builder_object_blank_close (metadata);
+		if (where == NULL) {
+			where = g_string_new ("} } WHERE { {\n");
+		}
+
+		g_string_append_printf (where, "?%s a nao:Tag ; nao:prefLabel \"%s\" .\n", var, escaped);
+
+		g_free (var);
+		g_free (escaped);
 		g_free (p);
 	}
 	g_ptr_array_free (keywords, TRUE);
@@ -587,7 +605,7 @@ extract_jpeg (const gchar          *uri,
 		gdouble value;
 
 		if (cinfo.density_unit == 0) {
-			if (ed->resolution_unit == 1)
+			if (ed->resolution_unit != 3)
 				value = g_strtod (ed->x_resolution, NULL);
 			else
 				value = g_strtod (ed->x_resolution, NULL) * CM_TO_INCH;
@@ -606,7 +624,7 @@ extract_jpeg (const gchar          *uri,
 		gdouble value;
 
 		if (cinfo.density_unit == 0) {
-			if (ed->resolution_unit == 1)
+			if (ed->resolution_unit != 3)
 				value = g_strtod (ed->y_resolution, NULL);
 			else
 				value = g_strtod (ed->y_resolution, NULL) * CM_TO_INCH;
@@ -619,6 +637,11 @@ extract_jpeg (const gchar          *uri,
 
 		tracker_sparql_builder_predicate (metadata, "nfo:verticalResolution");
 		tracker_sparql_builder_object_double (metadata, value);
+	}
+
+	if (where != NULL) {
+		tracker_sparql_builder_append (metadata, where->str);
+		g_string_free (where, TRUE);
 	}
 
 	jpeg_destroy_decompress (&cinfo);

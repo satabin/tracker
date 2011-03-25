@@ -100,7 +100,8 @@ libtracker_sparql_@TRACKER_API_VERSION@_la_DEPENDENCIES =  \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libtracker_sparql_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	tracker-builder.lo tracker-connection.lo tracker-cursor.lo \
-	tracker-backend.lo tracker-utils.lo tracker-uri.lo
+	tracker-backend.lo tracker-utils.lo tracker-uri.lo \
+	tracker-init.lo
 libtracker_sparql_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	$(am_libtracker_sparql_@TRACKER_API_VERSION@_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -290,6 +291,8 @@ LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
 MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
 MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
+MINER_EVOLUTION_SHELL_CFLAGS = @MINER_EVOLUTION_SHELL_CFLAGS@
+MINER_EVOLUTION_SHELL_LIBS = @MINER_EVOLUTION_SHELL_LIBS@
 MKDIR_P = @MKDIR_P@
 MSGFMT = @MSGFMT@
 MSGFMT_015 = @MSGFMT_015@
@@ -469,7 +472,8 @@ libtracker_sparql_@TRACKER_API_VERSION@_la_SOURCES = \
 	tracker-cursor.vala                            \
 	tracker-backend.vala                           \
 	tracker-utils.vala                             \
-	tracker-uri.c
+	tracker-uri.c                                  \
+	tracker-init.c
 
 libtracker_sparql_@TRACKER_API_VERSION@_la_LIBADD = \
 	$(BUILD_LIBS)                                  \
@@ -581,6 +585,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-builder.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-connection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-cursor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-init.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-uri.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Plo@am__quote@
 
@@ -948,6 +953,7 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
+	-export-symbols-regex '^tracker_sparql_(connection|cursor|builder|escape|error|value|get)_.*'
 
 tracker-sparql-$(TRACKER_API_VERSION).deps: tracker-sparql.deps
 	$(AM_V_GEN)cp $^ $@

@@ -252,6 +252,7 @@
     <keyword type="" name="nfo:programmingLanguage" link="nfo-properties.html#nfo-programmingLanguage"/>
     <keyword type="" name="nfo:fileCreated" link="nfo-properties.html#nfo-fileCreated"/>
     <keyword type="" name="nfo:domain" link="nfo-properties.html#nfo-domain"/>
+    <keyword type="" name="nfo:lastPlayedPosition" link="nfo-properties.html#nfo-lastPlayedPosition"/>
     <keyword type="" name="nfo:pageCount" link="nfo-properties.html#nfo-pageCount"/>
     <keyword type="" name="nfo:hasHash" link="nfo-properties.html#nfo-hasHash"/>
     <keyword type="" name="nfo:characterPosition" link="nfo-properties.html#nfo-characterPosition"/>

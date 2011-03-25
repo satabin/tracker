@@ -13,7 +13,7 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [4])
+m4_define([tracker_micro_version], [5])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -38,7 +38,7 @@ m4_define([tracker_lt_current_minus_age],
 # for Tracker.
 #
 # TRACKER_BINARY_VERSION=$TRACKER_MAJOR_VERSION.$TRACKER_MINOR_VERSION.$LT_CURRENT
-m4_define([tracker_binary_version], [0.10.0])
+m4_define([tracker_binary_version], [0.10.5])
 
 AC_INIT([tracker],
         [tracker_version],
@@ -186,10 +186,10 @@ LIBFLAC_REQUIRED=1.2.1
 LIBEXIF_REQUIRED=0.6
 LIBGSF_REQUIRED=1.13
 EXEMPI_REQUIRED=2.1.0
-EVO_REQUIRED=2.91.90
-EVO_SHELL_REQUIRED=2.91.90
-EDS_REQUIRED=2.91.90
-CAMEL_REQUIRED=2.91.90
+EVO_REQUIRED=2.32.0
+EVO_SHELL_REQUIRED=2.32.0
+EDS_REQUIRED=2.32.0
+CAMEL_REQUIRED=2.32.0
 # Unlikely version for now, Nepomuk integration isn't finished in streamanalyzer atm
 LIBSTREAMANALYZER_REQUIRED=0.7.0
 GEE_REQUIRED=0.3
@@ -379,6 +379,7 @@ if test "x$have_tracker_miner_evolution" != "xyes"; then
    PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_REQUIRED],
                      [have_tracker_miner_evolution=yes],
                      [have_tracker_miner_evolution=no])
+
 fi
 
 # Check requirements for tracker-miner-rss
@@ -601,6 +602,9 @@ if test "x$enable_maemo" = "xyes" ; then
 
    LIBTRACKER_COMMON_CFLAGS="$LIBTRACKER_COMMON_CFLAGS $GCONF_CFLAGS"
    LIBTRACKER_COMMON_LIBS="$LIBTRACKER_COMMON_LIBS $GCONF_LIBS"
+
+   LIBTRACKER_SPARQL_CFLAGS="$LIBTRACKER_SPARQL_CFLAGS $GCONF_CFLAGS"
+   LIBTRACKER_SPARQL_LIBS="$LIBTRACKER_SPARQL_LIBS $GCONF_LIBS"
 
    if test "x$have_gconf" != "xyes"; then
       AC_MSG_ERROR([Couldn't find gconf, needed when enabling maemo support])
@@ -1127,6 +1131,11 @@ else
 fi
 
 if test "x$have_tracker_miner_evolution" = "xyes"; then
+
+   PKG_CHECK_MODULES(MINER_EVOLUTION_SHELL, evolution-shell > 2.91,
+                     [miner_evolution_2_91=yes],
+                     [miner_evolution_2_91=no])
+
    AC_ARG_WITH([evolution_plugin_dir],
                AS_HELP_STRING([--with-evolution-plugin-dir],
                               [path to Evolution plugin directory]))
@@ -1138,6 +1147,10 @@ if test "x$have_tracker_miner_evolution" = "xyes"; then
 
    if test -z $tracker_miner_evolution_install_dir; then
       AC_MSG_ERROR([Couldn't find evolution plugin dir, consider using --with-evolution-plugin-dir.])
+   fi
+
+   if test "x$miner_evolution_2_91" = "xyes"; then
+      AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
    fi
 fi
 

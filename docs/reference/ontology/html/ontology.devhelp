@@ -252,6 +252,7 @@
     <function name="nfo:programmingLanguage" link="nfo-properties.html#nfo-programmingLanguage"/>
     <function name="nfo:fileCreated" link="nfo-properties.html#nfo-fileCreated"/>
     <function name="nfo:domain" link="nfo-properties.html#nfo-domain"/>
+    <function name="nfo:lastPlayedPosition" link="nfo-properties.html#nfo-lastPlayedPosition"/>
     <function name="nfo:pageCount" link="nfo-properties.html#nfo-pageCount"/>
     <function name="nfo:hasHash" link="nfo-properties.html#nfo-hasHash"/>
     <function name="nfo:characterPosition" link="nfo-properties.html#nfo-characterPosition"/>

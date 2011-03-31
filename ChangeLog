@@ -1,3 +1,271 @@
+2011-03-31  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.6
+
+2011-03-31  Philip Van Hoof  <philip@codeminded.be>
+
+	tests, libtracker-common: Add unit test for encoding guessing
+
+	libtracker-common: Set the declared locale before calling detect()
+
+	libtracker-common: Only use encoding guessing when confidence >30%
+
+2011-03-31  Jürg Billeter  <j@bitron.ch>
+
+	build: Require GStreamer 0.10.31 for GstDateTime
+
+	tracker-extract-gstramer, gupnp-dlna: Use GST_DATE_TIME if available
+	GST_DATE tag does not provide time information.
+
+	Fixes NB#241833.
+
+	tracker-needle: Simplify error handling
+
+	libtracker-sparql: Handle GSpawnError thrown by GDBus
+	If D-Bus session can neither be locater nor launched, GDBus throws a
+	GSpawnError. Propagate the error properly where necessary.
+
+	tracker-extract-msoffice-xml: Time limit extraction to 5s
+	Based on patch by Lassi Nieminen.
+
+	Fixes GB#645380.
+	Fixes NB#235445.
+
+2011-03-31  Philip Van Hoof  <philip@codeminded.be>
+
+	tests, libtracker-data: Add a comment so that wally wont change the h
+
+	tests, libtracker-data: Added unit tests for Unicode lower-case and case-fold
+
+	libtracker-data: Add tracker:case-fold function to SPARQL
+
+2011-03-31  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-03-31  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+	Updated Czech translation
+
+2011-03-31  Yinghua Wang  <wantinghard@gmail.com>
+
+	Update Simplified Chinese translation.
+
+2011-03-31  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-03-31  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-03-31  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-03-31  Joe Hansen  <joedalton2@yahoo.dk>
+
+	Updated Danish translation
+
+2011-03-31  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-03-31  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-03-31  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-03-31  Jürg Billeter  <j@bitron.ch>
+
+	build: Support build with evolution 2.91.6 and later
+	Fixes GB#645934.
+
+2011-03-30  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract, mp3: Length of elements in this table is 3, not 4
+	Fixes NB#241206.
+
+2011-03-30  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-direct: Use thread-default main context for async callback
+	This fixes the main context used for invoking the async ready callback
+	of tracker_direct_connection_query_async.
+
+	Fixes GB#645963.
+
+2011-03-30  Philip Van Hoof  <philip@codeminded.be>
+
+	functional-tests: Cleanup test_insert_08
+
+	functional-tests: Add another GRAPH with REPLACE behaviour test
+
+	functional-tests: Add GRAPH behaviour with REPLACE test
+
+	libtracker-data: Fix compiler warning about unused variable
+
+	libtracker-data: Performance improvement on rdf:type lookups
+
+	functional-tests: Make the REPLACE test a bit more easy to use
+
+	functional-tests: Improved output, add amount of contacts added
+
+	functional-tests: Correct the amount of arguments for printf
+
+	functional-tests: Use the newest qtcontact queries for REPLACE
+
+2011-03-30  Adrien Bustany  <adrien.bustany@nokia.com>
+
+	functional-tests: Fix contacts queries in benchmark
+
+2011-03-30  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Update my beautiful ascii art that explains the journal
+
+	functional-tests: Added a performance test for REPLACE
+
+	libtracker-data: Move blank_node handling to shared function
+
+	libtracker-data: The guint here is a gint
+
+	libtracker-data: Move domain index handling to a shared function
+
+	libtracker-data: Support for FTS with REPLACE
+
+	libtracker-data: Performance improvement for REPLACE support
+	Don't lookup the object-id in case no class in the known types of
+	the subject has tracker:notify: the only reason why we look this
+	old object-id up is for GraphUpdated at this moment.
+
+	functional-tests: Add domain check tests for REPLACE support
+
+	functional-tests: Fix comments in functional test
+
+	libtracker-data: Functional test for REPLACE support
+
+	libtracker-data: We can return right after setting error
+
+	libtracker-data: get_old_property_values already does domain check here
+
+	libtracker-data: Check for domain in support for REPLACE
+
+	libtracker-data: Move code comment to the right line
+
+	libtracker-data: Use INSERT OR REPLACE instead of just REPLACE
+
+	libtracker-data: Correct GraphUpdated for REPLACE support
+
+	libtracker-data, tracker-store: Support for REPLACE on single values
+
+	libtracker-data: Add an UPDATE operation to the journaling
+
+2011-03-30  Sam Thursfield  <ssssam@gmail.com>
+
+	ontologies: SLO/MLO use 'false' instead of 'False'
+	Fixes GB#645675 - mlo and slo contain invalid Turtle literals: 'False' instead of 'false'
+
+	Turtle spec says that only 'false' is valid (for Sparql both are fine)
+
+	http://www.w3.org/TeamSubmission/turtle/#sec-diff-sparql :
+	"4. The constants allowed for XSD booleans: true and false are
+	case independent. In Turtle they are not, only lowercase forms
+	are allowed."
+
+2011-03-30  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Specify how many bytes are ok in libunistring's case
+
+	libtracker-data: Use libicu, libunistring or glib for fn:lower-case
+	Fixes NB#240168.
+
+	configure.ac: This strange Evolution-plugin stuff doesn't belong here
+
+2011-03-30  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Handle double and dateTime typed string literals
+	Fixes NB#240582.
+
+2011-03-30  Adrien Bustany  <abustany@gnome.org>
+
+	tracker-miner-web: Fix GVariant signature for "Associated" property
+
+2011-03-30  Jürg Billeter  <j@bitron.ch>
+
+	tracker-needle: Fix C warnings on 64-bit platforms
+
+2011-03-30  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-needle: Fix alignment of folders without known parent
+
+	tracker-needle: Make category headers stand out more.
+	Also the number of hits is displayed now
+
+	tracker-needle: Display fancier size/date in file view
+
+	tracker-needle: Display fancier details in the categories view
+
+	tracker-needle: Add query type column to the model
+
+	tracker-needle: Don't align all text cells to have 2 lines high
+
+	tracker-needle: Remove unused code
+
+	tracker-needle: Bring icon view back to life
+	It is now an image view
+
+	tracker-needle: Make model load icons for file queries
+
+	tracker-needle: Bring the file view back to life
+
+	tracker-needle: Create the models in tracker-needle.vala, where it's then assigned to the view
+	This makes it easier using different models for the same view.
+
+	tracker-needle: Rewrite the "all" and "all in titles" query clauses
+	?urn should be exposed as such to be consistent.
+
+	tracker-needle: Make the model expose stuff as a plain list if there's only one query added.
+
+	tracker-needle: Add back details column in categories view
+
+	tracker-needle: Ensure text in categories view is always 2 lines high
+
+	tracker-needle: Ensure tooltips text in the models is pango markup ready
+
+	tracker-needle: Separate query data from category row in model.
+	Final effect is that not all categories appear now, only the
+	ones with results.
+
+	tracker-needle: Launch apps correctly
+
+	tracker-needle: Ensure operations are cancelled on a new search term
+
+	tracker-needle: Ensure consistency of the model information and its internal data
+	Children were being added one by one, but the iter functions already
+	handled the results array as if it was fully populated. This fixes
+	the treeview disparity warnings.
+
+	Also, proper timestamps are now set in the treeiters.
+
+	tracker-needle: Add back the pixbuf column/renderer.
+
+	tracker-needle: Improve categories treeview appearance
+
+	tracker-needle: Fix the result store to return the correct n_children for the root.
+
+	tracker-needle: Emit row-changed on categories after adding children to these.
+	Also remove a couple silly debug print()s
+
+	tracker-needle: Connect to search.activate to trigger query immediately.
+
+	tracker-needle: Move querying mechanism to a custom GtkTreeModel implementation
+	This model takes care of querying and queueing operations for incremental
+	loading.
+
 2011-03-24  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.5
@@ -1529,7 +1797,7 @@
 
 	libtracker-data: Fix C warning in tracker-db-interface-sqlite.c
 
-2011-01-22  Javier Jardón  <jjardon@gnome.org>
+2011-01-21  Javier Jardón  <jjardon@gnome.org>
 
 	tracker-needle: Use accessor functions instead direct access
 	Fixes https://bugzilla.gnome.org/show_bug.cgi?id=640231
@@ -1971,6 +2239,8 @@
 
 	tracker-needle: Add Ctrl+W to close window
 	Fixes GB#639543, Ctrl+W should close the window
+
+2011-01-14  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-needle: Use a meaningful window title "Desktop Search"
 	Fixes GB#639552, Give needle window a name that means something
@@ -2949,7 +3219,7 @@
 
 	docs: Document the TRACKER_PRAGMAS_FILE environment variable
 
-2010-11-28  Martyn Russell  <martyn@lanedo.com>
+2010-11-27  Martyn Russell  <martyn@lanedo.com>
 
 	Fixes GB#635757, missing test file in tarball
 
@@ -3518,7 +3788,7 @@
 
 	Updated Slovenian translation
 
-2010-10-30  Carles Ferrando  <carles.ferrando@gmail.com>
+2010-10-29  Carles Ferrando  <carles.ferrando@gmail.com>
 
 	Added Catalan (Valencian) translation
 
@@ -3542,7 +3812,7 @@
 
 	tracker-preferences: Fixed check which used "text" not "test"
 
-2010-10-29  Jorge González  <jorgegonz@svn.gnome.org>
+2010-10-28  Jorge González  <jorgegonz@svn.gnome.org>
 
 	Updated Spanish translation
 
@@ -4202,7 +4472,7 @@
 	Those classes shouldn't be run in the tests. Are there to organize the code
 	but don't contain useful tests by themselves.
 
-2010-10-14  Mikael Ottela  <mikael.ottela@ixonos.com>
+2010-10-13  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Fix the gupnp-dlna extractor to use the tracker_sparql_escape_uri_printf
 
@@ -5057,7 +5327,7 @@
 	tracker-store: Send D-Bus replies for BatchCommit
 	Fixes NB#189896.
 
-2010-09-03  Daniel Nylander  <po@danielnylander.se>
+2010-09-02  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -6403,7 +6673,7 @@
 	    Thus, adding an extra reference during the g_file_enumerate_children_async()
 	    for the specific GFile being used.
 
-2010-08-02  Gabor Kelemen  <kelemeng@gnome.hu>
+2010-08-01  Gabor Kelemen  <kelemeng@gnome.hu>
 
 	Updated Hungarian translation
 
@@ -8591,7 +8861,7 @@
 
 	tracker-extract: gstreamer: Bugfix for NB#169119, critical about unref of an object
 
-2010-05-17  Petr Kovar  <pknbe@volny.cz>
+2010-05-16  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -8978,7 +9248,7 @@
 
 	Update Czech translation by Marek Cernocky
 
-2010-05-02  Mario Blättermann  <mariobl@gnome.org>
+2010-05-01  Mario Blättermann  <mariobl@gnome.org>
 
 	Updated German translation
 
@@ -9012,9 +9282,9 @@
 
 	libtracker-data: Fixed compilation warning
 
-	libtracker-db: Fix for last commit, || should be &&
-
 2010-04-29  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-db: Fix for last commit, || should be &&
 
 	libtracker-db: Avoid strstr in uri_is_parent and uri_is_descendant
 
@@ -9207,7 +9477,7 @@
 
 	libstemmer: Bugfix NB#164958, FTS doesn't work for "beautif" and "beautifu"
 
-2010-04-23  Petr Kovar  <pknbe@volny.cz>
+2010-04-22  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -9787,7 +10057,7 @@
 
 	Fix build failures on none Linux platforms
 
-2010-04-09  Debarshi Ray  <debarshir@src.gnome.org>
+2010-04-08  Debarshi Ray  <debarshir@src.gnome.org>
 
 	tracker-miner-rss: Implicitly link the RSS miner against GTHREAD_LIBS
 
@@ -9920,7 +10190,7 @@
 	regex string. This fix changes the regex from a bound literal to being part
 	of the SQL query string itself.
 
-2010-04-06  Mikael Ottela  <mikael.ottela@ixonos.com>
+2010-04-05  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Added indices to message ontology for query performance
 
@@ -10030,7 +10300,7 @@
 
 	libtracker-miner: Don't install tracker-miner-dbus.h to /usr/include
 
-2010-04-01  Aurimas Černius  <aurisc4@gmail.com>
+2010-03-31  Aurimas Černius  <aurisc4@gmail.com>
 
 	Updated Lithuanian translation
 
@@ -12531,7 +12801,7 @@
 
 	Updated Norwegian bokmål translation
 
-2010-02-10  Martyn Russell  <martyn@lanedo.com>
+2010-02-09  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Removed tracker_miner_fs_get_directories()
 	This is no longer needed.
@@ -16259,7 +16529,7 @@
 	 --image-files to --images
 	 --music-files to --music
 
-2009-09-24  Michael Biebl  <biebl@debian.org>
+2009-09-23  Michael Biebl  <biebl@debian.org>
 
 	Add missing files to POTFILES.in
 	According to 4ddf3304d4c3909ab9ec9cf56edcb495e1d634c3 the miner desktop
@@ -16269,8 +16539,6 @@
 	This reverts commit 336b0bff94af3e96e1d5722ff1cd2e9cfa559b6c.
 
 	Add missing "\"
-
-2009-09-23  Michael Biebl  <biebl@debian.org>
 
 	Fix a few typos in the man pages
 
@@ -16369,7 +16637,7 @@
 
 	Fixes bug #584607, Search does not work for Hungarian
 
-2009-09-21  Daniel Nylander  <po@danielnylander.se>
+2009-09-20  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -19323,13 +19591,13 @@
 
 	Arbitrary lowering priority of SetMany() items
 
+2009-06-14  Philip Van Hoof  <philip@codeminded.be>
+
 	Don't do all the g_idle_add nonsense in the push modules
 	These were causing a GSource source for each 2000 items being pushed using the
 	DBus SetMany() call. Making it actually worse than better. I just removed them
 	for now, we might have to replace it with an internal, but static global for
 	the module, queue (not a queue per SetMany, like what is being removed here).
-
-2009-06-14  Philip Van Hoof  <philip@codeminded.be>
 
 	Fixed push modules, bugfix closing the query
 
@@ -20062,6 +20330,8 @@
 	Another include path fix
 	libtracker-gtk uses <tracker.h>, so we also need to add
 	$(top_srcdir)/src/libtracker for tracker-search-tool.
+
+2009-05-11  Michael Biebl  <biebl@debian.org>
 
 	Fix include path
 	tracker-search-tool-callbacks.c uses
@@ -20858,7 +21128,7 @@
 	Add gitlog-to-changelog script from gnulib and a dist-hook to
 	generate ChangeLog file when creating tarballs.
 
-2009-04-14  Khaled Hosny  <khaledhosny@eglug.org>
+2009-04-13  Khaled Hosny  <khaledhosny@eglug.org>
 
 	Updated Arabic translaion
 

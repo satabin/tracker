@@ -232,6 +232,155 @@ class TrackerStoreInsertionTests (CommonTrackerStoreTest):
                 DELETE { <test://instance-1> a rdfs:Resource. }
                 """)
 
+
+	def test_insert_05(self):
+                """
+                Insert or replace, single valued properties multiple times.
+                """
+                for i in range (0, 3):
+                        # Insert the same single valued properties of music file.
+                        self.tracker.update("""
+                        INSERT OR REPLACE {
+                           <test://instance-1> a nmm:MusicPiece, nfo:FileDataObject;
+                           nie:usageCounter '%d';
+                           nie:contentAccessed '2000-01-01T00:4%d:47Z' .
+                        }""" % (i, i))
+
+                        # Query for the property values and verify whether the last change is applied.
+                        result = self.tracker.query ("""
+                          SELECT ?playcount ?date WHERE {
+                             <test://instance-1> a nmm:MusicPiece ;
+                                 nie:usageCounter ?playcount ;
+                                 nie:contentAccessed ?date.
+                          }""")
+
+                        self.assertEquals (len (result), 1)
+                        self.assertEquals (len (result[0]), 2)
+                        self.assertEquals (int (result[0][0]), i)
+                        self.assertEquals (result[0][1], "2000-01-01T00:4%d:47Z" % (i))
+
+                self.tracker.update ("""
+                DELETE { <test://instance-1> a rdfs:Resource. }
+                """)
+
+	def test_insert_06(self):
+                """
+                Insert or replace, single and multi valued properties multiple times.
+                """
+                for i in range (0, 3):
+                        # Insert the same single valued properties and insert multi valued properties at the same time
+                        self.tracker.update("""
+                        INSERT OR REPLACE {
+                           <test://instance-2> a nie:InformationElement;
+                           nie:title '%d';
+                           nie:keyword '%d'
+                        }""" % (i, i))
+
+                        # Query for the property values and verify whether the last change is applied.
+                        result = self.tracker.query ("""
+                          SELECT ?t ?k WHERE {
+                             <test://instance-2> nie:title ?t ;
+                                 nie:keyword ?k 
+                          }""")
+
+                self.assertEquals (len (result), 3)
+                self.assertEquals (len (result[0]), 2)
+                self.assertEquals (result[0][0], "%d" % i)
+                self.assertEquals (result[0][1], "0")
+
+                self.assertEquals (result[1][0], "%d" % i)
+                self.assertEquals (result[1][1], "1")
+
+                self.assertEquals (result[2][0], "%d" % i)
+                self.assertEquals (result[2][1], "2")
+
+                self.tracker.update ("""
+                DELETE { <test://instance-2> a rdfs:Resource. }
+                """)
+
+	def test_insert_07(self):
+                """
+                Insert or replace, single and multi valued properties with domain errors.
+                """
+
+                try:
+                  INSERT_SPARQL = """INSERT OR REPLACE { <test://instance-3> nie:title 'test' }"""
+                  self.tracker.update (INSERT_SPARQL)
+                except:
+                  pass
+
+                INSERT_SPARQL = """INSERT OR REPLACE { <test://instance-4> a nie:DataSource }"""
+                self.tracker.update (INSERT_SPARQL)
+
+                try:
+                  INSERT_SPARQL = """INSERT OR REPLACE { <test://instance-5> nie:rootElementOf <test://instance-4> }"""
+                  self.tracker.update (INSERT_SPARQL)
+                except:
+                  pass
+
+                INSERT_SPARQL = """INSERT OR REPLACE { <test://instance-5> a nie:InformationElement ; nie:rootElementOf <test://instance-4> }"""
+                self.tracker.update (INSERT_SPARQL)
+
+                self.tracker.update ("""
+                DELETE { <test://instance-4> a rdfs:Resource. }
+                """)
+
+                self.tracker.update ("""
+                DELETE { <test://instance-5> a rdfs:Resource. }
+                """)
+
+	def test_insert_08(self):
+                """
+                Insert or replace, single and multi valued properties with graphs
+                """
+
+                INSERT_SPARQL = """INSERT { GRAPH <test://graph-1> { <test://instance-6> a nie:InformationElement ; nie:title 'title 1' } }"""
+                self.tracker.update (INSERT_SPARQL)
+
+                INSERT_SPARQL = """INSERT { GRAPH <test://graph-2> { <test://instance-6> nie:title 'title 1' } }"""
+                self.tracker.update (INSERT_SPARQL)
+
+                result = self.tracker.query ("""
+                          SELECT ?g ?t WHERE { GRAPH ?g {
+                             <test://instance-6> nie:title ?t
+                           } }""")
+
+                self.assertEquals (len (result), 1)
+                self.assertEquals (len (result[0]), 2)
+                self.assertEquals (result[0][0], "test://graph-1") # Yes, indeed
+                self.assertEquals (result[0][1], "title 1")
+
+                INSERT_SPARQL = """INSERT OR REPLACE { GRAPH <test://graph-2> { <test://instance-6> nie:title 'title 1' } }"""
+                self.tracker.update (INSERT_SPARQL)
+
+                result = self.tracker.query ("""
+                          SELECT ?g ?t WHERE { GRAPH ?g {
+                             <test://instance-6> nie:title ?t
+                           } }""")
+
+                self.assertEquals (len (result), 1)
+                self.assertEquals (len (result[0]), 2)
+                self.assertEquals (result[0][0], "test://graph-2") # Yup, that's right
+                self.assertEquals (result[0][1], "title 1")
+
+
+                INSERT_SPARQL = """INSERT OR REPLACE { GRAPH <test://graph-3> { <test://instance-6> nie:title 'title 2' } }"""
+                self.tracker.update (INSERT_SPARQL)
+
+                result = self.tracker.query ("""
+                          SELECT ?g ?t WHERE { GRAPH ?g {
+                             <test://instance-6> nie:title ?t
+                           } }""")
+
+                self.assertEquals (len (result), 1)
+                self.assertEquals (len (result[0]), 2)
+                self.assertEquals (result[0][0], "test://graph-3")
+                self.assertEquals (result[0][1], "title 2")
+
+                self.tracker.update ("""
+                DELETE { <test://instance-6> a rdfs:Resource. }
+                """)
+
         def __insert_valid_date_test (self, datestring, year, month, day, hours, minutes, seconds, timezone):
                 """
                 Insert a property with datestring value, retrieve its components and validate against

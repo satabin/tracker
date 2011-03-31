@@ -48,18 +48,19 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl test-bus-query.c test-bus-update.c \
 	test-busy-handling.c test-class-signal-performance-batch.c \
 	test-class-signal-performance.c test-class-signal.c \
-	test-default-update.c test-direct-query.c test-shared-query.c \
+	test-default-update.c test-direct-query.c \
+	test-insert-or-replace.c test-shared-query.c \
 	test-shared-update.c test_bus_query_vala.stamp \
 	test_bus_update_vala.stamp test_busy_handling_vala.stamp \
 	test_class_signal_performance_batch_vala.stamp \
 	test_class_signal_performance_vala.stamp \
 	test_class_signal_vala.stamp test_default_update_vala.stamp \
-	test_direct_query_vala.stamp \
+	test_direct_query_vala.stamp test_insert_or_replace_vala.stamp \
 	test_update_array_performance_vala.stamp
-noinst_PROGRAMS = test-busy-handling$(EXEEXT) \
-	test-direct-query$(EXEEXT) test-bus-query$(EXEEXT) \
-	test-default-update$(EXEEXT) test-bus-update$(EXEEXT) \
-	test-class-signal$(EXEEXT) \
+noinst_PROGRAMS = test-insert-or-replace$(EXEEXT) \
+	test-busy-handling$(EXEEXT) test-direct-query$(EXEEXT) \
+	test-bus-query$(EXEEXT) test-default-update$(EXEEXT) \
+	test-bus-update$(EXEEXT) test-class-signal$(EXEEXT) \
 	test-class-signal-performance$(EXEEXT) \
 	test-class-signal-performance-batch$(EXEEXT) \
 	test-update-array-performance$(EXEEXT)
@@ -171,6 +172,14 @@ test_direct_query_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-$(TRACKER_API_VERSION).la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_test_insert_or_replace_OBJECTS =  \
+	test_insert_or_replace-test-insert-or-replace.$(OBJEXT)
+test_insert_or_replace_OBJECTS = $(am_test_insert_or_replace_OBJECTS)
+test_insert_or_replace_DEPENDENCIES = $(am__DEPENDENCIES_2)
+test_insert_or_replace_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(test_insert_or_replace_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 am_test_update_array_performance_OBJECTS =  \
 	test-update-array-performance.$(OBJEXT)
 test_update_array_performance_OBJECTS =  \
@@ -221,12 +230,14 @@ SOURCES = $(test_bus_query_SOURCES) $(test_bus_update_SOURCES) \
 	$(test_class_signal_performance_SOURCES) \
 	$(test_class_signal_performance_batch_SOURCES) \
 	$(test_default_update_SOURCES) $(test_direct_query_SOURCES) \
+	$(test_insert_or_replace_SOURCES) \
 	$(test_update_array_performance_SOURCES)
 DIST_SOURCES = $(test_bus_query_SOURCES) $(test_bus_update_SOURCES) \
 	$(test_busy_handling_SOURCES) $(test_class_signal_SOURCES) \
 	$(test_class_signal_performance_SOURCES) \
 	$(test_class_signal_performance_batch_SOURCES) \
 	$(test_default_update_SOURCES) $(test_direct_query_SOURCES) \
+	$(test_insert_or_replace_SOURCES) \
 	$(test_update_array_performance_SOURCES)
 ETAGS = etags
 CTAGS = ctags
@@ -370,8 +381,6 @@ LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
 MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
 MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
-MINER_EVOLUTION_SHELL_CFLAGS = @MINER_EVOLUTION_SHELL_CFLAGS@
-MINER_EVOLUTION_SHELL_LIBS = @MINER_EVOLUTION_SHELL_LIBS@
 MKDIR_P = @MKDIR_P@
 MSGFMT = @MSGFMT@
 MSGFMT_015 = @MSGFMT_015@
@@ -547,6 +556,18 @@ LDADD = \
 	$(BUILD_LIBS)\
 	$(LIBTRACKER_SPARQL_LIBS)
 
+test_insert_or_replace_SOURCES = \
+	test-insert-or-replace.vala
+
+test_insert_or_replace_CFLAGS = \
+        $(AM_CPPFLAGS)
+
+test_insert_or_replace_VALAFLAGS = \
+        $(AM_VALAFLAGS)
+
+test_insert_or_replace_LDADD = \
+        $(LDADD)
+
 test_busy_handling_SOURCES = \
 	test-busy-handling.vala
 
@@ -681,6 +702,9 @@ test-default-update$(EXEEXT): $(test_default_update_OBJECTS) $(test_default_upda
 test-direct-query$(EXEEXT): $(test_direct_query_OBJECTS) $(test_direct_query_DEPENDENCIES) 
 	@rm -f test-direct-query$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_direct_query_OBJECTS) $(test_direct_query_LDADD) $(LIBS)
+test-insert-or-replace$(EXEEXT): $(test_insert_or_replace_OBJECTS) $(test_insert_or_replace_DEPENDENCIES) 
+	@rm -f test-insert-or-replace$(EXEEXT)
+	$(AM_V_CCLD)$(test_insert_or_replace_LINK) $(test_insert_or_replace_OBJECTS) $(test_insert_or_replace_LDADD) $(LIBS)
 test-update-array-performance$(EXEEXT): $(test_update_array_performance_OBJECTS) $(test_update_array_performance_DEPENDENCIES) 
 	@rm -f test-update-array-performance$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_update_array_performance_OBJECTS) $(test_update_array_performance_LDADD) $(LIBS)
@@ -702,6 +726,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_class_signal-test-class-signal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_class_signal_performance-test-class-signal-performance.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_class_signal_performance_batch-test-class-signal-performance-batch.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_insert_or_replace-test-insert-or-replace.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -790,6 +815,30 @@ test_class_signal_performance_batch-test-class-signal-performance-batch.obj: tes
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='test-class-signal-performance-batch.c' object='test_class_signal_performance_batch-test-class-signal-performance-batch.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_class_signal_performance_batch_CFLAGS) $(CFLAGS) -c -o test_class_signal_performance_batch-test-class-signal-performance-batch.obj `if test -f 'test-class-signal-performance-batch.c'; then $(CYGPATH_W) 'test-class-signal-performance-batch.c'; else $(CYGPATH_W) '$(srcdir)/test-class-signal-performance-batch.c'; fi`
+
+test_insert_or_replace-test-insert-or-replace.o: test-insert-or-replace.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_insert_or_replace_CFLAGS) $(CFLAGS) -MT test_insert_or_replace-test-insert-or-replace.o -MD -MP -MF $(DEPDIR)/test_insert_or_replace-test-insert-or-replace.Tpo -c -o test_insert_or_replace-test-insert-or-replace.o `test -f 'test-insert-or-replace.c' || echo '$(srcdir)/'`test-insert-or-replace.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_insert_or_replace-test-insert-or-replace.Tpo $(DEPDIR)/test_insert_or_replace-test-insert-or-replace.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='test-insert-or-replace.c' object='test_insert_or_replace-test-insert-or-replace.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_insert_or_replace_CFLAGS) $(CFLAGS) -c -o test_insert_or_replace-test-insert-or-replace.o `test -f 'test-insert-or-replace.c' || echo '$(srcdir)/'`test-insert-or-replace.c
+
+test_insert_or_replace-test-insert-or-replace.obj: test-insert-or-replace.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_insert_or_replace_CFLAGS) $(CFLAGS) -MT test_insert_or_replace-test-insert-or-replace.obj -MD -MP -MF $(DEPDIR)/test_insert_or_replace-test-insert-or-replace.Tpo -c -o test_insert_or_replace-test-insert-or-replace.obj `if test -f 'test-insert-or-replace.c'; then $(CYGPATH_W) 'test-insert-or-replace.c'; else $(CYGPATH_W) '$(srcdir)/test-insert-or-replace.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test_insert_or_replace-test-insert-or-replace.Tpo $(DEPDIR)/test_insert_or_replace-test-insert-or-replace.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='test-insert-or-replace.c' object='test_insert_or_replace-test-insert-or-replace.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_insert_or_replace_CFLAGS) $(CFLAGS) -c -o test_insert_or_replace-test-insert-or-replace.obj `if test -f 'test-insert-or-replace.c'; then $(CYGPATH_W) 'test-insert-or-replace.c'; else $(CYGPATH_W) '$(srcdir)/test-insert-or-replace.c'; fi`
+$(srcdir)/test-insert-or-replace.c: $(srcdir)/test_insert_or_replace_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/test_insert_or_replace_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) test_insert_or_replace_vala.stamp; \
+	fi
+test_insert_or_replace_vala.stamp: $(test_insert_or_replace_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(test_insert_or_replace_VALAFLAGS) $(VALAFLAGS) -C $(test_insert_or_replace_SOURCES)
+	$(AM_V_at)touch $@
 $(srcdir)/test-shared-update.c: $(srcdir)/test_bus_update_vala.stamp
 	@if test -f $@; then :; else \
 	  rm -f $(srcdir)/test_bus_update_vala.stamp; \
@@ -1004,6 +1053,7 @@ maintainer-clean-generic:
 	-rm -f test-class-signal.c
 	-rm -f test-default-update.c
 	-rm -f test-direct-query.c
+	-rm -f test-insert-or-replace.c
 	-rm -f test-shared-query.c
 	-rm -f test-shared-update.c
 	-rm -f test_bus_query_vala.stamp
@@ -1014,6 +1064,7 @@ maintainer-clean-generic:
 	-rm -f test_class_signal_vala.stamp
 	-rm -f test_default_update_vala.stamp
 	-rm -f test_direct_query_vala.stamp
+	-rm -f test_insert_or_replace_vala.stamp
 	-rm -f test_update_array_performance_vala.stamp
 clean: clean-am
 

@@ -212,8 +212,6 @@ LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
 MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
 MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
-MINER_EVOLUTION_SHELL_CFLAGS = @MINER_EVOLUTION_SHELL_CFLAGS@
-MINER_EVOLUTION_SHELL_LIBS = @MINER_EVOLUTION_SHELL_LIBS@
 MKDIR_P = @MKDIR_P@
 MSGFMT = @MSGFMT@
 MSGFMT_015 = @MSGFMT_015@
@@ -394,7 +392,13 @@ EXTRA_DIST = \
 	functions-xpath-5.out                          \
 	functions-xpath-5.rq                           \
 	functions-xpath-6.rq                           \
-	functions-xpath-6.out
+	functions-xpath-6.out                          \
+	functions-xpath-7.rq                           \
+	functions-xpath-7.out                          \
+	functions-xpath-8.rq                           \
+	functions-xpath-8.out                          \
+	functions-xpath-9.rq                           \
+	functions-xpath-9.out
 
 all: all-am
 

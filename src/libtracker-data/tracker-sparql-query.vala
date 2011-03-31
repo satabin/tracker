@@ -212,6 +212,7 @@ public class Tracker.Sparql.Query : Object {
 	internal Context context;
 
 	bool delete_statements;
+	bool update_statements;
 
 	int bnodeid = 0;
 	// base UUID used for blank nodes
@@ -588,12 +589,21 @@ public class Tracker.Sparql.Query : Object {
 		}
 
 		bool delete_statements;
+		bool update_statements;
 
 		if (accept (SparqlTokenType.INSERT)) {
 			delete_statements = false;
+			update_statements = false;
 
-			// SILENT => ignore (non-syntax) errors
-			silent = accept (SparqlTokenType.SILENT);
+			if (accept (SparqlTokenType.OR)) {
+				expect (SparqlTokenType.REPLACE);
+				update_statements = true;
+			}
+
+			if (!update_statements) {
+				// SILENT => ignore (non-syntax) errors
+				silent = accept (SparqlTokenType.SILENT);
+			}
 
 			if (current_graph == null && accept (SparqlTokenType.INTO)) {
 				parse_from_or_into_param ();
@@ -601,6 +611,7 @@ public class Tracker.Sparql.Query : Object {
 		} else {
 			expect (SparqlTokenType.DELETE);
 			delete_statements = true;
+			update_statements = false;
 			blank = false;
 
 			// SILENT => ignore (non-syntax) errors
@@ -670,6 +681,7 @@ public class Tracker.Sparql.Query : Object {
 		var cursor = exec_sql_cursor (sql.str, null, null, false);
 
 		this.delete_statements = delete_statements;
+		this.update_statements = update_statements;
 
 		// iterate over all solutions
 		while (cursor.next ()) {
@@ -908,7 +920,10 @@ public class Tracker.Sparql.Query : Object {
 			return;
 		}
 		try {
-			if (delete_statements) {
+			if (update_statements) {
+				// update triple in database
+				Data.update_statement (current_graph, current_subject, current_predicate, object);
+			} else if (delete_statements) {
 				// delete triple from database
 				Data.delete_statement (current_graph, current_subject, current_predicate, object);
 			} else {

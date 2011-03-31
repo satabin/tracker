@@ -525,10 +525,10 @@ read_id3v1_buffer (int     fd,
 static gchar *
 ucs2_to_utf8(const gchar *data, guint len)
 {
-	const gchar   *encoding = NULL;
+	const gchar *encoding = NULL;
 	guint16  c;
 	gboolean be;
-	gchar   *utf8 = NULL;
+	gchar *utf8 = NULL;
 
 	memcpy (&c, data, 2);
 
@@ -1157,16 +1157,16 @@ id3v2_get_frame (const gchar *name)
 
 	do {
 		m = (l + r) / 2;
-		if (strncmp (name, id3v2_frames[m].name, 4) < 0) {
+		if (strncmp (name, id3v2_frames[m].name, 3) < 0) {
 			/* left half */
 			r = m - 1;
 		} else {
 			/* right half */
 			l = m + 1;
 		}
-	} while (l <= r && strncmp (id3v2_frames[m].name, name, 4) != 0);
+	} while (l <= r && strncmp (id3v2_frames[m].name, name, 3) != 0);
 
-	if (strncmp (id3v2_frames[m].name, name, 4) == 0) {
+	if (strncmp (id3v2_frames[m].name, name, 3) == 0) {
 		return id3v2_frames[m].frame;
 	} else {
 		return ID3V2_UNKNOWN;

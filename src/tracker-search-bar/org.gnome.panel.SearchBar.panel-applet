@@ -9,7 +9,6 @@ Name[lt]=Paieškos juosta
 Name[nb]=Søkefelt
 Name[nds]=Sökbalken
 Name[pt]=Barra de Procura
-Name[zh_CN]=搜索栏
 Description=Find your data quickly using Tracker
 
 [SearchBar]
@@ -20,4 +19,4 @@ BonoboId=OAFIID:GNOME_SearchBar
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=tracker
 X-GNOME-Bugzilla-Component=Applet / Search Bar
-X-GNOME-Bugzilla-Version=0.10.5
+X-GNOME-Bugzilla-Version=0.10.6

@@ -72,6 +72,10 @@ public class Tracker.SparqlScanner : Object {
 					break;
 				}
 				break;
+			case 'O':
+			case 'o':
+				if (matches (begin, "OR")) return SparqlTokenType.OR;
+				break;
 			}
 			break;
 		case 3:
@@ -291,7 +295,16 @@ public class Tracker.SparqlScanner : Object {
 			switch (begin[0]) {
 			case 'R':
 			case 'r':
-				if (matches (begin, "REDUCED")) return SparqlTokenType.REDUCED;
+				switch (begin[2]) {
+				case 'D':
+				case 'd':
+					if (matches (begin, "REDUCED")) return SparqlTokenType.REDUCED;
+					break;
+				case 'P':
+				case 'p':
+					if (matches (begin, "REPLACE")) return SparqlTokenType.REPLACE;
+					break;
+				}
 				break;
 			case 'I':
 			case 'i':
@@ -899,12 +912,14 @@ public enum Tracker.SparqlTokenType {
 	OPEN_BRACKET,
 	OPEN_PARENS,
 	OPTIONAL,
+	OR,
 	ORDER,
 	PLUS,
 	PN_PREFIX,
 	PREFIX,
 	REDUCED,
 	REGEX,
+	REPLACE,
 	SAMETERM,
 	SELECT,
 	SEMICOLON,
@@ -991,12 +1006,14 @@ public enum Tracker.SparqlTokenType {
 		case OPEN_BRACKET: return "`['";
 		case OPEN_PARENS: return "`('";
 		case OPTIONAL: return "`OPTIONAL'";
+		case OR: return "`OR'";
 		case ORDER: return "`ORDER'";
 		case PLUS: return "`+'";
 		case PN_PREFIX: return "prefixed name";
 		case PREFIX: return "`PREFIX'";
 		case REDUCED: return "`REDUCED'";
 		case REGEX: return "`REGEX'";
+		case REPLACE: return "`REPLACE'";
 		case SAMETERM: return "`SAMETERM'";
 		case SELECT: return "`SELECT'";
 		case SEMICOLON: return "`;'";

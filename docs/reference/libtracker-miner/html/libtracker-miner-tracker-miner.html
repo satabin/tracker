@@ -66,7 +66,7 @@
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-miner-tracker-miner.html#tracker-miner-resume" title="tracker_miner_resume ()">tracker_miner_resume</a>                (<em class="parameter"><code><a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> cookie</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<span class="returnvalue">TrackerSparqlConnection</span> * <a class="link" href="libtracker-miner-tracker-miner.html#tracker-miner-get-connection" title="tracker_miner_get_connection ()">tracker_miner_get_connection</a>  (<em class="parameter"><code><a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);
+<a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlConnection.html"><span class="returnvalue">TrackerSparqlConnection</span></a> * <a class="link" href="libtracker-miner-tracker-miner.html#tracker-miner-get-connection" title="tracker_miner_get_connection ()">tracker_miner_get_connection</a>  (<em class="parameter"><code><a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);
 <a href="http://library.gnome.org/devel/gio/unstable/GDBusConnection.html"><span class="returnvalue">GDBusConnection</span></a> *   <a class="link" href="libtracker-miner-tracker-miner.html#tracker-miner-get-dbus-connection" title="tracker_miner_get_dbus_connection ()">tracker_miner_get_dbus_connection</a>   (<em class="parameter"><code><a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libtracker-miner-tracker-miner.html#tracker-miner-get-dbus-full-name" title="tracker_miner_get_dbus_full_name ()">tracker_miner_get_dbus_full_name</a>    (<em class="parameter"><code><a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="libtracker-miner-tracker-miner.html#tracker-miner-get-dbus-full-path" title="tracker_miner_get_dbus_full_path ()">tracker_miner_get_dbus_full_path</a>    (<em class="parameter"><code><a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);
@@ -425,9 +425,9 @@ operations until all pause requests have been resumed.
 <hr>
 <div class="refsect2" title="tracker_miner_get_connection ()">
 <a name="tracker-miner-get-connection"></a><h3>tracker_miner_get_connection ()</h3>
-<pre class="programlisting"><span class="returnvalue">TrackerSparqlConnection</span> * tracker_miner_get_connection  (<em class="parameter"><code><a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlConnection.html"><span class="returnvalue">TrackerSparqlConnection</span></a> * tracker_miner_get_connection  (<em class="parameter"><code><a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner"><span class="type">TrackerMiner</span></a> *miner</code></em>);</pre>
 <p>
-Gets the <span class="type">TrackerSparqlConnection</span> initialized by <em class="parameter"><code>miner</code></em>
+Gets the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlConnection.html"><span class="type">TrackerSparqlConnection</span></a> initialized by <em class="parameter"><code>miner</code></em>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -439,7 +439,7 @@ Gets the <span class="type">TrackerSparqlConnection</span> initialized by <em cl
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <span class="type">TrackerSparqlConnection</span>.
+<td> a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlConnection.html"><span class="type">TrackerSparqlConnection</span></a>.
 
 </td>
 </tr>

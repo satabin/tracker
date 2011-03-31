@@ -32,35 +32,60 @@ public class Tracker.View : ScrolledWindow {
 		private set;
 	}
 
-	public ListStore store {
-		get;
-		private set;
+	private ResultStore _store;
+	public ResultStore store {
+		get {
+			return _store;
+		}
+		set {
+			if (_store != null) {
+				_store.row_changed.disconnect (store_row_changed);
+			}
+
+			_store = value;
+
+			if (_store != null) {
+				debug ("using store:%p", _store);
+				_store.row_changed.connect (store_row_changed);
+			}
+
+			((TreeView )view).model = _store;
+		}
 	}
 
 	private Widget view = null;
 
-	public View (Display? _display = Display.NO_RESULTS, ListStore? _store) {
+	private void store_row_changed (TreeModel model,
+	                                TreePath  path,
+	                                TreeIter  iter) {
+		int n_children = model.iter_n_children (iter);
+
+		if (n_children > 0) {
+			((TreeView) view).expand_row (path, false);
+		}
+	}
+
+	private bool row_selection_func (TreeSelection selection,
+	                                 TreeModel     model,
+	                                 TreePath      path,
+	                                 bool          path_selected) {
+		if (path.get_depth () == 1) {
+			// Category row, not selectable
+			return false;
+		}
+
+		return true;
+	}
+
+	public View (Display? _display = Display.NO_RESULTS, ResultStore? store) {
 		set_policy (PolicyType.NEVER, PolicyType.AUTOMATIC);
 
 		display = _display;
 
-		if (_store != null) {
-			store = _store;
+		if (store != null) {
+			_store = store;
+			store.row_changed.connect (store_row_changed);
 			debug ("using store:%p", store);
-		} else {
-			// Setup treeview
-			store = new ListStore (10,
-			                       typeof (Gdk.Pixbuf),  // Icon small
-			                       typeof (Gdk.Pixbuf),  // Icon big
-			                       typeof (string),      // URN
-			                       typeof (string),      // URL
-			                       typeof (string),      // Title
-			                       typeof (string),      // Subtitle
-			                       typeof (string),      // Column 2
-			                       typeof (string),      // Column 3
-			                       typeof (string),      // Tooltip
-			                       typeof (bool));       // Category hint
-			debug ("Creating store:%p", store);
 		}
 
 		switch (display) {
@@ -106,8 +131,8 @@ public class Tracker.View : ScrolledWindow {
 			iv.set_model (store);
 			iv.set_item_width (96);
 			iv.set_selection_mode (SelectionMode.SINGLE);
-			iv.set_pixbuf_column (1);
-			iv.set_text_column (4);
+			iv.set_pixbuf_column (6);
+			iv.set_text_column (2);
 
 			break;
 		}
@@ -117,47 +142,48 @@ public class Tracker.View : ScrolledWindow {
 			TreeView tv = (TreeView) view;
 
 			tv.set_model (store);
-			tv.set_tooltip_column (8);
+			tv.set_tooltip_column (6);
 			tv.set_rules_hint (false);
 			tv.set_grid_lines (TreeViewGridLines.VERTICAL);
 			tv.set_headers_visible (true);
 
 			var renderer1 = new CellRendererPixbuf ();
-			var renderer2 = new Tracker.CellRendererText ();
+			var renderer2 = new Gtk.CellRendererText ();
 
 			col = new TreeViewColumn ();
+			col.set_sizing (TreeViewColumnSizing.AUTOSIZE);
 			col.pack_start (renderer1, false);
-			col.add_attribute (renderer1, "pixbuf", 0);
+			col.add_attribute (renderer1, "pixbuf", 7);
 			renderer1.xpad = 5;
 			renderer1.ypad = 5;
 
 			col.pack_start (renderer2, true);
-			col.add_attribute (renderer2, "text", 4);
+                        renderer2.set_fixed_height_from_font (2);
 			renderer2.ellipsize = Pango.EllipsizeMode.MIDDLE;
-			renderer2.show_fixed_height = false;
 
 			col.set_title (_("File"));
 			col.set_resizable (true);
 			col.set_expand (true);
+			col.set_cell_data_func (renderer1, renderer_background_func);
+			col.set_cell_data_func (renderer2, text_renderer_func);
+			tv.append_column (col);
+
+			var renderer3 = new Gtk.CellRendererText ();
+                        renderer3.set_fixed_height_from_font (2);
+			col = new TreeViewColumn ();
 			col.set_sizing (TreeViewColumnSizing.AUTOSIZE);
-			col.set_cell_data_func (renderer1, cell_renderer_func);
-			col.set_cell_data_func (renderer2, cell_renderer_func);
-			tv.append_column (col);
-
-			var renderer3 = new Tracker.CellRendererText ();
-			col = new TreeViewColumn ();
 			col.pack_start (renderer3, true);
-			col.add_attribute (renderer3, "text", 6);
 			col.set_title (_("Last Changed"));
-			col.set_cell_data_func (renderer3, cell_renderer_func);
+			col.set_cell_data_func (renderer3, file_date_renderer_func);
 			tv.append_column (col);
 
-			var renderer4 = new Tracker.CellRendererText ();
+			var renderer4 = new Gtk.CellRendererText ();
+                        renderer4.set_fixed_height_from_font (2);
 			col = new TreeViewColumn ();
+			col.set_sizing (TreeViewColumnSizing.AUTOSIZE);
 			col.pack_start (renderer4, true);
-			col.add_attribute (renderer4, "text", 7);
 			col.set_title (_("Size"));
-			col.set_cell_data_func (renderer4, cell_renderer_func);
+			col.set_cell_data_func (renderer4, file_size_renderer_func);
 			tv.append_column (col);
 
 			break;
@@ -166,66 +192,72 @@ public class Tracker.View : ScrolledWindow {
 		case Display.CATEGORIES: {
 			TreeViewColumn col;
 			TreeView tv = (TreeView) view;
+			TreeSelection selection;
 
 			tv.set_model (store);
-			tv.set_tooltip_column (8);
+			tv.set_tooltip_column (5);
 			tv.set_rules_hint (false);
 			tv.set_grid_lines (TreeViewGridLines.NONE);
 			tv.set_headers_visible (false);
+			tv.set_show_expanders (false);
 
-			var renderer1 = new CellRendererPixbuf ();
-			var renderer2 = new Tracker.CellRendererText ();
+                        selection = tv.get_selection ();
+                        selection.set_select_function (row_selection_func);
 
 			col = new TreeViewColumn ();
+			col.set_sizing (TreeViewColumnSizing.FIXED);
+			col.set_expand (true);
+
+			var renderer1 = new CellRendererPixbuf ();
 			col.pack_start (renderer1, false);
-			col.add_attribute (renderer1, "pixbuf", 0);
+			col.add_attribute (renderer1, "pixbuf", 6);
+			col.set_cell_data_func (renderer1, renderer_background_func);
 			renderer1.xpad = 5;
 			renderer1.ypad = 5;
 
+			var renderer2 = new Gtk.CellRendererText ();
 			col.pack_start (renderer2, true);
-			col.add_attribute (renderer2, "text", 4);
-			col.add_attribute (renderer2, "subtext", 5);
+			col.set_cell_data_func (renderer2, text_renderer_func);
+                        renderer2.set_fixed_height_from_font (2);
 			renderer2.ellipsize = Pango.EllipsizeMode.MIDDLE;
-			renderer2.show_fixed_height = true;
 
-			col.set_title (_("Item"));
-			col.set_resizable (true);
-			col.set_expand (true);
-			col.set_sizing (TreeViewColumnSizing.AUTOSIZE);
-			col.set_cell_data_func (renderer1, cell_renderer_func);
-			col.set_cell_data_func (renderer2, cell_renderer_func);
+			//col.set_resizable (true);
+			//col.set_sizing (TreeViewColumnSizing.AUTOSIZE);
 			tv.append_column (col);
 
-//			var renderer3 = new Tracker.CellRendererText ();
+//			var renderer3 = new Gtk.CellRendererText ();
 //			col = new TreeViewColumn ();
 //			col.pack_start (renderer3, true);
-//			col.add_attribute (renderer3, "text", 6);
+//			col.add_attribute (renderer3, "text", 3);
 //			col.set_title (_("Item Detail"));
 //			col.set_cell_data_func (renderer3, cell_renderer_func);
 //			tv.append_column (col);
 
-			var renderer4 = new Tracker.CellRendererText ();
+ 			var renderer4 = new Gtk.CellRendererText ();
+
+                        renderer4.set_fixed_height_from_font (2);
+			renderer4.alignment = Pango.Alignment.RIGHT;
+			renderer4.xalign = 1;
+
 			col = new TreeViewColumn ();
-			col.pack_start (renderer4, true);
-			col.add_attribute (renderer4, "text", 7);
-			col.set_title (_("Size"));
-			col.set_cell_data_func (renderer4, cell_renderer_func);
-			tv.append_column (col);
+			col.set_min_width (80);
+ 			col.set_sizing (TreeViewColumnSizing.FIXED);
+ 			col.pack_start (renderer4, true);
+			col.set_cell_data_func (renderer4, category_detail_renderer_func);
+ 			tv.append_column (col);
 
 			break;
 		}
 		}
 	}
 
-	private void cell_renderer_func (CellLayout   cell_layout,
-	                                 CellRenderer cell,
-	                                 TreeModel    tree_model,
-	                                 TreeIter     iter) {
+	private void renderer_background_func (CellLayout   cell_layout,
+	                                       CellRenderer cell,
+	                                       TreeModel    tree_model,
+	                                       TreeIter     iter) {
 		Gdk.Color color;
 		Style style;
-		bool show_row_hint;
-
-		tree_model.get (iter, 9, out show_row_hint, -1);
+		TreePath path;
 
 		style = view.get_style ();
 
@@ -247,14 +279,142 @@ public class Tracker.View : ScrolledWindow {
 			color.blue = (color.blue + (style.black).blue) / 2;
 		}
 
+		path = tree_model.get_path (iter);
+
 		// Set odd/even colours
-		if (show_row_hint) {
-//			((Widget) treeview).style_get ("odd-row-color", out color, null);
-			cell.set ("cell-background-gdk", &color);
+		if (path.get_indices()[0] % 2 != 0) {
+			cell.set ("cell-background-gdk", color);
 		} else {
-//			((Widget) treeview).style_get ("even-row-color", out color, null);
 			cell.set ("cell-background-gdk", null);
 		}
 	}
-}
 
+	private void text_renderer_func (CellLayout   cell_layout,
+	                                 CellRenderer cell,
+	                                 TreeModel    tree_model,
+	                                 TreeIter     iter) {
+		string text, subtext;
+		string markup = null;
+		int n_children;
+
+		renderer_background_func (cell_layout, cell, tree_model, iter);
+		n_children = tree_model.iter_n_children (iter);
+
+		if (n_children > 0) {
+			// Category row
+			Tracker.Query.Type type;
+			string cat = null;
+
+			tree_model.get (iter, 7, out type, -1);
+			switch (type) {
+			case Tracker.Query.Type.APPLICATIONS:
+				cat = _("Applications");
+				break;
+			case Tracker.Query.Type.MUSIC:
+				cat = _("Music");
+				break;
+			case Tracker.Query.Type.IMAGES:
+				cat = _("Images");
+				break;
+			case Tracker.Query.Type.VIDEOS:
+				cat = _("Videos");
+				break;
+			case Tracker.Query.Type.DOCUMENTS:
+				cat = _("Documents");
+				break;
+			case Tracker.Query.Type.MAIL:
+				cat = _("Mail");
+				break;
+			case Tracker.Query.Type.FOLDERS:
+				cat = _("Folders");
+				break;
+			}
+
+			markup = "<b><big>%s</big></b> <small>(%d %s)</small>".printf (cat, n_children, _("Items"));
+		} else {
+			// Result row
+			tree_model.get (iter, 2, out text, 3, out subtext, -1);
+
+			if (text != null) {
+				markup = Markup.escape_text (text);
+
+				if (subtext != null) {
+					markup += "\n<small><span color='grey'>%s</span></small>".printf (Markup.escape_text (subtext));
+				}
+			} else {
+				markup = "<span color='grey'>%s</span>\n".printf (_("Loading..."));
+			}
+		}
+
+		cell.set ("markup", markup);
+	}
+
+	private void file_size_renderer_func (CellLayout   cell_layout,
+	                                      CellRenderer cell,
+	                                      TreeModel    tree_model,
+	                                      TreeIter     iter) {
+		string size;
+
+		renderer_background_func (cell_layout, cell, tree_model, iter);
+		tree_model.get (iter, 4, out size, -1);
+
+		if (size != null) {
+			size = GLib.format_size_for_display (size.to_int());
+		}
+
+		cell.set ("text", size);
+	}
+
+	private void file_date_renderer_func (CellLayout   cell_layout,
+	                                      CellRenderer cell,
+	                                      TreeModel    tree_model,
+	                                      TreeIter     iter) {
+		string date;
+
+		renderer_background_func (cell_layout, cell, tree_model, iter);
+		tree_model.get (iter, 5, out date, -1);
+
+		if (date != null) {
+			date = tracker_time_format_from_iso8601 (date);
+		}
+
+		cell.set ("text", date);
+	}
+
+	private void category_detail_renderer_func (CellLayout   cell_layout,
+	                                            CellRenderer cell,
+	                                            TreeModel    tree_model,
+	                                            TreeIter     iter) {
+		Tracker.Query.Type category;
+		string markup = null;
+		string detail;
+
+		renderer_background_func (cell_layout, cell, tree_model, iter);
+		tree_model.get (iter, 4, out detail, 7, out category, -1);
+
+		if (detail == null) {
+			cell.set ("markup", null);
+			return;
+		}
+
+		switch (category) {
+		case Tracker.Query.Type.FOLDERS:
+		case Tracker.Query.Type.MAIL:
+			detail = tracker_time_format_from_iso8601 (detail);
+			break;
+		case Tracker.Query.Type.MUSIC:
+		case Tracker.Query.Type.VIDEOS:
+			detail = tracker_time_format_from_seconds (detail);
+			break;
+		case Tracker.Query.Type.DOCUMENTS:
+			detail = detail + " " + _("Pages");
+			break;
+		case Tracker.Query.Type.IMAGES:
+			detail = GLib.format_size_for_display (detail.to_int());
+			break;
+		}
+
+		markup = "<span color='grey'><small>%s</small></span>".printf (Markup.escape_text (detail));
+		cell.set ("markup", markup);
+	}
+}

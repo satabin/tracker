@@ -51,10 +51,103 @@ public class Tracker.Needle {
 	private int size_small = 0;
 	private int size_medium = 0;
 	private int size_big = 0;
-	static bool current_view = true;
 	static bool current_find_in = true;
 
+	private ResultStore categories_model;
+	private ResultStore files_model;
+	private ResultStore files_in_title_model;
+	private ResultStore images_model;
+
+	private void create_models () {
+		// Categories model
+		categories_model = new ResultStore (6);
+		categories_model.add_query (Tracker.Query.Type.APPLICATIONS,
+		                            "?urn",
+		                            "tracker:coalesce(nfo:softwareCmdLine(?urn), ?urn)",
+		                            "tracker:coalesce(nie:title(?urn), nfo:fileName(?urn))",
+		                            "nie:comment(?urn)",
+		                            "\"\"",
+		                            "\"\"");
+
+		categories_model.add_query (Tracker.Query.Type.IMAGES,
+		                            "?urn",
+		                            "nie:url(?urn)",
+		                            "tracker:coalesce(nie:title(?urn), nfo:fileName(?urn))",
+		                            "fn:string-join((nfo:height(?urn), nfo:width(?urn)), \" x \")",
+		                            "nfo:fileSize(?urn)",
+		                            "nie:url(?urn)");
+		categories_model.add_query (Tracker.Query.Type.MUSIC,
+		                            "?urn",
+		                            "nie:url(?urn)",
+		                            "tracker:coalesce(nie:title(?urn), nfo:fileName(?urn))",
+		                            "fn:string-join((?performer, ?album), \" - \")",
+		                            "nfo:duration(?urn)",
+		                            "nie:url(?urn)");
+		categories_model.add_query (Tracker.Query.Type.VIDEOS,
+		                            "?urn",
+		                            "nie:url(?urn)",
+		                            "tracker:coalesce(nie:title(?urn), nfo:fileName(?urn))",
+		                            "\"\"",
+		                            "nfo:duration(?urn)",
+		                            "nie:url(?urn)");
+		categories_model.add_query (Tracker.Query.Type.DOCUMENTS,
+		                            "?urn",
+		                            "nie:url(?urn)",
+		                            "tracker:coalesce(nie:title(?urn), nfo:fileName(?urn))",
+		                            "tracker:coalesce(nco:fullname(?creator), nco:fullname(?publisher))",
+		                            "nfo:pageCount(?urn)",
+		                            "nie:url(?urn)");
+		categories_model.add_query (Tracker.Query.Type.MAIL,
+		                            "?urn",
+		                            "nie:url(?urn)",
+		                            "tracker:coalesce(nco:fullname(?sender), nco:nickname(?sender), nco:emailAddress(?sender))",
+		                            "tracker:coalesce(nmo:messageSubject(?urn))",
+		                            "nmo:receivedDate(?urn)",
+		                            "fn:concat(\"To: \", tracker:coalesce(nco:fullname(?to), nco:nickname(?to), nco:emailAddress(?to)))");
+		categories_model.add_query (Tracker.Query.Type.FOLDERS,
+		                            "?urn",
+		                            "nie:url(?urn)",
+		                            "tracker:coalesce(nie:title(?urn), nfo:fileName(?urn))",
+		                            "nie:url(?parent)",
+		                            "nfo:fileLastModified(?urn)",
+		                            "?tooltip");
+
+		// Files model
+		files_model = new ResultStore (7);
+		files_model.add_query (Tracker.Query.Type.ALL,
+		                       "?urn",
+		                       "nie:url(?urn)",
+		                       "tracker:coalesce(nie:title(?urn), nfo:fileName(?urn))",
+		                       "nie:url(?urn)",
+		                       "nfo:fileSize(?urn)",
+		                       "nfo:fileLastModified(?urn)",
+		                       "nie:url(?urn)");
+
+		// Files model, search in titles
+		files_in_title_model = new ResultStore (7);
+		files_in_title_model.add_query (Tracker.Query.Type.ALL_ONLY_IN_TITLES,
+		                                "?urn",
+		                                "nie:url(?urn)",
+		                                "tracker:coalesce(nie:title(?urn), nfo:fileName(?urn))",
+		                                "nie:url(?urn)",
+		                                "nfo:fileSize(?urn)",
+		                                "nfo:fileLastModified(?urn)",
+		                                "nie:url(?urn)");
+
+		// Images model
+		images_model = new ResultStore (6);
+		images_model.icon_size = 48;
+		images_model.add_query (Tracker.Query.Type.IMAGES,
+		                        "?urn",
+		                        "nie:url(?urn)",
+		                        "tracker:coalesce(nie:title(?urn), nfo:fileName(?urn))",
+		                        "nfo:fileSize(?urn)",
+		                        "nfo:fileLastModified(?urn)",
+		                        "nie:url(?urn)");
+	}
+
 	public Needle () {
+		create_models ();
 		history = new Tracker.History ();
 	}
 
@@ -77,6 +170,19 @@ public class Tracker.Needle {
 
 			debug ("Setting search criteria to: '%s'\n", text);
 			search.set_text (text);
+		}
+	}
+
+	private void store_state_changed (GLib.Object object,
+	                                  ParamSpec   p) {
+		ResultStore store = (ResultStore) object;
+
+		if (store.active) {
+			spinner_shell.show_all ();
+			spinner.start ();
+		} else {
+			spinner_shell.hide ();
+			spinner.stop ();
 		}
 	}
 
@@ -130,6 +236,7 @@ public class Tracker.Needle {
 		search_list = builder.get_object ("comboboxentry_search") as ComboBoxEntry;
 		search = search_list.get_child () as Entry;
 		search.changed.connect (search_changed);
+		search.activate.connect (search_activated);
 		search_history_insert (history.get ());
 
 		spinner = new Spinner ();
@@ -151,9 +258,10 @@ public class Tracker.Needle {
 		sw_noresults = new Tracker.View (Tracker.View.Display.NO_RESULTS, null);
 		view.pack_start (sw_noresults, true, true, 0);
 
-		sw_categories = new Tracker.View (Tracker.View.Display.CATEGORIES, null);
+		sw_categories = new Tracker.View (Tracker.View.Display.CATEGORIES, categories_model);
 		treeview = (TreeView) sw_categories.get_child ();
 		treeview.row_activated.connect (view_row_selected);
+		sw_categories.store.notify["active"].connect (store_state_changed);
 		view.pack_start (sw_categories, true, true, 0);
 
 		sw_filelist = new Tracker.View (Tracker.View.Display.FILE_LIST, null);
@@ -161,7 +269,7 @@ public class Tracker.Needle {
 		treeview.row_activated.connect (view_row_selected);
 		view.pack_start (sw_filelist, true, true, 0);
 
-		sw_icons = new Tracker.View (Tracker.View.Display.FILE_ICONS, null);
+		sw_icons = new Tracker.View (Tracker.View.Display.FILE_ICONS, images_model);
 		iconview = (IconView) sw_icons.get_child ();
 		iconview.item_activated.connect (icon_item_selected);
 		view.pack_start (sw_icons, true, true, 0);
@@ -184,19 +292,6 @@ public class Tracker.Needle {
 		return false;
 	}
 
-	private ListStore? get_store_for_active_view () {
-		if (view_icons.active) {
-			return sw_icons.store;
-		} else if (view_filelist.active) {
-			return sw_filelist.store;
-		} else if (view_categories.active) {
-			return sw_categories.store;
-		}
-
-		debug ("No views active to get store?!?!");
-		return null;
-	}
-
 	private void search_changed (Editable editable) {
 		if (last_search_id != 0) {
 			Source.remove (last_search_id);
@@ -205,241 +300,18 @@ public class Tracker.Needle {
 		last_search_id = Timeout.add_seconds (1, search_run);
 	}
 
-	private async void search_simple (ListStore store) requires (store != null) {
-		Tracker.Query query = new Tracker.Query ();
-		Tracker.Sparql.Cursor cursor = null;
-
-		query.limit = 1000;
-		query.criteria = search.get_text ();
-
-		debug ("Doing simple search using store:%p", store);
-
-		try {
-			if (find_in_contents.active) {
-				cursor = yield query.perform_async (query.Type.ALL);
-			} else {
-				cursor = yield query.perform_async (query.Type.ALL_ONLY_IN_TITLES);
-			}
-
-			if (cursor == null) {
-				search_finished (store);
-				return;
-			}
-
-			store.clear ();
-
-			var screen = window.get_screen ();
-			var theme = IconTheme.get_for_screen (screen);
-
-			while (true) {
-				bool b = yield cursor.next_async ();
-				if (!b) {
-					break;
-				}
-
-				for (int i = 0; i < cursor.n_columns; i++) {
-					if (i == 0) {
-						debug ("--> %s", cursor.get_string (i));
-					} else {
-						debug ("  --> %s", cursor.get_string (i));
-					}
-				}
-
-				// Get icon
-				string urn = cursor.get_string (0);
-				string _file = cursor.get_string (1);
-				string title = cursor.get_string (2);
-				string _file_time = cursor.get_string (3);
-				string _file_size = cursor.get_string (4);
-				string tooltip = cursor.get_string (7);
-				Gdk.Pixbuf pixbuf_small = tracker_pixbuf_new_from_file (theme, _file, size_small, false);
-				Gdk.Pixbuf pixbuf_big = tracker_pixbuf_new_from_file (theme, _file, size_big, false);
-				string file_size = GLib.format_size_for_display (_file_size.to_int());
-				string file_time = tracker_time_format_from_iso8601 (_file_time);
-
-				// Insert into model
-				TreeIter iter;
-
-				// FIXME: should optimise this a bit more, inserting 2 images into a list eek
-				store.append (out iter);
-				store.set (iter,
-					       0, pixbuf_small, // Small Image
-					       1, pixbuf_big,   // Large Image
-					       2, urn,          // URN
-					       3, _file,        // URL
-					       4, title,        // Title
-					       5, null,         // Subtitle
-					       6, file_time,    // Column2: Time
-					       7, file_size,    // Column3: Size
-					       8, tooltip,      // Tooltip
-					       -1);
-			}
-		} catch (GLib.Error e) {
-			warning ("Could not iterate query results: %s", e.message);
-			search_finished (store);
-			return;
+	private void search_activated (Entry entry) {
+		if (last_search_id != 0) {
+			Source.remove (last_search_id);
+			last_search_id = 0;
 		}
 
-		search_finished (store);
+		search_run ();
 	}
 
-	private async void search_detailed (ListStore store) requires (store != null) {
-		Tracker.Query.Type[] categories = { 
-			Tracker.Query.Type.APPLICATIONS,
-			Tracker.Query.Type.MUSIC,
-			Tracker.Query.Type.VIDEOS,
-			Tracker.Query.Type.DOCUMENTS,
-			Tracker.Query.Type.MAIL,
-			Tracker.Query.Type.IMAGES,
-			Tracker.Query.Type.FOLDERS
-		};
-		Tracker.Query query = new Tracker.Query ();
-
-		store.clear ();
-
-		debug ("Doing detailed search using store:%p", store);
-
-		var screen = window.get_screen ();
-		var theme = IconTheme.get_for_screen (screen);
-		bool odd = false;
-
-		foreach (Tracker.Query.Type type in categories) {
-			int count = 0;
-
-			Tracker.Sparql.Cursor cursor;
-
-			query.limit = 1000;
-			query.criteria = search.get_text ();
-
-			try {
-				cursor = yield query.perform_async (type);
-
-				if (cursor == null) {
-					search_finished (store);
-					return;
-				}
-
-				while (true) {
-					bool b = yield cursor.next_async ();
-					if (!b) {
-						break;
-					}
-
-					for (int i = 0; i < cursor.n_columns; i++) {
-						if (i == 0) {
-							debug ("--> %s", cursor.get_string (i));
-						} else {
-							debug ("  --> %s", cursor.get_string (i));
-						}
-					}
-
-					string urn = cursor.get_string (0);
-					string _file = cursor.get_string (1);
-					string title = cursor.get_string (2);
-					string subtitle = null;
-					string column2 = null;
-					string column3 = null;
-					string tooltip = cursor.get_string (5);
-					Gdk.Pixbuf pixbuf_small = null; 
-
-					// Special cases
-					switch (type) {
-					case Tracker.Query.Type.APPLICATIONS:
-						if (count == 0) {
-							pixbuf_small = tracker_pixbuf_new_from_name (theme, "package-x-generic", size_medium);
-						}
-						break;
-					case Tracker.Query.Type.MUSIC:
-						if (count == 0) {
-							pixbuf_small = tracker_pixbuf_new_from_name (theme, "audio-x-generic", size_medium);
-						}
-						column2 = tracker_time_format_from_seconds (cursor.get_string (4));
-						break;
-					case Tracker.Query.Type.IMAGES:
-						if (count == 0) {
-							pixbuf_small = tracker_pixbuf_new_from_name (theme, "image-x-generic", size_medium);
-						}
-						column2 = GLib.format_size_for_display (cursor.get_string (4).to_int ());
-						break;
-					case Tracker.Query.Type.VIDEOS:
-						if (count == 0) {
-							pixbuf_small = tracker_pixbuf_new_from_name (theme, "video-x-generic", size_medium);
-						}
-						column2 = tracker_time_format_from_seconds (cursor.get_string (4));
-						break;
-					case Tracker.Query.Type.DOCUMENTS:
-						if (count == 0) {
-							pixbuf_small = tracker_pixbuf_new_from_name (theme, "x-office-presentation", size_medium);
-						}
-						break;
-					case Tracker.Query.Type.MAIL:
-						if (count == 0) {
-							pixbuf_small = tracker_pixbuf_new_from_name (theme, "emblem-mail", size_medium);
-						}
-						column2 = tracker_time_format_from_iso8601 (cursor.get_string (4));
-						break;
-					case Tracker.Query.Type.FOLDERS:
-						if (count == 0) {
-							pixbuf_small = tracker_pixbuf_new_from_name (theme, "folder", size_medium);
-						}
-						column2 = tracker_time_format_from_iso8601 (cursor.get_string (4));
-						break;
-
-					default:
-						break;
-					}
-
-					if (subtitle == null) {
-						subtitle = cursor.get_string (3);
-					}
-
-					if (column2 == null) {
-						column2 = cursor.get_string (4);
-					}
-
-					// Insert into model
-					TreeIter iter;
-
-					// FIXME: should optimise this a bit more, inserting 2 images into a list eek
-					store.append (out iter);
-					store.set (iter,
-							   0, pixbuf_small, // Small Image
-							   1, null,         // Large Image
-							   2, urn,          // URN
-							   3, _file,        // URL
-							   4, title,        // Title
-							   5, subtitle,     // Subtitle
-							   6, column2,      // Column2
-							   7, column3,      // Column3
-							   8, tooltip,      // Tooltip
-							   9, odd,          // Category hint
-							   -1);
-
-					count++;
-				}
-			} catch (GLib.Error e) {
-				warning ("Could not iterate query results: %s", e.message);
-				search_finished (store);
-				return;
-			}
-
-			if (count > 0) {
-				odd = !odd;
-			}
-		}
-
-		search_finished (store);
-	}
-
-	private void search_finished (ListStore? store) {
-		// Hide spinner
-		spinner.stop ();
-		spinner_shell.hide ();
-
-		TreeModel model = (TreeModel) store;
-
+	private void search_finished (ResultStore? store) {
 		// Check if we have any results, if we don't change the view
-		if (model == null || model.iter_n_children (null) < 1) {
+		if (store == null || !store.has_results ()) {
 			sw_noresults.show ();
 			sw_icons.hide ();
 			sw_categories.hide ();
@@ -497,15 +369,10 @@ public class Tracker.Needle {
 
 		string str = search.get_text ();
 		string criteria = str.strip ();
-		ListStore store = get_store_for_active_view ();
+		ResultStore store = null;
 
-		if (criteria.length < 1) {
-			if (store != null) {
-				store.clear ();
-			}
-
+		if (criteria.length < 3) {
 			search_finished (store);
-
 			return false;
 		}
 
@@ -516,30 +383,34 @@ public class Tracker.Needle {
 
 		if (view_icons.active) {
 			sw_icons.show ();
+			store = images_model;
 		} else {
 			sw_icons.hide ();
 		}
 
 		if (view_categories.active) {
 			sw_categories.show ();
+			store = categories_model;
 		} else {
 			sw_categories.hide ();
 		}
 
 		if (view_filelist.active) {
 			sw_filelist.show ();
+
+			if (find_in_contents.active) {
+				store = files_model;
+			} else {
+				store = files_in_title_model;
+			}
+
+			sw_filelist.store = store;
 		} else {
 			sw_filelist.hide ();
 		}
 
-		// Show spinner
-		spinner_shell.show_all ();
-		spinner.start ();
-
-		if (view_categories.active) {
-			search_detailed (store);
-		} else {
-			search_simple (store);
+		if (store != null) {
+			store.search_term = search.get_text ();
 		}
 
 		return false;
@@ -590,10 +461,15 @@ public class Tracker.Needle {
 	private void launch_selected (TreeModel model, TreePath path, int col) {
 		TreeIter iter;
 		model.get_iter (out iter, path);
-		
+
 		weak string uri;
 		model.get (iter, col, out uri);
-		debug ("Selected uri:'%s'", uri);
+
+                if (uri == null) {
+	                return;
+                }
+
+                debug ("Selected uri:'%s'", uri);
 
 		// Bit of a hack for now if there is no URI scheme, we assume that
 		// the uri is actually a command line to launch.
@@ -631,12 +507,12 @@ public class Tracker.Needle {
 
 	private void view_row_selected (TreeView view, TreePath path, TreeViewColumn column) {
 		var model = view.get_model ();
-		launch_selected (model, path, 3);
+		launch_selected (model, path, 1);
 	}
 
 	private void icon_item_selected (IconView view, TreePath path) {
 		var model = view.get_model ();
-		launch_selected (model, path, 3);
+		launch_selected (model, path, 1);
 	}
 
 	private void show_tags_clicked () {

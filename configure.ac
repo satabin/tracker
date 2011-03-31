@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [5])
-m4_define([tracker_interface_age], [0])
+m4_define([tracker_micro_version], [6])
+m4_define([tracker_interface_age], [1])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -357,11 +357,9 @@ PKG_CHECK_MODULES(TRACKER_MINER_FS, [$TRACKER_MINER_FS_REQUIRED])
 TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS -lz -lm"
 
 # Check requirements for tracker-miner-evolution
-evolution_plugin_name="evolution-plugin"
-
 TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
-                                  evolution-shell           >= $EVO_SHELL_REQUIRED
-                                  evolution-plugin          >= $EVO_REQUIRED
+                                  evolution-shell-3.0
+                                  evolution-plugin-3.0
                                   evolution-data-server-1.2 >= $EDS_REQUIRED
                                   camel-1.2                 >= $CAMEL_REQUIRED"
 
@@ -369,12 +367,19 @@ PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_REQUIRED],
                   [have_tracker_miner_evolution=yes],
                   [have_tracker_miner_evolution=no])
 
-if test "x$have_tracker_miner_evolution" != "xyes"; then
+if test "x$have_tracker_miner_evolution" = "xyes"; then
    evolution_plugin_name="evolution-plugin-3.0"
 
+   AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
+else
+   evolution_plugin_name="evolution-plugin"
+
+
    TRACKER_MINER_EVOLUTION_REQUIRED="glib-2.0                  >= $GLIB_REQUIRED
-                                     evolution-plugin-3.0      >= $EVO_REQUIRED
-                                     evolution-data-server-1.2 >= $EDS_REQUIRED"
+                                     evolution-shell           >= $EVO_SHELL_REQUIRED
+                                     evolution-plugin          >= $EVO_REQUIRED
+                                     evolution-data-server-1.2 >= $EDS_REQUIRED
+                                     camel-1.2                 >= $CAMEL_REQUIRED"
 
    PKG_CHECK_MODULES(TRACKER_MINER_EVOLUTION, [$TRACKER_MINER_EVOLUTION_REQUIRED],
                      [have_tracker_miner_evolution=yes],
@@ -1132,10 +1137,6 @@ fi
 
 if test "x$have_tracker_miner_evolution" = "xyes"; then
 
-   PKG_CHECK_MODULES(MINER_EVOLUTION_SHELL, evolution-shell > 2.91,
-                     [miner_evolution_2_91=yes],
-                     [miner_evolution_2_91=no])
-
    AC_ARG_WITH([evolution_plugin_dir],
                AS_HELP_STRING([--with-evolution-plugin-dir],
                               [path to Evolution plugin directory]))
@@ -1147,10 +1148,6 @@ if test "x$have_tracker_miner_evolution" = "xyes"; then
 
    if test -z $tracker_miner_evolution_install_dir; then
       AC_MSG_ERROR([Couldn't find evolution plugin dir, consider using --with-evolution-plugin-dir.])
-   fi
-
-   if test "x$miner_evolution_2_91" = "xyes"; then
-      AC_DEFINE(EVOLUTION_SHELL_2_91, 1, [Use new evolution-shell API])
    fi
 fi
 
@@ -1522,7 +1519,7 @@ AC_SUBST(GUPNP_DLNA_CFLAGS)
 AC_SUBST(GUPNP_DLNA_LIBS)
 
 PKG_CHECK_MODULES(GSTREAMER,
-                  [gstreamer-0.10 >= 0.10.12 gstreamer-tag-0.10 >= 0.10.12],
+                  [gstreamer-0.10 >= 0.10.31 gstreamer-tag-0.10 >= 0.10.31],
                   [have_libgstreamer=yes],
                   [have_libgstreamer=no])
 

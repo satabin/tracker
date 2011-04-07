@@ -19,6 +19,7 @@
 <ANCHOR id="tracker-miner-ignore-next-update" href="libtracker-miner/libtracker-miner-tracker-miner.html#tracker-miner-ignore-next-update">
 <ANCHOR id="tracker-miner-is-started" href="libtracker-miner/libtracker-miner-tracker-miner.html#tracker-miner-is-started">
 <ANCHOR id="tracker-miner-is-paused" href="libtracker-miner/libtracker-miner-tracker-miner.html#tracker-miner-is-paused">
+<ANCHOR id="tracker-miner-get-n-pause-reasons" href="libtracker-miner/libtracker-miner-tracker-miner.html#tracker-miner-get-n-pause-reasons">
 <ANCHOR id="tracker-miner-pause" href="libtracker-miner/libtracker-miner-tracker-miner.html#tracker-miner-pause">
 <ANCHOR id="tracker-miner-resume" href="libtracker-miner/libtracker-miner-tracker-miner.html#tracker-miner-resume">
 <ANCHOR id="tracker-miner-get-connection" href="libtracker-miner/libtracker-miner-tracker-miner.html#tracker-miner-get-connection">

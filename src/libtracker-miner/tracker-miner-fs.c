@@ -2370,20 +2370,10 @@ item_queue_get_next_file (TrackerMinerFS  *fs,
 
 		trace_eq_pop_head ("DELETED", queue_file);
 
-		/* TODO: Really check whether this makes sense... do
-		 * we really need to fully ignore the Delete event
-		 * and treat it as a IgnoreNextUpdate? */
-		if (check_ignore_next_update (fs, queue_file)) {
-			gchar *uri;
-
-			uri = g_file_get_uri (queue_file);
-			g_debug ("DELETED event ignored on file '%s', "
-			         " processing as IgnoreNextUpdate...",
-			         uri);
-			g_free (uri);
-
-			return QUEUE_IGNORE_NEXT_UPDATE;
-		}
+		/* Do not ignore DELETED event even if file is marked as
+		   IgnoreNextUpdate. We should never see DELETED on update
+		   (atomic rename or in-place update) but we may see DELETED
+		   due to actual file deletion right after update. */
 
 		/* If the same item OR its first parent is currently being processed,
 		 * we need to wait for this event */
@@ -4374,7 +4364,7 @@ tracker_miner_fs_get_throttle (TrackerMinerFS *fs)
  * If @file is not being currently processed by @fs, or doesn't
  * exist in the store yet, %NULL will be returned.
  *
- * Returns: The URN containing the data associated to @file,
+ * Returns: (transfer none): The URN containing the data associated to @file,
  *          or %NULL.
  *
  * Since: 0.8
@@ -4433,7 +4423,7 @@ tracker_miner_fs_get_urn (TrackerMinerFS *fs,
 
  * If @file doesn't exist in the store yet, %NULL will be returned.
  *
- * Returns: A newly allocated string with the URN containing the data associated
+ * Returns: (transfer full): A newly allocated string with the URN containing the data associated
  *          to @file, or %NULL.
  *
  * Since: 0.10
@@ -4467,7 +4457,7 @@ tracker_miner_fs_query_urn (TrackerMinerFS *fs,
  * children is processed, so most usually this function should
  * return non-%NULL.
  *
- * Returns: The parent folder URN, or %NULL.
+ * Returns: (transfer none): The parent folder URN, or %NULL.
  *
  * Since: 0.8
  **/

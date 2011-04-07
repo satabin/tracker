@@ -34,6 +34,8 @@
 #include <libtracker-fts/tracker-fts.h>
 #endif
 
+#include <libtracker-common/tracker-locale.h>
+
 #include "tracker-class.h"
 #include "tracker-data-manager.h"
 #include "tracker-data-update.h"
@@ -73,6 +75,7 @@
 static gchar    *ontologies_dir;
 static gboolean  initialized;
 static gboolean  in_journal_replay;
+static gboolean  reloading = FALSE;
 
 typedef struct {
 	const gchar *from;
@@ -3381,6 +3384,7 @@ tracker_data_manager_reload (TrackerBusyCallback   busy_callback,
 	g_message ("Reloading data manager...");
 	/* Shutdown data manager... */
 	flags = tracker_db_manager_get_flags (&select_cache_size, &update_cache_size);
+	reloading = TRUE;
 	tracker_data_manager_shutdown ();
 
 	g_message ("  Data manager shut down, now initializing again...");
@@ -3396,6 +3400,7 @@ tracker_data_manager_reload (TrackerBusyCallback   busy_callback,
 	                                    busy_user_data,
 	                                    busy_operation,
 	                                    &internal_error);
+	reloading = FALSE;
 
 	if (internal_error) {
 		g_propagate_error (error, internal_error);
@@ -3477,6 +3482,10 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 
 	/* Make sure we initialize all other modules we depend on */
 	tracker_ontologies_init ();
+
+	if (!reloading) {
+		tracker_locale_init ();
+	}
 
 	read_journal = FALSE;
 
@@ -4132,6 +4141,9 @@ tracker_data_manager_shutdown (void)
 	tracker_db_journal_shutdown ();
 	tracker_db_manager_shutdown ();
 	tracker_ontologies_shutdown ();
+	if (!reloading) {
+		tracker_locale_shutdown ();
+	}
 	tracker_data_update_shutdown ();
 
 	initialized = FALSE;

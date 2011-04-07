@@ -1,3 +1,298 @@
+2011-04-07  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.7
+
+2011-04-07  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-sparql: Fix header filename in generated vapi
+
+2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
+
+	miner-fs: Consider "paused by missing store" non critical for mtime check in future runs
+	Fixes Bug 644455 - ~/.cache/tracker/no-need-mtime-check.txt is not written if
+	tracker-store is stopped before tracker-miner-fs, reported by Michael Biebl.
+
+	Now tracker-miner-fs will consider a safe shutdown if the only pause reason is
+	tracker-store missing.
+
+2011-04-07  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-fs: Update man page given --no-daemon / --initial-sleep exclusivity
+
+2011-04-07  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-miner-fs: Perform initial-sleep in all miners as given by the config
+	Fixes GB#644997
+
+2011-04-07  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-extract: Fixed typo breaking distcheck, s/typelibs/typelib/g
+
+	build: Fixed broken distcheck configure arguments
+	Evolution plugin was building which shouldn't be the case
+
+	build: Fixed remaining distcheck issues with introspection
+	Mostly this is about $top_srcdir vs $top_builddir for Vala vs C files
+
+	build: Require Vala >= 0.12.0, to avoid introspection sed scripting/fixing
+	This also fixes a distcheck issue which was quite nasty to try to fix.
+
+2011-04-07  Jürg Billeter  <j@bitron.ch>
+
+	Update .gitignore
+
+2011-04-07  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common: Remove all pop_thread_default occurrences
+
+2011-04-07  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-common: Do not push thread-default context in gconfdbus
+	We cannot always push the global default context as a thread-default
+	context. The previous commit makes sure that the thread-default context
+	is always set to the global default context.
+
+	libtracker-sparql: Use separate thread for sync init if necessary
+	tracker_locale_init must run with the thread-default context set to the
+	global default context. As pushing a new thread-default context
+	requires the current thread to be the owner of the passed context, we
+	cannot always push the global default context as a thread-default
+	context.
+
+	This commit uses a threadpool job in the case that sync initialization
+	is requestesd with the thread-default context not set to the global
+	default context.
+
+2011-04-07  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-sparql: Fix single header include check mismatch
+
+2011-04-07  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Test for bogus extra data with anon blank nodes
+
+	libtracker-data: Do not insert bogus extra data for anon blank nodes
+	Fixes NB#244536.
+
+2011-04-07  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+	Updated Spanish translation
+
+2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
+
+	extract: Plug huge leak
+	Every GDBusMethodInvocation in handle_method_get_metadata_fast() was
+	being leaked, since that function is handling the replies itself.
+
+2011-04-07  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Also find small albumart, however only as secondary choice
+	Fixes NB#242253.
+
+2011-04-07  Martyn Russell  <martyn@lanedo.com>
+
+	build: Fixed the disparities between gir_DATA and girdir
+	Some copy/paste errors not helping with distcheck
+
+	libtracker-sparql: Added TRACKER_CHECK_VERSION and tracker_check_version()
+	Now, libtracker-sparql includes tracker-version.h and tracker-sparql.h is a
+	real non-generated header which includews the generated vala headers.
+
+	We need to wrap the generated headers from valac to include checks ensuring
+	the generated header is not included directly, but rather the on header
+	for the entire library is included instead (tracker-sparql.h)
+
+	So now we have -generated-no-checks.h from valac, and all -generated-no-checks.h
+	files get converted to -generated.h with the pre-processor additions inserted
+
+	Fixes GB#646365, Add macro to check Tracker version
+
+	libtracker-miner: Don't use specific version numbers for .gir files
+
+	libtracker-extract: Don't use specific version numbers for .gir files
+
+	libtracker-sparql: Fix gir generation dependencies
+
+2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Add introspection annotation to docs.
+
+	libtracker-extract: run introspection with --warn-all
+
+2011-04-07  Ivan Frade  <ivan.frade@nokia.com>
+
+	libtracker-sparql: Another sed trick to fix vala GIR
+	Add scope="true" to all the async function descriptions.
+
+	libtracker-miner: No need for different .gir for TrackerCrawler
+	All TrackerMiner definitions can go in TrackerMiner .gir
+
+	libtracker-miner, libtracker-sparql: Added introspection examples
+	Miner and Async query are not working as expected yet, but the code
+	should be correct.
+
+	libtracker-extract: Depend on Tracker-0.10.gir
+	Do not depend in the old TrackerSparql gir.
+
+	build: Require g-ir 0.9.5 or higher
+	Vala generates .gir with repository version="1.2" .
+
+	Quoting gobject-introspection changelog:
+	Update to version 0.9.5: Major rewrite, that leads to a bump in the gir format (version 1.2).
+
+	libtracker-sparql: Dirty 'sed' only when really needed
+	If vala is recent enough, the "sed" operation is not needed.
+	Also, run the sed trick only once on the file.
+
+	Vala version is checked via new m4 function.
+
+	Removed the .gir from the CLEANFILES. It must be cleaned only when
+	the library it comes from is cleaned.
+
+	libtracker-miner: Add (transfer x) annotation to some methods
+	g-ir-scanner was warning the lack of those annotations
+
+	libtracker-miner: Generate 2 gir to fix namespaces
+	Due problems with namespaces, now TrackerMiner classes are described in one gir
+	(TrackerMiner) and the Crawler in another (TrackerCrawler).
+
+	Reorganized the source files in different variables. Internal files, not
+	intended to be exposed in GI under private_sources.
+
+	libtracker-sparql: Use valac to generate the .gir file. Fix Namespace.
+	Use valac --gir instead of g-ir-scanner to generate the .gir file.
+	Nested namespaces are not supported: use Tracker instead of TrackerSparql for this.
+	Set introspection="0" to a function using va_list. This is a workaround for a bug
+	in vala. Remove in the next vala upgrade.
+
+2011-04-07  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Added introspection .gir file generation
+
+	libtracker-extract: Added introspection .gir file generation
+
+	libtracker-sparql: Added introspection .gir file generation
+
+	build: Added initial introspection support
+
+2011-04-07  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-miner: Do not ignore DELETED event for IgnoreNextUpdate
+	We should never see DELETED on update (atomic rename or in-place
+	update) but we may see DELETED due to actual file deletion right
+	after update.
+
+	Fixes NB#229461.
+
+2011-04-07  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common: A warning is sufficient here, no need for critical
+
+2011-04-07  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-sparql: Ensure Builder.length is not 0 when not empty
+	This caused preupdate fragments from extractors to be dropped in
+	certain situations.
+
+	Fixes NB#237582.
+
+	tracker-extract-pdf: Fix SPARQL preupdate for location information
+
+2011-04-07  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common: Make sure the first_time trick survives locale_shutdown
+
+	tracker-extract: Use init and shutdown for tracker-locale
+
+	libtracker-common: Device uses system bus, not session bus
+
+	libtracker-common: Locale values must be there on return of the init function
+
+	libtracker-common: Use 2011 for copyright of new files
+
+	libtracker-common: Ensure that the default mainloop is used for the DBus connection
+
+	libtracker-common: Remove false comments about mainloop
+
+	libtracker-common: Use warning instead of message
+
+	libtracker-common: Replace error code with enum
+
+	libtracker-common: Use variable names that are easier to evaluate
+
+	libtracker-common, -data: Don't reinit locale at each locale change
+
+	libtracker-common, -data: Use locale_init and locale_shutdown
+
+	libtracker-common: Cleanly and silently handle non gconf-dbus situation
+
+	libtracker-common: Listen for changes on GConf using DBus directly for meegotouch locales
+	Fixes NB#240272.
+
+	libtracker-common: Read meegotouch locales from GConf over DBus directly
+	Fixes NB#240272.
+
+	libtracker-sparql: Remove GConf dependency
+	In Maemo's case we're now reading from gconf-dbus using GDBus
+	directly, instead of using the non-thread-safe gconfclient API
+
+	libtracker-common: Remove reading meegotouch locale config over GConf
+
+2011-04-07  Markus Schley  <marqus@gmx.net>
+
+	[l10n] Updated German translation
+
+2011-04-07  Jürg Billeter  <j@bitron.ch>
+
+	tests/libtracker-sparql: Fix cancellation error check
+
+	tests/tracker-steroids: Test with the D-Bus backend
+
+	libtracker-sparql: Use static linking instead of plugins
+	Plugin loading in threads may be problematic in certain environments.
+	As we do not currently support external plugins anyway, this changes
+	libtracker-bus and libtracker-direct to be part of libtracker-sparql.
+	This will also slightly improve initialization performance.
+
+	Fixes NB#241659.
+
+2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
+
+	needle: Cancel operations on hidden views.
+
+2011-04-07  Ivan Frade  <ivan.frade@nokia.com>
+
+	DOAP file describing the project
+	Fixes GB#646374, Add a doap file to keep master.gnome.org happy when releasing
+
+	Added also in EXTRA_DIST
+
+2011-04-07  Daniel Nylander  <po@danielnylander.se>
+
+	Updated Swedish translation
+
+2011-04-07  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-needle: Improve "icons" or "images" category to allow filtering by all or title
+	Now there is a new matching mechanism, "all" which doesn't require
+	search criteria and will display all images in a nice grid like fashion.
+
+	The other is to display images with the criteria in the title/filename.
+
+	tracker-needle: Cleaned up some whitespace issues
+
+2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract-oasis: NULLify variable
+	It was leading to invalid frees if there was any error on extracting
+	the document file content.
+
+2011-04-04  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
 2011-03-31  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.6

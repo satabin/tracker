@@ -685,7 +685,7 @@ tracker_miner_stop (TrackerMiner *miner)
 /**
  * tracker_miner_ignore_next_update:
  * @miner: a #TrackerMiner
- * @urls: the urls to mark as to ignore on next update
+ * @urls: (in): the urls to mark as to ignore on next update
  *
  * Tells the miner to mark @urls are to ignore on next update.
  *
@@ -734,6 +734,25 @@ tracker_miner_is_paused (TrackerMiner *miner)
 	g_return_val_if_fail (TRACKER_IS_MINER (miner), TRUE);
 
 	return g_hash_table_size (miner->private->pauses) > 0 ? TRUE : FALSE;
+}
+
+/**
+ * tracker_miner_get_n_pause_reasons:
+ * @miner: a #TrackerMiner
+ *
+ * Returns the number of pause reasons holding @miner from
+ * indexing contents.
+ *
+ * Returns: The number of current pause reasons
+ *
+ * Since: 0.10.5
+ **/
+guint
+tracker_miner_get_n_pause_reasons (TrackerMiner *miner)
+{
+	g_return_val_if_fail (TRACKER_IS_MINER (miner), 0);
+
+	return g_hash_table_size (miner->private->pauses);
 }
 
 static gint
@@ -789,7 +808,7 @@ tracker_miner_pause_internal (TrackerMiner  *miner,
  * tracker_miner_pause:
  * @miner: a #TrackerMiner
  * @reason: reason to pause
- * @error: return location for errors
+ * @error: (out callee-allocates) (transfer full) (allow-none): return location for errors
  *
  * Asks @miner to pause. On success the cookie ID is returned,
  * this is what must be used in tracker_miner_resume() to resume
@@ -822,7 +841,7 @@ tracker_miner_pause (TrackerMiner  *miner,
  * tracker_miner_resume:
  * @miner: a #TrackerMiner
  * @cookie: pause cookie
- * @error: return location for errors
+ * @error: (out) (transfer full) (allow-none): return location for errors
  *
  * Asks the miner to resume processing. The cookie must be something
  * returned by tracker_miner_pause(). The miner won't actually resume
@@ -870,7 +889,7 @@ tracker_miner_resume (TrackerMiner  *miner,
  *
  * Gets the #TrackerSparqlConnection initialized by @miner
  *
- * Returns: a #TrackerSparqlConnection.
+ * Returns: (transfer none): a #TrackerSparqlConnection.
  *
  * Since: 0.10
  **/
@@ -886,7 +905,7 @@ tracker_miner_get_connection (TrackerMiner *miner)
  *
  * Gets the #GDBusConnection initialized by @miner
  *
- * Returns: a #GDBusConnection.
+ * Returns: (transfer none): a #GDBusConnection.
  *
  * Since: 0.10
  **/

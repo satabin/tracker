@@ -48,10 +48,14 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(libtracker_sparqlinclude_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(top_srcdir)/Makefile.decl \
-	libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp \
-	tracker-backend.c tracker-builder.c tracker-connection.c \
-	tracker-cursor.c tracker-utils.c
+	$(top_srcdir)/Makefile.decl libtracker_sparql_la_vala.stamp \
+	tracker-builder.c tracker-connection.c tracker-cursor.c \
+	tracker-utils.c
+
+# We don't clean the gir/typelib data for *Vala* generated g-ir files.
+# However, we do for *C* generated g-ir files due to Vala not being
+# required when building from a tarball.
+@HAVE_INTROSPECTION_TRUE@am__append_1 = $(gir_DATA) $(typelib_DATA)
 subdir = src/libtracker-sparql
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -71,47 +75,17 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
-am__install_max = 40
-am__nobase_strip_setup = \
-  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
-am__nobase_strip = \
-  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
-am__nobase_list = $(am__nobase_strip_setup); \
-  for p in $$list; do echo "$$p $$p"; done | \
-  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
-  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
-    if (++n[$$2] == $(am__install_max)) \
-      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
-    END { for (dir in files) print dir, files[dir] }'
-am__base_list = \
-  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
-  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(vapidir)" \
-	"$(DESTDIR)$(libtracker_sparqlincludedir)"
-LTLIBRARIES = $(lib_LTLIBRARIES)
+LTLIBRARIES = $(noinst_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libtracker_sparql_@TRACKER_API_VERSION@_la_DEPENDENCIES =  \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libtracker_sparql_@TRACKER_API_VERSION@_la_OBJECTS =  \
-	tracker-builder.lo tracker-connection.lo tracker-cursor.lo \
-	tracker-backend.lo tracker-utils.lo tracker-uri.lo \
-	tracker-init.lo
-libtracker_sparql_@TRACKER_API_VERSION@_la_OBJECTS =  \
-	$(am_libtracker_sparql_@TRACKER_API_VERSION@_la_OBJECTS)
+libtracker_sparql_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+am_libtracker_sparql_la_OBJECTS = tracker-builder.lo \
+	tracker-connection.lo tracker-cursor.lo tracker-utils.lo \
+	tracker-uri.lo tracker-version.lo
+libtracker_sparql_la_OBJECTS = $(am_libtracker_sparql_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
-libtracker_sparql_@TRACKER_API_VERSION@_la_LINK = $(LIBTOOL) \
-	$(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libtracker_sparql_@TRACKER_API_VERSION@_la_LDFLAGS) \
-	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -145,9 +119,33 @@ am__v_VALAC_0 = @echo "  VALAC " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(libtracker_sparql_@TRACKER_API_VERSION@_la_SOURCES)
-DIST_SOURCES = $(libtracker_sparql_@TRACKER_API_VERSION@_la_SOURCES)
-DATA = $(vapi_DATA)
+SOURCES = $(libtracker_sparql_la_SOURCES)
+DIST_SOURCES = $(libtracker_sparql_la_SOURCES)
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
+am__install_max = 40
+am__nobase_strip_setup = \
+  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
+am__nobase_strip = \
+  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
+am__nobase_list = $(am__nobase_strip_setup); \
+  for p in $$list; do echo "$$p $$p"; done | \
+  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
+  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
+    if (++n[$$2] == $(am__install_max)) \
+      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
+    END { for (dir in files) print dir, files[dir] }'
+am__base_list = \
+  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
+  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
+am__installdirs = "$(DESTDIR)$(girdir)" "$(DESTDIR)$(typelibdir)" \
+	"$(DESTDIR)$(vapidir)" \
+	"$(DESTDIR)$(libtracker_sparqlincludedir)"
+DATA = $(gir_DATA) $(typelib_DATA) $(vapi_DATA)
 HEADERS = $(libtracker_sparqlinclude_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -192,8 +190,6 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-GCONF_CFLAGS = @GCONF_CFLAGS@
-GCONF_LIBS = @GCONF_LIBS@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
@@ -231,6 +227,14 @@ INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
+INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
+INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
+INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
+INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
+INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
+INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
+INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
@@ -445,43 +449,43 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-modulesdir = $(libdir)/tracker-$(TRACKER_API_VERSION)/sparql-modules
-lib_LTLIBRARIES = libtracker-sparql-@TRACKER_API_VERSION@.la
+noinst_LTLIBRARIES = libtracker-sparql.la
 AM_VALAFLAGS = \
+	--gir=Tracker-$(TRACKER_API_VERSION).gir \
+	--library Tracker-$(TRACKER_API_VERSION) \
 	--includedir=libtracker-sparql                 \
-	--header tracker-sparql.h                      \
-	--vapi tracker-sparql-$(TRACKER_API_VERSION).vapi \
+	--header $(vala_header:.h=-no-checks.h)        \
+	--vapi tracker-sparql.vapi                     \
 	--pkg gio-2.0 --pkg gmodule-2.0 --pkg posix    \
 	$(BUILD_VALAFLAGS)                             \
-	config.vapi                                    \
 	$(top_srcdir)/src/vapi/glib-2.0-fixes.vapi
 
 AM_CPPFLAGS = \
 	$(BUILD_CFLAGS)                                \
-	-DSPARQL_MODULES_DIR=\""$(modulesdir)"\"       \
 	-I$(top_srcdir)/src                            \
 	-I$(top_builddir)/src                          \
 	$(LIBTRACKER_SPARQL_CFLAGS)
 
 libtracker_sparqlincludedir = $(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-sparql
-libtracker_sparql_@TRACKER_API_VERSION@_la_SOURCES = \
+libtracker_sparql_la_SOURCES = \
 	tracker-builder.vala                           \
 	tracker-connection.vala                        \
 	tracker-cursor.vala                            \
-	tracker-backend.vala                           \
 	tracker-utils.vala                             \
 	tracker-uri.c                                  \
-	tracker-init.c
+	tracker-version.c
 
-libtracker_sparql_@TRACKER_API_VERSION@_la_LIBADD = \
+libtracker_sparql_la_LIBADD = \
 	$(BUILD_LIBS)                                  \
 	$(LIBTRACKER_SPARQL_LIBS)
 
-libtracker_sparql_@TRACKER_API_VERSION@_la_LDFLAGS = \
-	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
+# Should only be one file
+vala_header = tracker-generated.h
 libtracker_sparqlinclude_HEADERS = \
-	tracker-sparql.h
+	$(vala_header)                                 \
+	tracker-sparql.h                               \
+	tracker-version.h
 
 
 # Vala bindings
@@ -491,19 +495,23 @@ vapi_DATA = \
 	tracker-sparql-$(TRACKER_API_VERSION).deps
 
 BUILT_SOURCES = \
-	libtracker_sparql_$(TRACKER_API_VERSION)_la_vala.stamp
+	libtracker_sparql_la_vala.stamp
 
 MAINTAINERCLEANFILES = \
 	tracker-sparql-$(TRACKER_API_VERSION).vapi     \
 	tracker-sparql-$(TRACKER_API_VERSION).deps     \
-	tracker-sparql.h
+	$(vala_header:.h=-no-checks.h)
 
-EXTRA_DIST = \
-	config.vapi                                    \
-	tracker-sparql-$(TRACKER_API_VERSION).vapi     \
-	tracker-sparql-$(TRACKER_API_VERSION).deps     \
-	tracker-sparql.deps
+CLEANFILES = \
+	tracker-sparql-$(TRACKER_API_VERSION).vapi
 
+EXTRA_DIST = tracker-sparql-$(TRACKER_API_VERSION).deps \
+	tracker-sparql.deps $(vala_header:.h=-no-checks.h) \
+	$(am__append_1)
+@HAVE_INTROSPECTION_TRUE@girdir = $(datadir)/gir-1.0
+@HAVE_INTROSPECTION_TRUE@gir_DATA = Tracker-$(TRACKER_API_VERSION).gir
+@HAVE_INTROSPECTION_TRUE@typelibdir = $(libdir)/girepository-1.0
+@HAVE_INTROSPECTION_TRUE@typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -539,39 +547,17 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
-install-libLTLIBRARIES: $(lib_LTLIBRARIES)
-	@$(NORMAL_INSTALL)
-	test -z "$(libdir)" || $(MKDIR_P) "$(DESTDIR)$(libdir)"
-	@list='$(lib_LTLIBRARIES)'; test -n "$(libdir)" || list=; \
-	list2=; for p in $$list; do \
-	  if test -f $$p; then \
-	    list2="$$list2 $$p"; \
-	  else :; fi; \
-	done; \
-	test -z "$$list2" || { \
-	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 '$(DESTDIR)$(libdir)'"; \
-	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 "$(DESTDIR)$(libdir)"; \
-	}
 
-uninstall-libLTLIBRARIES:
-	@$(NORMAL_UNINSTALL)
-	@list='$(lib_LTLIBRARIES)'; test -n "$(libdir)" || list=; \
-	for p in $$list; do \
-	  $(am__strip_dir) \
-	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f '$(DESTDIR)$(libdir)/$$f'"; \
-	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f "$(DESTDIR)$(libdir)/$$f"; \
-	done
-
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+clean-noinstLTLIBRARIES:
+	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
+	@list='$(noinst_LTLIBRARIES)'; for p in $$list; do \
 	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
 	  test "$$dir" != "$$p" || dir=.; \
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libtracker-sparql-@TRACKER_API_VERSION@.la: $(libtracker_sparql_@TRACKER_API_VERSION@_la_OBJECTS) $(libtracker_sparql_@TRACKER_API_VERSION@_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libtracker_sparql_@TRACKER_API_VERSION@_la_LINK) -rpath $(libdir) $(libtracker_sparql_@TRACKER_API_VERSION@_la_OBJECTS) $(libtracker_sparql_@TRACKER_API_VERSION@_la_LIBADD) $(LIBS)
+libtracker-sparql.la: $(libtracker_sparql_la_OBJECTS) $(libtracker_sparql_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libtracker_sparql_la_OBJECTS) $(libtracker_sparql_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -579,13 +565,12 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-backend.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-builder.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-connection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-cursor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-init.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-uri.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-version.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -610,33 +595,28 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
-$(srcdir)/tracker-builder.c: $(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp
+$(srcdir)/tracker-builder.c: $(srcdir)/libtracker_sparql_la_vala.stamp
 	@if test -f $@; then :; else \
-	  rm -f $(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp; \
-	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp; \
+	  rm -f $(srcdir)/libtracker_sparql_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_la_vala.stamp; \
 	fi
-$(srcdir)/tracker-connection.c: $(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp
+$(srcdir)/tracker-connection.c: $(srcdir)/libtracker_sparql_la_vala.stamp
 	@if test -f $@; then :; else \
-	  rm -f $(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp; \
-	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp; \
+	  rm -f $(srcdir)/libtracker_sparql_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_la_vala.stamp; \
 	fi
-$(srcdir)/tracker-cursor.c: $(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp
+$(srcdir)/tracker-cursor.c: $(srcdir)/libtracker_sparql_la_vala.stamp
 	@if test -f $@; then :; else \
-	  rm -f $(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp; \
-	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp; \
+	  rm -f $(srcdir)/libtracker_sparql_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_la_vala.stamp; \
 	fi
-$(srcdir)/tracker-backend.c: $(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp
+$(srcdir)/tracker-utils.c: $(srcdir)/libtracker_sparql_la_vala.stamp
 	@if test -f $@; then :; else \
-	  rm -f $(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp; \
-	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp; \
+	  rm -f $(srcdir)/libtracker_sparql_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_la_vala.stamp; \
 	fi
-$(srcdir)/tracker-utils.c: $(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp
-	@if test -f $@; then :; else \
-	  rm -f $(srcdir)/libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp; \
-	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp; \
-	fi
-libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp: $(libtracker_sparql_@TRACKER_API_VERSION@_la_SOURCES)
-	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(libtracker_sparql_@TRACKER_API_VERSION@_la_SOURCES)
+libtracker_sparql_la_vala.stamp: $(libtracker_sparql_la_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(libtracker_sparql_la_SOURCES)
 	$(AM_V_at)touch $@
 
 mostlyclean-libtool:
@@ -644,6 +624,46 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-girDATA: $(gir_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(girdir)" || $(MKDIR_P) "$(DESTDIR)$(girdir)"
+	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(girdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(girdir)" || exit $$?; \
+	done
+
+uninstall-girDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(girdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(girdir)" && rm -f $$files
+install-typelibDATA: $(typelib_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(typelibdir)" || $(MKDIR_P) "$(DESTDIR)$(typelibdir)"
+	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(typelibdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(typelibdir)" || exit $$?; \
+	done
+
+uninstall-typelibDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(typelibdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(typelibdir)" && rm -f $$files
 install-vapiDATA: $(vapi_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(vapidir)" || $(MKDIR_P) "$(DESTDIR)$(vapidir)"
@@ -773,7 +793,7 @@ check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(vapidir)" "$(DESTDIR)$(libtracker_sparqlincludedir)"; do \
+	for dir in "$(DESTDIR)$(girdir)" "$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(vapidir)" "$(DESTDIR)$(libtracker_sparqlincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -794,6 +814,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -802,8 +823,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-rm -f libtracker_sparql_@TRACKER_API_VERSION@_la_vala.stamp
-	-rm -f tracker-backend.c
+	-rm -f libtracker_sparql_la_vala.stamp
 	-rm -f tracker-builder.c
 	-rm -f tracker-connection.c
 	-rm -f tracker-cursor.c
@@ -812,7 +832,7 @@ maintainer-clean-generic:
 	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
-clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
+clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
 	mostlyclean-am
 
 distclean: distclean-am
@@ -833,14 +853,15 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libtracker_sparqlincludeHEADERS \
+install-data-am: install-girDATA \
+	install-libtracker_sparqlincludeHEADERS install-typelibDATA \
 	install-vapiDATA
 
 install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am: install-libLTLIBRARIES
+install-exec-am:
 
 install-html: install-html-am
 
@@ -880,27 +901,29 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libLTLIBRARIES \
-	uninstall-libtracker_sparqlincludeHEADERS uninstall-vapiDATA
+uninstall-am: uninstall-girDATA \
+	uninstall-libtracker_sparqlincludeHEADERS \
+	uninstall-typelibDATA uninstall-vapiDATA
 
 .MAKE: all check check-am install install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am check-local clean \
-	clean-generic clean-libLTLIBRARIES clean-libtool ctags \
+	clean-generic clean-libtool clean-noinstLTLIBRARIES ctags \
 	distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libLTLIBRARIES \
+	install-exec-am install-girDATA install-html install-html-am \
+	install-info install-info-am \
 	install-libtracker_sparqlincludeHEADERS install-man \
 	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip install-vapiDATA installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-libLTLIBRARIES \
-	uninstall-libtracker_sparqlincludeHEADERS uninstall-vapiDATA
+	install-strip install-typelibDATA install-vapiDATA \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags uninstall uninstall-am uninstall-girDATA \
+	uninstall-libtracker_sparqlincludeHEADERS \
+	uninstall-typelibDATA uninstall-vapiDATA
 
 
 ### testing rules
@@ -951,10 +974,26 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
-	-export-symbols-regex '^tracker_sparql_(connection|cursor|builder|escape|error|value|get)_.*'
+
+# We wrap the generated .h file with a check to make sure it's
+# not included directly. All other .[ch] headers have this.
+%-generated.h: %-generated-no-checks.h
+	$(AM_V_GEN)(echo "#if !defined (__LIBTRACKER_SPARQL_INSIDE__) && !defined (TRACKER_COMPILATION)" ; \
+	            echo "#error \"only <libtracker-sparql/tracker-sparql.h> must be included directly.\"" ; \
+	            echo "#endif") > $@
+	$(AM_V_GEN)(cat $< >> $@)
+
+tracker-sparql-$(TRACKER_API_VERSION).vapi: $(srcdir)/tracker-sparql.vapi
+	$(AM_V_GEN)(sed -e 's/tracker-generated-no-checks.h/tracker-sparql.h/' $< > $@)
 
 tracker-sparql-$(TRACKER_API_VERSION).deps: tracker-sparql.deps
 	$(AM_V_GEN)cp $^ $@
+
+# Introspection foo
+-include $(INTROSPECTION_MAKEFILE)
+
+@HAVE_INTROSPECTION_TRUE@Tracker-@TRACKER_API_VERSION@.typelib: Tracker-$(TRACKER_API_VERSION).gir
+@HAVE_INTROSPECTION_TRUE@	@INTROSPECTION_COMPILER@ --shared-library=libtracker-sparql-@TRACKER_API_VERSION@.so -o $@ $^
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

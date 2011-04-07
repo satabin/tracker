@@ -26,6 +26,7 @@
 #
 
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -45,9 +46,11 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-DIST_COMMON = $(libtracker_extractinc_HEADERS) $(noinst_HEADERS) \
+DIST_COMMON = $(libtracker_extractinclude_HEADERS) $(noinst_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
+@HAVE_INTROSPECTION_TRUE@am__append_1 = $(AM_CPPFLAGS)
+@HAVE_INTROSPECTION_TRUE@am__append_2 = TrackerExtract-$(TRACKER_API_VERSION).gir
 subdir = src/libtracker-extract
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -88,11 +91,12 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(libdir)" \
-	"$(DESTDIR)$(libtracker_extractincdir)"
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" \
+	"$(DESTDIR)$(typelibdir)" \
+	"$(DESTDIR)$(libtracker_extractincludedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libtracker_extract_@TRACKER_API_VERSION@_la_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+libtracker_extract_@TRACKER_API_VERSION@_la_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libtracker_extract_@TRACKER_API_VERSION@_la_OBJECTS =  \
@@ -136,7 +140,8 @@ am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES)
 DIST_SOURCES = $(libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES)
-HEADERS = $(libtracker_extractinc_HEADERS) $(noinst_HEADERS)
+DATA = $(gir_DATA) $(typelib_DATA)
+HEADERS = $(libtracker_extractinclude_HEADERS) $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -180,8 +185,6 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-GCONF_CFLAGS = @GCONF_CFLAGS@
-GCONF_LIBS = @GCONF_LIBS@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
@@ -219,6 +222,14 @@ INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
+INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@ $(am__append_1)
+INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
+INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
+INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
+INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
+INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
+INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
@@ -441,7 +452,7 @@ AM_CPPFLAGS = \
 	$(LIBTRACKER_EXTRACT_CFLAGS)
 
 lib_LTLIBRARIES = libtracker-extract-@TRACKER_API_VERSION@.la
-libtracker_extractincdir = $(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-extract/
+libtracker_extractincludedir = $(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-extract/
 libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES = \
 	tracker-data.h                                 \
 	tracker-exif.c                                 \
@@ -455,7 +466,7 @@ libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES = \
 	tracker-xmp.h
 
 noinst_HEADERS = 
-libtracker_extractinc_HEADERS = \
+libtracker_extractinclude_HEADERS = \
 	tracker-data.h                                 \
 	tracker-exif.h                                 \
 	tracker-extract.h                              \
@@ -469,11 +480,32 @@ libtracker_extract_@TRACKER_API_VERSION@_la_LDFLAGS = \
 	-export-symbols-regex '^tracker_.*'
 
 libtracker_extract_@TRACKER_API_VERSION@_la_LIBADD = \
-	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(BUILD_LIBS)                                  \
 	$(LIBTRACKER_EXTRACT_LIBS)
 
+INTROSPECTION_GIRS = $(am__append_2)
+INTROSPECTION_SCANNER_ARGS = \
+	--warn-all \
+	-I $(top_srcdir)/src \
+	-D TRACKER_COMPILATION \
+	--c-include="libtracker-extract/tracker-extract.h"
+
+INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)/src/libtracker-sparql
+@HAVE_INTROSPECTION_TRUE@introspection_sources = $(libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES)
+@HAVE_INTROSPECTION_TRUE@TrackerExtract_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_INCLUDES = GObject-2.0 GModule-2.0
+@HAVE_INTROSPECTION_TRUE@TrackerExtract_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_SCANNERFLAGS = \
+@HAVE_INTROSPECTION_TRUE@	--include-uninstalled=$(top_srcdir)/src/libtracker-sparql/Tracker-$(TRACKER_API_VERSION).gir
+
+@HAVE_INTROSPECTION_TRUE@TrackerExtract_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_CFLAGS = $(INCLUDES)
+@HAVE_INTROSPECTION_TRUE@TrackerExtract_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_LIBS = $(lib_LTLIBRARIES)
+@HAVE_INTROSPECTION_TRUE@TrackerExtract_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_FILES = $(introspection_sources)
+@HAVE_INTROSPECTION_TRUE@girdir = $(datadir)/gir-1.0
+@HAVE_INTROSPECTION_TRUE@gir_DATA = $(INTROSPECTION_GIRS)
+@HAVE_INTROSPECTION_TRUE@typelibdir = $(libdir)/girepository-1.0
+@HAVE_INTROSPECTION_TRUE@typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+@HAVE_INTROSPECTION_TRUE@CLEANFILES = $(gir_DATA) $(typelib_DATA)
 all: all-am
 
 .SUFFIXES:
@@ -583,26 +615,66 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-libtracker_extractincHEADERS: $(libtracker_extractinc_HEADERS)
+install-girDATA: $(gir_DATA)
 	@$(NORMAL_INSTALL)
-	test -z "$(libtracker_extractincdir)" || $(MKDIR_P) "$(DESTDIR)$(libtracker_extractincdir)"
-	@list='$(libtracker_extractinc_HEADERS)'; test -n "$(libtracker_extractincdir)" || list=; \
+	test -z "$(girdir)" || $(MKDIR_P) "$(DESTDIR)$(girdir)"
+	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(libtracker_extractincdir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(libtracker_extractincdir)" || exit $$?; \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(girdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(girdir)" || exit $$?; \
 	done
 
-uninstall-libtracker_extractincHEADERS:
+uninstall-girDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libtracker_extractinc_HEADERS)'; test -n "$(libtracker_extractincdir)" || list=; \
+	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(libtracker_extractincdir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(libtracker_extractincdir)" && rm -f $$files
+	echo " ( cd '$(DESTDIR)$(girdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(girdir)" && rm -f $$files
+install-typelibDATA: $(typelib_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(typelibdir)" || $(MKDIR_P) "$(DESTDIR)$(typelibdir)"
+	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(typelibdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(typelibdir)" || exit $$?; \
+	done
+
+uninstall-typelibDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(typelibdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(typelibdir)" && rm -f $$files
+install-libtracker_extractincludeHEADERS: $(libtracker_extractinclude_HEADERS)
+	@$(NORMAL_INSTALL)
+	test -z "$(libtracker_extractincludedir)" || $(MKDIR_P) "$(DESTDIR)$(libtracker_extractincludedir)"
+	@list='$(libtracker_extractinclude_HEADERS)'; test -n "$(libtracker_extractincludedir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(libtracker_extractincludedir)'"; \
+	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(libtracker_extractincludedir)" || exit $$?; \
+	done
+
+uninstall-libtracker_extractincludeHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libtracker_extractinclude_HEADERS)'; test -n "$(libtracker_extractincludedir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(libtracker_extractincludedir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(libtracker_extractincludedir)" && rm -f $$files
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -689,9 +761,9 @@ distdir: $(DISTFILES)
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) check-local
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(libtracker_extractincdir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" "$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(libtracker_extractincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -711,6 +783,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -742,7 +815,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libtracker_extractincHEADERS
+install-data-am: install-girDATA \
+	install-libtracker_extractincludeHEADERS install-typelibDATA
 
 install-dvi: install-dvi-am
 
@@ -788,8 +862,9 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libLTLIBRARIES \
-	uninstall-libtracker_extractincHEADERS
+uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
+	uninstall-libtracker_extractincludeHEADERS \
+	uninstall-typelibDATA
 
 .MAKE: check-am install-am install-strip
 
@@ -799,15 +874,17 @@ uninstall-am: uninstall-libLTLIBRARIES \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libLTLIBRARIES \
-	install-libtracker_extractincHEADERS install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
-	uninstall-libtracker_extractincHEADERS
+	install-exec-am install-girDATA install-html install-html-am \
+	install-info install-info-am install-libLTLIBRARIES \
+	install-libtracker_extractincludeHEADERS install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip install-typelibDATA installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
+	uninstall-am uninstall-girDATA uninstall-libLTLIBRARIES \
+	uninstall-libtracker_extractincludeHEADERS \
+	uninstall-typelibDATA
 
 
 ### testing rules
@@ -858,6 +935,10 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
+
+# Introspection foo
+-include $(INTROSPECTION_MAKEFILE)
+@HAVE_INTROSPECTION_TRUE@TrackerExtract-@TRACKER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) $(lib_LTLIBRARIES) Makefile
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

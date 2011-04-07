@@ -12,6 +12,7 @@
       <sub name="TrackerSparqlConnection" link="TrackerSparqlConnection.html"/>
       <sub name="TrackerSparqlCursor" link="TrackerSparqlCursor.html"/>
       <sub name="Utilities" link="libtracker-sparql-Utilities.html"/>
+      <sub name="Version Information" link="libtracker-sparql-Version-Information.html"/>
     </sub>
     <sub name="Examples" link="tracker-examples.html">
       <sub name="SPARQL query builder" link="tracker-examples-builder.html"/>
@@ -63,10 +64,10 @@
     <keyword type="enum" name="enum TrackerSparqlError" link="TrackerSparqlConnection.html#TrackerSparqlError"/>
     <keyword type="struct" name="TrackerSparqlConnection" link="TrackerSparqlConnection.html#TrackerSparqlConnection-struct"/>
     <keyword type="function" name="tracker_sparql_connection_get ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_connection_get_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-async" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_connection_get_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-async"/>
     <keyword type="function" name="tracker_sparql_connection_get_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-finish" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_get_direct ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_connection_get_direct_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-async" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_connection_get_direct_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-async"/>
     <keyword type="function" name="tracker_sparql_connection_get_direct_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-finish" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_query ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_query_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query-async"/>
@@ -106,6 +107,13 @@
     <keyword type="function" name="tracker_sparql_escape_string ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-string" since="0.10"/>
     <keyword type="function" name="tracker_sparql_escape_uri_printf ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-printf" since="0.10"/>
     <keyword type="function" name="tracker_sparql_escape_uri_vprintf ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf" since="0.10"/>
+    <keyword type="variable" name="tracker_major_version" link="libtracker-sparql-Version-Information.html#tracker-major-version"/>
+    <keyword type="variable" name="tracker_minor_version" link="libtracker-sparql-Version-Information.html#tracker-minor-version"/>
+    <keyword type="variable" name="tracker_micro_version" link="libtracker-sparql-Version-Information.html#tracker-micro-version"/>
+    <keyword type="variable" name="tracker_binary_age" link="libtracker-sparql-Version-Information.html#tracker-binary-age"/>
+    <keyword type="variable" name="tracker_interface_age" link="libtracker-sparql-Version-Information.html#tracker-interface-age"/>
+    <keyword type="function" name="tracker_check_version ()" link="libtracker-sparql-Version-Information.html#tracker-check-version" since="0.10"/>
+    <keyword type="macro" name="TRACKER_CHECK_VERSION()" link="libtracker-sparql-Version-Information.html#TRACKER-CHECK-VERSION:CAPS" since="0.10"/>
     <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_UPDATE" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-UPDATE:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_INSERT" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-INSERT:CAPS"/>
     <keyword type="constant" name="TRACKER_SPARQL_BUILDER_STATE_DELETE" link="TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-DELETE:CAPS"/>

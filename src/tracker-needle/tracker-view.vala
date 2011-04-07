@@ -49,7 +49,11 @@ public class Tracker.View : ScrolledWindow {
 				_store.row_changed.connect (store_row_changed);
 			}
 
-			((TreeView )view).model = _store;
+			if (display != Display.FILE_ICONS) {
+				((TreeView) view).model = _store;
+			} else {
+				((IconView) view).model = _store;
+			}
 		}
 	}
 
@@ -75,6 +79,14 @@ public class Tracker.View : ScrolledWindow {
 		}
 
 		return true;
+	}
+
+	public override void unmap () {
+		if (store != null) {
+			store.cancel_search ();
+		}
+
+		base.unmap ();
 	}
 
 	public View (Display? _display = Display.NO_RESULTS, ResultStore? store) {
@@ -129,10 +141,14 @@ public class Tracker.View : ScrolledWindow {
 			IconView iv = (IconView) view;
 
 			iv.set_model (store);
-			iv.set_item_width (96);
+			iv.set_item_width (128);
+			iv.set_item_padding (1);
+			iv.set_row_spacing (2);
+			iv.set_column_spacing (2);
 			iv.set_selection_mode (SelectionMode.SINGLE);
 			iv.set_pixbuf_column (6);
-			iv.set_text_column (2);
+			iv.set_text_column (-1); // was 2, -1 is for no text
+			iv.set_tooltip_column (5);
 
 			break;
 		}
@@ -158,7 +174,7 @@ public class Tracker.View : ScrolledWindow {
 			renderer1.ypad = 5;
 
 			col.pack_start (renderer2, true);
-                        renderer2.set_fixed_height_from_font (2);
+			renderer2.set_fixed_height_from_font (2);
 			renderer2.ellipsize = Pango.EllipsizeMode.MIDDLE;
 
 			col.set_title (_("File"));
@@ -169,7 +185,7 @@ public class Tracker.View : ScrolledWindow {
 			tv.append_column (col);
 
 			var renderer3 = new Gtk.CellRendererText ();
-                        renderer3.set_fixed_height_from_font (2);
+			renderer3.set_fixed_height_from_font (2);
 			col = new TreeViewColumn ();
 			col.set_sizing (TreeViewColumnSizing.AUTOSIZE);
 			col.pack_start (renderer3, true);
@@ -178,7 +194,7 @@ public class Tracker.View : ScrolledWindow {
 			tv.append_column (col);
 
 			var renderer4 = new Gtk.CellRendererText ();
-                        renderer4.set_fixed_height_from_font (2);
+			renderer4.set_fixed_height_from_font (2);
 			col = new TreeViewColumn ();
 			col.set_sizing (TreeViewColumnSizing.AUTOSIZE);
 			col.pack_start (renderer4, true);
@@ -201,8 +217,8 @@ public class Tracker.View : ScrolledWindow {
 			tv.set_headers_visible (false);
 			tv.set_show_expanders (false);
 
-                        selection = tv.get_selection ();
-                        selection.set_select_function (row_selection_func);
+			selection = tv.get_selection ();
+			selection.set_select_function (row_selection_func);
 
 			col = new TreeViewColumn ();
 			col.set_sizing (TreeViewColumnSizing.FIXED);
@@ -218,7 +234,7 @@ public class Tracker.View : ScrolledWindow {
 			var renderer2 = new Gtk.CellRendererText ();
 			col.pack_start (renderer2, true);
 			col.set_cell_data_func (renderer2, text_renderer_func);
-                        renderer2.set_fixed_height_from_font (2);
+			renderer2.set_fixed_height_from_font (2);
 			renderer2.ellipsize = Pango.EllipsizeMode.MIDDLE;
 
 			//col.set_resizable (true);
@@ -233,18 +249,17 @@ public class Tracker.View : ScrolledWindow {
 //			col.set_cell_data_func (renderer3, cell_renderer_func);
 //			tv.append_column (col);
 
- 			var renderer4 = new Gtk.CellRendererText ();
-
-                        renderer4.set_fixed_height_from_font (2);
+			var renderer4 = new Gtk.CellRendererText ();
+			renderer4.set_fixed_height_from_font (2);
 			renderer4.alignment = Pango.Alignment.RIGHT;
 			renderer4.xalign = 1;
 
 			col = new TreeViewColumn ();
 			col.set_min_width (80);
- 			col.set_sizing (TreeViewColumnSizing.FIXED);
- 			col.pack_start (renderer4, true);
+			col.set_sizing (TreeViewColumnSizing.FIXED);
+			col.pack_start (renderer4, true);
 			col.set_cell_data_func (renderer4, category_detail_renderer_func);
- 			tv.append_column (col);
+			tv.append_column (col);
 
 			break;
 		}

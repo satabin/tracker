@@ -53,7 +53,9 @@ DIST_COMMON = $(am__noinst_HEADERS_DIST) $(srcdir)/Makefile.am \
 @HAVE_MEEGOTOUCH_TRUE@am__append_4 = tracker-encoding-meegotouch.h
 @HAVE_TRACKER_FTS_TRUE@am__append_5 = tracker-language.c
 @HAVE_TRACKER_FTS_TRUE@am__append_6 = tracker-language.h
-@HAVE_TRACKER_FTS_TRUE@am__append_7 = $(top_builddir)/src/libstemmer/libstemmer.la
+@HAVE_MAEMO_TRUE@am__append_7 = tracker-locale-gconfdbus.c
+@HAVE_MAEMO_TRUE@am__append_8 = tracker-locale-gconfdbus.h
+@HAVE_TRACKER_FTS_TRUE@am__append_9 = $(top_builddir)/src/libstemmer/libstemmer.la
 subdir = src/libtracker-common
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -98,7 +100,7 @@ am__installdirs = "$(DESTDIR)$(libtracker_commondir)"
 LTLIBRARIES = $(libtracker_common_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtracker_common_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__append_7)
+	$(am__DEPENDENCIES_1) $(am__append_9)
 am__libtracker_common_la_SOURCES_DIST = tracker-marshal.h \
 	tracker-marshal.c tracker-os-dependant-unix.c \
 	tracker-os-dependant-win.c tracker-config-file.c \
@@ -106,20 +108,22 @@ am__libtracker_common_la_SOURCES_DIST = tracker-marshal.h \
 	tracker-ioprio.c tracker-keyfile-object.c tracker-log.c \
 	tracker-type-utils.c tracker-utils.c tracker-crc32.c \
 	tracker-locale.c tracker-encoding.c tracker-encoding-enca.c \
-	tracker-encoding-meegotouch.cpp tracker-language.c
+	tracker-encoding-meegotouch.cpp tracker-language.c \
+	tracker-locale-gconfdbus.c
 am__objects_1 = tracker-marshal.lo
 @OS_WIN32_FALSE@am__objects_2 = tracker-os-dependant-unix.lo
 @OS_WIN32_TRUE@am__objects_2 = tracker-os-dependant-win.lo
 @HAVE_ENCA_TRUE@am__objects_3 = tracker-encoding-enca.lo
 @HAVE_MEEGOTOUCH_TRUE@am__objects_4 = tracker-encoding-meegotouch.lo
 @HAVE_TRACKER_FTS_TRUE@am__objects_5 = tracker-language.lo
+@HAVE_MAEMO_TRUE@am__objects_6 = tracker-locale-gconfdbus.lo
 am_libtracker_common_la_OBJECTS = $(am__objects_1) $(am__objects_2) \
 	tracker-config-file.lo tracker-date-time.lo tracker-dbus.lo \
 	tracker-file-utils.lo tracker-ioprio.lo \
 	tracker-keyfile-object.lo tracker-log.lo tracker-type-utils.lo \
 	tracker-utils.lo tracker-crc32.lo tracker-locale.lo \
 	tracker-encoding.lo $(am__objects_3) $(am__objects_4) \
-	$(am__objects_5)
+	$(am__objects_5) $(am__objects_6)
 libtracker_common_la_OBJECTS = $(am_libtracker_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -178,7 +182,8 @@ am__noinst_HEADERS_DIST = tracker-dbus.h tracker-ioprio.h \
 	tracker-keyfile-object.h tracker-ontologies.h \
 	tracker-type-utils.h tracker-utils.h tracker-crc32.h \
 	tracker-locale.h tracker-encoding.h tracker-encoding-enca.h \
-	tracker-encoding-meegotouch.h tracker-language.h
+	tracker-encoding-meegotouch.h tracker-language.h \
+	tracker-locale-gconfdbus.h
 HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -223,8 +228,6 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
-GCONF_CFLAGS = @GCONF_CFLAGS@
-GCONF_LIBS = @GCONF_LIBS@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
@@ -262,6 +265,14 @@ INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
+INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
+INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
+INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
+INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
+INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
+INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
+INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
@@ -491,19 +502,20 @@ libtracker_common_la_SOURCES = $(marshal_sources) $(os_sources) \
 	tracker-file-utils.c tracker-ioprio.c tracker-keyfile-object.c \
 	tracker-log.c tracker-type-utils.c tracker-utils.c \
 	tracker-crc32.c tracker-locale.c tracker-encoding.c \
-	$(am__append_1) $(am__append_3) $(am__append_5)
+	$(am__append_1) $(am__append_3) $(am__append_5) \
+	$(am__append_7)
 noinst_HEADERS = tracker-dbus.h tracker-ioprio.h tracker-log.h \
 	tracker-os-dependant.h tracker-config-file.h tracker-common.h \
 	tracker-date-time.h tracker-file-utils.h \
 	tracker-keyfile-object.h tracker-ontologies.h \
 	tracker-type-utils.h tracker-utils.h tracker-crc32.h \
 	tracker-locale.h tracker-encoding.h $(am__append_2) \
-	$(am__append_4) $(am__append_6)
+	$(am__append_4) $(am__append_6) $(am__append_8)
 libtracker_common_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 libtracker_common_la_LIBADD = $(BUILD_LIBS) $(LIBTRACKER_COMMON_LIBS) \
-	$(am__append_7)
+	$(am__append_9)
 marshal_sources = \
 	tracker-marshal.h \
 	tracker-marshal.c
@@ -600,6 +612,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ioprio.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-keyfile-object.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-language.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-locale-gconfdbus.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-locale.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-log.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal.Plo@am__quote@

@@ -253,35 +253,27 @@ object when no longer used.
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 <p>
-A <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> is returned asynchronously in the <em class="parameter"><code>_callback_</code></em> of
-your choosing. You must call <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-finish" title="tracker_sparql_connection_get_finish ()"><code class="function">tracker_sparql_connection_get_finish()</code></a> to
-find out if the connection was returned without error.
-</p>
-<p>
-See also: <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()"><code class="function">tracker_sparql_connection_get()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
+<td>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_callback_</code></em> :</span></p></td>
-<td>user-defined <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
-             asynchronous operation is finished.
+<td>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_user_data_</code></em> :</span></p></td>
-<td>user-defined data to be passed to <em class="parameter"><code>_callback_</code></em>
+<td>
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10</p>
 </div>
 <hr>
 <div class="refsect2" title="tracker_sparql_connection_get_finish ()">
@@ -364,36 +356,27 @@ object when no longer used.
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
 <p>
-A <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> is returned asynchronously in the <em class="parameter"><code>_callback_</code></em> of
-your choosing. You must call
-<a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-finish" title="tracker_sparql_connection_get_direct_finish ()"><code class="function">tracker_sparql_connection_get_direct_finish()</code></a> to find out if the
-connection was returned without error.
-</p>
-<p>
-See also: <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct" title="tracker_sparql_connection_get_direct ()"><code class="function">tracker_sparql_connection_get_direct()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
+<td>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_callback_</code></em> :</span></p></td>
-<td>user-defined <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
-             asynchronous operation is finished.
+<td>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_user_data_</code></em> :</span></p></td>
-<td>user-defined data to be passed to <em class="parameter"><code>_callback_</code></em>
+<td>
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since 0.10</p>
 </div>
 <hr>
 <div class="refsect2" title="tracker_sparql_connection_get_direct_finish ()">
@@ -761,7 +744,7 @@ Finishes the asynchronous SPARQL update_array operation.
 <p>
 </p>
 <div class="example">
-<a name="id510894"></a><p class="title"><b>Example 1. </b></p>
+<a name="id501876"></a><p class="title"><b>Example 1. </b></p>
 <div class="example-contents"><pre class="programlisting">
 static void
 async_update_array_callback (GObject      *source_object,

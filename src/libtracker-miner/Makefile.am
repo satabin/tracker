@@ -25,27 +25,44 @@ lib_LTLIBRARIES = libtracker-miner-@TRACKER_API_VERSION@.la
 libtracker_minerdir = $(libdir)/tracker-$(TRACKER_API_VERSION)
 libtracker_minerincludedir=$(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-miner/
 
-libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES =    \
+crawler_sources = 				       \
 	$(libtracker_miner_marshal_sources)            \
 	$(libtracker_miner_marshal_headers)            \
-	$(libtracker_miner_monitor_sources)            \
-	$(libtracker_miner_monitor_headers)            \
-	$(network_provider_sources)                    \
-	$(password_provider_sources)                   \
 	tracker-crawler.c                              \
-	tracker-miner-dbus.h                           \
-	tracker-miner-object.c                         \
-	tracker-miner-fs.c                             \
+	tracker-crawler.h                              \
+	tracker-utils.c                                \
+	tracker-utils.h					
+
+private_sources = 				       \
 	tracker-miner-fs-processing-pool.h             \
 	tracker-miner-fs-processing-pool.c             \
+	tracker-storage.c                              \
+	tracker-storage.h                              
+
+miner_sources = 				       \
+	$(libtracker_miner_monitor_sources)            \
+	$(libtracker_miner_monitor_headers)            \
+	tracker-miner-dbus.h                           \
+	tracker-miner-object.c                         \
+	tracker-miner-object.h                         \
+	tracker-miner-fs.c                             \
+	tracker-miner-fs.h                             \
 	tracker-miner-manager.c                        \
+	tracker-miner-manager.h                        \
 	tracker-miner-web.c                            \
+	tracker-miner-web.h                            
+
+
+libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES =    \
+	$(network_provider_sources)                    \
+	$(password_provider_sources)                   \
+	$(crawler_sources)			       \
+	$(miner_sources)			       \
+	$(private_sources)			       \
 	tracker-network-provider.c                     \
 	tracker-password-provider.c                    \
-	tracker-storage.c                              \
 	tracker-thumbnailer.c                          \
-	tracker-utils.c                                \
-	tracker-utils.h
+	tracker-thumbnailer.h                          
 
 libtracker_minerinclude_HEADERS =                      \
 	tracker-crawler.h                              \
@@ -66,7 +83,7 @@ libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS =    \
 
 libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD =     \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	-lm                                            \
 	$(BUILD_LIBS)                                  \
 	$(LIBTRACKER_MINER_LIBS)
@@ -113,3 +130,46 @@ EXTRA_DIST =                                           \
 	tracker-marshal.list                           \
 	tracker-miner.vapi                             \
 	tracker-miner.deps
+
+# Introspection foo
+-include $(INTROSPECTION_MAKEFILE)
+INTROSPECTION_GIRS =
+INTROSPECTION_SCANNER_ARGS = \
+	-I $(top_srcdir)/src \
+	-D TRACKER_COMPILATION \
+	--c-include="libtracker-miner/tracker-miner.h" \
+	--identifier-prefix=TrackerProcessor \
+	--symbol-prefix=tracker_processing \
+	--identifier-prefix=Tracker \
+	--symbol-prefix=tracker \
+	--warn-all
+
+INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)/src/libtracker-sparql
+
+if HAVE_INTROSPECTION
+INTROSPECTION_CFLAGS += $(AM_CPPFLAGS)
+introspection_sources = \
+	$(filter-out $(libtracker_miner_monitor_sources) \
+	             $(libtracker_miner_monitor_headers)  \
+		     $(private_sources),  \
+	  $(libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES))
+
+TrackerMiner-@TRACKER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) $(lib_LTLIBRARIES) Makefile
+TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_INCLUDES = GObject-2.0 GModule-2.0 Gio-2.0
+TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_SCANNERFLAGS = \
+	--include-uninstalled=$(top_srcdir)/src/libtracker-sparql/Tracker-$(TRACKER_API_VERSION).gir
+TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_CFLAGS = $(INCLUDES)
+TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_NAMESPACE = "TrackerMiner"
+TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_LIBS = $(lib_LTLIBRARIES)
+TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_FILES = $(introspection_sources)
+
+INTROSPECTION_GIRS += TrackerMiner-$(TRACKER_API_VERSION).gir
+
+girdir = $(datadir)/gir-1.0
+gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibdir = $(libdir)/girepository-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
+endif

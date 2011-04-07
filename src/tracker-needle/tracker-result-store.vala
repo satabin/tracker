@@ -26,6 +26,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		string [] values;
 		Gdk.Pixbuf pixbuf;
 	}
+
 	private class CategoryNode {
 		public Tracker.Query.Type type;
 		public QueryData *query;
@@ -33,10 +34,13 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		public Gdk.Pixbuf pixbuf;
 		public int count;
 	}
+
 	private struct QueryData {
 		Tracker.Query.Type type;
+		Tracker.Query.Match match;
 		string [] args;
 	}
+
 	private QueryData [] queries;
 	private GenericArray<CategoryNode> categories;
 
@@ -44,6 +48,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		public CategoryNode node;
 		public int offset;
 	}
+
 	private GenericArray<Operation> running_operations;
 	private GenericArray<Operation> delayed_operations;
 
@@ -56,9 +61,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		set;
 	}
 
-	private Operation * find_operation (GenericArray<Operation>  array,
-					    CategoryNode            *node,
-					    int                      offset) {
+	private Operation * find_operation (GenericArray<Operation> array, CategoryNode *node, int offset) {
 		Operation op;
 		int i;
 
@@ -74,8 +77,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		return null;
 	}
 
-	async void load_operation (Operation    op,
-				   Cancellable? cancellable) {
+	async void load_operation (Operation op, Cancellable? cancellable) {
 		Tracker.Query query;
 		Sparql.Cursor cursor = null;
 		int i;
@@ -88,7 +90,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 			query.limit = 100;
 			query.offset = op.offset;
 
-			cursor = yield query.perform_async (op.node.query.type, op.node.query.args, cancellable);
+			cursor = yield query.perform_async (op.node.query.type, op.node.query.match, op.node.query.args, cancellable);
 
 			for (i = op.offset; i < op.offset + 100; i++) {
 				ResultNode *result;
@@ -150,8 +152,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		}
 	}
 
-	private void add_operation (CategoryNode cat,
-				    int          offset) {
+	private void add_operation (CategoryNode cat, int offset) {
 		Operation op = new Operation ();
 		Operation old;
 
@@ -164,7 +165,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		}
 
 		// If the task is delayed, it will be either pushed
-	        // to the running queue, or reordered to be processed
+		// to the running queue, or reordered to be processed
 		// next in the delayed queue.
 		old = find_operation (delayed_operations, cat, offset);
 
@@ -187,8 +188,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		}
 	}
 
-	async void load_category (QueryData    *query_data,
-				  Cancellable?  cancellable) {
+	async void load_category (QueryData *query_data, Cancellable? cancellable) {
 		uint count = 0;
 
 		try {
@@ -197,7 +197,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 			Tracker.Query query = new Tracker.Query ();
 			query.criteria = _search_term;
 
-			count = yield query.get_count_async (query_data.type, cancellable);
+			count = yield query.get_count_async (query_data.type, query_data.match, cancellable);
 		} catch (GLib.IOError ie) {
 			warning ("Could not get count: %s\n", ie.message);
 			return;
@@ -325,8 +325,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		private set;
 	}
 
-	private int find_nth_category_index (CategoryNode? node,
-	                                     int           n) {
+	private int find_nth_category_index (CategoryNode? node, int n) {
 		int i;
 
 		if (node == null) {
@@ -385,8 +384,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		return flags;
 	}
 
-	public bool get_iter (out Gtk.TreeIter iter,
-	                      Gtk.TreePath     path) {
+	public bool get_iter (out Gtk.TreeIter iter, Gtk.TreePath path) {
 		unowned int [] indices = path.get_indices ();
 		CategoryNode cat;
 		int i = 0;
@@ -455,9 +453,6 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 	private async void fetch_thumbnail (TreeIter iter) {
 		GLib.File file;
 		GLib.FileInfo info;
-		GLib.Icon icon;
-		TreePath path;
-		Gtk.IconInfo icon_info;
 		ResultNode *result;
 		string thumb_path;
 		Gdk.Pixbuf pixbuf = null;
@@ -483,6 +478,9 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 			if (thumb_path != null) {
 				pixbuf = new Gdk.Pixbuf.from_file_at_size (thumb_path, icon_size, icon_size);
 			} else {
+				GLib.Icon icon;
+				Gtk.IconInfo icon_info;
+
 				icon = (GLib.Icon) info.get_attribute_object ("standard::icon");
 
 				if (icon == null) {
@@ -490,7 +488,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 				}
 
 				var theme = IconTheme.get_for_screen (Gdk.Screen.get_default ());
-				icon_info = theme.lookup_by_gicon (icon, icon_size, 0);
+				icon_info = theme.lookup_by_gicon (icon, icon_size, 0); // Gtk.IconLookupFlags.FORCE_SIZE
 
 				if (icon_info == null) {
 					return;
@@ -503,15 +501,15 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		}
 
 		if (pixbuf != null) {
+			TreePath path;
+
 			result.pixbuf = pixbuf;
 			path = get_path (iter);
 			row_changed (path, iter);
 		}
 	}
 
-	public void get_value (Gtk.TreeIter   iter,
-	                       int            column,
-	                       out GLib.Value value) {
+	public void get_value (Gtk.TreeIter iter, int column, out GLib.Value value) {
 		CategoryNode cat;
 
 		if (column >= n_columns + n_extra_columns) {
@@ -535,7 +533,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 
 				if (pixbuf == null) {
 					var theme = IconTheme.get_for_screen (Gdk.Screen.get_default ());
-					int size = 24;
+					int size = icon_size;
 
 					switch (cat.type) {
 					case Tracker.Query.Type.APPLICATIONS:
@@ -590,8 +588,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		}
 	}
 
-	public bool iter_children (out Gtk.TreeIter iter,
-	                           Gtk.TreeIter?    parent) {
+	public bool iter_children (out Gtk.TreeIter iter, Gtk.TreeIter? parent) {
 		CategoryNode cat;
 
 		if (parent == null) {
@@ -702,9 +699,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		}
 	}
 
-	public bool iter_nth_child (out Gtk.TreeIter iter,
-	                            Gtk.TreeIter?    parent,
-	                            int              n) {
+	public bool iter_nth_child (out Gtk.TreeIter iter, Gtk.TreeIter? parent, int n) {
 		CategoryNode cat;
 
 		if (parent != null) {
@@ -726,8 +721,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 			if (queries.length > 1) {
 				index = find_nth_category_index (null, n);
 
-				if (index < 0 ||
-				    index >= categories.length) {
+				if (index < 0 || index >= categories.length) {
 					iter.stamp = 0;
 					return false;
 				}
@@ -748,8 +742,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		}
 	}
 
-	public bool iter_parent (out Gtk.TreeIter iter,
-	                         Gtk.TreeIter     child) {
+	public bool iter_parent (out Gtk.TreeIter iter, Gtk.TreeIter child) {
 		if (queries.length > 1 &&
 		    child.user_data2 != null) {
 			// child within a category
@@ -777,10 +770,10 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 
 		n_columns = _n_columns;
 		timestamp = 1;
-		icon_size = 24;
+		icon_size = 24; // Default value, overridden by tracker-needle.vala
 	}
 
-	public void add_query (Tracker.Query.Type type, ...) {
+	public void add_query (Tracker.Query.Type type, Tracker.Query.Match match, ...) {
 		var l = va_list ();
 		string str = null;
 		string [] args = null;
@@ -801,6 +794,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 
 		query_data = QueryData ();
 		query_data.type = type;
+		query_data.match = match;
 		query_data.args = args;
 
 		queries += query_data;
@@ -808,5 +802,14 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 
 	public bool has_results () {
 		return filled_categories_count () > 0;
+	}
+
+	public void cancel_search () {
+		if (cancellable != null) {
+			cancellable.cancel ();
+			cancellable = null;
+		}
+
+		clear_results ();
 	}
 }

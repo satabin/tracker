@@ -12,6 +12,7 @@
       <sub name="TrackerSparqlConnection" link="TrackerSparqlConnection.html"/>
       <sub name="TrackerSparqlCursor" link="TrackerSparqlCursor.html"/>
       <sub name="Utilities" link="libtracker-sparql-Utilities.html"/>
+      <sub name="Version Information" link="libtracker-sparql-Version-Information.html"/>
     </sub>
     <sub name="Examples" link="tracker-examples.html">
       <sub name="SPARQL query builder" link="tracker-examples-builder.html"/>
@@ -106,5 +107,12 @@
     <function name="tracker_sparql_escape_string ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-string"/>
     <function name="tracker_sparql_escape_uri_printf ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-printf"/>
     <function name="tracker_sparql_escape_uri_vprintf ()" link="libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf"/>
+    <function name="tracker_major_version" link="libtracker-sparql-Version-Information.html#tracker-major-version"/>
+    <function name="tracker_minor_version" link="libtracker-sparql-Version-Information.html#tracker-minor-version"/>
+    <function name="tracker_micro_version" link="libtracker-sparql-Version-Information.html#tracker-micro-version"/>
+    <function name="tracker_binary_age" link="libtracker-sparql-Version-Information.html#tracker-binary-age"/>
+    <function name="tracker_interface_age" link="libtracker-sparql-Version-Information.html#tracker-interface-age"/>
+    <function name="tracker_check_version ()" link="libtracker-sparql-Version-Information.html#tracker-check-version"/>
+    <function name="TRACKER_CHECK_VERSION()" link="libtracker-sparql-Version-Information.html#TRACKER-CHECK-VERSION:CAPS"/>
   </functions>
 </book>

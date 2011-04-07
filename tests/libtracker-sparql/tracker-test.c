@@ -142,7 +142,7 @@ test_tracker_sparql_cursor_next_async_cb (GObject      *source,
 	                                             &error);
 
 	if (finished == 1 && next == next_to_cancel) {
-		g_assert_no_error (error);
+		g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
 		g_print ("Got Cancellation GError\n");
 	} else {
 		g_assert_no_error (error);
@@ -328,9 +328,6 @@ main (gint argc, gchar **argv)
 	g_thread_init (NULL);
 	g_type_init ();
 	g_test_init (&argc, &argv, NULL);
-
-        /* do not require prior installation */
-        g_setenv ("TRACKER_SPARQL_MODULE_PATH", "../../src/libtracker-bus/.libs", TRUE);
 
 #if HAVE_TRACKER_FTS
 	main_loop = g_main_loop_new (NULL, FALSE);

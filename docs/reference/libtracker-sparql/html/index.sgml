@@ -128,3 +128,14 @@
 <ANCHOR id="tracker-sparql-escape-string" href="libtracker-sparql/libtracker-sparql-Utilities.html#tracker-sparql-escape-string">
 <ANCHOR id="tracker-sparql-escape-uri-printf" href="libtracker-sparql/libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-printf">
 <ANCHOR id="tracker-sparql-escape-uri-vprintf" href="libtracker-sparql/libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf">
+<ANCHOR id="libtracker-sparql-Version-Information" href="libtracker-sparql/libtracker-sparql-Version-Information.html">
+<ANCHOR id="libtracker-sparql-Version-Information.synopsis" href="libtracker-sparql/libtracker-sparql-Version-Information.html#libtracker-sparql-Version-Information.synopsis">
+<ANCHOR id="libtracker-sparql-Version-Information.description" href="libtracker-sparql/libtracker-sparql-Version-Information.html#libtracker-sparql-Version-Information.description">
+<ANCHOR id="libtracker-sparql-Version-Information.details" href="libtracker-sparql/libtracker-sparql-Version-Information.html#libtracker-sparql-Version-Information.details">
+<ANCHOR id="tracker-major-version" href="libtracker-sparql/libtracker-sparql-Version-Information.html#tracker-major-version">
+<ANCHOR id="tracker-minor-version" href="libtracker-sparql/libtracker-sparql-Version-Information.html#tracker-minor-version">
+<ANCHOR id="tracker-micro-version" href="libtracker-sparql/libtracker-sparql-Version-Information.html#tracker-micro-version">
+<ANCHOR id="tracker-binary-age" href="libtracker-sparql/libtracker-sparql-Version-Information.html#tracker-binary-age">
+<ANCHOR id="tracker-interface-age" href="libtracker-sparql/libtracker-sparql-Version-Information.html#tracker-interface-age">
+<ANCHOR id="tracker-check-version" href="libtracker-sparql/libtracker-sparql-Version-Information.html#tracker-check-version">
+<ANCHOR id="TRACKER-CHECK-VERSION:CAPS" href="libtracker-sparql/libtracker-sparql-Version-Information.html#TRACKER-CHECK-VERSION:CAPS">

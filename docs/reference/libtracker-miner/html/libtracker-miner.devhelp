@@ -38,6 +38,7 @@
     <function name="tracker_miner_ignore_next_update ()" link="libtracker-miner-tracker-miner.html#tracker-miner-ignore-next-update"/>
     <function name="tracker_miner_is_started ()" link="libtracker-miner-tracker-miner.html#tracker-miner-is-started"/>
     <function name="tracker_miner_is_paused ()" link="libtracker-miner-tracker-miner.html#tracker-miner-is-paused"/>
+    <function name="tracker_miner_get_n_pause_reasons ()" link="libtracker-miner-tracker-miner.html#tracker-miner-get-n-pause-reasons"/>
     <function name="tracker_miner_pause ()" link="libtracker-miner-tracker-miner.html#tracker-miner-pause"/>
     <function name="tracker_miner_resume ()" link="libtracker-miner-tracker-miner.html#tracker-miner-resume"/>
     <function name="tracker_miner_get_connection ()" link="libtracker-miner-tracker-miner.html#tracker-miner-get-connection"/>

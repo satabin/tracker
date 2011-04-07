@@ -18,11 +18,11 @@ SCAN_OPTIONS=--deprecated-guards="TRACKER_DISABLE_DEPRECATED"
 DOC_SOURCE_DIR = ../../../src/libtracker-sparql
 
 # Used for dependencies
-HFILE_GLOB = $(top_srcdir)/src/libtracker-sparql/*.h
+HFILE_GLOB = $(top_srcdir)/src/libtracker-sparql/*.h $(top_srcdir)/config.h
 CFILE_GLOB = $(top_srcdir)/src/libtracker-sparql/*.c
 
 # Header files to ignore when scanning
-IGNORE_HFILES =
+IGNORE_HFILES = $(top_srcdir)/src/libtracker-sparql/tracker-generated-no-check.h
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
@@ -32,7 +32,7 @@ AM_CPPFLAGS =                                          \
 	$(LIBTRACKER_SPARQL_CFLAGS)
 
 GTKDOC_LIBS =                                          \
-	$(top_builddir)/src/libtracker-sparql/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(LIBTRACKER_SPARQL_LIBS)
 

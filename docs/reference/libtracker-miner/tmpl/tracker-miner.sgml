@@ -173,6 +173,15 @@ TrackerMiner
 @Returns: 
 
 
+<!-- ##### FUNCTION tracker_miner_get_n_pause_reasons ##### -->
+<para>
+
+</para>
+
+@miner: 
+@Returns: 
+
+
 <!-- ##### FUNCTION tracker_miner_pause ##### -->
 <para>
 

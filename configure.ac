@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [6])
-m4_define([tracker_interface_age], [1])
+m4_define([tracker_micro_version], [7])
+m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -64,6 +64,7 @@ TRACKER_BINARY_AGE=tracker_binary_age
 TRACKER_VERSION=tracker_version
 TRACKER_API_VERSION=tracker_api_version
 TRACKER_BINARY_VERSION=tracker_binary_version
+
 AC_SUBST(TRACKER_MAJOR_VERSION)
 AC_SUBST(TRACKER_MINOR_VERSION)
 AC_SUBST(TRACKER_MICRO_VERSION)
@@ -73,6 +74,16 @@ AC_SUBST(TRACKER_API_VERSION)
 AC_SUBST(TRACKER_VERSION)
 AC_SUBST(TRACKER_BINARY_VERSION)
 
+AC_DEFINE(TRACKER_MAJOR_VERSION, [tracker_major_version],
+          [Define to the Tracker major version])
+AC_DEFINE(TRACKER_MINOR_VERSION, [tracker_minor_version],
+          [Define to the Tracker minor version])
+AC_DEFINE(TRACKER_MICRO_VERSION, [tracker_micro_version],
+          [Define to the Tracker micro version])
+AC_DEFINE(TRACKER_INTERFACE_AGE, [tracker_interface_age],
+          [Define to the Tracker interface age])
+AC_DEFINE(TRACKER_BINARY_AGE, [tracker_binary_age],
+          [Define to the Tracker binary age])
 
 # libtool versioning
 LT_RELEASE=tracker_lt_release
@@ -204,6 +215,10 @@ NETWORK_MANAGER_REQUIRED=0.8
 # 3.6.17 for shared cache mode with virtual tables
 # 3.7.0 for WAL
 SQLITE_REQUIRED=3.7.0
+
+# Needed to generate .gir files,
+# see http://live.gnome.org/GnomeGoals/AddGObjectIntrospectionSupport
+GOBJECT_INTROSPECTION_CHECK([0.9.5])
 
 # NOTE: dbus and dbus-glib-1 are only used now for libtracker-client
 # which is deprecated and tracker-writeback which will be refactored
@@ -597,23 +612,7 @@ AC_ARG_ENABLE(maemo,
 AM_CONDITIONAL(HAVE_MAEMO, test "x$enable_maemo" = "xyes")
 
 if test "x$enable_maemo" = "xyes" ; then
-
    AC_DEFINE(HAVE_MAEMO, 1, [Define if we enable Maemo specific features])
-
-   PKG_CHECK_MODULES(GCONF,
-                     [gconf-2.0],
-                     [have_gconf=yes],
-                     [have_gconf=no])
-
-   LIBTRACKER_COMMON_CFLAGS="$LIBTRACKER_COMMON_CFLAGS $GCONF_CFLAGS"
-   LIBTRACKER_COMMON_LIBS="$LIBTRACKER_COMMON_LIBS $GCONF_LIBS"
-
-   LIBTRACKER_SPARQL_CFLAGS="$LIBTRACKER_SPARQL_CFLAGS $GCONF_CFLAGS"
-   LIBTRACKER_SPARQL_LIBS="$LIBTRACKER_SPARQL_LIBS $GCONF_LIBS"
-
-   if test "x$have_gconf" != "xyes"; then
-      AC_MSG_ERROR([Couldn't find gconf, needed when enabling maemo support])
-   fi
 fi
 
 ####################################################################
@@ -2019,8 +2018,9 @@ AC_CONFIG_FILES([
 	src/libtracker-common/Makefile
 	src/libtracker-sparql/Makefile
 	src/libtracker-bus/Makefile
-	src/libtracker-direct/Makefile
 	src/libtracker-data/Makefile
+	src/libtracker-direct/Makefile
+	src/libtracker-sparql-backend/Makefile
 	src/libtracker-fts/Makefile
 	src/libtracker-extract/Makefile
 	src/libtracker-client/Makefile

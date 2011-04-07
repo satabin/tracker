@@ -271,6 +271,38 @@ miner_handle_next (void)
 	}
 }
 
+static gboolean
+miner_handle_first_cb (gpointer data)
+{
+	miner_handle_next ();
+	return FALSE;
+}
+
+static void
+miner_handle_first (TrackerConfig *config)
+{
+	gint initial_sleep;
+
+	/* If requesting to run as no-daemon, start right away */
+	if (no_daemon) {
+		miner_handle_next ();
+		return;
+	}
+
+	/* If no need to initially sleep, start right away */
+	initial_sleep = tracker_config_get_initial_sleep (config);
+	if (initial_sleep <= 0) {
+		miner_handle_next ();
+		return;
+	}
+
+	g_debug ("Performing initial sleep of %d seconds",
+	         initial_sleep);
+	g_timeout_add_seconds (initial_sleep,
+	                       miner_handle_first_cb,
+	                       NULL);
+}
+
 static void
 miner_finished_cb (TrackerMinerFS *fs,
                    gdouble         seconds_elapsed,
@@ -545,6 +577,80 @@ check_eligible (void)
 	g_object_unref (file);
 }
 
+static gboolean
+store_is_available (void)
+{
+	GDBusConnection *connection;
+	GDBusProxy *proxy;
+	gchar *name_owner;
+
+	connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+	if (!connection) {
+		return FALSE;
+	}
+
+	proxy = g_dbus_proxy_new_sync (connection,
+	                               G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+	                               NULL,
+	                               "org.freedesktop.Tracker1",
+	                               "/org/freedesktop/Tracker1/Status",
+	                               "org.freedesktop.Tracker1.Status",
+	                               NULL, NULL);
+
+	if (!proxy) {
+		g_object_unref (connection);
+		return FALSE;
+	}
+
+	name_owner = g_dbus_proxy_get_name_owner (proxy);
+
+	g_object_unref (connection);
+	g_object_unref (proxy);
+
+	if (name_owner) {
+		g_free (name_owner);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+static gboolean
+miner_needs_check (TrackerMiner *miner,
+		   gboolean      store_available)
+{
+	/* Reasons to not mark ourselves as cleanly shutdown include:
+	 *
+	 * 1. Still have files to process in our queues.
+	 * 2. We crash (out of our control usually anyway).
+	 * 3. At least one of the miners is PAUSED, we have
+	 *    to exclude the situations where the miner is
+	 *    exclusively paused due to the store not being
+	 *    available, but the miner is actually done.
+	 */
+	if (!tracker_miner_is_paused (miner)) {
+		if (TRACKER_IS_MINER_FS (miner) &&
+		    tracker_miner_fs_has_items_to_process (TRACKER_MINER_FS (miner))) {
+			/* There are items left to process */
+			return TRUE;
+		}
+
+		/* We consider the miner finished */
+		return FALSE;
+	} else {
+		if (store_available) {
+			/* Paused for other reasons, so probably not done */
+			return TRUE;
+		} else {
+			/* Check whether there are more pause
+			 * reasons than the store being out.
+			 */
+			return tracker_miner_get_n_pause_reasons (miner) > 1;
+		}
+	}
+}
+
 int
 main (gint argc, gchar *argv[])
 {
@@ -557,6 +663,7 @@ main (gint argc, gchar *argv[])
 	gboolean do_mtime_checking;
 	gboolean do_crawling;
 	gboolean force_mtime_checking = FALSE;
+	gboolean store_available;
 
 	g_type_init ();
 
@@ -715,22 +822,17 @@ main (gint argc, gchar *argv[])
 
 	tracker_thumbnailer_init ();
 
-	miner_handle_next ();
+	miner_handle_first (config);
 
 	/* Go, go, go! */
 	g_main_loop_run (main_loop);
 
 	g_message ("Shutdown started");
 
-	/* Reasons to not mark ourselves as cleanly shutdown include:
-	 *
-	 * 1. Still have files to process in our queues.
-	 * 2. We crash (out of our control usually anyway).
-	 * 3. At least one of the miners is PAUSED.
-	 */
-	if (!tracker_miner_fs_has_items_to_process (TRACKER_MINER_FS (miner_files)) &&
-	    !tracker_miner_is_paused (miner_applications) &&
-	    !tracker_miner_is_paused (miner_files)) {
+	store_available = store_is_available ();
+
+	if (!miner_needs_check (miner_files, store_available) &&
+	    !miner_needs_check (miner_applications, store_available)) {
 		tracker_db_manager_set_need_mtime_check (FALSE);
 	}
 

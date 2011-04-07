@@ -222,8 +222,23 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
+/* Define to the Tracker binary age */
+#undef TRACKER_BINARY_AGE
+
 /* Use tagreadbin in gstreamer extraction */
 #undef TRACKER_EXTRACT_GSTREAMER_USE_TAGREADBIN
+
+/* Define to the Tracker interface age */
+#undef TRACKER_INTERFACE_AGE
+
+/* Define to the Tracker major version */
+#undef TRACKER_MAJOR_VERSION
+
+/* Define to the Tracker micro version */
+#undef TRACKER_MICRO_VERSION
+
+/* Define to the Tracker minor version */
+#undef TRACKER_MINOR_VERSION
 
 /* Define that Tracker will try to use external video players */
 #undef USING_EXTERNAL_VIDEO_PLAYER

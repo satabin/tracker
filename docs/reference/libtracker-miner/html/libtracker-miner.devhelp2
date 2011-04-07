@@ -38,6 +38,7 @@
     <keyword type="function" name="tracker_miner_ignore_next_update ()" link="libtracker-miner-tracker-miner.html#tracker-miner-ignore-next-update" since="0.8"/>
     <keyword type="function" name="tracker_miner_is_started ()" link="libtracker-miner-tracker-miner.html#tracker-miner-is-started" since="0.8"/>
     <keyword type="function" name="tracker_miner_is_paused ()" link="libtracker-miner-tracker-miner.html#tracker-miner-is-paused" since="0.10"/>
+    <keyword type="function" name="tracker_miner_get_n_pause_reasons ()" link="libtracker-miner-tracker-miner.html#tracker-miner-get-n-pause-reasons" since="0.10.5"/>
     <keyword type="function" name="tracker_miner_pause ()" link="libtracker-miner-tracker-miner.html#tracker-miner-pause" since="0.8"/>
     <keyword type="function" name="tracker_miner_resume ()" link="libtracker-miner-tracker-miner.html#tracker-miner-resume" since="0.8"/>
     <keyword type="function" name="tracker_miner_get_connection ()" link="libtracker-miner-tracker-miner.html#tracker-miner-get-connection" since="0.10"/>
@@ -101,7 +102,7 @@
     <keyword type="signal" name="The &quot;process-file-attributes&quot; signal" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-process-file-attributes"/>
     <keyword type="macro" name="TRACKER_MINER_MANAGER_ERROR" link="TrackerMinerManager.html#TRACKER-MINER-MANAGER-ERROR:CAPS"/>
     <keyword type="enum" name="enum TrackerMinerManagerError" link="TrackerMinerManager.html#TrackerMinerManagerError" since="0.8"/>
-    <keyword type="function" name="tracker_miner_manager_error_quark ()" link="TrackerMinerManager.html#tracker-miner-manager-error-quark" since="0.8"/>
+    <keyword type="function" name="tracker_miner_manager_error_quark ()" link="TrackerMinerManager.html#tracker-miner-manager-error-quark"/>
     <keyword type="struct" name="TrackerMinerManager" link="TrackerMinerManager.html#TrackerMinerManager-struct"/>
     <keyword type="struct" name="TrackerMinerManagerClass" link="TrackerMinerManager.html#TrackerMinerManagerClass"/>
     <keyword type="function" name="tracker_miner_manager_new ()" link="TrackerMinerManager.html#tracker-miner-manager-new" since="0.8"/>
@@ -134,7 +135,7 @@
     <keyword type="macro" name="TRACKER_PASSWORD_PROVIDER_ERROR_DOMAIN" link="libtracker-miner-TrackerPasswordProvider.html#TRACKER-PASSWORD-PROVIDER-ERROR-DOMAIN:CAPS"/>
     <keyword type="macro" name="TRACKER_PASSWORD_PROVIDER_ERROR" link="libtracker-miner-TrackerPasswordProvider.html#TRACKER-PASSWORD-PROVIDER-ERROR:CAPS"/>
     <keyword type="enum" name="enum TrackerPasswordProviderError" link="libtracker-miner-TrackerPasswordProvider.html#TrackerPasswordProviderError" since="0.8"/>
-    <keyword type="function" name="tracker_password_provider_error_quark ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-error-quark" since="0.8"/>
+    <keyword type="function" name="tracker_password_provider_error_quark ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-error-quark"/>
     <keyword type="macro" name="TRACKER_PASSWORD_PROVIDER_GET_INTERFACE()" link="libtracker-miner-TrackerPasswordProvider.html#TRACKER-PASSWORD-PROVIDER-GET-INTERFACE:CAPS"/>
     <keyword type="typedef" name="TrackerPasswordProvider" link="libtracker-miner-TrackerPasswordProvider.html#TrackerPasswordProvider"/>
     <keyword type="struct" name="TrackerPasswordProviderIface" link="libtracker-miner-TrackerPasswordProvider.html#TrackerPasswordProviderIface" since="0.8"/>

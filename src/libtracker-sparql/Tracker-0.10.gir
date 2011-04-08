@@ -3,7 +3,7 @@
 <include name="GObject" version="2.0"/>
 <include name="Gio" version="2.0"/>
 <include name="GLib" version="2.0"/>
-<package name="Tracker-0.10"/>
+<package name="tracker-sparql-0.10"/>
 <c:include name="libtracker-sparql/tracker-generated-no-checks.h"/>
 <namespace name="Tracker" version="0.10" c:prefix="Tracker">
 	<enumeration name="SparqlValueType" c:type="TrackerSparqlValueType" glib:type-name="TrackerSparqlValueType" glib:get-type="tracker_sparql_value_type_get_type">

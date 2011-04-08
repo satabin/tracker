@@ -48,8 +48,10 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(libtracker_sparqlinclude_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(top_srcdir)/Makefile.decl libtracker_sparql_la_vala.stamp \
-	tracker-builder.c tracker-connection.c tracker-cursor.c \
+	$(top_srcdir)/Makefile.decl Tracker-$(TRACKER_API_VERSION).gir \
+	libtracker_sparql_la_vala.stamp tracker-builder.c \
+	tracker-connection.c tracker-cursor.c \
+	tracker-generated-no-checks.h tracker-sparql.vapi \
 	tracker-utils.c
 
 # We don't clean the gir/typelib data for *Vala* generated g-ir files.
@@ -450,9 +452,9 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 noinst_LTLIBRARIES = libtracker-sparql.la
-AM_VALAFLAGS = \
-	--gir=Tracker-$(TRACKER_API_VERSION).gir \
-	--library Tracker-$(TRACKER_API_VERSION) \
+libtracker_sparql_la_VALAFLAGS = \
+	--gir Tracker-$(TRACKER_API_VERSION).gir       \
+	--library tracker-sparql-$(TRACKER_API_VERSION) \
 	--includedir=libtracker-sparql                 \
 	--header $(vala_header:.h=-no-checks.h)        \
 	--vapi tracker-sparql.vapi                     \
@@ -615,8 +617,23 @@ $(srcdir)/tracker-utils.c: $(srcdir)/libtracker_sparql_la_vala.stamp
 	  rm -f $(srcdir)/libtracker_sparql_la_vala.stamp; \
 	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_la_vala.stamp; \
 	fi
+$(srcdir)/Tracker-$(TRACKER_API_VERSION).gir: $(srcdir)/libtracker_sparql_la_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/libtracker_sparql_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_la_vala.stamp; \
+	fi
+$(srcdir)/tracker-generated-no-checks.h: $(srcdir)/libtracker_sparql_la_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/libtracker_sparql_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_la_vala.stamp; \
+	fi
+$(srcdir)/tracker-sparql.vapi: $(srcdir)/libtracker_sparql_la_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/libtracker_sparql_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_sparql_la_vala.stamp; \
+	fi
 libtracker_sparql_la_vala.stamp: $(libtracker_sparql_la_SOURCES)
-	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(libtracker_sparql_la_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(libtracker_sparql_la_VALAFLAGS) $(VALAFLAGS) -C $(libtracker_sparql_la_SOURCES)
 	$(AM_V_at)touch $@
 
 mostlyclean-libtool:
@@ -823,10 +840,13 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-rm -f Tracker-$(TRACKER_API_VERSION).gir
 	-rm -f libtracker_sparql_la_vala.stamp
 	-rm -f tracker-builder.c
 	-rm -f tracker-connection.c
 	-rm -f tracker-cursor.c
+	-rm -f tracker-generated-no-checks.h
+	-rm -f tracker-sparql.vapi
 	-rm -f tracker-utils.c
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
@@ -983,7 +1003,7 @@ check-local: test
 	            echo "#endif") > $@
 	$(AM_V_GEN)(cat $< >> $@)
 
-tracker-sparql-$(TRACKER_API_VERSION).vapi: $(srcdir)/tracker-sparql.vapi
+tracker-sparql-$(TRACKER_API_VERSION).vapi: tracker-sparql.vapi
 	$(AM_V_GEN)(sed -e 's/tracker-generated-no-checks.h/tracker-sparql.h/' $< > $@)
 
 tracker-sparql-$(TRACKER_API_VERSION).deps: tracker-sparql.deps

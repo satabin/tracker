@@ -1482,7 +1482,7 @@ static gboolean tracker_steroids_update_array_co (TrackerSteroidsUpdateArrayData
 			}
 			tracker_dbus_request_debug (data->request, "query: %s", data->query_array[data->i], NULL);
 			data->_state_ = 1;
-			tracker_store_sparql_update (data->query_array[data->i], TRACKER_STORE_PRIORITY_HIGH, (const gchar*) data->sender, tracker_steroids_update_array_ready, data);
+			tracker_store_sparql_update (data->query_array[data->i], TRACKER_STORE_PRIORITY_LOW, (const gchar*) data->sender, tracker_steroids_update_array_ready, data);
 			return FALSE;
 			_state_1:
 			tracker_store_sparql_update_finish (data->_res_, &data->_inner_error_);

@@ -208,7 +208,7 @@ enum  {
 };
 void tracker_resources_disable_signals (TrackerResources* self);
 #define TRACKER_RESOURCES_PATH "/org/freedesktop/Tracker1/Resources"
-#define TRACKER_RESOURCES_GRAPH_UPDATED_IMMEDIATE_EMIT_AT 1000
+#define TRACKER_RESOURCES_GRAPH_UPDATED_IMMEDIATE_EMIT_AT 50000
 #define TRACKER_RESOURCES_SIGNALS_SECONDS_PER_EMIT 1
 #define TRACKER_RESOURCES_DBUS_ARBITRARY_MAX_MSG_SIZE 10000000
 TrackerResources* tracker_resources_new (GDBusConnection* connection);

@@ -1,3 +1,27 @@
+2011-04-08  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.8
+
+2011-04-08  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Protect tracker_db_cursor_get_* with mutex
+	This is necessary for parallel queries with direct access.
+
+	Fixes GB#642883.
+	Fixes NB#244556.
+
+	tracker-store: Increase maximum signal size from 1000 to 50000 triples
+	1000 triples is reached very quickly, especially with signals pending
+	for multiple classes. 50000 triples should still not require more than
+	1 MB of memory for signals at any time.
+
+	build: Fix build from tarball in libtracker-sparql
+
+	tracker-store: Fix UpdateArray to use low priority requests
+
+	libtracker-bus: There is no BatchUpdateArray
+	UpdateArray is always considered a batch operation.
+
 2011-04-07  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.7

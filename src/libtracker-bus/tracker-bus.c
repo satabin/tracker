@@ -269,16 +269,14 @@ struct _TrackerBusConnectionUpdateArrayAsyncData {
 	GVariant* resultv;
 	GVariant* _tmp6_;
 	GVariant* _tmp7_;
-	GVariant* _tmp8_;
-	GVariant* _tmp9_;
-	GVariantIter* _tmp10_;
+	GVariantIter* _tmp8_;
 	GVariantIter* iter;
 	gchar* code;
 	gchar* message;
+	gboolean _tmp9_;
+	gboolean _tmp10_;
 	gboolean _tmp11_;
-	gboolean _tmp12_;
-	gboolean _tmp13_;
-	GError* _tmp14_;
+	GError* _tmp12_;
 	GError * _inner_error_;
 };
 
@@ -413,7 +411,6 @@ GVariant* tracker_bus_steroids_update_array_finish (TrackerBusSteroids* self, GA
 void tracker_bus_steroids_batch_update_array (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 GVariant* tracker_bus_steroids_batch_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
 void tracker_bus_steroids_update_begin (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, gint priority, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target);
-void tracker_bus_steroids_update_array_begin (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, gint priority, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target);
 static void tracker_bus_steroids_proxy_g_signal (GDBusProxy* proxy, const gchar* sender_name, const gchar* signal_name, GVariant* parameters);
 static void tracker_bus_steroids_proxy_query_async (TrackerBusSteroids* self, const gchar* query, GUnixOutputStream* result_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 static gchar** tracker_bus_steroids_proxy_query_finish (TrackerBusSteroids* self, GAsyncResult* _res_, int* result_length1, GError** error);
@@ -908,16 +905,6 @@ void tracker_bus_steroids_update_begin (TrackerBusSteroids* self, GUnixInputStre
 		tracker_bus_steroids_update (self, sparql_stream, cancellable, callback, callback_target);
 	} else {
 		tracker_bus_steroids_batch_update (self, sparql_stream, cancellable, callback, callback_target);
-	}
-}
-
-
-void tracker_bus_steroids_update_array_begin (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, gint priority, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target) {
-	g_return_if_fail (sparql_stream != NULL);
-	if (priority <= G_PRIORITY_DEFAULT) {
-		tracker_bus_steroids_update_array (self, sparql_stream, cancellable, callback, callback_target);
-	} else {
-		tracker_bus_steroids_batch_update_array (self, sparql_stream, cancellable, callback, callback_target);
 	}
 }
 
@@ -2829,6 +2816,7 @@ static void _lambda4_ (GObject* o, GAsyncResult* res, Block5Data* _data5_) {
 
 static void __lambda4__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
 	_lambda4_ (source_object, res, self);
+	block5_data_unref (self);
 }
 
 
@@ -2885,7 +2873,7 @@ static gboolean tracker_bus_connection_real_update_array_async_co (TrackerBusCon
 	}
 	data->_data5_->dbus_res = NULL;
 	data->_data5_->sent_update = FALSE;
-	tracker_bus_steroids_update_array_begin (tracker_bus_connection_steroids_object, data->input, data->priority, data->cancellable, __lambda4__gasync_ready_callback, data->_data5_);
+	tracker_bus_steroids_update_array (tracker_bus_connection_steroids_object, data->input, data->cancellable, __lambda4__gasync_ready_callback, block5_data_ref (data->_data5_));
 	data->_tmp2_ = NULL;
 	data->_tmp2_ = g_data_output_stream_new ((GOutputStream*) data->output);
 	data->data_stream = data->_tmp2_;
@@ -3002,100 +2990,61 @@ static gboolean tracker_bus_connection_real_update_array_async_co (TrackerBusCon
 	data->_tmp5_ = NULL;
 	data->_tmp5_ = g_ptr_array_new_with_free_func (_g_error_free0_);
 	data->_result_ = data->_tmp5_;
-	if (data->priority <= G_PRIORITY_DEFAULT) {
-		data->_tmp6_ = NULL;
-		data->_tmp6_ = tracker_bus_steroids_update_array_finish (tracker_bus_connection_steroids_object, data->_data5_->dbus_res, &data->_inner_error_);
-		data->_tmp7_ = data->_tmp6_;
-		if (data->_inner_error_ != NULL) {
-			if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
-				g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
-				g_error_free (data->_inner_error_);
-				_g_variant_unref0 (data->resultv);
-				_g_ptr_array_unref0 (data->_result_);
-				_g_object_unref0 (data->data_stream);
-				_g_object_unref0 (data->output);
-				_g_object_unref0 (data->input);
-				block5_data_unref (data->_data5_);
-				data->_data5_ = NULL;
-				if (data->_state_ == 0) {
-					g_simple_async_result_complete_in_idle (data->_async_result);
-				} else {
-					g_simple_async_result_complete (data->_async_result);
-				}
-				g_object_unref (data->_async_result);
-				return FALSE;
+	data->_tmp6_ = NULL;
+	data->_tmp6_ = tracker_bus_steroids_update_array_finish (tracker_bus_connection_steroids_object, data->_data5_->dbus_res, &data->_inner_error_);
+	data->_tmp7_ = data->_tmp6_;
+	if (data->_inner_error_ != NULL) {
+		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
+			g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
+			g_error_free (data->_inner_error_);
+			_g_variant_unref0 (data->resultv);
+			_g_ptr_array_unref0 (data->_result_);
+			_g_object_unref0 (data->data_stream);
+			_g_object_unref0 (data->output);
+			_g_object_unref0 (data->input);
+			block5_data_unref (data->_data5_);
+			data->_data5_ = NULL;
+			if (data->_state_ == 0) {
+				g_simple_async_result_complete_in_idle (data->_async_result);
 			} else {
-				_g_variant_unref0 (data->resultv);
-				_g_ptr_array_unref0 (data->_result_);
-				_g_object_unref0 (data->data_stream);
-				_g_object_unref0 (data->output);
-				_g_object_unref0 (data->input);
-				block5_data_unref (data->_data5_);
-				data->_data5_ = NULL;
-				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, data->_inner_error_->message, g_quark_to_string (data->_inner_error_->domain), data->_inner_error_->code);
-				g_clear_error (&data->_inner_error_);
-				return FALSE;
+				g_simple_async_result_complete (data->_async_result);
 			}
+			g_object_unref (data->_async_result);
+			return FALSE;
+		} else {
+			_g_variant_unref0 (data->resultv);
+			_g_ptr_array_unref0 (data->_result_);
+			_g_object_unref0 (data->data_stream);
+			_g_object_unref0 (data->output);
+			_g_object_unref0 (data->input);
+			block5_data_unref (data->_data5_);
+			data->_data5_ = NULL;
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, data->_inner_error_->message, g_quark_to_string (data->_inner_error_->domain), data->_inner_error_->code);
+			g_clear_error (&data->_inner_error_);
+			return FALSE;
 		}
-		_g_variant_unref0 (data->resultv);
-		data->resultv = data->_tmp7_;
-	} else {
-		data->_tmp8_ = NULL;
-		data->_tmp8_ = tracker_bus_steroids_batch_update_array_finish (tracker_bus_connection_steroids_object, data->_data5_->dbus_res, &data->_inner_error_);
-		data->_tmp9_ = data->_tmp8_;
-		if (data->_inner_error_ != NULL) {
-			if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
-				g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
-				g_error_free (data->_inner_error_);
-				_g_variant_unref0 (data->resultv);
-				_g_ptr_array_unref0 (data->_result_);
-				_g_object_unref0 (data->data_stream);
-				_g_object_unref0 (data->output);
-				_g_object_unref0 (data->input);
-				block5_data_unref (data->_data5_);
-				data->_data5_ = NULL;
-				if (data->_state_ == 0) {
-					g_simple_async_result_complete_in_idle (data->_async_result);
-				} else {
-					g_simple_async_result_complete (data->_async_result);
-				}
-				g_object_unref (data->_async_result);
-				return FALSE;
-			} else {
-				_g_variant_unref0 (data->resultv);
-				_g_ptr_array_unref0 (data->_result_);
-				_g_object_unref0 (data->data_stream);
-				_g_object_unref0 (data->output);
-				_g_object_unref0 (data->input);
-				block5_data_unref (data->_data5_);
-				data->_data5_ = NULL;
-				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, data->_inner_error_->message, g_quark_to_string (data->_inner_error_->domain), data->_inner_error_->code);
-				g_clear_error (&data->_inner_error_);
-				return FALSE;
-			}
-		}
-		_g_variant_unref0 (data->resultv);
-		data->resultv = data->_tmp9_;
 	}
-	data->_tmp10_ = NULL;
-	data->_tmp10_ = g_variant_iter_new (data->resultv);
-	data->iter = data->_tmp10_;
+	_g_variant_unref0 (data->resultv);
+	data->resultv = data->_tmp7_;
+	data->_tmp8_ = NULL;
+	data->_tmp8_ = g_variant_iter_new (data->resultv);
+	data->iter = data->_tmp8_;
 	while (TRUE) {
-		data->_tmp11_ = g_variant_iter_next (data->iter, "s", &data->code, NULL);
-		if (!data->_tmp11_) {
+		data->_tmp9_ = g_variant_iter_next (data->iter, "s", &data->code, NULL);
+		if (!data->_tmp9_) {
 			break;
 		}
-		data->_tmp12_ = g_variant_iter_next (data->iter, "s", &data->message, NULL);
-		if (data->_tmp12_) {
+		data->_tmp10_ = g_variant_iter_next (data->iter, "s", &data->message, NULL);
+		if (data->_tmp10_) {
 			if (g_strcmp0 (data->code, "") != 0) {
-				data->_tmp13_ = g_strcmp0 (data->message, "") != 0;
+				data->_tmp11_ = g_strcmp0 (data->message, "") != 0;
 			} else {
-				data->_tmp13_ = FALSE;
+				data->_tmp11_ = FALSE;
 			}
-			if (data->_tmp13_) {
-				data->_tmp14_ = NULL;
-				data->_tmp14_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, data->message);
-				g_ptr_array_add (data->_result_, data->_tmp14_);
+			if (data->_tmp11_) {
+				data->_tmp12_ = NULL;
+				data->_tmp12_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, data->message);
+				g_ptr_array_add (data->_result_, data->_tmp12_);
 			} else {
 				g_ptr_array_add (data->_result_, NULL);
 			}

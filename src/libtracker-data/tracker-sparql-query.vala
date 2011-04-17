@@ -540,20 +540,24 @@ public class Tracker.Sparql.Query : Object {
 
 		// build SQL
 		var sql = new StringBuilder ();
-		sql.append ("SELECT ");
+		sql.append ("SELECT CASE EXISTS ( ");
 
 		expect (SparqlTokenType.ASK);
-
-		sql.append ("COUNT(1) > 0");
 
 		accept (SparqlTokenType.WHERE);
 
 		context = pattern.translate_group_graph_pattern (pattern_sql);
 
 		// select from results of WHERE clause
-		sql.append (" FROM (");
 		sql.append (pattern_sql.str);
-		sql.append (")");
+		sql.append (" ) WHEN 1 THEN 'true' WHEN 0 THEN 'false' ELSE NULL END");
+
+		if (accept (SparqlTokenType.GROUP) || accept (SparqlTokenType.ORDER) ||
+		    accept (SparqlTokenType.OFFSET) || accept (SparqlTokenType.LIMIT)) {
+			throw get_error ("invalid use of %s in ASK".printf (last().to_string()));
+		}
+
+		expect (SparqlTokenType.EOF);
 
 		context = context.parent_context;
 
@@ -768,6 +772,8 @@ public class Tracker.Sparql.Query : Object {
 				expect (SparqlTokenType.CLOSE_BRACE);
 
 				current_graph = old_graph;
+
+				accept (SparqlTokenType.DOT);
 			} else {
 				current_subject = parse_construct_var_or_term (var_value_map);
 				parse_construct_property_list_not_empty (var_value_map);

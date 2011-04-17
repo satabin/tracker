@@ -396,10 +396,6 @@
 <listitem><simpara><link linkend='nco-hasPhoneNumber'>nco:hasPhoneNumber</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
-<note>
-<title>Note:</title>
-<para>This class notifies about changes</para>
-</note>
 </refsect2>
 
 <refsect2 id='nco-FaxNumber'>
@@ -565,10 +561,6 @@
 <listitem><simpara><link linkend='nco-hasPostalAddress'>nco:hasPostalAddress</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
-<note>
-<title>Note:</title>
-<para>This class notifies about changes</para>
-</note>
 </refsect2>
 
 <refsect2 id='nco-IMAddress'>
@@ -642,10 +634,6 @@
 <listitem><simpara><link linkend='nco-representative'>nco:representative</link>, <link linkend='nco-publisher'>nco:publisher</link>, <link linkend='nco-creator'>nco:creator</link>, <link linkend='nco-contributor'>nco:contributor</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
-<note>
-<title>Note:</title>
-<para>This class notifies about changes</para>
-</note>
 </refsect2>
 
 <refsect2 id='nco-EmailAddress'>
@@ -669,10 +657,6 @@
 <listitem><simpara><link linkend='nco-hasEmailAddress'>nco:hasEmailAddress</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
-<note>
-<title>Note:</title>
-<para>This class notifies about changes</para>
-</note>
 </refsect2>
 
 <refsect2 id='nco-ContactListDataObject'>

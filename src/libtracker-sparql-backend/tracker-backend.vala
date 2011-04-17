@@ -31,7 +31,7 @@ class Tracker.Sparql.Backend : Connection {
 		BUS
 	}
 
-	public override void init () throws Sparql.Error, IOError, DBusError, SpawnError {
+	public Backend () throws Sparql.Error, IOError, DBusError, SpawnError {
 		Tracker.Backend.Status status = GLib.Bus.get_proxy_sync (BusType.SESSION,
 		                                                         TRACKER_DBUS_SERVICE,
 		                                                         TRACKER_DBUS_OBJECT_STATUS,
@@ -45,15 +45,8 @@ class Tracker.Sparql.Backend : Connection {
 
 		try {
 			debug ("Constructing connection, direct_only=%s", direct_only ? "true" : "false");
-			if (load_plugins (direct_only)) {
-				debug ("Waiting for backend to become available...");
-				if (direct != null) {
-					direct.init ();
-				} else {
-					bus.init ();
-				}
-				debug ("Backend is ready");
-			}
+			load_plugins (direct_only);
+			debug ("Backend is ready");
 		} catch (GLib.Error e) {
 			throw new Sparql.Error.INTERNAL (e.message);
 		}
@@ -202,32 +195,31 @@ class Tracker.Sparql.Backend : Connection {
 	static new Connection get (bool is_direct_only = false, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError {
 		door.lock ();
 
-		// assign to owned variable to ensure it doesn't get freed between unlock and return
-		var result = singleton;
-		if (result != null) {
-			assert (direct_only == is_direct_only);
+		try {
+			// assign to owned variable to ensure it doesn't get freed between check and return
+			var result = singleton;
+			if (result != null) {
+				assert (direct_only == is_direct_only);
+				return result;
+			}
+
+			log_init ();
+
+			direct_only = is_direct_only;
+
+			result = new Tracker.Sparql.Backend ();
+
+			if (cancellable != null && cancellable.is_cancelled ()) {
+				throw new IOError.CANCELLED ("Operation was cancelled");
+			}
+
+			singleton = result;
+			result.add_weak_pointer ((void**) (&singleton));
+
+			return singleton;
+		} finally {
 			door.unlock ();
-			return result;
 		}
-
-		log_init ();
-
-		direct_only = is_direct_only;
-
-		result = new Tracker.Sparql.Backend ();
-		result.init ();
-
-		if (cancellable != null && cancellable.is_cancelled ()) {
-			door.unlock ();
-			throw new IOError.CANCELLED ("Operation was cancelled");
-		}
-
-		singleton = result;
-		result.add_weak_pointer ((void**) (&singleton));
-
-		door.unlock ();
-
-		return singleton;
 	}
 
 	public static new Connection get_internal (bool is_direct_only = false, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError {

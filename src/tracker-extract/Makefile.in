@@ -399,8 +399,9 @@ libextract_xmp_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 PROGRAMS = $(libexec_PROGRAMS)
 am__tracker_extract_SOURCES_DIST = tracker-marshal.h tracker-marshal.c \
 	tracker-albumart.c tracker-albumart.h tracker-config.c \
-	tracker-config.h tracker-extract.c tracker-extract.h \
-	tracker-read.c tracker-read.h tracker-main.c tracker-main.h \
+	tracker-config.h tracker-controller.c tracker-controller.h \
+	tracker-extract.c tracker-extract.h tracker-read.c \
+	tracker-read.h tracker-main.c tracker-main.h \
 	tracker-albumart-generic.h tracker-gsf.c tracker-gsf.h \
 	tracker-topanalyzer.cpp tracker-topanalyzer.h \
 	tracker-albumart-pixbuf.c tracker-albumart-qt.cpp \
@@ -416,6 +417,7 @@ am__objects_1 = tracker_extract-tracker-marshal.$(OBJEXT)
 am_tracker_extract_OBJECTS = $(am__objects_1) \
 	tracker_extract-tracker-albumart.$(OBJEXT) \
 	tracker_extract-tracker-config.$(OBJEXT) \
+	tracker_extract-tracker-controller.$(OBJEXT) \
 	tracker_extract-tracker-extract.$(OBJEXT) \
 	tracker_extract-tracker-read.$(OBJEXT) \
 	tracker_extract-tracker-main.$(OBJEXT) $(am__objects_2) \
@@ -1143,10 +1145,11 @@ libextract_icon_la_LIBADD = \
 
 tracker_extract_SOURCES = $(marshal_sources) tracker-albumart.c \
 	tracker-albumart.h tracker-config.c tracker-config.h \
-	tracker-extract.c tracker-extract.h tracker-read.c \
-	tracker-read.h tracker-main.c tracker-main.h \
-	tracker-albumart-generic.h $(am__append_16) $(am__append_18) \
-	$(am__append_19) $(am__append_20) $(am__append_21)
+	tracker-controller.c tracker-controller.h tracker-extract.c \
+	tracker-extract.h tracker-read.c tracker-read.h tracker-main.c \
+	tracker-main.h tracker-albumart-generic.h $(am__append_16) \
+	$(am__append_18) $(am__append_19) $(am__append_20) \
+	$(am__append_21)
 tracker_extract_LDADD = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
@@ -1357,6 +1360,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-albumart-pixbuf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-albumart.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-config.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-controller.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-extract.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-gsf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_extract-tracker-main.Po@am__quote@
@@ -1626,6 +1630,22 @@ tracker_extract-tracker-config.obj: tracker-config.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-config.c' object='tracker_extract-tracker-config.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -c -o tracker_extract-tracker-config.obj `if test -f 'tracker-config.c'; then $(CYGPATH_W) 'tracker-config.c'; else $(CYGPATH_W) '$(srcdir)/tracker-config.c'; fi`
+
+tracker_extract-tracker-controller.o: tracker-controller.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -MT tracker_extract-tracker-controller.o -MD -MP -MF $(DEPDIR)/tracker_extract-tracker-controller.Tpo -c -o tracker_extract-tracker-controller.o `test -f 'tracker-controller.c' || echo '$(srcdir)/'`tracker-controller.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_extract-tracker-controller.Tpo $(DEPDIR)/tracker_extract-tracker-controller.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-controller.c' object='tracker_extract-tracker-controller.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -c -o tracker_extract-tracker-controller.o `test -f 'tracker-controller.c' || echo '$(srcdir)/'`tracker-controller.c
+
+tracker_extract-tracker-controller.obj: tracker-controller.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -MT tracker_extract-tracker-controller.obj -MD -MP -MF $(DEPDIR)/tracker_extract-tracker-controller.Tpo -c -o tracker_extract-tracker-controller.obj `if test -f 'tracker-controller.c'; then $(CYGPATH_W) 'tracker-controller.c'; else $(CYGPATH_W) '$(srcdir)/tracker-controller.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_extract-tracker-controller.Tpo $(DEPDIR)/tracker_extract-tracker-controller.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-controller.c' object='tracker_extract-tracker-controller.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -c -o tracker_extract-tracker-controller.obj `if test -f 'tracker-controller.c'; then $(CYGPATH_W) 'tracker-controller.c'; else $(CYGPATH_W) '$(srcdir)/tracker-controller.c'; fi`
 
 tracker_extract-tracker-extract.o: tracker-extract.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_extract_CFLAGS) $(CFLAGS) -MT tracker_extract-tracker-extract.o -MD -MP -MF $(DEPDIR)/tracker_extract-tracker-extract.Tpo -c -o tracker_extract-tracker-extract.o `test -f 'tracker-extract.c' || echo '$(srcdir)/'`tracker-extract.c

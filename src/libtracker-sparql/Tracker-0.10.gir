@@ -403,16 +403,6 @@
 				<type name="Tracker.SparqlConnection" c:type="TrackerSparqlConnection*"/>
 			</return-value>
 		</function>
-		<method name="init" c:identifier="tracker_sparql_connection_init" throws="1">
-			<return-value transfer-ownership="none">
-				<type name="none"/>
-			</return-value>
-		</method>
-		<virtual-method name="init" invoker="init" throws="1">
-			<return-value transfer-ownership="none">
-				<type name="none"/>
-			</return-value>
-		</virtual-method>
 		<method name="query" c:identifier="tracker_sparql_connection_query" throws="1">
 			<parameters>
 				<parameter name="sparql" transfer-ownership="none">
@@ -932,13 +922,6 @@
 	<record name="ConnectionClass" c:type="TrackerSparqlConnectionClass" glib:is-gtype-struct-for="Connection">
 		<field name="parent_class">
 			<type name="GObject.ObjectClass" c:type="GObjectClass"/>
-		</field>
-		<field name="init">
-			<callback name="sparql_connection_init" c:type="sparql_connection_init" throws="1">
-				<return-value transfer-ownership="none">
-					<type name="none"/>
-				</return-value>
-			</callback>
 		</field>
 		<field name="query">
 			<callback name="sparql_connection_query" c:type="sparql_connection_query" throws="1">

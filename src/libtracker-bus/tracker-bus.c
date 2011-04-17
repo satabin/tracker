@@ -465,7 +465,6 @@ enum  {
 };
 TrackerBusConnection* tracker_bus_connection_new (GError** error);
 TrackerBusConnection* tracker_bus_connection_construct (GType object_type, GError** error);
-static void tracker_bus_connection_real_init (TrackerSparqlConnection* base, GError** error);
 static void tracker_bus_connection_pipe (TrackerBusConnection* self, GUnixInputStream** input, GUnixOutputStream** output, GError** error);
 static TrackerSparqlCursor* tracker_bus_connection_real_query (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GError** error);
 static Block1Data* block1_data_ref (Block1Data* _data1_);
@@ -1968,12 +1967,6 @@ TrackerBusConnection* tracker_bus_connection_construct (GType object_type, GErro
 
 TrackerBusConnection* tracker_bus_connection_new (GError** error) {
 	return tracker_bus_connection_construct (TRACKER_BUS_TYPE_CONNECTION, error);
-}
-
-
-static void tracker_bus_connection_real_init (TrackerSparqlConnection* base, GError** error) {
-	TrackerBusConnection * self;
-	self = (TrackerBusConnection*) base;
 }
 
 
@@ -3780,7 +3773,6 @@ static gboolean tracker_bus_connection_real_statistics_async_co (TrackerBusConne
 
 static void tracker_bus_connection_class_init (TrackerBusConnectionClass * klass) {
 	tracker_bus_connection_parent_class = g_type_class_peek_parent (klass);
-	TRACKER_SPARQL_CONNECTION_CLASS (klass)->init = tracker_bus_connection_real_init;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query = tracker_bus_connection_real_query;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_async = tracker_bus_connection_real_query_async;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_finish = tracker_bus_connection_real_query_finish;

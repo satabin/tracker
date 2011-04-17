@@ -513,7 +513,7 @@ EXTRA_DIST = tracker-sparql-$(TRACKER_API_VERSION).deps \
 @HAVE_INTROSPECTION_TRUE@girdir = $(datadir)/gir-1.0
 @HAVE_INTROSPECTION_TRUE@gir_DATA = Tracker-$(TRACKER_API_VERSION).gir
 @HAVE_INTROSPECTION_TRUE@typelibdir = $(libdir)/girepository-1.0
-@HAVE_INTROSPECTION_TRUE@typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+@HAVE_INTROSPECTION_TRUE@typelib_DATA = $(gir_DATA:.gir=.typelib)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 

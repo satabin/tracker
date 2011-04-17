@@ -43,6 +43,7 @@
 static gchar **filenames;
 static gboolean full_namespaces;
 static gboolean print_version;
+static gboolean turtle;
 
 static GOptionEntry entries[] = {
 	{ "version", 'V', 0, G_OPTION_ARG_NONE, &print_version,
@@ -51,6 +52,10 @@ static GOptionEntry entries[] = {
 	},
 	{ "full-namespaces", 'f', 0, G_OPTION_ARG_NONE, &full_namespaces,
 	  N_("Show full namespaces (i.e. don't use nie:title, use full URLs)"),
+	  NULL,
+	},
+	{ "turtle", 't', 0, G_OPTION_ARG_NONE, &turtle,
+	  N_("Output results as RDF in Turtle format"),
 	  NULL,
 	},
 	{ G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &filenames,
@@ -162,6 +167,139 @@ get_prefixes (TrackerSparqlConnection *connection)
 	return retval;
 }
 
+static void
+print_plain (gchar               *urn_or_filename,
+             gchar               *urn,
+             TrackerSparqlCursor *cursor,
+             GHashTable          *prefixes,
+             gboolean             full_namespaces)
+{
+	while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+		const gchar *key = tracker_sparql_cursor_get_string (cursor, 0, NULL);
+		const gchar *value = tracker_sparql_cursor_get_string (cursor, 1, NULL);
+
+		if (!key || !value) {
+			continue;
+		}
+
+		/* Don't display nie:plainTextContent */
+		if (strcmp (key, "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#plainTextContent") == 0) {
+			continue;
+		}
+
+		if (G_UNLIKELY (full_namespaces)) {
+			g_print ("  '%s' = '%s'\n", key, value);
+		} else {
+			gchar *shorthand;
+
+			shorthand = get_shorthand (prefixes, key);
+			g_print ("  '%s' = '%s'\n", shorthand, value);
+			g_free (shorthand);
+		}
+	}
+}
+
+/* print a URI prefix in Turtle format */
+static void
+print_prefix (gpointer key,
+              gpointer value,
+              gpointer user_data)
+{
+	g_print ("@prefix %s: <%s#> .\n", (gchar *) value, (gchar *) key);
+}
+
+/* format a URI for Turtle; if it has a prefix, display uri
+ * as prefix:rest_of_uri; if not, display as <uri>
+ */
+inline static gchar *
+format_urn (GHashTable  *prefixes,
+            const gchar *urn,
+            gboolean     full_namespaces)
+{
+	gchar *urn_out;
+
+	if (full_namespaces) {
+		urn_out = g_strdup_printf ("<%s>", urn);
+	} else {
+		gchar *shorthand = get_shorthand (prefixes, urn);
+
+		/* If the shorthand is the same as the urn passed, we
+		 * assume it is a resource and pass it in as one,
+		 *
+		 *   e.g.: http://purl.org/dc/elements/1.1/date
+		 *     to: http://purl.org/dc/elements/1.1/date
+		 *
+		 * Otherwise, we use the shorthand version instead.
+		 *
+		 *   e.g.: http://www.w3.org/1999/02/22-rdf-syntax-ns
+		 *     to: rdf
+		 */
+		if (g_strcmp0 (shorthand, urn) == 0) {
+			urn_out = g_strdup_printf ("<%s>", urn);
+			g_free (shorthand);
+		} else {
+			urn_out = shorthand;
+		}
+	}
+
+	return urn_out;
+}
+
+/* Print triples for a urn in Turtle format */
+static void
+print_turtle (gchar               *urn,
+              TrackerSparqlCursor *cursor,
+              GHashTable          *prefixes,
+              gboolean             full_namespaces)
+{
+	gchar *subject;
+	gchar *predicate;
+	gchar *object;
+
+	if (G_UNLIKELY (full_namespaces)) {
+		subject = g_strdup (urn);
+	} else {
+		/* truncate subject */
+		subject = get_shorthand (prefixes, urn);
+	}
+
+	while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+		const gchar *key = tracker_sparql_cursor_get_string (cursor, 0, NULL);
+		const gchar *value = tracker_sparql_cursor_get_string (cursor, 1, NULL);
+		const gchar *is_resource = tracker_sparql_cursor_get_string (cursor, 2, NULL);
+
+		if (!key || !value || !is_resource) {
+			continue;
+		}
+
+		/* Don't display nie:plainTextContent */
+		if (strcmp (key, "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#plainTextContent") == 0) {
+			continue;
+		}
+
+		predicate = format_urn (prefixes, key, full_namespaces);
+
+		if (g_ascii_strcasecmp (is_resource, "true") == 0) {
+			object = g_strdup_printf ("<%s>", value);
+		} else {
+			gchar *escaped_value;
+
+			/* Escape value and make sure it is encapsulated properly */
+			escaped_value = tracker_sparql_escape_string (value);
+			object = g_strdup_printf ("\"%s\"", escaped_value);
+			g_free (escaped_value);
+		}
+
+		/* Print final statement */
+		g_print ("<%s> %s %s .\n", subject, predicate, object);
+
+		g_free (predicate);
+		g_free (object);
+	}
+
+	g_free (subject);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -227,6 +365,12 @@ main (int argc, char **argv)
 
 	prefixes = get_prefixes (connection);
 
+	/* print all prefixes if using turtle format and not showing full namespaces */
+	if (turtle && !full_namespaces) {
+		g_hash_table_foreach (prefixes, (GHFunc) print_prefix, NULL);
+		g_print ("\n");
+	}
+
 	for (p = filenames; *p; p++) {
 		TrackerSparqlCursor *cursor;
 		GError *error = NULL;
@@ -234,7 +378,9 @@ main (int argc, char **argv)
 		gchar *query;
 		gchar *urn;
 
-		g_print ("%s:'%s'\n", _("Querying information for entity"), *p);
+		if (!turtle) {
+			g_print ("%s:'%s'\n", _("Querying information for entity"), *p);
+		}
 
 		/* support both, URIs and local file paths */
 		if (has_valid_uri_scheme (*p)) {
@@ -277,12 +423,20 @@ main (int argc, char **argv)
 			urn = g_strdup (uri);
 		} else {
 			urn = g_strdup (tracker_sparql_cursor_get_string (cursor, 0, NULL));
-			g_print ("  '%s'\n", urn);
+
+			if (!turtle) {
+				g_print ("  '%s'\n", urn);
+			}
 
 			g_object_unref (cursor);
 		}
 
-		query = g_strdup_printf ("SELECT ?predicate ?object WHERE { <%s> ?predicate ?object }", urn);
+		query = g_strdup_printf ("SELECT ?predicate ?object"
+		                         "  ( EXISTS { ?predicate rdfs:range [ rdfs:subClassOf rdfs:Resource ] } )"
+		                         "WHERE {"
+		                         "  <%s> ?predicate ?object "
+		                         "}",
+		                         urn);
 
 		cursor = tracker_sparql_connection_query (connection, query, NULL, &error);
 
@@ -302,30 +456,12 @@ main (int argc, char **argv)
 			g_print ("  %s\n",
 			         _("No metadata available for that URI"));
 		} else {
-			g_print ("%s:\n", _("Results"));
+			if (turtle) {
+				print_turtle (urn, cursor, prefixes, full_namespaces);
+			} else {
+				g_print ("%s:\n", _("Results"));
 
-			while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
-				const gchar *key = tracker_sparql_cursor_get_string (cursor, 0, NULL);
-				const gchar *value = tracker_sparql_cursor_get_string (cursor, 1, NULL);
-
-				if (!key || !value) {
-					continue;
-				}
-
-				/* Don't display nie:plainTextContent */
-				if (strcmp (key, "http://www.semanticdesktop.org/ontologies/2007/01/19/nie#plainTextContent") == 0) {
-					continue;
-				}
-
-				if (G_UNLIKELY (full_namespaces)) {
-					g_print ("  '%s' = '%s'\n", key, value);
-				} else {
-					gchar *shorthand;
-
-					shorthand = get_shorthand (prefixes, key);
-					g_print ("  '%s' = '%s'\n", shorthand, value);
-					g_free (shorthand);
-				}
+				print_plain (*p, urn, cursor, prefixes, full_namespaces);
 			}
 
 			g_print ("\n");

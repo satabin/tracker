@@ -113,7 +113,6 @@ enum  {
 };
 TrackerDirectConnection* tracker_direct_connection_new (GError** error);
 TrackerDirectConnection* tracker_direct_connection_construct (GType object_type, GError** error);
-static void tracker_direct_connection_real_init (TrackerSparqlConnection* base, GError** error);
 static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDirectConnection* self, const gchar* sparql, GCancellable* cancellable, GError** error);
 static TrackerSparqlCursor* tracker_direct_connection_real_query (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GError** error);
 static void tracker_direct_connection_real_query_async_data_free (gpointer _data);
@@ -132,25 +131,13 @@ static void tracker_direct_connection_finalize (GObject* obj);
 
 TrackerDirectConnection* tracker_direct_connection_construct (GType object_type, GError** error) {
 	TrackerDirectConnection * self = NULL;
-	g_return_val_if_fail (!tracker_direct_connection_initialized, NULL);
-	self = (TrackerDirectConnection*) tracker_sparql_connection_construct (object_type);
-	return self;
-}
-
-
-TrackerDirectConnection* tracker_direct_connection_new (GError** error) {
-	return tracker_direct_connection_construct (TRACKER_DIRECT_TYPE_CONNECTION, error);
-}
-
-
-static void tracker_direct_connection_real_init (TrackerSparqlConnection* base, GError** error) {
-	TrackerDirectConnection * self;
 	guint select_cache_size;
 	const gchar* _tmp0_ = NULL;
 	gchar* _tmp1_;
 	gchar* env_cache_size;
 	GError * _inner_error_ = NULL;
-	self = (TrackerDirectConnection*) base;
+	g_return_val_if_fail (!tracker_direct_connection_initialized, NULL);
+	self = (TrackerDirectConnection*) tracker_sparql_connection_construct (object_type);
 	select_cache_size = (guint) 100;
 	_tmp0_ = g_getenv ("TRACKER_SPARQL_CACHE_SIZE");
 	_tmp1_ = g_strdup (_tmp0_);
@@ -168,7 +155,7 @@ static void tracker_direct_connection_real_init (TrackerSparqlConnection* base, 
 		_g_free0 (env_cache_size);
 		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
-		return;
+		return NULL;
 	}
 	goto __finally0;
 	__catch0_tracker_db_interface_error:
@@ -187,16 +174,23 @@ static void tracker_direct_connection_real_init (TrackerSparqlConnection* base, 
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
 			g_propagate_error (error, _inner_error_);
 			_g_free0 (env_cache_size);
-			return;
+			_g_object_unref0 (self);
+			return NULL;
 		} else {
 			_g_free0 (env_cache_size);
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 			g_clear_error (&_inner_error_);
-			return;
+			return NULL;
 		}
 	}
 	tracker_direct_connection_initialized = TRUE;
 	_g_free0 (env_cache_size);
+	return self;
+}
+
+
+TrackerDirectConnection* tracker_direct_connection_new (GError** error) {
+	return tracker_direct_connection_construct (TRACKER_DIRECT_TYPE_CONNECTION, error);
 }
 
 
@@ -678,7 +672,6 @@ static gboolean tracker_direct_connection_real_query_async_co (TrackerDirectConn
 
 static void tracker_direct_connection_class_init (TrackerDirectConnectionClass * klass) {
 	tracker_direct_connection_parent_class = g_type_class_peek_parent (klass);
-	TRACKER_SPARQL_CONNECTION_CLASS (klass)->init = tracker_direct_connection_real_init;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query = tracker_direct_connection_real_query;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_async = tracker_direct_connection_real_query_async;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_finish = tracker_direct_connection_real_query_finish;

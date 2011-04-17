@@ -94,7 +94,6 @@ struct _TrackerSparqlConnection {
 
 struct _TrackerSparqlConnectionClass {
 	GObjectClass parent_class;
-	void (*init) (TrackerSparqlConnection* self, GError** error);
 	TrackerSparqlCursor* (*query) (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GError** error);
 	void (*query_async) (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 	TrackerSparqlCursor* (*query_finish) (TrackerSparqlConnection* self, GAsyncResult* _res_, GError** error);
@@ -204,7 +203,6 @@ TrackerSparqlConnection* tracker_sparql_connection_get (GCancellable* cancellabl
 void tracker_sparql_connection_get_direct_async (GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 TrackerSparqlConnection* tracker_sparql_connection_get_direct_finish (GAsyncResult* _res_, GError** error);
 TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* cancellable, GError** error);
-void tracker_sparql_connection_init (TrackerSparqlConnection* self, GError** error);
 TrackerSparqlCursor* tracker_sparql_connection_query (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GError** error);
 void tracker_sparql_connection_query_async (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 TrackerSparqlCursor* tracker_sparql_connection_query_finish (TrackerSparqlConnection* self, GAsyncResult* _res_, GError** error);

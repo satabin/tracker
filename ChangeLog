@@ -1,3 +1,154 @@
+2011-04-14  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.9
+
+	tracker-info: Additional fixes for the --turtle command line option
+	- Make sure we escape strings
+	- Make sure we detect resources properly and encapsulate with <%s>
+
+2011-04-14  Elliot Smith  <elliot.smith@intel.com>
+
+	tracker-info: Support Turtle as an output format
+	Fixes GB#646834
+
+2011-04-14  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-common: Do not apply memory limits to spawned processes
+	The limits broke backup functionality and they are not needed for
+	processes spawned by tracker-extract as the limits are inherited from
+	tracker-extract.
+
+	NCO: Remove tracker:notify from immutable helper classes
+	This removes tracker:notify from nco:Contact, nco:EmailAddress,
+	nco:PhoneNumber, and nco:PostalAddress to avoid unnecessary GraphUpdated
+	emissions as instances of these helper classes are never modified after
+	creation.
+
+	libtracker-sparql: Fix deadlock when tracker is not available
+	If a connection attempt failed, subsequent connection attempts
+	deadlocked.
+
+	libtracker-sparql: Fix fallback from direct access to D-Bus
+	Fixes NB#238770.
+
+2011-04-14  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-writeback: Fix crash when not possible to get D-Bus connection
+	Fixes NB#245998.
+
+2011-04-14  Aleksander Morgado  <aleksander@lanedo.com>
+
+	functional tests: New test to ensure correct iptcdata records are read
+	Testing fix in NB#244267
+
+	functional tests: minor whitespace changes in extractor tester
+
+2011-04-14  Philip Van Hoof  <philip@codeminded.be>
+
+	tests/functional-tests: Use "true" and "false" for ASK
+
+2011-04-14  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-extract: Process only record-2 tags in libiptcdata
+	Fixes NB#244267
+
+2011-04-14  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-sparql: Build typelib and so introspection works
+
+2011-04-14  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-miner: Fix mtime check
+	Due to a bug in the query used for mtime checking, all files were
+	considered updated and hence reextracted.
+
+	Fixes NB#241302.
+
+2011-04-14  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Add check for eof at end of ASK queries
+
+	libtracker-data: Error when OFFSET, LIMIT, etc are used with ASK
+
+	libtracker-data: Use "true" in the unit test too, for ASK
+
+	libtracker-data: Make ASK use the same 'true' and 'false' as xsd:boolean
+	Fixes NB#245589.
+
+2011-04-14  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Test GRAPH template followed by DOT
+
+	SPARQL: Accept DOT after GRAPH template
+	Fixes NB#245373.
+
+2011-04-14  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-04-14  Michael Biebl  <biebl@debian.org>
+
+	build: add missing "\" to libtracker_sparql_LDFLAGS
+
+2011-04-14  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Implicitly convert all fn:concat arguments to strings
+	It previously converted only the first two arguments.
+
+	Fixes NB#213419.
+
+2011-04-14  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-store: plug a leak.
+
+2011-04-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	configure: Add --enable-meegotouch argument
+	Fixes GB#647548. The libmeegotouch was being masked behind
+	--enable-maemo, which also serves the purpose of installing
+	additional ontologies, these are now 2 separate arguments.
+
+2011-04-13  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Make sure we finalize the extractor object to print summary
+
+	tracker-extract: Cleaned up logging
+	Now all the thread tracing has to be turned on specifically with:
+
+	  -D THREAD_ENABLE_TRACE
+
+	The MP3 extractor was also dumping all frame debugging, this has to be
+	turned on with:
+
+	  -D FRAME_ENABLE_TRACE
+
+	Some other sanity checking has been added to the logging so we know
+	the max bytes from the config in the log.
+
+	Things are more sane now with verbosity set to 2
+
+	libtracker-common: Re-instate setrlimit()
+	Previously it was disabled due to GStreamer constantly causing high memory use.
+
+	Now we have re-enabled it and instead of a flat 512Mb (or 80Mb for 64bit) limit,
+	we use 50% of memory capping at MAXLONG (2Gb on 32bit machines) and using
+	at least 256Mb as a minimum.
+
+	This was done to fix my desktop with 4Gb going OOM from a broken PNG file
+
+2011-04-12  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: Handle errors when owning the bus name.
+
+	tracker-extract: Keep the GSource itself in TrackerController
+
+	tracker-extract: quit on pre-unmount if the mount point any processed file
+
+	tracker-extract: Add controller thread
+	This thread takes care of DBus dispatching and extractor lifetime
+	control, the main thread still carries out metadata extraction in
+	a synchronous manner.
+
 2011-04-08  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.8

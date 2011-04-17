@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [8])
-m4_define([tracker_interface_age], [1])
+m4_define([tracker_micro_version], [9])
+m4_define([tracker_interface_age], [2])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -1044,7 +1044,13 @@ AM_CONDITIONAL(HAVE_EXEMPI, test "x$have_exempi" = "xyes")
 # Check for tracker-miner-fs: meegotouch, for MeeGo desktop files
 ####################################################################
 
-if test "x$enable_maemo" != "xno"; then
+AC_ARG_ENABLE(meegotouch,
+              AS_HELP_STRING([--enable-meegotouch],
+                             [enable libmeegotouch application extraction [[default=no]]]),
+             [enable_meegotouch="$enableval"],
+             [enable_meegotouch=no])
+
+if test "x$enable_meegotouch" != "xno"; then
    PKG_CHECK_MODULES(MEEGOTOUCH,
                      [meegotouch >= $MEEGOTOUCH_REQUIRED],
                      [have_meegotouch=yes],
@@ -2197,5 +2203,6 @@ Writeback:
 Frameworks / Options:
 
 	Support Maemo                           $enable_maemo
+	Support libmeegotouch                   $have_meegotouch
         Support Guaranteed Metadata             $enable_guarantee_metadata (e.g. guess nie:title from files)
 "

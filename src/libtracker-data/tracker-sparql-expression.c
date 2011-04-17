@@ -2445,7 +2445,7 @@ static TrackerPropertyType tracker_sparql_expression_translate_function (Tracker
 														break;
 													}
 													g_string_append (sql, "||");
-													tracker_sparql_expression_translate_expression (self, sql, &_inner_error_);
+													tracker_sparql_expression_translate_expression_as_string (self, sql, &_inner_error_);
 													if (_inner_error_ != NULL) {
 														if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 															g_propagate_error (error, _inner_error_);

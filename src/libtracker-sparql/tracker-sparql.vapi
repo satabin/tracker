@@ -61,7 +61,6 @@ namespace Tracker {
 			public static new async Tracker.Sparql.Connection get_async (GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError, GLib.SpawnError;
 			public static new Tracker.Sparql.Connection get_direct (GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError, GLib.SpawnError;
 			public static async Tracker.Sparql.Connection get_direct_async (GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError, GLib.SpawnError;
-			public virtual void init () throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError, GLib.SpawnError;
 			public virtual void load (GLib.File file, GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError;
 			public virtual async void load_async (GLib.File file, GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError;
 			public abstract Tracker.Sparql.Cursor query (string sparql, GLib.Cancellable? cancellable = null) throws Tracker.Sparql.Error, GLib.IOError, GLib.DBusError;

@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="Tracker Client Library Reference Manual">
 <link rel="up" href="ch03.html" title="Building Queries">
 <link rel="prev" href="ch03.html" title="Building Queries">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -25,7 +25,7 @@
                   <a href="#libtracker-client-TrackerSparqlBuilder.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="Sparql builder">
+<div class="refentry">
 <a name="libtracker-client-TrackerSparqlBuilder"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -34,89 +34,91 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libtracker-client-TrackerSparqlBuilder.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">                    <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder">TrackerSparqlBuilder</a>;
-                    <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderClass" title="TrackerSparqlBuilderClass">TrackerSparqlBuilderClass</a>;
+<pre class="synopsis">struct              <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder">TrackerSparqlBuilder</a>;
+struct              <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderClass" title="struct TrackerSparqlBuilderClass">TrackerSparqlBuilderClass</a>;
                     <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderPrivate" title="TrackerSparqlBuilderPrivate">TrackerSparqlBuilderPrivate</a>;
 enum                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderState" title="enum TrackerSparqlBuilderState">TrackerSparqlBuilderState</a>;
-<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new" title="tracker_sparql_builder_new ()">tracker_sparql_builder_new</a>        (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert" title="tracker_sparql_builder_new_embedded_insert ()">tracker_sparql_builder_new_embedded_insert</a>
+<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new" title="tracker_sparql_builder_new ()">tracker_sparql_builder_new</a>      (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert" title="tracker_sparql_builder_new_embedded_insert ()">tracker_sparql_builder_new_embedded_insert</a>
                                                         (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-update" title="tracker_sparql_builder_new_update ()">tracker_sparql_builder_new_update</a> (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct" title="tracker_sparql_builder_construct ()">tracker_sparql_builder_construct</a>  (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> object_type</code></em>);
-<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-embedded-insert" title="tracker_sparql_builder_construct_embedded_insert ()">tracker_sparql_builder_construct_embedded_insert</a>
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> object_type</code></em>);
-<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-update" title="tracker_sparql_builder_construct_update ()">tracker_sparql_builder_construct_update</a>
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> object_type</code></em>);
+<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-update" title="tracker_sparql_builder_new_update ()">tracker_sparql_builder_new_update</a>
+                                                        (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct" title="tracker_sparql_builder_construct ()">tracker_sparql_builder_construct</a>
+                                                        (<em class="parameter"><code><span class="type">GType</span> object_type</code></em>);
+<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-embedded-insert" title="tracker_sparql_builder_construct_embedded_insert ()">tracker_sparql_builder_construct_embedded_insert</a>
+                                                        (<em class="parameter"><code><span class="type">GType</span> object_type</code></em>);
+<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-update" title="tracker_sparql_builder_construct_update ()">tracker_sparql_builder_construct_update</a>
+                                                        (<em class="parameter"><code><span class="type">GType</span> object_type</code></em>);
 <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderState" title="enum TrackerSparqlBuilderState"><span class="returnvalue">TrackerSparqlBuilderState</span></a>  <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-state" title="tracker_sparql_builder_get_state ()">tracker_sparql_builder_get_state</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a>*        <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-result" title="tracker_sparql_builder_get_result ()">tracker_sparql_builder_get_result</a>   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-length" title="tracker_sparql_builder_get_length ()">tracker_sparql_builder_get_length</a>   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-append" title="tracker_sparql_builder_append ()">tracker_sparql_builder_append</a>       (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *raw</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-prepend" title="tracker_sparql_builder_prepend ()">tracker_sparql_builder_prepend</a>      (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *raw</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open" title="tracker_sparql_builder_insert_open ()">tracker_sparql_builder_insert_open</a>  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-close" title="tracker_sparql_builder_insert_close ()">tracker_sparql_builder_insert_close</a> (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-open" title="tracker_sparql_builder_where_open ()">tracker_sparql_builder_where_open</a>   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-close" title="tracker_sparql_builder_where_close ()">tracker_sparql_builder_where_close</a>  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-open" title="tracker_sparql_builder_delete_open ()">tracker_sparql_builder_delete_open</a>  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-close" title="tracker_sparql_builder_delete_close ()">tracker_sparql_builder_delete_close</a> (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-drop-graph" title="tracker_sparql_builder_drop_graph ()">tracker_sparql_builder_drop_graph</a>   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-result" title="tracker_sparql_builder_get_result ()">tracker_sparql_builder_get_result</a>   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
+<span class="returnvalue">gint</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-length" title="tracker_sparql_builder_get_length ()">tracker_sparql_builder_get_length</a>   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-append" title="tracker_sparql_builder_append ()">tracker_sparql_builder_append</a>       (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *raw</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-prepend" title="tracker_sparql_builder_prepend ()">tracker_sparql_builder_prepend</a>      (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *raw</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open" title="tracker_sparql_builder_insert_open ()">tracker_sparql_builder_insert_open</a>  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-close" title="tracker_sparql_builder_insert_close ()">tracker_sparql_builder_insert_close</a> (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-open" title="tracker_sparql_builder_where_open ()">tracker_sparql_builder_where_open</a>   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-close" title="tracker_sparql_builder_where_close ()">tracker_sparql_builder_where_close</a>  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-open" title="tracker_sparql_builder_delete_open ()">tracker_sparql_builder_delete_open</a>  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-close" title="tracker_sparql_builder_delete_close ()">tracker_sparql_builder_delete_close</a> (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-drop-graph" title="tracker_sparql_builder_drop_graph ()">tracker_sparql_builder_drop_graph</a>   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-variable" title="tracker_sparql_builder_subject_variable ()">tracker_sparql_builder_subject_variable</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *var_name</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri" title="tracker_sparql_builder_subject_iri ()">tracker_sparql_builder_subject_iri</a>  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject" title="tracker_sparql_builder_subject ()">tracker_sparql_builder_subject</a>      (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *s</code></em>);
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *var_name</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri" title="tracker_sparql_builder_subject_iri ()">tracker_sparql_builder_subject_iri</a>  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject" title="tracker_sparql_builder_subject ()">tracker_sparql_builder_subject</a>      (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate-iri" title="tracker_sparql_builder_predicate_iri ()">tracker_sparql_builder_predicate_iri</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate" title="tracker_sparql_builder_predicate ()">tracker_sparql_builder_predicate</a>    (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *s</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-iri" title="tracker_sparql_builder_object_iri ()">tracker_sparql_builder_object_iri</a>   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object" title="tracker_sparql_builder_object ()">tracker_sparql_builder_object</a>       (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *s</code></em>);
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate" title="tracker_sparql_builder_predicate ()">tracker_sparql_builder_predicate</a>    (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-iri" title="tracker_sparql_builder_object_iri ()">tracker_sparql_builder_object_iri</a>   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object" title="tracker_sparql_builder_object ()">tracker_sparql_builder_object</a>       (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-string" title="tracker_sparql_builder_object_string ()">tracker_sparql_builder_object_string</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *literal</code></em>);
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *literal</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-boolean" title="tracker_sparql_builder_object_boolean ()">tracker_sparql_builder_object_boolean</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> literal</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-int64" title="tracker_sparql_builder_object_int64 ()">tracker_sparql_builder_object_int64</a> (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> literal</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-date" title="tracker_sparql_builder_object_date ()">tracker_sparql_builder_object_date</a>  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> literal</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-int64" title="tracker_sparql_builder_object_int64 ()">tracker_sparql_builder_object_int64</a> (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> literal</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-date" title="tracker_sparql_builder_object_date ()">tracker_sparql_builder_object_date</a>  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                                          <em class="parameter"><code><span class="type">time_t</span> *literal</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-double" title="tracker_sparql_builder_object_double ()">tracker_sparql_builder_object_double</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> literal</code></em>);
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> literal</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-variable" title="tracker_sparql_builder_object_variable ()">tracker_sparql_builder_object_variable</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *var_name</code></em>);
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *var_name</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-open" title="tracker_sparql_builder_object_blank_open ()">tracker_sparql_builder_object_blank_open</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-close" title="tracker_sparql_builder_object_blank_close ()">tracker_sparql_builder_object_blank_close</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-unvalidated" title="tracker_sparql_builder_object_unvalidated ()">tracker_sparql_builder_object_unvalidated</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *value</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libtracker-client-TrackerSparqlBuilder.description"></a><h2>Description</h2>
 <p>
-<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> is an object what will gather a set of
+<a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> is an object what will gather a set of
 subject/predicate/object triples, together with an optional WHERE clause,
 in order to create a query that may be issued to tracker-store.
 </p>
 <p>
-When using <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>, note that you may append several predicates
+When using <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>, note that you may append several predicates
 for the same subject, and several objects for the same predicate.
 </p>
 <div class="example">
@@ -152,14 +154,14 @@ for the same subject, and several objects for the same predicate.
 </div>
 <br class="example-break">
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libtracker-client-TrackerSparqlBuilder.details"></a><h2>Details</h2>
-<div class="refsect2" title="TrackerSparqlBuilder">
-<a name="TrackerSparqlBuilder"></a><h3>TrackerSparqlBuilder</h3>
-<pre class="programlisting">typedef struct {
+<div class="refsect2">
+<a name="TrackerSparqlBuilder"></a><h3>struct TrackerSparqlBuilder</h3>
+<pre class="programlisting">struct TrackerSparqlBuilder {
 	GObject parent_instance;
 	TrackerSparqlBuilderPrivate * priv;
-} TrackerSparqlBuilder;
+};
 </pre>
 <p>
 The <span class="structname">TrackerSparqlBuilder</span> object represents an
@@ -167,24 +169,24 @@ insertion/update SparQL query.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TrackerSparqlBuilderClass">
-<a name="TrackerSparqlBuilderClass"></a><h3>TrackerSparqlBuilderClass</h3>
-<pre class="programlisting">typedef struct {
+<div class="refsect2">
+<a name="TrackerSparqlBuilderClass"></a><h3>struct TrackerSparqlBuilderClass</h3>
+<pre class="programlisting">struct TrackerSparqlBuilderClass {
 	GObjectClass parent_class;
-} TrackerSparqlBuilderClass;
+};
 </pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TrackerSparqlBuilderPrivate">
+<div class="refsect2">
 <a name="TrackerSparqlBuilderPrivate"></a><h3>TrackerSparqlBuilderPrivate</h3>
 <pre class="programlisting">typedef struct _TrackerSparqlBuilderPrivate TrackerSparqlBuilderPrivate;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="enum TrackerSparqlBuilderState">
+<div class="refsect2">
 <a name="TrackerSparqlBuilderState"></a><h3>enum TrackerSparqlBuilderState</h3>
 <pre class="programlisting">typedef enum  {
 	TRACKER_SPARQL_BUILDER_STATE_UPDATE,
@@ -202,37 +204,36 @@ insertion/update SparQL query.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_new ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-new"></a><h3>tracker_sparql_builder_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* tracker_sparql_builder_new        (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  tracker_sparql_builder_new      (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_new</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new" title="tracker_sparql_builder_new ()"><code class="function">tracker_sparql_builder_new()</code></a> in libtracker-sparql instead.</p>
 </div>
 <p>
-Creates a stateless <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>.
+Creates a stateless <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a newly created <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> when done
-</td>
+<td>a newly created <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <code class="function">g_object_unref()</code> when done</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_new_embedded_insert ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-new-embedded-insert"></a><h3>tracker_sparql_builder_new_embedded_insert ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* tracker_sparql_builder_new_embedded_insert
+<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  tracker_sparql_builder_new_embedded_insert
                                                         (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_new_embedded_insert</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert" title="tracker_sparql_builder_new_embedded_insert ()"><code class="function">tracker_sparql_builder_new_embedded_insert()</code></a> in libtracker-sparql instead.</p>
 </div>
 <p>
-Creates a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> ready to be embedded in another query. In embedded
+Creates a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> ready to be embedded in another query. In embedded
 inserts, the subject is implied (responsibility of the embedder), so only calls to
 append predicates and objects for the given subject are allowed.
 </p>
@@ -240,149 +241,89 @@ append predicates and objects for the given subject are allowed.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a newly created <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> when done
-</td>
+<td>a newly created <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <code class="function">g_object_unref()</code> when done</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_new_update ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-new-update"></a><h3>tracker_sparql_builder_new_update ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* tracker_sparql_builder_new_update (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  tracker_sparql_builder_new_update
+                                                        (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_new_update</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-update" title="tracker_sparql_builder_new_update ()"><code class="function">tracker_sparql_builder_new_update()</code></a> in libtracker-sparql instead.</p>
 </div>
 <p>
-Creates an empty <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> for an update query.
+Creates an empty <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> for an update query.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a newly created <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> when done
-</td>
+<td>a newly created <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>. Free with <code class="function">g_object_unref()</code> when done</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_construct ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-construct"></a><h3>tracker_sparql_builder_construct ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* tracker_sparql_builder_construct  (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> object_type</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  tracker_sparql_builder_construct
+                                                        (<em class="parameter"><code><span class="type">GType</span> object_type</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_construct</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct" title="tracker_sparql_builder_construct ()"><code class="function">tracker_sparql_builder_construct()</code></a> in libtracker-sparql instead.</p>
 </div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>object_type</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_construct_embedded_insert ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-construct-embedded-insert"></a><h3>tracker_sparql_builder_construct_embedded_insert ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* tracker_sparql_builder_construct_embedded_insert
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> object_type</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  tracker_sparql_builder_construct_embedded_insert
+                                                        (<em class="parameter"><code><span class="type">GType</span> object_type</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_construct_embedded_insert</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-embedded-insert" title="tracker_sparql_builder_construct_embedded_insert ()"><code class="function">tracker_sparql_builder_construct_embedded_insert()</code></a> in libtracker-sparql instead.</p>
 </div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>object_type</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_construct_update ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-construct-update"></a><h3>tracker_sparql_builder_construct_update ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a>* tracker_sparql_builder_construct_update
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="type">GType</span></a> object_type</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> *  tracker_sparql_builder_construct_update
+                                                        (<em class="parameter"><code><span class="type">GType</span> object_type</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_construct_update</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-update" title="tracker_sparql_builder_construct_update ()"><code class="function">tracker_sparql_builder_construct_update()</code></a> in libtracker-sparql instead.</p>
 </div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>object_type</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_get_state ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-get-state"></a><h3>tracker_sparql_builder_get_state ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderState" title="enum TrackerSparqlBuilderState"><span class="returnvalue">TrackerSparqlBuilderState</span></a>  tracker_sparql_builder_get_state
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_get_state</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-state" title="tracker_sparql_builder_get_state ()"><code class="function">tracker_sparql_builder_get_state()</code></a> in libtracker-sparql instead.</p>
 </div>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_get_result ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-get-result"></a><h3>tracker_sparql_builder_get_result ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a>*        tracker_sparql_builder_get_result   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       tracker_sparql_builder_get_result   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_get_result</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-result" title="tracker_sparql_builder_get_result ()"><code class="function">tracker_sparql_builder_get_result()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -394,23 +335,22 @@ Returns the constructed SparQL query as a string.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The created SparQL query.
-</td>
+<td>The created SparQL query.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_get_length ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-get-length"></a><h3>tracker_sparql_builder_get_length ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                tracker_sparql_builder_get_length   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">gint</span>                tracker_sparql_builder_get_length   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_get_length</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-length" title="tracker_sparql_builder_get_length ()"><code class="function">tracker_sparql_builder_get_length()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -422,24 +362,23 @@ Returns the number of objects added to <em class="parameter"><code>self</code></
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The number of objects contained.
-</td>
+<td>The number of objects contained.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_append ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-append"></a><h3>tracker_sparql_builder_append ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_append       (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *raw</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_append       (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *raw</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_append</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-append" title="tracker_sparql_builder_append ()"><code class="function">tracker_sparql_builder_append()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -451,24 +390,23 @@ Appends raw, unvalidated content to <em class="parameter"><code>self</code></em>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>raw</code></em> :</span></p></td>
-<td>raw content to append.
-</td>
+<td>raw content to append.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_prepend ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-prepend"></a><h3>tracker_sparql_builder_prepend ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_prepend      (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *raw</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_prepend      (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *raw</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_prepend</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-prepend" title="tracker_sparql_builder_prepend ()"><code class="function">tracker_sparql_builder_prepend()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -480,24 +418,23 @@ Prepends raw, unvalidated content to <em class="parameter"><code>self</code></em
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>raw</code></em> :</span></p></td>
-<td>raw content to prepend.
-</td>
+<td>raw content to prepend.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_insert_open ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-insert-open"></a><h3>tracker_sparql_builder_insert_open ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_insert_open  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_insert_open  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_insert_open</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open" title="tracker_sparql_builder_insert_open ()"><code class="function">tracker_sparql_builder_insert_open()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -509,23 +446,22 @@ Opens an insertion statement.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>graph</code></em> :</span></p></td>
-<td>Graph name, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.
-</td>
+<td>Graph name, or <code class="literal">NULL</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_insert_close ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-insert-close"></a><h3>tracker_sparql_builder_insert_close ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_insert_close (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_insert_close (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_insert_close</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-close" title="tracker_sparql_builder_insert_close ()"><code class="function">tracker_sparql_builder_insert_close()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -536,17 +472,17 @@ Closes an insertion statement opened with <a class="link" href="libtracker-clien
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_where_open ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-where-open"></a><h3>tracker_sparql_builder_where_open ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_where_open   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_where_open   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_where_open</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-open" title="tracker_sparql_builder_where_open ()"><code class="function">tracker_sparql_builder_where_open()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -558,17 +494,17 @@ to which the update query applies.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_where_close ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-where-close"></a><h3>tracker_sparql_builder_where_close ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_where_close  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_where_close  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_where_close</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-close" title="tracker_sparql_builder_where_close ()"><code class="function">tracker_sparql_builder_where_close()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -579,18 +515,18 @@ Closes a WHERE clause opened through <a class="link" href="libtracker-client-Tra
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_delete_open ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-delete-open"></a><h3>tracker_sparql_builder_delete_open ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_delete_open  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_delete_open  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *graph</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_delete_open</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-open" title="tracker_sparql_builder_delete_open ()"><code class="function">tracker_sparql_builder_delete_open()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -603,23 +539,22 @@ a query to delete them.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>graph</code></em> :</span></p></td>
-<td>Graph name, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.
-</td>
+<td>Graph name, or <code class="literal">NULL</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_delete_close ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-delete-close"></a><h3>tracker_sparql_builder_delete_close ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_delete_close (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_delete_close (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_delete_close</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-close" title="tracker_sparql_builder_delete_close ()"><code class="function">tracker_sparql_builder_delete_close()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -630,18 +565,18 @@ Closes a DELETE clause opened through <a class="link" href="libtracker-client-Tr
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_drop_graph ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-drop-graph"></a><h3>tracker_sparql_builder_drop_graph ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_drop_graph   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_drop_graph   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_drop_graph</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-drop-graph" title="tracker_sparql_builder_drop_graph ()"><code class="function">tracker_sparql_builder_drop_graph()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -653,25 +588,24 @@ Appends a DROP GRAPH clause.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>iri</code></em> :</span></p></td>
-<td>a graph name.
-</td>
+<td>a graph name.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_subject_variable ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-subject-variable"></a><h3>tracker_sparql_builder_subject_variable ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_subject_variable
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *var_name</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *var_name</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_subject_variable</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-variable" title="tracker_sparql_builder_subject_variable ()"><code class="function">tracker_sparql_builder_subject_variable()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -683,24 +617,23 @@ Appends a subject as a SparQL variable, such as "?urn".
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>var_name</code></em> :</span></p></td>
-<td>Variable name, without leading '?'
-</td>
+<td>Variable name, without leading '?'</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_subject_iri ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-subject-iri"></a><h3>tracker_sparql_builder_subject_iri ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_subject_iri  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_subject_iri  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_subject_iri</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri" title="tracker_sparql_builder_subject_iri ()"><code class="function">tracker_sparql_builder_subject_iri()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -713,24 +646,23 @@ univocally identify a resource in tracker-store.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>iri</code></em> :</span></p></td>
-<td>IRI name, without leading and trailing greater/less than symbols.
-</td>
+<td>IRI name, without leading and trailing greater/less than symbols.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_subject ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-subject"></a><h3>tracker_sparql_builder_subject ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_subject      (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *s</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_subject      (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_subject</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject" title="tracker_sparql_builder_subject ()"><code class="function">tracker_sparql_builder_subject()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -742,25 +674,24 @@ Appends a subject.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>s</code></em> :</span></p></td>
-<td>subject string
-</td>
+<td>subject string</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_predicate_iri ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-predicate-iri"></a><h3>tracker_sparql_builder_predicate_iri ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_predicate_iri
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_predicate_iri</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate-iri" title="tracker_sparql_builder_predicate_iri ()"><code class="function">tracker_sparql_builder_predicate_iri()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -772,24 +703,23 @@ Appends a predicate as an IRI.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>iri</code></em> :</span></p></td>
-<td>IRI name, without leading and trailing greater/less than symbols.
-</td>
+<td>IRI name, without leading and trailing greater/less than symbols.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_predicate ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-predicate"></a><h3>tracker_sparql_builder_predicate ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_predicate    (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *s</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_predicate    (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_predicate</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate" title="tracker_sparql_builder_predicate ()"><code class="function">tracker_sparql_builder_predicate()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -801,24 +731,23 @@ Appends a predicate for the previously appended subject.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>s</code></em> :</span></p></td>
-<td>predicate string
-</td>
+<td>predicate string</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object_iri ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object-iri"></a><h3>tracker_sparql_builder_object_iri ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_iri   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *iri</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_iri   (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *iri</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object_iri</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-iri" title="tracker_sparql_builder_object_iri ()"><code class="function">tracker_sparql_builder_object_iri()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -830,24 +759,23 @@ Appends an object as an IRI.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>iri</code></em> :</span></p></td>
-<td>IRI name, without leading and trailing greater/less than symbols.
-</td>
+<td>IRI name, without leading and trailing greater/less than symbols.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object"></a><h3>tracker_sparql_builder_object ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object       (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *s</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object       (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object" title="tracker_sparql_builder_object ()"><code class="function">tracker_sparql_builder_object()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -859,25 +787,24 @@ Appends a free-form object for the previously appended subject and predicate.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>s</code></em> :</span></p></td>
-<td>object string
-</td>
+<td>object string</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object_string ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object-string"></a><h3>tracker_sparql_builder_object_string ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_string
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *literal</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *literal</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object_string</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-string" title="tracker_sparql_builder_object_string ()"><code class="function">tracker_sparql_builder_object_string()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -890,83 +817,80 @@ by double quotes.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>literal</code></em> :</span></p></td>
-<td>string object
-</td>
+<td>string object</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object_boolean ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object-boolean"></a><h3>tracker_sparql_builder_object_boolean ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_boolean
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> literal</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> literal</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object_boolean</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-boolean" title="tracker_sparql_builder_object_boolean ()"><code class="function">tracker_sparql_builder_object_boolean()</code></a> in libtracker-sparql instead.</p>
 </div>
 <p>
-Appends a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> value as an object.
+Appends a <span class="type">gboolean</span> value as an object.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>literal</code></em> :</span></p></td>
-<td>boolean object
-</td>
+<td>boolean object</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object_int64 ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object-int64"></a><h3>tracker_sparql_builder_object_int64 ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_int64 (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> literal</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_int64 (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> literal</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object_int64</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-int64" title="tracker_sparql_builder_object_int64 ()"><code class="function">tracker_sparql_builder_object_int64()</code></a> in libtracker-sparql instead.</p>
 </div>
 <p>
-Appends a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> as an object.
+Appends a <span class="type">gint64</span> as an object.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>literal</code></em> :</span></p></td>
-<td>object as gint64
-</td>
+<td>object as gint64</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object_date ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object-date"></a><h3>tracker_sparql_builder_object_date ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_date  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_date  (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
                                                          <em class="parameter"><code><span class="type">time_t</span> *literal</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object_date</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-date" title="tracker_sparql_builder_object_date ()"><code class="function">tracker_sparql_builder_object_date()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -979,42 +903,40 @@ string in the date format used by tracker-store.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>literal</code></em> :</span></p></td>
-<td>object as time_t
-</td>
+<td>object as time_t</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object_double ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object-double"></a><h3>tracker_sparql_builder_object_double ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_double
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> literal</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> literal</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object_double</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-double" title="tracker_sparql_builder_object_double ()"><code class="function">tracker_sparql_builder_object_double()</code></a> in libtracker-sparql instead.</p>
 </div>
 <p>
-Appends a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> as an object.
+Appends a <span class="type">gdouble</span> as an object.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a TrackerSparqlBuilder
-</td>
+<td>a TrackerSparqlBuilder</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>literal</code></em> :</span></p></td>
-<td>object as <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>
+<td>object as <span class="type">gdouble</span>
 </td>
 </tr>
 </tbody>
@@ -1022,12 +944,12 @@ Appends a <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object_variable ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object-variable"></a><h3>tracker_sparql_builder_object_variable ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_variable
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *var_name</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *var_name</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object_variable</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-variable" title="tracker_sparql_builder_object_variable ()"><code class="function">tracker_sparql_builder_object_variable()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -1039,24 +961,23 @@ Appends an object as a SparQL variable, such as "?urn".
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>var_name</code></em> :</span></p></td>
-<td>variable name, without leading '?'
-</td>
+<td>variable name, without leading '?'</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object_blank_open ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object-blank-open"></a><h3>tracker_sparql_builder_object_blank_open ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_blank_open
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object_blank_open</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-open" title="tracker_sparql_builder_object_blank_open ()"><code class="function">tracker_sparql_builder_object_blank_open()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -1069,18 +990,18 @@ separate insertion.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object_blank_close ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object-blank-close"></a><h3>tracker_sparql_builder_object_blank_close ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_blank_close
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object_blank_close</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-close" title="tracker_sparql_builder_object_blank_close ()"><code class="function">tracker_sparql_builder_object_blank_close()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -1091,19 +1012,19 @@ Closes an anomymous blank node opened with <a class="link" href="libtracker-clie
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_builder_object_unvalidated ()">
+<div class="refsect2">
 <a name="tracker-sparql-builder-object-unvalidated"></a><h3>tracker_sparql_builder_object_unvalidated ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_builder_object_unvalidated
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *value</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_sparql_builder_object_unvalidated</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-unvalidated" title="tracker_sparql_builder_object_unvalidated ()"><code class="function">tracker_sparql_builder_object_unvalidated()</code></a> in libtracker-sparql instead.</p>
 </div>
@@ -1115,13 +1036,12 @@ Appends a string not validated as UTF-8 as an object.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a class="link" href="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder" title="struct TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td>possibly UTF-8 invalid string.
-</td>
+<td>possibly UTF-8 invalid string.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1131,6 +1051,6 @@ Appends a string not validated as UTF-8 as an object.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link rel="up" href="tracker-examples.html" title="Part III. Examples">
 <link rel="prev" href="tracker-examples-builder.html" title="SPARQL query builder">
 <link rel="next" href="tracker-examples-writeonly.html" title="Updating the Store">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -19,12 +19,12 @@
 <th width="100%" align="center">Tracker SPARQL Library Reference Manual</th>
 <td><a accesskey="n" href="tracker-examples-writeonly.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="chapter" title="Querying the Store">
+<div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="tracker-examples-readonly"></a>Querying the Store</h2></div></div></div>
 <p>
       In order to perform read-only queries to the store, a new
-      <span class="type"><a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnection-struct" title="TrackerSparqlConnection">TrackerSparqlConnection</a></span>
+      <span class="type"><a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnection-struct" title="struct TrackerSparqlConnection">TrackerSparqlConnection</a></span>
       object must be acquired. In this case, as there is no intention of updating any
       value in the store, both the general connection (with
       <code class="function"><a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()">tracker_sparql_connection_get</a></code>)
@@ -41,7 +41,7 @@
       <code class="function"><a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-query-finish" title="tracker_sparql_connection_query_finish ()">tracker_sparql_connection_query_finish</a></code>.
     </p>
 <p>
-      If the query was successful, a <span class="type"><a class="link" href="TrackerSparqlCursor.html#TrackerSparqlCursor-struct" title="TrackerSparqlCursor">TrackerSparqlCursor</a></span>
+      If the query was successful, a <span class="type"><a class="link" href="TrackerSparqlCursor.html#TrackerSparqlCursor-struct" title="struct TrackerSparqlCursor">TrackerSparqlCursor</a></span>
       will be available. You can now iterate the results of the query both synchronously (with
       <code class="function"><a class="link" href="TrackerSparqlCursor.html#tracker-sparql-cursor-next" title="tracker_sparql_cursor_next ()">tracker_sparql_cursor_next</a></code>) or
       asynchronously (with
@@ -49,9 +49,9 @@
       <code class="function"><a class="link" href="TrackerSparqlCursor.html#tracker-sparql-cursor-next-finish" title="tracker_sparql_cursor_next_finish ()">tracker_sparql_cursor_next_finish</a></code>)
     </p>
 <p>
-      Once you end up with the query, remember to call <code class="function"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref">g_object_unref</a></code>
-      for the <span class="type"><a class="link" href="TrackerSparqlCursor.html#TrackerSparqlCursor-struct" title="TrackerSparqlCursor">TrackerSparqlCursor</a></span>. And the same applies to the
-      <span class="type"><a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnection-struct" title="TrackerSparqlConnection">TrackerSparqlConnection</a></span> when no longer needed.
+      Once you end up with the query, remember to call <code class="function">g_object_unref</code>
+      for the <span class="type"><a class="link" href="TrackerSparqlCursor.html#TrackerSparqlCursor-struct" title="struct TrackerSparqlCursor">TrackerSparqlCursor</a></span>. And the same applies to the
+      <span class="type"><a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnection-struct" title="struct TrackerSparqlConnection">TrackerSparqlConnection</a></span> when no longer needed.
     </p>
 <p>
       The following program shows how Read-Only queries can be done to the store in a
@@ -64,8 +64,8 @@
 int main (int argc, const char **argv)
 {
   GError *error = NULL;
-  <span class="type"><a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnection-struct" title="TrackerSparqlConnection">TrackerSparqlConnection</a></span> *connection;
-  <span class="type"><a class="link" href="TrackerSparqlCursor.html#TrackerSparqlCursor-struct" title="TrackerSparqlCursor">TrackerSparqlCursor</a></span> *cursor;
+  <span class="type"><a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnection-struct" title="struct TrackerSparqlConnection">TrackerSparqlConnection</a></span> *connection;
+  <span class="type"><a class="link" href="TrackerSparqlCursor.html#TrackerSparqlCursor-struct" title="struct TrackerSparqlCursor">TrackerSparqlCursor</a></span> *cursor;
   const gchar *query = "SELECT nie:url(?u) WHERE { ?u a nfo:FileDataObject }";
 
   /* Initialize GLib type system */
@@ -127,6 +127,6 @@ int main (int argc, const char **argv)
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

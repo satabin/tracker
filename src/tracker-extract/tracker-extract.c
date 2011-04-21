@@ -590,7 +590,7 @@ get_file_metadata (TrackerExtract         *extract,
 	*preupdate_out = preupdate;
 	*statements_out = statements;
 
-	return FALSE;
+	return TRUE;
 }
 
 static void
@@ -604,7 +604,6 @@ tracker_extract_info_free (TrackerExtractInfo *info)
 		g_object_unref (info->preupdate);
 	}
 
-	g_free (info->where);
 	g_slice_free (TrackerExtractInfo, info);
 }
 

@@ -31,7 +31,7 @@
     <keyword type="macro" name="TRACKER_MINER_ERROR_DOMAIN" link="libtracker-miner-tracker-miner.html#TRACKER-MINER-ERROR-DOMAIN:CAPS"/>
     <keyword type="macro" name="TRACKER_MINER_ERROR" link="libtracker-miner-tracker-miner.html#TRACKER-MINER-ERROR:CAPS"/>
     <keyword type="function" name="tracker_miner_error_quark ()" link="libtracker-miner-tracker-miner.html#tracker-miner-error-quark" since="0.8"/>
-    <keyword type="struct" name="TrackerMiner" link="libtracker-miner-tracker-miner.html#TrackerMiner-struct"/>
+    <keyword type="struct" name="struct TrackerMiner" link="libtracker-miner-tracker-miner.html#TrackerMiner-struct"/>
     <keyword type="struct" name="TrackerMinerClass" link="libtracker-miner-tracker-miner.html#TrackerMinerClass"/>
     <keyword type="function" name="tracker_miner_start ()" link="libtracker-miner-tracker-miner.html#tracker-miner-start" since="0.8"/>
     <keyword type="function" name="tracker_miner_stop ()" link="libtracker-miner-tracker-miner.html#tracker-miner-stop" since="0.8"/>
@@ -67,7 +67,7 @@
     <keyword type="function" name="tracker_miner_web_dissociate ()" link="libtracker-miner-tracker-miner-web.html#tracker-miner-web-dissociate" since="0.8"/>
     <keyword type="function" name="tracker_miner_web_get_association_data ()" link="libtracker-miner-tracker-miner-web.html#tracker-miner-web-get-association-data" since="0.8"/>
     <keyword type="struct" name="TrackerMinerFSPrivate" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFSPrivate"/>
-    <keyword type="struct" name="TrackerMinerFS" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-struct"/>
+    <keyword type="struct" name="struct TrackerMinerFS" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-struct"/>
     <keyword type="struct" name="TrackerMinerFSClass" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFSClass"/>
     <keyword type="function" name="tracker_miner_fs_check_directory ()" link="libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-check-directory" since="0.10"/>
     <keyword type="function" name="tracker_miner_fs_check_file ()" link="libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-check-file" since="0.10"/>
@@ -90,6 +90,7 @@
     <keyword type="property" name="The &quot;initial-crawling&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--initial-crawling"/>
     <keyword type="property" name="The &quot;mtime-checking&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--mtime-checking"/>
     <keyword type="property" name="The &quot;processing-pool-ready-limit&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--processing-pool-ready-limit"/>
+    <keyword type="property" name="The &quot;processing-pool-requests-limit&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--processing-pool-requests-limit"/>
     <keyword type="property" name="The &quot;processing-pool-wait-limit&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--processing-pool-wait-limit"/>
     <keyword type="property" name="The &quot;throttle&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--throttle"/>
     <keyword type="signal" name="The &quot;check-directory&quot; signal" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-check-directory"/>
@@ -103,8 +104,8 @@
     <keyword type="macro" name="TRACKER_MINER_MANAGER_ERROR" link="TrackerMinerManager.html#TRACKER-MINER-MANAGER-ERROR:CAPS"/>
     <keyword type="enum" name="enum TrackerMinerManagerError" link="TrackerMinerManager.html#TrackerMinerManagerError" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_error_quark ()" link="TrackerMinerManager.html#tracker-miner-manager-error-quark"/>
-    <keyword type="struct" name="TrackerMinerManager" link="TrackerMinerManager.html#TrackerMinerManager-struct"/>
-    <keyword type="struct" name="TrackerMinerManagerClass" link="TrackerMinerManager.html#TrackerMinerManagerClass"/>
+    <keyword type="struct" name="struct TrackerMinerManager" link="TrackerMinerManager.html#TrackerMinerManager-struct"/>
+    <keyword type="struct" name="struct TrackerMinerManagerClass" link="TrackerMinerManager.html#TrackerMinerManagerClass"/>
     <keyword type="function" name="tracker_miner_manager_new ()" link="TrackerMinerManager.html#tracker-miner-manager-new" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_new_full ()" link="TrackerMinerManager.html#tracker-miner-manager-new-full" since="0.10.5"/>
     <keyword type="function" name="tracker_miner_manager_get_running ()" link="TrackerMinerManager.html#tracker-miner-manager-get-running" since="0.8"/>
@@ -146,8 +147,8 @@
     <keyword type="function" name="tracker_password_provider_forget_password ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-forget-password" since="0.8"/>
     <keyword type="function" name="tracker_password_provider_lock_password ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-lock-password" since="0.8"/>
     <keyword type="function" name="tracker_password_provider_unlock_password ()" link="libtracker-miner-TrackerPasswordProvider.html#tracker-password-provider-unlock-password" since="0.8"/>
-    <keyword type="struct" name="TrackerStorage" link="libtracker-miner-TrackerStorage.html#TrackerStorage"/>
-    <keyword type="struct" name="TrackerStorageClass" link="libtracker-miner-TrackerStorage.html#TrackerStorageClass"/>
+    <keyword type="struct" name="struct TrackerStorage" link="libtracker-miner-TrackerStorage.html#TrackerStorage"/>
+    <keyword type="struct" name="struct TrackerStorageClass" link="libtracker-miner-TrackerStorage.html#TrackerStorageClass"/>
     <keyword type="enum" name="enum TrackerStorageType" link="libtracker-miner-TrackerStorage.html#TrackerStorageType" since="0.8"/>
     <keyword type="macro" name="TRACKER_STORAGE_TYPE_IS_REMOVABLE()" link="libtracker-miner-TrackerStorage.html#TRACKER-STORAGE-TYPE-IS-REMOVABLE:CAPS" since="0.10"/>
     <keyword type="macro" name="TRACKER_STORAGE_TYPE_IS_OPTICAL()" link="libtracker-miner-TrackerStorage.html#TRACKER-STORAGE-TYPE-IS-OPTICAL:CAPS" since="0.10"/>

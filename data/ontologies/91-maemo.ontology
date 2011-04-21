@@ -12,7 +12,7 @@
 
 maemo: a tracker:Namespace, tracker:Ontology ;
 	tracker:prefix "maemo" ;
-	nao:lastModified "2010-07-22T09:00:00Z" .
+	nao:lastModified "2011-04-20T13:43:00Z" .
 
 maemo:SoftwareWidget a rdfs:Class ;
 	rdfs:label "Widget" ;
@@ -108,3 +108,8 @@ maemo:contactGroupVibrationRingtone a rdf:Property ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nco:ContactGroup ;
 	rdfs:range nfo:FileDataObject .
+
+maemo:PostalAddress a rdfs:Class ;
+	rdfs:label "PostalAddress" ;
+	rdfs:comment "Postal Address. Class inspired by TYPE=postal parameter of the ADR property defined in RFC 2426 sec. 3.2.1" ;
+	rdfs:subClassOf nco:PostalAddress .

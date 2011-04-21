@@ -97,6 +97,7 @@ static gboolean miner_fs_queues_status_trace_timeout_cb (gpointer data);
 /* Default processing pool limits to be set */
 #define DEFAULT_WAIT_POOL_LIMIT 1
 #define DEFAULT_READY_POOL_LIMIT 1
+#define DEFAULT_N_REQUESTS_POOL_LIMIT 10
 
 /**
  * SECTION:tracker-miner-fs
@@ -262,6 +263,7 @@ enum {
 	PROP_THROTTLE,
 	PROP_WAIT_POOL_LIMIT,
 	PROP_READY_POOL_LIMIT,
+	PROP_N_REQUESTS_POOL_LIMIT,
 	PROP_MTIME_CHECKING,
 	PROP_INITIAL_CRAWLING
 };
@@ -400,6 +402,14 @@ tracker_miner_fs_class_init (TrackerMinerFSClass *klass)
 	                                                    "Maximum number of SPARQL updates that can be merged "
 	                                                    "in a single connection to the store",
 	                                                    1, G_MAXUINT, DEFAULT_READY_POOL_LIMIT,
+	                                                    G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class,
+	                                 PROP_N_REQUESTS_POOL_LIMIT,
+	                                 g_param_spec_uint ("processing-pool-requests-limit",
+	                                                    "Processing pool limit for number of requests",
+	                                                    "Maximum number of SPARQL requests that can be sent "
+	                                                    "to the store in parallel.",
+	                                                    1, G_MAXUINT, DEFAULT_N_REQUESTS_POOL_LIMIT,
 	                                                    G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 	g_object_class_install_property (object_class,
 	                                 PROP_MTIME_CHECKING,
@@ -666,7 +676,8 @@ tracker_miner_fs_init (TrackerMinerFS *object)
 	/* Create processing pool */
 	priv->processing_pool = tracker_processing_pool_new (object,
 	                                                     DEFAULT_WAIT_POOL_LIMIT,
-	                                                     DEFAULT_READY_POOL_LIMIT);
+	                                                     DEFAULT_READY_POOL_LIMIT,
+	                                                     DEFAULT_N_REQUESTS_POOL_LIMIT);
 
 	/* Set up the crawlers now we have config and hal */
 	priv->crawler = tracker_crawler_new ();
@@ -825,6 +836,10 @@ fs_set_property (GObject      *object,
 		tracker_processing_pool_set_ready_limit (fs->private->processing_pool,
 		                                         g_value_get_uint (value));
 		break;
+	case PROP_N_REQUESTS_POOL_LIMIT:
+		tracker_processing_pool_set_n_requests_limit (fs->private->processing_pool,
+		                                              g_value_get_uint (value));
+		break;
 	case PROP_MTIME_CHECKING:
 		fs->private->mtime_checking = g_value_get_boolean (value);
 		break;
@@ -858,6 +873,10 @@ fs_get_property (GObject    *object,
 	case PROP_READY_POOL_LIMIT:
 		g_value_set_uint (value,
 		                  tracker_processing_pool_get_ready_limit (fs->private->processing_pool));
+		break;
+	case PROP_N_REQUESTS_POOL_LIMIT:
+		g_value_set_uint (value,
+		                  tracker_processing_pool_get_n_requests_limit (fs->private->processing_pool));
 		break;
 	case PROP_MTIME_CHECKING:
 		g_value_set_boolean (value, fs->private->mtime_checking);
@@ -1704,7 +1723,6 @@ item_add_or_update_cb (TrackerMinerFS        *fs,
 		 * and in this case we need to setup queue handlers again */
 		if (!tracker_processing_pool_push_ready_task (fs->private->processing_pool,
 		                                              task,
-		                                              TRUE, /* buffer! */
 		                                              processing_pool_task_finished_cb,
 		                                              fs)) {
 			item_queue_handlers_set_up (fs);
@@ -1845,7 +1863,6 @@ item_remove (TrackerMinerFS *fs,
 	 * and in this case we need to setup queue handlers again */
 	if (!tracker_processing_pool_push_ready_task (fs->private->processing_pool,
 	                                              task,
-	                                              TRUE,
 	                                              processing_pool_task_finished_cb,
 	                                              fs)) {
 		item_queue_handlers_set_up (fs);
@@ -1869,7 +1886,6 @@ item_remove (TrackerMinerFS *fs,
 	 * and in this case we need to setup queue handlers again */
 	if (!tracker_processing_pool_push_ready_task (fs->private->processing_pool,
 	                                              task,
-	                                              TRUE,
 	                                              processing_pool_task_finished_cb,
 	                                              fs)) {
 		item_queue_handlers_set_up (fs);
@@ -2217,7 +2233,6 @@ item_move (TrackerMinerFS *fs,
 	 * and in this case we need to setup queue handlers again */
 	if (!tracker_processing_pool_push_ready_task (fs->private->processing_pool,
 	                                              task,
-	                                              FALSE,
 	                                              processing_pool_task_finished_cb,
 	                                              fs)) {
 		item_queue_handlers_set_up (fs);
@@ -2813,8 +2828,18 @@ item_queue_handlers_set_up (TrackerMinerFS *fs)
 		return;
 	}
 
+	/* Already sent max number of tasks to tracker-extract? */
 	if (tracker_processing_pool_wait_limit_reached (fs->private->processing_pool)) {
-		/* There is no room in the pool for more files */
+		return;
+	}
+
+	/* Already sent max number of requests to tracker-store?
+	 * In this case, we also slow down the processing of items, as we don't
+	 * want to keep on extracting if the communication with tracker-store is
+	 * very busy. Note that this is not very likely to happen, as the bottleneck
+	 * during extraction is not the communication with tracker-store.
+	 */
+	if (tracker_processing_pool_n_requests_limit_reached (fs->private->processing_pool)) {
 		return;
 	}
 

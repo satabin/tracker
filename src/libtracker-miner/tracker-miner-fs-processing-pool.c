@@ -78,31 +78,35 @@
  * 5. When a task is pushed to the pool as a "READY" task, the pool will be in
  *    charge of executing the SPARQL update into the store.
  *
- * 6. If buffering was requested when tracker_processing_pool_push_ready_task()
- *    was used to push the new task in the pool as a "READY" task, this task
- *    will be added internally into a SPARQL buffer. This SPARQL buffer will be
- *    flushed (pushing all collected SPARQL updates into the store) if one of
- *    these conditions is met:
+ * 6. All tasks pushed as READY tasks will be buffered by the processing pool,
+ *    in order to use as less SPARQL connections as possible (pushing multiple
+ *    requests in a single UpdateArray connection). The SPARQL buffer will be
+ *    flushedif one of these conditions is met:
  *      (a) The file corresponding to the task pushed doesn't have a parent.
  *      (b) The parent of the file corresponding to the task pushed is different
  *          to the parent of the last file pushed to the buffer.
  *      (c) The limit for "READY" tasks in the pool was reached.
  *      (d) The buffer was not flushed in the last MAX_SPARQL_BUFFER_TIME (=15)
  *          seconds.
- *    The buffer is flushed using a single multi-insert SPARQL connection. This
- *    means that an array of SPARQLs is sent to tracker-store, which replies
- *    with an array of GErrors specifying which update failed, if any.
- *    Once the flushing operation in the buffer is started, the tasks are then
- *    converted to "PROCESSING" state, until the reply from the store is
- *    received.
  *
- * 7. If buffering is not requested when
- *    tracker_processing_pool_push_ready_task() is called, first the previous
- *    buffer is flushed (if any) and then the current task is updated in the
- *    store, so this task goes directly from "READY" to "PROCESSING" state
- *    without going through the intermediate buffer.
+ * 7. When the buffer is flushed, BULK operations are preprocessed. The best
+ *    example of this kind of task is a file deletion operation which involves
+ *    first setting the resource unavailable and then actually deleting the
+ *    resource. When such bulk operations are detected, the pool will try to
+ *    merge in a single request as many as possible.
  *
- * 8. May the gods be with you if you need to fix a bug in here. So say we all.
+ * 8. When the buffer is flushed, all tasks are converted to "PROCESSING" state,
+ *    and one of these two actions may happen:
+ *      (a) If the limit of requests sent to the store is not reached, all tasks
+ *          are pushed to the tracker-store in a single UpdateArray connection.
+ *      (b) If the limit of requests sent to the store is reached, all tasks are
+ *          grouped and queued to be sent to the store when possible. Queued
+ *          groups of tasks are processed in the same order as they arrived.
+ *    The limit of requests is given by the "processing-pool-requests-limit"
+ *    property in the TrackerMinerFS object, and currently is set to 10 for both
+ *    TrackerMinerApplications and TrackerMinerFiles.
+ *
+ * 9. May the gods be with you if you need to fix a bug in here. So say we all.
  *
  */
 
@@ -186,6 +190,14 @@ struct _TrackerProcessingPool {
 	/* The processing pool limits */
 	guint limit[TRACKER_PROCESSING_TASK_STATUS_LAST];
 
+	/* The current number of requests sent to the store */
+	guint n_requests;
+	/* The limit for number of requests sent to the store */
+	guint limit_n_requests;
+	/* The list of UpdateArrayData items pending to be flushed, blocked
+	 * because the maximum number of requests was reached */
+	GQueue *pending_requests;
+
 	/* SPARQL buffer to pile up several UPDATEs */
 	GPtrArray *sparql_buffer;
 	GFile *sparql_buffer_current_parent;
@@ -199,8 +211,11 @@ struct _TrackerProcessingPool {
 };
 
 typedef struct {
+	TrackerProcessingPool *pool;
 	GPtrArray *tasks;
+	GArray *sparql_array;
 	GArray *error_map;
+	GPtrArray *bulk_ops;
 	guint n_bulk_operations;
 } UpdateArrayData;
 
@@ -360,6 +375,12 @@ pool_status_trace_timeout_cb (gpointer data)
 			l = g_list_next (l);
 		}
 	}
+	trace ("(Processing Pool %s) Requests being currently processed: %u "
+	       "(max: %u, pending: %u)",
+	       G_OBJECT_TYPE_NAME (pool->miner),
+	       pool->n_requests,
+	       pool->limit_n_requests,
+	       pool->pending_requests->length);
 	return TRUE;
 }
 #endif /* PROCESSING_POOL_ENABLE_TRACE */
@@ -377,6 +398,29 @@ pool_queue_free_foreach (gpointer data,
 	}
 }
 
+static void
+update_array_data_free (UpdateArrayData *update_data)
+{
+	if (!update_data)
+		return;
+
+	if (update_data->sparql_array) {
+		/* The array contains pointers to strings in the tasks, so no need to
+		 * deallocate its pointed contents, just the array itself. */
+		g_array_free (update_data->sparql_array, TRUE);
+	}
+
+	if (update_data->bulk_ops) {
+		/* The BulkOperationMerge structs which contain the sparql strings
+		 * are deallocated here */
+		g_ptr_array_free (update_data->bulk_ops, TRUE);
+	}
+
+	g_ptr_array_free (update_data->tasks, TRUE);
+	g_array_free (update_data->error_map, TRUE);
+	g_slice_free (UpdateArrayData, update_data);
+}
+
 void
 tracker_processing_pool_free (TrackerProcessingPool *pool)
 {
@@ -389,6 +433,11 @@ tracker_processing_pool_free (TrackerProcessingPool *pool)
 	if (pool->timeout_id)
 		g_source_remove (pool->timeout_id);
 #endif /* PROCESSING_POOL_ENABLE_TRACE */
+
+	g_queue_foreach (pool->pending_requests,
+	                 (GFunc)update_array_data_free,
+	                 NULL);
+	g_queue_free (pool->pending_requests);
 
 	/* Free any pending task here... shouldn't really
 	 * be any */
@@ -410,12 +459,13 @@ tracker_processing_pool_free (TrackerProcessingPool *pool)
 	}
 
 	g_free (pool);
-}
+	                 }
 
 TrackerProcessingPool *
 tracker_processing_pool_new (TrackerMinerFS *miner,
                              guint           limit_wait,
-                             guint           limit_ready)
+                             guint           limit_ready,
+                             guint           limit_n_requests)
 {
 	TrackerProcessingPool *pool;
 
@@ -426,16 +476,21 @@ tracker_processing_pool_new (TrackerMinerFS *miner,
 	pool->limit[TRACKER_PROCESSING_TASK_STATUS_READY] = limit_ready;
 	/* convenience limit, not really used currently */
 	pool->limit[TRACKER_PROCESSING_TASK_STATUS_PROCESSING] = G_MAXUINT;
+	pool->limit_n_requests = limit_n_requests;
 
 	pool->tasks[TRACKER_PROCESSING_TASK_STATUS_WAIT] = g_queue_new ();
 	pool->tasks[TRACKER_PROCESSING_TASK_STATUS_READY] = g_queue_new ();
 	pool->tasks[TRACKER_PROCESSING_TASK_STATUS_PROCESSING] = g_queue_new ();
 
+	pool->pending_requests = g_queue_new ();
+
 	g_debug ("Processing pool created with a limit of "
-	         "%u tasks in WAIT status and "
-	         "%u tasks in READY status",
+	         "%u tasks in WAIT status, "
+	         "%u tasks in READY status and "
+	         "%u requests",
 	         limit_wait,
-	         limit_ready);
+	         limit_ready,
+	         limit_n_requests);
 
 #ifdef PROCESSING_POOL_ENABLE_TRACE
 	pool->timeout_id = g_timeout_add_seconds (POOL_STATUS_TRACE_TIMEOUT_SECS,
@@ -464,6 +519,15 @@ tracker_processing_pool_set_ready_limit (TrackerProcessingPool *pool,
 	pool->limit[TRACKER_PROCESSING_TASK_STATUS_READY] = limit;
 }
 
+void
+tracker_processing_pool_set_n_requests_limit (TrackerProcessingPool *pool,
+                                              guint                  limit)
+{
+	g_message ("Processing pool limit for number of requests set to %u",
+	           limit);
+	pool->limit_n_requests = limit;
+}
+
 guint
 tracker_processing_pool_get_wait_limit (TrackerProcessingPool *pool)
 {
@@ -474,6 +538,12 @@ guint
 tracker_processing_pool_get_ready_limit (TrackerProcessingPool *pool)
 {
 	return pool->limit[TRACKER_PROCESSING_TASK_STATUS_READY];
+}
+
+guint
+tracker_processing_pool_get_n_requests_limit (TrackerProcessingPool *pool)
+{
+	return pool->limit_n_requests;
 }
 
 gboolean
@@ -490,6 +560,12 @@ tracker_processing_pool_ready_limit_reached (TrackerProcessingPool *pool)
 	return ((g_queue_get_length (pool->tasks[TRACKER_PROCESSING_TASK_STATUS_READY]) >=
 	         pool->limit[TRACKER_PROCESSING_TASK_STATUS_READY]) ?
 	        TRUE : FALSE);
+}
+
+gboolean
+tracker_processing_pool_n_requests_limit_reached (TrackerProcessingPool *pool)
+{
+	return (pool->n_requests >= pool->limit_n_requests ? TRUE : FALSE);
 }
 
 TrackerProcessingTask *
@@ -541,7 +617,6 @@ tracker_processing_pool_push_wait_task (TrackerProcessingPool *pool,
 	/* Set status of the task as WAIT */
 	task->status = TRACKER_PROCESSING_TASK_STATUS_WAIT;
 
-
 	trace ("(Processing Pool %s) Pushed WAIT task %p for file '%s'",
 	       G_OBJECT_TYPE_NAME (pool->miner),
 	       task,
@@ -554,48 +629,34 @@ tracker_processing_pool_push_wait_task (TrackerProcessingPool *pool,
 }
 
 static void
-tracker_processing_pool_sparql_update_cb (GObject      *object,
-                                          GAsyncResult *result,
-                                          gpointer      user_data)
-{
-	TrackerProcessingTask *task;
-	GError *error = NULL;
-
-	tracker_sparql_connection_update_finish (TRACKER_SPARQL_CONNECTION (object), result, &error);
-
-	task = user_data;
-
-	trace ("(Processing Pool) Finished update of task %p for file '%s'",
-	       task,
-	       task->file_uri);
-
-	/* Before calling user-provided callback, REMOVE the task from the pool;
-	 * as the user-provided callback may actually modify the pool again */
-	tracker_processing_pool_remove_task (task->pool, task);
-
-	/* Call finished handler with the error, if any */
-	task->finished_handler (task, task->finished_user_data, error);
-
-	/* Deallocate unneeded stuff */
-	tracker_processing_task_free (task);
-	g_clear_error (&error);
-}
-
-static void
 tracker_processing_pool_sparql_update_array_cb (GObject      *object,
                                                 GAsyncResult *result,
                                                 gpointer      user_data)
 {
+	TrackerProcessingPool *pool;
 	GError *global_error = NULL;
 	GPtrArray *sparql_array_errors;
 	UpdateArrayData *update_data;
+	gboolean flush_next;
 	guint i;
 
 	/* Get arrays of errors and queries */
 	update_data = user_data;
+	pool = update_data->pool;
 
-	trace ("(Processing Pool) Finished array-update of tasks %p",
-	       update_data->tasks);
+	/* If we had reached the limit of requests, flush next as this request is
+	 * just finished */
+	flush_next = tracker_processing_pool_n_requests_limit_reached (pool);
+
+	/* Request finished */
+	pool->n_requests--;
+
+	trace ("(Processing Pool) Finished array-update %p with %u tasks "
+	       "(%u requests processing, %u requests queued)",
+	       update_data->tasks,
+	       update_data->tasks->len,
+	       pool->n_requests,
+	       pool->pending_requests->length);
 
 	sparql_array_errors = tracker_sparql_connection_update_array_finish (TRACKER_SPARQL_CONNECTION (object),
 	                                                                     result,
@@ -646,12 +707,17 @@ tracker_processing_pool_sparql_update_array_cb (GObject      *object,
 		g_ptr_array_unref (sparql_array_errors);
 
 	/* Note that tasks are actually deallocated here */
-	g_ptr_array_free (update_data->tasks, TRUE);
-	g_array_free (update_data->error_map, TRUE);
-	g_slice_free (UpdateArrayData, update_data);
+	update_array_data_free (update_data);
 
 	if (global_error) {
 		g_error_free (global_error);
+	}
+
+	/* Flush if needed */
+	if (flush_next) {
+		tracker_processing_pool_buffer_flush (pool,
+		                                      "Pool request limit was reached and "
+		                                      "UpdateArrayrequest just finished");
 	}
 }
 
@@ -755,21 +821,94 @@ bulk_operation_merge_free (BulkOperationMerge *operation)
 	g_slice_free (BulkOperationMerge, operation);
 }
 
+static void
+processing_pool_update_array_flush (TrackerProcessingPool *pool,
+                                    UpdateArrayData       *update_data,
+                                    const gchar           *reason)
+{
+	/* This method will flush the UpdateArrayData passed as
+	 * argument if:
+	 *  - The threshold of requests not reached.
+	 *  - There is no other pending request to flush.
+	 *
+	 * Otherwise, the passed UpdateArrayData will be queued (if any) and the
+	 * first one in the pending queue will get flushed.
+	 */
+	UpdateArrayData *to_flush;
+
+	/* If we cannot flush anything or existing pending requests to flush,
+	 * just queue the UpdateArrayData if any */
+	if (tracker_processing_pool_n_requests_limit_reached (pool)) {
+		/* If we hit the threshold, there's nothing to flush */
+		to_flush = NULL;
+
+		if (update_data) {
+			trace ("(Processing Pool %s) Queueing array-update of tasks %p with %u items "
+			       "(%s, threshold reached)",
+			       G_OBJECT_TYPE_NAME (pool->miner),
+			       update_data->tasks,
+			       update_data->tasks->len,
+			       reason ? reason : "Unknown reason");
+			g_queue_push_tail (pool->pending_requests, update_data);
+		}
+	} else if (pool->pending_requests->length > 0) {
+		/* There are other pending tasks to be flushed, we need to queue this one if any. */
+		to_flush = g_queue_pop_head (pool->pending_requests);
+
+		if (update_data) {
+			trace ("(Processing Pool %s) Queueing array-update of tasks %p with %u items "
+			       "(%s, pending requests first)",
+			       G_OBJECT_TYPE_NAME (pool->miner),
+			       update_data->tasks,
+			       update_data->tasks->len,
+			       reason ? reason : "Unknown reason");
+			g_queue_push_tail (pool->pending_requests, update_data);
+		}
+	} else {
+		/* No pending requests, flush the received UpdateArrayData, if any */
+		to_flush = update_data;
+	}
+
+	/* If nothing to flush, return */
+	if (!to_flush)
+		return;
+
+	trace ("(Processing Pool %s) Flushing array-update of tasks %p with %u items (%s)",
+	       G_OBJECT_TYPE_NAME (pool->miner),
+	       to_flush->tasks,
+	       to_flush->tasks->len,
+	       reason ? reason : "Unknown reason");
+
+	/* New Request */
+	pool->n_requests++;
+
+	tracker_sparql_connection_update_array_async (tracker_miner_get_connection (TRACKER_MINER (pool->miner)),
+	                                              (gchar **) to_flush->sparql_array->data,
+	                                              to_flush->sparql_array->len,
+	                                              G_PRIORITY_DEFAULT,
+	                                              NULL,
+	                                              tracker_processing_pool_sparql_update_array_cb,
+	                                              to_flush);
+}
+
 void
 tracker_processing_pool_buffer_flush (TrackerProcessingPool *pool,
                                       const gchar           *reason)
 {
-	GPtrArray *bulk_ops;
+	GPtrArray *bulk_ops = NULL;
 	GArray *sparql_array, *error_map;
 	UpdateArrayData *update_data;
 	guint i, j;
 
-	if (!pool->sparql_buffer)
+	/* If no sparql buffer, flush any pending request, if any;
+	 * or just return otherwise */
+	if (!pool->sparql_buffer) {
+		processing_pool_update_array_flush (pool, NULL, reason);
 		return;
+	}
 
 	/* Loop buffer and construct array of strings */
 	sparql_array = g_array_new (FALSE, TRUE, sizeof (gchar *));
-	bulk_ops = g_ptr_array_new_with_free_func ((GDestroyNotify) bulk_operation_merge_free);
 	error_map = g_array_new (TRUE, TRUE, sizeof (gint));
 
 	for (i = 0; i < pool->sparql_buffer->len; i++) {
@@ -799,6 +938,10 @@ tracker_processing_pool_buffer_flush (TrackerProcessingPool *pool,
 			BulkOperationMerge *bulk = NULL;
 			gint j;
 
+			if (G_UNLIKELY (!bulk_ops)) {
+				bulk_ops = g_ptr_array_new_with_free_func ((GDestroyNotify) bulk_operation_merge_free);
+			}
+
 			for (j = 0; j < bulk_ops->len; j++) {
 				BulkOperationMerge *cur;
 
@@ -823,60 +966,49 @@ tracker_processing_pool_buffer_flush (TrackerProcessingPool *pool,
 		g_array_append_val (error_map, pos);
 	}
 
-	for (j = 0; j < bulk_ops->len; j++) {
-		BulkOperationMerge *bulk;
+	if (bulk_ops) {
+		for (j = 0; j < bulk_ops->len; j++) {
+			BulkOperationMerge *bulk;
 
-		bulk = g_ptr_array_index (bulk_ops, j);
-		bulk_operation_merge_finish (bulk);
+			bulk = g_ptr_array_index (bulk_ops, j);
+			bulk_operation_merge_finish (bulk);
 
-		if (bulk->sparql) {
-			g_array_prepend_val (sparql_array, bulk->sparql);
+			if (bulk->sparql) {
+				g_array_prepend_val (sparql_array, bulk->sparql);
+			}
 		}
 	}
 
-	trace ("(Processing Pool %s) Flushing array-update of tasks %p with %u items (%s)",
-	       G_OBJECT_TYPE_NAME (pool->miner),
-	       pool->sparql_buffer,
-	       pool->sparql_buffer->len,
-	       reason ? reason : "Unknown reason");
-
+	/* Create new UpdateArrayData with the contents, which take ownership
+	 * of the SPARQL buffer. */
 	update_data = g_slice_new0 (UpdateArrayData);
+	update_data->pool = pool;
 	update_data->tasks = pool->sparql_buffer;
-	update_data->n_bulk_operations = bulk_ops->len;
+	update_data->bulk_ops = bulk_ops;
+	update_data->n_bulk_operations = bulk_ops ? bulk_ops->len : 0;
 	update_data->error_map = error_map;
+	update_data->sparql_array = sparql_array;
 
-	tracker_sparql_connection_update_array_async (tracker_miner_get_connection (TRACKER_MINER (pool->miner)),
-	                                              (gchar **) sparql_array->data,
-	                                              sparql_array->len,
-	                                              G_PRIORITY_DEFAULT,
-	                                              NULL,
-	                                              tracker_processing_pool_sparql_update_array_cb,
-	                                              update_data);
-
-	/* Clear current parent */
+	/* Reset buffer and current parent in the pool */
+	pool->sparql_buffer = NULL;
+	pool->sparql_buffer_start_time = 0;
 	if (pool->sparql_buffer_current_parent) {
 		g_object_unref (pool->sparql_buffer_current_parent);
 		pool->sparql_buffer_current_parent = NULL;
 	}
 
-	/* Clear temp buffer */
-	g_array_free (sparql_array, TRUE);
-
-	g_ptr_array_free (bulk_ops, TRUE);
-
-	pool->sparql_buffer_start_time = 0;
-	/* Note the whole buffer is passed to the update_array callback,
-	 * so no need to free it. */
-	pool->sparql_buffer = NULL;
+	/* Flush or queue... */
+	processing_pool_update_array_flush (pool, update_data, reason);
 }
 
 gboolean
 tracker_processing_pool_push_ready_task (TrackerProcessingPool                     *pool,
                                          TrackerProcessingTask                     *task,
-                                         gboolean                                   buffer,
                                          TrackerProcessingPoolTaskFinishedCallback  finished_handler,
                                          gpointer                                   user_data)
 {
+	GFile *parent;
+	gboolean flushed = FALSE;
 	GList *previous;
 
 	/* The task MUST have a proper content here */
@@ -897,119 +1029,62 @@ tracker_processing_pool_push_ready_task (TrackerProcessingPool                  
 	task->finished_handler = finished_handler;
 	task->finished_user_data = user_data;
 
-	/* If buffering not requested, OR the limit of READY tasks is actually 1,
-	 * flush previous buffer (if any) and then the new update */
-	if (!buffer || pool->limit[TRACKER_PROCESSING_TASK_STATUS_READY] == 1) {
-		BulkOperationMerge *operation = NULL;
-		const gchar *sparql = NULL;
+	/* Set status of the task as READY */
+	task->status = TRACKER_PROCESSING_TASK_STATUS_READY;
+	g_queue_push_head (pool->tasks[TRACKER_PROCESSING_TASK_STATUS_READY], task);
 
-		trace ("(Processing Pool %s) Pushed READY/PROCESSING task %p for file '%s'",
-		       G_OBJECT_TYPE_NAME (pool->miner),
-		       task,
-		       task->file_uri);
+	/* Get parent of this file we're updating/creating */
+	parent = g_file_get_parent (task->file);
 
-		/* Flush previous */
-		tracker_processing_pool_buffer_flush (pool,
-		                                      "Before unbuffered task");
-
-		/* Set status of the task as PROCESSING (No READY status here!) */
-		task->status = TRACKER_PROCESSING_TASK_STATUS_PROCESSING;
-		g_queue_push_head (pool->tasks[TRACKER_PROCESSING_TASK_STATUS_PROCESSING], task);
-
-		trace ("(Processing Pool %s) Flushing single task %p",
-		       G_OBJECT_TYPE_NAME (pool->miner),
-		       task);
-
-		/* And update the new one */
-		if (task->content == CONTENT_SPARQL_STRING) {
-			sparql = task->data.string;
-		} else if (task->content == CONTENT_SPARQL_BUILDER) {
-			sparql = tracker_sparql_builder_get_result (task->data.builder);
-		} else if (task->content == CONTENT_BULK_OPERATION) {
-			operation = bulk_operation_merge_new (task->data.bulk.bulk_operation);
-			operation->tasks = g_list_prepend (NULL, task);
-			bulk_operation_merge_finish (operation);
-
-			if (operation->sparql) {
-				sparql = operation->sparql;
-			}
-		}
-
-		if (sparql) {
-			tracker_sparql_connection_update_async (tracker_miner_get_connection (TRACKER_MINER (pool->miner)),
-			                                        sparql,
-			                                        G_PRIORITY_DEFAULT,
-			                                        NULL,
-			                                        tracker_processing_pool_sparql_update_cb,
-			                                        task);
-		}
-
-		if (operation) {
-			bulk_operation_merge_free (operation);
-		}
-
-		return TRUE;
-	} else {
-		GFile *parent;
-		gboolean flushed = FALSE;
-
-		/* Set status of the task as READY */
-		task->status = TRACKER_PROCESSING_TASK_STATUS_READY;
-		g_queue_push_head (pool->tasks[TRACKER_PROCESSING_TASK_STATUS_READY], task);
-
-		/* Get parent of this file we're updating/creating */
-		parent = g_file_get_parent (task->file);
-
-		/* Start buffer if not already done */
-		if (!pool->sparql_buffer) {
-			pool->sparql_buffer =
-				g_ptr_array_new_with_free_func ((GDestroyNotify) tracker_processing_task_free);
-			pool->sparql_buffer_start_time = time (NULL);
-		}
-
-		/* Set current parent if not set already */
-		if (!pool->sparql_buffer_current_parent && parent) {
-			pool->sparql_buffer_current_parent = g_object_ref (parent);
-		}
-
-		trace ("(Processing Pool %s) Pushed READY task %p for file '%s' into array %p",
-		       G_OBJECT_TYPE_NAME (pool->miner),
-		       task,
-		       task->file_uri,
-		       pool->sparql_buffer);
-
-		/* Add task to array */
-		g_ptr_array_add (pool->sparql_buffer, task);
-
-		/* Flush buffer if:
-		 *  - Last item has no parent
-		 *  - Parent change was detected
-		 *  - Maximum number of READY items reached
-		 *  - Not flushed in the last MAX_SPARQL_BUFFER_TIME seconds
-		 */
-		if (!parent) {
-			tracker_processing_pool_buffer_flush (pool,
-			                                      "File with no parent");
-			flushed = TRUE;
-		} else if (!g_file_equal (parent, pool->sparql_buffer_current_parent)) {
-			tracker_processing_pool_buffer_flush (pool,
-			                                      "Different parent");
-			flushed = TRUE;
-		} else if (tracker_processing_pool_ready_limit_reached (pool)) {
-			tracker_processing_pool_buffer_flush (pool,
-			                                      "Ready limit reached");
-			flushed = TRUE;
-		} else if (time (NULL) - pool->sparql_buffer_start_time > MAX_SPARQL_BUFFER_TIME) {
-			tracker_processing_pool_buffer_flush (pool,
-			                                      "Buffer time reached");
-			flushed = TRUE;
-		}
-
-		if (parent)
-			g_object_unref (parent);
-
-		return flushed;
+	/* Start buffer if not already done */
+	if (!pool->sparql_buffer) {
+		pool->sparql_buffer =
+			g_ptr_array_new_with_free_func ((GDestroyNotify) tracker_processing_task_free);
+		pool->sparql_buffer_start_time = time (NULL);
 	}
+
+	/* Set current parent if not set already */
+	if (!pool->sparql_buffer_current_parent && parent) {
+		pool->sparql_buffer_current_parent = g_object_ref (parent);
+	}
+
+	trace ("(Processing Pool %s) Pushed READY task %p for file '%s' into array %p",
+	       G_OBJECT_TYPE_NAME (pool->miner),
+	       task,
+	       task->file_uri,
+	       pool->sparql_buffer);
+
+	/* Add task to array */
+	g_ptr_array_add (pool->sparql_buffer, task);
+
+	/* Flush buffer if:
+	 *  - Last item has no parent
+	 *  - Parent change was detected
+	 *  - Maximum number of READY items reached
+	 *  - Not flushed in the last MAX_SPARQL_BUFFER_TIME seconds
+	 */
+	if (!parent) {
+		tracker_processing_pool_buffer_flush (pool,
+		                                      "File with no parent");
+		flushed = TRUE;
+	} else if (!g_file_equal (parent, pool->sparql_buffer_current_parent)) {
+		tracker_processing_pool_buffer_flush (pool,
+		                                      "Different parent");
+		flushed = TRUE;
+	} else if (tracker_processing_pool_ready_limit_reached (pool)) {
+		tracker_processing_pool_buffer_flush (pool,
+		                                      "Ready limit reached");
+		flushed = TRUE;
+	} else if (time (NULL) - pool->sparql_buffer_start_time > MAX_SPARQL_BUFFER_TIME) {
+		tracker_processing_pool_buffer_flush (pool,
+		                                      "Buffer time reached");
+		flushed = TRUE;
+	}
+
+	if (parent)
+		g_object_unref (parent);
+
+	return flushed;
 }
 
 void

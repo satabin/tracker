@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [9])
-m4_define([tracker_interface_age], [2])
+m4_define([tracker_micro_version], [10])
+m4_define([tracker_interface_age], [3])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -412,7 +412,7 @@ PKG_CHECK_MODULES(TRACKER_MINER_RSS, [$TRACKER_MINER_RSS_REQUIRED],
 
 # Check requirements for tracker-miner-flickr
 TRACKER_MINER_FLICKR_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                               rest-0.6     >= $REST_REQUIRED"
+                               rest-0.7     >= $REST_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_MINER_FLICKR, [$TRACKER_MINER_FLICKR_REQUIRED],
                   [have_tracker_miner_flickr=yes],

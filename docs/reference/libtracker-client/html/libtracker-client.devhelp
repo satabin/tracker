@@ -57,8 +57,8 @@
     <function name="tracker_search_metadata_by_text_and_location_async ()" link="libtracker-client-Search.html#tracker-search-metadata-by-text-and-location-async"/>
     <function name="tracker_search_metadata_by_text_and_mime_async ()" link="libtracker-client-Search.html#tracker-search-metadata-by-text-and-mime-async"/>
     <function name="tracker_search_metadata_by_text_and_mime_and_location_async ()" link="libtracker-client-Search.html#tracker-search-metadata-by-text-and-mime-and-location-async"/>
-    <function name="TrackerSparqlBuilder" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"/>
-    <function name="TrackerSparqlBuilderClass" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderClass"/>
+    <function name="struct TrackerSparqlBuilder" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"/>
+    <function name="struct TrackerSparqlBuilderClass" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderClass"/>
     <function name="TrackerSparqlBuilderPrivate" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderPrivate"/>
     <function name="enum TrackerSparqlBuilderState" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderState"/>
     <function name="tracker_sparql_builder_new ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new"/>

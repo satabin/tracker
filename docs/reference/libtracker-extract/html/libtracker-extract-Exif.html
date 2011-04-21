@@ -7,7 +7,7 @@
 <link rel="home" href="index.html" title="Tracker Extract Library Reference Manual">
 <link rel="up" href="ch03.html" title="Common Embedded Support API">
 <link rel="prev" href="libtracker-extract-IPTC.html" title="IPTC">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -25,7 +25,7 @@
                   <a href="#libtracker-extract-Exif.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="Exif">
+<div class="refentry">
 <a name="libtracker-extract-Exif"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -34,27 +34,27 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsect1" title="Stability Level">
+<div class="refsect1">
 <a name="libtracker-extract-Exif.stability-level"></a><h2>Stability Level</h2>
 Stable, unless otherwise indicated
 </div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libtracker-extract-Exif.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 #include &lt;libtracker-extract/tracker-extract.h&gt;
 
                     <a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData">TrackerExifData</a>;
-<a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="returnvalue">TrackerExifData</span></a> *   <a class="link" href="libtracker-extract-Exif.html#tracker-exif-new" title="tracker_exif_new ()">tracker_exif_new</a>                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buffer</code></em>,
+<a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="returnvalue">TrackerExifData</span></a> *   <a class="link" href="libtracker-extract-Exif.html#tracker-exif-new" title="tracker_exif_new ()">tracker_exif_new</a>                    (<em class="parameter"><code>const <span class="type">guchar</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-extract-Exif.html#tracker-exif-free" title="tracker_exif_free ()">tracker_exif_free</a>                   (<em class="parameter"><code><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> *data</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-Exif.html#tracker-exif-read" title="tracker_exif_read ()">tracker_exif_read</a>                   (<em class="parameter"><code>unsigned <span class="type">char</span> *buffer</code></em>,
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-extract-Exif.html#tracker-exif-read" title="tracker_exif_read ()">tracker_exif_read</a>                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> *data</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libtracker-extract-Exif.description"></a><h2>Description</h2>
 <p>
 Exchangeable Image File Format (EXIF) is a specification for the
@@ -68,9 +68,9 @@ This API is provided to remove code duplication between extractors
 using these standards.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libtracker-extract-Exif.details"></a><h2>Details</h2>
-<div class="refsect2" title="TrackerExifData">
+<div class="refsect2">
 <a name="TrackerExifData"></a><h3>TrackerExifData</h3>
 <pre class="programlisting">typedef struct {
 	gchar *y_dimension;
@@ -103,11 +103,11 @@ using these standards.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_exif_new ()">
+<div class="refsect2">
 <a name="tracker-exif-new"></a><h3>tracker_exif_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="returnvalue">TrackerExifData</span></a> *   tracker_exif_new                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *buffer</code></em>,
+<pre class="programlisting"><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="returnvalue">TrackerExifData</span></a> *   tracker_exif_new                    (<em class="parameter"><code>const <span class="type">guchar</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
 <p>
 This function takes <em class="parameter"><code>len</code></em> bytes of <em class="parameter"><code>buffer</code></em> and runs it through the
 EXIF library.
@@ -117,36 +117,31 @@ EXIF library.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
-<td>a chunk of data with exif data in it.
-</td>
+<td>a chunk of data with exif data in it.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
-<td>the size of <em class="parameter"><code>buffer</code></em>.
-</td>
+<td>the size of <em class="parameter"><code>buffer</code></em>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
-<td>the URI this is related to.
-</td>
+<td>the URI this is related to.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a newly allocated <a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> struct if EXIF data was
-found, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> otherwise. Free the returned struct with <a class="link" href="libtracker-extract-Exif.html#tracker-exif-free" title="tracker_exif_free ()"><code class="function">tracker_exif_free()</code></a>.
-
-</td>
+<td>a newly allocated <a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> struct if EXIF data was
+found, <code class="literal">NULL</code> otherwise. Free the returned struct with <a class="link" href="libtracker-extract-Exif.html#tracker-exif-free" title="tracker_exif_free ()"><code class="function">tracker_exif_free()</code></a>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_exif_free ()">
+<div class="refsect2">
 <a name="tracker-exif-free"></a><h3>tracker_exif_free ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_exif_free                   (<em class="parameter"><code><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> *data</code></em>);</pre>
 <p>
-Frees <em class="parameter"><code>data</code></em> and all <a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> members. <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will produce a
+Frees <em class="parameter"><code>data</code></em> and all <a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> members. <code class="literal">NULL</code> will produce a
 a warning.
 </p>
 <div class="variablelist"><table border="0">
@@ -160,13 +155,13 @@ a warning.
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_exif_read ()">
+<div class="refsect2">
 <a name="tracker-exif-read"></a><h3>tracker_exif_read ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_exif_read                   (<em class="parameter"><code>unsigned <span class="type">char</span> *buffer</code></em>,
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_exif_read                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-Exif.html#TrackerExifData" title="TrackerExifData"><span class="type">TrackerExifData</span></a> *data</code></em>);</pre>
-<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">tracker_exif_read</code> is deprecated and should not be used in newly-written code. 0.9. Use <a class="link" href="libtracker-extract-Exif.html#tracker-exif-new" title="tracker_exif_new ()"><code class="function">tracker_exif_new()</code></a> instead.</p>
 </div>
@@ -180,30 +175,25 @@ data found in <em class="parameter"><code>uri</code></em>.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
-<td>a chunk of data with exif data in it.
-</td>
+<td>a chunk of data with exif data in it.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
-<td>the size of <em class="parameter"><code>buffer</code></em>.
-</td>
+<td>the size of <em class="parameter"><code>buffer</code></em>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
-<td>the URI this is related to.
-</td>
+<td>the URI this is related to.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>a pointer to a TrackerExifData struture to populate.
-</td>
+<td>a pointer to a TrackerExifData struture to populate.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned.
-
-</td>
+<td>
+<code class="literal">TRUE</code> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
+<code class="literal">FALSE</code> is returned.</td>
 </tr>
 </tbody>
 </table></div>
@@ -213,6 +203,6 @@ data found in <em class="parameter"><code>uri</code></em>.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

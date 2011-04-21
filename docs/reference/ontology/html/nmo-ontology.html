@@ -8,7 +8,7 @@
 <link rel="up" href="ontology.html" title="Part I. Overview">
 <link rel="prev" href="nco-properties.html" title="NCO Ontology Properties">
 <link rel="next" href="nmo-classes.html" title="NMO Ontology Classes">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -19,7 +19,7 @@
 <th width="100%" align="center">Tracker Ontology Reference Manual</th>
 <td><a accesskey="n" href="nmo-classes.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="chapter" title="Nepomuk Messaging Ontology (NMO): Model for messages and communications, including Email, SMS, MMS and phone calls">
+<div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="nmo-ontology"></a>Nepomuk Messaging Ontology (NMO): Model for messages and communications, including Email, SMS, MMS and phone calls</h2></div></div></div>
 <div class="toc"><dl>
@@ -51,16 +51,16 @@
 <dd><p><a class="ulink" href="http://git.gnome.org/cgit/tracker/log/data/ontologies/34-nmo.ontology" target="_top">Tracker changes</a></p></dd>
 <dt><span class="term">Copyright:</span></dt>
 <dd><p>© 2007 <a class="ulink" href="http://www.dfki.de/" target="_top">DFKI</a> © 2009 <a class="ulink" href="http://www.nokia.com/" target="_top">Nokia</a>. The ontologies are made available under the terms of NEPOMUK <a class="ulink" href="http://www.semanticdesktop.org/ontologies/nfo/LICENSE.txt" target="_top">software license</a> (FIXME verify)</p></dd>
-<div class="section" title="Overview">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="nmo-explanation"></a>Overview</h2></div></div></div>
-<div class="sect2" title="Introduction">
+<div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="nmo-introduction"></a>Introduction</h3></div></div></div>
 <p>NEPOMUK Message Ontology extends the NEPOMUK Information Element framework into the domain of messages. This ontology has been heavily extended by Tracker team to include real support for Emails, IM Accounts, SMS and Calls relevant in environments like <a class="ulink" href="http://maemo.nokia.com" target="_top">Maemo</a>.</p>
 <p>The messaging domain is too wide to be explained in one shot. For that reason, it has been splitted in few smaller pieces easier to grasp: the Message class (the core of the whole representation), the <a class="link" href="nmo-ontology.html#nmo-conversation-representation" title="Conversations">conversation representation</a>, the translation of an <a class="link" href="nmo-ontology.html#nmo-email-domain" title="Email domain">email</a> to Nepomuk terms, and finally <a class="link" href="nmo-ontology.html#nmo-sms-domain" title="SMS domain">SMS</a> and <a class="link" href="nmo-ontology.html#nmo-mms-domain" title="MMS Messages">MMS</a> representation.</p>
 </div>
-<div class="sect2" title="The Message class">
+<div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="nmo-message-core-class"></a>The Message class</h3></div></div></div>
 <p>The <a class="link" href="nmo-classes.html#nmo-Message" title="nmo:Message">nmo:Message</a> class is the common superclass for Emails, SMS, IM Messages, MMS (in NMO domain) and even Feed messages (defined in <a class="link" href="mfo-ontology.html#mfo-explanation" title="Overview">MFO ontology</a>). As such, it has the common properties for a 'Message' as an meaningful item in a communication: sender and receiver of the message, sent/received time, status of the message (read, answered and so on). It is a subclass of <a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a> and from there inherits the <a class="link" href="nie-properties.html#nie-plainTextContent" title="nie:plainTextContent">nie:plainTextContent</a> property (which, as its name states, contains the text of the message).
@@ -80,14 +80,14 @@
 </div>
 <br class="figure-break">
 </div>
-<div class="sect2" title="Conversations">
+<div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="nmo-conversation-representation"></a>Conversations</h3></div></div></div>
 <p>The dialog between two contacts could be considered a list of messages sorted by time, but that representation is too simplistic. Two contacts can keep a simultaneous communication in two channels (e.g. IM and IRC), and the concept of conversation, a communication with a beggining and end is also important to sort the information in the UI.</p>
 <p>The ontology provides a <a class="link" href="nmo-classes.html#nmo-CommunicationChannel" title="nmo:CommunicationChannel">nmo:CommunicationChannel</a> class, which groups all messages between a certain set of contacts (linked via <a class="link" href="nmo-properties.html#nmo-hasParticipant" title="nmo:hasParticipant">nmo:hasParticipant</a> property). The communication channel can be transient (an ad-hoc conversation in IM represented in the subclass <a class="link" href="nmo-classes.html#nmo-TransientChannel" title="nmo:TransientChannel">nmo:TransientChannel</a>) or permanent (a well-known IRC channel would be an instance of <a class="link" href="nmo-classes.html#nmo-PermanentChannel" title="nmo:PermanentChannel">nmo:PermanentChannel</a> ). Every time 'me' talks with an specific contact, the communication channel should be the same. It identifies somehow the whole list of messages between a set of participants.</p>
 <p>There is a second important class, <a class="link" href="nmo-classes.html#nmo-Conversation" title="nmo:Conversation">nmo:Conversation</a> to group messages delimited in a time frame. Every time a IM dialog is open (e.g. a window talking with a certain contact) a new instance of <a class="link" href="nmo-classes.html#nmo-Conversation" title="nmo:Conversation">nmo:Conversation</a> is created.</p>
 </div>
-<div class="sect2" title="Email domain">
+<div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="nmo-email-domain"></a>Email domain</h3></div></div></div>
 <p>The users usually see an Email as a flat Message, with some thread information and maybe 'attachments' in it, but in fact internally an Email message is a tree with a special root node (the envelope) that links to other nodes called MIME parts. This MIME parts can be plain text (for instance the content of the email that the user read) or binary blobs (like a document attached to the message). When a message is forwarded, the previous envelope (the root node of the original message) becomes just a mime part of the forwarded email.</p>
@@ -102,12 +102,12 @@
 </div>
 <br class="figure-break">
 </div>
-<div class="sect2" title="Email accounts">
+<div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="nmo-accounts-representation"></a>Email accounts</h3></div></div></div>
 <p>Explain here MailAccount and MailFolder</p>
 </div>
-<div class="sect2" title="SMS domain">
+<div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="nmo-sms-domain"></a>SMS domain</h3></div></div></div>
 <p>We have a new subclass of message to represent a SMS Message. It is worth to remark that we are talking about a <span class="emphasis"><em>simple</em></span> text message. Things like MMS are more complex (more similar to an email than a simple message), and will have their own classes.
@@ -150,12 +150,12 @@ nmo:containsSMS property will link the message with the relevant nmo:SMSFolder.<
 
     </pre>
 </div>
-<div class="sect2" title="MMS Messages">
+<div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="nmo-mms-domain"></a>MMS Messages</h3></div></div></div>
 <p>Bascially MMS messages has the structure of Email messages with an SMS envelope. This is exactly how they are represented in the ontology, with an specific class <a class="link" href="nmo-classes.html#nmo-MMSMessage" title="nmo:MMSMessage">nmo:MMSMessage</a> that inherits from SMS (to get the folders properties) and from <a class="link" href="nmo-classes.html#nmo-Email" title="nmo:Email">nmo:Email</a> (to use the Multipart/MimePart structure). Please refer to the SMS and Email documentation for more details.</p>
 </div>
-<div class="sect2" title="Call domain">
+<div class="sect2">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="nmo-call-domain"></a>Call domain</h3></div></div></div>
 <p>Voice calls are considered messages in the ontology. A call is a communication item between two contacts (therefore a Message with to/from properties) with an extra property <a class="link" href="nmo-properties.html#nmo-duration" title="nmo:duration">nmo:duration</a>. Each call is represented as an instance of <a class="link" href="nmo-classes.html#nmo-Call" title="nmo:Call">nmo:Call</a> class. There is also a <a class="link" href="nmo-classes.html#nmo-VOIPCall" title="nmo:VOIPCall">nmo:VOIPCall</a> class (subclass of <a class="link" href="nmo-classes.html#nmo-Call" title="nmo:Call">nmo:Call</a>) for VOIP communications (e.g. Skype, GTalk,...). </p>
@@ -164,6 +164,6 @@ nmo:containsSMS property will link the message with the relevant nmo:SMSFolder.<
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

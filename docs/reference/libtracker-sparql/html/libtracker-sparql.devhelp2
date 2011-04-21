@@ -22,7 +22,7 @@
     </sub>
   </chapters>
   <functions>
-    <keyword type="struct" name="TrackerSparqlBuilder" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"/>
+    <keyword type="struct" name="struct TrackerSparqlBuilder" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"/>
     <keyword type="enum" name="enum TrackerSparqlBuilderState" link="TrackerSparqlBuilder.html#TrackerSparqlBuilderState"/>
     <keyword type="function" name="tracker_sparql_builder_new ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-new" since="0.10"/>
     <keyword type="function" name="tracker_sparql_builder_new_embedded_insert ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert" since="0.10"/>
@@ -62,7 +62,7 @@
     <keyword type="property" name="The &quot;result&quot; property" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder--result"/>
     <keyword type="property" name="The &quot;state&quot; property" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder--state"/>
     <keyword type="enum" name="enum TrackerSparqlError" link="TrackerSparqlConnection.html#TrackerSparqlError"/>
-    <keyword type="struct" name="TrackerSparqlConnection" link="TrackerSparqlConnection.html#TrackerSparqlConnection-struct"/>
+    <keyword type="struct" name="struct TrackerSparqlConnection" link="TrackerSparqlConnection.html#TrackerSparqlConnection-struct"/>
     <keyword type="function" name="tracker_sparql_connection_get ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_get_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-async"/>
     <keyword type="function" name="tracker_sparql_connection_get_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-finish" since="0.10"/>
@@ -86,7 +86,7 @@
     <keyword type="function" name="tracker_sparql_connection_statistics ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_statistics_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-async" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_statistics_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-finish" since="0.10"/>
-    <keyword type="struct" name="TrackerSparqlCursor" link="TrackerSparqlCursor.html#TrackerSparqlCursor-struct"/>
+    <keyword type="struct" name="struct TrackerSparqlCursor" link="TrackerSparqlCursor.html#TrackerSparqlCursor-struct"/>
     <keyword type="enum" name="enum TrackerSparqlValueType" link="TrackerSparqlCursor.html#TrackerSparqlValueType" since="0.10"/>
     <keyword type="function" name="tracker_sparql_cursor_get_connection ()" link="TrackerSparqlCursor.html#tracker-sparql-cursor-get-connection" since="0.10"/>
     <keyword type="function" name="tracker_sparql_cursor_get_n_columns ()" link="TrackerSparqlCursor.html#tracker-sparql-cursor-get-n-columns" since="0.10"/>

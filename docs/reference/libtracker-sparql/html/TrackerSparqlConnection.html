@@ -8,7 +8,7 @@
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
 <link rel="prev" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder">
 <link rel="next" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -28,7 +28,7 @@
                   <a href="#TrackerSparqlConnection.object-hierarchy" class="shortcut">Object Hierarchy</a>
 </td></tr>
 </table>
-<div class="refentry" title="TrackerSparqlConnection">
+<div class="refentry">
 <a name="TrackerSparqlConnection"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -37,131 +37,132 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="TrackerSparqlConnection.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">enum                <a class="link" href="TrackerSparqlConnection.html#TrackerSparqlError" title="enum TrackerSparqlError">TrackerSparqlError</a>;
-                    <a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnection-struct" title="TrackerSparqlConnection">TrackerSparqlConnection</a>;
-<a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a>* <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()">tracker_sparql_connection_get</a>  (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-async" title="tracker_sparql_connection_get_async ()">tracker_sparql_connection_get_async</a> (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);
-<a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a>* <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-finish" title="tracker_sparql_connection_get_finish ()">tracker_sparql_connection_get_finish</a>
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a>* <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct" title="tracker_sparql_connection_get_direct ()">tracker_sparql_connection_get_direct</a>
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+struct              <a class="link" href="TrackerSparqlConnection.html#TrackerSparqlConnection-struct" title="struct TrackerSparqlConnection">TrackerSparqlConnection</a>;
+<a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *  <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()">tracker_sparql_connection_get</a>
+                                                        (<em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-async" title="tracker_sparql_connection_get_async ()">tracker_sparql_connection_get_async</a> (<em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);
+<a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *  <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-finish" title="tracker_sparql_connection_get_finish ()">tracker_sparql_connection_get_finish</a>
+                                                        (<em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+<a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *  <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct" title="tracker_sparql_connection_get_direct ()">tracker_sparql_connection_get_direct</a>
+                                                        (<em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-async" title="tracker_sparql_connection_get_direct_async ()">tracker_sparql_connection_get_direct_async</a>
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);
-<a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a>* <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-finish" title="tracker_sparql_connection_get_direct_finish ()">tracker_sparql_connection_get_direct_finish</a>
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a>* <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-query" title="tracker_sparql_connection_query ()">tracker_sparql_connection_query</a>    (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+                                                        (<em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);
+<a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *  <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-finish" title="tracker_sparql_connection_get_direct_finish ()">tracker_sparql_connection_get_direct_finish</a>
+                                                        (<em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+<a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *  <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-query" title="tracker_sparql_connection_query ()">tracker_sparql_connection_query</a>  (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-query-async" title="tracker_sparql_connection_query_async ()">tracker_sparql_connection_query_async</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);
-<a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a>* <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-query-finish" title="tracker_sparql_connection_query_finish ()">tracker_sparql_connection_query_finish</a>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);
+<a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *  <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-query-finish" title="tracker_sparql_connection_query_finish ()">tracker_sparql_connection_query_finish</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update" title="tracker_sparql_connection_update ()">tracker_sparql_connection_update</a>    (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-async" title="tracker_sparql_connection_update_async ()">tracker_sparql_connection_update_async</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-finish" title="tracker_sparql_connection_update_finish ()">tracker_sparql_connection_update_finish</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-array-async" title="tracker_sparql_connection_update_array_async ()">tracker_sparql_connection_update_array_async</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **sparql</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> sparql_length1</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a>*          <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-array-finish" title="tracker_sparql_connection_update_array_finish ()">tracker_sparql_connection_update_array_finish</a>
+                                                         <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);
+<span class="returnvalue">GPtrArray</span> *         <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-array-finish" title="tracker_sparql_connection_update_array_finish ()">tracker_sparql_connection_update_array_finish</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a>*           <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-blank" title="tracker_sparql_connection_update_blank ()">tracker_sparql_connection_update_blank</a>
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+<span class="returnvalue">GVariant</span> *          <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-blank" title="tracker_sparql_connection_update_blank ()">tracker_sparql_connection_update_blank</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-blank-async" title="tracker_sparql_connection_update_blank_async ()">tracker_sparql_connection_update_blank_async</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a>*           <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-blank-finish" title="tracker_sparql_connection_update_blank_finish ()">tracker_sparql_connection_update_blank_finish</a>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);
+<span class="returnvalue">GVariant</span> *          <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-update-blank-finish" title="tracker_sparql_connection_update_blank_finish ()">tracker_sparql_connection_update_blank_finish</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-load" title="tracker_sparql_connection_load ()">tracker_sparql_connection_load</a>      (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-load-async" title="tracker_sparql_connection_load_async ()">tracker_sparql_connection_load_async</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-load-finish" title="tracker_sparql_connection_load_finish ()">tracker_sparql_connection_load_finish</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a>* <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-statistics" title="tracker_sparql_connection_statistics ()">tracker_sparql_connection_statistics</a>
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+<a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *  <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-statistics" title="tracker_sparql_connection_statistics ()">tracker_sparql_connection_statistics</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-async" title="tracker_sparql_connection_statistics_async ()">tracker_sparql_connection_statistics_async</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);
-<a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a>* <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-finish" title="tracker_sparql_connection_statistics_finish ()">tracker_sparql_connection_statistics_finish</a>
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);
+<a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *  <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-finish" title="tracker_sparql_connection_statistics_finish ()">tracker_sparql_connection_statistics_finish</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Object Hierarchy">
+<div class="refsect1">
 <a name="TrackerSparqlConnection.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+  GObject
    +----TrackerSparqlConnection
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="TrackerSparqlConnection.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="TrackerSparqlConnection.details"></a><h2>Details</h2>
-<div class="refsect2" title="enum TrackerSparqlError">
+<div class="refsect2">
 <a name="TrackerSparqlError"></a><h3>enum TrackerSparqlError</h3>
 <pre class="programlisting">typedef enum  {
 	TRACKER_SPARQL_ERROR_PARSE,
@@ -178,9 +179,9 @@
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TrackerSparqlConnection">
-<a name="TrackerSparqlConnection-struct"></a><h3>TrackerSparqlConnection</h3>
-<pre class="programlisting">typedef struct _TrackerSparqlConnection TrackerSparqlConnection;</pre>
+<div class="refsect2">
+<a name="TrackerSparqlConnection-struct"></a><h3>struct TrackerSparqlConnection</h3>
+<pre class="programlisting">struct TrackerSparqlConnection;</pre>
 <p>
 The <span class="structname">TrackerSparqlConnection</span> object represents a
 connection with the Tracker store or databases depending on direct or
@@ -188,10 +189,11 @@ non-direct requests.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_get ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-get"></a><h3>tracker_sparql_connection_get ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a>* tracker_sparql_connection_get  (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *  tracker_sparql_connection_get
+                                                        (<em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 This function is used to give the caller a connection to Tracker they can
 use for future requests. The best backend available to connect to
@@ -226,61 +228,37 @@ substantial while data is restored as best as possible.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the
-object when no longer used.
-
-</td>
+<td>a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <code class="function">g_object_unref()</code> on the
+object when no longer used.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_get_async ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-get-async"></a><h3>tracker_sparql_connection_get_async ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_get_async (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_get_async (<em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>_callback_</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>_user_data_</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_get_finish ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-get-finish"></a><h3>tracker_sparql_connection_get_finish ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a>* tracker_sparql_connection_get_finish
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *  tracker_sparql_connection_get_finish
+                                                        (<em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 This function is called from the callback provided for
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-async" title="tracker_sparql_connection_get_async ()"><code class="function">tracker_sparql_connection_get_async()</code></a> to return the connection requested
@@ -291,31 +269,29 @@ or an error in cases of failure.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_res_</code></em> :</span></p></td>
-<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> from the callback used to return the <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>
+<td>The <span class="type">GAsyncResult</span> from the callback used to return the <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>The error which occurred or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>The error which occurred or <code class="literal">NULL</code>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the
-object when no longer used.
-
-</td>
+<td>a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <code class="function">g_object_unref()</code> on the
+object when no longer used.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_get_direct ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-get-direct"></a><h3>tracker_sparql_connection_get_direct ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a>* tracker_sparql_connection_get_direct
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *  tracker_sparql_connection_get_direct
+                                                        (<em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 This behaves the same way <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()"><code class="function">tracker_sparql_connection_get()</code></a> does, however,
 the <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> can only be used for read-only requests.
@@ -328,62 +304,38 @@ D-Bus which may be the case with <a class="link" href="TrackerSparqlConnection.h
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the
-object when no longer used.
-
-</td>
+<td>a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <code class="function">g_object_unref()</code> on the
+object when no longer used.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_get_direct_async ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-get-direct-async"></a><h3>tracker_sparql_connection_get_direct_async ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_get_direct_async
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
+                                                        (<em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>_callback_</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>_user_data_</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_get_direct_finish ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-get-direct-finish"></a><h3>tracker_sparql_connection_get_direct_finish ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a>* tracker_sparql_connection_get_direct_finish
-                                                        (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *  tracker_sparql_connection_get_direct_finish
+                                                        (<em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 This function is called from the callback provided for
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-async" title="tracker_sparql_connection_get_direct_async ()"><code class="function">tracker_sparql_connection_get_direct_async()</code></a> to return the connection
@@ -394,32 +346,30 @@ requested or an error in cases of failure.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_res_</code></em> :</span></p></td>
-<td>The <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> from the callback used to return the <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>
+<td>The <span class="type">GAsyncResult</span> from the callback used to return the <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>The error which occurred or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>The error which occurred or <code class="literal">NULL</code>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the
-object when no longer used.
-
-</td>
+<td>a new <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a>. Call <code class="function">g_object_unref()</code> on the
+object when no longer used.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_query ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-query"></a><h3>tracker_sparql_connection_query ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a>* tracker_sparql_connection_query    (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *  tracker_sparql_connection_query  (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Executes a SPARQL query on. The API call is completely synchronous, so
 it may block.
@@ -434,81 +384,46 @@ it may block.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sparql</code></em> :</span></p></td>
-<td>string containing the SPARQL query
-</td>
+<td>string containing the SPARQL query</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
-On error, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em> is set accordingly.
-Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer needed.
-
-</td>
+<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <span class="type">NULL</span> otherwise.
+On error, <span class="type">NULL</span> is returned and the <em class="parameter"><code>error</code></em> is set accordingly.
+Call <code class="function">g_object_unref()</code> on the returned cursor when no longer needed.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_query_async ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-query-async"></a><h3>tracker_sparql_connection_query_async ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_query_async
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>self</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>sparql</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>_callback_</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>_user_data_</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_query_finish ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-query-finish"></a><h3>tracker_sparql_connection_query_finish ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a>* tracker_sparql_connection_query_finish
+<pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *  tracker_sparql_connection_query_finish
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Finishes the asynchronous SPARQL query operation.
 </p>
@@ -522,35 +437,31 @@ Finishes the asynchronous SPARQL query operation.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_res_</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> with the result of the operation
-</td>
+<td>a <span class="type">GAsyncResult</span> with the result of the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
-On error, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em> is set accordingly.
-Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer needed.
-
-</td>
+<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <span class="type">NULL</span> otherwise.
+On error, <span class="type">NULL</span> is returned and the <em class="parameter"><code>error</code></em> is set accordingly.
+Call <code class="function">g_object_unref()</code> on the returned cursor when no longer needed.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_update ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-update"></a><h3>tracker_sparql_connection_update ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_update    (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Executes a SPARQL update. The API call is completely
 synchronous, so it may block.
@@ -565,39 +476,35 @@ synchronous, so it may block.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sparql</code></em> :</span></p></td>
-<td>string containing the SPARQL update query
-</td>
+<td>string containing the SPARQL update query</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>priority</code></em> :</span></p></td>
-<td>the priority for the operation
-</td>
+<td>the priority for the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_update_async ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-update-async"></a><h3>tracker_sparql_connection_update_async ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_update_async
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
 <p>
 Executes asynchronously a SPARQL update.
 </p>
@@ -611,24 +518,20 @@ Executes asynchronously a SPARQL update.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sparql</code></em> :</span></p></td>
-<td>string containing the SPARQL update query
-</td>
+<td>string containing the SPARQL update query</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>priority</code></em> :</span></p></td>
-<td>the priority for the asynchronous operation
-</td>
+<td>the priority for the asynchronous operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_callback_</code></em> :</span></p></td>
-<td>user-defined <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
-             asynchronous operation is finished.
-</td>
+<td>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+asynchronous operation is finished.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_user_data_</code></em> :</span></p></td>
@@ -640,12 +543,12 @@ Executes asynchronously a SPARQL update.
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_update_finish ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-update-finish"></a><h3>tracker_sparql_connection_update_finish ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_update_finish
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Finishes the asynchronous SPARQL update operation.
 </p>
@@ -659,30 +562,28 @@ Finishes the asynchronous SPARQL update operation.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_res_</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> with the result of the operation
-</td>
+<td>a <span class="type">GAsyncResult</span> with the result of the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_update_array_async ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-update-array-async"></a><h3>tracker_sparql_connection_update_array_async ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_update_array_async
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **sparql</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> sparql_length1</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
 <p>
 Executes asynchronously an array of SPARQL updates. Each update in the
 array is its own transaction. This means that update n+1 is not halted
@@ -698,8 +599,7 @@ due to an error in update n.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sparql</code></em> :</span></p></td>
-<td>an array of strings containing the SPARQL update queries
-</td>
+<td>an array of strings containing the SPARQL update queries</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sparql_length1</code></em> :</span></p></td>
@@ -708,19 +608,16 @@ due to an error in update n.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>priority</code></em> :</span></p></td>
-<td>the priority for the asynchronous operation
-</td>
+<td>the priority for the asynchronous operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_callback_</code></em> :</span></p></td>
-<td>user-defined <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
-             asynchronous operation is finished.
-</td>
+<td>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+asynchronous operation is finished.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_user_data_</code></em> :</span></p></td>
@@ -732,19 +629,19 @@ due to an error in update n.
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_update_array_finish ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-update-array-finish"></a><h3>tracker_sparql_connection_update_array_finish ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a>*          tracker_sparql_connection_update_array_finish
+<pre class="programlisting"><span class="returnvalue">GPtrArray</span> *         tracker_sparql_connection_update_array_finish
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Finishes the asynchronous SPARQL update_array operation.
 </p>
 <p>
 </p>
 <div class="example">
-<a name="id457468"></a><p class="title"><b>Example 1. </b></p>
+<a name="id465700"></a><p class="title"><b>Example 1. </b></p>
 <div class="example-contents"><pre class="programlisting">
 static void
 async_update_array_callback (GObject      *source_object,
@@ -780,40 +677,36 @@ async_update_array_callback (GObject      *source_object,
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_res_</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> with the result of the operation
-</td>
+<td>a <span class="type">GAsyncResult</span> with the result of the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> of size <em class="parameter"><code>sparql_length1</code></em> with elements that are
+<td>a <span class="type">GPtrArray</span> of size <em class="parameter"><code>sparql_length1</code></em> with elements that are
 either NULL or a GError instance. The returned array should be freed with
 g_ptr_array_unref when no longer used, not with g_ptr_array_free. When
 you use errors of the array, you must g_error_copy them. Errors inside of
 the array must be considered as const data and not freed. The index of
 the error corresponds to the index of the update query in the array that
-you passed to tracker_sparql_connection_update_array_async.
-
-</td>
+you passed to tracker_sparql_connection_update_array_async.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_update_blank ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-update-blank"></a><h3>tracker_sparql_connection_update_blank ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a>*           tracker_sparql_connection_update_blank
+<pre class="programlisting"><span class="returnvalue">GVariant</span> *          tracker_sparql_connection_update_blank
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Executes a SPARQL update and returns the URNs of the generated nodes,
 if any. The API call is completely synchronous, so it may block.
@@ -828,46 +721,40 @@ if any. The API call is completely synchronous, so it may block.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sparql</code></em> :</span></p></td>
-<td>string containing the SPARQL update query
-</td>
+<td>string containing the SPARQL update query</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>priority</code></em> :</span></p></td>
-<td>the priority for the operation
-</td>
+<td>the priority for the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> with the generated URNs, which should be freed with
-<a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#g-variant-unref"><code class="function">g_variant_unref()</code></a> when no longer used.
-
-</td>
+<td>a <span class="type">GVariant</span> with the generated URNs, which should be freed with
+<code class="function">g_variant_unref()</code> when no longer used.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_update_blank_async ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-update-blank-async"></a><h3>tracker_sparql_connection_update_blank_async ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_update_blank_async
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *sparql</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> priority</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *sparql</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
 <p>
 Executes asynchronously a SPARQL update.
 </p>
@@ -881,24 +768,20 @@ Executes asynchronously a SPARQL update.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sparql</code></em> :</span></p></td>
-<td>string containing the SPARQL update query
-</td>
+<td>string containing the SPARQL update query</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>priority</code></em> :</span></p></td>
-<td>the priority for the asynchronous operation
-</td>
+<td>the priority for the asynchronous operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_callback_</code></em> :</span></p></td>
-<td>user-defined <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
-             asynchronous operation is finished.
-</td>
+<td>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+asynchronous operation is finished.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_user_data_</code></em> :</span></p></td>
@@ -910,12 +793,12 @@ Executes asynchronously a SPARQL update.
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_update_blank_finish ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-update-blank-finish"></a><h3>tracker_sparql_connection_update_blank_finish ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="returnvalue">GVariant</span></a>*           tracker_sparql_connection_update_blank_finish
+<pre class="programlisting"><span class="returnvalue">GVariant</span> *          tracker_sparql_connection_update_blank_finish
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Finishes the asynchronous SPARQL update operation, and returns
 the URNs of the generated nodes, if any.
@@ -930,33 +813,29 @@ the URNs of the generated nodes, if any.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_res_</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> with the result of the operation
-</td>
+<td>a <span class="type">GAsyncResult</span> with the result of the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#GVariant"><span class="type">GVariant</span></a> with the generated URNs, which should be freed with
-<a href="http://library.gnome.org/devel/glib/unstable/glib-GVariant.html#g-variant-unref"><code class="function">g_variant_unref()</code></a> when no longer used.
-
-</td>
+<td>a <span class="type">GVariant</span> with the generated URNs, which should be freed with
+<code class="function">g_variant_unref()</code> when no longer used.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_load ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-load"></a><h3>tracker_sparql_connection_load ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_load      (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Loads a Turtle file (TTL) into the store. The API call is completely
 synchronous, so it may block.
@@ -971,33 +850,31 @@ synchronous, so it may block.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>
+<td>a <span class="type">GFile</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_load_async ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-load-async"></a><h3>tracker_sparql_connection_load_async ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_load_async
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
 <p>
 Loads, asynchronously, a Turtle file (TTL) into the store.
 </p>
@@ -1011,19 +888,17 @@ Loads, asynchronously, a Turtle file (TTL) into the store.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>
+<td>a <span class="type">GFile</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_callback_</code></em> :</span></p></td>
-<td>user-defined <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
-             asynchronous operation is finished.
-</td>
+<td>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+asynchronous operation is finished.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_user_data_</code></em> :</span></p></td>
@@ -1035,12 +910,12 @@ Loads, asynchronously, a Turtle file (TTL) into the store.
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_load_finish ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-load-finish"></a><h3>tracker_sparql_connection_load_finish ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_load_finish
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Finishes the asynchronous load of the Turtle file.
 </p>
@@ -1054,26 +929,24 @@ Finishes the asynchronous load of the Turtle file.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_res_</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> with the result of the operation
-</td>
+<td>a <span class="type">GAsyncResult</span> with the result of the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_statistics ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-statistics"></a><h3>tracker_sparql_connection_statistics ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a>* tracker_sparql_connection_statistics
+<pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *  tracker_sparql_connection_statistics
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Retrieves the statistics from the Store. The API call is completely
 synchronous, so it may block.
@@ -1088,35 +961,31 @@ synchronous, so it may block.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>
-on error. Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer
-needed.
-
-</td>
+<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <span class="type">NULL</span>
+on error. Call <code class="function">g_object_unref()</code> on the returned cursor when no longer
+needed.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_statistics_async ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-statistics-async"></a><h3>tracker_sparql_connection_statistics_async ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_sparql_connection_statistics_async
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> _callback_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> _user_data_</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
+                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> _callback_</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> _user_data_</code></em>);</pre>
 <p>
 Retrieves, asynchronously, the statistics from the Store.
 </p>
@@ -1130,14 +999,12 @@ Retrieves, asynchronously, the statistics from the Store.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> used to cancel the operation
-</td>
+<td>a <span class="type">GCancellable</span> used to cancel the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_callback_</code></em> :</span></p></td>
-<td>user-defined <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> to be called when
-             asynchronous operation is finished.
-</td>
+<td>user-defined <span class="type">GAsyncReadyCallback</span> to be called when
+asynchronous operation is finished.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_user_data_</code></em> :</span></p></td>
@@ -1149,12 +1016,12 @@ Retrieves, asynchronously, the statistics from the Store.
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_sparql_connection_statistics_finish ()">
+<div class="refsect2">
 <a name="tracker-sparql-connection-statistics-finish"></a><h3>tracker_sparql_connection_statistics_finish ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a>* tracker_sparql_connection_statistics_finish
+<pre class="programlisting"><a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="returnvalue">TrackerSparqlCursor</span></a> *  tracker_sparql_connection_statistics_finish
                                                         (<em class="parameter"><code><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> *self</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *_res_</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Finishes the asynchronous retrieval of statistics from the Store.
 </p>
@@ -1168,22 +1035,18 @@ Finishes the asynchronous retrieval of statistics from the Store.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>_res_</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> with the result of the operation
-</td>
+<td>a <span class="type">GAsyncResult</span> with the result of the operation</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for error reporting.
-</td>
+<span class="type">GError</span> for error reporting.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>
-on error. Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer
-needed.
-
-</td>
+<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <span class="type">NULL</span>
+on error. Call <code class="function">g_object_unref()</code> on the returned cursor when no longer
+needed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1193,6 +1056,6 @@ needed.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

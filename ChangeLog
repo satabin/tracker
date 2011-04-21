@@ -1,3 +1,102 @@
+2011-04-21  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.10
+
+2011-04-20  Martyn Russell  <martyn@lanedo.com>
+
+	maemo: Added timestamp change for maemo:PostalAddress
+
+2011-04-20  Jürg Billeter  <j@bitron.ch>
+
+	tracker-extract: Do not consider no metadata an error
+	Fixes NB#249028.
+
+	maemo: Add maemo:PostalAddress
+	This will be used for the TYPE=postal parameter of the ADR property
+	in vCards.
+
+	libtracker-data: Sort filter-in-5 test result to avoid test failures
+
+2011-04-20  Martyn Russell  <martyn@lanedo.com>
+
+	build: Require rest 0.7, Fedora and Ubuntu don't have 0.6 anymore
+
+2011-04-20  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: Pool documentation updated  ... to include:  * Bulk tasks  * Always-buffered tasks  * New limit of requests to tracker-store
+
+	libtracker-miner: avoid new extractions if requests limit reached
+
+	libtracker-miner: Put together sparql buffer reset code
+
+	libtracker-miner: Need to keep bulk ops if we are going to queue requests
+
+	libtracker-miner: Always try to buffer requests and use UpdateArray
+
+	tracker-miner-fs: Set limit of requests in processing pool to 10
+
+	libtracker-miner: New limit for the number of requests sent to the store
+
+2011-04-20  Jürg Billeter  <j@bitron.ch>
+
+	tracker-extract: Complete relicensing from GPL to LGPL
+	Copyright headers of header files and C++ files were not updated during
+	relicensing in January 2011.
+
+2011-04-20  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Fix critical about locale in case of standalone mode
+
+2011-04-20  Mario Blättermann  <mariobl@gnome.org>
+
+	[l10n] Updated German translation
+
+2011-04-20  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-04-20  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-04-20  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-04-20  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Indentation problems in controller
+
+	tracker-extract: Fix critical warning in controller's finalize
+	I tested the ref count of priv->extractor in the finalize of the
+	controller, and it was 0 already at that point. Making me believe
+	that an ownership transfer is needed at set of the property.
+
+	tracker-extract: Indentation fixes in tracker-main.c
+
+	tracker-extract: Fix crash with certain versions of Qt
+
+	libtracker-data: Fixes after review for nrl:InverseFunctionalProperty change detection
+
+	NCO: Remove nrl:InverseFunctionalProperty from nco:phoneNumber
+	Fixes NB#244787.
+
+	libtracker-data: Support detecting nrl:InverseFunctionalProperty changes
+
+2011-04-20  Carlos Garnacho  <carlosg@gnome.org>
+
+	needle: Fix emails query
+	There was no second argument for the tracker:coalesce() call
+
+2011-04-18  Jürg Billeter  <j@bitron.ch>
+
+	tracker-extract: Fix use of uninitialized memory
+	Fixes NB#248059.
+
+2011-04-15  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
 2011-04-14  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.9

@@ -8,7 +8,7 @@
 <link rel="up" href="mtp-ontology.html" title="Multimetida Transfer Protocol (MTP) Ontology: Extra properties to add MTP information to the objects in the ontology">
 <link rel="prev" href="mtp-ontology.html" title="Multimetida Transfer Protocol (MTP) Ontology: Extra properties to add MTP information to the objects in the ontology">
 <link rel="next" href="slo-ontology.html" title="Simplified Maemo Location Ontology (SLO) (experimental/for testing): Simpler, faster, better ontology for locations and landmarks">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -19,12 +19,12 @@
 <th width="100%" align="center">Tracker Ontology Reference Manual</th>
 <td><a accesskey="n" href="slo-ontology.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="section" title="MTP Ontology Properties">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="mtp-properties"></a>MTP Ontology Properties</h2></div></div></div>
-<div class="refsect2" title="mtp:waveformat">
-<a name="mtp-waveformat"></a><h3>mtp:waveformat</h3>
-<p>the WAVE formats reserved with Microsoft as of June 1, 2003. These codes are used to uniquely identify audio formats, and are used in various legacy and current software development kits (SDKs), including MCI, Microsoft Video for Windows, Microsoft DirectShow, Microsoft DirectSound, and Microsoft Windows Media Format.</p>
+<div class="refsect2">
+<a name="mtp-scantype"></a><h3>mtp:scantype</h3>
+<p>Scan type of a video file (MTP requirement. FIXME Maybe should be move to a different ontology)</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -40,79 +40,7 @@
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="mtp:fourCC">
-<a name="mtp-fourCC"></a><h3>mtp:fourCC</h3>
-<p>These codes are used to uniquely identify video formats, and are used in various legacy and current software development kits (SDKs), including those for Microsoft Video for Windows (VfW), Microsoft DirectShow, and Microsoft Windows Media Format.</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
-<td>1</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="mtp:hidden">
-<a name="mtp-hidden"></a><h3>mtp:hidden</h3>
-<p>Hidden for the MTP protocol</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="xsd-classes.html#xsd-boolean" title="xsd:boolean">xsd:boolean</a>, </td>
+<a class="link" href="mtp-ontology.html#mtp-ScanType" title="mtp:ScanType">mtp:ScanType</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -126,7 +54,7 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="mtp:credits">
+<div class="refsect2">
 <a name="mtp-credits"></a><h3>mtp:credits</h3>
 <p>Following MTP spec, credits contains... FIXME</p>
 <div class="variablelist"><table border="0">
@@ -162,39 +90,7 @@
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="mtp:scantype">
-<a name="mtp-scantype"></a><h3>mtp:scantype</h3>
-<p>Scan type of a video file (MTP requirement. FIXME Maybe should be move to a different ontology)</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
-<td>
-<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
-<td>
-<a class="link" href="mtp-ontology.html#mtp-ScanType" title="mtp:ScanType">mtp:ScanType</a>, </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
-<td>--</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" title="mtp:creator">
+<div class="refsect2">
 <a name="mtp-creator"></a><h3>mtp:creator</h3>
 <p>Following MTP spec, this property can contain a free text taking about creator of the Media</p>
 <div class="variablelist"><table border="0">
@@ -233,9 +129,113 @@
 </tbody>
 </table></div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="mtp-hidden"></a><h3>mtp:hidden</h3>
+<p>Hidden for the MTP protocol</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-ontology.html#nfo-Media" title="nfo:Media">nfo:Media</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-boolean" title="xsd:boolean">xsd:boolean</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mtp-fourCC"></a><h3>mtp:fourCC</h3>
+<p>These codes are used to uniquely identify video formats, and are used in various legacy and current software development kits (SDKs), including those for Microsoft Video for Windows (VfW), Microsoft DirectShow, and Microsoft Windows Media Format.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="mtp-waveformat"></a><h3>mtp:waveformat</h3>
+<p>the WAVE formats reserved with Microsoft as of June 1, 2003. These codes are used to uniquely identify audio formats, and are used in various legacy and current software development kits (SDKs), including MCI, Microsoft Video for Windows, Microsoft DirectShow, Microsoft DirectSound, and Microsoft Windows Media Format.</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nmm-classes.html#nmm-Video" title="nmm:Video">nmm:Video</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="xsd-classes.html#xsd-string" title="xsd:string">xsd:string</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Cardinality</code></em> :</span></p></td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

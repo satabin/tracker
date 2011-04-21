@@ -22,7 +22,7 @@
     </sub>
   </chapters>
   <functions>
-    <function name="TrackerSparqlBuilder" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"/>
+    <function name="struct TrackerSparqlBuilder" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"/>
     <function name="enum TrackerSparqlBuilderState" link="TrackerSparqlBuilder.html#TrackerSparqlBuilderState"/>
     <function name="tracker_sparql_builder_new ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-new"/>
     <function name="tracker_sparql_builder_new_embedded_insert ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert"/>
@@ -62,7 +62,7 @@
     <function name="The &quot;result&quot; property" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder--result"/>
     <function name="The &quot;state&quot; property" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder--state"/>
     <function name="enum TrackerSparqlError" link="TrackerSparqlConnection.html#TrackerSparqlError"/>
-    <function name="TrackerSparqlConnection" link="TrackerSparqlConnection.html#TrackerSparqlConnection-struct"/>
+    <function name="struct TrackerSparqlConnection" link="TrackerSparqlConnection.html#TrackerSparqlConnection-struct"/>
     <function name="tracker_sparql_connection_get ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get"/>
     <function name="tracker_sparql_connection_get_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-async"/>
     <function name="tracker_sparql_connection_get_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-finish"/>
@@ -86,7 +86,7 @@
     <function name="tracker_sparql_connection_statistics ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics"/>
     <function name="tracker_sparql_connection_statistics_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-async"/>
     <function name="tracker_sparql_connection_statistics_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-statistics-finish"/>
-    <function name="TrackerSparqlCursor" link="TrackerSparqlCursor.html#TrackerSparqlCursor-struct"/>
+    <function name="struct TrackerSparqlCursor" link="TrackerSparqlCursor.html#TrackerSparqlCursor-struct"/>
     <function name="enum TrackerSparqlValueType" link="TrackerSparqlCursor.html#TrackerSparqlValueType"/>
     <function name="tracker_sparql_cursor_get_connection ()" link="TrackerSparqlCursor.html#tracker-sparql-cursor-get-connection"/>
     <function name="tracker_sparql_cursor_get_n_columns ()" link="TrackerSparqlCursor.html#tracker-sparql-cursor-get-n-columns"/>

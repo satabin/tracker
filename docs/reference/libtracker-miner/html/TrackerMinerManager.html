@@ -8,7 +8,7 @@
 <link rel="up" href="ch04.html" title="Managing miners">
 <link rel="prev" href="ch04.html" title="Managing miners">
 <link rel="next" href="ch05.html" title="Base abstract utilities">
-<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -34,7 +34,7 @@
                   <a href="#TrackerMinerManager.signals" class="shortcut">Signals</a>
 </td></tr>
 </table>
-<div class="refentry" title="TrackerMinerManager">
+<div class="refentry">
 <a name="TrackerMinerManager"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -43,87 +43,88 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="TrackerMinerManager.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 #include &lt;libtracker-miner/tracker-miner.h&gt;
 
 #define             <a class="link" href="TrackerMinerManager.html#TRACKER-MINER-MANAGER-ERROR:CAPS" title="TRACKER_MINER_MANAGER_ERROR">TRACKER_MINER_MANAGER_ERROR</a>
 enum                <a class="link" href="TrackerMinerManager.html#TrackerMinerManagerError" title="enum TrackerMinerManagerError">TrackerMinerManagerError</a>;
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-error-quark" title="tracker_miner_manager_error_quark ()">tracker_miner_manager_error_quark</a>   (<em class="parameter"><code><span class="type">void</span></code></em>);
-                    <a class="link" href="TrackerMinerManager.html#TrackerMinerManager-struct" title="TrackerMinerManager">TrackerMinerManager</a>;
-                    <a class="link" href="TrackerMinerManager.html#TrackerMinerManagerClass" title="TrackerMinerManagerClass">TrackerMinerManagerClass</a>;
+<span class="returnvalue">GQuark</span>              <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-error-quark" title="tracker_miner_manager_error_quark ()">tracker_miner_manager_error_quark</a>   (<em class="parameter"><code><span class="type">void</span></code></em>);
+struct              <a class="link" href="TrackerMinerManager.html#TrackerMinerManager-struct" title="struct TrackerMinerManager">TrackerMinerManager</a>;
+struct              <a class="link" href="TrackerMinerManager.html#TrackerMinerManagerClass" title="struct TrackerMinerManagerClass">TrackerMinerManagerClass</a>;
 <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-new" title="tracker_miner_manager_new ()">tracker_miner_manager_new</a>         (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-new-full" title="tracker_miner_manager_new_full ()">tracker_miner_manager_new_full</a>    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> auto_start</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-running" title="tracker_miner_manager_get_running ()">tracker_miner_manager_get_running</a>   (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-available" title="tracker_miner_manager_get_available ()">tracker_miner_manager_get_available</a> (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-pause" title="tracker_miner_manager_pause ()">tracker_miner_manager_pause</a>         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *cookie</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-resume" title="tracker_miner_manager_resume ()">tracker_miner_manager_resume</a>        (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> cookie</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-is-active" title="tracker_miner_manager_is_active ()">tracker_miner_manager_is_active</a>     (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-is-paused" title="tracker_miner_manager_is_paused ()">tracker_miner_manager_is_paused</a>     (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> *applications</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> *reasons</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-status" title="tracker_miner_manager_get_status ()">tracker_miner_manager_get_status</a>    (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **status</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *progress</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-display-name" title="tracker_miner_manager_get_display_name ()">tracker_miner_manager_get_display_name</a>
+<a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-new-full" title="tracker_miner_manager_new_full ()">tracker_miner_manager_new_full</a>    (<em class="parameter"><code><span class="type">gboolean</span> auto_start</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+<span class="returnvalue">GSList</span> *              <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-running" title="tracker_miner_manager_get_running ()">tracker_miner_manager_get_running</a> (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);
+<span class="returnvalue">GSList</span> *              <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-available" title="tracker_miner_manager_get_available ()">tracker_miner_manager_get_available</a>
+                                                        (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-pause" title="tracker_miner_manager_pause ()">tracker_miner_manager_pause</a>         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *reason</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint32</span> *cookie</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-resume" title="tracker_miner_manager_resume ()">tracker_miner_manager_resume</a>        (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint32</span> cookie</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-is-active" title="tracker_miner_manager_is_active ()">tracker_miner_manager_is_active</a>     (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-is-paused" title="tracker_miner_manager_is_paused ()">tracker_miner_manager_is_paused</a>     (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>,
+                                                         <em class="parameter"><code><span class="type">GStrv</span> *applications</code></em>,
+                                                         <em class="parameter"><code><span class="type">GStrv</span> *reasons</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-status" title="tracker_miner_manager_get_status ()">tracker_miner_manager_get_status</a>    (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **status</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *progress</code></em>);
+const <span class="returnvalue">gchar</span> *         <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-display-name" title="tracker_miner_manager_get_display_name ()">tracker_miner_manager_get_display_name</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-description" title="tracker_miner_manager_get_description ()">tracker_miner_manager_get_description</a>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>);
+const <span class="returnvalue">gchar</span> *         <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-description" title="tracker_miner_manager_get_description ()">tracker_miner_manager_get_description</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-index-file" title="tracker_miner_manager_index_file ()">tracker_miner_manager_index_file</a>    (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-ignore-next-update" title="tracker_miner_manager_ignore_next_update ()">tracker_miner_manager_ignore_next_update</a>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-index-file" title="tracker_miner_manager_index_file ()">tracker_miner_manager_index_file</a>    (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-ignore-next-update" title="tracker_miner_manager_ignore_next_update ()">tracker_miner_manager_ignore_next_update</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **urls</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-reindex-by-mimetype" title="tracker_miner_manager_reindex_by_mimetype ()">tracker_miner_manager_reindex_by_mimetype</a>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **urls</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-reindex-by-mimetype" title="tracker_miner_manager_reindex_by_mimetype ()">tracker_miner_manager_reindex_by_mimetype</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> mimetypes</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">GStrv</span> mimetypes</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Object Hierarchy">
+<div class="refsect1">
 <a name="TrackerMinerManager.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+  GObject
    +----TrackerMinerManager
 </pre>
 </div>
-<div class="refsect1" title="Implemented Interfaces">
+<div class="refsect1">
 <a name="TrackerMinerManager.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 TrackerMinerManager implements
- <a href="http://library.gnome.org/devel/gio/unstable/GInitable.html">GInitable</a>.</p>
+ GInitable.</p>
 </div>
-<div class="refsect1" title="Properties">
+<div class="refsect1">
 <a name="TrackerMinerManager.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager--auto-start" title='The "auto-start" property'>auto-start</a>"               <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write / Construct Only
+  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager--auto-start" title='The "auto-start" property'>auto-start</a>"               <span class="type">gboolean</span>              : Read / Write / Construct Only
 </pre>
 </div>
-<div class="refsect1" title="Signals">
+<div class="refsect1">
 <a name="TrackerMinerManager.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager-miner-activated" title='The "miner-activated" signal'>miner-activated</a>"                                : Run Last
-  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager-miner-deactivated" title='The "miner-deactivated" signal'>miner-deactivated</a>"                              : Run Last
-  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager-miner-paused" title='The "miner-paused" signal'>miner-paused</a>"                                   : Run Last
-  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager-miner-progress" title='The "miner-progress" signal'>miner-progress</a>"                                 : Run Last
-  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager-miner-resumed" title='The "miner-resumed" signal'>miner-resumed</a>"                                  : Run Last
+  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager-miner-activated" title='The "miner-activated" signal'>miner-activated</a>"                                : <code class="literal">Run Last</code>
+  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager-miner-deactivated" title='The "miner-deactivated" signal'>miner-deactivated</a>"                              : <code class="literal">Run Last</code>
+  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager-miner-paused" title='The "miner-paused" signal'>miner-paused</a>"                                   : <code class="literal">Run Last</code>
+  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager-miner-progress" title='The "miner-progress" signal'>miner-progress</a>"                                 : <code class="literal">Run Last</code>
+  "<a class="link" href="TrackerMinerManager.html#TrackerMinerManager-miner-resumed" title='The "miner-resumed" signal'>miner-resumed</a>"                                  : <code class="literal">Run Last</code>
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="TrackerMinerManager.description"></a><h2>Description</h2>
 <p>
 <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> keeps track of available miners, their current
@@ -131,9 +132,9 @@ progress/status, and also allows basic external control on them, such
 as pausing or resuming data processing.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="TrackerMinerManager.details"></a><h2>Details</h2>
-<div class="refsect2" title="TRACKER_MINER_MANAGER_ERROR">
+<div class="refsect2">
 <a name="TRACKER-MINER-MANAGER-ERROR:CAPS"></a><h3>TRACKER_MINER_MANAGER_ERROR</h3>
 <pre class="programlisting">#define TRACKER_MINER_MANAGER_ERROR tracker_miner_manager_error_quark ()
 </pre>
@@ -141,7 +142,7 @@ as pausing or resuming data processing.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="enum TrackerMinerManagerError">
+<div class="refsect2">
 <a name="TrackerMinerManagerError"></a><h3>enum TrackerMinerManagerError</h3>
 <pre class="programlisting">typedef enum {
 	TRACKER_MINER_MANAGER_ERROR_NOT_AVAILABLE,
@@ -172,32 +173,24 @@ miner is handling (for example a file or URI) does not exist.
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_error_quark ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-error-quark"></a><h3>tracker_miner_manager_error_quark ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              tracker_miner_manager_error_quark   (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GQuark</span>              tracker_miner_manager_error_quark   (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="TrackerMinerManager">
-<a name="TrackerMinerManager-struct"></a><h3>TrackerMinerManager</h3>
-<pre class="programlisting">typedef struct _TrackerMinerManager TrackerMinerManager;</pre>
+<div class="refsect2">
+<a name="TrackerMinerManager-struct"></a><h3>struct TrackerMinerManager</h3>
+<pre class="programlisting">struct TrackerMinerManager;</pre>
 <p>
 Object to query and control miners.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TrackerMinerManagerClass">
-<a name="TrackerMinerManagerClass"></a><h3>TrackerMinerManagerClass</h3>
-<pre class="programlisting">typedef struct {
+<div class="refsect2">
+<a name="TrackerMinerManagerClass"></a><h3>struct TrackerMinerManagerClass</h3>
+<pre class="programlisting">struct TrackerMinerManagerClass {
 	GObjectClass parent_class;
 
 	void (* miner_progress)    (TrackerMinerManager *manager,
@@ -212,49 +205,43 @@ Object to query and control miners.
 	                            const gchar         *miner_name);
 	void (* miner_deactivated) (TrackerMinerManager *manager,
 	                            const gchar         *miner_name);
-} TrackerMinerManagerClass;
+};
 </pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObjectClass"><span class="type">GObjectClass</span></a> <em class="structfield"><code><a name="TrackerMinerManagerClass.parent-class"></a>parent_class</code></em>;</span></p></td>
-<td>
-</td>
+<td><p><span class="term"><span class="type">GObjectClass</span> <em class="structfield"><code><a name="TrackerMinerManagerClass.parent-class"></a>parent_class</code></em>;</span></p></td>
+<td></td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerManagerClass.miner-progress"></a>miner_progress</code></em> ()</span></p></td>
 <td>The progress signal for all miners including name,
-status and progress as a percentage between 0 and 1.
-</td>
+status and progress as a percentage between 0 and 1.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerManagerClass.miner-paused"></a>miner_paused</code></em> ()</span></p></td>
-<td>The paused signal for all miners known about.
-</td>
+<td>The paused signal for all miners known about.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerManagerClass.miner-resumed"></a>miner_resumed</code></em> ()</span></p></td>
-<td>The resumed signal for all miners known about.
-</td>
+<td>The resumed signal for all miners known about.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerManagerClass.miner-activated"></a>miner_activated</code></em> ()</span></p></td>
 <td>The activated signal for all miners which
-indicates the miner is available on d-bus.
-</td>
+indicates the miner is available on d-bus.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerManagerClass.miner-deactivated"></a>miner_deactivated</code></em> ()</span></p></td>
 <td>The deactivate for all miners which indicates
-the miner is no longer available on d-bus.
-</td>
+the miner is no longer available on d-bus.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_new ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-new"></a><h3>tracker_miner_manager_new ()</h3>
 <pre class="programlisting"><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * tracker_miner_manager_new         (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
@@ -267,18 +254,16 @@ Note: Auto-starting miners when querying status will be enabled.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> if an error happened.
-
-</td>
+<td>a <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> or <span class="type">NULL</span> if an error happened.</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_new_full ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-new-full"></a><h3>tracker_miner_manager_new_full ()</h3>
-<pre class="programlisting"><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * tracker_miner_manager_new_full    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> auto_start</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * tracker_miner_manager_new_full    (<em class="parameter"><code><span class="type">gboolean</span> auto_start</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Creates a new <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a>.
 </p>
@@ -287,29 +272,25 @@ Creates a new <a class="link" href="TrackerMinerManager.html" title="TrackerMine
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>auto_start</code></em> :</span></p></td>
-<td>Flag to disable auto-starting the miners when querying status
-</td>
+<td>Flag to disable auto-starting the miners when querying status</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> to report errors.
-</td>
+<td>a <span class="type">GError</span> to report errors.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a>. On error, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and <em class="parameter"><code>error</code></em> is set
-accordingly.
-
-</td>
+<td>a <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a>. On error, <span class="type">NULL</span> is returned and <em class="parameter"><code>error</code></em> is set
+accordingly.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10.5</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_get_running ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-get-running"></a><h3>tracker_miner_manager_get_running ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            tracker_miner_manager_get_running   (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GSList</span> *              tracker_miner_manager_get_running (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);</pre>
 <p>
 Returns a list of references for all active miners. Active miners
 are miners which are running within a process.
@@ -324,8 +305,8 @@ are miners which are running within a process.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> which must be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#g-slist-free"><code class="function">g_slist_free()</code></a> and all
-contained data with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. Otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned if there
+<td>a <span class="type">GSList</span> which must be freed with <code class="function">g_slist_free()</code> and all
+contained data with <code class="function">g_free()</code>. Otherwise <code class="literal">NULL</code> is returned if there
 are no miners. <span class="annotation">[<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a>]</span>
 </td>
 </tr>
@@ -334,9 +315,10 @@ are no miners. <span class="annotation">[<a href="http://foldoc.org/transfer%20f
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_get_available ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-get-available"></a><h3>tracker_miner_manager_get_available ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            tracker_miner_manager_get_available (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GSList</span> *              tracker_miner_manager_get_available
+                                                        (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);</pre>
 <p>
 Returns a list of references for all available miners. Available
 miners are miners which may or may not be running in a process at
@@ -352,8 +334,8 @@ the current time.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> which must be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#g-slist-free"><code class="function">g_slist_free()</code></a> and all
-contained data with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>. Otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned if there
+<td>a <span class="type">GSList</span> which must be freed with <code class="function">g_slist_free()</code> and all
+contained data with <code class="function">g_free()</code>. Otherwise <code class="literal">NULL</code> is returned if there
 are no miners. <span class="annotation">[<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a>]</span>
 </td>
 </tr>
@@ -362,12 +344,12 @@ are no miners. <span class="annotation">[<a href="http://foldoc.org/transfer%20f
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_pause ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-pause"></a><h3>tracker_miner_manager_pause ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_manager_pause         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> *cookie</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_miner_manager_pause         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *reason</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint32</span> *cookie</code></em>);</pre>
 <p>
 Asks <em class="parameter"><code>miner</code></em> to pause. a miner could be paused by
 several reasons, and its activity won't be resumed
@@ -378,41 +360,36 @@ until all pause requests have been resumed.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>manager</code></em> :</span></p></td>
-<td>a <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a>.
-</td>
+<td>a <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>reason</code></em> :</span></p></td>
-<td>reason to pause
-</td>
+<td>reason to pause</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cookie</code></em> :</span></p></td>
-<td>return location for the pause cookie ID
-</td>
+<td>return location for the pause cookie ID</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the miner was paused successfully, otherwise
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
-
-</td>
+<td>
+<code class="literal">TRUE</code> if the miner was paused successfully, otherwise
+<code class="literal">FALSE</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_resume ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-resume"></a><h3>tracker_miner_manager_resume ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_manager_resume        (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"><span class="type">guint32</span></a> cookie</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_miner_manager_resume        (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint32</span> cookie</code></em>);</pre>
 <p>
 Tells <em class="parameter"><code>miner</code></em> to resume activity. The miner won't actually resume
 operations until all pause requests have been resumed.
@@ -427,30 +404,27 @@ operations until all pause requests have been resumed.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cookie</code></em> :</span></p></td>
-<td>pause cookie
-</td>
+<td>pause cookie</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the miner was successfully resumed, otherwise
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
-
-</td>
+<td>
+<code class="literal">TRUE</code> if the miner was successfully resumed, otherwise
+<code class="literal">FALSE</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_is_active ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-is-active"></a><h3>tracker_miner_manager_is_active ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_manager_is_active     (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_miner_manager_is_active     (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>);</pre>
 <p>
 Returns the miner's current activity.
 </p>
@@ -464,29 +438,27 @@ Returns the miner's current activity.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>miner</code></em> is active, otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
-
-</td>
+<td>
+<code class="literal">TRUE</code> if the <em class="parameter"><code>miner</code></em> is active, otherwise <code class="literal">FALSE</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_is_paused ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-is-paused"></a><h3>tracker_miner_manager_is_paused ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_manager_is_paused     (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> *applications</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> *reasons</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_miner_manager_is_paused     (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>,
+                                                         <em class="parameter"><code><span class="type">GStrv</span> *applications</code></em>,
+                                                         <em class="parameter"><code><span class="type">GStrv</span> *reasons</code></em>);</pre>
 <p>
-This function either returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if the miner is not paused,
-or returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> and fills in <em class="parameter"><code>applications</code></em> and <em class="parameter"><code>reasons</code></em> with
+This function either returns <code class="literal">FALSE</code> if the miner is not paused,
+or returns <code class="literal">TRUE</code> and fills in <em class="parameter"><code>applications</code></em> and <em class="parameter"><code>reasons</code></em> with
 the pause reasons and the applications that asked for it. Both
 arrays will have the same lengh, and will be sorted so the
 application/pause reason pairs have the same index.
@@ -501,36 +473,34 @@ application/pause reason pairs have the same index.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>applications</code></em> :</span></p></td>
-<td> return location for application names. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a> callee-allocates][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a> callee-allocates][<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a> callee-allocates]</span>
+<td>return location for application names. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a> callee-allocates][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a>][<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>reasons</code></em> :</span></p></td>
-<td> return location for pause reasons. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a> callee-allocates][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a> callee-allocates][<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a> callee-allocates]</span>
+<td>return location for pause reasons. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a> callee-allocates][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a>][<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if <em class="parameter"><code>miner</code></em> is paused, otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
-
-</td>
+<td>
+<code class="literal">TRUE</code> if <em class="parameter"><code>miner</code></em> is paused, otherwise <code class="literal">FALSE</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_get_status ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-get-status"></a><h3>tracker_miner_manager_get_status ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_manager_get_status    (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **status</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *progress</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_miner_manager_get_status    (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **status</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> *progress</code></em>);</pre>
 <p>
 Returns the current status and progress for <em class="parameter"><code>miner</code></em>.
 </p>
@@ -544,24 +514,23 @@ Returns the current status and progress for <em class="parameter"><code>miner</c
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>status</code></em> :</span></p></td>
-<td> return location for status. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a>][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a>]</span>
+<td>return location for status. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a>][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>progress</code></em> :</span></p></td>
-<td> return location for progress. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a>][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a>]</span>
+<td>return location for progress. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a>][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the status could be retrieved successfully,
-otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>
-
+<td>
+<code class="literal">TRUE</code> if the status could be retrieved successfully,
+otherwise <code class="literal">FALSE</code>
 </td>
 </tr>
 </tbody>
@@ -569,11 +538,11 @@ otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Ma
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_get_display_name ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-get-display-name"></a><h3>tracker_miner_manager_get_display_name ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       tracker_miner_manager_get_display_name
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *         tracker_miner_manager_get_display_name
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>);</pre>
 <p>
 Returns a translated display name for <em class="parameter"><code>miner</code></em>.
 </p>
@@ -587,12 +556,11 @@ Returns a translated display name for <em class="parameter"><code>miner</code></
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A string which should not be freed or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span>
+<td>A string which should not be freed or <code class="literal">NULL</code>. <span class="annotation">[<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span>
 </td>
 </tr>
 </tbody>
@@ -600,11 +568,11 @@ Returns a translated display name for <em class="parameter"><code>miner</code></
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_get_description ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-get-description"></a><h3>tracker_miner_manager_get_description ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       tracker_miner_manager_get_description
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *         tracker_miner_manager_get_description
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>);</pre>
 <p>
 Returns the description for the given <em class="parameter"><code>miner</code></em>.
 </p>
@@ -618,12 +586,11 @@ Returns the description for the given <em class="parameter"><code>miner</code></
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A string which should not be freed or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none is specified. <span class="annotation">[<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span>
+<td>A string which should not be freed or <code class="literal">NULL</code> if none is specified. <span class="annotation">[<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span>
 </td>
 </tr>
 </tbody>
@@ -631,11 +598,11 @@ Returns the description for the given <em class="parameter"><code>miner</code></
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_index_file ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-index-file"></a><h3>tracker_miner_manager_index_file ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_manager_index_file    (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_miner_manager_index_file    (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Tells the filesystem miner to index the <em class="parameter"><code>file</code></em>.
 </p>
@@ -652,31 +619,29 @@ On failure <em class="parameter"><code>error</code></em> will be set.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
-<td>a URL valid in GIO of a file to give to the miner for processing
-</td>
+<td>a URL valid in GIO of a file to give to the miner for processing</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td> return location for errors. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a> callee-allocates][<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a> callee-allocates][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a> callee-allocates]</span>
+<td>return location for errors. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a> callee-allocates][<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a>][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success, otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
-
-</td>
+<td>
+<code class="literal">TRUE</code> on success, otherwise <code class="literal">FALSE</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_ignore_next_update ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-ignore-next-update"></a><h3>tracker_miner_manager_ignore_next_update ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_manager_ignore_next_update
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_miner_manager_ignore_next_update
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **urls</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *miner</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> **urls</code></em>);</pre>
 <p>
 Tells the <em class="parameter"><code>miner</code></em> to ignore any events for the next <em class="parameter"><code>urls</code></em>. This is
 used for cases where a file is updated by Tracker by the
@@ -693,31 +658,29 @@ the stack the changes to <em class="parameter"><code>urls</code></em>.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>urls</code></em> :</span></p></td>
-<td> the subjects to ignore the next updates of. <span class="annotation">[<a href="http://foldoc.org/in"><span class="acronym">in</span></a>]</span>
+<td>the subjects to ignore the next updates of. <span class="annotation">[<a href="http://foldoc.org/in"><span class="acronym">in</span></a>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success, otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
-
-</td>
+<td>
+<code class="literal">TRUE</code> on success, otherwise <code class="literal">FALSE</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_miner_manager_reindex_by_mimetype ()">
+<div class="refsect2">
 <a name="tracker-miner-manager-reindex-by-mimetype"></a><h3>tracker_miner_manager_reindex_by_mimetype ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_miner_manager_reindex_by_mimetype
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_miner_manager_reindex_by_mimetype
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a> mimetypes</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">GStrv</span> mimetypes</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Tells the filesystem miner to reindex any file with a mimetype in
 the <em class="parameter"><code>mimetypes</code></em> list.
@@ -735,42 +698,41 @@ On failure <em class="parameter"><code>error</code></em> will be set.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mimetypes</code></em> :</span></p></td>
-<td> an array of mimetypes (E.G. "text/plain"). All items
+<td>an array of mimetypes (E.G. "text/plain"). All items
 with a mimetype in that list will be reindexed. <span class="annotation">[<a href="http://foldoc.org/in"><span class="acronym">in</span></a>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td> return location for errors. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a> callee-allocates][<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a> callee-allocates][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a> callee-allocates]</span>
+<td>return location for errors. <span class="annotation">[<a href="http://foldoc.org/out"><span class="acronym">out</span></a> callee-allocates][<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a>][<a href="http://foldoc.org/allow-none"><span class="acronym">allow-none</span></a>]</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success, otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
-
-</td>
+<td>
+<code class="literal">TRUE</code> on success, otherwise <code class="literal">FALSE</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
 </div>
 </div>
-<div class="refsect1" title="Property Details">
+<div class="refsect1">
 <a name="TrackerMinerManager.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" title='The "auto-start" property'>
+<div class="refsect2">
 <a name="TrackerMinerManager--auto-start"></a><h3>The <code class="literal">"auto-start"</code> property</h3>
-<pre class="programlisting">  "auto-start"               <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write / Construct Only</pre>
+<pre class="programlisting">  "auto-start"               <span class="type">gboolean</span>              : Read / Write / Construct Only</pre>
 <p>If set, auto starts miners when querying their status.</p>
 <p>Default value: TRUE</p>
 </div>
 </div>
-<div class="refsect1" title="Signal Details">
+<div class="refsect1">
 <a name="TrackerMinerManager.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" title='The "miner-activated" signal'>
+<div class="refsect2">
 <a name="TrackerMinerManager-miner-activated"></a><h3>The <code class="literal">"miner-activated"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>               *miner,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>             user_data)      : Run Last</pre>
+                                                        <span class="type">gchar</span>               *miner,
+                                                        <span class="type">gpointer</span>             user_data)      : <code class="literal">Run Last</code></pre>
 <p>
 The ::miner-activated signal will be emitted whenever a miner
 (referenced by <em class="parameter"><code>miner</code></em>) is activated (technically, this means
@@ -786,8 +748,7 @@ the miner has appeared in the session bus).
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -798,11 +759,11 @@ the miner has appeared in the session bus).
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title='The "miner-deactivated" signal'>
+<div class="refsect2">
 <a name="TrackerMinerManager-miner-deactivated"></a><h3>The <code class="literal">"miner-deactivated"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>               *miner,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>             user_data)      : Run Last</pre>
+                                                        <span class="type">gchar</span>               *miner,
+                                                        <span class="type">gpointer</span>             user_data)      : <code class="literal">Run Last</code></pre>
 <p>
 The ::miner-deactivated signal will be emitted whenever a miner
 (referenced by <em class="parameter"><code>miner</code></em>) is deactivated (technically, this means
@@ -818,8 +779,7 @@ the miner has disappeared from the session bus).
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -830,11 +790,11 @@ the miner has disappeared from the session bus).
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title='The "miner-paused" signal'>
+<div class="refsect2">
 <a name="TrackerMinerManager-miner-paused"></a><h3>The <code class="literal">"miner-paused"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>               *miner,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>             user_data)      : Run Last</pre>
+                                                        <span class="type">gchar</span>               *miner,
+                                                        <span class="type">gpointer</span>             user_data)      : <code class="literal">Run Last</code></pre>
 <p>
 The ::miner-paused signal will be emitted whenever a miner
 (referenced by <em class="parameter"><code>miner</code></em>) is paused.
@@ -849,8 +809,7 @@ The ::miner-paused signal will be emitted whenever a miner
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -861,13 +820,13 @@ The ::miner-paused signal will be emitted whenever a miner
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title='The "miner-progress" signal'>
+<div class="refsect2">
 <a name="TrackerMinerManager-miner-progress"></a><h3>The <code class="literal">"miner-progress"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>               *miner,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>               *status,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>              progress,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>             user_data)      : Run Last</pre>
+                                                        <span class="type">gchar</span>               *miner,
+                                                        <span class="type">gchar</span>               *status,
+                                                        <span class="type">gdouble</span>              progress,
+                                                        <span class="type">gpointer</span>             user_data)      : <code class="literal">Run Last</code></pre>
 <p>
 The ::miner-progress signal is meant to report status/progress changes
 in any tracked miner.
@@ -882,18 +841,15 @@ in any tracked miner.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>status</code></em> :</span></p></td>
-<td>miner status
-</td>
+<td>miner status</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>progress</code></em> :</span></p></td>
-<td>miner progress, from 0 to 1
-</td>
+<td>miner progress, from 0 to 1</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -904,11 +860,11 @@ in any tracked miner.
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title='The "miner-resumed" signal'>
+<div class="refsect2">
 <a name="TrackerMinerManager-miner-resumed"></a><h3>The <code class="literal">"miner-resumed"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>               *miner,
-                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>             user_data)      : Run Last</pre>
+                                                        <span class="type">gchar</span>               *miner,
+                                                        <span class="type">gpointer</span>             user_data)      : <code class="literal">Run Last</code></pre>
 <p>
 The ::miner-resumed signal will be emitted whenever a miner
 (referenced by <em class="parameter"><code>miner</code></em>) is resumed.
@@ -923,8 +879,7 @@ The ::miner-resumed signal will be emitted whenever a miner
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>miner</code></em> :</span></p></td>
-<td>miner reference
-</td>
+<td>miner reference</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -938,6 +893,6 @@ The ::miner-resumed signal will be emitted whenever a miner
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.15</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

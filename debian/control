@@ -230,7 +230,7 @@ Depends: ${shlibs:Depends},
          ${misc:Depends},
          tracker (= ${binary:Version})
 Description: metadata database, indexer and search tool - developer tool
- This package includes a graphical developer tool that allows to query the
+ This package includes a graphical tool that allows developers to query the
  tracker database for object properties and relationships.
  .
  Tracker is an advanced framework for first class objects with associated
@@ -269,8 +269,7 @@ Depends: ${shlibs:Depends},
          ${misc:Depends},
          tracker (= ${binary:Version})
 Description: metadata database, indexer and search tool - evolution plugin
- This package contains a plugin for evolution which allows to index your
- evolution emails.
+ This package contains a plugin for indexing your evolution emails.
  .
  Tracker is an advanced framework for first class objects with associated
  metadata and tags. It provides a one stop solution for all metadata, tags,

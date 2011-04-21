@@ -30,6 +30,7 @@ libtracker-miner-0.10.so.0 libtracker-miner-0.10-0 #MINVER#
  tracker_miner_get_dbus_connection@Base 0.10.0
  tracker_miner_get_dbus_full_name@Base 0.10.0
  tracker_miner_get_dbus_full_path@Base 0.10.0
+ tracker_miner_get_n_pause_reasons@Base 0.10.10
  tracker_miner_get_type@Base 0.8.0
  tracker_miner_ignore_next_update@Base 0.8.0
  tracker_miner_is_paused@Base 0.10.0

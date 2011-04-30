@@ -1,11 +1,11 @@
-tracker (0.10.11-1) UNRELEASED; urgency=low
+tracker (0.10.11-1) experimental; urgency=low
 
   * New upstream release.
   * Update debian/libtracker-extract-0.10-0.symbols. Add tracker-encoding
     symbols which were moved from libtracker-common.
   * Bump Standards-Version to 3.9.2. No further changes.
 
- -- Michael Biebl <biebl@debian.org>  Sun, 01 May 2011 01:03:29 +0200
+ -- Michael Biebl <biebl@debian.org>  Sun, 01 May 2011 01:25:17 +0200
 
 tracker (0.10.10-1) experimental; urgency=low
 

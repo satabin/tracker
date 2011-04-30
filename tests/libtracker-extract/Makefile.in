@@ -66,13 +66,14 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__EXEEXT_1 = tracker-test-utils$(EXEEXT) tracker-test-xmp$(EXEEXT)
+am__EXEEXT_1 = tracker-encoding$(EXEEXT) tracker-test-utils$(EXEEXT) \
+	tracker-test-xmp$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
-am_tracker_test_utils_OBJECTS = tracker-test-utils.$(OBJEXT)
-tracker_test_utils_OBJECTS = $(am_tracker_test_utils_OBJECTS)
-tracker_test_utils_LDADD = $(LDADD)
+am_tracker_encoding_OBJECTS = tracker-encoding-test.$(OBJEXT)
+tracker_encoding_OBJECTS = $(am_tracker_encoding_OBJECTS)
+tracker_encoding_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-tracker_test_utils_DEPENDENCIES =  \
+tracker_encoding_DEPENDENCIES =  \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
@@ -81,6 +82,15 @@ tracker_test_utils_DEPENDENCIES =  \
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
+am_tracker_test_utils_OBJECTS = tracker-test-utils.$(OBJEXT)
+tracker_test_utils_OBJECTS = $(am_tracker_test_utils_OBJECTS)
+tracker_test_utils_LDADD = $(LDADD)
+tracker_test_utils_DEPENDENCIES =  \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_tracker_test_xmp_OBJECTS = tracker-test-xmp.$(OBJEXT)
 tracker_test_xmp_OBJECTS = $(am_tracker_test_xmp_OBJECTS)
 tracker_test_xmp_LDADD = $(LDADD)
@@ -116,9 +126,10 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(tracker_test_utils_SOURCES) $(tracker_test_xmp_SOURCES)
-DIST_SOURCES = $(tracker_test_utils_SOURCES) \
+SOURCES = $(tracker_encoding_SOURCES) $(tracker_test_utils_SOURCES) \
 	$(tracker_test_xmp_SOURCES)
+DIST_SOURCES = $(tracker_encoding_SOURCES) \
+	$(tracker_test_utils_SOURCES) $(tracker_test_xmp_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -420,8 +431,10 @@ GTESTER = gtester 			# for non-GLIB packages
 GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
-TEST_PROGS = tracker-test-utils tracker-test-xmp
+TEST_PROGS = tracker-encoding tracker-test-utils tracker-test-xmp
 AM_CPPFLAGS = \
+	-DTOP_SRCDIR=\"$(abs_top_srcdir)\"             \
+	-DTOP_BUILDDIR=\"$(abs_top_builddir)\"         \
 	$(BUILD_CFLAGS)                                \
 	-I$(top_srcdir)/src                            \
 	-I$(top_builddir)/src                          \
@@ -436,8 +449,10 @@ LDADD = \
 	$(BUILD_LIBS)                                  \
 	$(LIBTRACKER_EXTRACT_LIBS)
 
+tracker_encoding_SOURCES = tracker-encoding-test.c
 tracker_test_utils_SOURCES = tracker-test-utils.c
 tracker_test_xmp_SOURCES = tracker-test-xmp.c
+EXTRA_DIST = encoding-detect.bin
 all: all-am
 
 .SUFFIXES:
@@ -481,6 +496,9 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+tracker-encoding$(EXEEXT): $(tracker_encoding_OBJECTS) $(tracker_encoding_DEPENDENCIES) 
+	@rm -f tracker-encoding$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_encoding_OBJECTS) $(tracker_encoding_LDADD) $(LIBS)
 tracker-test-utils$(EXEEXT): $(tracker_test_utils_OBJECTS) $(tracker_test_utils_DEPENDENCIES) 
 	@rm -f tracker-test-utils$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_test_utils_OBJECTS) $(tracker_test_utils_LDADD) $(LIBS)
@@ -494,6 +512,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-encoding-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-test-utils.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-test-xmp.Po@am__quote@
 

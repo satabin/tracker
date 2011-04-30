@@ -3556,13 +3556,18 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 	iface = tracker_db_manager_get_db_interface ();
 
 	if (journal_check && is_first_time_index) {
-		if (tracker_db_journal_reader_init (NULL)) {
+		/* Call may fail without notice (it's handled) */
+		if (tracker_db_journal_reader_init (NULL, &internal_error)) {
 			if (tracker_db_journal_reader_next (NULL)) {
 				/* journal with at least one valid transaction
 				   is required to trigger journal replay */
 				read_journal = TRUE;
 			}
 			tracker_db_journal_reader_shutdown ();
+		} else if (internal_error && (internal_error->domain != TRACKER_DB_JOURNAL_ERROR ||
+			    internal_error->code != TRACKER_DB_JOURNAL_ERROR_BEGIN_OF_JOURNAL)) {
+			g_propagate_error (error, internal_error);
+			return FALSE;
 		}
 	}
 
@@ -3580,7 +3585,13 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 	if (read_journal) {
 		in_journal_replay = TRUE;
 
-		tracker_db_journal_reader_ontology_init (NULL);
+		tracker_db_journal_reader_ontology_init (NULL, &internal_error);
+
+		if (internal_error) {
+			g_propagate_error (error, internal_error);
+
+			return FALSE;
+		}
 
 		/* Load ontology IDs from journal into memory */
 		load_ontology_ids_from_journal (&uri_id_map, &max_id);
@@ -3594,7 +3605,13 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 		if (!read_journal) {
 			/* Truncate journal as it does not even contain a single valid transaction
 			 * or is explicitly ignored (journal_check == FALSE, only for test cases) */
-			tracker_db_journal_init (NULL, TRUE);
+			tracker_db_journal_init (NULL, TRUE, &internal_error);
+
+			if (internal_error) {
+				g_propagate_error (error, internal_error);
+
+				return FALSE;
+			}
 		}
 
 		/* load ontology from files into memory (max_id starts at zero: first-time) */
@@ -3710,7 +3727,13 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 		check_ontology = FALSE;
 	} else {
 		if (!read_only) {
-			tracker_db_journal_init (NULL, FALSE);
+			tracker_db_journal_init (NULL, FALSE, &internal_error);
+
+			if (internal_error) {
+				g_propagate_error (error, internal_error);
+
+				return FALSE;
+			}
 
 			/* Load ontology from database into memory */
 			db_get_static_data (iface);
@@ -4110,9 +4133,17 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 		if (internal_error) {
 
 			if (g_error_matches (internal_error, TRACKER_DB_INTERFACE_ERROR, TRACKER_DB_NO_SPACE)) {
+				GError *n_error = NULL;
 				tracker_db_manager_remove_all (FALSE);
 				tracker_db_manager_shutdown ();
-				tracker_db_journal_shutdown ();
+				/* Call may fail without notice, we're in error handling already.
+				 * When fails it means that close() of journal file failed. */
+				tracker_db_journal_shutdown (&n_error);
+				if (n_error) {
+					g_warning ("Error closing journal: %s",
+					           n_error->message ? n_error->message : "No error given");
+					g_error_free (n_error);
+				}
 			}
 
 			g_hash_table_unref (uri_id_map);
@@ -4123,7 +4154,14 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 		in_journal_replay = FALSE;
 
 		/* open journal for writing */
-		tracker_db_journal_init (NULL, FALSE);
+		tracker_db_journal_init (NULL, FALSE, &internal_error);
+
+		if (internal_error) {
+			g_hash_table_unref (uri_id_map);
+			g_propagate_error (error, internal_error);
+
+			return FALSE;
+		}
 
 		g_hash_table_unref (uri_id_map);
 	}
@@ -4170,10 +4208,20 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 void
 tracker_data_manager_shutdown (void)
 {
+	GError *error = NULL;
+
 	g_return_if_fail (initialized == TRUE);
 
 	/* Make sure we shutdown all other modules we depend on */
-	tracker_db_journal_shutdown ();
+	tracker_db_journal_shutdown (&error);
+
+	if (error) {
+		/* TODO: propagate error */
+		g_warning ("While shutting down journal %s",
+		           error->message ? error->message : "No error given");
+		g_error_free (error);
+	}
+
 	tracker_db_manager_shutdown ();
 	tracker_ontologies_shutdown ();
 	if (!reloading) {

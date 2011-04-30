@@ -49,8 +49,16 @@ host_triplet = @host@
 DIST_COMMON = $(libtracker_extractinclude_HEADERS) $(noinst_HEADERS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-@HAVE_INTROSPECTION_TRUE@am__append_1 = $(AM_CPPFLAGS)
-@HAVE_INTROSPECTION_TRUE@am__append_2 = TrackerExtract-$(TRACKER_API_VERSION).gir
+@HAVE_ENCA_TRUE@am__append_1 = \
+@HAVE_ENCA_TRUE@	tracker-encoding-enca.c                        \
+@HAVE_ENCA_TRUE@	tracker-encoding-enca.h
+
+@HAVE_MEEGOTOUCH_TRUE@am__append_2 = \
+@HAVE_MEEGOTOUCH_TRUE@	tracker-encoding-meegotouch.cpp                \
+@HAVE_MEEGOTOUCH_TRUE@	tracker-encoding-meegotouch.h
+
+@HAVE_INTROSPECTION_TRUE@am__append_3 = $(AM_CPPFLAGS)
+@HAVE_INTROSPECTION_TRUE@am__append_4 = TrackerExtract-$(TRACKER_API_VERSION).gir
 subdir = src/libtracker-extract
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -99,17 +107,26 @@ am__DEPENDENCIES_1 =
 libtracker_extract_@TRACKER_API_VERSION@_la_DEPENDENCIES = $(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am__libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES_DIST =  \
+	tracker-data.h tracker-encoding.c tracker-exif.c \
+	tracker-exif.h tracker-guarantee.c tracker-guarantee.h \
+	tracker-iptc.c tracker-iptc.h tracker-utils.c tracker-xmp.c \
+	tracker-xmp.h tracker-encoding-enca.c tracker-encoding-enca.h \
+	tracker-encoding-meegotouch.cpp tracker-encoding-meegotouch.h
+@HAVE_ENCA_TRUE@am__objects_1 = tracker-encoding-enca.lo
+@HAVE_MEEGOTOUCH_TRUE@am__objects_2 = tracker-encoding-meegotouch.lo
 am_libtracker_extract_@TRACKER_API_VERSION@_la_OBJECTS =  \
-	tracker-exif.lo tracker-guarantee.lo tracker-iptc.lo \
-	tracker-utils.lo tracker-xmp.lo
+	tracker-encoding.lo tracker-exif.lo tracker-guarantee.lo \
+	tracker-iptc.lo tracker-utils.lo tracker-xmp.lo \
+	$(am__objects_1) $(am__objects_2)
 libtracker_extract_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	$(am_libtracker_extract_@TRACKER_API_VERSION@_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
 libtracker_extract_@TRACKER_API_VERSION@_la_LINK = $(LIBTOOL) \
-	$(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(libtracker_extract_@TRACKER_API_VERSION@_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
@@ -135,11 +152,27 @@ LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 AM_V_CCLD = $(am__v_CCLD_$(V))
 am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD  " $@;
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
+AM_V_CXX = $(am__v_CXX_$(V))
+am__v_CXX_ = $(am__v_CXX_$(AM_DEFAULT_VERBOSITY))
+am__v_CXX_0 = @echo "  CXX   " $@;
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CXXLD = $(am__v_CXXLD_$(V))
+am__v_CXXLD_ = $(am__v_CXXLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CXXLD_0 = @echo "  CXXLD " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES)
-DIST_SOURCES = $(libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES)
+DIST_SOURCES = $(am__libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES_DIST)
 DATA = $(gir_DATA) $(typelib_DATA)
 HEADERS = $(libtracker_extractinclude_HEADERS) $(noinst_HEADERS)
 ETAGS = etags
@@ -222,7 +255,7 @@ INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
-INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@ $(am__append_1)
+INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@ $(am__append_3)
 INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
 INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
 INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
@@ -453,21 +486,15 @@ AM_CPPFLAGS = \
 
 lib_LTLIBRARIES = libtracker-extract-@TRACKER_API_VERSION@.la
 libtracker_extractincludedir = $(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-extract/
-libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES = \
-	tracker-data.h                                 \
-	tracker-exif.c                                 \
-	tracker-exif.h                                 \
-	tracker-guarantee.c                            \
-	tracker-guarantee.h                            \
-	tracker-iptc.c                                 \
-	tracker-iptc.h                                 \
-	tracker-utils.c                                \
-	tracker-xmp.c                                  \
-	tracker-xmp.h
-
+libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES = tracker-data.h \
+	tracker-encoding.c tracker-exif.c tracker-exif.h \
+	tracker-guarantee.c tracker-guarantee.h tracker-iptc.c \
+	tracker-iptc.h tracker-utils.c tracker-xmp.c tracker-xmp.h \
+	$(am__append_1) $(am__append_2)
 noinst_HEADERS = 
 libtracker_extractinclude_HEADERS = \
 	tracker-data.h                                 \
+	tracker-encoding.h                             \
 	tracker-exif.h                                 \
 	tracker-extract.h                              \
 	tracker-guarantee.h                            \
@@ -485,7 +512,7 @@ libtracker_extract_@TRACKER_API_VERSION@_la_LIBADD = \
 	$(BUILD_LIBS)                                  \
 	$(LIBTRACKER_EXTRACT_LIBS)
 
-INTROSPECTION_GIRS = $(am__append_2)
+INTROSPECTION_GIRS = $(am__append_4)
 INTROSPECTION_SCANNER_ARGS = \
 	--warn-all \
 	-I $(top_srcdir)/src \
@@ -509,7 +536,7 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)/src/libtracker-sparql
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o .obj
+.SUFFIXES: .c .cpp .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -572,7 +599,7 @@ clean-libLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libtracker-extract-@TRACKER_API_VERSION@.la: $(libtracker_extract_@TRACKER_API_VERSION@_la_OBJECTS) $(libtracker_extract_@TRACKER_API_VERSION@_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libtracker_extract_@TRACKER_API_VERSION@_la_LINK) -rpath $(libdir) $(libtracker_extract_@TRACKER_API_VERSION@_la_OBJECTS) $(libtracker_extract_@TRACKER_API_VERSION@_la_LIBADD) $(LIBS)
+	$(AM_V_CXXLD)$(libtracker_extract_@TRACKER_API_VERSION@_la_LINK) -rpath $(libdir) $(libtracker_extract_@TRACKER_API_VERSION@_la_OBJECTS) $(libtracker_extract_@TRACKER_API_VERSION@_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -580,6 +607,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-encoding-enca.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-encoding-meegotouch.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-encoding.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-exif.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-guarantee.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-iptc.Plo@am__quote@
@@ -609,6 +639,30 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+.cpp.o:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
+
+.cpp.obj:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+.cpp.lo:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
 mostlyclean-libtool:
 	-rm -f *.lo

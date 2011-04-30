@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [10])
-m4_define([tracker_interface_age], [3])
+m4_define([tracker_micro_version], [11])
+m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -38,7 +38,7 @@ m4_define([tracker_lt_current_minus_age],
 # for Tracker.
 #
 # TRACKER_BINARY_VERSION=$TRACKER_MAJOR_VERSION.$TRACKER_MINOR_VERSION.$LT_CURRENT
-m4_define([tracker_binary_version], [0.10.5])
+m4_define([tracker_binary_version], [0.10.11])
 
 AC_INIT([tracker],
         [tracker_version],
@@ -1056,8 +1056,8 @@ if test "x$enable_meegotouch" != "xno"; then
                      [have_meegotouch=yes],
                      [have_meegotouch=no])
 
-   LIBTRACKER_COMMON_CFLAGS="$LIBTRACKER_COMMON_CFLAGS $MEEGOTOUCH_CFLAGS"
-   LIBTRACKER_COMMON_LIBS="$LIBTRACKER_COMMON_LIBS $MEEGOTOUCH_LIBS"
+   LIBTRACKER_EXTRACT_CFLAGS="$LIBTRACKER_EXTRACT_CFLAGS $MEEGOTOUCH_CFLAGS"
+   LIBTRACKER_EXTRACT_LIBS="$LIBTRACKER_EXTRACT_LIBS $MEEGOTOUCH_LIBS"
 
    TRACKER_MINER_FS_CFLAGS="$TRACKER_MINER_FS_CFLAGS $MEEGOTOUCH_CFLAGS"
    TRACKER_MINER_FS_LIBS="$TRACKER_MINER_FS_LIBS $MEEGOTOUCH_LIBS"
@@ -1341,8 +1341,8 @@ AC_ARG_WITH(enca,
 if test "x$enable_enca" != "xno" ; then
    PKG_CHECK_MODULES(ENCA, [enca >= 1.9], have_enca=yes, have_enca=no)
 
-   LIBTRACKER_COMMON_CFLAGS="$LIBTRACKER_COMMON_CFLAGS $ENCA_CFLAGS"
-   LIBTRACKER_COMMON_LIBS="$LIBTRACKER_COMMON_LIBS $ENCA_LIBS"
+   LIBTRACKER_EXTRACT_CFLAGS="$LIBTRACKER_EXTRACT_CFLAGS $ENCA_CFLAGS"
+   LIBTRACKER_EXTRACT_LIBS="$LIBTRACKER_EXTRACT_LIBS $ENCA_LIBS"
 
    if test "x$have_enca" = "xyes"; then
      AC_DEFINE(HAVE_ENCA, [], [Enca language detection aid])

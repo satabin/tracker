@@ -1,6 +1,62 @@
-2011-04-21  Martyn Russell  <martyn@lanedo.com>
+2011-04-28  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.11
+
+2011-04-28  Jürg Billeter  <j@bitron.ch>
+
+	NCO: Add index on nco:phoneNumber
+	Removing nrl:InverseFunctionalProperty from nco:phoneNumber removed the
+	implicit index. This readds a non-unique index.
+
+	Fixes NB#250959.
+
+2011-04-28  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: Don't skip the last metadata iterator element in flac files.
+	Fixes GB#633108 - FLAC extractor doesn't work properly, reported by
+	Aleksander Morgado.
+
+	tracker-extract: Sort parts before extracting .pptx files content
+	Fixes GB#632876, Reported by Aleksander Morgado.
+
+2011-04-28  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-sparql-backend: Fix memory leak in Connection.get
+	The leak was caused by a bug in valac (fixed in master). This changes
+	the code to work correctly with valac versions without the fix as well.
+
+	Fixes NB#250455.
+
+	tracker-store: Fix callback in sparql_update_blank
+
+2011-04-28  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Set errors in these two fatal cases
+
+	libtracker-data: Fixes after review
+
+	libtracker-data: Adding comments explaining error handling actions
+
+	libtracker-data, tests, tracker-control: Handle journal errors
+
+	tests, libtracker-common: Fix tests when meegotouch is enabled
+
+2011-04-28  Jürg Billeter  <j@bitron.ch>
+
+	Move tracker-encoding from libtracker-common to libtracker-extract
+	Fixes NB#249787.
+
+2011-04-28  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-common: Reading locale from gconf-dbus is only for meegotouch
+
+2011-04-28  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.10
+
+2011-04-23  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
 
 2011-04-20  Martyn Russell  <martyn@lanedo.com>
 

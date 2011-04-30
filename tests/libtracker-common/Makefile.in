@@ -454,7 +454,7 @@ tracker_dbus_SOURCES = \
 tracker_type_utils_SOURCES = tracker-type-utils-test.c
 tracker_file_utils_SOURCES = tracker-file-utils-test.c
 tracker_utils_SOURCES = tracker-utils-test.c
-EXTRA_DIST = non-utf8.txt encoding-detect.bin
+EXTRA_DIST = non-utf8.txt
 all: all-am
 
 .SUFFIXES:

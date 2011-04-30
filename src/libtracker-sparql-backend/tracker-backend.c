@@ -1545,46 +1545,43 @@ static TrackerSparqlConnection* tracker_sparql_backend_get (gboolean is_direct_o
 	TrackerSparqlConnection* result = NULL;
 	TrackerSparqlConnection* _tmp0_;
 	TrackerSparqlConnection* _result_;
-	TrackerSparqlBackend* _tmp1_ = NULL;
-	TrackerSparqlBackend* _tmp2_;
-	gboolean _tmp3_ = FALSE;
-	TrackerSparqlConnection* _tmp6_;
 	GError * _inner_error_ = NULL;
 	g_static_mutex_lock (&tracker_sparql_backend_door);
 	_tmp0_ = _g_object_ref0 (tracker_sparql_backend_singleton);
 	_result_ = _tmp0_;
-	if (_result_ != NULL) {
-		g_assert (tracker_sparql_backend_direct_only == is_direct_only);
-		result = _result_;
-		g_static_mutex_unlock (&tracker_sparql_backend_door);
-		return result;
+	if (_result_ == NULL) {
+		TrackerSparqlBackend* _tmp1_ = NULL;
+		TrackerSparqlBackend* _tmp2_;
+		gboolean _tmp3_ = FALSE;
+		tracker_sparql_backend_log_init ();
+		tracker_sparql_backend_direct_only = is_direct_only;
+		_tmp1_ = tracker_sparql_backend_new (&_inner_error_);
+		_tmp2_ = _tmp1_;
+		if (_inner_error_ != NULL) {
+			_g_object_unref0 (_result_);
+			goto __finally2;
+		}
+		_g_object_unref0 (_result_);
+		_result_ = (TrackerSparqlConnection*) _tmp2_;
+		if (cancellable != NULL) {
+			gboolean _tmp4_;
+			_tmp4_ = g_cancellable_is_cancelled (cancellable);
+			_tmp3_ = _tmp4_;
+		} else {
+			_tmp3_ = FALSE;
+		}
+		if (_tmp3_) {
+			GError* _tmp5_ = NULL;
+			_tmp5_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
+			_inner_error_ = _tmp5_;
+			_g_object_unref0 (_result_);
+			goto __finally2;
+		}
+		tracker_sparql_backend_singleton = _result_;
+		g_object_add_weak_pointer ((GObject*) _result_, (void**) (&tracker_sparql_backend_singleton));
 	}
-	tracker_sparql_backend_log_init ();
-	tracker_sparql_backend_direct_only = is_direct_only;
-	_tmp1_ = tracker_sparql_backend_new (&_inner_error_);
-	_tmp2_ = _tmp1_;
-	if (_inner_error_ != NULL) {
-		goto __finally2;
-	}
-	_g_object_unref0 (_result_);
-	_result_ = (TrackerSparqlConnection*) _tmp2_;
-	if (cancellable != NULL) {
-		gboolean _tmp4_;
-		_tmp4_ = g_cancellable_is_cancelled (cancellable);
-		_tmp3_ = _tmp4_;
-	} else {
-		_tmp3_ = FALSE;
-	}
-	if (_tmp3_) {
-		GError* _tmp5_ = NULL;
-		_tmp5_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
-		_inner_error_ = _tmp5_;
-		goto __finally2;
-	}
-	tracker_sparql_backend_singleton = _result_;
-	g_object_add_weak_pointer ((GObject*) _result_, (void**) (&tracker_sparql_backend_singleton));
-	_tmp6_ = _g_object_ref0 (tracker_sparql_backend_singleton);
-	result = _tmp6_;
+	g_assert (tracker_sparql_backend_direct_only == is_direct_only);
+	result = _result_;
 	g_static_mutex_unlock (&tracker_sparql_backend_door);
 	return result;
 	_g_object_unref0 (_result_);

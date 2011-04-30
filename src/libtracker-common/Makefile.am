@@ -28,8 +28,7 @@ libtracker_common_la_SOURCES = \
 	tracker-type-utils.c \
 	tracker-utils.c \
 	tracker-crc32.c \
-	tracker-locale.c \
-	tracker-encoding.c
+	tracker-locale.c
 
 noinst_HEADERS = \
 	tracker-dbus.h \
@@ -45,25 +44,14 @@ noinst_HEADERS = \
 	tracker-type-utils.h \
 	tracker-utils.h \
 	tracker-crc32.h \
-	tracker-locale.h \
-	tracker-encoding.h
-
-if HAVE_ENCA
-libtracker_common_la_SOURCES += tracker-encoding-enca.c
-noinst_HEADERS += tracker-encoding-enca.h
-endif
-
-if HAVE_MEEGOTOUCH
-libtracker_common_la_SOURCES += tracker-encoding-meegotouch.cpp
-noinst_HEADERS += tracker-encoding-meegotouch.h
-endif
+	tracker-locale.h
 
 if HAVE_TRACKER_FTS
 libtracker_common_la_SOURCES += tracker-language.c
 noinst_HEADERS += tracker-language.h
 endif
 
-if HAVE_MAEMO
+if HAVE_MEEGOTOUCH
 libtracker_common_la_SOURCES += tracker-locale-gconfdbus.c
 noinst_HEADERS += tracker-locale-gconfdbus.h
 endif

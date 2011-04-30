@@ -22,36 +22,7 @@
 
 #include <glib-object.h>
 #include <libtracker-common/tracker-utils.h>
-#include <libtracker-common/tracker-encoding.h>
-
-static void
-test_encoding_guessing ()
-{
-	gchar *output;
-	GMappedFile *file = NULL;
-	gchar *prefix, *filen;
-
-	prefix = g_build_path (G_DIR_SEPARATOR_S, TOP_SRCDIR, "tests", "libtracker-common", NULL);
-	filen = g_build_filename (prefix, "encoding-detect.bin", NULL);
-
-	file = g_mapped_file_new (filen, FALSE, NULL);
-
-	output = tracker_encoding_guess (g_mapped_file_get_contents (file),
-	                                 g_mapped_file_get_length (file));
-
-	g_assert_cmpstr (output, ==, "UTF-8");
-
-#if GLIB_CHECK_VERSION(2,22,0)
-	g_mapped_file_unref (file);
-#else
-	g_mapped_file_free (file);
-#endif
-
-	g_free (prefix);
-	g_free (filen);
-	g_free (output);
-}
-
+#include <libtracker-common/tracker-locale.h>
 
 static void
 test_seconds_to_string ()
@@ -106,8 +77,12 @@ test_seconds_estimate_to_string ()
 int
 main (int argc, char **argv)
 {
+	gboolean ret;
+
 	g_type_init ();
 	g_test_init (&argc, &argv, NULL);
+
+	tracker_locale_init ();
 
 	g_test_add_func ("/libtracker-common/tracker-utils/seconds_to_string",
 	                 test_seconds_to_string);
@@ -115,8 +90,9 @@ main (int argc, char **argv)
 	g_test_add_func ("/libtracker-common/tracker-utils/seconds_estimate_to_string",
 	                 test_seconds_estimate_to_string);
 
-	g_test_add_func ("/libtracker-common/tracker-encoding/encoding_guessing",
-	                 test_encoding_guessing);
+	ret = g_test_run ();
 
-	return g_test_run ();
+	tracker_locale_shutdown ();
+
+	return ret;
 }

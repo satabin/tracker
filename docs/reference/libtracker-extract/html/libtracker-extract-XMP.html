@@ -45,17 +45,17 @@ Stable, unless otherwise indicated
 #include &lt;libtracker-extract/tracker-extract.h&gt;
 
                     <a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData">TrackerXmpData</a>;
-<a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="returnvalue">TrackerXmpData</span></a> *    <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-new" title="tracker_xmp_new ()">tracker_xmp_new</a>                     (<em class="parameter"><code>const <span class="type">gchar</span> *buffer</code></em>,
-                                                         <em class="parameter"><code><span class="type">gsize</span> len</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);
+<a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="returnvalue">TrackerXmpData</span></a> *    <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-new" title="tracker_xmp_new ()">tracker_xmp_new</a>                     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> len</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-free" title="tracker_xmp_free ()">tracker_xmp_free</a>                    (<em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-read" title="tracker_xmp_read ()">tracker_xmp_read</a>                    (<em class="parameter"><code>const <span class="type">gchar</span> *buffer</code></em>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-read" title="tracker_xmp_read ()">tracker_xmp_read</a>                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-apply" title="tracker_xmp_apply ()">tracker_xmp_apply</a>                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-apply" title="tracker_xmp_apply ()">tracker_xmp_apply</a>                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
 </pre>
 </div>
@@ -145,9 +145,9 @@ using these standards.
 <hr>
 <div class="refsect2">
 <a name="tracker-xmp-new"></a><h3>tracker_xmp_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="returnvalue">TrackerXmpData</span></a> *    tracker_xmp_new                     (<em class="parameter"><code>const <span class="type">gchar</span> *buffer</code></em>,
-                                                         <em class="parameter"><code><span class="type">gsize</span> len</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="returnvalue">TrackerXmpData</span></a> *    tracker_xmp_new                     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> len</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>);</pre>
 <p>
 This function takes <em class="parameter"><code>len</code></em> bytes of <em class="parameter"><code>buffer</code></em> and runs it through the
 XMP library.
@@ -170,7 +170,7 @@ XMP library.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly allocated <a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> struct if XMP data was
-found, <code class="literal">NULL</code> otherwise. Free the returned struct with <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-free" title="tracker_xmp_free ()"><code class="function">tracker_xmp_free()</code></a>.</td>
+found, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> otherwise. Free the returned struct with <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-free" title="tracker_xmp_free ()"><code class="function">tracker_xmp_free()</code></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -181,7 +181,7 @@ found, <code class="literal">NULL</code> otherwise. Free the returned struct wit
 <a name="tracker-xmp-free"></a><h3>tracker_xmp_free ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_xmp_free                    (<em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);</pre>
 <p>
-Frees <em class="parameter"><code>data</code></em> and all <a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> members. <code class="literal">NULL</code> will produce a
+Frees <em class="parameter"><code>data</code></em> and all <a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> members. <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will produce a
 a warning.
 </p>
 <div class="variablelist"><table border="0">
@@ -196,9 +196,9 @@ a warning.
 <hr>
 <div class="refsect2">
 <a name="tracker-xmp-read"></a><h3>tracker_xmp_read ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_xmp_read                    (<em class="parameter"><code>const <span class="type">gchar</span> *buffer</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_xmp_read                    (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -231,8 +231,8 @@ data found in <em class="parameter"><code>uri</code></em>.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
-<code class="literal">FALSE</code> is returned.</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned.</td>
 </tr>
 </tbody>
 </table></div>
@@ -241,9 +241,9 @@ data found in <em class="parameter"><code>uri</code></em>.
 <hr>
 <div class="refsect2">
 <a name="tracker-xmp-apply"></a><h3>tracker_xmp_apply ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_xmp_apply                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_xmp_apply                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);</pre>
 <p>
 This function applies all data in <em class="parameter"><code>data</code></em> to <em class="parameter"><code>metadata</code></em>.
@@ -266,8 +266,8 @@ This function applies all data in <em class="parameter"><code>data</code></em> t
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if the <em class="parameter"><code>data</code></em> was applied to <em class="parameter"><code>metadata</code></em> successfully,
-otherwise <code class="literal">FALSE</code> is returned.</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>data</code></em> was applied to <em class="parameter"><code>metadata</code></em> successfully,
+otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned.</td>
 </tr>
 </tbody>
 </table></div>

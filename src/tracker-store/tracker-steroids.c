@@ -1604,12 +1604,12 @@ static void _dbus_tracker_steroids_query (TrackerSteroids* self, GVariant* param
 	GVariantIter _arguments_iter;
 	gint _fd_index = 0;
 	gchar* query = NULL;
-	GVariant* _tmp8_;
+	GVariant* _tmp7_;
 	GUnixOutputStream* output_stream = NULL;
 	g_variant_iter_init (&_arguments_iter, parameters);
-	_tmp8_ = g_variant_iter_next_value (&_arguments_iter);
-	query = g_variant_dup_string (_tmp8_, NULL);
-	g_variant_unref (_tmp8_);
+	_tmp7_ = g_variant_iter_next_value (&_arguments_iter);
+	query = g_variant_dup_string (_tmp7_, NULL);
+	g_variant_unref (_tmp7_);
 	g_variant_iter_next (&_arguments_iter, "h", &_fd_index);
 	output_stream = (GUnixOutputStream *) g_unix_output_stream_new (g_unix_fd_list_get (g_dbus_message_get_unix_fd_list (g_dbus_method_invocation_get_message (invocation)), _fd_index, NULL), TRUE);
 	tracker_steroids_query (self, g_dbus_method_invocation_get_sender (invocation), query, output_stream, (GAsyncReadyCallback) _dbus_tracker_steroids_query_ready, invocation);
@@ -1627,9 +1627,9 @@ static void _dbus_tracker_steroids_query_ready (GObject * source_object, GAsyncR
 	GUnixFDList *_fd_list;
 	gchar** result;
 	int result_length1 = 0;
-	gchar** _tmp9_;
-	GVariantBuilder _tmp10_;
-	int _tmp11_;
+	gchar** _tmp8_;
+	GVariantBuilder _tmp9_;
+	int _tmp10_;
 	invocation = _user_data_;
 	result = tracker_steroids_query_finish ((TrackerSteroids*) source_object, _res_, &result_length1, &error);
 	if (error) {
@@ -1639,13 +1639,13 @@ static void _dbus_tracker_steroids_query_ready (GObject * source_object, GAsyncR
 	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
 	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
 	_fd_list = g_unix_fd_list_new ();
-	_tmp9_ = result;
-	g_variant_builder_init (&_tmp10_, G_VARIANT_TYPE ("as"));
-	for (_tmp11_ = 0; _tmp11_ < result_length1; _tmp11_++) {
-		g_variant_builder_add_value (&_tmp10_, g_variant_new_string (*_tmp9_));
-		_tmp9_++;
+	_tmp8_ = result;
+	g_variant_builder_init (&_tmp9_, G_VARIANT_TYPE ("as"));
+	for (_tmp10_ = 0; _tmp10_ < result_length1; _tmp10_++) {
+		g_variant_builder_add_value (&_tmp9_, g_variant_new_string (*_tmp8_));
+		_tmp8_++;
 	}
-	g_variant_builder_add_value (&_reply_builder, g_variant_builder_end (&_tmp10_));
+	g_variant_builder_add_value (&_reply_builder, g_variant_builder_end (&_tmp9_));
 	 result = (_vala_array_free ( result,  result_length1, (GDestroyNotify) g_free), NULL);
 	_reply = g_variant_builder_end (&_reply_builder);
 	g_dbus_message_set_body (_reply_message, _reply);

@@ -28,9 +28,9 @@
 #include <gio/gio.h>
 #include <tracker-store/tracker-events.h>
 #include <libtracker-common/tracker-common.h>
+#include <libtracker-data/tracker-data-backup.h>
 #include <libtracker-data/tracker-data-query.h>
 #include <libtracker-data/tracker-data-update.h>
-#include <libtracker-data/tracker-data-backup.h>
 
 
 #define TRACKER_TYPE_BACKUP (tracker_backup_get_type ())
@@ -108,9 +108,18 @@ struct _TrackerBackupSaveData {
 	Block2Data* _data2_;
 	GFile* _tmp2_;
 	GFile* destination;
-	GError* _tmp3_;
+	gboolean _tmp3_;
+	gchar* _tmp4_;
+	gchar* _tmp5_;
+	gchar* _tmp6_;
+	gchar* _tmp7_;
+	gchar* _tmp8_;
+	gchar* _tmp9_;
+	GError* _tmp10_;
+	GError* _tmp11_;
+	GError* _tmp12_;
 	GError * e;
-	GError* _tmp4_;
+	GError* _tmp13_;
 	GError * _inner_error_;
 };
 
@@ -128,16 +137,25 @@ struct _TrackerBackupRestoreData {
 	TrackerDBusRequest* request;
 	GFile* _tmp2_;
 	GFile* journal;
-	GObject* _tmp3_;
+	gboolean _tmp3_;
+	gchar* _tmp4_;
+	gchar* _tmp5_;
+	gchar* _tmp6_;
+	gchar* _tmp7_;
+	gchar* _tmp8_;
+	gchar* _tmp9_;
+	GError* _tmp10_;
+	GError* _tmp11_;
+	GObject* _tmp12_;
 	TrackerStatus* notifier;
-	void* _tmp4_;
-	GDestroyNotify _tmp5_;
-	TrackerBusyCallback _tmp6_;
+	void* _tmp13_;
+	GDestroyNotify _tmp14_;
+	TrackerBusyCallback _tmp15_;
 	TrackerBusyCallback busy_callback;
 	void* busy_callback_target;
 	GDestroyNotify busy_callback_target_destroy_notify;
 	GError * e;
-	GError* _tmp7_;
+	GError* _tmp16_;
 	GError * _inner_error_;
 };
 
@@ -332,6 +350,31 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* data) {
 	data->_tmp2_ = NULL;
 	data->_tmp2_ = g_file_new_for_uri (data->destination_uri);
 	data->destination = data->_tmp2_;
+	if (data->destination == NULL) {
+		data->_tmp3_ = TRUE;
+	} else {
+		data->_tmp4_ = NULL;
+		data->_tmp4_ = g_file_get_path (data->destination);
+		data->_tmp5_ = data->_tmp4_;
+		data->_tmp3_ = data->_tmp5_ == NULL;
+		_g_free0 (data->_tmp5_);
+	}
+	if (data->_tmp3_) {
+		data->_tmp6_ = g_strconcat ("'", data->destination_uri, NULL);
+		data->_tmp7_ = data->_tmp6_;
+		data->_tmp8_ = g_strconcat (data->_tmp7_, "' is not a valid uri", NULL);
+		data->_tmp9_ = data->_tmp8_;
+		data->_tmp10_ = NULL;
+		data->_tmp10_ = g_error_new_literal (TRACKER_DATA_BACKUP_ERROR, TRACKER_DATA_BACKUP_ERROR_INVALID_URI, data->_tmp9_);
+		data->_tmp11_ = data->_tmp10_;
+		_g_free0 (data->_tmp9_);
+		_g_free0 (data->_tmp7_);
+		data->_inner_error_ = data->_tmp11_;
+		_g_object_unref0 (data->destination);
+		block2_data_unref (data->_data2_);
+		data->_data2_ = NULL;
+		goto __catch0_g_error;
+	}
 	data->_state_ = 1;
 	tracker_store_pause (tracker_backup_save_ready, data);
 	return FALSE;
@@ -344,8 +387,8 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* data) {
 	_state_2:
 	;
 	if (data->_data2_->backup_error != NULL) {
-		data->_tmp3_ = _g_error_copy0 (data->_data2_->backup_error);
-		data->_inner_error_ = data->_tmp3_;
+		data->_tmp12_ = _g_error_copy0 (data->_data2_->backup_error);
+		data->_inner_error_ = data->_tmp12_;
 		_g_object_unref0 (data->destination);
 		block2_data_unref (data->_data2_);
 		data->_data2_ = NULL;
@@ -361,8 +404,8 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* data) {
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
 		tracker_dbus_request_end (data->request, data->e);
-		data->_tmp4_ = _g_error_copy0 (data->e);
-		data->_inner_error_ = data->_tmp4_;
+		data->_tmp13_ = _g_error_copy0 (data->e);
+		data->_inner_error_ = data->_tmp13_;
 		_g_error_free0 (data->e);
 		goto __finally0;
 	}
@@ -467,18 +510,41 @@ static gboolean tracker_backup_restore_co (TrackerBackupRestoreData* data) {
 	data->_tmp2_ = NULL;
 	data->_tmp2_ = g_file_new_for_uri (data->journal_uri);
 	data->journal = data->_tmp2_;
-	data->_tmp3_ = NULL;
-	data->_tmp3_ = tracker_dbus_get_object (TRACKER_TYPE_STATUS);
-	data->notifier = TRACKER_STATUS (data->_tmp3_);
-	data->_tmp4_ = NULL;
-	data->_tmp5_ = NULL;
-	data->_tmp6_ = NULL;
-	data->_tmp6_ = tracker_status_get_callback (data->notifier, &data->_tmp4_, &data->_tmp5_);
+	if (data->journal == NULL) {
+		data->_tmp3_ = TRUE;
+	} else {
+		data->_tmp4_ = NULL;
+		data->_tmp4_ = g_file_get_path (data->journal);
+		data->_tmp5_ = data->_tmp4_;
+		data->_tmp3_ = data->_tmp5_ == NULL;
+		_g_free0 (data->_tmp5_);
+	}
+	if (data->_tmp3_) {
+		data->_tmp6_ = g_strconcat ("'", data->journal_uri, NULL);
+		data->_tmp7_ = data->_tmp6_;
+		data->_tmp8_ = g_strconcat (data->_tmp7_, "' is not a valid uri", NULL);
+		data->_tmp9_ = data->_tmp8_;
+		data->_tmp10_ = NULL;
+		data->_tmp10_ = g_error_new_literal (TRACKER_DATA_BACKUP_ERROR, TRACKER_DATA_BACKUP_ERROR_INVALID_URI, data->_tmp9_);
+		data->_tmp11_ = data->_tmp10_;
+		_g_free0 (data->_tmp9_);
+		_g_free0 (data->_tmp7_);
+		data->_inner_error_ = data->_tmp11_;
+		_g_object_unref0 (data->journal);
+		goto __catch1_g_error;
+	}
+	data->_tmp12_ = NULL;
+	data->_tmp12_ = tracker_dbus_get_object (TRACKER_TYPE_STATUS);
+	data->notifier = TRACKER_STATUS (data->_tmp12_);
+	data->_tmp13_ = NULL;
+	data->_tmp14_ = NULL;
+	data->_tmp15_ = NULL;
+	data->_tmp15_ = tracker_status_get_callback (data->notifier, &data->_tmp13_, &data->_tmp14_);
 	data->busy_callback_target = NULL;
 	data->busy_callback_target_destroy_notify = NULL;
-	data->busy_callback = data->_tmp6_;
-	data->busy_callback_target = data->_tmp4_;
-	data->busy_callback_target_destroy_notify = data->_tmp5_;
+	data->busy_callback = data->_tmp15_;
+	data->busy_callback_target = data->_tmp13_;
+	data->busy_callback_target_destroy_notify = data->_tmp14_;
 	tracker_data_backup_restore (data->journal, NULL, data->busy_callback, data->busy_callback_target, &data->_inner_error_);
 	if (data->_inner_error_ != NULL) {
 		(data->busy_callback_target_destroy_notify == NULL) ? NULL : (data->busy_callback_target_destroy_notify (data->busy_callback_target), NULL);
@@ -502,8 +568,8 @@ static gboolean tracker_backup_restore_co (TrackerBackupRestoreData* data) {
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
 		tracker_dbus_request_end (data->request, data->e);
-		data->_tmp7_ = _g_error_copy0 (data->e);
-		data->_inner_error_ = data->_tmp7_;
+		data->_tmp16_ = _g_error_copy0 (data->e);
+		data->_inner_error_ = data->_tmp16_;
 		_g_error_free0 (data->e);
 		goto __finally1;
 	}

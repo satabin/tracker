@@ -401,6 +401,7 @@ TEST_PROGS =
 @HAVE_TRACKER_SEARCH_BAR_TRUE@tsb = tracker-search-bar.1
 @HAVE_TRACKER_PREFERENCES_TRUE@tp = tracker-preferences.1
 @HAVE_TRACKER_NEEDLE_TRUE@tn = tracker-needle.1
+@HAVE_TRACKER_MINER_RSS_TRUE@tmrss = tracker-miner-rss.1
 common = \
 	tracker-extract.1 \
 	tracker-extract.cfg.5 \
@@ -421,18 +422,19 @@ common = \
 # Install only common and enabled manpages
 man_MANS = \
 	$(common) \
+	$(tmrss) \
 	$(tsb) \
 	$(tn) \
-	$(ta) \
 	$(tp)
 
 
 # Make sure even disabled manpages get distributed
 EXTRA_DIST = \
 	$(common) \
-	tracker-search-bar.1 \
-	tracker-preferences.1 \
-	tracker-needle.1
+	$(tmrss) \
+	$(tsb) \
+	$(tn) \
+	$(tp)
 
 all: all-am
 

@@ -1955,6 +1955,9 @@ extractor_get_embedded_metadata_cb (const gchar *preupdate,
 	const gchar *uuid;
 
 	if (error) {
+		tracker_sparql_builder_graph_close (data->sparql);
+		tracker_sparql_builder_insert_close (data->sparql);
+
 		/* Something bad happened, notify about the error */
 		tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), data->file, error);
 		process_file_data_free (data);
@@ -2038,9 +2041,15 @@ extractor_get_embedded_metadata_cancel (GCancellable    *cancellable,
 	GError *error;
 
 	/* TODO: Cancel extractor call
-	 * Isn't this as simple as g_cancellable_cancel (cancellable) now after the
-	 * GDBus port? The original dbus-glib code didn't have this so I have not
-	 * yet implemented it as part of the GDBus port. */
+	 * We should cancel all of these on finalize()
+	 *
+	 * NOTE: We currently don't call g_cancellable_cancel() so
+	 * this is here just in the event that we may at some point.
+	 * It's likely the only time this would happen is during
+	 * finalize(). This is also why we don't close the (what
+	 * should be) currently open sparql builder like we do on
+	 * error in extractor_skip_embedded_metadata_cb().
+	 */
 
 	error = g_error_new_literal (miner_files_error_quark, 0,
 	                             "Embedded metadata extraction was cancelled");

@@ -88,15 +88,19 @@ gchar* tracker_time_format_from_iso8601 (const gchar* s) {
 	_tmp0_ = labs (diff_days);
 	diff_days_abs = _tmp0_;
 	if (diff_days_abs > 7) {
-		gchar* _tmp1_ = NULL;
-		_tmp1_ = g_time_format (&t, "%x");
-		result = _tmp1_;
+		const gchar* _tmp1_ = NULL;
+		gchar* _tmp2_ = NULL;
+		_tmp1_ = _ ("%x");
+		_tmp2_ = g_time_format (&t, _tmp1_);
+		result = _tmp2_;
 		return result;
 	}
 	if (diff_days_abs == 0) {
-		gchar* _tmp2_;
-		_tmp2_ = g_strdup ("Today");
-		result = _tmp2_;
+		const gchar* _tmp3_ = NULL;
+		gchar* _tmp4_;
+		_tmp3_ = _ ("Today");
+		_tmp4_ = g_strdup (_tmp3_);
+		result = _tmp4_;
 		return result;
 	} else {
 		gboolean future;
@@ -106,30 +110,34 @@ gchar* tracker_time_format_from_iso8601 (const gchar* s) {
 		}
 		if (diff_days <= 1) {
 			if (future) {
-				gchar* _tmp3_;
-				_tmp3_ = g_strdup ("Tomorrow");
-				result = _tmp3_;
-				return result;
-			} else {
-				gchar* _tmp4_;
-				_tmp4_ = g_strdup ("Yesterday");
-				result = _tmp4_;
-				return result;
-			}
-		} else {
-			if (future) {
 				const gchar* _tmp5_ = NULL;
-				gchar* _tmp6_ = NULL;
-				_tmp5_ = ngettext ("%ld day from now", "%ld days from now", (gulong) diff_days_abs);
-				_tmp6_ = g_strdup_printf (_tmp5_, diff_days_abs);
+				gchar* _tmp6_;
+				_tmp5_ = _ ("Tomorrow");
+				_tmp6_ = g_strdup (_tmp5_);
 				result = _tmp6_;
 				return result;
 			} else {
 				const gchar* _tmp7_ = NULL;
-				gchar* _tmp8_ = NULL;
-				_tmp7_ = ngettext ("%ld day ago", "%ld days ago", (gulong) diff_days_abs);
-				_tmp8_ = g_strdup_printf (_tmp7_, diff_days_abs);
+				gchar* _tmp8_;
+				_tmp7_ = _ ("Yesterday");
+				_tmp8_ = g_strdup (_tmp7_);
 				result = _tmp8_;
+				return result;
+			}
+		} else {
+			if (future) {
+				const gchar* _tmp9_ = NULL;
+				gchar* _tmp10_ = NULL;
+				_tmp9_ = ngettext ("%ld day from now", "%ld days from now", (gulong) diff_days_abs);
+				_tmp10_ = g_strdup_printf (_tmp9_, diff_days_abs);
+				result = _tmp10_;
+				return result;
+			} else {
+				const gchar* _tmp11_ = NULL;
+				gchar* _tmp12_ = NULL;
+				_tmp11_ = ngettext ("%ld day ago", "%ld days ago", (gulong) diff_days_abs);
+				_tmp12_ = g_strdup_printf (_tmp11_, diff_days_abs);
+				result = _tmp12_;
 				return result;
 			}
 		}
@@ -283,7 +291,7 @@ GdkPixbuf* tracker_pixbuf_new_from_file (GtkIconTheme* theme, const gchar* filen
 			_inner_error_ = NULL;
 			_tmp8_ = g_strconcat ("Error loading icon pixbuf: ", e->message, NULL);
 			_tmp9_ = _tmp8_;
-			g_warning ("tracker-utils.vala:122: %s", _tmp9_);
+			g_warning ("tracker-utils.vala:123: %s", _tmp9_);
 			_g_free0 (_tmp9_);
 			_g_error_free0 (e);
 		}
@@ -362,7 +370,7 @@ GdkPixbuf* tracker_pixbuf_new_from_file (GtkIconTheme* theme, const gchar* filen
 				_inner_error_ = NULL;
 				_tmp24_ = g_strconcat ("Error loading icon pixbuf: ", e->message, NULL);
 				_tmp25_ = _tmp24_;
-				g_warning ("tracker-utils.vala:146: %s", _tmp25_);
+				g_warning ("tracker-utils.vala:147: %s", _tmp25_);
 				_g_free0 (_tmp25_);
 				_g_error_free0 (e);
 			}
@@ -385,7 +393,7 @@ GdkPixbuf* tracker_pixbuf_new_from_file (GtkIconTheme* theme, const gchar* filen
 			_inner_error_ = NULL;
 			_tmp26_ = g_strconcat ("Error looking up file for pixbuf: ", e->message, NULL);
 			_tmp27_ = _tmp26_;
-			g_warning ("tracker-utils.vala:150: %s", _tmp27_);
+			g_warning ("tracker-utils.vala:151: %s", _tmp27_);
 			_g_free0 (_tmp27_);
 			_g_error_free0 (e);
 		}
@@ -437,7 +445,7 @@ GdkPixbuf* tracker_pixbuf_new_from_name (GtkIconTheme* theme, const gchar* name,
 		GError * e;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		g_warning ("tracker-utils.vala:168: Could not load default icon pixbuf from theme " \
+		g_warning ("tracker-utils.vala:169: Could not load default icon pixbuf from theme " \
 "for '%s': %s", name, e->message);
 		_g_error_free0 (e);
 	}

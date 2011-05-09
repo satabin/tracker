@@ -289,9 +289,6 @@ static void _dbus_tracker_resources_sync (TrackerResources* self, GVariant* para
 static void _dbus_tracker_resources_batch_sparql_update (TrackerResources* self, GVariant* parameters, GDBusMethodInvocation* invocation);
 static void _dbus_tracker_resources_batch_sparql_update_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
 static void _dbus_tracker_resources_batch_commit (TrackerResources* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_resources_enable_signals (TrackerResources* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_resources_disable_signals (TrackerResources* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_resources_unreg_batches (TrackerResources* self, GVariant* parameters, GDBusMethodInvocation* invocation);
 static void tracker_resources_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data);
 static GVariant* tracker_resources_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data);
 static gboolean tracker_resources_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data);
@@ -327,17 +324,7 @@ static const GDBusMethodInfo _tracker_resources_dbus_method_info_batch_sparql_up
 static const GDBusArgInfo * const _tracker_resources_dbus_arg_info_batch_commit_in[] = {NULL};
 static const GDBusArgInfo * const _tracker_resources_dbus_arg_info_batch_commit_out[] = {NULL};
 static const GDBusMethodInfo _tracker_resources_dbus_method_info_batch_commit = {-1, "BatchCommit", (GDBusArgInfo **) (&_tracker_resources_dbus_arg_info_batch_commit_in), (GDBusArgInfo **) (&_tracker_resources_dbus_arg_info_batch_commit_out)};
-static const GDBusArgInfo * const _tracker_resources_dbus_arg_info_enable_signals_in[] = {NULL};
-static const GDBusArgInfo * const _tracker_resources_dbus_arg_info_enable_signals_out[] = {NULL};
-static const GDBusMethodInfo _tracker_resources_dbus_method_info_enable_signals = {-1, "EnableSignals", (GDBusArgInfo **) (&_tracker_resources_dbus_arg_info_enable_signals_in), (GDBusArgInfo **) (&_tracker_resources_dbus_arg_info_enable_signals_out)};
-static const GDBusArgInfo * const _tracker_resources_dbus_arg_info_disable_signals_in[] = {NULL};
-static const GDBusArgInfo * const _tracker_resources_dbus_arg_info_disable_signals_out[] = {NULL};
-static const GDBusMethodInfo _tracker_resources_dbus_method_info_disable_signals = {-1, "DisableSignals", (GDBusArgInfo **) (&_tracker_resources_dbus_arg_info_disable_signals_in), (GDBusArgInfo **) (&_tracker_resources_dbus_arg_info_disable_signals_out)};
-static const GDBusArgInfo _tracker_resources_dbus_arg_info_unreg_batches_old_owner = {-1, "old_owner", "s"};
-static const GDBusArgInfo * const _tracker_resources_dbus_arg_info_unreg_batches_in[] = {&_tracker_resources_dbus_arg_info_unreg_batches_old_owner, NULL};
-static const GDBusArgInfo * const _tracker_resources_dbus_arg_info_unreg_batches_out[] = {NULL};
-static const GDBusMethodInfo _tracker_resources_dbus_method_info_unreg_batches = {-1, "UnregBatches", (GDBusArgInfo **) (&_tracker_resources_dbus_arg_info_unreg_batches_in), (GDBusArgInfo **) (&_tracker_resources_dbus_arg_info_unreg_batches_out)};
-static const GDBusMethodInfo * const _tracker_resources_dbus_method_info[] = {&_tracker_resources_dbus_method_info_load, &_tracker_resources_dbus_method_info_sparql_query, &_tracker_resources_dbus_method_info_sparql_update, &_tracker_resources_dbus_method_info_sparql_update_blank, &_tracker_resources_dbus_method_info_sync, &_tracker_resources_dbus_method_info_batch_sparql_update, &_tracker_resources_dbus_method_info_batch_commit, &_tracker_resources_dbus_method_info_enable_signals, &_tracker_resources_dbus_method_info_disable_signals, &_tracker_resources_dbus_method_info_unreg_batches, NULL};
+static const GDBusMethodInfo * const _tracker_resources_dbus_method_info[] = {&_tracker_resources_dbus_method_info_load, &_tracker_resources_dbus_method_info_sparql_query, &_tracker_resources_dbus_method_info_sparql_update, &_tracker_resources_dbus_method_info_sparql_update_blank, &_tracker_resources_dbus_method_info_sync, &_tracker_resources_dbus_method_info_batch_sparql_update, &_tracker_resources_dbus_method_info_batch_commit, NULL};
 static const GDBusArgInfo _tracker_resources_dbus_arg_info_writeback_subjects = {-1, "subjects", "a{iai}"};
 static const GDBusArgInfo * const _tracker_resources_dbus_arg_info_writeback[] = {&_tracker_resources_dbus_arg_info_writeback_subjects, NULL};
 static const GDBusSignalInfo _tracker_resources_dbus_signal_info_writeback = {-1, "Writeback", (GDBusArgInfo **) (&_tracker_resources_dbus_arg_info_writeback)};
@@ -1735,66 +1722,6 @@ static void _dbus_tracker_resources_batch_commit (TrackerResources* self, GVaria
 }
 
 
-static void _dbus_tracker_resources_enable_signals (TrackerResources* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GError* error = NULL;
-	GVariantIter _arguments_iter;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	tracker_resources_enable_signals (self);
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void _dbus_tracker_resources_disable_signals (TrackerResources* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GError* error = NULL;
-	GVariantIter _arguments_iter;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	tracker_resources_disable_signals (self);
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void _dbus_tracker_resources_unreg_batches (TrackerResources* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GError* error = NULL;
-	GVariantIter _arguments_iter;
-	gchar* old_owner = NULL;
-	GVariant* _tmp7_;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	_tmp7_ = g_variant_iter_next_value (&_arguments_iter);
-	old_owner = g_variant_dup_string (_tmp7_, NULL);
-	g_variant_unref (_tmp7_);
-	tracker_resources_unreg_batches (self, old_owner);
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	_g_free0 (old_owner);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
 static void tracker_resources_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data) {
 	gpointer* data;
 	gpointer object;
@@ -1814,12 +1741,6 @@ static void tracker_resources_dbus_interface_method_call (GDBusConnection* conne
 		_dbus_tracker_resources_batch_sparql_update (object, parameters, invocation);
 	} else if (strcmp (method_name, "BatchCommit") == 0) {
 		_dbus_tracker_resources_batch_commit (object, parameters, invocation);
-	} else if (strcmp (method_name, "EnableSignals") == 0) {
-		_dbus_tracker_resources_enable_signals (object, parameters, invocation);
-	} else if (strcmp (method_name, "DisableSignals") == 0) {
-		_dbus_tracker_resources_disable_signals (object, parameters, invocation);
-	} else if (strcmp (method_name, "UnregBatches") == 0) {
-		_dbus_tracker_resources_unreg_batches (object, parameters, invocation);
 	} else {
 		g_object_unref (invocation);
 	}

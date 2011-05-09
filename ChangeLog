@@ -1,3 +1,114 @@
+2011-05-05  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.12
+
+	tracker-miner-rss: Make sure manpage is distributed even if miner is disabled
+
+2011-05-05  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-needle: Fix date strings wrt i18n
+	Fixes GB#520670 - Timestring not internationalized, reported by
+	Yang Zhang.
+
+2011-05-05  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-control: Disable default dbus timeout on backup/restore
+	It's quite likely backup or restore may take > 25 seconds which is the
+	default timeout for dbus calls. This was causing errors when there was
+	no real timeout issue.
+
+2011-05-05  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: make Abiword extractor use GMarkup
+	This enables us to do content extraction properly. Fixes GB#633105,
+	reported by Aleksander Morgado.
+
+2011-05-05  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-fs: Explain why we don't close the sparql object on cancellation
+
+2011-05-05  Philip Van Hoof  <philip@codeminded.be>
+
+	miners/fs, libtracker-miner: On extractor error insert minimal FS info of the file
+	This commit can be ported to tracker-0.10
+
+	Fixes NB#249338.
+
+	Fix encoding unit test to the initialize locale system
+
+2011-05-05  Jürg Billeter  <j@bitron.ch>
+
+	tracker-store: Do not export internal methods via D-Bus
+
+	libtracker-miner: Do not try to load thumbnailer properties
+	The thumbnailer D-Bus objects do not have any properties. We can save
+	two D-Bus calls by not trying to load them.
+
+2011-05-05  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-05-05  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-needle: Update result list icons on icon theme change
+	Fixes GB#397205, reported by Luca Ferretti.
+
+2011-05-05  Mario Blättermann  <mariobl@gnome.org>
+
+	[l10n] Updated German translation
+
+2011-05-05  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-05-05  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-05-05  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-05-05  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-store: Improve error reporting in restore
+
+	libtracker-data, tracker-store: Improve error reporting for backup
+
+2011-05-05  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-control: Allow backup/restore to take local file names
+	This will now convert the arguments given into a real URI because a
+	URI is expected in tracker-store.
+
+	tracker-control: Add --backup and --restore support
+	These command line options provide an easy way to use the d-bus interfaces
+
+	tracker-miner-rss: Remove check for our update in GraphUpdated
+	Before we used GraphUpdated signals and filtered out our updates for
+	mfo:updatedTime, this could lead to updates being missed on some graphs.
+
+	This has been removed now and just does one more round to check all feeds
+	are up to date instead.
+
+	tracker-miner-rss: Only change mfo:updatedTime if a feed is added
+	Also used proper GCancellable for all SPARQL calls
+
+	tracker-miner-rss: Rename functions to make more sense
+
+	tracker-miner-rss: Fixed ASK SPARQL to check true/false not 0/1
+
+	tracker-miner-rss: Improve debugging and code maintainability
+
+	tracker-miner-rss: Added --add-feed and --title options
+	This allows people to add feeds easily which can then be tracked using
+	tracker-search --feeds.
+
+	tracker-miner-rss: Avoid recursive checking and inconsistent graph use
+	Also improve the debugging
+
+	tracker-miner-rss: Fixed crash trying to cast TrackerSparqlConnection to TrackerMinerRSS
+
 2011-04-28  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.11
@@ -50,13 +161,13 @@
 
 	libtracker-common: Reading locale from gconf-dbus is only for meegotouch
 
-2011-04-28  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.10
-
-2011-04-23  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+2011-04-28  Takeshi AIHANA  <takeshi.aihana@gmail.com>
 
 	Updated Japanese translation.
+
+2011-04-21  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.10
 
 2011-04-20  Martyn Russell  <martyn@lanedo.com>
 

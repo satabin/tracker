@@ -12,6 +12,10 @@ if HAVE_TRACKER_NEEDLE
 tn = tracker-needle.1
 endif
 
+if HAVE_TRACKER_MINER_RSS
+tmrss = tracker-miner-rss.1
+endif
+
 common = \
 	tracker-extract.1 \
 	tracker-extract.cfg.5 \
@@ -31,14 +35,15 @@ common = \
 # Install only common and enabled manpages
 man_MANS = \
 	$(common) \
+	$(tmrss) \
 	$(tsb) \
 	$(tn) \
-	$(ta) \
 	$(tp)
 
 # Make sure even disabled manpages get distributed
 EXTRA_DIST = \
 	$(common) \
-	tracker-search-bar.1 \
-	tracker-preferences.1 \
-	tracker-needle.1
+	$(tmrss) \
+	$(tsb) \
+	$(tn) \
+	$(tp)

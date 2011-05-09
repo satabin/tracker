@@ -401,11 +401,13 @@ static gboolean tracker_result_store_real_iter_nth_child (GtkTreeModel* base, Gt
 static gboolean tracker_result_store_real_iter_parent (GtkTreeModel* base, GtkTreeIter* iter, GtkTreeIter* child);
 static void tracker_result_store_real_ref_node (GtkTreeModel* base, GtkTreeIter* iter);
 static void tracker_result_store_real_unref_node (GtkTreeModel* base, GtkTreeIter* iter);
+static void tracker_result_store_theme_changed (TrackerResultStore* self, GtkIconTheme* theme);
 TrackerResultStore* tracker_result_store_new (gint _n_columns);
 TrackerResultStore* tracker_result_store_construct (GType object_type, gint _n_columns);
 static void _tracker_result_store_category_node_unref0_ (gpointer var);
 static void _g_object_unref0_ (gpointer var);
 void tracker_result_store_set_icon_size (TrackerResultStore* self, gint value);
+static void _tracker_result_store_theme_changed_gtk_icon_theme_changed (GtkIconTheme* _sender, gpointer self);
 void tracker_result_store_add_query (TrackerResultStore* self, TrackerQueryType type, TrackerQueryMatch match, ...);
 static void _vala_array_add2 (gchar*** array, int* length, int* size, gchar* value);
 static gchar** _vala_array_dup3 (gchar** self, int length);
@@ -1983,6 +1985,73 @@ static void tracker_result_store_real_unref_node (GtkTreeModel* base, GtkTreeIte
 }
 
 
+static void tracker_result_store_theme_changed (TrackerResultStore* self, GtkIconTheme* theme) {
+	GtkTreeIter iter = {0};
+	gint i = 0;
+	gint j = 0;
+	GtkTreeIter _tmp0_ = {0};
+	GtkTreeIter _tmp1_ = {0};
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (theme != NULL);
+	memset (&_tmp0_, 0, sizeof (GtkTreeIter));
+	_tmp1_ = _tmp0_;
+	iter = _tmp1_;
+	iter.stamp = self->priv->timestamp;
+	{
+		gboolean _tmp2_;
+		i = 0;
+		_tmp2_ = TRUE;
+		while (TRUE) {
+			gint _tmp3_;
+			gconstpointer _tmp4_ = NULL;
+			TrackerResultStoreCategoryNode* _tmp5_;
+			TrackerResultStoreCategoryNode* cat;
+			if (!_tmp2_) {
+				i++;
+			}
+			_tmp2_ = FALSE;
+			_tmp3_ = g_ptr_array_get_length (self->priv->categories);
+			if (!(i < _tmp3_)) {
+				break;
+			}
+			_tmp4_ = g_ptr_array_index (self->priv->categories, (guint) i);
+			_tmp5_ = _tracker_result_store_category_node_ref0 ((TrackerResultStoreCategoryNode*) _tmp4_);
+			cat = _tmp5_;
+			iter.user_data = cat;
+			{
+				gboolean _tmp6_;
+				j = cat->count - 1;
+				_tmp6_ = TRUE;
+				while (TRUE) {
+					TrackerResultStoreResultNode _tmp7_;
+					TrackerResultStoreResultNode _tmp8_ = {0};
+					TrackerResultStoreResultNode _result_;
+					void* _tmp9_ = NULL;
+					if (!_tmp6_) {
+						j--;
+					}
+					_tmp6_ = FALSE;
+					if (!(j >= 0)) {
+						break;
+					}
+					tracker_result_store_result_node_copy (&cat->results[j], &_tmp8_);
+					_tmp7_ = _tmp8_;
+					_result_ = _tmp7_;
+					iter.user_data2 = &cat->results[j];
+					_tmp9_ = GINT_TO_POINTER (j);
+					iter.user_data3 = _tmp9_;
+					if (_result_.pixbuf != NULL) {
+						tracker_result_store_fetch_thumbnail (self, &iter, NULL, NULL);
+					}
+					tracker_result_store_result_node_destroy (&_result_);
+				}
+			}
+			_tracker_result_store_category_node_unref0 (cat);
+		}
+	}
+}
+
+
 static void _tracker_result_store_category_node_unref0_ (gpointer var) {
 	(var == NULL) ? NULL : (var = (tracker_result_store_category_node_unref (var), NULL));
 }
@@ -1993,11 +2062,20 @@ static void _g_object_unref0_ (gpointer var) {
 }
 
 
+static void _tracker_result_store_theme_changed_gtk_icon_theme_changed (GtkIconTheme* _sender, gpointer self) {
+	tracker_result_store_theme_changed (self, _sender);
+}
+
+
 TrackerResultStore* tracker_result_store_construct (GType object_type, gint _n_columns) {
 	TrackerResultStore * self = NULL;
 	GPtrArray* _tmp0_ = NULL;
 	GPtrArray* _tmp1_ = NULL;
 	GPtrArray* _tmp2_ = NULL;
+	GdkScreen* _tmp3_ = NULL;
+	GtkIconTheme* _tmp4_ = NULL;
+	GtkIconTheme* _tmp5_;
+	GtkIconTheme* theme;
 	self = (TrackerResultStore*) g_object_new (object_type, NULL);
 	_tmp0_ = g_ptr_array_new_with_free_func (_tracker_result_store_category_node_unref0_);
 	_g_ptr_array_unref0 (self->priv->categories);
@@ -2011,6 +2089,12 @@ TrackerResultStore* tracker_result_store_construct (GType object_type, gint _n_c
 	self->priv->n_columns = _n_columns;
 	self->priv->timestamp = 1;
 	tracker_result_store_set_icon_size (self, 24);
+	_tmp3_ = gdk_screen_get_default ();
+	_tmp4_ = gtk_icon_theme_get_for_screen (_tmp3_);
+	_tmp5_ = _g_object_ref0 (_tmp4_);
+	theme = _tmp5_;
+	g_signal_connect_object (theme, "changed", (GCallback) _tracker_result_store_theme_changed_gtk_icon_theme_changed, self, 0);
+	_g_object_unref0 (theme);
 	return self;
 }
 
@@ -2093,7 +2177,7 @@ void tracker_result_store_add_query (TrackerResultStore* self, TrackerQueryType 
 		}
 	}
 	if (args_length1 != self->priv->n_columns) {
-		g_warning ("tracker-result-store.vala:791: Arguments and number of columns doesn't" \
+		g_warning ("tracker-result-store.vala:819: Arguments and number of columns doesn't" \
 " match");
 		tracker_result_store_query_data_destroy (&query_data);
 		args = (_vala_array_free (args, args_length1, (GDestroyNotify) g_free), NULL);

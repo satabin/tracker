@@ -15,8 +15,8 @@ Subject: [PATCH] Port from libdevkit-power-gobject to libupower-glib
 
 Index: tracker/configure.ac
 ===================================================================
---- tracker.orig/configure.ac	2010-09-02 18:38:36.811118718 +0200
-+++ tracker/configure.ac	2010-09-21 04:54:12.437941074 +0200
+--- tracker.orig/configure.ac	2011-05-12 14:32:01.175347662 +0200
++++ tracker/configure.ac	2011-05-12 14:32:49.346742066 +0200
 @@ -139,7 +139,7 @@
  LIBXML2_REQUIRED=2.6
  LIBNOTIFY_REQUIRED=0.4.3
@@ -102,7 +102,7 @@ Index: tracker/configure.ac
     elif test "x$have_hal" != "xyes"; then
        AC_MSG_ERROR([Couldn't find hal >= $HAL_REQUIRED.])
     fi
-@@ -1797,8 +1797,8 @@
+@@ -1800,8 +1800,8 @@
  	Enable unit tests:			$have_unit_tests
  
  	Support for ioprio:			$tracker_cv_have_ioprio
@@ -115,8 +115,8 @@ Index: tracker/configure.ac
  	Support for Cyrillic languages (enca): 	$have_enca
 Index: tracker/src/libtracker-common/Makefile.am
 ===================================================================
---- tracker.orig/src/libtracker-common/Makefile.am	2010-08-04 01:39:04.542355069 +0200
-+++ tracker/src/libtracker-common/Makefile.am	2010-09-21 04:54:12.520935448 +0200
+--- tracker.orig/src/libtracker-common/Makefile.am	2011-05-12 14:31:30.619731799 +0200
++++ tracker/src/libtracker-common/Makefile.am	2011-05-12 14:32:49.350742016 +0200
 @@ -4,14 +4,13 @@
  	-DSHAREDIR=\""$(datadir)"\"			\
  	-DG_LOG_DOMAIN=\"Tracker\"			\
@@ -160,7 +160,7 @@ Index: tracker/src/libtracker-common/Makefile.am
  	$(GCOV_LIBS)					\
 Index: tracker/src/libtracker-common/tracker-power-devicekit.c
 ===================================================================
---- tracker.orig/src/libtracker-common/tracker-power-devicekit.c	2010-08-04 01:39:04.550355808 +0200
+--- tracker.orig/src/libtracker-common/tracker-power-devicekit.c	2011-05-12 14:31:30.623731749 +0200
 +++ /dev/null	1970-01-01 00:00:00.000000000 +0000
 @@ -1,247 +0,0 @@
 -/*
@@ -413,7 +413,7 @@ Index: tracker/src/libtracker-common/tracker-power-devicekit.c
 Index: tracker/src/libtracker-common/tracker-power-upower.c
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ tracker/src/libtracker-common/tracker-power-upower.c	2010-09-21 04:54:12.641989976 +0200
++++ tracker/src/libtracker-common/tracker-power-upower.c	2011-05-12 14:32:49.350742016 +0200
 @@ -0,0 +1,247 @@
 +/*
 + * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
@@ -664,8 +664,8 @@ Index: tracker/src/libtracker-common/tracker-power-upower.c
 +#endif /* HAVE_UPOWER */
 Index: tracker/src/miners/fs/tracker-miner-files.c
 ===================================================================
---- tracker.orig/src/miners/fs/tracker-miner-files.c	2010-08-19 23:08:24.737737720 +0200
-+++ tracker/src/miners/fs/tracker-miner-files.c	2010-09-21 04:54:12.789935070 +0200
+--- tracker.orig/src/miners/fs/tracker-miner-files.c	2011-05-12 14:31:30.683730995 +0200
++++ tracker/src/miners/fs/tracker-miner-files.c	2011-05-12 14:32:49.358741916 +0200
 @@ -76,9 +76,9 @@
  
  	guint low_battery_pause_cookie;

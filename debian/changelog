@@ -3,6 +3,10 @@ tracker (0.8.18-1) UNRELEASED; urgency=low
   * New upstream release.
   * Refresh debian/patches/01-upower.patch.
   * Drop debian/patches/02-require_eds_2_32.patch, fixed upstream.
+  * Use dh-autoreconf to update the build system
+    - Drop debian/patches/99-autoreconf.patch.
+    - Add Build-Depends on dh-autoreconf.
+    - Pass --with autoreconf to dh.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 12 May 2011 14:32:05 +0200
 

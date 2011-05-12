@@ -1,3 +1,9 @@
+tracker (0.8.18-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 12 May 2011 14:32:05 +0200
+
 tracker (0.8.17-2) unstable; urgency=low
 
   * Add explicit Build-Depends on libcamel1.2-dev (>= 2.32.0) and also bump

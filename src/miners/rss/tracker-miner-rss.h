@@ -23,8 +23,6 @@
 
 #include <libtracker-miner/tracker-miner.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
-
 G_BEGIN_DECLS
 
 #define TRACKER_TYPE_MINER_RSS         (tracker_miner_rss_get_type())
@@ -45,8 +43,7 @@ struct _TrackerMinerRSSClass {
 	TrackerMinerClass parent;
 };
 
-GType            tracker_miner_rss_get_type (void) G_GNUC_CONST;
-TrackerMinerRSS *tracker_miner_rss_new      (GError **error);
+GType    tracker_miner_rss_get_type         (void) G_GNUC_CONST;
 
 G_END_DECLS
 

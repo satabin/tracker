@@ -40,10 +40,10 @@
 <pre class="synopsis">
 #include &lt;libtracker-client/tracker-client.h&gt;
 
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-client-Utilities.html#tracker-sparql-escape" title="tracker_sparql_escape ()">tracker_sparql_escape</a>               (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-client-Utilities.html#tracker-uri-printf-escaped" title="tracker_uri_printf_escaped ()">tracker_uri_printf_escaped</a>          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-client-Utilities.html#tracker-sparql-escape" title="tracker_sparql_escape ()">tracker_sparql_escape</a>               (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-client-Utilities.html#tracker-uri-printf-escaped" title="tracker_uri_printf_escaped ()">tracker_uri_printf_escaped</a>          (<em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-client-Utilities.html#tracker-uri-vprintf-escaped" title="tracker_uri_vprintf_escaped ()">tracker_uri_vprintf_escaped</a>         (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-client-Utilities.html#tracker-uri-vprintf-escaped" title="tracker_uri_vprintf_escaped ()">tracker_uri_vprintf_escaped</a>         (<em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code><span class="type">va_list</span> args</code></em>);
 </pre>
 </div>
@@ -57,12 +57,7 @@ This is miscellaneous API that may be useful to users.
 <a name="libtracker-client-Utilities.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="tracker-sparql-escape"></a><h3>tracker_sparql_escape ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_sparql_escape               (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>
-<p><code class="literal">tracker_sparql_escape</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/libtracker-sparql-Utilities.html#tracker-sparql-escape-string"><code class="function">tracker_sparql_escape_string()</code></a> in libtracker-sparql
-instead.</p>
-</div>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_sparql_escape               (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);</pre>
 <p>
 Escapes a string so it can be passed as a SPARQL parameter in
 any query/update.
@@ -77,7 +72,7 @@ any query/update.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the newly allocated escaped string which must be freed
-using <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a>.</td>
+using <code class="function">g_free()</code>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -86,13 +81,8 @@ using <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocati
 <hr>
 <div class="refsect2">
 <a name="tracker-uri-printf-escaped"></a><h3>tracker_uri_printf_escaped ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_uri_printf_escaped          (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_uri_printf_escaped          (<em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>
-<p><code class="literal">tracker_uri_printf_escaped</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-printf"><code class="function">tracker_sparql_escape_uri_printf()</code></a> in libtracker-sparql
-instead.</p>
-</div>
 <p>
 Calls <a class="link" href="libtracker-client-Utilities.html#tracker-uri-vprintf-escaped" title="tracker_uri_vprintf_escaped ()"><code class="function">tracker_uri_vprintf_escaped()</code></a> with the <em class="parameter"><code>Varargs</code></em> supplied.
 </p>
@@ -112,7 +102,7 @@ string precision pitfalls
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly-allocated string holding the result which should
-be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when finished with.</td>
+be freed with <code class="function">g_free()</code> when finished with.</td>
 </tr>
 </tbody>
 </table></div>
@@ -121,20 +111,15 @@ be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-
 <hr>
 <div class="refsect2">
 <a name="tracker-uri-vprintf-escaped"></a><h3>tracker_uri_vprintf_escaped ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_uri_vprintf_escaped         (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_uri_vprintf_escaped         (<em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code><span class="type">va_list</span> args</code></em>);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Warning</h3>
-<p><code class="literal">tracker_uri_vprintf_escaped</code> has been deprecated since version 0.10 and should not be used in newly-written code. Use <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/libtracker-sparql-Utilities.html#tracker-sparql-escape-uri-vprintf"><code class="function">tracker_sparql_escape_uri_vprintf()</code></a> in libtracker-sparql
-instead.</p>
-</div>
 <p>
-Similar to the standard C <code class="function">vsprintf()</code> function but safer, since it
-calculates the maximum space required and allocates memory to hold
-the result.
+Similar to the standard C <code class="function">vsprintf()</code> function but safer, since it 
+calculates the maximum space required and allocates memory to hold 
+the result. 
 </p>
 <p>
-The result is escaped using <a href="http://library.gnome.org/devel/glib/unstable/glib-URI-Functions.html#g-uri-escape-string"><code class="function">g_uri_escape_string()</code></a>.
+The result is escaped using <code class="function">g_uri_escape_string()</code>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -152,7 +137,7 @@ string precision pitfalls
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a newly-allocated string holding the result which should
-be freed with <a href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when finished with.</td>
+be freed with <code class="function">g_free()</code> when finished with.</td>
 </tr>
 </tbody>
 </table></div>

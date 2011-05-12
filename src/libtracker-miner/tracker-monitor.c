@@ -21,27 +21,20 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <gio/gio.h>
+
+#ifdef HAVE_LIBINOTIFY
+#  include <sys/inotify.h>
+#  include <libinotify/libinotify.h>
+#else
+#  include <gio/gio.h>
+#endif /* HAVE_LIBINOTIFY */
+
+#include <libtracker-common/tracker-keyfile-object.h>
 
 #include "tracker-monitor.h"
 #include "tracker-marshal.h"
 
 #define TRACKER_MONITOR_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TRACKER_TYPE_MONITOR, TrackerMonitorPrivate))
-
-/* If this is enabled, we are assuming that GIO is fixed so that after a CREATED
- * event emitted after a move operation from a non-monitored path to a monitored
- * one, a CHANGES_DONE_HINT is also emitted. This allows us to NOT send the
- * CREATED event to upper layers until the file has been fully closed.
- *
- * See https://bugzilla.gnome.org/show_bug.cgi?id=640077 and
- *     https://projects.maemo.org/bugzilla/show_bug.cgi?id=219982
- * When the upstream bugfix is integrated in GLib/GIO, we will be able to
- * depend on an specific glib version. Until then, disable this and only
- * enable in distros which have that patched glib.
- **/
-#ifdef GIO_ALWAYS_SENDS_CHANGES_DONE_HINT_AFTER_CREATED
-#warning Assuming GLib/GIO always sends CHANGES_DONE_HINT after CREATED...
-#endif /* GIO_ALWAYS_SENDS_CHANGES_DONE_HINT_AFTER_CREATED */
 
 /* The life time of an item in the cache */
 #define CACHE_LIFETIME_SECONDS 1
@@ -61,6 +54,8 @@ struct TrackerMonitorPrivate {
 	GHashTable    *monitors;
 
 	gboolean       enabled;
+	gint           scan_timeout;
+	gint           cache_timeout;
 
 	GType          monitor_backend;
 
@@ -78,26 +73,31 @@ struct TrackerMonitorPrivate {
 	guint          unpause_timeout_id;
 #endif /* PAUSE_ON_IO */
 
-	GHashTable    *pre_update;
-	GHashTable    *pre_delete;
+	GHashTable    *event_pairs;
 	guint          event_pairs_timeout_id;
+
+#ifdef HAVE_LIBINOTIFY
+	GHashTable    *cached_events;
+	guint          cached_events_timeout_id;
+#endif /* HAVE_LIBINOTIFY */
 };
+
+#ifdef HAVE_LIBINOTIFY
+typedef INotifyHandle DirMonitor;
+#else
+typedef GFileMonitor DirMonitor;
+#endif /* HAVE_LIBINOTIFY */
 
 typedef struct {
 	GFile    *file;
-	gchar    *file_uri;
-	GFile    *other_file;
-	gchar    *other_file_uri;
-	gboolean  is_directory;
 	GTimeVal  start_time;
+	GTimeVal  last_time;
 	guint32   event_type;
-	gboolean  expirable;
 } EventData;
 
 enum {
 	ITEM_CREATED,
 	ITEM_UPDATED,
-	ITEM_ATTRIBUTE_UPDATED,
 	ITEM_DELETED,
 	ITEM_MOVED,
 	LAST_SIGNAL
@@ -105,7 +105,9 @@ enum {
 
 enum {
 	PROP_0,
-	PROP_ENABLED
+	PROP_ENABLED,
+	PROP_SCAN_TIMEOUT,
+	PROP_CACHE_TIMEOUT
 };
 
 static void           tracker_monitor_finalize     (GObject        *object);
@@ -118,16 +120,13 @@ static void           tracker_monitor_get_property (GObject        *object,
                                                     GValue         *value,
                                                     GParamSpec     *pspec);
 static guint          get_inotify_limit            (void);
-static GFileMonitor * directory_monitor_new        (TrackerMonitor *monitor,
-                                                    GFile          *file);
-static void           directory_monitor_cancel     (GFileMonitor     *dir_monitor);
+static DirMonitor *   directory_monitor_new        (TrackerMonitor *monitor,
+						    GFile          *file);
+static void           directory_monitor_cancel     (DirMonitor     *dir_monitor);
 
 
 static void           event_data_free              (gpointer        data);
-static void           emit_signal_for_event        (TrackerMonitor *monitor,
-                                                    EventData      *event_data);
-static gboolean       monitor_cancel_recursively   (TrackerMonitor *monitor,
-                                                    GFile          *file);
+
 
 static guint signals[LAST_SIGNAL] = { 0, };
 
@@ -157,17 +156,6 @@ tracker_monitor_class_init (TrackerMonitorClass *klass)
 		              G_TYPE_BOOLEAN);
 	signals[ITEM_UPDATED] =
 		g_signal_new ("item-updated",
-		              G_TYPE_FROM_CLASS (klass),
-		              G_SIGNAL_RUN_LAST,
-		              0,
-		              NULL, NULL,
-		              tracker_marshal_VOID__OBJECT_BOOLEAN,
-		              G_TYPE_NONE,
-		              2,
-		              G_TYPE_OBJECT,
-		              G_TYPE_BOOLEAN);
-	signals[ITEM_ATTRIBUTE_UPDATED] =
-		g_signal_new ("item-attribute-updated",
 		              G_TYPE_FROM_CLASS (klass),
 		              G_SIGNAL_RUN_LAST,
 		              0,
@@ -209,6 +197,24 @@ tracker_monitor_class_init (TrackerMonitorClass *klass)
 	                                                       "Enabled",
 	                                                       TRUE,
 	                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class,
+	                                 PROP_SCAN_TIMEOUT,
+	                                 g_param_spec_int ("scan-timeout",
+	                                                   "Scan Timeout",
+	                                                   "Time in seconds between same events to prevent flooding (0->1000)",
+	                                                   0,
+	                                                   1000,
+	                                                   0,
+	                                                   G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class,
+	                                 PROP_CACHE_TIMEOUT,
+	                                 g_param_spec_int ("cache-timeout",
+	                                                   "Scan Timeout",
+	                                                   "Time in seconds for events to be cached (0->1000)",
+	                                                   0,
+	                                                   1000,
+	                                                   60,
+	                                                   G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 	g_type_class_add_private (object_class, sizeof (TrackerMonitorPrivate));
 }
@@ -217,9 +223,11 @@ static void
 tracker_monitor_init (TrackerMonitor *object)
 {
 	TrackerMonitorPrivate *priv;
+#ifndef HAVE_LIBINOTIFY
 	GFile                 *file;
 	GFileMonitor          *monitor;
 	const gchar           *name;
+#endif /* HAVE_LIBINOTIFY */
 
 	object->private = TRACKER_MONITOR_GET_PRIVATE (object);
 
@@ -235,16 +243,35 @@ tracker_monitor_init (TrackerMonitor *object)
 		                       (GDestroyNotify) g_object_unref,
 		                       (GDestroyNotify) directory_monitor_cancel);
 
-	priv->pre_update =
+#ifdef HAVE_LIBINOTIFY
+	/* We have a hash table with cookies so we can pair up move
+	 * events.
+	 */
+	priv->event_pairs =
+		g_hash_table_new_full (g_direct_hash,
+		                       g_direct_equal,
+		                       NULL,
+		                       event_data_free);
+
+	/* We have a hash table for events so we don't flood the
+	 * indexer with the same events too frequently, we also
+	 * concatenate some events with this like CREATED+UPDATED.
+	 */
+	priv->cached_events =
 		g_hash_table_new_full (g_file_hash,
 		                       (GEqualFunc) g_file_equal,
-		                       (GDestroyNotify) g_object_unref,
+		                       g_object_unref,
 		                       event_data_free);
-	priv->pre_delete =
+
+	g_message ("Monitor backend is libinotify");
+
+	priv->monitor_limit = get_inotify_limit ();
+#else /* HAVE_LIBINOTIFY */
+	priv->event_pairs =
 		g_hash_table_new_full (g_file_hash,
-		                       (GEqualFunc) g_file_equal,
-		                       (GDestroyNotify) g_object_unref,
-		                       event_data_free);
+				       (GEqualFunc) g_file_equal,
+				       (GDestroyNotify) g_object_unref,
+				       event_data_free);
 
 	/* For the first monitor we get the type and find out if we
 	 * are using inotify, FAM, polling, etc.
@@ -324,6 +351,7 @@ tracker_monitor_init (TrackerMonitor *object)
 	g_file_monitor_cancel (monitor);
 	g_object_unref (monitor);
 	g_object_unref (file);
+#endif /* !HAVE_LIBINOTIFY */
 
 	g_message ("Monitor limit is %d", priv->monitor_limit);
 }
@@ -341,12 +369,19 @@ tracker_monitor_finalize (GObject *object)
 	}
 #endif /* PAUSE_ON_IO */
 
+#ifdef HAVE_LIBINOTIFY
+	if (priv->cached_events_timeout_id) {
+		g_source_remove (priv->cached_events_timeout_id);
+	}
+
 	if (priv->event_pairs_timeout_id) {
 		g_source_remove (priv->event_pairs_timeout_id);
 	}
 
-	g_hash_table_unref (priv->pre_update);
-	g_hash_table_unref (priv->pre_delete);
+	g_hash_table_unref (priv->cached_events);
+#endif /* HAVE_LIBINOTIFY */
+
+	g_hash_table_unref (priv->event_pairs);
 	g_hash_table_unref (priv->monitors);
 
 	G_OBJECT_CLASS (tracker_monitor_parent_class)->finalize (object);
@@ -362,6 +397,14 @@ tracker_monitor_set_property (GObject      *object,
 	case PROP_ENABLED:
 		tracker_monitor_set_enabled (TRACKER_MONITOR (object),
 		                             g_value_get_boolean (value));
+		break;
+	case PROP_SCAN_TIMEOUT:
+		tracker_monitor_set_scan_timeout (TRACKER_MONITOR (object),
+		                                  g_value_get_int (value));
+		break;
+	case PROP_CACHE_TIMEOUT:
+		tracker_monitor_set_cache_timeout (TRACKER_MONITOR (object),
+		                                   g_value_get_int (value));
 		break;
 
 	default:
@@ -382,6 +425,12 @@ tracker_monitor_get_property (GObject      *object,
 	switch (prop_id) {
 	case PROP_ENABLED:
 		g_value_set_boolean (value, priv->enabled);
+		break;
+	case PROP_SCAN_TIMEOUT:
+		g_value_set_int (value, priv->scan_timeout);
+		break;
+	case PROP_CACHE_TIMEOUT:
+		g_value_set_int (value, priv->cache_timeout);
 		break;
 
 	default:
@@ -441,7 +490,7 @@ unpause_cb (gpointer data)
 
 static gboolean
 check_is_directory (TrackerMonitor *monitor,
-                    GFile          *file)
+		    GFile          *file)
 {
 	GFileType file_type;
 
@@ -463,10 +512,8 @@ check_is_directory (TrackerMonitor *monitor,
 }
 
 static EventData *
-event_data_new (GFile    *file,
-                GFile    *other_file,
-                gboolean  is_directory,
-                guint32   event_type)
+event_data_new (GFile   *file,
+                guint32  event_type)
 {
 	EventData *event;
 	GTimeVal now;
@@ -475,19 +522,9 @@ event_data_new (GFile    *file,
 	g_get_current_time (&now);
 
 	event->file = g_object_ref (file);
-	event->file_uri = g_file_get_uri (file);
-	if (other_file) {
-		event->other_file = g_object_ref (other_file);
-		event->other_file_uri = g_file_get_uri (other_file);
-	} else {
-		event->other_file = NULL;
-		event->other_file_uri = NULL;
-	}
-	event->is_directory = is_directory;
 	event->start_time = now;
+	event->last_time = now;
 	event->event_type = event_type;
-	/* Always expirable when created */
-	event->expirable = TRUE;
 
 	return event;
 }
@@ -500,15 +537,12 @@ event_data_free (gpointer data)
 	event = data;
 
 	g_object_unref (event->file);
-	g_free (event->file_uri);
-	if (event->other_file) {
-		g_object_unref (event->other_file);
-		g_free (event->other_file_uri);
-	}
 	g_slice_free (EventData, data);
 }
 
-gboolean
+
+/* Note: used both when compiling with and without libinotify support */
+static gboolean
 tracker_monitor_move (TrackerMonitor *monitor,
                       GFile          *old_file,
                       GFile          *new_file)
@@ -601,6 +635,753 @@ tracker_monitor_move (TrackerMonitor *monitor,
 	return items_moved > 0;
 }
 
+#ifdef HAVE_LIBINOTIFY
+
+static void
+event_data_update (EventData *event)
+{
+	GTimeVal now;
+
+	g_get_current_time (&now);
+
+	event->last_time = now;
+}
+
+static gchar *
+libinotify_monitor_event_to_string (guint32 event_type)
+{
+	GString *s;
+
+	s = g_string_new ("");
+
+	if (event_type & IN_ACCESS) {
+		s = g_string_append (s, "IN_ACCESS | ");
+	}
+	if (event_type & IN_MODIFY) {
+		s = g_string_append (s, "IN_MODIFY | ");
+	}
+	if (event_type & IN_ATTRIB) {
+		s = g_string_append (s, "IN_ATTRIB | ");
+	}
+	if (event_type & IN_CLOSE_WRITE) {
+		s = g_string_append (s, "IN_CLOSE_WRITE | ");
+	}
+	if (event_type & IN_CLOSE_NOWRITE) {
+		s = g_string_append (s, "IN_CLOSE_NOWRITE | ");
+	}
+	if (event_type & IN_OPEN) {
+		s = g_string_append (s, "IN_OPEN | ");
+	}
+	if (event_type & IN_MOVED_FROM) {
+		s = g_string_append (s, "IN_MOVED_FROM | ");
+	}
+	if (event_type & IN_MOVED_TO) {
+		s = g_string_append (s, "IN_MOVED_TO | ");
+	}
+	if (event_type & IN_CREATE) {
+		s = g_string_append (s, "IN_CREATE | ");
+	}
+	if (event_type & IN_DELETE) {
+		s = g_string_append (s, "IN_DELETE | ");
+	}
+	if (event_type & IN_DELETE_SELF) {
+		s = g_string_append (s, "IN_DELETE_SELF | ");
+	}
+	if (event_type & IN_MOVE_SELF) {
+		s = g_string_append (s, "IN_MOVE_SELF | ");
+	}
+	if (event_type & IN_UNMOUNT) {
+		s = g_string_append (s, "IN_UNMOUNT | ");
+	}
+	if (event_type & IN_Q_OVERFLOW) {
+		s = g_string_append (s, "IN_Q_OVERFLOW | ");
+	}
+	if (event_type & IN_IGNORED) {
+		s = g_string_append (s, "IN_IGNORED | ");
+	}
+
+	/* helper events */
+	if (event_type & IN_CLOSE) {
+		s = g_string_append (s, "IN_CLOSE* | ");
+	}
+	if (event_type & IN_MOVE) {
+		s = g_string_append (s, "IN_MOVE* | ");
+	}
+
+	/* special flags */
+	if (event_type & IN_MASK_ADD) {
+		s = g_string_append (s, "IN_MASK_ADD^ | ");
+	}
+	if (event_type & IN_ISDIR) {
+		s = g_string_append (s, "IN_ISDIR^ | ");
+	}
+	if (event_type & IN_ONESHOT) {
+		s = g_string_append (s, "IN_ONESHOT^ | ");
+	}
+
+	s->str[s->len - 3] = '\0';
+
+	return g_string_free (s, FALSE);
+}
+
+static gboolean
+libinotify_event_pairs_timeout_cb (gpointer data)
+{
+	TrackerMonitor *monitor;
+	GTimeVal        now;
+	GHashTableIter  iter;
+	gpointer        key, value;
+
+	monitor = data;
+
+	g_debug ("Checking for event pairs which have timed out...");
+
+	g_get_current_time (&now);
+
+	g_hash_table_iter_init (&iter, monitor->private->event_pairs);
+	while (g_hash_table_iter_next (&iter, &key, &value)) {
+		EventData   *event;
+		glong        seconds;
+		glong        seconds_then;
+		gboolean     is_directory;
+
+		event = value;
+
+		seconds_then = event->start_time.tv_sec;
+
+		seconds  = now.tv_sec;
+		seconds -= seconds_then;
+
+		g_debug ("Comparing now:%ld to then:%ld, diff:%ld",
+		         now.tv_sec,
+		         seconds_then,
+		         seconds);
+
+		if (seconds < 2) {
+			continue;
+		}
+
+		/* We didn't receive an event pair for this
+		 * cookie, so we just generate the CREATE or
+		 * DELETE event for the file we know about.
+		 */
+		g_debug ("Event:%d with cookie:%d has timed out (%ld seconds have elapsed)",
+		         event->event_type,
+		         GPOINTER_TO_UINT (key),
+		         seconds);
+
+		is_directory = check_is_directory (monitor, event->file);
+
+		switch (event->event_type) {
+		case IN_MOVED_FROM:
+		case IN_DELETE:
+		case IN_DELETE_SELF:
+			/* So we knew the source, but not the
+			 * target location for the event.
+			 */
+			if (is_directory) {
+				tracker_monitor_remove (monitor,
+				                        event->file);
+			}
+
+			g_signal_emit (monitor,
+			               signals[ITEM_DELETED], 0,
+			               event->file,
+			               is_directory);
+			break;
+
+		case IN_CREATE:
+		case IN_MOVED_TO:
+			/* So we knew the target, but not the
+			 * source location for the event.
+			 */
+			g_signal_emit (monitor,
+			               signals[ITEM_CREATED], 0,
+			               event->file,
+			               is_directory);
+			break;
+		default:
+			break;
+		}
+		/* Clean up */
+		g_hash_table_iter_remove (&iter);
+	}
+
+	if (g_hash_table_size (monitor->private->event_pairs) < 1) {
+		g_debug ("No more events to pair, removing timeout");
+		monitor->private->event_pairs_timeout_id = 0;
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+static void
+libinotify_cached_event_handle (TrackerMonitor *monitor,
+                                EventData      *data,
+                                gboolean        is_directory)
+{
+	switch (data->event_type) {
+	case IN_MODIFY:
+	case IN_CLOSE_WRITE:
+	case IN_ATTRIB:
+		g_signal_emit (monitor,
+		               signals[ITEM_UPDATED], 0,
+		               data->file,
+		               is_directory);
+		break;
+
+	case IN_MOVED_FROM:
+		/* So we knew the source, but not the
+		 * target location for the event.
+		 */
+
+	case IN_DELETE:
+	case IN_DELETE_SELF:
+		if (is_directory) {
+			tracker_monitor_remove (monitor,
+			                        data->file);
+		}
+
+		g_signal_emit (monitor,
+		               signals[ITEM_DELETED], 0,
+		               data->file,
+		               is_directory);
+
+		break;
+
+	case IN_MOVED_TO:
+		/* So we new the target, but not the
+		 * source location for the event.
+		 */
+
+	case IN_CREATE:
+		g_signal_emit (monitor,
+		               signals[ITEM_CREATED], 0,
+		               data->file,
+		               is_directory);
+
+		break;
+	default:
+		break;
+	}
+}
+
+static gboolean
+libinotify_cached_events_timeout_cb (gpointer data)
+{
+	TrackerMonitor *monitor;
+	GTimeVal        now;
+	GHashTableIter  iter;
+	gpointer        key, value;
+
+	monitor = data;
+
+	g_debug ("Checking for cached events that have timed out...");
+
+	g_get_current_time (&now);
+
+	g_hash_table_iter_init (&iter, monitor->private->cached_events);
+	while (g_hash_table_iter_next (&iter, &key, &value)) {
+		EventData   *event;
+		glong        last_event_seconds;
+		glong        start_event_seconds;
+		gboolean     is_directory;
+		gboolean     force_emit = FALSE;
+		gboolean     timed_out = FALSE;
+
+		event = value;
+
+		last_event_seconds = now.tv_sec - event->last_time.tv_sec;
+		start_event_seconds = now.tv_sec - event->start_time.tv_sec;
+
+		is_directory = check_is_directory (monitor, event->file);
+
+		g_debug ("Comparing now:%ld to then:%ld (start:%ld), diff:%ld (with start:%ld)",
+		         now.tv_sec,
+		         event->last_time.tv_sec,
+		         event->start_time.tv_sec,
+		         last_event_seconds,
+		         start_event_seconds);
+
+		/* If the item has been in the cache for too long
+		 * according to the module config options, then we
+		 * force the cache to expire in order to not starve
+		 * the indexer of events for files which are ALWAYS
+		 * changing.
+		 */
+		if (monitor->private->cache_timeout > 0) {
+			force_emit = start_event_seconds > monitor->private->cache_timeout;
+		}
+
+		timed_out = last_event_seconds >= MAX (CACHE_LIFETIME_SECONDS,
+		                                       monitor->private->scan_timeout);
+
+		/* Make sure the item is in the cache for at least 2
+		 * seconds OR the time as stated by the module config
+		 * options. This way, always changing files can not
+		 * be emitted too and flood the indexer with events.
+		 */
+		if (!force_emit) {
+			if (!timed_out) {
+				continue;
+			}
+
+			/* We didn't receive an event pair for this
+			 * cookie, so we just generate the CREATE or
+			 * DELETE event for the file we know about.
+			 */
+			g_debug ("Cached event:%d has timed out (%ld seconds have elapsed)",
+			         event->event_type,
+			         last_event_seconds);
+		} else {
+			event->start_time = now;
+			g_debug ("Cached event:%d has been forced to signal (%ld seconds have elapsed since the beginning)",
+			         event->event_type,
+			         start_event_seconds);
+		}
+
+		/* Signal event */
+		libinotify_cached_event_handle (monitor,
+		                                event,
+		                                is_directory);
+
+
+		if (timed_out) {
+			/* Clean up */
+			g_hash_table_iter_remove (&iter);
+		} else {
+			if (event->event_type == IN_CREATE) {
+				/* The file has been already created,
+				 * We want any further events to be
+				 * IN_MODIFY.
+				 */
+				event->event_type = IN_MODIFY;
+			}
+		}
+	}
+
+	if (g_hash_table_size (monitor->private->cached_events) < 1) {
+		g_debug ("No more cached events, removing timeout");
+		monitor->private->cached_events_timeout_id = 0;
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+static gboolean
+libinotify_cached_event_delete_children_func (gpointer key,
+                                              gpointer value,
+                                              gpointer user_data)
+{
+	EventData *data;
+
+	data = user_data;
+
+	return (data->event_type == IN_DELETE ||
+	        data->event_type == IN_DELETE_SELF) &&
+		g_file_has_prefix (key, data->file);
+}
+
+static void
+libinotify_monitor_force_emission (TrackerMonitor *monitor,
+                                   GFile          *file,
+                                   guint32         event_type,
+                                   gboolean        is_directory)
+{
+	EventData *data;
+
+	data = g_hash_table_lookup (monitor->private->cached_events, file);
+
+	if (data) {
+		gchar *event_type_str;
+
+		event_type_str = libinotify_monitor_event_to_string (event_type);
+
+		g_debug ("Cached event:%d being handled before %s",
+		         data->event_type,
+		         event_type_str);
+
+		/* Signal event */
+		libinotify_cached_event_handle (monitor,
+		                                data,
+		                                is_directory);
+
+		/* Clean up */
+		g_hash_table_remove (monitor->private->cached_events, data->file);
+
+		g_free (event_type_str);
+	}
+}
+
+static void
+libinotify_monitor_event_cb (INotifyHandle *handle,
+                             const char    *monitor_name,
+                             const char    *filename,
+                             guint32        event_type,
+                             guint32        cookie,
+                             gpointer       user_data)
+{
+	TrackerMonitor *monitor;
+	GFile          *file;
+	GFile          *other_file;
+	gchar          *str1;
+	gchar          *str2;
+	gboolean        is_directory;
+	gchar          *event_type_str;
+	EventData      *data = NULL;
+	gboolean        set_up_cache_timeout = FALSE;
+
+	monitor = user_data;
+
+	switch (event_type) {
+	case IN_Q_OVERFLOW:
+	case IN_OPEN:
+	case IN_CLOSE_NOWRITE:
+	case IN_ACCESS:
+	case IN_IGNORED:
+		/* Return, otherwise we spam with messages for every
+		 * file we open and look at.
+		 */
+		return;
+	default:
+		break;
+	}
+
+	if (G_UNLIKELY (!monitor->private->enabled)) {
+		g_debug ("Silently dropping monitor event, monitor disabled for now");
+		return;
+	}
+
+	if (monitor_name) {
+		str1 = g_build_filename (monitor_name, filename, NULL);
+		file = g_file_new_for_path (str1);
+	} else {
+		str1 = NULL;
+		file = g_file_new_for_path (filename);
+	}
+
+	other_file = NULL;
+	str2 = NULL;
+
+	if (!str1) {
+		str1 = g_file_get_path (file);
+	}
+
+	is_directory = check_is_directory (monitor, file);
+
+	event_type_str = libinotify_monitor_event_to_string (event_type);
+	g_message ("Received monitor event:%d->'%s' for file:'%s' (cookie:%d)",
+	           event_type,
+	           event_type_str,
+	           str1 ? str1 : "",
+	           cookie);
+	g_free (event_type_str);
+
+#ifdef PAUSE_ON_IO
+	if (monitor->private->unpause_timeout_id != 0) {
+		g_source_remove (monitor->private->unpause_timeout_id);
+	} else {
+		g_message ("Pausing indexing because we are "
+		           "receiving monitor events");
+
+		tracker_status_set_is_paused_for_io (TRUE);
+	}
+
+	monitor->private->unpause_timeout_id =
+		g_timeout_add_seconds (PAUSE_ON_IO_SECONDS,
+		                       unpause_cb,
+		                       monitor);
+#endif /* PAUSE_ON_IO */
+
+	if (cookie > 0) {
+		/* First check if we already have a file in
+		 * the event pairs hash table.
+		 */
+		data = g_hash_table_lookup (monitor->private->event_pairs,
+		                            GUINT_TO_POINTER (cookie));
+
+		if (!data) {
+			data = event_data_new (file, event_type);
+
+			g_hash_table_insert (monitor->private->event_pairs,
+			                     GUINT_TO_POINTER (cookie),
+			                     data);
+		} else {
+			other_file = data->file;
+		}
+
+		/* Add a check for old cookies we didn't
+		 * receive the follow up pair event for.
+		 */
+		if (!monitor->private->event_pairs_timeout_id) {
+			g_debug ("Setting up event pair timeout check");
+
+			monitor->private->event_pairs_timeout_id =
+				g_timeout_add_seconds (CACHE_LIFETIME_SECONDS,
+				                       libinotify_event_pairs_timeout_cb,
+				                       monitor);
+		}
+	}
+
+	switch (event_type) {
+	case IN_MODIFY:
+	case IN_CLOSE_WRITE:
+	case IN_ATTRIB:
+		set_up_cache_timeout = TRUE;
+
+		data = g_hash_table_lookup (monitor->private->cached_events, file);
+		if (data) {
+			/* We already have an event we will
+			 * signal when we timeout. So update
+			 * and don't propagate yet this event.
+			 *
+			 * See IN_CREATE.
+			 */
+			event_data_update (data);
+			break;
+		}
+
+		/* Here we just wait to make sure we don't get
+		 * any more MODIFY events and after 2 seconds
+		 * of no MODIFY events we emit it. This saves
+		 * spamming.
+		 */
+		data = event_data_new (file, event_type);
+
+		g_hash_table_insert (monitor->private->cached_events,
+		                     g_object_ref (data->file),
+		                     data);
+		break;
+
+	case IN_MOVED_FROM:
+		/* If the file is *ALREADY* in the cache, we need to
+		 * handle that cache first. Otherwise we have
+		 * disparity when the cache expires.
+		 */
+		libinotify_monitor_force_emission (monitor,
+		                                   file,
+		                                   event_type,
+		                                   is_directory);
+
+		/* Fall through */
+	case IN_DELETE:
+	case IN_DELETE_SELF:
+	case IN_UNMOUNT:
+		if (cookie == 0 || event_type == IN_UNMOUNT) {
+			/* This is how things generally work with
+			 * deleted items:
+			 *
+			 * 1. Check if we have a child file already in
+			 *    the deleted hash table AND this is a
+			 *    directory. If so, we delete all child
+			 *    items.
+			 * 2. Add the file to the deleted hash table
+			 *    but only if we don't have a higher level
+			 *    directory in the hash table already.
+			 * 3. Make sure we have the timeout set up to
+			 *    handle deleted items after n seconds.
+			 * 4. When we handle deleted items, only emit
+			 *    those which were deleted in the last 2
+			 *    seconds.
+			 */
+
+			data = event_data_new (file, event_type);
+
+			/* Stage 1: */
+			if (is_directory) {
+				gint count;
+
+				tracker_monitor_remove (monitor, file);
+
+				count =         g_hash_table_foreach_remove (monitor->private->cached_events,
+				                                             libinotify_cached_event_delete_children_func,
+				                                             data);
+
+				g_debug ("Removed %d child items in recently deleted cache", count);
+			}
+
+			/* Stage 2: */
+			g_hash_table_insert (monitor->private->cached_events,
+			                     g_object_ref (data->file),
+			                     data);
+
+			/* Stage 3: */
+			set_up_cache_timeout = TRUE;
+
+			/* FIXME: How do we handle the deleted items
+			 * cache for other events, i.e. we should
+			 * have something like
+			 * libinotify_monitor_force_emission() for
+			 * deleted items if we get CREATED before we
+			 * emit the DELETE event.
+			 */
+		} else if (other_file) {
+			g_signal_emit (monitor,
+			               signals[ITEM_MOVED], 0,
+			               file,
+			               other_file,
+			               is_directory,
+			               TRUE);
+
+			if (is_directory) {
+				tracker_monitor_move (monitor, file, other_file);
+			}
+
+			g_hash_table_remove (monitor->private->event_pairs,
+			                     GUINT_TO_POINTER (cookie));
+		}
+
+		break;
+
+	case IN_CREATE:
+		/* Here we just wait with CREATE events and
+		 * if we get MODIFY after, we drop the MODIFY
+		 * and just emit CREATE because otherwise we
+		 * send twice as much traffic to the indexer.
+		 */
+		set_up_cache_timeout = TRUE;
+
+		data = event_data_new (file, event_type);
+
+		g_hash_table_insert (monitor->private->cached_events,
+		                     g_object_ref (data->file),
+		                     data);
+		break;
+
+	case IN_MOVED_TO:
+		/* If the file is *ALREADY* in the cache, we need to
+		 * handle that cache first. Otherwise we have
+		 * disparity when the cache expires.
+		 */
+		libinotify_monitor_force_emission (monitor, file, event_type, is_directory);
+
+		/* Handle event */
+		if (cookie == 0) {
+			g_signal_emit (monitor,
+			               signals[ITEM_CREATED], 0,
+			               file,
+			               is_directory);
+		} else if (other_file) {
+			gboolean is_source_indexed;
+
+			/* We check for the event pair in the
+			 * hash table here. If it doesn't
+			 * exist even though we have a cookie
+			 * it means we didn't have a monitor
+			 * set up on the source location.
+			 * This means we need to get the
+			 * processor to crawl the new
+			 * location.
+			 */
+
+			if (g_hash_table_lookup (monitor->private->event_pairs,
+			                         GUINT_TO_POINTER (cookie))) {
+				is_source_indexed = TRUE;
+			} else {
+				is_source_indexed = FALSE;
+			}
+
+			g_signal_emit (monitor,
+			               signals[ITEM_MOVED], 0,
+			               other_file,
+			               file,
+			               is_directory,
+			               is_source_indexed);
+
+			if (is_directory) {
+				tracker_monitor_move (monitor, other_file, file);
+			}
+
+			g_hash_table_remove (monitor->private->event_pairs,
+			                     GUINT_TO_POINTER (cookie));
+		}
+
+		break;
+
+	case IN_MOVE_SELF:
+		/* We ignore this one because it is a
+		 * convenience state and we handle the
+		 * MOVE_TO and MOVE_FROM already.
+		 */
+
+	default:
+		break;
+	}
+
+	if (set_up_cache_timeout &&
+	    monitor->private->cached_events_timeout_id == 0) {
+		g_debug ("Setting up cached events timeout check");
+
+		monitor->private->cached_events_timeout_id =
+			g_timeout_add_seconds (CACHE_LIFETIME_SECONDS,
+			                       libinotify_cached_events_timeout_cb,
+			                       monitor);
+	}
+
+	g_free (str1);
+	g_free (str2);
+	g_object_unref (file);
+}
+
+static DirMonitor *
+directory_monitor_new (TrackerMonitor *monitor,
+		       GFile          *file)
+{
+	INotifyHandle *handle;
+	gchar         *path;
+	guint32        mask;
+	unsigned long  flags;
+
+	flags  = 0;
+	flags &= ~IN_FLAG_FILE_BASED;
+
+	/* Instead of use IN_ALL_EVENTS, we use these so we don't get
+	 * spammed with events on downloads and big copies between
+	 * directories.
+	 *
+	 * Missing now is:
+	 *   IN_ACCESS
+	 *   IN_MODIFY
+	 *   IN_CLOSE_NOWRITE
+	 *   IN_OPEN
+	 */
+	mask   = (IN_MOVED_FROM | IN_MOVED_TO | IN_MOVE_SELF |
+	          IN_DELETE | IN_DELETE_SELF |
+	          IN_CREATE |
+	          IN_CLOSE_WRITE |
+	          IN_ATTRIB |
+	          IN_UNMOUNT);
+
+	/* For files */
+	/* flags |= IN_FLAG_FILE_BASED; */
+
+	path = g_file_get_path (file);
+	handle = inotify_monitor_add (path,
+	                              mask,
+	                              flags,
+	                              libinotify_monitor_event_cb,
+	                              monitor);
+	g_free (path);
+
+	if (!handle) {
+		return NULL;
+	}
+
+	return handle;
+}
+
+static void
+directory_monitor_cancel (DirMonitor *dir_monitor)
+{
+	if (dir_monitor) {
+		inotify_monitor_remove (dir_monitor);
+	}
+}
+
+#else /* HAVE_LIBINOTIFY */
+
 static const gchar *
 monitor_event_to_string (GFileMonitorEvent event_type)
 {
@@ -628,154 +1409,62 @@ monitor_event_to_string (GFileMonitorEvent event_type)
 
 static void
 emit_signal_for_event (TrackerMonitor *monitor,
-                       EventData      *event_data)
+		       EventData      *event_data)
 {
-	switch (event_data->event_type) {
-	case G_FILE_MONITOR_EVENT_CREATED:
-		g_debug ("Emitting ITEM_CREATED for (%s) '%s'",
-		         event_data->is_directory ? "DIRECTORY" : "FILE",
-		         event_data->file_uri);
-		g_signal_emit (monitor,
-		               signals[ITEM_CREATED], 0,
-		               event_data->file,
-		               event_data->is_directory);
-		/* Note that if the created item is a Directory, we must NOT
-		 * add automatically a new monitor. */
-		break;
+	gboolean is_directory;
 
-	case G_FILE_MONITOR_EVENT_CHANGED:
-	case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
-		g_debug ("Emitting ITEM_UPDATED for (%s) '%s'",
-		         event_data->is_directory ? "DIRECTORY" : "FILE",
-		         event_data->file_uri);
-		g_signal_emit (monitor,
-		               signals[ITEM_UPDATED], 0,
-		               event_data->file,
-		               event_data->is_directory);
-		break;
+	is_directory = check_is_directory (monitor, event_data->file);
 
-	case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
-		g_debug ("Emitting ITEM_ATTRIBUTE_UPDATED for (%s) '%s'",
-		         event_data->is_directory ? "DIRECTORY" : "FILE",
-		         event_data->file_uri);
+	if (event_data->event_type == G_FILE_MONITOR_EVENT_CREATED) {
 		g_signal_emit (monitor,
-		               signals[ITEM_ATTRIBUTE_UPDATED], 0,
-		               event_data->file,
-		               event_data->is_directory);
-		break;
-
-	case G_FILE_MONITOR_EVENT_DELETED:
-		g_debug ("Emitting ITEM_DELETED for (%s) '%s'",
-		         event_data->is_directory ? "DIRECTORY" : "FILE",
-		         event_data->file_uri);
-		/* Remove monitors recursively */
-		if (event_data->is_directory) {
-			tracker_monitor_remove_recursively (monitor,
-			                                    event_data->file);
-		}
+			       signals[ITEM_CREATED], 0,
+			       event_data->file,
+			       is_directory);
+	} else {
 		g_signal_emit (monitor,
-		               signals[ITEM_DELETED], 0,
-		               event_data->file,
-		               event_data->is_directory);
-		break;
-
-	case G_FILE_MONITOR_EVENT_MOVED:
-		g_debug ("Emitting ITEM_MOVED for (%s) '%s'->'%s'",
-		         event_data->is_directory ? "DIRECTORY" : "FILE",
-		         event_data->file_uri,
-		         event_data->other_file_uri);
-		/* Note that in any case we should be moving the monitors
-		 * here to the new place, as the new place may be ignored.
-		 * We should leave this to the upper layers. But one thing
-		 * we must do is actually CANCEL all these monitors. */
-		if (event_data->is_directory) {
-			monitor_cancel_recursively (monitor,
-			                            event_data->file);
-		}
-		g_signal_emit (monitor,
-		               signals[ITEM_MOVED], 0,
-		               event_data->file,
-		               event_data->other_file,
-		               event_data->is_directory,
-		               TRUE);
-		break;
-
-	case G_FILE_MONITOR_EVENT_PRE_UNMOUNT:
-	case G_FILE_MONITOR_EVENT_UNMOUNTED:
-		/* Do nothing */
-		break;
+			       signals[ITEM_UPDATED], 0,
+			       event_data->file,
+			       is_directory);
 	}
-}
-
-static void
-event_pairs_process_in_ht (TrackerMonitor *monitor,
-                           GHashTable     *ht,
-                           GTimeVal       *now)
-{
-	GHashTableIter iter;
-	gpointer key, value;
-	GList *expired_events = NULL;
-	GList *l;
-
-	/* Start iterating the HT of events, and see if any of them was expired.
-	 * If so, STEAL the item from the HT, add it in an auxiliary list, and
-	 * once the whole HT has been iterated, emit the signals for the stolen
-	 * items. If the signal is emitted WHILE iterating the HT, we may end up
-	 * with some upper layer action modifying the HT we are iterating, and
-	 * that is not good. */
-	g_hash_table_iter_init (&iter, ht);
-	while (g_hash_table_iter_next (&iter, &key, &value)) {
-		EventData *event_data = value;
-		glong seconds;
-
-		/* If event is not yet expirable, keep it */
-		if (!event_data->expirable)
-			continue;
-
-		/* If event is expirable, but didn't expire yet, keep it */
-		seconds = now->tv_sec - event_data->start_time.tv_sec;
-		if (seconds < 2)
-			continue;
-
-		g_debug ("Event '%s' for URI '%s' has timed out (%ld seconds have elapsed)",
-		         monitor_event_to_string (event_data->event_type),
-		         event_data->file_uri,
-		         seconds);
-		/* STEAL the item from the HT, so that disposal methods
-		 * for key and value are not called. */
-		g_hash_table_iter_steal (&iter);
-		/* Unref the key, as no longer needed */
-		g_object_unref (key);
-		/* Add the expired event to our temp list */
-		expired_events = g_list_append (expired_events, event_data);
-	}
-
-	for (l = expired_events; l; l = g_list_next (l)) {
-		/* Emit signal for the expired event */
-		emit_signal_for_event (monitor, l->data);
-		/* And dispose the event data */
-		event_data_free (l->data);
-	}
-	g_list_free (expired_events);
 }
 
 static gboolean
 event_pairs_timeout_cb (gpointer user_data)
 {
 	TrackerMonitor *monitor;
+	GHashTableIter iter;
+	gpointer key, value;
 	GTimeVal now;
 
 	monitor = user_data;
+	g_hash_table_iter_init (&iter, monitor->private->event_pairs);
 	g_get_current_time (&now);
 
-	/* Process PRE-UPDATE hash table */
-	event_pairs_process_in_ht (monitor, monitor->private->pre_update, &now);
+	while (g_hash_table_iter_next (&iter, &key, &value)) {
+		GFile *file = key;
+		EventData *event_data = value;
+		glong seconds;
+		gchar *uri;
 
-	/* Process PRE-DELETE hash table */
-	event_pairs_process_in_ht (monitor, monitor->private->pre_delete, &now);
+		seconds = now.tv_sec - event_data->start_time.tv_sec;
 
-	if (g_hash_table_size (monitor->private->pre_update) > 0 ||
-	    g_hash_table_size (monitor->private->pre_delete) > 0) {
+		if (seconds < 2) {
+			continue;
+		}
+
+		uri = g_file_get_uri (file);
+
+		g_debug ("Event '%s' for URI '%s' has timed out (%ld seconds have elapsed)",
+		         monitor_event_to_string (event_data->event_type),
+			 uri, seconds);
+
+		g_free (uri);
+
+		emit_signal_for_event (monitor, event_data);
+		g_hash_table_iter_remove (&iter);
+	}
+
+	if (g_hash_table_size (monitor->private->event_pairs) > 0) {
 		return TRUE;
 	}
 
@@ -785,367 +1474,17 @@ event_pairs_timeout_cb (gpointer user_data)
 }
 
 static void
-monitor_event_file_created (TrackerMonitor *monitor,
-                            GFile          *file)
-{
-	EventData *new_event;
-
-	/*  - When a G_FILE_MONITOR_EVENT_CREATED(A) is received,
-	 *    -- Add it to the cache, replacing any previous element
-	 *       (shouldn't be any)
-	 */
-	new_event = event_data_new (file,
-	                            NULL,
-	                            FALSE,
-	                            G_FILE_MONITOR_EVENT_CREATED);
-
-	/* If we know that there always must be a CHANGES_DONE_HINT
-	 * emitted after a CREATED on a file event, set the event
-	 * as non-expirable. Will be set expirable when CHANGES_DONE_HINT
-	 * is actually received */
-#ifdef GIO_ALWAYS_SENDS_CHANGES_DONE_HINT_AFTER_CREATED
-	new_event->expirable = FALSE;
-#endif /* GIO_ALWAYS_SENDS_CHANGES_DONE_HINT_AFTER_CREATED */
-
-	g_hash_table_replace (monitor->private->pre_update,
-	                      g_object_ref (file),
-	                      new_event);
-}
-
-static void
-monitor_event_file_changed (TrackerMonitor *monitor,
-                            GFile          *file)
-{
-	EventData *previous_update_event_data;
-
-	/* Get previous event data, if any */
-	previous_update_event_data = g_hash_table_lookup (monitor->private->pre_update, file);
-
-	/* If use_changed_event, treat as an ATTRIBUTE_CHANGED. Otherwise,
-	 * assume there will be a CHANGES_DONE_HINT afterwards... */
-	if (!monitor->private->use_changed_event) {
-		/* Process the CHANGED event knowing that there will be a CHANGES_DONE_HINT */
-		if (previous_update_event_data) {
-			if (previous_update_event_data->event_type == G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED) {
-				/* If there is a previous ATTRIBUTE_CHANGED still not notified,
-				 * remove it, as we know there will be a CHANGES_DONE_HINT afterwards
-				 */
-				g_hash_table_remove (monitor->private->pre_update, file);
-			} else if (previous_update_event_data->event_type == G_FILE_MONITOR_EVENT_CREATED) {
-#ifdef GIO_ALWAYS_SENDS_CHANGES_DONE_HINT_AFTER_CREATED
-				/* If we got a CHANGED event before the CREATED was expired,
-				 * set the CREATED as not expirable, as we expect a CHANGES_DONE_HINT
-				 * afterwards. */
-				previous_update_event_data->expirable = FALSE;
-#endif /* GIO_ALWAYS_SENDS_CHANGES_DONE_HINT_AFTER_CREATED */
-			}
-		}
-		return;
-	}
-
-	/* For FAM-based monitors, there won't be a CHANGES_DONE_HINT, so use the CHANGED
-	 * events. */
-
-	if (!previous_update_event_data) {
-		/* If no previous one, insert it */
-		g_hash_table_insert (monitor->private->pre_update,
-		                     g_object_ref (file),
-		                     event_data_new (file,
-		                                     NULL,
-		                                     FALSE,
-		                                     G_FILE_MONITOR_EVENT_CHANGED));
-		return;
-	}
-
-	if (previous_update_event_data->event_type == G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED) {
-		/* Replace the previous ATTRIBUTE_CHANGED event with a CHANGED one. */
-		g_hash_table_replace (monitor->private->pre_update,
-		                      g_object_ref (file),
-		                      event_data_new (file,
-		                                      NULL,
-		                                      FALSE,
-		                                      G_FILE_MONITOR_EVENT_CHANGED));
-	} else {
-		/* Update the start_time of the previous one */
-		g_get_current_time (&(previous_update_event_data->start_time));
-	}
-}
-
-static void
-monitor_event_file_attribute_changed (TrackerMonitor *monitor,
-                                      GFile          *file)
-{
-	EventData *previous_update_event_data;
-
-	/* Get previous event data, if any */
-	previous_update_event_data = g_hash_table_lookup (monitor->private->pre_update, file);
-	if (!previous_update_event_data) {
-		/* If no previous one, insert it */
-		g_hash_table_insert (monitor->private->pre_update,
-		                     g_object_ref (file),
-		                     event_data_new (file,
-		                                     NULL,
-		                                     FALSE,
-		                                     G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED));
-		return;
-	}
-
-	if (previous_update_event_data->event_type == G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED) {
-		/* Update the start_time of the previous one, if it is an ATTRIBUTE_CHANGED
-		 * event. */
-		g_get_current_time (&(previous_update_event_data->start_time));
-
-		/* No need to update event time in CREATED, as these events
-		 * only expire when there is a CHANGES_DONE_HINT.
-		 */
-	}
-}
-
-static void
-monitor_event_file_changes_done (TrackerMonitor *monitor,
-                                 GFile          *file)
-{
-	EventData *previous_update_event_data;
-
-	/* Get previous event data, if any */
-	previous_update_event_data = g_hash_table_lookup (monitor->private->pre_update, file);
-	if (!previous_update_event_data) {
-		/* Insert new update item in cache */
-		g_hash_table_insert (monitor->private->pre_update,
-		                     g_object_ref (file),
-		                     event_data_new (file,
-		                                     NULL,
-		                                     FALSE,
-		                                     G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT));
-		return;
-	}
-
-	/* Refresh event timer, and make sure the event is now set as expirable */
-	g_get_current_time (&(previous_update_event_data->start_time));
-	previous_update_event_data->expirable = TRUE;
-}
-
-static void
-monitor_event_file_deleted (TrackerMonitor *monitor,
-                            GFile          *file)
-{
-	EventData *new_event;
-	EventData *previous_update_event_data;
-
-	/* Get previous event data, if any */
-	previous_update_event_data = g_hash_table_lookup (monitor->private->pre_update, file);
-
-	/* Remove any previous pending event (if blacklisting enabled, there may be some) */
-	if (previous_update_event_data) {
-		GFileMonitorEvent previous_update_event_type;
-
-		previous_update_event_type = previous_update_event_data->event_type;
-		g_hash_table_remove (monitor->private->pre_update, file);
-
-		if (previous_update_event_type == G_FILE_MONITOR_EVENT_CREATED) {
-			/* Oh, oh, oh, we got a previous CREATED event waiting in the event
-			 * cache... so we cancel it with the DELETED and don't notify anything */
-			return;
-		}
-		/* else, keep on notifying the event */
-	}
-
-	new_event = event_data_new (file,
-	                            NULL,
-	                            FALSE,
-	                            G_FILE_MONITOR_EVENT_DELETED);
-	emit_signal_for_event (monitor, new_event);
-	event_data_free (new_event);
-}
-
-static void
-monitor_event_file_moved (TrackerMonitor *monitor,
-                          GFile          *src_file,
-                          GFile          *dst_file)
-{
-	EventData *new_event;
-	EventData *previous_update_event_data;
-
-	/* Get previous event data, if any */
-	previous_update_event_data = g_hash_table_lookup (monitor->private->pre_update, src_file);
-
-	/* Some event-merging that can also be enabled if doing blacklisting, as we are
-	 * queueing the CHANGES_DONE_HINT in the cache :
-	 *   (a) CREATED(A)      + MOVED(A->B)  = CREATED (B)
-	 *   (b) UPDATED(A)      + MOVED(A->B)  = MOVED(A->B) + UPDATED(B)
-	 *   (c) ATTR_UPDATED(A) + MOVED(A->B)  = MOVED(A->B) + UPDATED(B)
-	 * Notes:
-	 *  - In case (a), the CREATED event is queued in the cache.
-	 *  - In case (a), note that B may already exist before, so instead of a CREATED
-	 *    we should be issuing an UPDATED instead... we don't do it as at the end we
-	 *    don't really mind, and we save a call to g_file_query_exists().
-	 *  - In case (b), the MOVED event is emitted right away, while the UPDATED
-	 *    one is queued in the cache.
-	 *  - In case (c), we issue an UPDATED instead of ATTR_UPDATED, because there may
-	 *    already be another UPDATED or CREATED event for B, so we make sure in this
-	 *    way that not only attributes get checked at the end.
-	 * */
-	if (previous_update_event_data) {
-		if (previous_update_event_data->event_type == G_FILE_MONITOR_EVENT_CREATED) {
-			/* (a) CREATED(A) + MOVED(A->B)  = CREATED (B)
-			 *
-			 * Oh, oh, oh, we got a previous created event
-			 * waiting in the event cache... so we remove it, and we
-			 * convert the MOVE event into a CREATED(other_file) */
-			g_hash_table_remove (monitor->private->pre_update, src_file);
-			g_hash_table_replace (monitor->private->pre_update,
-			                      g_object_ref (dst_file),
-			                      event_data_new (dst_file,
-			                                      NULL,
-			                                      FALSE,
-			                                      G_FILE_MONITOR_EVENT_CREATED));
-
-			/* Do not notify the moved event now */
-			return;
-		}
-
-		/*   (b) UPDATED(A)      + MOVED(A->B)  = MOVED(A->B) + UPDATED(B)
-		 *   (c) ATTR_UPDATED(A) + MOVED(A->B)  = MOVED(A->B) + UPDATED(B)
-		 *
-		 * We setup here the UPDATED(B) event, added to the cache */
-		g_hash_table_replace (monitor->private->pre_update,
-		                      g_object_ref (dst_file),
-		                      event_data_new (dst_file,
-		                                      NULL,
-		                                      FALSE,
-		                                      G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT));
-		/* Remove previous event */
-		g_hash_table_remove (monitor->private->pre_update, src_file);
-
-		/* And keep on notifying the MOVED event */
-	}
-
-	new_event = event_data_new (src_file,
-	                            dst_file,
-	                            FALSE,
-	                            G_FILE_MONITOR_EVENT_MOVED);
-	emit_signal_for_event (monitor, new_event);
-	event_data_free (new_event);
-}
-
-static void
-monitor_event_directory_created_or_changed (TrackerMonitor    *monitor,
-                                            GFile             *dir,
-                                            GFileMonitorEvent  event_type)
-{
-	EventData *previous_delete_event_data;
-
-	/* If any previous event on this item, notify it
-	 *  before creating it */
-	previous_delete_event_data = g_hash_table_lookup (monitor->private->pre_delete, dir);
-	if (previous_delete_event_data) {
-		emit_signal_for_event (monitor, previous_delete_event_data);
-		g_hash_table_remove (monitor->private->pre_delete, dir);
-	}
-
-	if (!g_hash_table_lookup (monitor->private->pre_update, dir)) {
-		g_hash_table_insert (monitor->private->pre_update,
-		                     g_object_ref (dir),
-		                     event_data_new (dir,
-		                                     NULL,
-		                                     TRUE,
-		                                     event_type));
-	}
-}
-
-static void
-monitor_event_directory_deleted (TrackerMonitor *monitor,
-                                 GFile          *dir)
-{
-	EventData *previous_update_event_data;
-	EventData *previous_delete_event_data;
-
-	/* If any previous update event on this item, notify it */
-	previous_update_event_data = g_hash_table_lookup (monitor->private->pre_update, dir);
-	if (previous_update_event_data) {
-		emit_signal_for_event (monitor, previous_update_event_data);
-		g_hash_table_remove (monitor->private->pre_update, dir);
-	}
-
-	/* Check if there is a previous delete event */
-	previous_delete_event_data = g_hash_table_lookup (monitor->private->pre_delete, dir);
-	if (previous_delete_event_data &&
-	    previous_delete_event_data->event_type == G_FILE_MONITOR_EVENT_MOVED) {
-		g_debug ("Processing MOVE(A->B) + DELETE(A) as MOVE(A->B) for directory '%s->%s'",
-		         previous_delete_event_data->file_uri,
-		         previous_delete_event_data->other_file_uri);
-
-		emit_signal_for_event (monitor, previous_delete_event_data);
-		g_hash_table_remove (monitor->private->pre_delete, dir);
-		return;
-	}
-
-	/* If no previous, add to HT */
-	g_hash_table_replace (monitor->private->pre_delete,
-	                      g_object_ref (dir),
-	                      event_data_new (dir,
-	                                      NULL,
-	                                      TRUE,
-	                                      G_FILE_MONITOR_EVENT_DELETED));
-}
-
-static void
-monitor_event_directory_moved (TrackerMonitor *monitor,
-                               GFile          *src_dir,
-                               GFile          *dst_dir)
-{
-	EventData *previous_update_event_data;
-	EventData *previous_delete_event_data;
-
-	/* If any previous update event on this item, notify it */
-	previous_update_event_data = g_hash_table_lookup (monitor->private->pre_update, src_dir);
-	if (previous_update_event_data) {
-		emit_signal_for_event (monitor, previous_update_event_data);
-		g_hash_table_remove (monitor->private->pre_update, src_dir);
-	}
-
-	/* Check if there is a previous delete event */
-	previous_delete_event_data = g_hash_table_lookup (monitor->private->pre_delete, src_dir);
-	if (previous_delete_event_data &&
-	    previous_delete_event_data->event_type == G_FILE_MONITOR_EVENT_DELETED) {
-		EventData *new_event;
-
-		new_event = event_data_new (src_dir,
-		                            dst_dir,
-		                            TRUE,
-		                            G_FILE_MONITOR_EVENT_MOVED);
-		g_debug ("Processing DELETE(A) + MOVE(A->B) as MOVE(A->B) for directory '%s->%s'",
-		         new_event->file_uri,
-		         new_event->other_file_uri);
-
-		emit_signal_for_event (monitor, new_event);
-		event_data_free (new_event);
-
-		/* And remove the previous DELETE */
-		g_hash_table_remove (monitor->private->pre_delete, src_dir);
-		return;
-	}
-
-	/* If no previous, add to HT */
-	g_hash_table_replace (monitor->private->pre_delete,
-	                      g_object_ref (src_dir),
-	                      event_data_new (src_dir,
-	                                      dst_dir,
-	                                      TRUE,
-	                                      G_FILE_MONITOR_EVENT_MOVED));
-}
-
-static void
-monitor_event_cb (GFileMonitor      *file_monitor,
-                  GFile             *file,
-                  GFile             *other_file,
-                  GFileMonitorEvent  event_type,
-                  gpointer           user_data)
+monitor_event_cb (GFileMonitor	    *file_monitor,
+		  GFile		    *file,
+		  GFile		    *other_file,
+		  GFileMonitorEvent  event_type,
+		  gpointer	     user_data)
 {
 	TrackerMonitor *monitor;
-	gchar *file_uri;
-	gchar *other_file_uri;
-	gboolean is_directory;
+	gchar	       *str1;
+	gchar	       *str2;
+	gboolean	is_directory;
+	EventData      *event_data;
 
 	monitor = user_data;
 
@@ -1154,103 +1493,110 @@ monitor_event_cb (GFileMonitor      *file_monitor,
 		return;
 	}
 
-	/* Get URIs as paths may not be in UTF-8 */
-	file_uri = g_file_get_uri (file);
+	str1 = g_file_get_path (file);
 
-	if (!other_file) {
-		other_file_uri = NULL;
-		g_debug ("Received monitor event:%d (%s) for file:'%s'",
-		         event_type,
-		         monitor_event_to_string (event_type),
-		         file_uri);
-		is_directory = check_is_directory (monitor, file);
+	if (other_file) {
+		str2 = g_file_get_path (other_file);
 	} else {
-		other_file_uri = g_file_get_uri (other_file);
-		g_debug ("Received monitor event:%d (%s) for files '%s'->'%s'",
-		         event_type,
-		         monitor_event_to_string (event_type),
-		         file_uri,
-		         other_file_uri);
-
-		/* If we have other_file, it means an item was moved from file to other_file;
-		 * so, it makes sense to check if the other_file is directory instead of
-		 * the origin file, as this one will not exist any more */
-		is_directory = check_is_directory (monitor, other_file);
+		str2 = NULL;
 	}
+
+	g_message ("Received monitor event:%d->'%s' for file:'%s' and other file:'%s'",
+		   event_type,
+		   monitor_event_to_string (event_type),
+		   str1,
+		   str2 ? str2 : "");
+
+	is_directory = check_is_directory (monitor, file);
 
 #ifdef PAUSE_ON_IO
 	if (monitor->private->unpause_timeout_id != 0) {
 		g_source_remove (monitor->private->unpause_timeout_id);
 	} else {
 		g_message ("Pausing indexing because we are "
-		           "receiving monitor events");
+			   "receiving monitor events");
 
 		tracker_status_set_is_paused_for_io (TRUE);
 	}
 
 	monitor->private->unpause_timeout_id =
 		g_timeout_add_seconds (PAUSE_ON_IO_SECONDS,
-		                       unpause_cb,
-		                       monitor);
+				       unpause_cb,
+				       monitor);
 #endif /* PAUSE_ON_IO */
 
-	if (!is_directory) {
-		/* FILE Events */
-		switch (event_type) {
-		case G_FILE_MONITOR_EVENT_CREATED:
-			monitor_event_file_created (monitor, file);
-			break;
-		case G_FILE_MONITOR_EVENT_CHANGED:
-			monitor_event_file_changed (monitor, file);
-			break;
-		case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
-			monitor_event_file_attribute_changed (monitor, file);
-			break;
-		case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
-			monitor_event_file_changes_done (monitor, file);
-			break;
-		case G_FILE_MONITOR_EVENT_DELETED:
-			monitor_event_file_deleted (monitor, file);
-			break;
-		case G_FILE_MONITOR_EVENT_MOVED:
-			monitor_event_file_moved (monitor, file, other_file);
-			break;
-		case G_FILE_MONITOR_EVENT_PRE_UNMOUNT:
-		case G_FILE_MONITOR_EVENT_UNMOUNTED:
+	switch (event_type) {
+	case G_FILE_MONITOR_EVENT_CHANGED:
+		if (!monitor->private->use_changed_event) {
 			/* Do nothing */
 			break;
 		}
-	} else {
-		/* DIRECTORY Events */
 
-		switch (event_type) {
-		case G_FILE_MONITOR_EVENT_CREATED:
-		case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
-		case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
-		case G_FILE_MONITOR_EVENT_CHANGED:
-			monitor_event_directory_created_or_changed (monitor, file, event_type);
-			break;
-		case G_FILE_MONITOR_EVENT_DELETED:
-			monitor_event_directory_deleted (monitor, file);
-			break;
-		case G_FILE_MONITOR_EVENT_MOVED:
-			monitor_event_directory_moved (monitor, file, other_file);
-			break;
-		case G_FILE_MONITOR_EVENT_PRE_UNMOUNT:
-		case G_FILE_MONITOR_EVENT_UNMOUNTED:
-			/* Do nothing */
-			break;
+		/* Fall through */
+	case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
+		if (!g_hash_table_lookup (monitor->private->event_pairs, file)) {
+			g_hash_table_insert (monitor->private->event_pairs,
+					     g_object_ref (file),
+					     event_data_new (file, event_type));
 		}
+
+		break;
+	case G_FILE_MONITOR_EVENT_CREATED:
+		if (!g_hash_table_lookup (monitor->private->event_pairs, file)) {
+			g_hash_table_insert (monitor->private->event_pairs,
+					     g_object_ref (file),
+					     event_data_new (file, event_type));
+		}
+
+		break;
+
+	case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
+		event_data = g_hash_table_lookup (monitor->private->event_pairs, file);
+
+		if (event_data) {
+			emit_signal_for_event (monitor, event_data);
+			g_hash_table_remove (monitor->private->event_pairs, file);
+		}
+
+		break;
+	case G_FILE_MONITOR_EVENT_DELETED:
+		if (is_directory) {
+			tracker_monitor_remove_recursively (monitor, file);
+		}
+
+		g_signal_emit (monitor,
+			       signals[ITEM_DELETED], 0,
+			       file,
+			       is_directory);
+		break;
+
+	case G_FILE_MONITOR_EVENT_MOVED:
+		g_signal_emit (monitor,
+			       signals[ITEM_MOVED], 0,
+			       file,
+			       other_file,
+			       is_directory,
+			       TRUE);
+
+		if (is_directory) {
+			tracker_monitor_move (monitor, file, other_file);
+		}
+
+		break;
+
+	case G_FILE_MONITOR_EVENT_PRE_UNMOUNT:
+	case G_FILE_MONITOR_EVENT_UNMOUNTED:
+		/* Do nothing */
+		break;
 	}
 
-	if (g_hash_table_size (monitor->private->pre_update) > 0 ||
-	    g_hash_table_size (monitor->private->pre_delete) > 0) {
+	if (g_hash_table_size (monitor->private->event_pairs) > 0) {
 		if (monitor->private->event_pairs_timeout_id == 0) {
 			g_debug ("Waiting for event pairs");
 			monitor->private->event_pairs_timeout_id =
 				g_timeout_add_seconds (CACHE_LIFETIME_SECONDS,
-				                       event_pairs_timeout_cb,
-				                       monitor);
+						       event_pairs_timeout_cb,
+						       monitor);
 		}
 	} else {
 		if (monitor->private->event_pairs_timeout_id != 0) {
@@ -1260,50 +1606,52 @@ monitor_event_cb (GFileMonitor      *file_monitor,
 		monitor->private->event_pairs_timeout_id = 0;
 	}
 
-	g_free (file_uri);
-	g_free (other_file_uri);
+	g_free (str1);
+	g_free (str2);
 }
 
-static GFileMonitor *
+static DirMonitor *
 directory_monitor_new (TrackerMonitor *monitor,
-                       GFile          *file)
+		       GFile          *file)
 {
 	GFileMonitor *file_monitor;
 	GError *error = NULL;
 
 	file_monitor = g_file_monitor_directory (file,
-	                                         G_FILE_MONITOR_SEND_MOVED | G_FILE_MONITOR_WATCH_MOUNTS,
-	                                         NULL,
-	                                         &error);
+						 G_FILE_MONITOR_SEND_MOVED | G_FILE_MONITOR_WATCH_MOUNTS,
+						 NULL,
+						 &error);
 
 	if (error) {
-		gchar *uri;
+		gchar *path;
 
-		uri = g_file_get_uri (file);
+		path = g_file_get_path (file);
 		g_warning ("Could not add monitor for path:'%s', %s",
-		           uri, error->message);
+			   path, error->message);
 
 		g_error_free (error);
-		g_free (uri);
+		g_free (path);
 
 		return NULL;
 	}
 
 	g_signal_connect (file_monitor, "changed",
-	                  G_CALLBACK (monitor_event_cb),
-	                  monitor);
+			  G_CALLBACK (monitor_event_cb),
+			  monitor);
 
 	return file_monitor;
 }
 
 static void
-directory_monitor_cancel (GFileMonitor *monitor)
+directory_monitor_cancel (DirMonitor *monitor)
 {
 	if (monitor) {
 		g_file_monitor_cancel (G_FILE_MONITOR (monitor));
 		g_object_unref (monitor);
 	}
 }
+
+#endif /* HAVE_LIBINOTIFY */
 
 TrackerMonitor *
 tracker_monitor_new (void)
@@ -1317,6 +1665,30 @@ tracker_monitor_get_enabled (TrackerMonitor *monitor)
 	g_return_val_if_fail (TRACKER_IS_MONITOR (monitor), FALSE);
 
 	return monitor->private->enabled;
+}
+
+gint
+tracker_monitor_get_scan_timeout (TrackerMonitor *monitor)
+{
+	TrackerMonitorPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_MONITOR (monitor), 0);
+
+	priv = TRACKER_MONITOR_GET_PRIVATE (monitor);
+
+	return priv->scan_timeout;
+}
+
+gint
+tracker_monitor_get_cache_timeout (TrackerMonitor *monitor)
+{
+	TrackerMonitorPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_MONITOR (monitor), 60);
+
+	priv = TRACKER_MONITOR_GET_PRIVATE (monitor);
+
+	return priv->cache_timeout;
 }
 
 void
@@ -1346,7 +1718,7 @@ tracker_monitor_set_enabled (TrackerMonitor *monitor,
 		file = k->data;
 
 		if (enabled) {
-			GFileMonitor *dir_monitor;
+			DirMonitor *dir_monitor;
 
 			dir_monitor = directory_monitor_new (monitor, file);
 			g_hash_table_replace (monitor->private->monitors,
@@ -1361,12 +1733,48 @@ tracker_monitor_set_enabled (TrackerMonitor *monitor,
 	g_list_free (keys);
 }
 
+void
+tracker_monitor_set_scan_timeout (TrackerMonitor *monitor,
+                                  gint            value)
+{
+	TrackerMonitorPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_MONITOR (monitor));
+
+	if (!tracker_keyfile_object_validate_int (monitor, "scan-timeout", value)) {
+		return;
+	}
+
+	priv = TRACKER_MONITOR_GET_PRIVATE (monitor);
+
+	priv->scan_timeout = value;
+	g_object_notify (G_OBJECT (monitor), "scan-timeout");
+}
+
+void
+tracker_monitor_set_cache_timeout (TrackerMonitor *monitor,
+                                   gint            value)
+{
+	TrackerMonitorPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_MONITOR (monitor));
+
+	if (!tracker_keyfile_object_validate_int (monitor, "cache-timeout", value)) {
+		return;
+	}
+
+	priv = TRACKER_MONITOR_GET_PRIVATE (monitor);
+
+	priv->cache_timeout = value;
+	g_object_notify (G_OBJECT (monitor), "cache-timeout");
+}
+
 gboolean
 tracker_monitor_add (TrackerMonitor *monitor,
                      GFile          *file)
 {
-	GFileMonitor *dir_monitor = NULL;
-	gchar *uri;
+	DirMonitor *dir_monitor = NULL;
+	gchar *path;
 
 	g_return_val_if_fail (TRACKER_IS_MONITOR (monitor), FALSE);
 	g_return_val_if_fail (G_IS_FILE (file), FALSE);
@@ -1389,7 +1797,7 @@ tracker_monitor_add (TrackerMonitor *monitor,
 		return FALSE;
 	}
 
-	uri = g_file_get_uri (file);
+	path = g_file_get_path (file);
 
 	if (monitor->private->enabled) {
 		/* We don't check if a file exists or not since we might want
@@ -1401,8 +1809,8 @@ tracker_monitor_add (TrackerMonitor *monitor,
 
 		if (!dir_monitor) {
 			g_warning ("Could not add monitor for path:'%s'",
-			           uri);
-			g_free (uri);
+			           path);
+			g_free (path);
 			return FALSE;
 		}
 	}
@@ -1416,10 +1824,10 @@ tracker_monitor_add (TrackerMonitor *monitor,
 	                     dir_monitor);
 
 	g_debug ("Added monitor for path:'%s', total monitors:%d",
-	         uri,
+	         path,
 	         g_hash_table_size (monitor->private->monitors));
 
-	g_free (uri);
+	g_free (path);
 
 	return TRUE;
 }
@@ -1436,14 +1844,14 @@ tracker_monitor_remove (TrackerMonitor *monitor,
 	removed = g_hash_table_remove (monitor->private->monitors, file);
 
 	if (removed) {
-		gchar *uri;
+		gchar *path;
 
-		uri = g_file_get_uri (file);
+		path = g_file_get_path (file);
 		g_debug ("Removed monitor for path:'%s', total monitors:%d",
-		         uri,
+		         path,
 		         g_hash_table_size (monitor->private->monitors));
 
-		g_free (uri);
+		g_free (path);
 	}
 
 	return removed;
@@ -1462,22 +1870,22 @@ tracker_monitor_remove_recursively (TrackerMonitor *monitor,
 
 	g_hash_table_iter_init (&iter, monitor->private->monitors);
 	while (g_hash_table_iter_next (&iter, &iter_file, &iter_file_monitor)) {
-		gchar *uri;
+		gchar *path;
 
 		if (!g_file_has_prefix (iter_file, file) &&
 		    !g_file_equal (iter_file, file)) {
 			continue;
 		}
 
-		uri = g_file_get_uri (iter_file);
+		path = g_file_get_path (iter_file);
 
 		g_hash_table_iter_remove (&iter);
 
 		g_debug ("Removed monitor for path:'%s', total monitors:%d",
-		         uri,
+		         path,
 		         g_hash_table_size (monitor->private->monitors));
 
-		g_free (uri);
+		g_free (path);
 
 		/* We reset this because now it is possible we have limit - 1 */
 		monitor->private->monitor_limit_warned = FALSE;
@@ -1485,34 +1893,6 @@ tracker_monitor_remove_recursively (TrackerMonitor *monitor,
 	}
 
 	return items_removed > 0;
-}
-
-static gboolean
-monitor_cancel_recursively (TrackerMonitor *monitor,
-                            GFile          *file)
-{
-	GHashTableIter iter;
-	gpointer iter_file, iter_file_monitor;
-	guint items_cancelled = 0;
-
-	g_hash_table_iter_init (&iter, monitor->private->monitors);
-	while (g_hash_table_iter_next (&iter, &iter_file, &iter_file_monitor)) {
-		gchar *uri;
-
-		if (!g_file_has_prefix (iter_file, file) &&
-		    !g_file_equal (iter_file, file)) {
-			continue;
-		}
-
-		uri = g_file_get_uri (iter_file);
-		g_file_monitor_cancel (G_FILE_MONITOR (iter_file_monitor));
-		g_debug ("Cancelled monitor for path:'%s'", uri);
-		g_free (uri);
-
-		items_cancelled++;
-	}
-
-	return items_cancelled > 0;
 }
 
 gboolean

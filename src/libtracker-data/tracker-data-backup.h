@@ -35,11 +35,6 @@ G_BEGIN_DECLS
 #define TRACKER_DATA_BACKUP_ERROR_DOMAIN "TrackerBackup"
 #define TRACKER_DATA_BACKUP_ERROR        tracker_data_backup_error_quark()
 
-typedef enum {
-	TRACKER_DATA_BACKUP_ERROR_UNKNOWN = 0,
-	TRACKER_DATA_BACKUP_ERROR_INVALID_URI
-} TrackerDataBackupError;
-
 typedef void (*TrackerDataBackupFinished) (GError *error, gpointer user_data);
 
 GQuark tracker_data_backup_error_quark (void);
@@ -48,10 +43,12 @@ void   tracker_data_backup_save        (GFile                     *destination,
                                         gpointer                   user_data,
                                         GDestroyNotify             destroy);
 void   tracker_data_backup_restore     (GFile                     *journal,
+                                        TrackerDataBackupFinished  callback,
+                                        gpointer                   user_data,
+                                        GDestroyNotify             destroy,
                                         const gchar              **test_schema,
                                         TrackerBusyCallback        busy_callback,
-                                        gpointer                   busy_user_data,
-                                        GError                   **error);
+                                        gpointer                   busy_user_data);
 
 G_END_DECLS
 

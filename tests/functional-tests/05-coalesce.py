@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # Copyright (C) 2010, Nokia <ivan.frade@nokia.com>
 #
@@ -17,44 +17,41 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-"""
-Test tracker:coalesce function in Sparql. Only uses the Store
-"""
+
 import dbus
 import unittest
 import random
 
+TRACKER = 'org.freedesktop.Tracker1'
+TRACKER_OBJ = '/org/freedesktop/Tracker1/Resources'
+RESOURCES_IFACE = "org.freedesktop.Tracker1.Resources"
 
-from common.utils import configuration as cfg
-import unittest2 as ut
-#import unittest as ut
-from common.utils.storetest import CommonTrackerStoreTest as CommonTrackerStoreTest
-
-class TestCoalesce (CommonTrackerStoreTest):
-    """
-    Insert and instance with some values, and tracker coalesce of some of them
-    with different combinations (first NULL, none NULL, all NULL...)
-    """
+class TestCoalesce (unittest.TestCase):
 
     def setUp (self):
+        bus = dbus.SessionBus ()
+        tracker = bus.get_object (TRACKER, TRACKER_OBJ)
+        self.resources = dbus.Interface (tracker,
+                                         dbus_interface=RESOURCES_IFACE);
+
         self.resource_uri = "contact://test_group_concat"
 
         #
         # nco:nickname and nco:note are not set
         #
         insert = """
-        INSERT { <%s> a nco:PersonContact;
+        INSERT { <%s> a nco:IMContact;
                       nco:fullname \"full name\" ;
                       nco:nameFamily \"family name\" .
          }
         """ % (self.resource_uri)
-        self.tracker.update (insert)
+        self.resources.SparqlUpdate (insert)
 
     def tearDown (self):
         delete = """
         DELETE { <%s> a rdfs:Resource. }
         """ % (self.resource_uri)
-        self.tracker.update (delete)
+        self.resources.SparqlUpdate (delete)
 
 
         
@@ -67,15 +64,14 @@ class TestCoalesce (CommonTrackerStoreTest):
 
         query = """
         SELECT tracker:coalesce (?full, ?family, ?nickname, ?note, 'test_coalesce') WHERE {
-           ?c a nco:PersonContact .
+           ?c a nco:IMContact .
            OPTIONAL { ?c nco:fullname ?full }
            OPTIONAL { ?c nco:nameFamily ?family }
            OPTIONAL { ?c nco:nickname ?nickname }
            OPTIONAL { ?c nco:note ?note }
-           FILTER (?c != nco:default-contact-me && ?c != nco:default-contact-emergency)
         }
         """ 
-        results = self.tracker.query (query)
+        results = self.resources.SparqlQuery (query)
         assert len (results) == 1
         assert results[0][0] == "full name"
 
@@ -89,15 +85,14 @@ class TestCoalesce (CommonTrackerStoreTest):
 
         query = """
         SELECT tracker:coalesce (?nickname, ?family, ?full, ?note, 'test_coalesce') WHERE {
-           ?c a nco:PersonContact .
+           ?c a nco:IMContact .
            OPTIONAL { ?c nco:fullname ?full }
            OPTIONAL { ?c nco:nameFamily ?family }
            OPTIONAL { ?c nco:nickname ?nickname }
            OPTIONAL { ?c nco:note ?note }
-           FILTER (?c != nco:default-contact-me && ?c != nco:default-contact-emergency)
         }
         """ 
-        results = self.tracker.query (query)
+        results = self.resources.SparqlQuery (query)
         assert len (results) == 1
         assert results[0][0] == "family name"
 
@@ -111,18 +106,17 @@ class TestCoalesce (CommonTrackerStoreTest):
 
         query = """
         SELECT tracker:coalesce (?nickname, ?note, 'test_coalesce') WHERE {
-           ?c a nco:PersonContact .
+           ?c a nco:IMContact .
            OPTIONAL { ?c nco:fullname ?full }
            OPTIONAL { ?c nco:nameFamily ?family }
            OPTIONAL { ?c nco:nickname ?nickname }
            OPTIONAL { ?c nco:note ?note }
-           FILTER (?c != nco:default-contact-me && ?c != nco:default-contact-emergency)
         }
         """ 
-        results = self.tracker.query (query)
+        results = self.resources.SparqlQuery (query)
         assert len (results) == 1
         assert results[0][0] == "test_coalesce"
         
 
 if __name__ == '__main__':
-    ut.main()
+    unittest.main()

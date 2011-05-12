@@ -20,17 +20,16 @@
 #include "config.h"
 
 #include <string.h>
-#include <locale.h>
 
 #include <glib.h>
 #include <gio/gio.h>
 
 #include <libtracker-common/tracker-common.h>
+#include <libtracker-db/tracker-db.h>
 
 #include <libtracker-data/tracker-data-manager.h>
 #include <libtracker-data/tracker-data-query.h>
 #include <libtracker-data/tracker-data-update.h>
-#include <libtracker-data/tracker-data.h>
 #include <libtracker-data/tracker-sparql-query.h>
 
 typedef struct _TestInfo TestInfo;
@@ -56,14 +55,8 @@ const TestInfo tests[] = {
 	{ "algebra/filter-nested-1", "algebra/data-1", FALSE },
 	{ "algebra/filter-nested-2", "algebra/data-1", FALSE },
 	{ "algebra/filter-scope-1", "algebra/data-2", FALSE },
-	{ "algebra/filter-in-1", "algebra/data-2", FALSE },
-	{ "algebra/filter-in-2", "algebra/data-2", FALSE },
-	{ "algebra/filter-in-3", "algebra/data-2", FALSE },
-	{ "algebra/filter-in-4", "algebra/data-2", FALSE },
-	{ "algebra/filter-in-5", "algebra/data-2", FALSE },
 	{ "algebra/var-scope-join-1", "algebra/var-scope-join-1", FALSE },
 	{ "anon/query", "anon/data", FALSE },
-	{ "anon/query-2", "anon/data", FALSE },
 	{ "ask/ask-1", "ask/data", FALSE },
 	{ "basic/base-prefix-3", "basic/data-1", FALSE },
 	{ "basic/compare-cast", "basic/data-1", FALSE },
@@ -76,7 +69,6 @@ const TestInfo tests[] = {
 	{ "datetime/delete-1", "datetime/data-3", FALSE },
 	{ "datetime/functions-localtime-1", "datetime/data-1", FALSE },
 	{ "datetime/functions-timezone-1", "datetime/data-2", FALSE },
-	{ "datetime/functions-timezone-2", "datetime/data-2", FALSE },
 	{ "expr-ops/query-ge-1", "expr-ops/data", FALSE },
 	{ "expr-ops/query-le-1", "expr-ops/data", FALSE },
 	{ "expr-ops/query-minus-1", "expr-ops/data", FALSE },
@@ -94,15 +86,9 @@ const TestInfo tests[] = {
 	{ "functions/functions-xpath-3", "functions/data-1", FALSE },
 	{ "functions/functions-xpath-4", "functions/data-1", FALSE },
 	{ "functions/functions-xpath-5", "functions/data-1", FALSE },
-	{ "functions/functions-xpath-6", "functions/data-1", FALSE },
-	{ "functions/functions-xpath-7", "functions/data-1", FALSE },
-	{ "functions/functions-xpath-8", "functions/data-1", FALSE },
-	{ "functions/functions-xpath-9", "functions/data-1", FALSE },
 	{ "graph/graph-1", "graph/data-1", FALSE },
 	{ "graph/graph-2", "graph/data-2", FALSE },
 	{ "graph/graph-3", "graph/data-3", FALSE },
-	{ "graph/graph-4", "graph/data-3", FALSE },
-	{ "graph/graph-4", "graph/data-4", FALSE },
 	{ "optional/q-opt-complex-1", "optional/complex-data-1", FALSE },
 	{ "optional/simple-optional-triple", "optional/simple-optional-triple", FALSE },
 	{ "regex/regex-query-001", "regex/regex-data-01", FALSE },
@@ -113,8 +99,6 @@ const TestInfo tests[] = {
 	{ "sort/query-sort-4", "sort/data-sort-4", FALSE },
 	{ "sort/query-sort-5", "sort/data-sort-4", FALSE },
 	{ "sort/query-sort-6", "sort/data-sort-4", FALSE },
-	{ "sort/query-sort-7", "sort/data-sort-1", FALSE },
-	{ "sort/query-sort-8", "sort/data-sort-5", FALSE },
 	{ "subqueries/subqueries-1", "subqueries/data-1", FALSE },
 	{ "subqueries/subqueries-union-1", "subqueries/data-1", FALSE },
 	{ "subqueries/subqueries-union-2", "subqueries/data-1", FALSE },
@@ -136,7 +120,7 @@ strstr_i (const char *a, const char *b)
 }
 
 static void
-check_result (TrackerDBCursor *cursor,
+check_result (TrackerDBResultSet *result_set,
               const TestInfo *test_info,
               const gchar *results_filename,
               GError *error)
@@ -162,25 +146,42 @@ check_result (TrackerDBCursor *cursor,
 
 	test_results = g_string_new ("");
 
-	if (cursor) {
+	if (result_set) {
+		gboolean valid = TRUE;
+		guint col_count;
 		gint col;
 
-		while (tracker_db_cursor_iter_next (cursor, NULL, &error)) {
-			for (col = 0; col < tracker_db_cursor_get_n_columns (cursor); col++) {
-				const gchar *str;
+		col_count = tracker_db_result_set_get_n_columns (result_set);
 
-				if (col > 0) {
-					g_string_append (test_results, "\t");
+		while (valid) {
+			for (col = 0; col < col_count; col++) {
+				GValue value = { 0 };
+
+				_tracker_db_result_set_get_value (result_set, col, &value);
+
+				switch (G_VALUE_TYPE (&value)) {
+				case G_TYPE_INT:
+					g_string_append_printf (test_results, "\"%d\"", g_value_get_int (&value));
+					break;
+				case G_TYPE_DOUBLE:
+					g_string_append_printf (test_results, "\"%f\"", g_value_get_double (&value));
+					break;
+				case G_TYPE_STRING:
+					g_string_append_printf (test_results, "\"%s\"", g_value_get_string (&value));
+					break;
+				default:
+					/* unbound variable */
+					break;
 				}
 
-				str = tracker_db_cursor_get_string (cursor, col, NULL);
-				if (str != NULL) {
-					/* bound variable */
-					g_string_append_printf (test_results, "\"%s\"", str);
+				if (col < col_count - 1) {
+					g_string_append (test_results, "\t");
 				}
 			}
 
 			g_string_append (test_results, "\n");
+
+			valid = tracker_db_result_set_iter_next (result_set);
 		}
 	} else if (test_info->expect_query_error) {
 		g_string_append (test_results, error->message);
@@ -218,7 +219,7 @@ check_result (TrackerDBCursor *cursor,
 static void
 test_sparql_query (gconstpointer test_data)
 {
-	TrackerDBCursor *cursor;
+	TrackerDBResultSet *result_set;
 	const TestInfo *test_info;
 	GError *error;
 	gchar *data_filename;
@@ -237,21 +238,18 @@ test_sparql_query (gconstpointer test_data)
 	g_free (prefix);
 
 	test_schemas[0] = data_prefix;
-
-	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
-
 	tracker_data_manager_init (TRACKER_DB_MANAGER_FORCE_REINDEX,
 	                           test_schemas,
-	                           NULL, FALSE, 100, 100, NULL, NULL, NULL, &error);
-
-	g_assert_no_error (error);
+	                           NULL, FALSE, NULL, NULL, NULL);
 
 	/* data_path = g_build_path (G_DIR_SEPARATOR_S, TOP_SRCDIR, "tests", "libtracker-data", NULL); */
 
 	/* load data set */
 	data_filename = g_strconcat (data_prefix, ".ttl", NULL);
 	if (g_file_test (data_filename, G_FILE_TEST_IS_REGULAR)) {
+		tracker_data_begin_db_transaction ();
 		tracker_turtle_reader_load (data_filename, &error);
+		tracker_data_commit_db_transaction ();
 		g_assert_no_error (error);
 	} else {
 		/* no .ttl available, assume .rq with SPARQL Update */
@@ -263,7 +261,9 @@ test_sparql_query (gconstpointer test_data)
 		g_file_get_contents (data_filename, &data, NULL, &error);
 		g_assert_no_error (error);
 
+		tracker_data_begin_db_transaction ();
 		tracker_data_update_sparql (data, &error);
+		tracker_data_commit_db_transaction ();
 		if (test_info->expect_update_error) {
 			g_assert (error != NULL);
 			g_clear_error (&error);
@@ -282,28 +282,28 @@ test_sparql_query (gconstpointer test_data)
 
 	/* perform actual query */
 
-	cursor = tracker_data_query_sparql_cursor (query, &error);
+	result_set = tracker_data_query_sparql (query, &error);
 
-	check_result (cursor, test_info, results_filename, error);
+	check_result (result_set, test_info, results_filename, error);
 
 	g_free (query_filename);
 	g_free (query);
 
 	query_filename = g_strconcat (test_prefix, ".extra.rq", NULL);
 	if (g_file_get_contents (query_filename, &query, NULL, NULL)) {
-		g_object_unref (cursor);
-		cursor = tracker_data_query_sparql_cursor (query, &error);
+		g_object_unref (result_set);
+		result_set = tracker_data_query_sparql (query, &error);
 		g_assert_no_error (error);
 		g_free (results_filename);
 		results_filename = g_strconcat (test_prefix, ".extra.out", NULL);
-		check_result (cursor, test_info, results_filename, error);
+		check_result (result_set, test_info, results_filename, error);
 	}
 
 	g_free (data_prefix);
 	g_free (test_prefix);
 
-	if (cursor) {
-		g_object_unref (cursor);
+	if (result_set) {
+		g_object_unref (result_set);
 	}
 
 	/* cleanup */
@@ -331,8 +331,6 @@ main (int argc, char **argv)
 
 	g_test_init (&argc, &argv, NULL);
 
-	setlocale (LC_COLLATE, "en_US.utf8");
-
 	current_dir = g_get_current_dir ();
 
 	g_setenv ("XDG_DATA_HOME", current_dir, TRUE);
@@ -345,17 +343,6 @@ main (int argc, char **argv)
 	/* add test cases */
 	for (i = 0; tests[i].test_name; i++) {
 		gchar *testpath;
-
-#ifndef HAVE_LIBICU
-		/* Skip tests which fail collation tests and are known
-		 * to do so. For more details see:
-		 *
-		 * https://bugzilla.gnome.org/show_bug.cgi?id=636074
-		 */
-		if (strcmp (tests[i].test_name, "functions/functions-xpath-2") == 0) {
-			continue;
-		}
-#endif
 
 		testpath = g_strconcat ("/libtracker-data/sparql/", tests[i].test_name, NULL);
 		g_test_add_data_func (testpath, &tests[i], test_sparql_query);

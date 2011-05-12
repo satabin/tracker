@@ -9,33 +9,55 @@ desktop_DATA =  tracker-preferences.desktop
 
 pkgdata_DATA = tracker-preferences.ui
 
-AM_VALAFLAGS =                                         \
-	--pkg gtk+-2.0 --pkg gmodule-2.0               \
-	$(BUILD_VALAFLAGS)                             \
-	config.vapi                                    \
-	tracker-config.vapi
+INCLUDES = 								\
+	-DTRACKER_DATADIR=\""$(datadir)/tracker"\" 			\
+	-DTRACKER_LOCALEDIR=\""$(localedir)"\" 				\
+	-DTRACKER_BINDIR=\""$(bindir)"\" 				\
+	-DTRACKER_LIBEXECDIR=\""$(libexecdir)"\" 			\
+	-DTRACKER_COMPILATION 						\
+	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"			\
+	-I$(top_srcdir)/src						\
+	-I$(top_builddir)						\
+	$(TRACKER_APPS_CFLAGS)						\
+	$(WARN_CFLAGS)							\
+	$(GCOV_CFLAGS)
 
-AM_CPPFLAGS =                                          \
-	$(BUILD_CFLAGS)                                \
-	-I$(top_srcdir)/src                            \
-	-I$(top_builddir)/src                          \
-	-DTRACKER_DATADIR=\""$(datadir)/tracker"\"     \
-	-DLOCALEDIR=\""$(localedir)"\"                 \
-	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"       \
-	$(TRACKER_PREFERENCES_CFLAGS)
+BUILT_SOURCES = 							\
+	tracker-preferences.vala.stamp
 
-LDADD =                                                \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS)                                  \
-	$(TRACKER_PREFERENCES_LIBS)
+config_class_sources = \
+	$(top_srcdir)/src/miners/fs/tracker-config.h			\
+	$(top_srcdir)/src/miners/fs/tracker-config.c			\
+	$(top_srcdir)/src/tracker-status-icon/tracker-icon-config.h	\
+	$(top_srcdir)/src/tracker-status-icon/tracker-icon-config.c
 
-tracker_preferences_SOURCES =                          \
-	tracker-preferences.vala                       \
-	$(top_srcdir)/src/miners/fs/tracker-config.c
+tracker_preferences_VALASOURCES = tracker-preferences.vala
 
-EXTRA_DIST =                                           \
-	$(pkgdata_DATA)                                \
-	config.vapi                                    \
-	tracker-config.vapi
+tracker_preferences_SOURCES = 						\
+	$(config_class_sources)						\
+	$(tracker_preferences_VALASOURCES:.vala=.c)
+
+tracker_preferences_LDADD = 						\
+	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la	\
+	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+	$(TRACKER_APPS_LIBS)						\
+	$(GCOV_LIBS)
+
+MAINTAINERCLEANFILES =							\
+	tracker-preferences.vala.stamp					\
+	$(tracker_preferences_VALASOURCES:.vala=.c)			\
+	$(NULL)
+
+EXTRA_DIST = 								\
+	$(pkgdata_DATA) 						\
+	config.vapi							\
+	tracker-config.vapi						\
+	tracker-status-icon-config.vapi					\
+	tracker-preferences.vala.stamp 					\
+	$(tracker_preferences_VALASOURCES)
+
+tracker-preferences.vala.stamp: $(tracker_preferences_VALASOURCES) tracker-config.vapi tracker-status-icon-config.vapi config.vapi
+	$(AM_V_GEN)$(VALAC) $(GCOV_VALAFLAGS) --pkg gtk+-2.0 --pkg gmodule-2.0 -C $(VALAFLAGS) $^
+	$(AM_V_GEN)touch $@
 
 CLEANFILES = $(desktop_DATA)

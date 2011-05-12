@@ -47,59 +47,34 @@ host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
 libexec_PROGRAMS = tracker-miner-fs$(EXEEXT)
-@HAVE_MEEGOTOUCH_TRUE@am__append_1 = \
-@HAVE_MEEGOTOUCH_TRUE@	tracker-miner-applications-meego.cpp \
-@HAVE_MEEGOTOUCH_TRUE@	tracker-miner-applications-meego.h
-
 subdir = src/miners/fs
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/intltool.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
 	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-mkinstalldirs = $(install_sh) -d
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(libexecdir)"
 PROGRAMS = $(libexec_PROGRAMS)
-am__tracker_miner_fs_SOURCES_DIST = tracker-power-hal.c \
-	tracker-power-upower.c tracker-power.h tracker-config.c \
-	tracker-config.h tracker-main.c tracker-miner-applications.c \
-	tracker-miner-applications.h \
-	tracker-miner-applications-locale.c \
-	tracker-miner-applications-locale.h tracker-miner-files.c \
-	tracker-miner-files.h tracker-miner-files-index.c \
-	tracker-miner-files-index.h \
-	tracker-miner-applications-meego.cpp \
-	tracker-miner-applications-meego.h
-@HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@am__objects_1 =  \
-@HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@	tracker-power-hal.$(OBJEXT)
-@HAVE_UPOWER_TRUE@am__objects_1 = tracker-power-upower.$(OBJEXT)
-am__objects_2 =
-@HAVE_MEEGOTOUCH_TRUE@am__objects_3 = tracker-miner-applications-meego.$(OBJEXT)
-am_tracker_miner_fs_OBJECTS = $(am__objects_1) $(am__objects_2) \
-	tracker-config.$(OBJEXT) tracker-main.$(OBJEXT) \
+am_tracker_miner_fs_OBJECTS = tracker-config.$(OBJEXT) \
+	tracker-dbus.$(OBJEXT) tracker-main.$(OBJEXT) \
 	tracker-miner-applications.$(OBJEXT) \
-	tracker-miner-applications-locale.$(OBJEXT) \
 	tracker-miner-files.$(OBJEXT) \
-	tracker-miner-files-index.$(OBJEXT) $(am__objects_3)
+	tracker-miner-files-reindex.$(OBJEXT)
 tracker_miner_fs_OBJECTS = $(am_tracker_miner_fs_OBJECTS)
 am__DEPENDENCIES_1 =
-tracker_miner_fs_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+tracker_miner_fs_DEPENDENCIES = $(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-db/libtracker-db.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -127,27 +102,11 @@ LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 AM_V_CCLD = $(am__v_CCLD_$(V))
 am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD  " $@;
-CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
-	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	$(AM_CXXFLAGS) $(CXXFLAGS)
-AM_V_CXX = $(am__v_CXX_$(V))
-am__v_CXX_ = $(am__v_CXX_$(AM_DEFAULT_VERBOSITY))
-am__v_CXX_0 = @echo "  CXX   " $@;
-CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
-	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-AM_V_CXXLD = $(am__v_CXXLD_$(V))
-am__v_CXXLD_ = $(am__v_CXXLD_$(AM_DEFAULT_VERBOSITY))
-am__v_CXXLD_0 = @echo "  CXXLD " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(tracker_miner_fs_SOURCES)
-DIST_SOURCES = $(am__tracker_miner_fs_SOURCES_DIST)
+DIST_SOURCES = $(tracker_miner_fs_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -160,9 +119,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BUILD_CFLAGS = @BUILD_CFLAGS@
-BUILD_LIBS = @BUILD_LIBS@
-BUILD_VALAFLAGS = @BUILD_VALAFLAGS@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -175,10 +133,13 @@ CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
 DBUSBINDINGTOOL = @DBUSBINDINGTOOL@
+DBUS_CFLAGS = @DBUS_CFLAGS@
+DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DIA = @DIA@
+DEVKIT_POWER_CFLAGS = @DEVKIT_POWER_CFLAGS@
+DEVKIT_POWER_LIBS = @DEVKIT_POWER_LIBS@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -187,6 +148,9 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENCA_CFLAGS = @ENCA_CFLAGS@
 ENCA_LIBS = @ENCA_LIBS@
+EVOLUTION_PLUGIN_CFLAGS = @EVOLUTION_PLUGIN_CFLAGS@
+EVOLUTION_PLUGIN_INSTALL_DIR = @EVOLUTION_PLUGIN_INSTALL_DIR@
+EVOLUTION_PLUGIN_LIBS = @EVOLUTION_PLUGIN_LIBS@
 EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
@@ -196,58 +160,55 @@ GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
-GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GIO_CFLAGS = @GIO_CFLAGS@
+GIO_LIBS = @GIO_LIBS@
+GLIB2_CFLAGS = @GLIB2_CFLAGS@
+GLIB2_LIBS = @GLIB2_LIBS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
+GMODULE_CFLAGS = @GMODULE_CFLAGS@
+GMODULE_LIBS = @GMODULE_LIBS@
+GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GMSGFMT_015 = @GMSGFMT_015@
 GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
 GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
+GOBJECT_CFLAGS = @GOBJECT_CFLAGS@
+GOBJECT_LIBS = @GOBJECT_LIBS@
 GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
+GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
+GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
-GUPNP_DLNA_CFLAGS = @GUPNP_DLNA_CFLAGS@
-GUPNP_DLNA_LIBS = @GUPNP_DLNA_LIBS@
-GVDB_CFLAGS = @GVDB_CFLAGS@
-GVDB_LIBS = @GVDB_LIBS@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HTML_DIR = @HTML_DIR@
+ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
+ID3LIB_LIBS = @ID3LIB_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
-INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
-INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
-INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
-INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
-INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
-INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
-INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
-INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
-INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
 LIBFLAC_CFLAGS = @LIBFLAC_CFLAGS@
 LIBFLAC_LIBS = @LIBFLAC_LIBS@
-LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
-LIBGIF_LIBS = @LIBGIF_LIBS@
+LIBGRSS_CFLAGS = @LIBGRSS_CFLAGS@
+LIBGRSS_LIBS = @LIBGRSS_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
-LIBICONV = @LIBICONV@
-LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
 LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
@@ -261,32 +222,12 @@ LIBSTREAMANALYZER_LIBS = @LIBSTREAMANALYZER_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
 LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
-LIBTRACKER_BUS_CFLAGS = @LIBTRACKER_BUS_CFLAGS@
-LIBTRACKER_BUS_LIBS = @LIBTRACKER_BUS_LIBS@
-LIBTRACKER_CLIENT_CFLAGS = @LIBTRACKER_CLIENT_CFLAGS@
-LIBTRACKER_CLIENT_LIBS = @LIBTRACKER_CLIENT_LIBS@
-LIBTRACKER_COMMON_CFLAGS = @LIBTRACKER_COMMON_CFLAGS@
-LIBTRACKER_COMMON_LIBS = @LIBTRACKER_COMMON_LIBS@
-LIBTRACKER_DATA_CFLAGS = @LIBTRACKER_DATA_CFLAGS@
-LIBTRACKER_DATA_LIBS = @LIBTRACKER_DATA_LIBS@
-LIBTRACKER_DIRECT_CFLAGS = @LIBTRACKER_DIRECT_CFLAGS@
-LIBTRACKER_DIRECT_LIBS = @LIBTRACKER_DIRECT_LIBS@
-LIBTRACKER_EXTRACT_CFLAGS = @LIBTRACKER_EXTRACT_CFLAGS@
-LIBTRACKER_EXTRACT_LIBS = @LIBTRACKER_EXTRACT_LIBS@
-LIBTRACKER_FTS_CFLAGS = @LIBTRACKER_FTS_CFLAGS@
-LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
-LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
-LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
-LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
-LIBTRACKER_SPARQL_LIBS = @LIBTRACKER_SPARQL_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
 LIBVORBIS_LIBS = @LIBVORBIS_LIBS@
 LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
 LIBXML2_LIBS = @LIBXML2_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
-LTLIBICONV = @LTLIBICONV@
-LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -294,14 +235,16 @@ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
 LT_RELEASE = @LT_RELEASE@
 LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
-MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
-MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
+MINER_RSS_CFLAGS = @MINER_RSS_CFLAGS@
+MINER_RSS_LIBS = @MINER_RSS_LIBS@
 MKDIR_P = @MKDIR_P@
+MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
-MSGFMT_015 = @MSGFMT_015@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
-NETWORK_MANAGER_CFLAGS = @NETWORK_MANAGER_CFLAGS@
-NETWORK_MANAGER_LIBS = @NETWORK_MANAGER_LIBS@
+NAUTILUS_EXTENSION_CFLAGS = @NAUTILUS_EXTENSION_CFLAGS@
+NAUTILUS_EXTENSION_INSTALL_DIR = @NAUTILUS_EXTENSION_INSTALL_DIR@
+NAUTILUS_EXTENSION_LIBS = @NAUTILUS_EXTENSION_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -321,12 +264,14 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
-POPPLER_CFLAGS = @POPPLER_CFLAGS@
-POPPLER_LIBS = @POPPLER_LIBS@
+POFILES = @POFILES@
+POPPLER_GLIB_CFLAGS = @POPPLER_GLIB_CFLAGS@
+POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
 POSUB = @POSUB@
-PYTHON = @PYTHON@
-QT_CFLAGS = @QT_CFLAGS@
-QT_LIBS = @QT_LIBS@
+PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
+PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
+QUILL_CFLAGS = @QUILL_CFLAGS@
+QUILL_LIBS = @QUILL_LIBS@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -334,61 +279,31 @@ SHELL = @SHELL@
 SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
 SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
-TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
-TAGLIB_LIBS = @TAGLIB_LIBS@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
+TRACKER_APPLETS_CFLAGS = @TRACKER_APPLETS_CFLAGS@
+TRACKER_APPLETS_LIBS = @TRACKER_APPLETS_LIBS@
+TRACKER_APPS_CFLAGS = @TRACKER_APPS_CFLAGS@
+TRACKER_APPS_LIBS = @TRACKER_APPS_LIBS@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
-TRACKER_EXPLORER_CFLAGS = @TRACKER_EXPLORER_CFLAGS@
-TRACKER_EXPLORER_LIBS = @TRACKER_EXPLORER_LIBS@
-TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
-TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
-TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
-TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
-TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
-TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
-TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
-TRACKER_MINER_FLICKR_CFLAGS = @TRACKER_MINER_FLICKR_CFLAGS@
-TRACKER_MINER_FLICKR_LIBS = @TRACKER_MINER_FLICKR_LIBS@
-TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
-TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
-TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
-TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
-TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
-TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
-TRACKER_NAUTILUS_EXTENSION_LIBS = @TRACKER_NAUTILUS_EXTENSION_LIBS@
-TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
-TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
-TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
-TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
-TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
-TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
-TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
-TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
-TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
-TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
+TRACKER_VALA_CFLAGS = @TRACKER_VALA_CFLAGS@
+TRACKER_VALA_LIBS = @TRACKER_VALA_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
-TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
-TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
-UPOWER_CFLAGS = @UPOWER_CFLAGS@
-UPOWER_LIBS = @UPOWER_LIBS@
+UNAC_CFLAGS = @UNAC_CFLAGS@
+UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
+UUID_CFLAGS = @UUID_CFLAGS@
+UUID_LIBS = @UUID_LIBS@
 VALAC = @VALAC@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 XGETTEXT = @XGETTEXT@
-XGETTEXT_015 = @XGETTEXT_015@
-XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
 abs_builddir = @abs_builddir@
@@ -450,51 +365,63 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-AM_CPPFLAGS = \
-	$(BUILD_CFLAGS)                                \
-	-I$(top_srcdir)/src                            \
-	-I$(top_builddir)/src                          \
-	-DSHAREDIR=\""$(datadir)"\"                    \
-	-DLOCALEDIR=\""$(localedir)"\"                 \
-	-DLIBEXEC_PATH=\""$(libexecdir)"\"             \
-	$(TRACKER_MINER_FS_CFLAGS)
+INCLUDES = \
+	-Wall								\
+	-DSHAREDIR=\""$(datadir)"\"					\
+	-DLOCALEDIR=\""$(localedir)"\" 					\
+	-DLIBEXEC_PATH=\""$(libexecdir)"\"				\
+	-DG_LOG_DOMAIN=\"Tracker\"					\
+	-DTRACKER_COMPILATION						\
+	-I$(top_srcdir)/src						\
+	-I$(top_builddir)/src						\
+	-I$(top_srcdir)/src/libtracker-client				\
+	-I$(top_builddir)/src/libtracker-client				\
+	-I$(top_srcdir)/src/libtracker-data				\
+	-I$(top_builddir)/src/libtracker-data				\
+	$(WARN_CFLAGS)							\
+	$(GMODULE_CFLAGS)						\
+	$(DBUS_CFLAGS)							\
+	$(GCOV_CFLAGS)
 
-@HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@power_headers = \
-@HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@	tracker-power.h
+tracker_miner_fs_SOURCES = \
+	tracker-config.c						\
+	tracker-config.h						\
+	tracker-dbus.c							\
+	tracker-dbus.h							\
+	tracker-main.c							\
+	tracker-miner-applications.c					\
+	tracker-miner-applications.h					\
+	tracker-miner-files.c						\
+	tracker-miner-files.h						\
+	tracker-miner-files-reindex.c					\
+	tracker-miner-files-reindex.h
 
-
-# Prefer UPower for the power data if it's available, else fall back to HAL
-@HAVE_UPOWER_TRUE@power_headers = \
-@HAVE_UPOWER_TRUE@	tracker-power.h
-
-@HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@power_sources = \
-@HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@	tracker-power-hal.c
-
-@HAVE_UPOWER_TRUE@power_sources = \
-@HAVE_UPOWER_TRUE@	tracker-power-upower.c
-
-tracker_miner_fs_SOURCES = $(power_sources) $(power_headers) \
-	tracker-config.c tracker-config.h tracker-main.c \
-	tracker-miner-applications.c tracker-miner-applications.h \
-	tracker-miner-applications-locale.c \
-	tracker-miner-applications-locale.h tracker-miner-files.c \
-	tracker-miner-files.h tracker-miner-files-index.c \
-	tracker-miner-files-index.h $(am__append_1)
 tracker_miner_fs_LDADD = \
-	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-data/libtracker-data.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS)                                  \
-	$(TRACKER_MINER_FS_LIBS)
+	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la	\
+	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
+	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
+	$(DBUS_LIBS)							\
+	$(GMODULE_LIBS)							\
+	$(GTHREAD_LIBS)							\
+	$(GIO_LIBS)							\
+	$(GCOV_LIBS)							\
+	$(GLIB2_LIBS)							\
+	-lz								\
+	-lm
 
 marshal_sources = \
-	tracker-marshal.h                              \
+	tracker-marshal.h						\
 	tracker-marshal.c
 
+dbus_sources = \
+	tracker-miner-glue.h						\
+	tracker-miner-files-reindex-glue.h				\
+	tracker-extract-client.h
+
 BUILT_SOURCES = \
-	$(marshal_sources)                             
+	$(marshal_sources)						\
+	$(dbus_sources)
 
 CLEANFILES = $(BUILT_SOURCES)
 EXTRA_DIST = tracker-marshal.list
@@ -502,7 +429,7 @@ all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .cpp .lo .o .obj
+.SUFFIXES: .c .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -578,7 +505,7 @@ clean-libexecPROGRAMS:
 	rm -f $$list
 tracker-miner-fs$(EXEEXT): $(tracker_miner_fs_OBJECTS) $(tracker_miner_fs_DEPENDENCIES) 
 	@rm -f tracker-miner-fs$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(tracker_miner_fs_OBJECTS) $(tracker_miner_fs_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(LINK) $(tracker_miner_fs_OBJECTS) $(tracker_miner_fs_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -587,14 +514,11 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-config.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-applications-locale.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-applications-meego.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-applications.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-files-index.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-files-reindex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-files.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-power-hal.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-power-upower.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -619,30 +543,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
-
-.cpp.o:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
-
-.cpp.obj:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-.cpp.lo:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
-@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -911,8 +811,14 @@ tracker-marshal.h: tracker-marshal.list
 	$(AM_V_GEN)$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --header > $@
 
 tracker-marshal.c: tracker-marshal.list
-	$(AM_V_GEN)echo "#include \"tracker-marshal.h\"" > $@ && \
+	$(AM_V_GEN)echo "#include \"tracker-marshal.h\"" > $@ &&	\
 		   $(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --body >> $@
+
+%-glue.h: $(top_srcdir)/data/dbus/%.xml
+	$(AM_V_GEN)$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
+
+%-client.h: $(top_srcdir)/data/dbus/%.xml
+	$(AM_V_GEN)$(DBUSBINDINGTOOL) --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -2,18 +2,18 @@
  * Copyright (C) 2007, Jamie McCracken <jamiemcc@gnome.org>
  * Copyright (C) 2008-2009, Nokia <ivan.frade@nokia.com>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
@@ -38,6 +38,20 @@
 
 #include <libtracker-extract/tracker-extract.h>
 
+#ifndef HAVE_GETLINE
+
+#include <stddef.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <errno.h>
+
+#undef getdelim
+#undef getline
+
+#define GROW_BY 80
+
+#endif /* HAVE_GETLINE */
+
 #ifdef USING_UNZIPPSFILES
 static void extract_ps_gz (const gchar          *uri,
                            TrackerSparqlBuilder *preupdate,
@@ -54,6 +68,72 @@ static TrackerExtractData data[] = {
 	{ "application/postscript",     extract_ps    },
 	{ NULL, NULL }
 };
+
+#ifndef HAVE_GETLINE
+
+static ssize_t
+igetdelim (gchar  **linebuf,
+           size_t  *linebufsz,
+           gint     delimiter,
+           FILE    *file)
+{
+	gint ch;
+	gint idx;
+
+	if ((file == NULL || linebuf == NULL || *linebuf == NULL || *linebufsz == 0) &&
+	    !(*linebuf == NULL && *linebufsz == 0)) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	if (*linebuf == NULL && *linebufsz == 0) {
+		*linebuf = g_malloc (GROW_BY);
+
+		if (!*linebuf) {
+			errno = ENOMEM;
+			return -1;
+		}
+
+		*linebufsz += GROW_BY;
+	}
+
+	idx = 0;
+
+	while ((ch = fgetc (file)) != EOF) {
+		/* Grow the line buffer as necessary */
+		while (idx > *linebufsz - 2) {
+			*linebuf = g_realloc (*linebuf, *linebufsz += GROW_BY);
+
+			if (!*linebuf) {
+				errno = ENOMEM;
+				return -1;
+			}
+		}
+		(*linebuf)[idx++] = (gchar) ch;
+
+		if ((gchar) ch == delimiter) {
+			break;
+		}
+	}
+
+	if (idx != 0) {
+		(*linebuf)[idx] = 0;
+	} else if ( ch == EOF ) {
+		return -1;
+	}
+
+	return idx;
+}
+
+static gint
+getline (gchar **s,
+         guint  *lim,
+         FILE   *stream)
+{
+	return igetdelim (s, lim, '\n', stream);
+}
+
+#endif /* HAVE_GETLINE */
 
 static gchar *
 hour_day_str_day (const gchar *date)
@@ -154,7 +234,7 @@ extract_ps_from_filestream (FILE *f,
 	 *  b) No more lines to read
 	 */
 	while ((accum < max_bytes) &&
-	       (read_char = tracker_getline (&line, &length, f)) != -1) {
+	       (read_char = getline (&line, &length, f)) != -1) {
 		gboolean pageno_atend = FALSE;
 		gboolean header_finished = FALSE;
 
@@ -284,9 +364,6 @@ extract_ps_gz (const gchar          *uri,
 	{
 		g_debug ("Extracting compressed PS '%s'...", uri);
 		extract_ps_from_filestream (fz, preupdate, metadata);
-#ifdef HAVE_POSIX_FADVISE
-		posix_fadvise (fdz, 0, 0, POSIX_FADV_DONTNEED);
-#endif /* HAVE_POSIX_FADVISE */
 		fclose (fz);
 	}
 

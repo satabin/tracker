@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <chapter id='mto-ontology'>
-<title>Maemo Transfer Ontology (MTO): Representation of download and upload operations in the system</title>
+<title>MTO Ontology</title>
 <varlistentry>
   <term>Authors:</term>
   <listitem>
@@ -190,7 +190,7 @@
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
+<listitem><simpara>--</simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>

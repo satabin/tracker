@@ -25,9 +25,6 @@
 # full-report: like test-report: with -m perf and -m slow
 #
 
-# Includes sources that will be shared with the
-# testers in test/libtracker-miner
-
 
 
 VPATH = @srcdir@
@@ -49,28 +46,33 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-DIST_COMMON = $(libtracker_minerinclude_HEADERS) \
-	$(srcdir)/Makefile-shared-sources.decl $(srcdir)/Makefile.am \
+DIST_COMMON = $(libtracker_minerinclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/Makefile.decl COPYING.LIB
-@HAVE_INTROSPECTION_TRUE@am__append_1 = $(AM_CPPFLAGS)
-@HAVE_INTROSPECTION_TRUE@am__append_2 = TrackerMiner-$(TRACKER_API_VERSION).gir
-@HAVE_INTROSPECTION_TRUE@am__append_3 = $(gir_DATA) $(typelib_DATA)
+@HAVE_LIBINOTIFY_TRUE@am__append_1 = \
+@HAVE_LIBINOTIFY_TRUE@	$(top_builddir)/src/libinotify/libinotify.la
+
+@HAVE_GNOME_KEYRING_TRUE@am__append_2 = \
+@HAVE_GNOME_KEYRING_TRUE@	tracker-password-provider-gnome.c
+
+@HAVE_GNOME_KEYRING_TRUE@am__append_3 = \
+@HAVE_GNOME_KEYRING_TRUE@	$(GNOME_KEYRING_LIBS)
+
+@HAVE_GNOME_KEYRING_TRUE@am__append_4 = \
+@HAVE_GNOME_KEYRING_TRUE@	$(GNOME_KEYRING_CFLAGS)
+
+@HAVE_GNOME_KEYRING_FALSE@am__append_5 = \
+@HAVE_GNOME_KEYRING_FALSE@	tracker-password-provider-keyfile.c
+
 subdir = src/libtracker-miner
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/iconv.m4 \
-	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/intltool.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
 	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/m4/sqlite-threadsafe.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-mkinstalldirs = $(install_sh) -d
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
@@ -95,54 +97,37 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" \
-	"$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(vapidir)" \
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(vapidir)" \
 	"$(DESTDIR)$(libtracker_minerincludedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
+@HAVE_GNOME_KEYRING_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
 libtracker_miner_@TRACKER_API_VERSION@_la_DEPENDENCIES =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) $(am__append_1) \
+	$(am__DEPENDENCIES_2)
 am__libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES_DIST =  \
-	tracker-network-provider-dummy.c \
-	tracker-network-provider-network-manager.c \
-	tracker-password-provider-keyfile.c \
+	tracker-crawler.c tracker-dbus.c tracker-dbus.h \
+	tracker-marshal.c tracker-marshal.h tracker-miner-dbus.h \
+	tracker-miner-object.c tracker-miner-fs.c \
+	tracker-miner-manager.c tracker-miner-web.c \
+	tracker-miner-web-dbus.h tracker-monitor.c tracker-monitor.h \
+	tracker-password-provider.c tracker-storage.c \
+	tracker-thumbnailer.c tracker-utils.c tracker-utils.h \
 	tracker-password-provider-gnome.c \
-	$(top_builddir)/src/libtracker-miner/tracker-marshal.c \
-	$(top_builddir)/src/libtracker-miner/tracker-marshal.h \
-	tracker-crawler.c tracker-crawler.h tracker-utils.c \
-	tracker-utils.h \
-	$(top_srcdir)/src/libtracker-miner/tracker-monitor.c \
-	$(top_srcdir)/src/libtracker-miner/tracker-monitor.h \
-	tracker-miner-dbus.h tracker-miner-object.c \
-	tracker-miner-object.h tracker-miner-fs.c tracker-miner-fs.h \
-	tracker-miner-manager.c tracker-miner-manager.h \
-	tracker-miner-web.c tracker-miner-web.h \
-	tracker-miner-fs-processing-pool.h \
-	tracker-miner-fs-processing-pool.c tracker-storage.c \
-	tracker-storage.h tracker-network-provider.c \
-	tracker-password-provider.c tracker-thumbnailer.c \
-	tracker-thumbnailer.h
-@HAVE_NETWORK_MANAGER_FALSE@am__objects_1 =  \
-@HAVE_NETWORK_MANAGER_FALSE@	tracker-network-provider-dummy.lo
-@HAVE_NETWORK_MANAGER_TRUE@am__objects_1 = tracker-network-provider-network-manager.lo
-@HAVE_GNOME_KEYRING_FALSE@am__objects_2 = tracker-password-provider-keyfile.lo
-@HAVE_GNOME_KEYRING_TRUE@am__objects_2 =  \
+	tracker-password-provider-keyfile.c
+@HAVE_GNOME_KEYRING_TRUE@am__objects_1 =  \
 @HAVE_GNOME_KEYRING_TRUE@	tracker-password-provider-gnome.lo
-am__objects_3 = tracker-marshal.lo
-am__objects_4 =
-am__objects_5 = $(am__objects_3) $(am__objects_4) tracker-crawler.lo \
-	tracker-utils.lo
-am__objects_6 = tracker-monitor.lo
-am__objects_7 = $(am__objects_6) $(am__objects_4) \
-	tracker-miner-object.lo tracker-miner-fs.lo \
-	tracker-miner-manager.lo tracker-miner-web.lo
-am__objects_8 = tracker-miner-fs-processing-pool.lo tracker-storage.lo
+@HAVE_GNOME_KEYRING_FALSE@am__objects_2 = tracker-password-provider-keyfile.lo
 am_libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS =  \
-	$(am__objects_1) $(am__objects_2) $(am__objects_5) \
-	$(am__objects_7) $(am__objects_8) tracker-network-provider.lo \
-	tracker-password-provider.lo tracker-thumbnailer.lo
+	tracker-crawler.lo tracker-dbus.lo tracker-marshal.lo \
+	tracker-miner-object.lo tracker-miner-fs.lo \
+	tracker-miner-manager.lo tracker-miner-web.lo \
+	tracker-monitor.lo tracker-password-provider.lo \
+	tracker-storage.lo tracker-thumbnailer.lo tracker-utils.lo \
+	$(am__objects_1) $(am__objects_2)
 libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	$(am_libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -182,7 +167,7 @@ am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES)
 DIST_SOURCES =  \
 	$(am__libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES_DIST)
-DATA = $(gir_DATA) $(typelib_DATA) $(vapi_DATA)
+DATA = $(vapi_DATA)
 HEADERS = $(libtracker_minerinclude_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -196,9 +181,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BUILD_CFLAGS = @BUILD_CFLAGS@
-BUILD_LIBS = @BUILD_LIBS@
-BUILD_VALAFLAGS = @BUILD_VALAFLAGS@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -211,10 +195,13 @@ CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
 DBUSBINDINGTOOL = @DBUSBINDINGTOOL@
+DBUS_CFLAGS = @DBUS_CFLAGS@
+DBUS_LIBS = @DBUS_LIBS@
 DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DIA = @DIA@
+DEVKIT_POWER_CFLAGS = @DEVKIT_POWER_CFLAGS@
+DEVKIT_POWER_LIBS = @DEVKIT_POWER_LIBS@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -223,6 +210,9 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ENCA_CFLAGS = @ENCA_CFLAGS@
 ENCA_LIBS = @ENCA_LIBS@
+EVOLUTION_PLUGIN_CFLAGS = @EVOLUTION_PLUGIN_CFLAGS@
+EVOLUTION_PLUGIN_INSTALL_DIR = @EVOLUTION_PLUGIN_INSTALL_DIR@
+EVOLUTION_PLUGIN_LIBS = @EVOLUTION_PLUGIN_LIBS@
 EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
@@ -232,58 +222,55 @@ GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
 GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
-GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GIO_CFLAGS = @GIO_CFLAGS@
+GIO_LIBS = @GIO_LIBS@
+GLIB2_CFLAGS = @GLIB2_CFLAGS@
+GLIB2_LIBS = @GLIB2_LIBS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
+GMODULE_CFLAGS = @GMODULE_CFLAGS@
+GMODULE_LIBS = @GMODULE_LIBS@
+GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GMSGFMT_015 = @GMSGFMT_015@
 GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
 GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
+GOBJECT_CFLAGS = @GOBJECT_CFLAGS@
+GOBJECT_LIBS = @GOBJECT_LIBS@
 GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
+GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
+GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
-GUPNP_DLNA_CFLAGS = @GUPNP_DLNA_CFLAGS@
-GUPNP_DLNA_LIBS = @GUPNP_DLNA_LIBS@
-GVDB_CFLAGS = @GVDB_CFLAGS@
-GVDB_LIBS = @GVDB_LIBS@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HTML_DIR = @HTML_DIR@
+ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
+ID3LIB_LIBS = @ID3LIB_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
-INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
-INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@ $(am__append_1)
-INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
-INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
-INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
-INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
-INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
-INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
-INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
 LIBFLAC_CFLAGS = @LIBFLAC_CFLAGS@
 LIBFLAC_LIBS = @LIBFLAC_LIBS@
-LIBGIF_CFLAGS = @LIBGIF_CFLAGS@
-LIBGIF_LIBS = @LIBGIF_LIBS@
+LIBGRSS_CFLAGS = @LIBGRSS_CFLAGS@
+LIBGRSS_LIBS = @LIBGRSS_LIBS@
 LIBGSF_CFLAGS = @LIBGSF_CFLAGS@
 LIBGSF_LIBS = @LIBGSF_LIBS@
-LIBICONV = @LIBICONV@
-LIBINTL = @LIBINTL@
 LIBIPTCDATA_CFLAGS = @LIBIPTCDATA_CFLAGS@
 LIBIPTCDATA_LIBS = @LIBIPTCDATA_LIBS@
 LIBJPEG_CFLAGS = @LIBJPEG_CFLAGS@
@@ -297,32 +284,12 @@ LIBSTREAMANALYZER_LIBS = @LIBSTREAMANALYZER_LIBS@
 LIBTIFF_CFLAGS = @LIBTIFF_CFLAGS@
 LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
-LIBTRACKER_BUS_CFLAGS = @LIBTRACKER_BUS_CFLAGS@
-LIBTRACKER_BUS_LIBS = @LIBTRACKER_BUS_LIBS@
-LIBTRACKER_CLIENT_CFLAGS = @LIBTRACKER_CLIENT_CFLAGS@
-LIBTRACKER_CLIENT_LIBS = @LIBTRACKER_CLIENT_LIBS@
-LIBTRACKER_COMMON_CFLAGS = @LIBTRACKER_COMMON_CFLAGS@
-LIBTRACKER_COMMON_LIBS = @LIBTRACKER_COMMON_LIBS@
-LIBTRACKER_DATA_CFLAGS = @LIBTRACKER_DATA_CFLAGS@
-LIBTRACKER_DATA_LIBS = @LIBTRACKER_DATA_LIBS@
-LIBTRACKER_DIRECT_CFLAGS = @LIBTRACKER_DIRECT_CFLAGS@
-LIBTRACKER_DIRECT_LIBS = @LIBTRACKER_DIRECT_LIBS@
-LIBTRACKER_EXTRACT_CFLAGS = @LIBTRACKER_EXTRACT_CFLAGS@
-LIBTRACKER_EXTRACT_LIBS = @LIBTRACKER_EXTRACT_LIBS@
-LIBTRACKER_FTS_CFLAGS = @LIBTRACKER_FTS_CFLAGS@
-LIBTRACKER_FTS_LIBS = @LIBTRACKER_FTS_LIBS@
-LIBTRACKER_MINER_CFLAGS = @LIBTRACKER_MINER_CFLAGS@
-LIBTRACKER_MINER_LIBS = @LIBTRACKER_MINER_LIBS@
-LIBTRACKER_SPARQL_CFLAGS = @LIBTRACKER_SPARQL_CFLAGS@
-LIBTRACKER_SPARQL_LIBS = @LIBTRACKER_SPARQL_LIBS@
 LIBVORBIS_CFLAGS = @LIBVORBIS_CFLAGS@
 LIBVORBIS_LIBS = @LIBVORBIS_LIBS@
 LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
 LIBXML2_LIBS = @LIBXML2_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
-LTLIBICONV = @LTLIBICONV@
-LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -330,14 +297,16 @@ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
 LT_RELEASE = @LT_RELEASE@
 LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
-MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
-MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
+MINER_RSS_CFLAGS = @MINER_RSS_CFLAGS@
+MINER_RSS_LIBS = @MINER_RSS_LIBS@
 MKDIR_P = @MKDIR_P@
+MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
-MSGFMT_015 = @MSGFMT_015@
+MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
-NETWORK_MANAGER_CFLAGS = @NETWORK_MANAGER_CFLAGS@
-NETWORK_MANAGER_LIBS = @NETWORK_MANAGER_LIBS@
+NAUTILUS_EXTENSION_CFLAGS = @NAUTILUS_EXTENSION_CFLAGS@
+NAUTILUS_EXTENSION_INSTALL_DIR = @NAUTILUS_EXTENSION_INSTALL_DIR@
+NAUTILUS_EXTENSION_LIBS = @NAUTILUS_EXTENSION_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -357,12 +326,14 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
-POPPLER_CFLAGS = @POPPLER_CFLAGS@
-POPPLER_LIBS = @POPPLER_LIBS@
+POFILES = @POFILES@
+POPPLER_GLIB_CFLAGS = @POPPLER_GLIB_CFLAGS@
+POPPLER_GLIB_LIBS = @POPPLER_GLIB_LIBS@
 POSUB = @POSUB@
-PYTHON = @PYTHON@
-QT_CFLAGS = @QT_CFLAGS@
-QT_LIBS = @QT_LIBS@
+PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
+PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
+QUILL_CFLAGS = @QUILL_CFLAGS@
+QUILL_LIBS = @QUILL_LIBS@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -370,61 +341,31 @@ SHELL = @SHELL@
 SQLITE3_CFLAGS = @SQLITE3_CFLAGS@
 SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
-TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
-TAGLIB_LIBS = @TAGLIB_LIBS@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
+TRACKER_APPLETS_CFLAGS = @TRACKER_APPLETS_CFLAGS@
+TRACKER_APPLETS_LIBS = @TRACKER_APPLETS_LIBS@
+TRACKER_APPS_CFLAGS = @TRACKER_APPS_CFLAGS@
+TRACKER_APPS_LIBS = @TRACKER_APPS_LIBS@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
-TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
-TRACKER_CONTROL_LIBS = @TRACKER_CONTROL_LIBS@
-TRACKER_EXPLORER_CFLAGS = @TRACKER_EXPLORER_CFLAGS@
-TRACKER_EXPLORER_LIBS = @TRACKER_EXPLORER_LIBS@
-TRACKER_EXTRACT_CFLAGS = @TRACKER_EXTRACT_CFLAGS@
-TRACKER_EXTRACT_LIBS = @TRACKER_EXTRACT_LIBS@
-TRACKER_EXTRACT_MODULES_CFLAGS = @TRACKER_EXTRACT_MODULES_CFLAGS@
-TRACKER_EXTRACT_MODULES_LIBS = @TRACKER_EXTRACT_MODULES_LIBS@
 TRACKER_INTERFACE_AGE = @TRACKER_INTERFACE_AGE@
 TRACKER_MAJOR_VERSION = @TRACKER_MAJOR_VERSION@
 TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
-TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
-TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
-TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
-TRACKER_MINER_FLICKR_CFLAGS = @TRACKER_MINER_FLICKR_CFLAGS@
-TRACKER_MINER_FLICKR_LIBS = @TRACKER_MINER_FLICKR_LIBS@
-TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
-TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
-TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
-TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
-TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
-TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
-TRACKER_NAUTILUS_EXTENSION_LIBS = @TRACKER_NAUTILUS_EXTENSION_LIBS@
-TRACKER_NEEDLE_CFLAGS = @TRACKER_NEEDLE_CFLAGS@
-TRACKER_NEEDLE_LIBS = @TRACKER_NEEDLE_LIBS@
-TRACKER_PREFERENCES_CFLAGS = @TRACKER_PREFERENCES_CFLAGS@
-TRACKER_PREFERENCES_LIBS = @TRACKER_PREFERENCES_LIBS@
-TRACKER_RESDUMP_CFLAGS = @TRACKER_RESDUMP_CFLAGS@
-TRACKER_RESDUMP_LIBS = @TRACKER_RESDUMP_LIBS@
-TRACKER_SEARCH_BAR_CFLAGS = @TRACKER_SEARCH_BAR_CFLAGS@
-TRACKER_SEARCH_BAR_LIBS = @TRACKER_SEARCH_BAR_LIBS@
-TRACKER_STORE_CFLAGS = @TRACKER_STORE_CFLAGS@
-TRACKER_STORE_LIBS = @TRACKER_STORE_LIBS@
-TRACKER_UTILS_CFLAGS = @TRACKER_UTILS_CFLAGS@
-TRACKER_UTILS_LIBS = @TRACKER_UTILS_LIBS@
+TRACKER_VALA_CFLAGS = @TRACKER_VALA_CFLAGS@
+TRACKER_VALA_LIBS = @TRACKER_VALA_LIBS@
 TRACKER_VERSION = @TRACKER_VERSION@
-TRACKER_WRITEBACK_CFLAGS = @TRACKER_WRITEBACK_CFLAGS@
-TRACKER_WRITEBACK_LIBS = @TRACKER_WRITEBACK_LIBS@
-UPOWER_CFLAGS = @UPOWER_CFLAGS@
-UPOWER_LIBS = @UPOWER_LIBS@
+UNAC_CFLAGS = @UNAC_CFLAGS@
+UNAC_LIBS = @UNAC_LIBS@
 USE_NLS = @USE_NLS@
+UUID_CFLAGS = @UUID_CFLAGS@
+UUID_LIBS = @UUID_LIBS@
 VALAC = @VALAC@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
 XGETTEXT = @XGETTEXT@
-XGETTEXT_015 = @XGETTEXT_015@
-XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
 XINE_CFLAGS = @XINE_CFLAGS@
 XINE_LIBS = @XINE_LIBS@
 abs_builddir = @abs_builddir@
@@ -486,160 +427,78 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-libtracker_miner_marshal_sources = \
-	$(top_builddir)/src/libtracker-miner/tracker-marshal.c
-
-libtracker_miner_marshal_headers = \
-	$(top_builddir)/src/libtracker-miner/tracker-marshal.h
-
-libtracker_miner_monitor_sources = \
-	$(top_srcdir)/src/libtracker-miner/tracker-monitor.c
-
-libtracker_miner_monitor_headers = \
-	$(top_srcdir)/src/libtracker-miner/tracker-monitor.h
-
-
-# Include list of shared sources:
-#  Defines:
-#    $(libtracker_miner_marshal_sources)
-#    $(libtracker_miner_marshal_headers)
-#    $(libtracker_miner_monitor_sources)
-#    $(libtracker_miner_monitor_headers)
-#
-# Headers and sources are split for the tests to build
-# with make distcheck.
-#
-AM_CPPFLAGS = \
-	$(BUILD_CFLAGS)                                \
-	-I$(top_srcdir)/src                            \
-	-I$(top_builddir)/src                          \
-	-DSHAREDIR=\""$(datadir)"\"                    \
+INCLUDES = -DSHAREDIR=\""$(datadir)"\" \
+	-DDBUS_SERVICES_DIR=\""$(DBUS_SERVICES_DIR)"\" \
+	-DG_LOG_DOMAIN=\"Tracker\" -DTRACKER_COMPILATION \
 	-DTRACKER_MINERS_DIR=\""$(datadir)/tracker/miners"\" \
-	$(LIBTRACKER_MINER_CFLAGS)
-
+	-I$(top_srcdir)/src -I$(top_builddir)/src \
+	-I$(top_builddir)/src/libtracker-client $(WARN_CFLAGS) \
+	$(GLIB2_CFLAGS) $(GCOV_CFLAGS) $(GIO_CFLAGS) $(DBUS_CFLAGS) \
+	$(am__append_4)
 lib_LTLIBRARIES = libtracker-miner-@TRACKER_API_VERSION@.la
 libtracker_minerdir = $(libdir)/tracker-$(TRACKER_API_VERSION)
 libtracker_minerincludedir = $(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-miner/
-crawler_sources = \
-	$(libtracker_miner_marshal_sources)            \
-	$(libtracker_miner_marshal_headers)            \
-	tracker-crawler.c                              \
-	tracker-crawler.h                              \
-	tracker-utils.c                                \
-	tracker-utils.h					
-
-private_sources = \
-	tracker-miner-fs-processing-pool.h             \
-	tracker-miner-fs-processing-pool.c             \
-	tracker-storage.c                              \
-	tracker-storage.h                              
-
-miner_sources = \
-	$(libtracker_miner_monitor_sources)            \
-	$(libtracker_miner_monitor_headers)            \
-	tracker-miner-dbus.h                           \
-	tracker-miner-object.c                         \
-	tracker-miner-object.h                         \
-	tracker-miner-fs.c                             \
-	tracker-miner-fs.h                             \
-	tracker-miner-manager.c                        \
-	tracker-miner-manager.h                        \
-	tracker-miner-web.c                            \
-	tracker-miner-web.h                            
-
-libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES = \
-	$(network_provider_sources)                    \
-	$(password_provider_sources)                   \
-	$(crawler_sources)			       \
-	$(miner_sources)			       \
-	$(private_sources)			       \
-	tracker-network-provider.c                     \
-	tracker-password-provider.c                    \
-	tracker-thumbnailer.c                          \
-	tracker-thumbnailer.h                          
-
+libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES = tracker-crawler.c \
+	tracker-dbus.c tracker-dbus.h tracker-marshal.c \
+	tracker-marshal.h tracker-miner-dbus.h tracker-miner-object.c \
+	tracker-miner-fs.c tracker-miner-manager.c tracker-miner-web.c \
+	tracker-miner-web-dbus.h tracker-monitor.c tracker-monitor.h \
+	tracker-password-provider.c tracker-storage.c \
+	tracker-thumbnailer.c tracker-utils.c tracker-utils.h \
+	$(am__append_2) $(am__append_5)
 libtracker_minerinclude_HEADERS = \
-	tracker-crawler.h                              \
-	tracker-miner.h                                \
-	tracker-miner-common.h                         \
-	tracker-miner-object.h                         \
-	tracker-miner-fs.h                             \
-	tracker-miner-manager.h                        \
-	tracker-miner-web.h                            \
-	tracker-network-provider.h                     \
-	tracker-password-provider.h                    \
-	tracker-storage.h                              \
+	tracker-crawler.h				\
+	tracker-miner.h					\
+	tracker-miner-object.h 				\
+	tracker-miner-fs.h				\
+	tracker-miner-manager.h				\
+	tracker-miner-web.h				\
+	tracker-password-provider.h			\
+	tracker-storage.h				\
 	tracker-thumbnailer.h
 
 libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-symbols-regex '^tracker_(miner|thumbnailer|crawler|storage|password_provider|network_provider)_.*'
+	-export-symbols-regex '^tracker_(miner|thumbnailer|crawler|storage|password_provider)_.*'
 
-libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD = \
+libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD =  \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
-	-lm                                            \
-	$(BUILD_LIBS)                                  \
-	$(LIBTRACKER_MINER_LIBS)
+	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
+	$(DBUS_LIBS) $(GIO_LIBS) $(GCOV_LIBS) $(GLIB2_LIBS) \
+	$(am__append_1) $(am__append_3)
+marshal_sources = \
+	tracker-marshal.c				\
+	tracker-marshal.h
 
-@HAVE_GNOME_KEYRING_FALSE@password_provider_sources = tracker-password-provider-keyfile.c
-@HAVE_GNOME_KEYRING_TRUE@password_provider_sources = tracker-password-provider-gnome.c
-@HAVE_NETWORK_MANAGER_FALSE@network_provider_sources = tracker-network-provider-dummy.c
-@HAVE_NETWORK_MANAGER_TRUE@network_provider_sources = tracker-network-provider-network-manager.c
+
+# Generate DBus files from XML data.
+dbus_sources = \
+	tracker-miner-glue.h				\
+	tracker-miner-web-glue.h			\
+	tracker-miner-client.h
+
 
 # Vala bindings
 vapidir = $(datadir)/vala/vapi
 vapi_DATA = \
-	tracker-miner-$(TRACKER_API_VERSION).vapi      \
+	tracker-miner-$(TRACKER_API_VERSION).vapi	\
 	tracker-miner-$(TRACKER_API_VERSION).deps
 
-BUILT_SOURCES = \
-	$(libtracker_miner_marshal_sources)            \
-	$(libtracker_miner_marshal_headers)            \
-	$(vapi_DATA)
-
-CLEANFILES = $(BUILT_SOURCES) $(am__append_3)
+BUILT_SOURCES = $(dbus_sources) $(marshal_sources) $(vapi_DATA)
+CLEANFILES = $(BUILT_SOURCES)
+DISTCLEANFILES = tracker-miner-web-full.xml
 EXTRA_DIST = \
-	tracker-marshal.list                           \
-	tracker-miner.vapi                             \
-	tracker-miner.deps
+	tracker-marshal.list		\
+	tracker-miner.vapi		\
+	tracker-miner.deps		\
+	tracker-miner-web-full.xml
 
-INTROSPECTION_GIRS = $(am__append_2)
-INTROSPECTION_SCANNER_ARGS = \
-	-I $(top_srcdir)/src \
-	-D TRACKER_COMPILATION \
-	--c-include="libtracker-miner/tracker-miner.h" \
-	--identifier-prefix=TrackerProcessor \
-	--symbol-prefix=tracker_processing \
-	--identifier-prefix=Tracker \
-	--symbol-prefix=tracker \
-	--warn-all
-
-INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)/src/libtracker-sparql
-@HAVE_INTROSPECTION_TRUE@introspection_sources = \
-@HAVE_INTROSPECTION_TRUE@	$(filter-out $(libtracker_miner_monitor_sources) \
-@HAVE_INTROSPECTION_TRUE@	             $(libtracker_miner_monitor_headers)  \
-@HAVE_INTROSPECTION_TRUE@		     $(private_sources),  \
-@HAVE_INTROSPECTION_TRUE@	  $(libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES))
-
-@HAVE_INTROSPECTION_TRUE@TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_INCLUDES = GObject-2.0 GModule-2.0 Gio-2.0
-@HAVE_INTROSPECTION_TRUE@TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_SCANNERFLAGS = \
-@HAVE_INTROSPECTION_TRUE@	--include-uninstalled=$(top_srcdir)/src/libtracker-sparql/Tracker-$(TRACKER_API_VERSION).gir
-
-@HAVE_INTROSPECTION_TRUE@TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_CFLAGS = $(INCLUDES)
-@HAVE_INTROSPECTION_TRUE@TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_NAMESPACE = "TrackerMiner"
-@HAVE_INTROSPECTION_TRUE@TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_LIBS = $(lib_LTLIBRARIES)
-@HAVE_INTROSPECTION_TRUE@TrackerMiner_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_FILES = $(introspection_sources)
-@HAVE_INTROSPECTION_TRUE@girdir = $(datadir)/gir-1.0
-@HAVE_INTROSPECTION_TRUE@gir_DATA = $(INTROSPECTION_GIRS)
-@HAVE_INTROSPECTION_TRUE@typelibdir = $(libdir)/girepository-1.0
-@HAVE_INTROSPECTION_TRUE@typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(srcdir)/Makefile-shared-sources.decl $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -710,16 +569,13 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crawler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-fs-processing-pool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-fs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-object.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-web.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-monitor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-network-provider-dummy.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-network-provider-network-manager.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-network-provider.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-password-provider-gnome.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-password-provider-keyfile.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-password-provider.Plo@am__quote@
@@ -751,67 +607,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
-tracker-marshal.lo: $(top_builddir)/src/libtracker-miner/tracker-marshal.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT tracker-marshal.lo -MD -MP -MF $(DEPDIR)/tracker-marshal.Tpo -c -o tracker-marshal.lo `test -f '$(top_builddir)/src/libtracker-miner/tracker-marshal.c' || echo '$(srcdir)/'`$(top_builddir)/src/libtracker-miner/tracker-marshal.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker-marshal.Tpo $(DEPDIR)/tracker-marshal.Plo
-@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_builddir)/src/libtracker-miner/tracker-marshal.c' object='tracker-marshal.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o tracker-marshal.lo `test -f '$(top_builddir)/src/libtracker-miner/tracker-marshal.c' || echo '$(srcdir)/'`$(top_builddir)/src/libtracker-miner/tracker-marshal.c
-
-tracker-monitor.lo: $(top_srcdir)/src/libtracker-miner/tracker-monitor.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT tracker-monitor.lo -MD -MP -MF $(DEPDIR)/tracker-monitor.Tpo -c -o tracker-monitor.lo `test -f '$(top_srcdir)/src/libtracker-miner/tracker-monitor.c' || echo '$(srcdir)/'`$(top_srcdir)/src/libtracker-miner/tracker-monitor.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker-monitor.Tpo $(DEPDIR)/tracker-monitor.Plo
-@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/libtracker-miner/tracker-monitor.c' object='tracker-monitor.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o tracker-monitor.lo `test -f '$(top_srcdir)/src/libtracker-miner/tracker-monitor.c' || echo '$(srcdir)/'`$(top_srcdir)/src/libtracker-miner/tracker-monitor.c
-
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-girDATA: $(gir_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(girdir)" || $(MKDIR_P) "$(DESTDIR)$(girdir)"
-	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(girdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(girdir)" || exit $$?; \
-	done
-
-uninstall-girDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(girdir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(girdir)" && rm -f $$files
-install-typelibDATA: $(typelib_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(typelibdir)" || $(MKDIR_P) "$(DESTDIR)$(typelibdir)"
-	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(typelibdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(typelibdir)" || exit $$?; \
-	done
-
-uninstall-typelibDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(typelibdir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(typelibdir)" && rm -f $$files
 install-vapiDATA: $(vapi_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(vapidir)" || $(MKDIR_P) "$(DESTDIR)$(vapidir)"
@@ -941,7 +741,7 @@ check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" "$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(vapidir)" "$(DESTDIR)$(libtracker_minerincludedir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(vapidir)" "$(DESTDIR)$(libtracker_minerincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -967,6 +767,7 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -995,8 +796,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-girDATA \
-	install-libtracker_minerincludeHEADERS install-typelibDATA \
+install-data-am: install-libtracker_minerincludeHEADERS \
 	install-vapiDATA
 
 install-dvi: install-dvi-am
@@ -1043,9 +843,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
-	uninstall-libtracker_minerincludeHEADERS uninstall-typelibDATA \
-	uninstall-vapiDATA
+uninstall-am: uninstall-libLTLIBRARIES \
+	uninstall-libtracker_minerincludeHEADERS uninstall-vapiDATA
 
 .MAKE: all check check-am install install-am install-strip
 
@@ -1055,18 +854,16 @@ uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-girDATA install-html install-html-am \
-	install-info install-info-am install-libLTLIBRARIES \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-libLTLIBRARIES \
 	install-libtracker_minerincludeHEADERS install-man install-pdf \
 	install-pdf-am install-ps install-ps-am install-strip \
-	install-typelibDATA install-vapiDATA installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-girDATA \
+	install-vapiDATA installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags uninstall uninstall-am \
 	uninstall-libLTLIBRARIES \
-	uninstall-libtracker_minerincludeHEADERS uninstall-typelibDATA \
-	uninstall-vapiDATA
+	uninstall-libtracker_minerincludeHEADERS uninstall-vapiDATA
 
 
 ### testing rules
@@ -1118,12 +915,18 @@ test-report perf-report full-report:	${TEST_PROGS}
 # run make test as part of make check
 check-local: test
 
-$(top_builddir)/src/libtracker-miner/tracker-marshal.h: tracker-marshal.list
+tracker-marshal.h: tracker-marshal.list
 	$(AM_V_GEN)$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --header > $@
 
-$(top_builddir)/src/libtracker-miner/tracker-marshal.c: tracker-marshal.list
+tracker-marshal.c: tracker-marshal.list
 	$(AM_V_GEN)(echo "#include \"tracker-marshal.h\""; \
 		    $(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --body) > $@
+
+%-glue.h: $(top_srcdir)/data/dbus/%.xml
+	$(AM_V_GEN)$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=_$(subst -,_,$*) $^
+
+%-client.h: $(top_srcdir)/data/dbus/%.xml
+	$(AM_V_GEN)$(DBUSBINDINGTOOL) --mode=glib-client --output=$@ --prefix=_$(subst -,_,$*) $^
 
 tracker-miner-$(TRACKER_API_VERSION).vapi: tracker-miner.vapi
 	cp $< $@
@@ -1131,10 +934,18 @@ tracker-miner-$(TRACKER_API_VERSION).vapi: tracker-miner.vapi
 tracker-miner-$(TRACKER_API_VERSION).deps: tracker-miner.deps
 	cp $< $@
 
-# Introspection foo
--include $(INTROSPECTION_MAKEFILE)
+# Custom rule to avoid API duplication. There is also a workaround for bug
+# in dbus-binding-tool where it generates bad code when two files are passed
+# on the command line (though the man page says it supports it)
+# This bug is reported at https://bugs.freedesktop.org/show_bug.cgi?id=25056
+tracker-miner-web-glue.h: $(top_srcdir)/data/dbus/tracker-miner-web.xml $(top_srcdir)/data/dbus/tracker-miner.xml
+	echo '<?xml version="1.0" encoding="UTF-8"?>'        > tracker-miner-web-full.xml
+	echo '<node name="/">'                              >> tracker-miner-web-full.xml
+	cat $^ | grep -v -e '<node' -e '<?xml' -e '</node>' >> tracker-miner-web-full.xml
+	echo '</node>'                                      >> tracker-miner-web-full.xml
+	$(AM_V_GEN)$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=_tracker_miner_web_dbus tracker-miner-web-full.xml
 
-@HAVE_INTROSPECTION_TRUE@TrackerMiner-@TRACKER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) $(lib_LTLIBRARIES) Makefile
+tracker-miner-web-full.xml: tracker-miner-web-glue.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

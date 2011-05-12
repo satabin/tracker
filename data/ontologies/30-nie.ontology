@@ -10,7 +10,7 @@
 
 nie: a tracker:Namespace, tracker:Ontology ;
 	tracker:prefix "nie" ;
-	nao:lastModified "2011-02-08T16:00:00Z" .
+	nao:lastModified "2010-02-16T11:00:00Z" .
 
 nie:DataObject a rdfs:Class ;
 	rdfs:label "Data Object" ;
@@ -39,36 +39,13 @@ nie:title a rdf:Property ;
 	tracker:weight 10 ;
 	tracker:writeback true .
 
-nie:url a rdf:Property ;
-	a nrl:InverseFunctionalProperty ;
-	rdfs:label "URL" ;
-	rdfs:comment "URL pointing at the location of the resource. In cases where creating a simple file:// or http:// URL for a file is difficult (e.g. for files inside compressed archives) the applications are encouraged to use conventions defined by Apache Commons VFS Project at http://jakarta.apache.org/  commons/ vfs/ filesystems.html." ;
-	nrl:maxCardinality 1 ;
-	rdfs:domain nie:DataObject ;
-	rdfs:range xsd:string ;
-	tracker:indexed true .
-
-nie:informationElementDate a rdf:Property ;
-	rdfs:subPropertyOf dc:date ;
-	rdfs:domain nie:InformationElement ;
-	rdfs:range xsd:dateTime .
-
-nie:contentLastModified a rdf:Property ;
-	rdfs:subPropertyOf nie:informationElementDate ;
-	nrl:maxCardinality 1 ;
-	rdfs:domain nie:InformationElement ;
-	rdfs:range xsd:dateTime .
-
 nie:subject a rdf:Property ;
 	rdfs:label "Subject" ;
 	rdfs:comment "The subject or topic of the document" ;
 	rdfs:subPropertyOf dc:subject ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nie:InformationElement ;
-	rdfs:range xsd:string ;
-	tracker:fulltextIndexed true ;
-	tracker:fulltextNoLimit true ;
-	tracker:weight 5 .
+	rdfs:range xsd:string .
 
 nie:mimeType a rdf:Property ;
 	rdfs:label "Mime Type" ;
@@ -98,8 +75,12 @@ nie:plainTextContent a rdf:Property ;
 	rdfs:domain nie:InformationElement ;
 	rdfs:range xsd:string ;
 	tracker:fulltextIndexed true ;
-	tracker:weight 2 ;
-	tracker:forceJournal false .
+	tracker:weight 2 .
+
+nie:informationElementDate a rdf:Property ;
+	rdfs:subPropertyOf dc:date ;
+	rdfs:domain nie:InformationElement ;
+	rdfs:range xsd:dateTime .
 
 nie:legal a rdf:Property ;
 	rdfs:comment "A common superproperty for all properties that point at legal information about an Information Element";
@@ -180,6 +161,12 @@ nie:isStoredAs a rdf:Property ;
 	rdfs:domain nie:InformationElement ;
 	rdfs:range nie:DataObject .
 
+nie:contentLastModified a rdf:Property ;
+	rdfs:subPropertyOf nie:informationElementDate ;
+	nrl:maxCardinality 1 ;
+	rdfs:domain nie:InformationElement ;
+	rdfs:range xsd:dateTime .
+
 nie:version a rdf:Property ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nie:InformationElement ;
@@ -193,8 +180,8 @@ nie:contentCreated a rdf:Property ;
 	tracker:writeback true .
 
 nie:contentAccessed a rdf:Property ;
-	rdfs:subPropertyOf nie:informationElementDate ;
-	nrl:maxCardinality 1 ;
+        rdfs:subPropertyOf nie:informationElementDate ;
+        nrl:maxCardinality 1 ;
 	rdfs:domain nie:InformationElement ;
 	rdfs:range xsd:dateTime .
 
@@ -206,7 +193,7 @@ nie:lastRefreshed a rdf:Property ;
 
 # Bug in nepomuk specification. Taking domain from superproperty
 nie:license a rdf:Property ;
-	rdfs:comment "Terms and intellectual property rights licensing conditions.";
+        rdfs:comment "Terms and intellectual property rights licensing conditions.";
 	rdfs:subPropertyOf dc:rights , nie:legal ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nie:InformationElement ;
@@ -278,4 +265,13 @@ nie:usageCounter a rdf:Property ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nie:InformationElement ;
 	rdfs:range xsd:integer ;
+	tracker:isAnnotation true ;
 	tracker:weight 3 .
+
+nie:url a rdf:Property ;
+	rdfs:label "URL" ;
+	rdfs:comment "URL pointing at the location of the resource. In cases where creating a simple file:// or http:// URL for a file is difficult (e.g. for files inside compressed archives) the applications are encouraged to use conventions defined by Apache Commons VFS Project at http://jakarta.apache.org/  commons/ vfs/ filesystems.html." ;
+	nrl:maxCardinality 1 ;
+	rdfs:domain nie:DataObject ;
+	rdfs:range xsd:string ;
+	tracker:indexed true .

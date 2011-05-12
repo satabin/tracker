@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
@@ -28,7 +28,9 @@
 
 #include <vorbis/vorbisfile.h>
 
-#include <libtracker-common/tracker-common.h>
+#include <libtracker-common/tracker-file-utils.h>
+
+#include <libtracker-client/tracker.h>
 
 #include <libtracker-extract/tracker-extract.h>
 
@@ -80,7 +82,7 @@ static TrackerExtractData extract_data[] = {
 
 static gchar *
 ogg_get_comment (vorbis_comment *vc,
-                 const gchar    *label)
+                 gchar          *label)
 {
 	gchar *tag;
 	gchar *utf_tag;
@@ -167,10 +169,10 @@ extract_vorbis (const char *uri,
 		vorbis_comment_clear (comment);
 	}
 
-	md.creator = tracker_coalesce_strip (3, vd.artist, vd.album_artist, vd.performer);
+	md.creator = tracker_coalesce (3, vd.artist, vd.album_artist, vd.performer);
 
 	if (md.creator) {
-		gchar *uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", md.creator);
+		gchar *uri = tracker_uri_printf_escaped ("urn:artist:%s", md.creator);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
 		tracker_sparql_builder_subject_iri (preupdate, uri);
@@ -186,19 +188,16 @@ extract_vorbis (const char *uri,
 	}
 
 	if (vd.album) {
-		gchar *uri = tracker_sparql_escape_uri_printf ("urn:album:%s", vd.album);
-		gchar *album_disc_uri;
+		gchar *uri = tracker_uri_printf_escaped ("urn:album:%s", vd.album);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
 		tracker_sparql_builder_subject_iri (preupdate, uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nmm:MusicAlbum");
-		/* FIXME: nmm:albumTitle is now deprecated
-		 * tracker_sparql_builder_predicate (preupdate, "nie:title");
-		 */
 		tracker_sparql_builder_predicate (preupdate, "nmm:albumTitle");
 		tracker_sparql_builder_object_unvalidated (preupdate, vd.album);
 		tracker_sparql_builder_insert_close (preupdate);
+		g_free (vd.album);
 
 		if (vd.track_count) {
 			tracker_sparql_builder_delete_open (preupdate, NULL);
@@ -266,47 +265,28 @@ extract_vorbis (const char *uri,
 			tracker_sparql_builder_insert_close (preupdate);
 		}
 
-		album_disc_uri = tracker_sparql_escape_uri_printf ("urn:album-disc:%s:Disc%d",
-		                                                   vd.album,
-		                                                   vd.disc_number ? atoi(vd.disc_number) : 1);
+		if (vd.disc_number) {
+			tracker_sparql_builder_delete_open (preupdate, NULL);
+			tracker_sparql_builder_subject_iri (preupdate, uri);
+			tracker_sparql_builder_predicate (preupdate, "nmm:setNumber");
+			tracker_sparql_builder_object_variable (preupdate, "unknown");
+			tracker_sparql_builder_delete_close (preupdate);
 
-		tracker_sparql_builder_delete_open (preupdate, NULL);
-		tracker_sparql_builder_subject_iri (preupdate, album_disc_uri);
-		tracker_sparql_builder_predicate (preupdate, "nmm:setNumber");
-		tracker_sparql_builder_object_variable (preupdate, "unknown");
-		tracker_sparql_builder_delete_close (preupdate);
-		tracker_sparql_builder_where_open (preupdate);
-		tracker_sparql_builder_subject_iri (preupdate, album_disc_uri);
-		tracker_sparql_builder_predicate (preupdate, "nmm:setNumber");
-		tracker_sparql_builder_object_variable (preupdate, "unknown");
-		tracker_sparql_builder_where_close (preupdate);
+			tracker_sparql_builder_where_open (preupdate);
+			tracker_sparql_builder_subject_iri (preupdate, uri);
+			tracker_sparql_builder_predicate (preupdate, "nmm:setNumber");
+			tracker_sparql_builder_object_variable (preupdate, "unknown");
+			tracker_sparql_builder_where_close (preupdate);
 
-		tracker_sparql_builder_delete_open (preupdate, NULL);
-		tracker_sparql_builder_subject_iri (preupdate, album_disc_uri);
-		tracker_sparql_builder_predicate (preupdate, "nmm:albumDiscAlbum");
-		tracker_sparql_builder_object_variable (preupdate, "unknown");
-		tracker_sparql_builder_delete_close (preupdate);
-		tracker_sparql_builder_where_open (preupdate);
-		tracker_sparql_builder_subject_iri (preupdate, album_disc_uri);
-		tracker_sparql_builder_predicate (preupdate, "nmm:albumDiscAlbum");
-		tracker_sparql_builder_object_variable (preupdate, "unknown");
-		tracker_sparql_builder_where_close (preupdate);
+			tracker_sparql_builder_insert_open (preupdate, NULL);
 
-		tracker_sparql_builder_insert_open (preupdate, NULL);
-		tracker_sparql_builder_subject_iri (preupdate, album_disc_uri);
-		tracker_sparql_builder_predicate (preupdate, "a");
-		tracker_sparql_builder_object (preupdate, "nmm:MusicAlbumDisc");
-		tracker_sparql_builder_predicate (preupdate, "nmm:setNumber");
-		tracker_sparql_builder_object_int64 (preupdate, vd.disc_number ? atoi (vd.disc_number) : 1);
-		tracker_sparql_builder_predicate (preupdate, "nmm:albumDiscAlbum");
-		tracker_sparql_builder_object_iri (preupdate, uri);
-		tracker_sparql_builder_insert_close (preupdate);
+			tracker_sparql_builder_subject_iri (preupdate, uri);
+			tracker_sparql_builder_predicate (preupdate, "nmm:setNumber");
+			tracker_sparql_builder_object_int64 (preupdate, atoi (vd.disc_number));
 
-		tracker_sparql_builder_predicate (metadata, "nmm:musicAlbumDisc");
-		tracker_sparql_builder_object_iri (metadata, album_disc_uri);
+			tracker_sparql_builder_insert_close (preupdate);
+		}
 
-		g_free (album_disc_uri);
-		g_free (vd.album);
 
 		tracker_sparql_builder_predicate (metadata, "nmm:musicAlbum");
 		tracker_sparql_builder_object_iri (metadata, uri);
@@ -454,14 +434,6 @@ extract_vorbis (const char *uri,
 		tracker_sparql_builder_predicate (metadata, "nfo:duration");
 		tracker_sparql_builder_object_int64 (metadata, (gint64) time);
 	}
-
-	g_free (vd.artist);
-	g_free (vd.album_artist);
-	g_free (vd.performer);
-
-#ifdef HAVE_POSIX_FADVISE
-	posix_fadvise (fileno (f), 0, 0, POSIX_FADV_DONTNEED);
-#endif /* HAVE_POSIX_FADVISE */
 
 	/* NOTE: This calls fclose on the file */
 	ov_clear (&vf);

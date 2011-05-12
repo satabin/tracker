@@ -24,96 +24,64 @@
 #include <glib.h>
 #include <gio/gio.h>
 
+#include <libtracker-db/tracker-db.h>
+
 #include <libtracker-data/tracker-data-manager.h>
 #include <libtracker-data/tracker-data-query.h>
 #include <libtracker-data/tracker-data-update.h>
-#include <libtracker-data/tracker-data.h>
 #include <libtracker-data/tracker-sparql-query.h>
 
 static void
 test_blank (void)
 {
 	GError *error;
-	GVariant *updates;
-	GVariantIter iter;
-	GVariant *rows;
-	guint len = 0;
-	gchar *solutions[3][3];
+	GPtrArray *updates, *solutions;
+	GHashTable *blank_nodes[2];
 
 	error = NULL;
-
-	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
 
 	/* initialization */
 	tracker_data_manager_init (TRACKER_DB_MANAGER_FORCE_REINDEX,
 	                           NULL,
 	                           NULL,
 	                           FALSE,
-	                           100,
-	                           100,
 	                           NULL,
 	                           NULL,
-	                           NULL,
-	                           &error);
-
-	g_assert_no_error (error);
+	                           NULL);
 
 	/* perform update in transaction */
 
-	updates = tracker_data_update_sparql_blank ("INSERT { _:foo a rdfs:Resource } "
+	tracker_data_begin_db_transaction ();
+	updates = tracker_data_update_sparql_blank (
+	                                            "INSERT { _:foo a rdfs:Resource } "
 	                                            "INSERT { _:foo a rdfs:Resource . _:bar a rdfs:Resource } ",
 	                                            &error);
+	tracker_data_commit_db_transaction ();
 	g_assert_no_error (error);
-	g_assert (updates != NULL);
 
-	g_variant_iter_init (&iter, updates);
-	while ((rows = g_variant_iter_next_value (&iter))) {
-		GVariantIter sub_iter;
-		GVariant *sub_value;
+	g_assert_cmpint (updates->len, ==, 2);
 
-		g_variant_iter_init (&sub_iter, rows);
+	solutions = updates->pdata[0];
+	g_assert_cmpint (solutions->len, ==, 1);
+	blank_nodes[0] = solutions->pdata[0];
 
-		while ((sub_value = g_variant_iter_next_value (&sub_iter))) {
-			gchar *a = NULL, *b = NULL;
-			GVariantIter sub_sub_iter;
-			GVariant *sub_sub_value;
+	solutions = updates->pdata[1];
+	g_assert_cmpint (solutions->len, ==, 1);
+	blank_nodes[1] = solutions->pdata[0];
 
-			g_variant_iter_init (&sub_sub_iter, sub_value);
+	g_assert (g_hash_table_lookup (blank_nodes[0], "foo") != NULL);
+	g_assert (g_hash_table_lookup (blank_nodes[1], "foo") != NULL);
+	g_assert (g_hash_table_lookup (blank_nodes[1], "bar") != NULL);
 
-			while ((sub_sub_value = g_variant_iter_next_value (&sub_sub_iter))) {
-				g_variant_get (sub_sub_value, "{ss}", &a, &b);
-				solutions[len][0] = a;
-				solutions[len][1] = b;
-				len++;
-				g_assert_cmpint (len, <=, 3);
-				g_variant_unref (sub_sub_value);
-			}
-			g_variant_unref (sub_value);
-		}
-		g_variant_unref (rows);
-	}
-
-	g_assert_cmpint (len, ==, 3);
-
-	g_assert_cmpstr (solutions[0][0], ==, "foo");
-	g_assert (solutions[0][1] != NULL);
-
-	g_assert_cmpstr (solutions[1][0], ==, "foo");
-	g_assert (solutions[1][1] != NULL);
-
-	g_assert_cmpstr (solutions[2][0], ==, "bar");
-	g_assert (solutions[2][1] != NULL);
+	g_assert_cmpstr (g_hash_table_lookup (blank_nodes[0], "foo"), !=, g_hash_table_lookup (blank_nodes[1], "foo"));
 
 	/* cleanup */
 
-	g_free (solutions[0][0]);
-	g_free (solutions[0][1]);
-	g_free (solutions[1][0]);
-	g_free (solutions[1][1]);
-	g_free (solutions[2][0]);
-	g_free (solutions[2][1]);
-
-	g_variant_unref (updates);
+	g_hash_table_unref (blank_nodes[0]);
+	g_hash_table_unref (blank_nodes[1]);
+	g_ptr_array_free (updates->pdata[0], TRUE);
+	g_ptr_array_free (updates->pdata[1], TRUE);
+	g_ptr_array_free (updates, TRUE);
 
 	tracker_data_manager_shutdown ();
 }

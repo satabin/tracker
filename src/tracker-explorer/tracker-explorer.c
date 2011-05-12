@@ -22,9 +22,11 @@
 
 #include <glib.h>
 #include <glib-object.h>
-#include <gio/gio.h>
+#include <dbus/dbus-glib.h>
 #include <stdlib.h>
 #include <string.h>
+#include <dbus/dbus-glib-lowlevel.h>
+#include <dbus/dbus.h>
 #include <gtk/gtk.h>
 #include <gee.h>
 #include <gobject/gvaluecollector.h>
@@ -37,11 +39,10 @@
 
 typedef struct _Resources Resources;
 typedef struct _ResourcesIface ResourcesIface;
-
-#define TYPE_RESOURCES_PROXY (resources_proxy_get_type ())
-typedef GDBusProxy ResourcesProxy;
-typedef GDBusProxyClass ResourcesProxyClass;
+typedef struct _DBusObjectVTable _DBusObjectVTable;
 #define _g_free0(var) (var = (g_free (var), NULL))
+typedef struct _ResourcesDBusProxy ResourcesDBusProxy;
+typedef DBusGProxyClass ResourcesDBusProxyClass;
 
 #define TYPE_HISTORY_ITEM (history_item_get_type ())
 #define HISTORY_ITEM(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_HISTORY_ITEM, HistoryItem))
@@ -80,6 +81,7 @@ typedef struct _ExplorerClass ExplorerClass;
 typedef struct _ExplorerPrivate ExplorerPrivate;
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 #define _history_unref0(var) ((var == NULL) ? NULL : (var = (history_unref (var), NULL)))
+#define _dbus_g_connection_unref0(var) ((var == NULL) ? NULL : (var = (dbus_g_connection_unref (var), NULL)))
 #define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 typedef struct _ParamSpecExplorer ParamSpecExplorer;
 #define _explorer_unref0(var) ((var == NULL) ? NULL : (var = (explorer_unref (var), NULL)))
@@ -87,6 +89,15 @@ typedef struct _ParamSpecExplorer ParamSpecExplorer;
 struct _ResourcesIface {
 	GTypeInterface parent_iface;
 	gchar** (*SparqlQuery) (Resources* self, const gchar* query, int* result_length1, int* result_length2, GError** error);
+};
+
+struct _DBusObjectVTable {
+	void (*register_object) (DBusConnection*, const char*, void*);
+};
+
+struct _ResourcesDBusProxy {
+	DBusGProxy parent_instance;
+	gboolean disposed;
 };
 
 struct _HistoryItem {
@@ -159,18 +170,26 @@ static gpointer history_item_parent_class = NULL;
 static gpointer history_parent_class = NULL;
 static gpointer explorer_parent_class = NULL;
 
-GType resources_proxy_get_type (void) G_GNUC_CONST;
-guint resources_register_object (void* object, GDBusConnection* connection, const gchar* path, GError** error);
+Resources* resources_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
 GType resources_get_type (void) G_GNUC_CONST;
 gchar** resources_SparqlQuery (Resources* self, const gchar* query, int* result_length1, int* result_length2, GError** error);
-static void resources_proxy_g_signal (GDBusProxy* proxy, const gchar* sender_name, const gchar* signal_name, GVariant* parameters);
-static gchar** resources_proxy_SparqlQuery (Resources* self, const gchar* query, int* result_length1, int* result_length2, GError** error);
-static void resources_proxy_resources_interface_init (ResourcesIface* iface);
-static void _dbus_resources_SparqlQuery (Resources* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void resources_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data);
-static GVariant* resources_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data);
-static gboolean resources_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data);
-static void _resources_unregister_object (gpointer user_data);
+static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
+static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
+void resources_dbus_register_object (DBusConnection* connection, const char* path, void* object);
+void _resources_dbus_unregister (DBusConnection* connection, void* _user_data_);
+DBusHandlerResult resources_dbus_message (DBusConnection* connection, DBusMessage* message, void* object);
+static DBusHandlerResult _dbus_resources_introspect (Resources* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_resources_property_get_all (Resources* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_resources_SparqlQuery (Resources* self, DBusConnection* connection, DBusMessage* message);
+GType resources_dbus_proxy_get_type (void) G_GNUC_CONST;
+DBusHandlerResult resources_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data);
+enum  {
+	RESOURCES_DBUS_PROXY_DUMMY_PROPERTY
+};
+static gchar** resources_dbus_proxy_SparqlQuery (Resources* self, const gchar* query, int* result_length1, int* result_length2, GError** error);
+static void resources_dbus_proxy_resources__interface_init (ResourcesIface* iface);
+static void _vala_resources_dbus_proxy_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
+static void _vala_resources_dbus_proxy_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
 gpointer history_item_ref (gpointer instance);
 void history_item_unref (gpointer instance);
 GParamSpec* param_spec_history_item (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags);
@@ -217,13 +236,13 @@ enum  {
 };
 #define EXPLORER_UI_FILE "tracker-explorer.ui"
 void explorer_show (Explorer* self);
-static void _gtk_main_quit_gtk_object_destroy (GtkObject* _sender, gpointer self);
+static void _gtk_main_quit_gtk_object_destroy (GtkWindow* _sender, gpointer self);
 static void explorer_entry_changed (Explorer* self, GtkEditable* editable);
-static void _explorer_entry_changed_gtk_editable_changed (GtkEditable* _sender, gpointer self);
+static void _explorer_entry_changed_gtk_editable_changed (GtkEntry* _sender, gpointer self);
 static void explorer_setup_uris (Explorer* self, GtkTreeView* urisview);
 static void explorer_setup_relationships (Explorer* self, GtkTreeView* relationshipsview);
 static void explorer_update_types_page (Explorer* self, GtkWidget* w);
-static void _explorer_update_types_page_gtk_container_set_focus_child (GtkContainer* _sender, GtkWidget* widget, gpointer self);
+static void _explorer_update_types_page_gtk_container_set_focus_child (GtkNotebook* _sender, GtkWidget* widget, gpointer self);
 static void explorer_forward_clicked (Explorer* self);
 static void _explorer_forward_clicked_gtk_button_clicked (GtkButton* _sender, gpointer self);
 static void explorer_back_clicked (Explorer* self);
@@ -245,16 +264,8 @@ static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNoti
 static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
 static gint _vala_array_length (gpointer array);
 
-static const GDBusArgInfo _resources_dbus_arg_info_SparqlQuery_query = {-1, "query", "s"};
-static const GDBusArgInfo _resources_dbus_arg_info_SparqlQuery_result = {-1, "result", "aas"};
-static const GDBusArgInfo * const _resources_dbus_arg_info_SparqlQuery_in[] = {&_resources_dbus_arg_info_SparqlQuery_query, NULL};
-static const GDBusArgInfo * const _resources_dbus_arg_info_SparqlQuery_out[] = {&_resources_dbus_arg_info_SparqlQuery_result, NULL};
-static const GDBusMethodInfo _resources_dbus_method_info_SparqlQuery = {-1, "SparqlQuery", (GDBusArgInfo **) (&_resources_dbus_arg_info_SparqlQuery_in), (GDBusArgInfo **) (&_resources_dbus_arg_info_SparqlQuery_out)};
-static const GDBusMethodInfo * const _resources_dbus_method_info[] = {&_resources_dbus_method_info_SparqlQuery, NULL};
-static const GDBusSignalInfo * const _resources_dbus_signal_info[] = {NULL};
-static const GDBusPropertyInfo * const _resources_dbus_property_info[] = {NULL};
-static const GDBusInterfaceInfo _resources_dbus_interface_info = {-1, "org.freedesktop.Tracker1.Resources", (GDBusMethodInfo **) (&_resources_dbus_method_info), (GDBusSignalInfo **) (&_resources_dbus_signal_info), (GDBusPropertyInfo **) (&_resources_dbus_property_info)};
-static const GDBusInterfaceVTable _resources_dbus_interface_vtable = {resources_dbus_interface_method_call, resources_dbus_interface_get_property, resources_dbus_interface_set_property};
+static const DBusObjectPathVTable _resources_dbus_path_vtable = {_resources_dbus_unregister, resources_dbus_message};
+static const _DBusObjectVTable _resources_dbus_vtable = {resources_dbus_register_object};
 
 gchar** resources_SparqlQuery (Resources* self, const gchar* query, int* result_length1, int* result_length2, GError** error) {
 	return RESOURCES_GET_INTERFACE (self)->SparqlQuery (self, query, result_length1, result_length2, error);
@@ -269,211 +280,506 @@ static void resources_base_init (ResourcesIface * iface) {
 }
 
 
+static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
+	const _DBusObjectVTable * vtable;
+	vtable = g_type_get_qdata (G_TYPE_FROM_INSTANCE (object), g_quark_from_static_string ("DBusObjectVTable"));
+	if (vtable) {
+		vtable->register_object (connection, path, object);
+	} else {
+		g_warning ("Object does not implement any D-Bus interface");
+	}
+}
+
+
+static void _vala_dbus_unregister_object (gpointer connection, GObject* object) {
+	char* path;
+	path = g_object_steal_data ((GObject*) object, "dbus_object_path");
+	dbus_connection_unregister_object_path (connection, path);
+	g_free (path);
+}
+
+
+void _resources_dbus_unregister (DBusConnection* connection, void* _user_data_) {
+}
+
+
+static DBusHandlerResult _dbus_resources_introspect (Resources* self, DBusConnection* connection, DBusMessage* message) {
+	DBusMessage* reply;
+	DBusMessageIter iter;
+	GString* xml_data;
+	char** children;
+	int i;
+	reply = dbus_message_new_method_return (message);
+	dbus_message_iter_init_append (reply, &iter);
+	xml_data = g_string_new ("<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n");
+	g_string_append (xml_data, "<node>\n<interface name=\"org.freedesktop.DBus.Introspectable\">\n  <method name=\"Introspect\">\n    <arg name=\"data\" direction=\"out\" type=\"s\"/>\n  </method>\n</interface>\n<interface name=\"org.freedesktop.DBus.Properties\">\n  <method name=\"Get\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"out\" type=\"v\"/>\n  </method>\n  <method name=\"Set\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"in\" type=\"v\"/>\n  </method>\n  <method name=\"GetAll\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"props\" direction=\"out\" type=\"a{sv}\"/>\n  </method>\n</interface>\n<interface name=\"org.freedesktop.Tracker1.Resources\">\n  <method name=\"SparqlQuery\">\n    <arg name=\"query\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"aas\" direction=\"out\"/>\n  </method>\n</interface>\n");
+	dbus_connection_list_registered (connection, g_object_get_data ((GObject *) self, "dbus_object_path"), &children);
+	for (i = 0; children[i]; i++) {
+		g_string_append_printf (xml_data, "<node name=\"%s\"/>\n", children[i]);
+	}
+	dbus_free_string_array (children);
+	g_string_append (xml_data, "</node>\n");
+	dbus_message_iter_append_basic (&iter, DBUS_TYPE_STRING, &xml_data->str);
+	g_string_free (xml_data, TRUE);
+	if (reply) {
+		dbus_connection_send (connection, reply, NULL);
+		dbus_message_unref (reply);
+		return DBUS_HANDLER_RESULT_HANDLED;
+	} else {
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	}
+}
+
+
+static DBusHandlerResult _dbus_resources_property_get_all (Resources* self, DBusConnection* connection, DBusMessage* message) {
+	DBusMessage* reply;
+	DBusMessageIter iter, reply_iter, subiter;
+	char* interface_name;
+	const char* _tmp0_;
+	if (strcmp (dbus_message_get_signature (message), "s")) {
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	}
+	dbus_message_iter_init (message, &iter);
+	reply = dbus_message_new_method_return (message);
+	dbus_message_iter_init_append (reply, &reply_iter);
+	dbus_message_iter_get_basic (&iter, &_tmp0_);
+	dbus_message_iter_next (&iter);
+	interface_name = g_strdup (_tmp0_);
+	if (strcmp (interface_name, "org.freedesktop.Tracker1.Resources") == 0) {
+		dbus_message_iter_open_container (&reply_iter, DBUS_TYPE_ARRAY, "{sv}", &subiter);
+		dbus_message_iter_close_container (&reply_iter, &subiter);
+	} else {
+		dbus_message_unref (reply);
+		reply = NULL;
+	}
+	g_free (interface_name);
+	if (reply) {
+		dbus_connection_send (connection, reply, NULL);
+		dbus_message_unref (reply);
+		return DBUS_HANDLER_RESULT_HANDLED;
+	} else {
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	}
+}
+
+
+static DBusHandlerResult _dbus_resources_SparqlQuery (Resources* self, DBusConnection* connection, DBusMessage* message) {
+	DBusMessageIter iter;
+	GError* error;
+	gchar* query = NULL;
+	const char* _tmp1_;
+	gchar** result;
+	int result_length1;
+	int result_length2;
+	DBusMessage* reply;
+	gchar** _tmp2_;
+	DBusMessageIter _tmp3_;
+	int _tmp4_;
+	error = NULL;
+	if (strcmp (dbus_message_get_signature (message), "s")) {
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	}
+	dbus_message_iter_init (message, &iter);
+	dbus_message_iter_get_basic (&iter, &_tmp1_);
+	dbus_message_iter_next (&iter);
+	query = g_strdup (_tmp1_);
+	result_length1 = 0;
+	result_length2 = 0;
+	result = resources_SparqlQuery (self, query, &result_length1, &result_length2, &error);
+	if (error) {
+		if (error->domain == DBUS_GERROR) {
+			switch (error->code) {
+				case DBUS_GERROR_FAILED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
+				break;
+				case DBUS_GERROR_NO_MEMORY:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+				break;
+				case DBUS_GERROR_SERVICE_UNKNOWN:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+				break;
+				case DBUS_GERROR_NAME_HAS_NO_OWNER:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+				break;
+				case DBUS_GERROR_NO_REPLY:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
+				break;
+				case DBUS_GERROR_IO_ERROR:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
+				break;
+				case DBUS_GERROR_BAD_ADDRESS:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+				break;
+				case DBUS_GERROR_NOT_SUPPORTED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+				break;
+				case DBUS_GERROR_LIMITS_EXCEEDED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+				break;
+				case DBUS_GERROR_ACCESS_DENIED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+				break;
+				case DBUS_GERROR_AUTH_FAILED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+				break;
+				case DBUS_GERROR_NO_SERVER:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
+				break;
+				case DBUS_GERROR_TIMEOUT:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
+				break;
+				case DBUS_GERROR_NO_NETWORK:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+				break;
+				case DBUS_GERROR_ADDRESS_IN_USE:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+				break;
+				case DBUS_GERROR_DISCONNECTED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+				break;
+				case DBUS_GERROR_INVALID_ARGS:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+				break;
+				case DBUS_GERROR_FILE_NOT_FOUND:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+				break;
+				case DBUS_GERROR_FILE_EXISTS:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
+				break;
+				case DBUS_GERROR_UNKNOWN_METHOD:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+				break;
+				case DBUS_GERROR_TIMED_OUT:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+				break;
+				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+				break;
+				case DBUS_GERROR_MATCH_RULE_INVALID:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+				break;
+				case DBUS_GERROR_SPAWN_EXEC_FAILED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+				break;
+				case DBUS_GERROR_SPAWN_FORK_FAILED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+				break;
+				case DBUS_GERROR_SPAWN_CHILD_EXITED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+				break;
+				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+				break;
+				case DBUS_GERROR_SPAWN_FAILED:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+				break;
+				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+				break;
+				case DBUS_GERROR_INVALID_SIGNATURE:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+				break;
+				case DBUS_GERROR_INVALID_FILE_CONTENT:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+				break;
+				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+				break;
+				case DBUS_GERROR_REMOTE_EXCEPTION:
+				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+				break;
+			}
+		}
+		dbus_connection_send (connection, reply, NULL);
+		dbus_message_unref (reply);
+		return DBUS_HANDLER_RESULT_HANDLED;
+	}
+	reply = dbus_message_new_method_return (message);
+	dbus_message_iter_init_append (reply, &iter);
+	_g_free0 (query);
+	_tmp2_ = result;
+	dbus_message_iter_open_container (&iter, DBUS_TYPE_ARRAY, "as", &_tmp3_);
+	for (_tmp4_ = 0; _tmp4_ < result_length1; _tmp4_++) {
+		DBusMessageIter _tmp5_;
+		int _tmp6_;
+		dbus_message_iter_open_container (&_tmp3_, DBUS_TYPE_ARRAY, "s", &_tmp5_);
+		for (_tmp6_ = 0; _tmp6_ < result_length2; _tmp6_++) {
+			const char* _tmp7_;
+			_tmp7_ = *_tmp2_;
+			dbus_message_iter_append_basic (&_tmp5_, DBUS_TYPE_STRING, &_tmp7_);
+			_tmp2_++;
+		}
+		dbus_message_iter_close_container (&_tmp3_, &_tmp5_);
+	}
+	dbus_message_iter_close_container (&iter, &_tmp3_);
+	 result = (_vala_array_free ( result,  result_length1 *  result_length2, (GDestroyNotify) g_free), NULL);
+	if (reply) {
+		dbus_connection_send (connection, reply, NULL);
+		dbus_message_unref (reply);
+		return DBUS_HANDLER_RESULT_HANDLED;
+	} else {
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	}
+}
+
+
+DBusHandlerResult resources_dbus_message (DBusConnection* connection, DBusMessage* message, void* object) {
+	DBusHandlerResult result;
+	result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	if (dbus_message_is_method_call (message, "org.freedesktop.DBus.Introspectable", "Introspect")) {
+		result = _dbus_resources_introspect (object, connection, message);
+	} else if (dbus_message_is_method_call (message, "org.freedesktop.DBus.Properties", "GetAll")) {
+		result = _dbus_resources_property_get_all (object, connection, message);
+	} else if (dbus_message_is_method_call (message, "org.freedesktop.Tracker1.Resources", "SparqlQuery")) {
+		result = _dbus_resources_SparqlQuery (object, connection, message);
+	}
+	if (result == DBUS_HANDLER_RESULT_HANDLED) {
+		return result;
+	} else {
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	}
+}
+
+
+void resources_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
+	if (!g_object_get_data (object, "dbus_object_path")) {
+		g_object_set_data (object, "dbus_object_path", g_strdup (path));
+		dbus_connection_register_object_path (connection, path, &_resources_dbus_path_vtable, object);
+		g_object_weak_ref (object, _vala_dbus_unregister_object, connection);
+	}
+}
+
+
 GType resources_get_type (void) {
 	static volatile gsize resources_type_id__volatile = 0;
 	if (g_once_init_enter (&resources_type_id__volatile)) {
 		static const GTypeInfo g_define_type_info = { sizeof (ResourcesIface), (GBaseInitFunc) resources_base_init, (GBaseFinalizeFunc) NULL, (GClassInitFunc) NULL, (GClassFinalizeFunc) NULL, NULL, 0, 0, (GInstanceInitFunc) NULL, NULL };
 		GType resources_type_id;
 		resources_type_id = g_type_register_static (G_TYPE_INTERFACE, "Resources", &g_define_type_info, 0);
-		g_type_interface_add_prerequisite (resources_type_id, G_TYPE_DBUS_PROXY);
-		g_type_set_qdata (resources_type_id, g_quark_from_static_string ("vala-dbus-proxy-type"), (void*) resources_proxy_get_type);
-		g_type_set_qdata (resources_type_id, g_quark_from_static_string ("vala-dbus-interface-name"), "org.freedesktop.Tracker1.Resources");
-		g_type_set_qdata (resources_type_id, g_quark_from_static_string ("vala-dbus-register-object"), (void*) resources_register_object);
+		g_type_interface_add_prerequisite (resources_type_id, G_TYPE_OBJECT);
+		g_type_set_qdata (resources_type_id, g_quark_from_string ("ValaDBusInterfaceProxyType"), &resources_dbus_proxy_get_type);
+		g_type_set_qdata (resources_type_id, g_quark_from_static_string ("DBusObjectVTable"), (void*) (&_resources_dbus_vtable));
 		g_once_init_leave (&resources_type_id__volatile, resources_type_id);
 	}
 	return resources_type_id__volatile;
 }
 
 
-G_DEFINE_TYPE_EXTENDED (ResourcesProxy, resources_proxy, G_TYPE_DBUS_PROXY, 0, G_IMPLEMENT_INTERFACE (TYPE_RESOURCES, resources_proxy_resources_interface_init) )
-static void resources_proxy_class_init (ResourcesProxyClass* klass) {
-	G_DBUS_PROXY_CLASS (klass)->g_signal = resources_proxy_g_signal;
+G_DEFINE_TYPE_EXTENDED (ResourcesDBusProxy, resources_dbus_proxy, DBUS_TYPE_G_PROXY, 0, G_IMPLEMENT_INTERFACE (TYPE_RESOURCES, resources_dbus_proxy_resources__interface_init) );
+Resources* resources_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path) {
+	Resources* self;
+	self = g_object_new (resources_dbus_proxy_get_type (), "connection", connection, "name", name, "path", path, "interface", "org.freedesktop.Tracker1.Resources", NULL);
+	return self;
 }
 
 
-static void resources_proxy_g_signal (GDBusProxy* proxy, const gchar* sender_name, const gchar* signal_name, GVariant* parameters) {
+static GObject* resources_dbus_proxy_construct (GType gtype, guint n_properties, GObjectConstructParam* properties) {
+	GObject* self;
+	DBusGConnection *connection;
+	char* path;
+	char* filter;
+	self = G_OBJECT_CLASS (resources_dbus_proxy_parent_class)->constructor (gtype, n_properties, properties);
+	g_object_get (self, "connection", &connection, NULL);
+	g_object_get (self, "path", &path, NULL);
+	dbus_connection_add_filter (dbus_g_connection_get_connection (connection), resources_dbus_proxy_filter, self, NULL);
+	filter = g_strdup_printf ("type='signal',path='%s',interface='org.freedesktop.Tracker1.Resources'", path);
+	dbus_bus_add_match (dbus_g_connection_get_connection (connection), filter, NULL);
+	dbus_g_connection_unref (connection);
+	g_free (path);
+	g_free (filter);
+	return self;
 }
 
 
-static void resources_proxy_init (ResourcesProxy* self) {
+DBusHandlerResult resources_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data) {
+	if (dbus_message_has_path (message, dbus_g_proxy_get_path (user_data))) {
+	}
+	return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
 
-static gchar** resources_proxy_SparqlQuery (Resources* self, const gchar* query, int* result_length1, int* result_length2, GError** error) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	GDBusMessage *_reply_message;
-	GVariant *_reply;
-	GVariantIter _reply_iter;
+static void resources_dbus_proxy_dispose (GObject* self) {
+	DBusGConnection *connection;
+	if (((ResourcesDBusProxy*) self)->disposed) {
+		return;
+	}
+	((ResourcesDBusProxy*) self)->disposed = TRUE;
+	g_object_get (self, "connection", &connection, NULL);
+	dbus_connection_remove_filter (dbus_g_connection_get_connection (connection), resources_dbus_proxy_filter, self);
+	G_OBJECT_CLASS (resources_dbus_proxy_parent_class)->dispose (self);
+}
+
+
+static void resources_dbus_proxy_class_init (ResourcesDBusProxyClass* klass) {
+	G_OBJECT_CLASS (klass)->constructor = resources_dbus_proxy_construct;
+	G_OBJECT_CLASS (klass)->dispose = resources_dbus_proxy_dispose;
+	G_OBJECT_CLASS (klass)->get_property = _vala_resources_dbus_proxy_get_property;
+	G_OBJECT_CLASS (klass)->set_property = _vala_resources_dbus_proxy_set_property;
+}
+
+
+static void resources_dbus_proxy_init (ResourcesDBusProxy* self) {
+}
+
+
+static gchar** resources_dbus_proxy_SparqlQuery (Resources* self, const gchar* query, int* result_length1, int* result_length2, GError** error) {
+	DBusError _dbus_error;
+	DBusGConnection *_connection;
+	DBusMessage *_message, *_reply;
+	DBusMessageIter _iter;
+	const char* _tmp0_;
 	gchar** _result;
 	int _result_length1;
 	int _result_length2;
-	GVariant* _tmp0_;
 	gchar** _tmp1_;
 	int _tmp1__length;
 	int _tmp1__size;
 	int _tmp1__length1;
-	GVariantIter _tmp2_;
-	GVariant* _tmp3_;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Resources", "SparqlQuery");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	g_variant_builder_add_value (&_arguments_builder, g_variant_new_string (query));
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	_reply_message = g_dbus_connection_send_message_with_reply_sync (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, NULL, error);
-	g_object_unref (_message);
-	if (!_reply_message) {
+	DBusMessageIter _tmp2_;
+	if (((ResourcesDBusProxy*) self)->disposed) {
+		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
 		return NULL;
 	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
+	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "org.freedesktop.Tracker1.Resources", "SparqlQuery");
+	dbus_message_iter_init_append (_message, &_iter);
+	_tmp0_ = query;
+	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_STRING, &_tmp0_);
+	g_object_get (self, "connection", &_connection, NULL);
+	dbus_error_init (&_dbus_error);
+	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
+	dbus_g_connection_unref (_connection);
+	dbus_message_unref (_message);
+	if (dbus_error_is_set (&_dbus_error)) {
+		GQuark _edomain = 0;
+		gint _ecode = 0;
+		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+			const char* _tmp5_;
+			_edomain = DBUS_GERROR;
+			_tmp5_ = _dbus_error.name + 27;
+			if (strcmp (_tmp5_, "Failed") == 0) {
+				_ecode = DBUS_GERROR_FAILED;
+			} else if (strcmp (_tmp5_, "NoMemory") == 0) {
+				_ecode = DBUS_GERROR_NO_MEMORY;
+			} else if (strcmp (_tmp5_, "ServiceUnknown") == 0) {
+				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+			} else if (strcmp (_tmp5_, "NameHasNoOwner") == 0) {
+				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+			} else if (strcmp (_tmp5_, "NoReply") == 0) {
+				_ecode = DBUS_GERROR_NO_REPLY;
+			} else if (strcmp (_tmp5_, "IOError") == 0) {
+				_ecode = DBUS_GERROR_IO_ERROR;
+			} else if (strcmp (_tmp5_, "BadAddress") == 0) {
+				_ecode = DBUS_GERROR_BAD_ADDRESS;
+			} else if (strcmp (_tmp5_, "NotSupported") == 0) {
+				_ecode = DBUS_GERROR_NOT_SUPPORTED;
+			} else if (strcmp (_tmp5_, "LimitsExceeded") == 0) {
+				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+			} else if (strcmp (_tmp5_, "AccessDenied") == 0) {
+				_ecode = DBUS_GERROR_ACCESS_DENIED;
+			} else if (strcmp (_tmp5_, "AuthFailed") == 0) {
+				_ecode = DBUS_GERROR_AUTH_FAILED;
+			} else if (strcmp (_tmp5_, "NoServer") == 0) {
+				_ecode = DBUS_GERROR_NO_SERVER;
+			} else if (strcmp (_tmp5_, "Timeout") == 0) {
+				_ecode = DBUS_GERROR_TIMEOUT;
+			} else if (strcmp (_tmp5_, "NoNetwork") == 0) {
+				_ecode = DBUS_GERROR_NO_NETWORK;
+			} else if (strcmp (_tmp5_, "AddressInUse") == 0) {
+				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
+			} else if (strcmp (_tmp5_, "Disconnected") == 0) {
+				_ecode = DBUS_GERROR_DISCONNECTED;
+			} else if (strcmp (_tmp5_, "InvalidArgs") == 0) {
+				_ecode = DBUS_GERROR_INVALID_ARGS;
+			} else if (strcmp (_tmp5_, "FileNotFound") == 0) {
+				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
+			} else if (strcmp (_tmp5_, "FileExists") == 0) {
+				_ecode = DBUS_GERROR_FILE_EXISTS;
+			} else if (strcmp (_tmp5_, "UnknownMethod") == 0) {
+				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
+			} else if (strcmp (_tmp5_, "TimedOut") == 0) {
+				_ecode = DBUS_GERROR_TIMED_OUT;
+			} else if (strcmp (_tmp5_, "MatchRuleNotFound") == 0) {
+				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+			} else if (strcmp (_tmp5_, "MatchRuleInvalid") == 0) {
+				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+			} else if (strcmp (_tmp5_, "Spawn.ExecFailed") == 0) {
+				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+			} else if (strcmp (_tmp5_, "Spawn.ForkFailed") == 0) {
+				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+			} else if (strcmp (_tmp5_, "Spawn.ChildExited") == 0) {
+				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+			} else if (strcmp (_tmp5_, "Spawn.ChildSignaled") == 0) {
+				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+			} else if (strcmp (_tmp5_, "Spawn.Failed") == 0) {
+				_ecode = DBUS_GERROR_SPAWN_FAILED;
+			} else if (strcmp (_tmp5_, "UnixProcessIdUnknown") == 0) {
+				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+			} else if (strcmp (_tmp5_, "InvalidSignature") == 0) {
+				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
+			} else if (strcmp (_tmp5_, "InvalidFileContent") == 0) {
+				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+			} else if (strcmp (_tmp5_, "SELinuxSecurityContextUnknown") == 0) {
+				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+			} else if (strcmp (_tmp5_, "RemoteException") == 0) {
+				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+			}
+		}
+		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
+		dbus_error_free (&_dbus_error);
 		return NULL;
 	}
-	_reply = g_dbus_message_get_body (_reply_message);
-	g_variant_iter_init (&_reply_iter, _reply);
+	if (strcmp (dbus_message_get_signature (_reply), "aas")) {
+		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "aas", dbus_message_get_signature (_reply));
+		dbus_message_unref (_reply);
+		return NULL;
+	}
+	dbus_message_iter_init (_reply, &_iter);
 	_result_length1 = 0;
 	_result_length2 = 0;
-	_tmp0_ = g_variant_iter_next_value (&_reply_iter);
 	_tmp1_ = g_new (gchar*, 5);
 	_tmp1__length = 0;
 	_tmp1__size = 4;
 	_tmp1__length1 = 0;
-	g_variant_iter_init (&_tmp2_, _tmp0_);
-	for (; (_tmp3_ = g_variant_iter_next_value (&_tmp2_)) != NULL; _tmp1__length1++) {
+	dbus_message_iter_recurse (&_iter, &_tmp2_);
+	for (; dbus_message_iter_get_arg_type (&_tmp2_); _tmp1__length1++) {
 		int _tmp1__length2;
-		GVariantIter _tmp4_;
-		GVariant* _tmp5_;
+		DBusMessageIter _tmp3_;
 		_tmp1__length2 = 0;
-		g_variant_iter_init (&_tmp4_, _tmp3_);
-		for (; (_tmp5_ = g_variant_iter_next_value (&_tmp4_)) != NULL; _tmp1__length2++) {
+		dbus_message_iter_recurse (&_tmp2_, &_tmp3_);
+		for (; dbus_message_iter_get_arg_type (&_tmp3_); _tmp1__length2++) {
+			const char* _tmp4_;
 			if (_tmp1__size == _tmp1__length) {
 				_tmp1__size = 2 * _tmp1__size;
 				_tmp1_ = g_renew (gchar*, _tmp1_, _tmp1__size + 1);
 			}
-			_tmp1_[_tmp1__length++] = g_variant_dup_string (_tmp5_, NULL);
-			g_variant_unref (_tmp5_);
+			dbus_message_iter_get_basic (&_tmp3_, &_tmp4_);
+			dbus_message_iter_next (&_tmp3_);
+			_tmp1_[_tmp1__length++] = g_strdup (_tmp4_);
 		}
 		_result_length2 = _tmp1__length2;
-		g_variant_unref (_tmp3_);
+		dbus_message_iter_next (&_tmp2_);
 	}
 	_result_length1 = _tmp1__length1;
 	_tmp1_[_tmp1__length] = NULL;
+	dbus_message_iter_next (&_iter);
 	_result = _tmp1_;
-	g_variant_unref (_tmp0_);
 	*result_length1 = _result_length1;
 	*result_length2 = _result_length2;
-	g_object_unref (_reply_message);
+	dbus_message_unref (_reply);
 	return _result;
 }
 
 
-static void resources_proxy_resources_interface_init (ResourcesIface* iface) {
-	iface->SparqlQuery = resources_proxy_SparqlQuery;
+static void resources_dbus_proxy_resources__interface_init (ResourcesIface* iface) {
+	iface->SparqlQuery = resources_dbus_proxy_SparqlQuery;
 }
 
 
-static void _dbus_resources_SparqlQuery (Resources* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GError* error = NULL;
-	GVariantIter _arguments_iter;
-	gchar* query = NULL;
-	GVariant* _tmp6_;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	gchar** result;
-	int result_length1 = 0;
-	int result_length2 = 0;
-	gchar** _tmp7_;
-	GVariantBuilder _tmp8_;
-	int _tmp9_;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	_tmp6_ = g_variant_iter_next_value (&_arguments_iter);
-	query = g_variant_dup_string (_tmp6_, NULL);
-	g_variant_unref (_tmp6_);
-	result = resources_SparqlQuery (self, query, &result_length1, &result_length2, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_tmp7_ = result;
-	g_variant_builder_init (&_tmp8_, G_VARIANT_TYPE ("aas"));
-	for (_tmp9_ = 0; _tmp9_ < result_length1; _tmp9_++) {
-		GVariantBuilder _tmp10_;
-		int _tmp11_;
-		g_variant_builder_init (&_tmp10_, G_VARIANT_TYPE ("aas"));
-		for (_tmp11_ = 0; _tmp11_ < result_length2; _tmp11_++) {
-			g_variant_builder_add_value (&_tmp10_, g_variant_new_string (*_tmp7_));
-			_tmp7_++;
-		}
-		g_variant_builder_add_value (&_tmp8_, g_variant_builder_end (&_tmp10_));
-	}
-	g_variant_builder_add_value (&_reply_builder, g_variant_builder_end (&_tmp8_));
-	 result = (_vala_array_free ( result,  result_length1 *  result_length2, (GDestroyNotify) g_free), NULL);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	_g_free0 (query);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
+static void _vala_resources_dbus_proxy_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
 }
 
 
-static void resources_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	if (strcmp (method_name, "SparqlQuery") == 0) {
-		_dbus_resources_SparqlQuery (object, parameters, invocation);
-	} else {
-		g_object_unref (invocation);
-	}
-}
-
-
-static GVariant* resources_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	return NULL;
-}
-
-
-static gboolean resources_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	return FALSE;
-}
-
-
-guint resources_register_object (gpointer object, GDBusConnection* connection, const gchar* path, GError** error) {
-	guint result;
-	gpointer *data;
-	data = g_new (gpointer, 3);
-	data[0] = g_object_ref (object);
-	data[1] = g_object_ref (connection);
-	data[2] = g_strdup (path);
-	result = g_dbus_connection_register_object (connection, path, (GDBusInterfaceInfo *) (&_resources_dbus_interface_info), &_resources_dbus_interface_vtable, data, _resources_unregister_object, error);
-	if (!result) {
-		return 0;
-	}
-	return result;
-}
-
-
-static void _resources_unregister_object (gpointer user_data) {
-	gpointer* data;
-	data = user_data;
-	g_object_unref (data[0]);
-	g_object_unref (data[1]);
-	g_free (data[2]);
-	g_free (data);
+static void _vala_resources_dbus_proxy_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
 }
 
 
@@ -958,17 +1264,17 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-static void _gtk_main_quit_gtk_object_destroy (GtkObject* _sender, gpointer self) {
+static void _gtk_main_quit_gtk_object_destroy (GtkWindow* _sender, gpointer self) {
 	gtk_main_quit ();
 }
 
 
-static void _explorer_entry_changed_gtk_editable_changed (GtkEditable* _sender, gpointer self) {
+static void _explorer_entry_changed_gtk_editable_changed (GtkEntry* _sender, gpointer self) {
 	explorer_entry_changed (self, _sender);
 }
 
 
-static void _explorer_update_types_page_gtk_container_set_focus_child (GtkContainer* _sender, GtkWidget* widget, gpointer self) {
+static void _explorer_update_types_page_gtk_container_set_focus_child (GtkNotebook* _sender, GtkWidget* widget, gpointer self) {
 	explorer_update_types_page (self, widget);
 }
 
@@ -984,57 +1290,63 @@ static void _explorer_back_clicked_gtk_button_clicked (GtkButton* _sender, gpoin
 
 
 void explorer_show (Explorer* self) {
-	Resources* _tmp0_ = NULL;
-	Resources* _tmp1_;
-	GtkBuilder* _tmp3_ = NULL;
+	DBusGConnection* _tmp0_ = NULL;
+	DBusGConnection* conn;
+	GtkBuilder* _tmp2_ = NULL;
 	GtkBuilder* builder;
-	GObject* _tmp5_ = NULL;
-	GObject* _tmp6_;
-	GtkWindow* _tmp7_;
+	GObject* _tmp4_ = NULL;
+	GObject* _tmp5_;
+	GtkWindow* _tmp6_;
 	GtkWindow* window;
-	GObject* _tmp8_ = NULL;
-	GObject* _tmp9_;
-	GtkEntry* _tmp10_;
+	GObject* _tmp7_ = NULL;
+	GObject* _tmp8_;
+	GtkEntry* _tmp9_;
 	GtkEntry* entry;
-	GObject* _tmp11_ = NULL;
-	GObject* _tmp12_;
-	GtkTreeView* _tmp13_;
+	GObject* _tmp10_ = NULL;
+	GObject* _tmp11_;
+	GtkTreeView* _tmp12_;
 	GtkTreeView* urisview;
-	GObject* _tmp14_ = NULL;
-	GObject* _tmp15_;
-	GtkTreeView* _tmp16_;
+	GObject* _tmp13_ = NULL;
+	GObject* _tmp14_;
+	GtkTreeView* _tmp15_;
 	GtkTreeView* relationshipsview;
-	GObject* _tmp17_ = NULL;
-	GObject* _tmp18_;
-	GtkLabel* _tmp19_;
-	GObject* _tmp20_ = NULL;
-	GObject* _tmp21_;
-	GtkNotebook* _tmp22_;
-	GObject* _tmp23_ = NULL;
-	GObject* _tmp24_;
-	GtkButton* _tmp25_;
-	GObject* _tmp26_ = NULL;
-	GObject* _tmp27_;
-	GtkButton* _tmp28_;
+	GObject* _tmp16_ = NULL;
+	GObject* _tmp17_;
+	GtkLabel* _tmp18_;
+	GObject* _tmp19_ = NULL;
+	GObject* _tmp20_;
+	GtkNotebook* _tmp21_;
+	GObject* _tmp22_ = NULL;
+	GObject* _tmp23_;
+	GtkButton* _tmp24_;
+	GObject* _tmp25_ = NULL;
+	GObject* _tmp26_;
+	GtkButton* _tmp27_;
 	GError * _inner_error_ = NULL;
 	g_return_if_fail (self != NULL);
-	_tmp0_ = g_initable_new (TYPE_RESOURCES_PROXY, NULL, &_inner_error_, "g-flags", G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS, "g-name", "org.freedesktop.Tracker1", "g-bus-type", G_BUS_TYPE_SESSION, "g-object-path", "/org/freedesktop/Tracker1/Resources", "g-interface-name", "org.freedesktop.Tracker1.Resources", NULL);
-	_tmp1_ = (Resources*) _tmp0_;
+	_tmp0_ = dbus_g_bus_get (DBUS_BUS_SESSION, &_inner_error_);
+	conn = _tmp0_;
 	if (_inner_error_ != NULL) {
-		goto __catch0_g_error;
+		if (_inner_error_->domain == DBUS_GERROR) {
+			goto __catch0_dbus_gerror;
+		}
+		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
+		return;
 	}
 	_g_object_unref0 (self->priv->tracker);
-	self->priv->tracker = _tmp1_;
+	self->priv->tracker = resources_dbus_proxy_new (conn, "org.freedesktop.Tracker1", "/org/freedesktop/Tracker1/Resources");
+	_dbus_g_connection_unref0 (conn);
 	goto __finally0;
-	__catch0_g_error:
+	__catch0_dbus_gerror:
 	{
 		GError * e;
-		GtkMessageDialog* _tmp2_ = NULL;
+		GtkMessageDialog* _tmp1_ = NULL;
 		GtkMessageDialog* msg;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		_tmp2_ = (GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CANCEL, "Error connecting to D-Bus session bus\n%s", e->message);
-		msg = g_object_ref_sink (_tmp2_);
+		_tmp1_ = (GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CANCEL, "Error connecting to D-Bus session bus\n%s", e->message);
+		msg = g_object_ref_sink (_tmp1_);
 		gtk_dialog_run ((GtkDialog*) msg);
 		gtk_main_quit ();
 		_g_object_unref0 (msg);
@@ -1046,8 +1358,8 @@ void explorer_show (Explorer* self) {
 		g_clear_error (&_inner_error_);
 		return;
 	}
-	_tmp3_ = gtk_builder_new ();
-	builder = _tmp3_;
+	_tmp2_ = gtk_builder_new ();
+	builder = _tmp2_;
 	gtk_builder_add_from_file (builder, SRCDIR EXPLORER_UI_FILE, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		goto __catch1_g_error;
@@ -1066,12 +1378,12 @@ void explorer_show (Explorer* self) {
 		__catch2_g_error:
 		{
 			GError * e;
-			GtkMessageDialog* _tmp4_ = NULL;
+			GtkMessageDialog* _tmp3_ = NULL;
 			GtkMessageDialog* msg;
 			e = _inner_error_;
 			_inner_error_ = NULL;
-			_tmp4_ = (GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CANCEL, "Failed to load UI\n%s", e->message);
-			msg = g_object_ref_sink (_tmp4_);
+			_tmp3_ = (GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CANCEL, "Failed to load UI\n%s", e->message);
+			msg = g_object_ref_sink (_tmp3_);
 			gtk_dialog_run ((GtkDialog*) msg);
 			gtk_main_quit ();
 			_g_object_unref0 (msg);
@@ -1095,49 +1407,49 @@ void explorer_show (Explorer* self) {
 		g_clear_error (&_inner_error_);
 		return;
 	}
-	_tmp5_ = gtk_builder_get_object (builder, "explorer");
-	_tmp6_ = _tmp5_;
-	_tmp7_ = _g_object_ref0 (GTK_IS_WINDOW (_tmp6_) ? ((GtkWindow*) _tmp6_) : NULL);
-	window = _tmp7_;
+	_tmp4_ = gtk_builder_get_object (builder, "explorer");
+	_tmp5_ = _tmp4_;
+	_tmp6_ = _g_object_ref0 (GTK_IS_WINDOW (_tmp5_) ? ((GtkWindow*) _tmp5_) : NULL);
+	window = _tmp6_;
 	g_signal_connect ((GtkObject*) window, "destroy", (GCallback) _gtk_main_quit_gtk_object_destroy, NULL);
-	_tmp8_ = gtk_builder_get_object (builder, "text-search");
-	_tmp9_ = _tmp8_;
-	_tmp10_ = _g_object_ref0 (GTK_IS_ENTRY (_tmp9_) ? ((GtkEntry*) _tmp9_) : NULL);
-	entry = _tmp10_;
+	_tmp7_ = gtk_builder_get_object (builder, "text-search");
+	_tmp8_ = _tmp7_;
+	_tmp9_ = _g_object_ref0 (GTK_IS_ENTRY (_tmp8_) ? ((GtkEntry*) _tmp8_) : NULL);
+	entry = _tmp9_;
 	g_signal_connect ((GtkEditable*) entry, "changed", (GCallback) _explorer_entry_changed_gtk_editable_changed, self);
-	_tmp11_ = gtk_builder_get_object (builder, "uris");
-	_tmp12_ = _tmp11_;
-	_tmp13_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp12_) ? ((GtkTreeView*) _tmp12_) : NULL);
-	urisview = _tmp13_;
+	_tmp10_ = gtk_builder_get_object (builder, "uris");
+	_tmp11_ = _tmp10_;
+	_tmp12_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp11_) ? ((GtkTreeView*) _tmp11_) : NULL);
+	urisview = _tmp12_;
 	explorer_setup_uris (self, urisview);
-	_tmp14_ = gtk_builder_get_object (builder, "relationshipsview");
-	_tmp15_ = _tmp14_;
-	_tmp16_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp15_) ? ((GtkTreeView*) _tmp15_) : NULL);
-	relationshipsview = _tmp16_;
+	_tmp13_ = gtk_builder_get_object (builder, "relationshipsview");
+	_tmp14_ = _tmp13_;
+	_tmp15_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp14_) ? ((GtkTreeView*) _tmp14_) : NULL);
+	relationshipsview = _tmp15_;
 	explorer_setup_relationships (self, relationshipsview);
-	_tmp17_ = gtk_builder_get_object (builder, "current-object");
-	_tmp18_ = _tmp17_;
-	_tmp19_ = _g_object_ref0 (GTK_IS_LABEL (_tmp18_) ? ((GtkLabel*) _tmp18_) : NULL);
+	_tmp16_ = gtk_builder_get_object (builder, "current-object");
+	_tmp17_ = _tmp16_;
+	_tmp18_ = _g_object_ref0 (GTK_IS_LABEL (_tmp17_) ? ((GtkLabel*) _tmp17_) : NULL);
 	_g_object_unref0 (self->priv->current_uri_label);
-	self->priv->current_uri_label = _tmp19_;
-	_tmp20_ = gtk_builder_get_object (builder, "types");
-	_tmp21_ = _tmp20_;
-	_tmp22_ = _g_object_ref0 (GTK_IS_NOTEBOOK (_tmp21_) ? ((GtkNotebook*) _tmp21_) : NULL);
+	self->priv->current_uri_label = _tmp18_;
+	_tmp19_ = gtk_builder_get_object (builder, "types");
+	_tmp20_ = _tmp19_;
+	_tmp21_ = _g_object_ref0 (GTK_IS_NOTEBOOK (_tmp20_) ? ((GtkNotebook*) _tmp20_) : NULL);
 	_g_object_unref0 (self->priv->types);
-	self->priv->types = _tmp22_;
+	self->priv->types = _tmp21_;
 	g_signal_connect ((GtkContainer*) self->priv->types, "set-focus-child", (GCallback) _explorer_update_types_page_gtk_container_set_focus_child, self);
-	_tmp23_ = gtk_builder_get_object (builder, "forward");
-	_tmp24_ = _tmp23_;
-	_tmp25_ = _g_object_ref0 (GTK_IS_BUTTON (_tmp24_) ? ((GtkButton*) _tmp24_) : NULL);
+	_tmp22_ = gtk_builder_get_object (builder, "forward");
+	_tmp23_ = _tmp22_;
+	_tmp24_ = _g_object_ref0 (GTK_IS_BUTTON (_tmp23_) ? ((GtkButton*) _tmp23_) : NULL);
 	_g_object_unref0 (self->priv->forward);
-	self->priv->forward = _tmp25_;
+	self->priv->forward = _tmp24_;
 	g_signal_connect (self->priv->forward, "clicked", (GCallback) _explorer_forward_clicked_gtk_button_clicked, self);
 	gtk_widget_set_sensitive ((GtkWidget*) self->priv->forward, FALSE);
-	_tmp26_ = gtk_builder_get_object (builder, "back");
-	_tmp27_ = _tmp26_;
-	_tmp28_ = _g_object_ref0 (GTK_IS_BUTTON (_tmp27_) ? ((GtkButton*) _tmp27_) : NULL);
+	_tmp25_ = gtk_builder_get_object (builder, "back");
+	_tmp26_ = _tmp25_;
+	_tmp27_ = _g_object_ref0 (GTK_IS_BUTTON (_tmp26_) ? ((GtkButton*) _tmp26_) : NULL);
 	_g_object_unref0 (self->priv->back);
-	self->priv->back = _tmp28_;
+	self->priv->back = _tmp27_;
 	g_signal_connect (self->priv->back, "clicked", (GCallback) _explorer_back_clicked_gtk_button_clicked, self);
 	gtk_widget_set_sensitive ((GtkWidget*) self->priv->back, FALSE);
 	explorer_fetch_prefixes (self);
@@ -1299,7 +1611,13 @@ static void explorer_fetch_prefixes (Explorer* self) {
 	_result__length1 = _tmp1_;
 	_result__length2 = _tmp2_;
 	if (_inner_error_ != NULL) {
-		goto __catch3_g_error;
+		if (_inner_error_->domain == DBUS_GERROR) {
+			goto __catch3_dbus_gerror;
+		}
+		_g_free0 (query);
+		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
+		return;
 	}
 	{
 		gint i;
@@ -1310,7 +1628,7 @@ static void explorer_fetch_prefixes (Explorer* self) {
 			while (TRUE) {
 				gchar* _tmp5_;
 				gchar* _namespace;
-				gint _tmp6_;
+				glong _tmp6_;
 				gchar* _tmp7_ = NULL;
 				if (!_tmp4_) {
 					i++;
@@ -1322,7 +1640,7 @@ static void explorer_fetch_prefixes (Explorer* self) {
 				_tmp5_ = g_strdup (_result_[(i * _result__length2) + 0]);
 				_namespace = _tmp5_;
 				_tmp6_ = strlen (_namespace);
-				_tmp7_ = string_substring (_namespace, (glong) 0, (glong) (_tmp6_ - 1));
+				_tmp7_ = string_substring (_namespace, (glong) 0, _tmp6_ - 1);
 				_g_free0 (_namespace);
 				_namespace = _tmp7_;
 				gee_abstract_map_set ((GeeAbstractMap*) self->priv->namespaces, _namespace, _result_[(i * _result__length2) + 1]);
@@ -1332,7 +1650,7 @@ static void explorer_fetch_prefixes (Explorer* self) {
 	}
 	_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
 	goto __finally3;
-	__catch3_g_error:
+	__catch3_dbus_gerror:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -1371,7 +1689,13 @@ static void explorer_entry_changed (Explorer* self, GtkEditable* editable) {
 	_result__length1 = _tmp2_;
 	_result__length2 = _tmp3_;
 	if (_inner_error_ != NULL) {
-		goto __catch4_g_error;
+		if (_inner_error_->domain == DBUS_GERROR) {
+			goto __catch4_dbus_gerror;
+		}
+		_g_free0 (query);
+		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
+		return;
 	}
 	gtk_list_store_clear (self->priv->uris);
 	{
@@ -1397,7 +1721,7 @@ static void explorer_entry_changed (Explorer* self, GtkEditable* editable) {
 	}
 	_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
 	goto __finally4;
-	__catch4_g_error:
+	__catch4_dbus_gerror:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -1535,7 +1859,16 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 	_result__length2 = _tmp15_;
 	if (_inner_error_ != NULL) {
 		_g_free0 (query);
-		goto __catch5_g_error;
+		if (_inner_error_->domain == DBUS_GERROR) {
+			goto __catch5_dbus_gerror;
+		}
+		_g_free0 (query);
+		_g_object_unref0 (model);
+		_g_free0 (type);
+		_g_object_unref0 (sw);
+		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
+		return;
 	}
 	gtk_list_store_clear (model);
 	{
@@ -1582,7 +1915,19 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 					_g_free0 (relation);
 					_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
 					_g_free0 (query);
-					goto __catch5_g_error;
+					if (_inner_error_->domain == DBUS_GERROR) {
+						goto __catch5_dbus_gerror;
+					}
+					_g_free0 (query2);
+					_g_free0 (relation);
+					_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
+					_g_free0 (query);
+					_g_object_unref0 (model);
+					_g_free0 (type);
+					_g_object_unref0 (sw);
+					g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return;
 				}
 				{
 					gint j;
@@ -1621,7 +1966,7 @@ static void explorer_update_types_page (Explorer* self, GtkWidget* w) {
 	_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
 	_g_free0 (query);
 	goto __finally5;
-	__catch5_g_error:
+	__catch5_dbus_gerror:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -1740,7 +2085,13 @@ static void explorer_update_pane (Explorer* self) {
 	_result__length2 = _tmp11_;
 	if (_inner_error_ != NULL) {
 		_g_free0 (query);
-		goto __catch6_g_error;
+		if (_inner_error_->domain == DBUS_GERROR) {
+			goto __catch6_dbus_gerror;
+		}
+		_g_free0 (query);
+		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
+		return;
 	}
 	gtk_list_store_clear (self->priv->relationships);
 	explorer_clear_types (self);
@@ -1792,7 +2143,7 @@ static void explorer_update_pane (Explorer* self) {
 	_result_ = (_vala_array_free (_result_, _result__length1 * _result__length2, (GDestroyNotify) g_free), NULL);
 	_g_free0 (query);
 	goto __finally6;
-	__catch6_g_error:
+	__catch6_dbus_gerror:
 	{
 		GError * e;
 		e = _inner_error_;

@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>tracker-file-utils</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
+<link rel="up" href="ch04.html" title="Utilities">
+<link rel="prev" href="libtracker-common-tracker-date-time-utils.html" title="tracker-date-time-utils">
+<link rel="next" href="libtracker-common-tracker-utils.html" title="tracker-utils">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libtracker-common-tracker-date-time-utils.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Common Library Reference Manual</th>
+<td><a accesskey="n" href="libtracker-common-tracker-utils.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libtracker-common-tracker-file-utils.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libtracker-common-tracker-file-utils.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="libtracker-common-tracker-file-utils"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libtracker-common-tracker-file-utils.top_of_page"></a>tracker-file-utils</span></h2>
+<p>tracker-file-utils</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="libtracker-common-tracker-file-utils.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis"><span class="returnvalue">FILE</span> *              <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-file-open" title="tracker_file_open ()">tracker_file_open</a>                   (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *how</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> sequential</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-file-close" title="tracker_file_close ()">tracker_file_close</a>                  (<em class="parameter"><code><span class="type">FILE</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> need_again_soon</code></em>);
+<span class="returnvalue">goffset</span>             <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-file-get-size" title="tracker_file_get_size ()">tracker_file_get_size</a>               (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);
+<span class="returnvalue">guint64</span>             <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-file-get-mtime" title="tracker_file_get_mtime ()">tracker_file_get_mtime</a>              (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-file-get-mime-type" title="tracker_file_get_mime_type ()">tracker_file_get_mime_type</a>          (<em class="parameter"><code><span class="type">GFile</span> *file</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-file-system-has-enough-space" title="tracker_file_system_has_enough_space ()">tracker_file_system_has_enough_space</a>
+                                                        (<em class="parameter"><code>const <span class="type">gchar</span> *path</code></em>,
+                                                         <em class="parameter"><code><span class="type">gulong</span> required_bytes</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> creating_db</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-file-is-locked" title="tracker_file_is_locked ()">tracker_file_is_locked</a>              (<em class="parameter"><code><span class="type">GFile</span> *file</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-file-lock" title="tracker_file_lock ()">tracker_file_lock</a>                   (<em class="parameter"><code><span class="type">GFile</span> *file</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-file-unlock" title="tracker_file_unlock ()">tracker_file_unlock</a>                 (<em class="parameter"><code><span class="type">GFile</span> *file</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-path-is-in-path" title="tracker_path_is_in_path ()">tracker_path_is_in_path</a>             (<em class="parameter"><code>const <span class="type">gchar</span> *path</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *in_path</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-path-has-write-access-or-was-created" title="tracker_path_has_write_access_or_was_created ()">tracker_path_has_write_access_or_was_created</a>
+                                                        (<em class="parameter"><code>const <span class="type">gchar</span> *path</code></em>);
+<span class="returnvalue">GSList</span> *            <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-path-list-filter-duplicates" title="tracker_path_list_filter_duplicates ()">tracker_path_list_filter_duplicates</a> (<em class="parameter"><code><span class="type">GSList</span> *roots</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *basename_exception_prefix</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> is_recursive</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-path-evaluate-name" title="tracker_path_evaluate_name ()">tracker_path_evaluate_name</a>          (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-file-utils.html#tracker-env-check-xdg-dirs" title="tracker_env_check_xdg_dirs ()">tracker_env_check_xdg_dirs</a>          (<em class="parameter"><code><span class="type">void</span></code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="libtracker-common-tracker-file-utils.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1">
+<a name="libtracker-common-tracker-file-utils.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="tracker-file-open"></a><h3>tracker_file_open ()</h3>
+<pre class="programlisting"><span class="returnvalue">FILE</span> *              tracker_file_open                   (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *how</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> sequential</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-file-close"></a><h3>tracker_file_close ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_file_close                  (<em class="parameter"><code><span class="type">FILE</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> need_again_soon</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-file-get-size"></a><h3>tracker_file_get_size ()</h3>
+<pre class="programlisting"><span class="returnvalue">goffset</span>             tracker_file_get_size               (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-file-get-mtime"></a><h3>tracker_file_get_mtime ()</h3>
+<pre class="programlisting"><span class="returnvalue">guint64</span>             tracker_file_get_mtime              (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-file-get-mime-type"></a><h3>tracker_file_get_mime_type ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_file_get_mime_type          (<em class="parameter"><code><span class="type">GFile</span> *file</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-file-system-has-enough-space"></a><h3>tracker_file_system_has_enough_space ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_file_system_has_enough_space
+                                                        (<em class="parameter"><code>const <span class="type">gchar</span> *path</code></em>,
+                                                         <em class="parameter"><code><span class="type">gulong</span> required_bytes</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> creating_db</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-file-is-locked"></a><h3>tracker_file_is_locked ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_file_is_locked              (<em class="parameter"><code><span class="type">GFile</span> *file</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-file-lock"></a><h3>tracker_file_lock ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_file_lock                   (<em class="parameter"><code><span class="type">GFile</span> *file</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-file-unlock"></a><h3>tracker_file_unlock ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_file_unlock                 (<em class="parameter"><code><span class="type">GFile</span> *file</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-path-is-in-path"></a><h3>tracker_path_is_in_path ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_path_is_in_path             (<em class="parameter"><code>const <span class="type">gchar</span> *path</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *in_path</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-path-has-write-access-or-was-created"></a><h3>tracker_path_has_write_access_or_was_created ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_path_has_write_access_or_was_created
+                                                        (<em class="parameter"><code>const <span class="type">gchar</span> *path</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-path-list-filter-duplicates"></a><h3>tracker_path_list_filter_duplicates ()</h3>
+<pre class="programlisting"><span class="returnvalue">GSList</span> *            tracker_path_list_filter_duplicates (<em class="parameter"><code><span class="type">GSList</span> *roots</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *basename_exception_prefix</code></em>,
+                                                         <em class="parameter"><code><span class="type">gboolean</span> is_recursive</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-path-evaluate-name"></a><h3>tracker_path_evaluate_name ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_path_evaluate_name          (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-env-check-xdg-dirs"></a><h3>tracker_env_check_xdg_dirs ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_env_check_xdg_dirs          (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.17</div>
+</body>
+</html>

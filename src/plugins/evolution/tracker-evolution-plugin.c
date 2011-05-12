@@ -41,27 +41,26 @@
 #include <sqlite3.h>
 
 #include <camel/camel.h>
+#ifndef HAVE_EDS_2_31_2
+#include <camel/camel-db.h>
+#endif
 
 #include <mail/mail-config.h>
+#include <mail/mail-session.h>
 #include <mail/em-utils.h>
 #include <mail/mail-ops.h>
 
-#ifdef EVOLUTION_SHELL_2_91
-#include <mail/e-mail-session.h>
-#else
-#include <mail/mail-session.h>
-#endif
-
-#include <mail/e-mail-backend.h>
-#include <shell/e-shell.h>
-
 #include <e-util/e-config.h>
-#include <e-util/e-account-utils.h>
 
 #include <libedataserver/e-account.h>
 #include <libedataserver/e-account-list.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
+#ifdef HAVE_EDS_2_29_1
+#include <e-util/e-account-utils.h>
+#endif
+
+#include <libtracker-client/tracker.h>
+#include <libtracker-client/tracker-sparql-builder.h>
 
 #include <libtracker-common/tracker-date-time.h>
 #include <libtracker-common/tracker-ontologies.h>
@@ -81,10 +80,14 @@
  * reads, never writes). We hope that's sufficient for not having to get our
  * code involved in Camel's cruel inneryard of having to lock the db_r ptr. */
 
-#define TRACKER_SERVICE                 "org.freedesktop.Tracker1"
-#define DATASOURCE_URN                  "urn:nepomuk:datasource:1cb1eb90-1241-11de-8c30-0800200c9a66"
-#define TRACKER_EVOLUTION_GRAPH_URN     "urn:uuid:9a96d750-5182-11e0-b8af-0800200c9a66"
+#define TRACKER_SERVICE                         "org.freedesktop.Tracker1"
 
+#define NIE_DATASOURCE                  TRACKER_NIE_PREFIX "DataSource"
+#define RDF_PREFIX                      TRACKER_RDF_PREFIX
+#define NMO_PREFIX                      TRACKER_NMO_PREFIX
+#define NCO_PREFIX                      TRACKER_NCO_PREFIX
+#define NAO_PREFIX                      TRACKER_NAO_PREFIX
+#define DATASOURCE_URN                  "urn:nepomuk:datasource:1cb1eb90-1241-11de-8c30-0800200c9a66"
 
 G_DEFINE_TYPE (TrackerEvolutionPlugin, tracker_evolution_plugin, TRACKER_TYPE_MINER)
 
@@ -106,7 +109,7 @@ G_DEFINE_TYPE (TrackerEvolutionPlugin, tracker_evolution_plugin, TRACKER_TYPE_MI
  * during registration of accounts and folders). I know this is cruel. I know. */
 
 typedef struct {
-	TrackerSparqlConnection *connection;
+	TrackerClient *client;
 	gchar *sparql;
 	gboolean commit;
 	gint prio;
@@ -168,18 +171,18 @@ typedef struct {
 	GHashTable *registered_stores;
 	GList *registered_clients;
 	EAccountList *accounts;
-	TrackerSparqlConnection *connection;
+	TrackerClient *client;
+	DBusGProxy *dbus_proxy;
+	DBusGConnection *connection;
 	time_t last_time;
 	gboolean resuming, paused;
 	guint total_popped, of_total;
-	guint watch_name_id;
-	GCancellable *sparql_cancel;
-	GTimer *timer_since_stopped;
 } TrackerEvolutionPluginPrivate;
 
 typedef struct {
 	IntroductionInfo *intro_info;
 	CamelStore *store;
+	CamelDB *cdb_r;
 	CamelFolderInfo *iter;
 } TryAgainInfo;
 
@@ -192,10 +195,7 @@ typedef struct {
 static TrackerEvolutionPlugin *manager = NULL;
 static GStaticRecMutex glock = G_STATIC_REC_MUTEX_INIT;
 static guint register_count = 0, walk_count = 0;
-static ThreadPool *folder_pool = NULL;
-#ifdef EVOLUTION_SHELL_2_91
-static EMailSession *session = NULL;
-#endif
+static ThreadPool *sparql_pool = NULL, *folder_pool = NULL;
 
 /* Prototype declarations */
 static void register_account (TrackerEvolutionPlugin *self, EAccount *account);
@@ -205,8 +205,6 @@ static void miner_started (TrackerMiner *miner);
 static void miner_stopped (TrackerMiner *miner);
 static void miner_paused (TrackerMiner *miner);
 static void miner_resumed (TrackerMiner *miner);
-static void miner_start_watching (TrackerMiner *miner);
-static void miner_stop_watching (TrackerMiner *miner);
 
 /* First a bunch of helper functions. */
 #if 0
@@ -219,25 +217,27 @@ camel_stream_format_text (CamelDataWrapper *dw, CamelStream *stream)
 	CamelMimeFilterWindows *windows = NULL;
 	ssize_t bytes = -1;
 
-	if (dw->mime_type && (charset = camel_content_type_param (dw->mime_type, "charset")) &&
-	    g_ascii_strncasecmp(charset, "iso-8859-", 9) == 0) {
-		CamelStream *null;
+	if (dw->mime_type && (charset = camel_content_type_param
+	                      (dw->mime_type, "charset")) &&
+	    g_ascii_strncasecmp(charset, "iso-8859-", 9) == 0)
+		{
+			CamelStream *null;
 
-		/* Since a few Windows mailers like to claim they sent
-		 * out iso-8859-# encoded text when they really sent
-		 * out windows-cp125#, do some simple sanity checking
-		 * before we move on... */
+			/* Since a few Windows mailers like to claim they sent
+			 * out iso-8859-# encoded text when they really sent
+			 * out windows-cp125#, do some simple sanity checking
+			 * before we move on... */
 
-		null = camel_stream_null_new();
-		filter_stream = camel_stream_filter_new_with_stream(null);
-		camel_object_unref(null);
-		windows = (CamelMimeFilterWindows *)camel_mime_filter_windows_new(charset);
-		camel_stream_filter_add (filter_stream, (CamelMimeFilter *)windows);
-		camel_data_wrapper_decode_to_stream (dw, (CamelStream *)filter_stream);
-		camel_stream_flush ((CamelStream *)filter_stream);
-		camel_object_unref (filter_stream);
-		charset = camel_mime_filter_windows_real_charset (windows);
-	}
+			null = camel_stream_null_new();
+			filter_stream = camel_stream_filter_new_with_stream(null);
+			camel_object_unref(null);
+			windows = (CamelMimeFilterWindows *)camel_mime_filter_windows_new(charset);
+			camel_stream_filter_add (filter_stream, (CamelMimeFilter *)windows);
+			camel_data_wrapper_decode_to_stream (dw, (CamelStream *)filter_stream);
+			camel_stream_flush ((CamelStream *)filter_stream);
+			camel_object_unref (filter_stream);
+			charset = camel_mime_filter_windows_real_charset (windows);
+		}
 
 	filter_stream = camel_stream_filter_new_with_stream (stream);
 
@@ -250,9 +250,8 @@ camel_stream_format_text (CamelDataWrapper *dw, CamelStream *stream)
 	camel_stream_flush ((CamelStream *)filter_stream);
 	camel_object_unref (filter_stream);
 
-	if (windows) {
+	if (windows)
 		camel_object_unref(windows);
-	}
 
 	return bytes;
 }
@@ -288,8 +287,16 @@ get_email_and_fullname (const gchar *line, gchar **email, gchar **fullname)
 static void
 folder_registry_free (FolderRegistry *registry)
 {
+#ifdef HAVE_EDS_2_31_2
 	g_signal_handler_disconnect (registry->folder, registry->hook_info->hook_id);
+#else
+	camel_object_remove_event (registry->folder, registry->hook_info->hook_id);
+#endif
+#ifdef HAVE_EDS_2_31_2
 	g_object_unref (registry->folder);
+#else
+	camel_object_unref (registry->folder);
+#endif
 	g_free (registry->hook_info->account_uri);
 	g_slice_free (OnSummaryChangedInfo, registry->hook_info);
 	g_slice_free (FolderRegistry, registry);
@@ -306,10 +313,24 @@ folder_registry_new (const gchar *account_uri,
 	registry->hook_info->account_uri = g_strdup (account_uri);
 	registry->hook_info->self = self; /* weak */
 	registry->hook_info->hook_id = 0;
+#ifdef HAVE_EDS_2_31_2
 	g_object_ref (folder);
+#else
+	camel_object_ref (folder);
+#endif
 	registry->folder = folder;
 
 	return registry;
+}
+
+
+static void
+free_pool_item (gpointer data, gpointer user_data)
+{
+	PoolItem *item = data;
+	g_free (item->sparql);
+	g_object_unref (item->client);
+	g_slice_free (PoolItem, item);
 }
 
 static void
@@ -324,12 +345,82 @@ thread_pool_exec (gpointer data, gpointer user_data)
 	pool->items = g_list_remove (pool->items, data);
 	g_mutex_unlock (pool->mutex);
 
+
 	if (!dying)
 		pool->func (data, pool->cancel);
 
 	item = data;
 	if (!item->dont_free)
 		pool->freeup (data, pool->cancel);
+}
+
+
+static void 
+reply_void (GError *error, gpointer  user_data)
+{
+	PoolItem *item = user_data;
+	ThreadPool *pool = item->pool;
+
+	if (error) {
+		g_debug ("Tracker plugin: Error updating data: %s\n", error->message);
+	}
+
+	g_mutex_lock (item->mutex);
+	g_cond_broadcast (item->cond);
+	item->has_happened = TRUE;
+	g_mutex_unlock (item->mutex);
+
+	if (item->dont_free)
+		pool->freeup (item, pool->cancel);
+}
+
+static void
+exec_update (gpointer data, gpointer user_data)
+{
+	PoolItem *item = data;
+	GCancellable *cancel = user_data;
+	gboolean no_patience = TRUE;
+
+	if (g_cancellable_is_cancelled (cancel))
+		return;
+
+	item->mutex = g_mutex_new ();
+	item->cond = g_cond_new ();
+	item->has_happened = FALSE;
+
+	if (item->commit) {
+		tracker_resources_batch_commit_async (item->client, reply_void, item);
+	} else {
+		tracker_resources_batch_sparql_update_async (item->client, item->sparql,
+		                                             reply_void, item);
+	}
+
+	g_mutex_lock (item->mutex);
+	if (!item->has_happened) {
+		GTimeVal val;
+		g_get_current_time (&val);
+		g_time_val_add (&val, 5 * 1000000); /* 5 seconds worth of patience */
+		no_patience = g_cond_timed_wait (item->cond, item->mutex, &val);
+		item->dont_free = !no_patience;
+	}
+	g_mutex_unlock (item->mutex);
+
+	/* Don't hammer DBus too much, else Evolution's UI sometimes becomes slugish
+	 * due to a dbus_watch_handle call on its mainloop */
+
+	if (no_patience)
+		g_usleep (300);
+}
+
+static gint 
+pool_sort_func (gconstpointer a,
+                gconstpointer b,
+                gpointer user_data)
+{
+	PoolItem *item_a = (PoolItem *) a;
+	PoolItem *item_b = (PoolItem *) b;
+
+	return item_a->prio - item_b->prio;
 }
 
 static ThreadPool*
@@ -392,17 +483,21 @@ send_sparql_update (TrackerEvolutionPlugin *self, const gchar *sparql, gint prio
 {
 	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (self);
 
-	g_static_rec_mutex_lock (&glock);
-	if (priv->connection) {
-		if (!priv->timer_since_stopped || g_timer_elapsed (priv->timer_since_stopped, NULL) > 5) {
-			tracker_sparql_connection_update (priv->connection,
-			                                  sparql,
-			                                  G_PRIORITY_DEFAULT,
-			                                  priv->sparql_cancel,
-			                                  NULL);
-		}
+	if (priv->client) {
+		PoolItem *item = g_slice_new (PoolItem);
+
+		if (!sparql_pool)
+			sparql_pool = thread_pool_new (exec_update, free_pool_item, pool_sort_func);
+
+		item->pool = sparql_pool;
+		item->dont_free = FALSE;
+		item->prio = prio;
+		item->commit = FALSE;
+		item->client = g_object_ref (priv->client);
+		item->sparql = g_strdup (sparql);
+
+		thread_pool_push (sparql_pool, item, NULL);
 	}
-	g_static_rec_mutex_unlock (&glock);
 }
 
 static void
@@ -410,19 +505,14 @@ send_sparql_commit (TrackerEvolutionPlugin *self, gboolean update)
 {
 	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (self);
 
-	if (priv->connection) {
+	if (priv->client) {
+		PoolItem *item = g_slice_new (PoolItem);
+
 		if (update) {
 			gchar *date_s = tracker_date_to_string (time (NULL));
-
-			/* TODO: We should probably do this per folder instead of a datasource
-			 * for the entire Evolution store. This way if the user interrupts
-			 * the synchronization, then at least the folders that are already
-			 * finished don't have to be repeated next time. Right now an interrupt
-			 * means starting over from scratch. */
-
-			gchar *update = g_strdup_printf ("DELETE { <" DATASOURCE_URN "> nie:contentLastModified ?d } "
-			                                 "WHERE { <"  DATASOURCE_URN "> a nie:InformationElement ; nie:contentLastModified ?d } \n"
-			                                 "INSERT { <" DATASOURCE_URN "> a nie:InformationElement ; nie:contentLastModified \"%s\" }",
+			gchar *update = g_strdup_printf ("DELETE FROM <"DATASOURCE_URN"> { <" DATASOURCE_URN "> nie:contentLastModified ?d } "
+			                                 "WHERE { <" DATASOURCE_URN "> a nie:InformationElement ; nie:contentLastModified ?d } \n"
+			                                 "INSERT INTO <"DATASOURCE_URN"> { <" DATASOURCE_URN "> nie:contentLastModified \"%s\" }",
 			                                 date_s);
 
 			send_sparql_update (self, update, 0);
@@ -430,21 +520,32 @@ send_sparql_commit (TrackerEvolutionPlugin *self, gboolean update)
 			g_free (update);
 			g_free (date_s);
 		}
+
+		if (!sparql_pool)
+			sparql_pool = thread_pool_new (exec_update, free_pool_item, pool_sort_func);
+
+		item->pool = sparql_pool;
+		item->dont_free = FALSE;
+		item->prio = 0;
+		item->commit = TRUE;
+		item->client = g_object_ref (priv->client);
+		item->sparql = NULL;
+
+		thread_pool_push (sparql_pool, item, NULL);
 	}
 }
 
 static void
 add_contact (TrackerSparqlBuilder *sparql, const gchar *predicate, const gchar *uri, const gchar *value)
 {
-	gchar *email = NULL, *fullname = NULL;
-	gchar *email_uri;
+	gchar *email_uri, *email = NULL, *fullname = NULL;
 
 	get_email_and_fullname (value, &email, &fullname);
 
-	email_uri = g_strdup_printf ("mailto:%s", email);
+	email_uri = tracker_uri_printf_escaped ("mailto:%s", email);
 
 	tracker_sparql_builder_subject_iri (sparql, email_uri);
-	tracker_sparql_builder_predicate (sparql, "a");
+	tracker_sparql_builder_predicate (sparql, "rdf:type");
 	tracker_sparql_builder_object (sparql, "nco:EmailAddress");
 
 	tracker_sparql_builder_subject_iri (sparql, email_uri);
@@ -456,22 +557,22 @@ add_contact (TrackerSparqlBuilder *sparql, const gchar *predicate, const gchar *
 
 	tracker_sparql_builder_object_blank_open (sparql);
 
-	tracker_sparql_builder_predicate (sparql, "a");
+	tracker_sparql_builder_predicate (sparql, "rdf:type");
 	tracker_sparql_builder_object (sparql, "nco:Contact");
 
 	if (fullname) {
 		tracker_sparql_builder_predicate (sparql, "nco:fullname");
 		tracker_sparql_builder_object_string (sparql, fullname);
+		g_free (fullname);
 	}
 
 	tracker_sparql_builder_predicate (sparql, "nco:hasEmailAddress");
 	tracker_sparql_builder_object_iri (sparql, email_uri);
 
 	tracker_sparql_builder_object_blank_close (sparql);
-	g_free (email_uri);
 
+	g_free (email_uri);
 	g_free (email);
-	g_free (fullname);
 }
 
 static void
@@ -483,18 +584,18 @@ process_fields (TrackerSparqlBuilder *sparql, const gchar *uid, guint flags,
 	guint i;
 
 	tracker_sparql_builder_subject_iri (sparql, DATASOURCE_URN);
-	tracker_sparql_builder_predicate (sparql, "a");
-	tracker_sparql_builder_object (sparql, "nie:DataSource");
+	tracker_sparql_builder_predicate (sparql, "rdf:type");
+	tracker_sparql_builder_object_iri (sparql, NIE_DATASOURCE);
 
 	/* for contentLastModified */
-	tracker_sparql_builder_predicate (sparql, "a");
+	tracker_sparql_builder_predicate (sparql, "rdf:type");
 	tracker_sparql_builder_object (sparql, "nie:InformationElement");
 
 	tracker_sparql_builder_subject_iri (sparql, uri);
-	tracker_sparql_builder_predicate (sparql, "a");
+	tracker_sparql_builder_predicate (sparql, "rdf:type");
 	tracker_sparql_builder_object (sparql, "nmo:Email");
 
-	tracker_sparql_builder_predicate (sparql, "a");
+	tracker_sparql_builder_predicate (sparql, "rdf:type");
 	tracker_sparql_builder_object (sparql, "nmo:MailboxDataObject");
 
 	tracker_sparql_builder_predicate (sparql, "tracker:available");
@@ -636,37 +737,6 @@ process_fields (TrackerSparqlBuilder *sparql, const gchar *uid, guint flags,
 #endif
 }
 
-static gchar*
-convert_url_to_whatever (CamelURL *a_url, const gchar *path, const gchar *uid)
-{
-	CamelURL *url;
-	gchar *uri, *qry, *ppath = g_strdup_printf ("/%s", path);
-
-	/* This converts a CamelURL plus path and uid components to a Evolution
-	 * compatible URL. Evolution has its own strange URL format, so .. ok */
-
-	url = camel_url_copy (a_url);
-
-	/* This would be the right way, but em_uri_from_camel ignores ?uid=x parts,
-	 * so instead we append it manually with a g_strdup_printf lower
-	 *
-	 * qry = g_strdup_printf ("uid=%s", uid);
-	 * camel_url_set_query (url, qry);
-	 * g_free (qry); */
-
-	camel_url_set_path (url, ppath);
-	g_free (ppath);
-	uri = camel_url_to_string (url, CAMEL_URL_HIDE_ALL);
-
-	qry = em_uri_from_camel (uri);
-	g_free (uri);
-	uri = g_strdup_printf ("%s?uid=%s", qry, uid);
-	g_free (qry);
-	camel_url_free (url);
-
-	return uri;
-}
-
 /* When new messages arrive to- or got deleted from the summary, called in
  * mainloop or by a thread (unknown, depends on Camel and Evolution code that
  * executes the reason why this signal gets emitted).
@@ -680,16 +750,17 @@ on_folder_summary_changed (CamelFolder *folder,
 {
 	OnSummaryChangedInfo *info = user_data;
 	CamelFolderSummary *summary;
+	gchar *account_uri = info->account_uri;
 	GPtrArray *merged;
 	guint i;
-	CamelURL *a_url;
+	gchar *em_uri;
 
 	if (!folder)
 		return;
 
 	summary = folder->summary;
-
-	a_url = CAMEL_SERVICE (camel_folder_get_parent_store (folder))->url;
+	em_uri = em_uri_from_camel (account_uri);
+	em_uri [strlen (em_uri) - 1] = '\0';
 
 	merged = g_ptr_array_new ();
 
@@ -724,13 +795,13 @@ on_folder_summary_changed (CamelFolder *folder,
 
 	for (i = 0; i< merged->len; i++) {
 		const gchar *subject, *to, *from, *cc, *uid = NULL;
+		gchar *size;
 		time_t sent;
 		guint flags;
 		CamelMessageInfo *linfo;
 		const CamelTag *ctags;
 		const CamelFlag *cflags;
-		gchar *full_sparql;
-	
+
 		linfo = camel_folder_summary_uid (summary, merged->pdata[i]);
 
 		if (linfo) {
@@ -739,7 +810,6 @@ on_folder_summary_changed (CamelFolder *folder,
 
 		if (linfo && uid) {
 			gchar *uri;
-			gchar *size;
 			TrackerSparqlBuilder *sparql;
 
 			subject = camel_message_info_subject (linfo);
@@ -757,12 +827,16 @@ on_folder_summary_changed (CamelFolder *folder,
 			/* This is not a path but a URI, don't use the
 			 * OS's directory separator here */
 
-			uri = convert_url_to_whatever (a_url, camel_folder_get_full_name (folder), uid);
+			uri = tracker_uri_printf_escaped ("%s/%s/%s",
+			                                  em_uri,
+			                                  camel_folder_get_full_name (folder),
+			                                  uid);
 
 			sparql = tracker_sparql_builder_new_update ();
 
-			tracker_sparql_builder_insert_silent_open (sparql, NULL);
-			tracker_sparql_builder_graph_open (sparql, TRACKER_EVOLUTION_GRAPH_URN);
+			tracker_sparql_builder_drop_graph (sparql, uri);
+
+			tracker_sparql_builder_insert_open (sparql, uri);
 
 			process_fields (sparql, uid, flags, sent, subject,
 			                from, to, cc, size, folder, uri);
@@ -804,34 +878,12 @@ on_folder_summary_changed (CamelFolder *folder,
 				ctags = ctags->next;
 			}
 
-			tracker_sparql_builder_graph_close (sparql);
 			tracker_sparql_builder_insert_close (sparql);
 
-			full_sparql = g_strdup_printf ("DELETE {"
-			                               "  GRAPH <%s> {"
-			                               "    <%s> ?p ?o"
-			                               "  } "
-			                               "} "
-			                               "WHERE {"
-			                               "  GRAPH <%s> {"
-			                               "    <%s> ?p ?o"
-			                               "    FILTER (?p != rdf:type && ?p != nie:contentCreated)"
-			                               "  } "
-			                               "} "
-			                               "%s",
-			                               TRACKER_EVOLUTION_GRAPH_URN,
-			                               uri,
-			                               TRACKER_EVOLUTION_GRAPH_URN,
-			                               uri,
-			                               tracker_sparql_builder_get_result (sparql));
-
-			send_sparql_update (info->self, full_sparql, 100);
-
-			g_free (full_sparql);
+			send_sparql_update (info->self, tracker_sparql_builder_get_result (sparql), 100);
 
 			g_object_set (info->self, "progress",
 			              (gdouble) i / merged->len,
-			              "status", "Updating an E-mail",
 			              NULL);
 
 			g_object_unref (sparql);
@@ -860,7 +912,10 @@ on_folder_summary_changed (CamelFolder *folder,
 
 			/* This is not a path but a URI, don't use the OS's
 			 * directory separator here */
-			uri = convert_url_to_whatever (a_url, camel_folder_get_full_name (folder), (char*) changes->uid_removed->pdata[i]);
+			uri = tracker_uri_printf_escaped ("%s/%s/%s",
+			                                  em_uri,
+			                                  camel_folder_get_full_name (folder),
+			                                  (char*) changes->uid_removed->pdata[i]);
 
 			g_string_append_printf (sparql, "DELETE FROM <%s> { <%s> a rdfs:Resource }\n ", uri, uri);
 			g_free (uri);
@@ -870,296 +925,219 @@ on_folder_summary_changed (CamelFolder *folder,
 		g_string_free (sparql, TRUE);
 	}
 
-	send_sparql_commit (info->self, FALSE);
+	send_sparql_commit (info->self, TRUE);
 
-	g_object_set (info->self, "progress", 1.0, "status", "Idle", NULL);
+	g_object_set (info->self, "progress",
+	              1.0, NULL);
+
+	g_free (em_uri);
 }
 
-#define UIDS_CHUNK_SIZE 200
-
-static gchar *
-uids_to_chunk (GPtrArray *uids, guint cur, guint max)
-{
-	guint i;
-	GString *str = g_string_new ("");
-
-	for (i = 0; i < max && i < uids->len; i++) {
-		if (i != 0) {
-			g_string_append (str, ", ");
-		}
-		g_string_append (str, g_ptr_array_index (uids, i));
-	}
-
-	return g_string_free (str, FALSE);
-}
 
 /* Initial upload of more recent than last_checkout items, called in the mainloop */
 static void
 introduce_walk_folders_in_folder (TrackerEvolutionPlugin *self,
                                   CamelFolderInfo *iter,
-                                  CamelStore *store,
+                                  CamelStore *store, CamelDB *cdb_r,
                                   gchar *account_uri,
                                   ClientRegistry *info,
                                   GCancellable *cancel)
 {
 	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (self);
-	CamelURL *a_url;
-	CamelDB *cdb_r;
+	gchar *em_uri;
 
 	if (g_cancellable_is_cancelled (cancel)) {
 		return;
 	}
 
-	cdb_r = camel_db_clone (store->cdb_r, NULL);
-
-	a_url = CAMEL_SERVICE (store)->url;
+	em_uri = em_uri_from_camel (account_uri);
+	em_uri [strlen (em_uri) - 1] = '\0';
 
 	while (iter) {
-		guint uids_i;
 		guint count = 0;
 		guint ret = SQLITE_OK;
-		gchar *query, *status;
+		gchar *query;
 		sqlite3_stmt *stmt = NULL;
-		GPtrArray *uids = g_ptr_array_new_with_free_func (g_free);
 
-		query = sqlite3_mprintf ("SELECT uid FROM %Q "
+		/* This query is the culprint of the functionality: it fetches
+		 * all the metadata from the summary table where modified is
+		 * more recent than the client-registry's modseq. Note that we
+		 * pass time(NULL) to all methods, which is why comparing
+		 * against the modified column that Evolution > 2.25.5 stores
+		 * works (otherwise this wouldn't work, of course).
+		 *
+		 * The idea is that only the changes must initially be pushed,
+		 * not everything each time (which would be unefficient). The
+		 * specification (http://live.gnome.org/Evolution/Metadata)
+		 * allows this 'modseq' optimization (is in fact recommending
+		 * it over using Cleanup() each time) */
+
+		/* TODO: add bodystructure and then prepare a full MIME structure
+		 * using the NMO ontology, by parsing the bodystructure.
+		 * Bodystructures can be found in %s_bodystructure when they
+		 * exist (not guaranteed). In IMAP BODYSTRUCTURE format. */
+
+		query = sqlite3_mprintf ("SELECT uid, flags, read, deleted, "            /* 0  - 3  */
+		                         "replied, important, junk, attachment, " /* 4  - 7  */
+		                         "size, dsent, dreceived, subject, "      /* 8  - 11 */
+		                         "mail_from, mail_to, mail_cc, mlist, "   /* 12 - 15 */
+		                         "labels, usertags "                      /* 16 - 17 */
+		                         "FROM %Q "
 		                         "WHERE modified > %"G_GUINT64_FORMAT,
+
 		                         iter->full_name,
 		                         info->last_checkout);
 
-		status = g_strdup_printf ("Processing folder %s", iter->name);
-		g_object_set (self,  "progress", 0.0, "status", status, NULL);
 
 		ret = sqlite3_prepare_v2 (cdb_r->db, query, -1, &stmt, NULL);
-		while (ret == SQLITE_OK || ret == SQLITE_BUSY || ret == SQLITE_ROW) {
-			gchar *uid;
 
-			if (g_cancellable_is_cancelled (cancel))
+		while (ret == SQLITE_OK || ret == SQLITE_BUSY || ret == SQLITE_ROW) {
+			TrackerSparqlBuilder *sparql = NULL;
+			gchar *subject, *to, *from, *cc, *uid, *size;
+			time_t sent;
+			gchar *part, *label, *p;
+			guint flags;
+
+			if (g_cancellable_is_cancelled (cancel)) {
 				break;
+			}
+
 			ret = sqlite3_step (stmt);
+
 			if (ret == SQLITE_BUSY) {
 				usleep (10);
 				continue;
 			}
-			if ((ret != SQLITE_OK && ret != SQLITE_ROW) || ret == SQLITE_DONE)
+
+			if ((ret != SQLITE_OK && ret != SQLITE_ROW) || ret == SQLITE_DONE) {
 				break;
+			}
 
 			uid = (gchar *) sqlite3_column_text (stmt, 0);
 
 			if (uid) {
-				g_ptr_array_add (uids, g_strdup (uid));
-			}
-		}
+				const gchar *query;
+				CamelFolder *folder;
+				guint max = 0, j;
+				gchar *uri;
+				gboolean opened = FALSE;
 
-		sqlite3_finalize (stmt);
-		sqlite3_free (query);
+				flags =   (guint  ) sqlite3_column_int  (stmt, 1);
+				size =    (gchar *) sqlite3_column_text (stmt, 8);
+				sent =    (time_t)  sqlite3_column_int64 (stmt, 9);
+				subject = (gchar *) sqlite3_column_text (stmt, 11);
+				from =    (gchar *) sqlite3_column_text (stmt, 12);
+				to =      (gchar *) sqlite3_column_text (stmt, 13);
+				cc =      (gchar *) sqlite3_column_text (stmt, 14);
 
-		for (uids_i = 0; uids_i < uids->len; uids_i += UIDS_CHUNK_SIZE) {
-			gchar *uids_chunk = uids_to_chunk (uids, uids_i, UIDS_CHUNK_SIZE);
+				folder = g_hash_table_lookup (priv->cached_folders, iter->full_name);
 
-			/* This query is the culprint of the functionality: it fetches
-			 * all the metadata from the summary table where modified is
-			 * more recent than the client-registry's modseq. Note that we
-			 * pass time(NULL) to all methods, which is why comparing
-			 * against the modified column that Evolution > 2.25.5 stores
-			 * works (otherwise this wouldn't work, of course).
-			 *
-			 * The idea is that only the changes must initially be pushed,
-			 * not everything each time (which would be unefficient). The
-			 * specification (http://live.gnome.org/Evolution/Metadata)
-			 * allows this 'modseq' optimization (is in fact recommending
-			 * it over using Cleanup() each time) */
+				uri = tracker_uri_printf_escaped ("%s/%s/%s", em_uri, iter->full_name, uid);
 
-			/* TODO: add bodystructure and then prepare a full MIME structure
-			 * using the NMO ontology, by parsing the bodystructure.
-			 * Bodystructures can be found in %s_bodystructure when they
-			 * exist (not guaranteed). In IMAP BODYSTRUCTURE format. */
-
-			query = sqlite3_mprintf ("SELECT uid, flags, read, deleted, "     /* 0  - 3  */
-			                         "replied, important, junk, attachment, " /* 4  - 7  */
-			                         "size, dsent, dreceived, subject, "      /* 8  - 11 */
-			                         "mail_from, mail_to, mail_cc, mlist, "   /* 12 - 15 */
-			                         "labels, usertags "                      /* 16 - 17 */
-			                         "FROM %Q "
-			                         "WHERE modified > %"G_GUINT64_FORMAT" "
-			                         "AND uid IN (%s)",
-			                         iter->full_name,
-			                         info->last_checkout,
-			                         uids_chunk);
-
-			g_free (uids_chunk);
-
-			ret = sqlite3_prepare_v2 (cdb_r->db, query, -1, &stmt, NULL);
-
-			while (ret == SQLITE_OK || ret == SQLITE_BUSY || ret == SQLITE_ROW) {
-				TrackerSparqlBuilder *sparql = NULL;
-				gchar *subject, *to, *from, *cc, *uid, *size;
-				time_t sent;
-				gchar *part, *label, *p;
-				guint flags;
-
-				if (g_cancellable_is_cancelled (cancel))
-					break;
-				ret = sqlite3_step (stmt);
-				if (ret == SQLITE_BUSY) {
-					usleep (10);
-					continue;
+				if (!sparql) {
+					sparql = tracker_sparql_builder_new_update ();
 				}
-				if ((ret != SQLITE_OK && ret != SQLITE_ROW) || ret == SQLITE_DONE)
-					break;
 
-				uid = (gchar *) sqlite3_column_text (stmt, 0);
+				tracker_sparql_builder_drop_graph (sparql, uri);
 
-				if (uid) {
-					CamelFolder *folder;
-					guint max = 0, j;
-					gchar *uri;
-					gboolean opened = FALSE;
-					gchar *full_sparql;
+				tracker_sparql_builder_insert_open (sparql, uri);
 
-					flags =   (guint  ) sqlite3_column_int  (stmt, 1);
-					size =    (gchar *) sqlite3_column_text (stmt, 8);
-					sent =    (time_t)  sqlite3_column_int64 (stmt, 9);
-					subject = (gchar *) sqlite3_column_text (stmt, 11);
-					from =    (gchar *) sqlite3_column_text (stmt, 12);
-					to =      (gchar *) sqlite3_column_text (stmt, 13);
-					cc =      (gchar *) sqlite3_column_text (stmt, 14);
+				process_fields (sparql, uid, flags, sent,
+				                subject, from, to, cc, size,
+				                folder, uri);
 
-					folder = g_hash_table_lookup (priv->cached_folders, iter->full_name);
+				/* Extract User flags/labels */
+				p = part = g_strdup ((const gchar *) sqlite3_column_text (stmt, 16));
+				if (part) {
+					label = part;
+					for (j=0; part[j]; j++) {
 
-					uri = convert_url_to_whatever (a_url, iter->full_name, uid);
+						if (part[j] == ' ') {
+							part[j] = 0;
 
-					if (!sparql) {
-						sparql = tracker_sparql_builder_new_update ();
+							if (!opened) {
+								tracker_sparql_builder_subject_iri (sparql, uri);
+								opened = TRUE;
+							}
+
+							tracker_sparql_builder_predicate (sparql, "nao:hasTag");
+							tracker_sparql_builder_object_blank_open (sparql);
+
+							tracker_sparql_builder_predicate (sparql, "rdf:type");
+							tracker_sparql_builder_object (sparql, "nao:Tag");
+
+							tracker_sparql_builder_predicate (sparql, "nao:prefLabel");
+							tracker_sparql_builder_object_string (sparql, label);
+							tracker_sparql_builder_object_blank_close (sparql);
+							label = &(part[j+1]);
+						}
 					}
+				}
+				g_free (p);
 
-					tracker_sparql_builder_insert_silent_open (sparql, NULL);
-					tracker_sparql_builder_graph_open (sparql, TRACKER_EVOLUTION_GRAPH_URN);
-
-					process_fields (sparql, uid, flags, sent,
-					                subject, from, to, cc, size,
-					                folder, uri);
-
-					/* Extract User flags/labels */
-					p = part = g_strdup ((const gchar *) sqlite3_column_text (stmt, 16));
-					if (part) {
-						label = part;
-						for (j=0; part[j]; j++) {
-
-							if (part[j] == ' ') {
-								part[j] = 0;
+				/* Extract User tags */
+				p = part = g_strdup ((const gchar *) sqlite3_column_text (stmt, 17));
+				EXTRACT_FIRST_DIGIT (max)
+					for (j = 0; j < max; j++) {
+						int len;
+						char *name, *value;
+						EXTRACT_STRING (name)
+							EXTRACT_STRING (value)
+							if (name && g_utf8_validate (name, -1, NULL) &&
+							    value && g_utf8_validate (value, -1, NULL)) {
 
 								if (!opened) {
 									tracker_sparql_builder_subject_iri (sparql, uri);
 									opened = TRUE;
 								}
 
-								tracker_sparql_builder_predicate (sparql, "nao:hasTag");
+								tracker_sparql_builder_predicate (sparql, "nao:hasProperty");
 								tracker_sparql_builder_object_blank_open (sparql);
 
 								tracker_sparql_builder_predicate (sparql, "rdf:type");
-								tracker_sparql_builder_object (sparql, "nao:Tag");
+								tracker_sparql_builder_object (sparql, "nao:Property");
 
-								tracker_sparql_builder_predicate (sparql, "nao:prefLabel");
-								tracker_sparql_builder_object_string (sparql, label);
+								tracker_sparql_builder_predicate (sparql, "nao:propertyName");
+								tracker_sparql_builder_object_string (sparql, name);
+
+								tracker_sparql_builder_predicate (sparql, "nao:propertyValue");
+								tracker_sparql_builder_object_string (sparql, value);
+
 								tracker_sparql_builder_object_blank_close (sparql);
-								label = &(part[j+1]);
 							}
-						}
+						g_free(name);
+						g_free(value);
 					}
-					g_free (p);
 
-					/* Extract User tags */
-					p = part = g_strdup ((const gchar *) sqlite3_column_text (stmt, 17));
-					EXTRACT_FIRST_DIGIT (max)
-						for (j = 0; j < max; j++) {
-							int len;
-							char *name, *value;
-							EXTRACT_STRING (name)
-								EXTRACT_STRING (value)
-								if (name && g_utf8_validate (name, -1, NULL) &&
-									value && g_utf8_validate (value, -1, NULL)) {
+				g_free (uri);
+				g_free (p);
 
-									if (!opened) {
-										tracker_sparql_builder_subject_iri (sparql, uri);
-										opened = TRUE;
-									}
-
-									tracker_sparql_builder_predicate (sparql, "nao:hasProperty");
-									tracker_sparql_builder_object_blank_open (sparql);
-
-									tracker_sparql_builder_predicate (sparql, "rdf:type");
-									tracker_sparql_builder_object (sparql, "nao:Property");
-
-									tracker_sparql_builder_predicate (sparql, "nao:propertyName");
-									tracker_sparql_builder_object_string (sparql, name);
-
-									tracker_sparql_builder_predicate (sparql, "nao:propertyValue");
-									tracker_sparql_builder_object_string (sparql, value);
-
-									tracker_sparql_builder_object_blank_close (sparql);
-								}
-							g_free(name);
-							g_free(value);
-						}
-
-					g_free (p);
-
-					tracker_sparql_builder_graph_close (sparql);
-					tracker_sparql_builder_insert_close (sparql);
-
-					full_sparql = g_strdup_printf ("DELETE {"
-					                               "  GRAPH <%s> {"
-					                               "    <%s> ?p ?o"
-					                               "  } "
-					                               "} "
-					                               "WHERE {"
-					                               "  GRAPH <%s> {"
-					                               "    <%s> ?p ?o"
-					                               "    FILTER (?p != rdf:type && ?p != nie:contentCreated)"
-					                               "  } "
-					                               "} "
-					                               "%s",
-					                               TRACKER_EVOLUTION_GRAPH_URN,
-					                               uri,
-					                               TRACKER_EVOLUTION_GRAPH_URN,
-					                               uri,
-					                               tracker_sparql_builder_get_result (sparql));
-
-					g_free (uri);
-					count++;
-					send_sparql_update (self, full_sparql, 0);
-					g_free (full_sparql);
-					g_object_unref (sparql);
-				}
+				tracker_sparql_builder_insert_close (sparql);
+				query = tracker_sparql_builder_get_result (sparql);
+				count++;
+				send_sparql_update (self, query, 0);
+				g_object_unref (sparql);
 			}
-
-			g_object_set (self, "progress",
-			              ((gdouble) uids_i / (gdouble) uids->len),
-			              "status", status,
-			              NULL);
-
-			sqlite3_finalize (stmt);
-			sqlite3_free (query);
 		}
 
-		send_sparql_commit (self, FALSE);
+		send_sparql_commit (self, TRUE);
+		g_object_set (self, "progress",
+		              1.0, NULL);
+
+		sqlite3_finalize (stmt);
+		sqlite3_free (query);
 
 		if (iter->child) {
 			introduce_walk_folders_in_folder (self, iter->child,
-			                                  store,
+			                                  store, cdb_r,
 			                                  account_uri, info,
 			                                  cancel);
 		}
 
 		iter = iter->next;
-		g_ptr_array_unref (uids);
-		g_free (status);
 	}
 
-	g_object_set (self, "progress", 1.0, "status", "Idle", NULL);
-
-	camel_db_close (cdb_r);
+	g_free (em_uri);
 }
 
 /* Initial notify of deletes that are more recent than last_checkout, called in
@@ -1177,9 +1155,10 @@ introduce_store_deal_with_deleted (TrackerEvolutionPlugin *self,
 	sqlite3_stmt *stmt = NULL;
 	CamelDB *cdb_r;
 	guint i, ret;
-	CamelURL *a_url;
+	gchar *em_uri;
 
-	a_url = CAMEL_SERVICE (store)->url;
+	em_uri = em_uri_from_camel (account_uri);
+	em_uri [strlen (em_uri) - 1] = '\0';
 
 	query = sqlite3_mprintf ("SELECT uid, mailbox "
 	                         "FROM Deletes "
@@ -1222,7 +1201,8 @@ introduce_store_deal_with_deleted (TrackerEvolutionPlugin *self,
 			 * directory separator here */
 
 			g_ptr_array_add (subjects_a,
-			                 convert_url_to_whatever (a_url, mailbox, uid));
+			                 tracker_uri_printf_escaped ("%s/%s/%s", em_uri,
+			                                             mailbox, uid));
 
 			if (count > 100) {
 				more = TRUE;
@@ -1263,6 +1243,8 @@ introduce_store_deal_with_deleted (TrackerEvolutionPlugin *self,
 	sqlite3_free (query);
 
 	camel_db_close (cdb_r);
+
+	g_free (em_uri);
 }
 
 /* Get the oldest date in all of the deleted-tables, called in the mainloop. We
@@ -1299,10 +1281,7 @@ get_last_deleted_time (TrackerEvolutionPlugin *self)
 				continue;
 			}
 
-			if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session),
-			                                                        uri,
-			                                                        CAMEL_PROVIDER_STORE,
-			                                                        NULL))) {
+			if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, NULL))) {
 				continue;
 			}
 
@@ -1357,9 +1336,15 @@ register_on_get_folder (gchar *uri, CamelFolder *folder, gpointer user_data)
 		goto not_ready;
 	}
 
+#ifdef HAVE_EDS_2_31_2
 	hook_id = g_signal_connect (folder, "changed",
-	                            G_CALLBACK (on_folder_summary_changed),
-	                            registry->hook_info);
+				    G_CALLBACK (on_folder_summary_changed),
+				    registry->hook_info);
+#else
+	hook_id = camel_object_hook_event (folder, "folder_changed",
+	                                   CAMEL_CALLBACK (on_folder_summary_changed),
+	                                   registry->hook_info);
+#endif
 	registry->hook_info->hook_id = hook_id;
 
 	g_hash_table_replace (priv->registered_folders,
@@ -1413,14 +1398,7 @@ register_walk_folders_in_folder (TrackerEvolutionPlugin *self,
 		/* This is asynchronous and hooked to the mail/ API, so nicely
 		 * integrated with the Evolution UI application */
 
-		mail_get_folder (
-#ifdef EVOLUTION_SHELL_2_91
-		                 session,
-#endif
-		                 iter->uri,
-		                 0,
-		                 register_on_get_folder,
-		                 info,
+		mail_get_folder (iter->uri, 0, register_on_get_folder, info,
 		                 mail_msg_unordered_push);
 
 		if (iter->child) {
@@ -1490,14 +1468,7 @@ unregister_walk_folders_in_folder (TrackerEvolutionPlugin *self,
 		/* This is asynchronous and hooked to the mail/ API, so nicely
 		 * integrated with the Evolution UI application */
 
-		mail_get_folder (
-#ifdef EVOLUTION_SHELL_2_91
-		                 session,
-#endif
-		                 titer->uri,
-		                 0,
-		                 unregister_on_get_folder,
-		                 info,
+		mail_get_folder (titer->uri, 0, unregister_on_get_folder, info,
 		                 mail_msg_unordered_push);
 
 		if (titer->child) {
@@ -1530,6 +1501,7 @@ typedef struct {
 	IntroductionInfo *intro_info;
 	CamelFolderInfo *iter;
 	CamelStore *store;
+	CamelDB *cdb_r;
 } WorkerThreadinfo;
 
 static void
@@ -1548,7 +1520,12 @@ free_worker_thread_info (gpointer data, gpointer user_data)
 
 	/* Ownership was transfered to us in try_again */
 	free_introduction_info (winfo->intro_info);
+	camel_db_close (winfo->cdb_r);
+#ifdef HAVE_EDS_2_31_2
 	g_object_unref (winfo->store);
+#else
+	camel_object_unref (winfo->store);
+#endif
 	camel_folder_info_free (winfo->iter);
 	g_free (winfo);
 }
@@ -1561,11 +1538,10 @@ folder_worker (gpointer data, gpointer user_data)
 	introduce_walk_folders_in_folder (winfo->intro_info->self,
 	                                  winfo->iter,
 	                                  winfo->store,
+	                                  winfo->cdb_r,
 	                                  winfo->intro_info->account_uri,
 	                                  winfo->intro_info->info,
 	                                  user_data);
-
-	send_sparql_commit (winfo->intro_info->self, TRUE);
 
 	return;
 }
@@ -1582,6 +1558,7 @@ try_again (gpointer user_data)
 		winfo->intro_info = info->intro_info; /* owner transfer */
 		winfo->iter = info->iter; /* owner transfer */
 		winfo->store = info->store; /* owner transfer */
+		winfo->cdb_r = info->cdb_r; /* owner transfer */
 
 		if (!folder_pool)
 			folder_pool = thread_pool_new (folder_worker, free_worker_thread_info, NULL);
@@ -1603,9 +1580,14 @@ on_got_folderinfo_introduce (CamelStore *store,
 
 	/* Ownership of these is transfered in try_again */
 
+#ifdef HAVE_EDS_2_31_2
 	g_object_ref (store);
+#else
+	camel_object_ref (store);
+#endif
 	info->store = store;
 	/* This apparently creates a thread */
+	info->cdb_r = camel_db_clone (store->cdb_r, NULL);
 	info->iter = camel_folder_info_clone (iter);
 	info->intro_info = data;
 
@@ -1658,10 +1640,7 @@ introduce_account_to (TrackerEvolutionPlugin *self,
 	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
 		return;
 
-	if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session),
-	                                                        uri,
-	                                                        CAMEL_PROVIDER_STORE,
-	                                                        NULL))) {
+	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, NULL))) {
 		return;
 	}
 
@@ -1682,7 +1661,11 @@ introduce_account_to (TrackerEvolutionPlugin *self,
 
 	mail_get_folderinfo (store, NULL, on_got_folderinfo_introduce, intro_info);
 
+#ifdef HAVE_EDS_2_31_2
 	g_object_unref (store);
+#else
+	camel_object_unref (store);
+#endif
 
 }
 
@@ -1727,7 +1710,7 @@ register_client_second_half (ClientRegistry *info)
 
 	if (info->last_checkout < too_old) {
 
-		send_sparql_update (info->self, "DELETE { ?s a rdfs:Resource } "
+		send_sparql_update (info->self, "DELETE FROM <"DATASOURCE_URN"> { ?s a rdfs:Resource } "
 		                    "WHERE { ?s nie:dataSource <" DATASOURCE_URN "> }", 0);
 		send_sparql_commit (info->self, FALSE);
 
@@ -1743,57 +1726,57 @@ register_client_second_half (ClientRegistry *info)
 }
 
 static void
-on_register_client_qry (GObject *source_object,
-                        GAsyncResult *res,
-                        gpointer user_data)
+on_register_client_qry (GPtrArray *results,
+                        GError    *error,
+                        gpointer   user_data)
 {
-	TrackerSparqlCursor *cursor;
 	ClientRegistry *info = user_data;
 	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (info->self);
-	GError *error = NULL;
-
-	cursor = tracker_sparql_connection_query_finish (TRACKER_SPARQL_CONNECTION (source_object),
-	                                                 res, &error);
+	guint i;
 
 	if (error) {
 		g_warning ("%s\n", error->message);
 		g_error_free (error);
 		g_slice_free (ClientRegistry, info);
-		if (cursor) {
-			g_object_unref (cursor);
-		}
 		return;
 	}
 
-	if (!tracker_sparql_cursor_next (cursor, NULL, NULL)) {
+	if (!results) {
 		if (priv->resuming) {
-			info->last_checkout = priv->last_time;
-		} else if (priv->resuming && priv->last_time != 0) {
 			info->last_checkout = priv->last_time;
 		} else {
 			info->last_checkout = 0;
 		}
 	} else {
-		do {
-			const gchar *str = tracker_sparql_cursor_get_string (cursor, 0, NULL);
-			GError *new_error = NULL;
+		if (results->len == 0 && priv->resuming && priv->last_time != 0) {
+			info->last_checkout = priv->last_time;
+		} else {
+			if (results->len == 0) {
+				info->last_checkout = 0;
+			} else {
+				for (i = 0; i < results->len; i++) {
+					const gchar **str = g_ptr_array_index (results, i);
+					GError *new_error = NULL;
 
-			info->last_checkout = (guint64) tracker_string_to_date (str, NULL, &new_error);
+					info->last_checkout = (guint64) tracker_string_to_date (str[0], NULL, &new_error);
 
-			if (new_error) {
-				g_warning ("%s", new_error->message);
-				g_error_free (error);
-				g_object_unref (cursor);
-				return;
+					if (new_error) {
+						g_warning ("%s", new_error->message);
+						g_error_free (error);
+						g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
+						g_ptr_array_free (results, TRUE);
+						return;
+					}
+
+					break;
+				}
 			}
-
-			break;
-		} while (tracker_sparql_cursor_next (cursor, NULL, NULL));
+		}
+		g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
+		g_ptr_array_free (results, TRUE);
 	}
 
 	register_client_second_half (info);
-
-	g_object_unref (cursor);
 }
 
 static void
@@ -1803,7 +1786,7 @@ register_client (TrackerEvolutionPlugin *self)
 	ClientRegistry *info;
 	const gchar *query;
 
-	if (!priv->connection) {
+	if (!priv->client) {
 		return;
 	}
 
@@ -1816,10 +1799,9 @@ register_client (TrackerEvolutionPlugin *self)
 	query = "SELECT ?c "
 		"WHERE { <" DATASOURCE_URN "> nie:contentLastModified ?c }";
 
-	tracker_sparql_connection_query_async (priv->connection, query,
-	                                       NULL,
-	                                       on_register_client_qry,
-	                                       info);
+	tracker_resources_sparql_query_async (priv->client, query,
+	                                      on_register_client_qry,
+	                                      info);
 }
 
 
@@ -1843,9 +1825,13 @@ on_folder_deleted (CamelStore *store,
 }
 
 static void
-on_folder_renamed (CamelStore      *store,
-                   gchar           *old_name,
-                   StoreRegistry   *registry)
+on_folder_renamed (CamelStore *store,
+#ifdef HAVE_EDS_2_31_2
+		   gchar *old_name,
+#else
+                   CamelRenameInfo *info,
+#endif
+                   StoreRegistry *registry)
 {
 	unregister_account (registry->self, registry->account);
 	register_account (registry->self, registry->account);
@@ -1862,7 +1848,11 @@ store_registry_new (gpointer co,
 	registry->store = co;
 	registry->account = account; /* weak */
 	registry->self = self; /* weak */
+#ifdef HAVE_EDS_2_31_2
 	g_object_ref (co);
+#else
+	camel_object_ref (co);
+#endif
 
 	return registry;
 }
@@ -1870,8 +1860,16 @@ store_registry_new (gpointer co,
 static void
 store_registry_free (StoreRegistry *registry)
 {
+#ifdef HAVE_EDS_2_31_2
 	g_signal_handler_disconnect (registry->store, registry->hook_id);
+#else
+	camel_object_remove_event (registry->store, registry->hook_id);
+#endif
+#ifdef HAVE_EDS_2_31_2
 	g_object_unref (registry->store);
+#else
+	camel_object_unref (registry->store);
+#endif
 	g_slice_free (StoreRegistry, registry);
 }
 
@@ -1899,27 +1897,45 @@ on_got_folderinfo_register (CamelStore *store,
 
 	/* Hook up catching folder changes in the store */
 	registry = store_registry_new (store, account, self);
+#ifdef HAVE_EDS_2_31_2
 	hook_id = g_signal_connect (store, "folder-created",
-	                            G_CALLBACK (on_folder_created),
-	                            registry);
+				    G_CALLBACK (on_folder_created),
+				    registry);
+#else
+	hook_id = camel_object_hook_event (store, "folder_created",
+	                                   CAMEL_CALLBACK (on_folder_created),
+	                                   registry);
+#endif
 	registry->hook_id = hook_id;
 	g_hash_table_replace (priv->registered_stores,
 	                      GINT_TO_POINTER (hook_id),
 	                      registry);
 
 	registry = store_registry_new (store, account, self);
+#ifdef HAVE_EDS_2_31_2
 	hook_id = g_signal_connect (store, "folder-renamed",
-	                            G_CALLBACK (on_folder_renamed),
-	                            registry);
+				    G_CALLBACK (on_folder_renamed),
+				    registry);
+#else
+	hook_id = camel_object_hook_event (store, "folder_renamed",
+	                                   CAMEL_CALLBACK (on_folder_renamed),
+	                                   registry);
+#endif
 	registry->hook_id = hook_id;
 	g_hash_table_replace (priv->registered_stores,
 	                      GINT_TO_POINTER (hook_id),
 	                      registry);
 
 	registry = store_registry_new (store, account, self);
+#ifdef HAVE_EDS_2_31_2
 	hook_id = g_signal_connect (store, "folder-deleted",
-	                            G_CALLBACK (on_folder_deleted),
-	                            registry);
+				    G_CALLBACK (on_folder_deleted),
+				    registry);
+#else
+	hook_id = camel_object_hook_event (store, "folder_deleted",
+	                                   CAMEL_CALLBACK (on_folder_deleted),
+	                                   registry);
+#endif
 	registry->hook_id = hook_id;
 	g_hash_table_replace (priv->registered_stores,
 	                      GINT_TO_POINTER (hook_id),
@@ -1957,10 +1973,7 @@ register_account (TrackerEvolutionPlugin *self,
 	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
 		return;
 
-	if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session),
-	                                                        uri,
-	                                                        CAMEL_PROVIDER_STORE,
-	                                                        NULL))) {
+	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, NULL))) {
 		return;
 	}
 
@@ -1975,7 +1988,11 @@ register_account (TrackerEvolutionPlugin *self,
 	/* Get the account's folder-info and register it asynchronously */
 	mail_get_folderinfo (store, NULL, on_got_folderinfo_register, reg_info);
 
+#ifdef HAVE_EDS_2_31_2
 	g_object_unref (store);
+#else
+	camel_object_unref (store);
+#endif
 }
 
 static gboolean
@@ -2025,10 +2042,7 @@ unregister_account (TrackerEvolutionPlugin *self,
 	if (!(provider->flags & CAMEL_PROVIDER_IS_STORAGE))
 		return;
 
-	if (!(store = (CamelStore *) camel_session_get_service (CAMEL_SESSION (session),
-	                                                        uri,
-	                                                        CAMEL_PROVIDER_STORE,
-	                                                        NULL))) {
+	if (!(store = (CamelStore *) camel_session_get_service (session, uri, CAMEL_PROVIDER_STORE, NULL))) {
 		return;
 	}
 
@@ -2041,7 +2055,11 @@ unregister_account (TrackerEvolutionPlugin *self,
 	/* Get the account's folder-info and unregister asynchronously */
 	mail_get_folderinfo (store, NULL, on_got_folderinfo_unregister, reg_info);
 
+#ifdef HAVE_EDS_2_31_2
 	g_object_unref (store);
+#else
+	camel_object_unref (store);
+#endif
 }
 
 static void
@@ -2074,6 +2092,12 @@ on_account_changed (EAccountList *list,
 static void
 disable_plugin (void)
 {
+	if (sparql_pool) {
+		ThreadPool *pool = sparql_pool;
+		sparql_pool = NULL;
+		thread_pool_destroy (pool);
+	}
+
 	if (folder_pool) {
 		ThreadPool *pool = folder_pool;
 		folder_pool = NULL;
@@ -2086,11 +2110,86 @@ disable_plugin (void)
 	}
 }
 
+
+static void
+list_names_reply_cb (DBusGProxy     *proxy,
+                     DBusGProxyCall *call,
+                     gpointer        user_data)
+{
+	GError *error = NULL;
+	GStrv names = NULL;
+	guint i = 0;
+
+	dbus_g_proxy_end_call (proxy, call, &error,
+	                       G_TYPE_STRV, &names,
+	                       G_TYPE_INVALID);
+
+	if (error) {
+		g_warning ("%s", error->message);
+		g_error_free (error);
+		if (names)
+			g_strfreev (names);
+		return;
+	}
+
+	while (names[i] != NULL) {
+		if (g_strcmp0 (names[i], TRACKER_SERVICE) == 0) {
+			register_client (user_data);
+			break;
+		}
+		i++;
+	}
+
+	g_strfreev (names);
+}
+
+
+static void
+name_owner_changed_cb (DBusGProxy *proxy,
+                       gchar *name,
+                       gchar *old_owner,
+                       gchar *new_owner,
+                       gpointer user_data)
+{
+	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (user_data);
+
+	if (g_strcmp0 (name, TRACKER_SERVICE) == 0) {
+		 if (tracker_is_empty_string (new_owner) && !tracker_is_empty_string (old_owner)) {
+			if (priv->client) {
+				TrackerClient *client = priv->client;
+
+				priv->client = NULL; 
+
+				if (sparql_pool) {
+					ThreadPool *pool = sparql_pool;
+					sparql_pool = NULL;
+					thread_pool_destroy (pool);
+				}
+
+				if (folder_pool) {
+					ThreadPool *pool = folder_pool;
+					folder_pool = NULL;
+					thread_pool_destroy (pool);
+				}
+
+				g_object_unref (client);
+			}
+		}
+
+		if (tracker_is_empty_string (old_owner) && !tracker_is_empty_string (new_owner)) {
+			if (!priv->client) {
+				priv->client = tracker_client_new (0, G_MAXINT);
+			}
+			register_client (user_data);
+		}
+	}
+}
+
 static void
 enable_plugin_real (void)
 {
 	manager = g_object_new (TRACKER_TYPE_EVOLUTION_PLUGIN,
-	                        "name", "Emails", NULL);
+		                        "name", "Emails", NULL);
 
 	g_signal_emit_by_name (manager, "started");
 }
@@ -2107,43 +2206,15 @@ enable_plugin_try (gpointer user_data)
 }
 
 static void
-ensure_connection (TrackerEvolutionPluginPrivate *priv)
+enable_plugin (void)
 {
-	g_static_rec_mutex_lock (&glock);
+	/* Deal with https://bugzilla.gnome.org/show_bug.cgi?id=606940 */
 
-	if (!priv->connection) {
-		if (priv->sparql_cancel) {
-			g_object_unref (priv->sparql_cancel);
-		}
-		priv->connection = tracker_sparql_connection_get (NULL, NULL);
-		priv->sparql_cancel = g_cancellable_new ();
+	if (sparql_pool) {
+		ThreadPool *pool = sparql_pool;
+		sparql_pool = NULL;
+		thread_pool_destroy (pool);
 	}
-
-	if (priv->timer_since_stopped && g_timer_elapsed (priv->timer_since_stopped, NULL) > 5) {
-		g_timer_destroy (priv->timer_since_stopped);
-		priv->timer_since_stopped = NULL;
-	}
-
-	g_static_rec_mutex_unlock (&glock);
-}
-
-static void
-ensure_no_connection (TrackerEvolutionPluginPrivate *priv)
-{
-	TrackerSparqlConnection *connection;
-
-	g_static_rec_mutex_lock (&glock);
-
-	connection = priv->connection;
-	if (!priv->timer_since_stopped) {
-		priv->timer_since_stopped = g_timer_new ();
-	}
-	if (priv->sparql_cancel) {
-		g_cancellable_cancel (priv->sparql_cancel);
-	}
-	priv->connection = NULL; 
-
-	g_static_rec_mutex_unlock (&glock);
 
 	if (folder_pool) {
 		ThreadPool *pool = folder_pool;
@@ -2151,19 +2222,7 @@ ensure_no_connection (TrackerEvolutionPluginPrivate *priv)
 		thread_pool_destroy (pool);
 	}
 
-	if (connection) {
-		g_object_unref (connection);
-	}
-}
-
-static void
-enable_plugin (void)
-{
-	/* Deal with https://bugzilla.gnome.org/show_bug.cgi?id=606940 */
-
 	if (manager) {
-		TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (manager);
-		ensure_no_connection (priv);
 		g_object_unref (manager);
 	}
 
@@ -2210,16 +2269,33 @@ tracker_evolution_plugin_finalize (GObject *plugin)
 
 	g_object_unref (priv->accounts);
 
-	ensure_no_connection (priv);
+	if (priv->client) {
+		TrackerClient *client = priv->client;
 
-	g_static_rec_mutex_lock (&glock);
+		priv->client = NULL;
 
-	if (priv->timer_since_stopped) {
-		g_timer_destroy (priv->timer_since_stopped);
-		priv->timer_since_stopped = NULL;
+		if (sparql_pool) {
+			ThreadPool *pool = sparql_pool;
+			sparql_pool = NULL;
+			thread_pool_destroy (pool);
+		}
+
+		if (folder_pool) {
+			ThreadPool *pool = folder_pool;
+			folder_pool = NULL;
+			thread_pool_destroy (pool);
+		}
+
+		g_object_unref (client);
 	}
 
-	g_static_rec_mutex_unlock (&glock);
+	if (priv->dbus_proxy) {
+		g_object_unref (priv->dbus_proxy);
+	}
+
+	if (priv->connection) {
+		dbus_g_connection_unref (priv->connection);
+	}
 
 	G_OBJECT_CLASS (tracker_evolution_plugin_parent_class)->finalize (plugin);
 }
@@ -2230,8 +2306,6 @@ tracker_evolution_plugin_class_init (TrackerEvolutionPluginClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 	TrackerMinerClass *miner_class = TRACKER_MINER_CLASS (klass);
-
-	g_setenv ("TRACKER_SPARQL_BACKEND", "bus", TRUE);
 
 	miner_class->started = miner_started;
 	miner_class->stopped = miner_stopped;
@@ -2248,19 +2322,9 @@ tracker_evolution_plugin_init (TrackerEvolutionPlugin *plugin)
 {
 	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (plugin);
 	EIterator *it;
+	GError *error = NULL;
 
-#ifdef EVOLUTION_SHELL_2_91
-	if (!session) {
-		EShell *shell;
-		EShellBackend *shell_backend;
-
-		shell = e_shell_get_default ();
-		shell_backend = e_shell_get_backend_by_name (shell, "mail");
-		session = e_mail_backend_get_session (E_MAIL_BACKEND (shell_backend));
-	}
-#endif
-
-	priv->connection = NULL;
+	priv->client = NULL;
 	priv->last_time = 0;
 	priv->resuming = FALSE;
 	priv->paused = FALSE;
@@ -2270,7 +2334,26 @@ tracker_evolution_plugin_init (TrackerEvolutionPlugin *plugin)
 	priv->registered_stores = NULL;
 	priv->registered_clients = NULL;
 
+	priv->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+
+	if (error) {
+		goto error_handler;
+	}
+
+	priv->dbus_proxy = dbus_g_proxy_new_for_name (priv->connection,
+	                                              DBUS_SERVICE_DBUS,
+	                                              DBUS_PATH_DBUS,
+	                                              DBUS_INTERFACE_DBUS);
+
+	dbus_g_proxy_add_signal (priv->dbus_proxy, "NameOwnerChanged",
+	                         G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
+	                         G_TYPE_INVALID);
+
+#ifdef HAVE_EDS_2_29_1
 	priv->accounts = g_object_ref (e_get_account_list ());
+#else
+	priv->accounts = g_object_ref (mail_config_get_accounts ());
+#endif
 
 	for (it = e_list_get_iterator (E_LIST (priv->accounts)); e_iterator_is_valid (it); e_iterator_next (it)) {
 		register_account (plugin, (EAccount *) e_iterator_get (it));
@@ -2284,45 +2367,26 @@ tracker_evolution_plugin_init (TrackerEvolutionPlugin *plugin)
 	                  G_CALLBACK (on_account_removed), plugin);
 	g_signal_connect (priv->accounts, "account-changed",
 	                  G_CALLBACK (on_account_changed), plugin);
+ error_handler:
+
+	if (error) {
+		g_warning ("Could not setup DBus for Tracker plugin, %s\n", error->message);
+		g_signal_emit_by_name (plugin, "error");
+		g_error_free (error);
+	}
 }
 
 static void
-on_tracker_store_appeared (GDBusConnection *d_connection,
-                           const gchar     *name,
-                           const gchar     *name_owner,
-                           gpointer         user_data)
-
+listnames_fini (gpointer data)
 {
-	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (user_data);
+	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (data);
 
-	ensure_connection (priv);
+	dbus_g_proxy_connect_signal (priv->dbus_proxy, "NameOwnerChanged",
+	                             G_CALLBACK (name_owner_changed_cb),
+	                             data,
+	                             NULL);
 
-	register_client (user_data);
-}
-
-static void
-miner_start_watching (TrackerMiner *miner)
-{
-	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (miner);
-
-	priv->watch_name_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
-	                                        TRACKER_SERVICE,
-	                                        G_BUS_NAME_WATCHER_FLAGS_NONE,
-	                                        on_tracker_store_appeared,
-	                                        NULL,
-	                                        miner,
-	                                        NULL);
-}
-
-static void
-miner_stop_watching (TrackerMiner *miner)
-{
-	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (miner);
-
-	if (priv->watch_name_id != 0)
-		g_bus_unwatch_name (priv->watch_name_id);
-
-	ensure_no_connection (priv);
+	g_object_unref (data);
 }
 
 static void
@@ -2330,18 +2394,24 @@ miner_started (TrackerMiner *miner)
 {
 	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (miner);
 
-	ensure_connection (priv);
+	if (!priv->client) {
+		priv->client = tracker_client_new (0, G_MAXINT);
+	}
 
-	miner_start_watching (miner);
+	dbus_g_proxy_begin_call (priv->dbus_proxy, "ListNames",
+	                         list_names_reply_cb,
+	                         g_object_ref (miner),
+	                         listnames_fini,
+	                         G_TYPE_INVALID,
+	                         G_TYPE_INVALID);
 
-	g_object_set (miner,  "progress", 0.0, "status", "Initializing", NULL);
+	g_object_set (miner,  "progress", 0.0,  "status", "Initializing", NULL);
 }
 
 static void
 miner_stopped (TrackerMiner *miner)
 {
 	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (miner);
-
 	miner_paused (miner);
 	priv->paused = FALSE;
 }
@@ -2353,23 +2423,62 @@ miner_paused (TrackerMiner *miner)
 
 	/* We don't really pause, we just completely stop */
 
-	miner_stop_watching (miner);
+	dbus_g_proxy_disconnect_signal (priv->dbus_proxy, "NameOwnerChanged",
+	                                G_CALLBACK (name_owner_changed_cb),
+	                                miner);
 
 	priv->paused = TRUE;
 	priv->last_time = 0;
 
-	ensure_no_connection (priv);
+	if (priv->client) {
+		TrackerClient *client = priv->client;
+
+		priv->client = NULL;
+
+		if (sparql_pool) {
+			ThreadPool *pool = sparql_pool;
+			sparql_pool = NULL;
+			thread_pool_destroy (pool);
+		}
+
+		if (folder_pool) {
+			ThreadPool *pool = folder_pool;
+			folder_pool = NULL;
+			thread_pool_destroy (pool);
+		}
+
+		g_object_unref (client);
+
+		/* By setting this to NULL, events will still be catched by our
+		 * handlers, but the send_sparql_* calls will just ignore it.
+		 * This is fine as a solution (at least for now). It allows us
+		 * to avoid having to unregister everything and risk the chance
+		 * of missing something (like a folder or account creation). */
+	}
 }
 
 static gboolean
 unset_resuming (gpointer data)
 {
 	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (data);
-
 	priv->resuming = FALSE;
 	g_object_unref (data);
-
 	return FALSE;
+}
+
+static void
+resuming_fini (gpointer data)
+{
+	TrackerEvolutionPluginPrivate *priv = TRACKER_EVOLUTION_PLUGIN_GET_PRIVATE (data);
+
+	g_timeout_add_seconds (1, unset_resuming, g_object_ref (data));
+
+	dbus_g_proxy_connect_signal (priv->dbus_proxy, "NameOwnerChanged",
+	                             G_CALLBACK (name_owner_changed_cb),
+	                             data,
+	                             NULL);
+
+	g_object_unref (data);
 }
 
 static void
@@ -2379,16 +2488,21 @@ miner_resumed (TrackerMiner *miner)
 
 	/* We don't really resume, we just completely restart */
 
-	ensure_connection (priv);
-
 	priv->resuming = TRUE;
 	priv->paused = FALSE;
 	priv->total_popped = 0;
 	priv->of_total = 0;
 
-	g_object_set (miner,  "progress", 0.0, "status", _("Processing…"), NULL);
+	if (!priv->client) {
+		priv->client = tracker_client_new (0, G_MAXINT);
+	}
 
-	miner_start_watching (miner);
+	g_object_set (miner,  "progress", 0.0,  "status", _("Processing…"), NULL);
 
-	g_timeout_add_seconds (1, unset_resuming, g_object_ref (miner));
+	dbus_g_proxy_begin_call (priv->dbus_proxy, "ListNames",
+	                         list_names_reply_cb,
+	                         g_object_ref (miner),
+	                         resuming_fini,
+	                         G_TYPE_INVALID,
+	                         G_TYPE_INVALID);
 }

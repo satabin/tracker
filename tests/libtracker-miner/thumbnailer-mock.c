@@ -19,9 +19,7 @@
 
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
-#if 0
 #include <dbus/dbus-glib.h>
-#endif
 #include "empty-gobject.h"
 #include "thumbnailer-mock.h"
 
@@ -43,8 +41,6 @@ dbus_mock_call_log_get ()
 	return calls;
 }
 
-#if 0
-
 static void
 dbus_mock_call_log_append (const gchar *function_name)
 {
@@ -52,7 +48,7 @@ dbus_mock_call_log_append (const gchar *function_name)
 }
 
 
-/* Port to gdbus */
+
 /*
  * DBus overrides
  */
@@ -131,5 +127,5 @@ dbus_g_proxy_call_no_reply (DBusGProxy        *proxy,
 {
 	dbus_mock_call_log_append (method);
 }
-#endif
+
 

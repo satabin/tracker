@@ -50,24 +50,12 @@ typedef struct {
 	gchar *white_balance;
 	gchar *copyright;
 	gchar *software;
-	gchar *x_resolution;
-	gchar *y_resolution;
-	gint resolution_unit;
 } TrackerExifData;
 
-TrackerExifData * tracker_exif_new   (const guchar *buffer,
-                                      size_t        len,
-                                      const gchar  *uri);
-void              tracker_exif_free  (TrackerExifData *data);
-
-#ifndef TRACKER_DISABLE_DEPRECATED
-
-gboolean          tracker_exif_read  (const unsigned char *buffer,
-                                      size_t               len,
-                                      const gchar         *uri,
-                                      TrackerExifData     *data) G_GNUC_DEPRECATED;
-
-#endif /* TRACKER_DISABLE_DEPRECATED */
+gboolean tracker_exif_read (const unsigned char *buffer,
+                            size_t               len,
+                            const gchar         *uri,
+                            TrackerExifData     *data);
 
 G_END_DECLS
 

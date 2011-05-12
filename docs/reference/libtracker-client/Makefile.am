@@ -22,21 +22,26 @@ HFILE_GLOB = $(top_srcdir)/src/libtracker-client/*.h
 CFILE_GLOB = $(top_srcdir)/src/libtracker-client/*.c
 
 # Header files to ignore when scanning
-IGNORE_HFILES =                                        \
-	tracker-resources-glue.h                       \
+IGNORE_HFILES = 			\
+	tracker-resources-glue.h	\
 	tracker-statistics-glue.h
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
-AM_CPPFLAGS =                                          \
-	-DTRACKER_COMPILATION                          \
-	-I$(top_srcdir)/src                            \
-	$(LIBTRACKER_CLIENT_CFLAGS)
+INCLUDES = 								\
+	-DTRACKER_COMPILATION						\
+	-I$(top_srcdir)/src						\
+	$(GLIB2_CFLAGS)							\
+	$(GIO_CFLAGS)							\
+	$(DBUS_CFLAGS)
 
-GTKDOC_LIBS =                                          \
+GTKDOC_LIBS =								\
 	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(LIBTRACKER_CLIENT_LIBS)
+	$(top_builddir)/src/libtracker-common/libtracker-common.la	\
+	$(DBUS_LIBS)							\
+	$(GIO_LIBS)							\
+	$(GLIB2_LIBS)
+
 
 # Extra options to supply to gtkdoc-mkdb
 MKDB_OPTIONS = --sgml-mode --output-format=xml

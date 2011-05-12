@@ -20,7 +20,6 @@
 class Tracker.Sparql.Expression : Object {
 	weak Query query;
 
-	const int MAX_VARIABLES_FOR_IN = 20;
 	const string XSD_NS = "http://www.w3.org/2001/XMLSchema#";
 	const string FN_NS = "http://www.w3.org/2005/xpath-functions#";
 	const string FTS_NS = "http://www.tracker-project.org/ontologies/fts#";
@@ -38,7 +37,7 @@ class Tracker.Sparql.Expression : Object {
 		get { return query.pattern; }
 	}
 
-	inline bool next () throws Sparql.Error {
+	inline bool next () throws SparqlError {
 		return query.next ();
 	}
 
@@ -50,15 +49,15 @@ class Tracker.Sparql.Expression : Object {
 		return query.last ();
 	}
 
-	inline bool accept (SparqlTokenType type) throws Sparql.Error {
+	inline bool accept (SparqlTokenType type) throws SparqlError {
 		return query.accept (type);
 	}
 
-	Sparql.Error get_error (string msg) {
+	SparqlError get_error (string msg) {
 		return query.get_error (msg);
 	}
 
-	bool expect (SparqlTokenType type) throws Sparql.Error {
+	bool expect (SparqlTokenType type) throws SparqlError {
 		return query.expect (type);
 	}
 
@@ -74,11 +73,7 @@ class Tracker.Sparql.Expression : Object {
 		return (type == PropertyType.INTEGER || type == PropertyType.DOUBLE || type == PropertyType.DATETIME || type == PropertyType.UNKNOWN);
 	}
 
-	void append_collate (StringBuilder sql) {
-		sql.append_printf (" COLLATE %s", COLLATION_NAME);
-	}
-
-	void skip_bracketted_expression () throws Sparql.Error {
+	void skip_bracketted_expression () throws SparqlError {
 		expect (SparqlTokenType.OPEN_PARENS);
 		while (true) {
 			switch (current ()) {
@@ -98,7 +93,7 @@ class Tracker.Sparql.Expression : Object {
 		expect (SparqlTokenType.CLOSE_PARENS);
 	}
 
-	internal void skip_select_variables () throws Sparql.Error {
+	internal void skip_select_variables () throws SparqlError {
 		while (true) {
 			switch (current ()) {
 			case SparqlTokenType.OPEN_PARENS:
@@ -121,7 +116,7 @@ class Tracker.Sparql.Expression : Object {
 		}
 	}
 
-	internal PropertyType translate_select_expression (StringBuilder sql, bool subquery, int variable_index) throws Sparql.Error {
+	internal PropertyType translate_select_expression (StringBuilder sql, bool subquery) throws SparqlError {
 		Variable variable = null;
 
 		long begin = sql.len;
@@ -140,6 +135,7 @@ class Tracker.Sparql.Expression : Object {
 
 		if (!subquery) {
 			convert_expression_to_string (sql, type, begin);
+			type = PropertyType.STRING;
 		}
 
 		if (accept (SparqlTokenType.AS)) {
@@ -170,16 +166,12 @@ class Tracker.Sparql.Expression : Object {
 				state = VariableState.BOUND;
 			}
 			context.select_var_set.insert (variable, state);
-
-			((SelectContext) context).variable_names += variable.name;
-		} else {
-			((SelectContext) context).variable_names += "var%d".printf (variable_index + 1);
 		}
 
 		return type;
 	}
 
-	void translate_expression_as_order_condition (StringBuilder sql) throws Sparql.Error {
+	void translate_expression_as_order_condition (StringBuilder sql) throws SparqlError {
 		long begin = sql.len;
 		if (translate_expression (sql) == PropertyType.RESOURCE) {
 			// ID => Uri
@@ -188,7 +180,7 @@ class Tracker.Sparql.Expression : Object {
 		}
 	}
 
-	internal void translate_order_condition (StringBuilder sql) throws Sparql.Error {
+	internal void translate_order_condition (StringBuilder sql) throws SparqlError {
 		if (accept (SparqlTokenType.ASC)) {
 			translate_expression_as_order_condition (sql);
 			sql.append (" ASC");
@@ -200,7 +192,7 @@ class Tracker.Sparql.Expression : Object {
 		}
 	}
 
-	void translate_bound_call (StringBuilder sql) throws Sparql.Error {
+	void translate_bound_call (StringBuilder sql) throws SparqlError {
 		expect (SparqlTokenType.BOUND);
 		expect (SparqlTokenType.OPEN_PARENS);
 		sql.append ("(");
@@ -209,32 +201,7 @@ class Tracker.Sparql.Expression : Object {
 		expect (SparqlTokenType.CLOSE_PARENS);
 	}
 
-	PropertyType translate_if_call (StringBuilder sql) throws Sparql.Error {
-		expect (SparqlTokenType.IF);
-		expect (SparqlTokenType.OPEN_PARENS);
-
-		// condition
-		sql.append ("(CASE ");
-		translate_expression (sql);
-
-		// if condition is true
-		sql.append (" WHEN 1 THEN ");
-		expect (SparqlTokenType.COMMA);
-		var type = translate_expression (sql);
-
-		// if condition is false
-		sql.append (" WHEN 0 THEN ");
-		expect (SparqlTokenType.COMMA);
-		translate_expression (sql);
-
-		sql.append (" ELSE NULL END)");
-
-		expect (SparqlTokenType.CLOSE_PARENS);
-
-		return type;
-	}
-
-	void translate_regex (StringBuilder sql) throws Sparql.Error {
+	void translate_regex (StringBuilder sql) throws SparqlError {
 		expect (SparqlTokenType.REGEX);
 		expect (SparqlTokenType.OPEN_PARENS);
 		sql.append ("SparqlRegex(");
@@ -257,12 +224,6 @@ class Tracker.Sparql.Expression : Object {
 		expect (SparqlTokenType.CLOSE_PARENS);
 	}
 
-	void translate_exists (StringBuilder sql) throws Sparql.Error {
-		sql.append ("(");
-		pattern.translate_exists (sql);
-		sql.append (")");
-	}
-
 	internal static void append_expression_as_string (StringBuilder sql, string expression, PropertyType type) {
 		long begin = sql.len;
 		sql.append (expression);
@@ -274,8 +235,6 @@ class Tracker.Sparql.Expression : Object {
 		case PropertyType.STRING:
 		case PropertyType.INTEGER:
 			// nothing to convert
-			// do not use CAST to convert integers to strings as this breaks use
-			// of index when sorting by variable introduced in select expression
 			break;
 		case PropertyType.RESOURCE:
 			// ID => Uri
@@ -300,7 +259,7 @@ class Tracker.Sparql.Expression : Object {
 		}
 	}
 
-	void translate_expression_as_string (StringBuilder sql) throws Sparql.Error {
+	void translate_expression_as_string (StringBuilder sql) throws SparqlError {
 		switch (current ()) {
 		case SparqlTokenType.IRI_REF:
 		case SparqlTokenType.PN_PREFIX:
@@ -328,7 +287,7 @@ class Tracker.Sparql.Expression : Object {
 		}
 	}
 
-	void translate_str (StringBuilder sql) throws Sparql.Error {
+	void translate_str (StringBuilder sql) throws SparqlError {
 		expect (SparqlTokenType.STR);
 		expect (SparqlTokenType.OPEN_PARENS);
 
@@ -337,7 +296,7 @@ class Tracker.Sparql.Expression : Object {
 		expect (SparqlTokenType.CLOSE_PARENS);
 	}
 
-	void translate_isuri (StringBuilder sql) throws Sparql.Error {
+	void translate_isuri (StringBuilder sql) throws SparqlError {
 		if (!accept (SparqlTokenType.ISURI)) {
 			expect (SparqlTokenType.ISIRI);
 		}
@@ -362,7 +321,7 @@ class Tracker.Sparql.Expression : Object {
 		expect (SparqlTokenType.CLOSE_PARENS);
 	}
 
-	void translate_datatype (StringBuilder sql) throws Sparql.Error {
+	void translate_datatype (StringBuilder sql) throws SparqlError {
 		expect (SparqlTokenType.DATATYPE);
 		expect (SparqlTokenType.OPEN_PARENS);
 
@@ -391,7 +350,7 @@ class Tracker.Sparql.Expression : Object {
 		expect (SparqlTokenType.CLOSE_PARENS);
 	}
 
-	PropertyType translate_function (StringBuilder sql, string uri) throws Sparql.Error {
+	PropertyType translate_function (StringBuilder sql, string uri) throws SparqlError {
 		if (uri == XSD_NS + "string") {
 			// conversion to string
 			translate_expression_as_string (sql);
@@ -411,24 +370,6 @@ class Tracker.Sparql.Expression : Object {
 			sql.append (" AS REAL)");
 
 			return PropertyType.DOUBLE;
-		} else if (uri == TRACKER_NS + "case-fold") {
-			// conversion to string
-			sql.append ("SparqlCaseFold (");
-			translate_expression_as_string (sql);
-			sql.append (")");
-			return PropertyType.STRING;
-		} else if (uri == TRACKER_NS + "ascii-lower-case") {
-			// conversion to string
-			sql.append ("lower (");
-			translate_expression_as_string (sql);
-			sql.append (")");
-			return PropertyType.STRING;
-		} else if (uri == FN_NS + "lower-case") {
-			// conversion to string
-			sql.append ("SparqlLowerCase (");
-			translate_expression_as_string (sql);
-			sql.append (")");
-			return PropertyType.STRING;
 		} else if (uri == FN_NS + "contains") {
 			// fn:contains('A','B') => 'A' GLOB '*B*'
 			sql.append ("(");
@@ -445,26 +386,18 @@ class Tracker.Sparql.Expression : Object {
 
 			return PropertyType.BOOLEAN;
 		} else if (uri == FN_NS + "starts-with") {
-			// fn:starts-with('A','B') => 'A' BETWEEN 'B' AND 'B\u0010fffd'
-			// 0010fffd always sorts last
-
+			// fn:starts-with('A','B') => 'A' GLOB 'B*'
+			sql.append ("(");
 			translate_expression_as_string (sql);
-			sql.append (" BETWEEN ");
-
+			sql.append (" GLOB ");
 			expect (SparqlTokenType.COMMA);
-			string prefix = parse_string_literal ();
 
 			sql.append ("?");
 			var binding = new LiteralBinding ();
-			binding.literal = prefix;
+			binding.literal = "%s*".printf (parse_string_literal ());
 			query.bindings.append (binding);
 
-			sql.append (" AND ");
-
-			sql.append ("?");
-			binding = new LiteralBinding ();
-			binding.literal = prefix + COLLATION_LAST_CHAR.to_string ();
-			query.bindings.append (binding);
+			sql.append (")");
 
 			return PropertyType.BOOLEAN;
 		} else if (uri == FN_NS + "ends-with") {
@@ -499,13 +432,13 @@ class Tracker.Sparql.Expression : Object {
 
 			return PropertyType.STRING;
 		} else if (uri == FN_NS + "concat") {
-			translate_expression_as_string (sql);
+			translate_expression (sql);
 			sql.append ("||");
 			expect (SparqlTokenType.COMMA);
-			translate_expression_as_string (sql);
+			translate_expression (sql);
 			while (accept (SparqlTokenType.COMMA)) {
 			      sql.append ("||");
-			      translate_expression_as_string (sql);
+			      translate_expression (sql);
 			}
 
 			return PropertyType.STRING;
@@ -622,13 +555,6 @@ class Tracker.Sparql.Expression : Object {
 			}
 
 			return PropertyType.INTEGER;
-		} else if (uri == TRACKER_NS + "uri") {
-			var type = translate_expression (sql);
-			if (type != PropertyType.INTEGER) {
-				throw get_error ("expected integer ID");
-			}
-
-			return PropertyType.RESOURCE;
 		} else if (uri == TRACKER_NS + "cartesian-distance") {
 			sql.append ("SparqlCartesianDistance(");
 			translate_expression (sql);
@@ -688,11 +614,7 @@ class Tracker.Sparql.Expression : Object {
 			sql.append (", ");
 			expect (SparqlTokenType.COMMA);
 
-                        translate_expression_as_string (sql);
-                        while (accept (SparqlTokenType.COMMA)) {
-			      sql.append (", ");
-			      translate_expression_as_string (sql);
-			}
+			translate_expression_as_string (sql);
 			sql.append (")");
 
 			return PropertyType.BOOLEAN;
@@ -709,58 +631,27 @@ class Tracker.Sparql.Expression : Object {
 				throw get_error ("Unknown function");
 			}
 
-			var expr = new StringBuilder ();
-			translate_expression (expr);
-
-			string value_separator = ",";
-			string? graph_separator = null;
-
-			if (accept (SparqlTokenType.COMMA)) {
-				value_separator = parse_string_literal ();
-
-				if (accept (SparqlTokenType.COMMA)) {
-					graph_separator = parse_string_literal ();
-				}
-			}
-
 			if (prop.multiple_values) {
-				// multi-valued property
 				sql.append ("(SELECT GROUP_CONCAT(");
 				long begin = sql.len;
 				sql.append_printf ("\"%s\"", prop.name);
 				convert_expression_to_string (sql, prop.data_type, begin);
-				if (graph_separator != null) {
-					sql.append_printf (" || %s || COALESCE((SELECT Uri FROM Resource WHERE ID = \"%s:graph\"), '')", escape_sql_string_literal (graph_separator), prop.name);
-				}
-				sql.append_printf (",%s)", escape_sql_string_literal (value_separator));
-				sql.append_printf (" FROM \"%s\" WHERE ID = %s)", prop.table_name, expr.str);
+				sql.append_printf (",',') FROM \"%s\" WHERE ID = ", prop.table_name);
+				translate_expression (sql);
+				sql.append (")");
 
 				return PropertyType.STRING;
 			} else {
-				// single-valued property
-				if (graph_separator == null) {
-					sql.append_printf ("(SELECT \"%s\" FROM \"%s\" WHERE ID = %s)", prop.name, prop.table_name, expr.str);
+				sql.append_printf ("(SELECT \"%s\" FROM \"%s\" WHERE ID = ", prop.name, prop.table_name);
+				translate_expression (sql);
+				sql.append (")");
 
-					if (prop.data_type == PropertyType.STRING) {
-						append_collate (sql);
-					}
-
-					return prop.data_type;
-				} else {
-					sql.append ("(SELECT ");
-					long begin = sql.len;
-					sql.append_printf ("\"%s\"", prop.name);
-					convert_expression_to_string (sql, prop.data_type, begin);
-					sql.append_printf (" || %s || COALESCE((SELECT Uri FROM Resource WHERE ID = \"%s:graph\"), '')", escape_sql_string_literal (graph_separator), prop.name);
-					sql.append_printf (" FROM \"%s\" WHERE ID = %s)", prop.table_name, expr.str);
-
-					return PropertyType.STRING;
-				}
+				return prop.data_type;
 			}
 		}
 	}
 
-	PropertyType parse_type_uri () throws Sparql.Error {
+	PropertyType parse_type_uri () throws SparqlError {
 		string type_iri;
 		PropertyType type;
 
@@ -804,7 +695,7 @@ class Tracker.Sparql.Expression : Object {
 		return type;
 	}
 
-	internal string parse_string_literal (out PropertyType type = null) throws Sparql.Error {
+	internal string parse_string_literal (out PropertyType type = null) throws SparqlError {
 		next ();
 		switch (last ()) {
 		case SparqlTokenType.STRING_LITERAL1:
@@ -813,7 +704,7 @@ class Tracker.Sparql.Expression : Object {
 
 			string s = get_last_string (1);
 			string* p = s;
-			string* end = p + s.length;
+			string* end = p + s.size ();
 			while ((long) p < (long) end) {
 				string* q = Posix.strchr (p, '\\');
 				if (q == null) {
@@ -842,12 +733,6 @@ class Tracker.Sparql.Expression : Object {
 						break;
 					case 't':
 						sb.append_c ('\t');
-						break;
-					case 'u':
-						char* ptr = (char*) p + 1;
-						unichar c = (((unichar) ptr[0].xdigit_value () * 16 + ptr[1].xdigit_value ()) * 16 + ptr[2].xdigit_value ()) * 16 + ptr[3].xdigit_value ();
-						sb.append_unichar (c);
-						p += 4;
 						break;
 					}
 					p++;
@@ -885,7 +770,7 @@ class Tracker.Sparql.Expression : Object {
 		}
 	}
 
-	PropertyType translate_uri_expression (StringBuilder sql, string uri) throws Sparql.Error {
+	PropertyType translate_uri_expression (StringBuilder sql, string uri) throws SparqlError {
 		if (accept (SparqlTokenType.OPEN_PARENS)) {
 			// function
 			var result = translate_function (sql, uri);
@@ -901,7 +786,7 @@ class Tracker.Sparql.Expression : Object {
 		}
 	}
 
-	PropertyType translate_primary_expression (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_primary_expression (StringBuilder sql) throws SparqlError {
 		PropertyType type;
 
 		switch (current ()) {
@@ -914,93 +799,62 @@ class Tracker.Sparql.Expression : Object {
 		case SparqlTokenType.DOUBLE:
 			next ();
 
-			if (query.no_cache) {
-				sql.append (get_last_string ());
-			} else {
-				sql.append ("?");
+			sql.append ("?");
 
-				var binding = new LiteralBinding ();
-				binding.literal = get_last_string ();
-				query.bindings.append (binding);
-			}
+			var binding = new LiteralBinding ();
+			binding.literal = get_last_string ();
+			query.bindings.append (binding);
 
 			return PropertyType.DOUBLE;
 		case SparqlTokenType.TRUE:
 			next ();
 
-			if (query.no_cache) {
-				sql.append ("1");
-			} else {
-				sql.append ("?");
+			sql.append ("?");
 
-				var binding = new LiteralBinding ();
-				binding.literal = "1";
-				binding.data_type = PropertyType.INTEGER;
-				query.bindings.append (binding);
-			}
+			var binding = new LiteralBinding ();
+			binding.literal = "1";
+			binding.data_type = PropertyType.INTEGER;
+			query.bindings.append (binding);
 
 			return PropertyType.BOOLEAN;
 		case SparqlTokenType.FALSE:
 			next ();
 
-			if (query.no_cache) {
-				sql.append ("0");
-			} else {
-				sql.append ("?");
+			sql.append ("?");
 
-				var binding = new LiteralBinding ();
-				binding.literal = "0";
-				binding.data_type = PropertyType.INTEGER;
-				query.bindings.append (binding);
-			}
+			var binding = new LiteralBinding ();
+			binding.literal = "0";
+			binding.data_type = PropertyType.INTEGER;
+			query.bindings.append (binding);
 
 			return PropertyType.BOOLEAN;
 		case SparqlTokenType.STRING_LITERAL1:
 		case SparqlTokenType.STRING_LITERAL2:
 		case SparqlTokenType.STRING_LITERAL_LONG1:
 		case SparqlTokenType.STRING_LITERAL_LONG2:
-			var literal = parse_string_literal (out type);
+			var binding = new LiteralBinding ();
+			binding.literal = parse_string_literal (out type);
+			query.bindings.append (binding);
 
 			switch (type) {
 			case PropertyType.INTEGER:
 			case PropertyType.BOOLEAN:
-			case PropertyType.DOUBLE:
-			case PropertyType.DATETIME:
-				if (query.no_cache) {
-					sql.append (escape_sql_string_literal (literal));
-				} else {
-					var binding = new LiteralBinding ();
-					binding.literal = literal;
-					binding.data_type = type;
-					query.bindings.append (binding);
-					sql.append ("?");
-				}
+				sql.append ("?");
+				binding.data_type = type;
 				return type;
 			default:
-				if (query.no_cache) {
-					sql.append (escape_sql_string_literal (literal));
-				} else {
-					var binding = new LiteralBinding ();
-					binding.literal = literal;
-					query.bindings.append (binding);
-					sql.append ("?");
-				}
-				append_collate (sql);
+				sql.append ("?");
 				return PropertyType.STRING;
 			}
 		case SparqlTokenType.INTEGER:
 			next ();
 
-			if (query.no_cache) {
-				sql.append (get_last_string ());
-			} else {
-				sql.append ("?");
+			sql.append ("?");
 
-				var binding = new LiteralBinding ();
-				binding.literal = get_last_string ();
-				binding.data_type = PropertyType.INTEGER;
-				query.bindings.append (binding);
-			}
+			var binding = new LiteralBinding ();
+			binding.literal = get_last_string ();
+			binding.data_type = PropertyType.INTEGER;
+			query.bindings.append (binding);
 
 			return PropertyType.INTEGER;
 		case SparqlTokenType.VAR:
@@ -1012,9 +866,6 @@ class Tracker.Sparql.Expression : Object {
 			if (variable.binding == null) {
 				return PropertyType.UNKNOWN;
 			} else {
-				if (variable.binding.data_type == PropertyType.STRING) {
-					append_collate (sql);
-				}
 				return variable.binding.data_type;
 			}
 		case SparqlTokenType.STR:
@@ -1034,8 +885,6 @@ class Tracker.Sparql.Expression : Object {
 		case SparqlTokenType.BOUND:
 			translate_bound_call (sql);
 			return PropertyType.BOOLEAN;
-		case SparqlTokenType.IF:
-			return translate_if_call (sql);
 		case SparqlTokenType.SAMETERM:
 			next ();
 			expect (SparqlTokenType.OPEN_PARENS);
@@ -1064,11 +913,6 @@ class Tracker.Sparql.Expression : Object {
 			return PropertyType.BOOLEAN;
 		case SparqlTokenType.REGEX:
 			translate_regex (sql);
-			query.no_cache = true;
-			return PropertyType.BOOLEAN;
-		case SparqlTokenType.EXISTS:
-		case SparqlTokenType.NOT:
-			translate_exists (sql);
 			return PropertyType.BOOLEAN;
 		case SparqlTokenType.COUNT:
 			next ();
@@ -1126,7 +970,7 @@ class Tracker.Sparql.Expression : Object {
 		}
 	}
 
-	PropertyType translate_unary_expression (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_unary_expression (StringBuilder sql) throws SparqlError {
 		if (accept (SparqlTokenType.OP_NEG)) {
 			sql.append ("NOT (");
 			var optype = translate_primary_expression (sql);
@@ -1146,7 +990,7 @@ class Tracker.Sparql.Expression : Object {
 		return translate_primary_expression (sql);
 	}
 
-	PropertyType translate_multiplicative_expression (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_multiplicative_expression (StringBuilder sql) throws SparqlError {
 		long begin = sql.len;
 		var optype = translate_unary_expression (sql);
 		while (true) {
@@ -1177,7 +1021,7 @@ class Tracker.Sparql.Expression : Object {
 		return optype;
 	}
 
-	PropertyType translate_additive_expression (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_additive_expression (StringBuilder sql) throws SparqlError {
 		long begin = sql.len;
 		var optype = translate_multiplicative_expression (sql);
 		while (true) {
@@ -1208,11 +1052,11 @@ class Tracker.Sparql.Expression : Object {
 		return optype;
 	}
 
-	PropertyType translate_numeric_expression (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_numeric_expression (StringBuilder sql) throws SparqlError {
 		return translate_additive_expression (sql);
 	}
 
-	PropertyType process_relational_expression (StringBuilder sql, long begin, uint n_bindings, PropertyType op1type, string operator) throws Sparql.Error {
+	PropertyType process_relational_expression (StringBuilder sql, long begin, uint n_bindings, PropertyType op1type, string operator) throws SparqlError {
 		sql.insert (begin, "(");
 		sql.append (operator);
 		var op2type = translate_numeric_expression (sql);
@@ -1228,38 +1072,7 @@ class Tracker.Sparql.Expression : Object {
 		return PropertyType.BOOLEAN;
 	}
 
-	PropertyType translate_in (StringBuilder sql, bool not) throws Sparql.Error {
-
-		int in_variable_count = 0;
-
-		if (not) {
-			sql.append (" NOT");
-		}
-
-		expect (SparqlTokenType.OPEN_PARENS);
-		sql.append (" IN (");
-		if (!accept (SparqlTokenType.CLOSE_PARENS)) {
-			in_variable_count++;
-			translate_expression (sql);
-			while (accept (SparqlTokenType.COMMA)) {
-				sql.append (", ");
-
-				in_variable_count++;
-
-				if (in_variable_count > MAX_VARIABLES_FOR_IN && !query.no_cache) {
-					query.no_cache = true;
-				}
-
-				translate_expression (sql);
-			}
-			expect (SparqlTokenType.CLOSE_PARENS);
-		}
-		sql.append (")");
-
-		return PropertyType.BOOLEAN;
-	}
-
-	PropertyType translate_relational_expression (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_relational_expression (StringBuilder sql) throws SparqlError {
 		long begin = sql.len;
 		// TODO: improve performance (linked list)
 		uint n_bindings = query.bindings.length ();
@@ -1276,20 +1089,15 @@ class Tracker.Sparql.Expression : Object {
 			return process_relational_expression (sql, begin, n_bindings, optype, " <= ");
 		} else if (accept (SparqlTokenType.OP_GT)) {
 			return process_relational_expression (sql, begin, n_bindings, optype, " > ");
-		} else if (accept (SparqlTokenType.OP_IN)) {
-			return translate_in (sql, false);
-		} else if (accept (SparqlTokenType.NOT)) {
-			expect (SparqlTokenType.OP_IN);
-			return translate_in (sql, true);
 		}
 		return optype;
 	}
 
-	PropertyType translate_value_logical (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_value_logical (StringBuilder sql) throws SparqlError {
 		return translate_relational_expression (sql);
 	}
 
-	PropertyType translate_conditional_and_expression (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_conditional_and_expression (StringBuilder sql) throws SparqlError {
 		long begin = sql.len;
 		var optype = translate_value_logical (sql);
 		while (accept (SparqlTokenType.OP_AND)) {
@@ -1307,7 +1115,7 @@ class Tracker.Sparql.Expression : Object {
 		return optype;
 	}
 
-	PropertyType translate_conditional_or_expression (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_conditional_or_expression (StringBuilder sql) throws SparqlError {
 		long begin = sql.len;
 		var optype = translate_conditional_and_expression (sql);
 		while (accept (SparqlTokenType.OP_OR)) {
@@ -1325,11 +1133,11 @@ class Tracker.Sparql.Expression : Object {
 		return optype;
 	}
 
-	internal PropertyType translate_expression (StringBuilder sql) throws Sparql.Error {
+	internal PropertyType translate_expression (StringBuilder sql) throws SparqlError {
 		return translate_conditional_or_expression (sql);
 	}
 
-	PropertyType translate_bracketted_expression (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_bracketted_expression (StringBuilder sql) throws SparqlError {
 		expect (SparqlTokenType.OPEN_PARENS);
 
 		if (current () == SparqlTokenType.SELECT) {
@@ -1348,7 +1156,7 @@ class Tracker.Sparql.Expression : Object {
 		return optype;
 	}
 
-	PropertyType translate_aggregate_expression (StringBuilder sql) throws Sparql.Error {
+	PropertyType translate_aggregate_expression (StringBuilder sql) throws SparqlError {
 		expect (SparqlTokenType.OPEN_PARENS);
 		if (accept (SparqlTokenType.DISTINCT)) {
 			sql.append ("DISTINCT ");
@@ -1358,22 +1166,19 @@ class Tracker.Sparql.Expression : Object {
 		return optype;
 	}
 
-	internal PropertyType translate_constraint (StringBuilder sql) throws Sparql.Error {
+	internal PropertyType translate_constraint (StringBuilder sql) throws SparqlError {
 		switch (current ()) {
 		case SparqlTokenType.STR:
 		case SparqlTokenType.LANG:
 		case SparqlTokenType.LANGMATCHES:
 		case SparqlTokenType.DATATYPE:
 		case SparqlTokenType.BOUND:
-		case SparqlTokenType.IF:
 		case SparqlTokenType.SAMETERM:
 		case SparqlTokenType.ISIRI:
 		case SparqlTokenType.ISURI:
 		case SparqlTokenType.ISBLANK:
 		case SparqlTokenType.ISLITERAL:
 		case SparqlTokenType.REGEX:
-		case SparqlTokenType.EXISTS:
-		case SparqlTokenType.NOT:
 			return translate_primary_expression (sql);
 		default:
 			return translate_bracketted_expression (sql);

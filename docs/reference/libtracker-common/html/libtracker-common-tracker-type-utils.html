@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>tracker-type-utils</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
+<link rel="up" href="ch04.html" title="Utilities">
+<link rel="prev" href="libtracker-common-tracker-crc.html" title="tracker-crc">
+<link rel="next" href="libtracker-common-tracker-date-time-utils.html" title="tracker-date-time-utils">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libtracker-common-tracker-crc.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Common Library Reference Manual</th>
+<td><a accesskey="n" href="libtracker-common-tracker-date-time-utils.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libtracker-common-tracker-type-utils.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libtracker-common-tracker-type-utils.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="libtracker-common-tracker-type-utils"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libtracker-common-tracker-type-utils.top_of_page"></a>tracker-type-utils</span></h2>
+<p>tracker-type-utils</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="libtracker-common-tracker-type-utils.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis"><span class="returnvalue">time_t</span>              <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-string-to-date" title="tracker_string_to_date ()">tracker_string_to_date</a>              (<em class="parameter"><code>const <span class="type">gchar</span> *date_string</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *offset</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-date-to-string" title="tracker_date_to_string ()">tracker_date_to_string</a>              (<em class="parameter"><code><span class="type">time_t</span> date_time</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-glong-to-string" title="tracker_glong_to_string ()">tracker_glong_to_string</a>             (<em class="parameter"><code><span class="type">glong</span> i</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-gint-to-string" title="tracker_gint_to_string ()">tracker_gint_to_string</a>              (<em class="parameter"><code><span class="type">gint</span> i</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-guint-to-string" title="tracker_guint_to_string ()">tracker_guint_to_string</a>             (<em class="parameter"><code><span class="type">guint</span> i</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-gint32-to-string" title="tracker_gint32_to_string ()">tracker_gint32_to_string</a>            (<em class="parameter"><code><span class="type">gint32</span> i</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-guint32-to-string" title="tracker_guint32_to_string ()">tracker_guint32_to_string</a>           (<em class="parameter"><code><span class="type">guint32</span> i</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-string-to-uint" title="tracker_string_to_uint ()">tracker_string_to_uint</a>              (<em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> *ret</code></em>);
+<span class="returnvalue">gint</span>                <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-string-in-string-list" title="tracker_string_in_string_list ()">tracker_string_in_string_list</a>       (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **strv</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-string-in-gslist" title="tracker_string_in_gslist ()">tracker_string_in_gslist</a>            (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                                                         <em class="parameter"><code><span class="type">GSList</span> *list</code></em>);
+<span class="returnvalue">GSList</span> *            <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-string-list-to-gslist" title="tracker_string_list_to_gslist ()">tracker_string_list_to_gslist</a>       (<em class="parameter"><code><span class="type">gchar</span> **strv</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> length</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-string-list-to-string" title="tracker_string_list_to_string ()">tracker_string_list_to_string</a>       (<em class="parameter"><code><span class="type">gchar</span> **strv</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> length</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> sep</code></em>);
+<span class="returnvalue">gchar</span> **            <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-string-to-string-list" title="tracker_string_to_string_list ()">tracker_string_to_string_list</a>       (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);
+<span class="returnvalue">gchar</span> **            <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-gslist-to-string-list" title="tracker_gslist_to_string_list ()">tracker_gslist_to_string_list</a>       (<em class="parameter"><code><span class="type">GSList</span> *list</code></em>);
+<span class="returnvalue">GSList</span> *            <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-gslist-copy-with-string-data" title="tracker_gslist_copy_with_string_data ()">tracker_gslist_copy_with_string_data</a>
+                                                        (<em class="parameter"><code><span class="type">GSList</span> *list</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-gslist-with-string-data-equal" title="tracker_gslist_with_string_data_equal ()">tracker_gslist_with_string_data_equal</a>
+                                                        (<em class="parameter"><code><span class="type">GSList</span> *list1</code></em>,
+                                                         <em class="parameter"><code><span class="type">GSList</span> *list2</code></em>);
+<span class="returnvalue">GList</span> *             <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-glist-copy-with-string-data" title="tracker_glist_copy_with_string_data ()">tracker_glist_copy_with_string_data</a> (<em class="parameter"><code><span class="type">GList</span> *list</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-type-utils.html#tracker-string-boolean-to-string-gint" title="tracker_string_boolean_to_string_gint ()">tracker_string_boolean_to_string_gint</a>
+                                                        (<em class="parameter"><code>const <span class="type">gchar</span> *value</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="libtracker-common-tracker-type-utils.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1">
+<a name="libtracker-common-tracker-type-utils.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="tracker-string-to-date"></a><h3>tracker_string_to_date ()</h3>
+<pre class="programlisting"><span class="returnvalue">time_t</span>              tracker_string_to_date              (<em class="parameter"><code>const <span class="type">gchar</span> *date_string</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *offset</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-date-to-string"></a><h3>tracker_date_to_string ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_date_to_string              (<em class="parameter"><code><span class="type">time_t</span> date_time</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-glong-to-string"></a><h3>tracker_glong_to_string ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_glong_to_string             (<em class="parameter"><code><span class="type">glong</span> i</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-gint-to-string"></a><h3>tracker_gint_to_string ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_gint_to_string              (<em class="parameter"><code><span class="type">gint</span> i</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-guint-to-string"></a><h3>tracker_guint_to_string ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_guint_to_string             (<em class="parameter"><code><span class="type">guint</span> i</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-gint32-to-string"></a><h3>tracker_gint32_to_string ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_gint32_to_string            (<em class="parameter"><code><span class="type">gint32</span> i</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-guint32-to-string"></a><h3>tracker_guint32_to_string ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_guint32_to_string           (<em class="parameter"><code><span class="type">guint32</span> i</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-string-to-uint"></a><h3>tracker_string_to_uint ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_string_to_uint              (<em class="parameter"><code>const <span class="type">gchar</span> *s</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> *ret</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-string-in-string-list"></a><h3>tracker_string_in_string_list ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>                tracker_string_in_string_list       (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **strv</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-string-in-gslist"></a><h3>tracker_string_in_gslist ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_string_in_gslist            (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                                                         <em class="parameter"><code><span class="type">GSList</span> *list</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-string-list-to-gslist"></a><h3>tracker_string_list_to_gslist ()</h3>
+<pre class="programlisting"><span class="returnvalue">GSList</span> *            tracker_string_list_to_gslist       (<em class="parameter"><code><span class="type">gchar</span> **strv</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> length</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-string-list-to-string"></a><h3>tracker_string_list_to_string ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_string_list_to_string       (<em class="parameter"><code><span class="type">gchar</span> **strv</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> length</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> sep</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-string-to-string-list"></a><h3>tracker_string_to_string_list ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> **            tracker_string_to_string_list       (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-gslist-to-string-list"></a><h3>tracker_gslist_to_string_list ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> **            tracker_gslist_to_string_list       (<em class="parameter"><code><span class="type">GSList</span> *list</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-gslist-copy-with-string-data"></a><h3>tracker_gslist_copy_with_string_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">GSList</span> *            tracker_gslist_copy_with_string_data
+                                                        (<em class="parameter"><code><span class="type">GSList</span> *list</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-gslist-with-string-data-equal"></a><h3>tracker_gslist_with_string_data_equal ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_gslist_with_string_data_equal
+                                                        (<em class="parameter"><code><span class="type">GSList</span> *list1</code></em>,
+                                                         <em class="parameter"><code><span class="type">GSList</span> *list2</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-glist-copy-with-string-data"></a><h3>tracker_glist_copy_with_string_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">GList</span> *             tracker_glist_copy_with_string_data (<em class="parameter"><code><span class="type">GList</span> *list</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-string-boolean-to-string-gint"></a><h3>tracker_string_boolean_to_string_gint ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_string_boolean_to_string_gint
+                                                        (<em class="parameter"><code>const <span class="type">gchar</span> *value</code></em>);</pre>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.17</div>
+</body>
+</html>

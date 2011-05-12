@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Nepomuk Messaging Ontology (NMO): Model for messages and communications, including Email, SMS, MMS and phone calls</title>
+<title>NMO Ontology</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
 <link rel="up" href="ontology.html" title="Part I. Overview">
@@ -21,7 +21,7 @@
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="nmo-ontology"></a>Nepomuk Messaging Ontology (NMO): Model for messages and communications, including Email, SMS, MMS and phone calls</h2></div></div></div>
+<a name="nmo-ontology"></a>NMO Ontology</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="nmo-ontology.html#nmo-explanation">Overview</a></span></dt>
 <dt><span class="section"><a href="nmo-classes.html">NMO Ontology Classes</a></span></dt>
@@ -75,7 +75,7 @@
 <a name="nmo-message-graph"></a><p class="title"><b>Figure 2. Graphical Overview (Message class)</b></p>
 <div class="figure-contents">
 <div><img src="message-class-overview.png" alt="Graphical Overview (Message class)"></div>
-<p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 8. Notation for ontology description">in this page</a></p>
+<p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 9. Notation for ontology description">in this page</a></p>
 </div>
 </div>
 <br class="figure-break">
@@ -97,7 +97,7 @@
 <a name="nmo-message-graph"></a><p class="title"><b>Figure 3. Graphical Overview (Email related classes)</b></p>
 <div class="figure-contents">
 <div><img src="email-mimeparts-overview.png" alt="Graphical Overview (Email related classes)"></div>
-<p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 8. Notation for ontology description">in this page</a></p>
+<p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 9. Notation for ontology description">in this page</a></p>
 </div>
 </div>
 <br class="figure-break">
@@ -120,9 +120,10 @@
 <a class="link" href="nmo-properties.html#nmo-to" title="nmo:to">nmo:to</a> and <a class="link" href="nmo-properties.html#nmo-from" title="nmo:from">nmo:from</a> linking the contacts (one of them "me", the other a nco:Contact or even a nco:PersonContact if the software is able to identify him).</li>
 <li class="listitem">For some implementations, is usefull to save the original vcards. For that <a class="link" href="nmo-properties.html#nmo-fromVCard" title="nmo:fromVCard">nmo:fromVCard</a> and <a class="link" href="nmo-properties.html#nmo-toVCard" title="nmo:toVCard">nmo:toVCard</a> properties can be used. Those properties point to files in the file system with the vcards</li>
 <li class="listitem">
-nmo:plainTextContent inherited from <a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a> for the content.</li>
+<a class="link" href="nmo-properties.html#nmo-plainTextMessageContent" title="nmo:plainTextMessageContent">nmo:plainTextMessageContent</a> inherited from nmo:Message for the content.
+</li>
 <li class="listitem">
-nmo:containsSMS property will link the message with the relevant nmo:SMSFolder.</li>
+<a class="link" href="nmo-properties.html#nmo-containsSMS" title="nmo:containsSMS">nmo:containsSMS</a> property will link the message with the relevant <a class="link" href="nmo-classes.html#nmo-SMSFolder" title="nmo:SMSFolder">nmo:SMSFolder</a>.</li>
 <li class="listitem">If needed, language and characterSet are inherited from NIE (<a class="link" href="nie-properties.html#nie-language" title="nie:language">nie:language</a>, <a class="link" href="nie-properties.html#nie-characterSet" title="nie:characterSet">nie:characterSet</a>), but there is a specific <a class="link" href="nmo-properties.html#nmo-encoding" title="nmo:encoding">nmo:encoding</a> property.</li>
 <li class="listitem">Note that nmo:SMSMessage is a subclass of <a class="link" href="nmo-classes.html#nmo-Message" title="nmo:Message">nmo:Message</a> and inherits all its properties, including <a class="link" href="nmo-properties.html#nmo-isDeleted" title="nmo:isDeleted">nmo:isDeleted</a>
 </li>
@@ -141,7 +142,7 @@ nmo:containsSMS property will link the message with the relevant nmo:SMSFolder.<
  &lt;test://1&gt; a nmo:SMSMessage ;
         nmo:from &lt;nco:default-contact-me&gt; ;
         nmo:to  &lt;urn:uuid:here-some-uri-of-a-contact&gt; ;
-        nmo:plainTextContent "Forgot the keys. Are you at home?" ;
+        nmo:plainTextMessageContent "Forgot the keys. Are you at home?" ;
         nie:characterSet "utf-8" ;
         nmo:toVCard &lt;file:///home/user/.sms/vcards/123098.vcard&gt; ;
         nmo:isDeleted false .

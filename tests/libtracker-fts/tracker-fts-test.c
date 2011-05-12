@@ -26,10 +26,11 @@
 
 #include <libtracker-common/tracker-ontologies.h>
 
+#include <libtracker-db/tracker-db.h>
+
 #include <libtracker-data/tracker-data-manager.h>
 #include <libtracker-data/tracker-data-query.h>
 #include <libtracker-data/tracker-data-update.h>
-#include <libtracker-data/tracker-data.h>
 #include <libtracker-data/tracker-sparql-query.h>
 
 typedef struct _TestInfo TestInfo;
@@ -50,7 +51,7 @@ const TestInfo tests[] = {
 static void
 test_sparql_query (gconstpointer test_data)
 {
-	TrackerDBCursor *cursor;
+	TrackerDBResultSet *result_set;
 	const TestInfo *test_info;
 	GError *error;
 	GString *test_results;
@@ -71,12 +72,9 @@ test_sparql_query (gconstpointer test_data)
 	g_free (prefix);
 
 	test_schemas[0] = data_prefix;
-	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
 	tracker_data_manager_init (TRACKER_DB_MANAGER_FORCE_REINDEX,
 	                           test_schemas,
-	                           NULL, FALSE, 100, 100, NULL, NULL, NULL, &error);
-
-	g_assert_no_error (error);
+	                           NULL, FALSE, NULL, NULL, NULL);
 
 	/* load data / perform updates */
 
@@ -84,7 +82,9 @@ test_sparql_query (gconstpointer test_data)
 	g_file_get_contents (update_filename, &update, NULL, &error);
 	g_assert_no_error (error);
 
+	tracker_data_begin_db_transaction ();
 	tracker_data_update_sparql (update, &error);
+	tracker_data_commit_db_transaction ();
 	g_assert_no_error (error);
 
 	g_free (update_filename);
@@ -101,35 +101,52 @@ test_sparql_query (gconstpointer test_data)
 		g_file_get_contents (results_filename, &results, NULL, &error);
 		g_assert_no_error (error);
 
-		cursor = tracker_data_query_sparql_cursor (query, &error);
+		result_set = tracker_data_query_sparql (query, &error);
 		g_assert_no_error (error);
 
 		/* compare results with reference output */
 
 		test_results = g_string_new ("");
 
-		if (cursor) {
+		if (result_set) {
+			gboolean valid = TRUE;
+			guint col_count;
 			gint col;
 
-			while (tracker_db_cursor_iter_next (cursor, NULL, &error)) {
-				for (col = 0; col < tracker_db_cursor_get_n_columns (cursor); col++) {
-					const gchar *str;
+			col_count = tracker_db_result_set_get_n_columns (result_set);
 
-					if (col > 0) {
-						g_string_append (test_results, "\t");
+			while (valid) {
+				for (col = 0; col < col_count; col++) {
+					GValue value = { 0 };
+
+					_tracker_db_result_set_get_value (result_set, col, &value);
+
+					switch (G_VALUE_TYPE (&value)) {
+					case G_TYPE_INT:
+						g_string_append_printf (test_results, "\"%d\"", g_value_get_int (&value));
+						break;
+					case G_TYPE_DOUBLE:
+						g_string_append_printf (test_results, "\"%f\"", g_value_get_double (&value));
+						break;
+					case G_TYPE_STRING:
+						g_string_append_printf (test_results, "\"%s\"", g_value_get_string (&value));
+						break;
+					default:
+						/* unbound variable */
+						break;
 					}
 
-					str = tracker_db_cursor_get_string (cursor, col, NULL);
-					if (str != NULL) {
-						/* bound variable */
-						g_string_append_printf (test_results, "\"%s\"", str);
+					if (col < col_count - 1) {
+						g_string_append (test_results, "\t");
 					}
 				}
 
 				g_string_append (test_results, "\n");
+
+				valid = tracker_db_result_set_iter_next (result_set);
 			}
 
-			g_object_unref (cursor);
+			g_object_unref (result_set);
 		}
 
 		if (strcmp (results, test_results->str)) {

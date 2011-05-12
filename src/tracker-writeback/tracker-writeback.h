@@ -23,7 +23,7 @@
 #include <glib-object.h>
 
 #include <libtracker-miner/tracker-miner.h>
-#include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-client/tracker.h>
 
 G_BEGIN_DECLS
 
@@ -44,19 +44,19 @@ struct TrackerWriteback {
 struct TrackerWritebackClass {
 	GObjectClass parent_class;
 
-	gboolean (* update_metadata) (TrackerWriteback        *writeback,
-	                              GPtrArray               *values,
-	                              TrackerSparqlConnection *connection);
+	gboolean (* update_metadata) (TrackerWriteback *writeback,
+	                              GPtrArray        *values,
+	                              TrackerClient    *client);
 };
 
 GType                tracker_writeback_get_type          (void) G_GNUC_CONST;
-gboolean             tracker_writeback_update_metadata   (TrackerWriteback        *writeback,
-                                                          GPtrArray               *values,
-                                                          TrackerSparqlConnection *connection);
+gboolean             tracker_writeback_update_metadata   (TrackerWriteback *writeback,
+                                                          GPtrArray        *values,
+                                                          TrackerClient    *client);
 TrackerMinerManager* tracker_writeback_get_miner_manager (void);
 
 /* Entry functions to be defined by modules */
-TrackerWriteback *   writeback_module_create             (GTypeModule             *module);
+TrackerWriteback *   writeback_module_create             (GTypeModule      *module);
 const gchar * const *writeback_module_get_rdf_types      (void);
 
 G_END_DECLS

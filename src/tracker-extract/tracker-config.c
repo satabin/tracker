@@ -2,16 +2,16 @@
  * Copyright (C) 2009, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.          See the GNU
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
+ * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
@@ -30,13 +30,10 @@
 
 /* Default values */
 #define DEFAULT_VERBOSITY 0
-#define DEFAULT_MAX_BYTES 1048576   /* 1Mbyte */
-#define ABSOLUTE_MAX_BYTES 10485760 /* 10 Mbytes (GB#616845) */
 
 typedef struct {
 	/* General */
 	gint verbosity;
-	gint max_bytes;
 } TrackerConfigPrivate;
 
 typedef struct {
@@ -66,13 +63,11 @@ enum {
 	PROP_0,
 
 	/* General */
-	PROP_VERBOSITY,
-	PROP_MAX_BYTES
+	PROP_VERBOSITY
 };
 
 static ObjectToKeyFile conversions[] = {
 	{ G_TYPE_INT,     "verbosity",          GROUP_GENERAL,  "Verbosity"       },
-	{ G_TYPE_INT,     "max-bytes",          GROUP_GENERAL,  "MaxBytes"        },
 };
 
 G_DEFINE_TYPE (TrackerConfig, tracker_config, TRACKER_TYPE_CONFIG_FILE);
@@ -98,16 +93,6 @@ tracker_config_class_init (TrackerConfigClass *klass)
 	                                                   DEFAULT_VERBOSITY,
 	                                                   G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-	g_object_class_install_property (object_class,
-	                                 PROP_MAX_BYTES,
-	                                 g_param_spec_int ("max-bytes",
-	                                                   "Max Bytes",
-	                                                   " Maximum number of UTF-8 bytes to extract per file [0->10485760]",
-	                                                   0,
-	                                                   ABSOLUTE_MAX_BYTES,
-	                                                   DEFAULT_MAX_BYTES,
-	                                                   G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
 	g_type_class_add_private (object_class, sizeof (TrackerConfigPrivate));
 }
 
@@ -120,17 +105,12 @@ static void
 config_set_property (GObject      *object,
                      guint         param_id,
                      const GValue *value,
-                     GParamSpec   *pspec)
+                     GParamSpec           *pspec)
 {
 	switch (param_id) {
 		/* General */
 	case PROP_VERBOSITY:
 		tracker_config_set_verbosity (TRACKER_CONFIG (object),
-		                              g_value_get_int (value));
-		break;
-
-	case PROP_MAX_BYTES:
-		tracker_config_set_max_bytes (TRACKER_CONFIG (object),
 		                              g_value_get_int (value));
 		break;
 
@@ -154,10 +134,6 @@ config_get_property (GObject    *object,
 		/* General */
 	case PROP_VERBOSITY:
 		g_value_set_int (value, priv->verbosity);
-		break;
-
-	case PROP_MAX_BYTES:
-		g_value_set_int (value, priv->max_bytes);
 		break;
 
 	default:
@@ -340,35 +316,4 @@ tracker_config_set_verbosity (TrackerConfig *config,
 
 	priv->verbosity = value;
 	g_object_notify (G_OBJECT (config), "verbosity");
-}
-
-
-gint
-tracker_config_get_max_bytes (TrackerConfig *config)
-{
-	TrackerConfigPrivate *priv;
-
-	g_return_val_if_fail (TRACKER_IS_CONFIG (config), DEFAULT_MAX_BYTES);
-
-	priv = TRACKER_CONFIG_GET_PRIVATE (config);
-
-	return priv->max_bytes;
-}
-
-void
-tracker_config_set_max_bytes (TrackerConfig *config,
-                              gint           value)
-{
-	TrackerConfigPrivate *priv;
-
-	g_return_if_fail (TRACKER_IS_CONFIG (config));
-
-	if (!tracker_keyfile_object_validate_int (config, "max-bytes", value)) {
-		return;
-	}
-
-	priv = TRACKER_CONFIG_GET_PRIVATE (config);
-
-	priv->max_bytes = value;
-	g_object_notify (G_OBJECT (config), "max-bytes");
 }

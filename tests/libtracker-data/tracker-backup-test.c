@@ -25,13 +25,13 @@
 #include <gio/gio.h>
 
 #include <libtracker-common/tracker-common.h>
+#include <libtracker-db/tracker-db.h>
 
-#include <libtracker-data/tracker-data-backup.h>
 #include <libtracker-data/tracker-data-manager.h>
 #include <libtracker-data/tracker-data-query.h>
 #include <libtracker-data/tracker-data-update.h>
-#include <libtracker-data/tracker-data.h>
 #include <libtracker-data/tracker-sparql-query.h>
+#include <libtracker-data/tracker-data-backup.h>
 
 static gint backup_calls = 0;
 static GMainLoop *loop = NULL;
@@ -54,28 +54,25 @@ check_content_in_db (gint expected_instances, gint expected_relations)
 	GError *error = NULL;
 	const gchar  *query_instances_1 = "SELECT ?u WHERE { ?u a foo:class1. }";
 	const gchar  *query_relation = "SELECT ?a ?b WHERE { ?a foo:propertyX ?b }";
-	TrackerDBCursor *cursor;
-	gint n_rows;
+	TrackerDBResultSet *result_set;
 
-	cursor = tracker_data_query_sparql_cursor (query_instances_1, &error);
+	result_set = tracker_data_query_sparql (query_instances_1, &error);
 	g_assert_no_error (error);
-	n_rows = 0;
-	while (tracker_db_cursor_iter_next (cursor, NULL, &error)) {
-		n_rows++;
+	if (expected_instances == 0) {
+		g_assert (result_set == NULL);
+	} else {
+		g_assert_cmpint (tracker_db_result_set_get_n_rows (result_set), ==, expected_instances);
+		g_object_unref (result_set);
 	}
-	g_assert_no_error (error);
-	g_assert_cmpint (n_rows, ==, expected_instances);
-	g_object_unref (cursor);
 
-	cursor = tracker_data_query_sparql_cursor (query_relation, &error);
+	result_set = tracker_data_query_sparql (query_relation, &error);
 	g_assert_no_error (error);
-	n_rows = 0;
-	while (tracker_db_cursor_iter_next (cursor, NULL, &error)) {
-		n_rows++;
+	if (expected_relations == 0) {
+		g_assert (result_set == NULL);
+	} else {
+		g_assert_cmpint (tracker_db_result_set_get_n_rows (result_set), ==, expected_relations);
+		g_object_unref (result_set);
 	}
-	g_assert_no_error (error);
-	g_assert_cmpint (n_rows, ==, expected_relations);
-	g_object_unref (cursor);
 
 	return TRUE;
 }
@@ -108,18 +105,16 @@ test_backup_and_restore_helper (gboolean journal)
 	test_schemas[2] = g_build_path (G_DIR_SEPARATOR_S, TOP_SRCDIR, "tests", "libtracker-data", "ontologies", "90-tracker", NULL);
 	test_schemas[3] = data_prefix;
 
-	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
-
 	tracker_data_manager_init (TRACKER_DB_MANAGER_FORCE_REINDEX,
 	                           (const gchar **) test_schemas,
-	                           NULL, FALSE, 100, 100, NULL, NULL, NULL, &error);
-
-	g_assert_no_error (error);
+	                           NULL, FALSE, NULL, NULL, NULL);
 
 	/* load data set */
 	data_filename = g_strconcat (data_prefix, ".data", NULL);
 	if (g_file_test (data_filename, G_FILE_TEST_IS_REGULAR)) {
+		tracker_data_begin_db_transaction ();
 		tracker_turtle_reader_load (data_filename, &error);
+		tracker_data_commit_db_transaction ();
 		g_assert_no_error (error);
 	} else {
 		g_assert_not_reached ();
@@ -156,36 +151,25 @@ test_backup_and_restore_helper (gboolean journal)
 		meta_db = g_build_path (G_DIR_SEPARATOR_S, db_location, "data", "tracker-store.journal", NULL);
 		g_unlink (meta_db);
 		g_free (meta_db);
-
-		meta_db = g_build_path (G_DIR_SEPARATOR_S, db_location, "data", "tracker-store.ontology.journal", NULL);
-		g_unlink (meta_db);
-		g_free (meta_db);
 	}
 
 	meta_db = g_build_path (G_DIR_SEPARATOR_S, db_location, "data", ".meta.isrunning", NULL);
 	g_unlink (meta_db);
 	g_free (meta_db);
 
-	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
-
 	tracker_data_manager_init (TRACKER_DB_MANAGER_FORCE_REINDEX,
 	                           (const gchar **) test_schemas,
-	                           NULL, FALSE, 100, 100, NULL, NULL, NULL, &error);
-
-	g_assert_no_error (error);
-
+	                           NULL, FALSE, NULL, NULL, NULL);
 	check_content_in_db (0, 0);
 
-	tracker_data_backup_restore (backup_file, (const gchar **) test_schemas, NULL, NULL, &error);
-	g_assert_no_error (error);
+	test_schemas[0] = data_prefix;
+	tracker_data_backup_restore (backup_file, backup_finished_cb, NULL, NULL, (const gchar **) test_schemas, NULL, NULL);
 	check_content_in_db (3, 1);
 
 	g_free (test_schemas[0]);
 	g_free (test_schemas[1]);
-	g_free (test_schemas[2]);
-	g_free (test_schemas[3]);
 
-	g_assert_cmpint (backup_calls, ==, 1);
+	g_assert_cmpint (backup_calls, ==, 2);
 
 	tracker_data_manager_shutdown ();
 }

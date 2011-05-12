@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # Copyright (C) 2010, Nokia <ivan.frade@nokia.com>
 #
@@ -17,22 +17,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-"""
-Test the GROUP_CONCAT function in Sparql. Only requires the store.
-"""
+
 import dbus
 import unittest
 import random
 
-from common.utils import configuration as cfg
-import unittest2 as ut
-#import unittest as ut
-from common.utils.storetest import CommonTrackerStoreTest as CommonTrackerStoreTest
+TRACKER = 'org.freedesktop.Tracker1'
+TRACKER_OBJ = '/org/freedesktop/Tracker1/Resources'
+RESOURCES_IFACE = "org.freedesktop.Tracker1.Resources"
 
-class TestGroupConcat (CommonTrackerStoreTest):
-    """
-    Insert a multivalued property and request the results in GROUP_CONCAT
-    """
+class TestGroupConcat (unittest.TestCase):
+
+    def setUp (self):
+        bus = dbus.SessionBus ()
+        tracker = bus.get_object (TRACKER, TRACKER_OBJ)
+        self.resources = dbus.Interface (tracker,
+                                         dbus_interface=RESOURCES_IFACE);
+
     def test_group_concat (self):
         """
         1. Insert 3 capabilities for a test contact
@@ -44,33 +45,33 @@ class TestGroupConcat (CommonTrackerStoreTest):
         uri = "contact://test_group_concat"
         
         insert = """
-        INSERT { <%s> a nco:IMAddress;
-                      nco:imID \"test_group_concat\";
-                      nco:imCapability nco:im-capability-text-chat ;
-                      nco:imCapability nco:im-capability-media-calls ;
-                      nco:imCapability nco:im-capability-file-transfers .
+        INSERT { <%s> a nco:IMContact;
+                      nco:fullname \"test_group_concat\";
+                      nco:imContactCapability nco:im-capability-text-chat ;
+                      nco:imContactCapability nco:im-capability-media-calls ;
+                      nco:imContactCapability nco:im-capability-file-transfers .
          }
         """ % (uri)
-        self.tracker.update (insert)
+        self.resources.SparqlUpdate (insert)
 
         query = """
         SELECT ?c ?capability WHERE {
-           ?c a nco:IMAddress ;
-              nco:imID \"test_group_concat\";
-              nco:imCapability ?capability .
+           ?c a nco:IMContact ;
+              nco:fullname \"test_group_concat\";
+              nco:imContactCapability ?capability .
         }
         """ 
-        results = self.tracker.query (query)
+        results = self.resources.SparqlQuery (query)
 
         assert len (results) == 3
         group_concat_query = """
         SELECT ?c GROUP_CONCAT (?capability, '|') AS ?cap WHERE {
-           ?c a nco:IMAddress ;
-              nco:imID \"test_group_concat\";
-              nco:imCapability ?capability .
+           ?c a nco:IMContact ;
+              nco:fullname \"test_group_concat\";
+              nco:imContactCapability ?capability .
         } GROUP BY (?c)
         """ 
-        results = self.tracker.query (group_concat_query)
+        results = self.resources.SparqlQuery (group_concat_query)
         assert len (results) == 1
         
         instances = results[0][1].split ('|')
@@ -89,8 +90,8 @@ class TestGroupConcat (CommonTrackerStoreTest):
         delete = """
         DELETE { <%s> a rdfs:Resource. }
         """ % (uri)
-        self.tracker.update (delete)
+        self.resources.SparqlUpdate (delete)
         
 
 if __name__ == '__main__':
-    ut.main()
+    unittest.main()

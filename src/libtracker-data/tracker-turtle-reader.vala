@@ -90,11 +90,11 @@ public class Tracker.TurtleReader : Object {
 
 			// generate name based uuid
 			return "urn:uuid:%.8s-%.4s-%.4s-%.4s-%.12s".printf (
-				sha1, sha1.substring (8), sha1.substring (12), sha1.substring (16), sha1.substring (20));
+				sha1, sha1.offset (8), sha1.offset (12), sha1.offset (16), sha1.offset (20));
 		}
 	}
 
-	inline bool next_token () throws Sparql.Error {
+	inline bool next_token () throws SparqlError {
 		index = (index + 1) % BUFFER_SIZE;
 		size--;
 		if (size <= 0) {
@@ -112,7 +112,7 @@ public class Tracker.TurtleReader : Object {
 		return tokens[index].type;
 	}
 
-	inline bool accept (SparqlTokenType type) throws Sparql.Error {
+	inline bool accept (SparqlTokenType type) throws SparqlError {
 		if (current () == type) {
 			next_token ();
 			return true;
@@ -120,11 +120,11 @@ public class Tracker.TurtleReader : Object {
 		return false;
 	}
 
-	Sparql.Error get_error (string msg) {
-		return new Sparql.Error.PARSE ("%d.%d: syntax error, %s".printf (tokens[index].begin.line, tokens[index].begin.column, msg));
+	SparqlError get_error (string msg) {
+		return new SparqlError.PARSE ("%d.%d: syntax error, %s".printf (tokens[index].begin.line, tokens[index].begin.column, msg));
 	}
 
-	bool expect (SparqlTokenType type) throws Sparql.Error {
+	bool expect (SparqlTokenType type) throws SparqlError {
 		if (accept (type)) {
 			return true;
 		}
@@ -134,10 +134,10 @@ public class Tracker.TurtleReader : Object {
 
 	string get_last_string (int strip = 0) {
 		int last_index = (index + BUFFER_SIZE - 1) % BUFFER_SIZE;
-		return ((string) (tokens[last_index].begin.pos + strip)).substring (0, (int) (tokens[last_index].end.pos - tokens[last_index].begin.pos - 2 * strip));
+		return ((string) (tokens[last_index].begin.pos + strip)).ndup ((tokens[last_index].end.pos - tokens[last_index].begin.pos - 2 * strip));
 	}
 
-	string resolve_prefixed_name (string prefix, string local_name) throws Sparql.Error {
+	string resolve_prefixed_name (string prefix, string local_name) throws SparqlError {
 		string ns = prefix_map.lookup (prefix);
 		if (ns == null) {
 			throw get_error ("use of undefined prefix `%s'".printf (prefix));
@@ -145,7 +145,7 @@ public class Tracker.TurtleReader : Object {
 		return ns + local_name;
 	}
 
-	public bool next () throws Sparql.Error {
+	public bool next () throws SparqlError {
 		while (true) {
 			switch (state) {
 			case State.INITIAL:
@@ -261,7 +261,7 @@ public class Tracker.TurtleReader : Object {
 
 					string s = get_last_string (1);
 					string* p = s;
-					string* end = p + s.length;
+					string* end = p + s.size ();
 					while ((long) p < (long) end) {
 						string* q = Posix.strchr (p, '\\');
 						if (q == null) {
@@ -365,7 +365,7 @@ public class Tracker.TurtleReader : Object {
 		}
 	}
 
-	public static void load (string path) throws FileError, Sparql.Error, DateError, DBInterfaceError {
+	public static void load (string path) throws FileError, SparqlError, DataError, DateError, DBInterfaceError {
 		try {
 			Data.begin_transaction ();
 
@@ -376,11 +376,10 @@ public class Tracker.TurtleReader : Object {
 				} else {
 					Data.insert_statement_with_string (reader.graph, reader.subject, reader.predicate, reader.object);
 				}
-				Data.update_buffer_might_flush ();
 			}
 
 			Data.commit_transaction ();
-		} catch (Sparql.Error e) {
+		} catch (DataError e) {
 			Data.rollback_transaction ();
 			throw e;
 		} catch (DBInterfaceError e) {

@@ -9,7 +9,7 @@
 
 nao: a tracker:Namespace, tracker:Ontology ;
 	tracker:prefix "nao" ;
-	nao:lastModified "2010-12-22T10:00:00Z" .
+	nao:lastModified "2010-02-16T11:00:00Z" .
 
 nao:Tag a rdfs:Class ;
 	rdfs:subClassOf rdfs:Resource ;
@@ -19,7 +19,6 @@ nao:prefLabel a rdf:Property ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nao:Tag ;
 	rdfs:range xsd:string ;
-	tracker:writeback true ;
 	tracker:fulltextIndexed true ;
 	tracker:weight 10 .
 
@@ -35,8 +34,8 @@ nao:description a rdf:Property ;
 nao:hasTag a rdf:Property ;
 	rdfs:domain rdfs:Resource ;
 	rdfs:range rdfs:Resource ;
-	tracker:writeback true ;
-	tracker:indexed true .
+	tracker:indexed true ;
+	tracker:isAnnotation true .
 
 nao:identifier a rdf:Property ;
 	nrl:maxCardinality 1 ;
@@ -58,16 +57,13 @@ nao:deprecated a rdf:Property;
 
 nao:Property a rdfs:Class ;
 	rdfs:label "Custom property to extend a class dynamically" ;
-	rdfs:comment "Dont use this without asking first your ontology doctor" ;
-	rdfs:subClassOf rdfs:Resource .
+	rdfs:comment "Dont use this without asking first your ontology doctor" .
 
 nao:propertyName a rdf:Property ;
-	nrl:maxCardinality 1 ;
 	rdfs:domain nao:Property ;
 	rdfs:range  xsd:string .
 
 nao:propertyValue a rdf:Property ;
-	nrl:maxCardinality 1 ;
 	rdfs:domain nao:Property ;
 	rdfs:range  xsd:string .
 
@@ -86,7 +82,7 @@ nao:lastModified a rdf:Property ;
 	rdfs:range xsd:dateTime .
 
 nao:isRelated a rdf:Property ;
-	rdfs:label "Is related" ;
-	rdfs:comment "This property defines a symmetric relation between any two resources. In order for this property to be used legally, the relationship must be symmetric." ;
-	rdfs:domain rdfs:Resource ;
-	rdfs:range rdfs:Resource .
+        rdfs:label "Is related" ;
+        rdfs:comment "This property defines a symmetric relation between any two resources. In order for this property to be used legally, the relationship must be symmetric." ;
+        rdfs:domain rdfs:Resource ;
+        rdfs:range rdfs:Resource .

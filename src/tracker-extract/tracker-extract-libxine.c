@@ -1,18 +1,18 @@
 /* Tracker - audio/video metadata extraction based on Xine
  * Copyright (C) 2006, Laurent Aguerreche <laurent.aguerreche@free.fr>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
@@ -99,7 +99,7 @@ tracker_extract_xine (const gchar          *uri,
 
 	author = xine_get_meta_info (stream, XINE_META_INFO_ARTIST);
 	if (author) {
-		gchar *canonical_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", author);
+		gchar *canonical_uri = tracker_uri_printf_escaped ("urn:artist:%s", author);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
 
@@ -114,16 +114,13 @@ tracker_extract_xine (const gchar          *uri,
 
 	album = xine_get_meta_info (stream, XINE_META_INFO_ALBUM);
 	if (album) {
-		gchar *canonical_uri = tracker_sparql_escape_uri_printf ("urn:album:%s", album);
+		gchar *canonical_uri = tracker_uri_printf_escaped ("urn:album:%s", album);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
 
 		tracker_sparql_builder_subject_iri (preupdate, canonical_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nmm:MusicAlbum");
-		/* FIXME: nmm:albumTitle is now deprecated
-		 * tracker_sparql_builder_predicate (preupdate, "nie:title");
-		 */
 		tracker_sparql_builder_predicate (preupdate, "nmm:albumTitle");
 		tracker_sparql_builder_object_unvalidated (preupdate, album);
 

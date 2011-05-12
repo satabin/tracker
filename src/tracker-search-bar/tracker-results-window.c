@@ -27,7 +27,7 @@
 
 #include <panel-applet.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-client/tracker-client.h>
 
 #include "tracker-results-window.h"
 #include "tracker-aligned-window.h"
@@ -177,13 +177,11 @@ typedef struct {
 
 	GtkIconTheme *icon_theme;
 
-	TrackerSparqlConnection *connection;
-	GCancellable *cancellable;
+	TrackerClient *client;
 	gchar *query;
 
 	gboolean first_category_populated;
 
-	GList *search_queries;
 	gint queries_pending;
 	gint request_id;
 } TrackerResultsWindowPrivate;
@@ -215,7 +213,6 @@ typedef struct {
 } ItemData;
 
 typedef struct {
-	GCancellable *cancellable;
 	gint request_id;
 	TrackerCategory category;
 	TrackerResultsWindow *window;
@@ -227,34 +224,29 @@ struct FindCategory {
 	gboolean found;
 };
 
-static void     results_window_constructed          (GObject              *object);
-static void     results_window_finalize             (GObject              *object);
-static void     results_window_set_property         (GObject              *object,
-                                                     guint                 prop_id,
-                                                     const GValue         *value,
-                                                     GParamSpec           *pspec);
-static void     results_window_get_property         (GObject              *object,
-                                                     guint                 prop_id,
-                                                     GValue               *value,
-                                                     GParamSpec           *pspec);
-static gboolean results_window_key_press_event      (GtkWidget            *widget,
-                                                     GdkEventKey          *event);
-static gboolean results_window_button_press_event   (GtkWidget            *widget,
-                                                     GdkEventButton       *event);
-static void     results_window_get_preferred_width  (GtkWidget            *widget,
-                                                     gint                 *minimal_width,
-                                                     gint                 *natural_width);
-static void     results_window_get_preferred_height (GtkWidget            *widget,
-                                                     gint                 *minimal_height,
-                                                     gint                 *natural_height);
-static void     results_window_screen_changed       (GtkWidget            *widget,
-                                                     GdkScreen            *prev_screen);
-static void     model_set_up                        (TrackerResultsWindow *window);
-static void     search_get                          (TrackerResultsWindow *window,
-                                                     TrackerCategory       category);
-static void     search_start                        (TrackerResultsWindow *window);
-static void     search_query_free                   (SearchQuery          *sq);
-static gchar *  category_to_string                  (TrackerCategory       category);
+static void     results_window_constructed        (GObject              *object);
+static void     results_window_finalize           (GObject              *object);
+static void     results_window_set_property       (GObject              *object,
+                                                   guint                 prop_id,
+                                                   const GValue         *value,
+                                                   GParamSpec           *pspec);
+static void     results_window_get_property       (GObject              *object,
+                                                   guint                 prop_id,
+                                                   GValue               *value,
+                                                   GParamSpec           *pspec);
+static gboolean results_window_key_press_event    (GtkWidget            *widget,
+                                                   GdkEventKey          *event);
+static gboolean results_window_button_press_event (GtkWidget            *widget,
+                                                   GdkEventButton       *event);
+static void     results_window_size_request       (GtkWidget            *widget,
+                                                   GtkRequisition       *requisition);
+static void     results_window_screen_changed     (GtkWidget            *widget,
+                                                   GdkScreen            *prev_screen);
+static void     model_set_up                      (TrackerResultsWindow *window);
+static void     search_get                        (TrackerResultsWindow *window,
+                                                   TrackerCategory       category);
+static void     search_start                      (TrackerResultsWindow *window);
+static gchar *  category_to_string                (TrackerCategory       category);
 
 enum {
 	COL_CATEGORY_ID,
@@ -288,8 +280,7 @@ tracker_results_window_class_init (TrackerResultsWindowClass *klass)
 
 	widget_class->key_press_event = results_window_key_press_event;
 	widget_class->button_press_event = results_window_button_press_event;
-	widget_class->get_preferred_width = results_window_get_preferred_width;
-	widget_class->get_preferred_height = results_window_get_preferred_height;
+	widget_class->size_request = results_window_size_request;
 	widget_class->screen_changed = results_window_screen_changed;
 
 	g_object_class_install_property (object_class,
@@ -394,9 +385,7 @@ tracker_results_window_init (TrackerResultsWindow *window)
 
 	priv = TRACKER_RESULTS_WINDOW_GET_PRIVATE (window);
 
-	priv->cancellable = g_cancellable_new ();
-	priv->connection = tracker_sparql_connection_get_direct (priv->cancellable,
-								 NULL);
+	priv->client = tracker_client_new (TRACKER_CLIENT_ENABLE_WARNINGS, G_MAXINT);
 
 	priv->frame = gtk_frame_new (NULL);
 	gtk_container_add (GTK_CONTAINER (window), priv->frame);
@@ -451,20 +440,9 @@ results_window_finalize (GObject *object)
 
 	g_free (priv->query);
 
-	if (priv->cancellable) {
-		g_cancellable_cancel (priv->cancellable);
-		g_object_unref (priv->cancellable);
+	if (priv->client) {
+		g_object_unref (priv->client);
 	}
-
-	if (priv->connection) {
-		g_object_unref (priv->connection);
-	}
-
-	/* Clean up previous requests, this will call
-	 * g_cancellable_cancel() on each query still running.
-	 */
-	g_list_foreach (priv->search_queries, (GFunc) search_query_free, NULL);
-	g_list_free (priv->search_queries);
 
 	G_OBJECT_CLASS (tracker_results_window_parent_class)->finalize (object);
 }
@@ -520,7 +498,7 @@ results_window_key_press_event (GtkWidget   *widget,
 {
 	TrackerResultsWindowPrivate *priv;
 
-	if (event->keyval == GDK_KEY_Escape) {
+	if (event->keyval == GDK_Escape) {
 		gtk_widget_hide (widget);
 
 		return TRUE;
@@ -528,9 +506,9 @@ results_window_key_press_event (GtkWidget   *widget,
 
 	priv = TRACKER_RESULTS_WINDOW_GET_PRIVATE (widget);
 
-        if (event->keyval != GDK_KEY_Return &&
+        if (event->keyval != GDK_Return &&
             (*event->string != '\0' ||
-             event->keyval == GDK_KEY_BackSpace)) {
+             event->keyval == GDK_BackSpace)) {
                 GtkWidget *entry;
 
                 entry = tracker_aligned_window_get_widget (TRACKER_ALIGNED_WINDOW (widget));
@@ -549,12 +527,8 @@ static gboolean
 results_window_button_press_event (GtkWidget      *widget,
                                    GdkEventButton *event)
 {
-	GtkAllocation alloc;
-
-	gtk_widget_get_allocation (widget, &alloc);
-
-	if (event->x < 0 || event->x > alloc.width ||
-	    event->y < 0 || event->y > alloc.height) {
+	if (event->x < 0 || event->x > widget->allocation.width ||
+	    event->y < 0 || event->y > widget->allocation.height) {
 		/* Click happened outside window, pop it down */
 		gtk_widget_hide (widget);
 		return TRUE;
@@ -575,50 +549,26 @@ results_window_size_request (GtkWidget      *widget,
 	GtkRequisition child_req;
 	guint border_width;
 
-	gtk_widget_size_request (gtk_bin_get_child (GTK_BIN (widget)), &child_req);
+	gtk_widget_size_request (GTK_BIN (widget)->child, &child_req);
 	border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
 	requisition->width = child_req.width + (2 * border_width);
 	requisition->height = child_req.height + (2 * border_width);
 
-	if (gtk_widget_get_realized (widget)) {
+	if (GTK_WIDGET_REALIZED (widget)) {
 		GdkScreen *screen;
 		GdkRectangle monitor_geom;
 		guint monitor_num;
 
 		/* make it no larger than half the monitor size */
 		screen = gtk_widget_get_screen (widget);
-		monitor_num = gdk_screen_get_monitor_at_window (screen, gtk_widget_get_window (widget));
+		monitor_num = gdk_screen_get_monitor_at_window (screen, widget->window);
 
 		gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor_geom);
 
 		requisition->width = MIN (requisition->width, monitor_geom.width / 2);
 		requisition->height = MIN (requisition->height, monitor_geom.height / 2);
 	}
-}
-
-static void
-results_window_get_preferred_width  (GtkWidget *widget,
-                                     gint      *minimal_width,
-                                     gint      *natural_width)
-{
-	GtkRequisition requisition;
-
-	results_window_size_request (widget, &requisition);
-
-	*minimal_width = *natural_width = requisition.width;
-}
-
-static void
-results_window_get_preferred_height (GtkWidget *widget,
-                                     gint      *minimal_height,
-                                     gint      *natural_height)
-{
-	GtkRequisition requisition;
-
-	results_window_size_request (widget, &requisition);
-
-	*minimal_height = *natural_height = requisition.height;
 }
 
 static void
@@ -688,7 +638,6 @@ search_query_new (gint                  request_id,
 	sq = g_slice_new0 (SearchQuery);
 
 	sq->request_id = request_id;
-	sq->cancellable = g_cancellable_new ();
 	sq->category = category;
 	sq->window = window;
 	sq->results = NULL;
@@ -699,11 +648,6 @@ search_query_new (gint                  request_id,
 static void
 search_query_free (SearchQuery *sq)
 {
-	if (sq->cancellable) {
-		g_cancellable_cancel (sq->cancellable);
-		g_object_unref (sq->cancellable);
-	}
-
 	g_slist_foreach (sq->results, (GFunc) item_data_free, NULL);
 	g_slist_free (sq->results);
 
@@ -1209,18 +1153,23 @@ search_window_ensure_not_blank (TrackerResultsWindow *window)
 }
 
 inline static void
-search_get_foreach (SearchQuery         *sq,
-		    TrackerSparqlCursor *cursor)
+search_get_foreach (gpointer value,
+                    gpointer user_data)
 {
+	SearchQuery *sq;
 	ItemData *id;
+	gchar **metadata;
 	const gchar *urn, *title, *tooltip, *link, *rank, *icon_name;
 
-	urn = tracker_sparql_cursor_get_string (cursor, 0, NULL);
-	title = tracker_sparql_cursor_get_string (cursor, 1, NULL);
-	tooltip = tracker_sparql_cursor_get_string (cursor, 2, NULL);
-	link = tracker_sparql_cursor_get_string (cursor, 3, NULL);
-	rank = tracker_sparql_cursor_get_string (cursor, 4, NULL);
-	icon_name = tracker_sparql_cursor_get_string (cursor, 5, NULL);
+	sq = user_data;
+	metadata = value;
+
+	urn = metadata[0];
+	title = metadata[1];
+	tooltip = metadata[2];
+	link = metadata[3];
+	rank = metadata[4];
+	icon_name = metadata[5];
 
 	/* App queries don't return rank or belongs */
 	if (!rank) {
@@ -1244,15 +1193,13 @@ search_get_foreach (SearchQuery         *sq,
 }
 
 static void
-search_get_cb (GObject      *source_object,
-	       GAsyncResult *res,
-	       gpointer      user_data)
+search_get_cb (GPtrArray *results,
+               GError    *error,
+               gpointer   user_data)
 {
-	TrackerSparqlCursor *cursor;
 	TrackerResultsWindow *window;
 	TrackerResultsWindowPrivate *priv;
 	SearchQuery *sq;
-	GError *error = NULL;
 
 	sq = user_data;
 	window = sq->window;
@@ -1260,28 +1207,12 @@ search_get_cb (GObject      *source_object,
 	priv = TRACKER_RESULTS_WINDOW_GET_PRIVATE (window);
 	priv->queries_pending--;
 
-	cursor = tracker_sparql_connection_query_finish (TRACKER_SPARQL_CONNECTION (source_object),
-							 res,
-							 &error);
-
 	/* If request IDs don't match, data is no longer needed */
 	if (priv->request_id != sq->request_id) {
 		g_message ("Received data from request id:%d, now on request id:%d",
 		           sq->request_id,
 		           priv->request_id);
-
-		priv->search_queries = g_list_remove (priv->search_queries, sq);
 		search_query_free (sq);
-
-		/* We don't care about errors if we're not interested
-		 * in the results.
-		 */
-		g_clear_error (&error);
-
-		if (cursor) {
-			g_object_unref (cursor);
-		}
-
 		return;
 	}
 
@@ -1289,31 +1220,29 @@ search_get_cb (GObject      *source_object,
 		g_printerr ("Could not get search results, %s\n", error->message);
 		g_error_free (error);
 
-		if (cursor) {
-			g_object_unref (cursor);
-		}
-
-		priv->search_queries = g_list_remove (priv->search_queries, sq);
 		search_query_free (sq);
 		search_window_ensure_not_blank (window);
 
 		return;
 	}
 
-	if (!cursor) {
+	if (!results) {
 		g_print ("No results were found matching the query in category:'%s'\n",
 		         category_to_string (sq->category));
 	} else {
 		GSList *l;
 
-		g_print ("Results: category:'%s'\n",
+		g_print ("Results: %d for category:'%s'\n",
+		         results->len,
 		         category_to_string (sq->category));
 
-		/* FIXME: make async */
-		while (tracker_sparql_cursor_next (cursor,
-						   priv->cancellable,
-						   &error)) {
-			search_get_foreach (sq, cursor);
+		if (results->len > 0) {
+			g_ptr_array_foreach (results,
+			                     search_get_foreach,
+			                     sq);
+
+			g_ptr_array_foreach (results, (GFunc) g_strfreev, NULL);
+			g_ptr_array_free (results, TRUE);
 
 			/* Add separator */
 			if (priv->first_category_populated) {
@@ -1334,11 +1263,8 @@ search_get_cb (GObject      *source_object,
 
 			priv->first_category_populated = TRUE;
 		}
-
-		g_object_unref (cursor);
 	}
 
-	priv->search_queries = g_list_remove (priv->search_queries, sq);
 	search_query_free (sq);
 	search_window_ensure_not_blank (window);
 
@@ -1399,14 +1325,9 @@ search_get (TrackerResultsWindow *window,
 	}
 
 	sq = search_query_new (priv->request_id, category, window);
-	priv->search_queries = g_list_prepend (priv->search_queries, sq);
 
 	sparql = g_strdup_printf (format, priv->query, MAX_ITEMS);
-	tracker_sparql_connection_query_async (priv->connection,
-					       sparql,
-					       sq->cancellable,
-					       search_get_cb,
-					       sq);
+	tracker_resources_sparql_query_async (priv->client, sparql, search_get_cb, sq);
 	g_free (sparql);
 
 	priv->queries_pending++;
@@ -1440,12 +1361,6 @@ search_start (TrackerResultsWindow *window)
 
 	priv->first_category_populated = FALSE;
 
-	/* Clean up previous requests, this will call
-	 * g_cancellable_cancel() on each query still running.
-	 */
-	g_list_foreach (priv->search_queries, (GFunc) search_query_free, NULL);
-	g_list_free (priv->search_queries);
-
 	/* SPARQL requests */
 	search_get (window, CATEGORY_IMAGE);
 	search_get (window, CATEGORY_AUDIO);
@@ -1472,14 +1387,14 @@ grab_popup_window (TrackerResultsWindow *window)
 	priv = TRACKER_RESULTS_WINDOW_GET_PRIVATE (window);
 
 	/* Grab pointer */
-	status = gdk_pointer_grab (gtk_widget_get_window (widget),
+	status = gdk_pointer_grab (widget->window,
 	                           TRUE,
 	                           GDK_POINTER_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK,
 	                           NULL, NULL,
 	                           time);
 
 	if (status == GDK_GRAB_SUCCESS) {
-		status = gdk_keyboard_grab (gtk_widget_get_window (widget), TRUE, time);
+		status = gdk_keyboard_grab (widget->window, TRUE, time);
 	}
 
 	if (status == GDK_GRAB_SUCCESS) {
@@ -1519,10 +1434,10 @@ tracker_results_window_popup (TrackerResultsWindow *window)
 
         /* Force scroll to top-left */
         vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (priv->scrolled_window));
-        gtk_adjustment_set_value (vadj, gtk_adjustment_get_lower (vadj));
+        gtk_adjustment_set_value (vadj, vadj->lower);
 
         hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (priv->scrolled_window));
-        gtk_adjustment_set_value (hadj, gtk_adjustment_get_lower (hadj));
+        gtk_adjustment_set_value (hadj, hadj->lower);
 
         g_idle_add ((GSourceFunc) grab_popup_window, window);
 }

@@ -34,19 +34,22 @@
 /* Maximum here is a G_MAXLONG, so if you want to use > 2GB, you have
  * to set MEM_LIMIT to RLIM_INFINITY
  */
-#define MEM_LIMIT_MIN 256 * 1024 * 1024
+#ifdef __x86_64__
+#define MEM_LIMIT 512 * 1024 * 1024
+#else
+#define MEM_LIMIT 80 * 1024 * 1024
+#endif
 
 #if defined(__OpenBSD__) && !defined(RLIMIT_AS)
 #define RLIMIT_AS RLIMIT_DATA
 #endif
 
-#undef DISABLE_MEM_LIMITS
+#define DISABLE_MEM_LIMITS
 
 gboolean
 tracker_spawn (gchar **argv,
                gint    timeout,
                gchar **tmp_stdout,
-               gchar **tmp_stderr,
                gint   *exit_status)
 {
 	GError      *error = NULL;
@@ -57,10 +60,8 @@ tracker_spawn (gchar **argv,
 	g_return_val_if_fail (argv[0] != NULL, FALSE);
 	g_return_val_if_fail (timeout >= 0, FALSE);
 
-	flags = G_SPAWN_SEARCH_PATH;
-
-	if (tmp_stderr == NULL)
-		flags |= G_SPAWN_STDERR_TO_DEV_NULL;
+	flags = G_SPAWN_SEARCH_PATH |
+		G_SPAWN_STDERR_TO_DEV_NULL;
 
 	if (!tmp_stdout) {
 		flags = flags | G_SPAWN_STDOUT_TO_DEV_NULL;
@@ -73,7 +74,7 @@ tracker_spawn (gchar **argv,
 	                       tracker_spawn_child_func,
 	                       GINT_TO_POINTER (timeout),
 	                       tmp_stdout,
-	                       tmp_stderr,
+	                       NULL,
 	                       exit_status,
 	                       &error);
 
@@ -89,8 +90,8 @@ tracker_spawn (gchar **argv,
 
 gboolean
 tracker_spawn_async_with_channels (const gchar **argv,
-                                   gint          timeout,
-                                   GPid         *pid,
+                                   gint                  timeout,
+                                   GPid                 *pid,
                                    GIOChannel  **stdin_channel,
                                    GIOChannel  **stdout_channel,
                                    GIOChannel  **stderr_channel)
@@ -103,10 +104,6 @@ tracker_spawn_async_with_channels (const gchar **argv,
 	g_return_val_if_fail (argv[0] != NULL, FALSE);
 	g_return_val_if_fail (timeout >= 0, FALSE);
 	g_return_val_if_fail (pid != NULL, FALSE);
-
-	/* Note: PID must be non-NULL because we're using the
-	 *  G_SPAWN_DO_NOT_REAP_CHILD option, so an explicit call to
-	 *  g_spawn_close_pid () will be needed afterwards */
 
 	result = g_spawn_async_with_pipes (NULL,
 	                                   (gchar **) argv,
@@ -163,6 +160,8 @@ tracker_spawn_child_func (gpointer user_data)
 		 */
 		alarm (timeout + 2);
 	}
+
+	tracker_memory_setrlimits ();
 
 	/* Set child's niceness to 19 */
 	errno = 0;
@@ -274,16 +273,12 @@ gboolean
 tracker_memory_setrlimits (void)
 {
 #ifndef DISABLE_MEM_LIMITS
-	struct rlimit rl = { 0 };
-	glong total;
-	glong total_halfed;
-	glong limit;
+	struct rlimit rl;
+	glong         total;
+	glong         limit;
 
 	total = get_memory_total ();
-	total_halfed = total / 2;
-
-	/* Clamp memory between 50% of total and MAXLONG (2Gb) */
-	limit = CLAMP (total_halfed, MEM_LIMIT_MIN, G_MAXLONG);
+	limit = CLAMP (MEM_LIMIT, 0, total);
 
 	/* We want to limit the max virtual memory
 	 * most extractors use mmap() so only virtual memory can be
@@ -316,8 +311,9 @@ tracker_memory_setrlimits (void)
 			str1 = g_format_size_for_display (total);
 			str2 = g_format_size_for_display (limit);
 
-			g_message ("Setting memory limitations: total is %s, minimum is 256 MB, recommended is ~1 GB", str1);
-			g_message ("  Virtual/Heap set to %s (50%% of total or MAXLONG)", str2);
+			g_message ("Setting memory limitations: total is %s, virtual/heap set to %s",
+			           str1,
+			           str2);
 
 			g_free (str2);
 			g_free (str1);

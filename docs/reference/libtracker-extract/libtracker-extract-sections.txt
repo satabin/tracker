@@ -1,8 +1,6 @@
 <SECTION>
 <FILE>tracker-xmp</FILE>
 TrackerXmpData
-tracker_xmp_new
-tracker_xmp_free
 tracker_xmp_read
 tracker_xmp_apply
 </SECTION>
@@ -10,8 +8,6 @@ tracker_xmp_apply
 <SECTION>
 <FILE>tracker-iptc</FILE>
 TrackerIptcData
-tracker_iptc_new
-tracker_iptc_free
 tracker_iptc_read
 </SECTION>
 
@@ -26,21 +22,15 @@ tracker_extract_get_data
 <SECTION>
 <FILE>tracker-utils</FILE>
 tracker_coalesce
-tracker_coalesce_strip
 tracker_merge
-tracker_merge_const
-tracker_getline
 tracker_text_normalize
-tracker_text_validate_utf8
 tracker_date_format_to_iso8601
 tracker_date_guess
-tracker_keywords_parse
 </SECTION>
 
 <SECTION>
 <FILE>tracker-exif</FILE>
 TrackerExifData
-tracker_exif_new
-tracker_exif_free
 tracker_exif_read
 </SECTION>
+

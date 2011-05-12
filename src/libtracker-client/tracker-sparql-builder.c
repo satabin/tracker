@@ -97,39 +97,37 @@ void tracker_sparql_builder_drop_graph (TrackerSparqlBuilder* self, const gchar*
 TrackerSparqlBuilderState tracker_sparql_builder_get_state (TrackerSparqlBuilder* self);
 void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar* graph);
 static void _vala_array_add5 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, const gchar* graph);
-static void _vala_array_add6 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self);
 void tracker_sparql_builder_delete_open (TrackerSparqlBuilder* self, const gchar* graph);
-static void _vala_array_add7 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
+static void _vala_array_add6 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self);
 void tracker_sparql_builder_where_open (TrackerSparqlBuilder* self);
-static void _vala_array_add8 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
+static void _vala_array_add7 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 void tracker_sparql_builder_where_close (TrackerSparqlBuilder* self);
 void tracker_sparql_builder_subject_variable (TrackerSparqlBuilder* self, const gchar* var_name);
 void tracker_sparql_builder_subject (TrackerSparqlBuilder* self, const gchar* s);
 void tracker_sparql_builder_object_variable (TrackerSparqlBuilder* self, const gchar* var_name);
 void tracker_sparql_builder_object (TrackerSparqlBuilder* self, const gchar* s);
 void tracker_sparql_builder_subject_iri (TrackerSparqlBuilder* self, const gchar* iri);
-static void _vala_array_add9 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
+static void _vala_array_add8 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 void tracker_sparql_builder_predicate_iri (TrackerSparqlBuilder* self, const gchar* iri);
 void tracker_sparql_builder_predicate (TrackerSparqlBuilder* self, const gchar* s);
-static void _vala_array_add10 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
+static void _vala_array_add9 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 void tracker_sparql_builder_object_iri (TrackerSparqlBuilder* self, const gchar* iri);
-static void _vala_array_add11 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
+static void _vala_array_add10 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 gint tracker_sparql_builder_get_length (TrackerSparqlBuilder* self);
 static void tracker_sparql_builder_set_length (TrackerSparqlBuilder* self, gint value);
 void tracker_sparql_builder_object_string (TrackerSparqlBuilder* self, const gchar* literal);
-static void _vala_array_add12 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
+static void _vala_array_add11 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 void tracker_sparql_builder_object_unvalidated (TrackerSparqlBuilder* self, const gchar* value);
 void tracker_sparql_builder_object_boolean (TrackerSparqlBuilder* self, gboolean literal);
 void tracker_sparql_builder_object_int64 (TrackerSparqlBuilder* self, gint64 literal);
 void tracker_sparql_builder_object_date (TrackerSparqlBuilder* self, time_t* literal);
 void tracker_sparql_builder_object_double (TrackerSparqlBuilder* self, gdouble literal);
 void tracker_sparql_builder_object_blank_open (TrackerSparqlBuilder* self);
-static void _vala_array_add13 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
+static void _vala_array_add12 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self);
-static void _vala_array_add14 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
+static void _vala_array_add13 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 void tracker_sparql_builder_prepend (TrackerSparqlBuilder* self, const gchar* raw);
 void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw);
 TrackerSparqlBuilder* tracker_sparql_builder_new (void);
@@ -259,34 +257,6 @@ void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar
 }
 
 
-static void _vala_array_add6 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-	if ((*length) == (*size)) {
-		*size = (*size) ? (2 * (*size)) : 4;
-		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
-	}
-	(*array)[(*length)++] = value;
-}
-
-
-void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, const gchar* graph) {
-	TrackerSparqlBuilderState _tmp0_;
-	g_return_if_fail (self != NULL);
-	_tmp0_ = tracker_sparql_builder_get_state (self);
-	g_return_if_fail (_tmp0_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE);
-	_vala_array_add6 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_INSERT);
-	if (graph != NULL) {
-		gchar* _tmp1_ = NULL;
-		gchar* _tmp2_;
-		_tmp1_ = g_strdup_printf ("INSERT SILENT INTO <%s> {\n", graph);
-		_tmp2_ = _tmp1_;
-		g_string_append (self->priv->str, _tmp2_);
-		_g_free0 (_tmp2_);
-	} else {
-		g_string_append (self->priv->str, "INSERT SILENT {\n");
-	}
-}
-
-
 void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp0_;
 	TrackerSparqlBuilderState _tmp1_;
@@ -309,7 +279,7 @@ void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self) {
 }
 
 
-static void _vala_array_add7 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
+static void _vala_array_add6 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
@@ -323,7 +293,7 @@ void tracker_sparql_builder_delete_open (TrackerSparqlBuilder* self, const gchar
 	g_return_if_fail (self != NULL);
 	_tmp0_ = tracker_sparql_builder_get_state (self);
 	g_return_if_fail (_tmp0_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE);
-	_vala_array_add7 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_DELETE);
+	_vala_array_add6 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_DELETE);
 	if (graph != NULL) {
 		gchar* _tmp1_ = NULL;
 		gchar* _tmp2_;
@@ -355,7 +325,7 @@ void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self) {
 }
 
 
-static void _vala_array_add8 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
+static void _vala_array_add7 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
@@ -369,7 +339,7 @@ void tracker_sparql_builder_where_open (TrackerSparqlBuilder* self) {
 	g_return_if_fail (self != NULL);
 	_tmp0_ = tracker_sparql_builder_get_state (self);
 	g_return_if_fail (_tmp0_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE);
-	_vala_array_add8 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_WHERE);
+	_vala_array_add7 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_WHERE);
 	g_string_append (self->priv->str, "WHERE {\n");
 }
 
@@ -428,7 +398,7 @@ void tracker_sparql_builder_subject_iri (TrackerSparqlBuilder* self, const gchar
 }
 
 
-static void _vala_array_add9 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
+static void _vala_array_add8 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
@@ -458,7 +428,7 @@ void tracker_sparql_builder_subject (TrackerSparqlBuilder* self, const gchar* s)
 		self->priv->states_length1 = self->priv->states_length1 - 3;
 	}
 	g_string_append (self->priv->str, s);
-	_vala_array_add9 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_SUBJECT);
+	_vala_array_add8 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_SUBJECT);
 }
 
 
@@ -474,7 +444,7 @@ void tracker_sparql_builder_predicate_iri (TrackerSparqlBuilder* self, const gch
 }
 
 
-static void _vala_array_add10 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
+static void _vala_array_add9 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
@@ -501,7 +471,7 @@ void tracker_sparql_builder_predicate (TrackerSparqlBuilder* self, const gchar* 
 	}
 	g_string_append (self->priv->str, " ");
 	g_string_append (self->priv->str, s);
-	_vala_array_add10 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_PREDICATE);
+	_vala_array_add9 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_PREDICATE);
 }
 
 
@@ -517,7 +487,7 @@ void tracker_sparql_builder_object_iri (TrackerSparqlBuilder* self, const gchar*
 }
 
 
-static void _vala_array_add11 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
+static void _vala_array_add10 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
@@ -543,13 +513,13 @@ void tracker_sparql_builder_object (TrackerSparqlBuilder* self, const gchar* s) 
 	}
 	g_string_append (self->priv->str, " ");
 	g_string_append (self->priv->str, s);
-	_vala_array_add11 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
+	_vala_array_add10 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
 	_tmp3_ = self->priv->_length;
 	tracker_sparql_builder_set_length (self, _tmp3_ + 1);
 }
 
 
-static void _vala_array_add12 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
+static void _vala_array_add11 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
@@ -620,61 +590,9 @@ void tracker_sparql_builder_object_string (TrackerSparqlBuilder* self, const gch
 		p++;
 	}
 	g_string_append (self->priv->str, "\"");
-	_vala_array_add12 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
+	_vala_array_add11 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
 	_tmp4_ = self->priv->_length;
 	tracker_sparql_builder_set_length (self, _tmp4_ + 1);
-}
-
-
-static glong string_strnlen (gchar* str, glong maxlen) {
-	glong result = 0L;
-	gchar* _tmp0_ = NULL;
-	gchar* end;
-	_tmp0_ = memchr (str, 0, (gsize) maxlen);
-	end = _tmp0_;
-	if (end == NULL) {
-		result = maxlen;
-		return result;
-	} else {
-		result = (glong) (end - str);
-		return result;
-	}
-}
-
-
-static gchar* string_substring (const gchar* self, glong offset, glong len) {
-	gchar* result = NULL;
-	glong string_length = 0L;
-	gboolean _tmp0_ = FALSE;
-	gchar* _tmp3_ = NULL;
-	g_return_val_if_fail (self != NULL, NULL);
-	if (offset >= 0) {
-		_tmp0_ = len >= 0;
-	} else {
-		_tmp0_ = FALSE;
-	}
-	if (_tmp0_) {
-		glong _tmp1_;
-		_tmp1_ = string_strnlen ((gchar*) self, offset + len);
-		string_length = _tmp1_;
-	} else {
-		gint _tmp2_;
-		_tmp2_ = strlen (self);
-		string_length = (glong) _tmp2_;
-	}
-	if (offset < 0) {
-		offset = string_length + offset;
-		g_return_val_if_fail (offset >= 0, NULL);
-	} else {
-		g_return_val_if_fail (offset <= string_length, NULL);
-	}
-	if (len < 0) {
-		len = string_length - offset;
-	}
-	g_return_val_if_fail ((offset + len) <= string_length, NULL);
-	_tmp3_ = g_strndup (((gchar*) self) + offset, (gsize) len);
-	result = _tmp3_;
-	return result;
 }
 
 
@@ -690,7 +608,7 @@ void tracker_sparql_builder_object_unvalidated (TrackerSparqlBuilder* self, cons
 		if (value != end) {
 			gchar* _tmp2_ = NULL;
 			gchar* _tmp3_;
-			_tmp2_ = string_substring (value, (glong) 0, (glong) (end - ((gchar*) value)));
+			_tmp2_ = g_strndup (value, end - ((gchar*) value));
 			_tmp3_ = _tmp2_;
 			tracker_sparql_builder_object_string (self, _tmp3_);
 			_g_free0 (_tmp3_);
@@ -784,7 +702,7 @@ void tracker_sparql_builder_object_double (TrackerSparqlBuilder* self, gdouble l
 }
 
 
-static void _vala_array_add13 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
+static void _vala_array_add12 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
@@ -807,11 +725,11 @@ void tracker_sparql_builder_object_blank_open (TrackerSparqlBuilder* self) {
 		self->priv->states_length1--;
 	}
 	g_string_append (self->priv->str, " [");
-	_vala_array_add13 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_BLANK);
+	_vala_array_add12 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_BLANK);
 }
 
 
-static void _vala_array_add14 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
+static void _vala_array_add13 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
@@ -830,7 +748,7 @@ void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self) {
 	g_return_if_fail ((_tmp0_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) && (self->priv->states[self->priv->states_length1 - 3] == TRACKER_SPARQL_BUILDER_STATE_BLANK));
 	g_string_append (self->priv->str, "]");
 	self->priv->states_length1 = self->priv->states_length1 - 3;
-	_vala_array_add14 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
+	_vala_array_add13 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
 	_tmp2_ = self->priv->_length;
 	tracker_sparql_builder_set_length (self, _tmp2_ + 1);
 }

@@ -17,14 +17,11 @@
  * 02110-1301, USA.
  */
 
-#include "config.h"
-
 #include <glib.h>
 #include <gio/gio.h>
-
 #include <totem-pl-parser.h>
 
-static gchar **filenames = NULL;
+static gchar    **filenames = NULL;
 
 typedef struct {
 	gint   tracks ;
@@ -40,7 +37,7 @@ static GOptionEntry entries[] = {
 };
 
 static void
-print_header (void)
+print_header ()
 {
 	g_print ("@prefix nmo: <http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#>.\n");
 	g_print ("@prefix nfo: <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#>.\n");
@@ -49,35 +46,32 @@ print_header (void)
 }
 
 static void
-print_playlist_entry (const gchar *uri)
-{
+print_playlist_entry (const gchar *uri) {
 	g_print ("<%s> a nmm:Playlist .\n\n", uri);
 }
 
 static void
-entry_parsed (TotemPlParser *parser, 
-              const gchar   *uri, 
-              GHashTable    *metadata, 
-              gpointer       user_data)
+entry_parsed (TotemPlParser *parser, const gchar *uri, GHashTable *metadata, gpointer user_data)
 {
-	PlaylistData *playlist_data = (PlaylistData*) user_data;
+	PlaylistData *playlist_data = (PlaylistData *)user_data;
 
 	playlist_data->tracks += 1;
 
+	//uri = g_hash_table_lookup (metadata, TOTEM_PL_PARSER_FIELD_URI);
 	g_print ("<%s> nfo:hasMediaFileListEntry [ \n",
 	         playlist_data->playlist);
 	g_print ("\t a nfo:MediaFileListEntry ; \n");
 	g_print ("\t nfo:listPosition %d ; \n", playlist_data->tracks);
-	g_print ("\t nfo:entryUrl \"%s\" ] .\n\n", uri);
+	g_print ("\t nfo:entryContent <%s> ] .\n\n", uri);
 }
 
-int
-main (int argc, char **argv)
+gint
+main (gint argc, gchar **argv)
 {
 	GFile *file;
 	GOptionContext *context = NULL;
 	gchar *uri;
-	PlaylistData playlist_data = { 0, NULL};
+	PlaylistData   playlist_data = { 0, NULL};
 	TotemPlParser *pl;
 	TotemPlParserResult result;
 	GError *error = NULL;
@@ -92,7 +86,8 @@ main (int argc, char **argv)
 	if (!g_option_context_parse (context, &argc, &argv, &error) || !filenames) {
 		gchar *help;
 
-		g_printerr ("%s\n\n", "Playlist filename is mandatory");
+		g_printerr ("%s\n\n",
+		            "Playlist filename is mandatory");
 
 		help = g_option_context_get_help (context, TRUE, NULL);
 		g_option_context_free (context);
@@ -113,6 +108,8 @@ main (int argc, char **argv)
 
 	g_object_set (pl, "recurse", FALSE, "disable-unsafe", TRUE, NULL);
 	g_signal_connect (G_OBJECT (pl), "entry-parsed", G_CALLBACK (entry_parsed), &playlist_data);
+
+
 
 	result = totem_pl_parser_parse (pl, uri, FALSE);
 

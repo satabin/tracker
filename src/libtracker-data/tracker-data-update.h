@@ -22,11 +22,10 @@
 #define __LIBTRACKER_DATA_UPDATE_H__
 
 #include <glib.h>
-#include <gio/gio.h>
 
 #include <libtracker-common/tracker-ontologies.h>
 
-#include "tracker-db-interface.h"
+#include <libtracker-db/tracker-db-interface.h>
 
 G_BEGIN_DECLS
 
@@ -34,27 +33,33 @@ G_BEGIN_DECLS
 #error "only <libtracker-data/tracker-data.h> must be included directly."
 #endif
 
-typedef enum {
-	TRACKER_DATA_COMMIT_REGULAR,
-	TRACKER_DATA_COMMIT_BATCH,
-	TRACKER_DATA_COMMIT_BATCH_LAST
-} TrackerDataCommitType;
+#define TRACKER_DATA_ERROR tracker_data_error_quark ()
 
-typedef void (*TrackerStatementCallback) (gint                  graph_id,
-                                          const gchar          *graph,
-                                          gint                  subject_id,
-                                          const gchar          *subject,
-                                          gint                  predicate_id,
-                                          gint                  object_id,
-                                          const gchar          *object,
-                                          GPtrArray            *rdf_types,
-                                          gpointer              user_data);
-typedef void (*TrackerCommitCallback)    (TrackerDataCommitType commit_type,
-                                          gpointer              user_data);
+typedef enum  {
+	TRACKER_DATA_ERROR_UNKNOWN_CLASS,
+	TRACKER_DATA_ERROR_UNKNOWN_PROPERTY,
+	TRACKER_DATA_ERROR_INVALID_TYPE,
+	TRACKER_DATA_ERROR_CONSTRAINT,
+	TRACKER_DATA_ERROR_NO_SPACE
+} TrackerDataError;
+
+typedef void (*TrackerStatementCallback) (const gchar *graph,
+                                          const gchar *subject,
+                                          const gchar *predicate,
+                                          const gchar *object,
+                                          GPtrArray   *rdf_types,
+                                          gpointer     user_data);
+typedef void (*TrackerCommitCallback)    (gpointer     user_data);
+typedef void (*TrackerBusyCallback)      (const gchar *status,
+                                          gdouble      progress,
+                                          gpointer     user_data);
 
 GQuark   tracker_data_error_quark                   (void);
 
 /* Metadata */
+void     tracker_data_delete_resource_description   (const gchar               *graph,
+                                                     const gchar               *url,
+                                                     GError                   **error);
 void     tracker_data_delete_statement              (const gchar               *graph,
                                                      const gchar               *subject,
                                                      const gchar               *predicate,
@@ -75,33 +80,27 @@ void     tracker_data_insert_statement_with_string  (const gchar               *
                                                      const gchar               *predicate,
                                                      const gchar               *object,
                                                      GError                   **error);
-void     tracker_data_update_statement              (const gchar               *graph,
-                                                     const gchar               *subject,
-                                                     const gchar               *predicate,
-                                                     const gchar               *object,
-                                                     GError                   **error);
+void     tracker_data_begin_db_transaction          (void);
+void     tracker_data_begin_db_transaction_for_replay (time_t                   time);
+void     tracker_data_commit_db_transaction         (void);
 void     tracker_data_begin_transaction             (GError                   **error);
-void     tracker_data_begin_ontology_transaction    (GError                   **error);
-void     tracker_data_begin_transaction_for_replay  (time_t                     time,
-                                                     GError                   **error);
 void     tracker_data_commit_transaction            (GError                   **error);
-void     tracker_data_notify_transaction            (TrackerDataCommitType      commit_type);
 void     tracker_data_rollback_transaction          (void);
 void     tracker_data_update_sparql                 (const gchar               *update,
                                                      GError                   **error);
-GVariant *
+GPtrArray *
          tracker_data_update_sparql_blank           (const gchar               *update,
                                                      GError                   **error);
 void     tracker_data_update_buffer_flush           (GError                   **error);
 void     tracker_data_update_buffer_might_flush     (GError                   **error);
-void     tracker_data_load_turtle_file              (GFile                     *file,
-                                                     GError                   **error);
 
 void     tracker_data_sync                          (void);
-void     tracker_data_replay_journal                (TrackerBusyCallback        busy_callback,
+void     tracker_data_replay_journal                (GHashTable                *classes,
+                                                     GHashTable                *properties,
+                                                     GHashTable                *id_uri_map,
+                                                     TrackerBusyCallback        busy_callback,
                                                      gpointer                   busy_user_data,
-                                                     const gchar               *busy_status,
-                                                     GError                   **error);
+                                                     const gchar               *busy_status);
 
 /* Calling back */
 void     tracker_data_add_insert_statement_callback      (TrackerStatementCallback   callback,

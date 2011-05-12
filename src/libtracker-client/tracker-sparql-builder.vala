@@ -72,16 +72,6 @@ public class Tracker.SparqlBuilder : Object {
 			str.append ("INSERT {\n");
 	}
 
-	public void insert_silent_open (string? graph)
-		requires (state == State.UPDATE)
-	{
-		states += State.INSERT;
-		if (graph != null)
-			str.append ("INSERT SILENT INTO <%s> {\n".printf (graph));
-		else
-			str.append ("INSERT SILENT {\n");
-	}
-
 	public void insert_close ()
 		requires (state == State.INSERT || state == State.OBJECT)
 	{
@@ -242,7 +232,7 @@ public class Tracker.SparqlBuilder : Object {
 
 		if (!utf8_validate (value, -1, out end)) {
 			if (value != end) {
-				object_string (value.substring (0, (long) (end - (char*) value)));
+				object_string (value.ndup (end - (char*) value));
 			} else {
 				object_string ("(invalid data)");
 			}

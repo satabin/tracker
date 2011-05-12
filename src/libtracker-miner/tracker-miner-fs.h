@@ -27,11 +27,9 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-client/tracker-sparql-builder.h>
 
 #include "tracker-miner-object.h"
-
-#include "tracker-miner-common.h"
 
 G_BEGIN_DECLS
 
@@ -42,15 +40,16 @@ G_BEGIN_DECLS
 #define TRACKER_IS_MINER_FS_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE ((c),  TRACKER_TYPE_MINER_FS))
 #define TRACKER_MINER_FS_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), TRACKER_TYPE_MINER_FS, TrackerMinerFSClass))
 
-typedef struct _TrackerMinerFS        TrackerMinerFS;
-typedef struct _TrackerMinerFSPrivate TrackerMinerFSPrivate;
+typedef struct TrackerMinerFS        TrackerMinerFS;
+typedef struct TrackerMinerFSPrivate TrackerMinerFSPrivate;
 
 /**
  * TrackerMinerFS:
  *
- * Abstract miner implementation to get data from the filesystem.
+ * Abstract miner abstract implementation to get data
+ * from the filesystem.
  **/
-struct _TrackerMinerFS {
+struct TrackerMinerFS {
 	TrackerMiner parent;
 	TrackerMinerFSPrivate *private;
 };
@@ -58,26 +57,17 @@ struct _TrackerMinerFS {
 /**
  * TrackerMinerFSClass:
  * @parent: parent object class
- * @check_file: Called when a file should be checked for further
- * processing.
- * @check_directory: Called when a directory should be checked for
- * further processing.
- * @check_directory_contents: Called when a directory should be
- * checked for further processing, based on the directory contents.
- * @process_file: Called when the metadata associated to a file is
- * requested.
- * @ignore_next_update_file: Called after a writeback event happens on
- * a file.
- * @monitor_directory: Called to check whether a directory should be
- * modified.
+ * @check_file: Called when a file should be checked for further processing
+ * @check_directory: Called when a directory should be checked for further processing
+ * @check_directory_contents: Called when a directory should be checked for further processing, based on the directory contents.
+ * @process_file: Called when the metadata associated to a file is requested.
+ * @ignore_next_update_file: Called after a writeback event happens on a file.
+ * @monitor_directory: Called to check whether a directory should be modified.
  * @finished: Called when all processing has been performed.
- * @process_file_attributes: Called when the metadata associated with
- * a file's attributes changes, for example, the mtime.
  *
- * Prototype for the abstract class, @check_file, @check_directory,
- * @check_directory_contents, @process_file and @monitor_directory
- * must be implemented in the deriving class in order to actually
- * extract data.
+ * Prototype for the abstract class, @check_file, @check_directory, @check_directory_contents,
+ * @process_file and @monitor_directory must be implemented in the deriving class in order to
+ * actually extract data.
  **/
 typedef struct {
 	TrackerMinerClass parent;
@@ -100,10 +90,6 @@ typedef struct {
 	gboolean (* monitor_directory)        (TrackerMinerFS       *fs,
 	                                       GFile                *file);
 	void     (* finished)                 (TrackerMinerFS       *fs);
-	gboolean (* process_file_attributes)  (TrackerMinerFS       *fs,
-	                                       GFile                *file,
-	                                       TrackerSparqlBuilder *builder,
-	                                       GCancellable         *cancellable);
 } TrackerMinerFSClass;
 
 GType                 tracker_miner_fs_get_type             (void) G_GNUC_CONST;
@@ -112,14 +98,8 @@ void                  tracker_miner_fs_directory_add        (TrackerMinerFS *fs,
                                                              gboolean        recurse);
 gboolean              tracker_miner_fs_directory_remove     (TrackerMinerFS *fs,
                                                              GFile          *file);
-gboolean              tracker_miner_fs_directory_remove_full (TrackerMinerFS *fs,
-                                                              GFile          *file);
-void                  tracker_miner_fs_check_file           (TrackerMinerFS *fs,
-                                                             GFile          *file,
-                                                             gboolean        check_parents);
-void                  tracker_miner_fs_check_directory      (TrackerMinerFS *fs,
-                                                             GFile          *file,
-                                                             gboolean        check_parents);
+void                  tracker_miner_fs_file_add             (TrackerMinerFS *fs,
+                                                             GFile          *file);
 void                  tracker_miner_fs_file_notify          (TrackerMinerFS *fs,
                                                              GFile          *file,
                                                              const GError   *error);
@@ -130,21 +110,7 @@ G_CONST_RETURN gchar *tracker_miner_fs_get_urn              (TrackerMinerFS *fs,
                                                              GFile          *file);
 G_CONST_RETURN gchar *tracker_miner_fs_get_parent_urn       (TrackerMinerFS *fs,
                                                              GFile          *file);
-gchar                *tracker_miner_fs_query_urn            (TrackerMinerFS *fs,
-                                                             GFile          *file);
 void                  tracker_miner_fs_force_recheck        (TrackerMinerFS *fs);
-
-void                  tracker_miner_fs_set_mtime_checking   (TrackerMinerFS *fs,
-                                                             gboolean        mtime_checking);
-void                  tracker_miner_fs_set_initial_crawling (TrackerMinerFS *fs,
-                                                             gboolean        do_initial_crawling);
-gboolean              tracker_miner_fs_get_mtime_checking   (TrackerMinerFS *fs);
-gboolean              tracker_miner_fs_get_initial_crawling (TrackerMinerFS *fs);
-
-gboolean              tracker_miner_fs_has_items_to_process (TrackerMinerFS *fs);
-
-void                  tracker_miner_fs_add_directory_without_parent (TrackerMinerFS *fs,
-                                                                     GFile          *file);
 
 G_END_DECLS
 

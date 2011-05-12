@@ -22,11 +22,10 @@ namespace Tracker.Sparql {
 	class PredicateVariable : Object {
 		public string? subject;
 		public string? object;
-		public bool return_graph;
 
 		public Class? domain;
 
-		public string get_sql_query (Query query) throws Sparql.Error {
+		public string get_sql_query (Query query) throws SparqlError {
 			try {
 				var sql = new StringBuilder ();
 
@@ -34,20 +33,20 @@ namespace Tracker.Sparql {
 					// single subject
 					var subject_id = Data.query_resource_id (subject);
 
-					DBCursor cursor = null;
+					DBResultSet result_set = null;
 					if (subject_id > 0) {
 						var iface = DBManager.get_db_interface ();
-						var stmt = iface.create_statement (DBStatementCacheType.SELECT,
-						                                   "SELECT (SELECT Uri FROM Resource WHERE ID = \"rdf:type\") " +
-						                                   "FROM \"rdfs:Resource_rdf:type\" WHERE ID = ?");
+						var stmt = iface.create_statement ("SELECT (SELECT Uri FROM Resource WHERE ID = \"rdf:type\") FROM \"rdfs:Resource_rdf:type\" WHERE ID = ?");
 						stmt.bind_int (0, subject_id);
-						cursor = stmt.start_cursor ();
+						result_set = stmt.execute ();
 					}
 
-					bool first = true;
-					if (cursor != null) {
-						while (cursor.next ()) {
-							var domain = Ontologies.get_class_by_uri (cursor.get_string (0));
+					if (result_set != null) {
+						bool first = true;
+						do {
+							Value value;
+							result_set._get_value (0, out value);
+							var domain = Ontologies.get_class_by_uri (value.get_string ());
 
 							foreach (Property prop in Ontologies.get_properties ()) {
 								if (prop.domain == domain) {
@@ -60,11 +59,8 @@ namespace Tracker.Sparql {
 
 									Expression.append_expression_as_string (sql, "\"%s\"".printf (prop.name), prop.data_type);
 
-									sql.append (" AS \"object\"");
-									if (return_graph) {
-										sql.append_printf (", \"%s:graph\" AS \"graph\"", prop.name);
-									}
-									sql.append_printf (" FROM \"%s\"", prop.table_name);
+									sql.append (" AS \"object\" FROM ");
+									sql.append_printf ("\"%s\"", prop.table_name);
 
 									sql.append (" WHERE ID = ?");
 
@@ -74,28 +70,26 @@ namespace Tracker.Sparql {
 									query.bindings.append (binding);
 								}
 							}
-						}
-					}
-
-					if (first) {
+						} while (result_set.iter_next ());
+					} else {
 						/* no match */
-						sql.append ("SELECT NULL AS ID, NULL AS \"predicate\", NULL AS \"object\", NULL AS \"graph\"");
+						sql.append ("SELECT NULL AS ID, NULL AS \"predicate\", NULL AS \"object\"");
 					}
 				} else if (object != null) {
 					// single object
 					var object_id = Data.query_resource_id (object);
 
 					var iface = DBManager.get_db_interface ();
-					var stmt = iface.create_statement (DBStatementCacheType.SELECT,
-					                                   "SELECT (SELECT Uri FROM Resource WHERE ID = \"rdf:type\") " +
-					                                   "FROM \"rdfs:Resource_rdf:type\" WHERE ID = ?");
+					var stmt = iface.create_statement ("SELECT (SELECT Uri FROM Resource WHERE ID = \"rdf:type\") FROM \"rdfs:Resource_rdf:type\" WHERE ID = ?");
 					stmt.bind_int (0, object_id);
-					var cursor = stmt.start_cursor ();
+					var result_set = stmt.execute ();
 
 					bool first = true;
-					if (cursor != null) {
-						while (cursor.next ()) {
-							var range = Ontologies.get_class_by_uri (cursor.get_string (0));
+					if (result_set != null) {
+						do {
+							Value value;
+							result_set._get_value (0, out value);
+							var range = Ontologies.get_class_by_uri (value.get_string ());
 
 							foreach (Property prop in Ontologies.get_properties ()) {
 								if (prop.range == range) {
@@ -108,19 +102,14 @@ namespace Tracker.Sparql {
 
 									Expression.append_expression_as_string (sql, "\"%s\"".printf (prop.name), prop.data_type);
 
-									sql.append (" AS \"object\"");
-									if (return_graph) {
-										sql.append_printf (", \"%s:graph\" AS \"graph\"", prop.name);
-									}
-									sql.append_printf (" FROM \"%s\"", prop.table_name);
+									sql.append (" AS \"object\" FROM ");
+									sql.append_printf ("\"%s\"", prop.table_name);
 								}
 							}
-						}
-					}
-
-					if (first) {
+						} while (result_set.iter_next ());
+					} else {
 						/* no match */
-						sql.append ("SELECT NULL AS ID, NULL AS \"predicate\", NULL AS \"object\", NULL AS \"graph\"");
+						sql.append ("SELECT NULL AS ID, NULL AS \"predicate\", NULL AS \"object\"");
 					}
 				} else if (domain != null) {
 					// any subject, predicates limited to a specific domain
@@ -136,11 +125,8 @@ namespace Tracker.Sparql {
 
 							Expression.append_expression_as_string (sql, "\"%s\"".printf (prop.name), prop.data_type);
 
-							sql.append (" AS \"object\"");
-							if (return_graph) {
-								sql.append_printf (", \"%s:graph\" AS \"graph\"", prop.name);
-							}
-							sql.append_printf (" FROM \"%s\"", prop.table_name);
+							sql.append (" AS \"object\" FROM ");
+							sql.append_printf ("\"%s\"", prop.table_name);
 						}
 					}
 				} else {
@@ -148,8 +134,8 @@ namespace Tracker.Sparql {
 					throw query.get_internal_error ("Unrestricted predicate variables not supported");
 				}
 				return sql.str;
-			} catch (GLib.Error e) {
-				throw new Sparql.Error.INTERNAL (e.message);
+			} catch (DBInterfaceError e) {
+				throw new SparqlError.INTERNAL (e.message);
 			}
 		}
 	}
@@ -163,7 +149,7 @@ class Tracker.Sparql.Pattern : Object {
 
 	int next_table_index;
 
-	internal string current_graph;
+	string current_graph;
 	bool current_graph_is_var;
 	string current_subject;
 	bool current_subject_is_var;
@@ -180,7 +166,7 @@ class Tracker.Sparql.Pattern : Object {
 		set { query.context = value; }
 	}
 
-	inline bool next () throws Sparql.Error {
+	inline bool next () throws SparqlError {
 		return query.next ();
 	}
 
@@ -188,15 +174,15 @@ class Tracker.Sparql.Pattern : Object {
 		return query.current ();
 	}
 
-	inline bool accept (SparqlTokenType type) throws Sparql.Error {
+	inline bool accept (SparqlTokenType type) throws SparqlError {
 		return query.accept (type);
 	}
 
-	Sparql.Error get_error (string msg) {
+	SparqlError get_error (string msg) {
 		return query.get_error (msg);
 	}
 
-	bool expect (SparqlTokenType type) throws Sparql.Error {
+	bool expect (SparqlTokenType type) throws SparqlError {
 		return query.expect (type);
 	}
 
@@ -222,14 +208,14 @@ class Tracker.Sparql.Pattern : Object {
 		public List<Variable> variables;
 		public HashTable<Variable,VariableBindingList> var_bindings;
 
-		public TripleContext (Query query, Context parent_context) {
-			base (query, parent_context);
+		public TripleContext (Context parent_context) {
+			base (parent_context);
 
 			tables = new List<DataTable> ();
 			table_map = new HashTable<string,DataTable>.full (str_hash, str_equal, g_free, g_object_unref);
 
 			variables = new List<Variable> ();
-			var_bindings = new HashTable<Variable,VariableBindingList>.full (Variable.hash, Variable.equal, g_object_unref, g_object_unref);
+			var_bindings = new HashTable<Variable,VariableBindingList>.full (direct_hash, direct_equal, g_object_unref, g_object_unref);
 
 			bindings = new List<LiteralBinding> ();
 		}
@@ -237,12 +223,12 @@ class Tracker.Sparql.Pattern : Object {
 
 	TripleContext? triple_context;
 
-	internal SelectContext translate_select (StringBuilder sql, bool subquery = false, bool scalar_subquery = false) throws Sparql.Error {
+	internal SelectContext translate_select (StringBuilder sql, bool subquery = false, bool scalar_subquery = false) throws SparqlError {
 		SelectContext result;
 		if (scalar_subquery) {
-			result = new SelectContext.subquery (query, context);
+			result = new SelectContext.subquery (context);
 		} else {
-			result = new SelectContext (query, context);
+			result = new SelectContext (context);
 		}
 		context = result;
 		var type = PropertyType.UNKNOWN;
@@ -302,21 +288,17 @@ class Tracker.Sparql.Pattern : Object {
 					sql.append (variable.sql_expression);
 				} else {
 					Expression.append_expression_as_string (sql, variable.sql_expression, variable.binding.data_type);
-					sql.append_printf (" AS \"%s\"", variable.name);
 				}
-				result.types += variable.binding.data_type;
-				result.variable_names += variable.name;
 			}
 		} else {
-			for (int i = 0; ; i++) {
-				first = false;
-
-				if (i > 0) {
+			while (true) {
+				if (!first) {
 					sql.append (", ");
+				} else {
+					first = false;
 				}
 
-				type = expression.translate_select_expression (sql, subquery, i);
-				result.types += type;
+				type = expression.translate_select_expression (sql, subquery);
 
 				switch (current ()) {
 				case SparqlTokenType.FROM:
@@ -338,10 +320,6 @@ class Tracker.Sparql.Pattern : Object {
 		// literals in select expressions need to be bound before literals in the where clause
 		foreach (var binding in where_bindings) {
 			query.bindings.append (binding);
-		}
-
-		if (first) {
-			sql.append ("NULL");
 		}
 
 		// select from results of WHERE clause
@@ -384,17 +362,17 @@ class Tracker.Sparql.Pattern : Object {
 
 		if (accept (SparqlTokenType.LIMIT)) {
 			expect (SparqlTokenType.INTEGER);
-			limit = int.parse (get_last_string ());
+			limit = get_last_string ().to_int ();
 			if (accept (SparqlTokenType.OFFSET)) {
 				expect (SparqlTokenType.INTEGER);
-				offset = int.parse (get_last_string ());
+				offset = get_last_string ().to_int ();
 			}
 		} else if (accept (SparqlTokenType.OFFSET)) {
 			expect (SparqlTokenType.INTEGER);
-			offset = int.parse (get_last_string ());
+			offset = get_last_string ().to_int ();
 			if (accept (SparqlTokenType.LIMIT)) {
 				expect (SparqlTokenType.INTEGER);
-				limit = int.parse (get_last_string ());
+				limit = get_last_string ().to_int ();
 			}
 		}
 
@@ -431,40 +409,7 @@ class Tracker.Sparql.Pattern : Object {
 		return result;
 	}
 
-	internal void translate_exists (StringBuilder sql) throws Sparql.Error {
-		bool not = accept (SparqlTokenType.NOT);
-		expect (SparqlTokenType.EXISTS);
-
-		SelectContext result;
-		result = new SelectContext.subquery (query, context);
-		context = result;
-
-		if (not) {
-			// NOT EXISTS
-			sql.append ("NOT EXISTS (");
-		} else {
-			// EXISTS
-			sql.append ("EXISTS (");
-		}
-
-		var pattern = translate_group_graph_pattern (sql);
-		foreach (var key in pattern.var_set.get_keys ()) {
-			context.var_set.insert (key, VariableState.BOUND);
-		}
-
-		// report use of undefined variables
-		foreach (var variable in context.var_set.get_keys ()) {
-			if (variable.binding == null) {
-				throw get_error ("use of undefined variable `%s'".printf (variable.name));
-			}
-		}
-
-		sql.append (")");
-
-		context = context.parent_context;
-	}
-
-	internal string parse_var_or_term (StringBuilder? sql, out bool is_var) throws Sparql.Error {
+	internal string parse_var_or_term (StringBuilder? sql, out bool is_var) throws SparqlError {
 		string result = "";
 		is_var = false;
 		if (current () == SparqlTokenType.VAR) {
@@ -534,7 +479,7 @@ class Tracker.Sparql.Pattern : Object {
 		return result;
 	}
 
-	void parse_object_list (StringBuilder sql, bool in_simple_optional = false) throws Sparql.Error {
+	void parse_object_list (StringBuilder sql, bool in_simple_optional = false) throws SparqlError {
 		while (true) {
 			parse_object (sql, in_simple_optional);
 			if (accept (SparqlTokenType.COMMA)) {
@@ -544,7 +489,7 @@ class Tracker.Sparql.Pattern : Object {
 		}
 	}
 
-	void parse_property_list_not_empty (StringBuilder sql, bool in_simple_optional = false) throws Sparql.Error {
+	void parse_property_list_not_empty (StringBuilder sql, bool in_simple_optional = false) throws SparqlError {
 		while (true) {
 			var old_predicate = current_predicate;
 			var old_predicate_is_var = current_predicate_is_var;
@@ -588,12 +533,12 @@ class Tracker.Sparql.Pattern : Object {
 		}
 	}
 
-	void translate_filter (StringBuilder sql) throws Sparql.Error {
+	void translate_filter (StringBuilder sql) throws SparqlError {
 		expect (SparqlTokenType.FILTER);
 		expression.translate_constraint (sql);
 	}
 
-	void skip_filter () throws Sparql.Error {
+	void skip_filter () throws SparqlError {
 		expect (SparqlTokenType.FILTER);
 
 		switch (current ()) {
@@ -630,13 +575,13 @@ class Tracker.Sparql.Pattern : Object {
 		}
 	}
 
-	void start_triples_block (StringBuilder sql) throws Sparql.Error {
-		context = triple_context = new TripleContext (query, context);
+	void start_triples_block (StringBuilder sql) throws SparqlError {
+		context = triple_context = new TripleContext (context);
 
 		sql.append ("SELECT ");
 	}
 
-	void end_triples_block (StringBuilder sql, ref bool first_where, bool in_group_graph_pattern) throws Sparql.Error {
+	void end_triples_block (StringBuilder sql, ref bool first_where, bool in_group_graph_pattern) throws SparqlError {
 		// remove last comma and space
 		sql.truncate (sql.len - 2);
 
@@ -659,7 +604,6 @@ class Tracker.Sparql.Pattern : Object {
 		foreach (var variable in triple_context.variables) {
 			bool maybe_null = true;
 			bool in_simple_optional = false;
-			PropertyType last_type = PropertyType.UNKNOWN;
 			string last_name = null;
 			foreach (VariableBinding binding in triple_context.var_bindings.lookup (variable).list) {
 				string name;
@@ -670,7 +614,6 @@ class Tracker.Sparql.Pattern : Object {
 					// always first in loop as variable is required to be unbound
 					name = variable.sql_expression;
 				}
-				var type = binding.data_type;
 				if (last_name != null) {
 					if (!first_where) {
 						sql.append (" AND ");
@@ -678,23 +621,11 @@ class Tracker.Sparql.Pattern : Object {
 						sql.append (" WHERE ");
 						first_where = false;
 					}
-
-					if (last_type == PropertyType.STRING && type == PropertyType.RESOURCE) {
-						sql.append_printf ("(SELECT ID FROM Resource WHERE Uri = %s)", last_name);
-					} else {
-						sql.append (last_name);
-					}
-
+					sql.append (last_name);
 					sql.append (" = ");
-
-					if (last_type == PropertyType.RESOURCE && type == PropertyType.STRING) {
-						sql.append_printf ("(SELECT ID FROM Resource WHERE Uri = %s)", name);
-					} else {
-						sql.append (name);
-					}
+					sql.append (name);
 				}
 				last_name = name;
-				last_type = type;
 				if (!binding.maybe_null) {
 					maybe_null = false;
 				}
@@ -748,7 +679,7 @@ class Tracker.Sparql.Pattern : Object {
 		context = context.parent_context;
 	}
 
-	void parse_triples (StringBuilder sql, long group_graph_pattern_start, ref bool in_triples_block, ref bool first_where, ref bool in_group_graph_pattern, bool found_simple_optional) throws Sparql.Error {
+	void parse_triples (StringBuilder sql, long group_graph_pattern_start, ref bool in_triples_block, ref bool first_where, ref bool in_group_graph_pattern, bool found_simple_optional) throws SparqlError {
 		while (true) {
 			if (current () != SparqlTokenType.VAR &&
 			    current () != SparqlTokenType.IRI_REF &&
@@ -871,7 +802,7 @@ class Tracker.Sparql.Pattern : Object {
 
 			// no match
 			return false;
-		} catch (Sparql.Error e) {
+		} catch (SparqlError e) {
 			return false;
 		} finally {
 			// in any case, go back to the start of the optional
@@ -879,7 +810,7 @@ class Tracker.Sparql.Pattern : Object {
 		}
 	}
 
-	internal Context translate_group_graph_pattern (StringBuilder sql) throws Sparql.Error {
+	internal Context translate_group_graph_pattern (StringBuilder sql) throws SparqlError {
 		expect (SparqlTokenType.OPEN_BRACE);
 
 		if (current () == SparqlTokenType.SELECT) {
@@ -888,7 +819,7 @@ class Tracker.Sparql.Pattern : Object {
 
 			// only export selected variables
 			context.var_set = context.select_var_set;
-			context.select_var_set = new HashTable<Variable,int>.full (Variable.hash, Variable.equal, g_object_unref, null);
+			context.select_var_set = new HashTable<Variable,int>.full (direct_hash, direct_equal, g_object_unref, null);
 
 			expect (SparqlTokenType.CLOSE_BRACE);
 
@@ -896,7 +827,7 @@ class Tracker.Sparql.Pattern : Object {
 			return result;
 		}
 
-		var result = new Context (query, context);
+		var result = new Context (context);
 		context = result;
 
 		SourceLocation[] filters = { };
@@ -961,11 +892,6 @@ class Tracker.Sparql.Pattern : Object {
 							// first used in optional part
 							context.parent_context.var_set.insert (v, VariableState.OPTIONAL);
 							select.append_printf ("t%d_g.%s", right_index, v.sql_expression);
-
-							if (v.binding.data_type == PropertyType.DATETIME) {
-								select.append_printf (", t%d_g.%s", right_index, v.get_extra_sql_expression ("localDate"));
-								select.append_printf (", t%d_g.%s", right_index, v.get_extra_sql_expression ("localTime"));
-							}
 						} else {
 							if (first_common) {
 								sql.append (" ON ");
@@ -978,20 +904,10 @@ class Tracker.Sparql.Pattern : Object {
 								// variable definitely bound in non-optional part
 								sql.append_printf ("t%d_g.%s = t%d_g.%s", left_index, v.sql_expression, right_index, v.sql_expression);
 								select.append_printf ("t%d_g.%s", left_index, v.sql_expression);
-
-								if (v.binding.data_type == PropertyType.DATETIME) {
-									select.append_printf (", t%d_g.%s", left_index, v.get_extra_sql_expression ("localDate"));
-									select.append_printf (", t%d_g.%s", left_index, v.get_extra_sql_expression ("localTime"));
-								}
 							} else if (old_state == VariableState.OPTIONAL) {
 								// variable maybe bound in non-optional part
 								sql.append_printf ("(t%d_g.%s IS NULL OR t%d_g.%s = t%d_g.%s)", left_index, v.sql_expression, left_index, v.sql_expression, right_index, v.sql_expression);
 								select.append_printf ("COALESCE (t%d_g.%s, t%d_g.%s) AS %s", left_index, v.sql_expression, right_index, v.sql_expression, v.sql_expression);
-
-								if (v.binding.data_type == PropertyType.DATETIME) {
-									select.append_printf (", COALESCE (t%d_g.%s, t%d_g.%s) AS %s", left_index, v.get_extra_sql_expression ("localDate"), right_index, v.get_extra_sql_expression ("localDate"), v.get_extra_sql_expression ("localDate"));
-									select.append_printf (", COALESCE (t%d_g.%s, t%d_g.%s) AS %s", left_index, v.get_extra_sql_expression ("localTime"), right_index, v.get_extra_sql_expression ("localTime"), v.get_extra_sql_expression ("localTime"));
-								}
 							}
 						}
 					}
@@ -1005,11 +921,6 @@ class Tracker.Sparql.Pattern : Object {
 							}
 
 							select.append_printf ("t%d_g.%s", left_index, v.sql_expression);
-
-							if (v.binding.data_type == PropertyType.DATETIME) {
-								select.append_printf (", t%d_g.%s", left_index, v.get_extra_sql_expression ("localDate"));
-								select.append_printf (", t%d_g.%s", left_index, v.get_extra_sql_expression ("localTime"));
-							}
 						}
 					}
 					if (first) {
@@ -1126,9 +1037,9 @@ class Tracker.Sparql.Pattern : Object {
 		return result;
 	}
 
-	void translate_group_or_union_graph_pattern (StringBuilder sql) throws Sparql.Error {
+	void translate_group_or_union_graph_pattern (StringBuilder sql) throws SparqlError {
 		Variable[] all_vars = { };
-		HashTable<Variable,int> all_var_set = new HashTable<Variable,int>.full (Variable.hash, Variable.equal, g_object_unref, null);
+		HashTable<Variable,int> all_var_set = new HashTable<Variable,int>.full (direct_hash, direct_equal, g_object_unref, null);
 
 		Context[] contexts = { };
 		long[] offsets = { };
@@ -1246,13 +1157,13 @@ class Tracker.Sparql.Pattern : Object {
 		}
 	}
 
-	void parse_object (StringBuilder sql, bool in_simple_optional = false) throws Sparql.Error {
+	void parse_object (StringBuilder sql, bool in_simple_optional = false) throws SparqlError {
 		long begin_sql_len = sql.len;
 
 		bool object_is_var;
 		string object = parse_var_or_term (sql, out object_is_var);
 
-		string db_table = null;
+		string db_table;
 		bool rdftype = false;
 		bool share_table = true;
 		bool is_fts_match = false;
@@ -1267,13 +1178,12 @@ class Tracker.Sparql.Pattern : Object {
 			prop = Ontologies.get_property_by_uri (current_predicate);
 
 			if (current_predicate == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-			    && !object_is_var && current_graph == null) {
+			    && !object_is_var) {
 				// rdf:type query
-				// avoid special casing if GRAPH is used as graph matching is not supported when using class tables
 				rdftype = true;
 				var cl = Ontologies.get_class_by_uri (object);
 				if (cl == null) {
-					throw new Sparql.Error.UNKNOWN_CLASS ("Unknown class `%s'".printf (object));
+					throw new SparqlError.UNKNOWN_CLASS ("Unknown class `%s'".printf (object));
 				}
 				db_table = cl.name;
 				subject_type = cl;
@@ -1284,7 +1194,7 @@ class Tracker.Sparql.Pattern : Object {
 					share_table = false;
 					is_fts_match = true;
 				} else {
-					throw new Sparql.Error.UNKNOWN_PROPERTY ("Unknown property `%s'".printf (current_predicate));
+					throw new SparqlError.UNKNOWN_PROPERTY ("Unknown property `%s'".printf (current_predicate));
 				}
 			} else {
 				if (current_predicate == "http://www.w3.org/2000/01/rdf-schema#domain"
@@ -1293,7 +1203,7 @@ class Tracker.Sparql.Pattern : Object {
 					// rdfs:domain
 					var domain = Ontologies.get_class_by_uri (object);
 					if (domain == null) {
-						throw new Sparql.Error.UNKNOWN_CLASS ("Unknown class `%s'".printf (object));
+						throw new SparqlError.UNKNOWN_CLASS ("Unknown class `%s'".printf (object));
 					}
 					var pv = context.predicate_variable_map.lookup (context.get_variable (current_subject));
 					if (pv == null) {
@@ -1303,31 +1213,7 @@ class Tracker.Sparql.Pattern : Object {
 					pv.domain = domain;
 				}
 
-				if (current_subject_is_var) {
-					// Domain specific index might be a possibility, let's check
-					Variable v = context.get_variable (current_subject);
-					VariableBindingList list = triple_context.var_bindings.lookup (v);
-
-					if (list != null && list.list != null) {
-						bool stop = false;
-						foreach (Class cl in prop.get_domain_indexes ()) {
-							foreach (VariableBinding b in list.list) {
-								if (b.type == cl) {
-									db_table = cl.name;
-									stop = true;
-									break;
-								}
-							}
-							if (stop) {
-								break;
-							}
-						}
-					}
-				}
-
-				if (db_table == null)
-					db_table = prop.table_name;
-
+				db_table = prop.table_name;
 				if (prop.multiple_values) {
 					// we can never share the table with multiple triples
 					// for multi value properties as a property may consist of multiple rows
@@ -1382,9 +1268,6 @@ class Tracker.Sparql.Pattern : Object {
 			if (!object_is_var) {
 				// single object
 				table.predicate_variable.object = object;
-			}
-			if (current_graph != null) {
-				table.predicate_variable.return_graph = true;
 			}
 			table.sql_query_tablename = current_predicate + (++counter).to_string ();
 			triple_context.tables.append (table);
@@ -1443,7 +1326,6 @@ class Tracker.Sparql.Pattern : Object {
 					}
 				} else {
 					// variable as predicate
-					binding.data_type = PropertyType.STRING;
 					binding.sql_db_column_name = "object";
 					binding.maybe_null = true;
 				}
@@ -1486,20 +1368,14 @@ class Tracker.Sparql.Pattern : Object {
 				triple_context.bindings.append (binding);
 			}
 
-			if (current_graph != null) {
+			if (current_graph != null && prop != null) {
 				if (current_graph_is_var) {
 					var binding = new VariableBinding ();
 					binding.variable = context.get_variable (current_graph);
 					binding.table = table;
+
 					binding.data_type = PropertyType.RESOURCE;
-
-					if (prop != null) {
-						binding.sql_db_column_name = prop.name + ":graph";
-					} else {
-						// variable as predicate
-						binding.sql_db_column_name = "graph";
-					}
-
+					binding.sql_db_column_name = prop.name + ":graph";
 					binding.maybe_null = true;
 					binding.in_simple_optional = in_simple_optional;
 
@@ -1515,15 +1391,9 @@ class Tracker.Sparql.Pattern : Object {
 					var binding = new LiteralBinding ();
 					binding.literal = current_graph;
 					binding.table = table;
+
 					binding.data_type = PropertyType.RESOURCE;
-
-					if (prop != null) {
-						binding.sql_db_column_name = prop.name + ":graph";
-					} else {
-						// variable as predicate
-						binding.sql_db_column_name = "graph";
-					}
-
+					binding.sql_db_column_name = prop.name + ":graph";
 					triple_context.bindings.append (binding);
 				}
 			}

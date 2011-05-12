@@ -28,12 +28,12 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-client/tracker-client.h>
 
-#define ABOUT \
+#define ABOUT	  \
 	"Tracker " PACKAGE_VERSION "\n"
 
-#define LICENSE \
+#define LICENSE	  \
 	"This program is free software and comes without any warranty.\n" \
 	"It is licensed under version 2 or later of the General Public " \
 	"License which can be viewed at:\n" \
@@ -50,13 +50,33 @@ static GOptionEntry entries[] = {
 	{ NULL }
 };
 
+static void
+get_meta_table_data (gpointer value)
+{
+	gchar **meta;
+	gchar **p;
+	gint    i;
+
+	meta = value;
+
+	for (p = meta, i = 0; *p; p++, i++) {
+		if (i == 0) {
+			g_print ("  %s", *p);
+		} else {
+			g_print (" = %s", *p);
+		}
+	}
+
+	g_print ("\n");
+}
+
 int
 main (int argc, char **argv)
 {
-	TrackerSparqlConnection *connection;
-	TrackerSparqlCursor *cursor;
+	TrackerClient  *client;
 	GOptionContext *context;
-	GError *error = NULL;
+	GPtrArray      *array;
+	GError         *error = NULL;
 
 	setlocale (LC_ALL, "");
 
@@ -79,56 +99,37 @@ main (int argc, char **argv)
 
 	g_option_context_free (context);
 
-	g_type_init ();
+	client = tracker_client_new (0, G_MAXINT);
 
-	if (!g_thread_supported ()) {
-		g_thread_init (NULL);
-	}
-
-	connection = tracker_sparql_connection_get (NULL, &error);
-
-	if (!connection) {
-		g_printerr ("%s: %s\n",
-		            _("Could not establish a connection to Tracker"),
-		            error ? error->message : _("No error given"));
-		g_clear_error (&error);
+	if (!client) {
+		g_printerr ("%s\n",
+		            _("Could not establish a D-Bus connection to Tracker"));
 		return EXIT_FAILURE;
 	}
 
-	cursor = tracker_sparql_connection_statistics (connection, NULL, &error);
+	array = tracker_statistics_get (client, &error);
 
 	if (error) {
 		g_printerr ("%s, %s\n",
 		            _("Could not get Tracker statistics"),
 		            error->message);
 		g_error_free (error);
+
 		return EXIT_FAILURE;
 	}
 
-	if (!cursor) {
-		g_print ("%s\n", _("No statistics available"));
+	if (!array) {
+		g_print ("%s\n",
+		         _("No statistics available"));
 	} else {
-		gint count = 0;
+		g_print ("%s\n",
+		         _("Statistics:"));
 
-		g_print ("%s\n", _("Statistics:"));
-
-		while (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
-			g_print ("  %s = %s\n",
-			         tracker_sparql_cursor_get_string (cursor, 0, NULL),
-			         tracker_sparql_cursor_get_string (cursor, 1, NULL));
-			count++;
-		}
-
-		if (count == 0) {
-			g_print ("  %s\n", _("None"));
-		}
-
-		g_print ("\n");
-
-		g_object_unref (cursor);
+		g_ptr_array_foreach (array, (GFunc) get_meta_table_data, NULL);
+		g_ptr_array_free (array, TRUE);
 	}
 
-	g_object_unref (connection);
+	g_object_unref (client);
 
 	return EXIT_SUCCESS;
 }

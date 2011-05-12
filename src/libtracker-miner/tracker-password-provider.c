@@ -80,12 +80,10 @@ tracker_password_provider_get_type (void)
 }
 
 /**
- * tracker_password_provider_error_quark (skip):
+ * tracker_password_provider_error_quark:
  *
  * Returns: the #GQuark used to identify password provider errors in
  * GError structures.
- *
- * Since: 0.8
  **/
 GQuark
 tracker_password_provider_error_quark (void)
@@ -101,10 +99,8 @@ tracker_password_provider_error_quark (void)
  * "GKeyFile". Either of these is what will be returned unless new
  * providers are written.
  *
- * Returns: (out) (transfer full): a newly allocated string representing the name which must
- * be freed with g_free().
- *
- * Since: 0.8
+ * Returns: a newly allocated string representing the #Object:name
+ * which must be freed with g_free().
  **/
 gchar *
 tracker_password_provider_get_name (TrackerPasswordProvider *provider)
@@ -126,15 +122,13 @@ tracker_password_provider_get_name (TrackerPasswordProvider *provider)
  * @description: the description for @service
  * @username: the username to store
  * @password: the password to store
- * @error: (out callee-allocates) (transfer full) (allow-none): return location for errors
+ * @error: return location for errors
  *
  * This function calls the password provider's "store_password"
  * implementation with @service, @description, @username and @password.
  *
  * Returns: %TRUE if the password was saved, otherwise %FALSE is
  * returned and @error will be set.
- *
- * Since: 0.8
  **/
 gboolean
 tracker_password_provider_store_password (TrackerPasswordProvider  *provider,
@@ -164,8 +158,8 @@ tracker_password_provider_store_password (TrackerPasswordProvider  *provider,
  * tracker_password_provider_get_password:
  * @provider: a TrackerPasswordProvider
  * @service: the name of the remote service associated with @username
- * @username: (out): the username associated with the password we are returning
- * @error: (out callee-allocates) (transfer full) (allow-none): return location for errors
+ * @username: the username associated with the password we are returning
+ * @error: return location for errors
  *
  * This function calls the password provider's "get_password"
  * implementation with @service and @username.
@@ -173,8 +167,6 @@ tracker_password_provider_store_password (TrackerPasswordProvider  *provider,
  * Returns: a newly allocated string representing a password which
  * must be freed with g_free(), otherwise %NULL is returned and @error
  * will be set.
- *
- * Since: 0.8
  **/
 gchar *
 tracker_password_provider_get_password (TrackerPasswordProvider  *provider,
@@ -200,14 +192,12 @@ tracker_password_provider_get_password (TrackerPasswordProvider  *provider,
  * tracker_password_provider_forget_password:
  * @provider: a TrackerPasswordProvider
  * @service: the name of the remote service associated with @username
- * @error: (out callee-allocates) (transfer full) (allow-none): return location for errors
+ * @error: return location for errors
  *
  * This function calls the password provider's "forget_password"
  * implementation with @service.
  *
  * On failure @error will be set.
- *
- * Since: 0.8
  **/
 void
 tracker_password_provider_forget_password (TrackerPasswordProvider  *provider,
@@ -235,14 +225,12 @@ tracker_password_provider_forget_password (TrackerPasswordProvider  *provider,
  * This function calls mlock() to secure a memory region newly
  * allocated and @password is copied using memcpy() into the new
  * address.
- *
+ * 
  * Password can not be %NULL or an empty string ("").
  *
- * Returns: (transfer full): a newly allocated string which <emphasis>MUST</emphasis>
+ * Returns: a newly allocated string which <emphasis>MUST</emphasis>
  * be freed with tracker_password_provider_unlock_password(). On
  * failure %NULL is returned.
- *
- * Since: 0.8
  **/
 gchar *
 tracker_password_provider_lock_password (const gchar *password)
@@ -272,15 +260,13 @@ tracker_password_provider_lock_password (const gchar *password)
  *
  * This function calls munlock() on @password which should be a
  * secured memory region. The @password is zeroed first with bzero()
- * and once unlocked it is freed with g_free().
+ * and once unlocked it is freed with g_free(). 
  *
  * The @password can not be %NULL or an empty string (""). In
  * addition, @password <emphasis>MUST</emphasis> be a string created
  * with tracker_password_provider_lock_password().
  *
  * Returns: %TRUE if munlock() succeeded, otherwise %FALSE is returned.
- *
- * Since: 0.8
  **/
 gboolean
 tracker_password_provider_unlock_password (gchar *password)
@@ -289,7 +275,7 @@ tracker_password_provider_unlock_password (gchar *password)
 
 	g_return_val_if_fail (password != NULL, FALSE);
 	g_return_val_if_fail (password[0] != '\0', FALSE);
-
+	
 	bzero (password, strlen (password));
 	retval = munlock (password, sizeof (password));
 	g_free (password);

@@ -1,99 +1,87 @@
 include $(top_srcdir)/Makefile.decl
 
-# Include list of shared sources:
-#  Defines:
-#    $(libtracker_miner_marshal_sources)
-#    $(libtracker_miner_marshal_headers)
-#    $(libtracker_miner_monitor_sources)
-#    $(libtracker_miner_monitor_headers)
-#
-# Headers and sources are split for the tests to build
-# with make distcheck.
-#
-include $(top_srcdir)/src/libtracker-miner/Makefile-shared-sources.decl
-
-noinst_LTLIBRARIES = libtracker-miner-tests.la
-
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS +=                                          \
-	tracker-crawler-test                           \
-	tracker-miner-manager-test                     \
-	tracker-password-provider-test                 \
-	tracker-thumbnailer-test                       \
-	tracker-monitor-test
+TEST_PROGS +=									\
+	tracker-crawler-test							\
+	tracker-miner-manager-test						\
+	tracker-password-provider-test						\
+	tracker-thumbnailer-test
 
-AM_CPPFLAGS =                                          \
-	$(BUILD_CFLAGS)                                \
-	-DTEST                                         \
-	-DLIBEXEC_PATH=\""$(libexecdir)"\"             \
-	-DTEST_DATA_DIR=\""$(abs_top_srcdir)/tests/libtracker-miner/data"\" \
-	-DTEST_MINERS_DIR=\""$(abs_top_srcdir)/tests/libtracker-miner/mock-miners"\" \
-	-I$(top_srcdir)/src                            \
-	-I$(top_builddir)/src                          \
-	-I$(top_srcdir)/tests/common                   \
-	$(LIBTRACKER_MINER_CFLAGS)
+INCLUDES =									\
+	-DTEST									\
+	-DG_LOG_DOMAIN=\"Tracker\"						\
+	-DLIBEXEC_PATH=\""$(libexecdir)"\"					\
+	-DTRACKER_COMPILATION							\
+	-DTEST_DATA_DIR=\""$(abs_top_srcdir)/tests/libtracker-miner/data"\"	\
+	-DTEST_MINERS_DIR=\""$(abs_top_srcdir)/tests/libtracker-miner/mock-miners"\"	\
+	-I$(top_srcdir)/src							\
+	-I$(top_builddir)/src							\
+	-I$(top_srcdir)/tests/common						\
+	-I$(top_srcdir)/src/libtracker-client					\
+	-I$(top_builddir)/src/libtracker-client					\
+	-I$(top_srcdir)/src/libtracker-miner					\
+	-I$(top_builddir)/src/libtracker-miner					\
+	$(WARN_CFLAGS)								\
+	$(GCOV_CFLAGS)								\
+	$(GLIB2_CFLAGS)								\
+	$(GIO_CFLAGS)								\
+	$(GMODULE_CFLAGS)							\
+	$(GTHREAD_CFLAGS)							\
+	$(DBUS_CFLAGS)
 
-LDADD =                                                \
+LIBS =										\
+	$(top_builddir)/src/libtracker-client/libtracker-client-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(BUILD_LIBS)                                  \
-	$(LIBTRACKER_MINER_LIBS)
+	$(top_builddir)/src/libtracker-common/libtracker-common.la		\
+	$(DBUS_LIBS)                                                            \
+	$(GCOV_LIBS)                                                            \
+	$(GMODULE_LIBS)                                                         \
+	$(GTHREAD_LIBS)                                                         \
+	$(GIO_LIBS)                                                             \
+	$(GLIB2_LIBS)
 
-libtracker_miner_tests_la_VALAFLAGS =                  \
-	--header tracker-miner-mock.h                  \
-	--pkg glib-2.0                                 \
-	$(BUILD_VALAFLAGS)
-
-libtracker_miner_tests_la_SOURCES =                    \
-	tracker-miner-mock.vala
-
-tracker_crawler_test_SOURCES =                         \
+tracker_crawler_test_SOURCES =							\
 	tracker-crawler-test.c
 
-tracker_miner_manager_test_SOURCES =                   \
-	tracker-miner-manager-test.c                   \
-	miners-mock.c                                  \
+tracker_thumbnailer_test_SOURCES =						\
+	tracker-thumbnailer-test.c						\
+	thumbnailer-mock.h							\
+	thumbnailer-mock.c							\
+	empty-gobject.h								\
 	empty-gobject.c
 
-tracker_miner_manager_test_LDADD =                     \
-	libtracker-miner-tests.la                      \
-	$(LDADD)
+tracker_miner_manager_test_VALASOURCES =					\
+	tracker-miner-mock.vala
 
-tracker_password_provider_test_SOURCES =               \
+tracker_miner_manager_test_SOURCES =						\
+	tracker-miner-manager-test.c						\
+	miners-mock.c								\
+	miners-mock.h								\
+	$(tracker_miner_manager_test_VALASOURCES:.vala=.c)			\
+	$(tracker_miner_manager_test_VALASOURCES:.vala=.h)			\
+	empty-gobject.h								\
+	empty-gobject.c
+
+tracker_password_provider_test_SOURCES =					\
 	tracker-password-provider-test.c
 
-tracker_password_provider_test_LDADD =                 \
-	libtracker-miner-tests.la                      \
-	$(LDADD)
+libtracker-miner-test.vala.stamp: $(tracker_miner_manager_test_VALASOURCES)
+	$(AM_V_GEN)$(VALAC) $(GCOV_VALAFLAGS) --pkg glib-2.0 -C $(VALAFLAGS) -H $(<:.vala=.h) $<
+	touch $@
 
-tracker_thumbnailer_test_SOURCES =                     \
-	tracker-thumbnailer-test.c                     \
-	thumbnailer-mock.c                             \
-	empty-gobject.c
+BUILT_SOURCES = libtracker-miner-test.vala.stamp
 
-tracker_monitor_test_SOURCES =                         \
-	$(libtracker_miner_marshal_sources)            \
-	$(libtracker_miner_monitor_sources)            \
-	tracker-monitor-test.c
+MAINTAINERCLEANFILES =								\
+	libtracker-miner-test.vala.stamp					\
+	$(tracker_miner_manager_test_VALASOURCES:.vala=.c)
 
-noinst_HEADERS =                                       \
-	$(libtracker_miner_marshal_headers)            \
-	$(libtracker_miner_monitor_headers)            \
-	tracker-miner-mock.h                           \
-	thumbnailer-mock.h                             \
-	miners-mock.h                                  \
-	empty-gobject.h
-
-BUILT_SOURCES =                                        \
-	libtracker_miner_tests_la_vala.stamp
-
-EXTRA_DIST =                                           \
-	data/empty-dir/.hidden                         \
-	data/file1                                     \
-	data/dir/empty-dir/.hidden                     \
-	data/dir/file1                                 \
-	data/dir/file2                                 \
-	mock-miners/mock-miner-1.desktop               \
+EXTRA_DIST = $(tracker_miner_manager_test_VALASOURCES)				\
+	libtracker-miner-test.vala.stamp					\
+	data/empty-dir/.hidden							\
+	data/file1								\
+	data/dir/empty-dir/.hidden						\
+	data/dir/file1								\
+	data/dir/file2								\
+	mock-miners/mock-miner-1.desktop					\
 	mock-miners/mock-miner-2.desktop

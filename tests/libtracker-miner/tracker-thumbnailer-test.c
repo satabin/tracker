@@ -22,8 +22,6 @@
 #include <libtracker-miner/tracker-miner.h>
 #include "thumbnailer-mock.h"
 
-#if 0
-/* port thumbnailer-mock.c to gdbus first */
 
 static void
 test_thumbnailer_init ()
@@ -57,6 +55,7 @@ test_thumbnailer_send_moves ()
         dbus_mock_call_log_reset ();
 
         tracker_thumbnailer_init ();
+
         /* Returns TRUE, but there is no dbus call */
         g_assert (tracker_thumbnailer_move_add ("file://a.jpeg", "mock/one", "file://b.jpeg"));
         g_assert (dbus_mock_call_log_get () == NULL);
@@ -82,7 +81,6 @@ test_thumbnailer_send_removes ()
         GList *dbus_calls = NULL;
         
         dbus_mock_call_log_reset ();
-
 
         tracker_thumbnailer_init ();
 
@@ -126,8 +124,6 @@ test_thumbnailer_send_cleanup ()
         dbus_mock_call_log_reset ();
 }
 
-#endif
-
 int
 main (int    argc,
       char **argv)
@@ -136,10 +132,7 @@ main (int    argc,
 	g_thread_init (NULL);
 	g_test_init (&argc, &argv, NULL);
 
-	g_test_message ("Testing thumbnailer");
-
-#if 0
-/* port thumbnailer-mock.c to gdbus first */
+	g_test_message ("Testing filesystem crawler");
 
 	g_test_add_func ("/libtracker-miner/tracker-thumbnailer/init",
 	                 test_thumbnailer_init);
@@ -151,8 +144,6 @@ main (int    argc,
                          test_thumbnailer_send_removes);
         g_test_add_func ("/libtracker-minter/tracker-thumbnailer/send_cleanup",
                          test_thumbnailer_send_cleanup);
-
-#endif
 
 	return g_test_run ();
 }

@@ -23,7 +23,6 @@
 #include <gio/gio.h>
 
 #include <libtracker-common/tracker-file-utils.h>
-#include <libtracker-common/tracker-locale.h>
 
 #include <tracker-test-helpers.h>
 
@@ -189,7 +188,6 @@ main (int argc, char **argv)
 	g_type_init ();
 	g_test_init (&argc, &argv, NULL);
 
-	tracker_locale_init ();
 
 	g_test_add_func ("/tracker/libtracker-common/tracker-file-utils/path_evaluate_name",
 	                 test_path_evaluate_name);
@@ -201,8 +199,6 @@ main (int argc, char **argv)
 	                 test_file_get_mime_type);
 
 	result = g_test_run ();
-
-	tracker_locale_shutdown ();
 
 	return result;
 }

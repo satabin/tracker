@@ -2,16 +2,16 @@
  * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
+ * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
@@ -20,9 +20,9 @@
 #ifndef __TRACKERD_EXTRACT_H__
 #define __TRACKERD_EXTRACT_H__
 
-#include <gio/gio.h>
-#include <libtracker-common/tracker-common.h>
-#include <libtracker-extract/tracker-extract.h>
+#include <glib-object.h>
+
+#include <dbus/dbus-glib-bindings.h>
 
 #define TRACKER_EXTRACT_SERVICE        "org.freedesktop.Tracker1.Extract"
 #define TRACKER_EXTRACT_PATH           "/org/freedesktop/Tracker1/Extract"
@@ -39,7 +39,6 @@ G_BEGIN_DECLS
 
 typedef struct TrackerExtract      TrackerExtract;
 typedef struct TrackerExtractClass TrackerExtractClass;
-typedef struct TrackerExtractInfo  TrackerExtractInfo;
 
 struct TrackerExtract {
 	GObject parent;
@@ -49,25 +48,18 @@ struct TrackerExtractClass {
 	GObjectClass parent;
 };
 
-struct TrackerExtractInfo {
-	TrackerSparqlBuilder *preupdate;
-	TrackerSparqlBuilder *statements;
-};
-
 GType           tracker_extract_get_type                (void);
 TrackerExtract *tracker_extract_new                     (gboolean                disable_shutdown,
                                                          gboolean                force_internal_extractors,
                                                          const gchar            *force_module);
-
-void            tracker_extract_file                    (TrackerExtract         *extract,
-                                                         const gchar            *file,
-                                                         const gchar            *mimetype,
-                                                         GCancellable           *cancellable,
-                                                         GAsyncReadyCallback     cb,
-                                                         gpointer                user_data);
-
-void            tracker_extract_dbus_start              (TrackerExtract         *extract);
-void            tracker_extract_dbus_stop               (TrackerExtract         *extract);
+void            tracker_extract_get_pid                 (TrackerExtract         *object,
+                                                         DBusGMethodInvocation  *context,
+                                                         GError                **error);
+void            tracker_extract_get_metadata            (TrackerExtract         *object,
+                                                         const gchar            *uri,
+                                                         const gchar            *mime,
+                                                         DBusGMethodInvocation  *context,
+                                                         GError                **error);
 
 /* Not DBus API */
 void            tracker_extract_get_metadata_by_cmdline (TrackerExtract         *object,

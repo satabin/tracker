@@ -2,18 +2,18 @@
  * Copyright (C) 2007, Jason Kivlighn <jkivlighn@gmail.com>
  * Copyright (C) 2008-2009, Nokia <ivan.frade@nokia.com>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
@@ -42,7 +42,7 @@ typedef struct {
 	guint in_body : 1;
 	GString *title;
 	GString *plain_text;
-	guint n_bytes_remaining;
+	guint n_words;
 } parser_data;
 
 static void extract_html (const gchar          *filename,
@@ -212,29 +212,24 @@ parser_characters (void          *data,
 	case READ_IGNORE:
 		break;
 	default:
-		if (pd->in_body && pd->n_bytes_remaining > 0) {
-			gsize text_len;
+		if (pd->in_body && pd->n_words > 0) {
+			gchar *text;
+			guint n_words;
 
-			text_len = strlen (ch);
+			text = tracker_text_normalize (ch, pd->n_words, &n_words);
 
-			if (tracker_text_validate_utf8 (ch,
-			                                (pd->n_bytes_remaining < text_len ?
-			                                 pd->n_bytes_remaining :
-			                                 text_len),
-			                                &pd->plain_text,
-			                                NULL)) {
-				/* In the case of HTML, each string arriving this
-				 * callback is independent to any other previous
-				 * string, so need to add an explicit whitespace
-				 * separator */
+			if (text && *text) {
+				g_string_append (pd->plain_text, text);
 				g_string_append_c (pd->plain_text, ' ');
+
+				if (n_words > pd->n_words) {
+					pd->n_words = 0;
+				} else {
+					pd->n_words -= n_words;
+				}
 			}
 
-			if (pd->n_bytes_remaining > text_len) {
-				pd->n_bytes_remaining -= text_len;
-			} else {
-				pd->n_bytes_remaining = 0;
-			}
+			g_free (text);
 		}
 		break;
 	}
@@ -245,7 +240,7 @@ extract_html (const gchar          *uri,
               TrackerSparqlBuilder *preupdate,
               TrackerSparqlBuilder *metadata)
 {
-	TrackerConfig *config;
+	TrackerFTSConfig *fts_config;
 	htmlDocPtr doc;
 	parser_data pd;
 	gchar *filename;
@@ -294,8 +289,8 @@ extract_html (const gchar          *uri,
 	pd.plain_text = g_string_new (NULL);
 	pd.title = g_string_new (NULL);
 
-	config = tracker_main_get_config ();
-	pd.n_bytes_remaining = tracker_config_get_max_bytes (config);
+	fts_config = tracker_main_get_fts_config ();
+	pd.n_words = tracker_fts_config_get_max_words_to_index (fts_config);
 
 	filename = g_filename_from_uri (uri, NULL, NULL);
 	doc = htmlSAXParseFile (filename, NULL, &handler, &pd);

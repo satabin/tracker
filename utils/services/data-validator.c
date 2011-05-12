@@ -17,15 +17,12 @@
  * 02110-1301, USA.
  */
 
-#include "config.h"
-
-#include <string.h>
-
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
+#include <string.h>
 
-#include <libtracker-data/tracker-data.h>
+#include <libtracker-data/tracker-sparql-query.h>
 
 static gchar         *ontology_dir = NULL;
 static gchar         *ttl_file = NULL;
@@ -63,7 +60,6 @@ exists_or_already_reported (const gchar *item)
 			return FALSE;
 		}
 	}
-
 	return TRUE;
 }
 
@@ -76,6 +72,7 @@ turtle_load_ontology (const gchar *turtle_subject,
 	if (!g_strcmp0 (turtle_predicate, IS)) {
 		known_items = g_list_prepend (known_items, g_strdup (turtle_subject));
 	}
+
 }
 
 static void
@@ -83,15 +80,19 @@ turtle_statement_handler (const gchar *turtle_subject,
                           const gchar *turtle_predicate,
                           const gchar *turtle_object)
 {
-	/* Check that predicate exists in the ontology */
+
+	/* Check that predicate exists in the ontology
+	 */
 	if (!exists_or_already_reported (turtle_predicate)){
 		g_print ("Unknown property %s\n", turtle_predicate);
 		unknown_items = g_list_prepend (unknown_items, g_strdup (turtle_predicate));
 		error_flag = TRUE;
 	}
 
-	/* And if it is a type... check the object is also there */
+	/* And if it is a type... check the object is also there
+	 */
 	if (!g_strcmp0 (turtle_predicate, IS)) {
+
 		if (!exists_or_already_reported (turtle_object)){
 			g_print ("Unknown class %s\n", turtle_object);
 			error_flag = TRUE;
@@ -99,6 +100,7 @@ turtle_statement_handler (const gchar *turtle_subject,
 		}
 	}
 }
+
 
 static void
 load_ontology_files (const gchar *services_dir)
@@ -143,6 +145,7 @@ load_ontology_files (const gchar *services_dir)
 			g_error_free (error);
 		}
 
+
 		g_free (fullpath);
 		counter += 1;
 		conf_file = g_dir_read_name (services);
@@ -156,6 +159,8 @@ load_ontology_files (const gchar *services_dir)
 	g_debug ("Loaded %d ontologies\n", counter);
 }
 
+
+
 gint
 main (gint argc, gchar **argv)
 {
@@ -164,6 +169,7 @@ main (gint argc, gchar **argv)
 	GError *error = NULL;
 
 	g_type_init ();
+
 
 	/* Translators: this messagge will apper immediately after the  */
 	/* usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>     */

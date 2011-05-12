@@ -29,12 +29,13 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-client/tracker-client.h>
+#include <libtracker-common/tracker-common.h>
 
-#define ABOUT \
+#define ABOUT	  \
 	"Tracker " PACKAGE_VERSION "\n"
 
-#define LICENSE \
+#define LICENSE	  \
 	"This program is free software and comes without any warranty.\n" \
 	"It is licensed under version 2 or later of the General Public " \
 	"License which can be viewed at:\n" \
@@ -59,10 +60,9 @@ static GOptionEntry   entries[] = {
 int
 main (int argc, char **argv)
 {
-	TrackerSparqlConnection *connection;
-	GOptionContext *context;
-	GError *error = NULL;
-	gchar **p;
+	TrackerClient   *client;
+	GOptionContext  *context;
+	gchar          **p;
 
 	setlocale (LC_ALL, "");
 
@@ -102,36 +102,33 @@ main (int argc, char **argv)
 
 	g_option_context_free (context);
 
-	g_type_init ();
+	client = tracker_client_new (0, G_MAXINT);
 
-	if (!g_thread_supported ()) {
-		g_thread_init (NULL);
-	}
-
-	connection = tracker_sparql_connection_get (NULL, &error);
-
-	if (!connection) {
-		g_printerr ("%s: %s\n",
-		            _("Could not establish a connection to Tracker"),
-		            error ? error->message : _("No error given"));
-		g_clear_error (&error);
+	if (!client) {
+		g_printerr ("%s\n",
+		            _("Could not establish a D-Bus connection to Tracker"));
 		return EXIT_FAILURE;
 	}
 
 	for (p = filenames; *p; p++) {
 		GError *error = NULL;
-		GFile *file;
+		GFile  *file;
+		gchar  *uri;
 
 		g_print ("%s:'%s'\n",
 		         _("Importing Turtle file"),
 		         *p);
 
 		file = g_file_new_for_commandline_arg (*p);
-		tracker_sparql_connection_load (connection, file, NULL, &error);
+		uri = g_file_get_uri (file);
+
+		tracker_resources_load (client, uri, &error);
+
 		g_object_unref (file);
+		g_free (uri);
 
 		if (error) {
-			g_printerr ("  %s, %s\n",
+			g_printerr ("%s, %s\n",
 			            _("Unable to import Turtle file"),
 			            error->message);
 
@@ -143,7 +140,7 @@ main (int argc, char **argv)
 		g_print ("\n");
 	}
 
-	g_object_unref (connection);
+	g_object_unref (client);
 
 	return EXIT_SUCCESS;
 }

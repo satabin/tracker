@@ -59,8 +59,8 @@ static GOptionEntry  entries[] = {
 };
 
 typedef struct {
-	gint    subject;
-	GArray *rdf_types;
+	gchar *subject;
+	GStrv  rdf_types;
 } WritebackData;
 
 static TrackerWritebackConsumer *consumer = NULL;
@@ -68,21 +68,14 @@ static TrackerWritebackDispatcher *dispatcher = NULL;
 static GMainContext *dispatcher_context = NULL;
 
 static WritebackData *
-writeback_data_new (gint    subject,
-                    GArray *rdf_types)
+writeback_data_new (const gchar *subject,
+                    const GStrv  rdf_types)
 {
 	WritebackData *data;
-	guint i;
 
 	data = g_slice_new (WritebackData);
-	data->subject = subject;
-
-	data->rdf_types = g_array_sized_new (FALSE, FALSE, sizeof (gint), rdf_types->len);
-
-	for (i = 0; i < rdf_types->len; i++) {
-		gint id = g_array_index (rdf_types, gint, i);
-		g_array_append_val (data->rdf_types, id);
-	}
+	data->subject = g_strdup (subject);
+	data->rdf_types = g_strdupv (rdf_types);
 
 	return data;
 }
@@ -90,7 +83,8 @@ writeback_data_new (gint    subject,
 static void
 writeback_data_free (WritebackData *data)
 {
-	g_array_free (data->rdf_types, TRUE);
+	g_free (data->subject);
+	g_strfreev (data->rdf_types);
 	g_slice_free (WritebackData, data);
 }
 
@@ -112,12 +106,12 @@ on_writeback_idle_cb (gpointer user_data)
 /* This callback run in the dispatcher thread */
 static void
 on_writeback_cb (TrackerWritebackDispatcher *dispatcher,
-                 gint                        subject,
-                 GArray                     *rdf_types)
+                 const gchar                *subject,
+                 const GStrv                 rdf_types)
 {
 	WritebackData *data;
 
-	g_message ("Got writeback petition on thread '%p' for subject '%d'",
+	g_message ("Got writeback petition on thread '%p' for subject '%s'",
 	           g_thread_self (), subject);
 
 	data = writeback_data_new (subject, rdf_types);
@@ -205,14 +199,7 @@ main (int   argc,
 	sanity_check_option_values (config);
 
 
-	consumer = tracker_writeback_consumer_new (&error);
-
-	if (error) {
-		g_critical ("Error creating consumer: %s", error->message);
-		g_error_free (error);
-
-		return EXIT_FAILURE;
-	}
+	consumer = tracker_writeback_consumer_new ();
 
 	/* Create dispatcher thread data here, GType
 	 * initialization for boxed types don't seem
@@ -220,15 +207,7 @@ main (int   argc,
 	 * signals initialization. */
 
 	dispatcher_context = g_main_context_new ();
-	dispatcher = tracker_writeback_dispatcher_new (dispatcher_context,
-	                                               &error);
-
-	if (error) {
-		g_critical ("Error creating dispatcher: %s", error->message);
-		g_error_free (error);
-
-		return EXIT_FAILURE;
-	}
+	dispatcher = tracker_writeback_dispatcher_new (dispatcher_context);
 
 	g_thread_create (dispatcher_thread_func, dispatcher, FALSE, &error);
 

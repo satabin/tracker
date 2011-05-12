@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>tracker-date-time-utils</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Tracker Common Library Reference Manual">
+<link rel="up" href="ch04.html" title="Utilities">
+<link rel="prev" href="libtracker-common-tracker-type-utils.html" title="tracker-type-utils">
+<link rel="next" href="libtracker-common-tracker-file-utils.html" title="tracker-file-utils">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libtracker-common-tracker-type-utils.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Tracker Common Library Reference Manual</th>
+<td><a accesskey="n" href="libtracker-common-tracker-file-utils.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libtracker-common-tracker-date-time-utils.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libtracker-common-tracker-date-time-utils.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="libtracker-common-tracker-date-time-utils"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libtracker-common-tracker-date-time-utils.top_of_page"></a>tracker-date-time-utils</span></h2>
+<p>tracker-date-time-utils</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="libtracker-common-tracker-date-time-utils.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">#define             <a class="link" href="libtracker-common-tracker-date-time-utils.html#TRACKER-DATE-ERROR:CAPS" title="TRACKER_DATE_ERROR">TRACKER_DATE_ERROR</a>
+#define             <a class="link" href="libtracker-common-tracker-date-time-utils.html#TRACKER-TYPE-DATE-TIME:CAPS" title="TRACKER_TYPE_DATE_TIME">TRACKER_TYPE_DATE_TIME</a>
+enum                <a class="link" href="libtracker-common-tracker-date-time-utils.html#TrackerDateError" title="enum TrackerDateError">TrackerDateError</a>;
+<span class="returnvalue">GQuark</span>              <a class="link" href="libtracker-common-tracker-date-time-utils.html#tracker-date-error-quark" title="tracker_date_error_quark ()">tracker_date_error_quark</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">gint</span>                <a class="link" href="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-local-date" title="tracker_date_time_get_local_date ()">tracker_date_time_get_local_date</a>    (<em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);
+<span class="returnvalue">gint</span>                <a class="link" href="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-local-time" title="tracker_date_time_get_local_time ()">tracker_date_time_get_local_time</a>    (<em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);
+<span class="returnvalue">gint</span>                <a class="link" href="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-offset" title="tracker_date_time_get_offset ()">tracker_date_time_get_offset</a>        (<em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);
+<span class="returnvalue">gint64</span>              <a class="link" href="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-time" title="tracker_date_time_get_time ()">tracker_date_time_get_time</a>          (<em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);
+<span class="returnvalue">GType</span>               <a class="link" href="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-type" title="tracker_date_time_get_type ()">tracker_date_time_get_type</a>          (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-date-time-utils.html#tracker-date-time-set" title="tracker_date_time_set ()">tracker_date_time_set</a>               (<em class="parameter"><code><span class="type">GValue</span> *value</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> time</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offset</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-date-time-utils.html#tracker-date-time-set-from-string" title="tracker_date_time_set_from_string ()">tracker_date_time_set_from_string</a>   (<em class="parameter"><code><span class="type">GValue</span> *value</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *date_time_string</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="libtracker-common-tracker-date-time-utils.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1">
+<a name="libtracker-common-tracker-date-time-utils.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="TRACKER-DATE-ERROR:CAPS"></a><h3>TRACKER_DATE_ERROR</h3>
+<pre class="programlisting">#define TRACKER_DATE_ERROR                     tracker_date_error_quark ()
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="TRACKER-TYPE-DATE-TIME:CAPS"></a><h3>TRACKER_TYPE_DATE_TIME</h3>
+<pre class="programlisting">#define TRACKER_TYPE_DATE_TIME                 (tracker_date_time_get_type ())
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="TrackerDateError"></a><h3>enum TrackerDateError</h3>
+<pre class="programlisting">typedef enum  {
+	TRACKER_DATE_ERROR_OFFSET,
+	TRACKER_DATE_ERROR_INVALID_ISO8601
+} TrackerDateError;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-date-error-quark"></a><h3>tracker_date_error_quark ()</h3>
+<pre class="programlisting"><span class="returnvalue">GQuark</span>              tracker_date_error_quark            (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-date-time-get-local-date"></a><h3>tracker_date_time_get_local_date ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>                tracker_date_time_get_local_date    (<em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-date-time-get-local-time"></a><h3>tracker_date_time_get_local_time ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>                tracker_date_time_get_local_time    (<em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-date-time-get-offset"></a><h3>tracker_date_time_get_offset ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>                tracker_date_time_get_offset        (<em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-date-time-get-time"></a><h3>tracker_date_time_get_time ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint64</span>              tracker_date_time_get_time          (<em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-date-time-get-type"></a><h3>tracker_date_time_get_type ()</h3>
+<pre class="programlisting"><span class="returnvalue">GType</span>               tracker_date_time_get_type          (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-date-time-set"></a><h3>tracker_date_time_set ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_date_time_set               (<em class="parameter"><code><span class="type">GValue</span> *value</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint64</span> time</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> offset</code></em>);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="tracker-date-time-set-from-string"></a><h3>tracker_date_time_set_from_string ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_date_time_set_from_string   (<em class="parameter"><code><span class="type">GValue</span> *value</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *date_time_string</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.17</div>
+</body>
+</html>

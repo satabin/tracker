@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
+<book xmlns="http://www.devhelp.net/book" title="Tracker Common Library Reference Manual" link="index.html" author="" name="libtracker-common">
+  <chapters>
+    <sub name="Overview" link="libtracker-common.html"/>
+    <sub name="Ontology" link="ch01.html">
+      <sub name="tracker-ontologies" link="libtracker-common-tracker-ontologies.html"/>
+    </sub>
+    <sub name="Configuration" link="ch02.html">
+      <sub name="TrackerConfigFile" link="TrackerConfigFile.html"/>
+      <sub name="TrackerLanguage" link="TrackerLanguage.html"/>
+      <sub name="TrackerPower" link="libtracker-common-TrackerPower.html"/>
+    </sub>
+    <sub name="Communication" link="ch03.html">
+      <sub name="tracker-dbus" link="libtracker-common-tracker-dbus.html"/>
+      <sub name="tracker-log" link="libtracker-common-tracker-log.html"/>
+    </sub>
+    <sub name="Utilities" link="ch04.html">
+      <sub name="tracker-crc" link="libtracker-common-tracker-crc.html"/>
+      <sub name="tracker-type-utils" link="libtracker-common-tracker-type-utils.html"/>
+      <sub name="tracker-date-time-utils" link="libtracker-common-tracker-date-time-utils.html"/>
+      <sub name="tracker-file-utils" link="libtracker-common-tracker-file-utils.html"/>
+      <sub name="tracker-utils" link="libtracker-common-tracker-utils.html"/>
+      <sub name="tracker-keyfile-object" link="libtracker-common-tracker-keyfile-object.html"/>
+      <sub name="tracker-os-dependant" link="libtracker-common-tracker-os-dependant.html"/>
+    </sub>
+    <sub name="Performance" link="ch05.html">
+      <sub name="tracker-ioprio" link="libtracker-common-tracker-ioprio.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <function name="TRACKER_RDF_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-RDF-PREFIX:CAPS"/>
+    <function name="TRACKER_RDFS_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-RDFS-PREFIX:CAPS"/>
+    <function name="TRACKER_XSD_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-XSD-PREFIX:CAPS"/>
+    <function name="TRACKER_TRACKER_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-TRACKER-PREFIX:CAPS"/>
+    <function name="TRACKER_DC_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-DC-PREFIX:CAPS"/>
+    <function name="TRACKER_MAEMO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-MAEMO-PREFIX:CAPS"/>
+    <function name="TRACKER_NRL_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NRL-PREFIX:CAPS"/>
+    <function name="TRACKER_NMO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NMO-PREFIX:CAPS"/>
+    <function name="TRACKER_NIE_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NIE-PREFIX:CAPS"/>
+    <function name="TRACKER_NCO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NCO-PREFIX:CAPS"/>
+    <function name="TRACKER_NAO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NAO-PREFIX:CAPS"/>
+    <function name="TRACKER_NID3_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NID3-PREFIX:CAPS"/>
+    <function name="TRACKER_NFO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NFO-PREFIX:CAPS"/>
+    <function name="TRACKER_NMM_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-NMM-PREFIX:CAPS"/>
+    <function name="TRACKER_MLO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-MLO-PREFIX:CAPS"/>
+    <function name="TRACKER_DATASOURCE_URN_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-DATASOURCE-URN-PREFIX:CAPS"/>
+    <function name="TRACKER_NON_REMOVABLE_MEDIA_DATASOURCE_URN" link="libtracker-common-tracker-ontologies.html#TRACKER-NON-REMOVABLE-MEDIA-DATASOURCE-URN:CAPS"/>
+    <function name="struct TrackerConfigFile" link="TrackerConfigFile.html#TrackerConfigFile-struct"/>
+    <function name="struct TrackerConfigFileClass" link="TrackerConfigFile.html#TrackerConfigFileClass"/>
+    <function name="tracker_config_file_save ()" link="TrackerConfigFile.html#tracker-config-file-save"/>
+    <function name="The &quot;domain&quot; property" link="TrackerConfigFile.html#TrackerConfigFile--domain"/>
+    <function name="The &quot;changed&quot; signal" link="TrackerConfigFile.html#TrackerConfigFile-changed"/>
+    <function name="struct TrackerLanguage" link="TrackerLanguage.html#TrackerLanguage-struct"/>
+    <function name="struct TrackerLanguageClass" link="TrackerLanguage.html#TrackerLanguageClass"/>
+    <function name="tracker_language_new ()" link="TrackerLanguage.html#tracker-language-new"/>
+    <function name="tracker_language_get_enable_stemmer ()" link="TrackerLanguage.html#tracker-language-get-enable-stemmer"/>
+    <function name="tracker_language_get_stop_words ()" link="TrackerLanguage.html#tracker-language-get-stop-words"/>
+    <function name="tracker_language_get_language_code ()" link="TrackerLanguage.html#tracker-language-get-language-code"/>
+    <function name="tracker_language_set_enable_stemmer ()" link="TrackerLanguage.html#tracker-language-set-enable-stemmer"/>
+    <function name="tracker_language_set_language_code ()" link="TrackerLanguage.html#tracker-language-set-language-code"/>
+    <function name="tracker_language_stem_word ()" link="TrackerLanguage.html#tracker-language-stem-word"/>
+    <function name="tracker_language_get_name_by_code ()" link="TrackerLanguage.html#tracker-language-get-name-by-code"/>
+    <function name="The &quot;enable-stemmer&quot; property" link="TrackerLanguage.html#TrackerLanguage--enable-stemmer"/>
+    <function name="The &quot;language-code&quot; property" link="TrackerLanguage.html#TrackerLanguage--language-code"/>
+    <function name="The &quot;stop-words&quot; property" link="TrackerLanguage.html#TrackerLanguage--stop-words"/>
+    <function name="struct TrackerPower" link="libtracker-common-TrackerPower.html#TrackerPower"/>
+    <function name="struct TrackerPowerClass" link="libtracker-common-TrackerPower.html#TrackerPowerClass"/>
+    <function name="tracker_power_new ()" link="libtracker-common-TrackerPower.html#tracker-power-new"/>
+    <function name="tracker_power_get_on_battery ()" link="libtracker-common-TrackerPower.html#tracker-power-get-on-battery"/>
+    <function name="tracker_power_get_on_low_battery ()" link="libtracker-common-TrackerPower.html#tracker-power-get-on-low-battery"/>
+    <function name="tracker_power_get_battery_percentage ()" link="libtracker-common-TrackerPower.html#tracker-power-get-battery-percentage"/>
+    <function name="TRACKER_DBUS_ERROR_DOMAIN" link="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR-DOMAIN:CAPS"/>
+    <function name="TRACKER_DBUS_ERROR" link="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR:CAPS"/>
+    <function name="TRACKER_TYPE_G_STRV_ARRAY" link="libtracker-common-tracker-dbus.html#TRACKER-TYPE-G-STRV-ARRAY:CAPS"/>
+    <function name="TRACKER_TYPE_STR_STRV_MAP" link="libtracker-common-tracker-dbus.html#TRACKER-TYPE-STR-STRV-MAP:CAPS"/>
+    <function name="TRACKER_TYPE_EVENT_ARRAY" link="libtracker-common-tracker-dbus.html#TRACKER-TYPE-EVENT-ARRAY:CAPS"/>
+    <function name="tracker_dbus_async_return_if_fail()" link="libtracker-common-tracker-dbus.html#tracker-dbus-async-return-if-fail"/>
+    <function name="tracker_dbus_return_val_if_fail()" link="libtracker-common-tracker-dbus.html#tracker-dbus-return-val-if-fail"/>
+    <function name="enum TrackerDBusEventsType" link="libtracker-common-tracker-dbus.html#TrackerDBusEventsType"/>
+    <function name="TrackerDBusRequestHandler" link="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler"/>
+    <function name="TrackerDBusRequestFunc ()" link="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc"/>
+    <function name="TrackerDBusData" link="libtracker-common-tracker-dbus.html#TrackerDBusData"/>
+    <function name="tracker_dbus_error_quark ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-error-quark"/>
+    <function name="tracker_dbus_data_new ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-data-new"/>
+    <function name="tracker_dbus_gvalue_slice_new ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-gvalue-slice-new"/>
+    <function name="tracker_dbus_gvalue_slice_free ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-gvalue-slice-free"/>
+    <function name="tracker_dbus_slist_to_strv ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-slist-to-strv"/>
+    <function name="tracker_dbus_str_to_strv ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-str-to-strv"/>
+    <function name="tracker_dbus_queue_str_to_strv ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-queue-str-to-strv"/>
+    <function name="tracker_dbus_queue_gfile_to_strv ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-queue-gfile-to-strv"/>
+    <function name="tracker_dbus_results_ptr_array_free ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-results-ptr-array-free"/>
+    <function name="tracker_dbus_get_next_request_id ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-get-next-request-id"/>
+    <function name="tracker_dbus_enable_client_lookup ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-enable-client-lookup"/>
+    <function name="tracker_dbus_request_add_hook ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-request-add-hook"/>
+    <function name="tracker_dbus_request_remove_hook ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-request-remove-hook"/>
+    <function name="tracker_dbus_request_new ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-request-new"/>
+    <function name="tracker_dbus_request_success ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-request-success"/>
+    <function name="tracker_dbus_request_failed ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-request-failed"/>
+    <function name="tracker_dbus_request_comment ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-request-comment"/>
+    <function name="tracker_dbus_request_info ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-request-info"/>
+    <function name="tracker_dbus_request_debug ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-request-debug"/>
+    <function name="tracker_dbus_request_block_hooks ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-request-block-hooks"/>
+    <function name="tracker_dbus_request_unblock_hooks ()" link="libtracker-common-tracker-dbus.html#tracker-dbus-request-unblock-hooks"/>
+    <function name="tracker_log_init ()" link="libtracker-common-tracker-log.html#tracker-log-init"/>
+    <function name="tracker_log_shutdown ()" link="libtracker-common-tracker-log.html#tracker-log-shutdown"/>
+    <function name="tracker_log_should_handle ()" link="libtracker-common-tracker-log.html#tracker-log-should-handle"/>
+    <function name="tracker_info()" link="libtracker-common-tracker-log.html#tracker-info"/>
+    <function name="tracker_crc32 ()" link="libtracker-common-tracker-crc.html#tracker-crc32"/>
+    <function name="tracker_string_to_date ()" link="libtracker-common-tracker-type-utils.html#tracker-string-to-date"/>
+    <function name="tracker_date_to_string ()" link="libtracker-common-tracker-type-utils.html#tracker-date-to-string"/>
+    <function name="tracker_glong_to_string ()" link="libtracker-common-tracker-type-utils.html#tracker-glong-to-string"/>
+    <function name="tracker_gint_to_string ()" link="libtracker-common-tracker-type-utils.html#tracker-gint-to-string"/>
+    <function name="tracker_guint_to_string ()" link="libtracker-common-tracker-type-utils.html#tracker-guint-to-string"/>
+    <function name="tracker_gint32_to_string ()" link="libtracker-common-tracker-type-utils.html#tracker-gint32-to-string"/>
+    <function name="tracker_guint32_to_string ()" link="libtracker-common-tracker-type-utils.html#tracker-guint32-to-string"/>
+    <function name="tracker_string_to_uint ()" link="libtracker-common-tracker-type-utils.html#tracker-string-to-uint"/>
+    <function name="tracker_string_in_string_list ()" link="libtracker-common-tracker-type-utils.html#tracker-string-in-string-list"/>
+    <function name="tracker_string_in_gslist ()" link="libtracker-common-tracker-type-utils.html#tracker-string-in-gslist"/>
+    <function name="tracker_string_list_to_gslist ()" link="libtracker-common-tracker-type-utils.html#tracker-string-list-to-gslist"/>
+    <function name="tracker_string_list_to_string ()" link="libtracker-common-tracker-type-utils.html#tracker-string-list-to-string"/>
+    <function name="tracker_string_to_string_list ()" link="libtracker-common-tracker-type-utils.html#tracker-string-to-string-list"/>
+    <function name="tracker_gslist_to_string_list ()" link="libtracker-common-tracker-type-utils.html#tracker-gslist-to-string-list"/>
+    <function name="tracker_gslist_copy_with_string_data ()" link="libtracker-common-tracker-type-utils.html#tracker-gslist-copy-with-string-data"/>
+    <function name="tracker_gslist_with_string_data_equal ()" link="libtracker-common-tracker-type-utils.html#tracker-gslist-with-string-data-equal"/>
+    <function name="tracker_glist_copy_with_string_data ()" link="libtracker-common-tracker-type-utils.html#tracker-glist-copy-with-string-data"/>
+    <function name="tracker_string_boolean_to_string_gint ()" link="libtracker-common-tracker-type-utils.html#tracker-string-boolean-to-string-gint"/>
+    <function name="TRACKER_DATE_ERROR" link="libtracker-common-tracker-date-time-utils.html#TRACKER-DATE-ERROR:CAPS"/>
+    <function name="TRACKER_TYPE_DATE_TIME" link="libtracker-common-tracker-date-time-utils.html#TRACKER-TYPE-DATE-TIME:CAPS"/>
+    <function name="enum TrackerDateError" link="libtracker-common-tracker-date-time-utils.html#TrackerDateError"/>
+    <function name="tracker_date_error_quark ()" link="libtracker-common-tracker-date-time-utils.html#tracker-date-error-quark"/>
+    <function name="tracker_date_time_get_local_date ()" link="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-local-date"/>
+    <function name="tracker_date_time_get_local_time ()" link="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-local-time"/>
+    <function name="tracker_date_time_get_offset ()" link="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-offset"/>
+    <function name="tracker_date_time_get_time ()" link="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-time"/>
+    <function name="tracker_date_time_get_type ()" link="libtracker-common-tracker-date-time-utils.html#tracker-date-time-get-type"/>
+    <function name="tracker_date_time_set ()" link="libtracker-common-tracker-date-time-utils.html#tracker-date-time-set"/>
+    <function name="tracker_date_time_set_from_string ()" link="libtracker-common-tracker-date-time-utils.html#tracker-date-time-set-from-string"/>
+    <function name="tracker_file_open ()" link="libtracker-common-tracker-file-utils.html#tracker-file-open"/>
+    <function name="tracker_file_close ()" link="libtracker-common-tracker-file-utils.html#tracker-file-close"/>
+    <function name="tracker_file_get_size ()" link="libtracker-common-tracker-file-utils.html#tracker-file-get-size"/>
+    <function name="tracker_file_get_mtime ()" link="libtracker-common-tracker-file-utils.html#tracker-file-get-mtime"/>
+    <function name="tracker_file_get_mime_type ()" link="libtracker-common-tracker-file-utils.html#tracker-file-get-mime-type"/>
+    <function name="tracker_file_system_has_enough_space ()" link="libtracker-common-tracker-file-utils.html#tracker-file-system-has-enough-space"/>
+    <function name="tracker_file_is_locked ()" link="libtracker-common-tracker-file-utils.html#tracker-file-is-locked"/>
+    <function name="tracker_file_lock ()" link="libtracker-common-tracker-file-utils.html#tracker-file-lock"/>
+    <function name="tracker_file_unlock ()" link="libtracker-common-tracker-file-utils.html#tracker-file-unlock"/>
+    <function name="tracker_path_is_in_path ()" link="libtracker-common-tracker-file-utils.html#tracker-path-is-in-path"/>
+    <function name="tracker_path_has_write_access_or_was_created ()" link="libtracker-common-tracker-file-utils.html#tracker-path-has-write-access-or-was-created"/>
+    <function name="tracker_path_list_filter_duplicates ()" link="libtracker-common-tracker-file-utils.html#tracker-path-list-filter-duplicates"/>
+    <function name="tracker_path_evaluate_name ()" link="libtracker-common-tracker-file-utils.html#tracker-path-evaluate-name"/>
+    <function name="tracker_env_check_xdg_dirs ()" link="libtracker-common-tracker-file-utils.html#tracker-env-check-xdg-dirs"/>
+    <function name="tracker_is_empty_string ()" link="libtracker-common-tracker-utils.html#tracker-is-empty-string"/>
+    <function name="tracker_is_blank_string ()" link="libtracker-common-tracker-utils.html#tracker-is-blank-string"/>
+    <function name="tracker_seconds_estimate_to_string ()" link="libtracker-common-tracker-utils.html#tracker-seconds-estimate-to-string"/>
+    <function name="tracker_seconds_to_string ()" link="libtracker-common-tracker-utils.html#tracker-seconds-to-string"/>
+    <function name="tracker_keyfile_object_blurb ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-blurb"/>
+    <function name="tracker_keyfile_object_default_boolean ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-default-boolean"/>
+    <function name="tracker_keyfile_object_default_int ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-default-int"/>
+    <function name="tracker_keyfile_object_validate_int ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-validate-int"/>
+    <function name="tracker_keyfile_object_load_int ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-load-int"/>
+    <function name="tracker_keyfile_object_load_boolean ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-load-boolean"/>
+    <function name="tracker_keyfile_object_load_string ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-load-string"/>
+    <function name="tracker_keyfile_object_load_string_list ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-load-string-list"/>
+    <function name="tracker_keyfile_object_load_directory_list ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-load-directory-list"/>
+    <function name="tracker_keyfile_object_save_int ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-save-int"/>
+    <function name="tracker_keyfile_object_save_boolean ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-save-boolean"/>
+    <function name="tracker_keyfile_object_save_string ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-save-string"/>
+    <function name="tracker_keyfile_object_save_string_list ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-save-string-list"/>
+    <function name="tracker_keyfile_object_save_directory_list ()" link="libtracker-common-tracker-keyfile-object.html#tracker-keyfile-object-save-directory-list"/>
+    <function name="tracker_spawn ()" link="libtracker-common-tracker-os-dependant.html#tracker-spawn"/>
+    <function name="tracker_spawn_async_with_channels ()" link="libtracker-common-tracker-os-dependant.html#tracker-spawn-async-with-channels"/>
+    <function name="tracker_spawn_child_func ()" link="libtracker-common-tracker-os-dependant.html#tracker-spawn-child-func"/>
+    <function name="tracker_create_permission_string ()" link="libtracker-common-tracker-os-dependant.html#tracker-create-permission-string"/>
+    <function name="tracker_memory_setrlimits ()" link="libtracker-common-tracker-os-dependant.html#tracker-memory-setrlimits"/>
+    <function name="tracker_ioprio_init ()" link="libtracker-common-tracker-ioprio.html#tracker-ioprio-init"/>
+  </functions>
+</book>

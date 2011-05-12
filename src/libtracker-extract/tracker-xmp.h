@@ -25,7 +25,7 @@
 #error "only <libtracker-extract/tracker-extract.h> must be included directly."
 #endif
 
-#include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-client/tracker-sparql-builder.h>
 
 G_BEGIN_DECLS
 
@@ -84,22 +84,13 @@ typedef struct {
 	gchar *city;
 } TrackerXmpData;
 
-TrackerXmpData * tracker_xmp_new   (const gchar          *buffer,
-                                    gsize                 len,
-                                    const gchar          *uri);
-void             tracker_xmp_free  (TrackerXmpData       *data);
-gboolean         tracker_xmp_apply (TrackerSparqlBuilder *preupdate,
-                                    TrackerSparqlBuilder *metadata,
-                                    const gchar          *uri,
-                                    TrackerXmpData       *data);
-
-#ifndef TRACKER_DISABLE_DEPRECATED
-
-gboolean         tracker_xmp_read  (const gchar          *buffer,
-                                    size_t                len,
-                                    const gchar          *uri,
-                                    TrackerXmpData       *data) G_GNUC_DEPRECATED;
-#endif /* TRACKER_DISABLE_DEPRECATED */
+gboolean tracker_xmp_read  (const gchar          *buffer,
+                            size_t                len,
+                            const gchar          *uri,
+                            TrackerXmpData       *data);
+gboolean tracker_xmp_apply (TrackerSparqlBuilder *metadata,
+                            const gchar          *uri,
+                            TrackerXmpData       *data);
 
 G_END_DECLS
 

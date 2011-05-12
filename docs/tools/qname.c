@@ -21,12 +21,12 @@
 #include <glib/gstdio.h>
 #include <string.h>
 
-/* static gchar *local_uri = NULL;
- * static gchar *local_prefix = NULL; */
+//static gchar *local_uri = NULL;
+//static gchar *local_prefix = NULL;
 
 typedef struct {
-	const gchar *namespace;
-	const gchar *uri;
+	gchar *namespace;
+	gchar *uri;
 } Namespace;
 
 static GHashTable *class_deffile = NULL;
@@ -61,9 +61,8 @@ qname_init (const gchar *luri, const gchar *lprefix, const gchar *class_location
 
 	if (NAMESPACES[0].namespace || NAMESPACES[0].uri) {
 		g_warning ("Reinitializing qname_module");
-		/* The strange casting is checked */
-		g_free ((gchar *) NAMESPACES[0].namespace);
-		g_free ((gchar *) NAMESPACES[0].uri);
+		g_free (NAMESPACES[0].namespace);
+		g_free (NAMESPACES[0].uri);
 		if (class_deffile) {
 			g_hash_table_destroy (class_deffile);
 		}
@@ -91,12 +90,11 @@ qname_init (const gchar *luri, const gchar *lprefix, const gchar *class_location
 
 		lines = g_strsplit (raw_content, "\n", -1);
 		for (i = 0; lines[i] != NULL; i++) {
-			gchar **pieces = NULL;
-
 			if (strlen (lines[i]) < 1) {
 				continue;
 			}
 
+			gchar **pieces = NULL;
 
 			pieces = g_strsplit (lines[i], " ", -1);
 			g_assert (g_strv_length (pieces) == 2);
@@ -115,11 +113,10 @@ qname_init (const gchar *luri, const gchar *lprefix, const gchar *class_location
 void
 qname_shutdown (void)
 {
-	/* The strange casting is checked */
-	g_free ((gchar*) NAMESPACES[0].namespace);
+	g_free (NAMESPACES[0].namespace);
 	NAMESPACES[0].namespace = NULL;
 
-	g_free ((gchar*) NAMESPACES[0].uri);
+	g_free (NAMESPACES[0].uri);
 	NAMESPACES[0].uri = NULL;
 
 	if (class_deffile) {
@@ -234,7 +231,6 @@ qname_to_classname (const gchar *qname) {
 	classname = g_strdup (pieces[1]);
 	g_strfreev (pieces);
 	g_free (shortname);
-
 	return classname;
 }
 
@@ -242,13 +238,11 @@ gboolean
 qname_is_basic_type (const gchar *qname)
 {
 	gint i;
-
 	/* dc: or xsd: are basic types */
 	for (i = 1; NAMESPACES[i].namespace != NULL && i < 3; i++) {
 		if (g_str_has_prefix (qname, NAMESPACES[i].uri)) {
 			return TRUE;
 		}
 	}
-
 	return FALSE;
 }

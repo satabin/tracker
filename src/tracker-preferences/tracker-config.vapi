@@ -27,6 +27,8 @@ namespace Tracker {
 		public int verbosity { get; set; }
 		public int initial_sleep { get; set; }
 		public bool enable_monitors { get; set; }
+		public int scan_timeout { get; set; }
+		public int cache_timeout { get; set; }
 		public int throttle { get; set; }
 		public bool enable_thumbnails { get; set; }
 		public bool index_on_battery { get; set; }
@@ -35,7 +37,6 @@ namespace Tracker {
 		public bool index_optical_discs { get; set; }
 		public bool index_mounted_directories { get; set; }
 		public int low_disk_space_limit { get; set; }
-		public int removable_days_threshold { get; set; }
 		public GLib.SList<string> index_recursive_directories { get; set; }
 		public GLib.SList<string> index_recursive_directories_unfiltered { get; }
 		public GLib.SList<string> index_single_directories { get; set; }

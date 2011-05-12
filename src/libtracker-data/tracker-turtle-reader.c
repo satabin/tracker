@@ -24,12 +24,10 @@
 #include <glib-object.h>
 #include <stdlib.h>
 #include <string.h>
-#include <libtracker-sparql/tracker-sparql.h>
-#include <libtracker-common/tracker-date-time.h>
-#include <libtracker-data/tracker-db-interface.h>
-#include <libtracker-data/tracker-data-query.h>
 #include <libtracker-data/tracker-data-update.h>
-#include <libtracker-data/tracker-data-backup.h>
+#include <libtracker-common/tracker-date-time.h>
+#include <libtracker-db/tracker-db-interface.h>
+#include <libtracker-data/tracker-data-query.h>
 
 
 #define TRACKER_TYPE_TURTLE_READER (tracker_turtle_reader_get_type ())
@@ -65,7 +63,7 @@ typedef struct _TrackerTurtleReaderTokenInfo TrackerTurtleReaderTokenInfo;
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 #define _g_free0(var) (var = (g_free (var), NULL))
 #define _g_hash_table_unref0(var) ((var == NULL) ? NULL : (var = (g_hash_table_unref (var), NULL)))
-#define _g_mapped_file_unref0(var) ((var == NULL) ? NULL : (var = (g_mapped_file_unref (var), NULL)))
+#define _g_mapped_file_free0(var) ((var == NULL) ? NULL : (var = (g_mapped_file_free (var), NULL)))
 #define _g_checksum_free0(var) ((var == NULL) ? NULL : (var = (g_checksum_free (var), NULL)))
 #define _g_string_free0(var) ((var == NULL) ? NULL : (var = (g_string_free (var, TRUE), NULL)))
 #define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
@@ -99,7 +97,6 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_COMMA,
 	TRACKER_SPARQL_TOKEN_TYPE_CONSTRUCT,
 	TRACKER_SPARQL_TOKEN_TYPE_COUNT,
-	TRACKER_SPARQL_TOKEN_TYPE_DATA,
 	TRACKER_SPARQL_TOKEN_TYPE_DATATYPE,
 	TRACKER_SPARQL_TOKEN_TYPE_DECIMAL,
 	TRACKER_SPARQL_TOKEN_TYPE_DELETE,
@@ -112,14 +109,12 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_DOUBLE_CIRCUMFLEX,
 	TRACKER_SPARQL_TOKEN_TYPE_DROP,
 	TRACKER_SPARQL_TOKEN_TYPE_EOF,
-	TRACKER_SPARQL_TOKEN_TYPE_EXISTS,
 	TRACKER_SPARQL_TOKEN_TYPE_FALSE,
 	TRACKER_SPARQL_TOKEN_TYPE_FILTER,
 	TRACKER_SPARQL_TOKEN_TYPE_FROM,
 	TRACKER_SPARQL_TOKEN_TYPE_GRAPH,
 	TRACKER_SPARQL_TOKEN_TYPE_GROUP,
 	TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT,
-	TRACKER_SPARQL_TOKEN_TYPE_IF,
 	TRACKER_SPARQL_TOKEN_TYPE_INSERT,
 	TRACKER_SPARQL_TOKEN_TYPE_INTEGER,
 	TRACKER_SPARQL_TOKEN_TYPE_INTO,
@@ -135,7 +130,6 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_MIN,
 	TRACKER_SPARQL_TOKEN_TYPE_MINUS,
 	TRACKER_SPARQL_TOKEN_TYPE_NAMED,
-	TRACKER_SPARQL_TOKEN_TYPE_NOT,
 	TRACKER_SPARQL_TOKEN_TYPE_OFFSET,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_AND,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_EQ,
@@ -146,23 +140,19 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_OP_NE,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_NEG,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_OR,
-	TRACKER_SPARQL_TOKEN_TYPE_OP_IN,
 	TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACE,
 	TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACKET,
 	TRACKER_SPARQL_TOKEN_TYPE_OPEN_PARENS,
 	TRACKER_SPARQL_TOKEN_TYPE_OPTIONAL,
-	TRACKER_SPARQL_TOKEN_TYPE_OR,
 	TRACKER_SPARQL_TOKEN_TYPE_ORDER,
 	TRACKER_SPARQL_TOKEN_TYPE_PLUS,
 	TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX,
 	TRACKER_SPARQL_TOKEN_TYPE_PREFIX,
 	TRACKER_SPARQL_TOKEN_TYPE_REDUCED,
 	TRACKER_SPARQL_TOKEN_TYPE_REGEX,
-	TRACKER_SPARQL_TOKEN_TYPE_REPLACE,
 	TRACKER_SPARQL_TOKEN_TYPE_SAMETERM,
 	TRACKER_SPARQL_TOKEN_TYPE_SELECT,
 	TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON,
-	TRACKER_SPARQL_TOKEN_TYPE_SILENT,
 	TRACKER_SPARQL_TOKEN_TYPE_STAR,
 	TRACKER_SPARQL_TOKEN_TYPE_STR,
 	TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL1,
@@ -224,6 +214,15 @@ struct _TrackerTurtleReaderPrivate {
 	GMappedFile* mapped_file;
 };
 
+typedef enum  {
+	TRACKER_SPARQL_ERROR_PARSE,
+	TRACKER_SPARQL_ERROR_UNKNOWN_CLASS,
+	TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY,
+	TRACKER_SPARQL_ERROR_TYPE,
+	TRACKER_SPARQL_ERROR_INTERNAL,
+	TRACKER_SPARQL_ERROR_UNSUPPORTED
+} TrackerSparqlError;
+#define TRACKER_SPARQL_ERROR tracker_sparql_error_quark ()
 
 static gpointer tracker_turtle_reader_parent_class = NULL;
 
@@ -253,6 +252,7 @@ TrackerSparqlScanner* tracker_sparql_scanner_new (gchar* input, gsize len);
 TrackerSparqlScanner* tracker_sparql_scanner_construct (GType object_type, gchar* input, gsize len);
 void uuid_generate (guchar* uuid);
 static gchar* tracker_turtle_reader_generate_bnodeid (TrackerTurtleReader* self, const gchar* user_bnodeid);
+GQuark tracker_sparql_error_quark (void);
 static inline gboolean tracker_turtle_reader_next_token (TrackerTurtleReader* self, GError** error);
 TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* self, TrackerSourceLocation* token_begin, TrackerSourceLocation* token_end, GError** error);
 static inline TrackerSparqlTokenType tracker_turtle_reader_current (TrackerTurtleReader* self);
@@ -268,9 +268,9 @@ static void tracker_turtle_reader_set_predicate (TrackerTurtleReader* self, cons
 static void tracker_turtle_reader_set_object (TrackerTurtleReader* self, const gchar* value);
 static void tracker_turtle_reader_set_object_is_uri (TrackerTurtleReader* self, gboolean value);
 const gchar* tracker_turtle_reader_get_subject (TrackerTurtleReader* self);
-static void _vala_array_add10 (gchar*** array, int* length, int* size, gchar* value);
+static void _vala_array_add5 (gchar*** array, int* length, int* size, gchar* value);
 const gchar* tracker_turtle_reader_get_predicate (TrackerTurtleReader* self);
-static void _vala_array_add11 (gchar*** array, int* length, int* size, gchar* value);
+static void _vala_array_add6 (gchar*** array, int* length, int* size, gchar* value);
 void tracker_turtle_reader_load (const gchar* path, GError** error);
 gboolean tracker_turtle_reader_get_object_is_uri (TrackerTurtleReader* self);
 const gchar* tracker_turtle_reader_get_graph (TrackerTurtleReader* self);
@@ -321,7 +321,7 @@ TrackerTurtleReader* tracker_turtle_reader_construct (GType object_type, const g
 			return NULL;
 		}
 	}
-	_g_mapped_file_unref0 (self->priv->mapped_file);
+	_g_mapped_file_free0 (self->priv->mapped_file);
 	self->priv->mapped_file = _tmp1_;
 	_tmp2_ = g_mapped_file_get_contents (self->priv->mapped_file);
 	_tmp3_ = g_mapped_file_get_length (self->priv->mapped_file);
@@ -351,54 +351,10 @@ TrackerTurtleReader* tracker_turtle_reader_new (const gchar* path, GError** erro
 }
 
 
-static glong string_strnlen (gchar* str, glong maxlen) {
-	glong result = 0L;
-	gchar* _tmp0_ = NULL;
-	gchar* end;
-	_tmp0_ = memchr (str, 0, (gsize) maxlen);
-	end = _tmp0_;
-	if (end == NULL) {
-		result = maxlen;
-		return result;
-	} else {
-		result = (glong) (end - str);
-		return result;
-	}
-}
-
-
-static gchar* string_substring (const gchar* self, glong offset, glong len) {
-	gchar* result = NULL;
-	glong string_length = 0L;
-	gboolean _tmp0_ = FALSE;
-	gchar* _tmp3_ = NULL;
+static const gchar* string_offset (const gchar* self, glong offset) {
+	const gchar* result = NULL;
 	g_return_val_if_fail (self != NULL, NULL);
-	if (offset >= 0) {
-		_tmp0_ = len >= 0;
-	} else {
-		_tmp0_ = FALSE;
-	}
-	if (_tmp0_) {
-		glong _tmp1_;
-		_tmp1_ = string_strnlen ((gchar*) self, offset + len);
-		string_length = _tmp1_;
-	} else {
-		gint _tmp2_;
-		_tmp2_ = strlen (self);
-		string_length = (glong) _tmp2_;
-	}
-	if (offset < 0) {
-		offset = string_length + offset;
-		g_return_val_if_fail (offset >= 0, NULL);
-	} else {
-		g_return_val_if_fail (offset <= string_length, NULL);
-	}
-	if (len < 0) {
-		len = string_length - offset;
-	}
-	g_return_val_if_fail ((offset + len) <= string_length, NULL);
-	_tmp3_ = g_strndup (((gchar*) self) + offset, (gsize) len);
-	result = _tmp3_;
+	result = (const gchar*) (((gchar*) self) + offset);
 	return result;
 }
 
@@ -418,16 +374,11 @@ static gchar* tracker_turtle_reader_generate_bnodeid (TrackerTurtleReader* self,
 		const gchar* _tmp2_ = NULL;
 		gchar* _tmp3_;
 		gchar* sha1;
-		gchar* _tmp4_ = NULL;
-		gchar* _tmp5_;
-		gchar* _tmp6_ = NULL;
-		gchar* _tmp7_;
+		const gchar* _tmp4_ = NULL;
+		const gchar* _tmp5_ = NULL;
+		const gchar* _tmp6_ = NULL;
+		const gchar* _tmp7_ = NULL;
 		gchar* _tmp8_ = NULL;
-		gchar* _tmp9_;
-		gchar* _tmp10_ = NULL;
-		gchar* _tmp11_;
-		gchar* _tmp12_ = NULL;
-		gchar* _tmp13_;
 		_tmp1_ = g_checksum_new (G_CHECKSUM_SHA1);
 		checksum = _tmp1_;
 		g_checksum_update (checksum, self->priv->base_uuid, (gsize) 16);
@@ -435,21 +386,12 @@ static gchar* tracker_turtle_reader_generate_bnodeid (TrackerTurtleReader* self,
 		_tmp2_ = g_checksum_get_string (checksum);
 		_tmp3_ = g_strdup (_tmp2_);
 		sha1 = _tmp3_;
-		_tmp4_ = string_substring (sha1, (glong) 8, (glong) (-1));
-		_tmp5_ = _tmp4_;
-		_tmp6_ = string_substring (sha1, (glong) 12, (glong) (-1));
-		_tmp7_ = _tmp6_;
-		_tmp8_ = string_substring (sha1, (glong) 16, (glong) (-1));
-		_tmp9_ = _tmp8_;
-		_tmp10_ = string_substring (sha1, (glong) 20, (glong) (-1));
-		_tmp11_ = _tmp10_;
-		_tmp12_ = g_strdup_printf ("urn:uuid:%.8s-%.4s-%.4s-%.4s-%.12s", sha1, _tmp5_, _tmp7_, _tmp9_, _tmp11_);
-		_tmp13_ = _tmp12_;
-		_g_free0 (_tmp11_);
-		_g_free0 (_tmp9_);
-		_g_free0 (_tmp7_);
-		_g_free0 (_tmp5_);
-		result = _tmp13_;
+		_tmp4_ = string_offset (sha1, (glong) 8);
+		_tmp5_ = string_offset (sha1, (glong) 12);
+		_tmp6_ = string_offset (sha1, (glong) 16);
+		_tmp7_ = string_offset (sha1, (glong) 20);
+		_tmp8_ = g_strdup_printf ("urn:uuid:%.8s-%.4s-%.4s-%.4s-%.12s", sha1, _tmp4_, _tmp5_, _tmp6_, _tmp7_);
+		result = _tmp8_;
 		_g_free0 (sha1);
 		_g_checksum_free0 (checksum);
 		return result;
@@ -597,7 +539,7 @@ static gchar* tracker_turtle_reader_get_last_string (TrackerTurtleReader* self, 
 	gchar* _tmp0_ = NULL;
 	g_return_val_if_fail (self != NULL, NULL);
 	last_index = ((self->priv->index + TRACKER_TURTLE_READER_BUFFER_SIZE) - 1) % TRACKER_TURTLE_READER_BUFFER_SIZE;
-	_tmp0_ = string_substring ((const gchar*) (self->priv->tokens[last_index].begin.pos + strip), (glong) 0, (glong) ((gint) ((self->priv->tokens[last_index].end.pos - self->priv->tokens[last_index].begin.pos) - (2 * strip))));
+	_tmp0_ = g_strndup ((const gchar*) (self->priv->tokens[last_index].begin.pos + strip), (self->priv->tokens[last_index].end.pos - self->priv->tokens[last_index].begin.pos) - (2 * strip));
 	result = _tmp0_;
 	return result;
 }
@@ -645,7 +587,59 @@ static gchar* tracker_turtle_reader_resolve_prefixed_name (TrackerTurtleReader* 
 }
 
 
-static void _vala_array_add10 (gchar*** array, int* length, int* size, gchar* value) {
+static glong string_strnlen (gchar* str, glong maxlen) {
+	glong result = 0L;
+	gchar* _tmp0_ = NULL;
+	gchar* end;
+	_tmp0_ = memchr (str, 0, (gsize) maxlen);
+	end = _tmp0_;
+	if (end == NULL) {
+		result = maxlen;
+		return result;
+	} else {
+		result = (glong) (end - str);
+		return result;
+	}
+}
+
+
+static gchar* string_substring (const gchar* self, glong offset, glong len) {
+	gchar* result = NULL;
+	glong string_length = 0L;
+	gboolean _tmp0_ = FALSE;
+	gchar* _tmp3_ = NULL;
+	g_return_val_if_fail (self != NULL, NULL);
+	if (offset >= 0) {
+		_tmp0_ = len >= 0;
+	} else {
+		_tmp0_ = FALSE;
+	}
+	if (_tmp0_) {
+		glong _tmp1_;
+		_tmp1_ = string_strnlen ((gchar*) self, offset + len);
+		string_length = _tmp1_;
+	} else {
+		gint _tmp2_;
+		_tmp2_ = strlen (self);
+		string_length = (glong) _tmp2_;
+	}
+	if (offset < 0) {
+		offset = string_length + offset;
+		g_return_val_if_fail (offset >= 0, NULL);
+	} else {
+		g_return_val_if_fail (offset <= string_length, NULL);
+	}
+	if (len < 0) {
+		len = string_length - offset;
+	}
+	g_return_val_if_fail ((offset + len) <= string_length, NULL);
+	_tmp3_ = g_strndup (((gchar*) self) + offset, (gsize) len);
+	result = _tmp3_;
+	return result;
+}
+
+
+static void _vala_array_add5 (gchar*** array, int* length, int* size, gchar* value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (gchar*, *array, (*size) + 1);
@@ -655,7 +649,7 @@ static void _vala_array_add10 (gchar*** array, int* length, int* size, gchar* va
 }
 
 
-static void _vala_array_add11 (gchar*** array, int* length, int* size, gchar* value) {
+static void _vala_array_add6 (gchar*** array, int* length, int* size, gchar* value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (gchar*, *array, (*size) + 1);
@@ -1424,9 +1418,9 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 									gchar* _tmp111_ = NULL;
 									gchar* _tmp112_;
 									_tmp109_ = g_strdup (self->priv->_subject);
-									_vala_array_add10 (&self->priv->subject_stack, &self->priv->subject_stack_length1, &self->priv->_subject_stack_size_, _tmp109_);
+									_vala_array_add5 (&self->priv->subject_stack, &self->priv->subject_stack_length1, &self->priv->_subject_stack_size_, _tmp109_);
 									_tmp110_ = g_strdup (self->priv->_predicate);
-									_vala_array_add11 (&self->priv->predicate_stack, &self->priv->predicate_stack_length1, &self->priv->_predicate_stack_size_, _tmp110_);
+									_vala_array_add6 (&self->priv->predicate_stack, &self->priv->predicate_stack_length1, &self->priv->_predicate_stack_size_, _tmp110_);
 									_tmp111_ = tracker_turtle_reader_generate_bnodeid (self, NULL);
 									_tmp112_ = _tmp111_;
 									tracker_turtle_reader_set_subject (self, _tmp112_);
@@ -1474,7 +1468,7 @@ gboolean tracker_turtle_reader_next (TrackerTurtleReader* self, GError** error) 
 										gchar* _tmp119_ = NULL;
 										gchar* s;
 										const gchar* p;
-										gint _tmp120_;
+										gsize _tmp120_;
 										const gchar* end;
 										gboolean _tmp122_;
 										gboolean _tmp123_;
@@ -1971,11 +1965,11 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 	g_return_if_fail (path != NULL);
 	tracker_data_begin_transaction (&_inner_error_);
 	if (_inner_error_ != NULL) {
-		if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-			goto __catch4_tracker_sparql_error;
+		if (_inner_error_->domain == TRACKER_DATA_ERROR) {
+			goto __catch3_tracker_data_error;
 		}
 		if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-			goto __catch4_tracker_db_interface_error;
+			goto __catch3_tracker_db_interface_error;
 		}
 		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -1984,13 +1978,13 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 	_tmp0_ = tracker_turtle_reader_new (path, &_inner_error_);
 	reader = _tmp0_;
 	if (_inner_error_ != NULL) {
-		if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-			goto __catch4_tracker_sparql_error;
+		if (_inner_error_->domain == TRACKER_DATA_ERROR) {
+			goto __catch3_tracker_data_error;
 		}
 		if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-			goto __catch4_tracker_db_interface_error;
+			goto __catch3_tracker_db_interface_error;
 		}
-		goto __finally4;
+		goto __finally3;
 	}
 	while (TRUE) {
 		gboolean _tmp1_;
@@ -1999,16 +1993,13 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		_tmp2_ = _tmp1_;
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (reader);
-			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-				goto __catch4_tracker_sparql_error;
+			if (_inner_error_->domain == TRACKER_DATA_ERROR) {
+				goto __catch3_tracker_data_error;
 			}
 			if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-				goto __catch4_tracker_db_interface_error;
+				goto __catch3_tracker_db_interface_error;
 			}
-			_g_object_unref0 (reader);
-			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-			g_clear_error (&_inner_error_);
-			return;
+			goto __finally3;
 		}
 		if (!_tmp2_) {
 			break;
@@ -2017,11 +2008,11 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			tracker_data_insert_statement_with_uri (reader->priv->_graph, reader->priv->_subject, reader->priv->_predicate, reader->priv->_object, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				_g_object_unref0 (reader);
-				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-					goto __catch4_tracker_sparql_error;
+				if (_inner_error_->domain == TRACKER_DATA_ERROR) {
+					goto __catch3_tracker_data_error;
 				}
 				if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-					goto __catch4_tracker_db_interface_error;
+					goto __catch3_tracker_db_interface_error;
 				}
 				_g_object_unref0 (reader);
 				g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2032,38 +2023,24 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 			tracker_data_insert_statement_with_string (reader->priv->_graph, reader->priv->_subject, reader->priv->_predicate, reader->priv->_object, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				_g_object_unref0 (reader);
-				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-					goto __catch4_tracker_sparql_error;
+				if (_inner_error_->domain == TRACKER_DATA_ERROR) {
+					goto __catch3_tracker_data_error;
 				}
 				if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-					goto __catch4_tracker_db_interface_error;
+					goto __catch3_tracker_db_interface_error;
 				}
-				goto __finally4;
+				goto __finally3;
 			}
-		}
-		tracker_data_update_buffer_might_flush (&_inner_error_);
-		if (_inner_error_ != NULL) {
-			_g_object_unref0 (reader);
-			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-				goto __catch4_tracker_sparql_error;
-			}
-			if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-				goto __catch4_tracker_db_interface_error;
-			}
-			_g_object_unref0 (reader);
-			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-			g_clear_error (&_inner_error_);
-			return;
 		}
 	}
 	tracker_data_commit_transaction (&_inner_error_);
 	if (_inner_error_ != NULL) {
 		_g_object_unref0 (reader);
-		if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-			goto __catch4_tracker_sparql_error;
+		if (_inner_error_->domain == TRACKER_DATA_ERROR) {
+			goto __catch3_tracker_data_error;
 		}
 		if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-			goto __catch4_tracker_db_interface_error;
+			goto __catch3_tracker_db_interface_error;
 		}
 		_g_object_unref0 (reader);
 		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -2071,8 +2048,8 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		return;
 	}
 	_g_object_unref0 (reader);
-	goto __finally4;
-	__catch4_tracker_sparql_error:
+	goto __finally3;
+	__catch3_tracker_data_error:
 	{
 		GError * e;
 		GError* _tmp3_;
@@ -2082,10 +2059,10 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		_tmp3_ = _g_error_copy0 (e);
 		_inner_error_ = _tmp3_;
 		_g_error_free0 (e);
-		goto __finally4;
+		goto __finally3;
 	}
-	goto __finally4;
-	__catch4_tracker_db_interface_error:
+	goto __finally3;
+	__catch3_tracker_db_interface_error:
 	{
 		GError * e;
 		GError* _tmp4_;
@@ -2095,11 +2072,11 @@ void tracker_turtle_reader_load (const gchar* path, GError** error) {
 		_tmp4_ = _g_error_copy0 (e);
 		_inner_error_ = _tmp4_;
 		_g_error_free0 (e);
-		goto __finally4;
+		goto __finally3;
 	}
-	__finally4:
+	__finally3:
 	if (_inner_error_ != NULL) {
-		if ((((_inner_error_->domain == G_FILE_ERROR) || (_inner_error_->domain == TRACKER_SPARQL_ERROR)) || (_inner_error_->domain == TRACKER_DATE_ERROR)) || (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR)) {
+		if (((((_inner_error_->domain == G_FILE_ERROR) || (_inner_error_->domain == TRACKER_SPARQL_ERROR)) || (_inner_error_->domain == TRACKER_DATA_ERROR)) || (_inner_error_->domain == TRACKER_DATE_ERROR)) || (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR)) {
 			g_propagate_error (error, _inner_error_);
 			return;
 		} else {
@@ -2255,7 +2232,7 @@ static void tracker_turtle_reader_finalize (GObject* obj) {
 	self->priv->subject_stack = (_vala_array_free (self->priv->subject_stack, self->priv->subject_stack_length1, (GDestroyNotify) g_free), NULL);
 	self->priv->predicate_stack = (_vala_array_free (self->priv->predicate_stack, self->priv->predicate_stack_length1, (GDestroyNotify) g_free), NULL);
 	self->priv->base_uuid = (g_free (self->priv->base_uuid), NULL);
-	_g_mapped_file_unref0 (self->priv->mapped_file);
+	_g_mapped_file_free0 (self->priv->mapped_file);
 	G_OBJECT_CLASS (tracker_turtle_reader_parent_class)->finalize (obj);
 }
 

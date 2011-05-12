@@ -16,10 +16,8 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
-
 #include <glib.h>
-
-#include <libtracker-client/tracker-client.h>
+#include <libtracker-client/tracker.h>
 
 static void
 test_tracker_client ()

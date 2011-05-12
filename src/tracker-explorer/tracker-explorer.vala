@@ -26,8 +26,8 @@ extern static const string UIDIR;
 extern static const string SRCDIR;
 
 [DBus (name = "org.freedesktop.Tracker1.Resources")]
-interface Resources : DBusProxy {
-	public abstract string[,] SparqlQuery (string query) throws Error;
+interface Resources : GLib.Object {
+	public abstract string[,] SparqlQuery (string query) throws DBus.Error;
 }
 
 public class HistoryItem {
@@ -107,11 +107,11 @@ public class Explorer {
 	public void show() {
 
 		try {
-			tracker = Bus.get_proxy_sync (BusType.SESSION,
-			                              "org.freedesktop.Tracker1",
-			                              "/org/freedesktop/Tracker1/Resources",
-			                              DBusProxyFlags.DO_NOT_LOAD_PROPERTIES | DBusProxyFlags.DO_NOT_CONNECT_SIGNALS);
-		} catch (Error e) {
+			var conn = DBus.Bus.get (DBus.BusType.SESSION);
+			tracker = (Resources) conn.get_object ("org.freedesktop.Tracker1",
+							       "/org/freedesktop/Tracker1/Resources",
+							       "org.freedesktop.Tracker1.Resources");
+		} catch (DBus.Error e) {
 			var msg = new MessageDialog (null, DialogFlags.MODAL,
 					 MessageType.ERROR, ButtonsType.CANCEL,
 					 "Error connecting to D-Bus session bus\n%s", e.message);
@@ -139,10 +139,10 @@ public class Explorer {
 		}
 
 		var window = builder.get_object ("explorer") as Window;
-		window.destroy.connect (Gtk.main_quit);
+		window.destroy += Gtk.main_quit;
 
 		var entry = builder.get_object ("text-search") as Entry;
-		entry.changed.connect (entry_changed);
+		entry.changed += entry_changed;
 
 		var urisview = builder.get_object ("uris") as TreeView;
 		setup_uris(urisview);
@@ -154,14 +154,14 @@ public class Explorer {
 
 		types = builder.get_object ("types") as Notebook;
 
-		types.set_focus_child.connect (update_types_page);
+		types.set_focus_child += update_types_page;
 
 		forward = builder.get_object("forward") as Button;
-		forward.clicked.connect (forward_clicked);
+		forward.clicked += forward_clicked;
 		forward.set_sensitive(false);
 
 		back = builder.get_object("back") as Button;
-		back.clicked.connect (back_clicked);
+		back.clicked += back_clicked;
 		back.set_sensitive(false);
 
 		fetch_prefixes();
@@ -174,7 +174,7 @@ public class Explorer {
 		urisview.set_model (uris);
 
 		urisview.insert_column_with_attributes (-1, "URI", new CellRendererText (), "text", 0, null);
-		urisview.row_activated.connect (row_selected);
+		urisview.row_activated += row_selected;
 	}
 
 	private void setup_relationships(TreeView relationshipsview) {
@@ -183,7 +183,7 @@ public class Explorer {
 
 		relationshipsview.insert_column_with_attributes (-1, "Relationship", new CellRendererText (), "text", 1, null);
 		relationshipsview.insert_column_with_attributes (-1, "Object", new CellRendererText (), "text", 2, null);
-		relationshipsview.row_activated.connect (row_selected);
+		relationshipsview.row_activated += row_selected;
 	}
 
 	private TreeView setup_reverserelationships() {
@@ -195,7 +195,7 @@ public class Explorer {
 
 		reverserelationshipsview.insert_column_with_attributes (-1, "Subject", new CellRendererText (), "text", 1, null);
 		reverserelationshipsview.insert_column_with_attributes (-1, "Relationship", new CellRendererText (), "text", 2, null);
-		reverserelationshipsview.row_activated.connect (row_selected);
+		reverserelationshipsview.row_activated += row_selected;
 
 		return reverserelationshipsview;
 	}
@@ -207,10 +207,10 @@ public class Explorer {
 			var result = tracker.SparqlQuery(query);
 			for (int i=0; i<result.length[0]; i++) {
 				string _namespace = result[i,0];
-				_namespace = _namespace.substring(0, _namespace.length -1);
+				_namespace = _namespace.substring(0, _namespace.len() -1);
 				namespaces[_namespace] = result[i,1];
 			}
-		} catch (Error e) {
+		} catch (DBus.Error e) {
 		}
 	}
 
@@ -228,7 +228,7 @@ public class Explorer {
 				uris.set (iter, 0, s, -1);
 			}
 
-		} catch (Error e) {
+		} catch (DBus.Error e) {
 		}
 	}
 
@@ -286,7 +286,7 @@ public class Explorer {
 				}
 
 			}
-		} catch (Error e) {
+		} catch (DBus.Error e) {
 		}
 	}
 
@@ -342,7 +342,7 @@ public class Explorer {
 			types.set_current_page(types.get_n_pages() - 1);
 			update_types_page(null);
 
-		} catch (Error e) {
+		} catch (DBus.Error e) {
 		}
 	}
 

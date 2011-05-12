@@ -28,28 +28,26 @@
 
 G_BEGIN_DECLS
 
-typedef GStrv (*TrackerNotifyClassGetter)   (void);
+typedef struct TrackerEvent TrackerEvent;
 
-void           tracker_events_init              (void);
-void           tracker_events_shutdown          (void);
-void           tracker_events_add_insert        (gint         graph_id,
-                                                 gint         subject_id,
-                                                 const gchar *subject,
-                                                 gint         pred_id,
-                                                 gint         object_id,
-                                                 const gchar *object,
-                                                 GPtrArray   *rdf_types);
-void           tracker_events_add_delete        (gint         graph_id,
-                                                 gint         subject_id,
-                                                 const gchar *subject,
-                                                 gint         pred_id,
-                                                 gint         object_id,
-                                                 const gchar *object,
-                                                 GPtrArray   *rdf_types);
-guint          tracker_events_get_total         (gboolean     and_reset);
-void           tracker_events_reset_pending     (void);
-void           tracker_events_freeze            (void);
-TrackerClass** tracker_events_get_classes       (guint       *length);
+struct TrackerEvent {
+	TrackerDBusEventsType type;
+	TrackerClass *class;
+	TrackerProperty *predicate;
+	gchar *subject;
+};
+
+typedef GStrv (*TrackerNotifyClassGetter) (void);
+
+void       tracker_events_init        (TrackerNotifyClassGetter  callback);
+void       tracker_events_shutdown    (void);
+void       tracker_events_insert      (const gchar              *uri,
+                                       const gchar              *predicate,
+                                       const gchar              *object,
+                                       GPtrArray                *rdf_types,
+                                       TrackerDBusEventsType     type);
+GArray    *tracker_events_get_pending (void);
+void       tracker_events_reset       (void);
 
 G_END_DECLS
 

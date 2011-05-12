@@ -37,20 +37,19 @@
 #define GROUP_GENERAL                            "General"
 #define GROUP_MONITORS                           "Monitors"
 #define GROUP_INDEXING                           "Indexing"
-#define GROUP_CRAWLING                           "Crawling"
 
 /* Default values */
 #define DEFAULT_VERBOSITY                        0
 #define DEFAULT_INITIAL_SLEEP                    15       /* 0->1000 */
 #define DEFAULT_ENABLE_MONITORS                  TRUE
 #define DEFAULT_THROTTLE                         0        /* 0->20 */
+#define DEFAULT_SCAN_TIMEOUT                     0        /* 0->1000 */
+#define DEFAULT_CACHE_TIMEOUT                    60       /* 0->1000 */
 #define DEFAULT_INDEX_REMOVABLE_DEVICES          TRUE
 #define DEFAULT_INDEX_OPTICAL_DISCS              FALSE
 #define DEFAULT_INDEX_ON_BATTERY                 FALSE
 #define DEFAULT_INDEX_ON_BATTERY_FIRST_TIME      TRUE
 #define DEFAULT_LOW_DISK_SPACE_LIMIT             1        /* 0->100 / -1 */
-#define DEFAULT_CRAWLING_INTERVAL                -1       /* 0->365 / -1 / -2 */
-#define DEFAULT_REMOVABLE_DAYS_THRESHOLD         3        /* 1->365 / 0  */
 
 typedef struct {
 	/* General */
@@ -59,6 +58,8 @@ typedef struct {
 
 	/* Monitors */
 	gboolean  enable_monitors;
+	gint      scan_timeout;
+	gint      cache_timeout;
 
 	/* Indexing */
 	gint      throttle;
@@ -74,8 +75,6 @@ typedef struct {
 	GSList   *ignored_directories;
 	GSList   *ignored_directories_with_content;
 	GSList   *ignored_files;
-	gint	  crawling_interval;
-	gint      removable_days_threshold;
 
 	/* Convenience data */
 	GSList   *ignored_directory_patterns;
@@ -118,6 +117,8 @@ enum {
 
 	/* Monitors */
 	PROP_ENABLE_MONITORS,
+	PROP_SCAN_TIMEOUT,
+	PROP_CACHE_TIMEOUT,
 
 	/* Indexing */
 	PROP_THROTTLE,
@@ -131,8 +132,6 @@ enum {
 	PROP_IGNORED_DIRECTORIES,
 	PROP_IGNORED_DIRECTORIES_WITH_CONTENT,
 	PROP_IGNORED_FILES,
-	PROP_CRAWLING_INTERVAL,
-	PROP_REMOVABLE_DAYS_THRESHOLD
 };
 
 static ObjectToKeyFile conversions[] = {
@@ -141,6 +140,8 @@ static ObjectToKeyFile conversions[] = {
 	{ G_TYPE_INT,     "initial-sleep",                    GROUP_GENERAL,  "InitialSleep"              },
 	/* Monitors */
 	{ G_TYPE_BOOLEAN, "enable-monitors",                  GROUP_MONITORS, "EnableMonitors"            },
+	{ G_TYPE_INT,     "scan-timeout",                     GROUP_MONITORS, "ScanTimeout"               },
+	{ G_TYPE_INT,     "cache-timeout",                    GROUP_MONITORS, "CacheTimeout"              },
 	/* Indexing */
 	{ G_TYPE_INT,     "throttle",                         GROUP_INDEXING, "Throttle"                  },
 	{ G_TYPE_BOOLEAN, "index-on-battery",                 GROUP_INDEXING, "IndexOnBattery"            },
@@ -153,8 +154,6 @@ static ObjectToKeyFile conversions[] = {
 	{ G_TYPE_POINTER, "ignored-directories",              GROUP_INDEXING, "IgnoredDirectories"        },
 	{ G_TYPE_POINTER, "ignored-directories-with-content", GROUP_INDEXING, "IgnoredDirectoriesWithContent" },
 	{ G_TYPE_POINTER, "ignored-files",                    GROUP_INDEXING, "IgnoredFiles"              },
-	{ G_TYPE_INT,	  "crawling-interval",                GROUP_INDEXING, "CrawlingInterval"          },
-	{ G_TYPE_INT,	  "removable-days-threshold",         GROUP_INDEXING, "RemovableDaysThreshold"    }
 };
 
 G_DEFINE_TYPE (TrackerConfig, tracker_config, TRACKER_TYPE_CONFIG_FILE);
@@ -200,6 +199,24 @@ tracker_config_class_init (TrackerConfigClass *klass)
 	                                                       " Set to false to completely disable any monitoring",
 	                                                       DEFAULT_ENABLE_MONITORS,
 	                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class,
+	                                 PROP_SCAN_TIMEOUT,
+	                                 g_param_spec_int ("scan-timeout",
+	                                                   "Scan Timeout",
+	                                                   " Time in seconds between same events to prevent flooding (0->1000)",
+	                                                   0,
+	                                                   1000,
+	                                                   DEFAULT_SCAN_TIMEOUT,
+	                                                   G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+	g_object_class_install_property (object_class,
+	                                 PROP_CACHE_TIMEOUT,
+	                                 g_param_spec_int ("cache-timeout",
+	                                                   "Scan Timeout",
+	                                                   " Time in seconds for events to be cached (0->1000)",
+	                                                   0,
+	                                                   1000,
+	                                                   DEFAULT_CACHE_TIMEOUT,
+	                                                   G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 	/* Indexing */
 	g_object_class_install_property (object_class,
@@ -292,30 +309,6 @@ tracker_config_class_init (TrackerConfigClass *klass)
 	                                                       "Ignored files",
 	                                                       " List of files to NOT index (separator=;)",
 	                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-	g_object_class_install_property (object_class,
-	                                 PROP_CRAWLING_INTERVAL,
-	                                 g_param_spec_int ("crawling-interval",
-	                                                   "Crawling interval",
-	                                                   " Interval in days to check the filesystem is up to date in the database,"
-	                                                   " maximum is 365, default is -1.\n"
-	                                                   "   -2 = crawling is disabled entirely\n"
-	                                                   "   -1 = crawling *may* occur on startup (if not cleanly shutdown)\n"
-	                                                   "    0 = crawling is forced",
-	                                                   -2,
-	                                                   365,
-	                                                   DEFAULT_CRAWLING_INTERVAL,
-	                                                   G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-	g_object_class_install_property (object_class,
-	                                 PROP_REMOVABLE_DAYS_THRESHOLD,
-	                                 g_param_spec_int ("removable-days-threshold",
-	                                                   "Removable days threshold",
-	                                                   " Threshold in days after which files from removables devices"
-	                                                   " will be removed from database if not mounted. 0 means never, "
-	                                                   " maximum is 365.",
-	                                                   0,
-	                                                   365,
-	                                                   DEFAULT_REMOVABLE_DAYS_THRESHOLD,
-	                                                   G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
 	g_type_class_add_private (object_class, sizeof (TrackerConfigPrivate));
 }
@@ -346,6 +339,14 @@ config_set_property (GObject      *object,
 	case PROP_ENABLE_MONITORS:
 		tracker_config_set_enable_monitors (TRACKER_CONFIG (object),
 		                                    g_value_get_boolean (value));
+		break;
+	case PROP_SCAN_TIMEOUT:
+		tracker_config_set_scan_timeout (TRACKER_CONFIG (object),
+		                                 g_value_get_int (value));
+		break;
+	case PROP_CACHE_TIMEOUT:
+		tracker_config_set_cache_timeout (TRACKER_CONFIG (object),
+		                                  g_value_get_int (value));
 		break;
 
 		/* Indexing */
@@ -393,14 +394,7 @@ config_set_property (GObject      *object,
 		tracker_config_set_ignored_files (TRACKER_CONFIG (object),
 		                                  g_value_get_pointer (value));
 		break;
-	case PROP_CRAWLING_INTERVAL:
-		tracker_config_set_crawling_interval (TRACKER_CONFIG (object),
-		                                      g_value_get_int (value));
-		break;
-	case PROP_REMOVABLE_DAYS_THRESHOLD:
-		tracker_config_set_removable_days_threshold (TRACKER_CONFIG (object),
-		                                             g_value_get_int (value));
-		break;
+
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
 		break;
@@ -429,6 +423,12 @@ config_get_property (GObject    *object,
 		/* Montors */
 	case PROP_ENABLE_MONITORS:
 		g_value_set_boolean (value, priv->enable_monitors);
+		break;
+	case PROP_SCAN_TIMEOUT:
+		g_value_set_int (value, priv->scan_timeout);
+		break;
+	case PROP_CACHE_TIMEOUT:
+		g_value_set_int (value, priv->cache_timeout);
 		break;
 
 		/* Indexing */
@@ -465,12 +465,7 @@ config_get_property (GObject    *object,
 	case PROP_IGNORED_FILES:
 		g_value_set_pointer (value, priv->ignored_files);
 		break;
-	case PROP_CRAWLING_INTERVAL:
-		g_value_set_int (value, priv->crawling_interval);
-		break;
-	case PROP_REMOVABLE_DAYS_THRESHOLD:
-		g_value_set_int (value, priv->removable_days_threshold);
-		break;
+
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
 		break;
@@ -828,9 +823,9 @@ config_load (TrackerConfig *config,
 
 	file = TRACKER_CONFIG_FILE (config);
 
-	if (use_defaults) {
-		config_create_with_defaults (config, file->key_file, FALSE);
-	}
+        if (use_defaults) {
+                config_create_with_defaults (config, file->key_file, FALSE);
+        }
 
 	if (!file->file_exists) {
 		tracker_config_file_save (file);
@@ -922,7 +917,7 @@ config_load (TrackerConfig *config,
 
 			if (!equal) {
 				g_object_set (config, conversions[i].property, new_dirs, NULL);
-			}
+                        }
 
 			g_slist_foreach (new_dirs, (GFunc) g_free, NULL);
 			g_slist_free (new_dirs);
@@ -1093,6 +1088,30 @@ tracker_config_get_enable_monitors (TrackerConfig *config)
 }
 
 gint
+tracker_config_get_scan_timeout (TrackerConfig *config)
+{
+	TrackerConfigPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_CONFIG (config), DEFAULT_SCAN_TIMEOUT);
+
+	priv = TRACKER_CONFIG_GET_PRIVATE (config);
+
+	return priv->scan_timeout;
+}
+
+gint
+tracker_config_get_cache_timeout (TrackerConfig *config)
+{
+	TrackerConfigPrivate *priv;
+
+	g_return_val_if_fail (TRACKER_IS_CONFIG (config), DEFAULT_CACHE_TIMEOUT);
+
+	priv = TRACKER_CONFIG_GET_PRIVATE (config);
+
+	return priv->cache_timeout;
+}
+
+gint
 tracker_config_get_throttle (TrackerConfig *config)
 {
 	TrackerConfigPrivate *priv;
@@ -1248,30 +1267,6 @@ tracker_config_get_ignored_files (TrackerConfig *config)
 	return priv->ignored_files;
 }
 
-gint
-tracker_config_get_crawling_interval (TrackerConfig *config)
-{
-	TrackerConfigPrivate *priv;
-
-	g_return_val_if_fail (TRACKER_IS_CONFIG (config), 0);
-
-	priv = TRACKER_CONFIG_GET_PRIVATE (config);
-
-	return priv->crawling_interval;
-}
-
-gint
-tracker_config_get_removable_days_threshold (TrackerConfig *config)
-{
-	TrackerConfigPrivate *priv;
-
-	g_return_val_if_fail (TRACKER_IS_CONFIG (config), 0);
-
-	priv = TRACKER_CONFIG_GET_PRIVATE (config);
-
-	return priv->removable_days_threshold;
-}
-
 void
 tracker_config_set_verbosity (TrackerConfig *config,
                               gint           value)
@@ -1320,6 +1315,42 @@ tracker_config_set_enable_monitors (TrackerConfig *config,
 
 	priv->enable_monitors = value;
 	g_object_notify (G_OBJECT (config), "enable-monitors");
+}
+
+void
+tracker_config_set_scan_timeout (TrackerConfig *config,
+                                 gint           value)
+{
+	TrackerConfigPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_CONFIG (config));
+
+	if (!tracker_keyfile_object_validate_int (config, "scan-timeout", value)) {
+		return;
+	}
+
+	priv = TRACKER_CONFIG_GET_PRIVATE (config);
+
+	priv->scan_timeout = value;
+	g_object_notify (G_OBJECT (config), "scan-timeout");
+}
+
+void
+tracker_config_set_cache_timeout (TrackerConfig *config,
+                                  gint           value)
+{
+	TrackerConfigPrivate *priv;
+
+	g_return_if_fail (TRACKER_IS_CONFIG (config));
+
+	if (!tracker_keyfile_object_validate_int (config, "cache-timeout", value)) {
+		return;
+	}
+
+	priv = TRACKER_CONFIG_GET_PRIVATE (config);
+
+	priv->cache_timeout = value;
+	g_object_notify (G_OBJECT (config), "cache-timeout");
 }
 
 void
@@ -1428,8 +1459,8 @@ rebuild_filtered_lists (TrackerConfig *config)
 
 	if (priv->index_single_directories_unfiltered) {
 		priv->index_single_directories =
-			tracker_path_list_filter_duplicates (priv->index_single_directories_unfiltered,
-			                                     ".", FALSE);
+		        tracker_path_list_filter_duplicates (priv->index_single_directories_unfiltered,
+		                                             ".", FALSE);
 	}
 
 	if (!tracker_gslist_with_string_data_equal (old_list, priv->index_single_directories)) {
@@ -1464,7 +1495,7 @@ rebuild_filtered_lists (TrackerConfig *config)
 		new_list = g_slist_reverse (new_list);
 
 		priv->index_recursive_directories =
-			tracker_path_list_filter_duplicates (new_list, ".", TRUE);
+		        tracker_path_list_filter_duplicates (new_list, ".", TRUE);
 
 		g_slist_free (new_list);
 	}
@@ -1485,7 +1516,7 @@ tracker_config_set_index_recursive_directories (TrackerConfig *config,
 {
 	TrackerConfigPrivate *priv;
 	GSList *l;
-	gboolean equal;
+        gboolean equal;
 
 	g_return_if_fail (TRACKER_IS_CONFIG (config));
 
@@ -1493,7 +1524,7 @@ tracker_config_set_index_recursive_directories (TrackerConfig *config,
 
 	l = priv->index_recursive_directories_unfiltered;
 
-	equal = tracker_gslist_with_string_data_equal (roots, l);
+        equal = tracker_gslist_with_string_data_equal (roots, l);
 
 	if (!roots) {
 		priv->index_recursive_directories_unfiltered = NULL;
@@ -1505,11 +1536,11 @@ tracker_config_set_index_recursive_directories (TrackerConfig *config,
 	g_slist_foreach (l, (GFunc) g_free, NULL);
 	g_slist_free (l);
 
-	if (equal) {
-		return;
-	}
+        if (equal) {
+                return;
+        }
 
-	rebuild_filtered_lists (config);
+        rebuild_filtered_lists (config);
 }
 
 void
@@ -1518,7 +1549,7 @@ tracker_config_set_index_single_directories (TrackerConfig *config,
 {
 	TrackerConfigPrivate *priv;
 	GSList *l;
-	gboolean equal;
+        gboolean equal;
 
 	g_return_if_fail (TRACKER_IS_CONFIG (config));
 
@@ -1526,7 +1557,7 @@ tracker_config_set_index_single_directories (TrackerConfig *config,
 
 	l = priv->index_single_directories_unfiltered;
 
-	equal = tracker_gslist_with_string_data_equal (roots, l);
+        equal = tracker_gslist_with_string_data_equal (roots, l);
 
 	if (!roots) {
 		priv->index_single_directories_unfiltered = NULL;
@@ -1538,11 +1569,11 @@ tracker_config_set_index_single_directories (TrackerConfig *config,
 	g_slist_foreach (l, (GFunc) g_free, NULL);
 	g_slist_free (l);
 
-	if (equal) {
-		return;
-	}
+        if (equal) {
+                return;
+        }
 
-	rebuild_filtered_lists (config);
+        rebuild_filtered_lists (config);
 }
 
 void
@@ -1551,7 +1582,7 @@ tracker_config_set_ignored_directories (TrackerConfig *config,
 {
 	TrackerConfigPrivate *priv;
 	GSList *l;
-	gboolean equal;
+        gboolean equal;
 
 	g_return_if_fail (TRACKER_IS_CONFIG (config));
 
@@ -1559,7 +1590,7 @@ tracker_config_set_ignored_directories (TrackerConfig *config,
 
 	l = priv->ignored_directories;
 
-	equal = tracker_gslist_with_string_data_equal (roots, l);
+        equal = tracker_gslist_with_string_data_equal (roots, l);
 
 	if (!roots) {
 		priv->ignored_directories = NULL;
@@ -1571,9 +1602,9 @@ tracker_config_set_ignored_directories (TrackerConfig *config,
 	g_slist_foreach (l, (GFunc) g_free, NULL);
 	g_slist_free (l);
 
-	if (equal) {
-		return;
-	}
+        if (equal) {
+                return;
+        }
 
 	/* Re-set up the GPatternSpec list */
 	config_set_ignored_directory_conveniences (config);
@@ -1587,7 +1618,7 @@ tracker_config_set_ignored_directories_with_content (TrackerConfig *config,
 {
 	TrackerConfigPrivate *priv;
 	GSList *l;
-	gboolean equal;
+        gboolean equal;
 
 	g_return_if_fail (TRACKER_IS_CONFIG (config));
 
@@ -1595,7 +1626,7 @@ tracker_config_set_ignored_directories_with_content (TrackerConfig *config,
 
 	l = priv->ignored_directories_with_content;
 
-	equal = tracker_gslist_with_string_data_equal (roots, l);
+        equal = tracker_gslist_with_string_data_equal (roots, l);
 
 	if (!roots) {
 		priv->ignored_directories_with_content = NULL;
@@ -1607,9 +1638,9 @@ tracker_config_set_ignored_directories_with_content (TrackerConfig *config,
 	g_slist_foreach (l, (GFunc) g_free, NULL);
 	g_slist_free (l);
 
-	if (equal) {
-		return;
-	}
+        if (equal) {
+                return;
+        }
 
 	g_object_notify (G_OBJECT (config), "ignored-directories-with-content");
 }
@@ -1620,7 +1651,7 @@ tracker_config_set_ignored_files (TrackerConfig *config,
 {
 	TrackerConfigPrivate *priv;
 	GSList *l;
-	gboolean equal;
+        gboolean equal;
 
 	g_return_if_fail (TRACKER_IS_CONFIG (config));
 
@@ -1628,7 +1659,7 @@ tracker_config_set_ignored_files (TrackerConfig *config,
 
 	l = priv->ignored_files;
 
-	equal = tracker_gslist_with_string_data_equal (files, l);
+        equal = tracker_gslist_with_string_data_equal (files, l);
 
 	if (!files) {
 		priv->ignored_files = NULL;
@@ -1640,50 +1671,14 @@ tracker_config_set_ignored_files (TrackerConfig *config,
 	g_slist_foreach (l, (GFunc) g_free, NULL);
 	g_slist_free (l);
 
-	if (equal) {
-		return;
-	}
+        if (equal) {
+                return;
+        }
 
 	/* Re-set up the GPatternSpec list */
 	config_set_ignored_file_conveniences (config);
 
 	g_object_notify (G_OBJECT (config), "ignored-files");
-}
-
-void
-tracker_config_set_crawling_interval (TrackerConfig *config,
-                                      gint           interval)
-{
-	TrackerConfigPrivate *priv;
-
-	g_return_if_fail (TRACKER_IS_CONFIG (config));
-
-	if (!tracker_keyfile_object_validate_int (config, "crawling-interval", interval)) {
-		return;
-	}
-
-	priv = TRACKER_CONFIG_GET_PRIVATE (config);
-
-	priv->crawling_interval = interval;
-	g_object_notify (G_OBJECT (config), "crawling-interval");
-}
-
-void
-tracker_config_set_removable_days_threshold (TrackerConfig *config,
-                                             gint           value)
-{
-	TrackerConfigPrivate *priv;
-
-	g_return_if_fail (TRACKER_IS_CONFIG (config));
-
-	if (!tracker_keyfile_object_validate_int (config, "removable-days-threshold", value)) {
-		return;
-	}
-
-	priv = TRACKER_CONFIG_GET_PRIVATE (config);
-
-	priv->removable_days_threshold = value;
-	g_object_notify (G_OBJECT (config), "removable-days-threshold");
 }
 
 /*

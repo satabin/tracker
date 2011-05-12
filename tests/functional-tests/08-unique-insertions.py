@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # Copyright (C) 2010, Nokia <ivan.frade@nokia.com>
 #
@@ -17,25 +17,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-"""
-Replicate the behaviour of the miner inserting information in the store.
-"""
+
 import dbus
 import unittest
 import random
 
-from common.utils import configuration as cfg
-import unittest2 as ut
-#import unittest as ut
-from common.utils.storetest import CommonTrackerStoreTest as CommonTrackerStoreTest
+TRACKER = 'org.freedesktop.Tracker1'
+TRACKER_OBJ = '/org/freedesktop/Tracker1/Resources'
+RESOURCES_IFACE = "org.freedesktop.Tracker1.Resources"
 
-class TestMinerInsertBehaviour (CommonTrackerStoreTest):
-    """
-    Mimic the behaviour of the miner, removing the previous information of the resource
-    and inserting a new one.
-    """
+class TestFTSFunctions (unittest.TestCase):
 
-    def test_miner_unique_insertion (self):
+    def setUp (self):
+        bus = dbus.SessionBus ()
+        tracker = bus.get_object (TRACKER, TRACKER_OBJ)
+        self.resources = dbus.Interface (tracker,
+                                         dbus_interface=RESOURCES_IFACE);
+
+    def test_unique_insertion (self):
         """
         We actually can't test tracker-miner-fs, so we mimick its behavior in this test
         1. Insert one resource
@@ -47,7 +46,7 @@ class TestMinerInsertBehaviour (CommonTrackerStoreTest):
         resource = 'graph://test/resource/1'
 
         insert_sparql = """
-        DELETE { ?r a rdfs:Resource } WHERE { GRAPH <graph://test/resource/1> { ?r a rdfs:Resource } }
+        DROP GRAPH <graph://test/resource/1>
         INSERT INTO <graph://test/resource/1> {
            _:resource a nie:DataObject ;
                       nie:url "%s" .
@@ -59,27 +58,27 @@ class TestMinerInsertBehaviour (CommonTrackerStoreTest):
         """ % resource
 
         delete_sparql = """
-        DELETE { ?r a rdfs:Resource } WHERE { GRAPH <graph://test/resource/1> { ?r a rdfs:Resource } }
+        DROP GRAPH <graph://test/resource/1>
         """
 
         ''' First insertion '''
-        self.tracker.update (insert_sparql)
+        self.resources.SparqlUpdate (insert_sparql)
 
-        results = self.tracker.query (select_sparql)
+        results = self.resources.SparqlQuery (select_sparql)
         self.assertEquals (len(results), 1)
 
         ''' Second insertion / update '''
-        self.tracker.update (insert_sparql)
+        self.resources.SparqlUpdate (insert_sparql)
 
-        results = self.tracker.query (select_sparql)
+        results = self.resources.SparqlQuery (select_sparql)
         self.assertEquals (len(results), 1)
 
         ''' Clean up '''
-        self.tracker.update (delete_sparql)
+        self.resources.SparqlUpdate (delete_sparql)
 
-        results = self.tracker.query (select_sparql)
+        results = self.resources.SparqlQuery (select_sparql)
         self.assertEquals (len(results), 0)
 
 
 if __name__ == '__main__':
-    ut.main()
+    unittest.main()

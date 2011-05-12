@@ -40,13 +40,9 @@
 
 #include <glib/gstdio.h>
 
-#endif /* HAVE_IOPRIO */
-
 #include <libtracker-common/tracker-log.h>
 
 #include "tracker-ioprio.h"
-
-#ifdef HAVE_IOPRIO
 
 #ifndef __NR_ioprio_set
 
@@ -141,7 +137,6 @@ tracker_ioprio_init (void)
 }
 
 #else  /* HAVE_IOPRIO */
-
 
 void
 tracker_ioprio_init (void)

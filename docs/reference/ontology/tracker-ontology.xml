@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <chapter id='tracker-ontology'>
-<title>Tracker-specific annotations Ontology: Internal tracker properties</title>
+<title>TRACKER Ontology</title>
 <varlistentry>
   <term>Authors:</term>
   <listitem>
@@ -38,7 +38,7 @@
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-DataSource'>nie:DataSource</link>, <link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nie-DataSource'>nie:DataSource</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -46,7 +46,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='tracker-isOptical'>tracker:isOptical</link>, <link linkend='tracker-isRemovable'>tracker:isRemovable</link>, <link linkend='tracker-mountPoint'>tracker:mountPoint</link>, <link linkend='tracker-unmountDate'>tracker:unmountDate</link>, <link linkend='tracker-isMounted'>tracker:isMounted</link>, </simpara></listitem>
+<listitem><simpara><link linkend='tracker-mountPoint'>tracker:mountPoint</link>, <link linkend='tracker-unmountDate'>tracker:unmountDate</link>, <link linkend='tracker-isMounted'>tracker:isMounted</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -114,36 +114,6 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='tracker-isRemovable'>
-<title>tracker:isRemovable</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='tracker-Volume'>tracker:Volume</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
 <refsect2 id='tracker-notify'>
 <title>tracker:notify</title>
 <variablelist>
@@ -154,36 +124,6 @@
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
 <listitem><simpara><link linkend='rdfs-Class'>rdfs:Class</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='tracker-forceJournal'>
-<title>tracker:forceJournal</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='rdf-Property'>rdf:Property</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -256,36 +196,6 @@
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='tracker-isOptical'>
-<title>tracker:isOptical</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='tracker-Volume'>tracker:Volume</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>

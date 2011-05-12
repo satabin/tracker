@@ -3,37 +3,33 @@
 /* Include functional tests in the installation */
 #undef DIST_FUNCTIONAL_TESTS
 
-/* Define to 1 if translation of program messages to the user's native
-   language is requested. */
+/* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
-
-/* Use new evolution-shell API */
-#undef EVOLUTION_SHELL_2_91
 
 /* The gettext translation domain */
 #undef GETTEXT_PACKAGE
 
-/* Guarantee existence of certain metadata */
-#undef GUARANTEE_METADATA
+/* Define to 1 if you have the `bind_textdomain_codeset' function. */
+#undef HAVE_BIND_TEXTDOMAIN_CODESET
 
-/* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
-   CoreFoundation framework. */
-#undef HAVE_CFLOCALECOPYCURRENT
-
-/* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
-   the CoreFoundation framework. */
-#undef HAVE_CFPREFERENCESCOPYAPPVALUE
-
-/* Define if the GNU dcgettext() function is already present or preinstalled.
-   */
+/* Define to 1 if you have the `dcgettext' function. */
 #undef HAVE_DCGETTEXT
 
 /* Define to 1 if you have the declaration of `posix_fadvise', and to 0 if you
    don't. */
 #undef HAVE_DECL_POSIX_FADVISE
 
+/* Define if we have DEVKIT_POWER */
+#undef HAVE_DEVKIT_POWER
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
+
+/* Define if we have eds 2.29.1 or newer */
+#undef HAVE_EDS_2_29_1
+
+/* Define if we have eds 2.31.2 or newer */
+#undef HAVE_EDS_2_31_2
 
 /* Enca language detection aid */
 #undef HAVE_ENCA
@@ -62,14 +58,8 @@
 /* Define if we have gtk-doc (with gtk-doc) */
 #undef HAVE_GTK_DOC
 
-/* Define if we have GUPnP-DLNA */
-#undef HAVE_GUPNP_DLNA
-
 /* Define if we have HAL */
 #undef HAVE_HAL
-
-/* Define if you have the iconv() function and it works. */
-#undef HAVE_ICONV
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
@@ -77,20 +67,23 @@
 /* Define if we have ioprio */
 #undef HAVE_IOPRIO
 
+/* Define if your <locale.h> file defines LC_MESSAGES. */
+#undef HAVE_LC_MESSAGES
+
 /* Define if we have libexif */
 #undef HAVE_LIBEXIF
 
 /* Define if we have libflac */
 #undef HAVE_LIBFLAC
 
-/* Define if we have libgif */
-#undef HAVE_LIBGIF
-
 /* Define if we have libgsf */
 #undef HAVE_LIBGSF
 
-/* libicu Unicode support library */
-#undef HAVE_LIBICU
+/* Define to 1 if you have the `id3' library (-lid3). */
+#undef HAVE_LIBID3
+
+/* Have libinotify */
+#undef HAVE_LIBINOTIFY
 
 /* Define if we have libiptcdata */
 #undef HAVE_LIBIPTCDATA
@@ -98,17 +91,11 @@
 /* Define if we have libjpeg */
 #undef HAVE_LIBJPEG
 
-/* Define to 1 if you have the `sqlite3' library (-lsqlite3). */
-#undef HAVE_LIBSQLITE3
-
 /* Define if we have libstreamanalyzer */
 #undef HAVE_LIBSTREAMANALYZER
 
 /* Define if we have libtiff */
 #undef HAVE_LIBTIFF
-
-/* libunistring Unicode support library */
-#undef HAVE_LIBUNISTRING
 
 /* Define if we have libvorbis */
 #undef HAVE_LIBVORBIS
@@ -122,32 +109,29 @@
 /* Define to 1 if you have the <linux/unistd.h> header file. */
 #undef HAVE_LINUX_UNISTD_H
 
-/* Define if we enable Maemo specific features */
-#undef HAVE_MAEMO
-
-/* Define if we have meegotouch */
-#undef HAVE_MEEGOTOUCH
+/* Define to 1 if you have the <locale.h> header file. */
+#undef HAVE_LOCALE_H
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
-/* Define if we have NetworkManager for network status detection */
-#undef HAVE_NETWORK_MANAGER
+/* Define if we have Nautilus extension */
+#undef HAVE_NAUTILUS_EXTENSION
 
 /* Define if we have poppler-glib */
-#undef HAVE_POPPLER
+#undef HAVE_POPPLER_GLIB
+
+/* Define if we have poppler-glib 0.14 or older */
+#undef HAVE_POPPLER_GLIB_0_14
 
 /* Define to 1 if you have the `posix_fadvise' function. */
 #undef HAVE_POSIX_FADVISE
 
-/* Define if we have Qt */
-#undef HAVE_QT
+/* Define if we have QUILL */
+#undef HAVE_QUILL
 
-/* Define to 1 if you have the <sqlite3.h> header file. */
-#undef HAVE_SQLITE3_H
-
-/* Define to 1 if you have the `statvfs64' function. */
-#undef HAVE_STATVFS64
+/* Define to 1 if you have the <sitdlib.h> header file. */
+#undef HAVE_SITDLIB_H
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
@@ -161,8 +145,8 @@
 /* Define to 1 if you have the <string.h> header file. */
 #undef HAVE_STRING_H
 
-/* Define to 1 if you have the <sys/statvfs.h> header file. */
-#undef HAVE_SYS_STATVFS_H
+/* Define to 1 if you have the <sys/inotify.h> header file. */
+#undef HAVE_SYS_INOTIFY_H
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H
@@ -176,20 +160,29 @@
 /* Define if we have Totem PL parser */
 #undef HAVE_TOTEM_PL_PARSER
 
-/* Define to 0 if tracker FTS is not compiled */
-#undef HAVE_TRACKER_FTS
+/* Define to 0 if tracker explorer is not compiled */
+#undef HAVE_TRACKER_EXPLORER
 
-/* Define to 0 if tracker-needle is not compiled */
-#undef HAVE_TRACKER_NEEDLE
+/* Define to 0 if tracker preferences is not compiled */
+#undef HAVE_TRACKER_PREFERENCES
+
+/* Define to 0 if t-s-b is not compiled */
+#undef HAVE_TRACKER_SEARCH_BAR
+
+/* Define to 0 if t-s-t is not compiled */
+#undef HAVE_TRACKER_SEARCH_TOOL
+
+/* Define to 0 if status icon is not compiled */
+#undef HAVE_TRACKER_STATUS_ICON
+
+/* Define if we have UNAC for accent stripping */
+#undef HAVE_UNAC
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
 /* Define if we have GLib unit test framework */
 #undef HAVE_UNIT_TEST
-
-/* Define if we have UPOWER */
-#undef HAVE_UPOWER
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
@@ -222,23 +215,8 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
-/* Define to the Tracker binary age */
-#undef TRACKER_BINARY_AGE
-
 /* Use tagreadbin in gstreamer extraction */
 #undef TRACKER_EXTRACT_GSTREAMER_USE_TAGREADBIN
-
-/* Define to the Tracker interface age */
-#undef TRACKER_INTERFACE_AGE
-
-/* Define to the Tracker major version */
-#undef TRACKER_MAJOR_VERSION
-
-/* Define to the Tracker micro version */
-#undef TRACKER_MICRO_VERSION
-
-/* Define to the Tracker minor version */
-#undef TRACKER_MINOR_VERSION
 
 /* Define that Tracker will try to use external video players */
 #undef USING_EXTERNAL_VIDEO_PLAYER

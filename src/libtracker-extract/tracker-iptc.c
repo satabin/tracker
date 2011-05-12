@@ -48,7 +48,7 @@
  *
  * The full IIM specification includes a complex data structure and a
  * set of metadata definitions.
- *
+ * 
  * Although IIM was intended for use with all types of news items —
  * including simple text articles — a subset found broad worldwide
  * acceptance as the standard embedded metadata used by news and
@@ -80,20 +80,11 @@ fix_iptc_orientation (const gchar *orientation)
 }
 
 static void
-foreach_dataset (IptcDataSet *dataset,
+foreach_dataset (IptcDataSet *dataset, 
                  void        *user_data)
 {
 	TrackerIptcData *data = user_data;
 	gchar mbuffer[1024];
-
-	/* The meaning of dataset->tag DEPENDS on the value of dataset->record.
-	 * See iptc-tag.h for the relationship.
-	 *
-	 * Now, We only want record-2 tags, otherwise we'll end up mixing
-	 * for example IPTC_TAG_CITY and IPTC_TAG_CHARACTER_SET, which BOTH
-	 * have a value of 90. */
-	if (dataset->record != IPTC_RECORD_APP_2)
-		return;
 
 	switch (dataset->tag) {
 	case IPTC_TAG_KEYWORDS:
@@ -111,8 +102,8 @@ foreach_dataset (IptcDataSet *dataset,
 	case IPTC_TAG_DATE_CREATED:
 		if (!data->date_created) {
 			iptc_dataset_get_as_str (dataset, mbuffer, 1024);
-			/* From: ex; date "2007 04 15"
-			 * To : ex. "2007-04-15T00:00:00+0200 where +0200 is offset w.r.t gmt */
+			/* From: ex; date "2007:04:15 15:35:58"
+			 * To : ex. "2007-04-15T17:35:58+0200 where +0200 is localtime */
 			data->date_created = tracker_date_format_to_iso8601 (mbuffer, IPTC_DATE_FORMAT);
 		}
 		break;
@@ -194,15 +185,36 @@ foreach_dataset (IptcDataSet *dataset,
 
 #endif /* HAVE_LIBIPTCDATA */
 
-static gboolean
-parse_iptc (const unsigned char *buffer,
-            size_t               len,
-            const gchar         *uri,
-            TrackerIptcData     *data)
+/**
+ * tracker_iptc_read:
+ * @buffer: a chunk of data with iptc data in it.
+ * @len: the size of @buffer.
+ * @uri: the URI this is related to.
+ * @data: a pointer to a TrackerIptcData struture to populate.
+ *
+ * This function takes @len bytes of @buffer and runs it through the
+ * IPTC library. The result is that @data is populated with the IPTC
+ * data found in @uri.
+ *
+ * Returns: %TRUE if the @data was populated successfully, otherwise
+ * %FALSE is returned.
+ *
+ * Since: 0.8
+ **/
+gboolean
+tracker_iptc_read (const unsigned char *buffer,
+                   size_t               len,
+                   const gchar         *uri,
+                   TrackerIptcData     *data)
 {
 #ifdef HAVE_LIBIPTCDATA
 	IptcData *iptc;
 #endif /* HAVE_LIBIPTCDATA */
+
+	g_return_val_if_fail (buffer != NULL, FALSE);
+	g_return_val_if_fail (len > 0, FALSE);
+	g_return_val_if_fail (uri != NULL, FALSE);
+	g_return_val_if_fail (data != NULL, FALSE);
 
 	memset (data, 0, sizeof (TrackerIptcData));
 
@@ -226,106 +238,4 @@ parse_iptc (const unsigned char *buffer,
 #endif /* HAVE_LIBIPTCDATA */
 
 	return TRUE;
-}
-
-#ifndef TRACKER_DISABLE_DEPRECATED
-
-/**
- * tracker_iptc_read:
- * @buffer: a chunk of data with iptc data in it.
- * @len: the size of @buffer.
- * @uri: the URI this is related to.
- * @data: a pointer to a TrackerIptcData struture to populate.
- *
- * This function takes @len bytes of @buffer and runs it through the
- * IPTC library. The result is that @data is populated with the IPTC
- * data found in @uri.
- *
- * Returns: %TRUE if the @data was populated successfully, otherwise
- * %FALSE is returned.
- *
- * Since: 0.8
- *
- * Deprecated: 0.9. Use tracker_iptc_new() instead.
- **/
-gboolean
-tracker_iptc_read (const unsigned char *buffer,
-                   size_t               len,
-                   const gchar         *uri,
-                   TrackerIptcData     *data)
-{
-	g_return_val_if_fail (buffer != NULL, FALSE);
-	g_return_val_if_fail (len > 0, FALSE);
-	g_return_val_if_fail (uri != NULL, FALSE);
-	g_return_val_if_fail (data != NULL, FALSE);
-
-	return parse_iptc (buffer, len, uri, data);
-}
-
-#endif /* TRACKER_DISABLE_DEPRECATED */
-
-/**
- * tracker_iptc_new:
- * @buffer: a chunk of data with iptc data in it.
- * @len: the size of @buffer.
- * @uri: the URI this is related to.
- *
- * This function takes @len bytes of @buffer and runs it through the
- * IPTC library.
- *
- * Returns: a newly allocated #TrackerIptcData struct if IPTC data was
- * found, %NULL otherwise. Free the returned struct with
- * tracker_iptc_free().
- *
- * Since: 0.10
- **/
-TrackerIptcData *
-tracker_iptc_new (const guchar *buffer,
-                  gsize         len,
-                  const gchar  *uri)
-{
-	TrackerIptcData *data;
-
-	g_return_val_if_fail (buffer != NULL, NULL);
-	g_return_val_if_fail (len > 0, NULL);
-	g_return_val_if_fail (uri != NULL, NULL);
-
-	data = g_new0 (TrackerIptcData, 1);
-
-	if (!parse_iptc (buffer, len, uri, data)) {
-		tracker_iptc_free (data);
-		return NULL;
-	}
-
-	return data;
-}
-
-/**
- * tracker_iptc_free:
- * @data: a #TrackerIptcData
- *
- * Frees @data and all #TrackerIptcData members. %NULL will produce a
- * a warning.
- *
- * Since: 0.10
- **/
-void
-tracker_iptc_free (TrackerIptcData *data)
-{
-	g_return_if_fail (data != NULL);
-
-	g_free (data->keywords);
-	g_free (data->date_created);
-	g_free (data->byline);
-	g_free (data->credit);
-	g_free (data->copyright_notice);
-	g_free (data->image_orientation);
-	g_free (data->byline_title);
-	g_free (data->city);
-	g_free (data->state);
-	g_free (data->sublocation);
-	g_free (data->country_name);
-	g_free (data->contact);
-
-	g_free (data);
 }

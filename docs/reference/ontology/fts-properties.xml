@@ -90,11 +90,6 @@
 </tr>
 <tr>
   <td>
-<link linkend='nco-district'>nco:district</link>,   </td>
-  <td>2</td>
-</tr>
-<tr>
-  <td>
 <link linkend='nco-nameFamily'>nco:nameFamily</link>,   </td>
   <td>4</td>
 </tr>
@@ -147,11 +142,6 @@
   <td>
 <link linkend='nco-fullname'>nco:fullname</link>,   </td>
   <td>6</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nco-county'>nco:county</link>,   </td>
-  <td>2</td>
 </tr>
 <tr>
   <td>
@@ -242,11 +232,6 @@
   <td>
 <link linkend='nie-comment'>nie:comment</link>,   </td>
   <td>2</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nie-subject'>nie:subject</link>,   </td>
-  <td>5</td>
 </tr>
 <tr>
   <td>

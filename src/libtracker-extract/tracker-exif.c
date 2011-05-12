@@ -49,7 +49,7 @@
  **/
 
 static gchar *
-get_date (ExifData *exif,
+get_date (ExifData *exif, 
           ExifTag   tag)
 {
 	ExifEntry *entry = exif_data_get_entry (exif, tag);
@@ -59,7 +59,7 @@ get_date (ExifData *exif,
 
 		exif_entry_get_value (entry, buf, 1024);
 		/* From: ex; date "2007:04:15 15:35:58"
-		 * To  : ex. "2007-04-15T17:35:58+0200 where +0200 is offset w.r.t gmt */
+		 * To  : ex. "2007-04-15T17:35:58+0200 where +0200 is localtime */
 		return tracker_date_format_to_iso8601 (buf, EXIF_DATE_FORMAT);
 	}
 
@@ -67,7 +67,7 @@ get_date (ExifData *exif,
 }
 
 static gchar *
-get_focal_length (ExifData *exif,
+get_focal_length (ExifData *exif, 
                   ExifTag   tag)
 {
 	ExifEntry *entry = exif_data_get_entry (exif, tag);
@@ -117,7 +117,7 @@ get_flash (ExifData *exif,
 }
 
 static gchar *
-get_fnumber (ExifData *exif,
+get_fnumber (ExifData *exif, 
              ExifTag   tag)
 {
 	ExifEntry *entry = exif_data_get_entry (exif, tag);
@@ -147,7 +147,7 @@ get_fnumber (ExifData *exif,
 }
 
 static gchar *
-get_exposure_time (ExifData *exif,
+get_exposure_time (ExifData *exif, 
                    ExifTag   tag)
 {
 	ExifEntry *entry = exif_data_get_entry (exif, tag);
@@ -183,7 +183,7 @@ get_exposure_time (ExifData *exif,
 }
 
 static gchar *
-get_orientation (ExifData *exif,
+get_orientation (ExifData *exif, 
                  ExifTag   tag)
 {
 	ExifEntry *entry = exif_data_get_entry (exif, tag);
@@ -255,7 +255,7 @@ get_metering_mode (ExifData *exif,
 }
 
 static gchar *
-get_white_balance (ExifData *exif,
+get_white_balance (ExifData *exif, 
                    ExifTag   tag)
 {
 	ExifEntry *entry = exif_data_get_entry (exif, tag);
@@ -278,26 +278,8 @@ get_white_balance (ExifData *exif,
 	return NULL;
 }
 
-
-static gint
-get_int (ExifData *exif,
-         ExifTag   tag)
-{
-	ExifEntry *entry = exif_data_get_entry (exif, tag);
-
-	if (entry) {
-		ExifByteOrder order;
-
-		order = exif_data_get_byte_order (exif);
-		return (gint) exif_get_short (entry->data, order);
-	}
-
-	return -1;
-}
-
-
 static gchar *
-get_value (ExifData *exif,
+get_value (ExifData *exif, 
            ExifTag   tag)
 {
 	ExifEntry *entry = exif_data_get_entry (exif, tag);
@@ -315,16 +297,37 @@ get_value (ExifData *exif,
 
 #endif /* HAVE_LIBEXIF */
 
-static gboolean
-parse_exif (const unsigned char *buffer,
-            size_t               len,
-            const gchar         *uri,
-            TrackerExifData     *data)
+/**
+ * tracker_exif_read:
+ * @buffer: a chunk of data with exif data in it.
+ * @len: the size of @buffer.
+ * @uri: the URI this is related to.
+ * @data: a pointer to a TrackerExifData struture to populate.
+ *
+ * This function takes @len bytes of @buffer and runs it through the
+ * EXIF library. The result is that @data is populated with the EXIF
+ * data found in @uri.
+ *
+ * Returns: %TRUE if the @data was populated successfully, otherwise
+ * %FALSE is returned.
+ *
+ * Since: 0.8
+ **/
+gboolean
+tracker_exif_read (const unsigned char *buffer,
+                   size_t               len,
+                   const gchar         *uri,
+                   TrackerExifData     *data)
 {
 #ifdef HAVE_LIBEXIF
 	ExifData *exif;
 #endif
 
+	g_return_val_if_fail (buffer != NULL, FALSE);
+	g_return_val_if_fail (len > 0, FALSE);
+	g_return_val_if_fail (uri != NULL, FALSE);
+	g_return_val_if_fail (data != NULL, FALSE);
+	
 	memset (data, 0, sizeof (TrackerExifData));
 
 #ifdef HAVE_LIBEXIF
@@ -394,12 +397,6 @@ parse_exif (const unsigned char *buffer,
 	if (!data->software)
 		data->software = get_value (exif, EXIF_TAG_SOFTWARE);
 
-	if (!data->resolution_unit)
-		data->resolution_unit = get_int (exif, EXIF_TAG_RESOLUTION_UNIT);
-	if (!data->x_resolution)
-		data->x_resolution = get_value (exif, EXIF_TAG_X_RESOLUTION);
-	if (!data->y_resolution)
-		data->y_resolution = get_value (exif, EXIF_TAG_Y_RESOLUTION);
 
 	exif_data_free (exif);
 #endif /* HAVE_LIBEXIF */
@@ -407,114 +404,3 @@ parse_exif (const unsigned char *buffer,
 	return TRUE;
 }
 
-#ifndef TRACKER_DISABLE_DEPRECATED
-
-/**
- * tracker_exif_read:
- * @buffer: a chunk of data with exif data in it.
- * @len: the size of @buffer.
- * @uri: the URI this is related to.
- * @data: a pointer to a TrackerExifData struture to populate.
- *
- * This function takes @len bytes of @buffer and runs it through the
- * EXIF library. The result is that @data is populated with the EXIF
- * data found in @uri.
- *
- * Returns: %TRUE if the @data was populated successfully, otherwise
- * %FALSE is returned.
- *
- * Since: 0.8
- *
- * Deprecated: 0.9. Use tracker_exif_new() instead.
- **/
-gboolean
-tracker_exif_read (const unsigned char *buffer,
-                   size_t               len,
-                   const gchar         *uri,
-                   TrackerExifData     *data)
-{
-	g_return_val_if_fail (buffer != NULL, FALSE);
-	g_return_val_if_fail (len > 0, FALSE);
-	g_return_val_if_fail (uri != NULL, FALSE);
-	g_return_val_if_fail (data != NULL, FALSE);
-
-	return parse_exif (buffer, len, uri, data);
-}
-
-#endif /* TRACKER_DISABLE_DEPRECATED */
-
-/**
- * tracker_exif_new:
- * @buffer: a chunk of data with exif data in it.
- * @len: the size of @buffer.
- * @uri: the URI this is related to.
- *
- * This function takes @len bytes of @buffer and runs it through the
- * EXIF library.
- *
- * Returns: a newly allocated #TrackerExifData struct if EXIF data was
- * found, %NULL otherwise. Free the returned struct with tracker_exif_free().
- *
- * Since: 0.10
- **/
-TrackerExifData *
-tracker_exif_new (const guchar *buffer,
-                  size_t        len,
-                  const gchar  *uri)
-{
-	TrackerExifData *data;
-
-	g_return_val_if_fail (buffer != NULL, NULL);
-	g_return_val_if_fail (len > 0, NULL);
-	g_return_val_if_fail (uri != NULL, NULL);
-
-	data = g_new0 (TrackerExifData, 1);
-
-	if (!parse_exif (buffer, len, uri, data)) {
-		tracker_exif_free (data);
-		return NULL;
-	}
-
-	return data;
-}
-
-/**
- * tracker_exif_free:
- * @data: a #TrackerExifData
- *
- * Frees @data and all #TrackerExifData members. %NULL will produce a
- * a warning.
- *
- * Since: 0.10
- **/
-void
-tracker_exif_free (TrackerExifData *data)
-{
-	g_return_if_fail (data != NULL);
-
-	g_free (data->y_dimension);
-	g_free (data->x_dimension);
-	g_free (data->image_width);
-	g_free (data->document_name);
-	g_free (data->time);
-	g_free (data->time_original);
-	g_free (data->artist);
-	g_free (data->user_comment);
-	g_free (data->description);
-	g_free (data->make);
-	g_free (data->model);
-	g_free (data->orientation);
-	g_free (data->exposure_time);
-	g_free (data->fnumber);
-	g_free (data->flash);
-	g_free (data->focal_length);
-	g_free (data->iso_speed_ratings);
-	g_free (data->metering_mode);
-	g_free (data->white_balance);
-	g_free (data->copyright);
-	g_free (data->software);
-	g_free (data->x_resolution);
-	g_free (data->y_resolution);
-
-	g_free (data);
-}

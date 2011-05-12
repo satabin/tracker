@@ -34,10 +34,6 @@
 #include <limits.h>
 #include <errno.h>
 
-#ifdef __linux__
-#include <sys/statfs.h>
-#endif
-
 #include <glib.h>
 #include <gio/gio.h>
 
@@ -51,7 +47,7 @@
 static GHashTable *file_locks = NULL;
 
 FILE *
-tracker_file_open (const gchar *path,
+tracker_file_open (const gchar *uri,
                    const gchar *how,
                    gboolean     sequential)
 {
@@ -59,16 +55,16 @@ tracker_file_open (const gchar *path,
 	gboolean  readonly;
 	int       flags;
 
-	g_return_val_if_fail (path != NULL, NULL);
+	g_return_val_if_fail (uri != NULL, NULL);
 	g_return_val_if_fail (how != NULL, NULL);
 
-	file = fopen (path, how);
+	file = fopen (uri, how);
 	if (!file) {
 		return NULL;
 	}
 
 	/* Are we opening for readonly? */
-	readonly = !strstr (path, "r+") && strchr (path, 'r');
+	readonly = !strstr (uri, "r+") && strchr (uri, 'r');
 
 	if (readonly) {
 		int fd;
@@ -92,12 +88,6 @@ tracker_file_close (FILE     *file,
 {
 	g_return_if_fail (file != NULL);
 
-#ifdef HAVE_POSIX_FADVISE
-	if (!need_again_soon) {
-		posix_fadvise (fileno (file), 0, 0, POSIX_FADV_DONTNEED);
-	}
-#endif /* HAVE_POSIX_FADVISE */
-
 	fclose (file);
 }
 
@@ -119,13 +109,9 @@ tracker_file_get_size (const gchar *path)
 	                          &error);
 
 	if (G_UNLIKELY (error)) {
-		gchar *uri;
-
-		uri = g_file_get_uri (file);
 		g_message ("Could not get size for '%s', %s",
-		           uri,
+		           path,
 		           error->message);
-		g_free (uri);
 		g_error_free (error);
 		size = 0;
 	} else {
@@ -138,14 +124,17 @@ tracker_file_get_size (const gchar *path)
 	return size;
 }
 
-static
 guint64
-file_get_mtime (GFile *file)
+tracker_file_get_mtime (const gchar *path)
 {
 	GFileInfo *info;
+	GFile     *file;
 	GError    *error = NULL;
 	guint64    mtime;
 
+	g_return_val_if_fail (path != NULL, 0);
+
+	file = g_file_new_for_path (path);
 	info = g_file_query_info (file,
 	                          G_FILE_ATTRIBUTE_TIME_MODIFIED,
 	                          G_FILE_QUERY_INFO_NONE,
@@ -153,52 +142,15 @@ file_get_mtime (GFile *file)
 	                          &error);
 
 	if (G_UNLIKELY (error)) {
-		gchar *uri;
-
-		uri = g_file_get_uri (file);
-		g_message ("Could not get mtime for '%s': %s",
-		           uri,
+		g_message ("Could not get mtime for '%s', %s",
+		           path,
 		           error->message);
-		g_free (uri);
 		g_error_free (error);
 		mtime = 0;
 	} else {
 		mtime = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_TIME_MODIFIED);
 		g_object_unref (info);
 	}
-
-	return mtime;
-}
-
-guint64
-tracker_file_get_mtime (const gchar *path)
-{
-	GFile     *file;
-	guint64    mtime;
-
-	g_return_val_if_fail (path != NULL, 0);
-
-	file = g_file_new_for_path (path);
-
-	mtime = file_get_mtime (file);
-
-	g_object_unref (file);
-
-	return mtime;
-}
-
-
-guint64
-tracker_file_get_mtime_uri (const gchar *uri)
-{
-	GFile     *file;
-	guint64    mtime;
-
-	g_return_val_if_fail (uri != NULL, 0);
-
-	file = g_file_new_for_uri (uri);
-
-	mtime = file_get_mtime (file);
 
 	g_object_unref (file);
 
@@ -221,13 +173,8 @@ tracker_file_get_mime_type (GFile *file)
 	                          &error);
 
 	if (G_UNLIKELY (error)) {
-		gchar *uri;
-
-		uri = g_file_get_uri (file);
-		g_message ("Could not guess mimetype for '%s', %s",
-		           uri,
+		g_message ("Could not guess mimetype, %s",
 		           error->message);
-		g_free (uri);
 		g_error_free (error);
 		content_type = NULL;
 	} else {
@@ -238,89 +185,39 @@ tracker_file_get_mime_type (GFile *file)
 	return content_type ? content_type : g_strdup ("unknown");
 }
 
-#ifdef __linux__
-
-#ifdef __USE_LARGEFILE64
-#define __statvfs statfs64
-#else
-#define __statvfs statfs
-#endif
-
-#else /* __linux__ */
-
-#if HAVE_STATVFS64
-#define __statvfs statvfs64
-#else
-#define __statvfs statvfs
-#endif
-
-#endif /* __linux__ */
-
-guint64
-tracker_file_system_get_remaining_space (const gchar *path)
-{
-	guint64 remaining;
-	struct __statvfs st;
-
-	if (__statvfs (path, &st) == -1) {
-		remaining = 0;
-		g_critical ("Could not statvfs() '%s': %s",
-		            path,
-		            g_strerror (errno));
-	} else {
-		remaining = st.f_bsize * st.f_bavail;
-	}
-
-	return remaining;
-}
-
-gdouble
-tracker_file_system_get_remaining_space_percentage (const gchar *path)
-{
-	gdouble remaining;
-	struct __statvfs st;
-
-	if (__statvfs (path, &st) == -1) {
-		remaining = 0.0;
-		g_critical ("Could not statvfs() '%s': %s",
-		            path,
-		            g_strerror (errno));
-	} else {
-		remaining = (st.f_bavail * 100.0 / st.f_blocks);
-	}
-
-	return remaining;
-}
-
 gboolean
 tracker_file_system_has_enough_space (const gchar *path,
                                       gulong       required_bytes,
                                       gboolean     creating_db)
 {
+	struct statvfs st;
 	gchar *str1;
 	gchar *str2;
 	gboolean enough;
-	guint64 remaining;
 
 	g_return_val_if_fail (path != NULL, FALSE);
 
-	remaining = tracker_file_system_get_remaining_space (path);
-	enough = (remaining >= required_bytes);
+	if (statvfs (path, &st) == -1) {
+		g_critical ("Could not statvfs() '%s'", path);
+		return FALSE;
+	}
+
+	enough = ((long long) st.f_bsize * st.f_bavail) >= required_bytes;
 
 	if (creating_db) {
 		str1 = g_format_size_for_display (required_bytes);
-		str2 = g_format_size_for_display (remaining);
+		str2 = g_format_size_for_display (st.f_bsize * st.f_bavail);
 
 		if (!enough) {
 			g_critical ("Not enough disk space to create databases, "
-			            "%s remaining, %s required as a minimum",
-			            str2,
-			            str1);
+				    "%s remaining, %s required as a minimum",
+				    str2,
+				    str1);
 		} else {
 			g_message ("Checking for adequate disk space to create databases, "
-			           "%s remaining, %s required as a minimum",
-			           str2,
-			           str1);
+				   "%s remaining, %s required as a minimum",
+				   str2,
+				   str1);
 		}
 
 		g_free (str2);
@@ -583,6 +480,7 @@ path_has_write_access (const gchar *path,
 	                          0,
 	                          NULL,
 	                          &error);
+	g_object_unref (file);
 
 	if (G_UNLIKELY (error)) {
 		if (error->code == G_IO_ERROR_NOT_FOUND) {
@@ -590,14 +488,10 @@ path_has_write_access (const gchar *path,
 				*exists = FALSE;
 			}
 		} else {
-			gchar *uri;
-
-			uri = g_file_get_uri (file);
 			g_warning ("Could not check if we have write access for "
-			           "'%s': %s",
-			           uri,
+			           "path '%s', %s",
+			           path,
 			           error->message);
-			g_free (uri);
 		}
 
 		g_error_free (error);
@@ -609,11 +503,9 @@ path_has_write_access (const gchar *path,
 		}
 
 		writable = g_file_info_get_attribute_boolean (info, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
-
-		g_object_unref (info);
 	}
 
-	g_object_unref (file);
+	g_object_unref (info);
 
 	return writable;
 }
@@ -725,11 +617,7 @@ tracker_file_lock (GFile *file)
 	fd = open (path, O_RDONLY);
 
 	if (fd < 0) {
-		gchar *uri;
-
-		uri = g_file_get_uri (file);
-		g_warning ("Could not open '%s'", uri);
-		g_free (uri);
+		g_warning ("Could not open '%s'", path);
 		g_free (path);
 
 		return FALSE;
@@ -742,11 +630,7 @@ tracker_file_lock (GFile *file)
 		                     g_object_ref (file),
 		                     GINT_TO_POINTER (fd));
 	} else {
-		gchar *uri;
-
-		uri = g_file_get_uri (file);
-		g_warning ("Could not lock file '%s'", uri);
-		g_free (uri);
+		g_warning ("Could not lock file '%s'", path);
 		close (fd);
 	}
 
@@ -776,11 +660,11 @@ tracker_file_unlock (GFile *file)
 	retval = flock (fd, LOCK_UN);
 
 	if (retval < 0) {
-		gchar *uri;
+		gchar *path;
 
-		uri = g_file_get_uri (file);
-		g_warning ("Could not unlock file '%s'", uri);
-		g_free (uri);
+		path = g_file_get_path (file);
+		g_warning ("Could not unlock file '%s'", path);
+		g_free (path);
 
 		return FALSE;
 	}
@@ -832,11 +716,7 @@ tracker_file_is_locked (GFile *file)
 	fd = open (path, O_RDONLY);
 
 	if (fd < 0) {
-		gchar *uri;
-
-		uri = g_file_get_uri (file);
-		g_warning ("Could not open '%s'", uri);
-		g_free (uri);
+		g_warning ("Could not open '%s'", path);
 		g_free (path);
 
 		return FALSE;
@@ -858,32 +738,4 @@ tracker_file_is_locked (GFile *file)
 	g_free (path);
 
 	return retval;
-}
-
-gboolean
-tracker_file_is_hidden (GFile *file)
-{
-	GFileInfo *file_info;
-	gboolean is_hidden = FALSE;
-
-	file_info = g_file_query_info (file,
-	                               G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
-	                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
-	                               NULL, NULL);
-	if (file_info) {
-		/* Check if GIO says the file is hidden */
-		is_hidden = g_file_info_get_is_hidden (file_info);
-		g_object_unref (file_info);
-	}
-
-	return is_hidden;
-}
-
-gint
-tracker_file_cmp (GFile *file_a,
-                  GFile *file_b)
-{
-	/* Returns 0 if files are equal.
-	 * Useful to be used in g_list_find_custom() or g_queue_find_custom() */
-	return !g_file_equal (file_a, file_b);
 }

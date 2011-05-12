@@ -68,41 +68,6 @@ This is the directory which tracker uses to load the .ontology files
 from. If unset it will default to the correct place. This is used
 mainly for testing purposes.
 
-.TP
-.B TRACKER_LANGUAGE_STOP_WORDS_DIR
-This is the directory which tracker uses to load the stop words
-dictionaries from. If unset it will default to the correct place. This
-is used mainly for testing purposes.
-
-.TP
-.B TRACKER_STORE_MAX_TASK_TIME
-This is maximum time allowed for a process to finish before interruption
-happens. The actual moment of interruption depends also on the frequency of
-checks. The value 0 indicates no interruption.
-This environment variable is used mainly for testing purposes.
-
-.TP
-.B TRACKER_STORE_SELECT_CACHE_SIZE / TRACKER_STORE_UPDATE_CACHE_SIZE
-Tracker caches database statements which occur frequently to make
-subsequent repeat queries much faster. The cache size is set to 100 by
-default for each type (select and update queries). This must be at
-least 2 as a minimum, any less and a value of 3 is used instead. The
-number represents the number of cached statements to keep around.
-This environment variable is used mainly for testing purposes.
-
-.TP
-.B TRACKER_PRAGMAS_FILE
-Tracker has a fixed set of PRAGMA settings for creating its SQLite connection.
-With this environment variable pointing to a text file you can override these
-settings. The file is a \n separated list of SQLite queries to execute on any
-newly created SQLite connection in tracker-store.
-
-.TP
-.B TRACKER_DISABLE_MEEGOTOUCH_LOCALE
-If Tracker is compiled with meegotouch locale management support, setting this
-variable in the environment will disable retrieving the locale from GConf, and
-the standard locale settings will be used instead.
-
 .SH FILES
 .I $HOME/.config/tracker/tracker-store.cfg
 .I $HOME/.config/tracker/tracker-fts.cfg
@@ -123,7 +88,7 @@ for more information.
 .BR tracker-stats (1),
 .BR tracker-services (1),
 .BR tracker-info (1),
-.BR tracker-control (1),
+.BR tracker-status (1).
 
 .BR tracker-store.cfg (5),
 .BR tracker-fts.cfg (5).

@@ -25,6 +25,7 @@ using GLib;
 using Tracker;
 
 public static Config config = null;
+public static IconConfig icon_config = null;
 
 public const string HOME_STRING = "$HOME";
 
@@ -37,7 +38,6 @@ public static CheckButton checkbutton_index_removable_media;
 public static CheckButton checkbutton_index_optical_discs;
 public static Scale hscale_disk_space_limit;
 public static Scale hscale_throttle;
-public static Scale hscale_drop_device_threshold;
 public static ListStore liststore_index_recursively;
 public static ListStore liststore_index_single;
 public static ListStore liststore_ignored_directories;
@@ -53,6 +53,26 @@ public static Notebook notebook;
 public static RadioButton radiobutton_display_never;
 public static RadioButton radiobutton_display_active;
 public static RadioButton radiobutton_display_always;
+
+public static void radiobutton_visibility_toggled_cb (RadioButton source) {
+	if (radiobutton_display_never.active) {
+		icon_config.visibility = 0;
+	} else if (radiobutton_display_active.active) {
+		icon_config.visibility = 1;
+	} else {
+		icon_config.visibility = 2;
+	}
+}
+
+public static void initialize_visibility_radiobutton () {
+	if (icon_config.visibility == 0) {
+		radiobutton_display_never.active = true;
+	} else if (icon_config.visibility == 1) {
+		radiobutton_display_active.active = true;
+	} else {
+		radiobutton_display_always.active = true;
+	}
+}
 
 public static void spinbutton_delay_value_changed_cb (SpinButton source) {
 	config.initial_sleep = source.get_value_as_int ();
@@ -92,14 +112,6 @@ public static string hscale_throttle_format_value_cb (Scale source, double value
 	return _("%d/20").printf ((int) value);
 }
 
-public static string hscale_drop_device_threshold_format_value_cb (Scale source, double value) {
-	if (((int) value) == 0) {
-		return _("Disabled");
-	}
-
-	return _("%d").printf ((int) value);
-}
-
 public static void add_freevalue (ListStore model) {
 	Dialog dialog;
 	Entry entry;
@@ -107,9 +119,9 @@ public static void add_freevalue (ListStore model) {
 
 	dialog = new Dialog.with_buttons (_("Enter value"),
 	                                  window,
-	                                  DialogFlags.DESTROY_WITH_PARENT,
-	                                  Stock.CANCEL, ResponseType.CANCEL,
-	                                  Stock.OK, ResponseType.ACCEPT);
+	                                  DialogFlags.DESTROY_WITH_PARENT | DialogFlags.NO_SEPARATOR,
+	                                  STOCK_CANCEL, ResponseType.CANCEL,
+	                                  STOCK_OK, ResponseType.ACCEPT);
 
 	dialog.set_default_response(ResponseType.ACCEPT);
 	content_area = (Container) dialog.get_content_area ();
@@ -138,8 +150,8 @@ public static void add_dir (ListStore model)
 {
 	FileChooserDialog dialog = new FileChooserDialog (_("Select directory"), window,
 	                                              FileChooserAction.SELECT_FOLDER,
-	                                              Stock.CANCEL, ResponseType.CANCEL,
-	                                              Stock.OK, ResponseType.ACCEPT);
+	                                              STOCK_CANCEL, ResponseType.CANCEL,
+	                                              STOCK_OK, ResponseType.ACCEPT);
 
 	if (dialog.run () == ResponseType.ACCEPT) {
 		TreeIter iter;
@@ -262,9 +274,9 @@ public static void button_apply_clicked_cb (Button source) {
 
 	config.low_disk_space_limit = (int) hscale_disk_space_limit.get_value ();
 	config.throttle = (int) hscale_throttle.get_value ();
-	config.removable_days_threshold = (int) hscale_drop_device_threshold.get_value ();
 
 	config.save ();
+	icon_config.save ();
 
 	/* TODO: restart the Application and Files miner (no idea how to cleanly do this atm) */
 }
@@ -331,12 +343,9 @@ setup_standard_treeview (TreeView view, string title)
 static int main (string[] args) {
 	Gtk.init (ref args);
 
-	Intl.bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-	Intl.bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-	Intl.textdomain (GETTEXT_PACKAGE);
-
 	try {
 		config = new Config.with_domain ("tracker-miner-fs");
+		icon_config = new IconConfig.with_domain ("tracker-status-icon");
 
 		var builder = new Builder ();
 		builder.add_from_file (TRACKER_DATADIR + Path.DIR_SEPARATOR_S + "tracker-preferences.ui");
@@ -361,15 +370,22 @@ static int main (string[] args) {
 		hscale_disk_space_limit.set_value ((double) config.low_disk_space_limit);
 		hscale_throttle = builder.get_object ("hscale_throttle") as Scale;
 		hscale_throttle.set_value ((double) config.throttle);
-		hscale_drop_device_threshold = builder.get_object ("hscale_drop_device_threshold") as Scale;
-		hscale_drop_device_threshold.set_value ((double) config.removable_days_threshold);
 		togglebutton_home = builder.get_object ("togglebutton_home") as ToggleButton;
 
 		notebook = builder.get_object ("notebook") as Notebook;
 
-		// We hide this page because it contains the start up
-		// delay which is not necessary to display for most people.
-		notebook.remove_page (0);
+		radiobutton_display_never = builder.get_object ("radiobutton_display_never") as RadioButton;
+		radiobutton_display_active = builder.get_object ("radiobutton_display_active") as RadioButton;
+		radiobutton_display_always = builder.get_object ("radiobutton_display_always") as RadioButton;
+		initialize_visibility_radiobutton ();
+
+		/* Note: if the General tab ever has more config parameters than those
+		 *  of the status icon, then don't remove the page, just the status-icon
+		 *  related parameters */
+		if (!HAVE_TRACKER_STATUS_ICON) {
+			/* Page #0 is the Contents page */
+			notebook.remove_page (0);
+		}
 
 		treeview_index_recursively = builder.get_object ("treeview_index_recursively") as TreeView;
 		treeview_index_single = builder.get_object ("treeview_index_single") as TreeView;
@@ -403,7 +419,6 @@ static int main (string[] args) {
 		builder.connect_signals (null);
 
 		window.show_all ();
-
 		Gtk.main ();
 	} catch (Error e) {
 		stderr.printf ("Could not load UI: %s\n", e.message);

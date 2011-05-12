@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # Copyright (C) 2010, Nokia <ivan.frade@nokia.com>
 #
@@ -18,23 +18,23 @@
 # 02110-1301, USA.
 #
 
-"""
-These tests use only the store. They insert instances with known text
-and run sparql with fts functions to check the results.
-"""
 import dbus
 import unittest
 import random
 
-from common.utils import configuration as cfg
-import unittest2 as ut
-#import unittest as ut
-from common.utils.storetest import CommonTrackerStoreTest as CommonTrackerStoreTest
+TRACKER = 'org.freedesktop.Tracker1'
+TRACKER_OBJ = '/org/freedesktop/Tracker1/Resources'
+RESOURCES_IFACE = "org.freedesktop.Tracker1.Resources"
 
-class TestFTSFunctions (CommonTrackerStoreTest):
-    """
-    Insert data with text and check the fts:xxxx functions are returning the expected results
-    """
+class TestFTSFunctions (unittest.TestCase):
+
+    def setUp (self):
+        bus = dbus.SessionBus ()
+        tracker = bus.get_object (TRACKER, TRACKER_OBJ)
+        self.resources = dbus.Interface (tracker,
+                                         dbus_interface=RESOURCES_IFACE);
+
+
     def test_fts_rank (self):
         """
         1. Insert a Contact1 with 'abcdefxyz' as fullname and nickname
@@ -58,7 +58,7 @@ class TestFTSFunctions (CommonTrackerStoreTest):
                        nco:nickname 'abcdefxyz abcdefxyz' .
         }
         """
-        self.tracker.update (insert_sparql)
+        self.resources.SparqlUpdate (insert_sparql)
 
         query = """
         SELECT ?contact WHERE {
@@ -66,7 +66,7 @@ class TestFTSFunctions (CommonTrackerStoreTest):
                 fts:match 'abcdefxyz' .
         } ORDER BY DESC (fts:rank(?contact))
         """
-        results = self.tracker.query (query)
+        results = self.resources.SparqlQuery (query)
 
         self.assertEquals (len(results), 3)
         self.assertEquals (results[0][0], "contact://test/fts-function/rank/3")
@@ -75,13 +75,11 @@ class TestFTSFunctions (CommonTrackerStoreTest):
 
         delete_sparql = """
         DELETE {
-        <contact://test/fts-function/rank/1> a rdfs:Resource .
-        <contact://test/fts-function/rank/2> a rdfs:Resource .
-        <contact://test/fts-function/rank/3> a rdfs:Resource .
+        <contact://test/fts-function/rank/1> a rdf:Resource .
+        <contact://test/fts-function/rank/2> a rdf:Resource .
+        <contact://test/fts-function/rank/3> a rdf:Resource .
         }
         """
-        self.tracker.update (delete_sparql)
-
 
     def test_fts_offsets (self):
         """
@@ -94,28 +92,27 @@ class TestFTSFunctions (CommonTrackerStoreTest):
         """
         insert_sparql = """
         INSERT {
-        <contact://test/fts-function/offset/1> a nco:PersonContact ;
+        <contact://test/fts-function/rank/1> a nco:PersonContact ;
                        nco:fullname 'abcdefxyz' ;
                        nco:nickname 'abcdefxyz' .
 
-        <contact://test/fts-function/offset/2> a nco:PersonContact ;
+        <contact://test/fts-function/rank/2> a nco:PersonContact ;
                        nco:fullname 'abcdefxyz' .
 
-        <contact://test/fts-function/offset/3> a nco:PersonContact ;
+        <contact://test/fts-function/rank/3> a nco:PersonContact ;
                        nco:fullname 'abcdefxyz' ;
                        nco:nickname 'abcdefxyz abcdefxyz' .
         }
         """
-        self.tracker.update (insert_sparql)
+        self.resources.SparqlUpdate (insert_sparql)
 
         query = """
         SELECT fts:offsets (?contact) WHERE {
            ?contact a nco:PersonContact ;
                 fts:match 'abcdefxyz' .
-        }
+        } 
         """
-        results = self.tracker.query (query)
-
+        results = self.resources.SparqlQuery (query)
         self.assertEquals (len(results), 3)
         self.assertEquals (len (results[0][0].split(",")), 4) # (u'151,1,161,1')
         self.assertEquals (len (results[1][0].split(",")), 2) # (u'161,1')
@@ -123,13 +120,13 @@ class TestFTSFunctions (CommonTrackerStoreTest):
 
         delete_sparql = """
         DELETE {
-        <contact://test/fts-function/offset/1> a rdfs:Resource .
-        <contact://test/fts-function/offset/2> a rdfs:Resource .
-        <contact://test/fts-function/offset/3> a rdfs:Resource .
+        <contact://test/fts-function/rank/1> a rdf:Resource .
+        <contact://test/fts-function/rank/2> a rdf:Resource .
+        <contact://test/fts-function/rank/3> a rdf:Resource .
         }
         """
-        self.tracker.update (delete_sparql)
-
+        
+        
 
 if __name__ == '__main__':
-    ut.main()
+    unittest.main()

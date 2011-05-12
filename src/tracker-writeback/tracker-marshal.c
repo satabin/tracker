@@ -52,20 +52,20 @@
 
 /* VOID:BOXED (tracker-marshal.list:1) */
 
-/* VOID:INT,BOXED (tracker-marshal.list:2) */
+/* VOID:STRING,BOXED (tracker-marshal.list:2) */
 void
-tracker_marshal_VOID__INT_BOXED (GClosure     *closure,
-                                 GValue       *return_value G_GNUC_UNUSED,
-                                 guint         n_param_values,
-                                 const GValue *param_values,
-                                 gpointer      invocation_hint G_GNUC_UNUSED,
-                                 gpointer      marshal_data)
+tracker_marshal_VOID__STRING_BOXED (GClosure     *closure,
+                                    GValue       *return_value G_GNUC_UNUSED,
+                                    guint         n_param_values,
+                                    const GValue *param_values,
+                                    gpointer      invocation_hint G_GNUC_UNUSED,
+                                    gpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__INT_BOXED) (gpointer     data1,
-                                                gint         arg_1,
-                                                gpointer     arg_2,
-                                                gpointer     data2);
-  register GMarshalFunc_VOID__INT_BOXED callback;
+  typedef void (*GMarshalFunc_VOID__STRING_BOXED) (gpointer     data1,
+                                                   gpointer     arg_1,
+                                                   gpointer     arg_2,
+                                                   gpointer     data2);
+  register GMarshalFunc_VOID__STRING_BOXED callback;
   register GCClosure *cc = (GCClosure*) closure;
   register gpointer data1, data2;
 
@@ -81,10 +81,10 @@ tracker_marshal_VOID__INT_BOXED (GClosure     *closure,
       data1 = g_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
-  callback = (GMarshalFunc_VOID__INT_BOXED) (marshal_data ? marshal_data : cc->callback);
+  callback = (GMarshalFunc_VOID__STRING_BOXED) (marshal_data ? marshal_data : cc->callback);
 
   callback (data1,
-            g_marshal_value_peek_int (param_values + 1),
+            g_marshal_value_peek_string (param_values + 1),
             g_marshal_value_peek_boxed (param_values + 2),
             data2);
 }

@@ -1,9 +1,10 @@
 include $(top_srcdir)/Makefile.decl
 
-AM_CPPFLAGS =				\
-	$(BUILD_CFLAGS)			\
+INCLUDES =				\
+	-DSHAREDIR=\""$(datadir)"\"	\
+	-DG_LOG_DOMAIN=\"Tracker\"	\
 	-I$(top_srcdir)/src		\
-	-DSHAREDIR=\""$(datadir)"\"
+	$(WARN_CFLAGS)
 
 noinst_LTLIBRARIES = libstemmer.la
 
@@ -47,5 +48,5 @@ noinst_HEADERS =			\
 	stem_UTF_8_swedish.h
 
 
-libstemmer_la_LIBADD = $(BUILD_LIBS)
+libstemmer_la_LIBADD = $(GCOV_LIBS)
 

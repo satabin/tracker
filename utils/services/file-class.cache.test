@@ -312,6 +312,7 @@ nmm nmm:isContentEncrypted
 nmm nmm:skipCounter
 nmm nmm:ImageList
 nmm nmm:Photo
+nmm nmm:camera
 nmm nmm:exposureTime
 nmm nmm:Flash
 nmm nmm:flash-on
@@ -423,6 +424,7 @@ nfo nfo:hasMediaFileListEntry
 nfo nfo:entryCounter
 nfo nfo:listDuration
 nfo nfo:listPosition
+nfo nfo:entryContent
 nfo nfo:height
 nfo nfo:hashAlgorithm
 nfo nfo:fileName
@@ -650,6 +652,7 @@ rdf tracker:prefix
 rdf tracker:indexed
 rdf tracker:fulltextIndexed
 rdf tracker:transient
+rdf tracker:isAnnotation
 rdf tracker:weight
 rdf tracker:added
 rdf tracker:modified
@@ -720,6 +723,7 @@ nmo nmo:isDeleted
 nmo nmo:isDraft
 nmo nmo:isRecent
 nmo nmo:isRead
+nmo nmo:plainTextMessageContent
 nmo nmo:htmlMessageContent
 nmo nmo:references
 nmo nmo:inReplyTo

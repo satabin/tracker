@@ -2,6 +2,7 @@ tracker (0.8.18-1) UNRELEASED; urgency=low
 
   * New upstream release.
   * Refresh debian/patches/01-upower.patch.
+  * Drop debian/patches/02-require_eds_2_32.patch, fixed upstream.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 12 May 2011 14:32:05 +0200
 

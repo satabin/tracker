@@ -319,6 +319,16 @@ void tracker_sparql_cursor_rewind (TrackerSparqlCursor* self) {
  *
  * Since: 0.10
  */
+static gint64 int64_parse (const gchar* str) {
+	gint64 result = 0LL;
+	gint64 _tmp0_;
+	g_return_val_if_fail (str != NULL, 0LL);
+	_tmp0_ = g_ascii_strtoll (str, NULL, (guint) 0);
+	result = _tmp0_;
+	return result;
+}
+
+
 static gint64 tracker_sparql_cursor_real_get_integer (TrackerSparqlCursor* self, gint column) {
 	gint64 result = 0LL;
 	TrackerSparqlValueType _tmp0_;
@@ -330,7 +340,7 @@ static gint64 tracker_sparql_cursor_real_get_integer (TrackerSparqlCursor* self,
 	g_return_val_if_fail (_tmp0_ == TRACKER_SPARQL_VALUE_TYPE_INTEGER, 0);
 	_tmp1_ = tracker_sparql_cursor_get_string (self, column, NULL);
 	as_str = _tmp1_;
-	_tmp2_ = g_ascii_strtoll (as_str, NULL, 0);
+	_tmp2_ = int64_parse (as_str);
 	result = _tmp2_;
 	return result;
 }
@@ -352,6 +362,16 @@ gint64 tracker_sparql_cursor_get_integer (TrackerSparqlCursor* self, gint column
  *
  * Since: 0.10
  */
+static gdouble double_parse (const gchar* str) {
+	gdouble result = 0.0;
+	gdouble _tmp0_;
+	g_return_val_if_fail (str != NULL, 0.0);
+	_tmp0_ = g_ascii_strtod (str, NULL);
+	result = _tmp0_;
+	return result;
+}
+
+
 static gdouble tracker_sparql_cursor_real_get_double (TrackerSparqlCursor* self, gint column) {
 	gdouble result = 0.0;
 	TrackerSparqlValueType _tmp0_;
@@ -363,7 +383,7 @@ static gdouble tracker_sparql_cursor_real_get_double (TrackerSparqlCursor* self,
 	g_return_val_if_fail (_tmp0_ == TRACKER_SPARQL_VALUE_TYPE_DOUBLE, 0);
 	_tmp1_ = tracker_sparql_cursor_get_string (self, column, NULL);
 	as_str = _tmp1_;
-	_tmp2_ = g_ascii_strtod (as_str, NULL);
+	_tmp2_ = double_parse (as_str);
 	result = _tmp2_;
 	return result;
 }

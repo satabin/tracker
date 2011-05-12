@@ -224,7 +224,7 @@ void tracker_resources_unreg_batches (TrackerResources* self, const gchar* old_o
 GType tracker_statistics_get_type (void) G_GNUC_CONST;
 guint tracker_statistics_register_object (void* object, GDBusConnection* connection, const gchar* path, GError** error);
 #define TRACKER_STATISTICS_PATH "/org/freedesktop/Tracker1/Statistics"
-GVariant* tracker_statistics_get (TrackerStatistics* self, const char* sender);
+GVariant* tracker_statistics_get (TrackerStatistics* self, const char* sender, GError** error);
 TrackerStatistics* tracker_statistics_new (void);
 TrackerStatistics* tracker_statistics_construct (GType object_type);
 #define TRACKER_STATUS_PATH "/org/freedesktop/Tracker1/Status"

@@ -1949,7 +1949,7 @@ gchar* tracker_sparql_query_get_last_string (TrackerSparqlQuery* self, gint stri
 	gchar* _tmp0_ = NULL;
 	g_return_val_if_fail (self != NULL, NULL);
 	last_index = ((self->priv->index + TRACKER_SPARQL_QUERY_BUFFER_SIZE) - 1) % TRACKER_SPARQL_QUERY_BUFFER_SIZE;
-	_tmp0_ = g_strndup ((const gchar*) (self->priv->tokens[last_index].begin.pos + strip), (self->priv->tokens[last_index].end.pos - self->priv->tokens[last_index].begin.pos) - (2 * strip));
+	_tmp0_ = string_substring ((const gchar*) (self->priv->tokens[last_index].begin.pos + strip), (glong) 0, (glong) ((gint) ((self->priv->tokens[last_index].end.pos - self->priv->tokens[last_index].begin.pos) - (2 * strip))));
 	result = _tmp0_;
 	return result;
 }

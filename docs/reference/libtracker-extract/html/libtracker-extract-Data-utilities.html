@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="Core">
 <link rel="prev" href="libtracker-extract-How-to-use-libtracker-extract.html" title="How to use libtracker-extract">
 <link rel="next" href="ch02.html" title="Common Embedded Support">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libtracker-extract-Data-utilities.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="Data utilities">
+<div class="refentry">
 <a name="libtracker-extract-Data-utilities"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -36,29 +36,29 @@ handling and normalizing</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsect1" title="Stability Level">
+<div class="refsect1">
 <a name="libtracker-extract-Data-utilities.stability-level"></a><h2>Stability Level</h2>
 Stable, unless otherwise indicated
 </div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libtracker-extract-Data-utilities.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 #include &lt;libtracker-extract/tracker-extract.h&gt;
 
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-coalesce" title="tracker_coalesce ()">tracker_coalesce</a>                    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-coalesce" title="tracker_coalesce ()">tracker_coalesce</a>                    (<em class="parameter"><code><span class="type">gint</span> n_values</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-merge" title="tracker_merge ()">tracker_merge</a>                       (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *delimiter</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-merge" title="tracker_merge ()">tracker_merge</a>                       (<em class="parameter"><code>const <span class="type">gchar</span> *delimiter</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> n_values</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-text-normalize" title="tracker_text_normalize ()">tracker_text_normalize</a>              (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> max_words</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_words</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-date-format-to-iso8601" title="tracker_date_format_to_iso8601 ()">tracker_date_format_to_iso8601</a>      (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *date_string</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-date-guess" title="tracker_date_guess ()">tracker_date_guess</a>                  (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *date_string</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-text-normalize" title="tracker_text_normalize ()">tracker_text_normalize</a>              (<em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> max_words</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> *n_words</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-date-format-to-iso8601" title="tracker_date_format_to_iso8601 ()">tracker_date_format_to_iso8601</a>      (<em class="parameter"><code>const <span class="type">gchar</span> *date_string</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-extract-Data-utilities.html#tracker-date-guess" title="tracker_date_guess ()">tracker_date_guess</a>                  (<em class="parameter"><code>const <span class="type">gchar</span> *date_string</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libtracker-extract-Data-utilities.description"></a><h2>Description</h2>
 <p>
 This API is provided to facilitate common more general functions
@@ -66,19 +66,19 @@ which extractors may find useful. These functions are also used by
 the in-house extractors quite frequently.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libtracker-extract-Data-utilities.details"></a><h2>Details</h2>
-<div class="refsect2" title="tracker_coalesce ()">
+<div class="refsect2">
 <a name="tracker-coalesce"></a><h3>tracker_coalesce ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_coalesce                    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_coalesce                    (<em class="parameter"><code><span class="type">gint</span> n_values</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 This function iterates through a series of string pointers passed
-using <em class="parameter"><code>Varargs</code></em> and returns the first which is not <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, not empty
+using <em class="parameter"><code>Varargs</code></em> and returns the first which is not <code class="literal">NULL</code>, not empty
 (i.e. "") and not comprised of one or more spaces (i.e. " ").
 </p>
 <p>
-The returned value is stripped using <a href="/usr/share/gtk-doc/html/glib/glib-String-Utility-Functions.html#g-strstrip"><code class="function">g_strstrip()</code></a>. All other values
+The returned value is stripped using <code class="function">g_strstrip()</code>. All other values
 supplied are freed. It is MOST important NOT to pass constant
 string pointers to this function!
 </p>
@@ -87,30 +87,26 @@ string pointers to this function!
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_values</code></em> :</span></p></td>
-<td>the number of <em class="parameter"><code>Varargs</code></em> supplied
-</td>
+<td>the number of <em class="parameter"><code>Varargs</code></em> supplied</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td>the string pointers to coalesce
-</td>
+<td>the string pointers to coalesce</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> the first string pointer from those provided which
-matches, otherwise <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.
-
-</td>
+<td>the first string pointer from those provided which
+matches, otherwise <code class="literal">NULL</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_merge ()">
+<div class="refsect2">
 <a name="tracker-merge"></a><h3>tracker_merge ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_merge                       (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *delimiter</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> n_values</code></em>,
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_merge                       (<em class="parameter"><code>const <span class="type">gchar</span> *delimiter</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> n_values</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 This function iterates through a series of string pointers passed
@@ -118,7 +114,7 @@ using <em class="parameter"><code>Varargs</code></em> and returns a newly alloca
 strings.
 </p>
 <p>
-The <em class="parameter"><code>delimiter</code></em> can be <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. If specified, it will be used in
+The <em class="parameter"><code>delimiter</code></em> can be <code class="literal">NULL</code>. If specified, it will be used in
 between each merged string in the result.
 </p>
 <div class="variablelist"><table border="0">
@@ -126,48 +122,43 @@ between each merged string in the result.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>delimiter</code></em> :</span></p></td>
-<td>the delimiter to use when merging
-</td>
+<td>the delimiter to use when merging</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_values</code></em> :</span></p></td>
-<td>the number of <em class="parameter"><code>Varargs</code></em> supplied
-</td>
+<td>the number of <em class="parameter"><code>Varargs</code></em> supplied</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td>the string pointers to merge
-</td>
+<td>the string pointers to merge</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a newly-allocated string holding the result which should
-be freed with <a href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when finished with, otherwise <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.
-
-</td>
+<td>a newly-allocated string holding the result which should
+be freed with <code class="function">g_free()</code> when finished with, otherwise <code class="literal">NULL</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_text_normalize ()">
+<div class="refsect2">
 <a name="tracker-text-normalize"></a><h3>tracker_text_normalize ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_text_normalize              (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> max_words</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> *n_words</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_text_normalize              (<em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> max_words</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> *n_words</code></em>);</pre>
 <p>
 This function iterates through <em class="parameter"><code>text</code></em> checking for UTF-8 validity
-using <a href="/usr/share/gtk-doc/html/glib/glib-Unicode-Manipulation.html#g-utf8-get-char-validated"><code class="function">g_utf8_get_char_validated()</code></a>. For each character found, the
-<a href="/usr/share/gtk-doc/html/glib/glib-Unicode-Manipulation.html#GUnicodeType"><code class="literal">GUnicodeType</code></a> is checked to make sure it is one fo the following
+using <code class="function">g_utf8_get_char_validated()</code>. For each character found, the
+<code class="literal">GUnicodeType</code> is checked to make sure it is one fo the following
 values:
 </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem"><p><a href="/usr/share/gtk-doc/html/glib/glib-Unicode-Manipulation.html#G-UNICODE-LOWERCASE-LETTER:CAPS"><code class="literal">G_UNICODE_LOWERCASE_LETTER</code></a></p></li>
-<li class="listitem"><p><a href="/usr/share/gtk-doc/html/glib/glib-Unicode-Manipulation.html#G-UNICODE-MODIFIER-LETTER:CAPS"><code class="literal">G_UNICODE_MODIFIER_LETTER</code></a></p></li>
-<li class="listitem"><p><a href="/usr/share/gtk-doc/html/glib/glib-Unicode-Manipulation.html#G-UNICODE-OTHER-LETTER:CAPS"><code class="literal">G_UNICODE_OTHER_LETTER</code></a></p></li>
-<li class="listitem"><p><a href="/usr/share/gtk-doc/html/glib/glib-Unicode-Manipulation.html#G-UNICODE-TITLECASE-LETTER:CAPS"><code class="literal">G_UNICODE_TITLECASE_LETTER</code></a></p></li>
-<li class="listitem"><p><a href="/usr/share/gtk-doc/html/glib/glib-Unicode-Manipulation.html#G-UNICODE-UPPERCASE-LETTER:CAPS"><code class="literal">G_UNICODE_UPPERCASE_LETTER</code></a></p></li>
+<li class="listitem"><p><code class="literal">G_UNICODE_LOWERCASE_LETTER</code></p></li>
+<li class="listitem"><p><code class="literal">G_UNICODE_MODIFIER_LETTER</code></p></li>
+<li class="listitem"><p><code class="literal">G_UNICODE_OTHER_LETTER</code></p></li>
+<li class="listitem"><p><code class="literal">G_UNICODE_TITLECASE_LETTER</code></p></li>
+<li class="listitem"><p><code class="literal">G_UNICODE_UPPERCASE_LETTER</code></p></li>
 </ul></div>
 <p>
 </p>
@@ -177,7 +168,7 @@ stripped. A regular space (i.e. " ") is used to separate the words
 in the returned string.
 </p>
 <p>
-The <em class="parameter"><code>n_words</code></em> can be <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. If specified, it will be populated with
+The <em class="parameter"><code>n_words</code></em> can be <code class="literal">NULL</code>. If specified, it will be populated with
 the number of words that were normalized in the result.
 </p>
 <div class="variablelist"><table border="0">
@@ -185,35 +176,30 @@ the number of words that were normalized in the result.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>text</code></em> :</span></p></td>
-<td>the text to normalize
-</td>
+<td>the text to normalize</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>max_words</code></em> :</span></p></td>
-<td>the maximum words of <em class="parameter"><code>text</code></em> to normalize
-</td>
+<td>the maximum words of <em class="parameter"><code>text</code></em> to normalize</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>n_words</code></em> :</span></p></td>
-<td>the number of words actually normalized
-</td>
+<td>the number of words actually normalized</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a newly-allocated string holding the result which should
-be freed with <a href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when finished with, otherwise <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.
-
-</td>
+<td>a newly-allocated string holding the result which should
+be freed with <code class="function">g_free()</code> when finished with, otherwise <code class="literal">NULL</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_date_format_to_iso8601 ()">
+<div class="refsect2">
 <a name="tracker-date-format-to-iso8601"></a><h3>tracker_date_format_to_iso8601 ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_date_format_to_iso8601      (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *date_string</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_date_format_to_iso8601      (<em class="parameter"><code>const <span class="type">gchar</span> *date_string</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>);</pre>
 <p>
 This function uses <code class="function">strptime()</code> to create a time tm structure using
 <em class="parameter"><code>date_string</code></em> and <em class="parameter"><code>format</code></em>.
@@ -223,8 +209,7 @@ This function uses <code class="function">strptime()</code> to create a time tm 
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>date_string</code></em> :</span></p></td>
-<td>the date in a string pointer
-</td>
+<td>the date in a string pointer</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
@@ -233,20 +218,18 @@ This function uses <code class="function">strptime()</code> to create a time tm 
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a newly-allocated string with the time represented in
-ISO8601 date format which should be freed with <a href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when
-finished with, otherwise <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.
-
-</td>
+<td>a newly-allocated string with the time represented in
+ISO8601 date format which should be freed with <code class="function">g_free()</code> when
+finished with, otherwise <code class="literal">NULL</code>.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_date_guess ()">
+<div class="refsect2">
 <a name="tracker-date-guess"></a><h3>tracker_date_guess ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_date_guess                  (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *date_string</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_date_guess                  (<em class="parameter"><code>const <span class="type">gchar</span> *date_string</code></em>);</pre>
 <p>
 This function uses a number of methods to try and guess the date
 held in <em class="parameter"><code>date_string</code></em>. The <em class="parameter"><code>date_string</code></em> must be at least 5
@@ -270,16 +253,13 @@ Some of the string formats guessed include:
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>date_string</code></em> :</span></p></td>
-<td>the date in a string pointer
-</td>
+<td>the date in a string pointer</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a newly-allocated string with the time represented in
-ISO8601 date format which should be freed with <a href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when
-finished with, otherwise <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.
-
-</td>
+<td>a newly-allocated string with the time represented in
+ISO8601 date format which should be freed with <code class="function">g_free()</code> when
+finished with, otherwise <code class="literal">NULL</code>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -289,6 +269,6 @@ finished with, otherwise <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Mac
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

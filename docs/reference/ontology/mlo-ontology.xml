@@ -100,13 +100,13 @@
 </section>
 <section id='mlo-classes'>
 <title>MLO Ontology Classes</title>
-<refsect2 id='mlo-GeoSphere'>
-<title>mlo:GeoSphere</title>
-<para>Point and radius to define an area in the space</para>
+<refsect2 id='mlo-GeoLocation'>
+<title>mlo:GeoLocation</title>
+<para>A place in the space, can be defined by coordinates, text or box</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -114,7 +114,84 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-radius'>mlo:radius</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-asPostalAddress'>mlo:asPostalAddress</link>, <link linkend='mlo-asGeoPoint'>mlo:asGeoPoint</link>, <link linkend='mlo-asBoundingBox'>mlo:asBoundingBox</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-location'>mlo:location</link>, </simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mlo-PointOfInterest'>
+<title>mlo:PointOfInterest</title>
+<para>Use the nie title, description, ...  properties</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-Landmark'>mlo:Landmark</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+<note>
+<title>Note:</title>
+<para>This class is deprecated</para>
+</note>
+</refsect2>
+
+<refsect2 id='mlo-LandmarkCategory'>
+<title>mlo:LandmarkCategory</title>
+<para>Predefined set of instances for categories of landmarks</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-isRemovable'>mlo:isRemovable</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-belongsToCategory'>mlo:belongsToCategory</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Predefined instances</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-predefined-landmark-category-transport'>mlo:predefined-landmark-category-transport</link>, <link linkend='mlo-predefined-landmark-category-sports'>mlo:predefined-landmark-category-sports</link>, <link linkend='mlo-predefined-landmark-category-sightseeing'>mlo:predefined-landmark-category-sightseeing</link>, <link linkend='mlo-predefined-landmark-category-shopping'>mlo:predefined-landmark-category-shopping</link>, <link linkend='mlo-predefined-landmark-category-religious-places'>mlo:predefined-landmark-category-religious-places</link>, <link linkend='mlo-predefined-landmark-category-public-service'>mlo:predefined-landmark-category-public-service</link>, <link linkend='mlo-predefined-landmark-category-people'>mlo:predefined-landmark-category-people</link>, <link linkend='mlo-predefined-landmark-category-outdoor-activities'>mlo:predefined-landmark-category-outdoor-activities</link>, <link linkend='mlo-predefined-landmark-category-geographical-area'>mlo:predefined-landmark-category-geographical-area</link>, <link linkend='mlo-predefined-landmark-category-food-beverage'>mlo:predefined-landmark-category-food-beverage</link>, <link linkend='mlo-predefined-landmark-category-entertainment'>mlo:predefined-landmark-category-entertainment</link>, <link linkend='mlo-predefined-landmark-category-educational-institute'>mlo:predefined-landmark-category-educational-institute</link>, <link linkend='mlo-predefined-landmark-category-communication'>mlo:predefined-landmark-category-communication</link>, <link linkend='mlo-predefined-landmark-category-business'>mlo:predefined-landmark-category-business</link>, <link linkend='mlo-predefined-landmark-category-accommodation'>mlo:predefined-landmark-category-accommodation</link>, </simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mlo-Landmark'>
+<title>mlo:Landmark</title>
+<para>Use the nie title, description, ... properties</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-PointOfInterest'>mlo:PointOfInterest</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-poiLocation'>mlo:poiLocation</link>, <link linkend='mlo-belongsToCategory'>mlo:belongsToCategory</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -149,59 +226,12 @@
 </note>
 </refsect2>
 
-<refsect2 id='mlo-GeoBoundingBox'>
-<title>mlo:GeoBoundingBox</title>
-<para>Bounding box for a region in the space, defined with 2 points in 2D. We assume that the box is always aligned with parallels and meridians.</para>
+<refsect2 id='mlo-Route'>
+<title>mlo:Route</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-Route'>mlo:Route</link>, <link linkend='mlo-LocationBoundingBox'>mlo:LocationBoundingBox</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-bbSouthEast'>mlo:bbSouthEast</link>, <link linkend='mlo-bbNorthWest'>mlo:bbNorthWest</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-asBoundingBox'>mlo:asBoundingBox</link>, </simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mlo-Landmark'>
-<title>mlo:Landmark</title>
-<para>Use the nie title, description, ... properties</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-PointOfInterest'>mlo:PointOfInterest</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-poiLocation'>mlo:poiLocation</link>, <link linkend='mlo-belongsToCategory'>mlo:belongsToCategory</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mlo-LandmarkCategory'>
-<title>mlo:LandmarkCategory</title>
-<para>Predefined set of instances for categories of landmarks</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-GeoBoundingBox'>mlo:GeoBoundingBox</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -209,15 +239,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-isRemovable'>mlo:isRemovable</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-routeDetails'>mlo:routeDetails</link>, <link linkend='mlo-endTime'>mlo:endTime</link>, <link linkend='mlo-startTime'>mlo:startTime</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-belongsToCategory'>mlo:belongsToCategory</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Predefined instances</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-predefined-landmark-category-transport'>mlo:predefined-landmark-category-transport</link>, <link linkend='mlo-predefined-landmark-category-sports'>mlo:predefined-landmark-category-sports</link>, <link linkend='mlo-predefined-landmark-category-sightseeing'>mlo:predefined-landmark-category-sightseeing</link>, <link linkend='mlo-predefined-landmark-category-shopping'>mlo:predefined-landmark-category-shopping</link>, <link linkend='mlo-predefined-landmark-category-religious-places'>mlo:predefined-landmark-category-religious-places</link>, <link linkend='mlo-predefined-landmark-category-public-service'>mlo:predefined-landmark-category-public-service</link>, <link linkend='mlo-predefined-landmark-category-people'>mlo:predefined-landmark-category-people</link>, <link linkend='mlo-predefined-landmark-category-outdoor-activities'>mlo:predefined-landmark-category-outdoor-activities</link>, <link linkend='mlo-predefined-landmark-category-geographical-area'>mlo:predefined-landmark-category-geographical-area</link>, <link linkend='mlo-predefined-landmark-category-food-beverage'>mlo:predefined-landmark-category-food-beverage</link>, <link linkend='mlo-predefined-landmark-category-entertainment'>mlo:predefined-landmark-category-entertainment</link>, <link linkend='mlo-predefined-landmark-category-educational-institute'>mlo:predefined-landmark-category-educational-institute</link>, <link linkend='mlo-predefined-landmark-category-communication'>mlo:predefined-landmark-category-communication</link>, <link linkend='mlo-predefined-landmark-category-business'>mlo:predefined-landmark-category-business</link>, <link linkend='mlo-predefined-landmark-category-accommodation'>mlo:predefined-landmark-category-accommodation</link>, </simpara></listitem>
+<listitem><simpara>--</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -245,36 +271,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mlo-PointOfInterest'>
-<title>mlo:PointOfInterest</title>
-<para>Use the nie title, description, ...  properties</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-Landmark'>mlo:Landmark</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-<note>
-<title>Note:</title>
-<para>This class is deprecated</para>
-</note>
-</refsect2>
-
-<refsect2 id='mlo-GeoLocation'>
-<title>mlo:GeoLocation</title>
-<para>A place in the space, can be defined by coordinates, text or box</para>
+<refsect2 id='mlo-GeoBoundingBox'>
+<title>mlo:GeoBoundingBox</title>
+<para>Bounding box for a region in the space, defined with 2 points in 2D. We assume that the box is always aligned with parallels and meridians.</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
@@ -282,25 +281,26 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='mlo-Route'>mlo:Route</link>, <link linkend='mlo-LocationBoundingBox'>mlo:LocationBoundingBox</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-asPostalAddress'>mlo:asPostalAddress</link>, <link linkend='mlo-asGeoPoint'>mlo:asGeoPoint</link>, <link linkend='mlo-asBoundingBox'>mlo:asBoundingBox</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-bbSouthEast'>mlo:bbSouthEast</link>, <link linkend='mlo-bbNorthWest'>mlo:bbNorthWest</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-location'>mlo:location</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-asBoundingBox'>mlo:asBoundingBox</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
 
-<refsect2 id='mlo-Route'>
-<title>mlo:Route</title>
+<refsect2 id='mlo-GeoSphere'>
+<title>mlo:GeoSphere</title>
+<para>Point and radius to define an area in the space</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoBoundingBox'>mlo:GeoBoundingBox</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -308,7 +308,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-routeDetails'>mlo:routeDetails</link>, <link linkend='mlo-endTime'>mlo:endTime</link>, <link linkend='mlo-startTime'>mlo:startTime</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-radius'>mlo:radius</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -320,6 +320,32 @@
 </section>
 <section id='mlo-properties'>
 <title>MLO Ontology Properties</title>
+<refsect2 id='mlo-endTime'>
+<title>mlo:endTime</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-Route'>mlo:Route</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-dateTime'>xsd:dateTime</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='mlo-poiLocation'>
 <title>mlo:poiLocation</title>
 <para>Coordinates of the point (Use the mlo:location property inherited from IE</para>
@@ -351,9 +377,8 @@
 </note>
 </refsect2>
 
-<refsect2 id='mlo-longitude'>
-<title>mlo:longitude</title>
-<para>Positive to the East of the Greenwich meridian, negative to the West (following WGS-84)</para>
+<refsect2 id='mlo-boxSouthWestCorner'>
+<title>mlo:boxSouthWestCorner</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -361,91 +386,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mlo-asGeoPoint'>
-<title>mlo:asGeoPoint</title>
-<para>Representation of the location as geo point</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoLocation'>mlo:GeoLocation</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-LocationBoundingBox'>mlo:LocationBoundingBox</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mlo-asPostalAddress'>
-<title>mlo:asPostalAddress</title>
-<para>Representation of the location as text address</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoLocation'>mlo:GeoLocation</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nco-PostalAddress'>nco:PostalAddress</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mlo-state'>
-<title>mlo:state</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -462,9 +407,8 @@
 </note>
 </refsect2>
 
-<refsect2 id='mlo-routeDetails'>
-<title>mlo:routeDetails</title>
-<para>FIXME Domain can be resource if we handle map-files correctly in the ontology</para>
+<refsect2 id='mlo-boxVerticalLimit'>
+<title>mlo:boxVerticalLimit</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -472,11 +416,42 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-Route'>mlo:Route</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-LocationBoundingBox'>mlo:LocationBoundingBox</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+<note>
+<title>Note:</title>
+<para>This property is deprecated</para>
+</note>
+</refsect2>
+
+<refsect2 id='mlo-location'>
+<title>mlo:location</title>
+<para>This can be subclassed to add semantics</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-GeoLocation'>mlo:GeoLocation</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -489,8 +464,35 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mlo-boxSouthWestCorner'>
-<title>mlo:boxSouthWestCorner</title>
+<refsect2 id='mlo-timestamp'>
+<title>mlo:timestamp</title>
+<para>Timestamp when the geopoint is referenced. Create subproperties for certain use cases</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-dateTime'>xsd:dateTime</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mlo-boxNorthLimit'>
+<title>mlo:boxNorthLimit</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -546,63 +548,6 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mlo-timestamp'>
-<title>mlo:timestamp</title>
-<para>Timestamp when the geopoint is referenced. Create subproperties for certain use cases</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-dateTime'>xsd:dateTime</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mlo-boxVerticalLimit'>
-<title>mlo:boxVerticalLimit</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-LocationBoundingBox'>mlo:LocationBoundingBox</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-<note>
-<title>Note:</title>
-<para>This property is deprecated</para>
-</note>
-</refsect2>
-
 <refsect2 id='mlo-bbNorthWest'>
 <title>mlo:bbNorthWest</title>
 <para>North west corner of a bounding box. The GeoPoint is interpreted in 2D</para>
@@ -618,6 +563,60 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mlo-routeDetails'>
+<title>mlo:routeDetails</title>
+<para>FIXME Domain can be resource if we handle map-files correctly in the ontology</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-Route'>mlo:Route</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mlo-radius'>
+<title>mlo:radius</title>
+<para>Radius from the center to define an area. Some applications can use it in 2D sense, making then a circle instead of a sphere</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-GeoSphere'>mlo:GeoSphere</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -657,9 +656,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mlo-altitude'>
-<title>mlo:altitude</title>
-<para>Altitude following WGS 84 reference</para>
+<refsect2 id='mlo-isRemovable'>
+<title>mlo:isRemovable</title>
+<para>Flag to indicate if this instance is removable. This restriction is not enforced by tracker; it is API responsability to honor the value</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -667,11 +666,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-LandmarkCategory'>mlo:LandmarkCategory</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -684,8 +683,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mlo-endTime'>
-<title>mlo:endTime</title>
+<refsect2 id='mlo-startTime'>
+<title>mlo:startTime</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -710,9 +709,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mlo-location'>
-<title>mlo:location</title>
-<para>This can be subclassed to add semantics</para>
+<refsect2 id='mlo-city'>
+<title>mlo:city</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -720,11 +718,42 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+<note>
+<title>Note:</title>
+<para>This property is deprecated</para>
+</note>
+</refsect2>
+
+<refsect2 id='mlo-asGeoPoint'>
+<title>mlo:asGeoPoint</title>
+<para>Representation of the location as geo point</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
 <listitem><simpara><link linkend='mlo-GeoLocation'>mlo:GeoLocation</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -737,9 +766,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mlo-radius'>
-<title>mlo:radius</title>
-<para>Radius from the center to define an area. Some applications can use it in 2D sense, making then a circle instead of a sphere</para>
+<refsect2 id='mlo-address'>
+<title>mlo:address</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -747,7 +775,182 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoSphere'>mlo:GeoSphere</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+<note>
+<title>Note:</title>
+<para>This property is deprecated</para>
+</note>
+</refsect2>
+
+<refsect2 id='mlo-state'>
+<title>mlo:state</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+<note>
+<title>Note:</title>
+<para>This property is deprecated</para>
+</note>
+</refsect2>
+
+<refsect2 id='mlo-asPostalAddress'>
+<title>mlo:asPostalAddress</title>
+<para>Representation of the location as text address</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-GeoLocation'>mlo:GeoLocation</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nco-PostalAddress'>nco:PostalAddress</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mlo-boxEastLimit'>
+<title>mlo:boxEastLimit</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-LocationBoundingBox'>mlo:LocationBoundingBox</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+<note>
+<title>Note:</title>
+<para>This property is deprecated</para>
+</note>
+</refsect2>
+
+<refsect2 id='mlo-longitude'>
+<title>mlo:longitude</title>
+<para>Positive to the East of the Greenwich meridian, negative to the West (following WGS-84)</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mlo-country'>
+<title>mlo:country</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+<note>
+<title>Note:</title>
+<para>This property is deprecated</para>
+</note>
+</refsect2>
+
+<refsect2 id='mlo-altitude'>
+<title>mlo:altitude</title>
+<para>Altitude following WGS 84 reference</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -816,209 +1019,6 @@
 <listitem><simpara>--</simpara></listitem>
 </varlistentry>
 </variablelist>
-</refsect2>
-
-<refsect2 id='mlo-boxEastLimit'>
-<title>mlo:boxEastLimit</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-LocationBoundingBox'>mlo:LocationBoundingBox</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-<note>
-<title>Note:</title>
-<para>This property is deprecated</para>
-</note>
-</refsect2>
-
-<refsect2 id='mlo-isRemovable'>
-<title>mlo:isRemovable</title>
-<para>Flag to indicate if this instance is removable. This restriction is not enforced by tracker; it is API responsability to honor the value</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-LandmarkCategory'>mlo:LandmarkCategory</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mlo-boxNorthLimit'>
-<title>mlo:boxNorthLimit</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-LocationBoundingBox'>mlo:LocationBoundingBox</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-<note>
-<title>Note:</title>
-<para>This property is deprecated</para>
-</note>
-</refsect2>
-
-<refsect2 id='mlo-address'>
-<title>mlo:address</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-<note>
-<title>Note:</title>
-<para>This property is deprecated</para>
-</note>
-</refsect2>
-
-<refsect2 id='mlo-startTime'>
-<title>mlo:startTime</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-Route'>mlo:Route</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-dateTime'>xsd:dateTime</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mlo-city'>
-<title>mlo:city</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-<note>
-<title>Note:</title>
-<para>This property is deprecated</para>
-</note>
-</refsect2>
-
-<refsect2 id='mlo-country'>
-<title>mlo:country</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mlo-GeoPoint'>mlo:GeoPoint</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-<note>
-<title>Note:</title>
-<para>This property is deprecated</para>
-</note>
 </refsect2>
 
 </section>

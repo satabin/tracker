@@ -8,7 +8,7 @@
 <link rel="up" href="ch03.html" title="Communication">
 <link rel="prev" href="ch03.html" title="Communication">
 <link rel="next" href="libtracker-common-tracker-log.html" title="tracker-log">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libtracker-common-tracker-dbus.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="tracker-dbus">
+<div class="refentry">
 <a name="libtracker-common-tracker-dbus"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,7 +35,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libtracker-common-tracker-dbus.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">#define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR-DOMAIN:CAPS" title="TRACKER_DBUS_ERROR_DOMAIN">TRACKER_DBUS_ERROR_DOMAIN</a>
 #define             <a class="link" href="libtracker-common-tracker-dbus.html#TRACKER-DBUS-ERROR:CAPS" title="TRACKER_DBUS_ERROR">TRACKER_DBUS_ERROR</a>
@@ -49,63 +49,63 @@
                                                          error)
 enum                <a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusEventsType" title="enum TrackerDBusEventsType">TrackerDBusEventsType</a>;
 typedef             <a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler">TrackerDBusRequestHandler</a>;
-<span class="returnvalue">void</span>                (<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()">*TrackerDBusRequestFunc</a>)           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()">*TrackerDBusRequestFunc</a>)           (<em class="parameter"><code><span class="type">guint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
                     <a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusData" title="TrackerDBusData">TrackerDBusData</a>;
-<a href="/usr/share/gtk-doc/html/glib/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-error-quark" title="tracker_dbus_error_quark ()">tracker_dbus_error_quark</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusData" title="TrackerDBusData"><span class="returnvalue">TrackerDBusData</span></a> *   <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-data-new" title="tracker_dbus_data_new ()">tracker_dbus_data_new</a>               (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> arg1</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> arg2</code></em>);
-<a href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-gvalue-slice-new" title="tracker_dbus_gvalue_slice_new ()">tracker_dbus_gvalue_slice_new</a>       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> type</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-gvalue-slice-free" title="tracker_dbus_gvalue_slice_free ()">tracker_dbus_gvalue_slice_free</a>      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> *value</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-slist-to-strv" title="tracker_dbus_slist_to_strv ()">tracker_dbus_slist_to_strv</a>          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> *list</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-str-to-strv" title="tracker_dbus_str_to_strv ()">tracker_dbus_str_to_strv</a>            (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-queue-str-to-strv" title="tracker_dbus_queue_str_to_strv ()">tracker_dbus_queue_str_to_strv</a>      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Double-ended-Queues.html#GQueue"><span class="type">GQueue</span></a> *queue</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-queue-gfile-to-strv" title="tracker_dbus_queue_gfile_to_strv ()">tracker_dbus_queue_gfile_to_strv</a>    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Double-ended-Queues.html#GQueue"><span class="type">GQueue</span></a> *queue</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-results-ptr-array-free" title="tracker_dbus_results_ptr_array_free ()">tracker_dbus_results_ptr_array_free</a> (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> **ptr_array</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-get-next-request-id" title="tracker_dbus_get_next_request_id ()">tracker_dbus_get_next_request_id</a>    (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-enable-client-lookup" title="tracker_dbus_enable_client_lookup ()">tracker_dbus_enable_client_lookup</a>   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable</code></em>);
+<span class="returnvalue">GQuark</span>              <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-error-quark" title="tracker_dbus_error_quark ()">tracker_dbus_error_quark</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusData" title="TrackerDBusData"><span class="returnvalue">TrackerDBusData</span></a> *   <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-data-new" title="tracker_dbus_data_new ()">tracker_dbus_data_new</a>               (<em class="parameter"><code>const <span class="type">gpointer</span> arg1</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gpointer</span> arg2</code></em>);
+<span class="returnvalue">GValue</span> *            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-gvalue-slice-new" title="tracker_dbus_gvalue_slice_new ()">tracker_dbus_gvalue_slice_new</a>       (<em class="parameter"><code><span class="type">GType</span> type</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-gvalue-slice-free" title="tracker_dbus_gvalue_slice_free ()">tracker_dbus_gvalue_slice_free</a>      (<em class="parameter"><code><span class="type">GValue</span> *value</code></em>);
+<span class="returnvalue">gchar</span> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-slist-to-strv" title="tracker_dbus_slist_to_strv ()">tracker_dbus_slist_to_strv</a>          (<em class="parameter"><code><span class="type">GSList</span> *list</code></em>);
+<span class="returnvalue">gchar</span> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-str-to-strv" title="tracker_dbus_str_to_strv ()">tracker_dbus_str_to_strv</a>            (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);
+<span class="returnvalue">gchar</span> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-queue-str-to-strv" title="tracker_dbus_queue_str_to_strv ()">tracker_dbus_queue_str_to_strv</a>      (<em class="parameter"><code><span class="type">GQueue</span> *queue</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> max</code></em>);
+<span class="returnvalue">gchar</span> **            <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-queue-gfile-to-strv" title="tracker_dbus_queue_gfile_to_strv ()">tracker_dbus_queue_gfile_to_strv</a>    (<em class="parameter"><code><span class="type">GQueue</span> *queue</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> max</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-results-ptr-array-free" title="tracker_dbus_results_ptr_array_free ()">tracker_dbus_results_ptr_array_free</a> (<em class="parameter"><code><span class="type">GPtrArray</span> **ptr_array</code></em>);
+<span class="returnvalue">guint</span>               <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-get-next-request-id" title="tracker_dbus_get_next_request_id ()">tracker_dbus_get_next_request_id</a>    (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-enable-client-lookup" title="tracker_dbus_enable_client_lookup ()">tracker_dbus_enable_client_lookup</a>   (<em class="parameter"><code><span class="type">gboolean</span> enable</code></em>);
 <a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler"><span class="returnvalue">TrackerDBusRequestHandler</span></a> * <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-add-hook" title="tracker_dbus_request_add_hook ()">tracker_dbus_request_add_hook</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()"><span class="type">TrackerDBusRequestFunc</span></a> new</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()"><span class="type">TrackerDBusRequestFunc</span></a> done</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-remove-hook" title="tracker_dbus_request_remove_hook ()">tracker_dbus_request_remove_hook</a>    (<em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler"><span class="type">TrackerDBusRequestHandler</span></a> *handler</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-new" title="tracker_dbus_request_new ()">tracker_dbus_request_new</a>            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-new" title="tracker_dbus_request_new ()">tracker_dbus_request_new</a>            (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-success" title="tracker_dbus_request_success ()">tracker_dbus_request_success</a>        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-failed" title="tracker_dbus_request_failed ()">tracker_dbus_request_failed</a>         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-success" title="tracker_dbus_request_success ()">tracker_dbus_request_success</a>        (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-failed" title="tracker_dbus_request_failed ()">tracker_dbus_request_failed</a>         (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-comment" title="tracker_dbus_request_comment ()">tracker_dbus_request_comment</a>        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-comment" title="tracker_dbus_request_comment ()">tracker_dbus_request_comment</a>        (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-info" title="tracker_dbus_request_info ()">tracker_dbus_request_info</a>           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-info" title="tracker_dbus_request_info ()">tracker_dbus_request_info</a>           (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-debug" title="tracker_dbus_request_debug ()">tracker_dbus_request_debug</a>          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-debug" title="tracker_dbus_request_debug ()">tracker_dbus_request_debug</a>          (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-block-hooks" title="tracker_dbus_request_block_hooks ()">tracker_dbus_request_block_hooks</a>    (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-dbus.html#tracker-dbus-request-unblock-hooks" title="tracker_dbus_request_unblock_hooks ()">tracker_dbus_request_unblock_hooks</a>  (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libtracker-common-tracker-dbus.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libtracker-common-tracker-dbus.details"></a><h2>Details</h2>
-<div class="refsect2" title="TRACKER_DBUS_ERROR_DOMAIN">
+<div class="refsect2">
 <a name="TRACKER-DBUS-ERROR-DOMAIN:CAPS"></a><h3>TRACKER_DBUS_ERROR_DOMAIN</h3>
 <pre class="programlisting">#define TRACKER_DBUS_ERROR_DOMAIN "TrackerDBus"
 </pre>
@@ -113,7 +113,7 @@ typedef             <a class="link" href="libtracker-common-tracker-dbus.html#Tr
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TRACKER_DBUS_ERROR">
+<div class="refsect2">
 <a name="TRACKER-DBUS-ERROR:CAPS"></a><h3>TRACKER_DBUS_ERROR</h3>
 <pre class="programlisting">#define TRACKER_DBUS_ERROR        tracker_dbus_error_quark()
 </pre>
@@ -121,14 +121,14 @@ typedef             <a class="link" href="libtracker-common-tracker-dbus.html#Tr
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TRACKER_TYPE_G_STRV_ARRAY">
+<div class="refsect2">
 <a name="TRACKER-TYPE-G-STRV-ARRAY:CAPS"></a><h3>TRACKER_TYPE_G_STRV_ARRAY</h3>
 <pre class="programlisting">#define             TRACKER_TYPE_G_STRV_ARRAY</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TRACKER_TYPE_STR_STRV_MAP">
+<div class="refsect2">
 <a name="TRACKER-TYPE-STR-STRV-MAP:CAPS"></a><h3>TRACKER_TYPE_STR_STRV_MAP</h3>
 <pre class="programlisting">#define TRACKER_TYPE_STR_STRV_MAP (dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_STRV))
 </pre>
@@ -136,63 +136,28 @@ typedef             <a class="link" href="libtracker-common-tracker-dbus.html#Tr
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TRACKER_TYPE_EVENT_ARRAY">
+<div class="refsect2">
 <a name="TRACKER-TYPE-EVENT-ARRAY:CAPS"></a><h3>TRACKER_TYPE_EVENT_ARRAY</h3>
 <pre class="programlisting">#define             TRACKER_TYPE_EVENT_ARRAY</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_async_return_if_fail()">
+<div class="refsect2">
 <a name="tracker-dbus-async-return-if-fail"></a><h3>tracker_dbus_async_return_if_fail()</h3>
 <pre class="programlisting">#define             tracker_dbus_async_return_if_fail(expr,context)</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>expr</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_return_val_if_fail()">
+<div class="refsect2">
 <a name="tracker-dbus-return-val-if-fail"></a><h3>tracker_dbus_return_val_if_fail()</h3>
 <pre class="programlisting">#define             tracker_dbus_return_val_if_fail(expr,val,error)</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>expr</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>val</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="enum TrackerDBusEventsType">
+<div class="refsect2">
 <a name="TrackerDBusEventsType"></a><h3>enum TrackerDBusEventsType</h3>
 <pre class="programlisting">typedef enum {
 	TRACKER_DBUS_EVENTS_TYPE_ADD,
@@ -204,7 +169,7 @@ typedef             <a class="link" href="libtracker-common-tracker-dbus.html#Tr
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TrackerDBusRequestHandler">
+<div class="refsect2">
 <a name="TrackerDBusRequestHandler"></a><h3>TrackerDBusRequestHandler</h3>
 <pre class="programlisting">typedef struct TrackerDBusRequestHandler TrackerDBusRequestHandler;
 </pre>
@@ -212,30 +177,15 @@ typedef             <a class="link" href="libtracker-common-tracker-dbus.html#Tr
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TrackerDBusRequestFunc ()">
+<div class="refsect2">
 <a name="TrackerDBusRequestFunc"></a><h3>TrackerDBusRequestFunc ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerDBusRequestFunc)           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerDBusRequestFunc)           (<em class="parameter"><code><span class="type">guint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>request_id</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="TrackerDBusData">
+<div class="refsect2">
 <a name="TrackerDBusData"></a><h3>TrackerDBusData</h3>
 <pre class="programlisting">typedef struct {
 	guint    id;
@@ -247,493 +197,170 @@ typedef             <a class="link" href="libtracker-common-tracker-dbus.html#Tr
 </p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_error_quark ()">
+<div class="refsect2">
 <a name="tracker-dbus-error-quark"></a><h3>tracker_dbus_error_quark ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              tracker_dbus_error_quark            (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GQuark</span>              tracker_dbus_error_quark            (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_data_new ()">
+<div class="refsect2">
 <a name="tracker-dbus-data-new"></a><h3>tracker_dbus_data_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusData" title="TrackerDBusData"><span class="returnvalue">TrackerDBusData</span></a> *   tracker_dbus_data_new               (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> arg1</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> arg2</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusData" title="TrackerDBusData"><span class="returnvalue">TrackerDBusData</span></a> *   tracker_dbus_data_new               (<em class="parameter"><code>const <span class="type">gpointer</span> arg1</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gpointer</span> arg2</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>arg1</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>arg2</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_gvalue_slice_new ()">
+<div class="refsect2">
 <a name="tracker-dbus-gvalue-slice-new"></a><h3>tracker_dbus_gvalue_slice_new ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"><span class="returnvalue">GValue</span></a> *            tracker_dbus_gvalue_slice_new       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> type</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GValue</span> *            tracker_dbus_gvalue_slice_new       (<em class="parameter"><code><span class="type">GType</span> type</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_gvalue_slice_free ()">
+<div class="refsect2">
 <a name="tracker-dbus-gvalue-slice-free"></a><h3>tracker_dbus_gvalue_slice_free ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_gvalue_slice_free      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"><span class="type">GValue</span></a> *value</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_gvalue_slice_free      (<em class="parameter"><code><span class="type">GValue</span> *value</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_slist_to_strv ()">
+<div class="refsect2">
 <a name="tracker-dbus-slist-to-strv"></a><h3>tracker_dbus_slist_to_strv ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            tracker_dbus_slist_to_strv          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Singly-Linked-Lists.html#GSList"><span class="type">GSList</span></a> *list</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> **            tracker_dbus_slist_to_strv          (<em class="parameter"><code><span class="type">GSList</span> *list</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>list</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_str_to_strv ()">
+<div class="refsect2">
 <a name="tracker-dbus-str-to-strv"></a><h3>tracker_dbus_str_to_strv ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            tracker_dbus_str_to_strv            (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *str</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> **            tracker_dbus_str_to_strv            (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_queue_str_to_strv ()">
+<div class="refsect2">
 <a name="tracker-dbus-queue-str-to-strv"></a><h3>tracker_dbus_queue_str_to_strv ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            tracker_dbus_queue_str_to_strv      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Double-ended-Queues.html#GQueue"><span class="type">GQueue</span></a> *queue</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> **            tracker_dbus_queue_str_to_strv      (<em class="parameter"><code><span class="type">GQueue</span> *queue</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> max</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>queue</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>max</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_queue_gfile_to_strv ()">
+<div class="refsect2">
 <a name="tracker-dbus-queue-gfile-to-strv"></a><h3>tracker_dbus_queue_gfile_to_strv ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            tracker_dbus_queue_gfile_to_strv    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Double-ended-Queues.html#GQueue"><span class="type">GQueue</span></a> *queue</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> **            tracker_dbus_queue_gfile_to_strv    (<em class="parameter"><code><span class="type">GQueue</span> *queue</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> max</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>queue</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>max</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_results_ptr_array_free ()">
+<div class="refsect2">
 <a name="tracker-dbus-results-ptr-array-free"></a><h3>tracker_dbus_results_ptr_array_free ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_results_ptr_array_free (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a> **ptr_array</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_results_ptr_array_free (<em class="parameter"><code><span class="type">GPtrArray</span> **ptr_array</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>ptr_array</code></em> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_get_next_request_id ()">
+<div class="refsect2">
 <a name="tracker-dbus-get-next-request-id"></a><h3>tracker_dbus_get_next_request_id ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               tracker_dbus_get_next_request_id    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">guint</span>               tracker_dbus_get_next_request_id    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_enable_client_lookup ()">
+<div class="refsect2">
 <a name="tracker-dbus-enable-client-lookup"></a><h3>tracker_dbus_enable_client_lookup ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_enable_client_lookup   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_enable_client_lookup   (<em class="parameter"><code><span class="type">gboolean</span> enable</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>enable</code></em> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_request_add_hook ()">
+<div class="refsect2">
 <a name="tracker-dbus-request-add-hook"></a><h3>tracker_dbus_request_add_hook ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler"><span class="returnvalue">TrackerDBusRequestHandler</span></a> * tracker_dbus_request_add_hook
                                                         (<em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()"><span class="type">TrackerDBusRequestFunc</span></a> new</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestFunc" title="TrackerDBusRequestFunc ()"><span class="type">TrackerDBusRequestFunc</span></a> done</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>new</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>done</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_request_remove_hook ()">
+<div class="refsect2">
 <a name="tracker-dbus-request-remove-hook"></a><h3>tracker_dbus_request_remove_hook ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_remove_hook    (<em class="parameter"><code><a class="link" href="libtracker-common-tracker-dbus.html#TrackerDBusRequestHandler" title="TrackerDBusRequestHandler"><span class="type">TrackerDBusRequestHandler</span></a> *handler</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>handler</code></em> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_request_new ()">
+<div class="refsect2">
 <a name="tracker-dbus-request-new"></a><h3>tracker_dbus_request_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_new            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_new            (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>request_id</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_request_success ()">
+<div class="refsect2">
 <a name="tracker-dbus-request-success"></a><h3>tracker_dbus_request_success ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_success        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_success        (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>request_id</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_request_failed ()">
+<div class="refsect2">
 <a name="tracker-dbus-request-failed"></a><h3>tracker_dbus_request_failed ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_failed         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_failed         (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>request_id</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_request_comment ()">
+<div class="refsect2">
 <a name="tracker-dbus-request-comment"></a><h3>tracker_dbus_request_comment ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_comment        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_comment        (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>request_id</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_request_info ()">
+<div class="refsect2">
 <a name="tracker-dbus-request-info"></a><h3>tracker_dbus_request_info ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_info           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_info           (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>request_id</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_request_debug ()">
+<div class="refsect2">
 <a name="tracker-dbus-request-debug"></a><h3>tracker_dbus_request_debug ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_debug          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> request_id</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/dbus-glib/dbus-glib-DBusGMethod.html#DBusGMethodInvocation"><span class="type">DBusGMethodInvocation</span></a> *context</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_debug          (<em class="parameter"><code><span class="type">gint</span> request_id</code></em>,
+                                                         <em class="parameter"><code><span class="type">DBusGMethodInvocation</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *format</code></em>,
                                                          <em class="parameter"><code>...</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>request_id</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_request_block_hooks ()">
+<div class="refsect2">
 <a name="tracker-dbus-request-block-hooks"></a><h3>tracker_dbus_request_block_hooks ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_block_hooks    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_dbus_request_unblock_hooks ()">
+<div class="refsect2">
 <a name="tracker-dbus-request-unblock-hooks"></a><h3>tracker_dbus_request_unblock_hooks ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_dbus_request_unblock_hooks  (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
@@ -743,6 +370,6 @@ typedef             <a class="link" href="libtracker-common-tracker-dbus.html#Tr
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

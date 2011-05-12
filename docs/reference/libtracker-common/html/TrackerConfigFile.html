@@ -8,7 +8,7 @@
 <link rel="up" href="ch02.html" title="Configuration">
 <link rel="prev" href="ch02.html" title="Configuration">
 <link rel="next" href="TrackerLanguage.html" title="TrackerLanguage">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -32,7 +32,7 @@
                   <a href="#TrackerConfigFile.signals" class="shortcut">Signals</a>
 </td></tr>
 </table>
-<div class="refentry" title="TrackerConfigFile">
+<div class="refentry">
 <a name="TrackerConfigFile"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -41,36 +41,36 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="TrackerConfigFile.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 #include &lt;libtracker-common/tracker-common.h&gt;
 
-                    <a class="link" href="TrackerConfigFile.html#TrackerConfigFile-struct" title="TrackerConfigFile">TrackerConfigFile</a>;
-                    <a class="link" href="TrackerConfigFile.html#TrackerConfigFileClass" title="TrackerConfigFileClass">TrackerConfigFileClass</a>;
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerConfigFile.html#tracker-config-file-save" title="tracker_config_file_save ()">tracker_config_file_save</a>            (<em class="parameter"><code><a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a> *config</code></em>);
+struct              <a class="link" href="TrackerConfigFile.html#TrackerConfigFile-struct" title="struct TrackerConfigFile">TrackerConfigFile</a>;
+struct              <a class="link" href="TrackerConfigFile.html#TrackerConfigFileClass" title="struct TrackerConfigFileClass">TrackerConfigFileClass</a>;
+<span class="returnvalue">gboolean</span>            <a class="link" href="TrackerConfigFile.html#tracker-config-file-save" title="tracker_config_file_save ()">tracker_config_file_save</a>            (<em class="parameter"><code><a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a> *config</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Object Hierarchy">
+<div class="refsect1">
 <a name="TrackerConfigFile.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+  GObject
    +----TrackerConfigFile
 </pre>
 </div>
-<div class="refsect1" title="Properties">
+<div class="refsect1">
 <a name="TrackerConfigFile.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="TrackerConfigFile.html#TrackerConfigFile--domain" title='The "domain" property'>domain</a>"                   <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write / Construct
+  "<a class="link" href="TrackerConfigFile.html#TrackerConfigFile--domain" title='The "domain" property'>domain</a>"                   <span class="type">gchar</span>*                : Read / Write / Construct
 </pre>
 </div>
-<div class="refsect1" title="Signals">
+<div class="refsect1">
 <a name="TrackerConfigFile.signals"></a><h2>Signals</h2>
 <pre class="synopsis">
-  "<a class="link" href="TrackerConfigFile.html#TrackerConfigFile-changed" title='The "changed" signal'>changed</a>"                                        : Run Last
+  "<a class="link" href="TrackerConfigFile.html#TrackerConfigFile-changed" title='The "changed" signal'>changed</a>"                                        : <code class="literal">Run Last</code>
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="TrackerConfigFile.description"></a><h2>Description</h2>
 <p>
 <a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a> is an abstract base class to help creating objects
@@ -78,30 +78,30 @@ that proxy a configuration file, mirroring settings to disk and notifying
 of changes.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="TrackerConfigFile.details"></a><h2>Details</h2>
-<div class="refsect2" title="TrackerConfigFile">
-<a name="TrackerConfigFile-struct"></a><h3>TrackerConfigFile</h3>
-<pre class="programlisting">typedef struct _TrackerConfigFile TrackerConfigFile;</pre>
+<div class="refsect2">
+<a name="TrackerConfigFile-struct"></a><h3>struct TrackerConfigFile</h3>
+<pre class="programlisting">struct TrackerConfigFile;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TrackerConfigFileClass">
-<a name="TrackerConfigFileClass"></a><h3>TrackerConfigFileClass</h3>
-<pre class="programlisting">typedef struct {
+<div class="refsect2">
+<a name="TrackerConfigFileClass"></a><h3>struct TrackerConfigFileClass</h3>
+<pre class="programlisting">struct TrackerConfigFileClass {
 	GObjectClass parent_class;
 
 	void (* changed) (TrackerConfigFile *file);
-} TrackerConfigFileClass;
+};
 </pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_config_file_save ()">
+<div class="refsect2">
 <a name="tracker-config-file-save"></a><h3>tracker_config_file_save ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_config_file_save            (<em class="parameter"><code><a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a> *config</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_config_file_save            (<em class="parameter"><code><a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a> *config</code></em>);</pre>
 <p>
 Writes the configuration stored in TrackerConfigFile to disk.
 </p>
@@ -115,28 +115,28 @@ Writes the configuration stored in TrackerConfigFile to disk.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success, <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.
-</td>
+<td>
+<code class="literal">TRUE</code> on success, <code class="literal">FALSE</code> otherwise.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 </div>
-<div class="refsect1" title="Property Details">
+<div class="refsect1">
 <a name="TrackerConfigFile.property-details"></a><h2>Property Details</h2>
-<div class="refsect2" title='The "domain" property'>
+<div class="refsect2">
 <a name="TrackerConfigFile--domain"></a><h3>The <code class="literal">"domain"</code> property</h3>
-<pre class="programlisting">  "domain"                   <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write / Construct</pre>
+<pre class="programlisting">  "domain"                   <span class="type">gchar</span>*                : Read / Write / Construct</pre>
 <p>The prefix before .cfg for the filename.</p>
 <p>Default value: NULL</p>
 </div>
 </div>
-<div class="refsect1" title="Signal Details">
+<div class="refsect1">
 <a name="TrackerConfigFile.signal-details"></a><h2>Signal Details</h2>
-<div class="refsect2" title='The "changed" signal'>
+<div class="refsect2">
 <a name="TrackerConfigFile-changed"></a><h3>The <code class="literal">"changed"</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a> *config,
-                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>           user_data)      : Run Last</pre>
+                                                        <span class="type">gpointer</span>           user_data)      : <code class="literal">Run Last</code></pre>
 <p>
 the ::changed signal is emitted whenever
 the configuration file has changed on disk.
@@ -146,8 +146,7 @@ the configuration file has changed on disk.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>the <a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a>.
-</td>
+<td>the <a class="link" href="TrackerConfigFile.html" title="TrackerConfigFile"><span class="type">TrackerConfigFile</span></a>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
@@ -160,6 +159,6 @@ the configuration file has changed on disk.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

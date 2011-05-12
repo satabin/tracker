@@ -13,7 +13,7 @@ AC_PREREQ(2.59)
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [8])
-m4_define([tracker_micro_version], [17])
+m4_define([tracker_micro_version], [18])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -1157,6 +1157,9 @@ if test "x$enable_poppler_glib" != "xno" ; then
 
    AC_SUBST(POPPLER_GLIB_CFLAGS)
    AC_SUBST(POPPLER_GLIB_LIBS)
+
+   PKG_CHECK_EXISTS([poppler-glib <= 0.14],
+                    [AC_DEFINE(HAVE_POPPLER_GLIB_0_14, 1, [Define if we have poppler-glib 0.14 or older])])
 
    if test "x$have_poppler_glib" = "xyes"; then
       AC_DEFINE(HAVE_POPPLER_GLIB, [], [Define if we have poppler-glib])

@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="Core">
 <link rel="prev" href="ch01.html" title="Core">
 <link rel="next" href="libtracker-extract-Data-utilities.html" title="Data utilities">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libtracker-extract-How-to-use-libtracker-extract.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="How to use libtracker-extract">
+<div class="refentry">
 <a name="libtracker-extract-How-to-use-libtracker-extract"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,16 +35,16 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsect1" title="Stability Level">
+<div class="refsect1">
 <a name="libtracker-extract-How-to-use-libtracker-extract.stability-level"></a><h2>Stability Level</h2>
 Stable, unless otherwise indicated
 </div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libtracker-extract-How-to-use-libtracker-extract.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 #include &lt;libtracker-extract/tracker-extract.h&gt;
 
-<span class="returnvalue">void</span>                (<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractMimeFunc" title="TrackerExtractMimeFunc ()">*TrackerExtractMimeFunc</a>)           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+<span class="returnvalue">void</span>                (<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractMimeFunc" title="TrackerExtractMimeFunc ()">*TrackerExtractMimeFunc</a>)           (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
                                                          <em class="parameter"><code><a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
                                                          <em class="parameter"><code><a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>);
 <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="returnvalue">TrackerExtractData</span></a> * (<a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractDataFunc" title="TrackerExtractDataFunc ()">*TrackerExtractDataFunc</a>)          (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -52,7 +52,7 @@ Stable, unless otherwise indicated
 <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="returnvalue">TrackerExtractData</span></a> * <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#tracker-extract-get-data" title="tracker_extract_get_data ()">tracker_extract_get_data</a>           (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libtracker-extract-How-to-use-libtracker-extract.description"></a><h2>Description</h2>
 <p>
 The libtracker-extract library is the foundation for Tracker
@@ -68,7 +68,7 @@ do that.
 <p>
 </p>
 <div class="example">
-<a name="id514723"></a><p class="title"><b>Example 1. Basic extractor example</b></p>
+<a name="id453525"></a><p class="title"><b>Example 1. Basic extractor example</b></p>
 <div class="example-contents">
 An example of how to write an extractor to retrieve PNG embedded
 metadata.
@@ -120,11 +120,11 @@ metadata.
 <p><br class="example-break">
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libtracker-extract-How-to-use-libtracker-extract.details"></a><h2>Details</h2>
-<div class="refsect2" title="TrackerExtractMimeFunc ()">
+<div class="refsect2">
 <a name="TrackerExtractMimeFunc"></a><h3>TrackerExtractMimeFunc ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerExtractMimeFunc)           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                (*TrackerExtractMimeFunc)           (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
                                                          <em class="parameter"><code><a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
                                                          <em class="parameter"><code><a href="../libtracker-sparql/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>);</pre>
 <p>
@@ -150,27 +150,24 @@ through <a href="../libtracker-sparql/TrackerSparqlBuilder.html#tracker-sparql-b
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
-<td>a string representing a URI.
-</td>
+<td>a string representing a URI.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preupdate</code></em> :</span></p></td>
 <td>used to populate with data updates that
-            are a prerequisite for the actual file
-            metadata insertion.
-</td>
+are a prerequisite for the actual file
+metadata insertion.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>metadata</code></em> :</span></p></td>
-<td>used to populate with file metadata predicate/object(s).
-</td>
+<td>used to populate with file metadata predicate/object(s).</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="TrackerExtractDataFunc ()">
+<div class="refsect2">
 <a name="TrackerExtractDataFunc"></a><h3>TrackerExtractDataFunc ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="returnvalue">TrackerExtractData</span></a> * (*TrackerExtractDataFunc)          (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
@@ -182,16 +179,14 @@ combinations.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> an array of <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="type">TrackerExtractData</span></a> which must be NULL
-terminated and must NOT be freed.
-
-</td>
+<td>an array of <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="type">TrackerExtractData</span></a> which must be NULL
+terminated and must NOT be freed.</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.6</p>
 </div>
 <hr>
-<div class="refsect2" title="TrackerExtractData">
+<div class="refsect2">
 <a name="TrackerExtractData"></a><h3>TrackerExtractData</h3>
 <pre class="programlisting">typedef struct {
 	const gchar *mime;
@@ -209,21 +204,19 @@ matches the <em class="parameter"><code>mime</code></em>.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term">const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *<em class="structfield"><code><a name="TrackerExtractData.mime"></a>mime</code></em>;</span></p></td>
-<td>a string pointer representing a mime type.
-</td>
+<td><p><span class="term">const <span class="type">gchar</span> *<em class="structfield"><code><a name="TrackerExtractData.mime"></a>mime</code></em>;</span></p></td>
+<td>a string pointer representing a mime type.</td>
 </tr>
 <tr>
 <td><p><span class="term"><a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractMimeFunc" title="TrackerExtractMimeFunc ()"><span class="type">TrackerExtractMimeFunc</span></a> <em class="structfield"><code><a name="TrackerExtractData.func"></a>func</code></em>;</span></p></td>
-<td>a function to extract extract the data in.
-</td>
+<td>a function to extract extract the data in.</td>
 </tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_extract_get_data ()">
+<div class="refsect2">
 <a name="tracker-extract-get-data"></a><h3>tracker_extract_get_data ()</h3>
 <pre class="programlisting"><a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="returnvalue">TrackerExtractData</span></a> * tracker_extract_get_data           (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
@@ -242,11 +235,9 @@ the file being handled.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="type">TrackerExtractData</span></a> pointer which should not be freed.
+<td>a <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="type">TrackerExtractData</span></a> pointer which should not be freed.
 This pointer can be an array of <a class="link" href="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" title="TrackerExtractData"><span class="type">TrackerExtractData</span></a> structures
-where multiple mime types are supported.
-
-</td>
+where multiple mime types are supported.</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 0.8</p>
@@ -255,6 +246,6 @@ where multiple mime types are supported.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

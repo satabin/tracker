@@ -119,8 +119,8 @@
     <function name="The &quot;miner-paused&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-paused"/>
     <function name="The &quot;miner-progress&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-progress"/>
     <function name="The &quot;miner-resumed&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-resumed"/>
-    <function name="TrackerStorage" link="libtracker-miner-TrackerStorage.html#TrackerStorage"/>
-    <function name="TrackerStorageClass" link="libtracker-miner-TrackerStorage.html#TrackerStorageClass"/>
+    <function name="struct TrackerStorage" link="libtracker-miner-TrackerStorage.html#TrackerStorage"/>
+    <function name="struct TrackerStorageClass" link="libtracker-miner-TrackerStorage.html#TrackerStorageClass"/>
     <function name="enum TrackerStorageType" link="libtracker-miner-TrackerStorage.html#TrackerStorageType"/>
     <function name="tracker_storage_new ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-new"/>
     <function name="tracker_storage_get_device_roots ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-get-device-roots"/>

@@ -58,8 +58,8 @@
 </section>
 <section id='tracker-properties'>
 <title>TRACKER Ontology Properties</title>
-<refsect2 id='tracker-unmountDate'>
-<title>tracker:unmountDate</title>
+<refsect2 id='tracker-tagRelatedTo'>
+<title>tracker:tagRelatedTo</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -67,53 +67,19 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='tracker-Volume'>tracker:Volume</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nao-Tag'>nao:Tag</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-dateTime'>xsd:dateTime</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='tracker-notify'>
-<title>tracker:notify</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
 <listitem><simpara><link linkend='rdfs-Class'>rdfs:Class</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -148,8 +114,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='tracker-isDefaultTag'>
-<title>tracker:isDefaultTag</title>
+<refsect2 id='tracker-notify'>
+<title>tracker:notify</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -157,63 +123,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nao-Tag'>nao:Tag</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='tracker-writeback'>
-<title>tracker:writeback</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='rdf-Property'>rdf:Property</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='tracker-available'>
-<title>tracker:available</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-DataObject'>nie:DataObject</link>, </simpara></listitem>
+<listitem><simpara><link linkend='rdfs-Class'>rdfs:Class</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -264,8 +174,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='tracker-tagRelatedTo'>
-<title>tracker:tagRelatedTo</title>
+<refsect2 id='tracker-isDefaultTag'>
+<title>tracker:isDefaultTag</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -277,7 +187,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='rdfs-Class'>rdfs:Class</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -286,6 +196,96 @@
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='tracker-available'>
+<title>tracker:available</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-DataObject'>nie:DataObject</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='tracker-unmountDate'>
+<title>tracker:unmountDate</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='tracker-Volume'>tracker:Volume</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-dateTime'>xsd:dateTime</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='tracker-writeback'>
+<title>tracker:writeback</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='rdf-Property'>rdf:Property</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>

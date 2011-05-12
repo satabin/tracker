@@ -8,7 +8,7 @@
 <link rel="up" href="ontology.html" title="Part I. Overview">
 <link rel="prev" href="mfo-properties.html" title="MFO Ontology Properties">
 <link rel="next" href="mlo-classes.html" title="MLO Ontology Classes">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -19,7 +19,7 @@
 <th width="100%" align="center">Tracker Ontology Reference Manual</th>
 <td><a accesskey="n" href="mlo-classes.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="chapter" title="MLO Ontology">
+<div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="mlo-ontology"></a>MLO Ontology</h2></div></div></div>
 <div class="toc"><dl>
@@ -37,10 +37,10 @@
 <dd><p><a class="ulink" href="http://git.gnome.org/cgit/tracker/log/data/ontologies/40-mlo.ontology" target="_top">Tracker changes</a></p></dd>
 <dt><span class="term">Copyright:</span></dt>
 <dd><p>© 2009, 2010 <a class="ulink" href="http://www.nokia.com/" target="_top">Nokia</a></p></dd>
-<div class="section" title="Overview">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="mlo-explanation"></a>Overview</h2></div></div></div>
-<div class="refsect2" title="Introduction">
+<div class="refsect2">
 <a name="mlo-introduction"></a><h3>Introduction</h3>
 <p>This is the proposed ontology to integrate geolocation information in the nepomuk set of ontologies. It defines a place in the space with the class <a class="link" href="mlo-classes.html#mlo-GeoLocation" title="mlo:GeoLocation">mlo:GeoLocation</a>. A place can be defined in different ways:</p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
@@ -59,14 +59,14 @@
 <p>Landmark can be grouped in categories. For this reason, the ontology provides a property <a class="link" href="mlo-properties.html#mlo-belongsToCategory" title="mlo:belongsToCategory">mlo:belongsToCategory</a> that links a Landmark with the class <a class="link" href="mlo-classes.html#mlo-LandmarkCategory" title="mlo:LandmarkCategory">mlo:LandmarkCategory</a> . The ontology includes also a predefined set of instances, very common an a de-facto standard in the industry.</p>
 </div>
 <hr>
-<div class="refsect2" title="Considerations">
+<div class="refsect2">
 <a name="mlo-considerations"></a><h3>Considerations</h3>
 <p>A <a class="link" href="mlo-classes.html#mlo-Landmark" title="mlo:Landmark">mlo:Landmark</a> is linked with its location using the property <a class="link" href="mlo-properties.html#mlo-location" title="mlo:location">mlo:location</a>, inherited from its superclass <a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>.</p>
 <p>All classes in the ontology are subclasses of <a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>. It is not indicated in the graphic for the sake of clarity.</p>
 <p>The three possible representations of a location (i.e. <a class="link" href="mlo-classes.html#mlo-GeoPoint" title="mlo:GeoPoint">mlo:GeoPoint</a>, <a class="link" href="mlo-classes.html#mlo-GeoBoundingBox" title="mlo:GeoBoundingBox">mlo:GeoBoundingBox</a>, <a class="link" href="nco-ontology.html#nco-PostalAddress" title="nco:PostalAddress">nco:PostalAddress</a>) are <span class="emphasis"><em>properties</em></span> (and <span class="emphasis"><em>not subclasses</em></span>) of the location object (instance of <a class="link" href="mlo-classes.html#mlo-GeoLocation" title="mlo:GeoLocation">mlo:GeoLocation</a>).</p>
 </div>
 <hr>
-<div class="refsect2" title="Contract with applications">
+<div class="refsect2">
 <a name="mlo-comments"></a><h3>Contract with applications</h3>
 <p>We want to put special emphasis in the point that the applications must keep the different representations of the points consistent. Basically a point in the space is very unlikely to change (the point is there or not), but it is not difficult to assume that some application can complete the information, taking the postal addresses of the points without coordinates, and set the coordinates using some web service.</p>
 <p>A box is considered as a <span class="emphasis"><em>2 dimensions</em></span> area orientated to the north, aligned to parallels and meridians. The area is defined with two points: the southern east point (down left corner, in the <a class="link" href="mlo-properties.html#mlo-bbSouthEast" title="mlo:bbSouthEast">mlo:bbSouthEast</a> property) and northern western point (upper right corner, in the <a class="link" href="mlo-properties.html#mlo-bbNorthWest" title="mlo:bbNorthWest">mlo:bbNorthWest</a> property).</p>
@@ -84,6 +84,6 @@
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

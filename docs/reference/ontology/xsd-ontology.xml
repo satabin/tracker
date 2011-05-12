@@ -51,52 +51,8 @@
 </section>
 <section id='xsd-classes'>
 <title>XSD Ontology Classes</title>
-<refsect2 id='xsd-dateTime'>
-<title>xsd:dateTime</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='xsd-double'>
-<title>xsd:double</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='xsd-string'>
-<title>xsd:string</title>
+<refsect2 id='xsd-integer'>
+<title>xsd:integer</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
@@ -139,6 +95,50 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='xsd-string'>
+<title>xsd:string</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='xsd-double'>
+<title>xsd:double</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='xsd-date'>
 <title>xsd:date</title>
 <variablelist>
@@ -161,8 +161,8 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='xsd-integer'>
-<title>xsd:integer</title>
+<refsect2 id='xsd-dateTime'>
+<title>xsd:dateTime</title>
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>

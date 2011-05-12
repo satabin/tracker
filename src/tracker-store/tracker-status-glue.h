@@ -69,8 +69,7 @@ static const DBusGMethodInfo dbus_glib_tracker_status_methods[] = {
   { (GCallback) tracker_status_get_progress, dbus_glib_marshal_tracker_status_NONE__POINTER, 60 },
 };
 
-const DBusGObjectInfo dbus_glib_tracker_status_object_info = {
-  0,
+const DBusGObjectInfo dbus_glib_tracker_status_object_info = {  1,
   dbus_glib_tracker_status_methods,
   2,
 "org.freedesktop.Tracker1.Status\0GetStatus\0A\0status\0O\0F\0N\0s\0\0org.freedesktop.Tracker1.Status\0GetProgress\0A\0progress\0O\0F\0N\0d\0\0\0",

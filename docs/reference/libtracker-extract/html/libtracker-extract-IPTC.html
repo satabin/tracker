@@ -8,7 +8,7 @@
 <link rel="up" href="ch02.html" title="Common Embedded Support">
 <link rel="prev" href="libtracker-extract-XMP.html" title="XMP">
 <link rel="next" href="libtracker-extract-Exif.html" title="Exif">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libtracker-extract-IPTC.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="IPTC">
+<div class="refentry">
 <a name="libtracker-extract-IPTC"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -36,23 +36,23 @@ International Press Telecommunications Council (IPTC)</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsect1" title="Stability Level">
+<div class="refsect1">
 <a name="libtracker-extract-IPTC.stability-level"></a><h2>Stability Level</h2>
 Stable, unless otherwise indicated
 </div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libtracker-extract-IPTC.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 #include &lt;libtracker-extract/tracker-extract.h&gt;
 
                     <a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData">TrackerIptcData</a>;
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-IPTC.html#tracker-iptc-read" title="tracker_iptc_read ()">tracker_iptc_read</a>                   (<em class="parameter"><code>unsigned <span class="type">char</span> *buffer</code></em>,
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-extract-IPTC.html#tracker-iptc-read" title="tracker_iptc_read ()">tracker_iptc_read</a>                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="type">TrackerIptcData</span></a> *data</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libtracker-extract-IPTC.description"></a><h2>Description</h2>
 <p>
 The Information Interchange Model (IIM) is a file structure and set
@@ -90,9 +90,9 @@ This API is provided to remove code duplication between extractors
 using these standards.
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libtracker-extract-IPTC.details"></a><h2>Details</h2>
-<div class="refsect2" title="TrackerIptcData">
+<div class="refsect2">
 <a name="TrackerIptcData"></a><h3>TrackerIptcData</h3>
 <pre class="programlisting">typedef struct {
 	gchar *keywords;
@@ -113,11 +113,11 @@ using these standards.
 </p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_iptc_read ()">
+<div class="refsect2">
 <a name="tracker-iptc-read"></a><h3>tracker_iptc_read ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_iptc_read                   (<em class="parameter"><code>unsigned <span class="type">char</span> *buffer</code></em>,
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_iptc_read                   (<em class="parameter"><code>const unsigned <span class="type">char</span> *buffer</code></em>,
                                                          <em class="parameter"><code><span class="type">size_t</span> len</code></em>,
-                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-IPTC.html#TrackerIptcData" title="TrackerIptcData"><span class="type">TrackerIptcData</span></a> *data</code></em>);</pre>
 <p>
 This function takes <em class="parameter"><code>len</code></em> bytes of <em class="parameter"><code>buffer</code></em> and runs it through the
@@ -129,30 +129,25 @@ data found in <em class="parameter"><code>uri</code></em>.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
-<td>a chunk of data with iptc data in it.
-</td>
+<td>a chunk of data with iptc data in it.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
-<td>the size of <em class="parameter"><code>buffer</code></em>.
-</td>
+<td>the size of <em class="parameter"><code>buffer</code></em>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>
-<td>the URI this is related to.
-</td>
+<td>the URI this is related to.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>a pointer to a TrackerIptcData struture to populate.
-</td>
+<td>a pointer to a TrackerIptcData struture to populate.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
-<a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned.
-
-</td>
+<td>
+<code class="literal">TRUE</code> if the <em class="parameter"><code>data</code></em> was populated successfully, otherwise
+<code class="literal">FALSE</code> is returned.</td>
 </tr>
 </tbody>
 </table></div>
@@ -162,6 +157,6 @@ data found in <em class="parameter"><code>uri</code></em>.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link rel="up" href="ch02.html" title="Configuration">
 <link rel="prev" href="TrackerLanguage.html" title="TrackerLanguage">
 <link rel="next" href="ch03.html" title="Communication">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libtracker-common-TrackerPower.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="TrackerPower">
+<div class="refentry">
 <a name="libtracker-common-TrackerPower"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,85 +35,69 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libtracker-common-TrackerPower.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">                    <a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower">TrackerPower</a>;
-                    <a class="link" href="libtracker-common-TrackerPower.html#TrackerPowerClass" title="TrackerPowerClass">TrackerPowerClass</a>;
-<a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="returnvalue">TrackerPower</span></a> *      <a class="link" href="libtracker-common-TrackerPower.html#tracker-power-new" title="tracker_power_new ()">tracker_power_new</a>                   (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-common-TrackerPower.html#tracker-power-get-on-battery" title="tracker_power_get_on_battery ()">tracker_power_get_on_battery</a>        (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-common-TrackerPower.html#tracker-power-get-on-low-battery" title="tracker_power_get_on_low_battery ()">tracker_power_get_on_low_battery</a>    (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             <a class="link" href="libtracker-common-TrackerPower.html#tracker-power-get-battery-percentage" title="tracker_power_get_battery_percentage ()">tracker_power_get_battery_percentage</a>
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);
+<pre class="synopsis">struct              <a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower">TrackerPower</a>;
+struct              <a class="link" href="libtracker-common-TrackerPower.html#TrackerPowerClass" title="struct TrackerPowerClass">TrackerPowerClass</a>;
+<a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="returnvalue">TrackerPower</span></a> *      <a class="link" href="libtracker-common-TrackerPower.html#tracker-power-new" title="tracker_power_new ()">tracker_power_new</a>                   (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-TrackerPower.html#tracker-power-get-on-battery" title="tracker_power_get_on_battery ()">tracker_power_get_on_battery</a>        (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-TrackerPower.html#tracker-power-get-on-low-battery" title="tracker_power_get_on_low_battery ()">tracker_power_get_on_low_battery</a>    (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);
+<span class="returnvalue">gdouble</span>             <a class="link" href="libtracker-common-TrackerPower.html#tracker-power-get-battery-percentage" title="tracker_power_get_battery_percentage ()">tracker_power_get_battery_percentage</a>
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libtracker-common-TrackerPower.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libtracker-common-TrackerPower.details"></a><h2>Details</h2>
-<div class="refsect2" title="TrackerPower">
-<a name="TrackerPower"></a><h3>TrackerPower</h3>
-<pre class="programlisting">typedef struct {
+<div class="refsect2">
+<a name="TrackerPower"></a><h3>struct TrackerPower</h3>
+<pre class="programlisting">struct TrackerPower {
 	GObject parent;
-} TrackerPower;
+};
 </pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="TrackerPowerClass">
-<a name="TrackerPowerClass"></a><h3>TrackerPowerClass</h3>
-<pre class="programlisting">typedef struct {
+<div class="refsect2">
+<a name="TrackerPowerClass"></a><h3>struct TrackerPowerClass</h3>
+<pre class="programlisting">struct TrackerPowerClass {
 	GObjectClass parent_class;
-} TrackerPowerClass;
+};
 </pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_power_new ()">
+<div class="refsect2">
 <a name="tracker-power-new"></a><h3>tracker_power_new ()</h3>
-<pre class="programlisting"><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="returnvalue">TrackerPower</span></a> *      tracker_power_new                   (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="returnvalue">TrackerPower</span></a> *      tracker_power_new                   (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
-Creates a new instance of <a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="type">TrackerPower</span></a>.
+Creates a new instance of <a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="type">TrackerPower</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The newly created <a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="type">TrackerPower</span></a>.
-</td>
+<td>The newly created <a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="type">TrackerPower</span></a>.</td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_power_get_on_battery ()">
+<div class="refsect2">
 <a name="tracker-power-get-on-battery"></a><h3>tracker_power_get_on_battery ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_power_get_on_battery        (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_power_get_on_battery        (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>power</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_power_get_on_low_battery ()">
+<div class="refsect2">
 <a name="tracker-power-get-on-low-battery"></a><h3>tracker_power_get_on_low_battery ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_power_get_on_low_battery    (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_power_get_on_low_battery    (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);</pre>
 <p>
 Returns whether the computer has batteries.
 </p>
@@ -122,22 +106,22 @@ Returns whether the computer has batteries.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>power</code></em> :</span></p></td>
-<td>A <a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="type">TrackerPower</span></a>
+<td>A <a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="type">TrackerPower</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><span class="type">TRUE</span></a> if the computer has batteries available.
-</td>
+<td>
+<span class="type">TRUE</span> if the computer has batteries available.</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_power_get_battery_percentage ()">
+<div class="refsect2">
 <a name="tracker-power-get-battery-percentage"></a><h3>tracker_power_get_battery_percentage ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="returnvalue">gdouble</span></a>             tracker_power_get_battery_percentage
-                                                        (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>             tracker_power_get_battery_percentage
+                                                        (<em class="parameter"><code><a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="type">TrackerPower</span></a> *power</code></em>);</pre>
 <p>
 Returns the percentage of battery power available.
 </p>
@@ -146,13 +130,13 @@ Returns the percentage of battery power available.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>power</code></em> :</span></p></td>
-<td>A <a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="TrackerPower"><span class="type">TrackerPower</span></a>
+<td>A <a class="link" href="libtracker-common-TrackerPower.html#TrackerPower" title="struct TrackerPower"><span class="type">TrackerPower</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> representing the percentage between 0.0 and 1.0.
-</td>
+<td>
+<span class="type">gdouble</span> representing the percentage between 0.0 and 1.0.</td>
 </tr>
 </tbody>
 </table></div>
@@ -161,6 +145,6 @@ Returns the percentage of battery power available.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

@@ -34,6 +34,29 @@
 </varlistentry>
 <section id='mto-classes'>
 <title>MTO Ontology Classes</title>
+<refsect2 id='mto-SyncTransfer'>
+<title>mto:SyncTransfer</title>
+<para>Handles synchronization between the device and some server (a computer, or a website)</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='mto-TransferElement'>
 <title>mto:TransferElement</title>
 <para>Gives information about the transfer of a single element - typically a file. The properties in this class would need to be changed if it has to handle sync elements as well</para>
@@ -61,56 +84,6 @@
 </note>
 </refsect2>
 
-<refsect2 id='mto-UploadTransfer'>
-<title>mto:UploadTransfer</title>
-<para>Handles transfers of files/data present on the device to some place outside the device. Upload methods include uploading to a website, sending via BlueTooth etc. </para>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-transferCategory'>mto:transferCategory</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mto-TransferMethod'>
-<title>mto:TransferMethod</title>
-<para>Class with a restricted set of instances to enumarate transfer methods</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-method'>mto:method</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Predefined instances</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-transfer-method-web'>mto:transfer-method-web</link>, <link linkend='mto-transfer-method-bluetooth'>mto:transfer-method-bluetooth</link>, </simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
 <refsect2 id='mto-DownloadTransfer'>
 <title>mto:DownloadTransfer</title>
 <para>Handles transfers of files outside the device into the device. This class will only refer to files downloaded from a website or recieved using BlueTooth etc. Files recieved with messages are not considered here. Those would be handled seperately using nmo:Message</para>
@@ -134,9 +107,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mto-SyncTransfer'>
-<title>mto:SyncTransfer</title>
-<para>Handles synchronization between the device and some server (a computer, or a website)</para>
+<refsect2 id='mto-UploadTransfer'>
+<title>mto:UploadTransfer</title>
+<para>Handles transfers of files/data present on the device to some place outside the device. Upload methods include uploading to a website, sending via BlueTooth etc. </para>
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
@@ -148,7 +121,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='mto-transferCategory'>mto:transferCategory</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -211,9 +184,67 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='mto-TransferMethod'>
+<title>mto:TransferMethod</title>
+<para>Class with a restricted set of instances to enumarate transfer methods</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-method'>mto:method</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Predefined instances</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-transfer-method-web'>mto:transfer-method-web</link>, <link linkend='mto-transfer-method-bluetooth'>mto:transfer-method-bluetooth</link>, </simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 </section>
 <section id='mto-properties'>
 <title>MTO Ontology Properties</title>
+<refsect2 id='mto-transferState'>
+<title>mto:transferState</title>
+<para>Captures the state of the transfer. This is derived from the cumulative states of the transfer elements of this transfer. Applications are responsible to keep it up-to-date</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-State'>mto:State</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='mto-destination'>
 <title>mto:destination</title>
 <para>The destination of the transfer. If the transfer is an download, it would be the URI for a file on the device. If the transfer is a (web) upload, it will be a URL, which will be filled once the upload is completed.</para>
@@ -241,6 +272,60 @@
 <varlistentry>
 <term><parameter>Cardinality</parameter>&#160;:</term>
 <listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mto-transferList'>
+<title>mto:transferList</title>
+<para>A list of transfer elements</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-TransferElement'>mto:TransferElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mto-transferPrivacyLevel'>
+<title>mto:transferPrivacyLevel</title>
+<para>It will contain an string with the privacy level in the service. The exact string and its interpretation is service specific</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -276,99 +361,6 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mto-source'>
-<title>mto:source</title>
-<para>The source for the transfer. If the transfer is an upload, it would be the URI for a file on the device. If the transfer is a (web) download, it will be a URL. Question: Does it make more sense to have two fields: uploadSource and downloadSource?</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-TransferElement'>mto:TransferElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mto-startedTime'>
-<title>mto:startedTime</title>
-<para>Captures the date and time when the transfer was started</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-TransferElement'>mto:TransferElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-dateTime'>xsd:dateTime</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mto-account'>
-<title>mto:account</title>
-<para>A reference to the account to which the web upload is to be done. This should at least contain information about the account and the service which is being used. For instance, Google/YouTube or Google/Picassa</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
 <refsect2 id='mto-state'>
 <title>mto:state</title>
 <para>Captures the current state of the transfer element: Pending (not started), In Progress, Paused, Cancelled, Done</para>
@@ -380,91 +372,6 @@
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
 <listitem><simpara><link linkend='mto-TransferElement'>mto:TransferElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-State'>mto:State</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mto-transferPrivacyLevel'>
-<title>mto:transferPrivacyLevel</title>
-<para>It will contain an string with the privacy level in the service. The exact string and its interpretation is service specific</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mto-transferList'>
-<title>mto:transferList</title>
-<para>A list of transfer elements</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-TransferElement'>mto:TransferElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mto-transferState'>
-<title>mto:transferState</title>
-<para>Captures the state of the transfer. This is derived from the cumulative states of the transfer elements of this transfer. Applications are responsible to keep it up-to-date</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
@@ -516,9 +423,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mto-transferCategory'>
-<title>mto:transferCategory</title>
-<para>This can contain category / tag / album / folder in the destination service</para>
+<refsect2 id='mto-agent'>
+<title>mto:agent</title>
+<para>The application processing the transfer - e.g. Upload Engine etc</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -526,11 +433,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-UploadTransfer'>mto:UploadTransfer</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-Software'>nfo:Software</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -539,6 +446,41 @@
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mto-source'>
+<title>mto:source</title>
+<para>The source for the transfer. If the transfer is an upload, it would be the URI for a file on the device. If the transfer is a (web) download, it will be a URL. Question: Does it make more sense to have two fields: uploadSource and downloadSource?</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-TransferElement'>mto:TransferElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -574,6 +516,64 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='mto-account'>
+<title>mto:account</title>
+<para>A reference to the account to which the web upload is to be done. This should at least contain information about the account and the service which is being used. For instance, Google/YouTube or Google/Picassa</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mto-transferCategory'>
+<title>mto:transferCategory</title>
+<para>This can contain category / tag / album / folder in the destination service</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mto-UploadTransfer'>mto:UploadTransfer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='mto-completedTime'>
 <title>mto:completedTime</title>
 <para>Captures the date and time when the transfer ended. It must be set only when the trasfer element is completed succesfully</para>
@@ -605,9 +605,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mto-agent'>
-<title>mto:agent</title>
-<para>The application processing the transfer - e.g. Upload Engine etc</para>
+<refsect2 id='mto-startedTime'>
+<title>mto:startedTime</title>
+<para>Captures the date and time when the transfer was started</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -615,11 +615,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mto-Transfer'>mto:Transfer</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mto-TransferElement'>mto:TransferElement</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Software'>nfo:Software</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-dateTime'>xsd:dateTime</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>

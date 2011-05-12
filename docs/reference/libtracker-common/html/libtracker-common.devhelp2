@@ -46,13 +46,13 @@
     <keyword type="macro" name="TRACKER_MLO_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-MLO-PREFIX:CAPS"/>
     <keyword type="macro" name="TRACKER_DATASOURCE_URN_PREFIX" link="libtracker-common-tracker-ontologies.html#TRACKER-DATASOURCE-URN-PREFIX:CAPS"/>
     <keyword type="macro" name="TRACKER_NON_REMOVABLE_MEDIA_DATASOURCE_URN" link="libtracker-common-tracker-ontologies.html#TRACKER-NON-REMOVABLE-MEDIA-DATASOURCE-URN:CAPS"/>
-    <keyword type="struct" name="TrackerConfigFile" link="TrackerConfigFile.html#TrackerConfigFile-struct"/>
-    <keyword type="struct" name="TrackerConfigFileClass" link="TrackerConfigFile.html#TrackerConfigFileClass"/>
+    <keyword type="struct" name="struct TrackerConfigFile" link="TrackerConfigFile.html#TrackerConfigFile-struct"/>
+    <keyword type="struct" name="struct TrackerConfigFileClass" link="TrackerConfigFile.html#TrackerConfigFileClass"/>
     <keyword type="function" name="tracker_config_file_save ()" link="TrackerConfigFile.html#tracker-config-file-save"/>
     <keyword type="property" name="The &quot;domain&quot; property" link="TrackerConfigFile.html#TrackerConfigFile--domain"/>
     <keyword type="signal" name="The &quot;changed&quot; signal" link="TrackerConfigFile.html#TrackerConfigFile-changed"/>
-    <keyword type="struct" name="TrackerLanguage" link="TrackerLanguage.html#TrackerLanguage-struct"/>
-    <keyword type="struct" name="TrackerLanguageClass" link="TrackerLanguage.html#TrackerLanguageClass"/>
+    <keyword type="struct" name="struct TrackerLanguage" link="TrackerLanguage.html#TrackerLanguage-struct"/>
+    <keyword type="struct" name="struct TrackerLanguageClass" link="TrackerLanguage.html#TrackerLanguageClass"/>
     <keyword type="function" name="tracker_language_new ()" link="TrackerLanguage.html#tracker-language-new"/>
     <keyword type="function" name="tracker_language_get_enable_stemmer ()" link="TrackerLanguage.html#tracker-language-get-enable-stemmer"/>
     <keyword type="function" name="tracker_language_get_stop_words ()" link="TrackerLanguage.html#tracker-language-get-stop-words"/>
@@ -64,8 +64,8 @@
     <keyword type="property" name="The &quot;enable-stemmer&quot; property" link="TrackerLanguage.html#TrackerLanguage--enable-stemmer"/>
     <keyword type="property" name="The &quot;language-code&quot; property" link="TrackerLanguage.html#TrackerLanguage--language-code"/>
     <keyword type="property" name="The &quot;stop-words&quot; property" link="TrackerLanguage.html#TrackerLanguage--stop-words"/>
-    <keyword type="struct" name="TrackerPower" link="libtracker-common-TrackerPower.html#TrackerPower"/>
-    <keyword type="struct" name="TrackerPowerClass" link="libtracker-common-TrackerPower.html#TrackerPowerClass"/>
+    <keyword type="struct" name="struct TrackerPower" link="libtracker-common-TrackerPower.html#TrackerPower"/>
+    <keyword type="struct" name="struct TrackerPowerClass" link="libtracker-common-TrackerPower.html#TrackerPowerClass"/>
     <keyword type="function" name="tracker_power_new ()" link="libtracker-common-TrackerPower.html#tracker-power-new"/>
     <keyword type="function" name="tracker_power_get_on_battery ()" link="libtracker-common-TrackerPower.html#tracker-power-get-on-battery"/>
     <keyword type="function" name="tracker_power_get_on_low_battery ()" link="libtracker-common-TrackerPower.html#tracker-power-get-on-low-battery"/>

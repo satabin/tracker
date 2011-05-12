@@ -57,8 +57,8 @@
     <keyword type="function" name="tracker_search_metadata_by_text_and_location_async ()" link="libtracker-client-Search.html#tracker-search-metadata-by-text-and-location-async" deprecated="0.8: Use tracker_resources_sparql_query() instead."/>
     <keyword type="function" name="tracker_search_metadata_by_text_and_mime_async ()" link="libtracker-client-Search.html#tracker-search-metadata-by-text-and-mime-async" deprecated="0.8: Use tracker_resources_sparql_query() instead."/>
     <keyword type="function" name="tracker_search_metadata_by_text_and_mime_and_location_async ()" link="libtracker-client-Search.html#tracker-search-metadata-by-text-and-mime-and-location-async" deprecated="0.8: Use tracker_resources_sparql_query() instead."/>
-    <keyword type="struct" name="TrackerSparqlBuilder" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"/>
-    <keyword type="struct" name="TrackerSparqlBuilderClass" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderClass"/>
+    <keyword type="struct" name="struct TrackerSparqlBuilder" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"/>
+    <keyword type="struct" name="struct TrackerSparqlBuilderClass" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderClass"/>
     <keyword type="struct" name="TrackerSparqlBuilderPrivate" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderPrivate"/>
     <keyword type="enum" name="enum TrackerSparqlBuilderState" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderState"/>
     <keyword type="function" name="tracker_sparql_builder_new ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new"/>

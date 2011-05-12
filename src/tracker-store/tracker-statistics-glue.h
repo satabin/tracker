@@ -68,8 +68,7 @@ static const DBusGMethodInfo dbus_glib_tracker_statistics_methods[] = {
   { (GCallback) tracker_statistics_get, dbus_glib_marshal_tracker_statistics_NONE__POINTER, 0 },
 };
 
-const DBusGObjectInfo dbus_glib_tracker_statistics_object_info = {
-  0,
+const DBusGObjectInfo dbus_glib_tracker_statistics_object_info = {  1,
   dbus_glib_tracker_statistics_methods,
   1,
 "org.freedesktop.Tracker1.Statistics\0Get\0A\0service_stats\0O\0F\0N\0aas\0\0\0",

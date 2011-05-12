@@ -55,6 +55,10 @@ G_BEGIN_DECLS
 #endif /* !G_ENABLE_DEBUG */
 
 
+/* NONE:POINTER */
+#define dbus_glib_marshal_tracker_resources_VOID__POINTER	g_cclosure_marshal_VOID__POINTER
+#define dbus_glib_marshal_tracker_resources_NONE__POINTER	dbus_glib_marshal_tracker_resources_VOID__POINTER
+
 /* NONE:STRING,POINTER */
 extern void dbus_glib_marshal_tracker_resources_VOID__STRING_POINTER (GClosure     *closure,
                                                                       GValue       *return_value,
@@ -99,10 +103,6 @@ dbus_glib_marshal_tracker_resources_VOID__STRING_POINTER (GClosure     *closure,
 }
 #define dbus_glib_marshal_tracker_resources_NONE__STRING_POINTER	dbus_glib_marshal_tracker_resources_VOID__STRING_POINTER
 
-/* NONE:POINTER */
-#define dbus_glib_marshal_tracker_resources_VOID__POINTER	g_cclosure_marshal_VOID__POINTER
-#define dbus_glib_marshal_tracker_resources_NONE__POINTER	dbus_glib_marshal_tracker_resources_VOID__POINTER
-
 G_END_DECLS
 
 #endif /* __dbus_glib_marshal_tracker_resources_MARSHAL_H__ */
@@ -118,8 +118,7 @@ static const DBusGMethodInfo dbus_glib_tracker_resources_methods[] = {
   { (GCallback) tracker_resources_batch_commit, dbus_glib_marshal_tracker_resources_NONE__POINTER, 385 },
 };
 
-const DBusGObjectInfo dbus_glib_tracker_resources_object_info = {
-  0,
+const DBusGObjectInfo dbus_glib_tracker_resources_object_info = {  1,
   dbus_glib_tracker_resources_methods,
   7,
 "org.freedesktop.Tracker1.Resources\0Load\0A\0uri\0I\0s\0\0org.freedesktop.Tracker1.Resources\0SparqlQuery\0A\0query\0I\0s\0result\0O\0F\0N\0aas\0\0org.freedesktop.Tracker1.Resources\0SparqlUpdate\0A\0query\0I\0s\0\0org.freedesktop.Tracker1.Resources\0SparqlUpdateBlank\0A\0query\0I\0s\0result\0O\0F\0N\0aaa{ss}\0\0org.freedesktop.Tracker1.Resources\0Sync\0A\0\0org.freedesktop.Tracker1.Resources\0BatchSparqlUpdate\0A\0query\0I\0s\0\0org.freedesktop.Tracker1.Resources\0BatchCommit\0A\0\0\0",

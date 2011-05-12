@@ -119,8 +119,8 @@
     <keyword type="signal" name="The &quot;miner-paused&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-paused"/>
     <keyword type="signal" name="The &quot;miner-progress&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-progress"/>
     <keyword type="signal" name="The &quot;miner-resumed&quot; signal" link="libtracker-miner-tracker-miner-manager.html#TrackerMinerManager-miner-resumed"/>
-    <keyword type="struct" name="TrackerStorage" link="libtracker-miner-TrackerStorage.html#TrackerStorage"/>
-    <keyword type="struct" name="TrackerStorageClass" link="libtracker-miner-TrackerStorage.html#TrackerStorageClass"/>
+    <keyword type="struct" name="struct TrackerStorage" link="libtracker-miner-TrackerStorage.html#TrackerStorage"/>
+    <keyword type="struct" name="struct TrackerStorageClass" link="libtracker-miner-TrackerStorage.html#TrackerStorageClass"/>
     <keyword type="enum" name="enum TrackerStorageType" link="libtracker-miner-TrackerStorage.html#TrackerStorageType"/>
     <keyword type="function" name="tracker_storage_new ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-new"/>
     <keyword type="function" name="tracker_storage_get_device_roots ()" link="libtracker-miner-TrackerStorage.html#tracker-storage-get-device-roots"/>

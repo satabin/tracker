@@ -55,6 +55,10 @@ G_BEGIN_DECLS
 #endif /* !G_ENABLE_DEBUG */
 
 
+/* NONE:POINTER */
+#define dbus_glib_marshal_tracker_extract_VOID__POINTER	g_cclosure_marshal_VOID__POINTER
+#define dbus_glib_marshal_tracker_extract_NONE__POINTER	dbus_glib_marshal_tracker_extract_VOID__POINTER
+
 /* NONE:STRING,STRING,POINTER */
 extern void dbus_glib_marshal_tracker_extract_VOID__STRING_STRING_POINTER (GClosure     *closure,
                                                                            GValue       *return_value,
@@ -101,10 +105,6 @@ dbus_glib_marshal_tracker_extract_VOID__STRING_STRING_POINTER (GClosure     *clo
 }
 #define dbus_glib_marshal_tracker_extract_NONE__STRING_STRING_POINTER	dbus_glib_marshal_tracker_extract_VOID__STRING_STRING_POINTER
 
-/* NONE:POINTER */
-#define dbus_glib_marshal_tracker_extract_VOID__POINTER	g_cclosure_marshal_VOID__POINTER
-#define dbus_glib_marshal_tracker_extract_NONE__POINTER	dbus_glib_marshal_tracker_extract_VOID__POINTER
-
 G_END_DECLS
 
 #endif /* __dbus_glib_marshal_tracker_extract_MARSHAL_H__ */
@@ -115,8 +115,7 @@ static const DBusGMethodInfo dbus_glib_tracker_extract_methods[] = {
   { (GCallback) tracker_extract_get_metadata, dbus_glib_marshal_tracker_extract_NONE__STRING_STRING_POINTER, 57 },
 };
 
-const DBusGObjectInfo dbus_glib_tracker_extract_object_info = {
-  0,
+const DBusGObjectInfo dbus_glib_tracker_extract_object_info = {  1,
   dbus_glib_tracker_extract_methods,
   2,
 "org.freedesktop.Tracker1.Extract\0GetPid\0A\0value\0O\0F\0N\0i\0\0org.freedesktop.Tracker1.Extract\0GetMetadata\0A\0uri\0I\0s\0mime\0I\0s\0preupdate\0O\0F\0N\0s\0embedded\0O\0F\0N\0s\0\0\0",

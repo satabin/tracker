@@ -33,28 +33,6 @@
 </varlistentry>
 <section id='maemo-classes'>
 <title>MAEMO Ontology Classes</title>
-<refsect2 id='maemo-DesktopBookmark'>
-<title>maemo:DesktopBookmark</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
 <refsect2 id='maemo-SoftwareWidget'>
 <title>maemo:SoftwareWidget</title>
 <para>A widget</para>
@@ -101,6 +79,28 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='maemo-DesktopBookmark'>
+<title>maemo:DesktopBookmark</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 </section>
 <section id='maemo-properties'>
 <title>MAEMO Ontology Properties</title>
@@ -118,58 +118,6 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='maemo-webhistoryThumbnail'>
-<title>maemo:webhistoryThumbnail</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-WebHistory'>nfo:WebHistory</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='maemo-remoteMediaArt'>
-<title>maemo:remoteMediaArt</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-Image'>nfo:Image</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -212,6 +160,32 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='maemo-remoteMediaArt'>
+<title>maemo:remoteMediaArt</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Media'>nfo:Media</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Image'>nfo:Image</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='maemo-localPhoneNumber'>
 <title>maemo:localPhoneNumber</title>
 <variablelist>
@@ -238,6 +212,32 @@
 <varlistentry>
 <term><parameter>Cardinality</parameter>&#160;:</term>
 <listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='maemo-webhistoryThumbnail'>
+<title>maemo:webhistoryThumbnail</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-WebHistory'>nfo:WebHistory</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>

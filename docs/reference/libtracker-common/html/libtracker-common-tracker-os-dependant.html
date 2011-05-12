@@ -8,7 +8,7 @@
 <link rel="up" href="ch04.html" title="Utilities">
 <link rel="prev" href="libtracker-common-tracker-keyfile-object.html" title="tracker-keyfile-object">
 <link rel="next" href="ch05.html" title="Performance">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libtracker-common-tracker-os-dependant.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="tracker-os-dependant">
+<div class="refentry">
 <a name="libtracker-common-tracker-os-dependant"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,177 +35,76 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libtracker-common-tracker-os-dependant.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn" title="tracker_spawn ()">tracker_spawn</a>                       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **argv</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **tmp_stdout</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *exit_status</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn-async-with-channels" title="tracker_spawn_async_with_channels ()">tracker_spawn_async_with_channels</a>   (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **argv</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-The-Main-Event-Loop.html#GPid"><span class="type">GPid</span></a> *pid</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stdin_channel</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stdout_channel</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stderr_channel</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn-child-func" title="tracker_spawn_child_func ()">tracker_spawn_child_func</a>            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-create-permission-string" title="tracker_create_permission_string ()">tracker_create_permission_string</a>    (<em class="parameter"><code><span class="type">struct stat</span> finfo</code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-memory-setrlimits" title="tracker_memory_setrlimits ()">tracker_memory_setrlimits</a>           (<em class="parameter"><code><span class="type">void</span></code></em>);
+<pre class="synopsis"><span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn" title="tracker_spawn ()">tracker_spawn</a>                       (<em class="parameter"><code><span class="type">gchar</span> **argv</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> timeout</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **tmp_stdout</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *exit_status</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn-async-with-channels" title="tracker_spawn_async_with_channels ()">tracker_spawn_async_with_channels</a>   (<em class="parameter"><code>const <span class="type">gchar</span> **argv</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> timeout</code></em>,
+                                                         <em class="parameter"><code><span class="type">GPid</span> *pid</code></em>,
+                                                         <em class="parameter"><code><span class="type">GIOChannel</span> **stdin_channel</code></em>,
+                                                         <em class="parameter"><code><span class="type">GIOChannel</span> **stdout_channel</code></em>,
+                                                         <em class="parameter"><code><span class="type">GIOChannel</span> **stderr_channel</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-spawn-child-func" title="tracker_spawn_child_func ()">tracker_spawn_child_func</a>            (<em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
+<span class="returnvalue">gchar</span> *             <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-create-permission-string" title="tracker_create_permission_string ()">tracker_create_permission_string</a>    (<em class="parameter"><code><span class="type">struct stat</span> finfo</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-os-dependant.html#tracker-memory-setrlimits" title="tracker_memory_setrlimits ()">tracker_memory_setrlimits</a>           (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libtracker-common-tracker-os-dependant.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libtracker-common-tracker-os-dependant.details"></a><h2>Details</h2>
-<div class="refsect2" title="tracker_spawn ()">
+<div class="refsect2">
 <a name="tracker-spawn"></a><h3>tracker_spawn ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_spawn                       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **argv</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **tmp_stdout</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *exit_status</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_spawn                       (<em class="parameter"><code><span class="type">gchar</span> **argv</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> timeout</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **tmp_stdout</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> *exit_status</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>argv</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>timeout</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>tmp_stdout</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>exit_status</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_spawn_async_with_channels ()">
+<div class="refsect2">
 <a name="tracker-spawn-async-with-channels"></a><h3>tracker_spawn_async_with_channels ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_spawn_async_with_channels   (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **argv</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> timeout</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-The-Main-Event-Loop.html#GPid"><span class="type">GPid</span></a> *pid</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stdin_channel</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stdout_channel</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-IO-Channels.html#GIOChannel"><span class="type">GIOChannel</span></a> **stderr_channel</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_spawn_async_with_channels   (<em class="parameter"><code>const <span class="type">gchar</span> **argv</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> timeout</code></em>,
+                                                         <em class="parameter"><code><span class="type">GPid</span> *pid</code></em>,
+                                                         <em class="parameter"><code><span class="type">GIOChannel</span> **stdin_channel</code></em>,
+                                                         <em class="parameter"><code><span class="type">GIOChannel</span> **stdout_channel</code></em>,
+                                                         <em class="parameter"><code><span class="type">GIOChannel</span> **stderr_channel</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>argv</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>timeout</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>pid</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>stdin_channel</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>stdout_channel</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>stderr_channel</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_spawn_child_func ()">
+<div class="refsect2">
 <a name="tracker-spawn-child-func"></a><h3>tracker_spawn_child_func ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                tracker_spawn_child_func            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                tracker_spawn_child_func            (<em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_create_permission_string ()">
+<div class="refsect2">
 <a name="tracker-create-permission-string"></a><h3>tracker_create_permission_string ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             tracker_create_permission_string    (<em class="parameter"><code><span class="type">struct stat</span> finfo</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *             tracker_create_permission_string    (<em class="parameter"><code><span class="type">struct stat</span> finfo</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>finfo</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_memory_setrlimits ()">
+<div class="refsect2">
 <a name="tracker-memory-setrlimits"></a><h3>tracker_memory_setrlimits ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_memory_setrlimits           (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_memory_setrlimits           (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

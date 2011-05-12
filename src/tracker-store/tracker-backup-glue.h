@@ -109,8 +109,7 @@ static const DBusGMethodInfo dbus_glib_tracker_backup_methods[] = {
   { (GCallback) tracker_backup_restore, dbus_glib_marshal_tracker_backup_NONE__STRING_POINTER, 60 },
 };
 
-const DBusGObjectInfo dbus_glib_tracker_backup_object_info = {
-  0,
+const DBusGObjectInfo dbus_glib_tracker_backup_object_info = {  1,
   dbus_glib_tracker_backup_methods,
   2,
 "org.freedesktop.Tracker1.Backup\0Save\0A\0destination-uri\0I\0s\0\0org.freedesktop.Tracker1.Backup\0Restore\0A\0journal-uri\0I\0s\0\0\0",

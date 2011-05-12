@@ -105,102 +105,6 @@ dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_BOXED_BOXED_UINT_POINTER (
 }
 #define dbus_glib_marshal_tracker_kmail_registrar_NONE__BOXED_BOXED_BOXED_UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_BOXED_BOXED_UINT_POINTER
 
-/* NONE:STRING,UINT,POINTER */
-extern void dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_UINT_POINTER (GClosure     *closure,
-                                                                                 GValue       *return_value,
-                                                                                 guint         n_param_values,
-                                                                                 const GValue *param_values,
-                                                                                 gpointer      invocation_hint,
-                                                                                 gpointer      marshal_data);
-void
-dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_UINT_POINTER (GClosure     *closure,
-                                                                     GValue       *return_value G_GNUC_UNUSED,
-                                                                     guint         n_param_values,
-                                                                     const GValue *param_values,
-                                                                     gpointer      invocation_hint G_GNUC_UNUSED,
-                                                                     gpointer      marshal_data)
-{
-  typedef void (*GMarshalFunc_VOID__STRING_UINT_POINTER) (gpointer     data1,
-                                                          gpointer     arg_1,
-                                                          guint        arg_2,
-                                                          gpointer     arg_3,
-                                                          gpointer     data2);
-  register GMarshalFunc_VOID__STRING_UINT_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
-
-  g_return_if_fail (n_param_values == 4);
-
-  if (G_CCLOSURE_SWAP_DATA (closure))
-    {
-      data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
-    }
-  else
-    {
-      data1 = g_value_peek_pointer (param_values + 0);
-      data2 = closure->data;
-    }
-  callback = (GMarshalFunc_VOID__STRING_UINT_POINTER) (marshal_data ? marshal_data : cc->callback);
-
-  callback (data1,
-            g_marshal_value_peek_string (param_values + 1),
-            g_marshal_value_peek_uint (param_values + 2),
-            g_marshal_value_peek_pointer (param_values + 3),
-            data2);
-}
-#define dbus_glib_marshal_tracker_kmail_registrar_NONE__STRING_UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_UINT_POINTER
-
-/* NONE:BOXED,UINT,POINTER */
-extern void dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_UINT_POINTER (GClosure     *closure,
-                                                                                GValue       *return_value,
-                                                                                guint         n_param_values,
-                                                                                const GValue *param_values,
-                                                                                gpointer      invocation_hint,
-                                                                                gpointer      marshal_data);
-void
-dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_UINT_POINTER (GClosure     *closure,
-                                                                    GValue       *return_value G_GNUC_UNUSED,
-                                                                    guint         n_param_values,
-                                                                    const GValue *param_values,
-                                                                    gpointer      invocation_hint G_GNUC_UNUSED,
-                                                                    gpointer      marshal_data)
-{
-  typedef void (*GMarshalFunc_VOID__BOXED_UINT_POINTER) (gpointer     data1,
-                                                         gpointer     arg_1,
-                                                         guint        arg_2,
-                                                         gpointer     arg_3,
-                                                         gpointer     data2);
-  register GMarshalFunc_VOID__BOXED_UINT_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
-
-  g_return_if_fail (n_param_values == 4);
-
-  if (G_CCLOSURE_SWAP_DATA (closure))
-    {
-      data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
-    }
-  else
-    {
-      data1 = g_value_peek_pointer (param_values + 0);
-      data2 = closure->data;
-    }
-  callback = (GMarshalFunc_VOID__BOXED_UINT_POINTER) (marshal_data ? marshal_data : cc->callback);
-
-  callback (data1,
-            g_marshal_value_peek_boxed (param_values + 1),
-            g_marshal_value_peek_uint (param_values + 2),
-            g_marshal_value_peek_pointer (param_values + 3),
-            data2);
-}
-#define dbus_glib_marshal_tracker_kmail_registrar_NONE__BOXED_UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_UINT_POINTER
-
-/* NONE:UINT,POINTER */
-#define dbus_glib_marshal_tracker_kmail_registrar_VOID__UINT_POINTER	g_cclosure_marshal_VOID__UINT_POINTER
-#define dbus_glib_marshal_tracker_kmail_registrar_NONE__UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__UINT_POINTER
-
 /* NONE:STRING,BOXED,BOXED,UINT,POINTER */
 extern void dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_BOXED_BOXED_UINT_POINTER (GClosure     *closure,
                                                                                              GValue       *return_value,
@@ -251,6 +155,102 @@ dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_BOXED_BOXED_UINT_POINTER 
 }
 #define dbus_glib_marshal_tracker_kmail_registrar_NONE__STRING_BOXED_BOXED_UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_BOXED_BOXED_UINT_POINTER
 
+/* NONE:STRING,UINT,POINTER */
+extern void dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_UINT_POINTER (GClosure     *closure,
+                                                                                 GValue       *return_value,
+                                                                                 guint         n_param_values,
+                                                                                 const GValue *param_values,
+                                                                                 gpointer      invocation_hint,
+                                                                                 gpointer      marshal_data);
+void
+dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_UINT_POINTER (GClosure     *closure,
+                                                                     GValue       *return_value G_GNUC_UNUSED,
+                                                                     guint         n_param_values,
+                                                                     const GValue *param_values,
+                                                                     gpointer      invocation_hint G_GNUC_UNUSED,
+                                                                     gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__STRING_UINT_POINTER) (gpointer     data1,
+                                                          gpointer     arg_1,
+                                                          guint        arg_2,
+                                                          gpointer     arg_3,
+                                                          gpointer     data2);
+  register GMarshalFunc_VOID__STRING_UINT_POINTER callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 4);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__STRING_UINT_POINTER) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_string (param_values + 1),
+            g_marshal_value_peek_uint (param_values + 2),
+            g_marshal_value_peek_pointer (param_values + 3),
+            data2);
+}
+#define dbus_glib_marshal_tracker_kmail_registrar_NONE__STRING_UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__STRING_UINT_POINTER
+
+/* NONE:UINT,POINTER */
+#define dbus_glib_marshal_tracker_kmail_registrar_VOID__UINT_POINTER	g_cclosure_marshal_VOID__UINT_POINTER
+#define dbus_glib_marshal_tracker_kmail_registrar_NONE__UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__UINT_POINTER
+
+/* NONE:BOXED,UINT,POINTER */
+extern void dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_UINT_POINTER (GClosure     *closure,
+                                                                                GValue       *return_value,
+                                                                                guint         n_param_values,
+                                                                                const GValue *param_values,
+                                                                                gpointer      invocation_hint,
+                                                                                gpointer      marshal_data);
+void
+dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_UINT_POINTER (GClosure     *closure,
+                                                                    GValue       *return_value G_GNUC_UNUSED,
+                                                                    guint         n_param_values,
+                                                                    const GValue *param_values,
+                                                                    gpointer      invocation_hint G_GNUC_UNUSED,
+                                                                    gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__BOXED_UINT_POINTER) (gpointer     data1,
+                                                         gpointer     arg_1,
+                                                         guint        arg_2,
+                                                         gpointer     arg_3,
+                                                         gpointer     data2);
+  register GMarshalFunc_VOID__BOXED_UINT_POINTER callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 4);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__BOXED_UINT_POINTER) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_boxed (param_values + 1),
+            g_marshal_value_peek_uint (param_values + 2),
+            g_marshal_value_peek_pointer (param_values + 3),
+            data2);
+}
+#define dbus_glib_marshal_tracker_kmail_registrar_NONE__BOXED_UINT_POINTER	dbus_glib_marshal_tracker_kmail_registrar_VOID__BOXED_UINT_POINTER
+
 G_END_DECLS
 
 #endif /* __dbus_glib_marshal_tracker_kmail_registrar_MARSHAL_H__ */
@@ -264,8 +264,7 @@ static const DBusGMethodInfo dbus_glib_tracker_kmail_registrar_methods[] = {
   { (GCallback) tracker_kmail_registrar_cleanup, dbus_glib_marshal_tracker_kmail_registrar_NONE__UINT_POINTER, 358 },
 };
 
-const DBusGObjectInfo dbus_glib_tracker_kmail_registrar_object_info = {
-  0,
+const DBusGObjectInfo dbus_glib_tracker_kmail_registrar_object_info = {  1,
   dbus_glib_tracker_kmail_registrar_methods,
   5,
 "org.freedesktop.email.metadata.Registrar\0Set\0A\0subject\0I\0s\0predicates\0I\0as\0values\0I\0as\0modseq\0I\0u\0\0org.freedesktop.email.metadata.Registrar\0SetMany\0A\0subjects\0I\0as\0predicates\0I\0aas\0values\0I\0aas\0modseq\0I\0u\0\0org.freedesktop.email.metadata.Registrar\0Unset\0A\0subject\0I\0s\0modseq\0I\0u\0\0org.freedesktop.email.metadata.Registrar\0UnsetMany\0A\0subjects\0I\0as\0modseq\0I\0u\0\0org.freedesktop.email.metadata.Registrar\0Cleanup\0A\0modseq\0I\0u\0\0\0",

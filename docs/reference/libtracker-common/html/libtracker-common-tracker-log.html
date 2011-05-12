@@ -8,7 +8,7 @@
 <link rel="up" href="ch03.html" title="Communication">
 <link rel="prev" href="libtracker-common-tracker-dbus.html" title="tracker-dbus">
 <link rel="next" href="ch04.html" title="Utilities">
-<meta name="generator" content="GTK-Doc V1.14 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -26,7 +26,7 @@
                   <a href="#libtracker-common-tracker-log.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" title="tracker-log">
+<div class="refentry">
 <a name="libtracker-common-tracker-log"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -35,104 +35,56 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv" title="Synopsis">
+<div class="refsynopsisdiv">
 <a name="libtracker-common-tracker-log.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-common-tracker-log.html#tracker-log-init" title="tracker_log_init ()">tracker_log_init</a>                    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> verbosity</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **used_filename</code></em>);
+<pre class="synopsis"><span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-log.html#tracker-log-init" title="tracker_log_init ()">tracker_log_init</a>                    (<em class="parameter"><code><span class="type">gint</span> verbosity</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **used_filename</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-common-tracker-log.html#tracker-log-shutdown" title="tracker_log_shutdown ()">tracker_log_shutdown</a>                (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-common-tracker-log.html#tracker-log-should-handle" title="tracker_log_should_handle ()">tracker_log_should_handle</a>           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Message-Logging.html#GLogLevelFlags"><span class="type">GLogLevelFlags</span></a> log_level</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> verbosity</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="libtracker-common-tracker-log.html#tracker-log-should-handle" title="tracker_log_should_handle ()">tracker_log_should_handle</a>           (<em class="parameter"><code><span class="type">GLogLevelFlags</span> log_level</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> verbosity</code></em>);
 #define             <a class="link" href="libtracker-common-tracker-log.html#tracker-info" title="tracker_info()">tracker_info</a>                        (...)
 </pre>
 </div>
-<div class="refsect1" title="Description">
+<div class="refsect1">
 <a name="libtracker-common-tracker-log.description"></a><h2>Description</h2>
 <p>
 </p>
 </div>
-<div class="refsect1" title="Details">
+<div class="refsect1">
 <a name="libtracker-common-tracker-log.details"></a><h2>Details</h2>
-<div class="refsect2" title="tracker_log_init ()">
+<div class="refsect2">
 <a name="tracker-log-init"></a><h3>tracker_log_init ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_log_init                    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> verbosity</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **used_filename</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_log_init                    (<em class="parameter"><code><span class="type">gint</span> verbosity</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **used_filename</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>verbosity</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>used_filename</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_log_shutdown ()">
+<div class="refsect2">
 <a name="tracker-log-shutdown"></a><h3>tracker_log_shutdown ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                tracker_log_shutdown                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" title="tracker_log_should_handle ()">
+<div class="refsect2">
 <a name="tracker-log-should-handle"></a><h3>tracker_log_should_handle ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_log_should_handle           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Message-Logging.html#GLogLevelFlags"><span class="type">GLogLevelFlags</span></a> log_level</code></em>,
-                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> verbosity</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            tracker_log_should_handle           (<em class="parameter"><code><span class="type">GLogLevelFlags</span> log_level</code></em>,
+                                                         <em class="parameter"><code><span class="type">gint</span> verbosity</code></em>);</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>log_level</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>verbosity</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
-<div class="refsect2" title="tracker_info()">
+<div class="refsect2">
 <a name="tracker-info"></a><h3>tracker_info()</h3>
 <pre class="programlisting">#define             tracker_info(...)</pre>
 <p>
 </p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
-<td>
-</td>
-</tr></tbody>
-</table></div>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.14</div>
+          Generated by GTK-Doc V1.17</div>
 </body>
 </html>

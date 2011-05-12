@@ -64,6 +64,106 @@
 </section>
 <section id='mfo-classes'>
 <title>MFO Ontology Classes</title>
+<refsect2 id='mfo-FeedElement'>
+<title>mfo:FeedElement</title>
+<para>Superclass for all elements related with feeds, to provide common configuration options</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-Enclosure'>mfo:Enclosure</link>, <link linkend='mfo-FeedMessage'>mfo:FeedMessage</link>, <link linkend='mfo-FeedChannel'>mfo:FeedChannel</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-feedSettings'>mfo:feedSettings</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mfo-Action'>
+<title>mfo:Action</title>
+<para>class with a restricted set of actions</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-action'>mfo:action</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Predefined instances</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-refresh-now'>mfo:refresh-now</link>, </simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mfo-FeedSettings'>
+<title>mfo:FeedSettings</title>
+<para>Represents settings applied to a feed channel or a feed entry. How often it is updated, through which connection type it is delivered, when data expires and so on</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-maxSize'>mfo:maxSize</link>, <link linkend='mfo-downloadFlag'>mfo:downloadFlag</link>, <link linkend='mfo-downloadPath'>mfo:downloadPath</link>, <link linkend='mfo-expiryInterval'>mfo:expiryInterval</link>, <link linkend='mfo-updateInterval'>mfo:updateInterval</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-feedSettings'>mfo:feedSettings</link>, </simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mfo-Enclosure'>
+<title>mfo:Enclosure</title>
+<para>Represents an enclosure of a feed message</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-FeedElement'>mfo:FeedElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-optional'>mfo:optional</link>, <link linkend='mfo-localLink'>mfo:localLink</link>, <link linkend='mfo-groupDefault'>mfo:groupDefault</link>, <link linkend='mfo-remoteLink'>mfo:remoteLink</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-enclosureList'>mfo:enclosureList</link>, </simpara></listitem>
+</varlistentry>
+</variablelist>
+<note>
+<title>Note:</title>
+<para>This class notifies about changes</para>
+</note>
+</refsect2>
+
 <refsect2 id='mfo-FeedMessage'>
 <title>mfo:FeedMessage</title>
 <para>Represents feed entry on top of Nepomuk Messaging Ontology's message. May have enclosures attached and certain settings that allow deviation from feed channel's setup</para>
@@ -118,106 +218,6 @@
 </note>
 </refsect2>
 
-<refsect2 id='mfo-Enclosure'>
-<title>mfo:Enclosure</title>
-<para>Represents an enclosure of a feed message</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-FeedElement'>mfo:FeedElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-optional'>mfo:optional</link>, <link linkend='mfo-localLink'>mfo:localLink</link>, <link linkend='mfo-groupDefault'>mfo:groupDefault</link>, <link linkend='mfo-remoteLink'>mfo:remoteLink</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-enclosureList'>mfo:enclosureList</link>, </simpara></listitem>
-</varlistentry>
-</variablelist>
-<note>
-<title>Note:</title>
-<para>This class notifies about changes</para>
-</note>
-</refsect2>
-
-<refsect2 id='mfo-FeedSettings'>
-<title>mfo:FeedSettings</title>
-<para>Represents settings applied to a feed channel or a feed entry. How often it is updated, through which connection type it is delivered, when data expires and so on</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-maxSize'>mfo:maxSize</link>, <link linkend='mfo-downloadFlag'>mfo:downloadFlag</link>, <link linkend='mfo-downloadPath'>mfo:downloadPath</link>, <link linkend='mfo-expiryInterval'>mfo:expiryInterval</link>, <link linkend='mfo-updateInterval'>mfo:updateInterval</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-feedSettings'>mfo:feedSettings</link>, </simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mfo-FeedElement'>
-<title>mfo:FeedElement</title>
-<para>Superclass for all elements related with feeds, to provide common configuration options</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-Enclosure'>mfo:Enclosure</link>, <link linkend='mfo-FeedMessage'>mfo:FeedMessage</link>, <link linkend='mfo-FeedChannel'>mfo:FeedChannel</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-feedSettings'>mfo:feedSettings</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mfo-Action'>
-<title>mfo:Action</title>
-<para>class with a restricted set of actions</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-action'>mfo:action</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Predefined instances</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-refresh-now'>mfo:refresh-now</link>, </simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
 <refsect2 id='mfo-FeedType'>
 <title>mfo:FeedType</title>
 <para>class with a restricted set of feed types</para>
@@ -244,125 +244,6 @@
 </section>
 <section id='mfo-properties'>
 <title>MFO Ontology Properties</title>
-<refsect2 id='mfo-image'>
-<title>mfo:image</title>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-FeedChannel'>mfo:FeedChannel</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mfo-maxSize'>
-<title>mfo:maxSize</title>
-<para>Maximum size of enclosure that can be downloaded. Interpreted as KBs </para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-FeedSettings'>mfo:FeedSettings</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mfo-remoteLink'>
-<title>mfo:remoteLink</title>
-<para>Used to store remote URL of enclosure</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-Enclosure'>mfo:Enclosure</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-RemoteDataObject'>nfo:RemoteDataObject</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mfo-enclosureList'>
-<title>mfo:enclosureList</title>
-<para>A list of enclosures</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-FeedMessage'>mfo:FeedMessage</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-Enclosure'>mfo:Enclosure</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
 <refsect2 id='mfo-totalCount'>
 <title>mfo:totalCount</title>
 <para>Total messages count within a channel</para>
@@ -394,9 +275,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mfo-updatedTime'>
-<title>mfo:updatedTime</title>
-<para>Captures the updated date and time when the channel is updated</para>
+<refsect2 id='mfo-expiryInterval'>
+<title>mfo:expiryInterval</title>
+<para>Expiry interval for feed channel, it tells time that a message in a channel can live. Interpreted as minutes</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -404,11 +285,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-FeedChannel'>mfo:FeedChannel</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mfo-FeedSettings'>mfo:FeedSettings</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-dateTime'>xsd:dateTime</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -456,6 +337,37 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='mfo-updateInterval'>
+<title>mfo:updateInterval</title>
+<para>Update interval for a feed channel to get updated or refreshed. Interpreted as minutes</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-FeedSettings'>mfo:FeedSettings</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='mfo-action'>
 <title>mfo:action</title>
 <para>Captures the current action for the channel: Refresh Now</para>
@@ -487,9 +399,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mfo-updateInterval'>
-<title>mfo:updateInterval</title>
-<para>Update interval for a feed channel to get updated or refreshed. Interpreted as minutes</para>
+<refsect2 id='mfo-downloadPath'>
+<title>mfo:downloadPath</title>
+<para>Download path for enclosures in a message</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -501,7 +413,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -549,6 +461,68 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='mfo-unreadCount'>
+<title>mfo:unreadCount</title>
+<para>Unread messages count within a channel</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-FeedChannel'>mfo:FeedChannel</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mfo-maxSize'>
+<title>mfo:maxSize</title>
+<para>Maximum size of enclosure that can be downloaded. Interpreted as KBs </para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-FeedSettings'>mfo:FeedSettings</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='mfo-type'>
 <title>mfo:type</title>
 <para> Feeds format type which is mapped to plugin used in engine: flickr,rss-atom </para>
@@ -564,6 +538,36 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='mfo-FeedType'>mfo:FeedType</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mfo-image'>
+<title>mfo:image</title>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-FeedChannel'>mfo:FeedChannel</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -673,9 +677,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mfo-expiryInterval'>
-<title>mfo:expiryInterval</title>
-<para>Expiry interval for feed channel, it tells time that a message in a channel can live. Interpreted as minutes</para>
+<refsect2 id='mfo-optional'>
+<title>mfo:optional</title>
+<para>The enclosure is mandatory to download or only optional</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -683,11 +687,11 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-FeedSettings'>mfo:FeedSettings</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mfo-Enclosure'>mfo:Enclosure</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -704,40 +708,9 @@
 </variablelist>
 </refsect2>
 
-<refsect2 id='mfo-downloadPath'>
-<title>mfo:downloadPath</title>
-<para>Download path for enclosures in a message</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-FeedSettings'>mfo:FeedSettings</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-string'>xsd:string</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mfo-unreadCount'>
-<title>mfo:unreadCount</title>
-<para>Unread messages count within a channel</para>
+<refsect2 id='mfo-updatedTime'>
+<title>mfo:updatedTime</title>
+<para>Captures the updated date and time when the channel is updated</para>
 <variablelist>
 <varlistentry>
 <term><parameter>Type</parameter>&#160;:</term>
@@ -749,7 +722,65 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+<listitem><simpara><link linkend='xsd-dateTime'>xsd:dateTime</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mfo-enclosureList'>
+<title>mfo:enclosureList</title>
+<para>A list of enclosures</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-FeedMessage'>mfo:FeedMessage</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-Enclosure'>mfo:Enclosure</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='mfo-remoteLink'>
+<title>mfo:remoteLink</title>
+<para>Used to store remote URL of enclosure</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='mfo-Enclosure'>mfo:Enclosure</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-RemoteDataObject'>nfo:RemoteDataObject</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -777,37 +808,6 @@
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
 <listitem><simpara><link linkend='mfo-FeedSettings'>mfo:FeedSettings</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Range</parameter>&#160;:</term>
-<listitem><simpara><link linkend='xsd-boolean'>xsd:boolean</link>, </simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Superproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Subproperties</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Cardinality</parameter>&#160;:</term>
-<listitem><simpara>1</simpara></listitem>
-</varlistentry>
-</variablelist>
-</refsect2>
-
-<refsect2 id='mfo-optional'>
-<title>mfo:optional</title>
-<para>The enclosure is mandatory to download or only optional</para>
-<variablelist>
-<varlistentry>
-<term><parameter>Type</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-Enclosure'>mfo:Enclosure</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>

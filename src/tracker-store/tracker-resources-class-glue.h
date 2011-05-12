@@ -63,8 +63,7 @@ G_END_DECLS
 static const DBusGMethodInfo dbus_glib_tracker_resources_class_methods[] = {
 };
 
-const DBusGObjectInfo dbus_glib_tracker_resources_class_object_info = {
-  0,
+const DBusGObjectInfo dbus_glib_tracker_resources_class_object_info = {  1,
   dbus_glib_tracker_resources_class_methods,
   0,
 "\0",

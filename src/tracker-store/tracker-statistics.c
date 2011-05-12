@@ -25,8 +25,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libtracker-common/tracker-common.h>
+#include <libtracker-data/tracker-db-manager.h>
+#include <libtracker-data/tracker-db-interface.h>
 #include <libtracker-data/tracker-ontologies.h>
 #include <libtracker-data/tracker-class.h>
+#include <libtracker-sparql/tracker-sparql.h>
 #include <gio/gio.h>
 
 
@@ -56,6 +59,8 @@ struct _TrackerStatisticsClass {
 
 
 static gpointer tracker_statistics_parent_class = NULL;
+static gboolean tracker_statistics_initialized;
+static gboolean tracker_statistics_initialized = FALSE;
 
 GType tracker_statistics_get_type (void) G_GNUC_CONST;
 guint tracker_statistics_register_object (void* object, GDBusConnection* connection, const gchar* path, GError** error);
@@ -63,9 +68,10 @@ enum  {
 	TRACKER_STATISTICS_DUMMY_PROPERTY
 };
 #define TRACKER_STATISTICS_PATH "/org/freedesktop/Tracker1/Statistics"
-GVariant* tracker_statistics_get (TrackerStatistics* self, const char* sender);
+GVariant* tracker_statistics_get (TrackerStatistics* self, const char* sender, GError** error);
 TrackerStatistics* tracker_statistics_new (void);
 TrackerStatistics* tracker_statistics_construct (GType object_type);
+static void tracker_statistics_finalize (GObject* obj);
 static void _dbus_tracker_statistics_get (TrackerStatistics* self, GVariant* parameters, GDBusMethodInvocation* invocation);
 static void tracker_statistics_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data);
 static GVariant* tracker_statistics_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data);
@@ -87,60 +93,133 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-GVariant* tracker_statistics_get (TrackerStatistics* self, const char* sender) {
+GVariant* tracker_statistics_get (TrackerStatistics* self, const char* sender, GError** error) {
 	GVariant* result = NULL;
 	TrackerDBusRequest* _tmp0_ = NULL;
 	TrackerDBusRequest* request;
-	GVariantBuilder* _tmp1_ = NULL;
+	GVariantBuilder* _tmp12_ = NULL;
 	GVariantBuilder* builder;
-	gint _tmp2_;
-	TrackerClass** _tmp3_ = NULL;
-	GVariant* _tmp10_ = NULL;
+	gint _tmp13_;
+	TrackerClass** _tmp14_ = NULL;
+	GVariant* _tmp21_ = NULL;
+	GError * _inner_error_ = NULL;
 	g_return_val_if_fail (self != NULL, NULL);
 	g_return_val_if_fail (sender != NULL, NULL);
 	_tmp0_ = tracker_dbus_request_begin ((const gchar*) sender, "Statistics.Get", NULL);
 	request = _tmp0_;
-	_tmp1_ = g_variant_builder_new ((const GVariantType*) "aas");
-	builder = _tmp1_;
-	_tmp3_ = tracker_ontologies_get_classes (&_tmp2_);
+	if (!tracker_statistics_initialized) {
+		TrackerDBInterface* _tmp1_ = NULL;
+		TrackerDBInterface* _tmp2_;
+		TrackerDBInterface* iface;
+		gint _tmp3_;
+		TrackerClass** _tmp4_ = NULL;
+		_tmp1_ = tracker_db_manager_get_db_interface ();
+		_tmp2_ = _g_object_ref0 (_tmp1_);
+		iface = _tmp2_;
+		_tmp4_ = tracker_ontologies_get_classes (&_tmp3_);
+		{
+			TrackerClass** cl_collection;
+			int cl_collection_length1;
+			int cl_it;
+			cl_collection = _tmp4_;
+			cl_collection_length1 = _tmp3_;
+			for (cl_it = 0; cl_it < _tmp3_; cl_it = cl_it + 1) {
+				TrackerClass* _tmp5_;
+				TrackerClass* cl;
+				_tmp5_ = _g_object_ref0 (cl_collection[cl_it]);
+				cl = _tmp5_;
+				{
+					const gchar* _tmp6_ = NULL;
+					gboolean _tmp7_;
+					_tmp6_ = tracker_class_get_name (cl);
+					_tmp7_ = g_str_has_prefix (_tmp6_, "xsd:");
+					if (!_tmp7_) {
+						const gchar* _tmp8_ = NULL;
+						TrackerDBStatement* _tmp9_ = NULL;
+						TrackerDBStatement* stmt;
+						TrackerDBCursor* _tmp10_ = NULL;
+						TrackerDBCursor* stat_cursor;
+						gint64 _tmp11_;
+						_tmp8_ = tracker_class_get_name (cl);
+						_tmp9_ = tracker_db_interface_create_statement (iface, TRACKER_DB_STATEMENT_CACHE_TYPE_NONE, &_inner_error_, "SELECT COUNT(1) FROM \"%s\"", _tmp8_);
+						stmt = _tmp9_;
+						if (_inner_error_ != NULL) {
+							g_propagate_error (error, _inner_error_);
+							_g_object_unref0 (cl);
+							_g_object_unref0 (iface);
+							return NULL;
+						}
+						_tmp10_ = tracker_db_statement_start_cursor (stmt, &_inner_error_);
+						stat_cursor = _tmp10_;
+						if (_inner_error_ != NULL) {
+							g_propagate_error (error, _inner_error_);
+							_g_object_unref0 (stmt);
+							_g_object_unref0 (cl);
+							_g_object_unref0 (iface);
+							return NULL;
+						}
+						tracker_sparql_cursor_next ((TrackerSparqlCursor*) stat_cursor, NULL, &_inner_error_);
+						if (_inner_error_ != NULL) {
+							g_propagate_error (error, _inner_error_);
+							_g_object_unref0 (stat_cursor);
+							_g_object_unref0 (stmt);
+							_g_object_unref0 (cl);
+							_g_object_unref0 (iface);
+							return NULL;
+						}
+						_tmp11_ = tracker_sparql_cursor_get_integer ((TrackerSparqlCursor*) stat_cursor, 0);
+						tracker_class_set_count (cl, (gint) _tmp11_);
+						_g_object_unref0 (stat_cursor);
+						_g_object_unref0 (stmt);
+					}
+					_g_object_unref0 (cl);
+				}
+			}
+		}
+		tracker_statistics_initialized = TRUE;
+		_g_object_unref0 (iface);
+	}
+	_tmp12_ = g_variant_builder_new ((const GVariantType*) "aas");
+	builder = _tmp12_;
+	_tmp14_ = tracker_ontologies_get_classes (&_tmp13_);
 	{
 		TrackerClass** cl_collection;
 		int cl_collection_length1;
 		int cl_it;
-		cl_collection = _tmp3_;
-		cl_collection_length1 = _tmp2_;
-		for (cl_it = 0; cl_it < _tmp2_; cl_it = cl_it + 1) {
-			TrackerClass* _tmp4_;
+		cl_collection = _tmp14_;
+		cl_collection_length1 = _tmp13_;
+		for (cl_it = 0; cl_it < _tmp13_; cl_it = cl_it + 1) {
+			TrackerClass* _tmp15_;
 			TrackerClass* cl;
-			_tmp4_ = _g_object_ref0 (cl_collection[cl_it]);
-			cl = _tmp4_;
+			_tmp15_ = _g_object_ref0 (cl_collection[cl_it]);
+			cl = _tmp15_;
 			{
-				gint _tmp5_;
-				const gchar* _tmp6_ = NULL;
-				gint _tmp7_;
-				gchar* _tmp8_ = NULL;
-				gchar* _tmp9_;
-				_tmp5_ = tracker_class_get_count (cl);
-				if (_tmp5_ == 0) {
+				gint _tmp16_;
+				const gchar* _tmp17_ = NULL;
+				gint _tmp18_;
+				gchar* _tmp19_ = NULL;
+				gchar* _tmp20_;
+				_tmp16_ = tracker_class_get_count (cl);
+				if (_tmp16_ == 0) {
 					_g_object_unref0 (cl);
 					continue;
 				}
 				g_variant_builder_open (builder, (const GVariantType*) "as");
-				_tmp6_ = tracker_class_get_name (cl);
-				g_variant_builder_add (builder, "s", _tmp6_, NULL);
-				_tmp7_ = tracker_class_get_count (cl);
-				_tmp8_ = g_strdup_printf ("%i", _tmp7_);
-				_tmp9_ = _tmp8_;
-				g_variant_builder_add (builder, "s", _tmp9_, NULL);
-				_g_free0 (_tmp9_);
+				_tmp17_ = tracker_class_get_name (cl);
+				g_variant_builder_add (builder, "s", _tmp17_, NULL);
+				_tmp18_ = tracker_class_get_count (cl);
+				_tmp19_ = g_strdup_printf ("%i", _tmp18_);
+				_tmp20_ = _tmp19_;
+				g_variant_builder_add (builder, "s", _tmp20_, NULL);
+				_g_free0 (_tmp20_);
 				g_variant_builder_close (builder);
 				_g_object_unref0 (cl);
 			}
 		}
 	}
 	tracker_dbus_request_end (request, NULL);
-	_tmp10_ = g_variant_builder_end (builder);
-	result = g_variant_ref_sink (_tmp10_);
+	_tmp21_ = g_variant_builder_end (builder);
+	result = g_variant_ref_sink (_tmp21_);
 	_g_variant_builder_unref0 (builder);
 	return result;
 }
@@ -160,10 +239,18 @@ TrackerStatistics* tracker_statistics_new (void) {
 
 static void tracker_statistics_class_init (TrackerStatisticsClass * klass) {
 	tracker_statistics_parent_class = g_type_class_peek_parent (klass);
+	G_OBJECT_CLASS (klass)->finalize = tracker_statistics_finalize;
 }
 
 
 static void tracker_statistics_instance_init (TrackerStatistics * self) {
+}
+
+
+static void tracker_statistics_finalize (GObject* obj) {
+	TrackerStatistics * self;
+	self = TRACKER_STATISTICS (obj);
+	G_OBJECT_CLASS (tracker_statistics_parent_class)->finalize (obj);
 }
 
 
@@ -188,7 +275,11 @@ static void _dbus_tracker_statistics_get (TrackerStatistics* self, GVariant* par
 	GVariantBuilder _reply_builder;
 	GVariant* result;
 	g_variant_iter_init (&_arguments_iter, parameters);
-	result = tracker_statistics_get (self, g_dbus_method_invocation_get_sender (invocation));
+	result = tracker_statistics_get (self, g_dbus_method_invocation_get_sender (invocation), &error);
+	if (error) {
+		g_dbus_method_invocation_return_gerror (invocation, error);
+		return;
+	}
 	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
 	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
 	g_variant_builder_add_value (&_reply_builder, result);

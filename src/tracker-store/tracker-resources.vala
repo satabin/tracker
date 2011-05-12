@@ -52,6 +52,7 @@ public class Tracker.Resources : Object {
 
 	DBusConnection connection;
 	uint signal_timeout;
+	bool regular_commit_pending;
 
 	public signal void writeback ([DBus (signature = "a{iai}")] Variant subjects);
 	public signal void graph_updated (string classname, [DBus (signature = "a(iiii)")] Variant deletes, [DBus (signature = "a(iiii)")] Variant inserts);
@@ -215,12 +216,8 @@ public class Tracker.Resources : Object {
 	}
 
 	bool on_emit_signals () {
-		bool had_any = false;
-
 		foreach (var cl in Tracker.Events.get_classes ()) {
-			if (emit_graph_updated (cl)) {
-				had_any = true;
-			}
+			emit_graph_updated (cl);
 		}
 
 		/* Reset counter */
@@ -230,7 +227,6 @@ public class Tracker.Resources : Object {
 		var writebacks = Tracker.Writeback.get_ready ();
 
 		if (writebacks != null) {
-			had_any = true;
 			var builder = new VariantBuilder ((VariantType) "a{iai}");
 
 			var wb_iter = HashTableIter<int, GLib.Array<int>> (writebacks);
@@ -256,29 +252,49 @@ public class Tracker.Resources : Object {
 
 		Tracker.Writeback.reset_ready ();
 
-		if (!had_any) {
-			signal_timeout = 0;
-		}
-
-		return had_any;
+		regular_commit_pending = false;
+		signal_timeout = 0;
+		return false;
 	}
 
-	void on_statements_committed (bool start_timer) {
+	void on_statements_committed (Tracker.Data.CommitType commit_type) {
 		/* Class signal feature */
 
 		foreach (var cl in Tracker.Events.get_classes ()) {
 			cl.transact_events ();
 		}
 
-		if (start_timer && signal_timeout == 0) {
-			signal_timeout = Timeout.add_seconds (SIGNALS_SECONDS_PER_EMIT, on_emit_signals);
+		if (!regular_commit_pending) {
+			// never cancel timeout for non-batch commits as we want
+			// to ensure that the signal corresponding to a certain
+			// update arrives within a fixed time limit
+
+			// cancel it in all other cases
+			// in the BATCH_LAST case, the timeout will be reenabled
+			// further down but it's important to cancel it first
+			// to reset the timeout to 1 s starting now
+			if (signal_timeout != 0) {
+				Source.remove (signal_timeout);
+				signal_timeout = 0;
+			}
+		}
+
+		if (commit_type == Tracker.Data.CommitType.REGULAR) {
+			regular_commit_pending = true;
+		}
+
+		if (regular_commit_pending || commit_type == Tracker.Data.CommitType.BATCH_LAST) {
+			// timer wanted for non-batch commits and the last in a series of batch commits
+			if (signal_timeout == 0) {
+				signal_timeout = Timeout.add (SIGNALS_SECONDS_PER_EMIT * 1000, on_emit_signals);
+			}
 		}
 
 		/* Writeback feature */
 		Tracker.Writeback.transact ();
 	}
 
-	void on_statements_rolled_back (bool start_timer) {
+	void on_statements_rolled_back (Tracker.Data.CommitType commit_type) {
 		Tracker.Events.reset_pending ();
 		Tracker.Writeback.reset_pending ();
 	}
@@ -286,13 +302,16 @@ public class Tracker.Resources : Object {
 	void check_graph_updated_signal () {
 		/* Check for whether we need an immediate emit */
 		if (Tracker.Events.get_total (false) > GRAPH_UPDATED_IMMEDIATE_EMIT_AT) {
-
-			foreach (var cl in Tracker.Events.get_classes ()) {
-				emit_graph_updated (cl);
+			// possibly active timeout no longer necessary as signals
+			// for committed transactions will be emitted by the following on_emit_signals call
+			// do this before actually calling on_emit_signals as on_emit_signals sets signal_timeout to 0
+			if (signal_timeout != 0) {
+				Source.remove (signal_timeout);
+				signal_timeout = 0;
 			}
 
-			/* Reset counter */
-			Tracker.Events.get_total (true);
+			// immediately emit signals for already committed transaction
+			on_emit_signals ();
 		}
 	}
 

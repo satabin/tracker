@@ -1,3 +1,82 @@
+2011-05-12  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.13
+
+2011-05-12  Jürg Billeter  <j@bitron.ch>
+
+	tracker-store: Stop signal timeout for sequential batch updates
+	If tracker-store receives a batch request after processing all previous
+	batch requests but before the signal timeout expires, stop the signal
+	timeout. This reduces the number of signals sent for batch updates where
+	requests do not trigger any queueing in tracker-store, e.g., when
+	sending simple batch update every 0.5 s.
+
+	Fixes NB#254154.
+
+	tracker-store: Use Timeout.add instead of add_seconds for signal timeout
+	Second granularity is not precise enough for delays that might be
+	visible in the user interface.
+
+	tracker-store: Stop signal timeout after an immediate emission
+
+	tracker-store: Always stop signal timeout after handling it
+	If a later commit needs the timeout, it will be enabled again in
+	on_statements_committed.
+
+	tracker-extract-mp3: Add simple frame tracing to ID3v2.2 and ID3v2.3
+
+2011-05-12  Yinghua Wang  <wantinghard@gmail.com>
+
+	Updated zh_CN translation.
+
+2011-05-12  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-05-12  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Test local time handling with optional patterns
+
+	SPARQL: Fix local time handling with optional patterns
+	Fixes NB#253807.
+
+	Fix Vala warnings
+
+2011-05-12  Mario Blättermann  <mariobl@gnome.org>
+
+	[l10n] Updated German translation
+
+2011-05-12  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-05-12  Jürg Billeter  <j@bitron.ch>
+
+	tracker-store: Use lazy initialization for statistics
+	This reduces startup time of tracker-store.
+
+2011-05-12  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Cancel TrackerMinerFS cancellables on finalize()
+	This also gets rid of a related comment in TrackerMinerFiles, since
+	the cancellables there are those that TrackerMinerFS create.
+
+2011-05-11  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Add watchdog for failed unmounts
+	Fixes NB#248873. If, for whatever reason, an unmount operation fails
+	or doesn't respond in a timely fashion, TrackerStorage will emit
+	::mount-point-added again so Tracker keeps monitoring any further
+	change in there.
+
+2011-05-07  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
+
+2011-05-05  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
 2011-05-05  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.12

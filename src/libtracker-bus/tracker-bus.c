@@ -138,8 +138,6 @@ struct _TrackerBusSteroidsIface {
 	void (*batch_update_finish) (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
 	void (*update_array) (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 	GVariant* (*update_array_finish) (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-	void (*batch_update_array) (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-	GVariant* (*batch_update_array_finish) (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
 };
 
 struct _TrackerBusStatisticsIface {
@@ -408,8 +406,6 @@ void tracker_bus_steroids_batch_update (TrackerBusSteroids* self, GUnixInputStre
 void tracker_bus_steroids_batch_update_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
 void tracker_bus_steroids_update_array (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 GVariant* tracker_bus_steroids_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-void tracker_bus_steroids_batch_update_array (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-GVariant* tracker_bus_steroids_batch_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
 void tracker_bus_steroids_update_begin (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, gint priority, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target);
 static void tracker_bus_steroids_proxy_g_signal (GDBusProxy* proxy, const gchar* sender_name, const gchar* signal_name, GVariant* parameters);
 static void tracker_bus_steroids_proxy_query_async (TrackerBusSteroids* self, const gchar* query, GUnixOutputStream* result_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
@@ -422,8 +418,6 @@ static void tracker_bus_steroids_proxy_batch_update_async (TrackerBusSteroids* s
 static void tracker_bus_steroids_proxy_batch_update_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
 static void tracker_bus_steroids_proxy_update_array_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 static GVariant* tracker_bus_steroids_proxy_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-static void tracker_bus_steroids_proxy_batch_update_array_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-static GVariant* tracker_bus_steroids_proxy_batch_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
 static void tracker_bus_steroids_proxy_tracker_bus_steroids_interface_init (TrackerBusSteroidsIface* iface);
 static void _dbus_tracker_bus_steroids_query (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation);
 static void _dbus_tracker_bus_steroids_query_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
@@ -435,8 +429,6 @@ static void _dbus_tracker_bus_steroids_batch_update (TrackerBusSteroids* self, G
 static void _dbus_tracker_bus_steroids_batch_update_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
 static void _dbus_tracker_bus_steroids_update_array (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation);
 static void _dbus_tracker_bus_steroids_update_array_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
-static void _dbus_tracker_bus_steroids_batch_update_array (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_bus_steroids_batch_update_array_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
 static void tracker_bus_steroids_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data);
 static GVariant* tracker_bus_steroids_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data);
 static gboolean tracker_bus_steroids_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data);
@@ -571,12 +563,7 @@ static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_update_array_resul
 static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_update_array_in[] = {&_tracker_bus_steroids_dbus_arg_info_update_array_sparql_stream, NULL};
 static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_update_array_out[] = {&_tracker_bus_steroids_dbus_arg_info_update_array_result, NULL};
 static const GDBusMethodInfo _tracker_bus_steroids_dbus_method_info_update_array = {-1, "UpdateArray", (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_update_array_in), (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_update_array_out)};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_batch_update_array_sparql_stream = {-1, "sparql_stream", "h"};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_batch_update_array_result = {-1, "result", "as"};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_batch_update_array_in[] = {&_tracker_bus_steroids_dbus_arg_info_batch_update_array_sparql_stream, NULL};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_batch_update_array_out[] = {&_tracker_bus_steroids_dbus_arg_info_batch_update_array_result, NULL};
-static const GDBusMethodInfo _tracker_bus_steroids_dbus_method_info_batch_update_array = {-1, "BatchUpdateArray", (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_batch_update_array_in), (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_batch_update_array_out)};
-static const GDBusMethodInfo * const _tracker_bus_steroids_dbus_method_info[] = {&_tracker_bus_steroids_dbus_method_info_query, &_tracker_bus_steroids_dbus_method_info_update, &_tracker_bus_steroids_dbus_method_info_update_blank, &_tracker_bus_steroids_dbus_method_info_batch_update, &_tracker_bus_steroids_dbus_method_info_update_array, &_tracker_bus_steroids_dbus_method_info_batch_update_array, NULL};
+static const GDBusMethodInfo * const _tracker_bus_steroids_dbus_method_info[] = {&_tracker_bus_steroids_dbus_method_info_query, &_tracker_bus_steroids_dbus_method_info_update, &_tracker_bus_steroids_dbus_method_info_update_blank, &_tracker_bus_steroids_dbus_method_info_batch_update, &_tracker_bus_steroids_dbus_method_info_update_array, NULL};
 static const GDBusSignalInfo * const _tracker_bus_steroids_dbus_signal_info[] = {NULL};
 static const GDBusPropertyInfo * const _tracker_bus_steroids_dbus_property_info[] = {NULL};
 static const GDBusInterfaceInfo _tracker_bus_steroids_dbus_interface_info = {-1, "org.freedesktop.Tracker1.Steroids", (GDBusMethodInfo **) (&_tracker_bus_steroids_dbus_method_info), (GDBusSignalInfo **) (&_tracker_bus_steroids_dbus_signal_info), (GDBusPropertyInfo **) (&_tracker_bus_steroids_dbus_property_info)};
@@ -888,16 +875,6 @@ GVariant* tracker_bus_steroids_update_array_finish (TrackerBusSteroids* self, GA
 }
 
 
-void tracker_bus_steroids_batch_update_array (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->batch_update_array (self, sparql_stream, cancellable, _callback_, _user_data_);
-}
-
-
-GVariant* tracker_bus_steroids_batch_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error) {
-	return TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->batch_update_array_finish (self, _res_, error);
-}
-
-
 void tracker_bus_steroids_update_begin (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, gint priority, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target) {
 	g_return_if_fail (sparql_stream != NULL);
 	if (priority <= G_PRIORITY_DEFAULT) {
@@ -1170,48 +1147,6 @@ static GVariant* tracker_bus_steroids_proxy_update_array_finish (TrackerBusStero
 }
 
 
-static void tracker_bus_steroids_proxy_batch_update_array_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	GUnixFDList *_fd_list;
-	TRACKER_SPARQL_ERROR;
-	G_DBUS_ERROR;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Steroids", "BatchUpdateArray");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	g_variant_builder_add (&_arguments_builder, "h", g_unix_fd_list_append (_fd_list, g_unix_input_stream_get_fd (sparql_stream), NULL));
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	g_dbus_message_set_unix_fd_list (_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message_with_reply (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, cancellable, _vala_g_async_ready_callback, g_simple_async_result_new ((GObject *) self, _callback_, _user_data_, NULL));
-	g_object_unref (_message);
-}
-
-
-static GVariant* tracker_bus_steroids_proxy_batch_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error) {
-	GDBusMessage *_reply_message;
-	gint _fd_index = 0;
-	GVariant *_reply;
-	GVariantIter _reply_iter;
-	GVariant* _result;
-	_reply_message = g_dbus_connection_send_message_with_reply_finish (g_dbus_proxy_get_connection ((GDBusProxy *) self), g_simple_async_result_get_op_res_gpointer ((GSimpleAsyncResult *) _res_), error);
-	if (!_reply_message) {
-		return NULL;
-	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
-		return NULL;
-	}
-	_reply = g_dbus_message_get_body (_reply_message);
-	g_variant_iter_init (&_reply_iter, _reply);
-	_result = g_variant_iter_next_value (&_reply_iter);
-	g_object_unref (_reply_message);
-	return _result;
-}
-
-
 static void tracker_bus_steroids_proxy_tracker_bus_steroids_interface_init (TrackerBusSteroidsIface* iface) {
 	iface->query = tracker_bus_steroids_proxy_query_async;
 	iface->query_finish = tracker_bus_steroids_proxy_query_finish;
@@ -1223,8 +1158,6 @@ static void tracker_bus_steroids_proxy_tracker_bus_steroids_interface_init (Trac
 	iface->batch_update_finish = tracker_bus_steroids_proxy_batch_update_finish;
 	iface->update_array = tracker_bus_steroids_proxy_update_array_async;
 	iface->update_array_finish = tracker_bus_steroids_proxy_update_array_finish;
-	iface->batch_update_array = tracker_bus_steroids_proxy_batch_update_array_async;
-	iface->batch_update_array_finish = tracker_bus_steroids_proxy_batch_update_array_finish;
 }
 
 
@@ -1443,47 +1376,6 @@ static void _dbus_tracker_bus_steroids_update_array_ready (GObject * source_obje
 }
 
 
-static void _dbus_tracker_bus_steroids_batch_update_array (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GVariantIter _arguments_iter;
-	gint _fd_index = 0;
-	GUnixInputStream* sparql_stream = NULL;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	g_variant_iter_next (&_arguments_iter, "h", &_fd_index);
-	sparql_stream = (GUnixInputStream *) g_unix_input_stream_new (g_unix_fd_list_get (g_dbus_message_get_unix_fd_list (g_dbus_method_invocation_get_message (invocation)), _fd_index, NULL), TRUE);
-	tracker_bus_steroids_batch_update_array (self, sparql_stream, NULL, (GAsyncReadyCallback) _dbus_tracker_bus_steroids_batch_update_array_ready, invocation);
-	_g_object_unref0 (sparql_stream);
-}
-
-
-static void _dbus_tracker_bus_steroids_batch_update_array_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_) {
-	GDBusMethodInvocation * invocation;
-	GError* error = NULL;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	GUnixFDList *_fd_list;
-	GVariant* result;
-	invocation = _user_data_;
-	result = tracker_bus_steroids_batch_update_array_finish ((TrackerBusSteroids*) source_object, _res_, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	g_variant_builder_add_value (&_reply_builder, result);
-	_g_variant_unref0 ( result);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_message_set_unix_fd_list (_reply_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
 static void tracker_bus_steroids_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data) {
 	gpointer* data;
 	gpointer object;
@@ -1499,8 +1391,6 @@ static void tracker_bus_steroids_dbus_interface_method_call (GDBusConnection* co
 		_dbus_tracker_bus_steroids_batch_update (object, parameters, invocation);
 	} else if (strcmp (method_name, "UpdateArray") == 0) {
 		_dbus_tracker_bus_steroids_update_array (object, parameters, invocation);
-	} else if (strcmp (method_name, "BatchUpdateArray") == 0) {
-		_dbus_tracker_bus_steroids_batch_update_array (object, parameters, invocation);
 	} else {
 		g_object_unref (invocation);
 	}

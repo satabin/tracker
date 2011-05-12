@@ -349,7 +349,7 @@ static Block7Data* block7_data_ref (Block7Data* _data7_);
 static void block7_data_unref (Block7Data* _data7_);
 static gboolean _lambda0_ (Block7Data* _data7_);
 static gboolean __lambda0__gsource_func (gpointer self);
-static gboolean tracker_store_start_timer_or_not (TrackerStoreTask* task);
+static TrackerDataCommitType tracker_store_commit_type (TrackerStoreTask* task);
 static GType tracker_store_update_task_get_type (void) G_GNUC_CONST G_GNUC_UNUSED;
 static gboolean tracker_store_task_finish_cb (TrackerStoreTask* task);
 static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task);
@@ -604,41 +604,47 @@ static void tracker_store_sched (void) {
 }
 
 
-static gboolean tracker_store_start_timer_or_not (TrackerStoreTask* task) {
-	gboolean result = FALSE;
-	gboolean _result_ = FALSE;
-	g_return_val_if_fail (task != NULL, FALSE);
+static TrackerDataCommitType tracker_store_commit_type (TrackerStoreTask* task) {
+	TrackerDataCommitType result = 0;
+	g_return_val_if_fail (task != NULL, 0);
 	switch (task->type) {
 		case TRACKER_STORE_TASK_TYPE_UPDATE:
 		case TRACKER_STORE_TASK_TYPE_UPDATE_BLANK:
 		{
-			gboolean _tmp0_ = FALSE;
-			if (TRACKER_STORE_UPDATE_TASK (task)->priority == TRACKER_STORE_PRIORITY_LOW) {
-				guint _tmp1_;
-				_tmp1_ = g_queue_get_length (tracker_store_update_queues[TRACKER_STORE_PRIORITY_LOW]);
-				_tmp0_ = _tmp1_ > 0;
+			if (TRACKER_STORE_UPDATE_TASK (task)->priority == TRACKER_STORE_PRIORITY_HIGH) {
+				result = TRACKER_DATA_COMMIT_REGULAR;
+				return result;
 			} else {
-				_tmp0_ = FALSE;
+				guint _tmp0_;
+				_tmp0_ = g_queue_get_length (tracker_store_update_queues[TRACKER_STORE_PRIORITY_LOW]);
+				if (_tmp0_ > 0) {
+					result = TRACKER_DATA_COMMIT_BATCH;
+					return result;
+				} else {
+					result = TRACKER_DATA_COMMIT_BATCH_LAST;
+					return result;
+				}
 			}
-			_result_ = !_tmp0_;
-			break;
 		}
 		case TRACKER_STORE_TASK_TYPE_TURTLE:
 		{
-			guint _tmp2_;
-			_tmp2_ = g_queue_get_length (tracker_store_update_queues[TRACKER_STORE_PRIORITY_TURTLE]);
-			_result_ = _tmp2_ == 0;
-			break;
+			guint _tmp1_;
+			_tmp1_ = g_queue_get_length (tracker_store_update_queues[TRACKER_STORE_PRIORITY_TURTLE]);
+			if (_tmp1_ > 0) {
+				result = TRACKER_DATA_COMMIT_BATCH;
+				return result;
+			} else {
+				result = TRACKER_DATA_COMMIT_BATCH_LAST;
+				return result;
+			}
 		}
 		default:
-		case TRACKER_STORE_TASK_TYPE_QUERY:
 		{
-			_result_ = FALSE;
-			break;
+			g_warn_if_reached ();
+			result = TRACKER_DATA_COMMIT_REGULAR;
+			return result;
 		}
 	}
-	result = _result_;
-	return result;
 }
 
 
@@ -698,8 +704,8 @@ static gboolean tracker_store_task_finish_cb (TrackerStoreTask* task) {
 		}
 		if (_tmp2_) {
 			if (task->error == NULL) {
-				gboolean _tmp3_;
-				_tmp3_ = tracker_store_start_timer_or_not (task);
+				TrackerDataCommitType _tmp3_;
+				_tmp3_ = tracker_store_commit_type (task);
 				tracker_data_notify_transaction (_tmp3_);
 			}
 			task->callback (task->callback_target);
@@ -709,8 +715,8 @@ static gboolean tracker_store_task_finish_cb (TrackerStoreTask* task) {
 		} else {
 			if (task->type == TRACKER_STORE_TASK_TYPE_TURTLE) {
 				if (task->error == NULL) {
-					gboolean _tmp4_;
-					_tmp4_ = tracker_store_start_timer_or_not (task);
+					TrackerDataCommitType _tmp4_;
+					_tmp4_ = tracker_store_commit_type (task);
 					tracker_data_notify_transaction (_tmp4_);
 				}
 				task->callback (task->callback_target);

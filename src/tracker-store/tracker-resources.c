@@ -75,6 +75,7 @@ struct _TrackerResourcesClass {
 struct _TrackerResourcesPrivate {
 	GDBusConnection* connection;
 	guint signal_timeout;
+	gboolean regular_commit_pending;
 };
 
 struct _TrackerResourcesLoadData {
@@ -261,17 +262,17 @@ static void __lambda3__tracker_events_foreach (gint graph_id, gint subject_id, g
 static void _lambda4_ (gint graph_id, gint subject_id, gint pred_id, gint object_id, Block4Data* _data4_);
 static void __lambda4__tracker_events_foreach (gint graph_id, gint subject_id, gint pred_id, gint object_id, gpointer self);
 static gboolean tracker_resources_on_emit_signals (TrackerResources* self);
-static void tracker_resources_on_statements_committed (TrackerResources* self, gboolean start_timer);
+static void tracker_resources_on_statements_committed (TrackerResources* self, TrackerDataCommitType commit_type);
 static gboolean _tracker_resources_on_emit_signals_gsource_func (gpointer self);
-static void tracker_resources_on_statements_rolled_back (TrackerResources* self, gboolean start_timer);
+static void tracker_resources_on_statements_rolled_back (TrackerResources* self, TrackerDataCommitType commit_type);
 static void tracker_resources_check_graph_updated_signal (TrackerResources* self);
 static void tracker_resources_on_statement_inserted (TrackerResources* self, gint graph_id, const gchar* graph, gint subject_id, const gchar* subject, gint pred_id, gint object_id, const gchar* object, GPtrArray* rdf_types);
 static void tracker_resources_on_statement_deleted (TrackerResources* self, gint graph_id, const gchar* graph, gint subject_id, const gchar* subject, gint pred_id, gint object_id, const gchar* object, GPtrArray* rdf_types);
 void tracker_resources_enable_signals (TrackerResources* self);
 static void _tracker_resources_on_statement_inserted_tracker_statement_callback (gint graph_id, const gchar* graph, gint subject_id, const gchar* subject, gint predicate_id, gint object_id, const gchar* object, GPtrArray* rdf_types, gpointer self);
 static void _tracker_resources_on_statement_deleted_tracker_statement_callback (gint graph_id, const gchar* graph, gint subject_id, const gchar* subject, gint predicate_id, gint object_id, const gchar* object, GPtrArray* rdf_types, gpointer self);
-static void _tracker_resources_on_statements_committed_tracker_commit_callback (gboolean start_timer, gpointer self);
-static void _tracker_resources_on_statements_rolled_back_tracker_commit_callback (gboolean start_timer, gpointer self);
+static void _tracker_resources_on_statements_committed_tracker_commit_callback (TrackerDataCommitType commit_type, gpointer self);
+static void _tracker_resources_on_statements_rolled_back_tracker_commit_callback (TrackerDataCommitType commit_type, gpointer self);
 void tracker_resources_unreg_batches (TrackerResources* self, const gchar* old_owner);
 void tracker_store_unreg_batches (const gchar* client_id);
 static void g_cclosure_user_marshal_VOID__VARIANT (GClosure * closure, GValue * return_value, guint n_param_values, const GValue * param_values, gpointer invocation_hint, gpointer marshal_data);
@@ -1184,14 +1185,12 @@ static gpointer _g_hash_table_ref0 (gpointer self) {
 
 static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 	gboolean result = FALSE;
-	gboolean had_any;
 	gint _tmp0_;
 	TrackerClass** _tmp1_ = NULL;
-	GHashTable* _tmp4_ = NULL;
-	GHashTable* _tmp5_;
+	GHashTable* _tmp3_ = NULL;
+	GHashTable* _tmp4_;
 	GHashTable* writebacks;
 	g_return_val_if_fail (self != NULL, FALSE);
-	had_any = FALSE;
 	_tmp1_ = tracker_events_get_classes (&_tmp0_);
 	{
 		TrackerClass** cl_collection;
@@ -1205,39 +1204,34 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 			_tmp2_ = _g_object_ref0 (cl_collection[cl_it]);
 			cl = _tmp2_;
 			{
-				gboolean _tmp3_;
-				_tmp3_ = tracker_resources_emit_graph_updated (self, cl);
-				if (_tmp3_) {
-					had_any = TRUE;
-				}
+				tracker_resources_emit_graph_updated (self, cl);
 				_g_object_unref0 (cl);
 			}
 		}
 	}
 	tracker_events_get_total (TRUE);
-	_tmp4_ = tracker_writeback_get_ready ();
-	_tmp5_ = _g_hash_table_ref0 (_tmp4_);
-	writebacks = _tmp5_;
+	_tmp3_ = tracker_writeback_get_ready ();
+	_tmp4_ = _g_hash_table_ref0 (_tmp3_);
+	writebacks = _tmp4_;
 	if (writebacks != NULL) {
-		GVariantBuilder* _tmp6_ = NULL;
+		GVariantBuilder* _tmp5_ = NULL;
 		GVariantBuilder* builder;
 		GHashTableIter wb_iter = {0};
 		gint subject_id = 0;
 		GArray* types = NULL;
-		GVariant* _tmp12_ = NULL;
-		GVariant* _tmp13_;
-		had_any = TRUE;
-		_tmp6_ = g_variant_builder_new ((const GVariantType*) "a{iai}");
-		builder = _tmp6_;
+		GVariant* _tmp11_ = NULL;
+		GVariant* _tmp12_;
+		_tmp5_ = g_variant_builder_new ((const GVariantType*) "a{iai}");
+		builder = _tmp5_;
 		g_hash_table_iter_init (&wb_iter, writebacks);
 		while (TRUE) {
+			gconstpointer _tmp6_ = NULL;
 			gconstpointer _tmp7_ = NULL;
-			gconstpointer _tmp8_ = NULL;
-			gboolean _tmp9_;
-			_tmp9_ = g_hash_table_iter_next (&wb_iter, &_tmp7_, &_tmp8_);
-			subject_id = _tmp7_;
-			types = _tmp8_;
-			if (!_tmp9_) {
+			gboolean _tmp8_;
+			_tmp8_ = g_hash_table_iter_next (&wb_iter, &_tmp6_, &_tmp7_);
+			subject_id = _tmp6_;
+			types = _tmp7_;
+			if (!_tmp8_) {
 				break;
 			}
 			g_variant_builder_open (builder, (const GVariantType*) "{iai}");
@@ -1247,36 +1241,35 @@ static gboolean tracker_resources_on_emit_signals (TrackerResources* self) {
 				gint i;
 				i = 0;
 				{
-					gboolean _tmp10_;
-					_tmp10_ = TRUE;
+					gboolean _tmp9_;
+					_tmp9_ = TRUE;
 					while (TRUE) {
-						gint _tmp11_;
-						if (!_tmp10_) {
+						gint _tmp10_;
+						if (!_tmp9_) {
 							i++;
 						}
-						_tmp10_ = FALSE;
+						_tmp9_ = FALSE;
 						if (!(i < types->len)) {
 							break;
 						}
-						_tmp11_ = g_array_index (types, gint, (guint) i);
-						g_variant_builder_add (builder, "i", _tmp11_, NULL);
+						_tmp10_ = g_array_index (types, gint, (guint) i);
+						g_variant_builder_add (builder, "i", _tmp10_, NULL);
 					}
 				}
 			}
 			g_variant_builder_close (builder);
 			g_variant_builder_close (builder);
 		}
-		_tmp12_ = g_variant_builder_end (builder);
-		_tmp13_ = g_variant_ref_sink (_tmp12_);
-		g_signal_emit_by_name (self, "writeback", _tmp13_);
-		_g_variant_unref0 (_tmp13_);
+		_tmp11_ = g_variant_builder_end (builder);
+		_tmp12_ = g_variant_ref_sink (_tmp11_);
+		g_signal_emit_by_name (self, "writeback", _tmp12_);
+		_g_variant_unref0 (_tmp12_);
 		_g_variant_builder_unref0 (builder);
 	}
 	tracker_writeback_reset_ready ();
-	if (!had_any) {
-		self->priv->signal_timeout = (guint) 0;
-	}
-	result = had_any;
+	self->priv->regular_commit_pending = FALSE;
+	self->priv->signal_timeout = (guint) 0;
+	result = FALSE;
 	_g_hash_table_unref0 (writebacks);
 	return result;
 }
@@ -1289,7 +1282,7 @@ static gboolean _tracker_resources_on_emit_signals_gsource_func (gpointer self) 
 }
 
 
-static void tracker_resources_on_statements_committed (TrackerResources* self, gboolean start_timer) {
+static void tracker_resources_on_statements_committed (TrackerResources* self, TrackerDataCommitType commit_type) {
 	gint _tmp0_;
 	TrackerClass** _tmp1_ = NULL;
 	gboolean _tmp3_ = FALSE;
@@ -1312,21 +1305,32 @@ static void tracker_resources_on_statements_committed (TrackerResources* self, g
 			}
 		}
 	}
-	if (start_timer) {
-		_tmp3_ = self->priv->signal_timeout == 0;
+	if (!self->priv->regular_commit_pending) {
+		if (self->priv->signal_timeout != 0) {
+			g_source_remove (self->priv->signal_timeout);
+			self->priv->signal_timeout = (guint) 0;
+		}
+	}
+	if (commit_type == TRACKER_DATA_COMMIT_REGULAR) {
+		self->priv->regular_commit_pending = TRUE;
+	}
+	if (self->priv->regular_commit_pending) {
+		_tmp3_ = TRUE;
 	} else {
-		_tmp3_ = FALSE;
+		_tmp3_ = commit_type == TRACKER_DATA_COMMIT_BATCH_LAST;
 	}
 	if (_tmp3_) {
-		guint _tmp4_;
-		_tmp4_ = g_timeout_add_seconds_full (G_PRIORITY_DEFAULT, (guint) TRACKER_RESOURCES_SIGNALS_SECONDS_PER_EMIT, _tracker_resources_on_emit_signals_gsource_func, g_object_ref (self), g_object_unref);
-		self->priv->signal_timeout = _tmp4_;
+		if (self->priv->signal_timeout == 0) {
+			guint _tmp4_;
+			_tmp4_ = g_timeout_add_full (G_PRIORITY_DEFAULT, (guint) (TRACKER_RESOURCES_SIGNALS_SECONDS_PER_EMIT * 1000), _tracker_resources_on_emit_signals_gsource_func, g_object_ref (self), g_object_unref);
+			self->priv->signal_timeout = _tmp4_;
+		}
 	}
 	tracker_writeback_transact ();
 }
 
 
-static void tracker_resources_on_statements_rolled_back (TrackerResources* self, gboolean start_timer) {
+static void tracker_resources_on_statements_rolled_back (TrackerResources* self, TrackerDataCommitType commit_type) {
 	g_return_if_fail (self != NULL);
 	tracker_events_reset_pending ();
 	tracker_writeback_reset_pending ();
@@ -1338,27 +1342,11 @@ static void tracker_resources_check_graph_updated_signal (TrackerResources* self
 	g_return_if_fail (self != NULL);
 	_tmp0_ = tracker_events_get_total (FALSE);
 	if (_tmp0_ > TRACKER_RESOURCES_GRAPH_UPDATED_IMMEDIATE_EMIT_AT) {
-		gint _tmp1_;
-		TrackerClass** _tmp2_ = NULL;
-		_tmp2_ = tracker_events_get_classes (&_tmp1_);
-		{
-			TrackerClass** cl_collection;
-			int cl_collection_length1;
-			int cl_it;
-			cl_collection = _tmp2_;
-			cl_collection_length1 = _tmp1_;
-			for (cl_it = 0; cl_it < _tmp1_; cl_it = cl_it + 1) {
-				TrackerClass* _tmp3_;
-				TrackerClass* cl;
-				_tmp3_ = _g_object_ref0 (cl_collection[cl_it]);
-				cl = _tmp3_;
-				{
-					tracker_resources_emit_graph_updated (self, cl);
-					_g_object_unref0 (cl);
-				}
-			}
+		if (self->priv->signal_timeout != 0) {
+			g_source_remove (self->priv->signal_timeout);
+			self->priv->signal_timeout = (guint) 0;
 		}
-		tracker_events_get_total (TRUE);
+		tracker_resources_on_emit_signals (self);
 	}
 }
 
@@ -1393,13 +1381,13 @@ static void _tracker_resources_on_statement_deleted_tracker_statement_callback (
 }
 
 
-static void _tracker_resources_on_statements_committed_tracker_commit_callback (gboolean start_timer, gpointer self) {
-	tracker_resources_on_statements_committed (self, start_timer);
+static void _tracker_resources_on_statements_committed_tracker_commit_callback (TrackerDataCommitType commit_type, gpointer self) {
+	tracker_resources_on_statements_committed (self, commit_type);
 }
 
 
-static void _tracker_resources_on_statements_rolled_back_tracker_commit_callback (gboolean start_timer, gpointer self) {
-	tracker_resources_on_statements_rolled_back (self, start_timer);
+static void _tracker_resources_on_statements_rolled_back_tracker_commit_callback (TrackerDataCommitType commit_type, gpointer self) {
+	tracker_resources_on_statements_rolled_back (self, commit_type);
 }
 
 

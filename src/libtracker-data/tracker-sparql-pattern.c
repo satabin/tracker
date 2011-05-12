@@ -575,6 +575,7 @@ gboolean tracker_sparql_variable_equal (TrackerSparqlVariable* a, TrackerSparqlV
 static gboolean _tracker_sparql_variable_equal_gequal_func (gconstpointer a, gconstpointer b);
 TrackerSparqlContext* tracker_sparql_context_new (TrackerSparqlQuery* query, TrackerSparqlContext* parent_context);
 TrackerSparqlContext* tracker_sparql_context_construct (GType object_type, TrackerSparqlQuery* query, TrackerSparqlContext* parent_context);
+gchar* tracker_sparql_variable_get_extra_sql_expression (TrackerSparqlVariable* self, const gchar* suffix);
 static void tracker_sparql_pattern_translate_group_or_union_graph_pattern (TrackerSparqlPattern* self, GString* sql, GError** error);
 static void _vala_array_add6 (TrackerSourceLocation** array, int* length, int* size, const TrackerSourceLocation* value);
 static void _vala_array_add7 (glong** array, int* length, int* size, glong value);
@@ -588,7 +589,6 @@ TrackerSparqlVariableBindingList* tracker_sparql_variable_binding_list_new (void
 TrackerSparqlVariableBindingList* tracker_sparql_variable_binding_list_construct (GType object_type);
 void tracker_sparql_pattern_add_variable_binding (TrackerSparqlPattern* self, GString* sql, TrackerSparqlVariableBinding* binding, TrackerSparqlVariableState variable_state);
 gchar* tracker_sparql_data_binding_get_extra_sql_expression (TrackerSparqlDataBinding* self, const gchar* suffix);
-gchar* tracker_sparql_variable_get_extra_sql_expression (TrackerSparqlVariable* self, const gchar* suffix);
 static TrackerSparqlDataTable* tracker_sparql_pattern_get_table (TrackerSparqlPattern* self, const gchar* subject, const gchar* db_table, gboolean share_table, gboolean* newtable);
 TrackerSparqlDataTable* tracker_sparql_data_table_new (void);
 TrackerSparqlDataTable* tracker_sparql_data_table_construct (GType object_type);
@@ -4270,8 +4270,8 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 	gboolean first_where;
 	gboolean found_simple_optional;
 	glong group_graph_pattern_start;
-	gboolean _tmp58_ = FALSE;
-	TrackerSparqlContext* _tmp61_ = NULL;
+	gboolean _tmp82_ = FALSE;
+	TrackerSparqlContext* _tmp85_ = NULL;
 	GError * _inner_error_ = NULL;
 	g_return_val_if_fail (self != NULL, NULL);
 	g_return_val_if_fail (sql != NULL, NULL);
@@ -4489,9 +4489,9 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 				gboolean first_common;
 				TrackerSparqlContext* _tmp23_ = NULL;
 				GList* _tmp24_ = NULL;
-				TrackerSparqlContext* _tmp39_ = NULL;
-				GList* _tmp40_ = NULL;
-				TrackerSparqlContext* _tmp44_ = NULL;
+				TrackerSparqlContext* _tmp59_ = NULL;
+				GList* _tmp60_ = NULL;
+				TrackerSparqlContext* _tmp68_ = NULL;
 				if (!in_triples_block) {
 					_tmp18_ = !in_group_graph_pattern;
 				} else {
@@ -4583,6 +4583,20 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 								g_hash_table_insert (_tmp27_->parent_context->var_set, _tmp28_, GINT_TO_POINTER ((gint) TRACKER_SPARQL_VARIABLE_STATE_OPTIONAL));
 								_tmp29_ = tracker_sparql_variable_get_sql_expression (v);
 								g_string_append_printf (select, "t%d_g.%s", right_index, _tmp29_);
+								if (((TrackerSparqlDataBinding*) v->binding)->data_type == TRACKER_PROPERTY_TYPE_DATETIME) {
+									gchar* _tmp30_ = NULL;
+									gchar* _tmp31_;
+									gchar* _tmp32_ = NULL;
+									gchar* _tmp33_;
+									_tmp30_ = tracker_sparql_variable_get_extra_sql_expression (v, "localDate");
+									_tmp31_ = _tmp30_;
+									g_string_append_printf (select, ", t%d_g.%s", right_index, _tmp31_);
+									_g_free0 (_tmp31_);
+									_tmp32_ = tracker_sparql_variable_get_extra_sql_expression (v, "localTime");
+									_tmp33_ = _tmp32_;
+									g_string_append_printf (select, ", t%d_g.%s", right_index, _tmp33_);
+									_g_free0 (_tmp33_);
+								}
 							} else {
 								if (first_common) {
 									g_string_append (sql, " ON ");
@@ -4591,30 +4605,78 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 									g_string_append (sql, " AND ");
 								}
 								if (old_state == TRACKER_SPARQL_VARIABLE_STATE_BOUND) {
-									const gchar* _tmp30_ = NULL;
-									const gchar* _tmp31_ = NULL;
-									const gchar* _tmp32_ = NULL;
-									_tmp30_ = tracker_sparql_variable_get_sql_expression (v);
-									_tmp31_ = tracker_sparql_variable_get_sql_expression (v);
-									g_string_append_printf (sql, "t%d_g.%s = t%d_g.%s", left_index, _tmp30_, right_index, _tmp31_);
-									_tmp32_ = tracker_sparql_variable_get_sql_expression (v);
-									g_string_append_printf (select, "t%d_g.%s", left_index, _tmp32_);
+									const gchar* _tmp34_ = NULL;
+									const gchar* _tmp35_ = NULL;
+									const gchar* _tmp36_ = NULL;
+									_tmp34_ = tracker_sparql_variable_get_sql_expression (v);
+									_tmp35_ = tracker_sparql_variable_get_sql_expression (v);
+									g_string_append_printf (sql, "t%d_g.%s = t%d_g.%s", left_index, _tmp34_, right_index, _tmp35_);
+									_tmp36_ = tracker_sparql_variable_get_sql_expression (v);
+									g_string_append_printf (select, "t%d_g.%s", left_index, _tmp36_);
+									if (((TrackerSparqlDataBinding*) v->binding)->data_type == TRACKER_PROPERTY_TYPE_DATETIME) {
+										gchar* _tmp37_ = NULL;
+										gchar* _tmp38_;
+										gchar* _tmp39_ = NULL;
+										gchar* _tmp40_;
+										_tmp37_ = tracker_sparql_variable_get_extra_sql_expression (v, "localDate");
+										_tmp38_ = _tmp37_;
+										g_string_append_printf (select, ", t%d_g.%s", left_index, _tmp38_);
+										_g_free0 (_tmp38_);
+										_tmp39_ = tracker_sparql_variable_get_extra_sql_expression (v, "localTime");
+										_tmp40_ = _tmp39_;
+										g_string_append_printf (select, ", t%d_g.%s", left_index, _tmp40_);
+										_g_free0 (_tmp40_);
+									}
 								} else {
 									if (old_state == TRACKER_SPARQL_VARIABLE_STATE_OPTIONAL) {
-										const gchar* _tmp33_ = NULL;
-										const gchar* _tmp34_ = NULL;
-										const gchar* _tmp35_ = NULL;
-										const gchar* _tmp36_ = NULL;
-										const gchar* _tmp37_ = NULL;
-										const gchar* _tmp38_ = NULL;
-										_tmp33_ = tracker_sparql_variable_get_sql_expression (v);
-										_tmp34_ = tracker_sparql_variable_get_sql_expression (v);
-										_tmp35_ = tracker_sparql_variable_get_sql_expression (v);
-										g_string_append_printf (sql, "(t%d_g.%s IS NULL OR t%d_g.%s = t%d_g.%s)", left_index, _tmp33_, left_index, _tmp34_, right_index, _tmp35_);
-										_tmp36_ = tracker_sparql_variable_get_sql_expression (v);
-										_tmp37_ = tracker_sparql_variable_get_sql_expression (v);
-										_tmp38_ = tracker_sparql_variable_get_sql_expression (v);
-										g_string_append_printf (select, "COALESCE (t%d_g.%s, t%d_g.%s) AS %s", left_index, _tmp36_, right_index, _tmp37_, _tmp38_);
+										const gchar* _tmp41_ = NULL;
+										const gchar* _tmp42_ = NULL;
+										const gchar* _tmp43_ = NULL;
+										const gchar* _tmp44_ = NULL;
+										const gchar* _tmp45_ = NULL;
+										const gchar* _tmp46_ = NULL;
+										_tmp41_ = tracker_sparql_variable_get_sql_expression (v);
+										_tmp42_ = tracker_sparql_variable_get_sql_expression (v);
+										_tmp43_ = tracker_sparql_variable_get_sql_expression (v);
+										g_string_append_printf (sql, "(t%d_g.%s IS NULL OR t%d_g.%s = t%d_g.%s)", left_index, _tmp41_, left_index, _tmp42_, right_index, _tmp43_);
+										_tmp44_ = tracker_sparql_variable_get_sql_expression (v);
+										_tmp45_ = tracker_sparql_variable_get_sql_expression (v);
+										_tmp46_ = tracker_sparql_variable_get_sql_expression (v);
+										g_string_append_printf (select, "COALESCE (t%d_g.%s, t%d_g.%s) AS %s", left_index, _tmp44_, right_index, _tmp45_, _tmp46_);
+										if (((TrackerSparqlDataBinding*) v->binding)->data_type == TRACKER_PROPERTY_TYPE_DATETIME) {
+											gchar* _tmp47_ = NULL;
+											gchar* _tmp48_;
+											gchar* _tmp49_ = NULL;
+											gchar* _tmp50_;
+											gchar* _tmp51_ = NULL;
+											gchar* _tmp52_;
+											gchar* _tmp53_ = NULL;
+											gchar* _tmp54_;
+											gchar* _tmp55_ = NULL;
+											gchar* _tmp56_;
+											gchar* _tmp57_ = NULL;
+											gchar* _tmp58_;
+											_tmp47_ = tracker_sparql_variable_get_extra_sql_expression (v, "localDate");
+											_tmp48_ = _tmp47_;
+											_tmp49_ = tracker_sparql_variable_get_extra_sql_expression (v, "localDate");
+											_tmp50_ = _tmp49_;
+											_tmp51_ = tracker_sparql_variable_get_extra_sql_expression (v, "localDate");
+											_tmp52_ = _tmp51_;
+											g_string_append_printf (select, ", COALESCE (t%d_g.%s, t%d_g.%s) AS %s", left_index, _tmp48_, right_index, _tmp50_, _tmp52_);
+											_g_free0 (_tmp52_);
+											_g_free0 (_tmp50_);
+											_g_free0 (_tmp48_);
+											_tmp53_ = tracker_sparql_variable_get_extra_sql_expression (v, "localTime");
+											_tmp54_ = _tmp53_;
+											_tmp55_ = tracker_sparql_variable_get_extra_sql_expression (v, "localTime");
+											_tmp56_ = _tmp55_;
+											_tmp57_ = tracker_sparql_variable_get_extra_sql_expression (v, "localTime");
+											_tmp58_ = _tmp57_;
+											g_string_append_printf (select, ", COALESCE (t%d_g.%s, t%d_g.%s) AS %s", left_index, _tmp54_, right_index, _tmp56_, _tmp58_);
+											_g_free0 (_tmp58_);
+											_g_free0 (_tmp56_);
+											_g_free0 (_tmp54_);
+										}
 									}
 								}
 							}
@@ -4622,29 +4684,43 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 					}
 					_g_list_free0 (v_collection);
 				}
-				_tmp39_ = tracker_sparql_pattern_get_context (self);
-				_tmp40_ = g_hash_table_get_keys (_tmp39_->parent_context->var_set);
+				_tmp59_ = tracker_sparql_pattern_get_context (self);
+				_tmp60_ = g_hash_table_get_keys (_tmp59_->parent_context->var_set);
 				{
 					GList* v_collection;
 					GList* v_it;
-					v_collection = _tmp40_;
+					v_collection = _tmp60_;
 					for (v_it = v_collection; v_it != NULL; v_it = v_it->next) {
 						TrackerSparqlVariable* v;
 						v = (TrackerSparqlVariable*) v_it->data;
 						{
-							TrackerSparqlContext* _tmp41_ = NULL;
-							gconstpointer _tmp42_ = NULL;
-							_tmp41_ = tracker_sparql_pattern_get_context (self);
-							_tmp42_ = g_hash_table_lookup (_tmp41_->var_set, v);
-							if (GPOINTER_TO_INT (_tmp42_) == 0) {
-								const gchar* _tmp43_ = NULL;
+							TrackerSparqlContext* _tmp61_ = NULL;
+							gconstpointer _tmp62_ = NULL;
+							_tmp61_ = tracker_sparql_pattern_get_context (self);
+							_tmp62_ = g_hash_table_lookup (_tmp61_->var_set, v);
+							if (GPOINTER_TO_INT (_tmp62_) == 0) {
+								const gchar* _tmp63_ = NULL;
 								if (first) {
 									first = FALSE;
 								} else {
 									g_string_append (select, ", ");
 								}
-								_tmp43_ = tracker_sparql_variable_get_sql_expression (v);
-								g_string_append_printf (select, "t%d_g.%s", left_index, _tmp43_);
+								_tmp63_ = tracker_sparql_variable_get_sql_expression (v);
+								g_string_append_printf (select, "t%d_g.%s", left_index, _tmp63_);
+								if (((TrackerSparqlDataBinding*) v->binding)->data_type == TRACKER_PROPERTY_TYPE_DATETIME) {
+									gchar* _tmp64_ = NULL;
+									gchar* _tmp65_;
+									gchar* _tmp66_ = NULL;
+									gchar* _tmp67_;
+									_tmp64_ = tracker_sparql_variable_get_extra_sql_expression (v, "localDate");
+									_tmp65_ = _tmp64_;
+									g_string_append_printf (select, ", t%d_g.%s", left_index, _tmp65_);
+									_g_free0 (_tmp65_);
+									_tmp66_ = tracker_sparql_variable_get_extra_sql_expression (v, "localTime");
+									_tmp67_ = _tmp66_;
+									g_string_append_printf (select, ", t%d_g.%s", left_index, _tmp67_);
+									_g_free0 (_tmp67_);
+								}
 							}
 						}
 					}
@@ -4653,8 +4729,8 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 				if (first) {
 					g_string_append (select, "1");
 				}
-				_tmp44_ = tracker_sparql_pattern_get_context (self);
-				tracker_sparql_pattern_set_context (self, _tmp44_->parent_context);
+				_tmp68_ = tracker_sparql_pattern_get_context (self);
+				tracker_sparql_pattern_set_context (self, _tmp68_->parent_context);
 				g_string_append (select, " FROM (");
 				g_string_insert (sql, (gssize) group_graph_pattern_start, select->str);
 				g_string_insert (sql, (gssize) group_graph_pattern_start, "SELECT * FROM (");
@@ -4662,10 +4738,10 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 				_g_string_free0 (select);
 			}
 		} else {
-			gboolean _tmp45_;
-			gboolean _tmp46_;
-			_tmp45_ = tracker_sparql_pattern_accept (self, TRACKER_SPARQL_TOKEN_TYPE_GRAPH, &_inner_error_);
-			_tmp46_ = _tmp45_;
+			gboolean _tmp69_;
+			gboolean _tmp70_;
+			_tmp69_ = tracker_sparql_pattern_accept (self, TRACKER_SPARQL_TOKEN_TYPE_GRAPH, &_inner_error_);
+			_tmp70_ = _tmp69_;
 			if (_inner_error_ != NULL) {
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 					g_propagate_error (error, _inner_error_);
@@ -4680,21 +4756,21 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 					return NULL;
 				}
 			}
-			if (_tmp46_) {
-				gchar* _tmp47_;
+			if (_tmp70_) {
+				gchar* _tmp71_;
 				gchar* old_graph;
 				gboolean old_graph_is_var;
-				gboolean _tmp48_;
-				gchar* _tmp49_ = NULL;
-				gchar* _tmp50_;
-				gboolean _tmp51_ = FALSE;
-				gchar* _tmp52_;
-				_tmp47_ = g_strdup (self->current_graph);
-				old_graph = _tmp47_;
+				gboolean _tmp72_;
+				gchar* _tmp73_ = NULL;
+				gchar* _tmp74_;
+				gboolean _tmp75_ = FALSE;
+				gchar* _tmp76_;
+				_tmp71_ = g_strdup (self->current_graph);
+				old_graph = _tmp71_;
 				old_graph_is_var = self->priv->current_graph_is_var;
-				_tmp49_ = tracker_sparql_pattern_parse_var_or_term (self, sql, &_tmp48_, &_inner_error_);
-				self->priv->current_graph_is_var = _tmp48_;
-				_tmp50_ = _tmp49_;
+				_tmp73_ = tracker_sparql_pattern_parse_var_or_term (self, sql, &_tmp72_, &_inner_error_);
+				self->priv->current_graph_is_var = _tmp72_;
+				_tmp74_ = _tmp73_;
 				if (_inner_error_ != NULL) {
 					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 						g_propagate_error (error, _inner_error_);
@@ -4712,13 +4788,13 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 					}
 				}
 				_g_free0 (self->current_graph);
-				self->current_graph = _tmp50_;
+				self->current_graph = _tmp74_;
 				if (!in_triples_block) {
-					_tmp51_ = !in_group_graph_pattern;
+					_tmp75_ = !in_group_graph_pattern;
 				} else {
-					_tmp51_ = FALSE;
+					_tmp75_ = FALSE;
 				}
-				if (_tmp51_) {
+				if (_tmp75_) {
 					in_group_graph_pattern = TRUE;
 					g_string_insert (sql, (gssize) group_graph_pattern_start, "SELECT * FROM (");
 					tracker_sparql_pattern_translate_group_or_union_graph_pattern (self, sql, &_inner_error_);
@@ -4784,22 +4860,22 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 					}
 					g_string_append (sql, ")");
 				}
-				_tmp52_ = g_strdup (old_graph);
+				_tmp76_ = g_strdup (old_graph);
 				_g_free0 (self->current_graph);
-				self->current_graph = _tmp52_;
+				self->current_graph = _tmp76_;
 				self->priv->current_graph_is_var = old_graph_is_var;
 				_g_free0 (old_graph);
 			} else {
-				TrackerSparqlTokenType _tmp53_;
-				_tmp53_ = tracker_sparql_pattern_current (self);
-				if (_tmp53_ == TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACE) {
-					gboolean _tmp54_ = FALSE;
+				TrackerSparqlTokenType _tmp77_;
+				_tmp77_ = tracker_sparql_pattern_current (self);
+				if (_tmp77_ == TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACE) {
+					gboolean _tmp78_ = FALSE;
 					if (!in_triples_block) {
-						_tmp54_ = !in_group_graph_pattern;
+						_tmp78_ = !in_group_graph_pattern;
 					} else {
-						_tmp54_ = FALSE;
+						_tmp78_ = FALSE;
 					}
-					if (_tmp54_) {
+					if (_tmp78_) {
 						in_group_graph_pattern = TRUE;
 						g_string_insert (sql, (gssize) group_graph_pattern_start, "SELECT * FROM (");
 						tracker_sparql_pattern_translate_group_or_union_graph_pattern (self, sql, &_inner_error_);
@@ -4860,14 +4936,14 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 						g_string_append (sql, ")");
 					}
 				} else {
-					TrackerSparqlTokenType _tmp55_;
-					_tmp55_ = tracker_sparql_pattern_current (self);
-					if (_tmp55_ == TRACKER_SPARQL_TOKEN_TYPE_FILTER) {
-						TrackerSourceLocation _tmp56_ = {0};
-						TrackerSourceLocation _tmp57_ = {0};
-						tracker_sparql_pattern_get_location (self, &_tmp56_);
-						_tmp57_ = _tmp56_;
-						_vala_array_add6 (&filters, &filters_length1, &_filters_size_, &_tmp57_);
+					TrackerSparqlTokenType _tmp79_;
+					_tmp79_ = tracker_sparql_pattern_current (self);
+					if (_tmp79_ == TRACKER_SPARQL_TOKEN_TYPE_FILTER) {
+						TrackerSourceLocation _tmp80_ = {0};
+						TrackerSourceLocation _tmp81_ = {0};
+						tracker_sparql_pattern_get_location (self, &_tmp80_);
+						_tmp81_ = _tmp80_;
+						_vala_array_add6 (&filters, &filters_length1, &_filters_size_, &_tmp81_);
 						tracker_sparql_pattern_skip_filter (self, &_inner_error_);
 						if (_inner_error_ != NULL) {
 							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
@@ -4936,11 +5012,11 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 		}
 	}
 	if (!in_triples_block) {
-		_tmp58_ = !in_group_graph_pattern;
+		_tmp82_ = !in_group_graph_pattern;
 	} else {
-		_tmp58_ = FALSE;
+		_tmp82_ = FALSE;
 	}
-	if (_tmp58_) {
+	if (_tmp82_) {
 		g_string_append (sql, "SELECT 1");
 	} else {
 		if (in_triples_block) {
@@ -4966,12 +5042,12 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 		first_where = TRUE;
 	}
 	if (filters_length1 > 0) {
-		TrackerSourceLocation _tmp59_ = {0};
-		TrackerSourceLocation _tmp60_ = {0};
+		TrackerSourceLocation _tmp83_ = {0};
+		TrackerSourceLocation _tmp84_ = {0};
 		TrackerSourceLocation end;
-		tracker_sparql_pattern_get_location (self, &_tmp59_);
-		_tmp60_ = _tmp59_;
-		end = _tmp60_;
+		tracker_sparql_pattern_get_location (self, &_tmp83_);
+		_tmp84_ = _tmp83_;
+		end = _tmp84_;
 		{
 			TrackerSourceLocation* filter_location_collection;
 			int filter_location_collection_length1;
@@ -5009,8 +5085,8 @@ TrackerSparqlContext* tracker_sparql_pattern_translate_group_graph_pattern (Trac
 		}
 		tracker_sparql_pattern_set_location (self, &end);
 	}
-	_tmp61_ = tracker_sparql_pattern_get_context (self);
-	tracker_sparql_pattern_set_context (self, _tmp61_->parent_context);
+	_tmp85_ = tracker_sparql_pattern_get_context (self);
+	tracker_sparql_pattern_set_context (self, _tmp85_->parent_context);
 	result = _result_;
 	filters = (g_free (filters), NULL);
 	return result;

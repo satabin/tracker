@@ -22,6 +22,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <libtracker-sparql/tracker-sparql.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -84,6 +85,7 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_COMMA,
 	TRACKER_SPARQL_TOKEN_TYPE_CONSTRUCT,
 	TRACKER_SPARQL_TOKEN_TYPE_COUNT,
+	TRACKER_SPARQL_TOKEN_TYPE_DATA,
 	TRACKER_SPARQL_TOKEN_TYPE_DATATYPE,
 	TRACKER_SPARQL_TOKEN_TYPE_DECIMAL,
 	TRACKER_SPARQL_TOKEN_TYPE_DELETE,
@@ -96,12 +98,14 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_DOUBLE_CIRCUMFLEX,
 	TRACKER_SPARQL_TOKEN_TYPE_DROP,
 	TRACKER_SPARQL_TOKEN_TYPE_EOF,
+	TRACKER_SPARQL_TOKEN_TYPE_EXISTS,
 	TRACKER_SPARQL_TOKEN_TYPE_FALSE,
 	TRACKER_SPARQL_TOKEN_TYPE_FILTER,
 	TRACKER_SPARQL_TOKEN_TYPE_FROM,
 	TRACKER_SPARQL_TOKEN_TYPE_GRAPH,
 	TRACKER_SPARQL_TOKEN_TYPE_GROUP,
 	TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT,
+	TRACKER_SPARQL_TOKEN_TYPE_IF,
 	TRACKER_SPARQL_TOKEN_TYPE_INSERT,
 	TRACKER_SPARQL_TOKEN_TYPE_INTEGER,
 	TRACKER_SPARQL_TOKEN_TYPE_INTO,
@@ -117,6 +121,7 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_MIN,
 	TRACKER_SPARQL_TOKEN_TYPE_MINUS,
 	TRACKER_SPARQL_TOKEN_TYPE_NAMED,
+	TRACKER_SPARQL_TOKEN_TYPE_NOT,
 	TRACKER_SPARQL_TOKEN_TYPE_OFFSET,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_AND,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_EQ,
@@ -127,19 +132,23 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_OP_NE,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_NEG,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_OR,
+	TRACKER_SPARQL_TOKEN_TYPE_OP_IN,
 	TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACE,
 	TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACKET,
 	TRACKER_SPARQL_TOKEN_TYPE_OPEN_PARENS,
 	TRACKER_SPARQL_TOKEN_TYPE_OPTIONAL,
+	TRACKER_SPARQL_TOKEN_TYPE_OR,
 	TRACKER_SPARQL_TOKEN_TYPE_ORDER,
 	TRACKER_SPARQL_TOKEN_TYPE_PLUS,
 	TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX,
 	TRACKER_SPARQL_TOKEN_TYPE_PREFIX,
 	TRACKER_SPARQL_TOKEN_TYPE_REDUCED,
 	TRACKER_SPARQL_TOKEN_TYPE_REGEX,
+	TRACKER_SPARQL_TOKEN_TYPE_REPLACE,
 	TRACKER_SPARQL_TOKEN_TYPE_SAMETERM,
 	TRACKER_SPARQL_TOKEN_TYPE_SELECT,
 	TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON,
+	TRACKER_SPARQL_TOKEN_TYPE_SILENT,
 	TRACKER_SPARQL_TOKEN_TYPE_STAR,
 	TRACKER_SPARQL_TOKEN_TYPE_STR,
 	TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL1,
@@ -154,15 +163,6 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_WITH
 } TrackerSparqlTokenType;
 
-typedef enum  {
-	TRACKER_SPARQL_ERROR_PARSE,
-	TRACKER_SPARQL_ERROR_UNKNOWN_CLASS,
-	TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY,
-	TRACKER_SPARQL_ERROR_TYPE,
-	TRACKER_SPARQL_ERROR_INTERNAL,
-	TRACKER_SPARQL_ERROR_UNSUPPORTED
-} TrackerSparqlError;
-#define TRACKER_SPARQL_ERROR tracker_sparql_error_quark ()
 
 static gpointer tracker_sparql_scanner_parent_class = NULL;
 
@@ -184,7 +184,6 @@ static TrackerSparqlTokenType tracker_sparql_scanner_read_number (TrackerSparqlS
 static gboolean tracker_sparql_scanner_is_pn_char (TrackerSparqlScanner* self, gchar c);
 static gboolean tracker_sparql_scanner_is_pn_local_char (TrackerSparqlScanner* self, gchar c);
 static gboolean tracker_sparql_scanner_is_varname_char (TrackerSparqlScanner* self, gchar c);
-GQuark tracker_sparql_error_quark (void);
 TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* self, TrackerSourceLocation* token_begin, TrackerSourceLocation* token_end, GError** error);
 static void tracker_sparql_scanner_space (TrackerSparqlScanner* self);
 static gboolean tracker_sparql_scanner_whitespace (TrackerSparqlScanner* self);
@@ -262,6 +261,48 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 					}
 					break;
 				}
+				case 'i':
+				case 'I':
+				{
+					switch (begin[1]) {
+						case 'F':
+						case 'f':
+						{
+							gboolean _tmp2_;
+							_tmp2_ = tracker_sparql_scanner_matches (self, begin, "IF");
+							if (_tmp2_) {
+								result = TRACKER_SPARQL_TOKEN_TYPE_IF;
+								return result;
+							}
+							break;
+						}
+						case 'N':
+						case 'n':
+						{
+							gboolean _tmp3_;
+							_tmp3_ = tracker_sparql_scanner_matches (self, begin, "IN");
+							if (_tmp3_) {
+								result = TRACKER_SPARQL_TOKEN_TYPE_OP_IN;
+								return result;
+							}
+							break;
+						}
+						default:
+						break;
+					}
+					break;
+				}
+				case 'O':
+				case 'o':
+				{
+					gboolean _tmp4_;
+					_tmp4_ = tracker_sparql_scanner_matches (self, begin, "OR");
+					if (_tmp4_) {
+						result = TRACKER_SPARQL_TOKEN_TYPE_OR;
+						return result;
+					}
+					break;
+				}
 				default:
 				break;
 			}
@@ -281,9 +322,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 								case 'C':
 								case 'c':
 								{
-									gboolean _tmp2_;
-									_tmp2_ = tracker_sparql_scanner_matches (self, begin, "ASC");
-									if (_tmp2_) {
+									gboolean _tmp5_;
+									_tmp5_ = tracker_sparql_scanner_matches (self, begin, "ASC");
+									if (_tmp5_) {
 										result = TRACKER_SPARQL_TOKEN_TYPE_ASC;
 										return result;
 									}
@@ -292,9 +333,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 								case 'K':
 								case 'k':
 								{
-									gboolean _tmp3_;
-									_tmp3_ = tracker_sparql_scanner_matches (self, begin, "ASK");
-									if (_tmp3_) {
+									gboolean _tmp6_;
+									_tmp6_ = tracker_sparql_scanner_matches (self, begin, "ASK");
+									if (_tmp6_) {
 										result = TRACKER_SPARQL_TOKEN_TYPE_ASK;
 										return result;
 									}
@@ -308,9 +349,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'V':
 						case 'v':
 						{
-							gboolean _tmp4_;
-							_tmp4_ = tracker_sparql_scanner_matches (self, begin, "AVG");
-							if (_tmp4_) {
+							gboolean _tmp7_;
+							_tmp7_ = tracker_sparql_scanner_matches (self, begin, "AVG");
+							if (_tmp7_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_AVG;
 								return result;
 							}
@@ -328,9 +369,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'A':
 						case 'a':
 						{
-							gboolean _tmp5_;
-							_tmp5_ = tracker_sparql_scanner_matches (self, begin, "MAX");
-							if (_tmp5_) {
+							gboolean _tmp8_;
+							_tmp8_ = tracker_sparql_scanner_matches (self, begin, "MAX");
+							if (_tmp8_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_MAX;
 								return result;
 							}
@@ -339,9 +380,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'I':
 						case 'i':
 						{
-							gboolean _tmp6_;
-							_tmp6_ = tracker_sparql_scanner_matches (self, begin, "MIN");
-							if (_tmp6_) {
+							gboolean _tmp9_;
+							_tmp9_ = tracker_sparql_scanner_matches (self, begin, "MIN");
+							if (_tmp9_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_MIN;
 								return result;
 							}
@@ -352,6 +393,17 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 					}
 					break;
 				}
+				case 'N':
+				case 'n':
+				{
+					gboolean _tmp10_;
+					_tmp10_ = tracker_sparql_scanner_matches (self, begin, "NOT");
+					if (_tmp10_) {
+						result = TRACKER_SPARQL_TOKEN_TYPE_NOT;
+						return result;
+					}
+					break;
+				}
 				case 'S':
 				case 's':
 				{
@@ -359,9 +411,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'T':
 						case 't':
 						{
-							gboolean _tmp7_;
-							_tmp7_ = tracker_sparql_scanner_matches (self, begin, "STR");
-							if (_tmp7_) {
+							gboolean _tmp11_;
+							_tmp11_ = tracker_sparql_scanner_matches (self, begin, "STR");
+							if (_tmp11_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_STR;
 								return result;
 							}
@@ -370,9 +422,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'U':
 						case 'u':
 						{
-							gboolean _tmp8_;
-							_tmp8_ = tracker_sparql_scanner_matches (self, begin, "SUM");
-							if (_tmp8_) {
+							gboolean _tmp12_;
+							_tmp12_ = tracker_sparql_scanner_matches (self, begin, "SUM");
+							if (_tmp12_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_SUM;
 								return result;
 							}
@@ -394,9 +446,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'B':
 				case 'b':
 				{
-					gboolean _tmp9_;
-					_tmp9_ = tracker_sparql_scanner_matches (self, begin, "BASE");
-					if (_tmp9_) {
+					gboolean _tmp13_;
+					_tmp13_ = tracker_sparql_scanner_matches (self, begin, "BASE");
+					if (_tmp13_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_BASE;
 						return result;
 					}
@@ -406,12 +458,23 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'd':
 				{
 					switch (begin[1]) {
+						case 'A':
+						case 'a':
+						{
+							gboolean _tmp14_;
+							_tmp14_ = tracker_sparql_scanner_matches (self, begin, "DATA");
+							if (_tmp14_) {
+								result = TRACKER_SPARQL_TOKEN_TYPE_DATA;
+								return result;
+							}
+							break;
+						}
 						case 'E':
 						case 'e':
 						{
-							gboolean _tmp10_;
-							_tmp10_ = tracker_sparql_scanner_matches (self, begin, "DESC");
-							if (_tmp10_) {
+							gboolean _tmp15_;
+							_tmp15_ = tracker_sparql_scanner_matches (self, begin, "DESC");
+							if (_tmp15_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_DESC;
 								return result;
 							}
@@ -420,9 +483,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'R':
 						case 'r':
 						{
-							gboolean _tmp11_;
-							_tmp11_ = tracker_sparql_scanner_matches (self, begin, "DROP");
-							if (_tmp11_) {
+							gboolean _tmp16_;
+							_tmp16_ = tracker_sparql_scanner_matches (self, begin, "DROP");
+							if (_tmp16_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_DROP;
 								return result;
 							}
@@ -436,9 +499,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'F':
 				case 'f':
 				{
-					gboolean _tmp12_;
-					_tmp12_ = tracker_sparql_scanner_matches (self, begin, "FROM");
-					if (_tmp12_) {
+					gboolean _tmp17_;
+					_tmp17_ = tracker_sparql_scanner_matches (self, begin, "FROM");
+					if (_tmp17_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_FROM;
 						return result;
 					}
@@ -447,9 +510,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'I':
 				case 'i':
 				{
-					gboolean _tmp13_;
-					_tmp13_ = tracker_sparql_scanner_matches (self, begin, "INTO");
-					if (_tmp13_) {
+					gboolean _tmp18_;
+					_tmp18_ = tracker_sparql_scanner_matches (self, begin, "INTO");
+					if (_tmp18_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_INTO;
 						return result;
 					}
@@ -458,9 +521,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'L':
 				case 'l':
 				{
-					gboolean _tmp14_;
-					_tmp14_ = tracker_sparql_scanner_matches (self, begin, "LANG");
-					if (_tmp14_) {
+					gboolean _tmp19_;
+					_tmp19_ = tracker_sparql_scanner_matches (self, begin, "LANG");
+					if (_tmp19_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_LANG;
 						return result;
 					}
@@ -469,10 +532,21 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'T':
 				case 't':
 				{
-					gboolean _tmp15_;
-					_tmp15_ = tracker_sparql_scanner_matches (self, begin, "TRUE");
-					if (_tmp15_) {
+					gboolean _tmp20_;
+					_tmp20_ = tracker_sparql_scanner_matches (self, begin, "TRUE");
+					if (_tmp20_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_TRUE;
+						return result;
+					}
+					break;
+				}
+				case 'W':
+				case 'w':
+				{
+					gboolean _tmp21_;
+					_tmp21_ = tracker_sparql_scanner_matches (self, begin, "WITH");
+					if (_tmp21_) {
+						result = TRACKER_SPARQL_TOKEN_TYPE_WITH;
 						return result;
 					}
 					break;
@@ -488,9 +562,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'B':
 				case 'b':
 				{
-					gboolean _tmp16_;
-					_tmp16_ = tracker_sparql_scanner_matches (self, begin, "BOUND");
-					if (_tmp16_) {
+					gboolean _tmp22_;
+					_tmp22_ = tracker_sparql_scanner_matches (self, begin, "BOUND");
+					if (_tmp22_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_BOUND;
 						return result;
 					}
@@ -499,9 +573,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'C':
 				case 'c':
 				{
-					gboolean _tmp17_;
-					_tmp17_ = tracker_sparql_scanner_matches (self, begin, "COUNT");
-					if (_tmp17_) {
+					gboolean _tmp23_;
+					_tmp23_ = tracker_sparql_scanner_matches (self, begin, "COUNT");
+					if (_tmp23_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_COUNT;
 						return result;
 					}
@@ -514,9 +588,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'A':
 						case 'a':
 						{
-							gboolean _tmp18_;
-							_tmp18_ = tracker_sparql_scanner_matches (self, begin, "GRAPH");
-							if (_tmp18_) {
+							gboolean _tmp24_;
+							_tmp24_ = tracker_sparql_scanner_matches (self, begin, "GRAPH");
+							if (_tmp24_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_GRAPH;
 								return result;
 							}
@@ -525,9 +599,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'O':
 						case 'o':
 						{
-							gboolean _tmp19_;
-							_tmp19_ = tracker_sparql_scanner_matches (self, begin, "GROUP");
-							if (_tmp19_) {
+							gboolean _tmp25_;
+							_tmp25_ = tracker_sparql_scanner_matches (self, begin, "GROUP");
+							if (_tmp25_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_GROUP;
 								return result;
 							}
@@ -541,9 +615,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'L':
 				case 'l':
 				{
-					gboolean _tmp20_;
-					_tmp20_ = tracker_sparql_scanner_matches (self, begin, "LIMIT");
-					if (_tmp20_) {
+					gboolean _tmp26_;
+					_tmp26_ = tracker_sparql_scanner_matches (self, begin, "LIMIT");
+					if (_tmp26_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_LIMIT;
 						return result;
 					}
@@ -552,9 +626,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'N':
 				case 'n':
 				{
-					gboolean _tmp21_;
-					_tmp21_ = tracker_sparql_scanner_matches (self, begin, "NAMED");
-					if (_tmp21_) {
+					gboolean _tmp27_;
+					_tmp27_ = tracker_sparql_scanner_matches (self, begin, "NAMED");
+					if (_tmp27_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_NAMED;
 						return result;
 					}
@@ -563,9 +637,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'O':
 				case 'o':
 				{
-					gboolean _tmp22_;
-					_tmp22_ = tracker_sparql_scanner_matches (self, begin, "ORDER");
-					if (_tmp22_) {
+					gboolean _tmp28_;
+					_tmp28_ = tracker_sparql_scanner_matches (self, begin, "ORDER");
+					if (_tmp28_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_ORDER;
 						return result;
 					}
@@ -574,9 +648,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'R':
 				case 'r':
 				{
-					gboolean _tmp23_;
-					_tmp23_ = tracker_sparql_scanner_matches (self, begin, "REGEX");
-					if (_tmp23_) {
+					gboolean _tmp29_;
+					_tmp29_ = tracker_sparql_scanner_matches (self, begin, "REGEX");
+					if (_tmp29_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_REGEX;
 						return result;
 					}
@@ -585,9 +659,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'U':
 				case 'u':
 				{
-					gboolean _tmp24_;
-					_tmp24_ = tracker_sparql_scanner_matches (self, begin, "UNION");
-					if (_tmp24_) {
+					gboolean _tmp30_;
+					_tmp30_ = tracker_sparql_scanner_matches (self, begin, "UNION");
+					if (_tmp30_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_UNION;
 						return result;
 					}
@@ -596,40 +670,20 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'W':
 				case 'w':
 				{
-					switch (begin[1]) {
-						case 'H':
-						case 'h':
-						{
-							gboolean _tmp25_;
-							_tmp25_ = tracker_sparql_scanner_matches (self, begin, "WHERE");
-							if (_tmp25_) {
-								result = TRACKER_SPARQL_TOKEN_TYPE_WHERE;
-								return result;
-							}
-							break;
-						}
-						case 'I':
-						case 'i':
-						{
-							gboolean _tmp26_;
-							_tmp26_ = tracker_sparql_scanner_matches (self, begin, "WITH");
-							if (_tmp26_) {
-								result = TRACKER_SPARQL_TOKEN_TYPE_WITH;
-								return result;
-							}
-							break;
-						}
-						default:
-						break;
+					gboolean _tmp31_;
+					_tmp31_ = tracker_sparql_scanner_matches (self, begin, "WHERE");
+					if (_tmp31_) {
+						result = TRACKER_SPARQL_TOKEN_TYPE_WHERE;
+						return result;
 					}
 					break;
 				}
 				case 'F':
 				case 'f':
 				{
-					gboolean _tmp27_;
-					_tmp27_ = tracker_sparql_scanner_matches (self, begin, "FALSE");
-					if (_tmp27_) {
+					gboolean _tmp32_;
+					_tmp32_ = tracker_sparql_scanner_matches (self, begin, "FALSE");
+					if (_tmp32_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_FALSE;
 						return result;
 					}
@@ -646,9 +700,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 								case 'I':
 								case 'i':
 								{
-									gboolean _tmp28_;
-									_tmp28_ = tracker_sparql_scanner_matches (self, begin, "ISIRI");
-									if (_tmp28_) {
+									gboolean _tmp33_;
+									_tmp33_ = tracker_sparql_scanner_matches (self, begin, "ISIRI");
+									if (_tmp33_) {
 										result = TRACKER_SPARQL_TOKEN_TYPE_ISIRI;
 										return result;
 									}
@@ -657,9 +711,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 								case 'U':
 								case 'u':
 								{
-									gboolean _tmp29_;
-									_tmp29_ = tracker_sparql_scanner_matches (self, begin, "ISURI");
-									if (_tmp29_) {
+									gboolean _tmp34_;
+									_tmp34_ = tracker_sparql_scanner_matches (self, begin, "ISURI");
+									if (_tmp34_) {
 										result = TRACKER_SPARQL_TOKEN_TYPE_ISURI;
 										return result;
 									}
@@ -686,10 +740,21 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'D':
 				case 'd':
 				{
-					gboolean _tmp30_;
-					_tmp30_ = tracker_sparql_scanner_matches (self, begin, "DELETE");
-					if (_tmp30_) {
+					gboolean _tmp35_;
+					_tmp35_ = tracker_sparql_scanner_matches (self, begin, "DELETE");
+					if (_tmp35_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_DELETE;
+						return result;
+					}
+					break;
+				}
+				case 'E':
+				case 'e':
+				{
+					gboolean _tmp36_;
+					_tmp36_ = tracker_sparql_scanner_matches (self, begin, "EXISTS");
+					if (_tmp36_) {
+						result = TRACKER_SPARQL_TOKEN_TYPE_EXISTS;
 						return result;
 					}
 					break;
@@ -697,9 +762,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'F':
 				case 'f':
 				{
-					gboolean _tmp31_;
-					_tmp31_ = tracker_sparql_scanner_matches (self, begin, "FILTER");
-					if (_tmp31_) {
+					gboolean _tmp37_;
+					_tmp37_ = tracker_sparql_scanner_matches (self, begin, "FILTER");
+					if (_tmp37_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_FILTER;
 						return result;
 					}
@@ -708,9 +773,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'I':
 				case 'i':
 				{
-					gboolean _tmp32_;
-					_tmp32_ = tracker_sparql_scanner_matches (self, begin, "INSERT");
-					if (_tmp32_) {
+					gboolean _tmp38_;
+					_tmp38_ = tracker_sparql_scanner_matches (self, begin, "INSERT");
+					if (_tmp38_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_INSERT;
 						return result;
 					}
@@ -719,9 +784,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'O':
 				case 'o':
 				{
-					gboolean _tmp33_;
-					_tmp33_ = tracker_sparql_scanner_matches (self, begin, "OFFSET");
-					if (_tmp33_) {
+					gboolean _tmp39_;
+					_tmp39_ = tracker_sparql_scanner_matches (self, begin, "OFFSET");
+					if (_tmp39_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_OFFSET;
 						return result;
 					}
@@ -730,9 +795,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'P':
 				case 'p':
 				{
-					gboolean _tmp34_;
-					_tmp34_ = tracker_sparql_scanner_matches (self, begin, "PREFIX");
-					if (_tmp34_) {
+					gboolean _tmp40_;
+					_tmp40_ = tracker_sparql_scanner_matches (self, begin, "PREFIX");
+					if (_tmp40_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_PREFIX;
 						return result;
 					}
@@ -741,11 +806,31 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'S':
 				case 's':
 				{
-					gboolean _tmp35_;
-					_tmp35_ = tracker_sparql_scanner_matches (self, begin, "SELECT");
-					if (_tmp35_) {
-						result = TRACKER_SPARQL_TOKEN_TYPE_SELECT;
-						return result;
+					switch (begin[1]) {
+						case 'E':
+						case 'e':
+						{
+							gboolean _tmp41_;
+							_tmp41_ = tracker_sparql_scanner_matches (self, begin, "SELECT");
+							if (_tmp41_) {
+								result = TRACKER_SPARQL_TOKEN_TYPE_SELECT;
+								return result;
+							}
+							break;
+						}
+						case 'I':
+						case 'i':
+						{
+							gboolean _tmp42_;
+							_tmp42_ = tracker_sparql_scanner_matches (self, begin, "SILENT");
+							if (_tmp42_) {
+								result = TRACKER_SPARQL_TOKEN_TYPE_SILENT;
+								return result;
+							}
+							break;
+						}
+						default:
+						break;
 					}
 					break;
 				}
@@ -760,20 +845,40 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'R':
 				case 'r':
 				{
-					gboolean _tmp36_;
-					_tmp36_ = tracker_sparql_scanner_matches (self, begin, "REDUCED");
-					if (_tmp36_) {
-						result = TRACKER_SPARQL_TOKEN_TYPE_REDUCED;
-						return result;
+					switch (begin[2]) {
+						case 'D':
+						case 'd':
+						{
+							gboolean _tmp43_;
+							_tmp43_ = tracker_sparql_scanner_matches (self, begin, "REDUCED");
+							if (_tmp43_) {
+								result = TRACKER_SPARQL_TOKEN_TYPE_REDUCED;
+								return result;
+							}
+							break;
+						}
+						case 'P':
+						case 'p':
+						{
+							gboolean _tmp44_;
+							_tmp44_ = tracker_sparql_scanner_matches (self, begin, "REPLACE");
+							if (_tmp44_) {
+								result = TRACKER_SPARQL_TOKEN_TYPE_REPLACE;
+								return result;
+							}
+							break;
+						}
+						default:
+						break;
 					}
 					break;
 				}
 				case 'I':
 				case 'i':
 				{
-					gboolean _tmp37_;
-					_tmp37_ = tracker_sparql_scanner_matches (self, begin, "ISBLANK");
-					if (_tmp37_) {
+					gboolean _tmp45_;
+					_tmp45_ = tracker_sparql_scanner_matches (self, begin, "ISBLANK");
+					if (_tmp45_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_ISBLANK;
 						return result;
 					}
@@ -794,9 +899,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'A':
 						case 'a':
 						{
-							gboolean _tmp38_;
-							_tmp38_ = tracker_sparql_scanner_matches (self, begin, "DATATYPE");
-							if (_tmp38_) {
+							gboolean _tmp46_;
+							_tmp46_ = tracker_sparql_scanner_matches (self, begin, "DATATYPE");
+							if (_tmp46_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_DATATYPE;
 								return result;
 							}
@@ -805,9 +910,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'E':
 						case 'e':
 						{
-							gboolean _tmp39_;
-							_tmp39_ = tracker_sparql_scanner_matches (self, begin, "DESCRIBE");
-							if (_tmp39_) {
+							gboolean _tmp47_;
+							_tmp47_ = tracker_sparql_scanner_matches (self, begin, "DESCRIBE");
+							if (_tmp47_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_DESCRIBE;
 								return result;
 							}
@@ -816,9 +921,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 						case 'I':
 						case 'i':
 						{
-							gboolean _tmp40_;
-							_tmp40_ = tracker_sparql_scanner_matches (self, begin, "DISTINCT");
-							if (_tmp40_) {
+							gboolean _tmp48_;
+							_tmp48_ = tracker_sparql_scanner_matches (self, begin, "DISTINCT");
+							if (_tmp48_) {
 								result = TRACKER_SPARQL_TOKEN_TYPE_DISTINCT;
 								return result;
 							}
@@ -832,9 +937,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'O':
 				case 'o':
 				{
-					gboolean _tmp41_;
-					_tmp41_ = tracker_sparql_scanner_matches (self, begin, "OPTIONAL");
-					if (_tmp41_) {
+					gboolean _tmp49_;
+					_tmp49_ = tracker_sparql_scanner_matches (self, begin, "OPTIONAL");
+					if (_tmp49_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_OPTIONAL;
 						return result;
 					}
@@ -843,9 +948,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'S':
 				case 's':
 				{
-					gboolean _tmp42_;
-					_tmp42_ = tracker_sparql_scanner_matches (self, begin, "SAMETERM");
-					if (_tmp42_) {
+					gboolean _tmp50_;
+					_tmp50_ = tracker_sparql_scanner_matches (self, begin, "SAMETERM");
+					if (_tmp50_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_SAMETERM;
 						return result;
 					}
@@ -862,9 +967,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'C':
 				case 'c':
 				{
-					gboolean _tmp43_;
-					_tmp43_ = tracker_sparql_scanner_matches (self, begin, "CONSTRUCT");
-					if (_tmp43_) {
+					gboolean _tmp51_;
+					_tmp51_ = tracker_sparql_scanner_matches (self, begin, "CONSTRUCT");
+					if (_tmp51_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_CONSTRUCT;
 						return result;
 					}
@@ -873,9 +978,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 				case 'I':
 				case 'i':
 				{
-					gboolean _tmp44_;
-					_tmp44_ = tracker_sparql_scanner_matches (self, begin, "ISLITERAL");
-					if (_tmp44_) {
+					gboolean _tmp52_;
+					_tmp52_ = tracker_sparql_scanner_matches (self, begin, "ISLITERAL");
+					if (_tmp52_) {
 						result = TRACKER_SPARQL_TOKEN_TYPE_ISLITERAL;
 						return result;
 					}
@@ -888,9 +993,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 		}
 		case 11:
 		{
-			gboolean _tmp45_;
-			_tmp45_ = tracker_sparql_scanner_matches (self, begin, "LANGMATCHES");
-			if (_tmp45_) {
+			gboolean _tmp53_;
+			_tmp53_ = tracker_sparql_scanner_matches (self, begin, "LANGMATCHES");
+			if (_tmp53_) {
 				result = TRACKER_SPARQL_TOKEN_TYPE_LANGMATCHES;
 				return result;
 			}
@@ -898,9 +1003,9 @@ static TrackerSparqlTokenType tracker_sparql_scanner_get_identifier_or_keyword (
 		}
 		case 12:
 		{
-			gboolean _tmp46_;
-			_tmp46_ = tracker_sparql_scanner_matches (self, begin, "GROUP_CONCAT");
-			if (_tmp46_) {
+			gboolean _tmp54_;
+			_tmp54_ = tracker_sparql_scanner_matches (self, begin, "GROUP_CONCAT");
+			if (_tmp54_) {
 				result = TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT;
 				return result;
 			}
@@ -1331,7 +1436,7 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 					case '@':
 					{
 						gboolean _tmp10_ = FALSE;
-						gsize _tmp11_;
+						gint _tmp11_;
 						type = TRACKER_SPARQL_TOKEN_TYPE_NONE;
 						self->priv->current++;
 						_tmp11_ = strlen ("prefix");
@@ -1343,13 +1448,13 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 							_tmp10_ = FALSE;
 						}
 						if (_tmp10_) {
-							gsize _tmp13_;
+							gint _tmp13_;
 							type = TRACKER_SPARQL_TOKEN_TYPE_ATPREFIX;
 							_tmp13_ = strlen ("prefix");
 							self->priv->current = self->priv->current + _tmp13_;
 						} else {
 							gboolean _tmp14_ = FALSE;
-							gsize _tmp15_;
+							gint _tmp15_;
 							_tmp15_ = strlen ("base");
 							if (self->priv->current < (self->priv->end - _tmp15_)) {
 								gboolean _tmp16_;
@@ -1359,7 +1464,7 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 								_tmp14_ = FALSE;
 							}
 							if (_tmp14_) {
-								gsize _tmp17_;
+								gint _tmp17_;
 								type = TRACKER_SPARQL_TOKEN_TYPE_ATBASE;
 								_tmp17_ = strlen ("base");
 								self->priv->current = self->priv->current + _tmp17_;
@@ -1542,7 +1647,7 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 					{
 						gboolean _tmp23_ = FALSE;
 						gboolean _tmp24_ = FALSE;
-						gboolean _tmp38_ = FALSE;
+						gboolean _tmp42_ = FALSE;
 						if (self->priv->current < (self->priv->end - 6)) {
 							_tmp24_ = begin[1] == begin[0];
 						} else {
@@ -1588,7 +1693,7 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 										self->priv->column = 1;
 										token_length_in_chars = 3;
 									} else {
-										if (self->priv->current[0] <= 0x7f) {
+										if (((guchar) self->priv->current[0]) <= 0x7f) {
 											self->priv->current++;
 											token_length_in_chars++;
 										} else {
@@ -1682,11 +1787,55 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 										token_length_in_chars++;
 										break;
 									}
+									case 'u':
+									{
+										{
+											gint i;
+											i = 0;
+											{
+												gboolean _tmp34_;
+												_tmp34_ = TRUE;
+												while (TRUE) {
+													gboolean _tmp35_ = FALSE;
+													if (!_tmp34_) {
+														i++;
+													}
+													_tmp34_ = FALSE;
+													if (!(i < 4)) {
+														break;
+													}
+													if (((self->priv->current + i) + 1) >= self->priv->end) {
+														_tmp35_ = TRUE;
+													} else {
+														gboolean _tmp36_;
+														_tmp36_ = g_ascii_isxdigit (self->priv->current[i + 1]);
+														_tmp35_ = !_tmp36_;
+													}
+													if (_tmp35_) {
+														GError* _tmp37_ = NULL;
+														_tmp37_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: invalid escape sequence", self->priv->line, self->priv->column + token_length_in_chars);
+														_inner_error_ = _tmp37_;
+														if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+															g_propagate_error (error, _inner_error_);
+															return 0;
+														} else {
+															g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+															g_clear_error (&_inner_error_);
+															return 0;
+														}
+													}
+												}
+											}
+										}
+										self->priv->current = self->priv->current + 5;
+										token_length_in_chars = token_length_in_chars + 5;
+										break;
+									}
 									default:
 									{
-										GError* _tmp34_ = NULL;
-										_tmp34_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: invalid escape sequence", self->priv->line, self->priv->column + token_length_in_chars);
-										_inner_error_ = _tmp34_;
+										GError* _tmp38_ = NULL;
+										_tmp38_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: invalid escape sequence", self->priv->line, self->priv->column + token_length_in_chars);
+										_inner_error_ = _tmp38_;
 										if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 											g_propagate_error (error, _inner_error_);
 											return 0;
@@ -1701,24 +1850,24 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 								if (self->priv->current[0] == '\n') {
 									break;
 								} else {
-									if (self->priv->current[0] <= 0x7f) {
+									if (((guchar) self->priv->current[0]) <= 0x7f) {
 										self->priv->current++;
 										token_length_in_chars++;
 									} else {
-										gunichar _tmp35_;
+										gunichar _tmp39_;
 										gunichar u;
-										_tmp35_ = g_utf8_get_char_validated ((const gchar*) self->priv->current, (gssize) ((glong) (self->priv->end - self->priv->current)));
-										u = _tmp35_;
+										_tmp39_ = g_utf8_get_char_validated ((const gchar*) self->priv->current, (gssize) ((glong) (self->priv->end - self->priv->current)));
+										u = _tmp39_;
 										if (u != ((gunichar) (-1))) {
-											gint _tmp36_;
-											_tmp36_ = g_unichar_to_utf8 (u, NULL);
-											self->priv->current = self->priv->current + _tmp36_;
+											gint _tmp40_;
+											_tmp40_ = g_unichar_to_utf8 (u, NULL);
+											self->priv->current = self->priv->current + _tmp40_;
 											token_length_in_chars++;
 										} else {
-											GError* _tmp37_ = NULL;
+											GError* _tmp41_ = NULL;
 											self->priv->current++;
-											_tmp37_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: invalid UTF-8 character", self->priv->line, self->priv->column + token_length_in_chars);
-											_inner_error_ = _tmp37_;
+											_tmp41_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: invalid UTF-8 character", self->priv->line, self->priv->column + token_length_in_chars);
+											_inner_error_ = _tmp41_;
 											if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 												g_propagate_error (error, _inner_error_);
 												return 0;
@@ -1733,16 +1882,16 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 							}
 						}
 						if (self->priv->current < self->priv->end) {
-							_tmp38_ = self->priv->current[0] != '\n';
+							_tmp42_ = self->priv->current[0] != '\n';
 						} else {
-							_tmp38_ = FALSE;
+							_tmp42_ = FALSE;
 						}
-						if (_tmp38_) {
+						if (_tmp42_) {
 							self->priv->current++;
 						} else {
-							GError* _tmp39_ = NULL;
-							_tmp39_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: syntax error, expected %c", self->priv->line, self->priv->column + token_length_in_chars, begin[0]);
-							_inner_error_ = _tmp39_;
+							GError* _tmp43_ = NULL;
+							_tmp43_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: syntax error, expected %c", self->priv->line, self->priv->column + token_length_in_chars, begin[0]);
+							_inner_error_ = _tmp43_;
 							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 								g_propagate_error (error, _inner_error_);
 								return 0;
@@ -1756,20 +1905,20 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 					}
 					case '^':
 					{
-						gboolean _tmp40_ = FALSE;
+						gboolean _tmp44_ = FALSE;
 						type = TRACKER_SPARQL_TOKEN_TYPE_NONE;
 						if (self->priv->current < (self->priv->end - 2)) {
-							_tmp40_ = self->priv->current[0] == self->priv->current[1];
+							_tmp44_ = self->priv->current[0] == self->priv->current[1];
 						} else {
-							_tmp40_ = FALSE;
+							_tmp44_ = FALSE;
 						}
-						if (_tmp40_) {
+						if (_tmp44_) {
 							type = TRACKER_SPARQL_TOKEN_TYPE_DOUBLE_CIRCUMFLEX;
 							self->priv->current = self->priv->current + 2;
 						} else {
-							GError* _tmp41_ = NULL;
-							_tmp41_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: syntax error, unexpected character", self->priv->line, self->priv->column);
-							_inner_error_ = _tmp41_;
+							GError* _tmp45_ = NULL;
+							_tmp45_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: syntax error, unexpected character", self->priv->line, self->priv->column);
+							_inner_error_ = _tmp45_;
 							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 								g_propagate_error (error, _inner_error_);
 								return 0;
@@ -1789,14 +1938,14 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 					}
 					default:
 					{
-						gunichar _tmp42_;
+						gunichar _tmp46_;
 						gunichar u;
-						_tmp42_ = g_utf8_get_char_validated ((const gchar*) self->priv->current, (gssize) ((glong) (self->priv->end - self->priv->current)));
-						u = _tmp42_;
+						_tmp46_ = g_utf8_get_char_validated ((const gchar*) self->priv->current, (gssize) ((glong) (self->priv->end - self->priv->current)));
+						u = _tmp46_;
 						if (u != ((gunichar) (-1))) {
-							GError* _tmp43_ = NULL;
-							_tmp43_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: syntax error, unexpected character", self->priv->line, self->priv->column);
-							_inner_error_ = _tmp43_;
+							GError* _tmp47_ = NULL;
+							_tmp47_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: syntax error, unexpected character", self->priv->line, self->priv->column);
+							_inner_error_ = _tmp47_;
 							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 								g_propagate_error (error, _inner_error_);
 								return 0;
@@ -1806,9 +1955,9 @@ TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* 
 								return 0;
 							}
 						} else {
-							GError* _tmp44_ = NULL;
-							_tmp44_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: invalid UTF-8 character", self->priv->line, self->priv->column);
-							_inner_error_ = _tmp44_;
+							GError* _tmp48_ = NULL;
+							_tmp48_ = g_error_new (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, "%d.%d: invalid UTF-8 character", self->priv->line, self->priv->column);
+							_inner_error_ = _tmp48_;
 							if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 								g_propagate_error (error, _inner_error_);
 								return 0;
@@ -2154,6 +2303,11 @@ const gchar* tracker_sparql_token_type_to_string (TrackerSparqlTokenType self) {
 			result = "end of file";
 			return result;
 		}
+		case TRACKER_SPARQL_TOKEN_TYPE_EXISTS:
+		{
+			result = "`EXISTS'";
+			return result;
+		}
 		case TRACKER_SPARQL_TOKEN_TYPE_FALSE:
 		{
 			result = "`false'";
@@ -2182,6 +2336,11 @@ const gchar* tracker_sparql_token_type_to_string (TrackerSparqlTokenType self) {
 		case TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT:
 		{
 			result = "`GROUP_CONCAT'";
+			return result;
+		}
+		case TRACKER_SPARQL_TOKEN_TYPE_IF:
+		{
+			result = "`IF'";
 			return result;
 		}
 		case TRACKER_SPARQL_TOKEN_TYPE_INSERT:
@@ -2259,6 +2418,11 @@ const gchar* tracker_sparql_token_type_to_string (TrackerSparqlTokenType self) {
 			result = "`NAMED'";
 			return result;
 		}
+		case TRACKER_SPARQL_TOKEN_TYPE_NOT:
+		{
+			result = "`NOT'";
+			return result;
+		}
 		case TRACKER_SPARQL_TOKEN_TYPE_OFFSET:
 		{
 			result = "`OFFSET'";
@@ -2309,6 +2473,11 @@ const gchar* tracker_sparql_token_type_to_string (TrackerSparqlTokenType self) {
 			result = "`||'";
 			return result;
 		}
+		case TRACKER_SPARQL_TOKEN_TYPE_OP_IN:
+		{
+			result = "`IN'";
+			return result;
+		}
 		case TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACE:
 		{
 			result = "`{'";
@@ -2327,6 +2496,11 @@ const gchar* tracker_sparql_token_type_to_string (TrackerSparqlTokenType self) {
 		case TRACKER_SPARQL_TOKEN_TYPE_OPTIONAL:
 		{
 			result = "`OPTIONAL'";
+			return result;
+		}
+		case TRACKER_SPARQL_TOKEN_TYPE_OR:
+		{
+			result = "`OR'";
 			return result;
 		}
 		case TRACKER_SPARQL_TOKEN_TYPE_ORDER:
@@ -2359,6 +2533,11 @@ const gchar* tracker_sparql_token_type_to_string (TrackerSparqlTokenType self) {
 			result = "`REGEX'";
 			return result;
 		}
+		case TRACKER_SPARQL_TOKEN_TYPE_REPLACE:
+		{
+			result = "`REPLACE'";
+			return result;
+		}
 		case TRACKER_SPARQL_TOKEN_TYPE_SAMETERM:
 		{
 			result = "`SAMETERM'";
@@ -2372,6 +2551,11 @@ const gchar* tracker_sparql_token_type_to_string (TrackerSparqlTokenType self) {
 		case TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON:
 		{
 			result = "`;'";
+			return result;
+		}
+		case TRACKER_SPARQL_TOKEN_TYPE_SILENT:
+		{
+			result = "`SILENT'";
 			return result;
 		}
 		case TRACKER_SPARQL_TOKEN_TYPE_STAR:
@@ -2446,7 +2630,7 @@ const gchar* tracker_sparql_token_type_to_string (TrackerSparqlTokenType self) {
 GType tracker_sparql_token_type_get_type (void) {
 	static volatile gsize tracker_sparql_token_type_type_id__volatile = 0;
 	if (g_once_init_enter (&tracker_sparql_token_type_type_id__volatile)) {
-		static const GEnumValue values[] = {{TRACKER_SPARQL_TOKEN_TYPE_NONE, "TRACKER_SPARQL_TOKEN_TYPE_NONE", "none"}, {TRACKER_SPARQL_TOKEN_TYPE_A, "TRACKER_SPARQL_TOKEN_TYPE_A", "a"}, {TRACKER_SPARQL_TOKEN_TYPE_AS, "TRACKER_SPARQL_TOKEN_TYPE_AS", "as"}, {TRACKER_SPARQL_TOKEN_TYPE_ASC, "TRACKER_SPARQL_TOKEN_TYPE_ASC", "asc"}, {TRACKER_SPARQL_TOKEN_TYPE_ASK, "TRACKER_SPARQL_TOKEN_TYPE_ASK", "ask"}, {TRACKER_SPARQL_TOKEN_TYPE_ATBASE, "TRACKER_SPARQL_TOKEN_TYPE_ATBASE", "atbase"}, {TRACKER_SPARQL_TOKEN_TYPE_ATPREFIX, "TRACKER_SPARQL_TOKEN_TYPE_ATPREFIX", "atprefix"}, {TRACKER_SPARQL_TOKEN_TYPE_AVG, "TRACKER_SPARQL_TOKEN_TYPE_AVG", "avg"}, {TRACKER_SPARQL_TOKEN_TYPE_BASE, "TRACKER_SPARQL_TOKEN_TYPE_BASE", "base"}, {TRACKER_SPARQL_TOKEN_TYPE_BLANK_NODE, "TRACKER_SPARQL_TOKEN_TYPE_BLANK_NODE", "blank-node"}, {TRACKER_SPARQL_TOKEN_TYPE_BOUND, "TRACKER_SPARQL_TOKEN_TYPE_BOUND", "bound"}, {TRACKER_SPARQL_TOKEN_TYPE_BY, "TRACKER_SPARQL_TOKEN_TYPE_BY", "by"}, {TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACE, "TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACE", "close-brace"}, {TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACKET, "TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACKET", "close-bracket"}, {TRACKER_SPARQL_TOKEN_TYPE_CLOSE_PARENS, "TRACKER_SPARQL_TOKEN_TYPE_CLOSE_PARENS", "close-parens"}, {TRACKER_SPARQL_TOKEN_TYPE_COLON, "TRACKER_SPARQL_TOKEN_TYPE_COLON", "colon"}, {TRACKER_SPARQL_TOKEN_TYPE_COMMA, "TRACKER_SPARQL_TOKEN_TYPE_COMMA", "comma"}, {TRACKER_SPARQL_TOKEN_TYPE_CONSTRUCT, "TRACKER_SPARQL_TOKEN_TYPE_CONSTRUCT", "construct"}, {TRACKER_SPARQL_TOKEN_TYPE_COUNT, "TRACKER_SPARQL_TOKEN_TYPE_COUNT", "count"}, {TRACKER_SPARQL_TOKEN_TYPE_DATATYPE, "TRACKER_SPARQL_TOKEN_TYPE_DATATYPE", "datatype"}, {TRACKER_SPARQL_TOKEN_TYPE_DECIMAL, "TRACKER_SPARQL_TOKEN_TYPE_DECIMAL", "decimal"}, {TRACKER_SPARQL_TOKEN_TYPE_DELETE, "TRACKER_SPARQL_TOKEN_TYPE_DELETE", "delete"}, {TRACKER_SPARQL_TOKEN_TYPE_DESC, "TRACKER_SPARQL_TOKEN_TYPE_DESC", "desc"}, {TRACKER_SPARQL_TOKEN_TYPE_DESCRIBE, "TRACKER_SPARQL_TOKEN_TYPE_DESCRIBE", "describe"}, {TRACKER_SPARQL_TOKEN_TYPE_DISTINCT, "TRACKER_SPARQL_TOKEN_TYPE_DISTINCT", "distinct"}, {TRACKER_SPARQL_TOKEN_TYPE_DIV, "TRACKER_SPARQL_TOKEN_TYPE_DIV", "div"}, {TRACKER_SPARQL_TOKEN_TYPE_DOT, "TRACKER_SPARQL_TOKEN_TYPE_DOT", "dot"}, {TRACKER_SPARQL_TOKEN_TYPE_DOUBLE, "TRACKER_SPARQL_TOKEN_TYPE_DOUBLE", "double"}, {TRACKER_SPARQL_TOKEN_TYPE_DOUBLE_CIRCUMFLEX, "TRACKER_SPARQL_TOKEN_TYPE_DOUBLE_CIRCUMFLEX", "double-circumflex"}, {TRACKER_SPARQL_TOKEN_TYPE_DROP, "TRACKER_SPARQL_TOKEN_TYPE_DROP", "drop"}, {TRACKER_SPARQL_TOKEN_TYPE_EOF, "TRACKER_SPARQL_TOKEN_TYPE_EOF", "eof"}, {TRACKER_SPARQL_TOKEN_TYPE_FALSE, "TRACKER_SPARQL_TOKEN_TYPE_FALSE", "false"}, {TRACKER_SPARQL_TOKEN_TYPE_FILTER, "TRACKER_SPARQL_TOKEN_TYPE_FILTER", "filter"}, {TRACKER_SPARQL_TOKEN_TYPE_FROM, "TRACKER_SPARQL_TOKEN_TYPE_FROM", "from"}, {TRACKER_SPARQL_TOKEN_TYPE_GRAPH, "TRACKER_SPARQL_TOKEN_TYPE_GRAPH", "graph"}, {TRACKER_SPARQL_TOKEN_TYPE_GROUP, "TRACKER_SPARQL_TOKEN_TYPE_GROUP", "group"}, {TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT, "TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT", "group-concat"}, {TRACKER_SPARQL_TOKEN_TYPE_INSERT, "TRACKER_SPARQL_TOKEN_TYPE_INSERT", "insert"}, {TRACKER_SPARQL_TOKEN_TYPE_INTEGER, "TRACKER_SPARQL_TOKEN_TYPE_INTEGER", "integer"}, {TRACKER_SPARQL_TOKEN_TYPE_INTO, "TRACKER_SPARQL_TOKEN_TYPE_INTO", "into"}, {TRACKER_SPARQL_TOKEN_TYPE_IRI_REF, "TRACKER_SPARQL_TOKEN_TYPE_IRI_REF", "iri-ref"}, {TRACKER_SPARQL_TOKEN_TYPE_ISBLANK, "TRACKER_SPARQL_TOKEN_TYPE_ISBLANK", "isblank"}, {TRACKER_SPARQL_TOKEN_TYPE_ISIRI, "TRACKER_SPARQL_TOKEN_TYPE_ISIRI", "isiri"}, {TRACKER_SPARQL_TOKEN_TYPE_ISLITERAL, "TRACKER_SPARQL_TOKEN_TYPE_ISLITERAL", "isliteral"}, {TRACKER_SPARQL_TOKEN_TYPE_ISURI, "TRACKER_SPARQL_TOKEN_TYPE_ISURI", "isuri"}, {TRACKER_SPARQL_TOKEN_TYPE_LANG, "TRACKER_SPARQL_TOKEN_TYPE_LANG", "lang"}, {TRACKER_SPARQL_TOKEN_TYPE_LANGMATCHES, "TRACKER_SPARQL_TOKEN_TYPE_LANGMATCHES", "langmatches"}, {TRACKER_SPARQL_TOKEN_TYPE_LIMIT, "TRACKER_SPARQL_TOKEN_TYPE_LIMIT", "limit"}, {TRACKER_SPARQL_TOKEN_TYPE_MAX, "TRACKER_SPARQL_TOKEN_TYPE_MAX", "max"}, {TRACKER_SPARQL_TOKEN_TYPE_MIN, "TRACKER_SPARQL_TOKEN_TYPE_MIN", "min"}, {TRACKER_SPARQL_TOKEN_TYPE_MINUS, "TRACKER_SPARQL_TOKEN_TYPE_MINUS", "minus"}, {TRACKER_SPARQL_TOKEN_TYPE_NAMED, "TRACKER_SPARQL_TOKEN_TYPE_NAMED", "named"}, {TRACKER_SPARQL_TOKEN_TYPE_OFFSET, "TRACKER_SPARQL_TOKEN_TYPE_OFFSET", "offset"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_AND, "TRACKER_SPARQL_TOKEN_TYPE_OP_AND", "op-and"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_EQ, "TRACKER_SPARQL_TOKEN_TYPE_OP_EQ", "op-eq"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_GE, "TRACKER_SPARQL_TOKEN_TYPE_OP_GE", "op-ge"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_GT, "TRACKER_SPARQL_TOKEN_TYPE_OP_GT", "op-gt"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_LE, "TRACKER_SPARQL_TOKEN_TYPE_OP_LE", "op-le"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_LT, "TRACKER_SPARQL_TOKEN_TYPE_OP_LT", "op-lt"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_NE, "TRACKER_SPARQL_TOKEN_TYPE_OP_NE", "op-ne"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_NEG, "TRACKER_SPARQL_TOKEN_TYPE_OP_NEG", "op-neg"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_OR, "TRACKER_SPARQL_TOKEN_TYPE_OP_OR", "op-or"}, {TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACE, "TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACE", "open-brace"}, {TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACKET, "TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACKET", "open-bracket"}, {TRACKER_SPARQL_TOKEN_TYPE_OPEN_PARENS, "TRACKER_SPARQL_TOKEN_TYPE_OPEN_PARENS", "open-parens"}, {TRACKER_SPARQL_TOKEN_TYPE_OPTIONAL, "TRACKER_SPARQL_TOKEN_TYPE_OPTIONAL", "optional"}, {TRACKER_SPARQL_TOKEN_TYPE_ORDER, "TRACKER_SPARQL_TOKEN_TYPE_ORDER", "order"}, {TRACKER_SPARQL_TOKEN_TYPE_PLUS, "TRACKER_SPARQL_TOKEN_TYPE_PLUS", "plus"}, {TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX, "TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX", "pn-prefix"}, {TRACKER_SPARQL_TOKEN_TYPE_PREFIX, "TRACKER_SPARQL_TOKEN_TYPE_PREFIX", "prefix"}, {TRACKER_SPARQL_TOKEN_TYPE_REDUCED, "TRACKER_SPARQL_TOKEN_TYPE_REDUCED", "reduced"}, {TRACKER_SPARQL_TOKEN_TYPE_REGEX, "TRACKER_SPARQL_TOKEN_TYPE_REGEX", "regex"}, {TRACKER_SPARQL_TOKEN_TYPE_SAMETERM, "TRACKER_SPARQL_TOKEN_TYPE_SAMETERM", "sameterm"}, {TRACKER_SPARQL_TOKEN_TYPE_SELECT, "TRACKER_SPARQL_TOKEN_TYPE_SELECT", "select"}, {TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON, "TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON", "semicolon"}, {TRACKER_SPARQL_TOKEN_TYPE_STAR, "TRACKER_SPARQL_TOKEN_TYPE_STAR", "star"}, {TRACKER_SPARQL_TOKEN_TYPE_STR, "TRACKER_SPARQL_TOKEN_TYPE_STR", "str"}, {TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL1, "TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL1", "string-literal1"}, {TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL2, "TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL2", "string-literal2"}, {TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG1, "TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG1", "string-literal-long1"}, {TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG2, "TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG2", "string-literal-long2"}, {TRACKER_SPARQL_TOKEN_TYPE_SUM, "TRACKER_SPARQL_TOKEN_TYPE_SUM", "sum"}, {TRACKER_SPARQL_TOKEN_TYPE_TRUE, "TRACKER_SPARQL_TOKEN_TYPE_TRUE", "true"}, {TRACKER_SPARQL_TOKEN_TYPE_UNION, "TRACKER_SPARQL_TOKEN_TYPE_UNION", "union"}, {TRACKER_SPARQL_TOKEN_TYPE_VAR, "TRACKER_SPARQL_TOKEN_TYPE_VAR", "var"}, {TRACKER_SPARQL_TOKEN_TYPE_WHERE, "TRACKER_SPARQL_TOKEN_TYPE_WHERE", "where"}, {TRACKER_SPARQL_TOKEN_TYPE_WITH, "TRACKER_SPARQL_TOKEN_TYPE_WITH", "with"}, {0, NULL, NULL}};
+		static const GEnumValue values[] = {{TRACKER_SPARQL_TOKEN_TYPE_NONE, "TRACKER_SPARQL_TOKEN_TYPE_NONE", "none"}, {TRACKER_SPARQL_TOKEN_TYPE_A, "TRACKER_SPARQL_TOKEN_TYPE_A", "a"}, {TRACKER_SPARQL_TOKEN_TYPE_AS, "TRACKER_SPARQL_TOKEN_TYPE_AS", "as"}, {TRACKER_SPARQL_TOKEN_TYPE_ASC, "TRACKER_SPARQL_TOKEN_TYPE_ASC", "asc"}, {TRACKER_SPARQL_TOKEN_TYPE_ASK, "TRACKER_SPARQL_TOKEN_TYPE_ASK", "ask"}, {TRACKER_SPARQL_TOKEN_TYPE_ATBASE, "TRACKER_SPARQL_TOKEN_TYPE_ATBASE", "atbase"}, {TRACKER_SPARQL_TOKEN_TYPE_ATPREFIX, "TRACKER_SPARQL_TOKEN_TYPE_ATPREFIX", "atprefix"}, {TRACKER_SPARQL_TOKEN_TYPE_AVG, "TRACKER_SPARQL_TOKEN_TYPE_AVG", "avg"}, {TRACKER_SPARQL_TOKEN_TYPE_BASE, "TRACKER_SPARQL_TOKEN_TYPE_BASE", "base"}, {TRACKER_SPARQL_TOKEN_TYPE_BLANK_NODE, "TRACKER_SPARQL_TOKEN_TYPE_BLANK_NODE", "blank-node"}, {TRACKER_SPARQL_TOKEN_TYPE_BOUND, "TRACKER_SPARQL_TOKEN_TYPE_BOUND", "bound"}, {TRACKER_SPARQL_TOKEN_TYPE_BY, "TRACKER_SPARQL_TOKEN_TYPE_BY", "by"}, {TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACE, "TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACE", "close-brace"}, {TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACKET, "TRACKER_SPARQL_TOKEN_TYPE_CLOSE_BRACKET", "close-bracket"}, {TRACKER_SPARQL_TOKEN_TYPE_CLOSE_PARENS, "TRACKER_SPARQL_TOKEN_TYPE_CLOSE_PARENS", "close-parens"}, {TRACKER_SPARQL_TOKEN_TYPE_COLON, "TRACKER_SPARQL_TOKEN_TYPE_COLON", "colon"}, {TRACKER_SPARQL_TOKEN_TYPE_COMMA, "TRACKER_SPARQL_TOKEN_TYPE_COMMA", "comma"}, {TRACKER_SPARQL_TOKEN_TYPE_CONSTRUCT, "TRACKER_SPARQL_TOKEN_TYPE_CONSTRUCT", "construct"}, {TRACKER_SPARQL_TOKEN_TYPE_COUNT, "TRACKER_SPARQL_TOKEN_TYPE_COUNT", "count"}, {TRACKER_SPARQL_TOKEN_TYPE_DATA, "TRACKER_SPARQL_TOKEN_TYPE_DATA", "data"}, {TRACKER_SPARQL_TOKEN_TYPE_DATATYPE, "TRACKER_SPARQL_TOKEN_TYPE_DATATYPE", "datatype"}, {TRACKER_SPARQL_TOKEN_TYPE_DECIMAL, "TRACKER_SPARQL_TOKEN_TYPE_DECIMAL", "decimal"}, {TRACKER_SPARQL_TOKEN_TYPE_DELETE, "TRACKER_SPARQL_TOKEN_TYPE_DELETE", "delete"}, {TRACKER_SPARQL_TOKEN_TYPE_DESC, "TRACKER_SPARQL_TOKEN_TYPE_DESC", "desc"}, {TRACKER_SPARQL_TOKEN_TYPE_DESCRIBE, "TRACKER_SPARQL_TOKEN_TYPE_DESCRIBE", "describe"}, {TRACKER_SPARQL_TOKEN_TYPE_DISTINCT, "TRACKER_SPARQL_TOKEN_TYPE_DISTINCT", "distinct"}, {TRACKER_SPARQL_TOKEN_TYPE_DIV, "TRACKER_SPARQL_TOKEN_TYPE_DIV", "div"}, {TRACKER_SPARQL_TOKEN_TYPE_DOT, "TRACKER_SPARQL_TOKEN_TYPE_DOT", "dot"}, {TRACKER_SPARQL_TOKEN_TYPE_DOUBLE, "TRACKER_SPARQL_TOKEN_TYPE_DOUBLE", "double"}, {TRACKER_SPARQL_TOKEN_TYPE_DOUBLE_CIRCUMFLEX, "TRACKER_SPARQL_TOKEN_TYPE_DOUBLE_CIRCUMFLEX", "double-circumflex"}, {TRACKER_SPARQL_TOKEN_TYPE_DROP, "TRACKER_SPARQL_TOKEN_TYPE_DROP", "drop"}, {TRACKER_SPARQL_TOKEN_TYPE_EOF, "TRACKER_SPARQL_TOKEN_TYPE_EOF", "eof"}, {TRACKER_SPARQL_TOKEN_TYPE_EXISTS, "TRACKER_SPARQL_TOKEN_TYPE_EXISTS", "exists"}, {TRACKER_SPARQL_TOKEN_TYPE_FALSE, "TRACKER_SPARQL_TOKEN_TYPE_FALSE", "false"}, {TRACKER_SPARQL_TOKEN_TYPE_FILTER, "TRACKER_SPARQL_TOKEN_TYPE_FILTER", "filter"}, {TRACKER_SPARQL_TOKEN_TYPE_FROM, "TRACKER_SPARQL_TOKEN_TYPE_FROM", "from"}, {TRACKER_SPARQL_TOKEN_TYPE_GRAPH, "TRACKER_SPARQL_TOKEN_TYPE_GRAPH", "graph"}, {TRACKER_SPARQL_TOKEN_TYPE_GROUP, "TRACKER_SPARQL_TOKEN_TYPE_GROUP", "group"}, {TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT, "TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT", "group-concat"}, {TRACKER_SPARQL_TOKEN_TYPE_IF, "TRACKER_SPARQL_TOKEN_TYPE_IF", "if"}, {TRACKER_SPARQL_TOKEN_TYPE_INSERT, "TRACKER_SPARQL_TOKEN_TYPE_INSERT", "insert"}, {TRACKER_SPARQL_TOKEN_TYPE_INTEGER, "TRACKER_SPARQL_TOKEN_TYPE_INTEGER", "integer"}, {TRACKER_SPARQL_TOKEN_TYPE_INTO, "TRACKER_SPARQL_TOKEN_TYPE_INTO", "into"}, {TRACKER_SPARQL_TOKEN_TYPE_IRI_REF, "TRACKER_SPARQL_TOKEN_TYPE_IRI_REF", "iri-ref"}, {TRACKER_SPARQL_TOKEN_TYPE_ISBLANK, "TRACKER_SPARQL_TOKEN_TYPE_ISBLANK", "isblank"}, {TRACKER_SPARQL_TOKEN_TYPE_ISIRI, "TRACKER_SPARQL_TOKEN_TYPE_ISIRI", "isiri"}, {TRACKER_SPARQL_TOKEN_TYPE_ISLITERAL, "TRACKER_SPARQL_TOKEN_TYPE_ISLITERAL", "isliteral"}, {TRACKER_SPARQL_TOKEN_TYPE_ISURI, "TRACKER_SPARQL_TOKEN_TYPE_ISURI", "isuri"}, {TRACKER_SPARQL_TOKEN_TYPE_LANG, "TRACKER_SPARQL_TOKEN_TYPE_LANG", "lang"}, {TRACKER_SPARQL_TOKEN_TYPE_LANGMATCHES, "TRACKER_SPARQL_TOKEN_TYPE_LANGMATCHES", "langmatches"}, {TRACKER_SPARQL_TOKEN_TYPE_LIMIT, "TRACKER_SPARQL_TOKEN_TYPE_LIMIT", "limit"}, {TRACKER_SPARQL_TOKEN_TYPE_MAX, "TRACKER_SPARQL_TOKEN_TYPE_MAX", "max"}, {TRACKER_SPARQL_TOKEN_TYPE_MIN, "TRACKER_SPARQL_TOKEN_TYPE_MIN", "min"}, {TRACKER_SPARQL_TOKEN_TYPE_MINUS, "TRACKER_SPARQL_TOKEN_TYPE_MINUS", "minus"}, {TRACKER_SPARQL_TOKEN_TYPE_NAMED, "TRACKER_SPARQL_TOKEN_TYPE_NAMED", "named"}, {TRACKER_SPARQL_TOKEN_TYPE_NOT, "TRACKER_SPARQL_TOKEN_TYPE_NOT", "not"}, {TRACKER_SPARQL_TOKEN_TYPE_OFFSET, "TRACKER_SPARQL_TOKEN_TYPE_OFFSET", "offset"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_AND, "TRACKER_SPARQL_TOKEN_TYPE_OP_AND", "op-and"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_EQ, "TRACKER_SPARQL_TOKEN_TYPE_OP_EQ", "op-eq"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_GE, "TRACKER_SPARQL_TOKEN_TYPE_OP_GE", "op-ge"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_GT, "TRACKER_SPARQL_TOKEN_TYPE_OP_GT", "op-gt"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_LE, "TRACKER_SPARQL_TOKEN_TYPE_OP_LE", "op-le"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_LT, "TRACKER_SPARQL_TOKEN_TYPE_OP_LT", "op-lt"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_NE, "TRACKER_SPARQL_TOKEN_TYPE_OP_NE", "op-ne"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_NEG, "TRACKER_SPARQL_TOKEN_TYPE_OP_NEG", "op-neg"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_OR, "TRACKER_SPARQL_TOKEN_TYPE_OP_OR", "op-or"}, {TRACKER_SPARQL_TOKEN_TYPE_OP_IN, "TRACKER_SPARQL_TOKEN_TYPE_OP_IN", "op-in"}, {TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACE, "TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACE", "open-brace"}, {TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACKET, "TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACKET", "open-bracket"}, {TRACKER_SPARQL_TOKEN_TYPE_OPEN_PARENS, "TRACKER_SPARQL_TOKEN_TYPE_OPEN_PARENS", "open-parens"}, {TRACKER_SPARQL_TOKEN_TYPE_OPTIONAL, "TRACKER_SPARQL_TOKEN_TYPE_OPTIONAL", "optional"}, {TRACKER_SPARQL_TOKEN_TYPE_OR, "TRACKER_SPARQL_TOKEN_TYPE_OR", "or"}, {TRACKER_SPARQL_TOKEN_TYPE_ORDER, "TRACKER_SPARQL_TOKEN_TYPE_ORDER", "order"}, {TRACKER_SPARQL_TOKEN_TYPE_PLUS, "TRACKER_SPARQL_TOKEN_TYPE_PLUS", "plus"}, {TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX, "TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX", "pn-prefix"}, {TRACKER_SPARQL_TOKEN_TYPE_PREFIX, "TRACKER_SPARQL_TOKEN_TYPE_PREFIX", "prefix"}, {TRACKER_SPARQL_TOKEN_TYPE_REDUCED, "TRACKER_SPARQL_TOKEN_TYPE_REDUCED", "reduced"}, {TRACKER_SPARQL_TOKEN_TYPE_REGEX, "TRACKER_SPARQL_TOKEN_TYPE_REGEX", "regex"}, {TRACKER_SPARQL_TOKEN_TYPE_REPLACE, "TRACKER_SPARQL_TOKEN_TYPE_REPLACE", "replace"}, {TRACKER_SPARQL_TOKEN_TYPE_SAMETERM, "TRACKER_SPARQL_TOKEN_TYPE_SAMETERM", "sameterm"}, {TRACKER_SPARQL_TOKEN_TYPE_SELECT, "TRACKER_SPARQL_TOKEN_TYPE_SELECT", "select"}, {TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON, "TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON", "semicolon"}, {TRACKER_SPARQL_TOKEN_TYPE_SILENT, "TRACKER_SPARQL_TOKEN_TYPE_SILENT", "silent"}, {TRACKER_SPARQL_TOKEN_TYPE_STAR, "TRACKER_SPARQL_TOKEN_TYPE_STAR", "star"}, {TRACKER_SPARQL_TOKEN_TYPE_STR, "TRACKER_SPARQL_TOKEN_TYPE_STR", "str"}, {TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL1, "TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL1", "string-literal1"}, {TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL2, "TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL2", "string-literal2"}, {TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG1, "TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG1", "string-literal-long1"}, {TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG2, "TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL_LONG2", "string-literal-long2"}, {TRACKER_SPARQL_TOKEN_TYPE_SUM, "TRACKER_SPARQL_TOKEN_TYPE_SUM", "sum"}, {TRACKER_SPARQL_TOKEN_TYPE_TRUE, "TRACKER_SPARQL_TOKEN_TYPE_TRUE", "true"}, {TRACKER_SPARQL_TOKEN_TYPE_UNION, "TRACKER_SPARQL_TOKEN_TYPE_UNION", "union"}, {TRACKER_SPARQL_TOKEN_TYPE_VAR, "TRACKER_SPARQL_TOKEN_TYPE_VAR", "var"}, {TRACKER_SPARQL_TOKEN_TYPE_WHERE, "TRACKER_SPARQL_TOKEN_TYPE_WHERE", "where"}, {TRACKER_SPARQL_TOKEN_TYPE_WITH, "TRACKER_SPARQL_TOKEN_TYPE_WITH", "with"}, {0, NULL, NULL}};
 		GType tracker_sparql_token_type_type_id;
 		tracker_sparql_token_type_type_id = g_enum_register_static ("TrackerSparqlTokenType", values);
 		g_once_init_leave (&tracker_sparql_token_type_type_id__volatile, tracker_sparql_token_type_type_id);

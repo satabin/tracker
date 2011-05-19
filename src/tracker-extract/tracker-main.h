@@ -2,18 +2,18 @@
  * Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
  * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
@@ -21,7 +21,7 @@
 #ifndef __TRACKER_MAIN_H__
 #define __TRACKER_MAIN_H__
 
-#include "tracker-fts-config.h"
+#include "tracker-config.h"
 
 G_BEGIN_DECLS
 
@@ -29,7 +29,9 @@ G_BEGIN_DECLS
  * get more work to do.
  */
 void              tracker_main_quit_timeout_reset (void);
-TrackerFTSConfig *tracker_main_get_fts_config     (void);
+
+/* Enables getting the config object from extractors */
+TrackerConfig    *tracker_main_get_config         (void);
 
 G_END_DECLS
 

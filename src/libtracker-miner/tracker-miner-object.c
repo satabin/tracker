@@ -19,14 +19,27 @@
 
 #include "config.h"
 
+#include <math.h>
+
+#include <glib/gi18n.h>
+
 #include <libtracker-common/tracker-dbus.h>
 #include <libtracker-common/tracker-type-utils.h>
 
 #include "tracker-marshal.h"
 #include "tracker-miner-object.h"
 #include "tracker-miner-dbus.h"
-#include "tracker-miner-glue.h"
-#include "tracker-dbus.h"
+
+/* Here we use ceil() to eliminate decimal points beyond what we're
+ * interested in, which is 2 decimal places for the progress. The
+ * ceil() call will also round up the last decimal place.
+ *
+ * The 0.49 value is used for rounding correctness, because ceil()
+ * rounds up if the number is > 0.0.
+ */
+#define PROGRESS_ROUNDED(x) (ceil (((x) * 100) - 0.49) / 100)
+
+#define TRACKER_SERVICE "org.freedesktop.Tracker1"
 
 /**
  * SECTION:tracker-miner
@@ -38,26 +51,66 @@
  * but provides the basic signaling and operation control so the miners
  * implementing this class are properly recognized by Tracker, and can be
  * controlled properly by external means such as #TrackerMinerManager.
+ *
+ * #TrackerMiner implements the #GInitable interface, and thus, all objects of
+ * types inheriting from #TrackerMiner must be initialized with g_initable_init()
+ * just after creation (or directly created with g_initable_new()).
  **/
 
 #define TRACKER_MINER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_MINER, TrackerMinerPrivate))
 
 static GQuark miner_error_quark = 0;
 
-struct TrackerMinerPrivate {
-	TrackerClient *client;
+/* Introspection data for the service we are exporting */
+static const gchar introspection_xml[] =
+  "<node>"
+  "  <interface name='org.freedesktop.Tracker1.Miner'>"
+  "    <method name='GetStatus'>"
+  "      <arg type='s' name='status' direction='out' />"
+  "    </method>"
+  "    <method name='GetProgress'>"
+  "      <arg type='d' name='progress' direction='out' />"
+  "    </method>"
+  "    <method name='GetPauseDetails'>"
+  "      <arg type='as' name='pause_applications' direction='out' />"
+  "      <arg type='as' name='pause_reasons' direction='out' />"
+  "    </method>"
+  "    <method name='Pause'>"
+  "      <arg type='s' name='application' direction='in' />"
+  "      <arg type='s' name='reason' direction='in' />"
+  "      <arg type='i' name='cookie' direction='out' />"
+  "    </method>"
+  "    <method name='Resume'>"
+  "      <arg type='i' name='cookie' direction='in' />"
+  "    </method>"
+  "    <method name='IgnoreNextUpdate'>"
+  "      <arg type='as' name='urls' direction='in' />"
+  "    </method>"
+  "    <signal name='Started' />"
+  "    <signal name='Stopped' />"
+  "    <signal name='Paused' />"
+  "    <signal name='Resumed' />"
+  "    <signal name='Progress'>"
+  "      <arg type='s' name='status' />"
+  "      <arg type='d' name='progress' />"
+  "    </signal>"
+  "  </interface>"
+  "</node>";
 
+struct _TrackerMinerPrivate {
+	TrackerSparqlConnection *connection;
 	GHashTable *pauses;
-
 	gboolean started;
-
 	gchar *name;
 	gchar *status;
 	gdouble progress;
-
 	gint availability_cookie;
-
-	GPtrArray *async_calls;
+	GDBusConnection *d_connection;
+	GDBusNodeInfo *introspection_data;
+	guint watch_name_id;
+	guint registration_id;
+	gchar *full_name;
+	gchar *full_path;
 };
 
 typedef struct {
@@ -65,17 +118,6 @@ typedef struct {
 	gchar *application;
 	gchar *reason;
 } PauseData;
-
-typedef struct {
-	TrackerMiner *miner;
-	GCancellable *cancellable;
-	gpointer callback;
-	gpointer user_data;
-	gpointer source_function;
-
-	guint id;
-	guint signal_id;
-} AsyncCallData;
 
 enum {
 	PROP_0,
@@ -96,32 +138,56 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static void       miner_set_property           (GObject       *object,
-                                                guint          param_id,
-                                                const GValue  *value,
-                                                GParamSpec    *pspec);
-static void       miner_get_property           (GObject       *object,
-                                                guint          param_id,
-                                                GValue        *value,
-                                                GParamSpec    *pspec);
-static void       miner_finalize               (GObject       *object);
-static void       miner_dispose                (GObject       *object);
-static void       miner_constructed            (GObject       *object);
-static void       pause_data_destroy           (gpointer       data);
-static PauseData *pause_data_new               (const gchar   *application,
-                                                const gchar   *reason);
-static void       async_call_data_notify_error (AsyncCallData *data,
-                                                gint           code,
-                                                const gchar   *message);
-static void       async_call_data_destroy      (AsyncCallData *data,
-                                                gboolean       remove);
-static void       sparql_cancelled_cb          (GCancellable  *cancellable,
-                                                AsyncCallData *data);
-static void       store_name_monitor_cb (TrackerMiner *miner,
-                                         const gchar  *name,
-                                         gboolean      available);
+static void       miner_set_property           (GObject                *object,
+                                                guint                   param_id,
+                                                const GValue           *value,
+                                                GParamSpec             *pspec);
+static void       miner_get_property           (GObject                *object,
+                                                guint                   param_id,
+                                                GValue                 *value,
+                                                GParamSpec             *pspec);
+static void       miner_finalize               (GObject                *object);
+static void       miner_initable_iface_init    (GInitableIface         *iface);
+static gboolean   miner_initable_init          (GInitable              *initable,
+                                                GCancellable           *cancellable,
+                                                GError                **error);
+static void       pause_data_destroy           (gpointer                data);
+static PauseData *pause_data_new               (const gchar            *application,
+                                                const gchar            *reason);
+static void       handle_method_call           (GDBusConnection        *connection,
+                                                const gchar            *sender,
+                                                const gchar            *object_path,
+                                                const gchar            *interface_name,
+                                                const gchar            *method_name,
+                                                GVariant               *parameters,
+                                                GDBusMethodInvocation  *invocation,
+                                                gpointer                user_data);
+static GVariant  *handle_get_property          (GDBusConnection        *connection,
+                                                const gchar            *sender,
+                                                const gchar            *object_path,
+                                                const gchar            *interface_name,
+                                                const gchar            *property_name,
+                                                GError                **error,
+                                                gpointer                user_data);
+static gboolean   handle_set_property          (GDBusConnection        *connection,
+                                                const gchar            *sender,
+                                                const gchar            *object_path,
+                                                const gchar            *interface_name,
+                                                const gchar            *property_name,
+                                                GVariant               *value,
+                                                GError                **error,
+                                                gpointer                user_data);
+static void       on_tracker_store_appeared    (GDBusConnection        *connection,
+                                                const gchar            *name,
+                                                const gchar            *name_owner,
+                                                gpointer                user_data);
+static void       on_tracker_store_disappeared (GDBusConnection        *connection,
+                                                const gchar            *name,
+                                                gpointer                user_data);
 
-G_DEFINE_ABSTRACT_TYPE (TrackerMiner, tracker_miner, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (TrackerMiner, tracker_miner, G_TYPE_OBJECT,
+                                  G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                         miner_initable_iface_init));
 
 static void
 tracker_miner_class_init (TrackerMinerClass *klass)
@@ -131,8 +197,6 @@ tracker_miner_class_init (TrackerMinerClass *klass)
 	object_class->set_property = miner_set_property;
 	object_class->get_property = miner_get_property;
 	object_class->finalize     = miner_finalize;
-	object_class->constructed  = miner_constructed;
-	object_class->dispose      = miner_dispose;
 
 	/**
 	 * TrackerMiner::started:
@@ -141,6 +205,8 @@ tracker_miner_class_init (TrackerMinerClass *klass)
 	 * the ::started signal is emitted in the miner
 	 * right after it has been started through
 	 * tracker_miner_start().
+	 *
+	 * Since: 0.8
 	 **/
 	signals[STARTED] =
 		g_signal_new ("started",
@@ -157,6 +223,8 @@ tracker_miner_class_init (TrackerMinerClass *klass)
 	 * the ::stopped signal is emitted in the miner
 	 * right after it has been stopped through
 	 * tracker_miner_stop().
+	 *
+	 * Since: 0.8
 	 **/
 	signals[STOPPED] =
 		g_signal_new ("stopped",
@@ -174,6 +242,8 @@ tracker_miner_class_init (TrackerMinerClass *klass)
 	 * there is any reason to pause, either
 	 * internal (through tracker_miner_pause()) or
 	 * external (through DBus, see #TrackerMinerManager).
+	 *
+	 * Since: 0.8
 	 **/
 	signals[PAUSED] =
 		g_signal_new ("paused",
@@ -190,6 +260,8 @@ tracker_miner_class_init (TrackerMinerClass *klass)
 	 * the ::resumed signal is emitted whenever
 	 * all reasons to pause have disappeared, see
 	 * tracker_miner_resume() and #TrackerMinerManager.
+	 *
+	 * Since: 0.8
 	 **/
 	signals[RESUMED] =
 		g_signal_new ("resumed",
@@ -209,6 +281,8 @@ tracker_miner_class_init (TrackerMinerClass *klass)
 	 * to indicate progress about the data mining process. @status will
 	 * contain a translated string with the current miner status and @progress
 	 * will indicate how much has been processed so far.
+	 *
+	 * Since: 0.8
 	 **/
 	signals[PROGRESS] =
 		g_signal_new ("progress",
@@ -229,6 +303,8 @@ tracker_miner_class_init (TrackerMinerClass *klass)
 	 * the ::ignore-next-update signal is emitted in the miner
 	 * right after it has been asked to mark @urls as to ignore on next update
 	 * through tracker_miner_ignore_next_update().
+	 *
+	 * Since: 0.8
 	 **/
 	signals[IGNORE_NEXT_UPDATE] =
 		g_signal_new ("ignore-next-update",
@@ -270,20 +346,140 @@ tracker_miner_class_init (TrackerMinerClass *klass)
 }
 
 static void
+miner_initable_iface_init (GInitableIface *iface)
+{
+	iface->init = miner_initable_init;
+}
+
+static gboolean
+miner_initable_init (GInitable     *initable,
+                     GCancellable  *cancellable,
+                     GError       **error)
+{
+	TrackerMiner *miner = TRACKER_MINER (initable);
+	GError *inner_error = NULL;
+	GVariant *reply;
+	guint32 rval;
+	GDBusInterfaceVTable interface_vtable = {
+		handle_method_call,
+		handle_get_property,
+		handle_set_property
+	};
+
+	/* Try to get SPARQL connection... */
+	miner->private->connection = tracker_sparql_connection_get (NULL, &inner_error);
+	if (!miner->private->connection) {
+		g_propagate_error (error, inner_error);
+		return FALSE;
+	}
+
+	/* Try to get DBus connection... */
+	miner->private->d_connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &inner_error);
+	if (!miner->private->d_connection) {
+		g_propagate_error (error, inner_error);
+		return FALSE;
+	}
+
+	/* Setup introspection data */
+	miner->private->introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, &inner_error);
+	if (!miner->private->introspection_data) {
+		g_propagate_error (error, inner_error);
+		return FALSE;
+	}
+
+	/* Check miner has a proper name */
+	if (!miner->private->name) {
+		g_set_error (error,
+		             TRACKER_MINER_ERROR,
+		             0,
+		             "Miner '%s' should have been given a name, bailing out",
+		             G_OBJECT_TYPE_NAME (miner));
+		return FALSE;
+	}
+
+	/* Setup full name */
+	miner->private->full_name = g_strconcat (TRACKER_MINER_DBUS_NAME_PREFIX,
+	                                         miner->private->name,
+	                                         NULL);
+
+	/* Register the D-Bus object */
+	miner->private->full_path = g_strconcat (TRACKER_MINER_DBUS_PATH_PREFIX,
+	                                         miner->private->name,
+	                                         NULL);
+
+	g_message ("Registering D-Bus object...");
+	g_message ("  Path:'%s'", miner->private->full_path);
+	g_message ("  Object Type:'%s'", G_OBJECT_TYPE_NAME (miner));
+
+	miner->private->registration_id =
+		g_dbus_connection_register_object (miner->private->d_connection,
+		                                   miner->private->full_path,
+	                                       miner->private->introspection_data->interfaces[0],
+	                                       &interface_vtable,
+	                                       miner,
+	                                       NULL,
+		                                   &inner_error);
+	if (inner_error) {
+		g_propagate_error (error, inner_error);
+		g_prefix_error (error,
+		                "Could not register the D-Bus object '%s'. ",
+		                miner->private->full_path);
+		return FALSE;
+	}
+
+	/* Request the D-Bus name */
+	reply = g_dbus_connection_call_sync (miner->private->d_connection,
+	                                     "org.freedesktop.DBus",
+	                                     "/org/freedesktop/DBus",
+	                                     "org.freedesktop.DBus",
+	                                     "RequestName",
+	                                     g_variant_new ("(su)",
+	                                                    miner->private->full_name,
+	                                                    0x4 /* DBUS_NAME_FLAG_DO_NOT_QUEUE */),
+	                                     G_VARIANT_TYPE ("(u)"),
+	                                     0, -1, NULL, &inner_error);
+	if (inner_error) {
+		g_propagate_error (error, inner_error);
+		g_prefix_error (error,
+		                "Could not acquire name:'%s'. ",
+		                miner->private->full_name);
+		return FALSE;
+	}
+
+	g_variant_get (reply, "(u)", &rval);
+	g_variant_unref (reply);
+
+	if (rval != 1 /* DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER */) {
+		g_set_error (error,
+		             TRACKER_MINER_ERROR,
+		             0,
+		             "D-Bus service name:'%s' is already taken, "
+		             "perhaps the application is already running?",
+		             miner->private->full_name);
+		return FALSE;
+	}
+
+	miner->private->watch_name_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
+	                                                  TRACKER_SERVICE,
+	                                                  G_BUS_NAME_WATCHER_FLAGS_NONE,
+	                                                  on_tracker_store_appeared,
+	                                                  on_tracker_store_disappeared,
+	                                                  miner,
+	                                                  NULL);
+
+	return TRUE;
+}
+
+static void
 tracker_miner_init (TrackerMiner *miner)
 {
 	TrackerMinerPrivate *priv;
-
 	miner->private = priv = TRACKER_MINER_GET_PRIVATE (miner);
-
-	/* Set the timeout to 0 so we don't have one */
-	priv->client = tracker_client_new (TRACKER_CLIENT_ENABLE_WARNINGS, G_MAXINT);
 
 	priv->pauses = g_hash_table_new_full (g_direct_hash,
 	                                      g_direct_equal,
 	                                      NULL,
 	                                      pause_data_destroy);
-	priv->async_calls = g_ptr_array_new ();
 }
 
 static void
@@ -292,6 +488,18 @@ miner_update_progress (TrackerMiner *miner)
 	g_signal_emit (miner, signals[PROGRESS], 0,
 	               miner->private->status,
 	               miner->private->progress);
+
+	if (miner->private->d_connection) {
+		g_dbus_connection_emit_signal (miner->private->d_connection,
+		                               NULL,
+		                               miner->private->full_path,
+		                               TRACKER_MINER_DBUS_INTERFACE,
+		                               "Progress",
+		                               g_variant_new ("(sd)",
+		                                              miner->private->status,
+		                                              miner->private->progress),
+		                               NULL);
+	}
 }
 
 static void
@@ -325,10 +533,15 @@ miner_set_property (GObject      *object,
 	case PROP_PROGRESS: {
 		gdouble new_progress;
 
-		new_progress = g_value_get_double (value);
+		new_progress = PROGRESS_ROUNDED (g_value_get_double (value));
 
-		/* Only notify 1% changes */
-		if ((gint) (miner->private->progress * 100) == (gint) (new_progress * 100)) {
+		/* NOTE: We don't round the current progress before
+		 * comparison because we use the rounded value when
+		 * we set it last.
+		 *
+		 * Only notify 1% changes
+		 */
+		if (new_progress == miner->private->progress) {
 			/* Same, do nothing */
 			break;
 		}
@@ -367,91 +580,6 @@ miner_get_property (GObject    *object,
 	}
 }
 
-static void
-async_call_finalize_foreach (AsyncCallData *data,
-                             gpointer       user_data)
-{
-	async_call_data_notify_error (data, 0, "Miner is being finalized");
-	async_call_data_destroy (data, TRUE);
-}
-
-static void
-miner_dispose (GObject *object)
-{
-	TrackerMiner *miner = TRACKER_MINER (object);
-
-	g_ptr_array_foreach (miner->private->async_calls,
-	                     (GFunc) async_call_finalize_foreach,
-	                     object);
-}
-
-static void
-miner_finalize (GObject *object)
-{
-	TrackerMiner *miner = TRACKER_MINER (object);
-
-	g_free (miner->private->status);
-	g_free (miner->private->name);
-
-	if (miner->private->client) {
-		g_object_unref (miner->private->client);
-	}
-
-	g_hash_table_unref (miner->private->pauses);
-	g_ptr_array_free (miner->private->async_calls, TRUE);
-
-	_tracker_miner_dbus_shutdown (miner);
-
-	G_OBJECT_CLASS (tracker_miner_parent_class)->finalize (object);
-}
-
-static void
-miner_constructed (GObject *object)
-{
-	TrackerMiner *miner = TRACKER_MINER (object);
-
-	_tracker_miner_dbus_init (miner, &dbus_glib__tracker_miner_object_info);
-	_tracker_miner_dbus_add_name_watch (miner, "org.freedesktop.Tracker1",
-                                            store_name_monitor_cb);
-}
-
-static void
-store_name_monitor_cb (TrackerMiner *miner,
-                       const gchar  *name,
-                       gboolean      available)
-{
-	GError *error = NULL;
-
-	g_debug ("Store availability has changed to %s",
-		 available ? "AVAILABLE" : "UNAVAILABLE");
-
-	if (available && miner->private->availability_cookie != 0) {
-		tracker_miner_resume (miner,
-		                      miner->private->availability_cookie,
-		                      &error);
-
-		if (error) {
-			g_warning ("Error happened resuming miner, %s", error->message);
-			g_error_free (error);
-		}
-
-		miner->private->availability_cookie = 0;
-	} else if (!available && miner->private->availability_cookie == 0) {
-		gint cookie_id;
-
-		cookie_id = tracker_miner_pause (miner,
-		                                 _("Data store is not available"),
-		                                 &error);
-
-		if (error) {
-			g_warning ("Could not pause, %s", error->message);
-			g_error_free (error);
-		} else {
-			miner->private->availability_cookie = cookie_id;
-		}
-	}
-}
-
 static PauseData *
 pause_data_new (const gchar *application,
                 const gchar *reason)
@@ -481,189 +609,14 @@ pause_data_destroy (gpointer data)
 	g_slice_free (PauseData, pd);
 }
 
-static void
-async_call_data_destroy (AsyncCallData *data,
-                         gboolean       remove)
-{
-	TrackerMiner *miner = data->miner;
-
-	if (data->cancellable) {
-		if (data->signal_id) {
-			g_signal_handler_disconnect (data->cancellable, data->signal_id);
-		}
-
-		g_object_unref (data->cancellable);
-	}
-
-	if (data->id != 0) {
-		tracker_cancel_call (miner->private->client, data->id);
-		data->id = 0;
-	}
-
-	if (remove) {
-		g_ptr_array_remove_fast (miner->private->async_calls, data);
-	}
-
-	g_slice_free (AsyncCallData, data);
-}
-
-static AsyncCallData *
-async_call_data_new (TrackerMiner *miner,
-                     GCancellable *cancellable,
-                     gpointer      callback,
-                     gpointer      user_data,
-                     gpointer      source_function)
-{
-	AsyncCallData *data;
-
-	data = g_slice_new0 (AsyncCallData);
-	data->miner = miner;
-	data->callback = callback;
-	data->user_data = user_data;
-	data->source_function = source_function;
-
-	if (cancellable) {
-		data->cancellable = g_object_ref (cancellable);
-
-		data->signal_id = g_signal_connect (cancellable, "cancelled",
-		                                    G_CALLBACK (sparql_cancelled_cb), data);
-	}
-
-	g_ptr_array_add (miner->private->async_calls, data);
-
-	return data;
-}
-
-static void
-async_call_data_update_callback (AsyncCallData *data,
-                                 GError        *error)
-{
-	GAsyncReadyCallback callback;
-	GSimpleAsyncResult *result;
-
-	callback = data->callback;
-
-	if (error) {
-		result = g_simple_async_result_new_from_error (G_OBJECT (data->miner),
-		                                               callback,
-		                                               data->user_data,
-		                                               (GError *) error);
-	} else {
-		result = g_simple_async_result_new (G_OBJECT (data->miner),
-		                                    callback,
-		                                    data->user_data,
-		                                    data->source_function);
-	}
-
-	g_simple_async_result_complete (result);
-	g_object_unref (result);
-}
-
-static void
-async_call_data_query_callback (AsyncCallData   *data,
-                                const GPtrArray *query_results,
-                                GError          *error)
-{
-	GAsyncReadyCallback callback;
-	GSimpleAsyncResult *result;
-
-	callback = data->callback;
-
-	if (error) {
-		result = g_simple_async_result_new_from_error (G_OBJECT (data->miner),
-		                                               callback,
-		                                               data->user_data,
-		                                               error);
-	} else {
-		result = g_simple_async_result_new (G_OBJECT (data->miner),
-		                                    callback,
-		                                    data->user_data,
-		                                    data->source_function);
-	}
-
-	g_simple_async_result_set_op_res_gpointer (result, (gpointer) query_results, NULL);
-	g_simple_async_result_complete (result);
-	g_object_unref (result);
-}
-
-static void
-async_call_data_notify_error (AsyncCallData *data,
-                              gint           code,
-                              const gchar   *message)
-{
-	TrackerMiner *miner;
-	GError *error;
-
-	miner = data->miner;
-
-	if (data->id != 0) {
-		tracker_cancel_call (miner->private->client, data->id);
-		data->id = 0;
-	}
-
-	if (data->callback) {
-		error = g_error_new_literal (miner_error_quark, code, message);
-
-		if (data->source_function == tracker_miner_execute_update ||
-		    data->source_function == tracker_miner_execute_batch_update ||
-		    data->source_function == tracker_miner_commit) {
-			async_call_data_update_callback (data, error);
-		} else {
-			async_call_data_query_callback (data, NULL, error);
-		}
-
-		g_error_free (error);
-	}
-}
-
-static void
-sparql_update_cb (GError   *error,
-                  gpointer  user_data)
-{
-	AsyncCallData *data = user_data;
-
-	async_call_data_update_callback (data, error);
-	async_call_data_destroy (data, TRUE);
-
-	if (error) {
-		g_error_free (error);
-	}
-}
-
-static void
-sparql_query_cb (GPtrArray *result,
-                 GError    *error,
-                 gpointer   user_data)
-{
-	AsyncCallData *data = user_data;
-
-	async_call_data_query_callback (data, result, error);
-
-	if (error) {
-		g_error_free (error);
-	} else {
-		if (result) {
-			tracker_dbus_results_ptr_array_free (&result);
-		}
-	}
-
-	async_call_data_destroy (data, TRUE);
-}
-
-static void
-sparql_cancelled_cb (GCancellable  *cancellable,
-                     AsyncCallData *data)
-{
-	async_call_data_notify_error (data, 0, "SPARQL operation was cancelled");
-	async_call_data_destroy (data, TRUE);
-}
-
 /**
  * tracker_miner_error_quark:
  *
  * Returns the #GQuark used to identify miner errors in GError structures.
  *
  * Returns: the error #GQuark
+ *
+ * Since: 0.8
  **/
 GQuark
 tracker_miner_error_quark (void)
@@ -676,6 +629,8 @@ tracker_miner_error_quark (void)
  * @miner: a #TrackerMiner
  *
  * Tells the miner to start processing data.
+ *
+ * Since: 0.8
  **/
 void
 tracker_miner_start (TrackerMiner *miner)
@@ -686,6 +641,16 @@ tracker_miner_start (TrackerMiner *miner)
 	miner->private->started = TRUE;
 
 	g_signal_emit (miner, signals[STARTED], 0);
+
+	if (miner->private->d_connection) {
+		g_dbus_connection_emit_signal (miner->private->d_connection,
+		                               NULL,
+		                               miner->private->full_path,
+		                               TRACKER_MINER_DBUS_INTERFACE,
+		                               "Started",
+		                               NULL,
+		                               NULL);
+	}
 }
 
 /**
@@ -693,6 +658,8 @@ tracker_miner_start (TrackerMiner *miner)
  * @miner: a #TrackerMiner
  *
  * Tells the miner to stop processing data.
+ *
+ * Since: 0.8
  **/
 void
 tracker_miner_stop (TrackerMiner *miner)
@@ -703,14 +670,26 @@ tracker_miner_stop (TrackerMiner *miner)
 	miner->private->started = FALSE;
 
 	g_signal_emit (miner, signals[STOPPED], 0);
+
+	if (miner->private->d_connection) {
+		g_dbus_connection_emit_signal (miner->private->d_connection,
+		                               NULL,
+		                               miner->private->full_path,
+		                               TRACKER_MINER_DBUS_INTERFACE,
+		                               "Stopped",
+		                               NULL,
+		                               NULL);
+	}
 }
 
 /**
  * tracker_miner_ignore_next_update:
  * @miner: a #TrackerMiner
- * @urls: the urls to mark as to ignore on next update
+ * @urls: (in): the urls to mark as to ignore on next update
  *
  * Tells the miner to mark @urls are to ignore on next update.
+ *
+ * Since: 0.8
  **/
 void
 tracker_miner_ignore_next_update (TrackerMiner *miner,
@@ -728,6 +707,8 @@ tracker_miner_ignore_next_update (TrackerMiner *miner,
  * Returns #TRUE if the miner has been started.
  *
  * Returns: #TRUE if the miner is already started.
+ *
+ * Since: 0.8
  **/
 gboolean
 tracker_miner_is_started (TrackerMiner *miner)
@@ -738,246 +719,40 @@ tracker_miner_is_started (TrackerMiner *miner)
 }
 
 /**
- * tracker_miner_execute_update:
+ * tracker_miner_is_paused:
  * @miner: a #TrackerMiner
- * @sparql: a SPARQL query
- * @cancellable: a #GCancellable to control the operation
- * @callback: a #GAsyncReadyCallback to call when the operation is finished
- * @user_data: data to pass to @callback
  *
- * Executes an update SPARQL query on tracker-store, use this
- * whenever you want to perform data insertions or modifications.
+ * Returns #TRUE if the miner is paused.
  *
- * When the operation is finished, @callback will be called, providing a #GAsyncResult
- * object. Call tracker_miner_execute_sparql_finish on it to get the returned #GError,
- * if there is one.
+ * Returns: #TRUE if the miner is paused.
  *
- * If the operation is cancelled, @callback will be called anyway, with the #GAsyncResult
- * object containing an error.
+ * Since: 0.10
  **/
-void
-tracker_miner_execute_update (TrackerMiner        *miner,
-                              const gchar         *sparql,
-                              GCancellable        *cancellable,
-                              GAsyncReadyCallback  callback,
-                              gpointer             user_data)
+gboolean
+tracker_miner_is_paused (TrackerMiner *miner)
 {
-	AsyncCallData *data;
+	g_return_val_if_fail (TRACKER_IS_MINER (miner), TRUE);
 
-	g_return_if_fail (TRACKER_IS_MINER (miner));
-	g_return_if_fail (sparql != NULL);
-	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
-
-	data = async_call_data_new (miner,
-	                            cancellable,
-	                            callback,
-	                            user_data,
-	                            tracker_miner_execute_sparql);
-
-	data->id = tracker_resources_sparql_update_async (miner->private->client,
-	                                                  sparql,
-	                                                  sparql_update_cb,
-	                                                  data);
+	return g_hash_table_size (miner->private->pauses) > 0 ? TRUE : FALSE;
 }
 
 /**
- * tracker_miner_execute_update_finish:
+ * tracker_miner_get_n_pause_reasons:
  * @miner: a #TrackerMiner
- * @result: a #GAsyncResult
- * @error: a #GError
  *
- * Finishes the async update operation. If an error occured during the update,
- * @error will be set.
+ * Returns the number of pause reasons holding @miner from
+ * indexing contents.
  *
+ * Returns: The number of current pause reasons
+ *
+ * Since: 0.10.5
  **/
-void
-tracker_miner_execute_update_finish (TrackerMiner  *miner,
-                                     GAsyncResult  *result,
-                                     GError       **error)
+guint
+tracker_miner_get_n_pause_reasons (TrackerMiner *miner)
 {
-	GSimpleAsyncResult *r = G_SIMPLE_ASYNC_RESULT (result);
+	g_return_val_if_fail (TRACKER_IS_MINER (miner), 0);
 
-	g_simple_async_result_propagate_error (r, error);
-}
-
-/**
- * tracker_miner_execute_sparql:
- * @miner: a #TrackerMiner
- * @sparql: a SPARQL query
- * @cancellable: a #GCancellable to control the operation
- * @callback: a #GAsyncReadyCallback to call when the operation is finished
- * @user_data: data to pass to @callback
- *
- * Executes the SPARQL query on tracker-store and returns asynchronously
- * the queried data. Use this whenever you need to get data from
- * already stored information.
- *
- * When the operation is finished, @callback will be called, providing a #GAsyncResult
- * object. Call tracker_miner_execute_sparql_finish on it to get the query results, or
- * the GError object if an error occured.
- *
- * If the operation is cancelled, @callback will be called anyway, with the #GAsyncResult
- * object containing an error.
- **/
-void
-tracker_miner_execute_sparql (TrackerMiner        *miner,
-                              const gchar         *sparql,
-                              GCancellable        *cancellable,
-                              GAsyncReadyCallback  callback,
-                              gpointer             user_data)
-{
-	AsyncCallData *data;
-
-	g_return_if_fail (TRACKER_IS_MINER (miner));
-	g_return_if_fail (sparql != NULL);
-	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
-	g_return_if_fail (callback != NULL);
-
-	data = async_call_data_new (miner, cancellable, callback, user_data, tracker_miner_execute_sparql);
-
-	data->id = tracker_resources_sparql_query_async (miner->private->client,
-	                                                 sparql, sparql_query_cb,
-	                                                 data);
-}
-
-/**
- * tracker_miner_execute_sparql_finish:
- * @miner: a #TrackerMiner
- * @result: a #GAsyncResult object holding the result of the query
- * @error: a #GError
- *
- * Finishes the async operation and returns the query results. If an error
- * occured during the query, @error will be set.
- *
- * Returns: a #GPtrArray with the sparql results which should not be freed.
- **/
-const GPtrArray *
-tracker_miner_execute_sparql_finish (TrackerMiner  *miner,
-                                     GAsyncResult  *result,
-                                     GError       **error)
-{
-	GSimpleAsyncResult *r = G_SIMPLE_ASYNC_RESULT (result);
-
-	if (g_simple_async_result_propagate_error (r, error)) {
-		return NULL;
-	}
-
-	return (const GPtrArray*) g_simple_async_result_get_op_res_gpointer (r);
-}
-
-/**
- * tracker_miner_execute_batch_update:
- * @miner: a #TrackerMiner
- * @sparql: a set of SPARQL updates
- * @cancellable: a #GCancellable to control the operation
- * @callback: a #GAsyncReadyCallback to call when the operation is finished
- * @user_data: data to pass to @callback
- *
- * Executes a batch of update SPARQL queries on tracker-store, use this
- * whenever you want to perform data insertions or modifications in
- * batches.
- *
- * When the operation is finished, @callback will be called, providing a #GAsyncResult
- * object. Call tracker_miner_execute_batch_update_finish on it to get the returned #GError,
- * if there is one.
- *
- * If the operation is cancelled, @callback will be called anyway, with the #GAsyncResult
- * object containing an error.
- **/
-void
-tracker_miner_execute_batch_update (TrackerMiner        *miner,
-                                    const gchar         *sparql,
-                                    GCancellable        *cancellable,
-                                    GAsyncReadyCallback  callback,
-                                    gpointer             user_data)
-{
-	AsyncCallData *data;
-
-	g_return_if_fail (TRACKER_IS_MINER (miner));
-	g_return_if_fail (sparql != NULL);
-	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
-
-	data = async_call_data_new (miner, cancellable, callback, user_data, tracker_miner_execute_batch_update);
-
-	data->id = tracker_resources_batch_sparql_update_async (miner->private->client,
-	                                                        sparql, sparql_update_cb,
-	                                                        data);
-}
-
-/**
- * tracker_miner_execute_batch_update_finish:
- * @miner: a #TrackerMiner
- * @result: a #GAsyncResult
- * @error: a #GError
- *
- * Finishes the async batch update operation. If an error occured during the update,
- * @error will be set.
- *
- **/
-void
-tracker_miner_execute_batch_update_finish (TrackerMiner *miner,
-                                           GAsyncResult *result,
-                                           GError      **error)
-{
-	GSimpleAsyncResult *r = G_SIMPLE_ASYNC_RESULT (result);
-
-	g_simple_async_result_propagate_error (r, error);
-}
-
-/**
- * tracker_miner_commit:
- * @miner: a #TrackerMiner
- * @cancellable: a #GCancellable to control the operation
- * @callback: a #GAsyncReadyCallback to call when the operation is finished
- * @user_data: data to pass to @callback
- *
- * Commits all pending batch updates. See tracker_miner_execute_batch_update().
- *
- * When the operation is finished, @callback will be called, providing a #GAsyncResult
- * object. Call tracker_miner_commit_finish on it to get the returned #GError,
- * if there is one.
- *
- * If the operation is cancelled, @callback will be called anyway, with the #GAsyncResult
- * object containing an error.
- **/
-
-void
-tracker_miner_commit (TrackerMiner        *miner,
-                      GCancellable        *cancellable,
-                      GAsyncReadyCallback  callback,
-                      gpointer             user_data)
-
-{
-	AsyncCallData *data;
-
-	g_return_if_fail (TRACKER_IS_MINER (miner));
-	g_return_if_fail (!cancellable || G_IS_CANCELLABLE (cancellable));
-
-	data = async_call_data_new (miner, cancellable, callback, user_data, tracker_miner_commit);
-
-	data->id = tracker_resources_batch_commit_async (miner->private->client,
-	                                                 sparql_update_cb,
-	                                                 data);
-}
-
-/**
- * tracker_miner_commit_finish:
- * @miner: a #TrackerMiner
- * @result: a #GAsyncResult
- * @error: a #GError
- *
- * Finishes the async comit operation. If an error occured during the commit,
- * @error will be set.
- *
- **/
-void
-tracker_miner_commit_finish (TrackerMiner  *miner,
-                             GAsyncResult  *result,
-                             GError       **error)
-{
-	GSimpleAsyncResult *r = G_SIMPLE_ASYNC_RESULT (result);
-
-	g_simple_async_result_propagate_error (r, error);
+	return g_hash_table_size (miner->private->pauses);
 }
 
 static gint
@@ -1012,8 +787,18 @@ tracker_miner_pause_internal (TrackerMiner  *miner,
 
 	if (g_hash_table_size (miner->private->pauses) == 1) {
 		/* Pause */
-		g_message ("Miner is pausing");
+		g_message ("Miner:'%s' is pausing", miner->private->name);
 		g_signal_emit (miner, signals[PAUSED], 0);
+
+		if (miner->private->d_connection) {
+			g_dbus_connection_emit_signal (miner->private->d_connection,
+			                               NULL,
+			                               miner->private->full_path,
+			                               TRACKER_MINER_DBUS_INTERFACE,
+			                               "Paused",
+			                               NULL,
+			                               NULL);
+		}
 	}
 
 	return pd->cookie;
@@ -1023,13 +808,15 @@ tracker_miner_pause_internal (TrackerMiner  *miner,
  * tracker_miner_pause:
  * @miner: a #TrackerMiner
  * @reason: reason to pause
- * @error: return location for errors
+ * @error: (out callee-allocates) (transfer full) (allow-none): return location for errors
  *
  * Asks @miner to pause. On success the cookie ID is returned,
  * this is what must be used in tracker_miner_resume() to resume
  * operations. On failure @error will be set and -1 will be returned.
  *
  * Returns: The pause cookie ID.
+ *
+ * Since: 0.8
  **/
 gint
 tracker_miner_pause (TrackerMiner  *miner,
@@ -1054,13 +841,15 @@ tracker_miner_pause (TrackerMiner  *miner,
  * tracker_miner_resume:
  * @miner: a #TrackerMiner
  * @cookie: pause cookie
- * @error: return location for errors
+ * @error: (out) (transfer full) (allow-none): return location for errors
  *
  * Asks the miner to resume processing. The cookie must be something
  * returned by tracker_miner_pause(). The miner won't actually resume
  * operations until all pause requests have been resumed.
  *
  * Returns: #TRUE if the cookie was valid.
+ *
+ * Since: 0.8
  **/
 gboolean
 tracker_miner_resume (TrackerMiner  *miner,
@@ -1077,68 +866,226 @@ tracker_miner_resume (TrackerMiner  *miner,
 
 	if (g_hash_table_size (miner->private->pauses) == 0) {
 		/* Resume */
-		g_message ("Miner is resuming");
+		g_message ("Miner:'%s' is resuming", miner->private->name);
 		g_signal_emit (miner, signals[RESUMED], 0);
+
+		if (miner->private->d_connection) {
+			g_dbus_connection_emit_signal (miner->private->d_connection,
+			                               NULL,
+			                               miner->private->full_path,
+			                               TRACKER_MINER_DBUS_INTERFACE,
+			                               "Resumed",
+			                               NULL,
+			                               NULL);
+		}
 	}
 
 	return TRUE;
 }
 
-/* DBus methods */
-void
-_tracker_miner_dbus_get_status (TrackerMiner           *miner,
-                                DBusGMethodInvocation  *context,
-                                GError                **error)
+/**
+ * tracker_miner_get_connection:
+ * @miner: a #TrackerMiner
+ *
+ * Gets the #TrackerSparqlConnection initialized by @miner
+ *
+ * Returns: (transfer none): a #TrackerSparqlConnection.
+ *
+ * Since: 0.10
+ **/
+TrackerSparqlConnection *
+tracker_miner_get_connection (TrackerMiner *miner)
 {
-	guint request_id;
-
-	request_id = tracker_dbus_get_next_request_id ();
-
-	tracker_dbus_async_return_if_fail (miner != NULL, context);
-
-	tracker_dbus_request_new (request_id, context, "%s()", __PRETTY_FUNCTION__);
-
-	tracker_dbus_request_success (request_id, context);
-	dbus_g_method_return (context, miner->private->status);
+	return miner->private->connection;
 }
 
-void
-_tracker_miner_dbus_get_progress (TrackerMiner           *miner,
-                                  DBusGMethodInvocation  *context,
-                                  GError                **error)
+/**
+ * tracker_miner_get_dbus_connection:
+ * @miner: a #TrackerMiner
+ *
+ * Gets the #GDBusConnection initialized by @miner
+ *
+ * Returns: (transfer none): a #GDBusConnection.
+ *
+ * Since: 0.10
+ **/
+GDBusConnection *
+tracker_miner_get_dbus_connection (TrackerMiner *miner)
 {
-	guint request_id;
-
-	request_id = tracker_dbus_get_next_request_id ();
-
-	tracker_dbus_async_return_if_fail (miner != NULL, context);
-
-	tracker_dbus_request_new (request_id, context, "%s()", __PRETTY_FUNCTION__);
-
-	tracker_dbus_request_success (request_id, context);
-	dbus_g_method_return (context, miner->private->progress);
+	return miner->private->d_connection;
 }
 
-void
-_tracker_miner_dbus_get_pause_details (TrackerMiner           *miner,
-                                       DBusGMethodInvocation  *context,
-                                       GError                **error)
+/**
+ * tracker_miner_get_dbus_full_name:
+ * @miner: a #TrackerMiner
+ *
+ * Gets the DBus name registered by @miner
+ *
+ * Returns: a constant string which should not be modified by the caller.
+ *
+ * Since: 0.10
+ **/
+G_CONST_RETURN gchar *
+tracker_miner_get_dbus_full_name (TrackerMiner *miner)
+{
+	return miner->private->full_name;
+}
+
+/**
+ * tracker_miner_get_dbus_full_path:
+ * @miner: a #TrackerMiner
+ *
+ * Gets the DBus path registered by @miner
+ *
+ * Returns: a constant string which should not be modified by the caller.
+ *
+ * Since: 0.10
+ **/
+G_CONST_RETURN gchar *
+tracker_miner_get_dbus_full_path (TrackerMiner *miner)
+{
+	return miner->private->full_path;
+}
+
+static void
+miner_finalize (GObject *object)
+{
+	TrackerMiner *miner = TRACKER_MINER (object);
+
+	if (miner->private->watch_name_id != 0) {
+		g_bus_unwatch_name (miner->private->watch_name_id);
+	}
+
+	if (miner->private->registration_id != 0) {
+		g_dbus_connection_unregister_object (miner->private->d_connection,
+		                                     miner->private->registration_id);
+	}
+
+	if (miner->private->introspection_data) {
+		g_dbus_node_info_unref (miner->private->introspection_data);
+	}
+
+	if (miner->private->d_connection) {
+		g_object_unref (miner->private->d_connection);
+	}
+
+	g_free (miner->private->status);
+	g_free (miner->private->name);
+	g_free (miner->private->full_name);
+	g_free (miner->private->full_path);
+
+	if (miner->private->connection) {
+		g_object_unref (miner->private->connection);
+	}
+
+	if (miner->private->pauses) {
+		g_hash_table_unref (miner->private->pauses);
+	}
+
+	G_OBJECT_CLASS (tracker_miner_parent_class)->finalize (object);
+}
+
+static void
+handle_method_call_ignore_next_update (TrackerMiner          *miner,
+                                       GDBusMethodInvocation *invocation,
+                                       GVariant              *parameters)
+{
+	GStrv urls = NULL;
+	TrackerDBusRequest *request;
+
+	g_variant_get (parameters, "(^a&s)", &urls);
+
+	request = tracker_g_dbus_request_begin (invocation,
+	                                        "%s", __PRETTY_FUNCTION__);
+
+	tracker_miner_ignore_next_update (miner, urls);
+
+	tracker_dbus_request_end (request, NULL);
+	g_dbus_method_invocation_return_value (invocation, NULL);
+	g_free (urls);
+}
+
+static void
+handle_method_call_resume (TrackerMiner          *miner,
+                           GDBusMethodInvocation *invocation,
+                           GVariant              *parameters)
+{
+	GError *local_error = NULL;
+	gint cookie;
+	TrackerDBusRequest *request;
+
+	g_variant_get (parameters, "(i)", &cookie);
+
+	request = tracker_g_dbus_request_begin (invocation,
+	                                        "%s(cookie:%d)",
+	                                        __PRETTY_FUNCTION__,
+	                                        cookie);
+
+	if (!tracker_miner_resume (miner, cookie, &local_error)) {
+		tracker_dbus_request_end (request, local_error);
+
+		g_dbus_method_invocation_return_gerror (invocation, local_error);
+
+		g_error_free (local_error);
+		return;
+	}
+
+	tracker_dbus_request_end (request, NULL);
+	g_dbus_method_invocation_return_value (invocation, NULL);
+}
+
+static void
+handle_method_call_pause (TrackerMiner          *miner,
+                          GDBusMethodInvocation *invocation,
+                          GVariant              *parameters)
+{
+	GError *local_error = NULL;
+	gint cookie;
+	const gchar *application = NULL, *reason = NULL;
+	TrackerDBusRequest *request;
+
+	g_variant_get (parameters, "(&s&s)", &application, &reason);
+
+	tracker_gdbus_async_return_if_fail (application != NULL, invocation);
+	tracker_gdbus_async_return_if_fail (reason != NULL, invocation);
+
+	request = tracker_g_dbus_request_begin (invocation,
+	                                        "%s(application:'%s', reason:'%s')",
+	                                        __PRETTY_FUNCTION__,
+	                                        application,
+	                                        reason);
+
+	cookie = tracker_miner_pause_internal (miner, application, reason, &local_error);
+	if (cookie == -1) {
+		tracker_dbus_request_end (request, local_error);
+
+		g_dbus_method_invocation_return_gerror (invocation, local_error);
+
+		g_error_free (local_error);
+
+		return;
+	}
+
+	tracker_dbus_request_end (request, NULL);
+	g_dbus_method_invocation_return_value (invocation,
+	                                       g_variant_new ("(i)", cookie));
+}
+
+static void
+handle_method_call_get_pause_details (TrackerMiner          *miner,
+                                      GDBusMethodInvocation *invocation,
+                                      GVariant              *parameters)
 {
 	GSList *applications, *reasons;
 	GStrv applications_strv, reasons_strv;
 	GHashTableIter iter;
 	gpointer key, value;
-	guint request_id;
+	TrackerDBusRequest *request;
 
-	request_id = tracker_dbus_get_next_request_id ();
-
-	tracker_dbus_async_return_if_fail (miner != NULL, context);
-
-	tracker_dbus_request_new (request_id, context, "%s()", __PRETTY_FUNCTION__);
+	request = tracker_g_dbus_request_begin (invocation, "%s()", __PRETTY_FUNCTION__);
 
 	applications = NULL;
 	reasons = NULL;
-
 	g_hash_table_iter_init (&iter, miner->private->pauses);
 	while (g_hash_table_iter_next (&iter, &key, &value)) {
 		PauseData *pd = value;
@@ -1146,120 +1093,166 @@ _tracker_miner_dbus_get_pause_details (TrackerMiner           *miner,
 		applications = g_slist_prepend (applications, pd->application);
 		reasons = g_slist_prepend (reasons, pd->reason);
 	}
-
 	applications = g_slist_reverse (applications);
 	reasons = g_slist_reverse (reasons);
-
 	applications_strv = tracker_gslist_to_string_list (applications);
 	reasons_strv = tracker_gslist_to_string_list (reasons);
 
-	tracker_dbus_request_success (request_id, context);
-	dbus_g_method_return (context, applications_strv, reasons_strv);
+	tracker_dbus_request_end (request, NULL);
+	g_dbus_method_invocation_return_value (invocation,
+	                                       g_variant_new ("(^as^as)",
+	                                                      applications_strv,
+	                                                      reasons_strv));
 
 	g_strfreev (applications_strv);
 	g_strfreev (reasons_strv);
-
 	g_slist_free (applications);
 	g_slist_free (reasons);
 }
 
-void
-_tracker_miner_dbus_pause (TrackerMiner           *miner,
-                           const gchar            *application,
-                           const gchar            *reason,
-                           DBusGMethodInvocation  *context,
-                           GError                **error)
+static void
+handle_method_call_get_progress (TrackerMiner          *miner,
+                                 GDBusMethodInvocation *invocation,
+                                 GVariant              *parameters)
 {
-	GError *local_error = NULL;
-	guint request_id;
-	gint cookie;
+	TrackerDBusRequest *request;
 
-	request_id = tracker_dbus_get_next_request_id ();
+	request = tracker_g_dbus_request_begin (invocation, "%s()", __PRETTY_FUNCTION__);
 
-	tracker_dbus_async_return_if_fail (miner != NULL, context);
-	tracker_dbus_async_return_if_fail (application != NULL, context);
-	tracker_dbus_async_return_if_fail (reason != NULL, context);
-
-	tracker_dbus_request_new (request_id, context,
-	                          "%s(application:'%s', reason:'%s')",
-	                          __PRETTY_FUNCTION__,
-	                          application,
-	                          reason);
-
-	cookie = tracker_miner_pause_internal (miner, application, reason, &local_error);
-	if (cookie == -1) {
-		GError *actual_error = NULL;
-
-		tracker_dbus_request_failed (request_id,
-		                             context,
-		                             &actual_error,
-		                             local_error ? local_error->message : NULL);
-		dbus_g_method_return_error (context, actual_error);
-
-		g_error_free (actual_error);
-		g_error_free (local_error);
-
-		return;
-	}
-
-	tracker_dbus_request_success (request_id, context);
-	dbus_g_method_return (context, cookie);
+	tracker_dbus_request_end (request, NULL);
+	g_dbus_method_invocation_return_value (invocation,
+	                                       g_variant_new ("(d)", miner->private->progress));
 }
 
-void
-_tracker_miner_dbus_resume (TrackerMiner           *miner,
-                            gint                    cookie,
-                            DBusGMethodInvocation  *context,
-                            GError                **error)
+static void
+handle_method_call_get_status (TrackerMiner          *miner,
+                               GDBusMethodInvocation *invocation,
+                               GVariant              *parameters)
 {
-	GError *local_error = NULL;
-	guint request_id;
+	TrackerDBusRequest *request;
 
-	request_id = tracker_dbus_get_next_request_id ();
+	request = tracker_g_dbus_request_begin (invocation, "%s()", __PRETTY_FUNCTION__);
 
-	tracker_dbus_async_return_if_fail (miner != NULL, context);
+	tracker_dbus_request_end (request, NULL);
+	g_dbus_method_invocation_return_value (invocation,
+	                                       g_variant_new ("(s)", miner->private->status ? miner->private->status : ""));
 
-	tracker_dbus_request_new (request_id,
-	                          context,
-	                          "%s(cookie:%d)",
-	                          __PRETTY_FUNCTION__,
-	                          cookie);
-
-	if (!tracker_miner_resume (miner, cookie, &local_error)) {
-		GError *actual_error = NULL;
-
-		tracker_dbus_request_failed (request_id,
-		                             context,
-		                             &actual_error,
-		                             local_error ? local_error->message : NULL);
-		dbus_g_method_return_error (context, actual_error);
-
-		g_error_free (actual_error);
-		g_error_free (local_error);
-
-		return;
-	}
-
-	tracker_dbus_request_success (request_id, context);
-	dbus_g_method_return (context);
 }
 
-void
-_tracker_miner_dbus_ignore_next_update (TrackerMiner           *miner,
-                                        const GStrv             urls,
-                                        DBusGMethodInvocation  *context,
-                                        GError                **error)
+static void
+handle_method_call (GDBusConnection       *connection,
+                    const gchar           *sender,
+                    const gchar           *object_path,
+                    const gchar           *interface_name,
+                    const gchar           *method_name,
+                    GVariant              *parameters,
+                    GDBusMethodInvocation *invocation,
+                    gpointer               user_data)
 {
-	guint request_id;
+	TrackerMiner *miner = user_data;
 
-	request_id = tracker_dbus_get_next_request_id ();
+	tracker_gdbus_async_return_if_fail (miner != NULL, invocation);
 
-	tracker_dbus_async_return_if_fail (miner != NULL, context);
+	if (g_strcmp0 (method_name, "IgnoreNextUpdate") == 0) {
+		handle_method_call_ignore_next_update (miner, invocation, parameters);
+	} else
+	if (g_strcmp0 (method_name, "Resume") == 0) {
+		handle_method_call_resume (miner, invocation, parameters);
+	} else
+	if (g_strcmp0 (method_name, "Pause") == 0) {
+		handle_method_call_pause (miner, invocation, parameters);
+	} else
+	if (g_strcmp0 (method_name, "GetPauseDetails") == 0) {
+		handle_method_call_get_pause_details (miner, invocation, parameters);
+	} else
+	if (g_strcmp0 (method_name, "GetProgress") == 0) {
+		handle_method_call_get_progress (miner, invocation, parameters);
+	} else
+	if (g_strcmp0 (method_name, "GetStatus") == 0) {
+		handle_method_call_get_status (miner, invocation, parameters);
+	} else {
+		g_assert_not_reached ();
+	}
+}
 
-	tracker_dbus_request_new (request_id, context, "%s()", __PRETTY_FUNCTION__);
+static GVariant *
+handle_get_property (GDBusConnection  *connection,
+                     const gchar      *sender,
+                     const gchar      *object_path,
+                     const gchar      *interface_name,
+                     const gchar      *property_name,
+                     GError          **error,
+                     gpointer          user_data)
+{
+	g_assert_not_reached ();
+	return NULL;
+}
 
-	tracker_miner_ignore_next_update (miner, urls);
+static gboolean
+handle_set_property (GDBusConnection  *connection,
+                     const gchar      *sender,
+                     const gchar      *object_path,
+                     const gchar      *interface_name,
+                     const gchar      *property_name,
+                     GVariant         *value,
+                     GError          **error,
+                     gpointer          user_data)
+{
+	g_assert_not_reached ();
+	return TRUE;
+}
 
-	tracker_dbus_request_success (request_id, context);
-	dbus_g_method_return (context);
+static void
+on_tracker_store_appeared (GDBusConnection *connection,
+                           const gchar     *name,
+                           const gchar     *name_owner,
+                           gpointer         user_data)
+
+{
+	TrackerMiner *miner = user_data;
+
+	g_debug ("Miner:'%s' noticed store availability has changed to AVAILABLE",
+	         miner->private->name);
+
+	if (miner->private->availability_cookie != 0) {
+		GError *error = NULL;
+
+		tracker_miner_resume (miner,
+		                      miner->private->availability_cookie,
+		                      &error);
+
+		if (error) {
+			g_warning ("Error happened resuming miner, %s", error->message);
+			g_error_free (error);
+		}
+
+		miner->private->availability_cookie = 0;
+	}
+}
+
+static void
+on_tracker_store_disappeared (GDBusConnection *connection,
+                              const gchar     *name,
+                              gpointer         user_data)
+{
+	TrackerMiner *miner = user_data;
+
+	g_debug ("Miner:'%s' noticed store availability has changed to UNAVAILABLE",
+	         miner->private->name);
+
+	if (miner->private->availability_cookie == 0) {
+		GError *error = NULL;
+		gint cookie_id;
+
+		cookie_id = tracker_miner_pause (miner,
+		                                 _("Data store is not available"),
+		                                 &error);
+
+		if (error) {
+			g_warning ("Could not pause, %s", error->message);
+			g_error_free (error);
+		} else {
+			miner->private->availability_cookie = cookie_id;
+		}
+	}
 }

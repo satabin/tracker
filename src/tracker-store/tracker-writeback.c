@@ -28,35 +28,44 @@
 
 typedef struct {
 	GHashTable *allowances;
-	GHashTable *events;
+	GHashTable *pending_events;
+	GHashTable *ready_events;
 } WritebackPrivate;
 
-static GStaticPrivate private_key = G_STATIC_PRIVATE_INIT;
+static WritebackPrivate *private;
 
-static GStrv
-copy_rdf_types (GPtrArray *rdf_types)
+static GArray*
+rdf_types_to_array (GPtrArray *rdf_types)
 {
-	GStrv new_types;
+	GArray *new_types;
 	guint n;
 
-	new_types = g_new0 (gchar *, rdf_types->len + 1);
+	new_types =  g_array_sized_new (FALSE, FALSE, sizeof (gint), rdf_types->len);
 
 	for (n = 0; n < rdf_types->len; n++) {
-		new_types[n] = g_strdup (tracker_class_get_uri (rdf_types->pdata[n]));
+		gint id = tracker_class_get_id (rdf_types->pdata[n]);
+		g_array_append_val (new_types, id);
 	}
 
 	return new_types;
 }
 
+static void
+array_free (GArray *array)
+{
+	g_array_free (array, TRUE);
+}
+
 void
-tracker_writeback_check (const gchar *graph,
+tracker_writeback_check (gint         graph_id,
+                         const gchar *graph,
+                         gint         subject_id,
                          const gchar *subject,
-                         const gchar *predicate,
+                         gint         pred_id,
+                         gint         object_id,
                          const gchar *object,
                          GPtrArray   *rdf_types)
 {
-	WritebackPrivate *private;
-
 	/* When graph is NULL, the graph is the default one. We only do
 	 * writeback reporting in the default graph (update queries that
 	 * aren't coming from the miner)
@@ -67,45 +76,48 @@ tracker_writeback_check (const gchar *graph,
 		return;
 	}
 
-	private = g_static_private_get (&private_key);
 	g_return_if_fail (private != NULL);
 
-	if (g_hash_table_lookup (private->allowances, predicate)) {
-		if (!private->events) {
-			private->events = g_hash_table_new_full (g_str_hash, g_str_equal,
-			                                         (GDestroyNotify) g_free,
-			                                         (GDestroyNotify) g_strfreev);
+	if (g_hash_table_lookup (private->allowances, GINT_TO_POINTER (pred_id))) {
+		if (!private->pending_events) {
+			private->pending_events = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+			                                                 (GDestroyNotify) NULL,
+			                                                 (GDestroyNotify) NULL);
 		}
 
-		g_hash_table_insert (private->events,
-		                     g_strdup (subject),
-		                     copy_rdf_types (rdf_types));
+		g_hash_table_insert (private->pending_events,
+		                     GINT_TO_POINTER (subject_id),
+		                     rdf_types_to_array (rdf_types));
 	}
 }
 
 void
-tracker_writeback_reset (void)
+tracker_writeback_reset_pending ()
 {
-	WritebackPrivate *private;
-
-	private = g_static_private_get (&private_key);
 	g_return_if_fail (private != NULL);
 
-	if (private->events) {
-		g_hash_table_unref (private->events);
-		private->events = NULL;
+	if (private->pending_events) {
+		g_hash_table_remove_all (private->pending_events);
+	}
+}
+
+void
+tracker_writeback_reset_ready ()
+{
+	g_return_if_fail (private != NULL);
+
+	if (private->ready_events) {
+		g_hash_table_unref (private->ready_events);
+		private->ready_events = NULL;
 	}
 }
 
 GHashTable *
-tracker_writeback_get_pending (void)
+tracker_writeback_get_ready (void)
 {
-	WritebackPrivate *private;
-
-	private = g_static_private_get (&private_key);
 	g_return_val_if_fail (private != NULL, NULL);
 
-	return private->events;
+	return private->ready_events;
 }
 
 static void
@@ -114,6 +126,10 @@ free_private (gpointer user_data)
 	WritebackPrivate *private;
 
 	private = user_data;
+	if (private->ready_events)
+		g_hash_table_unref (private->ready_events);
+	if (private->pending_events)
+		g_hash_table_unref (private->pending_events);
 	g_hash_table_unref (private->allowances);
 	g_free (private);
 }
@@ -121,20 +137,16 @@ free_private (gpointer user_data)
 void
 tracker_writeback_init (TrackerWritebackGetPredicatesFunc func)
 {
-	WritebackPrivate *private;
 	GStrv predicates_to_signal;
 	gint i, count;
 
-	private = g_static_private_get (&private_key);
 	g_return_if_fail (private == NULL);
 
 	private = g_new0 (WritebackPrivate, 1);
 
-	g_static_private_set (&private_key, private, free_private);
-
-	private->allowances = g_hash_table_new_full (g_str_hash,
-	                                             g_str_equal,
-	                                             (GDestroyNotify) g_free,
+	private->allowances = g_hash_table_new_full (g_direct_hash,
+	                                             g_direct_equal,
+	                                             NULL,
 	                                             NULL);
 
 	g_message ("Setting up predicates for writeback notification...");
@@ -152,24 +164,55 @@ tracker_writeback_init (TrackerWritebackGetPredicatesFunc func)
 	}
 
 	count = g_strv_length (predicates_to_signal);
+
 	for (i = 0; i < count; i++) {
-		g_message ("  Adding:'%s'", predicates_to_signal[i]);
-		g_hash_table_insert (private->allowances,
-		                     g_strdup (predicates_to_signal[i]),
-		                     GINT_TO_POINTER (TRUE));
+		TrackerProperty *predicate = tracker_ontologies_get_property_by_uri (predicates_to_signal[i]);
+		if (predicate) {
+			gint id = tracker_property_get_id (predicate);
+			g_message ("  Adding:'%s'", predicates_to_signal[i]);
+			g_hash_table_insert (private->allowances,
+			                     GINT_TO_POINTER (id),
+			                     GINT_TO_POINTER (TRUE));
+		}
 	}
 
 	g_strfreev (predicates_to_signal);
 }
 
 void
+tracker_writeback_transact (void)
+{
+	GHashTableIter iter;
+	gpointer key, value;
+
+	if (!private->pending_events)
+		return;
+
+	if (!private->ready_events) {
+		private->ready_events = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+		                                               (GDestroyNotify) NULL,
+		                                               (GDestroyNotify) array_free);
+	}
+
+	g_hash_table_iter_init (&iter, private->pending_events);
+
+	while (g_hash_table_iter_next (&iter, &key, &value)) {
+		g_hash_table_insert (private->ready_events, key, value);
+		g_hash_table_iter_remove (&iter);
+	}
+}
+
+void
 tracker_writeback_shutdown (void)
 {
-	WritebackPrivate *private;
-
-	private = g_static_private_get (&private_key);
 	g_return_if_fail (private != NULL);
 
-	tracker_writeback_reset ();
-	g_static_private_set (&private_key, NULL, NULL);
+	tracker_writeback_reset_pending ();
+
+	/* Perhaps hurry an emit of the ready events here? We're shutting down,
+	 * so I guess we're not required to do that here ... ? */
+	tracker_writeback_reset_ready ();
+
+	free_private (private);
+	private = NULL;
 }

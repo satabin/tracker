@@ -23,16 +23,16 @@
 
 #include <glib-object.h>
 #include <gio/gio.h>
-#include <libtracker-client/tracker.h>
 
 G_BEGIN_DECLS
 
-#define TRACKER_TYPE_WRITEBACK_DISPATCHER         (tracker_writeback_dispatcher_get_type())
-#define TRACKER_WRITEBACK_DISPATCHER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), TRACKER_TYPE_WRITEBACK_DISPATCHER, TrackerWritebackDispatcher))
-#define TRACKER_WRITEBACK_DISPATCHER_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST ((c), TRACKER_TYPE_WRITEBACK_DISPATCHER, TrackerWritebackDispatcherClass))
-#define TRACKER_IS_WRITEBACK_DISPATCHER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), TRACKER_TYPE_WRITEBACK_DISPATCHER))
-#define TRACKER_IS_WRITEBACK_DISPATCHER_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE ((c),  TRACKER_TYPE_WRITEBACK_DISPATCHER))
-#define TRACKER_WRITEBACK_DISPATCHER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), TRACKER_TYPE_WRITEBACK_DISPATCHER, TrackerWritebackDispatcherClass))
+#define TRACKER_TYPE_WRITEBACK_DISPATCHER                  (tracker_writeback_dispatcher_get_type())
+#define TRACKER_WRITEBACK_DISPATCHER(o)                    (G_TYPE_CHECK_INSTANCE_CAST ((o), TRACKER_TYPE_WRITEBACK_DISPATCHER, TrackerWritebackDispatcher))
+#define TRACKER_WRITEBACK_DISPATCHER_CLASS(c)              (G_TYPE_CHECK_CLASS_CAST ((c), TRACKER_TYPE_WRITEBACK_DISPATCHER, TrackerWritebackDispatcherClass))
+#define TRACKER_IS_WRITEBACK_DISPATCHER(o)                 (G_TYPE_CHECK_INSTANCE_TYPE ((o), TRACKER_TYPE_WRITEBACK_DISPATCHER))
+#define TRACKER_IS_WRITEBACK_DISPATCHER_CLASS(c)           (G_TYPE_CHECK_CLASS_TYPE ((c),  TRACKER_TYPE_WRITEBACK_DISPATCHER))
+#define TRACKER_WRITEBACK_DISPATCHER_GET_CLASS(o)          (G_TYPE_INSTANCE_GET_CLASS ((o), TRACKER_TYPE_WRITEBACK_DISPATCHER, TrackerWritebackDispatcherClass))
+#define TRACKER_WRITEBACK_DISPATCHER_GET_INITABLE_IFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), G_TYPE_INITABLE, GInitable))
 
 typedef struct TrackerWritebackDispatcher TrackerWritebackDispatcher;
 typedef struct TrackerWritebackDispatcherClass TrackerWritebackDispatcherClass;
@@ -45,13 +45,14 @@ struct TrackerWritebackDispatcherClass {
 	GObjectClass parent_class;
 
 	void (* writeback) (TrackerWritebackDispatcher *dispatcher,
-	                    const gchar                *subject,
-	                    const GStrv                 rdf_types);
+	                    gint                        subject,
+	                    GArray                     *rdf_types);
 };
 
 GType                        tracker_writeback_dispatcher_get_type (void) G_GNUC_CONST;
 
-TrackerWritebackDispatcher * tracker_writeback_dispatcher_new (GMainContext *context);
+TrackerWritebackDispatcher * tracker_writeback_dispatcher_new (GMainContext  *context,
+                                                               GError       **error);
 
 G_END_DECLS
 

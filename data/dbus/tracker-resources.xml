@@ -51,7 +51,13 @@
     </method>
 
    <signal name="Writeback">
-      <arg type="a{sas}" name="subjects" />
+      <arg type="a{iai}" name="subjects" />
+   </signal>
+
+   <signal name="GraphUpdated">
+      <arg type="s" name ="classname" />
+      <arg type="a(iiii)" name="deletes" />
+      <arg type="a(iiii)" name="inserts" />
    </signal>
 
   </interface>

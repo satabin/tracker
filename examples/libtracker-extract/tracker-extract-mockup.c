@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2010, Your name <Your email address>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
@@ -24,7 +24,7 @@
 #include <gio/gio.h>
 
 #include <libtracker-extract/tracker-extract.h>
-#include <libtracker-client/tracker-client.h>
+#include <libtracker-sparql/tracker-sparql.h>
 
 static void extract_mockup (const gchar          *uri,
                             TrackerSparqlBuilder *preupdate,
@@ -59,10 +59,10 @@ extract_mockup (const gchar          *uri,
 	gchar *lyricist_unknown;
 
 	/* Coalesced input */
-	gchar *title;
+	const gchar *title;
 	gchar *performer;
 	gchar *performer_uri;
-	gchar *lyricist;
+	const gchar *lyricist;
 	gchar *lyricist_uri;
 	gchar *album;
 	gchar *album_uri;
@@ -132,8 +132,8 @@ extract_mockup (const gchar          *uri,
 	fclose (f);
 
 	/* TODO: Make sure we coalesce duplicate values */
-	title = tracker_coalesce (4, title_tagv1, title_tagv2, title_tagv3, title_unknown);
-	lyricist = tracker_coalesce (2, lyricist_tagv2, lyricist_unknown);
+	title = tracker_coalesce_strip (4, title_tagv1, title_tagv2, title_tagv3, title_unknown);
+	lyricist = tracker_coalesce_strip (2, lyricist_tagv2, lyricist_unknown);
 
 	performer = g_strdup ("Stone Gods");
 	composer = NULL;
@@ -154,7 +154,7 @@ extract_mockup (const gchar          *uri,
 	 *  data objects, for example, an artist which might be used n times)
 	 */
 	if (performer) {
-		performer_uri = tracker_uri_printf_escaped ("urn:artist:%s", performer);
+		performer_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", performer);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
 		tracker_sparql_builder_subject_iri (preupdate, performer_uri);
@@ -168,7 +168,7 @@ extract_mockup (const gchar          *uri,
 	}
 
 	if (composer) {
-		composer_uri = tracker_uri_printf_escaped ("urn:artist:%s", composer);
+		composer_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", composer);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
 		tracker_sparql_builder_subject_iri (preupdate, composer_uri);
@@ -182,7 +182,7 @@ extract_mockup (const gchar          *uri,
 	}
 
 	if (lyricist) {
-		lyricist_uri = tracker_uri_printf_escaped ("urn:artist:%s", lyricist);
+		lyricist_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", lyricist);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
 		tracker_sparql_builder_subject_iri (preupdate, lyricist_uri);
@@ -196,12 +196,15 @@ extract_mockup (const gchar          *uri,
 	}
 
 	if (album) {
-		album_uri = tracker_uri_printf_escaped ("urn:album:%s", album);
+		album_uri = tracker_sparql_escape_uri_printf ("urn:album:%s", album);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
 		tracker_sparql_builder_subject_iri (preupdate, album_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nmm:MusicAlbum");
+		/* FIXME: nmm:albumTitle is now deprecated
+		 * tracker_sparql_builder_predicate (preupdate, "nie:title");
+		 */
 		tracker_sparql_builder_predicate (preupdate, "nmm:albumTitle");
 		tracker_sparql_builder_object_unvalidated (preupdate, album);
 		tracker_sparql_builder_insert_close (preupdate);
@@ -241,7 +244,6 @@ extract_mockup (const gchar          *uri,
 	if (title) {
 		tracker_sparql_builder_predicate (metadata, "nie:title");
 		tracker_sparql_builder_object_unvalidated (metadata, title);
-		g_free (title);
 	}
 
 	if (lyricist_uri) {
@@ -321,6 +323,14 @@ extract_mockup (const gchar          *uri,
 	}
 
 	/* TODO: Clean up */
+	g_free (title_tagv1);
+	g_free (title_tagv2);
+	g_free (title_tagv3);
+	g_free (title_unknown);
+
+	g_free (lyricist_tagv2);
+	g_free (lyricist_unknown);
+
 	g_free (album);
 	g_free (composer);
 	g_free (performer);

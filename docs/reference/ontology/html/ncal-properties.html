@@ -5,9 +5,9 @@
 <title>NCAL Ontology Properties</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
-<link rel="up" href="ncal-ontology.html" title="NCAL Ontology">
-<link rel="prev" href="ncal-ontology.html" title="NCAL Ontology">
-<link rel="next" href="scal-ontology.html" title="SCAL Ontology">
+<link rel="up" href="ncal-ontology.html" title="Nepomuk Calendar Ontology (NCAL): Automatic translation of the ICAL standard into ontology. Too complex for our taste. Please check SCAL">
+<link rel="prev" href="ncal-ontology.html" title="Nepomuk Calendar Ontology (NCAL): Automatic translation of the ICAL standard into ontology. Too complex for our taste. Please check SCAL">
+<link rel="next" href="scal-ontology.html" title="Simplified Calendar Ontology (SCAL): Simple and efficient ontology to represent calendar information (events, ToDos, recurrency rules...)">
 <meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -1277,6 +1277,38 @@ rdfs:Resource, </td>
 </div>
 <hr>
 <div class="refsect2">
+<a name="ncal-anniversary"></a><h3>ncal:anniversary</h3>
+<p>links a contact with the calendar event of an anniversary. (NCAL version)</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nco-classes.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="ncal-ontology.html#ncal-Event" title="ncal:Event">ncal:Event</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="ncal-priority"></a><h3>ncal:priority</h3>
 <p>The property defines the relative priority for a calendar component. Inspired by RFC 2445 sec. 4.8.1.9</p>
 <div class="variablelist"><table border="0">
@@ -1585,7 +1617,7 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
+<a class="link" href="nco-classes.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -2002,7 +2034,7 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
+<a class="link" href="nco-classes.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -2080,6 +2112,38 @@ rdfs:Resource, </td>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
 <td>
 <a class="link" href="ncal-properties.html#ncal-ncalRelation" title="ncal:ncalRelation">ncal:ncalRelation</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="ncal-birthday"></a><h3>ncal:birthday</h3>
+<p>links a contact with the calendar event of his birthday. (NCAL version)</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Type</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Domain</code></em> :</span></p></td>
+<td>
+<a class="link" href="nco-classes.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
+<td>
+<a class="link" href="ncal-ontology.html#ncal-Event" title="ncal:Event">ncal:Event</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
+<td>--</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subproperties</code></em> :</span></p></td>
@@ -2175,7 +2239,7 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
+<a class="link" href="nco-classes.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -3463,7 +3527,7 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
+<a class="link" href="nco-classes.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>
@@ -3531,7 +3595,7 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Range</code></em> :</span></p></td>
 <td>
-<a class="link" href="nco-ontology.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
+<a class="link" href="nco-classes.html#nco-Contact" title="nco:Contact">nco:Contact</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Superproperties</code></em> :</span></p></td>

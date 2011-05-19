@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>MAEMO Ontology</title>
+<title>Maemo-specific classes: Some maemo/meego specific properties</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
 <link rel="up" href="ontology.html" title="Part I. Overview">
@@ -21,7 +21,7 @@
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="maemo-ontology"></a>MAEMO Ontology</h2></div></div></div>
+<a name="maemo-ontology"></a>Maemo-specific classes: Some maemo/meego specific properties</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="maemo-ontology.html#maemo-classes">MAEMO Ontology Classes</a></span></dt>
 <dt><span class="section"><a href="maemo-properties.html">MAEMO Ontology Properties</a></span></dt>
@@ -67,6 +67,33 @@
 </div>
 <hr>
 <div class="refsect2">
+<a name="maemo-PostalAddress"></a><h3>maemo:PostalAddress</h3>
+<p>Postal Address. Class inspired by TYPE=postal parameter of the ADR property defined in RFC 2426 sec. 3.2.1</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
+<td>
+<a class="link" href="nco-classes.html#nco-PostalAddress" title="nco:PostalAddress">nco:PostalAddress</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subclasses</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In domain of</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In range of</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="maemo-SoftwareApplet"></a><h3>maemo:SoftwareApplet</h3>
 <p>A widget</p>
 <div class="variablelist"><table border="0">
@@ -76,6 +103,34 @@
 <td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
 <td>
 <a class="link" href="nfo-ontology.html#nfo-Software" title="nfo:Software">nfo:Software</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subclasses</code></em> :</span></p></td>
+<td>
+<a class="link" href="maemo-ontology.html#maemo-ControlPanelApplet" title="maemo:ControlPanelApplet">maemo:ControlPanelApplet</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In domain of</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In range of</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="maemo-ControlPanelApplet"></a><h3>maemo:ControlPanelApplet</h3>
+<p>A control panel applet for Meego</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
+<td>
+<a class="link" href="maemo-ontology.html#maemo-SoftwareApplet" title="maemo:SoftwareApplet">maemo:SoftwareApplet</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>Subclasses</code></em> :</span></p></td>

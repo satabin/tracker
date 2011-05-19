@@ -3,71 +3,79 @@
 <book xmlns="http://www.devhelp.net/book" title="Tracker Ontology Reference Manual" link="index.html" author="" name="ontology">
   <chapters>
     <sub name="Overview" link="ontology.html">
-      <sub name="XSD Ontology" link="xsd-ontology.html">
+      <sub name="XML schema (XSD): Basic types definitions (int, double,...)" link="xsd-ontology.html">
         <sub name="Overview" link="xsd-ontology.html#xsd-explanation"/>
         <sub name="XSD Ontology Classes" link="xsd-classes.html"/>
         <sub name="XSD Ontology Properties" link="xsd-properties.html"/>
       </sub>
-      <sub name="NIE Ontology" link="nie-ontology.html">
+      <sub name="Resource Description Framework (RDF): Core RDF classes to keep the internal consistency of the ontology" link="rdf-ontology.html">
+        <sub name="RDF Ontology Classes" link="rdf-ontology.html#rdf-classes"/>
+        <sub name="RDF Ontology Properties" link="rdf-properties.html"/>
+      </sub>
+      <sub name="Dublin Core metadata (DC): Common superproperties for documents" link="dc-ontology.html">
+        <sub name="DC Ontology Classes" link="dc-ontology.html#dc-classes"/>
+        <sub name="DC Ontology Properties" link="dc-properties.html"/>
+      </sub>
+      <sub name="Nepomuk Information Element (NIE): Top classes in the ontology. Almost everything else is subclass of these." link="nie-ontology.html">
         <sub name="Overview" link="nie-ontology.html#nie-explanation"/>
         <sub name="NIE Ontology Classes" link="nie-classes.html"/>
         <sub name="NIE Ontology Properties" link="nie-properties.html"/>
       </sub>
-      <sub name="NCO Ontology" link="nco-ontology.html">
-        <sub name="NCO Ontology Classes" link="nco-ontology.html#nco-classes"/>
+      <sub name="Nepomuk Annotation Ontology (NAO): Tags, ratings and other common annotations to all classes" link="nao-ontology.html">
+        <sub name="NAO Ontology Classes" link="nao-ontology.html#nao-classes"/>
+        <sub name="NAO Ontology Properties" link="nao-properties.html"/>
+      </sub>
+      <sub name="Nepomuk File Ontology (NFO): About files and other desktop resources." link="nfo-ontology.html">
+        <sub name="NFO Ontology Classes" link="nfo-ontology.html#nfo-classes"/>
+        <sub name="NFO Ontology Properties" link="nfo-properties.html"/>
+      </sub>
+      <sub name="Nepomuk Contacts Ontology (NCO): All about contacts. Rough equivalent of the VCARD standard." link="nco-ontology.html">
+        <sub name="Overview" link="nco-ontology.html#nco-explanation"/>
+        <sub name="NCO Ontology Classes" link="nco-classes.html"/>
         <sub name="NCO Ontology Properties" link="nco-properties.html"/>
       </sub>
-      <sub name="NMO Ontology" link="nmo-ontology.html">
+      <sub name="Nepomuk Messaging Ontology (NMO): Model for messages and communications, including Email, SMS, MMS and phone calls" link="nmo-ontology.html">
         <sub name="Overview" link="nmo-ontology.html#nmo-explanation"/>
         <sub name="NMO Ontology Classes" link="nmo-classes.html"/>
         <sub name="NMO Ontology Properties" link="nmo-properties.html"/>
       </sub>
-      <sub name="NFO Ontology" link="nfo-ontology.html">
-        <sub name="NFO Ontology Classes" link="nfo-ontology.html#nfo-classes"/>
-        <sub name="NFO Ontology Properties" link="nfo-properties.html"/>
+      <sub name="Nepomuk Calendar Ontology (NCAL): Automatic translation of the ICAL standard into ontology. Too complex for our taste. Please check SCAL" link="ncal-ontology.html">
+        <sub name="NCAL Ontology Classes" link="ncal-ontology.html#ncal-classes"/>
+        <sub name="NCAL Ontology Properties" link="ncal-properties.html"/>
       </sub>
-      <sub name="NAO Ontology" link="nao-ontology.html">
-        <sub name="NAO Ontology Classes" link="nao-ontology.html#nao-classes"/>
-        <sub name="NAO Ontology Properties" link="nao-properties.html"/>
+      <sub name="Simplified Calendar Ontology (SCAL): Simple and efficient ontology to represent calendar information (events, ToDos, recurrency rules...)" link="scal-ontology.html">
+        <sub name="SCAL Ontology Classes" link="scal-ontology.html#scal-classes"/>
+        <sub name="SCAL Ontology Properties" link="scal-properties.html"/>
       </sub>
-      <sub name="MTO Ontology" link="mto-ontology.html">
-        <sub name="MTO Ontology Classes" link="mto-ontology.html#mto-classes"/>
-        <sub name="MTO Ontology Properties" link="mto-properties.html"/>
-      </sub>
-      <sub name="NMM Ontology" link="nmm-ontology.html">
+      <sub name="Nepomuk MultiMedia (NMM): Description of multimedia objects like Music, Video and Images" link="nmm-ontology.html">
         <sub name="Overview" link="nmm-ontology.html#nmm-explanation"/>
         <sub name="NMM Ontology Classes" link="nmm-classes.html"/>
         <sub name="NMM Ontology Properties" link="nmm-properties.html"/>
       </sub>
-      <sub name="MFO Ontology" link="mfo-ontology.html">
+      <sub name="Maemo Transfer Ontology (MTO): Representation of download and upload operations in the system" link="mto-ontology.html">
+        <sub name="MTO Ontology Classes" link="mto-ontology.html#mto-classes"/>
+        <sub name="MTO Ontology Properties" link="mto-properties.html"/>
+      </sub>
+      <sub name="Maemo Feeds Ontology (MFO): Model for feeds and alike online streams" link="mfo-ontology.html">
         <sub name="Overview" link="mfo-ontology.html#mfo-explanation"/>
         <sub name="MFO Ontology Classes" link="mfo-classes.html"/>
         <sub name="MFO Ontology Properties" link="mfo-properties.html"/>
       </sub>
-      <sub name="MLO Ontology" link="mlo-ontology.html">
-        <sub name="Overview" link="mlo-ontology.html#mlo-explanation"/>
-        <sub name="MLO Ontology Classes" link="mlo-classes.html"/>
-        <sub name="MLO Ontology Properties" link="mlo-properties.html"/>
+      <sub name="Multimetida Transfer Protocol (MTP) Ontology: Extra properties to add MTP information to the objects in the ontology" link="mtp-ontology.html">
+        <sub name="MTP Ontology Classes" link="mtp-ontology.html#mtp-classes"/>
+        <sub name="MTP Ontology Properties" link="mtp-properties.html"/>
       </sub>
-      <sub name="TRACKER Ontology" link="tracker-ontology.html">
+      <sub name="Simplified Maemo Location Ontology (SLO) (experimental/for testing): Simpler, faster, better ontology for locations and landmarks" link="slo-ontology.html">
+        <sub name="SLO Ontology Classes" link="slo-ontology.html#slo-classes"/>
+        <sub name="SLO Ontology Properties" link="slo-properties.html"/>
+      </sub>
+      <sub name="Tracker-specific annotations Ontology: Internal tracker properties" link="tracker-ontology.html">
         <sub name="TRACKER Ontology Classes" link="tracker-ontology.html#tracker-classes"/>
         <sub name="TRACKER Ontology Properties" link="tracker-properties.html"/>
       </sub>
-      <sub name="MAEMO Ontology" link="maemo-ontology.html">
+      <sub name="Maemo-specific classes: Some maemo/meego specific properties" link="maemo-ontology.html">
         <sub name="MAEMO Ontology Classes" link="maemo-ontology.html#maemo-classes"/>
         <sub name="MAEMO Ontology Properties" link="maemo-properties.html"/>
-      </sub>
-      <sub name="NCAL Ontology" link="ncal-ontology.html">
-        <sub name="NCAL Ontology Classes" link="ncal-ontology.html#ncal-classes"/>
-        <sub name="NCAL Ontology Properties" link="ncal-properties.html"/>
-      </sub>
-      <sub name="SCAL Ontology" link="scal-ontology.html">
-        <sub name="SCAL Ontology Classes" link="scal-ontology.html#scal-classes"/>
-        <sub name="SCAL Ontology Properties" link="scal-properties.html"/>
-      </sub>
-      <sub name="DC Ontology" link="dc-ontology.html">
-        <sub name="DC Ontology Classes" link="dc-ontology.html#dc-classes"/>
-        <sub name="DC Ontology Properties" link="dc-properties.html"/>
       </sub>
       <sub name="Full-text indexed properties in the ontology" link="fts-properties.html"/>
     </sub>
@@ -81,6 +89,46 @@
     <function name="xsd:double" link="xsd-classes.html#xsd-double"/>
     <function name="xsd:date" link="xsd-classes.html#xsd-date"/>
     <function name="xsd:dateTime" link="xsd-classes.html#xsd-dateTime"/>
+    <function name="rdf:Class" link="rdf-ontology.html#rdf-Class"/>
+    <function name="rdf:Literal" link="rdf-ontology.html#rdf-Literal"/>
+    <function name="rdf:Resource" link="rdf-ontology.html#rdf-Resource"/>
+    <function name="tracker:Namespace" link="rdf-ontology.html#tracker-Namespace"/>
+    <function name="tracker:Ontology" link="rdf-ontology.html#tracker-Ontology"/>
+    <function name="rdf:Property" link="rdf-ontology.html#rdf-Property"/>
+    <function name="tracker:domainIndex" link="rdf-properties.html#tracker-domainIndex"/>
+    <function name="tracker:fulltextNoLimit" link="rdf-properties.html#tracker-fulltextNoLimit"/>
+    <function name="rdf:range" link="rdf-properties.html#rdf-range"/>
+    <function name="tracker:modified" link="rdf-properties.html#tracker-modified"/>
+    <function name="tracker:damaged" link="rdf-properties.html#tracker-damaged"/>
+    <function name="tracker:weight" link="rdf-properties.html#tracker-weight"/>
+    <function name="tracker:indexed" link="rdf-properties.html#tracker-indexed"/>
+    <function name="tracker:added" link="rdf-properties.html#tracker-added"/>
+    <function name="rdf:type" link="rdf-properties.html#rdf-type"/>
+    <function name="rdf:subPropertyOf" link="rdf-properties.html#rdf-subPropertyOf"/>
+    <function name="rdf:label" link="rdf-properties.html#rdf-label"/>
+    <function name="rdf:domain" link="rdf-properties.html#rdf-domain"/>
+    <function name="tracker:secondaryIndex" link="rdf-properties.html#tracker-secondaryIndex"/>
+    <function name="tracker:prefix" link="rdf-properties.html#tracker-prefix"/>
+    <function name="rdf:subClassOf" link="rdf-properties.html#rdf-subClassOf"/>
+    <function name="tracker:defaultValue" link="rdf-properties.html#tracker-defaultValue"/>
+    <function name="rdf:comment" link="rdf-properties.html#rdf-comment"/>
+    <function name="tracker:fulltextIndexed" link="rdf-properties.html#tracker-fulltextIndexed"/>
+    <function name="tracker:transient" link="rdf-properties.html#tracker-transient"/>
+    <function name="dc:creator" link="dc-properties.html#dc-creator"/>
+    <function name="dc:type" link="dc-properties.html#dc-type"/>
+    <function name="dc:publisher" link="dc-properties.html#dc-publisher"/>
+    <function name="dc:date" link="dc-properties.html#dc-date"/>
+    <function name="dc:source" link="dc-properties.html#dc-source"/>
+    <function name="dc:relation" link="dc-properties.html#dc-relation"/>
+    <function name="dc:contributor" link="dc-properties.html#dc-contributor"/>
+    <function name="dc:identifier" link="dc-properties.html#dc-identifier"/>
+    <function name="dc:language" link="dc-properties.html#dc-language"/>
+    <function name="dc:subject" link="dc-properties.html#dc-subject"/>
+    <function name="dc:format" link="dc-properties.html#dc-format"/>
+    <function name="dc:coverage" link="dc-properties.html#dc-coverage"/>
+    <function name="dc:rights" link="dc-properties.html#dc-rights"/>
+    <function name="dc:title" link="dc-properties.html#dc-title"/>
+    <function name="dc:description" link="dc-properties.html#dc-description"/>
     <function name="URIs and full representation of a file" link="nie-ontology.html#nie-uri-representation"/>
     <function name="" link="nie-ontology.html#nie-graphical-overview"/>
     <function name="Related information" link="nie-ontology.html#nie-related-information"/>
@@ -125,191 +173,19 @@
     <function name="nie:title" link="nie-properties.html#nie-title"/>
     <function name="nie:language" link="nie-properties.html#nie-language"/>
     <function name="nie:created" link="nie-properties.html#nie-created"/>
-    <function name="nco:IMAccount" link="nco-ontology.html#nco-IMAccount"/>
-    <function name="nco:PcsNumber" link="nco-ontology.html#nco-PcsNumber"/>
-    <function name="nco:PersonContact" link="nco-ontology.html#nco-PersonContact"/>
-    <function name="nco:VoicePhoneNumber" link="nco-ontology.html#nco-VoicePhoneNumber"/>
-    <function name="nco:MessagingNumber" link="nco-ontology.html#nco-MessagingNumber"/>
-    <function name="nco:MetaContact" link="nco-ontology.html#nco-MetaContact"/>
-    <function name="nco:IMContact" link="nco-ontology.html#nco-IMContact"/>
-    <function name="nco:BbsNumber" link="nco-ontology.html#nco-BbsNumber"/>
-    <function name="nco:Gender" link="nco-ontology.html#nco-Gender"/>
-    <function name="nco:ContactMedium" link="nco-ontology.html#nco-ContactMedium"/>
-    <function name="nco:CellPhoneNumber" link="nco-ontology.html#nco-CellPhoneNumber"/>
-    <function name="nco:Role" link="nco-ontology.html#nco-Role"/>
-    <function name="nco:IsdnNumber" link="nco-ontology.html#nco-IsdnNumber"/>
-    <function name="nco:ContactList" link="nco-ontology.html#nco-ContactList"/>
-    <function name="nco:VideoTelephoneNumber" link="nco-ontology.html#nco-VideoTelephoneNumber"/>
-    <function name="nco:DomesticDeliveryAddress" link="nco-ontology.html#nco-DomesticDeliveryAddress"/>
-    <function name="nco:FaxNumber" link="nco-ontology.html#nco-FaxNumber"/>
-    <function name="nco:OrganizationContact" link="nco-ontology.html#nco-OrganizationContact"/>
-    <function name="nco:PhoneNumber" link="nco-ontology.html#nco-PhoneNumber"/>
-    <function name="nco:IMAddress" link="nco-ontology.html#nco-IMAddress"/>
-    <function name="nco:PresenceStatus" link="nco-ontology.html#nco-PresenceStatus"/>
-    <function name="nco:PostalAddress" link="nco-ontology.html#nco-PostalAddress"/>
-    <function name="nco:EmailAddress" link="nco-ontology.html#nco-EmailAddress"/>
-    <function name="nco:CarPhoneNumber" link="nco-ontology.html#nco-CarPhoneNumber"/>
-    <function name="nco:ModemNumber" link="nco-ontology.html#nco-ModemNumber"/>
-    <function name="nco:ContactGroup" link="nco-ontology.html#nco-ContactGroup"/>
-    <function name="nco:ContactListDataObject" link="nco-ontology.html#nco-ContactListDataObject"/>
-    <function name="nco:ParcelDeliveryAddress" link="nco-ontology.html#nco-ParcelDeliveryAddress"/>
-    <function name="nco:IMCapability" link="nco-ontology.html#nco-IMCapability"/>
-    <function name="nco:PagerNumber" link="nco-ontology.html#nco-PagerNumber"/>
-    <function name="nco:Affiliation" link="nco-ontology.html#nco-Affiliation"/>
-    <function name="nco:InternationalDeliveryAddress" link="nco-ontology.html#nco-InternationalDeliveryAddress"/>
-    <function name="nco:Contact" link="nco-ontology.html#nco-Contact"/>
-    <function name="nco:imAccountType" link="nco-properties.html#nco-imAccountType"/>
-    <function name="nco:imID" link="nco-properties.html#nco-imID"/>
-    <function name="nco:imNickname" link="nco-properties.html#nco-imNickname"/>
-    <function name="nco:fromIMAccount" link="nco-properties.html#nco-fromIMAccount"/>
-    <function name="nco:region" link="nco-properties.html#nco-region"/>
-    <function name="nco:country" link="nco-properties.html#nco-country"/>
-    <function name="nco:imEnabled" link="nco-properties.html#nco-imEnabled"/>
-    <function name="nco:publisher" link="nco-properties.html#nco-publisher"/>
-    <function name="nco:representative" link="nco-properties.html#nco-representative"/>
-    <function name="nco:imCapability" link="nco-properties.html#nco-imCapability"/>
-    <function name="nco:hasIMContact" link="nco-properties.html#nco-hasIMContact"/>
-    <function name="nco:streetAddress" link="nco-properties.html#nco-streetAddress"/>
-    <function name="nco:contactMediumComment" link="nco-properties.html#nco-contactMediumComment"/>
-    <function name="nco:logo" link="nco-properties.html#nco-logo"/>
-    <function name="nco:nameAdditional" link="nco-properties.html#nco-nameAdditional"/>
-    <function name="nco:hasLocation" link="nco-properties.html#nco-hasLocation"/>
-    <function name="nco:contributor" link="nco-properties.html#nco-contributor"/>
-    <function name="nco:role" link="nco-properties.html#nco-role"/>
-    <function name="nco:hasIMAddress" link="nco-properties.html#nco-hasIMAddress"/>
-    <function name="nco:contactGroupName" link="nco-properties.html#nco-contactGroupName"/>
-    <function name="nco:sound" link="nco-properties.html#nco-sound"/>
-    <function name="nco:org" link="nco-properties.html#nco-org"/>
-    <function name="nco:addressLocation" link="nco-properties.html#nco-addressLocation"/>
-    <function name="nco:imContactCapability" link="nco-properties.html#nco-imContactCapability"/>
-    <function name="nco:imContactStatusMessage" link="nco-properties.html#nco-imContactStatusMessage"/>
-    <function name="nco:imProtocol" link="nco-properties.html#nco-imProtocol"/>
-    <function name="nco:imContactId" link="nco-properties.html#nco-imContactId"/>
-    <function name="nco:title" link="nco-properties.html#nco-title"/>
-    <function name="nco:birthDate" link="nco-properties.html#nco-birthDate"/>
-    <function name="nco:containsContact" link="nco-properties.html#nco-containsContact"/>
-    <function name="nco:blogUrl" link="nco-properties.html#nco-blogUrl"/>
-    <function name="nco:imAccountAvatar" link="nco-properties.html#nco-imAccountAvatar"/>
-    <function name="nco:hasContactMedium" link="nco-properties.html#nco-hasContactMedium"/>
-    <function name="nco:creator" link="nco-properties.html#nco-creator"/>
-    <function name="nco:contactUID" link="nco-properties.html#nco-contactUID"/>
-    <function name="nco:note" link="nco-properties.html#nco-note"/>
-    <function name="nco:foafUrl" link="nco-properties.html#nco-foafUrl"/>
-    <function name="nco:hasEmailAddress" link="nco-properties.html#nco-hasEmailAddress"/>
-    <function name="nco:locality" link="nco-properties.html#nco-locality"/>
-    <function name="nco:hasIMAccount" link="nco-properties.html#nco-hasIMAccount"/>
-    <function name="nco:nameHonorificSuffix" link="nco-properties.html#nco-nameHonorificSuffix"/>
-    <function name="nco:websiteUrl" link="nco-properties.html#nco-websiteUrl"/>
-    <function name="nco:nameFamily" link="nco-properties.html#nco-nameFamily"/>
-    <function name="nco:imAccountAddress" link="nco-properties.html#nco-imAccountAddress"/>
-    <function name="nco:nameHonorificPrefix" link="nco-properties.html#nco-nameHonorificPrefix"/>
-    <function name="nco:hasAffiliation" link="nco-properties.html#nco-hasAffiliation"/>
-    <function name="nco:metacontact" link="nco-properties.html#nco-metacontact"/>
-    <function name="nco:gender" link="nco-properties.html#nco-gender"/>
-    <function name="nco:extendedAddress" link="nco-properties.html#nco-extendedAddress"/>
-    <function name="nco:imStatusMessage" link="nco-properties.html#nco-imStatusMessage"/>
-    <function name="nco:key" link="nco-properties.html#nco-key"/>
-    <function name="nco:imAvatar" link="nco-properties.html#nco-imAvatar"/>
-    <function name="nco:emailAddress" link="nco-properties.html#nco-emailAddress"/>
-    <function name="nco:url" link="nco-properties.html#nco-url"/>
-    <function name="nco:postalcode" link="nco-properties.html#nco-postalcode"/>
-    <function name="nco:hasPhoneNumber" link="nco-properties.html#nco-hasPhoneNumber"/>
-    <function name="nco:nameGiven" link="nco-properties.html#nco-nameGiven"/>
-    <function name="nco:photo" link="nco-properties.html#nco-photo"/>
-    <function name="nco:imPresence" link="nco-properties.html#nco-imPresence"/>
-    <function name="nco:nickname" link="nco-properties.html#nco-nickname"/>
-    <function name="nco:hobby" link="nco-properties.html#nco-hobby"/>
-    <function name="nco:department" link="nco-properties.html#nco-department"/>
-    <function name="nco:phoneNumber" link="nco-properties.html#nco-phoneNumber"/>
-    <function name="nco:pobox" link="nco-properties.html#nco-pobox"/>
-    <function name="nco:imDisplayName" link="nco-properties.html#nco-imDisplayName"/>
-    <function name="nco:fullname" link="nco-properties.html#nco-fullname"/>
-    <function name="nco:imContactPresence" link="nco-properties.html#nco-imContactPresence"/>
-    <function name="nco:hasPostalAddress" link="nco-properties.html#nco-hasPostalAddress"/>
-    <function name="nco:imContactNickname" link="nco-properties.html#nco-imContactNickname"/>
-    <function name="nco:voiceMail" link="nco-properties.html#nco-voiceMail"/>
-    <function name="nco:belongsToGroup" link="nco-properties.html#nco-belongsToGroup"/>
-    <function name="nmo:IMMessage" link="nmo-classes.html#nmo-IMMessage"/>
-    <function name="nmo:Email" link="nmo-classes.html#nmo-Email"/>
-    <function name="nmo:SMSFolder" link="nmo-classes.html#nmo-SMSFolder"/>
-    <function name="nmo:PermanentChannel" link="nmo-classes.html#nmo-PermanentChannel"/>
-    <function name="nmo:Attachment" link="nmo-classes.html#nmo-Attachment"/>
-    <function name="nmo:MimePart" link="nmo-classes.html#nmo-MimePart"/>
-    <function name="nmo:VOIPCall" link="nmo-classes.html#nmo-VOIPCall"/>
-    <function name="nmo:Call" link="nmo-classes.html#nmo-Call"/>
-    <function name="nmo:MessageHeader" link="nmo-classes.html#nmo-MessageHeader"/>
-    <function name="nmo:Multipart" link="nmo-classes.html#nmo-Multipart"/>
-    <function name="nmo:Message" link="nmo-classes.html#nmo-Message"/>
-    <function name="nmo:MailAccount" link="nmo-classes.html#nmo-MailAccount"/>
-    <function name="nmo:TransientChannel" link="nmo-classes.html#nmo-TransientChannel"/>
-    <function name="nmo:Conversation" link="nmo-classes.html#nmo-Conversation"/>
-    <function name="nmo:Mailbox" link="nmo-classes.html#nmo-Mailbox"/>
-    <function name="nmo:DeliveryStatus" link="nmo-classes.html#nmo-DeliveryStatus"/>
-    <function name="nmo:MailboxDataObject" link="nmo-classes.html#nmo-MailboxDataObject"/>
-    <function name="nmo:SMSMessage" link="nmo-classes.html#nmo-SMSMessage"/>
-    <function name="nmo:CommunicationChannel" link="nmo-classes.html#nmo-CommunicationChannel"/>
-    <function name="nmo:MMSMessage" link="nmo-classes.html#nmo-MMSMessage"/>
-    <function name="nmo:MailFolder" link="nmo-classes.html#nmo-MailFolder"/>
-    <function name="nmo:htmlMessageContent" link="nmo-properties.html#nmo-htmlMessageContent"/>
-    <function name="nmo:headerValue" link="nmo-properties.html#nmo-headerValue"/>
-    <function name="nmo:bcc" link="nmo-properties.html#nmo-bcc"/>
-    <function name="nmo:isFlagged" link="nmo-properties.html#nmo-isFlagged"/>
-    <function name="nmo:plainTextMessageContent" link="nmo-properties.html#nmo-plainTextMessageContent"/>
-    <function name="nmo:encoding" link="nmo-properties.html#nmo-encoding"/>
-    <function name="nmo:hasParticipant" link="nmo-properties.html#nmo-hasParticipant"/>
-    <function name="nmo:accountName" link="nmo-properties.html#nmo-accountName"/>
-    <function name="nmo:mimeHeader" link="nmo-properties.html#nmo-mimeHeader"/>
-    <function name="nmo:folderName" link="nmo-properties.html#nmo-folderName"/>
-    <function name="nmo:accountDisplayName" link="nmo-properties.html#nmo-accountDisplayName"/>
-    <function name="nmo:reportDelivery" link="nmo-properties.html#nmo-reportDelivery"/>
-    <function name="nmo:deliveryStatus" link="nmo-properties.html#nmo-deliveryStatus"/>
-    <function name="nmo:serverUnreadCount" link="nmo-properties.html#nmo-serverUnreadCount"/>
-    <function name="nmo:isDraft" link="nmo-properties.html#nmo-isDraft"/>
-    <function name="nmo:contentId" link="nmo-properties.html#nmo-contentId"/>
-    <function name="nmo:isEmergency" link="nmo-properties.html#nmo-isEmergency"/>
-    <function name="nmo:conversation" link="nmo-properties.html#nmo-conversation"/>
-    <function name="nmo:status" link="nmo-properties.html#nmo-status"/>
-    <function name="nmo:references" link="nmo-properties.html#nmo-references"/>
-    <function name="nmo:messageId" link="nmo-properties.html#nmo-messageId"/>
-    <function name="nmo:isSent" link="nmo-properties.html#nmo-isSent"/>
-    <function name="nmo:duration" link="nmo-properties.html#nmo-duration"/>
-    <function name="nmo:messageSubject" link="nmo-properties.html#nmo-messageSubject"/>
-    <function name="nmo:signature" link="nmo-properties.html#nmo-signature"/>
-    <function name="nmo:containsSMS" link="nmo-properties.html#nmo-containsSMS"/>
-    <function name="nmo:receivedDate" link="nmo-properties.html#nmo-receivedDate"/>
-    <function name="nmo:hasContent" link="nmo-properties.html#nmo-hasContent"/>
-    <function name="nmo:contentDescription" link="nmo-properties.html#nmo-contentDescription"/>
-    <function name="nmo:isAnswered" link="nmo-properties.html#nmo-isAnswered"/>
-    <function name="nmo:cc" link="nmo-properties.html#nmo-cc"/>
-    <function name="nmo:contentMimeType" link="nmo-properties.html#nmo-contentMimeType"/>
-    <function name="nmo:isRecent" link="nmo-properties.html#nmo-isRecent"/>
-    <function name="nmo:communicationChannel" link="nmo-properties.html#nmo-communicationChannel"/>
-    <function name="nmo:serverCount" link="nmo-properties.html#nmo-serverCount"/>
-    <function name="nmo:hasAttachment" link="nmo-properties.html#nmo-hasAttachment"/>
-    <function name="nmo:isDeleted" link="nmo-properties.html#nmo-isDeleted"/>
-    <function name="nmo:contentDisposition" link="nmo-properties.html#nmo-contentDisposition"/>
-    <function name="nmo:inReplyTo" link="nmo-properties.html#nmo-inReplyTo"/>
-    <function name="nmo:recipient" link="nmo-properties.html#nmo-recipient"/>
-    <function name="nmo:replyTo" link="nmo-properties.html#nmo-replyTo"/>
-    <function name="nmo:smsId" link="nmo-properties.html#nmo-smsId"/>
-    <function name="nmo:sentDate" link="nmo-properties.html#nmo-sentDate"/>
-    <function name="nmo:sender" link="nmo-properties.html#nmo-sender"/>
-    <function name="nmo:toVCard" link="nmo-properties.html#nmo-toVCard"/>
-    <function name="nmo:contentTransferEncoding" link="nmo-properties.html#nmo-contentTransferEncoding"/>
-    <function name="nmo:partBoundary" link="nmo-properties.html#nmo-partBoundary"/>
-    <function name="nmo:lastMessageDate" link="nmo-properties.html#nmo-lastMessageDate"/>
-    <function name="nmo:charSet" link="nmo-properties.html#nmo-charSet"/>
-    <function name="nmo:headerName" link="nmo-properties.html#nmo-headerName"/>
-    <function name="nmo:to" link="nmo-properties.html#nmo-to"/>
-    <function name="nmo:responseType" link="nmo-properties.html#nmo-responseType"/>
-    <function name="nmo:messageHeader" link="nmo-properties.html#nmo-messageHeader"/>
-    <function name="nmo:isRead" link="nmo-properties.html#nmo-isRead"/>
-    <function name="nmo:containsSMSFolder" link="nmo-properties.html#nmo-containsSMSFolder"/>
-    <function name="nmo:smsFolderId" link="nmo-properties.html#nmo-smsFolderId"/>
-    <function name="nmo:from" link="nmo-properties.html#nmo-from"/>
-    <function name="nmo:fromVCard" link="nmo-properties.html#nmo-fromVCard"/>
-    <function name="nmo:validityPeriod" link="nmo-properties.html#nmo-validityPeriod"/>
-    <function name="nmo:fromAddress" link="nmo-properties.html#nmo-fromAddress"/>
+    <function name="nao:Property" link="nao-ontology.html#nao-Property"/>
+    <function name="nao:Tag" link="nao-ontology.html#nao-Tag"/>
+    <function name="nao:identifier" link="nao-properties.html#nao-identifier"/>
+    <function name="nao:propertyValue" link="nao-properties.html#nao-propertyValue"/>
+    <function name="nao:hasProperty" link="nao-properties.html#nao-hasProperty"/>
+    <function name="nao:lastModified" link="nao-properties.html#nao-lastModified"/>
+    <function name="nao:isRelated" link="nao-properties.html#nao-isRelated"/>
+    <function name="nao:prefLabel" link="nao-properties.html#nao-prefLabel"/>
+    <function name="nao:deprecated" link="nao-properties.html#nao-deprecated"/>
+    <function name="nao:description" link="nao-properties.html#nao-description"/>
+    <function name="nao:propertyName" link="nao-properties.html#nao-propertyName"/>
+    <function name="nao:numericRating" link="nao-properties.html#nao-numericRating"/>
+    <function name="nao:hasTag" link="nao-properties.html#nao-hasTag"/>
     <function name="nfo:FileDataObject" link="nfo-ontology.html#nfo-FileDataObject"/>
     <function name="nfo:Video" link="nfo-ontology.html#nfo-Video"/>
     <function name="nfo:MediaList" link="nfo-ontology.html#nfo-MediaList"/>
@@ -327,9 +203,11 @@
     <function name="nfo:HardDiskPartition" link="nfo-ontology.html#nfo-HardDiskPartition"/>
     <function name="nfo:Font" link="nfo-ontology.html#nfo-Font"/>
     <function name="nfo:FilesystemImage" link="nfo-ontology.html#nfo-FilesystemImage"/>
+    <function name="nfo:HelpDocument" link="nfo-ontology.html#nfo-HelpDocument"/>
     <function name="nfo:DeletedResource" link="nfo-ontology.html#nfo-DeletedResource"/>
     <function name="nfo:RasterImage" link="nfo-ontology.html#nfo-RasterImage"/>
     <function name="nfo:MindMap" link="nfo-ontology.html#nfo-MindMap"/>
+    <function name="nfo:Note" link="nfo-ontology.html#nfo-Note"/>
     <function name="nfo:PlainTextDocument" link="nfo-ontology.html#nfo-PlainTextDocument"/>
     <function name="nfo:Spreadsheet" link="nfo-ontology.html#nfo-Spreadsheet"/>
     <function name="nfo:Trash" link="nfo-ontology.html#nfo-Trash"/>
@@ -350,6 +228,7 @@
     <function name="nfo:FileHash" link="nfo-ontology.html#nfo-FileHash"/>
     <function name="nfo:MediaStream" link="nfo-ontology.html#nfo-MediaStream"/>
     <function name="nfo:Attachment" link="nfo-ontology.html#nfo-Attachment"/>
+    <function name="nfo:Equipment" link="nfo-ontology.html#nfo-Equipment"/>
     <function name="nfo:Website" link="nfo-ontology.html#nfo-Website"/>
     <function name="nfo:Application" link="nfo-ontology.html#nfo-Application"/>
     <function name="nfo:EmbeddedFileDataObject" link="nfo-ontology.html#nfo-EmbeddedFileDataObject"/>
@@ -371,20 +250,20 @@
     <function name="nfo:belongsToContainer" link="nfo-properties.html#nfo-belongsToContainer"/>
     <function name="nfo:gain" link="nfo-properties.html#nfo-gain"/>
     <function name="nfo:colorDepth" link="nfo-properties.html#nfo-colorDepth"/>
+    <function name="nfo:tilt" link="nfo-properties.html#nfo-tilt"/>
     <function name="nfo:channels" link="nfo-properties.html#nfo-channels"/>
-    <function name="nfo:conflicts" link="nfo-properties.html#nfo-conflicts"/>
     <function name="nfo:listPosition" link="nfo-properties.html#nfo-listPosition"/>
     <function name="nfo:tableOfContents" link="nfo-properties.html#nfo-tableOfContents"/>
     <function name="nfo:deletionDate" link="nfo-properties.html#nfo-deletionDate"/>
+    <function name="nfo:conflicts" link="nfo-properties.html#nfo-conflicts"/>
     <function name="nfo:definesGlobalVariable" link="nfo-properties.html#nfo-definesGlobalVariable"/>
-    <function name="nfo:orientation" link="nfo-properties.html#nfo-orientation"/>
     <function name="nfo:wordCount" link="nfo-properties.html#nfo-wordCount"/>
     <function name="nfo:containsBookmarkFolder" link="nfo-properties.html#nfo-containsBookmarkFolder"/>
     <function name="nfo:frameRate" link="nfo-properties.html#nfo-frameRate"/>
-    <function name="nfo:fileUrl" link="nfo-properties.html#nfo-fileUrl"/>
     <function name="nfo:rearChannels" link="nfo-properties.html#nfo-rearChannels"/>
     <function name="nfo:mediaListEntry" link="nfo-properties.html#nfo-mediaListEntry"/>
     <function name="nfo:bookmarks" link="nfo-properties.html#nfo-bookmarks"/>
+    <function name="nfo:orientation" link="nfo-properties.html#nfo-orientation"/>
     <function name="nfo:supercedes" link="nfo-properties.html#nfo-supercedes"/>
     <function name="nfo:containsBookmark" link="nfo-properties.html#nfo-containsBookmark"/>
     <function name="nfo:isContentEncrypted" link="nfo-properties.html#nfo-isContentEncrypted"/>
@@ -392,14 +271,18 @@
     <function name="nfo:fileCreated" link="nfo-properties.html#nfo-fileCreated"/>
     <function name="nfo:sampleCount" link="nfo-properties.html#nfo-sampleCount"/>
     <function name="nfo:compressionType" link="nfo-properties.html#nfo-compressionType"/>
+    <function name="nfo:model" link="nfo-properties.html#nfo-model"/>
     <function name="nfo:listDuration" link="nfo-properties.html#nfo-listDuration"/>
     <function name="nfo:aspectRatio" link="nfo-properties.html#nfo-aspectRatio"/>
     <function name="nfo:hashValue" link="nfo-properties.html#nfo-hashValue"/>
-    <function name="nfo:domain" link="nfo-properties.html#nfo-domain"/>
+    <function name="nfo:heading" link="nfo-properties.html#nfo-heading"/>
     <function name="nfo:commentCharacterCount" link="nfo-properties.html#nfo-commentCharacterCount"/>
     <function name="nfo:permissions" link="nfo-properties.html#nfo-permissions"/>
     <function name="nfo:duration" link="nfo-properties.html#nfo-duration"/>
+    <function name="nfo:manufacturer" link="nfo-properties.html#nfo-manufacturer"/>
     <function name="nfo:streamPosition" link="nfo-properties.html#nfo-streamPosition"/>
+    <function name="nfo:domain" link="nfo-properties.html#nfo-domain"/>
+    <function name="nfo:lastPlayedPosition" link="nfo-properties.html#nfo-lastPlayedPosition"/>
     <function name="nfo:characterPosition" link="nfo-properties.html#nfo-characterPosition"/>
     <function name="nfo:sideChannels" link="nfo-properties.html#nfo-sideChannels"/>
     <function name="nfo:hasHash" link="nfo-properties.html#nfo-hasHash"/>
@@ -410,6 +293,8 @@
     <function name="nfo:pageCount" link="nfo-properties.html#nfo-pageCount"/>
     <function name="nfo:definesClass" link="nfo-properties.html#nfo-definesClass"/>
     <function name="nfo:fileLastAccessed" link="nfo-properties.html#nfo-fileLastAccessed"/>
+    <function name="nfo:equipmentSoftware" link="nfo-properties.html#nfo-equipmentSoftware"/>
+    <function name="nfo:encodedBy" link="nfo-properties.html#nfo-encodedBy"/>
     <function name="nfo:depicts" link="nfo-properties.html#nfo-depicts"/>
     <function name="nfo:averageBitrate" link="nfo-properties.html#nfo-averageBitrate"/>
     <function name="nfo:bitrateType" link="nfo-properties.html#nfo-bitrateType"/>
@@ -418,8 +303,8 @@
     <function name="nfo:pageNumber" link="nfo-properties.html#nfo-pageNumber"/>
     <function name="nfo:fileSize" link="nfo-properties.html#nfo-fileSize"/>
     <function name="nfo:originalLocation" link="nfo-properties.html#nfo-originalLocation"/>
-    <function name="nfo:hasMediaFileListEntry" link="nfo-properties.html#nfo-hasMediaFileListEntry"/>
     <function name="nfo:fileLastModified" link="nfo-properties.html#nfo-fileLastModified"/>
+    <function name="nfo:hasMediaFileListEntry" link="nfo-properties.html#nfo-hasMediaFileListEntry"/>
     <function name="nfo:softwareCmdLine" link="nfo-properties.html#nfo-softwareCmdLine"/>
     <function name="nfo:bitsPerSample" link="nfo-properties.html#nfo-bitsPerSample"/>
     <function name="nfo:lineCount" link="nfo-properties.html#nfo-lineCount"/>
@@ -429,11 +314,11 @@
     <function name="nfo:fileOwner" link="nfo-properties.html#nfo-fileOwner"/>
     <function name="nfo:encoding" link="nfo-properties.html#nfo-encoding"/>
     <function name="nfo:horizontalResolution" link="nfo-properties.html#nfo-horizontalResolution"/>
+    <function name="nfo:equipment" link="nfo-properties.html#nfo-equipment"/>
     <function name="nfo:softwareIcon" link="nfo-properties.html#nfo-softwareIcon"/>
-    <function name="nfo:entryContent" link="nfo-properties.html#nfo-entryContent"/>
+    <function name="nfo:fileName" link="nfo-properties.html#nfo-fileName"/>
     <function name="nfo:count" link="nfo-properties.html#nfo-count"/>
     <function name="nfo:uri" link="nfo-properties.html#nfo-uri"/>
-    <function name="nfo:fileName" link="nfo-properties.html#nfo-fileName"/>
     <function name="nfo:averageAudioBitrate" link="nfo-properties.html#nfo-averageAudioBitrate"/>
     <function name="nfo:peakGain" link="nfo-properties.html#nfo-peakGain"/>
     <function name="nfo:characterCount" link="nfo-properties.html#nfo-characterCount"/>
@@ -445,193 +330,199 @@
     <function name="nfo:height" link="nfo-properties.html#nfo-height"/>
     <function name="nfo:sampleRate" link="nfo-properties.html#nfo-sampleRate"/>
     <function name="nfo:verticalResolution" link="nfo-properties.html#nfo-verticalResolution"/>
-    <function name="nao:Property" link="nao-ontology.html#nao-Property"/>
-    <function name="nao:Tag" link="nao-ontology.html#nao-Tag"/>
-    <function name="nao:identifier" link="nao-properties.html#nao-identifier"/>
-    <function name="nao:propertyValue" link="nao-properties.html#nao-propertyValue"/>
-    <function name="nao:hasProperty" link="nao-properties.html#nao-hasProperty"/>
-    <function name="nao:lastModified" link="nao-properties.html#nao-lastModified"/>
-    <function name="nao:isRelated" link="nao-properties.html#nao-isRelated"/>
-    <function name="nao:prefLabel" link="nao-properties.html#nao-prefLabel"/>
-    <function name="nao:deprecated" link="nao-properties.html#nao-deprecated"/>
-    <function name="nao:description" link="nao-properties.html#nao-description"/>
-    <function name="nao:propertyName" link="nao-properties.html#nao-propertyName"/>
-    <function name="nao:numericRating" link="nao-properties.html#nao-numericRating"/>
-    <function name="nao:hasTag" link="nao-properties.html#nao-hasTag"/>
-    <function name="mto:SyncTransfer" link="mto-ontology.html#mto-SyncTransfer"/>
-    <function name="mto:TransferElement" link="mto-ontology.html#mto-TransferElement"/>
-    <function name="mto:DownloadTransfer" link="mto-ontology.html#mto-DownloadTransfer"/>
-    <function name="mto:UploadTransfer" link="mto-ontology.html#mto-UploadTransfer"/>
-    <function name="mto:Transfer" link="mto-ontology.html#mto-Transfer"/>
-    <function name="mto:State" link="mto-ontology.html#mto-State"/>
-    <function name="mto:TransferMethod" link="mto-ontology.html#mto-TransferMethod"/>
-    <function name="mto:transferState" link="mto-properties.html#mto-transferState"/>
-    <function name="mto:destination" link="mto-properties.html#mto-destination"/>
-    <function name="mto:transferList" link="mto-properties.html#mto-transferList"/>
-    <function name="mto:transferPrivacyLevel" link="mto-properties.html#mto-transferPrivacyLevel"/>
-    <function name="mto:method" link="mto-properties.html#mto-method"/>
-    <function name="mto:state" link="mto-properties.html#mto-state"/>
-    <function name="mto:created" link="mto-properties.html#mto-created"/>
-    <function name="mto:agent" link="mto-properties.html#mto-agent"/>
-    <function name="mto:source" link="mto-properties.html#mto-source"/>
-    <function name="mto:starter" link="mto-properties.html#mto-starter"/>
-    <function name="mto:account" link="mto-properties.html#mto-account"/>
-    <function name="mto:transferCategory" link="mto-properties.html#mto-transferCategory"/>
-    <function name="mto:completedTime" link="mto-properties.html#mto-completedTime"/>
-    <function name="mto:startedTime" link="mto-properties.html#mto-startedTime"/>
-    <function name="nmm:Artist" link="nmm-classes.html#nmm-Artist"/>
-    <function name="nmm:Flash" link="nmm-classes.html#nmm-Flash"/>
-    <function name="nmm:AnalogRadio" link="nmm-classes.html#nmm-AnalogRadio"/>
-    <function name="nmm:Video" link="nmm-classes.html#nmm-Video"/>
-    <function name="nmm:ImageList" link="nmm-classes.html#nmm-ImageList"/>
-    <function name="nmm:MusicPiece" link="nmm-classes.html#nmm-MusicPiece"/>
-    <function name="nmm:MusicAlbum" link="nmm-classes.html#nmm-MusicAlbum"/>
-    <function name="nmm:Playlist" link="nmm-classes.html#nmm-Playlist"/>
-    <function name="nmm:WhiteBalance" link="nmm-classes.html#nmm-WhiteBalance"/>
-    <function name="nmm:Photo" link="nmm-classes.html#nmm-Photo"/>
-    <function name="nmm:RadioModulation" link="nmm-classes.html#nmm-RadioModulation"/>
-    <function name="nmm:DigitalRadio" link="nmm-classes.html#nmm-DigitalRadio"/>
-    <function name="nmm:RadioStation" link="nmm-classes.html#nmm-RadioStation"/>
-    <function name="nmm:SynchronizedText" link="nmm-classes.html#nmm-SynchronizedText"/>
-    <function name="nmm:MeteringMode" link="nmm-classes.html#nmm-MeteringMode"/>
-    <function name="nmm:streamingBitrate" link="nmm-properties.html#nmm-streamingBitrate"/>
-    <function name="nmm:leadActor" link="nmm-properties.html#nmm-leadActor"/>
-    <function name="nmm:lyrics" link="nmm-properties.html#nmm-lyrics"/>
-    <function name="nmm:musicCDIdentifier" link="nmm-properties.html#nmm-musicCDIdentifier"/>
-    <function name="nmm:modulation" link="nmm-properties.html#nmm-modulation"/>
-    <function name="nmm:focalLength" link="nmm-properties.html#nmm-focalLength"/>
-    <function name="nmm:albumDuration" link="nmm-properties.html#nmm-albumDuration"/>
-    <function name="nmm:setNumber" link="nmm-properties.html#nmm-setNumber"/>
-    <function name="nmm:isSeries" link="nmm-properties.html#nmm-isSeries"/>
-    <function name="nmm:category" link="nmm-properties.html#nmm-category"/>
-    <function name="nmm:synopsis" link="nmm-properties.html#nmm-synopsis"/>
-    <function name="nmm:frequency" link="nmm-properties.html#nmm-frequency"/>
-    <function name="nmm:skipCounter" link="nmm-properties.html#nmm-skipCounter"/>
-    <function name="nmm:carrier" link="nmm-properties.html#nmm-carrier"/>
-    <function name="nmm:isForHearingImpaired" link="nmm-properties.html#nmm-isForHearingImpaired"/>
-    <function name="nmm:length" link="nmm-properties.html#nmm-length"/>
-    <function name="nmm:composer" link="nmm-properties.html#nmm-composer"/>
-    <function name="nmm:albumTrackCount" link="nmm-properties.html#nmm-albumTrackCount"/>
-    <function name="nmm:albumTitle" link="nmm-properties.html#nmm-albumTitle"/>
-    <function name="nmm:director" link="nmm-properties.html#nmm-director"/>
-    <function name="nmm:meteringMode" link="nmm-properties.html#nmm-meteringMode"/>
-    <function name="nmm:isContentEncrypted" link="nmm-properties.html#nmm-isContentEncrypted"/>
-    <function name="nmm:dlnaProfile" link="nmm-properties.html#nmm-dlnaProfile"/>
-    <function name="nmm:whiteBalance" link="nmm-properties.html#nmm-whiteBalance"/>
-    <function name="nmm:isoSpeed" link="nmm-properties.html#nmm-isoSpeed"/>
-    <function name="nmm:exposureTime" link="nmm-properties.html#nmm-exposureTime"/>
-    <function name="nmm:fnumber" link="nmm-properties.html#nmm-fnumber"/>
-    <function name="nmm:MPAARating" link="nmm-properties.html#nmm-MPAARating"/>
-    <function name="nmm:episodeNumber" link="nmm-properties.html#nmm-episodeNumber"/>
-    <function name="nmm:radioPTY" link="nmm-properties.html#nmm-radioPTY"/>
-    <function name="nmm:isColorCorrected" link="nmm-properties.html#nmm-isColorCorrected"/>
-    <function name="nmm:runTime" link="nmm-properties.html#nmm-runTime"/>
-    <function name="nmm:producedBy" link="nmm-properties.html#nmm-producedBy"/>
-    <function name="nmm:hasSubtitle" link="nmm-properties.html#nmm-hasSubtitle"/>
-    <function name="nmm:albumArtist" link="nmm-properties.html#nmm-albumArtist"/>
-    <function name="nmm:genre" link="nmm-properties.html#nmm-genre"/>
-    <function name="nmm:performer" link="nmm-properties.html#nmm-performer"/>
-    <function name="nmm:albumPeakGain" link="nmm-properties.html#nmm-albumPeakGain"/>
-    <function name="nmm:uPnPShared" link="nmm-properties.html#nmm-uPnPShared"/>
-    <function name="nmm:protocol" link="nmm-properties.html#nmm-protocol"/>
-    <function name="nmm:radioIcon" link="nmm-properties.html#nmm-radioIcon"/>
-    <function name="nmm:camera" link="nmm-properties.html#nmm-camera"/>
-    <function name="nmm:lyricist" link="nmm-properties.html#nmm-lyricist"/>
-    <function name="nmm:beatsPerMinute" link="nmm-properties.html#nmm-beatsPerMinute"/>
-    <function name="nmm:flash" link="nmm-properties.html#nmm-flash"/>
-    <function name="nmm:videoAlbum" link="nmm-properties.html#nmm-videoAlbum"/>
-    <function name="nmm:artistName" link="nmm-properties.html#nmm-artistName"/>
-    <function name="nmm:albumGain" link="nmm-properties.html#nmm-albumGain"/>
-    <function name="nmm:musicAlbum" link="nmm-properties.html#nmm-musicAlbum"/>
-    <function name="nmm:trackNumber" link="nmm-properties.html#nmm-trackNumber"/>
-    <function name="nmm:season" link="nmm-properties.html#nmm-season"/>
-    <function name="nmm:internationalStandardRecordingCode" link="nmm-properties.html#nmm-internationalStandardRecordingCode"/>
-    <function name="nmm:isCropped" link="nmm-properties.html#nmm-isCropped"/>
-    <function name="nmm:subtitle" link="nmm-properties.html#nmm-subtitle"/>
-    <function name="nmm:alternativeMedia" link="nmm-properties.html#nmm-alternativeMedia"/>
-    <function name="nmm:encoding" link="nmm-properties.html#nmm-encoding"/>
-    <function name="" link="mfo-ontology.html#mfo-graphical-overview"/>
-    <function name="mfo:FeedElement" link="mfo-classes.html#mfo-FeedElement"/>
-    <function name="mfo:Action" link="mfo-classes.html#mfo-Action"/>
-    <function name="mfo:FeedSettings" link="mfo-classes.html#mfo-FeedSettings"/>
-    <function name="mfo:Enclosure" link="mfo-classes.html#mfo-Enclosure"/>
-    <function name="mfo:FeedMessage" link="mfo-classes.html#mfo-FeedMessage"/>
-    <function name="mfo:FeedChannel" link="mfo-classes.html#mfo-FeedChannel"/>
-    <function name="mfo:FeedType" link="mfo-classes.html#mfo-FeedType"/>
-    <function name="mfo:totalCount" link="mfo-properties.html#mfo-totalCount"/>
-    <function name="mfo:expiryInterval" link="mfo-properties.html#mfo-expiryInterval"/>
-    <function name="mfo:name" link="mfo-properties.html#mfo-name"/>
-    <function name="mfo:updateInterval" link="mfo-properties.html#mfo-updateInterval"/>
-    <function name="mfo:action" link="mfo-properties.html#mfo-action"/>
-    <function name="mfo:downloadPath" link="mfo-properties.html#mfo-downloadPath"/>
-    <function name="mfo:localLink" link="mfo-properties.html#mfo-localLink"/>
-    <function name="mfo:unreadCount" link="mfo-properties.html#mfo-unreadCount"/>
-    <function name="mfo:maxSize" link="mfo-properties.html#mfo-maxSize"/>
-    <function name="mfo:type" link="mfo-properties.html#mfo-type"/>
-    <function name="mfo:image" link="mfo-properties.html#mfo-image"/>
-    <function name="mfo:downloadedTime" link="mfo-properties.html#mfo-downloadedTime"/>
-    <function name="mfo:feedSettings" link="mfo-properties.html#mfo-feedSettings"/>
-    <function name="mfo:groupDefault" link="mfo-properties.html#mfo-groupDefault"/>
-    <function name="mfo:optional" link="mfo-properties.html#mfo-optional"/>
-    <function name="mfo:updatedTime" link="mfo-properties.html#mfo-updatedTime"/>
-    <function name="mfo:enclosureList" link="mfo-properties.html#mfo-enclosureList"/>
-    <function name="mfo:remoteLink" link="mfo-properties.html#mfo-remoteLink"/>
-    <function name="mfo:downloadFlag" link="mfo-properties.html#mfo-downloadFlag"/>
-    <function name="Introduction" link="mlo-ontology.html#mlo-introduction"/>
-    <function name="Considerations" link="mlo-ontology.html#mlo-considerations"/>
-    <function name="Contract with applications" link="mlo-ontology.html#mlo-comments"/>
-    <function name="" link="mlo-ontology.html#mlo-graphical-overview"/>
-    <function name="mlo:GeoLocation" link="mlo-classes.html#mlo-GeoLocation"/>
-    <function name="mlo:PointOfInterest" link="mlo-classes.html#mlo-PointOfInterest"/>
-    <function name="mlo:LandmarkCategory" link="mlo-classes.html#mlo-LandmarkCategory"/>
-    <function name="mlo:Landmark" link="mlo-classes.html#mlo-Landmark"/>
-    <function name="mlo:LocationBoundingBox" link="mlo-classes.html#mlo-LocationBoundingBox"/>
-    <function name="mlo:Route" link="mlo-classes.html#mlo-Route"/>
-    <function name="mlo:GeoPoint" link="mlo-classes.html#mlo-GeoPoint"/>
-    <function name="mlo:GeoBoundingBox" link="mlo-classes.html#mlo-GeoBoundingBox"/>
-    <function name="mlo:GeoSphere" link="mlo-classes.html#mlo-GeoSphere"/>
-    <function name="mlo:endTime" link="mlo-properties.html#mlo-endTime"/>
-    <function name="mlo:poiLocation" link="mlo-properties.html#mlo-poiLocation"/>
-    <function name="mlo:boxSouthWestCorner" link="mlo-properties.html#mlo-boxSouthWestCorner"/>
-    <function name="mlo:boxVerticalLimit" link="mlo-properties.html#mlo-boxVerticalLimit"/>
-    <function name="mlo:location" link="mlo-properties.html#mlo-location"/>
-    <function name="mlo:timestamp" link="mlo-properties.html#mlo-timestamp"/>
-    <function name="mlo:boxNorthLimit" link="mlo-properties.html#mlo-boxNorthLimit"/>
-    <function name="mlo:bbSouthEast" link="mlo-properties.html#mlo-bbSouthEast"/>
-    <function name="mlo:bbNorthWest" link="mlo-properties.html#mlo-bbNorthWest"/>
-    <function name="mlo:routeDetails" link="mlo-properties.html#mlo-routeDetails"/>
-    <function name="mlo:radius" link="mlo-properties.html#mlo-radius"/>
-    <function name="mlo:asBoundingBox" link="mlo-properties.html#mlo-asBoundingBox"/>
-    <function name="mlo:isRemovable" link="mlo-properties.html#mlo-isRemovable"/>
-    <function name="mlo:startTime" link="mlo-properties.html#mlo-startTime"/>
-    <function name="mlo:city" link="mlo-properties.html#mlo-city"/>
-    <function name="mlo:asGeoPoint" link="mlo-properties.html#mlo-asGeoPoint"/>
-    <function name="mlo:address" link="mlo-properties.html#mlo-address"/>
-    <function name="mlo:state" link="mlo-properties.html#mlo-state"/>
-    <function name="mlo:asPostalAddress" link="mlo-properties.html#mlo-asPostalAddress"/>
-    <function name="mlo:boxEastLimit" link="mlo-properties.html#mlo-boxEastLimit"/>
-    <function name="mlo:longitude" link="mlo-properties.html#mlo-longitude"/>
-    <function name="mlo:country" link="mlo-properties.html#mlo-country"/>
-    <function name="mlo:altitude" link="mlo-properties.html#mlo-altitude"/>
-    <function name="mlo:latitude" link="mlo-properties.html#mlo-latitude"/>
-    <function name="mlo:belongsToCategory" link="mlo-properties.html#mlo-belongsToCategory"/>
-    <function name="tracker:Volume" link="tracker-ontology.html#tracker-Volume"/>
-    <function name="tracker:tagRelatedTo" link="tracker-properties.html#tracker-tagRelatedTo"/>
-    <function name="tracker:mountPoint" link="tracker-properties.html#tracker-mountPoint"/>
-    <function name="tracker:notify" link="tracker-properties.html#tracker-notify"/>
-    <function name="tracker:isMounted" link="tracker-properties.html#tracker-isMounted"/>
-    <function name="tracker:isDefaultTag" link="tracker-properties.html#tracker-isDefaultTag"/>
-    <function name="tracker:available" link="tracker-properties.html#tracker-available"/>
-    <function name="tracker:unmountDate" link="tracker-properties.html#tracker-unmountDate"/>
-    <function name="tracker:writeback" link="tracker-properties.html#tracker-writeback"/>
-    <function name="maemo:SoftwareWidget" link="maemo-ontology.html#maemo-SoftwareWidget"/>
-    <function name="maemo:SoftwareApplet" link="maemo-ontology.html#maemo-SoftwareApplet"/>
-    <function name="maemo:DesktopBookmark" link="maemo-ontology.html#maemo-DesktopBookmark"/>
-    <function name="maemo:bookmarkThumbnail" link="maemo-properties.html#maemo-bookmarkThumbnail"/>
-    <function name="maemo:relevance" link="maemo-properties.html#maemo-relevance"/>
-    <function name="maemo:remoteMediaArt" link="maemo-properties.html#maemo-remoteMediaArt"/>
-    <function name="maemo:localPhoneNumber" link="maemo-properties.html#maemo-localPhoneNumber"/>
-    <function name="maemo:webhistoryThumbnail" link="maemo-properties.html#maemo-webhistoryThumbnail"/>
+    <function name="A contact in this ontology" link="nco-ontology.html#nco-ContactRepresentation"/>
+    <function name="Postal Address" link="nco-ontology.html#nco-PostalAddressRepresentation"/>
+    <function name="IM Accounts and contacts" link="nco-ontology.html#nco-ImContactsRepresentations"/>
+    <function name="Special remarks" link="nco-ontology.html#nco-special-remarks"/>
+    <function name="Related information" link="nco-ontology.html#nco-related-information"/>
+    <function name="nco:IMAccount" link="nco-classes.html#nco-IMAccount"/>
+    <function name="nco:PcsNumber" link="nco-classes.html#nco-PcsNumber"/>
+    <function name="nco:PersonContact" link="nco-classes.html#nco-PersonContact"/>
+    <function name="nco:VoicePhoneNumber" link="nco-classes.html#nco-VoicePhoneNumber"/>
+    <function name="nco:MessagingNumber" link="nco-classes.html#nco-MessagingNumber"/>
+    <function name="nco:BbsNumber" link="nco-classes.html#nco-BbsNumber"/>
+    <function name="nco:Gender" link="nco-classes.html#nco-Gender"/>
+    <function name="nco:ContactMedium" link="nco-classes.html#nco-ContactMedium"/>
+    <function name="nco:CellPhoneNumber" link="nco-classes.html#nco-CellPhoneNumber"/>
+    <function name="nco:Role" link="nco-classes.html#nco-Role"/>
+    <function name="nco:IsdnNumber" link="nco-classes.html#nco-IsdnNumber"/>
+    <function name="nco:ContactList" link="nco-classes.html#nco-ContactList"/>
+    <function name="nco:VideoTelephoneNumber" link="nco-classes.html#nco-VideoTelephoneNumber"/>
+    <function name="nco:DomesticDeliveryAddress" link="nco-classes.html#nco-DomesticDeliveryAddress"/>
+    <function name="nco:FaxNumber" link="nco-classes.html#nco-FaxNumber"/>
+    <function name="nco:OrganizationContact" link="nco-classes.html#nco-OrganizationContact"/>
+    <function name="nco:PhoneNumber" link="nco-classes.html#nco-PhoneNumber"/>
+    <function name="nco:IMAddress" link="nco-classes.html#nco-IMAddress"/>
+    <function name="nco:PresenceStatus" link="nco-classes.html#nco-PresenceStatus"/>
+    <function name="nco:PostalAddress" link="nco-classes.html#nco-PostalAddress"/>
+    <function name="nco:EmailAddress" link="nco-classes.html#nco-EmailAddress"/>
+    <function name="nco:CarPhoneNumber" link="nco-classes.html#nco-CarPhoneNumber"/>
+    <function name="nco:AuthorizationStatus" link="nco-classes.html#nco-AuthorizationStatus"/>
+    <function name="nco:ModemNumber" link="nco-classes.html#nco-ModemNumber"/>
+    <function name="nco:ContactGroup" link="nco-classes.html#nco-ContactGroup"/>
+    <function name="nco:ContactListDataObject" link="nco-classes.html#nco-ContactListDataObject"/>
+    <function name="nco:ParcelDeliveryAddress" link="nco-classes.html#nco-ParcelDeliveryAddress"/>
+    <function name="nco:IMCapability" link="nco-classes.html#nco-IMCapability"/>
+    <function name="nco:PagerNumber" link="nco-classes.html#nco-PagerNumber"/>
+    <function name="nco:Affiliation" link="nco-classes.html#nco-Affiliation"/>
+    <function name="nco:InternationalDeliveryAddress" link="nco-classes.html#nco-InternationalDeliveryAddress"/>
+    <function name="nco:Contact" link="nco-classes.html#nco-Contact"/>
+    <function name="nco:imAccountType" link="nco-properties.html#nco-imAccountType"/>
+    <function name="nco:imID" link="nco-properties.html#nco-imID"/>
+    <function name="nco:imNickname" link="nco-properties.html#nco-imNickname"/>
+    <function name="nco:region" link="nco-properties.html#nco-region"/>
+    <function name="nco:country" link="nco-properties.html#nco-country"/>
+    <function name="nco:imEnabled" link="nco-properties.html#nco-imEnabled"/>
+    <function name="nco:publisher" link="nco-properties.html#nco-publisher"/>
+    <function name="nco:representative" link="nco-properties.html#nco-representative"/>
+    <function name="nco:imCapability" link="nco-properties.html#nco-imCapability"/>
+    <function name="nco:hasIMContact" link="nco-properties.html#nco-hasIMContact"/>
+    <function name="nco:streetAddress" link="nco-properties.html#nco-streetAddress"/>
+    <function name="nco:contactMediumComment" link="nco-properties.html#nco-contactMediumComment"/>
+    <function name="nco:logo" link="nco-properties.html#nco-logo"/>
+    <function name="nco:contactLocalUID" link="nco-properties.html#nco-contactLocalUID"/>
+    <function name="nco:nameAdditional" link="nco-properties.html#nco-nameAdditional"/>
+    <function name="nco:contributor" link="nco-properties.html#nco-contributor"/>
+    <function name="nco:role" link="nco-properties.html#nco-role"/>
+    <function name="nco:hasLocation" link="nco-properties.html#nco-hasLocation"/>
+    <function name="nco:contactGroupName" link="nco-properties.html#nco-contactGroupName"/>
+    <function name="nco:sound" link="nco-properties.html#nco-sound"/>
+    <function name="nco:org" link="nco-properties.html#nco-org"/>
+    <function name="nco:addressLocation" link="nco-properties.html#nco-addressLocation"/>
+    <function name="nco:hasIMAddress" link="nco-properties.html#nco-hasIMAddress"/>
+    <function name="nco:imProtocol" link="nco-properties.html#nco-imProtocol"/>
+    <function name="nco:video" link="nco-properties.html#nco-video"/>
+    <function name="nco:title" link="nco-properties.html#nco-title"/>
+    <function name="nco:birthDate" link="nco-properties.html#nco-birthDate"/>
+    <function name="nco:containsContact" link="nco-properties.html#nco-containsContact"/>
+    <function name="nco:blogUrl" link="nco-properties.html#nco-blogUrl"/>
+    <function name="nco:creator" link="nco-properties.html#nco-creator"/>
+    <function name="nco:hasContactMedium" link="nco-properties.html#nco-hasContactMedium"/>
+    <function name="nco:contactUID" link="nco-properties.html#nco-contactUID"/>
+    <function name="nco:note" link="nco-properties.html#nco-note"/>
+    <function name="nco:foafUrl" link="nco-properties.html#nco-foafUrl"/>
+    <function name="nco:hasEmailAddress" link="nco-properties.html#nco-hasEmailAddress"/>
+    <function name="nco:locality" link="nco-properties.html#nco-locality"/>
+    <function name="nco:district" link="nco-properties.html#nco-district"/>
+    <function name="nco:nameHonorificSuffix" link="nco-properties.html#nco-nameHonorificSuffix"/>
+    <function name="nco:websiteUrl" link="nco-properties.html#nco-websiteUrl"/>
+    <function name="nco:nameFamily" link="nco-properties.html#nco-nameFamily"/>
+    <function name="nco:imAccountAddress" link="nco-properties.html#nco-imAccountAddress"/>
+    <function name="nco:nameHonorificPrefix" link="nco-properties.html#nco-nameHonorificPrefix"/>
+    <function name="nco:hasAffiliation" link="nco-properties.html#nco-hasAffiliation"/>
+    <function name="nco:gender" link="nco-properties.html#nco-gender"/>
+    <function name="nco:imAddressAuthStatusTo" link="nco-properties.html#nco-imAddressAuthStatusTo"/>
+    <function name="nco:extendedAddress" link="nco-properties.html#nco-extendedAddress"/>
+    <function name="nco:imStatusMessage" link="nco-properties.html#nco-imStatusMessage"/>
+    <function name="nco:key" link="nco-properties.html#nco-key"/>
+    <function name="nco:imAvatar" link="nco-properties.html#nco-imAvatar"/>
+    <function name="nco:emailAddress" link="nco-properties.html#nco-emailAddress"/>
+    <function name="nco:url" link="nco-properties.html#nco-url"/>
+    <function name="nco:postalcode" link="nco-properties.html#nco-postalcode"/>
+    <function name="nco:hasPhoneNumber" link="nco-properties.html#nco-hasPhoneNumber"/>
+    <function name="nco:photo" link="nco-properties.html#nco-photo"/>
+    <function name="nco:nameGiven" link="nco-properties.html#nco-nameGiven"/>
+    <function name="nco:imPresence" link="nco-properties.html#nco-imPresence"/>
+    <function name="nco:nickname" link="nco-properties.html#nco-nickname"/>
+    <function name="nco:hobby" link="nco-properties.html#nco-hobby"/>
+    <function name="nco:department" link="nco-properties.html#nco-department"/>
+    <function name="nco:phoneNumber" link="nco-properties.html#nco-phoneNumber"/>
+    <function name="nco:presenceLastModified" link="nco-properties.html#nco-presenceLastModified"/>
+    <function name="nco:pobox" link="nco-properties.html#nco-pobox"/>
+    <function name="nco:imDisplayName" link="nco-properties.html#nco-imDisplayName"/>
+    <function name="nco:fullname" link="nco-properties.html#nco-fullname"/>
+    <function name="nco:imAddressAuthStatusFrom" link="nco-properties.html#nco-imAddressAuthStatusFrom"/>
+    <function name="nco:hasPostalAddress" link="nco-properties.html#nco-hasPostalAddress"/>
+    <function name="nco:county" link="nco-properties.html#nco-county"/>
+    <function name="nco:voiceMail" link="nco-properties.html#nco-voiceMail"/>
+    <function name="nco:belongsToGroup" link="nco-properties.html#nco-belongsToGroup"/>
+    <function name="nmo:IMMessage" link="nmo-classes.html#nmo-IMMessage"/>
+    <function name="nmo:Email" link="nmo-classes.html#nmo-Email"/>
+    <function name="nmo:PermanentChannel" link="nmo-classes.html#nmo-PermanentChannel"/>
+    <function name="nmo:Attachment" link="nmo-classes.html#nmo-Attachment"/>
+    <function name="nmo:MMSMessage" link="nmo-classes.html#nmo-MMSMessage"/>
+    <function name="nmo:MimePart" link="nmo-classes.html#nmo-MimePart"/>
+    <function name="nmo:VOIPCall" link="nmo-classes.html#nmo-VOIPCall"/>
+    <function name="nmo:Call" link="nmo-classes.html#nmo-Call"/>
+    <function name="nmo:MessageHeader" link="nmo-classes.html#nmo-MessageHeader"/>
+    <function name="nmo:Multipart" link="nmo-classes.html#nmo-Multipart"/>
+    <function name="nmo:Message" link="nmo-classes.html#nmo-Message"/>
+    <function name="nmo:MailAccount" link="nmo-classes.html#nmo-MailAccount"/>
+    <function name="nmo:TransientChannel" link="nmo-classes.html#nmo-TransientChannel"/>
+    <function name="nmo:Conversation" link="nmo-classes.html#nmo-Conversation"/>
+    <function name="nmo:CommunicationChannel" link="nmo-classes.html#nmo-CommunicationChannel"/>
+    <function name="nmo:PhoneMessageFolder" link="nmo-classes.html#nmo-PhoneMessageFolder"/>
+    <function name="nmo:MailboxDataObject" link="nmo-classes.html#nmo-MailboxDataObject"/>
+    <function name="nmo:SMSMessage" link="nmo-classes.html#nmo-SMSMessage"/>
+    <function name="nmo:PhoneMessage" link="nmo-classes.html#nmo-PhoneMessage"/>
+    <function name="nmo:ReportReadStatus" link="nmo-classes.html#nmo-ReportReadStatus"/>
+    <function name="nmo:MailFolder" link="nmo-classes.html#nmo-MailFolder"/>
+    <function name="nmo:DeliveryStatus" link="nmo-classes.html#nmo-DeliveryStatus"/>
+    <function name="nmo:htmlMessageContent" link="nmo-properties.html#nmo-htmlMessageContent"/>
+    <function name="nmo:serverUnreadCount" link="nmo-properties.html#nmo-serverUnreadCount"/>
+    <function name="nmo:isDeleted" link="nmo-properties.html#nmo-isDeleted"/>
+    <function name="nmo:fromVCard" link="nmo-properties.html#nmo-fromVCard"/>
+    <function name="nmo:phoneMessageId" link="nmo-properties.html#nmo-phoneMessageId"/>
+    <function name="nmo:contentTransferEncoding" link="nmo-properties.html#nmo-contentTransferEncoding"/>
+    <function name="nmo:toVCard" link="nmo-properties.html#nmo-toVCard"/>
+    <function name="nmo:headerName" link="nmo-properties.html#nmo-headerName"/>
+    <function name="nmo:isFlagged" link="nmo-properties.html#nmo-isFlagged"/>
+    <function name="nmo:from" link="nmo-properties.html#nmo-from"/>
+    <function name="nmo:mmsHasContent" link="nmo-properties.html#nmo-mmsHasContent"/>
+    <function name="nmo:sentDate" link="nmo-properties.html#nmo-sentDate"/>
+    <function name="nmo:isRecent" link="nmo-properties.html#nmo-isRecent"/>
+    <function name="nmo:phoneMessageFolderId" link="nmo-properties.html#nmo-phoneMessageFolderId"/>
+    <function name="nmo:reportDelivery" link="nmo-properties.html#nmo-reportDelivery"/>
+    <function name="nmo:communicationChannel" link="nmo-properties.html#nmo-communicationChannel"/>
+    <function name="nmo:fromAddress" link="nmo-properties.html#nmo-fromAddress"/>
+    <function name="nmo:conversation" link="nmo-properties.html#nmo-conversation"/>
+    <function name="nmo:isDraft" link="nmo-properties.html#nmo-isDraft"/>
+    <function name="nmo:accountName" link="nmo-properties.html#nmo-accountName"/>
+    <function name="nmo:isRead" link="nmo-properties.html#nmo-isRead"/>
+    <function name="nmo:lastMessageDate" link="nmo-properties.html#nmo-lastMessageDate"/>
+    <function name="nmo:accountDisplayName" link="nmo-properties.html#nmo-accountDisplayName"/>
+    <function name="nmo:contentMimeType" link="nmo-properties.html#nmo-contentMimeType"/>
+    <function name="nmo:duration" link="nmo-properties.html#nmo-duration"/>
+    <function name="nmo:folderName" link="nmo-properties.html#nmo-folderName"/>
+    <function name="nmo:hasContent" link="nmo-properties.html#nmo-hasContent"/>
+    <function name="nmo:serverCount" link="nmo-properties.html#nmo-serverCount"/>
+    <function name="nmo:contentDescription" link="nmo-properties.html#nmo-contentDescription"/>
+    <function name="nmo:sender" link="nmo-properties.html#nmo-sender"/>
+    <function name="nmo:to" link="nmo-properties.html#nmo-to"/>
+    <function name="nmo:messageId" link="nmo-properties.html#nmo-messageId"/>
+    <function name="nmo:charSet" link="nmo-properties.html#nmo-charSet"/>
+    <function name="nmo:lastSuccessfulMessageDate" link="nmo-properties.html#nmo-lastSuccessfulMessageDate"/>
+    <function name="nmo:sentWithReportRead" link="nmo-properties.html#nmo-sentWithReportRead"/>
+    <function name="nmo:messageHeader" link="nmo-properties.html#nmo-messageHeader"/>
+    <function name="nmo:responseType" link="nmo-properties.html#nmo-responseType"/>
+    <function name="nmo:references" link="nmo-properties.html#nmo-references"/>
+    <function name="nmo:containsPhoneMessageFolder" link="nmo-properties.html#nmo-containsPhoneMessageFolder"/>
+    <function name="nmo:receivedDate" link="nmo-properties.html#nmo-receivedDate"/>
+    <function name="nmo:status" link="nmo-properties.html#nmo-status"/>
+    <function name="nmo:isEmergency" link="nmo-properties.html#nmo-isEmergency"/>
+    <function name="nmo:isSent" link="nmo-properties.html#nmo-isSent"/>
+    <function name="nmo:signature" link="nmo-properties.html#nmo-signature"/>
+    <function name="nmo:replyTo" link="nmo-properties.html#nmo-replyTo"/>
+    <function name="nmo:contentId" link="nmo-properties.html#nmo-contentId"/>
+    <function name="nmo:contentDisposition" link="nmo-properties.html#nmo-contentDisposition"/>
+    <function name="nmo:encoding" link="nmo-properties.html#nmo-encoding"/>
+    <function name="nmo:hasParticipant" link="nmo-properties.html#nmo-hasParticipant"/>
+    <function name="nmo:mimeHeader" link="nmo-properties.html#nmo-mimeHeader"/>
+    <function name="nmo:validityPeriod" link="nmo-properties.html#nmo-validityPeriod"/>
+    <function name="nmo:mustAnswerReportRead" link="nmo-properties.html#nmo-mustAnswerReportRead"/>
+    <function name="nmo:containsPhoneMessage" link="nmo-properties.html#nmo-containsPhoneMessage"/>
+    <function name="nmo:isAnswered" link="nmo-properties.html#nmo-isAnswered"/>
+    <function name="nmo:hasAttachment" link="nmo-properties.html#nmo-hasAttachment"/>
+    <function name="nmo:partBoundary" link="nmo-properties.html#nmo-partBoundary"/>
+    <function name="nmo:deliveryStatus" link="nmo-properties.html#nmo-deliveryStatus"/>
+    <function name="nmo:bcc" link="nmo-properties.html#nmo-bcc"/>
+    <function name="nmo:reportReadStatus" link="nmo-properties.html#nmo-reportReadStatus"/>
+    <function name="nmo:mmsId" link="nmo-properties.html#nmo-mmsId"/>
+    <function name="nmo:headerValue" link="nmo-properties.html#nmo-headerValue"/>
+    <function name="nmo:cc" link="nmo-properties.html#nmo-cc"/>
+    <function name="nmo:messageSubject" link="nmo-properties.html#nmo-messageSubject"/>
+    <function name="nmo:inReplyTo" link="nmo-properties.html#nmo-inReplyTo"/>
+    <function name="nmo:recipient" link="nmo-properties.html#nmo-recipient"/>
     <function name="ncal:Weekday" link="ncal-ontology.html#ncal-Weekday"/>
     <function name="ncal:Freebusy" link="ncal-ontology.html#ncal-Freebusy"/>
     <function name="ncal:UnionParentClass" link="ncal-ontology.html#ncal-UnionParentClass"/>
@@ -707,6 +598,7 @@
     <function name="ncal:description" link="ncal-properties.html#ncal-description"/>
     <function name="ncal:component" link="ncal-properties.html#ncal-component"/>
     <function name="ncal:duration" link="ncal-properties.html#ncal-duration"/>
+    <function name="ncal:anniversary" link="ncal-properties.html#ncal-anniversary"/>
     <function name="ncal:priority" link="ncal-properties.html#ncal-priority"/>
     <function name="ncal:periodDuration" link="ncal-properties.html#ncal-periodDuration"/>
     <function name="ncal:class" link="ncal-properties.html#ncal-class"/>
@@ -730,6 +622,7 @@
     <function name="ncal:involvedContact" link="ncal-properties.html#ncal-involvedContact"/>
     <function name="ncal:periodBegin" link="ncal-properties.html#ncal-periodBegin"/>
     <function name="ncal:relatedToParent" link="ncal-properties.html#ncal-relatedToParent"/>
+    <function name="ncal:birthday" link="ncal-properties.html#ncal-birthday"/>
     <function name="ncal:categories" link="ncal-properties.html#ncal-categories"/>
     <function name="ncal:count" link="ncal-properties.html#ncal-count"/>
     <function name="ncal:sentBy" link="ncal-properties.html#ncal-sentBy"/>
@@ -822,6 +715,7 @@
     <function name="scal:journalStatus" link="scal-properties.html#scal-journalStatus"/>
     <function name="scal:belongsToCalendar" link="scal-properties.html#scal-belongsToCalendar"/>
     <function name="scal:exceptionRDate" link="scal-properties.html#scal-exceptionRDate"/>
+    <function name="scal:anniversary" link="scal-properties.html#scal-anniversary"/>
     <function name="scal:attendanceStatus" link="scal-properties.html#scal-attendanceStatus"/>
     <function name="scal:alarmOffset" link="scal-properties.html#scal-alarmOffset"/>
     <function name="scal:eventStatus" link="scal-properties.html#scal-eventStatus"/>
@@ -834,20 +728,186 @@
     <function name="scal:calendarItemAlarm" link="scal-properties.html#scal-calendarItemAlarm"/>
     <function name="scal:todoStatus" link="scal-properties.html#scal-todoStatus"/>
     <function name="scal:attachment" link="scal-properties.html#scal-attachment"/>
-    <function name="dc:creator" link="dc-properties.html#dc-creator"/>
-    <function name="dc:type" link="dc-properties.html#dc-type"/>
-    <function name="dc:publisher" link="dc-properties.html#dc-publisher"/>
-    <function name="dc:date" link="dc-properties.html#dc-date"/>
-    <function name="dc:source" link="dc-properties.html#dc-source"/>
-    <function name="dc:relation" link="dc-properties.html#dc-relation"/>
-    <function name="dc:contributor" link="dc-properties.html#dc-contributor"/>
-    <function name="dc:identifier" link="dc-properties.html#dc-identifier"/>
-    <function name="dc:language" link="dc-properties.html#dc-language"/>
-    <function name="dc:subject" link="dc-properties.html#dc-subject"/>
-    <function name="dc:format" link="dc-properties.html#dc-format"/>
-    <function name="dc:coverage" link="dc-properties.html#dc-coverage"/>
-    <function name="dc:rights" link="dc-properties.html#dc-rights"/>
-    <function name="dc:title" link="dc-properties.html#dc-title"/>
-    <function name="dc:description" link="dc-properties.html#dc-description"/>
+    <function name="scal:birthday" link="scal-properties.html#scal-birthday"/>
+    <function name="nmm:Artist" link="nmm-classes.html#nmm-Artist"/>
+    <function name="nmm:Flash" link="nmm-classes.html#nmm-Flash"/>
+    <function name="nmm:AnalogRadio" link="nmm-classes.html#nmm-AnalogRadio"/>
+    <function name="nmm:Video" link="nmm-classes.html#nmm-Video"/>
+    <function name="nmm:ImageList" link="nmm-classes.html#nmm-ImageList"/>
+    <function name="nmm:MusicPiece" link="nmm-classes.html#nmm-MusicPiece"/>
+    <function name="nmm:MusicAlbum" link="nmm-classes.html#nmm-MusicAlbum"/>
+    <function name="nmm:Playlist" link="nmm-classes.html#nmm-Playlist"/>
+    <function name="nmm:WhiteBalance" link="nmm-classes.html#nmm-WhiteBalance"/>
+    <function name="nmm:Photo" link="nmm-classes.html#nmm-Photo"/>
+    <function name="nmm:RadioModulation" link="nmm-classes.html#nmm-RadioModulation"/>
+    <function name="nmm:DigitalRadio" link="nmm-classes.html#nmm-DigitalRadio"/>
+    <function name="nmm:RadioStation" link="nmm-classes.html#nmm-RadioStation"/>
+    <function name="nmm:SynchronizedText" link="nmm-classes.html#nmm-SynchronizedText"/>
+    <function name="nmm:MusicAlbumDisc" link="nmm-classes.html#nmm-MusicAlbumDisc"/>
+    <function name="nmm:MeteringMode" link="nmm-classes.html#nmm-MeteringMode"/>
+    <function name="nmm:streamingBitrate" link="nmm-properties.html#nmm-streamingBitrate"/>
+    <function name="nmm:whiteBalance" link="nmm-properties.html#nmm-whiteBalance"/>
+    <function name="nmm:musicAlbumDisc" link="nmm-properties.html#nmm-musicAlbumDisc"/>
+    <function name="nmm:lyrics" link="nmm-properties.html#nmm-lyrics"/>
+    <function name="nmm:musicCDIdentifier" link="nmm-properties.html#nmm-musicCDIdentifier"/>
+    <function name="nmm:leadActor" link="nmm-properties.html#nmm-leadActor"/>
+    <function name="nmm:focalLength" link="nmm-properties.html#nmm-focalLength"/>
+    <function name="nmm:albumDuration" link="nmm-properties.html#nmm-albumDuration"/>
+    <function name="nmm:setNumber" link="nmm-properties.html#nmm-setNumber"/>
+    <function name="nmm:isSeries" link="nmm-properties.html#nmm-isSeries"/>
+    <function name="nmm:category" link="nmm-properties.html#nmm-category"/>
+    <function name="nmm:synopsis" link="nmm-properties.html#nmm-synopsis"/>
+    <function name="nmm:frequency" link="nmm-properties.html#nmm-frequency"/>
+    <function name="nmm:skipCounter" link="nmm-properties.html#nmm-skipCounter"/>
+    <function name="nmm:carrier" link="nmm-properties.html#nmm-carrier"/>
+    <function name="nmm:modulation" link="nmm-properties.html#nmm-modulation"/>
+    <function name="nmm:isForHearingImpaired" link="nmm-properties.html#nmm-isForHearingImpaired"/>
+    <function name="nmm:isContentEncrypted" link="nmm-properties.html#nmm-isContentEncrypted"/>
+    <function name="nmm:composer" link="nmm-properties.html#nmm-composer"/>
+    <function name="nmm:albumTrackCount" link="nmm-properties.html#nmm-albumTrackCount"/>
+    <function name="nmm:director" link="nmm-properties.html#nmm-director"/>
+    <function name="nmm:isoSpeed" link="nmm-properties.html#nmm-isoSpeed"/>
+    <function name="nmm:albumTitle" link="nmm-properties.html#nmm-albumTitle"/>
+    <function name="nmm:exposureTime" link="nmm-properties.html#nmm-exposureTime"/>
+    <function name="nmm:dlnaProfile" link="nmm-properties.html#nmm-dlnaProfile"/>
+    <function name="nmm:meteringMode" link="nmm-properties.html#nmm-meteringMode"/>
+    <function name="nmm:radioPTY" link="nmm-properties.html#nmm-radioPTY"/>
+    <function name="nmm:fnumber" link="nmm-properties.html#nmm-fnumber"/>
+    <function name="nmm:MPAARating" link="nmm-properties.html#nmm-MPAARating"/>
+    <function name="nmm:episodeNumber" link="nmm-properties.html#nmm-episodeNumber"/>
+    <function name="nmm:isColorCorrected" link="nmm-properties.html#nmm-isColorCorrected"/>
+    <function name="nmm:runTime" link="nmm-properties.html#nmm-runTime"/>
+    <function name="nmm:producedBy" link="nmm-properties.html#nmm-producedBy"/>
+    <function name="nmm:hasSubtitle" link="nmm-properties.html#nmm-hasSubtitle"/>
+    <function name="nmm:albumArtist" link="nmm-properties.html#nmm-albumArtist"/>
+    <function name="nmm:genre" link="nmm-properties.html#nmm-genre"/>
+    <function name="nmm:performer" link="nmm-properties.html#nmm-performer"/>
+    <function name="nmm:albumPeakGain" link="nmm-properties.html#nmm-albumPeakGain"/>
+    <function name="nmm:uPnPShared" link="nmm-properties.html#nmm-uPnPShared"/>
+    <function name="nmm:protocol" link="nmm-properties.html#nmm-protocol"/>
+    <function name="nmm:radioIcon" link="nmm-properties.html#nmm-radioIcon"/>
+    <function name="nmm:flash" link="nmm-properties.html#nmm-flash"/>
+    <function name="nmm:albumDiscAlbum" link="nmm-properties.html#nmm-albumDiscAlbum"/>
+    <function name="nmm:beatsPerMinute" link="nmm-properties.html#nmm-beatsPerMinute"/>
+    <function name="nmm:lyricist" link="nmm-properties.html#nmm-lyricist"/>
+    <function name="nmm:videoAlbum" link="nmm-properties.html#nmm-videoAlbum"/>
+    <function name="nmm:artistName" link="nmm-properties.html#nmm-artistName"/>
+    <function name="nmm:albumGain" link="nmm-properties.html#nmm-albumGain"/>
+    <function name="nmm:musicAlbum" link="nmm-properties.html#nmm-musicAlbum"/>
+    <function name="nmm:trackNumber" link="nmm-properties.html#nmm-trackNumber"/>
+    <function name="nmm:season" link="nmm-properties.html#nmm-season"/>
+    <function name="nmm:internationalStandardRecordingCode" link="nmm-properties.html#nmm-internationalStandardRecordingCode"/>
+    <function name="nmm:isCropped" link="nmm-properties.html#nmm-isCropped"/>
+    <function name="nmm:subtitle" link="nmm-properties.html#nmm-subtitle"/>
+    <function name="nmm:alternativeMedia" link="nmm-properties.html#nmm-alternativeMedia"/>
+    <function name="nmm:encoding" link="nmm-properties.html#nmm-encoding"/>
+    <function name="mto:SyncTransfer" link="mto-ontology.html#mto-SyncTransfer"/>
+    <function name="mto:TransferElement" link="mto-ontology.html#mto-TransferElement"/>
+    <function name="mto:DownloadTransfer" link="mto-ontology.html#mto-DownloadTransfer"/>
+    <function name="mto:UploadTransfer" link="mto-ontology.html#mto-UploadTransfer"/>
+    <function name="mto:Transfer" link="mto-ontology.html#mto-Transfer"/>
+    <function name="mto:State" link="mto-ontology.html#mto-State"/>
+    <function name="mto:TransferMethod" link="mto-ontology.html#mto-TransferMethod"/>
+    <function name="mto:transferState" link="mto-properties.html#mto-transferState"/>
+    <function name="mto:destination" link="mto-properties.html#mto-destination"/>
+    <function name="mto:transferList" link="mto-properties.html#mto-transferList"/>
+    <function name="mto:transferPrivacyLevel" link="mto-properties.html#mto-transferPrivacyLevel"/>
+    <function name="mto:method" link="mto-properties.html#mto-method"/>
+    <function name="mto:state" link="mto-properties.html#mto-state"/>
+    <function name="mto:created" link="mto-properties.html#mto-created"/>
+    <function name="mto:agent" link="mto-properties.html#mto-agent"/>
+    <function name="mto:source" link="mto-properties.html#mto-source"/>
+    <function name="mto:starter" link="mto-properties.html#mto-starter"/>
+    <function name="mto:account" link="mto-properties.html#mto-account"/>
+    <function name="mto:transferCategory" link="mto-properties.html#mto-transferCategory"/>
+    <function name="mto:completedTime" link="mto-properties.html#mto-completedTime"/>
+    <function name="mto:startedTime" link="mto-properties.html#mto-startedTime"/>
+    <function name="" link="mfo-ontology.html#mfo-graphical-overview"/>
+    <function name="mfo:FeedElement" link="mfo-classes.html#mfo-FeedElement"/>
+    <function name="mfo:Action" link="mfo-classes.html#mfo-Action"/>
+    <function name="mfo:FeedSettings" link="mfo-classes.html#mfo-FeedSettings"/>
+    <function name="mfo:Enclosure" link="mfo-classes.html#mfo-Enclosure"/>
+    <function name="mfo:FeedMessage" link="mfo-classes.html#mfo-FeedMessage"/>
+    <function name="mfo:FeedChannel" link="mfo-classes.html#mfo-FeedChannel"/>
+    <function name="mfo:FeedType" link="mfo-classes.html#mfo-FeedType"/>
+    <function name="mfo:totalCount" link="mfo-properties.html#mfo-totalCount"/>
+    <function name="mfo:expiryInterval" link="mfo-properties.html#mfo-expiryInterval"/>
+    <function name="mfo:name" link="mfo-properties.html#mfo-name"/>
+    <function name="mfo:updateInterval" link="mfo-properties.html#mfo-updateInterval"/>
+    <function name="mfo:action" link="mfo-properties.html#mfo-action"/>
+    <function name="mfo:downloadPath" link="mfo-properties.html#mfo-downloadPath"/>
+    <function name="mfo:localLink" link="mfo-properties.html#mfo-localLink"/>
+    <function name="mfo:unreadCount" link="mfo-properties.html#mfo-unreadCount"/>
+    <function name="mfo:maxSize" link="mfo-properties.html#mfo-maxSize"/>
+    <function name="mfo:type" link="mfo-properties.html#mfo-type"/>
+    <function name="mfo:image" link="mfo-properties.html#mfo-image"/>
+    <function name="mfo:downloadedTime" link="mfo-properties.html#mfo-downloadedTime"/>
+    <function name="mfo:feedSettings" link="mfo-properties.html#mfo-feedSettings"/>
+    <function name="mfo:groupDefault" link="mfo-properties.html#mfo-groupDefault"/>
+    <function name="mfo:optional" link="mfo-properties.html#mfo-optional"/>
+    <function name="mfo:updatedTime" link="mfo-properties.html#mfo-updatedTime"/>
+    <function name="mfo:enclosureList" link="mfo-properties.html#mfo-enclosureList"/>
+    <function name="mfo:remoteLink" link="mfo-properties.html#mfo-remoteLink"/>
+    <function name="mfo:downloadFlag" link="mfo-properties.html#mfo-downloadFlag"/>
+    <function name="mtp:ScanType" link="mtp-ontology.html#mtp-ScanType"/>
+    <function name="mtp:scantype" link="mtp-properties.html#mtp-scantype"/>
+    <function name="mtp:credits" link="mtp-properties.html#mtp-credits"/>
+    <function name="mtp:creator" link="mtp-properties.html#mtp-creator"/>
+    <function name="mtp:hidden" link="mtp-properties.html#mtp-hidden"/>
+    <function name="mtp:fourCC" link="mtp-properties.html#mtp-fourCC"/>
+    <function name="mtp:waveformat" link="mtp-properties.html#mtp-waveformat"/>
+    <function name="slo:Route" link="slo-ontology.html#slo-Route"/>
+    <function name="slo:GeoLocation" link="slo-ontology.html#slo-GeoLocation"/>
+    <function name="slo:LandmarkCategory" link="slo-ontology.html#slo-LandmarkCategory"/>
+    <function name="slo:Landmark" link="slo-ontology.html#slo-Landmark"/>
+    <function name="slo:iconUrl" link="slo-properties.html#slo-iconUrl"/>
+    <function name="slo:boundingLatitudeMin" link="slo-properties.html#slo-boundingLatitudeMin"/>
+    <function name="slo:boundingLongitudeMin" link="slo-properties.html#slo-boundingLongitudeMin"/>
+    <function name="slo:horizontalAccuracy" link="slo-properties.html#slo-horizontalAccuracy"/>
+    <function name="slo:altitude" link="slo-properties.html#slo-altitude"/>
+    <function name="slo:hasContact" link="slo-properties.html#slo-hasContact"/>
+    <function name="slo:belongsToCategory" link="slo-properties.html#slo-belongsToCategory"/>
+    <function name="slo:timestamp" link="slo-properties.html#slo-timestamp"/>
+    <function name="slo:latitude" link="slo-properties.html#slo-latitude"/>
+    <function name="slo:postalAddress" link="slo-properties.html#slo-postalAddress"/>
+    <function name="slo:isRemovable" link="slo-properties.html#slo-isRemovable"/>
+    <function name="slo:radius" link="slo-properties.html#slo-radius"/>
+    <function name="slo:routeDetails" link="slo-properties.html#slo-routeDetails"/>
+    <function name="slo:location" link="slo-properties.html#slo-location"/>
+    <function name="slo:startTime" link="slo-properties.html#slo-startTime"/>
+    <function name="slo:categoryIconUrl" link="slo-properties.html#slo-categoryIconUrl"/>
+    <function name="slo:verticalAccuracy" link="slo-properties.html#slo-verticalAccuracy"/>
+    <function name="slo:boundingLatitudeMax" link="slo-properties.html#slo-boundingLatitudeMax"/>
+    <function name="slo:endTime" link="slo-properties.html#slo-endTime"/>
+    <function name="slo:longitude" link="slo-properties.html#slo-longitude"/>
+    <function name="slo:boundingLongitudeMax" link="slo-properties.html#slo-boundingLongitudeMax"/>
+    <function name="tracker:Volume" link="tracker-ontology.html#tracker-Volume"/>
+    <function name="tracker:tagRelatedTo" link="tracker-properties.html#tracker-tagRelatedTo"/>
+    <function name="tracker:mountPoint" link="tracker-properties.html#tracker-mountPoint"/>
+    <function name="tracker:isRemovable" link="tracker-properties.html#tracker-isRemovable"/>
+    <function name="tracker:notify" link="tracker-properties.html#tracker-notify"/>
+    <function name="tracker:forceJournal" link="tracker-properties.html#tracker-forceJournal"/>
+    <function name="tracker:isMounted" link="tracker-properties.html#tracker-isMounted"/>
+    <function name="tracker:isDefaultTag" link="tracker-properties.html#tracker-isDefaultTag"/>
+    <function name="tracker:isOptical" link="tracker-properties.html#tracker-isOptical"/>
+    <function name="tracker:available" link="tracker-properties.html#tracker-available"/>
+    <function name="tracker:unmountDate" link="tracker-properties.html#tracker-unmountDate"/>
+    <function name="tracker:writeback" link="tracker-properties.html#tracker-writeback"/>
+    <function name="maemo:SoftwareWidget" link="maemo-ontology.html#maemo-SoftwareWidget"/>
+    <function name="maemo:PostalAddress" link="maemo-ontology.html#maemo-PostalAddress"/>
+    <function name="maemo:SoftwareApplet" link="maemo-ontology.html#maemo-SoftwareApplet"/>
+    <function name="maemo:ControlPanelApplet" link="maemo-ontology.html#maemo-ControlPanelApplet"/>
+    <function name="maemo:DesktopBookmark" link="maemo-ontology.html#maemo-DesktopBookmark"/>
+    <function name="maemo:localPhoneNumber" link="maemo-properties.html#maemo-localPhoneNumber"/>
+    <function name="maemo:contactVideoRingtone" link="maemo-properties.html#maemo-contactVideoRingtone"/>
+    <function name="maemo:contactGroupVibrationRingtone" link="maemo-properties.html#maemo-contactGroupVibrationRingtone"/>
+    <function name="maemo:contactAudioRingtone" link="maemo-properties.html#maemo-contactAudioRingtone"/>
+    <function name="maemo:contactVibrationRingtone" link="maemo-properties.html#maemo-contactVibrationRingtone"/>
+    <function name="maemo:relevance" link="maemo-properties.html#maemo-relevance"/>
+    <function name="maemo:webhistoryThumbnail" link="maemo-properties.html#maemo-webhistoryThumbnail"/>
+    <function name="maemo:contactGroupVideoRingtone" link="maemo-properties.html#maemo-contactGroupVideoRingtone"/>
+    <function name="maemo:bookmarkThumbnail" link="maemo-properties.html#maemo-bookmarkThumbnail"/>
+    <function name="maemo:remoteMediaArt" link="maemo-properties.html#maemo-remoteMediaArt"/>
+    <function name="maemo:contactGroupAudioRingtone" link="maemo-properties.html#maemo-contactGroupAudioRingtone"/>
   </functions>
 </book>

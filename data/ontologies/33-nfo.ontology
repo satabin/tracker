@@ -12,11 +12,12 @@
 
 nfo: a tracker:Namespace, tracker:Ontology ;
 	tracker:prefix "nfo" ;
-	nao:lastModified "2010-08-03T10:03:00Z" .
+	nao:lastModified "2011-03-24T10:11:00Z" .
 
 nfo:Document a rdfs:Class ;
 	rdfs:label "Document" ;
 	rdfs:comment "A generic document. A common superclass for all documents on the desktop." ;
+	tracker:notify true;
 	rdfs:subClassOf nie:InformationElement .
 
 nfo:FileDataObject a rdfs:Class ;
@@ -37,6 +38,7 @@ nfo:Media a rdfs:Class ;
 nfo:Visual a rdfs:Class ;
 	rdfs:label "Visual" ;
 	rdfs:comment "File containing visual content." ;
+	tracker:domainIndex nie:contentCreated ;
 	rdfs:subClassOf nfo:Media .
 
 nfo:Image a rdfs:Class ;
@@ -254,9 +256,9 @@ nfo:Website a rdfs:Class ;
 
 nfo:WebHistory a rdfs:Class ;
 	rdfs:label "Web History" ;
-        rdfs:comment "A web history entry" ;
+	rdfs:comment "A web history entry" ;
 	tracker:notify true ;
-        rdfs:subClassOf nie:InformationElement .
+	rdfs:subClassOf nie:InformationElement .
 
 nfo:count a rdf:Property ;
 	rdfs:label "count" ;
@@ -335,6 +337,20 @@ nfo:belongsToContainer a rdf:Property ;
 nfo:aspectRatio a rdf:Property ;
 	rdfs:label "aspectRatio" ;
 	rdfs:comment "Visual content aspect ratio. (Width divided by Height)" ;
+	nrl:maxCardinality 1 ;
+	rdfs:domain nfo:Visual ;
+	rdfs:range xsd:double .
+
+nfo:heading a rdf:Property ;
+	rdfs:label "Heading" ;
+	rdfs:comment "Specifies the direction of travelling while capturing image/video. The range of values from 0.00 to 359.99 (where 0 is due North, 90 is East, 180 South and 270 is West)";
+	nrl:maxCardinality 1;
+	rdfs:domain nfo:Visual ;
+	rdfs:range xsd:double .
+
+nfo:tilt a rdf:Property ;
+	rdfs:label "Tilt" ;
+	rdfs:comment "Vertical inclination of the camera while capturing the image, in angles starting on 0 as horizontal, positive numbers pointing up, negative angles pointing down" ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nfo:Visual ;
 	rdfs:range xsd:double .
@@ -453,20 +469,9 @@ nfo:listPosition a rdf:Property ;
 
 # Propose in nepomuk
 
-# This property is very impractical
-nfo:entryContent a rdf:Property ;
-	rdfs:label "Entry content" ;
-	rdfs:comment "URI to the element in certain position of the list" ;
-	nrl:maxCardinality 1 ;
-	rdfs:domain nfo:MediaFileListEntry ;
-	rdfs:range nie:InformationElement ;
-	nao:deprecated true ;
-	tracker:writeback true .
-
-# This one makes more sense
 nfo:entryUrl a rdf:Property ;
 	rdfs:label "Entry URL" ;
-	rdfs:comment "URI to the element in certain position of the list" ;
+	rdfs:comment "URL to the element in certain position of the list" ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nfo:MediaFileListEntry ;
 	rdfs:range xsd:string ;
@@ -531,14 +536,6 @@ nfo:hasMediaStream a rdf:Property ;
 	rdfs:domain nfo:Media ;
 	rdfs:range nie:DataObject .
 
-nfo:fileUrl a rdf:Property ;
-	rdfs:label "fileUrl" ;
-	rdfs:comment "URL of the file. It points at the location of the file. In cases where creating a simple file:// or http:// URL for a file is difficult (e.g. for files inside compressed archives) the applications are encouraged to use conventions defined by Apache Commons VFS Project at http://jakarta.apache.org/  commons/ vfs/ filesystems.html." ;
-	nrl:maxCardinality 1 ;
-	nao:deprecated true ;
-	rdfs:domain nfo:FileDataObject ;
-	rdfs:range rdfs:Resource .
-
 nfo:width a rdf:Property ;
 	rdfs:label "width" ;
 	rdfs:comment "Visual content width in pixels." ;
@@ -563,6 +560,12 @@ nfo:tableOfContents a rdf:Property ;
         rdfs:range xsd:string ;
        	tracker:fulltextIndexed true ;
 	tracker:weight 5 .
+
+# Not in upstream Nepomuk. Pending to submit there.
+nfo:Note a rdfs:Class ;
+         rdfs:label "Note";
+         rdfs:comment "Usually small document with snippets, reminders or frequenly used content.";
+         rdfs:subClassOf nfo:Document .
 
 nfo:lineCount a rdf:Property ;
 	rdfs:label "lineCount" ;
@@ -612,6 +615,14 @@ nfo:containsBookmarkFolder a rdf:Property ;
 nfo:codec a rdf:Property ;
 	rdfs:label "codec" ;
 	rdfs:comment "The name of the codec necessary to decode a piece of media." ;
+	nrl:maxCardinality 1 ;
+	rdfs:domain nfo:Media ;
+	rdfs:range xsd:string .
+
+# FIXME Added property
+nfo:encodedBy a rdf:Property ;
+	rdfs:label "encodedBy" ;
+	rdfs:comment "The contains the name of the person or organisation that encoded the media" ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nfo:Media ;
 	rdfs:range xsd:string .
@@ -745,7 +756,7 @@ nfo:deletionDate a rdf:Property ;
 
 nfo:bookmarks a rdf:Property ;
 	rdfs:label "link" ;
-	rdfs:comment "The address of the linked object. Usually a web URI." ;
+	rdfs:comment "The address of the linked object. Usually a web URL." ;
 	rdfs:subPropertyOf nie:links ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nfo:Bookmark ;
@@ -844,7 +855,8 @@ nfo:softwareCategoryIcon a rdf:Property ;
 nfo:SoftwareApplication a rdfs:Class ;
 	rdfs:label "Application" ;
 	rdfs:comment "An application" ;
-	rdfs:subClassOf nfo:Software .
+	rdfs:subClassOf nfo:Software ;
+	tracker:notify true .
 
 nfo:softwareIcon a rdf:Property ;
 	rdfs:label "SoftwareIcon" ;
@@ -865,7 +877,8 @@ nfo:softwareCmdLine a rdf:Property ;
 
 nfo:Orientation a rdfs:Class ;
 	rdfs:label "Orientation enum" ;
-	rdfs:comment "Orientation enum" .
+	rdfs:comment "Orientation enum" ;
+	rdfs:subClassOf rdfs:Resource .
 
 nfo:orientation-top a nfo:Orientation .
 nfo:orientation-top-mirror a nfo:Orientation .
@@ -888,7 +901,8 @@ poi: a tracker:Namespace ;
 	tracker:prefix "poi" .
 
 # TDB
-poi:ObjectOfInterest a rdfs:Class .
+poi:ObjectOfInterest a rdfs:Class ;
+	rdfs:subClassOf rdfs:Resource .
 
 nfo:depicts a rdf:Property ;
 	rdfs:domain nfo:Image ;
@@ -909,3 +923,54 @@ nfo:isContentEncrypted a rdf:Property ;
 	nrl:maxCardinality 1 ;
 	rdfs:domain nie:InformationElement ;
 	rdfs:range xsd:boolean .
+
+
+# Ontology request by Alexander Bokovoy, replaces nfo:device
+# These classes and properties need to be submitted to NEPOMUK
+nfo:Equipment a rdfs:Class ;
+	rdfs:label "Equipment" ;
+	rdfs:comment "The equipment used to create media" ;
+	rdfs:subClassOf nie:InformationElement .
+
+nfo:equipment a rdf:Property ;
+	rdfs:label "Device" ;
+	rdfs:comment "Equipment used to create the media" ;
+	nrl:maxCardinality 1 ;
+	rdfs:domain nfo:Media ;
+	rdfs:range nfo:Equipment .
+
+nfo:manufacturer a rdf:Property ;
+	rdfs:label "Manufacturer" ;
+	rdfs:comment "The manufacturer of the equipment" ;
+	nrl:maxCardinality 1 ;
+	rdfs:domain nfo:Equipment ;
+	rdfs:range xsd:string .
+
+nfo:model a rdf:Property ;
+	rdfs:label "Model" ;
+	rdfs:comment "The model of the equipment" ;
+	nrl:maxCardinality 1 ;
+	rdfs:domain nfo:Equipment ;
+	rdfs:range xsd:string .
+
+nfo:equipmentSoftware a rdf:Property ;
+	rdfs:label "Equipment software" ;
+	rdfs:comment "The software of the equipment" ;
+	nrl:maxCardinality 1 ;
+	rdfs:domain nfo:Equipment ;
+	rdfs:range xsd:string .
+
+# This class needs to be submitted to NEPOMUK
+nfo:HelpDocument a rdfs:Class ;
+	rdfs:label "Help document" ;
+	rdfs:comment "User guides and similar to assist the user" ;
+	rdfs:subClassOf nfo:Document .
+
+
+# This property needs to be submitted to NEPOMUK
+nfo:lastPlayedPosition a rdf:Property ;
+        rdfs:comment "Position in the media (in seconds) where the play was paused. Positive number, being 0 the beginning of the media." ;
+        rdfs:label "last played position" ;
+        nrl:maxCardinality 1 ;
+        rdfs:domain nfo:Media ;
+        rdfs:range xsd:integer .

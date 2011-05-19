@@ -18,38 +18,38 @@
     </sub>
   </chapters>
   <functions>
-    <keyword type="macro" name="TRACKER_DBUS_SERVICE" link="libtracker-client-tracker.html#TRACKER-DBUS-SERVICE:CAPS"/>
-    <keyword type="macro" name="TRACKER_DBUS_OBJECT" link="libtracker-client-tracker.html#TRACKER-DBUS-OBJECT:CAPS"/>
-    <keyword type="macro" name="TRACKER_DBUS_INTERFACE_RESOURCES" link="libtracker-client-tracker.html#TRACKER-DBUS-INTERFACE-RESOURCES:CAPS"/>
-    <keyword type="macro" name="TRACKER_DBUS_INTERFACE_STATISTICS" link="libtracker-client-tracker.html#TRACKER-DBUS-INTERFACE-STATISTICS:CAPS"/>
+    <keyword type="macro" name="TRACKER_DBUS_SERVICE" link="libtracker-client-tracker.html#TRACKER-DBUS-SERVICE:CAPS" deprecated=""/>
+    <keyword type="macro" name="TRACKER_DBUS_OBJECT" link="libtracker-client-tracker.html#TRACKER-DBUS-OBJECT:CAPS" deprecated=""/>
+    <keyword type="macro" name="TRACKER_DBUS_INTERFACE_RESOURCES" link="libtracker-client-tracker.html#TRACKER-DBUS-INTERFACE-RESOURCES:CAPS" deprecated=""/>
+    <keyword type="macro" name="TRACKER_DBUS_INTERFACE_STATISTICS" link="libtracker-client-tracker.html#TRACKER-DBUS-INTERFACE-STATISTICS:CAPS" deprecated=""/>
     <keyword type="struct" name="TrackerClient" link="libtracker-client-tracker.html#TrackerClient-struct"/>
-    <keyword type="struct" name="TrackerClientClass" link="libtracker-client-tracker.html#TrackerClientClass"/>
-    <keyword type="enum" name="enum TrackerClientFlags" link="libtracker-client-tracker.html#TrackerClientFlags"/>
-    <keyword type="function" name="tracker_client_new ()" link="libtracker-client-tracker.html#tracker-client-new"/>
+    <keyword type="struct" name="TrackerClientClass" link="libtracker-client-tracker.html#TrackerClientClass" deprecated=""/>
+    <keyword type="enum" name="enum TrackerClientFlags" link="libtracker-client-tracker.html#TrackerClientFlags" deprecated=""/>
+    <keyword type="function" name="tracker_client_new ()" link="libtracker-client-tracker.html#tracker-client-new" deprecated=""/>
     <keyword type="property" name="The &quot;enable-warnings&quot; property" link="libtracker-client-tracker.html#TrackerClient--enable-warnings"/>
     <keyword type="property" name="The &quot;timeout&quot; property" link="libtracker-client-tracker.html#TrackerClient--timeout"/>
-    <keyword type="function" name="tracker_cancel_call ()" link="libtracker-client-Cancellations.html#tracker-cancel-call"/>
-    <keyword type="function" name="tracker_cancel_last_call ()" link="libtracker-client-Cancellations.html#tracker-cancel-last-call"/>
-    <keyword type="function" name="tracker_sparql_escape ()" link="libtracker-client-Utilities.html#tracker-sparql-escape" since="0.8"/>
-    <keyword type="function" name="tracker_uri_printf_escaped ()" link="libtracker-client-Utilities.html#tracker-uri-printf-escaped" since="0.8"/>
-    <keyword type="function" name="tracker_uri_vprintf_escaped ()" link="libtracker-client-Utilities.html#tracker-uri-vprintf-escaped" since="0.8"/>
-    <keyword type="function" name="TrackerReplyGPtrArray ()" link="libtracker-client-Statistics.html#TrackerReplyGPtrArray"/>
-    <keyword type="function" name="tracker_statistics_get ()" link="libtracker-client-Statistics.html#tracker-statistics-get" since="0.8"/>
-    <keyword type="function" name="tracker_statistics_get_async ()" link="libtracker-client-Statistics.html#tracker-statistics-get-async" since="0.8"/>
-    <keyword type="function" name="TrackerReplyGPtrArray ()" link="libtracker-client-Resources.html#TrackerReplyGPtrArray"/>
-    <keyword type="function" name="TrackerReplyVoid ()" link="libtracker-client-Resources.html#TrackerReplyVoid"/>
-    <keyword type="function" name="tracker_resources_sparql_query ()" link="libtracker-client-Resources.html#tracker-resources-sparql-query" since="0.8"/>
-    <keyword type="function" name="tracker_resources_sparql_query_async ()" link="libtracker-client-Resources.html#tracker-resources-sparql-query-async" since="0.8"/>
-    <keyword type="function" name="tracker_resources_sparql_update ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update" since="0.8"/>
-    <keyword type="function" name="tracker_resources_sparql_update_async ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update-async" since="0.8"/>
-    <keyword type="function" name="tracker_resources_sparql_update_blank ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update-blank"/>
-    <keyword type="function" name="tracker_resources_sparql_update_blank_async ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update-blank-async"/>
-    <keyword type="function" name="tracker_resources_batch_sparql_update ()" link="libtracker-client-Resources.html#tracker-resources-batch-sparql-update" since="0.8"/>
-    <keyword type="function" name="tracker_resources_batch_sparql_update_async ()" link="libtracker-client-Resources.html#tracker-resources-batch-sparql-update-async" since="0.8"/>
-    <keyword type="function" name="tracker_resources_batch_commit ()" link="libtracker-client-Resources.html#tracker-resources-batch-commit" since="0.8"/>
-    <keyword type="function" name="tracker_resources_batch_commit_async ()" link="libtracker-client-Resources.html#tracker-resources-batch-commit-async" since="0.8"/>
-    <keyword type="function" name="tracker_resources_load ()" link="libtracker-client-Resources.html#tracker-resources-load"/>
-    <keyword type="function" name="tracker_resources_load_async ()" link="libtracker-client-Resources.html#tracker-resources-load-async"/>
+    <keyword type="function" name="tracker_cancel_call ()" link="libtracker-client-Cancellations.html#tracker-cancel-call" deprecated="0.10: There is no replacement for this in libtracker-sparql"/>
+    <keyword type="function" name="tracker_cancel_last_call ()" link="libtracker-client-Cancellations.html#tracker-cancel-last-call" deprecated="0.10: There is no replacement for this in libtracker-sparql"/>
+    <keyword type="function" name="tracker_sparql_escape ()" link="libtracker-client-Utilities.html#tracker-sparql-escape" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_uri_printf_escaped ()" link="libtracker-client-Utilities.html#tracker-uri-printf-escaped" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_uri_vprintf_escaped ()" link="libtracker-client-Utilities.html#tracker-uri-vprintf-escaped" deprecated="" since="0.8"/>
+    <keyword type="function" name="TrackerReplyGPtrArray ()" link="libtracker-client-Statistics.html#TrackerReplyGPtrArray" deprecated=""/>
+    <keyword type="function" name="tracker_statistics_get ()" link="libtracker-client-Statistics.html#tracker-statistics-get" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_statistics_get_async ()" link="libtracker-client-Statistics.html#tracker-statistics-get-async" deprecated="" since="0.8"/>
+    <keyword type="function" name="TrackerReplyGPtrArray ()" link="libtracker-client-Resources.html#TrackerReplyGPtrArray" deprecated=""/>
+    <keyword type="function" name="TrackerReplyVoid ()" link="libtracker-client-Resources.html#TrackerReplyVoid" deprecated=""/>
+    <keyword type="function" name="tracker_resources_sparql_query ()" link="libtracker-client-Resources.html#tracker-resources-sparql-query" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_resources_sparql_query_async ()" link="libtracker-client-Resources.html#tracker-resources-sparql-query-async" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_resources_sparql_update ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_resources_sparql_update_async ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update-async" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_resources_sparql_update_blank ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update-blank" deprecated="0.10: There is no replacement for this in libtracker-sparql" since="0.8"/>
+    <keyword type="function" name="tracker_resources_sparql_update_blank_async ()" link="libtracker-client-Resources.html#tracker-resources-sparql-update-blank-async" deprecated="0.10: There is no replacement for this in libtracker-sparql" since="0.8"/>
+    <keyword type="function" name="tracker_resources_batch_sparql_update ()" link="libtracker-client-Resources.html#tracker-resources-batch-sparql-update" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_resources_batch_sparql_update_async ()" link="libtracker-client-Resources.html#tracker-resources-batch-sparql-update-async" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_resources_batch_commit ()" link="libtracker-client-Resources.html#tracker-resources-batch-commit" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_resources_batch_commit_async ()" link="libtracker-client-Resources.html#tracker-resources-batch-commit-async" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_resources_load ()" link="libtracker-client-Resources.html#tracker-resources-load" deprecated="" since="0.8"/>
+    <keyword type="function" name="tracker_resources_load_async ()" link="libtracker-client-Resources.html#tracker-resources-load-async" deprecated=""/>
     <keyword type="function" name="TrackerReplyArray ()" link="libtracker-client-Search.html#TrackerReplyArray" deprecated=""/>
     <keyword type="function" name="tracker_connect ()" link="libtracker-client-Search.html#tracker-connect" deprecated="0.8: Use tracker_client_new() instead."/>
     <keyword type="function" name="tracker_disconnect ()" link="libtracker-client-Search.html#tracker-disconnect" deprecated="0.8: Use g_object_unref() instead."/>
@@ -61,40 +61,40 @@
     <keyword type="struct" name="struct TrackerSparqlBuilderClass" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderClass"/>
     <keyword type="struct" name="TrackerSparqlBuilderPrivate" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderPrivate"/>
     <keyword type="enum" name="enum TrackerSparqlBuilderState" link="libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilderState"/>
-    <keyword type="function" name="tracker_sparql_builder_new ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new"/>
-    <keyword type="function" name="tracker_sparql_builder_new_embedded_insert ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert"/>
-    <keyword type="function" name="tracker_sparql_builder_new_update ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-update"/>
-    <keyword type="function" name="tracker_sparql_builder_construct ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct"/>
-    <keyword type="function" name="tracker_sparql_builder_construct_embedded_insert ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-embedded-insert"/>
-    <keyword type="function" name="tracker_sparql_builder_construct_update ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-update"/>
-    <keyword type="function" name="tracker_sparql_builder_get_state ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-state"/>
-    <keyword type="function" name="tracker_sparql_builder_get_result ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-result"/>
-    <keyword type="function" name="tracker_sparql_builder_get_length ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-length"/>
-    <keyword type="function" name="tracker_sparql_builder_append ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-append"/>
-    <keyword type="function" name="tracker_sparql_builder_prepend ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-prepend"/>
-    <keyword type="function" name="tracker_sparql_builder_insert_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open"/>
-    <keyword type="function" name="tracker_sparql_builder_insert_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-close"/>
-    <keyword type="function" name="tracker_sparql_builder_where_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-open"/>
-    <keyword type="function" name="tracker_sparql_builder_where_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-close"/>
-    <keyword type="function" name="tracker_sparql_builder_delete_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-open"/>
-    <keyword type="function" name="tracker_sparql_builder_delete_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-close"/>
-    <keyword type="function" name="tracker_sparql_builder_drop_graph ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-drop-graph"/>
-    <keyword type="function" name="tracker_sparql_builder_subject_variable ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-variable"/>
-    <keyword type="function" name="tracker_sparql_builder_subject_iri ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri"/>
-    <keyword type="function" name="tracker_sparql_builder_subject ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject"/>
-    <keyword type="function" name="tracker_sparql_builder_predicate_iri ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate-iri"/>
-    <keyword type="function" name="tracker_sparql_builder_predicate ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate"/>
-    <keyword type="function" name="tracker_sparql_builder_object_iri ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-iri"/>
-    <keyword type="function" name="tracker_sparql_builder_object ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object"/>
-    <keyword type="function" name="tracker_sparql_builder_object_string ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-string"/>
-    <keyword type="function" name="tracker_sparql_builder_object_boolean ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-boolean"/>
-    <keyword type="function" name="tracker_sparql_builder_object_int64 ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-int64"/>
-    <keyword type="function" name="tracker_sparql_builder_object_date ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-date"/>
-    <keyword type="function" name="tracker_sparql_builder_object_double ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-double"/>
-    <keyword type="function" name="tracker_sparql_builder_object_variable ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-variable"/>
-    <keyword type="function" name="tracker_sparql_builder_object_blank_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-open"/>
-    <keyword type="function" name="tracker_sparql_builder_object_blank_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-close"/>
-    <keyword type="function" name="tracker_sparql_builder_object_unvalidated ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-unvalidated"/>
+    <keyword type="function" name="tracker_sparql_builder_new ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new" deprecated="0.10: Use tracker_sparql_builder_new() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_new_embedded_insert ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert" deprecated="0.10: Use tracker_sparql_builder_new_embedded_insert() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_new_update ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-update" deprecated="0.10: Use tracker_sparql_builder_new_update() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_construct ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct" deprecated="0.10: Use tracker_sparql_builder_construct() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_construct_embedded_insert ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-embedded-insert" deprecated="0.10: Use tracker_sparql_builder_construct_embedded_insert() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_construct_update ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-construct-update" deprecated="0.10: Use tracker_sparql_builder_construct_update() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_get_state ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-state" deprecated="0.10: Use tracker_sparql_builder_get_state() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_get_result ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-result" deprecated="0.10: Use tracker_sparql_builder_get_result() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_get_length ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-get-length" deprecated="0.10: Use tracker_sparql_builder_get_length() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_append ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-append" deprecated="0.10: Use tracker_sparql_builder_append() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_prepend ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-prepend" deprecated="0.10: Use tracker_sparql_builder_prepend() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_insert_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-open" deprecated="0.10: Use tracker_sparql_builder_insert_open() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_insert_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-insert-close" deprecated="0.10: Use tracker_sparql_builder_insert_close() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_where_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-open" deprecated="0.10: Use tracker_sparql_builder_where_open() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_where_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-where-close" deprecated="0.10: Use tracker_sparql_builder_where_close() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_delete_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-open" deprecated="0.10: Use tracker_sparql_builder_delete_open() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_delete_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-delete-close" deprecated="0.10: Use tracker_sparql_builder_delete_close() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_drop_graph ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-drop-graph" deprecated="0.10: Use tracker_sparql_builder_drop_graph() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_subject_variable ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-variable" deprecated="0.10: Use tracker_sparql_builder_subject_variable() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_subject_iri ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri" deprecated="0.10: Use tracker_sparql_builder_subject_iri() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_subject ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-subject" deprecated="0.10: Use tracker_sparql_builder_subject() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_predicate_iri ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate-iri" deprecated="0.10: Use tracker_sparql_builder_predicate_iri() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_predicate ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-predicate" deprecated="0.10: Use tracker_sparql_builder_predicate() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object_iri ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-iri" deprecated="0.10: Use tracker_sparql_builder_object_iri() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object" deprecated="0.10: Use tracker_sparql_builder_object() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object_string ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-string" deprecated="0.10: Use tracker_sparql_builder_object_string() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object_boolean ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-boolean" deprecated="0.10: Use tracker_sparql_builder_object_boolean() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object_int64 ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-int64" deprecated="0.10: Use tracker_sparql_builder_object_int64() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object_date ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-date" deprecated="0.10: Use tracker_sparql_builder_object_date() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object_double ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-double" deprecated="0.10: Use tracker_sparql_builder_object_double() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object_variable ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-variable" deprecated="0.10: Use tracker_sparql_builder_object_variable() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object_blank_open ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-open" deprecated="0.10: Use tracker_sparql_builder_object_blank_open() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object_blank_close ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-blank-close" deprecated="0.10: Use tracker_sparql_builder_object_blank_close() in libtracker-sparql instead." since="0.8"/>
+    <keyword type="function" name="tracker_sparql_builder_object_unvalidated ()" link="libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-object-unvalidated" deprecated="0.10: Use tracker_sparql_builder_object_unvalidated() in libtracker-sparql instead." since="0.8"/>
     <keyword type="constant" name="TRACKER_CLIENT_ENABLE_WARNINGS" link="libtracker-client-tracker.html#TRACKER-CLIENT-ENABLE-WARNINGS:CAPS"/>
   </functions>
 </book>

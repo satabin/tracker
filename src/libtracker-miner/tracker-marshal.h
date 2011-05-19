@@ -70,7 +70,15 @@ extern void tracker_marshal_VOID__STRING_STRING_BOOLEAN_BOOLEAN (GClosure     *c
                                                                  gpointer      invocation_hint,
                                                                  gpointer      marshal_data);
 
-/* BOOL:OBJECT,OBJECT,OBJECT (tracker-marshal.list:9) */
+/* VOID:STRING,STRING,STRING,BOOLEAN,BOOLEAN (tracker-marshal.list:9) */
+extern void tracker_marshal_VOID__STRING_STRING_STRING_BOOLEAN_BOOLEAN (GClosure     *closure,
+                                                                        GValue       *return_value,
+                                                                        guint         n_param_values,
+                                                                        const GValue *param_values,
+                                                                        gpointer      invocation_hint,
+                                                                        gpointer      marshal_data);
+
+/* BOOL:OBJECT,OBJECT,OBJECT (tracker-marshal.list:10) */
 extern void tracker_marshal_BOOLEAN__OBJECT_OBJECT_OBJECT (GClosure     *closure,
                                                            GValue       *return_value,
                                                            guint         n_param_values,
@@ -79,7 +87,7 @@ extern void tracker_marshal_BOOLEAN__OBJECT_OBJECT_OBJECT (GClosure     *closure
                                                            gpointer      marshal_data);
 #define tracker_marshal_BOOL__OBJECT_OBJECT_OBJECT	tracker_marshal_BOOLEAN__OBJECT_OBJECT_OBJECT
 
-/* BOOL:OBJECT,OBJECT (tracker-marshal.list:10) */
+/* BOOL:OBJECT,OBJECT (tracker-marshal.list:11) */
 extern void tracker_marshal_BOOLEAN__OBJECT_OBJECT (GClosure     *closure,
                                                     GValue       *return_value,
                                                     guint         n_param_values,
@@ -88,7 +96,7 @@ extern void tracker_marshal_BOOLEAN__OBJECT_OBJECT (GClosure     *closure,
                                                     gpointer      marshal_data);
 #define tracker_marshal_BOOL__OBJECT_OBJECT	tracker_marshal_BOOLEAN__OBJECT_OBJECT
 
-/* BOOL:OBJECT,POINTER (tracker-marshal.list:11) */
+/* BOOL:OBJECT,POINTER (tracker-marshal.list:12) */
 extern void tracker_marshal_BOOLEAN__OBJECT_POINTER (GClosure     *closure,
                                                      GValue       *return_value,
                                                      guint         n_param_values,
@@ -97,7 +105,7 @@ extern void tracker_marshal_BOOLEAN__OBJECT_POINTER (GClosure     *closure,
                                                      gpointer      marshal_data);
 #define tracker_marshal_BOOL__OBJECT_POINTER	tracker_marshal_BOOLEAN__OBJECT_POINTER
 
-/* BOOL:OBJECT (tracker-marshal.list:12) */
+/* BOOL:OBJECT (tracker-marshal.list:13) */
 extern void tracker_marshal_BOOLEAN__OBJECT (GClosure     *closure,
                                              GValue       *return_value,
                                              guint         n_param_values,

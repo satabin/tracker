@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <chapter id='scal-ontology'>
-<title>SCAL Ontology</title>
+<title>Simplified Calendar Ontology (SCAL): Simple and efficient ontology to represent calendar information (events, ToDos, recurrency rules...)</title>
 <varlistentry>
   <term>Authors:</term>
   <listitem>
@@ -101,7 +101,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='scal-anniversary'>scal:anniversary</link>, <link linkend='scal-birthday'>scal:birthday</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -335,7 +335,7 @@
 <variablelist>
 <varlistentry>
 <term><parameter>Superclasses</parameter>&#160;:</term>
-<listitem><simpara>--</simpara></listitem>
+<listitem><simpara><link linkend='rdfs-Resource'>rdfs:Resource</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Subclasses</parameter>&#160;:</term>
@@ -1260,6 +1260,33 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='scal-anniversary'>
+<title>scal:anniversary</title>
+<para>links a contact with the calendar event of an anniversary. (SCAL version)</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nco-Contact'>nco:Contact</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='scal-Event'>scal:Event</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='scal-attendanceStatus'>
 <title>scal:attendanceStatus</title>
 <para>Status of contact's assitance to the event</para>
@@ -1608,6 +1635,33 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='nie-DataObject'>nie:DataObject</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='scal-birthday'>
+<title>scal:birthday</title>
+<para>links a contact with the calendar event of his birthday. (SCAL version)</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nco-Contact'>nco:Contact</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='scal-Event'>scal:Event</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>

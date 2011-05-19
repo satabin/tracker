@@ -58,6 +58,7 @@ TrackerSparqlBuilder* tracker_sparql_builder_new_embedded_insert (void);
 TrackerSparqlBuilder* tracker_sparql_builder_construct_embedded_insert (GType object_type);
 void tracker_sparql_builder_drop_graph (TrackerSparqlBuilder* self, const gchar* iri);
 void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar* graph);
+void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, const gchar* graph);
 void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self);
 void tracker_sparql_builder_delete_open (TrackerSparqlBuilder* self, const gchar* graph);
 void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self);

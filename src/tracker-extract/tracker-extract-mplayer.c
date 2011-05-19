@@ -3,18 +3,18 @@
  * Copyright (C) 2006, Laurent Aguerreche <laurent.aguerreche@free.fr>
  * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
@@ -90,7 +90,7 @@ copy_hash_table_entry (gpointer key,
 	ForeachCopyInfo *info = user_data;
 
 	if (g_strcmp0 (key, "nmm:performer") == 0) {
-		gchar *canonical_uri = tracker_uri_printf_escaped ("urn:artist:%s", value);
+		gchar *canonical_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", value);
 
 		tracker_sparql_builder_insert_open (info->preupdate, NULL);
 

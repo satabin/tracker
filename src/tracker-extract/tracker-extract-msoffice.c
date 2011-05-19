@@ -3,18 +3,18 @@
  * Copyright (C) 2006, Laurent Aguerreche <laurent.aguerreche@free.fr>
  * Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
@@ -126,47 +126,6 @@ typedef struct {
 	gsize     length;
 } ExcelExtendedStringRecord;
 
-typedef enum {
-	MS_OFFICE_XML_TAG_INVALID,
-	MS_OFFICE_XML_TAG_TITLE,
-	MS_OFFICE_XML_TAG_SUBJECT,
-	MS_OFFICE_XML_TAG_AUTHOR,
-	MS_OFFICE_XML_TAG_MODIFIED,
-	MS_OFFICE_XML_TAG_COMMENTS,
-	MS_OFFICE_XML_TAG_CREATED,
-	MS_OFFICE_XML_TAG_GENERATOR,
-	MS_OFFICE_XML_TAG_NUM_OF_PAGES,
-	MS_OFFICE_XML_TAG_NUM_OF_CHARACTERS,
-	MS_OFFICE_XML_TAG_NUM_OF_WORDS,
-	MS_OFFICE_XML_TAG_NUM_OF_LINES,
-	MS_OFFICE_XML_TAG_APPLICATION,
-	MS_OFFICE_XML_TAG_NUM_OF_PARAGRAPHS,
-	MS_OFFICE_XML_TAG_SLIDE_TEXT,
-	MS_OFFICE_XML_TAG_WORD_TEXT,
-	MS_OFFICE_XML_TAG_XLS_SHARED_TEXT,
-	MS_OFFICE_XML_TAG_DOCUMENT_CORE_DATA,
-	MS_OFFICE_XML_TAG_DOCUMENT_TEXT_DATA
-} MsOfficeXMLTagType;
-
-typedef enum {
-	FILE_TYPE_INVALID,
-	FILE_TYPE_PPTX,
-	FILE_TYPE_PPSX,
-	FILE_TYPE_DOCX,
-	FILE_TYPE_XLSX
-} MsOfficeXMLFileType;
-
-typedef struct {
-	TrackerSparqlBuilder *metadata;
-	MsOfficeXMLFileType file_type;
-	MsOfficeXMLTagType tag_type;
-	gboolean style_element_present;
-	gboolean preserve_attribute_present;
-	const gchar *uri;
-	GString *content;
-	gboolean title_already_set;
-} MsOfficeXMLParserInfo;
-
 typedef struct {
 	TrackerSparqlBuilder *metadata;
 	const gchar *uri;
@@ -175,23 +134,60 @@ typedef struct {
 static void extract_msoffice     (const gchar          *uri,
                                   TrackerSparqlBuilder *preupdate,
                                   TrackerSparqlBuilder *metadata);
-static void extract_msoffice_xml (const gchar          *uri,
-                                  TrackerSparqlBuilder *preupdate,
-                                  TrackerSparqlBuilder *metadata);
 
 static TrackerExtractData data[] = {
 	{ "application/msword",            extract_msoffice },
-	/* Powerpoint files */
 	{ "application/vnd.ms-powerpoint", extract_msoffice },
 	{ "application/vnd.ms-excel",	   extract_msoffice },
 	{ "application/vnd.ms-*",          extract_msoffice },
-	/* MSoffice2007*/
-	{ "application/vnd.openxmlformats-officedocument.presentationml.presentation", extract_msoffice_xml },
-	{ "application/vnd.openxmlformats-officedocument.presentationml.slideshow",    extract_msoffice_xml },
-	{ "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",         extract_msoffice_xml },
-	{ "application/vnd.openxmlformats-officedocument.wordprocessingml.document",   extract_msoffice_xml },
 	{ NULL, NULL }
 };
+
+/* Valid range from \000 to \377 (0 to 255) */
+#define octal_ascii_triplet_is_valid(slash, a2, a1, a0) \
+	(slash == '\\' && \
+	 a2 >= '0' && a2 <= '3' && \
+	 a1 >= '0' && a1 <= '7' && \
+	 a0 >= '0' && a0 <= '7')
+
+#define octal_ascii_triplet_to_decimal_int(a2, a1, a0) \
+	((a0 - '0') + 8 * ((a1 - '0') + 8 * (a2 - '0')))
+
+/*
+ * So, we may get input strings with UTF-8 characters encoded in OCTAL and
+ * represented in ASCII, like this:
+ *     K\303\230BENHAVNS UNIVERSITET
+ * which is equivalent to:
+ *     KØBENHAVNS UNIVERSITET
+ */
+static void
+msoffice_string_process_octal_triplets (guchar *str)
+{
+	guint i = 0; /* index in original string */
+	guint j = 0; /* index in processed string */
+	guint length = strlen (str);
+
+	/* Changing the string IN PLACE, note that j<=i ALWAYS! */
+	while (i < length) {
+		if (length - i >= 4 &&
+		    octal_ascii_triplet_is_valid (str[i], str[i+1], str[i+2], str[i+3])) {
+			/* Found a new octal triplet */
+			str[j] = octal_ascii_triplet_to_decimal_int (str[i+1], str[i+2], str[i+3]);
+			i += 4;
+		} else if (i != j) {
+			/* We previously found an octal triplet,
+			 * we need to update the string */
+			str[j] = str[i];
+			i++;
+		} else {
+			/* No need to update the string yet */
+			i++;
+		}
+		j++;
+	}
+	/* New end of string */
+	str[j]='\0';
+}
 
 static void
 metadata_add_gvalue (TrackerSparqlBuilder *metadata,
@@ -262,6 +258,9 @@ metadata_add_gvalue (TrackerSparqlBuilder *metadata,
 		}
 
 		if (str_val) {
+			/* Process (in place) octal triplets if found */
+			msoffice_string_process_octal_triplets (str_val);
+
 			if (type && predicate) {
 				tracker_sparql_builder_predicate (metadata, key);
 
@@ -397,9 +396,7 @@ read_32bit (const guint8 *buffer)
  * @param chunk_size Number of valid bytes in the input buffer
  * @param is_ansi If %TRUE, input text should be encoded in CP1252, and
  *  in UTF-16 otherwise.
- * @param p_words_remaining Pointer to #gint specifying how many words
- *  should still be considered.
- * @param p_words_remaining Pointer to #gsize specifying how many bytes
+ * @param p_bytes_remaining Pointer to #gsize specifying how many bytes
  *  should still be considered.
  * @param p_content Pointer to a #GString where the output normalized words
  *  will be appended.
@@ -408,9 +405,8 @@ static void
 msoffice_convert_and_normalize_chunk (guint8    *buffer,
                                       gsize      chunk_size,
                                       gboolean   is_ansi,
-                                      gint      *p_words_remaining,
-                                      gsize     *p_bytes_remaining,
-                                      GString  **p_content)
+                                      gsize     *bytes_remaining,
+                                      GString  **content)
 {
 	gsize n_bytes_utf8;
 	gchar *converted_text;
@@ -418,9 +414,8 @@ msoffice_convert_and_normalize_chunk (guint8    *buffer,
 
 	g_return_if_fail (buffer != NULL);
 	g_return_if_fail (chunk_size > 0);
-	g_return_if_fail (p_words_remaining != NULL);
-	g_return_if_fail (p_bytes_remaining != NULL);
-	g_return_if_fail (p_content != NULL);
+	g_return_if_fail (bytes_remaining != NULL);
+	g_return_if_fail (content != NULL);
 
 	/* chunks can have different encoding
 	 *
@@ -437,42 +432,21 @@ msoffice_convert_and_normalize_chunk (guint8    *buffer,
 	                            &error);
 
 	if (converted_text) {
-		gchar *normalized_chunk;
-		guint n_words_normalized;
+		gsize len_to_validate;
 
-		/* Get normalized chunk */
-		normalized_chunk = tracker_text_normalize (converted_text,
-		                                           *p_words_remaining,
-		                                           &n_words_normalized);
+		len_to_validate = MIN (*bytes_remaining, n_bytes_utf8);
 
-		/* Update number of words remaining.
-		 * Note that n_words_normalized should always be less or
-		 * equal than n_words_remaining */
-		*p_words_remaining = (n_words_normalized <= *p_words_remaining ?
-		                      *p_words_remaining - n_words_normalized : 0);
-
-		/* Update accumulated UTF-8 bytes read */
-		*p_bytes_remaining = (n_bytes_utf8 <= *p_bytes_remaining ?
-		                      *p_bytes_remaining - n_bytes_utf8 : 0);
-
-		/* g_debug ("Words normalized: %u (remaining: %u); " */
-		/*          "Bytes read (UTF-8): %" G_GSIZE_FORMAT " bytes " */
-		/*          "(remaining: %" G_GSIZE_FORMAT ")", */
-		/*          n_words_normalized, *p_words_remaining, */
-		/*          n_bytes_utf8, *p_bytes_remaining); */
-
-		/* Append normalized chunk to the string to be returned */
-		if (*p_content) {
-			g_string_append (*p_content, normalized_chunk);
-		} else {
-			*p_content = g_string_new (normalized_chunk);
+		if (tracker_text_validate_utf8 (converted_text,
+		                                len_to_validate,
+		                                content,
+		                                NULL)) {
+			/* A whitespace is added to separate next strings appended */
+			g_string_append_c (*content, ' ');
 		}
 
-		/* A whitespace is added to separate next strings appended */
-		g_string_append (*p_content, " ");
-
+		/* Update accumulated UTF-8 bytes read */
+		*bytes_remaining -= len_to_validate;
 		g_free (converted_text);
-		g_free (normalized_chunk);
 	} else {
 		g_warning ("Couldn't convert %" G_GSIZE_FORMAT " bytes from %s to UTF-8: %s",
 		           chunk_size,
@@ -664,7 +638,6 @@ ppt_seek_header (GsfInput *stream,
 
 static gchar *
 extract_powerpoint_content (GsfInfile *infile,
-                            gint       max_words,
                             gsize      max_bytes,
                             gboolean  *is_encrypted)
 {
@@ -672,6 +645,11 @@ extract_powerpoint_content (GsfInfile *infile,
 	GsfInput *stream;
 	GString *all_texts = NULL;
 	gsf_off_t last_document_container;
+
+	/* If no content requested, return */
+	if (max_bytes == 0) {
+		return NULL;
+	}
 
 	stream = gsf_infile_child_by_name (infile, "PowerPoint Document");
 
@@ -738,18 +716,16 @@ extract_powerpoint_content (GsfInfile *infile,
 	                     SLIDELISTWITHTEXT_RECORD_TYPE,
 	                     SLIDELISTWITHTEXT_RECORD_TYPE,
 	                     FALSE)) {
-		gint words_remaining = max_words;
 		gsize bytes_remaining = max_bytes;
 		guint8 *buffer = NULL;
 		gsize buffer_size = 0;
 
 		/*
 		 * Read while we have either TextBytesAtom or
-		 * TextCharsAtom and we have read less than max_words
-		 * amount of words and less than max_bytes (in UTF-8)
+		 * TextCharsAtom and we have read less than max_bytes
+		 * (in UTF-8)
 		 */
-		while (words_remaining > 0 &&
-		       bytes_remaining > 0 &&
+		while (bytes_remaining > 0 &&
 		       ppt_seek_header (stream,
 		                        TEXTBYTESATOM_RECORD_TYPE,
 		                        TEXTCHARSATOM_RECORD_TYPE,
@@ -768,7 +744,6 @@ extract_powerpoint_content (GsfInfile *infile,
 				msoffice_convert_and_normalize_chunk (buffer,
 				                                      read_size,
 				                                      FALSE, /* Always UTF-16 */
-				                                      &words_remaining,
 				                                      &bytes_remaining,
 				                                      &all_texts);
 			}
@@ -780,45 +755,6 @@ extract_powerpoint_content (GsfInfile *infile,
 	g_object_unref (stream);
 
 	return all_texts ? g_string_free (all_texts, FALSE) : NULL;
-}
-
-/**
- * @brief get maximum number of words to index
- * @return maximum number of words to index
- */
-static gint
-fts_max_words (void)
-{
-	TrackerFTSConfig *fts_config;
-
-	fts_config = tracker_main_get_fts_config ();
-	return tracker_fts_config_get_max_words_to_index (fts_config);
-}
-
-/**
- * @brief get min word length
- * @return min_word_length
- */
-static gint
-fts_min_word_length (void)
-{
-	TrackerFTSConfig *fts_config;
-
-	fts_config = tracker_main_get_fts_config ();
-	return tracker_fts_config_get_min_word_length (fts_config);
-}
-
-/**
- * @brief get max word length
- * @return max_word_length
- */
-static gint
-fts_max_word_length (void)
-{
-	TrackerFTSConfig *fts_config;
-
-	fts_config = tracker_main_get_fts_config ();
-	return tracker_fts_config_get_max_word_length (fts_config);
 }
 
 /**
@@ -852,7 +788,6 @@ open_uri (const gchar *uri)
  */
 static gchar *
 extract_msword_content (GsfInfile *infile,
-                        gint       n_words,
                         gsize      n_bytes,
                         gboolean  *is_encrypted)
 {
@@ -868,8 +803,12 @@ extract_msword_content (GsfInfile *infile,
 	GString *content = NULL;
 	guint8 *text_buffer = NULL;
 	gint text_buffer_size = 0;
-	guint n_words_remaining;
 	gsize n_bytes_remaining;
+
+	/* If no content requested, return */
+	if (n_bytes == 0) {
+		return NULL;
+	}
 
 	document_stream = gsf_infile_child_by_name (infile, "WordDocument");
 	if (document_stream == NULL) {
@@ -949,7 +888,6 @@ extract_msword_content (GsfInfile *infile,
 			 * real text, so skip it */
 			guint16 GrpPrl_len;
 
-
 			GrpPrl_len = read_16bit (&clx[i+1]);
 			/* 3 is the length of clxt (1byte) and cbGrpprl(2bytes) */
 			i = i + 3 + GrpPrl_len;
@@ -961,14 +899,11 @@ extract_msword_content (GsfInfile *infile,
 	/* Iterate over pieces...
 	 *   Loop is halted whenever one of this conditions is met:
 	 *     a) Max bytes to be read reached
-	 *     b) Already read up to the max number of words configured
-	 *     c) No more pieces to read
+	 *     b) No more pieces to read
 	 */
 	i = 0;
-	n_words_remaining = n_words;
 	n_bytes_remaining = n_bytes;
-	while (n_words_remaining > 0 &&
-	       n_bytes_remaining > 0 &&
+	while (n_bytes_remaining > 0 &&
 	       i < piece_count) {
 		guint8 *piece_descriptor;
 		gint piece_start;
@@ -1031,7 +966,6 @@ extract_msword_content (GsfInfile *infile,
 			msoffice_convert_and_normalize_chunk (text_buffer,
 			                                      piece_size,
 			                                      is_ansi,
-			                                      &n_words_remaining,
 			                                      &n_bytes_remaining,
 			                                      &content);
 		}
@@ -1317,12 +1251,10 @@ read_excel_string (GsfInput *stream,
 static void
 xls_get_extended_record_string (GsfInput  *stream,
                                 GArray    *list,
-                                guint     *p_words_remaining,
                                 gsize     *p_bytes_remaining,
                                 GString  **p_content)
 {
 	ExcelExtendedStringRecord *record;
-	guint32 cst_total;
 	guint32 cst_unique;
 	guint parsing_record = 0;
 	guint8 tmp_buffer[4] = { 0 };
@@ -1350,7 +1282,7 @@ xls_get_extended_record_string (GsfInput  *stream,
 
 	/* Reading cst total */
 	gsf_input_read (stream, 4, tmp_buffer);
-	cst_total = read_32bit (tmp_buffer);
+	read_32bit (tmp_buffer);
 
 	/* Reading cst unique */
 	gsf_input_read (stream, 4, tmp_buffer);
@@ -1359,12 +1291,10 @@ xls_get_extended_record_string (GsfInput  *stream,
 	/* Iterate over chunks...
 	 *   Loop is halted whenever one of this conditions is met:
 	 *     a) Max bytes to be read reached
-	 *     b) Already read up to the max number of words configured
-	 *     c) No more chunks to read
+	 *     b) No more chunks to read
 	 */
 	i = 0;
-	while (*p_words_remaining > 0 &&
-	       *p_bytes_remaining > 0 &&
+	while (*p_bytes_remaining > 0 &&
 	       i < cst_unique) {
 		guint16 cch;
 		guint16 c_run;
@@ -1420,7 +1350,6 @@ xls_get_extended_record_string (GsfInput  *stream,
 		msoffice_convert_and_normalize_chunk (buffer,
 		                                      chunk_size,
 		                                      !is_high_byte,
-		                                      p_words_remaining,
 		                                      p_bytes_remaining,
 		                                      p_content);
 
@@ -1497,7 +1426,6 @@ xls_get_extended_record_string (GsfInput  *stream,
  */
 static gchar*
 extract_excel_content (GsfInfile *infile,
-                       gint       n_words,
                        gsize      n_bytes,
                        gboolean  *is_encrypted)
 {
@@ -1505,8 +1433,12 @@ extract_excel_content (GsfInfile *infile,
 	GString *content = NULL;
 	GsfInput *stream;
 	guint saved_offset;
-	guint n_words_remaining = n_words;
 	gsize n_bytes_remaining = n_bytes;
+
+	/* If no content requested, return */
+	if (n_bytes == 0) {
+		return NULL;
+	}
 
 	stream = gsf_infile_child_by_name (infile, "Workbook");
 
@@ -1515,8 +1447,7 @@ extract_excel_content (GsfInfile *infile,
 	}
 
 	/* Read until we reach eof or any of our limits reached */
-	while (n_words_remaining > 0 &&
-	       n_bytes_remaining > 0 &&
+	while (n_bytes_remaining > 0 &&
 	       !gsf_input_eof (stream)) {
 		guint8 tmp_buffer[4] = { 0 };
 
@@ -1599,7 +1530,6 @@ extract_excel_content (GsfInfile *infile,
 			/* Read extended string */
 			xls_get_extended_record_string (stream,
 			                                list,
-			                                &n_words_remaining,
 			                                &n_bytes_remaining,
 			                                &content);
 
@@ -1618,8 +1548,7 @@ extract_excel_content (GsfInfile *infile,
 
 	g_object_unref (stream);
 
-	g_debug ("Words normalized: %u, Bytes: %" G_GSIZE_FORMAT,
-	         n_words - n_words_remaining,
+	g_debug ("Bytes extracted: %" G_GSIZE_FORMAT,
 	         n_bytes - n_bytes_remaining);
 
 	return content ? g_string_free (content, FALSE) : NULL;
@@ -1718,13 +1647,13 @@ extract_msoffice (const gchar          *uri,
                   TrackerSparqlBuilder *preupdate,
                   TrackerSparqlBuilder *metadata)
 {
+	TrackerConfig *config;
 	GFile *file = NULL;
 	GFileInfo *file_info = NULL;
 	const gchar *mime_used;
 	GsfInfile *infile = NULL;
 	gchar *content = NULL;
 	gboolean is_encrypted = FALSE;
-	gint max_words;
 	gsize max_bytes;
 
 	file = g_file_new_for_uri (uri);
@@ -1752,6 +1681,8 @@ extract_msoffice (const gchar          *uri,
 
 	infile = open_uri (uri);
 	if (!infile) {
+		g_object_unref (file_info);
+		gsf_shutdown ();
 		return;
 	}
 
@@ -1760,23 +1691,25 @@ extract_msoffice (const gchar          *uri,
 
 	mime_used = g_file_info_get_content_type (file_info);
 
-	/* Set max words to read from content */
-	max_words = fts_max_words ();
-
-	/* Set max bytes to read from content.
-	 * Assuming 3 bytes per unicode point in UTF-8, as 4-byte UTF-8 unicode
-	 *  points are really pretty rare */
-	max_bytes = 3 * max_words * fts_max_word_length ();
+	/* Set max bytes to read from content */
+	config = tracker_main_get_config ();
+	max_bytes = tracker_config_get_max_bytes (config);
 
 	if (g_ascii_strcasecmp (mime_used, "application/msword") == 0) {
 		/* Word file */
-		content = extract_msword_content (infile, max_words, max_bytes, &is_encrypted);
+		content = extract_msword_content (infile, max_bytes, &is_encrypted);
 	} else if (g_ascii_strcasecmp (mime_used, "application/vnd.ms-powerpoint") == 0) {
 		/* PowerPoint file */
-		content = extract_powerpoint_content (infile, max_words, max_bytes, &is_encrypted);
+		tracker_sparql_builder_predicate (metadata, "a");
+		tracker_sparql_builder_object (metadata, "nfo:Presentation");
+
+		content = extract_powerpoint_content (infile, max_bytes, &is_encrypted);
 	} else if (g_ascii_strcasecmp (mime_used, "application/vnd.ms-excel") == 0) {
 		/* Excel File */
-		content = extract_excel_content (infile, max_words, max_bytes, &is_encrypted);
+		tracker_sparql_builder_predicate (metadata, "a");
+		tracker_sparql_builder_object (metadata, "nfo:Spreadsheet");
+
+		content = extract_excel_content (infile, max_bytes, &is_encrypted);
 	} else {
 		g_message ("Mime type was not recognised:'%s'", mime_used);
 	}
@@ -1793,564 +1726,8 @@ extract_msoffice (const gchar          *uri,
 	}
 
 	g_object_unref (infile);
-	gsf_shutdown ();
-}
-
-static void
-xml_start_element_handler_text_data (GMarkupParseContext  *context,
-                                     const gchar          *element_name,
-                                     const gchar         **attribute_names,
-                                     const gchar         **attribute_values,
-                                     gpointer              user_data,
-                                     GError              **error)
-{
-	MsOfficeXMLParserInfo *info = user_data;
-	const gchar **a;
-	const gchar **v;
-
-	switch (info->file_type) {
-	case FILE_TYPE_DOCX:
-		if (g_ascii_strcasecmp (element_name, "w:pStyle") == 0) {
-			for (a = attribute_names, v = attribute_values; *a; ++a, ++v) {
-				if (g_ascii_strcasecmp (*a, "w:val") != 0) {
-					continue;
-				}
-
-				if (g_ascii_strncasecmp (*v, "Heading", 7) == 0) {
-					info->style_element_present = TRUE;
-				} else if (g_ascii_strncasecmp (*v, "TOC", 3) == 0) {
-					info->style_element_present = TRUE;
-				} else if (g_ascii_strncasecmp (*v, "Section", 7) == 0) {
-					info->style_element_present = TRUE;
-				} else if (g_ascii_strncasecmp (*v, "Title", 5) == 0) {
-					info->style_element_present = TRUE;
-				} else if (g_ascii_strncasecmp (*v, "Subtitle", 8) == 0) {
-					info->style_element_present = TRUE;
-				}
-			}
-		} else if (g_ascii_strcasecmp (element_name, "w:rStyle") == 0) {
-			for (a = attribute_names, v = attribute_values; *a; ++a, ++v) {
-				if (g_ascii_strcasecmp (*a, "w:val") != 0) {
-					continue;
-				}
-
-				if (g_ascii_strncasecmp (*v, "SubtleEmphasis", 14) == 0) {
-					info->style_element_present = TRUE;
-				} else if (g_ascii_strncasecmp (*v, "SubtleReference", 15) == 0) {
-					info->style_element_present = TRUE;
-				}
-			}
-		} else if (g_ascii_strcasecmp (element_name, "w:sz") == 0) {
-			for (a = attribute_names, v = attribute_values; *a; ++a, ++v) {
-				if (g_ascii_strcasecmp (*a, "w:val") != 0) {
-					continue;
-				}
-
-				if (atoi (*v) >= 38) {
-					info->style_element_present = TRUE;
-				}
-			}
-		} else if (g_ascii_strcasecmp (element_name, "w:smartTag") == 0) {
-			info->style_element_present = TRUE;
-		} else if (g_ascii_strcasecmp (element_name, "w:sdtContent") == 0) {
-			info->style_element_present = TRUE;
-		} else if (g_ascii_strcasecmp (element_name, "w:hyperlink") == 0) {
-			info->style_element_present = TRUE;
-		} else if (g_ascii_strcasecmp (element_name, "w:t") == 0) {
-			for (a = attribute_names, v = attribute_values; *a; ++a, ++v) {
-				if (g_ascii_strcasecmp (*a, "xml:space") != 0) {
-					continue;
-				}
-
-				if (g_ascii_strncasecmp (*v, "preserve", 8) == 0) {
-					info->preserve_attribute_present = TRUE;
-				}
-			}
-
-			info->tag_type = MS_OFFICE_XML_TAG_WORD_TEXT;
-		}
-		break;
-
-	case FILE_TYPE_XLSX:
-		if (g_ascii_strcasecmp (element_name, "sheet") == 0) {
-			for (a = attribute_names, v = attribute_values; *a; ++a, ++v) {
-				if (g_ascii_strcasecmp (*a, "name") == 0) {
-					info->tag_type = MS_OFFICE_XML_TAG_XLS_SHARED_TEXT;
-				}
-			}
-
-		} else if (g_ascii_strcasecmp (element_name, "t") == 0) {
-			info->tag_type = MS_OFFICE_XML_TAG_XLS_SHARED_TEXT;
-		}
-		break;
-
-	case FILE_TYPE_PPTX:
-	case FILE_TYPE_PPSX:
-		info->tag_type = MS_OFFICE_XML_TAG_SLIDE_TEXT;
-		break;
-
-	case FILE_TYPE_INVALID:
-		g_message ("Microsoft document type:%d invalid", info->file_type);
-		break;
-	}
-}
-
-static void
-xml_end_element_handler_document_data (GMarkupParseContext  *context,
-                                       const gchar          *element_name,
-                                       gpointer              user_data,
-                                       GError              **error)
-{
-	MsOfficeXMLParserInfo *info = user_data;
-
-	if (g_ascii_strcasecmp (element_name, "w:p") == 0) {
-		info->style_element_present = FALSE;
-		info->preserve_attribute_present = FALSE;
-	}
-
-	((MsOfficeXMLParserInfo*) user_data)->tag_type = MS_OFFICE_XML_TAG_INVALID;
-}
-
-static void
-xml_start_element_handler_core_data	(GMarkupParseContext  *context,
-	 const gchar           *element_name,
-	 const gchar          **attribute_names,
-	 const gchar          **attribute_values,
-	 gpointer               user_data,
-	 GError               **error)
-{
-	MsOfficeXMLParserInfo *info = user_data;
-
-	if (g_ascii_strcasecmp (element_name, "dc:title") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_TITLE;
-	} else if (g_ascii_strcasecmp (element_name, "dc:subject") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_SUBJECT;
-	} else if (g_ascii_strcasecmp (element_name, "dc:creator") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_AUTHOR;
-	} else if (g_ascii_strcasecmp (element_name, "dc:description") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_COMMENTS;
-	} else if (g_ascii_strcasecmp (element_name, "dcterms:created") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_CREATED;
-	} else if (g_ascii_strcasecmp (element_name, "meta:generator") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_GENERATOR;
-	} else if (g_ascii_strcasecmp (element_name, "dcterms:modified") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_MODIFIED;
-	} else if (g_ascii_strcasecmp (element_name, "cp:lastModifiedBy") == 0) {
-		/* Do nothing ? */
-	} else if (g_ascii_strcasecmp (element_name, "Pages") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_NUM_OF_PAGES;
-	} else if (g_ascii_strcasecmp (element_name, "Slides") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_NUM_OF_PAGES;
-	} else if (g_ascii_strcasecmp (element_name, "Paragraphs") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_NUM_OF_PARAGRAPHS;
-	} else if (g_ascii_strcasecmp (element_name, "Characters") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_NUM_OF_CHARACTERS;
-	} else if (g_ascii_strcasecmp (element_name, "Words") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_NUM_OF_WORDS;
-	} else if (g_ascii_strcasecmp (element_name, "Lines") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_NUM_OF_LINES;
-	} else if (g_ascii_strcasecmp (element_name, "Application") == 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_APPLICATION;
-	} else {
-		info->tag_type = MS_OFFICE_XML_TAG_INVALID;
-	}
-}
-
-static void
-xml_text_handler_document_data (GMarkupParseContext  *context,
-                                const gchar          *text,
-                                gsize                 text_len,
-                                gpointer              user_data,
-                                GError              **error)
-{
-	MsOfficeXMLParserInfo *info = user_data;
-	static gboolean found = FALSE;
-	static gboolean added = FALSE;
-	guint min_word_length = fts_min_word_length();
-
-	switch (info->tag_type) {
-	case MS_OFFICE_XML_TAG_WORD_TEXT:
-		if (info->style_element_present) {
-			if (atoi (text) == 0) {
-				g_string_append_printf (info->content, "%s ", text);
-			}
-		}
-
-		if (info->preserve_attribute_present) {
-			gchar *keywords = g_strdup (text);
-			if (found && (strlen (keywords) >= min_word_length)) {
-				g_string_append_printf (info->content, "%s ", text);
-				found = FALSE;
-			} else {
-				gchar *lasts;
-				gchar *keyw;
-
-				for (keyw = strtok_r (keywords, ",; ", &lasts);
-				     keyw;
-				     keyw = strtok_r (NULL, ",; ", &lasts)) {
-					if ((g_ascii_strncasecmp (keyw, "Table", 6) == 0) ||
-					    (g_ascii_strncasecmp (keyw, "Figure", 6) == 0) ||
-					    (g_ascii_strncasecmp (keyw, "Section", 7) == 0) ||
-					    (g_ascii_strncasecmp (keyw, "Index", 5) == 0)) {
-						found = TRUE;
-					}
-				}
-			}
-
-			g_free (keywords);
-		}
-		break;
-
-	case MS_OFFICE_XML_TAG_SLIDE_TEXT:
-		if (strlen (text) > min_word_length) {
-			g_string_append_printf (info->content, "%s ", text);
-		}
-		break;
-
-	case MS_OFFICE_XML_TAG_XLS_SHARED_TEXT:
-		if ((atoi (text) == 0) && (strlen (text) > min_word_length))  {
-			g_string_append_printf (info->content, "%s ", text);
-		}
-		break;
-
-	case MS_OFFICE_XML_TAG_TITLE:
-		if (info->title_already_set) {
-			g_warning ("Avoiding additional title (%s) in MsOffice XML document '%s'",
-			           text, info->uri);
-		} else {
-			info->title_already_set = TRUE;
-			tracker_sparql_builder_predicate (info->metadata, "nie:title");
-			tracker_sparql_builder_object_unvalidated (info->metadata, text);
-		}
-		break;
-
-	case MS_OFFICE_XML_TAG_SUBJECT:
-		tracker_sparql_builder_predicate (info->metadata, "nie:subject");
-		tracker_sparql_builder_object_unvalidated (info->metadata, text);
-		break;
-
-	case MS_OFFICE_XML_TAG_AUTHOR:
-		tracker_sparql_builder_predicate (info->metadata, "nco:publisher");
-
-		tracker_sparql_builder_object_blank_open (info->metadata);
-		tracker_sparql_builder_predicate (info->metadata, "a");
-		tracker_sparql_builder_object (info->metadata, "nco:Contact");
-
-		tracker_sparql_builder_predicate (info->metadata, "nco:fullname");
-		tracker_sparql_builder_object_unvalidated (info->metadata, text);
-		tracker_sparql_builder_object_blank_close (info->metadata);
-		break;
-
-	case MS_OFFICE_XML_TAG_COMMENTS:
-		tracker_sparql_builder_predicate (info->metadata, "nie:comment");
-		tracker_sparql_builder_object_unvalidated (info->metadata, text);
-		break;
-
-	case MS_OFFICE_XML_TAG_CREATED: {
-		gchar *date;
-
-		date = tracker_date_guess (text);
-		tracker_sparql_builder_predicate (info->metadata, "nie:contentCreated");
-		tracker_sparql_builder_object_unvalidated (info->metadata, date);
-		g_free (date);
-		break;
-	}
-
-	case MS_OFFICE_XML_TAG_GENERATOR:
-		if (!added) {
-			tracker_sparql_builder_predicate (info->metadata, "nie:generator");
-			tracker_sparql_builder_object_unvalidated (info->metadata, text);
-			added = TRUE;
-		}
-		break;
-
-	case MS_OFFICE_XML_TAG_APPLICATION:
-		/* FIXME: Same code as MS_OFFICE_XML_TAG_GENERATOR should be
-		 * used, but nie:generator has max cardinality of 1
-		 * and this would cause errors.
-		 */
-		break;
-
-	case MS_OFFICE_XML_TAG_MODIFIED: {
-		gchar *date;
-
-                date = tracker_date_guess (text);
-		tracker_sparql_builder_predicate (info->metadata, "nie:contentLastModified");
-		tracker_sparql_builder_object_unvalidated (info->metadata, date);
-                g_free (date);
-		break;
-	}
-
-	case MS_OFFICE_XML_TAG_NUM_OF_PAGES:
-		tracker_sparql_builder_predicate (info->metadata, "nfo:pageCount");
-		tracker_sparql_builder_object_unvalidated (info->metadata, text);
-		break;
-
-	case MS_OFFICE_XML_TAG_NUM_OF_CHARACTERS:
-		tracker_sparql_builder_predicate (info->metadata, "nfo:characterCount");
-		tracker_sparql_builder_object_unvalidated (info->metadata, text);
-		break;
-
-	case MS_OFFICE_XML_TAG_NUM_OF_WORDS:
-		tracker_sparql_builder_predicate (info->metadata, "nfo:wordCount");
-		tracker_sparql_builder_object_unvalidated (info->metadata, text);
-		break;
-
-	case MS_OFFICE_XML_TAG_NUM_OF_LINES:
-		tracker_sparql_builder_predicate (info->metadata, "nfo:lineCount");
-		tracker_sparql_builder_object_unvalidated (info->metadata, text);
-		break;
-
-	case MS_OFFICE_XML_TAG_NUM_OF_PARAGRAPHS:
-		/* TODO: There is no ontology for this. */
-		break;
-
-	case MS_OFFICE_XML_TAG_DOCUMENT_CORE_DATA:
-	case MS_OFFICE_XML_TAG_DOCUMENT_TEXT_DATA:
-		/* Nothing as we are using it in defining type of data */
-		break;
-
-	case MS_OFFICE_XML_TAG_INVALID:
-		/* Here we cant use log otheriwse it will print for other non useful files */
-		break;
-	}
-}
-
-static gboolean
-xml_read (MsOfficeXMLParserInfo *parser_info,
-          const gchar           *xml_filename,
-          MsOfficeXMLTagType     type)
-{
-	GMarkupParseContext *context;
-	MsOfficeXMLParserInfo info;
-
-	/* FIXME: Can we use the original info here? */
-	info.metadata = parser_info->metadata;
-	info.file_type = parser_info->file_type;
-	info.tag_type = MS_OFFICE_XML_TAG_INVALID;
-	info.style_element_present = FALSE;
-	info.preserve_attribute_present = FALSE;
-	info.uri = parser_info->uri;
-	info.content = parser_info->content;
-	info.title_already_set = parser_info->title_already_set;
-
-	switch (type) {
-	case MS_OFFICE_XML_TAG_DOCUMENT_CORE_DATA: {
-		GMarkupParser parser = {
-			xml_start_element_handler_core_data,
-			xml_end_element_handler_document_data,
-			xml_text_handler_document_data,
-			NULL,
-			NULL
-		};
-
-		context = g_markup_parse_context_new (&parser,
-		                                      0,
-		                                      &info,
-		                                      NULL);
-		break;
-	}
-
-	case MS_OFFICE_XML_TAG_DOCUMENT_TEXT_DATA: {
-		GMarkupParser parser = {
-			xml_start_element_handler_text_data,
-			xml_end_element_handler_document_data,
-			xml_text_handler_document_data,
-			NULL,
-			NULL
-		};
-
-		context = g_markup_parse_context_new (&parser,
-		                                      0,
-		                                      &info,
-		                                      NULL);
-		break;
-	}
-
-	default:
-		context = NULL;
-		break;
-	}
-
-	if (context) {
-		/* Load the internal XML file from the Zip archive, and parse it
-		 * using the given context */
-		tracker_gsf_parse_xml_in_zip (parser_info->uri,
-		                              xml_filename,
-		                              context);
-		g_markup_parse_context_free (context);
-	}
-
-	return TRUE;
-}
-
-static void
-xml_start_element_handler_content_types (GMarkupParseContext  *context,
-                                         const gchar          *element_name,
-                                         const gchar         **attribute_names,
-                                         const gchar         **attribute_values,
-                                         gpointer              user_data,
-                                         GError              **error)
-{
-	MsOfficeXMLParserInfo *info;
-	const gchar *part_name;
-	const gchar *content_type;
-	gint i;
-
-	info = user_data;
-
-	if (g_ascii_strcasecmp (element_name, "Override") != 0) {
-		info->tag_type = MS_OFFICE_XML_TAG_INVALID;
-		return;
-	}
-
-	part_name = NULL;
-	content_type = NULL;
-
-	for (i = 0; attribute_names[i]; i++) {
-		if (g_ascii_strcasecmp (attribute_names[i], "PartName") == 0) {
-			part_name = attribute_values[i];
-		} else if (g_ascii_strcasecmp (attribute_names[i], "ContentType") == 0) {
-			content_type = attribute_values[i];
-		}
-	}
-
-	/* Both part_name and content_type MUST be NON-NULL */
-	if (!part_name || !content_type) {
-		g_message ("Invalid file (part_name:%s, content_type:%s)",
-		           part_name ? part_name : "none",
-		           content_type ? content_type : "none");
-		return;
-	}
-
-	if ((g_ascii_strcasecmp (content_type, "application/vnd.openxmlformats-package.core-properties+xml") == 0) ||
-	    (g_ascii_strcasecmp (content_type, "application/vnd.openxmlformats-officedocument.extended-properties+xml") == 0)) {
-		xml_read (info, part_name + 1, MS_OFFICE_XML_TAG_DOCUMENT_CORE_DATA);
-		return;
-	}
-
-	switch (info->file_type) {
-	case FILE_TYPE_DOCX:
-		if (g_ascii_strcasecmp (content_type, "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml") == 0) {
-			xml_read (info, part_name + 1, MS_OFFICE_XML_TAG_DOCUMENT_TEXT_DATA);
-		}
-		break;
-
-	case FILE_TYPE_PPTX:
-	case FILE_TYPE_PPSX:
-		if ((g_ascii_strcasecmp (content_type, "application/vnd.openxmlformats-officedocument.presentationml.slide+xml") == 0) ||
-		    (g_ascii_strcasecmp (content_type, "application/vnd.openxmlformats-officedocument.drawingml.diagramData+xml") == 0)) {
-			xml_read (info, part_name + 1, MS_OFFICE_XML_TAG_DOCUMENT_TEXT_DATA);
-		}
-		break;
-
-	case FILE_TYPE_XLSX:
-		if ((g_ascii_strcasecmp (content_type, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml") == 0) ||
-		    (g_ascii_strcasecmp (content_type, "application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml") == 0)) {
-			xml_read (info, part_name + 1, MS_OFFICE_XML_TAG_DOCUMENT_TEXT_DATA);
-		}
-		break;
-
-	case FILE_TYPE_INVALID:
-		g_message ("Invalid file type:'%d'", info->file_type);
-		break;
-	}
-}
-
-static void
-extract_msoffice_xml (const gchar          *uri,
-                      TrackerSparqlBuilder *preupdate,
-                      TrackerSparqlBuilder *metadata)
-{
-	MsOfficeXMLParserInfo info;
-	MsOfficeXMLFileType file_type;
-	GFile *file;
-	GFileInfo *file_info;
-	GMarkupParseContext *context = NULL;
-	GMarkupParser parser = {
-		xml_start_element_handler_content_types,
-		xml_end_element_handler_document_data,
-		NULL,
-		NULL,
-		NULL
-	};
-	const gchar *mime_used;
-
-	file = g_file_new_for_uri (uri);
-
-	if (!file) {
-		g_warning ("Could not create GFile for URI:'%s'",
-		           uri);
-		return;
-	}
-
-	file_info = g_file_query_info (file,
-	                               G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-	                               G_FILE_QUERY_INFO_NONE,
-	                               NULL,
-	                               NULL);
-	g_object_unref (file);
-
-	if (!file_info) {
-		g_warning ("Could not get GFileInfo for URI:'%s'",
-		           uri);
-		return;
-	}
-
-	mime_used = g_file_info_get_content_type (file_info);
-
-	if (g_ascii_strcasecmp (mime_used, "application/vnd.openxmlformats-officedocument.wordprocessingml.document") == 0) {
-		file_type = FILE_TYPE_DOCX;
-	} else if (g_ascii_strcasecmp (mime_used, "application/vnd.openxmlformats-officedocument.presentationml.presentation") == 0) {
-		file_type = FILE_TYPE_PPTX;
-	} else if (g_ascii_strcasecmp (mime_used, "application/vnd.openxmlformats-officedocument.presentationml.slideshow") == 0) {
-		file_type = FILE_TYPE_PPSX;
-	} else if (g_ascii_strcasecmp (mime_used, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") == 0) {
-		file_type = FILE_TYPE_XLSX;
-	} else {
-		g_message ("Mime type was not recognised:'%s'", mime_used);
-		file_type = FILE_TYPE_INVALID;
-	}
-
 	g_object_unref (file_info);
-
-
-	g_debug ("Extracting MsOffice XML format...");
-
-	tracker_sparql_builder_predicate (metadata, "a");
-	tracker_sparql_builder_object (metadata, "nfo:PaginatedTextDocument");
-
-	info.metadata = metadata;
-	info.file_type = file_type;
-	info.tag_type = MS_OFFICE_XML_TAG_INVALID;
-	info.style_element_present = FALSE;
-	info.preserve_attribute_present = FALSE;
-	info.uri = uri;
-	info.content = g_string_new ("");
-	info.title_already_set = FALSE;
-
-	context = g_markup_parse_context_new (&parser, 0, &info, NULL);
-
-	/* Load the internal XML file from the Zip archive, and parse it
-	 * using the given context */
-	tracker_gsf_parse_xml_in_zip (uri,
-	                              "[Content_Types].xml",
-	                              context);
-
-	if (info.content) {
-		gchar *content;
-
-		content = g_string_free (info.content, FALSE);
-		info.content = NULL;
-
-		if (content) {
-			tracker_sparql_builder_predicate (metadata, "nie:plainTextContent");
-			tracker_sparql_builder_object_unvalidated (metadata, content);
-			g_free (content);
-		}
-	}
-
-	g_markup_parse_context_free (context);
+	gsf_shutdown ();
 }
 
 TrackerExtractData *

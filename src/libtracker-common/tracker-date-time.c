@@ -158,12 +158,21 @@ tracker_string_to_date (const gchar *date_string,
 			t -= offset;
 		}
 	} else {
+		time_t t2;
+
 		/* local time */
 		tm.tm_isdst = -1;
 
 		t = mktime (&tm);
 
+		/* calculate UTC offset, requires timegm for correct result
+		   with past times when timezone had different UTC offset */
+#if !(defined(__FreeBSD__) || defined(__OpenBSD__) || defined (__GLIBC__))
 		offset = -timezone + (tm.tm_isdst > 0 ? 3600 : 0);
+#else
+		t2 = timegm (&tm);
+		offset = t2 - t;
+#endif
 	}
 
 	g_match_info_free (match_info);
@@ -187,7 +196,7 @@ tracker_date_to_string (time_t date_time)
 
 	gmtime_r (&date_time, &utc_time);
 
-	/* Output is ISO 8160 format : "YYYY-MM-DDThh:mm:ssZ" */
+	/* Output is ISO 8601 format : "YYYY-MM-DDThh:mm:ssZ" */
 	count = strftime (buffer, sizeof (buffer), "%FT%TZ", &utc_time);
 
 	return count > 0 ? g_strdup (buffer) : NULL;

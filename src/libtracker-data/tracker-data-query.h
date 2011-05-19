@@ -25,7 +25,7 @@
 
 #include <glib.h>
 
-#include <libtracker-db/tracker-db-interface.h>
+#include "tracker-db-interface.h"
 
 G_BEGIN_DECLS
 
@@ -33,10 +33,11 @@ G_BEGIN_DECLS
 #error "only <libtracker-data/tracker-data.h> must be included directly."
 #endif
 
-gint                 tracker_data_query_resource_id (const gchar  *uri);
-TrackerDBResultSet  *tracker_data_query_sparql      (const gchar  *query,
-                                                     GError      **error);
-GPtrArray*           tracker_data_query_rdf_type    (gint          id);
+gint                 tracker_data_query_resource_id   (const gchar  *uri);
+TrackerDBCursor     *tracker_data_query_sparql_cursor (const gchar  *query,
+                                                       GError      **error);
+
+GPtrArray*           tracker_data_query_rdf_type      (gint          id);
 
 G_END_DECLS
 

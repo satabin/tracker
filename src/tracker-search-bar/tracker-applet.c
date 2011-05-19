@@ -20,6 +20,7 @@
 #include "config.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
@@ -30,19 +31,22 @@
 #include "tracker-applet.h"
 #include "tracker-results-window.h"
 
-static void applet_about_cb (BonoboUIComponent *uic,
-                             TrackerApplet     *applet,
-                             const gchar       *verb_name);
+static void applet_about_cb (GtkAction     *action,
+                             TrackerApplet *applet);
 
-static const BonoboUIVerb applet_menu_verbs [] = {
-	BONOBO_UI_UNSAFE_VERB ("about", applet_about_cb),
-	BONOBO_UI_VERB_END
+static const GtkActionEntry applet_menu_actions[] = {
+	{ "About",
+	  GTK_STOCK_ABOUT,
+	  N_("_About"),
+	  NULL,
+	  NULL,
+	  G_CALLBACK (applet_about_cb)
+	}
 };
 
 static void
-applet_about_cb (BonoboUIComponent *uic,
-                 TrackerApplet     *applet,
-                 const gchar       *verb_name)
+applet_about_cb (GtkAction     *action,
+                 TrackerApplet *applet)
 {
 	GObject *object;
 	GtkWidget *dialog;
@@ -94,7 +98,7 @@ applet_entry_start_search (TrackerApplet *applet)
 		g_object_set (applet->results, "query", text, NULL);
 	}
 
-	if (!GTK_WIDGET_VISIBLE (applet->results)) {
+	if (!gtk_widget_get_visible (applet->results)) {
 		tracker_results_window_popup (TRACKER_RESULTS_WINDOW (applet->results));
 	}
 }
@@ -154,14 +158,14 @@ applet_entry_key_press_event_cb (GtkWidget     *widget,
                                  GdkEventKey   *event,
                                  TrackerApplet *applet)
 {
-	if (event->keyval == GDK_Escape) {
+	if (event->keyval == GDK_KEY_Escape) {
 		if (!applet->results) {
 			return FALSE;
 		}
 
 		gtk_widget_destroy (applet->results);
 		applet->results = NULL;
-	} else if (event->keyval == GDK_Down) {
+	} else if (event->keyval == GDK_KEY_Down) {
 		if (!applet->results) {
 			return FALSE;
 		}
@@ -248,22 +252,25 @@ applet_change_orient_cb (GtkWidget         *widget,
                          gpointer           user_data)
 {
 	TrackerApplet *applet;
+	GtkAllocation alloc;
 	guint new_size;
 
 	applet = user_data;
         new_size = applet->size;
 
+	gtk_widget_get_allocation (GTK_WIDGET (applet->parent), &alloc);
+
 	switch (orient) {
 	case PANEL_APPLET_ORIENT_LEFT:
 	case PANEL_APPLET_ORIENT_RIGHT:
 		applet->orient = GTK_ORIENTATION_VERTICAL;
-		new_size = GTK_WIDGET (applet->parent)->allocation.width;
+		new_size = alloc.width;
 		break;
 
 	case PANEL_APPLET_ORIENT_UP:
 	case PANEL_APPLET_ORIENT_DOWN:
 		applet->orient = GTK_ORIENTATION_HORIZONTAL;
-		new_size = GTK_WIDGET (applet->parent)->allocation.height;
+		new_size = alloc.height;
 		break;
 	}
 
@@ -314,6 +321,8 @@ applet_size_allocate_cb (GtkWidget     *widget,
 
 }
 
+#if 0
+
 static void
 applet_destroy_cb (BonoboObject  *object,
                    TrackerApplet *applet)
@@ -346,26 +355,33 @@ applet_destroy_cb (BonoboObject  *object,
 	g_free (applet);
 }
 
+#endif
+
 static gboolean
 applet_new (PanelApplet *parent_applet)
 {
 	TrackerApplet *applet;
 	GError *error = NULL;
 	GtkBuilder *builder;
-	const gchar *filename;
+	GtkActionGroup *action_group;
+	gchar *ui_path;
 
 	builder = gtk_builder_new ();
-	filename = PKGDATADIR "/tracker-search-bar.ui";
+	ui_path = g_build_filename (PKGDATADIR,
+	                            "tracker-search-bar.ui",
+	                            NULL);
 
-	if (gtk_builder_add_from_file (builder, filename, &error) == 0) {
+	if (gtk_builder_add_from_file (builder, ui_path, &error) == 0) {
 		g_printerr ("Could not load builder file, %s", error->message);
 		g_error_free (error);
+		g_free (ui_path);
 		g_object_unref (builder);
 
 		return FALSE;
 	}
 
-	g_print ("Added builder file:'%s'\n", filename);
+	g_print ("Added builder file:'%s'\n", ui_path);
+	g_free (ui_path);
 
 	applet = g_new0 (TrackerApplet, 1);
 
@@ -385,12 +401,20 @@ applet_new (PanelApplet *parent_applet)
 	panel_applet_set_background_widget (PANEL_APPLET (applet->parent),
 	                                    GTK_WIDGET (applet->parent));
 
+	action_group = gtk_action_group_new ("Applet Actions");
+	gtk_action_group_set_translation_domain (action_group, GETTEXT_PACKAGE);
+	gtk_action_group_add_actions (action_group,
+	                              applet_menu_actions,
+	                              G_N_ELEMENTS (applet_menu_actions),
+	                              applet);
+	ui_path = g_build_filename (PKGDATADIR,
+	                            "tracker-search-bar-menu.xml",
+	                            NULL);
 	panel_applet_setup_menu_from_file (PANEL_APPLET (applet->parent),
-	                                   NULL,
-	                                   PKGDATADIR "/GNOME_Search_Bar_Applet.xml",
-	                                   NULL,
-	                                   applet_menu_verbs,
-	                                   applet);
+	                                   ui_path,
+	                                   action_group);
+	g_free (ui_path);
+	g_object_unref (action_group);
 
 	gtk_widget_show (applet->parent);
 
@@ -398,8 +422,11 @@ applet_new (PanelApplet *parent_applet)
 	                  G_CALLBACK (applet_size_allocate_cb), applet);
 	g_signal_connect (applet->parent, "change_orient",
 	                  G_CALLBACK (applet_change_orient_cb), applet);
+
+#if 0
 	g_signal_connect (panel_applet_get_control (PANEL_APPLET (applet->parent)), "destroy",
 	                  G_CALLBACK (applet_destroy_cb), applet);
+#endif
 
 	/* Initialise other modules */
 
@@ -415,7 +442,7 @@ applet_factory (PanelApplet *applet,
                 const gchar *iid,
                 gpointer     data)
 {
-	if (!strcmp (iid, "OAFIID:GNOME_Search_Bar_Applet")) {
+	if (!strcmp (iid, "SearchBar")) {
 		g_print ("Creating applet\n");
 		return applet_new (applet);
 	}
@@ -426,8 +453,7 @@ applet_factory (PanelApplet *applet,
 /*
  * Generate the boilerplate to hook into GObject/Bonobo.
  */
-PANEL_APPLET_BONOBO_FACTORY ("OAFIID:GNOME_Search_Bar_Applet_Factory",
-                             PANEL_TYPE_APPLET,
-                             "GNOME_Search_Bar_Applet", PACKAGE_VERSION,
-                             applet_factory,
-                             NULL);
+PANEL_APPLET_OUT_PROCESS_FACTORY ("SearchBarFactory",
+                                  PANEL_TYPE_APPLET,
+                                  applet_factory,
+                                  NULL)

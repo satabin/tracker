@@ -8,9 +8,9 @@
 #include <glib-object.h>
 #include <stdlib.h>
 #include <string.h>
-#include <libtracker-db/tracker-db-interface.h>
+#include <libtracker-data/tracker-db-interface.h>
+#include <libtracker-sparql/tracker-sparql.h>
 #include <libtracker-common/tracker-date-time.h>
-#include <libtracker-data/tracker-data-update.h>
 
 G_BEGIN_DECLS
 
@@ -103,15 +103,6 @@ typedef struct _TrackerTurtleReader TrackerTurtleReader;
 typedef struct _TrackerTurtleReaderClass TrackerTurtleReaderClass;
 typedef struct _TrackerTurtleReaderPrivate TrackerTurtleReaderPrivate;
 
-typedef enum  {
-	TRACKER_SPARQL_ERROR_PARSE,
-	TRACKER_SPARQL_ERROR_UNKNOWN_CLASS,
-	TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY,
-	TRACKER_SPARQL_ERROR_TYPE,
-	TRACKER_SPARQL_ERROR_INTERNAL,
-	TRACKER_SPARQL_ERROR_UNSUPPORTED
-} TrackerSparqlError;
-#define TRACKER_SPARQL_ERROR tracker_sparql_error_quark ()
 struct _TrackerSparqlQuery {
 	GObject parent_instance;
 	TrackerSparqlQueryPrivate * priv;
@@ -119,6 +110,7 @@ struct _TrackerSparqlQuery {
 	TrackerSparqlPattern* pattern;
 	GList* bindings;
 	TrackerSparqlContext* context;
+	gint last_var_index;
 };
 
 struct _TrackerSparqlQueryClass {
@@ -160,6 +152,7 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_COMMA,
 	TRACKER_SPARQL_TOKEN_TYPE_CONSTRUCT,
 	TRACKER_SPARQL_TOKEN_TYPE_COUNT,
+	TRACKER_SPARQL_TOKEN_TYPE_DATA,
 	TRACKER_SPARQL_TOKEN_TYPE_DATATYPE,
 	TRACKER_SPARQL_TOKEN_TYPE_DECIMAL,
 	TRACKER_SPARQL_TOKEN_TYPE_DELETE,
@@ -172,12 +165,14 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_DOUBLE_CIRCUMFLEX,
 	TRACKER_SPARQL_TOKEN_TYPE_DROP,
 	TRACKER_SPARQL_TOKEN_TYPE_EOF,
+	TRACKER_SPARQL_TOKEN_TYPE_EXISTS,
 	TRACKER_SPARQL_TOKEN_TYPE_FALSE,
 	TRACKER_SPARQL_TOKEN_TYPE_FILTER,
 	TRACKER_SPARQL_TOKEN_TYPE_FROM,
 	TRACKER_SPARQL_TOKEN_TYPE_GRAPH,
 	TRACKER_SPARQL_TOKEN_TYPE_GROUP,
 	TRACKER_SPARQL_TOKEN_TYPE_GROUP_CONCAT,
+	TRACKER_SPARQL_TOKEN_TYPE_IF,
 	TRACKER_SPARQL_TOKEN_TYPE_INSERT,
 	TRACKER_SPARQL_TOKEN_TYPE_INTEGER,
 	TRACKER_SPARQL_TOKEN_TYPE_INTO,
@@ -193,6 +188,7 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_MIN,
 	TRACKER_SPARQL_TOKEN_TYPE_MINUS,
 	TRACKER_SPARQL_TOKEN_TYPE_NAMED,
+	TRACKER_SPARQL_TOKEN_TYPE_NOT,
 	TRACKER_SPARQL_TOKEN_TYPE_OFFSET,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_AND,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_EQ,
@@ -203,19 +199,23 @@ typedef enum  {
 	TRACKER_SPARQL_TOKEN_TYPE_OP_NE,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_NEG,
 	TRACKER_SPARQL_TOKEN_TYPE_OP_OR,
+	TRACKER_SPARQL_TOKEN_TYPE_OP_IN,
 	TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACE,
 	TRACKER_SPARQL_TOKEN_TYPE_OPEN_BRACKET,
 	TRACKER_SPARQL_TOKEN_TYPE_OPEN_PARENS,
 	TRACKER_SPARQL_TOKEN_TYPE_OPTIONAL,
+	TRACKER_SPARQL_TOKEN_TYPE_OR,
 	TRACKER_SPARQL_TOKEN_TYPE_ORDER,
 	TRACKER_SPARQL_TOKEN_TYPE_PLUS,
 	TRACKER_SPARQL_TOKEN_TYPE_PN_PREFIX,
 	TRACKER_SPARQL_TOKEN_TYPE_PREFIX,
 	TRACKER_SPARQL_TOKEN_TYPE_REDUCED,
 	TRACKER_SPARQL_TOKEN_TYPE_REGEX,
+	TRACKER_SPARQL_TOKEN_TYPE_REPLACE,
 	TRACKER_SPARQL_TOKEN_TYPE_SAMETERM,
 	TRACKER_SPARQL_TOKEN_TYPE_SELECT,
 	TRACKER_SPARQL_TOKEN_TYPE_SEMICOLON,
+	TRACKER_SPARQL_TOKEN_TYPE_SILENT,
 	TRACKER_SPARQL_TOKEN_TYPE_STAR,
 	TRACKER_SPARQL_TOKEN_TYPE_STR,
 	TRACKER_SPARQL_TOKEN_TYPE_STRING_LITERAL1,
@@ -240,7 +240,6 @@ struct _TrackerTurtleReaderClass {
 };
 
 
-GQuark tracker_sparql_error_quark (void);
 GType tracker_sparql_query_get_type (void) G_GNUC_CONST;
 GType tracker_sparql_expression_get_type (void) G_GNUC_CONST;
 GType tracker_sparql_pattern_get_type (void) G_GNUC_CONST;
@@ -257,9 +256,11 @@ TrackerSparqlQuery* tracker_sparql_query_new (const gchar* query);
 TrackerSparqlQuery* tracker_sparql_query_construct (GType object_type, const gchar* query);
 TrackerSparqlQuery* tracker_sparql_query_new_update (const gchar* query);
 TrackerSparqlQuery* tracker_sparql_query_construct_update (GType object_type, const gchar* query);
-TrackerDBResultSet* tracker_sparql_query_execute (TrackerSparqlQuery* self, GError** error);
-GPtrArray* tracker_sparql_query_execute_update (TrackerSparqlQuery* self, gboolean blank, GError** error);
+TrackerDBCursor* tracker_sparql_query_execute_cursor (TrackerSparqlQuery* self, gboolean threadsafe, GError** error);
+GVariant* tracker_sparql_query_execute_update (TrackerSparqlQuery* self, gboolean blank, GError** error);
 void uuid_generate (guchar* uuid);
+gboolean tracker_sparql_query_get_no_cache (TrackerSparqlQuery* self);
+void tracker_sparql_query_set_no_cache (TrackerSparqlQuery* self, gboolean value);
 GType tracker_sparql_scanner_get_type (void) G_GNUC_CONST;
 TrackerSparqlScanner* tracker_sparql_scanner_new (gchar* input, gsize len);
 TrackerSparqlScanner* tracker_sparql_scanner_construct (GType object_type, gchar* input, gsize len);

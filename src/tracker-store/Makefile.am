@@ -1,109 +1,69 @@
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES =								\
-	-DSHAREDIR=\""$(datadir)"\"					\
-	-DLOCALEDIR=\""$(localedir)"\" 					\
-	-DMAIL_MODULES_DIR=\""$(libdir)"/tracker-$(TRACKER_API_VERSION)/mail-modules\"         \
-	-DPUSH_MODULES_DIR=\""$(libdir)/tracker-$(TRACKER_API_VERSION)/push-modules/daemon"\"	\
-	-DG_LOG_DOMAIN=\"Tracker\"					\
-	-DTRACKER_COMPILATION						\
-	-I$(top_srcdir)/src						\
-	-I$(top_builddir)/src						\
-	-I$(top_builddir)/src/libtracker-data				\
-	$(WARN_CFLAGS)							\
-	$(GLIB2_CFLAGS)							\
-	$(GTHREAD_CFLAGS)						\
-	$(GMODULE_CFLAGS)						\
-	$(GIO_CFLAGS)							\
-	$(GCOV_CFLAGS)							\
-	$(DBUS_CFLAGS)							\
-	$(FAM_CFLAGS)							\
-	$(SQLITE3_CFLAGS)
+AM_CPPFLAGS =                                          \
+	$(BUILD_CFLAGS)                                \
+	-DSHAREDIR=\""$(datadir)"\"                    \
+	-DLOCALEDIR=\""$(localedir)"\"                 \
+	-DMAIL_MODULES_DIR=\""$(libdir)"/tracker-$(TRACKER_API_VERSION)/mail-modules\" \
+	-DPUSH_MODULES_DIR=\""$(libdir)/tracker-$(TRACKER_API_VERSION)/push-modules/daemon"\" \
+	-I$(top_srcdir)/src                            \
+	-I$(top_builddir)/src                          \
+	$(TRACKER_STORE_CFLAGS)                        \
+	-include config.h                              \
+	-DNO_LIBDBUS
 
 #
 # Daemon sources
 #
 libexec_PROGRAMS = tracker-store
 
-tracker_store_SOURCES =							\
-	$(marshal_sources)						\
-	$(dbus_sources)							\
-	tracker-backup.c						\
-	tracker-backup.h						\
-	tracker-config.c						\
-	tracker-config.h						\
-	tracker-dbus.c							\
-	tracker-dbus.h							\
-	tracker-events.c						\
-	tracker-events.h						\
-	tracker-writeback.c						\
-	tracker-writeback.h						\
-	tracker-main.c							\
-	tracker-resources.c						\
-	tracker-resources.h						\
-	tracker-push.c							\
-	tracker-push.h							\
-	tracker-push-registrar.c					\
-	tracker-push-registrar.h					\
-	tracker-resource-class.c					\
-	tracker-resource-class.h					\
-	tracker-statistics.c						\
-	tracker-statistics.h						\
-	tracker-store.c							\
-	tracker-store.h							\
-	tracker-status.c						\
-	tracker-status.h
+tracker_store_SOURCES =                                \
+	tracker-backup.vala                            \
+	tracker-config.c                               \
+	tracker-dbus.vala                              \
+	tracker-events.c                               \
+	tracker-locale-change.c                        \
+	tracker-main.vala                              \
+	tracker-resources.vala                         \
+	tracker-statistics.vala                        \
+	tracker-status.vala                            \
+	tracker-steroids.vala                          \
+	tracker-store.vala                             \
+	tracker-writeback.c
 
-if OS_WIN32
-tracker_store_win_libs = -lws2_32 -lkernel32
-endif
+noinst_HEADERS =                                       \
+	tracker-config.h                               \
+	tracker-events.h                               \
+	tracker-locale-change.h                        \
+	tracker-store.h                                \
+	tracker-writeback.h
 
-tracker_store_LDADD =							\
-	$(plugin_libs)							\
-	$(top_builddir)/src/libtracker-data/libtracker-data.la		\
-	$(top_builddir)/src/libtracker-db/libtracker-db.la 		\
-	$(top_builddir)/src/libtracker-common/libtracker-common.la 	\
-	$(top_builddir)/src/libstemmer/libstemmer.la	 		\
-	$(SQLITE3_LIBS)							\
-	$(DBUS_LIBS)							\
-	$(GIO_LIBS)							\
-	$(GMODULE_LIBS)							\
-	$(GTHREAD_LIBS)							\
-	$(GLIB2_LIBS)							\
-	$(GCOV_LIBS)							\
-	$(tracker_store_win_libs)					\
-	-lz								\
-	-lm
+BUILT_SOURCES = tracker-store.h
 
-marshal_sources =                                         		\
-        tracker-marshal.h                             			\
-        tracker-marshal.c
+tracker_store_VALAFLAGS = \
+	--pkg gio-2.0 \
+	--pkg gio-unix-2.0 \
+	--pkg posix \
+	$(BUILD_VALAFLAGS) \
+	$(top_srcdir)/src/libtracker-common/libtracker-common.vapi \
+	$(top_srcdir)/src/libtracker-sparql/tracker-sparql-$(TRACKER_API_VERSION).vapi \
+	$(top_srcdir)/src/libtracker-data/tracker-sparql-query.vapi \
+	$(top_srcdir)/src/libtracker-data/libtracker-data.vapi \
+	$(top_srcdir)/src/tracker-store/tracker-config.vapi \
+	$(top_srcdir)/src/tracker-store/tracker-events.vapi \
+	$(top_srcdir)/src/tracker-store/tracker-locale-change.vapi \
+	$(top_srcdir)/src/tracker-store/tracker-writeback.vapi \
+	-H tracker-store.h
 
-dbus_sources = 								\
-	tracker-backup-glue.h						\
-	tracker-resources-glue.h					\
-	tracker-statistics-glue.h					\
-	tracker-resources-class-glue.h					\
-	tracker-status-glue.h
+tracker_store_LDADD =                                  \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(BUILD_LIBS)                                  \
+	$(TRACKER_STORE_LIBS)
 
-tracker-marshal.h: tracker-marshal.list
-	$(AM_V_GEN)$(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --header > $@
-
-tracker-marshal.c: tracker-marshal.list
-	$(AM_V_GEN)echo "#include \"tracker-marshal.h\"" > $@ &&	\
-		   $(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --body >> $@
-
-%-glue.h: $(top_srcdir)/data/dbus/%.xml
-	$(AM_V_GEN)$(DBUSBINDINGTOOL) --mode=glib-server --output=$@ --prefix=$(subst -,_,$*) $^
-
-%-client.h: $(top_srcdir)/data/dbus/%.xml
-	$(AM_V_GEN)$(DBUSBINDINGTOOL) --mode=glib-client --output=$@ --prefix=$(subst -,_,$*) $^
-
-BUILT_SOURCES = 							\
-	$(marshal_sources)						\
-	$(dbus_sources)
-
-CLEANFILES = $(BUILT_SOURCES)
-
-EXTRA_DIST = tracker-marshal.list
-
+EXTRA_DIST = \
+	tracker-config.vapi \
+	tracker-events.vapi \
+	tracker-locale-change.vapi \
+	tracker-writeback.vapi

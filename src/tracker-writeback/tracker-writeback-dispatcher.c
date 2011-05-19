@@ -17,8 +17,13 @@
  * Boston, MA  02110-1301, USA.
  */
 
+#include "config.h"
+
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib-lowlevel.h>
+#include <dbus/dbus-glib.h>
+
 #include <libtracker-common/tracker-dbus.h>
-#include <libtracker-client/tracker.h>
 
 #include "tracker-writeback-dispatcher.h"
 #include "tracker-writeback-dbus.h"
@@ -34,11 +39,13 @@
 	"type='signal', " \
 	"sender='" TRACKER_SERVICE "', " \
 	"path='" TRACKER_RESOURCES_OBJECT "', " \
-	"interface='" TRACKER_INTERFACE_RESOURCES "'"
+	"interface='" TRACKER_INTERFACE_RESOURCES "', " \
+	"member='Writeback'"
 
 typedef struct {
 	GMainContext *context;
 	DBusConnection *connection;
+	gboolean good_init;
 } TrackerWritebackDispatcherPrivate;
 
 enum {
@@ -53,50 +60,21 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
+static void tracker_writeback_dispatcher_finalize            (GObject        *object);
 
-static void tracker_writeback_dispatcher_finalize     (GObject      *object);
-static void tracker_writeback_dispatcher_constructed  (GObject      *object);
+static void tracker_writeback_dispatcher_get_property        (GObject        *object,
+                                                              guint           param_id,
+                                                              GValue         *value,
+                                                              GParamSpec     *pspec);
+static void tracker_writeback_dispatcher_set_property        (GObject        *object,
+                                                              guint           param_id,
+                                                              const GValue   *value,
+                                                              GParamSpec     *pspec);
+static void tracker_writeback_dispatcher_initable_iface_init (GInitableIface *iface);
 
-static void tracker_writeback_dispatcher_get_property (GObject      *object,
-                                                       guint         param_id,
-                                                       GValue       *value,
-                                                       GParamSpec   *pspec);
-static void tracker_writeback_dispatcher_set_property (GObject      *object,
-                                                       guint         param_id,
-                                                       const GValue *value,
-                                                       GParamSpec   *pspec);
-
-
-G_DEFINE_TYPE (TrackerWritebackDispatcher, tracker_writeback_dispatcher, G_TYPE_OBJECT)
-
-static void
-tracker_writeback_dispatcher_class_init (TrackerWritebackDispatcherClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->finalize = tracker_writeback_dispatcher_finalize;
-	object_class->constructed = tracker_writeback_dispatcher_constructed;
-	object_class->get_property = tracker_writeback_dispatcher_get_property;
-	object_class->set_property = tracker_writeback_dispatcher_set_property;
-
-	g_object_class_install_property (object_class,
-	                                 PROP_MAIN_CONTEXT,
-	                                 g_param_spec_pointer ("context",
-	                                                       "Main context",
-	                                                       "Main context to run the DBus service on",
-	                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-
-	signals[WRITEBACK] =
-		g_signal_new ("writeback",
-		              G_OBJECT_CLASS_TYPE (object_class),
-		              G_SIGNAL_RUN_LAST,
-		              G_STRUCT_OFFSET (TrackerWritebackDispatcherClass, writeback),
-		              NULL, NULL,
-		              tracker_marshal_VOID__STRING_BOXED,
-		              G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_STRV);
-
-	g_type_class_add_private (object_class, sizeof (TrackerWritebackDispatcherPrivate));
-}
+G_DEFINE_TYPE_WITH_CODE (TrackerWritebackDispatcher, tracker_writeback_dispatcher, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                         tracker_writeback_dispatcher_initable_iface_init));
 
 static void
 handle_writeback_signal (TrackerWritebackDispatcher *dispatcher,
@@ -115,7 +93,7 @@ handle_writeback_signal (TrackerWritebackDispatcher *dispatcher,
 
 	signature = dbus_message_iter_get_signature (&iter);
 
-	if (g_strcmp0 (signature, "a{sas}") != 0) {
+	if (g_strcmp0 (signature, "a{iai}") != 0) {
 		g_critical ("  Unexpected message signature '%s'", signature);
 		g_free (signature);
 		return;
@@ -130,10 +108,10 @@ handle_writeback_signal (TrackerWritebackDispatcher *dispatcher,
 
 		while ((arg_type = dbus_message_iter_get_arg_type (&arr)) != DBUS_TYPE_INVALID) {
 			DBusMessageIter dict, types_arr;
-			const gchar *subject;
+			gint subject;
 			GArray *rdf_types;
 
-			rdf_types = g_array_new (TRUE, TRUE, sizeof (gchar *));
+			rdf_types = g_array_new (FALSE, FALSE, sizeof (gint));
 
 			dbus_message_iter_recurse (&arr, &dict);
 
@@ -143,7 +121,7 @@ handle_writeback_signal (TrackerWritebackDispatcher *dispatcher,
 			dbus_message_iter_recurse (&dict, &types_arr);
 
 			while ((arg_type = dbus_message_iter_get_arg_type (&types_arr)) != DBUS_TYPE_INVALID) {
-				const gchar *type;
+				gint type;
 
 				dbus_message_iter_get_basic (&types_arr, &type);
 
@@ -152,7 +130,7 @@ handle_writeback_signal (TrackerWritebackDispatcher *dispatcher,
 				dbus_message_iter_next (&types_arr);
 			}
 
-			g_signal_emit (dispatcher, signals[WRITEBACK], 0, subject, rdf_types->data);
+			g_signal_emit (dispatcher, signals[WRITEBACK], 0, subject, rdf_types);
 			g_array_free (rdf_types, TRUE);
 
 			dbus_message_iter_next (&arr);
@@ -181,8 +159,9 @@ message_filter (DBusConnection *connection,
 }
 
 static DBusConnection *
-setup_dbus_connection (TrackerWritebackDispatcher *dispatcher,
-                       GMainContext               *context)
+setup_dbus_connection (TrackerWritebackDispatcher  *dispatcher,
+                       GMainContext                *context,
+                       GError                     **n_error)
 {
 	DBusConnection *connection;
 	DBusError error;
@@ -194,8 +173,10 @@ setup_dbus_connection (TrackerWritebackDispatcher *dispatcher,
 	connection = dbus_bus_get_private (DBUS_BUS_SESSION, &error);
 
 	if (dbus_error_is_set (&error)) {
-		g_critical ("Could not connect to the D-Bus session bus, %s",
-		            error.message);
+		g_set_error_literal (n_error,
+		                     TRACKER_DBUS_ERROR,
+		                     TRACKER_DBUS_ERROR_ASSERTION_FAILED,
+		                     error.message);
 		dbus_error_free (&error);
 		return NULL;
 	}
@@ -209,8 +190,10 @@ setup_dbus_connection (TrackerWritebackDispatcher *dispatcher,
 	                                &error);
 
 	if (dbus_error_is_set (&error)) {
-		g_critical ("Could not acquire name:'%s', %s",
-		            TRACKER_WRITEBACK_DBUS_NAME, error.message);
+		g_set_error_literal (n_error,
+		                     TRACKER_DBUS_ERROR,
+		                     TRACKER_DBUS_ERROR_ASSERTION_FAILED,
+		                     error.message);
 		dbus_error_free (&error);
 		dbus_connection_close (connection);
 		dbus_connection_unref (connection);
@@ -219,9 +202,12 @@ setup_dbus_connection (TrackerWritebackDispatcher *dispatcher,
 	}
 
 	if (result != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER) {
-		g_critical ("D-Bus service name:'%s' is already taken, "
-		            "perhaps the application is already running?",
-		            TRACKER_WRITEBACK_DBUS_NAME);
+		g_set_error_literal (n_error,
+		                     TRACKER_DBUS_ERROR,
+		                     TRACKER_DBUS_ERROR_ASSERTION_FAILED,
+		                     "D-Bus service name:'"TRACKER_WRITEBACK_DBUS_NAME"' is already taken, "
+		                     "perhaps the application is already running?");
+
 		dbus_connection_close (connection);
 		dbus_connection_unref (connection);
 
@@ -230,7 +216,11 @@ setup_dbus_connection (TrackerWritebackDispatcher *dispatcher,
 
 	/* Add message filter function */
 	if (!dbus_connection_add_filter (connection, message_filter, dispatcher, NULL)) {
-		g_critical ("Could not add message filter");
+		g_set_error_literal (n_error,
+		                     TRACKER_DBUS_ERROR,
+		                     TRACKER_DBUS_ERROR_ASSERTION_FAILED,
+		                     "Could not add message filter");
+
 		dbus_connection_close (connection);
 		dbus_connection_unref (connection);
 
@@ -241,7 +231,10 @@ setup_dbus_connection (TrackerWritebackDispatcher *dispatcher,
 	dbus_bus_add_match (connection, DBUS_MATCH_STR, &error);
 
 	if (dbus_error_is_set (&error)) {
-		g_critical ("Could not add match rules, %s", error.message);
+		g_set_error_literal (n_error,
+		                     TRACKER_DBUS_ERROR,
+		                     TRACKER_DBUS_ERROR_ASSERTION_FAILED,
+		                     error.message);
 		dbus_error_free (&error);
 		dbus_connection_close (connection);
 		dbus_connection_unref (connection);
@@ -253,6 +246,68 @@ setup_dbus_connection (TrackerWritebackDispatcher *dispatcher,
 	dbus_connection_setup_with_g_main (connection, context);
 
 	return connection;
+}
+
+static gboolean
+tracker_writeback_dispatcher_initable_init (GInitable     *initable,
+                                            GCancellable  *cancellable,
+                                            GError       **error)
+{
+	TrackerWritebackDispatcherPrivate *priv;
+	TrackerWritebackDispatcher *dispatcher;
+	DBusConnection *connection;
+	GError *internal_error = NULL;
+
+	dispatcher = TRACKER_WRITEBACK_DISPATCHER (initable);
+	priv = TRACKER_WRITEBACK_DISPATCHER_GET_PRIVATE (dispatcher);
+
+	connection = setup_dbus_connection (dispatcher, priv->context,
+	                                    &internal_error);
+
+	if (internal_error) {
+		priv->good_init = FALSE;
+		g_propagate_error (error, internal_error);
+		return FALSE;
+	} else {
+		priv->connection = connection;
+		priv->good_init = TRUE;
+	}
+
+	return TRUE;
+}
+
+static void
+tracker_writeback_dispatcher_initable_iface_init (GInitableIface *iface)
+{
+	iface->init = tracker_writeback_dispatcher_initable_init;
+}
+
+static void
+tracker_writeback_dispatcher_class_init (TrackerWritebackDispatcherClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	object_class->finalize = tracker_writeback_dispatcher_finalize;
+	object_class->get_property = tracker_writeback_dispatcher_get_property;
+	object_class->set_property = tracker_writeback_dispatcher_set_property;
+
+	g_object_class_install_property (object_class,
+	                                 PROP_MAIN_CONTEXT,
+	                                 g_param_spec_pointer ("context",
+	                                                       "Main context",
+	                                                       "Main context to run the DBus service on",
+	                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+
+	signals[WRITEBACK] =
+		g_signal_new ("writeback",
+		              G_OBJECT_CLASS_TYPE (object_class),
+		              G_SIGNAL_RUN_LAST,
+		              G_STRUCT_OFFSET (TrackerWritebackDispatcherClass, writeback),
+		              NULL, NULL,
+		              tracker_marshal_VOID__INT_BOXED,
+		              G_TYPE_NONE, 2, G_TYPE_INT, G_TYPE_ARRAY);
+
+	g_type_class_add_private (object_class, sizeof (TrackerWritebackDispatcherPrivate));
 }
 
 static void
@@ -267,36 +322,24 @@ tracker_writeback_dispatcher_finalize (GObject *object)
 	DBusError error;
 
 	priv = TRACKER_WRITEBACK_DISPATCHER_GET_PRIVATE (object);
-	dbus_error_init (&error);
 
-	dbus_bus_remove_match (priv->connection, DBUS_MATCH_STR, &error);
+	if (priv->good_init) {
+		dbus_error_init (&error);
 
-	if (dbus_error_is_set (&error)) {
-		g_critical ("Could not remove match rules, %s", error.message);
-		dbus_error_free (&error);
+		dbus_bus_remove_match (priv->connection, DBUS_MATCH_STR, &error);
+
+		if (dbus_error_is_set (&error)) {
+			g_critical ("Could not remove match rules, %s", error.message);
+			dbus_error_free (&error);
+		}
+
+		dbus_connection_remove_filter (priv->connection, message_filter, object);
+		dbus_connection_unref (priv->connection);
 	}
-
-	dbus_connection_remove_filter (priv->connection, message_filter, object);
-	dbus_connection_unref (priv->connection);
 
 	G_OBJECT_CLASS (tracker_writeback_dispatcher_parent_class)->finalize (object);
 }
 
-static void
-tracker_writeback_dispatcher_constructed (GObject *object)
-{
-	TrackerWritebackDispatcherPrivate *priv;
-	TrackerWritebackDispatcher *dispatcher;
-	DBusConnection *connection;
-
-	dispatcher = TRACKER_WRITEBACK_DISPATCHER (object);
-	priv = TRACKER_WRITEBACK_DISPATCHER_GET_PRIVATE (dispatcher);
-
-	connection = setup_dbus_connection (dispatcher, priv->context);
-	g_assert (connection != NULL);
-
-	priv->connection = connection;
-}
 
 static void
 tracker_writeback_dispatcher_get_property (GObject    *object,
@@ -355,9 +398,21 @@ tracker_writeback_dispatcher_set_property (GObject       *object,
 }
 
 TrackerWritebackDispatcher *
-tracker_writeback_dispatcher_new (GMainContext *context)
+tracker_writeback_dispatcher_new (GMainContext  *context,
+                                  GError       **error)
 {
-	return g_object_new (TRACKER_TYPE_WRITEBACK_DISPATCHER,
-	                     "context", context,
-	                     NULL);
+	GError *internal_error = NULL;
+	TrackerWritebackDispatcher *ret;
+
+	ret = g_initable_new (TRACKER_TYPE_WRITEBACK_DISPATCHER,
+	                       NULL, &internal_error,
+	                       "context", context,
+	                       NULL);
+
+	if (internal_error) {
+		g_propagate_error (error, internal_error);
+		return NULL;
+	}
+
+	return ret;
 }

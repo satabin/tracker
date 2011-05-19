@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <chapter id='mfo-ontology'>
-<title>MFO Ontology</title>
+<title>Maemo Feeds Ontology (MFO): Model for feeds and alike online streams</title>
 <varlistentry>
   <term>Authors:</term>
   <listitem>
@@ -78,7 +78,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-feedSettings'>mfo:feedSettings</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mfo-feedSettings'>mfo:feedSettings</link>, <link linkend='mfo-image'>mfo:image</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -205,7 +205,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-type'>mfo:type</link>, <link linkend='mfo-action'>mfo:action</link>, <link linkend='mfo-totalCount'>mfo:totalCount</link>, <link linkend='mfo-unreadCount'>mfo:unreadCount</link>, <link linkend='mfo-updatedTime'>mfo:updatedTime</link>, <link linkend='mfo-image'>mfo:image</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mfo-type'>mfo:type</link>, <link linkend='mfo-action'>mfo:action</link>, <link linkend='mfo-totalCount'>mfo:totalCount</link>, <link linkend='mfo-unreadCount'>mfo:unreadCount</link>, <link linkend='mfo-updatedTime'>mfo:updatedTime</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -563,7 +563,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Domain</parameter>&#160;:</term>
-<listitem><simpara><link linkend='mfo-FeedChannel'>mfo:FeedChannel</link>, </simpara></listitem>
+<listitem><simpara><link linkend='mfo-FeedElement'>mfo:FeedElement</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>

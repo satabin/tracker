@@ -26,178 +26,173 @@
 
 #include "tracker-events.h"
 
-
 typedef struct {
-	GHashTable *allowances;
-	GArray *events;
-	GStringChunk *chunk;
+	gboolean frozen;
+	guint total;
+	GPtrArray *notify_classes;
 } EventsPrivate;
 
-static GStaticPrivate private_key = G_STATIC_PRIVATE_INIT;
+static EventsPrivate *private;
 
-static void
-tracker_events_add_allow (const gchar *rdf_class)
+guint
+tracker_events_get_total (gboolean and_reset)
 {
-	EventsPrivate *private;
-	TrackerClass *cl;
+	guint total;
 
-	private = g_static_private_get (&private_key);
+	g_return_val_if_fail (private != NULL, 0);
+
+	total = private->total;
+
+	if (and_reset) {
+		private->total = 0;
+	}
+
+	return total;
+}
+
+void
+tracker_events_add_insert (gint         graph_id,
+                           gint         subject_id,
+                           const gchar *subject,
+                           gint         pred_id,
+                           gint         object_id,
+                           const gchar *object,
+                           GPtrArray   *rdf_types)
+{
+	guint i;
+
+	g_return_if_fail (rdf_types != NULL);
 	g_return_if_fail (private != NULL);
 
-	cl = tracker_ontologies_get_class_by_uri (rdf_class);
-	if (!cl) {
-		g_critical ("Unknown class %s", rdf_class);
+	if (private->frozen) {
 		return;
 	}
 
-	g_hash_table_insert (private->allowances, cl,
-	                     GINT_TO_POINTER (TRUE));
-}
-
-static gboolean
-is_allowed (EventsPrivate *private, TrackerClass *rdf_class)
-{
-	return (g_hash_table_lookup (private->allowances, rdf_class) != NULL) ? TRUE : FALSE;
-}
-
-static void
-prepare_event_for_rdf_type (EventsPrivate *private,
-                            TrackerClass  *rdf_class ,
-                            const gchar *uri,
-                            TrackerDBusEventsType type,
-                            const gchar *predicate)
-{
-	TrackerEvent event;
-
-	if (!private->events) {
-		private->events = g_array_new (TRUE, FALSE, sizeof (TrackerEvent));
-	}
-
-	if (!private->chunk) {
-		private->chunk = g_string_chunk_new (4096);
-	}
-
-	event.type = type;
-	event.class = rdf_class;
-	event.predicate = tracker_ontologies_get_property_by_uri (predicate);
-	event.subject = g_string_chunk_insert_const (private->chunk, uri);
-
-	g_array_append_val (private->events, event);
-}
-
-void
-tracker_events_insert (const gchar *uri,
-                       const gchar *predicate,
-                       const gchar *object,
-                       GPtrArray *rdf_types,
-                       TrackerDBusEventsType type)
-{
-	EventsPrivate *private;
-
-	g_return_if_fail (rdf_types || type != TRACKER_DBUS_EVENTS_TYPE_UPDATE);
-	private = g_static_private_get (&private_key);
-	g_return_if_fail (private != NULL);
-
-	if (rdf_types && type == TRACKER_DBUS_EVENTS_TYPE_UPDATE) {
-		guint i;
-
-		for (i = 0; i < rdf_types->len; i++) {
-
-			/* object is not very important for updates (we don't expose
-			 * the value being set to the user's DBus API in tracker-store) */
-			if (is_allowed (private, rdf_types->pdata[i])) {
-
-				prepare_event_for_rdf_type (private, rdf_types->pdata[i],
-				                            uri, type, predicate);
-			}
-		}
-	} else {
-		TrackerClass *class = tracker_ontologies_get_class_by_uri (object);
-		/* In case of delete and create, object is the rdf:type */
-		if (is_allowed (private, class)) {
-			prepare_event_for_rdf_type (private, class,
-			                            uri, type, predicate);
+	for (i = 0; i < rdf_types->len; i++) {
+		if (tracker_class_get_notify (rdf_types->pdata[i])) {
+			tracker_class_add_insert_event (rdf_types->pdata[i],
+			                                graph_id,
+			                                subject_id,
+			                                pred_id,
+			                                object_id);
+			private->total++;
 		}
 	}
 }
 
 void
-tracker_events_reset (void)
+tracker_events_add_delete (gint         graph_id,
+                           gint         subject_id,
+                           const gchar *subject,
+                           gint         pred_id,
+                           gint         object_id,
+                           const gchar *object,
+                           GPtrArray   *rdf_types)
 {
-	EventsPrivate *private;
+	guint i;
 
-	private = g_static_private_get (&private_key);
+	g_return_if_fail (rdf_types != NULL);
 	g_return_if_fail (private != NULL);
 
-	if (private->events) {
-		g_array_free (private->events, TRUE);
-		g_string_chunk_free (private->chunk);
-		private->chunk = NULL;
-		private->events = NULL;
+	if (private->frozen) {
+		return;
+	}
+
+	for (i = 0; i < rdf_types->len; i++) {
+		if (tracker_class_get_notify (rdf_types->pdata[i])) {
+			tracker_class_add_delete_event (rdf_types->pdata[i],
+			                                graph_id,
+			                                subject_id,
+			                                pred_id,
+			                                object_id);
+			private->total++;
+		}
 	}
 }
 
-GArray *
-tracker_events_get_pending (void)
+void
+tracker_events_reset_pending (void)
 {
-	EventsPrivate *private;
+	guint i;
 
-	private = g_static_private_get (&private_key);
-	g_return_val_if_fail (private != NULL, NULL);
+	g_return_if_fail (private != NULL);
 
-	return private->events;
+	for (i = 0; i < private->notify_classes->len; i++) {
+		TrackerClass *class = g_ptr_array_index (private->notify_classes, i);
+
+		tracker_class_reset_pending_events (class);
+	}
+
+	private->frozen = FALSE;
+}
+
+void
+tracker_events_freeze (void)
+{
+	g_return_if_fail (private != NULL);
+
+	private->frozen = TRUE;
 }
 
 static void
 free_private (EventsPrivate *private)
 {
-	g_hash_table_unref (private->allowances);
+	guint i;
+
+	for (i = 0; i < private->notify_classes->len; i++) {
+		TrackerClass *class = g_ptr_array_index (private->notify_classes, i);
+
+		tracker_class_reset_pending_events (class);
+
+		/* Perhaps hurry an emit of the ready events here? We're shutting down,
+		 * so I guess we're not required to do that here ... ? */
+		tracker_class_reset_ready_events (class);
+	}
+
+	g_ptr_array_unref (private->notify_classes);
+
 	g_free (private);
 }
 
-void
-tracker_events_init (TrackerNotifyClassGetter callback)
+TrackerClass **
+tracker_events_get_classes (guint *length)
 {
-	EventsPrivate *private;
-	GStrv          classes_to_signal;
-	gint           i, count;
+	g_return_val_if_fail (private != NULL, NULL);
+
+	*length = private->notify_classes->len;
+
+	return (TrackerClass **) (private->notify_classes->pdata);
+}
+
+void
+tracker_events_init (void)
+{
+	TrackerClass **classes;
+	guint length = 0, i;
 
 	private = g_new0 (EventsPrivate, 1);
 
-	g_static_private_set (&private_key,
-	                      private,
-	                      (GDestroyNotify) free_private);
+	classes = tracker_ontologies_get_classes (&length);
 
-	private->allowances = g_hash_table_new (g_direct_hash, g_direct_equal);
+	private->notify_classes = g_ptr_array_sized_new (length);
+	g_ptr_array_set_free_func (private->notify_classes, (GDestroyNotify) g_object_unref);
 
-	private->events = NULL;
+	for (i = 0; i < length; i++) {
+		TrackerClass *class = classes[i];
 
-	if (!callback) {
-		return;
+		if (tracker_class_get_notify (class)) {
+			g_ptr_array_add (private->notify_classes, g_object_ref (class));
+		}
 	}
 
-	classes_to_signal = (*callback)();
-
-	if (!classes_to_signal)
-		return;
-
-	count = g_strv_length (classes_to_signal);
-	for (i = 0; i < count; i++) {
-		tracker_events_add_allow (classes_to_signal[i]);
-	}
-
-	g_strfreev (classes_to_signal);
 }
 
 void
 tracker_events_shutdown (void)
 {
-	EventsPrivate *private;
-
-	private = g_static_private_get (&private_key);
 	if (private != NULL) {
-		tracker_events_reset ();
-		g_static_private_set (&private_key, NULL, NULL);
+		free_private (private);
+		private = NULL;
 	} else {
 		g_warning ("tracker_events already shutdown");
 	}

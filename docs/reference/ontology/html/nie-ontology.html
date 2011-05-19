@@ -2,18 +2,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>NIE Ontology</title>
+<title>Nepomuk Information Element (NIE): Top classes in the ontology. Almost everything else is subclass of these.</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Ontology Reference Manual">
 <link rel="up" href="ontology.html" title="Part I. Overview">
-<link rel="prev" href="xsd-properties.html" title="XSD Ontology Properties">
+<link rel="prev" href="dc-properties.html" title="DC Ontology Properties">
 <link rel="next" href="nie-classes.html" title="NIE Ontology Classes">
 <meta name="generator" content="GTK-Doc V1.17 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="xsd-properties.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="dc-properties.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="ontology.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Tracker Ontology Reference Manual</th>
@@ -21,7 +21,7 @@
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="nie-ontology"></a>NIE Ontology</h2></div></div></div>
+<a name="nie-ontology"></a>Nepomuk Information Element (NIE): Top classes in the ontology. Almost everything else is subclass of these.</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="nie-ontology.html#nie-explanation">Overview</a></span></dt>
 <dt><span class="section"><a href="nie-classes.html">NIE Ontology Classes</a></span></dt>
@@ -164,18 +164,18 @@ its album).
 <p>Here comes an example, for the image file /home/user/a.jpeg:</p>
 <pre class="programlisting">
 &lt;urn:uuid:10293801928301293&gt; a nmm:Photo, nfo:FileDataObject ;
-         # Properties as nmm:Photo
+	# Properties as nmm:Photo
 	 nfo:width 49 ;
 	 nfo:height 36 ;
-         nmm:flash &lt;nmm:flash-off&gt;;
-         nmm:whiteBalance &lt;nmm:white-balance-automatic&gt; ;
-         nmm:camera "Tracknon N900" ;
+	nmm:flash &lt;nmm:flash-off&gt;;
+	nmm:whiteBalance &lt;nmm:white-balance-automatic&gt; ;
+	nfo:equipment [ a nfo:Equipment ; nfo:make 'Nokia'; nfo:model 'N900'; nfo:equipmentSoftware 'Tracknon' ] ;
 
-         # Properties from nfo:FileDataObject
-         nfo:fileSize 12341234 ;
+	# Properties from nfo:FileDataObject
+	nfo:fileSize 12341234 ;
 
-         # Mandatory for any nfo:DataObject
-         nie:url &lt;file:///home/ivan/test/CC-test-big.png&gt; .
+	# Mandatory for any nfo:DataObject
+	nie:url &lt;file:///home/ivan/test/CC-test-big.png&gt; .
 
 </pre>
 </div>
@@ -185,7 +185,7 @@ its album).
 <a name="nie-ontology-graph"></a><p class="title"><b>Figure 1. Graphical Overview</b></p>
 <div class="figure-contents"><div><img src="overview.png" alt="Graphical Overview"></div></div>
 </div>
-<br class="figure-break"><p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 9. Notation for ontology description">in this page</a></p>
+<br class="figure-break"><p>Notation defined <a class="link" href="ontology-notation-description.html#ontology-notation" title="Figure 8. Notation for ontology description">in this page</a></p>
 </div>
 <hr>
 <div class="refsect2">

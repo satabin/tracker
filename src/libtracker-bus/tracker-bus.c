@@ -156,6 +156,12 @@ struct _TrackerBusConnectionClass {
 	TrackerSparqlConnectionClass parent_class;
 };
 
+struct _TrackerBusConnectionPrivate {
+	TrackerBusResources* resources_object;
+	TrackerBusSteroids* steroids_object;
+	TrackerBusStatistics* statistics_object;
+};
+
 struct _Block1Data {
 	int _ref_count_;
 	TrackerBusConnection * self;
@@ -365,14 +371,6 @@ struct _TrackerBusConnectionStatisticsAsyncData {
 
 
 static gpointer tracker_bus_connection_parent_class = NULL;
-static gboolean tracker_bus_connection_initialized;
-static TrackerBusResources* tracker_bus_connection_resources_object;
-static TrackerBusResources* tracker_bus_connection_resources_object = NULL;
-static TrackerBusSteroids* tracker_bus_connection_steroids_object;
-static TrackerBusSteroids* tracker_bus_connection_steroids_object = NULL;
-static TrackerBusStatistics* tracker_bus_connection_statistics_object;
-static TrackerBusStatistics* tracker_bus_connection_statistics_object = NULL;
-static gboolean tracker_bus_connection_initialized = FALSE;
 
 GType tracker_bus_resources_proxy_get_type (void) G_GNUC_CONST;
 guint tracker_bus_resources_register_object (void* object, GDBusConnection* connection, const gchar* path, GError** error);
@@ -452,6 +450,7 @@ static GVariant* tracker_bus_statistics_dbus_interface_get_property (GDBusConnec
 static gboolean tracker_bus_statistics_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data);
 static void _tracker_bus_statistics_unregister_object (gpointer user_data);
 GType tracker_bus_connection_get_type (void) G_GNUC_CONST;
+#define TRACKER_BUS_CONNECTION_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_BUS_TYPE_CONNECTION, TrackerBusConnectionPrivate))
 enum  {
 	TRACKER_BUS_CONNECTION_DUMMY_PROPERTY
 };
@@ -1801,7 +1800,6 @@ TrackerBusConnection* tracker_bus_connection_construct (GType object_type, GErro
 	TrackerBusStatistics* _tmp4_ = NULL;
 	TrackerBusStatistics* _tmp5_;
 	GError * _inner_error_ = NULL;
-	g_return_val_if_fail (!tracker_bus_connection_initialized, NULL);
 	self = (TrackerBusConnection*) tracker_sparql_connection_construct (object_type);
 	_tmp0_ = g_initable_new (TRACKER_BUS_TYPE_RESOURCES_PROXY, NULL, &_inner_error_, "g-flags", G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS, "g-name", TRACKER_DBUS_SERVICE, "g-bus-type", G_BUS_TYPE_SESSION, "g-object-path", TRACKER_DBUS_OBJECT_RESOURCES, "g-interface-name", "org.freedesktop.Tracker1.Resources", NULL);
 	_tmp1_ = (TrackerBusResources*) _tmp0_;
@@ -1816,9 +1814,9 @@ TrackerBusConnection* tracker_bus_connection_construct (GType object_type, GErro
 			return NULL;
 		}
 	}
-	_g_object_unref0 (tracker_bus_connection_resources_object);
-	tracker_bus_connection_resources_object = _tmp1_;
-	g_dbus_proxy_set_default_timeout ((GDBusProxy*) tracker_bus_connection_resources_object, G_MAXINT);
+	_g_object_unref0 (self->priv->resources_object);
+	self->priv->resources_object = _tmp1_;
+	g_dbus_proxy_set_default_timeout ((GDBusProxy*) self->priv->resources_object, G_MAXINT);
 	_tmp2_ = g_initable_new (TRACKER_BUS_TYPE_STEROIDS_PROXY, NULL, &_inner_error_, "g-flags", G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS, "g-name", TRACKER_DBUS_SERVICE, "g-bus-type", G_BUS_TYPE_SESSION, "g-object-path", TRACKER_DBUS_OBJECT_STEROIDS, "g-interface-name", "org.freedesktop.Tracker1.Steroids", NULL);
 	_tmp3_ = (TrackerBusSteroids*) _tmp2_;
 	if (_inner_error_ != NULL) {
@@ -1832,9 +1830,9 @@ TrackerBusConnection* tracker_bus_connection_construct (GType object_type, GErro
 			return NULL;
 		}
 	}
-	_g_object_unref0 (tracker_bus_connection_steroids_object);
-	tracker_bus_connection_steroids_object = _tmp3_;
-	g_dbus_proxy_set_default_timeout ((GDBusProxy*) tracker_bus_connection_steroids_object, G_MAXINT);
+	_g_object_unref0 (self->priv->steroids_object);
+	self->priv->steroids_object = _tmp3_;
+	g_dbus_proxy_set_default_timeout ((GDBusProxy*) self->priv->steroids_object, G_MAXINT);
 	_tmp4_ = g_initable_new (TRACKER_BUS_TYPE_STATISTICS_PROXY, NULL, &_inner_error_, "g-flags", G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS, "g-name", TRACKER_DBUS_SERVICE, "g-bus-type", G_BUS_TYPE_SESSION, "g-object-path", TRACKER_DBUS_OBJECT_STATISTICS, "g-interface-name", "org.freedesktop.Tracker1.Statistics", NULL);
 	_tmp5_ = (TrackerBusStatistics*) _tmp4_;
 	if (_inner_error_ != NULL) {
@@ -1848,9 +1846,8 @@ TrackerBusConnection* tracker_bus_connection_construct (GType object_type, GErro
 			return NULL;
 		}
 	}
-	_g_object_unref0 (tracker_bus_connection_statistics_object);
-	tracker_bus_connection_statistics_object = _tmp5_;
-	tracker_bus_connection_initialized = TRUE;
+	_g_object_unref0 (self->priv->statistics_object);
+	self->priv->statistics_object = _tmp5_;
 	return self;
 }
 
@@ -2135,7 +2132,7 @@ static gboolean tracker_bus_connection_real_query_async_co (TrackerBusConnection
 	}
 	data->_data2_->dbus_res = NULL;
 	data->_data2_->received_result = FALSE;
-	tracker_bus_steroids_query (tracker_bus_connection_steroids_object, data->sparql, data->output, data->cancellable, __lambda0__gasync_ready_callback, block2_data_ref (data->_data2_));
+	tracker_bus_steroids_query (data->self->priv->steroids_object, data->sparql, data->output, data->cancellable, __lambda0__gasync_ready_callback, block2_data_ref (data->_data2_));
 	_g_object_unref0 (data->output);
 	data->output = NULL;
 	data->_tmp2_ = NULL;
@@ -2181,7 +2178,7 @@ static gboolean tracker_bus_connection_real_query_async_co (TrackerBusConnection
 		;
 	}
 	data->_tmp4_ = NULL;
-	data->_tmp4_ = tracker_bus_steroids_query_finish (tracker_bus_connection_steroids_object, data->_data2_->dbus_res, &data->_tmp3_, &data->_inner_error_);
+	data->_tmp4_ = tracker_bus_steroids_query_finish (data->self->priv->steroids_object, data->_data2_->dbus_res, &data->_tmp3_, &data->_inner_error_);
 	data->variable_names = data->_tmp4_;
 	data->variable_names_length1 = data->_tmp3_;
 	data->_variable_names_size_ = data->_tmp3_;
@@ -2471,7 +2468,7 @@ static gboolean tracker_bus_connection_real_update_async_co (TrackerBusConnectio
 	}
 	data->_data4_->dbus_res = NULL;
 	data->_data4_->sent_update = FALSE;
-	tracker_bus_steroids_update_begin (tracker_bus_connection_steroids_object, data->input, data->priority, data->cancellable, __lambda2__gasync_ready_callback, data->_data4_);
+	tracker_bus_steroids_update_begin (data->self->priv->steroids_object, data->input, data->priority, data->cancellable, __lambda2__gasync_ready_callback, data->_data4_);
 	data->_tmp2_ = NULL;
 	data->_tmp2_ = g_data_output_stream_new ((GOutputStream*) data->output);
 	data->data_stream = data->_tmp2_;
@@ -2543,7 +2540,7 @@ static gboolean tracker_bus_connection_real_update_async_co (TrackerBusConnectio
 		;
 	}
 	if (data->priority <= G_PRIORITY_DEFAULT) {
-		tracker_bus_steroids_update_finish (tracker_bus_connection_steroids_object, data->_data4_->dbus_res, &data->_inner_error_);
+		tracker_bus_steroids_update_finish (data->self->priv->steroids_object, data->_data4_->dbus_res, &data->_inner_error_);
 		if (data->_inner_error_ != NULL) {
 			if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
 				g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
@@ -2572,7 +2569,7 @@ static gboolean tracker_bus_connection_real_update_async_co (TrackerBusConnectio
 			}
 		}
 	} else {
-		tracker_bus_steroids_batch_update_finish (tracker_bus_connection_steroids_object, data->_data4_->dbus_res, &data->_inner_error_);
+		tracker_bus_steroids_batch_update_finish (data->self->priv->steroids_object, data->_data4_->dbus_res, &data->_inner_error_);
 		if (data->_inner_error_ != NULL) {
 			if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
 				g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
@@ -2756,7 +2753,7 @@ static gboolean tracker_bus_connection_real_update_array_async_co (TrackerBusCon
 	}
 	data->_data5_->dbus_res = NULL;
 	data->_data5_->sent_update = FALSE;
-	tracker_bus_steroids_update_array (tracker_bus_connection_steroids_object, data->input, data->cancellable, __lambda4__gasync_ready_callback, block5_data_ref (data->_data5_));
+	tracker_bus_steroids_update_array (data->self->priv->steroids_object, data->input, data->cancellable, __lambda4__gasync_ready_callback, block5_data_ref (data->_data5_));
 	data->_tmp2_ = NULL;
 	data->_tmp2_ = g_data_output_stream_new ((GOutputStream*) data->output);
 	data->data_stream = data->_tmp2_;
@@ -2874,7 +2871,7 @@ static gboolean tracker_bus_connection_real_update_array_async_co (TrackerBusCon
 	data->_tmp5_ = g_ptr_array_new_with_free_func (_g_error_free0_);
 	data->_result_ = data->_tmp5_;
 	data->_tmp6_ = NULL;
-	data->_tmp6_ = tracker_bus_steroids_update_array_finish (tracker_bus_connection_steroids_object, data->_data5_->dbus_res, &data->_inner_error_);
+	data->_tmp6_ = tracker_bus_steroids_update_array_finish (data->self->priv->steroids_object, data->_data5_->dbus_res, &data->_inner_error_);
 	data->_tmp7_ = data->_tmp6_;
 	if (data->_inner_error_ != NULL) {
 		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
@@ -3176,7 +3173,7 @@ static gboolean tracker_bus_connection_real_update_blank_async_co (TrackerBusCon
 	}
 	data->_data7_->dbus_res = NULL;
 	data->_data7_->sent_update = FALSE;
-	tracker_bus_steroids_update_blank (tracker_bus_connection_steroids_object, data->input, data->cancellable, __lambda5__gasync_ready_callback, block7_data_ref (data->_data7_));
+	tracker_bus_steroids_update_blank (data->self->priv->steroids_object, data->input, data->cancellable, __lambda5__gasync_ready_callback, block7_data_ref (data->_data7_));
 	data->_tmp2_ = NULL;
 	data->_tmp2_ = g_data_output_stream_new ((GOutputStream*) data->output);
 	data->data_stream = data->_tmp2_;
@@ -3248,7 +3245,7 @@ static gboolean tracker_bus_connection_real_update_blank_async_co (TrackerBusCon
 		;
 	}
 	data->_tmp4_ = NULL;
-	data->_tmp4_ = tracker_bus_steroids_update_blank_finish (tracker_bus_connection_steroids_object, data->_data7_->dbus_res, &data->_inner_error_);
+	data->_tmp4_ = tracker_bus_steroids_update_blank_finish (data->self->priv->steroids_object, data->_data7_->dbus_res, &data->_inner_error_);
 	data->_tmp5_ = data->_tmp4_;
 	if (data->_inner_error_ != NULL) {
 		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
@@ -3315,7 +3312,7 @@ static void tracker_bus_connection_real_load (TrackerSparqlConnection* base, GFi
 	g_return_if_fail (file != NULL);
 	_tmp0_ = g_file_get_uri (file);
 	_tmp1_ = _tmp0_;
-	tracker_bus_resources_load (tracker_bus_connection_resources_object, _tmp1_, cancellable, &_inner_error_);
+	tracker_bus_resources_load (self->priv->resources_object, _tmp1_, cancellable, &_inner_error_);
 	_g_free0 (_tmp1_);
 	if (_inner_error_ != NULL) {
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
@@ -3406,10 +3403,10 @@ static gboolean tracker_bus_connection_real_load_async_co (TrackerBusConnectionL
 	data->_tmp0_ = g_file_get_uri (data->file);
 	data->_tmp1_ = data->_tmp0_;
 	data->_state_ = 1;
-	tracker_bus_resources_load_async (tracker_bus_connection_resources_object, data->_tmp1_, data->cancellable, tracker_bus_connection_load_async_ready, data);
+	tracker_bus_resources_load_async (data->self->priv->resources_object, data->_tmp1_, data->cancellable, tracker_bus_connection_load_async_ready, data);
 	return FALSE;
 	_state_1:
-	tracker_bus_resources_load_finish (tracker_bus_connection_resources_object, data->_res_, &data->_inner_error_);
+	tracker_bus_resources_load_finish (data->self->priv->resources_object, data->_res_, &data->_inner_error_);
 	_g_free0 (data->_tmp1_);
 	if (data->_inner_error_ != NULL) {
 		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
@@ -3489,7 +3486,7 @@ static TrackerSparqlCursor* tracker_bus_connection_real_statistics (TrackerSparq
 	TrackerBusArrayCursor* _tmp10_ = NULL;
 	GError * _inner_error_ = NULL;
 	self = (TrackerBusConnection*) base;
-	_tmp2_ = tracker_bus_statistics_Get (tracker_bus_connection_statistics_object, cancellable, &_tmp0_, &_tmp1_, &_inner_error_);
+	_tmp2_ = tracker_bus_statistics_Get (self->priv->statistics_object, cancellable, &_tmp0_, &_tmp1_, &_inner_error_);
 	results = _tmp2_;
 	results_length1 = _tmp0_;
 	results_length2 = _tmp1_;
@@ -3588,11 +3585,11 @@ static gboolean tracker_bus_connection_real_statistics_async_co (TrackerBusConne
 	}
 	_state_0:
 	data->_state_ = 1;
-	tracker_bus_statistics_Get_async (tracker_bus_connection_statistics_object, data->cancellable, tracker_bus_connection_statistics_async_ready, data);
+	tracker_bus_statistics_Get_async (data->self->priv->statistics_object, data->cancellable, tracker_bus_connection_statistics_async_ready, data);
 	return FALSE;
 	_state_1:
 	data->_tmp2_ = NULL;
-	data->_tmp2_ = tracker_bus_statistics_Get_finish (tracker_bus_connection_statistics_object, data->_res_, &data->_tmp0_, &data->_tmp1_, &data->_inner_error_);
+	data->_tmp2_ = tracker_bus_statistics_Get_finish (data->self->priv->statistics_object, data->_res_, &data->_tmp0_, &data->_tmp1_, &data->_inner_error_);
 	data->results = data->_tmp2_;
 	data->results_length1 = data->_tmp0_;
 	data->results_length2 = data->_tmp1_;
@@ -3663,6 +3660,7 @@ static gboolean tracker_bus_connection_real_statistics_async_co (TrackerBusConne
 
 static void tracker_bus_connection_class_init (TrackerBusConnectionClass * klass) {
 	tracker_bus_connection_parent_class = g_type_class_peek_parent (klass);
+	g_type_class_add_private (klass, sizeof (TrackerBusConnectionPrivate));
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query = tracker_bus_connection_real_query;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_async = tracker_bus_connection_real_query_async;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_finish = tracker_bus_connection_real_query_finish;
@@ -3685,13 +3683,16 @@ static void tracker_bus_connection_class_init (TrackerBusConnectionClass * klass
 
 
 static void tracker_bus_connection_instance_init (TrackerBusConnection * self) {
+	self->priv = TRACKER_BUS_CONNECTION_GET_PRIVATE (self);
 }
 
 
 static void tracker_bus_connection_finalize (GObject* obj) {
 	TrackerBusConnection * self;
 	self = TRACKER_BUS_CONNECTION (obj);
-	tracker_bus_connection_initialized = FALSE;
+	_g_object_unref0 (self->priv->resources_object);
+	_g_object_unref0 (self->priv->steroids_object);
+	_g_object_unref0 (self->priv->statistics_object);
 	G_OBJECT_CLASS (tracker_bus_connection_parent_class)->finalize (obj);
 }
 

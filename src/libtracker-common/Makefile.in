@@ -103,7 +103,8 @@ am__libtracker_common_la_SOURCES_DIST = tracker-marshal.h \
 	tracker-date-time.c tracker-dbus.c tracker-file-utils.c \
 	tracker-ioprio.c tracker-keyfile-object.c tracker-log.c \
 	tracker-type-utils.c tracker-utils.c tracker-crc32.c \
-	tracker-locale.c tracker-language.c tracker-locale-gconfdbus.c
+	tracker-locale.c tracker-albumart.c tracker-language.c \
+	tracker-locale-gconfdbus.c
 am__objects_1 = tracker-marshal.lo
 @OS_WIN32_FALSE@am__objects_2 = tracker-os-dependant-unix.lo
 @OS_WIN32_TRUE@am__objects_2 = tracker-os-dependant-win.lo
@@ -114,7 +115,7 @@ am_libtracker_common_la_OBJECTS = $(am__objects_1) $(am__objects_2) \
 	tracker-file-utils.lo tracker-ioprio.lo \
 	tracker-keyfile-object.lo tracker-log.lo tracker-type-utils.lo \
 	tracker-utils.lo tracker-crc32.lo tracker-locale.lo \
-	$(am__objects_3) $(am__objects_4)
+	tracker-albumart.lo $(am__objects_3) $(am__objects_4)
 libtracker_common_la_OBJECTS = $(am_libtracker_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -156,7 +157,8 @@ am__noinst_HEADERS_DIST = tracker-dbus.h tracker-ioprio.h \
 	tracker-common.h tracker-date-time.h tracker-file-utils.h \
 	tracker-keyfile-object.h tracker-ontologies.h \
 	tracker-type-utils.h tracker-utils.h tracker-crc32.h \
-	tracker-locale.h tracker-language.h tracker-locale-gconfdbus.h
+	tracker-locale.h tracker-albumart.h tracker-language.h \
+	tracker-locale-gconfdbus.h
 HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -474,14 +476,15 @@ libtracker_common_la_SOURCES = $(marshal_sources) $(os_sources) \
 	tracker-config-file.c tracker-date-time.c tracker-dbus.c \
 	tracker-file-utils.c tracker-ioprio.c tracker-keyfile-object.c \
 	tracker-log.c tracker-type-utils.c tracker-utils.c \
-	tracker-crc32.c tracker-locale.c $(am__append_1) \
-	$(am__append_3)
+	tracker-crc32.c tracker-locale.c tracker-albumart.c \
+	$(am__append_1) $(am__append_3)
 noinst_HEADERS = tracker-dbus.h tracker-ioprio.h tracker-log.h \
 	tracker-os-dependant.h tracker-config-file.h tracker-common.h \
 	tracker-date-time.h tracker-file-utils.h \
 	tracker-keyfile-object.h tracker-ontologies.h \
 	tracker-type-utils.h tracker-utils.h tracker-crc32.h \
-	tracker-locale.h $(am__append_2) $(am__append_4)
+	tracker-locale.h tracker-albumart.h $(am__append_2) \
+	$(am__append_4)
 libtracker_common_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
@@ -572,6 +575,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-config-file.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crc32.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-date-time.Plo@am__quote@

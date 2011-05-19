@@ -1034,9 +1034,11 @@ tracker_data_update_buffer_might_flush (GError **error)
 static void
 tracker_data_update_buffer_clear (void)
 {
+#if HAVE_TRACKER_FTS
 	TrackerDBInterface *iface;
 
 	iface = tracker_db_manager_get_db_interface ();
+#endif
 
 	g_hash_table_remove_all (update_buffer.resources);
 	g_hash_table_remove_all (update_buffer.resources_by_id);

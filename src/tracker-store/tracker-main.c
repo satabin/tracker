@@ -551,24 +551,10 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	tracker_data_manager_init (flags, NULL, &_tmp26_, TRUE, (guint) select_cache_size, (guint) update_cache_size, busy_callback, busy_callback_target, "Initializing", &_inner_error_);
 	is_first_time_index = _tmp26_;
 	if (_inner_error_ != NULL) {
-		if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-			goto __catch7_tracker_db_interface_error;
-		}
-		_g_free0 (cache_size_s);
-		_g_free0 (rotate_to);
-		(busy_callback_target_destroy_notify == NULL) ? NULL : (busy_callback_target_destroy_notify (busy_callback_target), NULL);
-		busy_callback = NULL;
-		busy_callback_target = NULL;
-		busy_callback_target_destroy_notify = NULL;
-		_g_object_unref0 (notifier);
-		_g_object_unref0 (db_config);
-		_g_object_unref0 (config);
-		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-		g_clear_error (&_inner_error_);
-		return 0;
+		goto __catch7_g_error;
 	}
 	goto __finally7;
-	__catch7_tracker_db_interface_error:
+	__catch7_g_error:
 	{
 		GError * e;
 		e = _inner_error_;

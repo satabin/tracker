@@ -281,6 +281,7 @@ static GType tracker_sparql_backend_backend_get_type (void) G_GNUC_UNUSED;
 TrackerSparqlBackend* tracker_sparql_backend_new (GError** error);
 TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GError** error);
 static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, gboolean direct_only, GError** error);
+static void tracker_sparql_backend_real_dispose (GObject* base);
 static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GError** error);
 static void tracker_sparql_backend_real_query_async_data_free (gpointer _data);
 static void tracker_sparql_backend_real_query_async (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
@@ -600,6 +601,25 @@ TrackerSparqlBackend* tracker_sparql_backend_new (GError** error) {
 }
 
 
+static void tracker_sparql_backend_real_dispose (GObject* base) {
+	TrackerSparqlBackend * self;
+	GError * _inner_error_ = NULL;
+	self = (TrackerSparqlBackend*) base;
+	g_static_mutex_lock (&tracker_sparql_backend_door);
+	if (tracker_sparql_backend_singleton == TRACKER_SPARQL_CONNECTION (self)) {
+		tracker_sparql_backend_singleton = NULL;
+	}
+	__finally1:
+	g_static_mutex_unlock (&tracker_sparql_backend_door);
+	if (_inner_error_ != NULL) {
+		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
+		return;
+	}
+	G_OBJECT_CLASS (tracker_sparql_backend_parent_class)->dispose ((GObject*) TRACKER_SPARQL_CONNECTION (self));
+}
+
+
 static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GError** error) {
 	TrackerSparqlBackend * self;
 	TrackerSparqlCursor* result = NULL;
@@ -607,7 +627,7 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 	self = (TrackerSparqlBackend*) base;
 	g_return_val_if_fail (sparql != NULL, NULL);
 	g_return_val_if_fail ((self->priv->bus != NULL) || (self->priv->direct != NULL), NULL);
-	g_debug ("tracker-backend.vala:57: %s(): '%s'", "Tracker.Sparql.Backend.query", sparql);
+	g_debug ("tracker-backend.vala:75: %s(): '%s'", "Tracker.Sparql.Backend.query", sparql);
 	if (self->priv->direct != NULL) {
 		TrackerSparqlCursor* _tmp0_ = NULL;
 		TrackerSparqlCursor* _tmp1_;
@@ -711,7 +731,7 @@ static gboolean tracker_sparql_backend_real_query_async_co (TrackerSparqlBackend
 	}
 	_state_0:
 	g_return_val_if_fail ((data->self->priv->bus != NULL) || (data->self->priv->direct != NULL), FALSE);
-	g_debug ("tracker-backend.vala:67: %s(): '%s'", "Tracker.Sparql.Backend.query_async", data->sparql);
+	g_debug ("tracker-backend.vala:85: %s(): '%s'", "Tracker.Sparql.Backend.query_async", data->sparql);
 	if (data->self->priv->direct != NULL) {
 		data->_state_ = 1;
 		tracker_sparql_connection_query_async (data->self->priv->direct, data->sparql, data->cancellable, tracker_sparql_backend_query_async_ready, data);
@@ -795,7 +815,7 @@ static void tracker_sparql_backend_real_update (TrackerSparqlConnection* base, c
 	self = (TrackerSparqlBackend*) base;
 	g_return_if_fail (sparql != NULL);
 	g_return_if_fail (self->priv->bus != NULL);
-	g_debug ("tracker-backend.vala:77: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update", priority, sparql);
+	g_debug ("tracker-backend.vala:95: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update", priority, sparql);
 	tracker_sparql_connection_update (self->priv->bus, sparql, priority, cancellable, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
@@ -819,7 +839,7 @@ static GVariant* tracker_sparql_backend_real_update_blank (TrackerSparqlConnecti
 	self = (TrackerSparqlBackend*) base;
 	g_return_val_if_fail (sparql != NULL, NULL);
 	g_return_val_if_fail (self->priv->bus != NULL, NULL);
-	g_debug ("tracker-backend.vala:83: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank", priority, sparql);
+	g_debug ("tracker-backend.vala:101: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank", priority, sparql);
 	_tmp0_ = tracker_sparql_connection_update_blank (self->priv->bus, sparql, priority, cancellable, &_inner_error_);
 	_tmp1_ = _tmp0_;
 	if (_inner_error_ != NULL) {
@@ -891,7 +911,7 @@ static gboolean tracker_sparql_backend_real_update_async_co (TrackerSparqlBacken
 	}
 	_state_0:
 	g_return_val_if_fail (data->self->priv->bus != NULL, FALSE);
-	g_debug ("tracker-backend.vala:89: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_async", data->priority, data->sparql);
+	g_debug ("tracker-backend.vala:107: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_async", data->priority, data->sparql);
 	data->_state_ = 1;
 	tracker_sparql_connection_update_async (data->self->priv->bus, data->sparql, data->priority, data->cancellable, tracker_sparql_backend_update_async_ready, data);
 	return FALSE;
@@ -1097,7 +1117,7 @@ static gboolean tracker_sparql_backend_real_update_blank_async_co (TrackerSparql
 	}
 	_state_0:
 	g_return_val_if_fail (data->self->priv->bus != NULL, FALSE);
-	g_debug ("tracker-backend.vala:100: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank_async", data->priority, data->sparql);
+	g_debug ("tracker-backend.vala:118: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank_async", data->priority, data->sparql);
 	data->_state_ = 1;
 	tracker_sparql_connection_update_blank_async (data->self->priv->bus, data->sparql, data->priority, data->cancellable, tracker_sparql_backend_update_blank_async_ready, data);
 	return FALSE;
@@ -1150,7 +1170,7 @@ static void tracker_sparql_backend_real_load (TrackerSparqlConnection* base, GFi
 	g_return_if_fail (self->priv->bus != NULL);
 	_tmp0_ = g_file_get_uri (file);
 	uri = _tmp0_;
-	g_debug ("tracker-backend.vala:107: %s(): '%s'", "Tracker.Sparql.Backend.load", uri);
+	g_debug ("tracker-backend.vala:125: %s(): '%s'", "Tracker.Sparql.Backend.load", uri);
 	tracker_sparql_connection_load (self->priv->bus, file, cancellable, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
@@ -1224,7 +1244,7 @@ static gboolean tracker_sparql_backend_real_load_async_co (TrackerSparqlBackendL
 	data->_tmp0_ = NULL;
 	data->_tmp0_ = g_file_get_uri (data->file);
 	data->uri = data->_tmp0_;
-	g_debug ("tracker-backend.vala:114: %s(): '%s'", "Tracker.Sparql.Backend.load_async", data->uri);
+	g_debug ("tracker-backend.vala:132: %s(): '%s'", "Tracker.Sparql.Backend.load_async", data->uri);
 	data->_state_ = 1;
 	tracker_sparql_connection_load_async (data->self->priv->bus, data->file, data->cancellable, tracker_sparql_backend_load_async_ready, data);
 	return FALSE;
@@ -1268,7 +1288,7 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_statistics (TrackerSparq
 	GError * _inner_error_ = NULL;
 	self = (TrackerSparqlBackend*) base;
 	g_return_val_if_fail (self->priv->bus != NULL, NULL);
-	g_debug ("tracker-backend.vala:120: %s()", "Tracker.Sparql.Backend.statistics");
+	g_debug ("tracker-backend.vala:138: %s()", "Tracker.Sparql.Backend.statistics");
 	_tmp0_ = tracker_sparql_connection_statistics (self->priv->bus, cancellable, &_inner_error_);
 	_tmp1_ = _tmp0_;
 	if (_inner_error_ != NULL) {
@@ -1342,7 +1362,7 @@ static gboolean tracker_sparql_backend_real_statistics_async_co (TrackerSparqlBa
 	}
 	_state_0:
 	g_return_val_if_fail (data->self->priv->bus != NULL, FALSE);
-	g_debug ("tracker-backend.vala:126: %s()", "Tracker.Sparql.Backend.statistics_async");
+	g_debug ("tracker-backend.vala:144: %s()", "Tracker.Sparql.Backend.statistics_async");
 	data->_state_ = 1;
 	tracker_sparql_connection_statistics_async (data->self->priv->bus, data->cancellable, tracker_sparql_backend_statistics_async_ready, data);
 	return FALSE;
@@ -1404,15 +1424,15 @@ static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self,
 		_tmp2_ = g_ascii_strcasecmp (env_backend, "direct");
 		if (_tmp2_ == 0) {
 			backend = TRACKER_SPARQL_BACKEND_BACKEND_DIRECT;
-			g_debug ("tracker-backend.vala:138: Using backend = 'DIRECT'");
+			g_debug ("tracker-backend.vala:156: Using backend = 'DIRECT'");
 		} else {
 			gint _tmp3_;
 			_tmp3_ = g_ascii_strcasecmp (env_backend, "bus");
 			if (_tmp3_ == 0) {
 				backend = TRACKER_SPARQL_BACKEND_BACKEND_BUS;
-				g_debug ("tracker-backend.vala:141: Using backend = 'BUS'");
+				g_debug ("tracker-backend.vala:159: Using backend = 'BUS'");
 			} else {
-				g_warning ("tracker-backend.vala:143: Environment variable TRACKER_SPARQL_BACKEND " \
+				g_warning ("tracker-backend.vala:161: Environment variable TRACKER_SPARQL_BACKEND " \
 "set to unknown value '%s'", env_backend);
 			}
 		}
@@ -1426,9 +1446,9 @@ static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self,
 		}
 		if (_tmp4_) {
 			backend = TRACKER_SPARQL_BACKEND_BACKEND_DIRECT;
-			g_debug ("tracker-backend.vala:150: Using backend = 'DIRECT'");
+			g_debug ("tracker-backend.vala:168: Using backend = 'DIRECT'");
 		} else {
-			g_debug ("tracker-backend.vala:152: Using backend = 'AUTO'");
+			g_debug ("tracker-backend.vala:170: Using backend = 'AUTO'");
 		}
 	}
 	if (direct_only) {
@@ -1437,7 +1457,7 @@ static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self,
 		_tmp5_ = FALSE;
 	}
 	if (_tmp5_) {
-		g_debug ("tracker-backend.vala:157: Backend set in environment contradicts reque" \
+		g_debug ("tracker-backend.vala:175: Backend set in environment contradicts reque" \
 "sted connection type, using environment to override");
 	}
 	switch (backend) {
@@ -1445,37 +1465,42 @@ static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self,
 		{
 			TrackerDirectConnection* _tmp6_ = NULL;
 			TrackerDirectConnection* _tmp7_;
-			TrackerBusConnection* _tmp8_ = NULL;
-			TrackerBusConnection* _tmp9_;
-			TrackerSparqlConnection* _tmp10_;
+			TrackerBusConnection* _tmp10_ = NULL;
+			TrackerBusConnection* _tmp11_;
+			TrackerSparqlConnection* _tmp12_;
 			_tmp6_ = tracker_direct_connection_new (&_inner_error_);
 			_tmp7_ = _tmp6_;
 			if (_inner_error_ != NULL) {
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-					goto __catch1_tracker_sparql_error;
+					goto __catch2_tracker_sparql_error;
 				}
-				goto __finally1;
+				goto __finally2;
 			}
 			_g_object_unref0 (self->priv->direct);
 			self->priv->direct = (TrackerSparqlConnection*) _tmp7_;
-			goto __finally1;
-			__catch1_tracker_sparql_error:
+			goto __finally2;
+			__catch2_tracker_sparql_error:
 			{
 				GError * e;
+				gchar* _tmp8_;
+				gchar* _tmp9_;
 				e = _inner_error_;
 				_inner_error_ = NULL;
-				g_debug ("tracker-backend.vala:167: Unable to initialize direct backend");
+				_tmp8_ = g_strconcat ("Unable to initialize direct backend: ", e->message, NULL);
+				_tmp9_ = _tmp8_;
+				g_debug ("tracker-backend.vala:185: %s", _tmp9_);
+				_g_free0 (_tmp9_);
 				_g_error_free0 (e);
 			}
-			__finally1:
+			__finally2:
 			if (_inner_error_ != NULL) {
 				g_propagate_error (error, _inner_error_);
 				_g_object_unref0 (connection);
 				_g_free0 (env_backend);
 				return FALSE;
 			}
-			_tmp8_ = tracker_bus_connection_new (&_inner_error_);
-			_tmp9_ = _tmp8_;
+			_tmp10_ = tracker_bus_connection_new (&_inner_error_);
+			_tmp11_ = _tmp10_;
 			if (_inner_error_ != NULL) {
 				g_propagate_error (error, _inner_error_);
 				_g_object_unref0 (connection);
@@ -1483,19 +1508,19 @@ static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self,
 				return FALSE;
 			}
 			_g_object_unref0 (self->priv->bus);
-			self->priv->bus = (TrackerSparqlConnection*) _tmp9_;
-			_tmp10_ = _g_object_ref0 (self->priv->bus);
+			self->priv->bus = (TrackerSparqlConnection*) _tmp11_;
+			_tmp12_ = _g_object_ref0 (self->priv->bus);
 			_g_object_unref0 (connection);
-			connection = _tmp10_;
+			connection = _tmp12_;
 			break;
 		}
 		case TRACKER_SPARQL_BACKEND_BACKEND_DIRECT:
 		{
-			TrackerDirectConnection* _tmp11_ = NULL;
-			TrackerDirectConnection* _tmp12_;
-			TrackerSparqlConnection* _tmp13_;
-			_tmp11_ = tracker_direct_connection_new (&_inner_error_);
-			_tmp12_ = _tmp11_;
+			TrackerDirectConnection* _tmp13_ = NULL;
+			TrackerDirectConnection* _tmp14_;
+			TrackerSparqlConnection* _tmp15_;
+			_tmp13_ = tracker_direct_connection_new (&_inner_error_);
+			_tmp14_ = _tmp13_;
 			if (_inner_error_ != NULL) {
 				g_propagate_error (error, _inner_error_);
 				_g_object_unref0 (connection);
@@ -1503,19 +1528,19 @@ static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self,
 				return FALSE;
 			}
 			_g_object_unref0 (self->priv->direct);
-			self->priv->direct = (TrackerSparqlConnection*) _tmp12_;
-			_tmp13_ = _g_object_ref0 (self->priv->direct);
+			self->priv->direct = (TrackerSparqlConnection*) _tmp14_;
+			_tmp15_ = _g_object_ref0 (self->priv->direct);
 			_g_object_unref0 (connection);
-			connection = _tmp13_;
+			connection = _tmp15_;
 			break;
 		}
 		case TRACKER_SPARQL_BACKEND_BACKEND_BUS:
 		{
-			TrackerBusConnection* _tmp14_ = NULL;
-			TrackerBusConnection* _tmp15_;
-			TrackerSparqlConnection* _tmp16_;
-			_tmp14_ = tracker_bus_connection_new (&_inner_error_);
-			_tmp15_ = _tmp14_;
+			TrackerBusConnection* _tmp16_ = NULL;
+			TrackerBusConnection* _tmp17_;
+			TrackerSparqlConnection* _tmp18_;
+			_tmp16_ = tracker_bus_connection_new (&_inner_error_);
+			_tmp17_ = _tmp16_;
 			if (_inner_error_ != NULL) {
 				g_propagate_error (error, _inner_error_);
 				_g_object_unref0 (connection);
@@ -1523,10 +1548,10 @@ static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self,
 				return FALSE;
 			}
 			_g_object_unref0 (self->priv->bus);
-			self->priv->bus = (TrackerSparqlConnection*) _tmp15_;
-			_tmp16_ = _g_object_ref0 (self->priv->bus);
+			self->priv->bus = (TrackerSparqlConnection*) _tmp17_;
+			_tmp18_ = _g_object_ref0 (self->priv->bus);
 			_g_object_unref0 (connection);
-			connection = _tmp16_;
+			connection = _tmp18_;
 			break;
 		}
 		default:
@@ -1559,7 +1584,7 @@ static TrackerSparqlConnection* tracker_sparql_backend_get (gboolean is_direct_o
 		_tmp2_ = _tmp1_;
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (_result_);
-			goto __finally2;
+			goto __finally3;
 		}
 		_g_object_unref0 (_result_);
 		_result_ = (TrackerSparqlConnection*) _tmp2_;
@@ -1575,17 +1600,16 @@ static TrackerSparqlConnection* tracker_sparql_backend_get (gboolean is_direct_o
 			_tmp5_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
 			_inner_error_ = _tmp5_;
 			_g_object_unref0 (_result_);
-			goto __finally2;
+			goto __finally3;
 		}
 		tracker_sparql_backend_singleton = _result_;
-		g_object_add_weak_pointer ((GObject*) _result_, (void**) (&tracker_sparql_backend_singleton));
 	}
 	g_assert (tracker_sparql_backend_direct_only == is_direct_only);
 	result = _result_;
 	g_static_mutex_unlock (&tracker_sparql_backend_door);
 	return result;
 	_g_object_unref0 (_result_);
-	__finally2:
+	__finally3:
 	g_static_mutex_unlock (&tracker_sparql_backend_door);
 	if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
 		g_propagate_error (error, _inner_error_);
@@ -1791,16 +1815,16 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 	_tmp1_ = _tmp0_;
 	if (_inner_error_ != NULL) {
 		if (_inner_error_->domain == G_IO_ERROR) {
-			goto __catch3_g_io_error;
+			goto __catch4_g_io_error;
 		}
 		if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-			goto __catch3_tracker_sparql_error;
+			goto __catch4_tracker_sparql_error;
 		}
 		if (_inner_error_->domain == G_DBUS_ERROR) {
-			goto __catch3_g_dbus_error;
+			goto __catch4_g_dbus_error;
 		}
 		if (_inner_error_->domain == G_SPAWN_ERROR) {
-			goto __catch3_g_spawn_error;
+			goto __catch4_g_spawn_error;
 		}
 		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -1808,8 +1832,8 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 	}
 	_g_object_unref0 (_data2_->_result_);
 	_data2_->_result_ = _tmp1_;
-	goto __finally3;
-	__catch3_g_io_error:
+	goto __finally4;
+	__catch4_g_io_error:
 	{
 		GError * e_io;
 		GError* _tmp2_;
@@ -1820,8 +1844,8 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 		_data2_->io_error = _tmp2_;
 		_g_error_free0 (e_io);
 	}
-	goto __finally3;
-	__catch3_tracker_sparql_error:
+	goto __finally4;
+	__catch4_tracker_sparql_error:
 	{
 		GError * e_spql;
 		GError* _tmp3_;
@@ -1832,8 +1856,8 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 		_data2_->sparql_error = _tmp3_;
 		_g_error_free0 (e_spql);
 	}
-	goto __finally3;
-	__catch3_g_dbus_error:
+	goto __finally4;
+	__catch4_g_dbus_error:
 	{
 		GError * e_dbus;
 		GError* _tmp4_;
@@ -1844,8 +1868,8 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 		_data2_->dbus_error = _tmp4_;
 		_g_error_free0 (e_dbus);
 	}
-	goto __finally3;
-	__catch3_g_spawn_error:
+	goto __finally4;
+	__catch4_g_spawn_error:
 	{
 		GError * e_spawn;
 		GError* _tmp5_;
@@ -1856,7 +1880,7 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 		_data2_->spawn_error = _tmp5_;
 		_g_error_free0 (e_spawn);
 	}
-	__finally3:
+	__finally4:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -2109,6 +2133,7 @@ static void tracker_sparql_backend_remove_log_handler (const gchar* log_domain, 
 static void tracker_sparql_backend_class_init (TrackerSparqlBackendClass * klass) {
 	tracker_sparql_backend_parent_class = g_type_class_peek_parent (klass);
 	g_type_class_add_private (klass, sizeof (TrackerSparqlBackendPrivate));
+	G_OBJECT_CLASS (klass)->dispose = tracker_sparql_backend_real_dispose;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query = tracker_sparql_backend_real_query;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_async = tracker_sparql_backend_real_query_async;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_finish = tracker_sparql_backend_real_query_finish;

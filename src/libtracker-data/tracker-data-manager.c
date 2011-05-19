@@ -2140,7 +2140,6 @@ db_get_static_data (TrackerDBInterface *iface)
 			TrackerClass *class;
 			const gchar  *uri;
 			gint          id;
-			gint          count;
 			GValue        value = { 0 };
 			gboolean      notify;
 
@@ -3540,10 +3539,15 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 				read_journal = TRUE;
 			}
 			tracker_db_journal_reader_shutdown ();
-		} else if (internal_error && (internal_error->domain != TRACKER_DB_JOURNAL_ERROR ||
-			    internal_error->code != TRACKER_DB_JOURNAL_ERROR_BEGIN_OF_JOURNAL)) {
-			g_propagate_error (error, internal_error);
-			return FALSE;
+		} else if (internal_error) {
+			if (!g_error_matches (internal_error,
+			                      TRACKER_DB_JOURNAL_ERROR,
+			                      TRACKER_DB_JOURNAL_ERROR_BEGIN_OF_JOURNAL)) {
+				g_propagate_error (error, internal_error);
+				return FALSE;
+			} else {
+				g_clear_error (&internal_error);
+			}
 		}
 	}
 
@@ -3561,18 +3565,29 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 	if (read_journal) {
 		in_journal_replay = TRUE;
 
-		tracker_db_journal_reader_ontology_init (NULL, &internal_error);
+		if (tracker_db_journal_reader_ontology_init (NULL, &internal_error)) {
+			/* Load ontology IDs from journal into memory */
+			load_ontology_ids_from_journal (&uri_id_map, &max_id);
 
-		if (internal_error) {
-			g_propagate_error (error, internal_error);
+			tracker_db_journal_reader_shutdown ();
+		} else {
+			if (internal_error) {
+				if (!g_error_matches (internal_error,
+					              TRACKER_DB_JOURNAL_ERROR,
+					              TRACKER_DB_JOURNAL_ERROR_BEGIN_OF_JOURNAL)) {
+					g_propagate_error (error, internal_error);
+					return FALSE;
+				} else {
+					g_clear_error (&internal_error);
+				}
+			}
 
-			return FALSE;
+			/* do not trigger journal replay if ontology journal
+			   does not exist or is not valid,
+			   same as with regular journal further above */
+			in_journal_replay = FALSE;
+			read_journal = FALSE;
 		}
-
-		/* Load ontology IDs from journal into memory */
-		load_ontology_ids_from_journal (&uri_id_map, &max_id);
-
-		tracker_db_journal_reader_shutdown ();
 	}
 
 	if (is_first_time_index && !read_only) {
@@ -3638,7 +3653,11 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 			}
 		}
 
-		tracker_data_begin_ontology_transaction (NULL);
+		tracker_data_begin_ontology_transaction (&internal_error);
+		if (internal_error) {
+			g_propagate_error (error, internal_error);
+			return FALSE;
+		}
 
 		/* This is a no-op when FTS is disabled */
 		tracker_db_interface_sqlite_fts_init (iface, TRUE);
@@ -3767,7 +3786,11 @@ tracker_data_manager_init (TrackerDBManagerFlags   flags,
 
 		/* check ontology against database */
 
-		tracker_data_begin_ontology_transaction (NULL);
+		tracker_data_begin_ontology_transaction (&internal_error);
+		if (internal_error) {
+			g_propagate_error (error, internal_error);
+			return FALSE;
+		}
 
 		/* Get a map of tracker:Ontology v. nao:lastModified so that we can test
 		 * for all the ontology files in ontologies_dir whether the last-modified

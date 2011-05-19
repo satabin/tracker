@@ -393,36 +393,43 @@ cur_setstr (gchar       *dest,
 }
 
 static gboolean
-write_all_data (int    fd, 
-                gchar *data, 
-                gsize  len)
+write_all_data (int      fd,
+                gchar   *data,
+                gsize    len,
+                GError **error)
 {
 	gssize written;
-	gboolean result;
-
-	result = FALSE;
 
 	while (len > 0) {
 		written = write (fd, data, len);
 		
 		if (written < 0) {
-			if (errno == EAGAIN) {
+			gint err = errno;
+
+			if (err == EINTR) {
+				/* interrupted by signal, try again */
 				continue;
 			}
-			goto out;
+
+			g_set_error (error, TRACKER_DB_JOURNAL_ERROR,
+			             TRACKER_DB_JOURNAL_ERROR_COULD_NOT_WRITE,
+			             "Could not write to journal file, %s",
+			             g_strerror (err));
+
+			return FALSE;
 		} else if (written == 0) {
-			goto out; /* WTH? Don't loop forever*/
+			g_set_error (error, TRACKER_DB_JOURNAL_ERROR,
+			             TRACKER_DB_JOURNAL_ERROR_COULD_NOT_WRITE,
+			             "Could not write to journal file, write returned 0 without error");
+
+			return FALSE;
 		}
 		
 		len -= written;
 		data += written;
 	}
 
-	result = TRUE; /* Succeeded! */
-
-out:
-
-	return result;
+	return TRUE; /* Succeeded! */
 }
 
 GQuark
@@ -464,12 +471,10 @@ db_journal_init_file (JournalWriter  *jwriter,
 		             TRACKER_DB_JOURNAL_ERROR_COULD_NOT_WRITE,
 		             "Could not open journal for writing, %s",
 		             g_strerror (errno));
-		g_free (jwriter->journal_filename);
-		jwriter->journal_filename = NULL;
 		return FALSE;
 	}
 
-	if (g_stat (jwriter->journal_filename, &st) == 0) {
+	if (fstat (jwriter->journal, &st) == 0) {
 		jwriter->cur_size = (gsize) st.st_size;
 	}
 
@@ -480,16 +485,6 @@ db_journal_init_file (JournalWriter  *jwriter,
 
 		cur_block_maybe_expand (jwriter, 8);
 
-		/* If it didn't expand properly */
-		if (jwriter->cur_block == NULL) {
-			g_set_error (error, TRACKER_DB_JOURNAL_ERROR,
-			             TRACKER_DB_JOURNAL_ERROR_COULD_NOT_WRITE,
-			             "Could not write journal, not enough memory");
-			g_free (jwriter->journal_filename);
-			jwriter->journal_filename = NULL;
-			return FALSE;
-		}
-
 		jwriter->cur_block[0] = 't';
 		jwriter->cur_block[1] = 'r';
 		jwriter->cur_block[2] = 'l';
@@ -499,13 +494,12 @@ db_journal_init_file (JournalWriter  *jwriter,
 		jwriter->cur_block[6] = '0';
 		jwriter->cur_block[7] = '4';
 
-		if (!write_all_data (jwriter->journal, jwriter->cur_block, 8)) {
-			g_set_error (error, TRACKER_DB_JOURNAL_ERROR,
-			             TRACKER_DB_JOURNAL_ERROR_COULD_NOT_WRITE,
-			             "Could not write to journal file, %s",
-			             g_strerror (errno));
-			g_free (jwriter->journal_filename);
-			jwriter->journal_filename = NULL;
+		if (!write_all_data (jwriter->journal, jwriter->cur_block, 8, error)) {
+			cur_block_kill (jwriter);
+			/* delete empty journal file */
+			g_unlink (jwriter->journal_filename);
+			close (jwriter->journal);
+			jwriter->journal = 0;
 			return FALSE;
 		}
 
@@ -551,6 +545,8 @@ db_journal_writer_init (JournalWriter  *jwriter,
 
 	if (n_error) {
 		g_propagate_error (error, n_error);
+		g_free (jwriter->journal_filename);
+		jwriter->journal_filename = NULL;
 	}
 
 	return ret;
@@ -1177,11 +1173,7 @@ db_journal_writer_commit_db_transaction (JournalWriter  *jwriter,
 	crc = tracker_crc32 (jwriter->cur_block + offset, jwriter->cur_block_len - offset);
 	cur_setnum (jwriter->cur_block, &begin_pos, crc);
 
-	if (!write_all_data (jwriter->journal, jwriter->cur_block, jwriter->cur_block_len)) {
-		g_set_error (error, TRACKER_DB_JOURNAL_ERROR,
-		             TRACKER_DB_JOURNAL_ERROR_COULD_NOT_WRITE,
-		             "Could not write to journal, %s",
-		             g_strerror (errno));
+	if (!write_all_data (jwriter->journal, jwriter->cur_block, jwriter->cur_block_len, error)) {
 		return FALSE;
 	}
 
@@ -1345,7 +1337,6 @@ db_journal_reader_init_file (JournalReader  *jreader,
 		g_set_error (error, TRACKER_DB_JOURNAL_ERROR,
 		             TRACKER_DB_JOURNAL_ERROR_BEGIN_OF_JOURNAL,
 		             "Damaged journal entry at begin of journal");
-		tracker_db_journal_reader_shutdown ();
 		return FALSE;
 	}
 
@@ -1391,17 +1382,15 @@ db_journal_reader_init (JournalReader  *jreader,
 		    !g_error_matches (n_error, G_FILE_ERROR, G_FILE_ERROR_NOENT)) {
 			/* Do not set error if the file does not exist, just return FALSE */
 
-			g_set_error (error, TRACKER_DB_JOURNAL_ERROR,
-			             TRACKER_DB_JOURNAL_ERROR_UNKNOWN,
-			             "Could not create TrackerDBJournalReader for file '%s', %s",
-			             jreader->filename,
-			             n_error->message ? n_error->message : "no error given");
+			g_propagate_prefixed_error (error,
+			                            n_error,
+			                            "Could not create TrackerDBJournalReader for file '%s', ",
+			                            jreader->filename);
+		} else {
+			g_error_free (n_error);
 		}
 
-		g_error_free (n_error);
 		g_free (filename_open);
-		g_free (jreader->filename);
-		jreader->filename = NULL;
 
 		tracker_db_journal_reader_shutdown ();
 		return FALSE;
@@ -1491,6 +1480,7 @@ reader_next_file (GError **error)
 
 	if (!db_journal_reader_init_file (&reader, filename_open, error)) {
 		g_free (filename_open);
+		tracker_db_journal_reader_shutdown ();
 		return FALSE;
 	}
 
@@ -2088,7 +2078,6 @@ tracker_db_journal_rotate (GError **error)
 	GInputStream *istream;
 	GOutputStream *ostream, *cstream;
 	static gint max = 0;
-	static gboolean needs_move;
 	GError *n_error = NULL;
 	gboolean ret;
 
@@ -2098,7 +2087,6 @@ tracker_db_journal_rotate (GError **error)
 		const gchar *f_name;
 
 		directory = g_path_get_dirname (writer.journal_filename);
-		needs_move = (g_strcmp0 (rotating_settings.rotate_to, directory) != 0);
 		journal_dir = g_dir_open (directory, 0, NULL);
 
 		f_name = g_dir_read_name (journal_dir);
@@ -2175,6 +2163,8 @@ tracker_db_journal_rotate (GError **error)
 
 	if (n_error) {
 		g_propagate_error (error, n_error);
+		g_free (writer.journal_filename);
+		writer.journal_filename = NULL;
 	}
 
 	return ret;

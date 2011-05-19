@@ -1,3 +1,110 @@
+2011-05-19  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.14
+
+2011-05-19  Jean-Luc Lamadon  <jean-luc.lamadon@nokia.com>
+
+	functional-tests: Add UID::user and GID::users to tracker-tests aegis file
+
+2011-05-19  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-common: Fixed documentation version typo, s/0.10.4/0.10.14/
+
+2011-05-19  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: perform task merging for monitor events
+	This only kicks in after initial crawling, and makes most sense
+	in paused miners, so consecutive, longer term monitor events
+	are merged together with previous unhandled events to avoid
+	useless operations after resuming.
+
+2011-05-19  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-miner: Document newly added functions
+
+	libtracker-miner: The get_path API doesn't require stripped input, fixed the query
+
+	libtracker-miner: Only run the check once per 30 minutes
+
+	libtracker-miner: Cleanup media-art that isn't valid anymore
+
+	tracker-extract, libtracker-common: Move sharable code to libtracker-common
+
+2011-05-19  Jürg Billeter  <j@bitron.ch>
+
+	tests/libtracker-sparql: Add interleaved connection test
+	Based on test by James Thomas.
+
+	libtracker-direct: Support multiple direct connection objects
+	If Tracker.Sparql.Connection.get is called after singleton is set to
+	null in dispose and before backend object is finalized, multiple direct
+	connection objects may exist at the same time.
+
+	The first instance initializes libtracker-data, the last instance shuts
+	it down.
+
+	libtracker-bus: Support multiple bus connection objects
+	If Tracker.Sparql.Connection.get is called after singleton is set to
+	null in dispose and before backend object is finalized, multiple bus
+	connection objects may exist at the same time.
+
+	libtracker-sparql-backend: Protect singleton weak pointer with mutex
+
+	libtracker-sparql-backend: Improve debug message for direct connection
+
+	libtracker-data: Do not trigger replay with invalid ontology journal
+	Use same criteria as with data journal.
+
+	libtracker-data: Clear ignored journal error in tracker_db_manager_init
+
+	libtracker-data: Use original error code in db_journal_reader_init
+	tracker_data_manager_init matches against specific error codes.
+
+	libtracker-data: Move journal reader shutdown out of init_file
+	Journal reader shutdown frees journal filename, however, we still want
+	to use that in the propagated error message.
+
+	libtracker-data: If unable to writer journal header, delete empty file
+
+	libtracker-data: Use GError for write_all_data in tracker-db-journal
+
+	libtracker-data: Handle EINTR instead of EAGAIN when writing journal
+	Writing to a regular file will never set EAGAIN.
+
+	libtracker-data: Remove unneeded out of memory check
+	g_realloc never returns NULL (if size > 0). There is no point in trying
+	to handle it in a single random place.
+
+	libtracker-data: Small refactoring in error handling of journal writer
+
+	libtracker-data: Use fstat to query size of open journal file
+	This avoids querying the size of the wrong file in the unlikely case
+	that another process replaced the journal file between open and stat.
+
+	libtracker-data: Propagate errors for ontology transactions
+
+	tracker-store: Improve Data.Manager.init error handling
+	The only noticeable difference is that exit code was 0 when journal
+	error was encountered during initialization.
+
+	libtracker-data: Fix build with FTS
+
+	tracker-extract: Fix C warnings
+
+	tracker-miner-fs: Fix C warnings
+
+	libtracker-miner: Fix C warnings
+
+	libtracker-data: Fix C warning
+
+	libtracker-common: Fix C warnings
+
+2011-05-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Don't crash if TrackerMonitor can't create a sample monitor
+	Neither G_OBJECT_TYPE() or g_type_name() can handle NULL, leading to a crash,
+	now a critical warning is issued instead.
+
 2011-05-12  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.13

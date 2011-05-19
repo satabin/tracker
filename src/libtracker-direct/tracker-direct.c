@@ -23,13 +23,13 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <libtracker-sparql/tracker-sparql.h>
+#include <libtracker-data/tracker-db-manager.h>
 #include <libtracker-data/tracker-data-manager.h>
 #include <gio/gio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <libtracker-data/tracker-db-manager.h>
-#include <libtracker-data/tracker-db-interface.h>
 #include <libtracker-data/tracker-sparql-query.h>
+#include <libtracker-data/tracker-db-interface.h>
 #include <libtracker-common/tracker-date-time.h>
 
 
@@ -104,8 +104,8 @@ struct _TrackerDirectConnectionQueryAsyncData {
 
 
 static gpointer tracker_direct_connection_parent_class = NULL;
-static gboolean tracker_direct_connection_initialized;
-static gboolean tracker_direct_connection_initialized = FALSE;
+static gint tracker_direct_connection_use_count;
+static gint tracker_direct_connection_use_count = 0;
 
 GType tracker_direct_connection_get_type (void) G_GNUC_CONST;
 enum  {
@@ -131,34 +131,33 @@ static void tracker_direct_connection_finalize (GObject* obj);
 
 TrackerDirectConnection* tracker_direct_connection_construct (GType object_type, GError** error) {
 	TrackerDirectConnection * self = NULL;
-	guint select_cache_size;
-	const gchar* _tmp0_ = NULL;
-	gchar* _tmp1_;
-	gchar* env_cache_size;
 	GError * _inner_error_ = NULL;
-	g_return_val_if_fail (!tracker_direct_connection_initialized, NULL);
 	self = (TrackerDirectConnection*) tracker_sparql_connection_construct (object_type);
-	select_cache_size = (guint) 100;
-	_tmp0_ = g_getenv ("TRACKER_SPARQL_CACHE_SIZE");
-	_tmp1_ = g_strdup (_tmp0_);
-	env_cache_size = _tmp1_;
-	if (env_cache_size != NULL) {
-		gint _tmp2_;
-		_tmp2_ = atoi (env_cache_size);
-		select_cache_size = (guint) _tmp2_;
-	}
-	tracker_data_manager_init (TRACKER_DB_MANAGER_READONLY, NULL, NULL, FALSE, select_cache_size, (guint) 0, NULL, NULL, NULL, &_inner_error_);
-	if (_inner_error_ != NULL) {
-		if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-			goto __catch0_tracker_db_interface_error;
+	tracker_db_manager_lock ();
+	if (tracker_direct_connection_use_count == 0) {
+		guint select_cache_size;
+		const gchar* _tmp0_ = NULL;
+		gchar* _tmp1_;
+		gchar* env_cache_size;
+		select_cache_size = (guint) 100;
+		_tmp0_ = g_getenv ("TRACKER_SPARQL_CACHE_SIZE");
+		_tmp1_ = g_strdup (_tmp0_);
+		env_cache_size = _tmp1_;
+		if (env_cache_size != NULL) {
+			gint _tmp2_;
+			_tmp2_ = atoi (env_cache_size);
+			select_cache_size = (guint) _tmp2_;
+		}
+		tracker_data_manager_init (TRACKER_DB_MANAGER_READONLY, NULL, NULL, FALSE, select_cache_size, (guint) 0, NULL, NULL, NULL, &_inner_error_);
+		if (_inner_error_ != NULL) {
+			_g_free0 (env_cache_size);
+			goto __catch1_g_error;
 		}
 		_g_free0 (env_cache_size);
-		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-		g_clear_error (&_inner_error_);
-		return NULL;
 	}
-	goto __finally0;
-	__catch0_tracker_db_interface_error:
+	tracker_direct_connection_use_count++;
+	goto __finally1;
+	__catch1_g_error:
 	{
 		GError * e;
 		GError* _tmp3_ = NULL;
@@ -167,24 +166,21 @@ TrackerDirectConnection* tracker_direct_connection_construct (GType object_type,
 		_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, e->message);
 		_inner_error_ = _tmp3_;
 		_g_error_free0 (e);
-		goto __finally0;
+		goto __finally1;
 	}
-	__finally0:
+	__finally1:
+	tracker_db_manager_unlock ();
 	if (_inner_error_ != NULL) {
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
 			g_propagate_error (error, _inner_error_);
-			_g_free0 (env_cache_size);
 			_g_object_unref0 (self);
 			return NULL;
 		} else {
-			_g_free0 (env_cache_size);
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 			g_clear_error (&_inner_error_);
 			return NULL;
 		}
 	}
-	tracker_direct_connection_initialized = TRUE;
-	_g_free0 (env_cache_size);
 	return self;
 }
 
@@ -210,12 +206,12 @@ static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDir
 	if (_inner_error_ != NULL) {
 		_g_object_unref0 (query_object);
 		if (_inner_error_->domain == TRACKER_DB_INTERFACE_ERROR) {
-			goto __catch1_tracker_db_interface_error;
+			goto __catch2_tracker_db_interface_error;
 		}
 		if (_inner_error_->domain == TRACKER_DATE_ERROR) {
-			goto __catch1_tracker_date_error;
+			goto __catch2_tracker_date_error;
 		}
-		goto __finally1;
+		goto __finally2;
 	}
 	tracker_sparql_cursor_set_connection ((TrackerSparqlCursor*) cursor, (TrackerSparqlConnection*) self);
 	result = (TrackerSparqlCursor*) cursor;
@@ -223,8 +219,8 @@ static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDir
 	return result;
 	_g_object_unref0 (cursor);
 	_g_object_unref0 (query_object);
-	goto __finally1;
-	__catch1_tracker_db_interface_error:
+	goto __finally2;
+	__catch2_tracker_db_interface_error:
 	{
 		GError * e;
 		GError* _tmp2_ = NULL;
@@ -233,10 +229,10 @@ static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDir
 		_tmp2_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, e->message);
 		_inner_error_ = _tmp2_;
 		_g_error_free0 (e);
-		goto __finally1;
+		goto __finally2;
 	}
-	goto __finally1;
-	__catch1_tracker_date_error:
+	goto __finally2;
+	__catch2_tracker_date_error:
 	{
 		GError * e;
 		GError* _tmp3_ = NULL;
@@ -245,9 +241,9 @@ static TrackerSparqlCursor* tracker_direct_connection_query_unlocked (TrackerDir
 		_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_PARSE, e->message);
 		_inner_error_ = _tmp3_;
 		_g_error_free0 (e);
-		goto __finally1;
+		goto __finally2;
 	}
-	__finally1:
+	__finally2:
 	if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
 		g_propagate_error (error, _inner_error_);
 		return NULL;
@@ -271,12 +267,12 @@ static TrackerSparqlCursor* tracker_direct_connection_real_query (TrackerSparqlC
 	_tmp0_ = tracker_direct_connection_query_unlocked (self, sparql, cancellable, &_inner_error_);
 	_tmp1_ = _tmp0_;
 	if (_inner_error_ != NULL) {
-		goto __finally2;
+		goto __finally3;
 	}
 	result = _tmp1_;
 	tracker_db_manager_unlock ();
 	return result;
-	__finally2:
+	__finally3:
 	tracker_db_manager_unlock ();
 	if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
 		g_propagate_error (error, _inner_error_);
@@ -413,13 +409,13 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 	_tmp1_ = _tmp0_;
 	if (_inner_error_ != NULL) {
 		if (_inner_error_->domain == G_IO_ERROR) {
-			goto __catch3_g_io_error;
+			goto __catch4_g_io_error;
 		}
 		if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
-			goto __catch3_tracker_sparql_error;
+			goto __catch4_tracker_sparql_error;
 		}
 		if (_inner_error_->domain == G_DBUS_ERROR) {
-			goto __catch3_g_dbus_error;
+			goto __catch4_g_dbus_error;
 		}
 		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -427,8 +423,8 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 	}
 	_g_object_unref0 (_data2_->_result_);
 	_data2_->_result_ = _tmp1_;
-	goto __finally3;
-	__catch3_g_io_error:
+	goto __finally4;
+	__catch4_g_io_error:
 	{
 		GError * e_io;
 		GError* _tmp2_;
@@ -439,8 +435,8 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 		_data2_->io_error = _tmp2_;
 		_g_error_free0 (e_io);
 	}
-	goto __finally3;
-	__catch3_tracker_sparql_error:
+	goto __finally4;
+	__catch4_tracker_sparql_error:
 	{
 		GError * e_spql;
 		GError* _tmp3_;
@@ -451,8 +447,8 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 		_data2_->sparql_error = _tmp3_;
 		_g_error_free0 (e_spql);
 	}
-	goto __finally3;
-	__catch3_g_dbus_error:
+	goto __finally4;
+	__catch4_g_dbus_error:
 	{
 		GError * e_dbus;
 		GError* _tmp4_;
@@ -463,7 +459,7 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 		_data2_->dbus_error = _tmp4_;
 		_g_error_free0 (e_dbus);
 	}
-	__finally3:
+	__finally4:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -624,7 +620,7 @@ static gboolean tracker_direct_connection_real_query_async_co (TrackerDirectConn
 	data->_tmp7_ = tracker_direct_connection_query_unlocked (data->self, data->_data1_->sparql, data->_data1_->cancellable, &data->_inner_error_);
 	data->_tmp8_ = data->_tmp7_;
 	if (data->_inner_error_ != NULL) {
-		goto __finally4;
+		goto __finally5;
 	}
 	data->result = data->_tmp8_;
 	tracker_db_manager_unlock ();
@@ -637,7 +633,7 @@ static gboolean tracker_direct_connection_real_query_async_co (TrackerDirectConn
 	}
 	g_object_unref (data->_async_result);
 	return FALSE;
-	__finally4:
+	__finally5:
 	tracker_db_manager_unlock ();
 	if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
 		g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
@@ -685,10 +681,18 @@ static void tracker_direct_connection_instance_init (TrackerDirectConnection * s
 
 static void tracker_direct_connection_finalize (GObject* obj) {
 	TrackerDirectConnection * self;
+	GError * _inner_error_ = NULL;
 	self = TRACKER_DIRECT_CONNECTION (obj);
-	if (tracker_direct_connection_initialized) {
+	tracker_db_manager_lock ();
+	tracker_direct_connection_use_count--;
+	if (tracker_direct_connection_use_count == 0) {
 		tracker_data_manager_shutdown ();
-		tracker_direct_connection_initialized = FALSE;
+	}
+	__finally0:
+	tracker_db_manager_unlock ();
+	if (_inner_error_ != NULL) {
+		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
 	}
 	G_OBJECT_CLASS (tracker_direct_connection_parent_class)->finalize (obj);
 }

@@ -1,3 +1,106 @@
+2011-05-26  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.15
+
+	tracker-evolution: When reporting "Updating Folder" state which one
+	tracker-control wasn't useful without this since it could be on any folder
+
+	tracker-evolution: Don't set status/progress to twice when Idle
+
+	tracker-evolution: Make miner initable
+	This fixes it now showing up on dbus or sending progress updates
+
+	tracker-evolution: Added some debugging to see what's going on
+
+	tracker-evolution: Coding style fixes
+
+	tracker-evolution: Cleaned up unused code and whitespace issues
+
+	tracker-evolution: Renamed object for consistency to MinerEvolution
+
+	tracker-extract: Provide clear logging about which extractor module is used
+	This is a bit of a regression, we used to say which extractor module was used
+	but we don't for some reason in master. This fixes that.
+
+2011-05-26  Juerg Billeter  <juerg@debian.bitron.ch>
+
+	libtracker-sparql-backend: Work around race condition in GDBus
+	GDBusProxy created from a thread without its own GMainContext may cause
+	memory corruption due to a race condition in handling the
+	NameOwnerChanged signal.
+
+	As we only call a single method on the Status object, drop use of
+	GDBusProxy in this case and directly use low level D-Bus support.
+
+	Fixes NB#254855.
+
+2011-05-26  Philip Van Hoof  <philip@codeminded.be>
+
+	Fix a crash when destructing QApplication
+	Apparently it's not ok to destroy a QApplication which seems to be
+	designed for use on the stack of the main() function. This indeed
+	leaves a small memory leak at the exit of the process.
+
+	Fixes NB#259000.
+
+2011-05-26  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Fix builds including this library using g++
+	Conflicts:
+
+		src/libtracker-miner/tracker-miner-fs.c
+		src/libtracker-miner/tracker-miner-object.c
+
+2011-05-26  Jürg Billeter  <j@bitron.ch>
+
+	tracker-store: Reenable signals after failing to load Turtle file
+
+2011-05-26  Lionel Landwerlin  <lionel.g.landwerlin@linux.intel.com>
+
+	libtracker-miner: install missing header
+
+2011-05-26  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Protect cursor finalization with mutex
+	This is necessary for parallel queries with direct access.
+
+	Fixes NB#244556.
+
+	libtracker-sparql-backend: Fix deadlock on initialization error
+
+2011-05-25  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Make tracker_miner_fs_directory_remove() more robust
+	the tasks that are likely to perform I/O (extraction, crawling) are
+	removed first, so other non-crucial, but time consuming tasks (i.e.
+	monitors removal) don't get in the way.
+
+	Also, stuff from priv->crawled_directories is removed, as the miner
+	could pick these up for further processing.
+
+	libtracker-miner: Do not perform removed files check if crawling was cancelled.
+	Since the logic is "remove from the hashtable all existing files, so the remainder
+	can be deleted", there are chances that a file could be left there when crawling is
+	interrupted.
+
+	libtracker-miner: Make the failed unmounts watchdog more relaxed
+	The timeout priority is now lower so ::mount-unmount has a chance to
+	be processed before the watchdog if the miner's main loop is busy
+	(say removing monitors). Also, the timeout is longer so we aren't
+	overzealous on slow unmounts.
+
+	tracker-miner-fs: Do not shutdown cleanly if ctrl+c is hit during initial sleep
+
+	tracker-miner-fs: Don't do initial sleep if no mtime check is going to happen
+	Crawling will be fairly fast if no mtime checks are to be done (which is the
+	most usual case), so avoid initial sleep so we get the monitors in place ASAP.
+	Fixes NB#252898.
+
+2011-05-24  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-miner-fs: Close sparql insert/graph braces on extractor cancellation.
+	Fixes NB#258459.
+
 2011-05-19  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.14

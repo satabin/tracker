@@ -17,12 +17,8 @@
  * Boston, MA  02110-1301, USA.
  */
 
-[DBus (name = "org.freedesktop.Tracker1.Status")]
-interface Tracker.Backend.Status : DBusProxy {
-	public abstract void wait () throws DBusError;
-}
-
 class Tracker.Sparql.Backend : Connection {
+	bool initialized;
 	Tracker.Sparql.Connection direct = null;
 	Tracker.Sparql.Connection bus = null;
 	enum Backend {
@@ -32,39 +28,44 @@ class Tracker.Sparql.Backend : Connection {
 	}
 
 	public Backend () throws Sparql.Error, IOError, DBusError, SpawnError {
-		Tracker.Backend.Status status = GLib.Bus.get_proxy_sync (BusType.SESSION,
-		                                                         TRACKER_DBUS_SERVICE,
-		                                                         TRACKER_DBUS_OBJECT_STATUS,
-		                                                         DBusProxyFlags.DO_NOT_LOAD_PROPERTIES | DBusProxyFlags.DO_NOT_CONNECT_SIGNALS);
-		status.set_default_timeout (int.MAX);
-
-		// Makes sure the sevice is available
-		debug ("Waiting for service to become available...");
-		status.wait ();
-		debug ("Service is ready");
-
 		try {
+			// Makes sure the sevice is available
+			debug ("Waiting for service to become available...");
+
+			// do not use proxy to work around race condition in GDBus
+			// NB#259760
+			var bus = GLib.Bus.get_sync (BusType.SESSION);
+			var msg = new DBusMessage.method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_STATUS, TRACKER_DBUS_INTERFACE_STATUS, "Wait");
+			bus.send_message_with_reply_sync (msg, 0, /* timeout */ int.MAX, null).to_gerror ();
+
+			debug ("Service is ready");
+
 			debug ("Constructing connection, direct_only=%s", direct_only ? "true" : "false");
 			load_plugins (direct_only);
 			debug ("Backend is ready");
 		} catch (GLib.Error e) {
 			throw new Sparql.Error.INTERNAL (e.message);
 		}
+
+		initialized = true;
 	}
 
 	public override void dispose () {
-		door.lock ();
+		// trying to lock on partially initialized instances will deadlock
+		if (initialized) {
+			door.lock ();
 
-		try {
-			// Ensure this instance is not used for any new calls to Tracker.Sparql.Connection.get.
-			// However, a call to Tracker.Sparql.Connection.get between g_object_unref and the
-			// above lock might have increased the reference count of this instance to 2 (or more).
-			// Therefore, we must not clean up direct/bus connection in dispose.
-			if (singleton == this) {
-				singleton = null;
+			try {
+				// Ensure this instance is not used for any new calls to Tracker.Sparql.Connection.get.
+				// However, a call to Tracker.Sparql.Connection.get between g_object_unref and the
+				// above lock might have increased the reference count of this instance to 2 (or more).
+				// Therefore, we must not clean up direct/bus connection in dispose.
+				if (singleton == this) {
+					singleton = null;
+				}
+			} finally {
+				door.unlock ();
 			}
-		} finally {
-			door.unlock ();
 		}
 
 		base.dispose ();

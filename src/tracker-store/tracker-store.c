@@ -844,11 +844,15 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 					tracker_events_freeze ();
 					tracker_data_load_turtle_file (file, &_inner_error_);
 					if (_inner_error_ != NULL) {
+						goto __finally21;
+					}
+					__finally21:
+					tracker_events_reset_pending ();
+					if (_inner_error_ != NULL) {
 						_g_object_unref0 (file);
 						_tracker_store_task_unref0 (turtle_task);
 						goto __catch20_g_error;
 					}
-					tracker_events_reset_pending ();
 					_g_object_unref0 (file);
 					_tracker_store_task_unref0 (turtle_task);
 				}
@@ -946,19 +950,19 @@ void tracker_store_init (void) {
 	_tmp9_ = g_thread_pool_new (_tracker_store_pool_dispatch_cb_gfunc, NULL, 1, TRUE, &_inner_error_);
 	_tmp10_ = _tmp9_;
 	if (_inner_error_ != NULL) {
-		goto __catch21_g_error;
+		goto __catch22_g_error;
 	}
 	_g_thread_pool_free0 (tracker_store_update_pool);
 	tracker_store_update_pool = _tmp10_;
 	_tmp11_ = g_thread_pool_new (_tracker_store_pool_dispatch_cb_gfunc, NULL, TRACKER_STORE_MAX_CONCURRENT_QUERIES, TRUE, &_inner_error_);
 	_tmp12_ = _tmp11_;
 	if (_inner_error_ != NULL) {
-		goto __catch21_g_error;
+		goto __catch22_g_error;
 	}
 	_g_thread_pool_free0 (tracker_store_query_pool);
 	tracker_store_query_pool = _tmp12_;
-	goto __finally21;
-	__catch21_g_error:
+	goto __finally22;
+	__catch22_g_error:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -966,7 +970,7 @@ void tracker_store_init (void) {
 		g_warning ("%s", e->message);
 		_g_error_free0 (e);
 	}
-	__finally21:
+	__finally22:
 	if (_inner_error_ != NULL) {
 		_g_free0 (max_task_time_env);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);

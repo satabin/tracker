@@ -1,3 +1,10 @@
+tracker (0.10.15-2) UNRELEASED; urgency=low
+
+  * Use a wildcard in nautilus' extension directory so the package can be
+    built against nautilus 3 without changes.
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 27 May 2011 16:24:24 +0200
+
 tracker (0.10.15-1) experimental; urgency=low
 
   * New upstream release.

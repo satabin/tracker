@@ -1,3 +1,104 @@
+2011-06-03  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.16
+
+2011-06-03  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Lower TrackerMinerFS idle priorities.
+	This is so other events (timeouts, monitor events, ...) are
+	guaranteed to be processed promptly while extraction is ongoing.
+
+	tracker-miner-fs: Use CancelTasks method in tracker-extract
+
+	tracker-extract: Add CancelTasks DBus signal
+	This signal will let tracker-miner-fs explicitly cancel tasks from
+	the controller thread, as GVolumeMonitor::mount-pre-unmount will
+	happen in the main thread, which can be busy with extraction,
+	it is possibly handled way too late. Fixes NB#258488.
+
+	tracker-miner-fs: Deinitialize correctly stuff when not getting the DBus name
+
+2011-06-03  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Use test location for password provider config and don't abort
+	Previously we aborted on any warning or worse, to counter this (given
+	we don't expect the file to exist when running the tests initially),
+	we set up a gtest log handler function.
+
+	libtracker-miner: Improve password provider error handling and reporting
+
+2011-06-03  Jürg Billeter  <j@bitron.ch>
+
+	docs: Always distribute all man pages
+	Fixes GB#650804.
+
+2011-06-02  Maitrey Mishra  <ext-maitrey.mishra@nokia.com>
+
+	tracker-extract: Fix gstreamer + real media extraction
+	Fixes MB#18159, tracker can't index real media
+
+2011-06-02  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-control: Fixed memory leak when getting pause details
+
+	tracker-control: Don't auto-start miners for pausing/resuming/listing/pause details
+	We also now use the full API tracker_miner_manager_new_full() to
+	report errors when the manager can't initiate properly.
+
+	This also means we now don't start miners when using tracker-control
+	with no arguments.
+
+	tracker-control: Use full API to get miner manager and report errors
+	This is for cases where we just report status of all miners and processes
+
+	tracker-control: Free GError if getting TrackerMinerManager fails
+
+	libtracker-miner: Honor auto_start parameter in tracker_miner_manager_new_full()
+	We didn't use the auto_start parameter at all, just passed FALSE each
+	time we created the object
+
+2011-06-02  Gil Forcada  <gforcada@gnome.org>
+
+	[l10n]Updated Catalan translation
+
+2011-06-02  Kristjan SCHMIDT  <kristjan.schmidt@googlemail.com>
+
+	Add Esperanto translation
+
+2011-06-02  maimishr  <ext-maitrey.mishra@nokia.com>
+
+	functional-tests: Support cases with AND without Upstart
+
+2011-06-02  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-data: plug a leak.
+
+	tracker-miner-fs: Do not spam log on recursive monitors removal
+	This part is known to work well, no need to spew a line for each dir
+	monitor removed.
+
+2011-06-02  Kostas Papadimas  <pkst@gnome.org>
+
+	l10n: Updated Greek translation for tracker
+
+2011-06-02  Georgios Stefanakis  <george.stefanakis@gmail.com>
+
+	l10n: Updated Greek translation for tracker
+
+2011-06-02  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-miner-fs: Create bus names before touching sensitive files
+	The miner objects creation (and thus DBus owner requests) have been
+	moved above in main() to avoid possible race conditions when
+	checking/removing the no-need-mtime-check file.
+
+	It could happen, that if two miner-fs instances are launched
+	(tracker-control -S sometimes triggers that by activating both
+	FS/Apps miners, this is an acknowledged race condition in DBus),
+	one could remove the existing mtime check file, and then fail to
+	acquire the bus name, leaving the other with a bus name but
+	ignorant about the mtime check needed.
+
 2011-05-26  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.15

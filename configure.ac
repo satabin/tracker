@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [15])
-m4_define([tracker_interface_age], [4])
+m4_define([tracker_micro_version], [16])
+m4_define([tracker_interface_age], [5])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -1980,6 +1980,15 @@ fi
 have_mockup="no  (disabled)"
 
 AM_CONDITIONAL(HAVE_MOCKUP, test "x$have_mockup" = "xyes")
+
+####################################################################
+# Check if we should use initctl or sysvinit
+####################################################################
+
+# Check for initcl
+AC_PATH_PROG(INITCTL, initctl, [])
+AC_SUBST(INITCTL)
+AM_CONDITIONAL(HAVE_UPSTART, test "x$INITCTL" != "x")
 
 ##################################################################
 # Write generated files

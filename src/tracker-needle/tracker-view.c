@@ -92,7 +92,8 @@ typedef enum  {
 	TRACKER_QUERY_TYPE_DOCUMENTS,
 	TRACKER_QUERY_TYPE_MAIL,
 	TRACKER_QUERY_TYPE_CALENDAR,
-	TRACKER_QUERY_TYPE_FOLDERS
+	TRACKER_QUERY_TYPE_FOLDERS,
+	TRACKER_QUERY_TYPE_BOOKMARKS
 } TrackerQueryType;
 
 
@@ -576,8 +577,8 @@ static void tracker_view_text_renderer_func (TrackerView* self, GtkCellLayout* c
 	if (n_children > 0) {
 		TrackerQueryType type = 0;
 		gchar* cat;
-		const gchar* _tmp15_ = NULL;
-		gchar* _tmp16_ = NULL;
+		const gchar* _tmp17_ = NULL;
+		gchar* _tmp18_ = NULL;
 		cat = NULL;
 		gtk_tree_model_get (tree_model, iter, 7, &type, -1, -1);
 		switch (type) {
@@ -651,44 +652,54 @@ static void tracker_view_text_renderer_func (TrackerView* self, GtkCellLayout* c
 				cat = _tmp14_;
 				break;
 			}
+			case TRACKER_QUERY_TYPE_BOOKMARKS:
+			{
+				const gchar* _tmp15_ = NULL;
+				gchar* _tmp16_;
+				_tmp15_ = _ ("Bookmarks");
+				_tmp16_ = g_strdup (_tmp15_);
+				_g_free0 (cat);
+				cat = _tmp16_;
+				break;
+			}
 			default:
 			break;
 		}
-		_tmp15_ = _ ("Items");
-		_tmp16_ = g_strdup_printf ("<b><big>%s</big></b> <small>(%d %s)</small>", cat, n_children, _tmp15_);
+		_tmp17_ = _ ("Items");
+		_tmp18_ = g_strdup_printf ("<b><big>%s</big></b> <small>(%d %s)</small>", cat, n_children, _tmp17_);
 		_g_free0 (markup);
-		markup = _tmp16_;
+		markup = _tmp18_;
 		_g_free0 (cat);
 	} else {
 		gtk_tree_model_get (tree_model, iter, 2, &text, 3, &subtext, -1, -1);
 		if (text != NULL) {
-			gchar* _tmp17_ = NULL;
-			_tmp17_ = g_markup_escape_text (text, (gssize) (-1));
+			gchar* _tmp19_ = NULL;
+			_tmp19_ = g_markup_escape_text (text, (gssize) (-1));
 			_g_free0 (markup);
-			markup = _tmp17_;
+			markup = _tmp19_;
 			if (subtext != NULL) {
-				gchar* _tmp18_ = NULL;
-				gchar* _tmp19_;
 				gchar* _tmp20_ = NULL;
 				gchar* _tmp21_;
-				gchar* _tmp22_;
-				_tmp18_ = g_markup_escape_text (subtext, (gssize) (-1));
-				_tmp19_ = _tmp18_;
-				_tmp20_ = g_strdup_printf ("\n<small><span color='grey'>%s</span></small>", _tmp19_);
+				gchar* _tmp22_ = NULL;
+				gchar* _tmp23_;
+				gchar* _tmp24_;
+				_tmp20_ = g_markup_escape_text (subtext, (gssize) (-1));
 				_tmp21_ = _tmp20_;
-				_tmp22_ = g_strconcat (markup, _tmp21_, NULL);
+				_tmp22_ = g_strdup_printf ("\n<small><span color='grey'>%s</span></small>", _tmp21_);
+				_tmp23_ = _tmp22_;
+				_tmp24_ = g_strconcat (markup, _tmp23_, NULL);
 				_g_free0 (markup);
-				markup = _tmp22_;
+				markup = _tmp24_;
+				_g_free0 (_tmp23_);
 				_g_free0 (_tmp21_);
-				_g_free0 (_tmp19_);
 			}
 		} else {
-			const gchar* _tmp23_ = NULL;
-			gchar* _tmp24_ = NULL;
-			_tmp23_ = _ ("Loading...");
-			_tmp24_ = g_strdup_printf ("<span color='grey'>%s</span>\n", _tmp23_);
+			const gchar* _tmp25_ = NULL;
+			gchar* _tmp26_ = NULL;
+			_tmp25_ = _ ("Loading...");
+			_tmp26_ = g_strdup_printf ("<span color='grey'>%s</span>\n", _tmp25_);
 			_g_free0 (markup);
-			markup = _tmp24_;
+			markup = _tmp26_;
 		}
 	}
 	g_object_set ((GObject*) cell, "markup", markup, NULL);
@@ -761,6 +772,7 @@ static void tracker_view_category_detail_renderer_func (TrackerView* self, GtkCe
 	switch (category) {
 		case TRACKER_QUERY_TYPE_FOLDERS:
 		case TRACKER_QUERY_TYPE_MAIL:
+		case TRACKER_QUERY_TYPE_BOOKMARKS:
 		{
 			gchar* _tmp0_ = NULL;
 			_tmp0_ = tracker_time_format_from_iso8601 (detail);

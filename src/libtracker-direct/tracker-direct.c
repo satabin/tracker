@@ -61,6 +61,10 @@ struct _TrackerDirectConnectionClass {
 	TrackerSparqlConnectionClass parent_class;
 };
 
+struct _TrackerDirectConnectionPrivate {
+	gboolean initialized;
+};
+
 struct _Block1Data {
 	int _ref_count_;
 	TrackerDirectConnection * self;
@@ -108,6 +112,7 @@ static gint tracker_direct_connection_use_count;
 static gint tracker_direct_connection_use_count = 0;
 
 GType tracker_direct_connection_get_type (void) G_GNUC_CONST;
+#define TRACKER_DIRECT_CONNECTION_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_DIRECT_TYPE_CONNECTION, TrackerDirectConnectionPrivate))
 enum  {
 	TRACKER_DIRECT_CONNECTION_DUMMY_PROPERTY
 };
@@ -156,6 +161,7 @@ TrackerDirectConnection* tracker_direct_connection_construct (GType object_type,
 		_g_free0 (env_cache_size);
 	}
 	tracker_direct_connection_use_count++;
+	self->priv->initialized = TRUE;
 	goto __finally1;
 	__catch1_g_error:
 	{
@@ -668,6 +674,7 @@ static gboolean tracker_direct_connection_real_query_async_co (TrackerDirectConn
 
 static void tracker_direct_connection_class_init (TrackerDirectConnectionClass * klass) {
 	tracker_direct_connection_parent_class = g_type_class_peek_parent (klass);
+	g_type_class_add_private (klass, sizeof (TrackerDirectConnectionPrivate));
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query = tracker_direct_connection_real_query;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_async = tracker_direct_connection_real_query_async;
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_finish = tracker_direct_connection_real_query_finish;
@@ -676,6 +683,7 @@ static void tracker_direct_connection_class_init (TrackerDirectConnectionClass *
 
 
 static void tracker_direct_connection_instance_init (TrackerDirectConnection * self) {
+	self->priv = TRACKER_DIRECT_CONNECTION_GET_PRIVATE (self);
 }
 
 
@@ -683,6 +691,9 @@ static void tracker_direct_connection_finalize (GObject* obj) {
 	TrackerDirectConnection * self;
 	GError * _inner_error_ = NULL;
 	self = TRACKER_DIRECT_CONNECTION (obj);
+	if (!self->priv->initialized) {
+		goto _return;
+	}
 	tracker_db_manager_lock ();
 	tracker_direct_connection_use_count--;
 	if (tracker_direct_connection_use_count == 0) {
@@ -694,6 +705,7 @@ static void tracker_direct_connection_finalize (GObject* obj) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 	}
+	_return:
 	G_OBJECT_CLASS (tracker_direct_connection_parent_class)->finalize (obj);
 }
 

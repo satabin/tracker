@@ -161,7 +161,8 @@ typedef enum  {
 	TRACKER_QUERY_TYPE_DOCUMENTS,
 	TRACKER_QUERY_TYPE_MAIL,
 	TRACKER_QUERY_TYPE_CALENDAR,
-	TRACKER_QUERY_TYPE_FOLDERS
+	TRACKER_QUERY_TYPE_FOLDERS,
+	TRACKER_QUERY_TYPE_BOOKMARKS
 } TrackerQueryType;
 
 typedef enum  {
@@ -300,6 +301,7 @@ static void tracker_needle_create_models (TrackerNeedle* self) {
 "ilAddress(?sender))", "nmo:messageSubject(?urn)", "nmo:receivedDate(?urn)", "fn:concat(\"To: \", tracker:coalesce(nco:fullname(?to), nco:nickname(?" \
 "to), nco:emailAddress(?to)))", NULL);
 	tracker_result_store_add_query (self->priv->categories_model, TRACKER_QUERY_TYPE_FOLDERS, TRACKER_QUERY_MATCH_FTS, "?urn", "nie:url(?urn)", "tracker:coalesce(nie:title(?urn), nfo:fileName(?urn))", "nie:url(?parent)", "nfo:fileLastModified(?urn)", "?tooltip", NULL);
+	tracker_result_store_add_query (self->priv->categories_model, TRACKER_QUERY_TYPE_BOOKMARKS, TRACKER_QUERY_MATCH_FTS, "?urn", "nie:url(?bookmark)", "nie:title(?urn)", "nie:url(?bookmark)", "nie:contentLastModified(?urn)", "nie:url(?bookmark)", NULL);
 	_tmp1_ = tracker_result_store_new (7);
 	_g_object_unref0 (self->priv->files_model);
 	self->priv->files_model = _tmp1_;
@@ -380,7 +382,7 @@ void tracker_needle_set_search (TrackerNeedle* self, gchar** args, int args_leng
 				}
 			}
 		}
-		g_debug ("tracker-needle.vala:196: Setting search criteria to: '%s'\n", text);
+		g_debug ("tracker-needle.vala:204: Setting search criteria to: '%s'\n", text);
 		gtk_entry_set_text (self->priv->search, text);
 		_g_free0 (text);
 	}
@@ -1175,21 +1177,21 @@ static void tracker_needle_find_in_toggled (TrackerNeedle* self) {
 	}
 	_tmp5_ = gtk_toggle_tool_button_get_active (self->priv->find_in_contents);
 	if (_tmp5_) {
-		g_debug ("tracker-needle.vala:503: Find in toggled to 'contents'");
+		g_debug ("tracker-needle.vala:511: Find in toggled to 'contents'");
 		gtk_widget_set_sensitive ((GtkWidget*) self->priv->search_entry, TRUE);
 		tracker_needle_search_run (self);
 	} else {
 		gboolean _tmp6_;
 		_tmp6_ = gtk_toggle_tool_button_get_active (self->priv->find_in_titles);
 		if (_tmp6_) {
-			g_debug ("tracker-needle.vala:509: Find in toggled to 'titles'");
+			g_debug ("tracker-needle.vala:517: Find in toggled to 'titles'");
 			gtk_widget_set_sensitive ((GtkWidget*) self->priv->search_entry, TRUE);
 			tracker_needle_search_run (self);
 		} else {
 			gboolean _tmp7_;
 			_tmp7_ = gtk_toggle_tool_button_get_active (self->priv->find_in_all);
 			if (_tmp7_) {
-				g_debug ("tracker-needle.vala:515: Find in toggled to 'all'");
+				g_debug ("tracker-needle.vala:523: Find in toggled to 'all'");
 				gtk_widget_set_sensitive ((GtkWidget*) self->priv->search_entry, FALSE);
 				tracker_needle_search_run (self);
 			}
@@ -1245,7 +1247,7 @@ static void tracker_needle_launch_selected (TrackerNeedle* self, GtkTreeModel* m
 	if (uri == NULL) {
 		return;
 	}
-	g_debug ("tracker-needle.vala:541: Selected uri:'%s'", uri);
+	g_debug ("tracker-needle.vala:549: Selected uri:'%s'", uri);
 	_tmp1_ = string_index_of (uri, "://", 0);
 	if (_tmp1_ < 1) {
 		gchar** _tmp2_;
@@ -1265,7 +1267,7 @@ static void tracker_needle_launch_selected (TrackerNeedle* self, GtkTreeModel* m
 		command = _tmp3_;
 		command_length1 = _vala_array_length (_tmp2_);
 		_command_size_ = _vala_array_length (_tmp2_);
-		g_debug ("tracker-needle.vala:547: Attempting to spawn_async() '%s'", command[0]);
+		g_debug ("tracker-needle.vala:555: Attempting to spawn_async() '%s'", command[0]);
 		_tmp4_ = g_new0 (gchar*, 1 + 1);
 		argv = _tmp4_;
 		argv_length1 = 1;
@@ -1287,7 +1289,7 @@ static void tracker_needle_launch_selected (TrackerNeedle* self, GtkTreeModel* m
 			e = _inner_error_;
 			_inner_error_ = NULL;
 			_tmp8_ = g_strerror (e->code);
-			g_warning ("tracker-needle.vala:561: Could not launch '%s', %d->%s", command[0], e->code, _tmp8_);
+			g_warning ("tracker-needle.vala:569: Could not launch '%s', %d->%s", command[0], e->code, _tmp8_);
 			_g_error_free0 (e);
 			argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
 			command = (_vala_array_free (command, command_length1, (GDestroyNotify) g_free), NULL);
@@ -1301,12 +1303,12 @@ static void tracker_needle_launch_selected (TrackerNeedle* self, GtkTreeModel* m
 			g_clear_error (&_inner_error_);
 			return;
 		}
-		g_debug ("tracker-needle.vala:565: Launched application with PID:%d", (gint) child_pid);
+		g_debug ("tracker-needle.vala:573: Launched application with PID:%d", (gint) child_pid);
 		argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
 		command = (_vala_array_free (command, command_length1, (GDestroyNotify) g_free), NULL);
 		return;
 	}
-	g_debug ("tracker-needle.vala:570: Attempting to launch application for uri:'%s'", uri);
+	g_debug ("tracker-needle.vala:578: Attempting to launch application for uri:'%s'", uri);
 	g_app_info_launch_default_for_uri (uri, NULL, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		goto __catch22_g_error;
@@ -1321,7 +1323,7 @@ static void tracker_needle_launch_selected (TrackerNeedle* self, GtkTreeModel* m
 		_inner_error_ = NULL;
 		_tmp9_ = g_strconcat ("Could not launch application: ", e->message, NULL);
 		_tmp10_ = _tmp9_;
-		g_warning ("tracker-needle.vala:573: %s", _tmp10_);
+		g_warning ("tracker-needle.vala:581: %s", _tmp10_);
 		_g_free0 (_tmp10_);
 		_g_error_free0 (e);
 	}
@@ -1370,10 +1372,10 @@ static void tracker_needle_show_tags_clicked (TrackerNeedle* self) {
 	g_return_if_fail (self != NULL);
 	_tmp0_ = gtk_toggle_tool_button_get_active (self->priv->show_tags);
 	if (_tmp0_) {
-		g_debug ("tracker-needle.vala:589: Showing tags");
+		g_debug ("tracker-needle.vala:597: Showing tags");
 		gtk_widget_show ((GtkWidget*) self->priv->taglist);
 	} else {
-		g_debug ("tracker-needle.vala:592: Hiding tags");
+		g_debug ("tracker-needle.vala:600: Hiding tags");
 		gtk_widget_hide ((GtkWidget*) self->priv->taglist);
 	}
 }
@@ -1383,7 +1385,7 @@ static void tracker_needle_show_stats_clicked (TrackerNeedle* self) {
 	TrackerStats* _tmp0_ = NULL;
 	TrackerStats* s;
 	g_return_if_fail (self != NULL);
-	g_debug ("tracker-needle.vala:598: Showing stats dialog");
+	g_debug ("tracker-needle.vala:606: Showing stats dialog");
 	_tmp0_ = tracker_stats_new ();
 	s = g_object_ref_sink (_tmp0_);
 	gtk_widget_show ((GtkWidget*) s);

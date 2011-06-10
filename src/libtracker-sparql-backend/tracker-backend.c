@@ -108,6 +108,7 @@ struct _TrackerSparqlBackendUpdateAsyncData {
 	gchar* sparql;
 	gint priority;
 	GCancellable* cancellable;
+	GError* _tmp0_;
 	GError * _inner_error_;
 };
 
@@ -122,8 +123,9 @@ struct _TrackerSparqlBackendUpdateArrayAsyncData {
 	gint priority;
 	GCancellable* cancellable;
 	GPtrArray* result;
-	GPtrArray* _tmp0_;
+	GError* _tmp0_;
 	GPtrArray* _tmp1_;
+	GPtrArray* _tmp2_;
 	GError * _inner_error_;
 };
 
@@ -137,8 +139,9 @@ struct _TrackerSparqlBackendUpdateBlankAsyncData {
 	gint priority;
 	GCancellable* cancellable;
 	GVariant* result;
-	GVariant* _tmp0_;
+	GError* _tmp0_;
 	GVariant* _tmp1_;
+	GVariant* _tmp2_;
 	GError * _inner_error_;
 };
 
@@ -152,6 +155,7 @@ struct _TrackerSparqlBackendLoadAsyncData {
 	GCancellable* cancellable;
 	gchar* _tmp0_;
 	gchar* uri;
+	GError* _tmp1_;
 	GError * _inner_error_;
 };
 
@@ -163,8 +167,9 @@ struct _TrackerSparqlBackendStatisticsAsyncData {
 	TrackerSparqlBackend* self;
 	GCancellable* cancellable;
 	TrackerSparqlCursor* result;
-	TrackerSparqlCursor* _tmp0_;
+	GError* _tmp0_;
 	TrackerSparqlCursor* _tmp1_;
+	TrackerSparqlCursor* _tmp2_;
 	GError * _inner_error_;
 };
 
@@ -182,7 +187,6 @@ struct _Block2Data {
 	GError* spawn_error;
 	TrackerSparqlConnection* _result_;
 	GMainContext* context;
-	gboolean is_direct_only;
 	GCancellable* cancellable;
 	gpointer _async_data_;
 };
@@ -192,7 +196,6 @@ struct _TrackerSparqlBackendGetInternalAsyncData {
 	GObject* _source_object_;
 	GAsyncResult* _res_;
 	GSimpleAsyncResult* _async_result;
-	gboolean is_direct_only;
 	GCancellable* cancellable;
 	TrackerSparqlConnection* result;
 	Block2Data* _data2_;
@@ -235,8 +238,6 @@ struct _TrackerSparqlConnectionGetDirectAsyncData {
 
 
 static gpointer tracker_sparql_backend_parent_class = NULL;
-static gboolean tracker_sparql_backend_direct_only;
-static gboolean tracker_sparql_backend_direct_only = FALSE;
 static TrackerSparqlConnection* tracker_sparql_backend_singleton;
 static TrackerSparqlConnection* tracker_sparql_backend_singleton = NULL;
 static gboolean tracker_sparql_backend_log_initialized;
@@ -252,7 +253,7 @@ enum  {
 static GType tracker_sparql_backend_backend_get_type (void) G_GNUC_UNUSED;
 TrackerSparqlBackend* tracker_sparql_backend_new (GError** error);
 TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GError** error);
-static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, gboolean direct_only, GError** error);
+static void tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, GError** error);
 static void tracker_sparql_backend_real_dispose (GObject* base);
 static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GError** error);
 static void tracker_sparql_backend_real_query_async_data_free (gpointer _data);
@@ -284,12 +285,12 @@ static void tracker_sparql_backend_real_statistics_async_data_free (gpointer _da
 static void tracker_sparql_backend_real_statistics_async (TrackerSparqlConnection* base, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 static gboolean tracker_sparql_backend_real_statistics_async_co (TrackerSparqlBackendStatisticsAsyncData* data);
 static void tracker_sparql_backend_statistics_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
-static TrackerSparqlConnection* tracker_sparql_backend_get (gboolean is_direct_only, GCancellable* cancellable, GError** error);
+static TrackerSparqlConnection* tracker_sparql_backend_get (GCancellable* cancellable, GError** error);
 static void tracker_sparql_backend_log_init (void);
-TrackerSparqlConnection* tracker_sparql_backend_get_internal (gboolean is_direct_only, GCancellable* cancellable, GError** error);
+TrackerSparqlConnection* tracker_sparql_backend_get_internal (GCancellable* cancellable, GError** error);
 static Block1Data* block1_data_ref (Block1Data* _data1_);
 static void block1_data_unref (Block1Data* _data1_);
-void tracker_sparql_backend_get_internal_async (gboolean is_direct_only, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
+void tracker_sparql_backend_get_internal_async (GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 TrackerSparqlConnection* tracker_sparql_backend_get_internal_finish (GAsyncResult* _res_, GError** error);
 static void _lambda2_ (GObject* obj, GAsyncResult* res, Block1Data* _data1_);
 static void __lambda2__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self);
@@ -341,7 +342,6 @@ TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GErro
 	GDBusMessage* _tmp2_ = NULL;
 	GDBusMessage* _tmp3_;
 	GDBusMessage* _tmp4_;
-	const gchar* _tmp5_ = NULL;
 	GError * _inner_error_ = NULL;
 	self = (TrackerSparqlBackend*) tracker_sparql_connection_construct (object_type);
 	g_debug ("tracker-backend.vala:33: Waiting for service to become available...");
@@ -368,13 +368,8 @@ TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GErro
 		goto __catch0_g_error;
 	}
 	g_debug ("tracker-backend.vala:41: Service is ready");
-	if (tracker_sparql_backend_direct_only) {
-		_tmp5_ = "true";
-	} else {
-		_tmp5_ = "false";
-	}
-	g_debug ("tracker-backend.vala:43: Constructing connection, direct_only=%s", _tmp5_);
-	tracker_sparql_backend_load_plugins (self, tracker_sparql_backend_direct_only, &_inner_error_);
+	g_debug ("tracker-backend.vala:43: Constructing connection");
+	tracker_sparql_backend_load_plugins (self, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		_g_object_unref0 (msg);
 		_g_object_unref0 (bus);
@@ -387,11 +382,11 @@ TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GErro
 	__catch0_g_error:
 	{
 		GError * e;
-		GError* _tmp6_ = NULL;
+		GError* _tmp5_ = NULL;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		_tmp6_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, e->message);
-		_inner_error_ = _tmp6_;
+		_tmp5_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, e->message);
+		_inner_error_ = _tmp5_;
 		_g_error_free0 (e);
 		goto __finally0;
 	}
@@ -444,8 +439,7 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 	GError * _inner_error_ = NULL;
 	self = (TrackerSparqlBackend*) base;
 	g_return_val_if_fail (sparql != NULL, NULL);
-	g_return_val_if_fail ((self->priv->bus != NULL) || (self->priv->direct != NULL), NULL);
-	g_debug ("tracker-backend.vala:76: %s(): '%s'", "Tracker.Sparql.Backend.query", sparql);
+	g_debug ("tracker-backend.vala:75: %s(): '%s'", "Tracker.Sparql.Backend.query", sparql);
 	if (self->priv->direct != NULL) {
 		TrackerSparqlCursor* _tmp0_ = NULL;
 		TrackerSparqlCursor* _tmp1_;
@@ -548,8 +542,7 @@ static gboolean tracker_sparql_backend_real_query_async_co (TrackerSparqlBackend
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_return_val_if_fail ((data->self->priv->bus != NULL) || (data->self->priv->direct != NULL), FALSE);
-	g_debug ("tracker-backend.vala:86: %s(): '%s'", "Tracker.Sparql.Backend.query_async", data->sparql);
+	g_debug ("tracker-backend.vala:84: %s(): '%s'", "Tracker.Sparql.Backend.query_async", data->sparql);
 	if (data->self->priv->direct != NULL) {
 		data->_state_ = 1;
 		tracker_sparql_connection_query_async (data->self->priv->direct, data->sparql, data->cancellable, tracker_sparql_backend_query_async_ready, data);
@@ -632,8 +625,20 @@ static void tracker_sparql_backend_real_update (TrackerSparqlConnection* base, c
 	GError * _inner_error_ = NULL;
 	self = (TrackerSparqlBackend*) base;
 	g_return_if_fail (sparql != NULL);
-	g_return_if_fail (self->priv->bus != NULL);
-	g_debug ("tracker-backend.vala:96: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update", priority, sparql);
+	g_debug ("tracker-backend.vala:93: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update", priority, sparql);
+	if (self->priv->bus == NULL) {
+		GError* _tmp0_ = NULL;
+		_tmp0_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
+		_inner_error_ = _tmp0_;
+		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
+			g_propagate_error (error, _inner_error_);
+			return;
+		} else {
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+			g_clear_error (&_inner_error_);
+			return;
+		}
+	}
 	tracker_sparql_connection_update (self->priv->bus, sparql, priority, cancellable, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
@@ -651,15 +656,27 @@ static void tracker_sparql_backend_real_update (TrackerSparqlConnection* base, c
 static GVariant* tracker_sparql_backend_real_update_blank (TrackerSparqlConnection* base, const gchar* sparql, gint priority, GCancellable* cancellable, GError** error) {
 	TrackerSparqlBackend * self;
 	GVariant* result = NULL;
-	GVariant* _tmp0_ = NULL;
-	GVariant* _tmp1_;
+	GVariant* _tmp1_ = NULL;
+	GVariant* _tmp2_;
 	GError * _inner_error_ = NULL;
 	self = (TrackerSparqlBackend*) base;
 	g_return_val_if_fail (sparql != NULL, NULL);
-	g_return_val_if_fail (self->priv->bus != NULL, NULL);
-	g_debug ("tracker-backend.vala:102: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank", priority, sparql);
-	_tmp0_ = tracker_sparql_connection_update_blank (self->priv->bus, sparql, priority, cancellable, &_inner_error_);
-	_tmp1_ = _tmp0_;
+	g_debug ("tracker-backend.vala:101: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank", priority, sparql);
+	if (self->priv->bus == NULL) {
+		GError* _tmp0_ = NULL;
+		_tmp0_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
+		_inner_error_ = _tmp0_;
+		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
+			g_propagate_error (error, _inner_error_);
+			return NULL;
+		} else {
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+			g_clear_error (&_inner_error_);
+			return NULL;
+		}
+	}
+	_tmp1_ = tracker_sparql_connection_update_blank (self->priv->bus, sparql, priority, cancellable, &_inner_error_);
+	_tmp2_ = _tmp1_;
 	if (_inner_error_ != NULL) {
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
 			g_propagate_error (error, _inner_error_);
@@ -670,7 +687,7 @@ static GVariant* tracker_sparql_backend_real_update_blank (TrackerSparqlConnecti
 			return NULL;
 		}
 	}
-	result = _tmp1_;
+	result = _tmp2_;
 	return result;
 }
 
@@ -728,8 +745,27 @@ static gboolean tracker_sparql_backend_real_update_async_co (TrackerSparqlBacken
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_return_val_if_fail (data->self->priv->bus != NULL, FALSE);
-	g_debug ("tracker-backend.vala:108: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_async", data->priority, data->sparql);
+	g_debug ("tracker-backend.vala:109: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_async", data->priority, data->sparql);
+	if (data->self->priv->bus == NULL) {
+		data->_tmp0_ = NULL;
+		data->_tmp0_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
+		data->_inner_error_ = data->_tmp0_;
+		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
+			g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
+			g_error_free (data->_inner_error_);
+			if (data->_state_ == 0) {
+				g_simple_async_result_complete_in_idle (data->_async_result);
+			} else {
+				g_simple_async_result_complete (data->_async_result);
+			}
+			g_object_unref (data->_async_result);
+			return FALSE;
+		} else {
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, data->_inner_error_->message, g_quark_to_string (data->_inner_error_->domain), data->_inner_error_->code);
+			g_clear_error (&data->_inner_error_);
+			return FALSE;
+		}
+	}
 	data->_state_ = 1;
 	tracker_sparql_connection_update_async (data->self->priv->bus, data->sparql, data->priority, data->cancellable, tracker_sparql_backend_update_async_ready, data);
 	return FALSE;
@@ -833,14 +869,33 @@ static gboolean tracker_sparql_backend_real_update_array_async_co (TrackerSparql
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_return_val_if_fail (data->self->priv->bus != NULL, FALSE);
+	if (data->self->priv->bus == NULL) {
+		data->_tmp0_ = NULL;
+		data->_tmp0_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
+		data->_inner_error_ = data->_tmp0_;
+		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
+			g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
+			g_error_free (data->_inner_error_);
+			if (data->_state_ == 0) {
+				g_simple_async_result_complete_in_idle (data->_async_result);
+			} else {
+				g_simple_async_result_complete (data->_async_result);
+			}
+			g_object_unref (data->_async_result);
+			return FALSE;
+		} else {
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, data->_inner_error_->message, g_quark_to_string (data->_inner_error_->domain), data->_inner_error_->code);
+			g_clear_error (&data->_inner_error_);
+			return FALSE;
+		}
+	}
 	data->_state_ = 1;
 	tracker_sparql_connection_update_array_async (data->self->priv->bus, data->sparql, data->sparql_length1, data->priority, data->cancellable, tracker_sparql_backend_update_array_async_ready, data);
 	return FALSE;
 	_state_1:
-	data->_tmp0_ = NULL;
-	data->_tmp0_ = tracker_sparql_connection_update_array_finish (data->self->priv->bus, data->_res_, &data->_inner_error_);
-	data->_tmp1_ = data->_tmp0_;
+	data->_tmp1_ = NULL;
+	data->_tmp1_ = tracker_sparql_connection_update_array_finish (data->self->priv->bus, data->_res_, &data->_inner_error_);
+	data->_tmp2_ = data->_tmp1_;
 	if (data->_inner_error_ != NULL) {
 		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
 			g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
@@ -858,7 +913,7 @@ static gboolean tracker_sparql_backend_real_update_array_async_co (TrackerSparql
 			return FALSE;
 		}
 	}
-	data->result = data->_tmp1_;
+	data->result = data->_tmp2_;
 	if (data->_state_ == 0) {
 		g_simple_async_result_complete_in_idle (data->_async_result);
 	} else {
@@ -934,15 +989,34 @@ static gboolean tracker_sparql_backend_real_update_blank_async_co (TrackerSparql
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_return_val_if_fail (data->self->priv->bus != NULL, FALSE);
-	g_debug ("tracker-backend.vala:119: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank_async", data->priority, data->sparql);
+	g_debug ("tracker-backend.vala:124: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank_async", data->priority, data->sparql);
+	if (data->self->priv->bus == NULL) {
+		data->_tmp0_ = NULL;
+		data->_tmp0_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
+		data->_inner_error_ = data->_tmp0_;
+		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
+			g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
+			g_error_free (data->_inner_error_);
+			if (data->_state_ == 0) {
+				g_simple_async_result_complete_in_idle (data->_async_result);
+			} else {
+				g_simple_async_result_complete (data->_async_result);
+			}
+			g_object_unref (data->_async_result);
+			return FALSE;
+		} else {
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, data->_inner_error_->message, g_quark_to_string (data->_inner_error_->domain), data->_inner_error_->code);
+			g_clear_error (&data->_inner_error_);
+			return FALSE;
+		}
+	}
 	data->_state_ = 1;
 	tracker_sparql_connection_update_blank_async (data->self->priv->bus, data->sparql, data->priority, data->cancellable, tracker_sparql_backend_update_blank_async_ready, data);
 	return FALSE;
 	_state_1:
-	data->_tmp0_ = NULL;
-	data->_tmp0_ = tracker_sparql_connection_update_blank_finish (data->self->priv->bus, data->_res_, &data->_inner_error_);
-	data->_tmp1_ = data->_tmp0_;
+	data->_tmp1_ = NULL;
+	data->_tmp1_ = tracker_sparql_connection_update_blank_finish (data->self->priv->bus, data->_res_, &data->_inner_error_);
+	data->_tmp2_ = data->_tmp1_;
 	if (data->_inner_error_ != NULL) {
 		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
 			g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
@@ -960,7 +1034,7 @@ static gboolean tracker_sparql_backend_real_update_blank_async_co (TrackerSparql
 			return FALSE;
 		}
 	}
-	data->result = data->_tmp1_;
+	data->result = data->_tmp2_;
 	if (data->_state_ == 0) {
 		g_simple_async_result_complete_in_idle (data->_async_result);
 	} else {
@@ -985,10 +1059,24 @@ static void tracker_sparql_backend_real_load (TrackerSparqlConnection* base, GFi
 	GError * _inner_error_ = NULL;
 	self = (TrackerSparqlBackend*) base;
 	g_return_if_fail (file != NULL);
-	g_return_if_fail (self->priv->bus != NULL);
 	_tmp0_ = g_file_get_uri (file);
 	uri = _tmp0_;
-	g_debug ("tracker-backend.vala:126: %s(): '%s'", "Tracker.Sparql.Backend.load", uri);
+	g_debug ("tracker-backend.vala:133: %s(): '%s'", "Tracker.Sparql.Backend.load", uri);
+	if (self->priv->bus == NULL) {
+		GError* _tmp1_ = NULL;
+		_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
+		_inner_error_ = _tmp1_;
+		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
+			g_propagate_error (error, _inner_error_);
+			_g_free0 (uri);
+			return;
+		} else {
+			_g_free0 (uri);
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+			g_clear_error (&_inner_error_);
+			return;
+		}
+	}
 	tracker_sparql_connection_load (self->priv->bus, file, cancellable, &_inner_error_);
 	if (_inner_error_ != NULL) {
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
@@ -1058,11 +1146,32 @@ static gboolean tracker_sparql_backend_real_load_async_co (TrackerSparqlBackendL
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_return_val_if_fail (data->self->priv->bus != NULL, FALSE);
 	data->_tmp0_ = NULL;
 	data->_tmp0_ = g_file_get_uri (data->file);
 	data->uri = data->_tmp0_;
-	g_debug ("tracker-backend.vala:133: %s(): '%s'", "Tracker.Sparql.Backend.load_async", data->uri);
+	g_debug ("tracker-backend.vala:142: %s(): '%s'", "Tracker.Sparql.Backend.load_async", data->uri);
+	if (data->self->priv->bus == NULL) {
+		data->_tmp1_ = NULL;
+		data->_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
+		data->_inner_error_ = data->_tmp1_;
+		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
+			g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
+			g_error_free (data->_inner_error_);
+			_g_free0 (data->uri);
+			if (data->_state_ == 0) {
+				g_simple_async_result_complete_in_idle (data->_async_result);
+			} else {
+				g_simple_async_result_complete (data->_async_result);
+			}
+			g_object_unref (data->_async_result);
+			return FALSE;
+		} else {
+			_g_free0 (data->uri);
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, data->_inner_error_->message, g_quark_to_string (data->_inner_error_->domain), data->_inner_error_->code);
+			g_clear_error (&data->_inner_error_);
+			return FALSE;
+		}
+	}
 	data->_state_ = 1;
 	tracker_sparql_connection_load_async (data->self->priv->bus, data->file, data->cancellable, tracker_sparql_backend_load_async_ready, data);
 	return FALSE;
@@ -1101,14 +1210,26 @@ static gboolean tracker_sparql_backend_real_load_async_co (TrackerSparqlBackendL
 static TrackerSparqlCursor* tracker_sparql_backend_real_statistics (TrackerSparqlConnection* base, GCancellable* cancellable, GError** error) {
 	TrackerSparqlBackend * self;
 	TrackerSparqlCursor* result = NULL;
-	TrackerSparqlCursor* _tmp0_ = NULL;
-	TrackerSparqlCursor* _tmp1_;
+	TrackerSparqlCursor* _tmp1_ = NULL;
+	TrackerSparqlCursor* _tmp2_;
 	GError * _inner_error_ = NULL;
 	self = (TrackerSparqlBackend*) base;
-	g_return_val_if_fail (self->priv->bus != NULL, NULL);
-	g_debug ("tracker-backend.vala:139: %s()", "Tracker.Sparql.Backend.statistics");
-	_tmp0_ = tracker_sparql_connection_statistics (self->priv->bus, cancellable, &_inner_error_);
-	_tmp1_ = _tmp0_;
+	g_debug ("tracker-backend.vala:150: %s()", "Tracker.Sparql.Backend.statistics");
+	if (self->priv->bus == NULL) {
+		GError* _tmp0_ = NULL;
+		_tmp0_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Statistics support not available for direct-only connection");
+		_inner_error_ = _tmp0_;
+		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
+			g_propagate_error (error, _inner_error_);
+			return NULL;
+		} else {
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+			g_clear_error (&_inner_error_);
+			return NULL;
+		}
+	}
+	_tmp1_ = tracker_sparql_connection_statistics (self->priv->bus, cancellable, &_inner_error_);
+	_tmp2_ = _tmp1_;
 	if (_inner_error_ != NULL) {
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
 			g_propagate_error (error, _inner_error_);
@@ -1119,7 +1240,7 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_statistics (TrackerSparq
 			return NULL;
 		}
 	}
-	result = _tmp1_;
+	result = _tmp2_;
 	return result;
 }
 
@@ -1179,15 +1300,34 @@ static gboolean tracker_sparql_backend_real_statistics_async_co (TrackerSparqlBa
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_return_val_if_fail (data->self->priv->bus != NULL, FALSE);
-	g_debug ("tracker-backend.vala:145: %s()", "Tracker.Sparql.Backend.statistics_async");
+	g_debug ("tracker-backend.vala:158: %s()", "Tracker.Sparql.Backend.statistics_async");
+	if (data->self->priv->bus == NULL) {
+		data->_tmp0_ = NULL;
+		data->_tmp0_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Statistics support not available for direct-only connection");
+		data->_inner_error_ = data->_tmp0_;
+		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
+			g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
+			g_error_free (data->_inner_error_);
+			if (data->_state_ == 0) {
+				g_simple_async_result_complete_in_idle (data->_async_result);
+			} else {
+				g_simple_async_result_complete (data->_async_result);
+			}
+			g_object_unref (data->_async_result);
+			return FALSE;
+		} else {
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, data->_inner_error_->message, g_quark_to_string (data->_inner_error_->domain), data->_inner_error_->code);
+			g_clear_error (&data->_inner_error_);
+			return FALSE;
+		}
+	}
 	data->_state_ = 1;
 	tracker_sparql_connection_statistics_async (data->self->priv->bus, data->cancellable, tracker_sparql_backend_statistics_async_ready, data);
 	return FALSE;
 	_state_1:
-	data->_tmp0_ = NULL;
-	data->_tmp0_ = tracker_sparql_connection_statistics_finish (data->self->priv->bus, data->_res_, &data->_inner_error_);
-	data->_tmp1_ = data->_tmp0_;
+	data->_tmp1_ = NULL;
+	data->_tmp1_ = tracker_sparql_connection_statistics_finish (data->self->priv->bus, data->_res_, &data->_inner_error_);
+	data->_tmp2_ = data->_tmp1_;
 	if (data->_inner_error_ != NULL) {
 		if (((data->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (data->_inner_error_->domain == G_IO_ERROR)) || (data->_inner_error_->domain == G_DBUS_ERROR)) {
 			g_simple_async_result_set_from_error (data->_async_result, data->_inner_error_);
@@ -1205,7 +1345,7 @@ static gboolean tracker_sparql_backend_real_statistics_async_co (TrackerSparqlBa
 			return FALSE;
 		}
 	}
-	data->result = data->_tmp1_;
+	data->result = data->_tmp2_;
 	if (data->_state_ == 0) {
 		g_simple_async_result_complete_in_idle (data->_async_result);
 	} else {
@@ -1223,16 +1363,13 @@ static gboolean tracker_sparql_backend_real_statistics_async_co (TrackerSparqlBa
 }
 
 
-static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, gboolean direct_only, GError** error) {
-	gboolean result = FALSE;
+static void tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, GError** error) {
 	const gchar* _tmp0_ = NULL;
 	gchar* _tmp1_;
 	gchar* env_backend;
 	TrackerSparqlBackendBackend backend;
-	gboolean _tmp5_ = FALSE;
-	TrackerSparqlConnection* connection = NULL;
 	GError * _inner_error_ = NULL;
-	g_return_val_if_fail (self != NULL, FALSE);
+	g_return_if_fail (self != NULL);
 	_tmp0_ = g_getenv ("TRACKER_SPARQL_BACKEND");
 	_tmp1_ = g_strdup (_tmp0_);
 	env_backend = _tmp1_;
@@ -1242,52 +1379,31 @@ static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self,
 		_tmp2_ = g_ascii_strcasecmp (env_backend, "direct");
 		if (_tmp2_ == 0) {
 			backend = TRACKER_SPARQL_BACKEND_BACKEND_DIRECT;
-			g_debug ("tracker-backend.vala:157: Using backend = 'DIRECT'");
+			g_debug ("tracker-backend.vala:173: Using backend = 'DIRECT'");
 		} else {
 			gint _tmp3_;
 			_tmp3_ = g_ascii_strcasecmp (env_backend, "bus");
 			if (_tmp3_ == 0) {
 				backend = TRACKER_SPARQL_BACKEND_BACKEND_BUS;
-				g_debug ("tracker-backend.vala:160: Using backend = 'BUS'");
+				g_debug ("tracker-backend.vala:176: Using backend = 'BUS'");
 			} else {
-				g_warning ("tracker-backend.vala:162: Environment variable TRACKER_SPARQL_BACKEND " \
+				g_warning ("tracker-backend.vala:178: Environment variable TRACKER_SPARQL_BACKEND " \
 "set to unknown value '%s'", env_backend);
 			}
 		}
 	}
 	if (backend == TRACKER_SPARQL_BACKEND_BACKEND_AUTO) {
-		gboolean _tmp4_ = FALSE;
-		if (direct_only) {
-			_tmp4_ = backend == TRACKER_SPARQL_BACKEND_BACKEND_AUTO;
-		} else {
-			_tmp4_ = FALSE;
-		}
-		if (_tmp4_) {
-			backend = TRACKER_SPARQL_BACKEND_BACKEND_DIRECT;
-			g_debug ("tracker-backend.vala:169: Using backend = 'DIRECT'");
-		} else {
-			g_debug ("tracker-backend.vala:171: Using backend = 'AUTO'");
-		}
-	}
-	if (direct_only) {
-		_tmp5_ = backend == TRACKER_SPARQL_BACKEND_BACKEND_BUS;
-	} else {
-		_tmp5_ = FALSE;
-	}
-	if (_tmp5_) {
-		g_debug ("tracker-backend.vala:176: Backend set in environment contradicts reque" \
-"sted connection type, using environment to override");
+		g_debug ("tracker-backend.vala:183: Using backend = 'AUTO'");
 	}
 	switch (backend) {
 		case TRACKER_SPARQL_BACKEND_BACKEND_AUTO:
 		{
-			TrackerDirectConnection* _tmp6_ = NULL;
-			TrackerDirectConnection* _tmp7_;
-			TrackerBusConnection* _tmp10_ = NULL;
-			TrackerBusConnection* _tmp11_;
-			TrackerSparqlConnection* _tmp12_;
-			_tmp6_ = tracker_direct_connection_new (&_inner_error_);
-			_tmp7_ = _tmp6_;
+			TrackerDirectConnection* _tmp4_ = NULL;
+			TrackerDirectConnection* _tmp5_;
+			TrackerBusConnection* _tmp8_ = NULL;
+			TrackerBusConnection* _tmp9_;
+			_tmp4_ = tracker_direct_connection_new (&_inner_error_);
+			_tmp5_ = _tmp4_;
 			if (_inner_error_ != NULL) {
 				if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 					goto __catch2_tracker_sparql_error;
@@ -1295,81 +1411,66 @@ static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self,
 				goto __finally2;
 			}
 			_g_object_unref0 (self->priv->direct);
-			self->priv->direct = (TrackerSparqlConnection*) _tmp7_;
+			self->priv->direct = (TrackerSparqlConnection*) _tmp5_;
 			goto __finally2;
 			__catch2_tracker_sparql_error:
 			{
 				GError * e;
-				gchar* _tmp8_;
-				gchar* _tmp9_;
+				gchar* _tmp6_;
+				gchar* _tmp7_;
 				e = _inner_error_;
 				_inner_error_ = NULL;
-				_tmp8_ = g_strconcat ("Unable to initialize direct backend: ", e->message, NULL);
-				_tmp9_ = _tmp8_;
-				g_debug ("tracker-backend.vala:186: %s", _tmp9_);
-				_g_free0 (_tmp9_);
+				_tmp6_ = g_strconcat ("Unable to initialize direct backend: ", e->message, NULL);
+				_tmp7_ = _tmp6_;
+				g_debug ("tracker-backend.vala:191: %s", _tmp7_);
+				_g_free0 (_tmp7_);
 				_g_error_free0 (e);
 			}
 			__finally2:
 			if (_inner_error_ != NULL) {
 				g_propagate_error (error, _inner_error_);
-				_g_object_unref0 (connection);
 				_g_free0 (env_backend);
-				return FALSE;
+				return;
 			}
-			_tmp10_ = tracker_bus_connection_new (&_inner_error_);
-			_tmp11_ = _tmp10_;
+			_tmp8_ = tracker_bus_connection_new (&_inner_error_);
+			_tmp9_ = _tmp8_;
 			if (_inner_error_ != NULL) {
 				g_propagate_error (error, _inner_error_);
-				_g_object_unref0 (connection);
 				_g_free0 (env_backend);
-				return FALSE;
+				return;
 			}
 			_g_object_unref0 (self->priv->bus);
-			self->priv->bus = (TrackerSparqlConnection*) _tmp11_;
-			_tmp12_ = _g_object_ref0 (self->priv->bus);
-			_g_object_unref0 (connection);
-			connection = _tmp12_;
+			self->priv->bus = (TrackerSparqlConnection*) _tmp9_;
 			break;
 		}
 		case TRACKER_SPARQL_BACKEND_BACKEND_DIRECT:
 		{
-			TrackerDirectConnection* _tmp13_ = NULL;
-			TrackerDirectConnection* _tmp14_;
-			TrackerSparqlConnection* _tmp15_;
-			_tmp13_ = tracker_direct_connection_new (&_inner_error_);
-			_tmp14_ = _tmp13_;
+			TrackerDirectConnection* _tmp10_ = NULL;
+			TrackerDirectConnection* _tmp11_;
+			_tmp10_ = tracker_direct_connection_new (&_inner_error_);
+			_tmp11_ = _tmp10_;
 			if (_inner_error_ != NULL) {
 				g_propagate_error (error, _inner_error_);
-				_g_object_unref0 (connection);
 				_g_free0 (env_backend);
-				return FALSE;
+				return;
 			}
 			_g_object_unref0 (self->priv->direct);
-			self->priv->direct = (TrackerSparqlConnection*) _tmp14_;
-			_tmp15_ = _g_object_ref0 (self->priv->direct);
-			_g_object_unref0 (connection);
-			connection = _tmp15_;
+			self->priv->direct = (TrackerSparqlConnection*) _tmp11_;
 			break;
 		}
 		case TRACKER_SPARQL_BACKEND_BACKEND_BUS:
 		{
-			TrackerBusConnection* _tmp16_ = NULL;
-			TrackerBusConnection* _tmp17_;
-			TrackerSparqlConnection* _tmp18_;
-			_tmp16_ = tracker_bus_connection_new (&_inner_error_);
-			_tmp17_ = _tmp16_;
+			TrackerBusConnection* _tmp12_ = NULL;
+			TrackerBusConnection* _tmp13_;
+			_tmp12_ = tracker_bus_connection_new (&_inner_error_);
+			_tmp13_ = _tmp12_;
 			if (_inner_error_ != NULL) {
 				g_propagate_error (error, _inner_error_);
-				_g_object_unref0 (connection);
 				_g_free0 (env_backend);
-				return FALSE;
+				return;
 			}
 			_g_object_unref0 (self->priv->bus);
-			self->priv->bus = (TrackerSparqlConnection*) _tmp17_;
-			_tmp18_ = _g_object_ref0 (self->priv->bus);
-			_g_object_unref0 (connection);
-			connection = _tmp18_;
+			self->priv->bus = (TrackerSparqlConnection*) _tmp13_;
 			break;
 		}
 		default:
@@ -1377,14 +1478,11 @@ static gboolean tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self,
 			g_assert_not_reached ();
 		}
 	}
-	result = connection != NULL;
-	_g_object_unref0 (connection);
 	_g_free0 (env_backend);
-	return result;
 }
 
 
-static TrackerSparqlConnection* tracker_sparql_backend_get (gboolean is_direct_only, GCancellable* cancellable, GError** error) {
+static TrackerSparqlConnection* tracker_sparql_backend_get (GCancellable* cancellable, GError** error) {
 	TrackerSparqlConnection* result = NULL;
 	TrackerSparqlConnection* _tmp0_;
 	TrackerSparqlConnection* _result_;
@@ -1397,7 +1495,6 @@ static TrackerSparqlConnection* tracker_sparql_backend_get (gboolean is_direct_o
 		TrackerSparqlBackend* _tmp2_;
 		gboolean _tmp3_ = FALSE;
 		tracker_sparql_backend_log_init ();
-		tracker_sparql_backend_direct_only = is_direct_only;
 		_tmp1_ = tracker_sparql_backend_new (&_inner_error_);
 		_tmp2_ = _tmp1_;
 		if (_inner_error_ != NULL) {
@@ -1422,7 +1519,6 @@ static TrackerSparqlConnection* tracker_sparql_backend_get (gboolean is_direct_o
 		}
 		tracker_sparql_backend_singleton = _result_;
 	}
-	g_assert (tracker_sparql_backend_direct_only == is_direct_only);
 	result = _result_;
 	g_static_mutex_unlock (&tracker_sparql_backend_door);
 	return result;
@@ -1471,7 +1567,7 @@ static void __lambda2__gasync_ready_callback (GObject* source_object, GAsyncResu
 }
 
 
-TrackerSparqlConnection* tracker_sparql_backend_get_internal (gboolean is_direct_only, GCancellable* cancellable, GError** error) {
+TrackerSparqlConnection* tracker_sparql_backend_get_internal (GCancellable* cancellable, GError** error) {
 	TrackerSparqlConnection* result = NULL;
 	Block1Data* _data1_;
 	GMainContext* _tmp0_ = NULL;
@@ -1487,7 +1583,7 @@ TrackerSparqlConnection* tracker_sparql_backend_get_internal (gboolean is_direct
 	if (_tmp0_ == NULL) {
 		TrackerSparqlConnection* _tmp1_ = NULL;
 		TrackerSparqlConnection* _tmp2_;
-		_tmp1_ = tracker_sparql_backend_get (is_direct_only, cancellable, &_inner_error_);
+		_tmp1_ = tracker_sparql_backend_get (cancellable, &_inner_error_);
 		_tmp2_ = _tmp1_;
 		if (_inner_error_ != NULL) {
 			if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
@@ -1514,7 +1610,7 @@ TrackerSparqlConnection* tracker_sparql_backend_get_internal (gboolean is_direct
 	_data1_->loop = _tmp4_;
 	_data1_->async_result = NULL;
 	g_main_context_push_thread_default (context);
-	tracker_sparql_backend_get_internal_async (is_direct_only, cancellable, __lambda2__gasync_ready_callback, block1_data_ref (_data1_));
+	tracker_sparql_backend_get_internal_async (cancellable, __lambda2__gasync_ready_callback, block1_data_ref (_data1_));
 	g_main_loop_run (_data1_->loop);
 	g_main_context_pop_thread_default (context);
 	_tmp5_ = tracker_sparql_backend_get_internal_finish (_data1_->async_result, &_inner_error_);
@@ -1552,12 +1648,11 @@ static void tracker_sparql_backend_get_internal_async_data_free (gpointer _data)
 }
 
 
-void tracker_sparql_backend_get_internal_async (gboolean is_direct_only, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
+void tracker_sparql_backend_get_internal_async (GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
 	TrackerSparqlBackendGetInternalAsyncData* _data_;
 	_data_ = g_slice_new0 (TrackerSparqlBackendGetInternalAsyncData);
 	_data_->_async_result = g_simple_async_result_new (NULL, _callback_, _user_data_, tracker_sparql_backend_get_internal_async);
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_sparql_backend_get_internal_async_data_free);
-	_data_->is_direct_only = is_direct_only;
 	_data_->cancellable = _g_object_ref0 (cancellable);
 	tracker_sparql_backend_get_internal_async_co (_data_);
 }
@@ -1629,7 +1724,7 @@ static gboolean _lambda0_ (GIOSchedulerJob* job, Block2Data* _data2_) {
 	GSource* source;
 	GError * _inner_error_ = NULL;
 	g_return_val_if_fail (job != NULL, FALSE);
-	_tmp0_ = tracker_sparql_backend_get (_data2_->is_direct_only, _data2_->cancellable, &_inner_error_);
+	_tmp0_ = tracker_sparql_backend_get (_data2_->cancellable, &_inner_error_);
 	_tmp1_ = _tmp0_;
 	if (_inner_error_ != NULL) {
 		if (_inner_error_->domain == G_IO_ERROR) {
@@ -1733,7 +1828,6 @@ static gboolean tracker_sparql_backend_get_internal_async_co (TrackerSparqlBacke
 	_state_0:
 	data->_data2_ = g_slice_new0 (Block2Data);
 	data->_data2_->_ref_count_ = 1;
-	data->_data2_->is_direct_only = data->is_direct_only;
 	data->_data2_->cancellable = _g_object_ref0 (data->cancellable);
 	data->_data2_->_async_data_ = data;
 	data->_tmp0_ = g_static_mutex_trylock (&tracker_sparql_backend_door);
@@ -1742,7 +1836,6 @@ static gboolean tracker_sparql_backend_get_internal_async_co (TrackerSparqlBacke
 		data->_result_ = data->_tmp1_;
 		g_static_mutex_unlock (&tracker_sparql_backend_door);
 		if (data->_result_ != NULL) {
-			g_assert (tracker_sparql_backend_direct_only == data->_data2_->is_direct_only);
 			data->result = data->_result_;
 			block2_data_unref (data->_data2_);
 			data->_data2_ = NULL;
@@ -2053,7 +2146,7 @@ static gboolean tracker_sparql_connection_get_async_co (TrackerSparqlConnectionG
 	}
 	_state_0:
 	data->_state_ = 1;
-	tracker_sparql_backend_get_internal_async (FALSE, data->cancellable, tracker_sparql_connection_get_async_ready, data);
+	tracker_sparql_backend_get_internal_async (data->cancellable, tracker_sparql_connection_get_async_ready, data);
 	return FALSE;
 	_state_1:
 	data->_tmp0_ = NULL;
@@ -2099,7 +2192,7 @@ TrackerSparqlConnection* tracker_sparql_connection_get (GCancellable* cancellabl
 	TrackerSparqlConnection* _tmp0_ = NULL;
 	TrackerSparqlConnection* _tmp1_;
 	GError * _inner_error_ = NULL;
-	_tmp0_ = tracker_sparql_backend_get_internal (FALSE, cancellable, &_inner_error_);
+	_tmp0_ = tracker_sparql_backend_get_internal (cancellable, &_inner_error_);
 	_tmp1_ = _tmp0_;
 	if (_inner_error_ != NULL) {
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
@@ -2168,7 +2261,7 @@ static gboolean tracker_sparql_connection_get_direct_async_co (TrackerSparqlConn
 	}
 	_state_0:
 	data->_state_ = 1;
-	tracker_sparql_backend_get_internal_async (TRUE, data->cancellable, tracker_sparql_connection_get_direct_async_ready, data);
+	tracker_sparql_backend_get_internal_async (data->cancellable, tracker_sparql_connection_get_direct_async_ready, data);
 	return FALSE;
 	_state_1:
 	data->_tmp0_ = NULL;
@@ -2214,7 +2307,7 @@ TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* can
 	TrackerSparqlConnection* _tmp0_ = NULL;
 	TrackerSparqlConnection* _tmp1_;
 	GError * _inner_error_ = NULL;
-	_tmp0_ = tracker_sparql_backend_get_internal (TRUE, cancellable, &_inner_error_);
+	_tmp0_ = tracker_sparql_backend_get_internal (cancellable, &_inner_error_);
 	_tmp1_ = _tmp0_;
 	if (_inner_error_ != NULL) {
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {

@@ -475,11 +475,12 @@ static void tracker_stats_setup_ui (TrackerStats* self) {
 				static GQuark _tmp12__label11 = 0;
 				static GQuark _tmp12__label12 = 0;
 				static GQuark _tmp12__label13 = 0;
-				GtkHBox* _tmp55_ = NULL;
+				static GQuark _tmp12__label14 = 0;
+				GtkHBox* _tmp58_ = NULL;
 				GtkHBox* hbox;
-				GtkLabel* _tmp56_ = NULL;
+				GtkLabel* _tmp59_ = NULL;
 				GtkLabel* label_key;
-				GtkLabel* _tmp57_ = NULL;
+				GtkLabel* _tmp60_ = NULL;
 				GtkLabel* label_val;
 				if (!_tmp8_) {
 					i++;
@@ -705,6 +706,21 @@ static void tracker_stats_setup_ui (TrackerStats* self) {
 							break;
 						}
 					}
+				} else if (_tmp12_ == ((0 != _tmp12__label14) ? _tmp12__label14 : (_tmp12__label14 = g_quark_from_static_string ("nfo:Bookmark")))) {
+					switch (0) {
+						default:
+						{
+							gint _tmp55_;
+							const gchar* _tmp56_ = NULL;
+							gchar* _tmp57_;
+							_tmp55_ = atoi (val);
+							_tmp56_ = ngettext ("Bookmark", "Bookmarks", (gulong) _tmp55_);
+							_tmp57_ = g_strdup (_tmp56_);
+							_g_free0 (key_used);
+							key_used = _tmp57_;
+							break;
+						}
+					}
 				} else {
 					switch (0) {
 						default:
@@ -713,12 +729,12 @@ static void tracker_stats_setup_ui (TrackerStats* self) {
 						}
 					}
 				}
-				_tmp55_ = (GtkHBox*) gtk_hbox_new (FALSE, 12);
-				hbox = g_object_ref_sink (_tmp55_);
-				_tmp56_ = (GtkLabel*) gtk_label_new (key_used);
-				label_key = g_object_ref_sink (_tmp56_);
-				_tmp57_ = (GtkLabel*) gtk_label_new (val);
-				label_val = g_object_ref_sink (_tmp57_);
+				_tmp58_ = (GtkHBox*) gtk_hbox_new (FALSE, 12);
+				hbox = g_object_ref_sink (_tmp58_);
+				_tmp59_ = (GtkLabel*) gtk_label_new (key_used);
+				label_key = g_object_ref_sink (_tmp59_);
+				_tmp60_ = (GtkLabel*) gtk_label_new (val);
+				label_val = g_object_ref_sink (_tmp60_);
 				gtk_misc_set_alignment ((GtkMisc*) label_key, 0.0f, 0.5f);
 				gtk_misc_set_alignment ((GtkMisc*) label_val, 0.0f, 0.5f);
 				gtk_box_pack_start ((GtkBox*) hbox, (GtkWidget*) label_key, TRUE, TRUE, (guint) 0);
@@ -739,14 +755,14 @@ static void tracker_stats_setup_ui (TrackerStats* self) {
 	__catch12_g_dbus_error:
 	{
 		GError * e;
-		gchar* _tmp58_;
-		gchar* _tmp59_;
+		gchar* _tmp61_;
+		gchar* _tmp62_;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		_tmp58_ = g_strconcat ("Could not get Tracker statistics: ", e->message, NULL);
-		_tmp59_ = _tmp58_;
-		g_warning ("tracker-stats.vala:153: %s", _tmp59_);
-		_g_free0 (_tmp59_);
+		_tmp61_ = g_strconcat ("Could not get Tracker statistics: ", e->message, NULL);
+		_tmp62_ = _tmp61_;
+		g_warning ("tracker-stats.vala:156: %s", _tmp62_);
+		_g_free0 (_tmp62_);
 		_g_error_free0 (e);
 	}
 	__finally12:

@@ -117,7 +117,8 @@ typedef enum  {
 	TRACKER_QUERY_TYPE_DOCUMENTS,
 	TRACKER_QUERY_TYPE_MAIL,
 	TRACKER_QUERY_TYPE_CALENDAR,
-	TRACKER_QUERY_TYPE_FOLDERS
+	TRACKER_QUERY_TYPE_FOLDERS,
+	TRACKER_QUERY_TYPE_BOOKMARKS
 } TrackerQueryType;
 
 typedef enum  {
@@ -1619,6 +1620,14 @@ static void tracker_result_store_real_get_value (GtkTreeModel* base, GtkTreeIter
 						pixbuf = _tmp12_;
 						break;
 					}
+					case TRACKER_QUERY_TYPE_BOOKMARKS:
+					{
+						GdkPixbuf* _tmp13_ = NULL;
+						_tmp13_ = tracker_pixbuf_new_from_name (theme, "web-browser", size);
+						_g_object_unref0 (pixbuf);
+						pixbuf = _tmp13_;
+						break;
+					}
 					default:
 					break;
 				}
@@ -2177,7 +2186,7 @@ void tracker_result_store_add_query (TrackerResultStore* self, TrackerQueryType 
 		}
 	}
 	if (args_length1 != self->priv->n_columns) {
-		g_warning ("tracker-result-store.vala:819: Arguments and number of columns doesn't" \
+		g_warning ("tracker-result-store.vala:822: Arguments and number of columns doesn't" \
 " match");
 		tracker_result_store_query_data_destroy (&query_data);
 		args = (_vala_array_free (args, args_length1, (GDestroyNotify) g_free), NULL);

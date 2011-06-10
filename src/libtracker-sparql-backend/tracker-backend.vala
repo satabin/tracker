@@ -40,8 +40,8 @@ class Tracker.Sparql.Backend : Connection {
 
 			debug ("Service is ready");
 
-			debug ("Constructing connection, direct_only=%s", direct_only ? "true" : "false");
-			load_plugins (direct_only);
+			debug ("Constructing connection");
+			load_plugins ();
 			debug ("Backend is ready");
 		} catch (GLib.Error e) {
 			throw new Sparql.Error.INTERNAL (e.message);
@@ -71,8 +71,7 @@ class Tracker.Sparql.Backend : Connection {
 		base.dispose ();
 	}
 
-	public override Cursor query (string sparql, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null || direct != null) {
+	public override Cursor query (string sparql, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
 		debug ("%s(): '%s'", Log.METHOD, sparql);
 		if (direct != null) {
 			return direct.query (sparql, cancellable);
@@ -81,8 +80,7 @@ class Tracker.Sparql.Backend : Connection {
 		}
 	}
 
-	public async override Cursor query_async (string sparql, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null || direct != null) {
+	public async override Cursor query_async (string sparql, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
 		debug ("%s(): '%s'", Log.METHOD, sparql);
 		if (direct != null) {
 			return yield direct.query_async (sparql, cancellable);
@@ -91,63 +89,81 @@ class Tracker.Sparql.Backend : Connection {
 		}
 	}
 
-	public override void update (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null) {
+	public override void update (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
 		debug ("%s(priority:%d): '%s'", Log.METHOD, priority, sparql);
+		if (bus == null) {
+			throw new Sparql.Error.UNSUPPORTED ("Update support not available for direct-only connection");
+		}
 		bus.update (sparql, priority, cancellable);
 	}
 
-	public override GLib.Variant? update_blank (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null) {
+	public override GLib.Variant? update_blank (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
 		debug ("%s(priority:%d): '%s'", Log.METHOD, priority, sparql);
+		if (bus == null) {
+			throw new Sparql.Error.UNSUPPORTED ("Update support not available for direct-only connection");
+		}
 		return bus.update_blank (sparql, priority, cancellable);
 	}
 
-	public async override void update_async (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null) {
+	public async override void update_async (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
 		debug ("%s(priority:%d): '%s'", Log.METHOD, priority, sparql);
+		if (bus == null) {
+			throw new Sparql.Error.UNSUPPORTED ("Update support not available for direct-only connection");
+		}
 		yield bus.update_async (sparql, priority, cancellable);
 	}
 
-	public async override GenericArray<Error?>? update_array_async (string[] sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null) {
+	public async override GenericArray<Error?>? update_array_async (string[] sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
+		if (bus == null) {
+			throw new Sparql.Error.UNSUPPORTED ("Update support not available for direct-only connection");
+		}
 		return yield bus.update_array_async (sparql, priority, cancellable);
 	}
 
-	public async override GLib.Variant? update_blank_async (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null) {
+	public async override GLib.Variant? update_blank_async (string sparql, int priority = GLib.Priority.DEFAULT, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
 		debug ("%s(priority:%d): '%s'", Log.METHOD, priority, sparql);
+		if (bus == null) {
+			throw new Sparql.Error.UNSUPPORTED ("Update support not available for direct-only connection");
+		}
 		return yield bus.update_blank_async (sparql, priority, cancellable);
 	}
 
-	public override void load (File file, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null) {
+	public override void load (File file, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
 		var uri = file.get_uri ();
 		debug ("%s(): '%s'", Log.METHOD, uri);
+		if (bus == null) {
+			throw new Sparql.Error.UNSUPPORTED ("Update support not available for direct-only connection");
+		}
 		bus.load (file, cancellable);
 	}
 
-	public async override void load_async (File file, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null) {
+	public async override void load_async (File file, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
 		var uri = file.get_uri ();
 		debug ("%s(): '%s'", Log.METHOD, uri);
+		if (bus == null) {
+			throw new Sparql.Error.UNSUPPORTED ("Update support not available for direct-only connection");
+		}
 		yield bus.load_async (file, cancellable);
 	}
 
-	public override Cursor? statistics (Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null) {
+	public override Cursor? statistics (Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
 		debug ("%s()", Log.METHOD);
+		if (bus == null) {
+			throw new Sparql.Error.UNSUPPORTED ("Statistics support not available for direct-only connection");
+		}
 		return bus.statistics (cancellable);
 	}
 
-	public async override Cursor? statistics_async (Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError
-	requires (bus != null) {
+	public async override Cursor? statistics_async (Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError {
 		debug ("%s()", Log.METHOD);
+		if (bus == null) {
+			throw new Sparql.Error.UNSUPPORTED ("Statistics support not available for direct-only connection");
+		}
 		return yield bus.statistics_async (cancellable);
 	}
 
 	// Plugin loading functions
-	private bool load_plugins (bool direct_only) throws GLib.Error {
+	private void load_plugins () throws GLib.Error {
 		string env_backend = Environment.get_variable ("TRACKER_SPARQL_BACKEND");
 		Backend backend = Backend.AUTO;
 
@@ -164,19 +180,8 @@ class Tracker.Sparql.Backend : Connection {
 		}
 
 		if (backend == Backend.AUTO) {
-			if (direct_only && backend == Backend.AUTO) {
-				backend = Backend.DIRECT;
-				debug ("Using backend = 'DIRECT'");
-			} else {
-				debug ("Using backend = 'AUTO'");
-			}
+			debug ("Using backend = 'AUTO'");
 		}
-
-		if (direct_only && backend == Backend.BUS) {
-			debug ("Backend set in environment contradicts requested connection type, using environment to override");
-		}
-
-		Tracker.Sparql.Connection connection;
 
 		switch (backend) {
 		case backend.AUTO:
@@ -187,31 +192,26 @@ class Tracker.Sparql.Backend : Connection {
 			}
 
 			bus = new Tracker.Bus.Connection ();
-
-			connection = bus;
 			break;
 
 		case backend.DIRECT:
-			connection = direct = new Tracker.Direct.Connection ();
+			direct = new Tracker.Direct.Connection ();
 			break;
 
 		case backend.BUS:
-			connection = bus = new Tracker.Bus.Connection ();
+			bus = new Tracker.Bus.Connection ();
 			break;
 
 		default:
 			assert_not_reached ();
 		}
-
-		return connection != null;
 	}
 
-	static bool direct_only;
 	static weak Connection? singleton;
 	static bool log_initialized;
 	static StaticMutex door;
 
-	static new Connection get (bool is_direct_only = false, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError {
+	static new Connection get (Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError {
 		door.lock ();
 
 		try {
@@ -220,8 +220,6 @@ class Tracker.Sparql.Backend : Connection {
 
 			if (result == null) {
 				log_init ();
-
-				direct_only = is_direct_only;
 
 				result = new Tracker.Sparql.Backend ();
 
@@ -232,17 +230,16 @@ class Tracker.Sparql.Backend : Connection {
 				singleton = result;
 			}
 
-			assert (direct_only == is_direct_only);
 			return result;
 		} finally {
 			door.unlock ();
 		}
 	}
 
-	public static new Connection get_internal (bool is_direct_only = false, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError {
+	public static new Connection get_internal (Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError {
 		if (MainContext.get_thread_default () == null) {
 			// ok to initialize without extra thread
-			return get (is_direct_only, cancellable);
+			return get (cancellable);
 		}
 
 		// run with separate main context to be able to wait for async method
@@ -252,7 +249,7 @@ class Tracker.Sparql.Backend : Connection {
 
 		context.push_thread_default ();
 
-		get_internal_async.begin (is_direct_only, cancellable, (obj, res) => {
+		get_internal_async.begin (cancellable, (obj, res) => {
 			async_result = res;
 			loop.quit ();
 		});
@@ -264,7 +261,7 @@ class Tracker.Sparql.Backend : Connection {
 		return get_internal_async.end (async_result);
 	}
 
-	public async static new Connection get_internal_async (bool is_direct_only = false, Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError {
+	public async static new Connection get_internal_async (Cancellable? cancellable = null) throws Sparql.Error, IOError, DBusError, SpawnError {
 		// fast path: avoid extra thread if connection is already available
 		if (door.trylock ()) {
 			// assign to owned variable to ensure it doesn't get freed between unlock and return
@@ -273,7 +270,6 @@ class Tracker.Sparql.Backend : Connection {
 			door.unlock ();
 
 			if (result != null) {
-				assert (direct_only == is_direct_only);
 				return result;
 			}
 		}
@@ -288,7 +284,7 @@ class Tracker.Sparql.Backend : Connection {
 
 		g_io_scheduler_push_job (job => {
 			try {
-				result = get (is_direct_only, cancellable);
+				result = get (cancellable);
 			} catch (IOError e_io) {
 				io_error = e_io;
 			} catch (Sparql.Error e_spql) {
@@ -374,17 +370,17 @@ class Tracker.Sparql.Backend : Connection {
 }
 
 public async static Tracker.Sparql.Connection tracker_sparql_connection_get_async (Cancellable? cancellable = null) throws Tracker.Sparql.Error, IOError, DBusError, SpawnError {
-	return yield Tracker.Sparql.Backend.get_internal_async (false, cancellable);
+	return yield Tracker.Sparql.Backend.get_internal_async (cancellable);
 }
 
 public static Tracker.Sparql.Connection tracker_sparql_connection_get (Cancellable? cancellable = null) throws Tracker.Sparql.Error, IOError, DBusError, SpawnError {
-	return Tracker.Sparql.Backend.get_internal (false, cancellable);
+	return Tracker.Sparql.Backend.get_internal (cancellable);
 }
 
 public async static Tracker.Sparql.Connection tracker_sparql_connection_get_direct_async (Cancellable? cancellable = null) throws Tracker.Sparql.Error, IOError, DBusError, SpawnError {
-	return yield Tracker.Sparql.Backend.get_internal_async (true, cancellable);
+	return yield Tracker.Sparql.Backend.get_internal_async (cancellable);
 }
 
 public static Tracker.Sparql.Connection tracker_sparql_connection_get_direct (Cancellable? cancellable = null) throws Tracker.Sparql.Error, IOError, DBusError, SpawnError {
-	return Tracker.Sparql.Backend.get_internal (true, cancellable);
+	return Tracker.Sparql.Backend.get_internal (cancellable);
 }

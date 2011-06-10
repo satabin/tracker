@@ -85,7 +85,8 @@ typedef enum  {
 	TRACKER_QUERY_TYPE_DOCUMENTS,
 	TRACKER_QUERY_TYPE_MAIL,
 	TRACKER_QUERY_TYPE_CALENDAR,
-	TRACKER_QUERY_TYPE_FOLDERS
+	TRACKER_QUERY_TYPE_FOLDERS,
+	TRACKER_QUERY_TYPE_BOOKMARKS
 } TrackerQueryType;
 
 typedef enum  {
@@ -223,7 +224,7 @@ static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify 
 GType tracker_query_type_get_type (void) {
 	static volatile gsize tracker_query_type_type_id__volatile = 0;
 	if (g_once_init_enter (&tracker_query_type_type_id__volatile)) {
-		static const GEnumValue values[] = {{TRACKER_QUERY_TYPE_ALL, "TRACKER_QUERY_TYPE_ALL", "all"}, {TRACKER_QUERY_TYPE_CONTACTS, "TRACKER_QUERY_TYPE_CONTACTS", "contacts"}, {TRACKER_QUERY_TYPE_APPLICATIONS, "TRACKER_QUERY_TYPE_APPLICATIONS", "applications"}, {TRACKER_QUERY_TYPE_MUSIC, "TRACKER_QUERY_TYPE_MUSIC", "music"}, {TRACKER_QUERY_TYPE_IMAGES, "TRACKER_QUERY_TYPE_IMAGES", "images"}, {TRACKER_QUERY_TYPE_VIDEOS, "TRACKER_QUERY_TYPE_VIDEOS", "videos"}, {TRACKER_QUERY_TYPE_DOCUMENTS, "TRACKER_QUERY_TYPE_DOCUMENTS", "documents"}, {TRACKER_QUERY_TYPE_MAIL, "TRACKER_QUERY_TYPE_MAIL", "mail"}, {TRACKER_QUERY_TYPE_CALENDAR, "TRACKER_QUERY_TYPE_CALENDAR", "calendar"}, {TRACKER_QUERY_TYPE_FOLDERS, "TRACKER_QUERY_TYPE_FOLDERS", "folders"}, {0, NULL, NULL}};
+		static const GEnumValue values[] = {{TRACKER_QUERY_TYPE_ALL, "TRACKER_QUERY_TYPE_ALL", "all"}, {TRACKER_QUERY_TYPE_CONTACTS, "TRACKER_QUERY_TYPE_CONTACTS", "contacts"}, {TRACKER_QUERY_TYPE_APPLICATIONS, "TRACKER_QUERY_TYPE_APPLICATIONS", "applications"}, {TRACKER_QUERY_TYPE_MUSIC, "TRACKER_QUERY_TYPE_MUSIC", "music"}, {TRACKER_QUERY_TYPE_IMAGES, "TRACKER_QUERY_TYPE_IMAGES", "images"}, {TRACKER_QUERY_TYPE_VIDEOS, "TRACKER_QUERY_TYPE_VIDEOS", "videos"}, {TRACKER_QUERY_TYPE_DOCUMENTS, "TRACKER_QUERY_TYPE_DOCUMENTS", "documents"}, {TRACKER_QUERY_TYPE_MAIL, "TRACKER_QUERY_TYPE_MAIL", "mail"}, {TRACKER_QUERY_TYPE_CALENDAR, "TRACKER_QUERY_TYPE_CALENDAR", "calendar"}, {TRACKER_QUERY_TYPE_FOLDERS, "TRACKER_QUERY_TYPE_FOLDERS", "folders"}, {TRACKER_QUERY_TYPE_BOOKMARKS, "TRACKER_QUERY_TYPE_BOOKMARKS", "bookmarks"}, {0, NULL, NULL}};
 		GType tracker_query_type_type_id;
 		tracker_query_type_type_id = g_enum_register_static ("TrackerQueryType", values);
 		g_once_init_leave (&tracker_query_type_type_id__volatile, tracker_query_type_type_id);
@@ -263,7 +264,7 @@ TrackerQuery* tracker_query_construct (GType object_type) {
 		GError * e;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		g_warning ("tracker-query.vala:163: Could not get Sparql connection: %s", e->message);
+		g_warning ("tracker-query.vala:171: Could not get Sparql connection: %s", e->message);
 		_g_error_free0 (e);
 	}
 	__finally3:
@@ -293,7 +294,7 @@ static gboolean tracker_query_check_query_and_match_type (TrackerQuery* self, Tr
 		_tmp0_ = FALSE;
 	}
 	if (_tmp0_) {
-		g_critical ("tracker-query.vala:169: You can not use a non-IMAGES query (%d) with N" \
+		g_critical ("tracker-query.vala:177: You can not use a non-IMAGES query (%d) with N" \
 "ONE matching", (gint) query_type);
 		result = FALSE;
 		return result;
@@ -310,7 +311,7 @@ static gboolean tracker_query_check_query_and_match_type (TrackerQuery* self, Tr
 		_tmp1_ = FALSE;
 	}
 	if (_tmp1_) {
-		g_critical ("tracker-query.vala:175: You can not use a MUSIC query with match TITLE" \
+		g_critical ("tracker-query.vala:183: You can not use a MUSIC query with match TITLE" \
 "S or FTS, INDIRECT required");
 		result = FALSE;
 		return result;
@@ -333,7 +334,7 @@ static gboolean tracker_query_check_query_and_match_type (TrackerQuery* self, Tr
 		_tmp3_ = FALSE;
 	}
 	if (_tmp3_) {
-		g_critical ("tracker-query.vala:182: You can not use a non-MUSIC query (%d) with IN" \
+		g_critical ("tracker-query.vala:190: You can not use a non-MUSIC query (%d) with IN" \
 "DIRECT matching (%d)", (gint) query_type, (gint) match_type);
 		result = FALSE;
 		return result;
@@ -434,7 +435,7 @@ static gboolean tracker_query_get_count_async_co (TrackerQueryGetCountAsyncData*
 		data->_tmp1_ = FALSE;
 	}
 	if (data->_tmp1_) {
-		g_warning ("tracker-query.vala:198: Criteria was NULL or an empty string, no query" \
+		g_warning ("tracker-query.vala:206: Criteria was NULL or an empty string, no query" \
 " performed");
 		data->result = (guint) 0;
 		_g_object_unref0 (data->cursor);
@@ -485,7 +486,7 @@ static gboolean tracker_query_get_count_async_co (TrackerQueryGetCountAsyncData*
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
-		g_warning ("tracker-query.vala:211: Could not run Sparql count query: %s", data->e->message);
+		g_warning ("tracker-query.vala:219: Could not run Sparql count query: %s", data->e->message);
 		_g_error_free0 (data->e);
 	}
 	__finally4:
@@ -633,7 +634,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 		data->_tmp1_ = FALSE;
 	}
 	if (data->_tmp1_) {
-		g_warning ("tracker-query.vala:226: Criteria was NULL or an empty string, no query" \
+		g_warning ("tracker-query.vala:234: Criteria was NULL or an empty string, no query" \
 " performed");
 		data->result = NULL;
 		_g_object_unref0 (data->cursor);
@@ -646,7 +647,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 		return FALSE;
 	}
 	if (data->self->priv->_limit < 1) {
-		g_warning ("tracker-query.vala:231: Limit was < 1, no query performed");
+		g_warning ("tracker-query.vala:239: Limit was < 1, no query performed");
 		data->result = NULL;
 		_g_object_unref0 (data->cursor);
 		if (data->_state_ == 0) {
@@ -697,7 +698,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 	_g_free0 (data->_tmp21_);
 	_g_free0 (data->_tmp19_);
 	_g_free0 (data->_tmp17_);
-	g_debug ("tracker-query.vala:241: Running query: '%s'", data->self->priv->_query);
+	g_debug ("tracker-query.vala:249: Running query: '%s'", data->self->priv->_query);
 	data->_state_ = 1;
 	tracker_sparql_connection_query_async (tracker_query_connection, data->self->priv->_query, NULL, tracker_query_perform_async_ready, data);
 	return FALSE;
@@ -715,7 +716,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
-		g_warning ("tracker-query.vala:246: Could not run Sparql query: %s", data->e->message);
+		g_warning ("tracker-query.vala:254: Could not run Sparql query: %s", data->e->message);
 		_g_error_free0 (data->e);
 	}
 	__finally5:
@@ -742,7 +743,7 @@ static gboolean tracker_query_perform_async_co (TrackerQueryPerformAsyncData* da
 			return FALSE;
 		}
 	}
-	g_debug ("tracker-query.vala:249: Done");
+	g_debug ("tracker-query.vala:257: Done");
 	data->result = data->cursor;
 	_g_free0 (data->match);
 	_g_free0 (data->criteria_escaped);
@@ -962,7 +963,8 @@ static void tracker_query_instance_init (TrackerQuery * self) {
 	gchar* _tmp13_;
 	gchar* _tmp14_;
 	gchar* _tmp15_;
-	gchar** _tmp16_ = NULL;
+	gchar* _tmp16_;
+	gchar** _tmp17_ = NULL;
 	self->priv = TRACKER_QUERY_GET_PRIVATE (self);
 	_tmp0_ = g_strdup ("");
 	_tmp1_ = g_strdup ("?urn fts:match \"%s\"");
@@ -1036,19 +1038,25 @@ static void tracker_query_instance_init (TrackerQuery * self) {
 "		    ?urn nfo:belongsToContainer ?parent .\n" \
 "		  }\n" \
 "		}");
-	_tmp16_ = g_new0 (gchar*, 10 + 1);
-	_tmp16_[0] = _tmp6_;
-	_tmp16_[1] = _tmp7_;
-	_tmp16_[2] = _tmp8_;
-	_tmp16_[3] = _tmp9_;
-	_tmp16_[4] = _tmp10_;
-	_tmp16_[5] = _tmp11_;
-	_tmp16_[6] = _tmp12_;
-	_tmp16_[7] = _tmp13_;
-	_tmp16_[8] = _tmp14_;
-	_tmp16_[9] = _tmp15_;
-	self->priv->where_clauses = _tmp16_;
-	self->priv->where_clauses_length1 = 10;
+	_tmp16_ = g_strdup ("WHERE {\n" \
+"		  ?urn a nfo:Bookmark ;\n" \
+"               nfo:bookmarks ?bookmark .\n" \
+"		  %s\n" \
+"		}");
+	_tmp17_ = g_new0 (gchar*, 11 + 1);
+	_tmp17_[0] = _tmp6_;
+	_tmp17_[1] = _tmp7_;
+	_tmp17_[2] = _tmp8_;
+	_tmp17_[3] = _tmp9_;
+	_tmp17_[4] = _tmp10_;
+	_tmp17_[5] = _tmp11_;
+	_tmp17_[6] = _tmp12_;
+	_tmp17_[7] = _tmp13_;
+	_tmp17_[8] = _tmp14_;
+	_tmp17_[9] = _tmp15_;
+	_tmp17_[10] = _tmp16_;
+	self->priv->where_clauses = _tmp17_;
+	self->priv->where_clauses_length1 = 11;
 	self->priv->_where_clauses_size_ = self->priv->where_clauses_length1;
 	self->ref_count = 1;
 }

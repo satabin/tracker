@@ -1,3 +1,93 @@
+2011-06-09  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.17
+
+	tracker-needle: Improve the information shown about bookmarks
+	The link was broken and so was the tooltip.
+
+	tracker-needle: Added bookmarks to the stats dialog
+
+2011-06-09  Adrien Bustany  <abustany@gnome.org>
+
+	tracker-needle: Add support for bookmarks
+
+2011-06-09  Olav Vitters  <olav@vitters.nl>
+
+	Add description to DOAP file
+
+2011-06-09  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-sparql-backend: Drop unnecessary connection variable
+
+	libtracker-sparql-backend: Drop direct_only flag
+	As the connection is a singleton, it does not make sense to have a
+	construction flag. Calling tracker_sparql_connection_get and
+	tracker_sparql_connection_get_direct in the same process triggered an
+	assertion failure. This changes tracker_sparql_connection_get_direct to
+	be equivalent to tracker_sparql_connection_get.
+
+	The D-Bus proxies in libtracker-bus use lazy initialization, so they do
+	not cause any overhead when constructing the connection.
+
+	Direct-only can still be enforced on the process level by setting
+	TRACKER_SPARQL_BACKEND=direct.
+
+	libtracker-bus: Use lazy initialization for D-Bus proxy objects
+
+2011-06-09  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-06-09  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-sparql-backend: Use GError instead of critical warnings
+	Direct-only connections do not support updates or statistics. Report
+	this limitation using GError instead of return_if_fail.
+
+2011-06-09  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: Fix compiler warning
+
+2011-06-09  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-direct: Fix use_count on failed initialization
+
+2011-06-09  Carlos Garnacho  <carlosg@gnome.org>
+
+	Fix typo when cherry-picking
+	s/private/priv/ ...
+
+	tracker-miner-fs: Do not insert minimal sparql on cancellation
+	Cancellation only happens on unmount, the file is gone anyway and
+	would be reindexed the next time it is available, so don't do
+	potentially long operations here such as flushing the sparql buffer.
+
+	Together with my previous commit (3cdb6ba91), these commits are meant
+	to have Tracker react even faster to unmount events, finally fixing
+	NB#258488, hopefully.
+
+	libtracker-miner: Do not connect anything to cancellable::cancel
+	This isn't the right way of handling cancellation, instead let the
+	callbacks use the GError just set to do so.
+
+	libtracker-miner: Avoid possible race condition when cancelling extraction
+	Fixes NB#262992. Operations for files that aren't sent to the extractor were
+	instead finished an idle function, which could lead to double frees if the
+	task was cancelled right in between (one resulting from cancellable::cancel,
+	the other when dispatching the idle function).
+
+	So, instead, don't do that in an idle at all, there is no reason why
+	we can't call tracker_miner_fs_file_notify() right away.
+
+2011-06-07  Jean-Luc Lamadon  <jean-luc.lamadon@nokia.com>
+
+	tracker-extract: real-media could be audio only
+	Fixes: NB#262953 - real media audio files are listed in video application
+
+2011-06-04  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
+
 2011-06-03  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.16

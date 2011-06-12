@@ -8,15 +8,31 @@ export LDFLAGS := $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed -Wl,-Bs
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		--disable-unit-tests \
+		--enable-tracker-fts \
+		--enable-upower \
 		--enable-tracker-explorer \
 		--disable-tracker-search-bar \
 		--enable-tracker-needle \
 		--enable-tracker-preferences \
 		--enable-nautilus-extension \
+		--enable-libiptcdata \
+		--enable-exempi \
+		--enable-libexif \
+		--enable-libgif \
+		--enable-libjpeg \
+		--enable-libtiff \
+		--enable-poppler \
+		--enable-libgsf \
+		--enable-libxml2 \
 		--enable-libvorbis \
 		--enable-libflac \
+		--enable-playlist \
+		--disable-network-manager \
+		--disable-gnome-keyring \
+		--disable-miner-rss \
+		--disable-miner-flickr \
+		--enable-miner-evolution \
 		--enable-gtk-doc \
-		--disable-network-manager
 
 # Enforce tight shlibs dependencies
 override_dh_makeshlibs:

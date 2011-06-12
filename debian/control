@@ -138,7 +138,7 @@ Architecture: any
 Section: libdevel
 Depends: libtracker-miner-0.10-0 (= ${binary:Version}),
          ${misc:Depends},
-         libtracker-client-0.10-dev,
+         libtracker-sparql-0.10-dev,
          libglib2.0-dev
 Description: tracker data miner library - development files
  This package contains the static libraries and header files needed to link
@@ -168,7 +168,7 @@ Architecture: any
 Section: libdevel
 Depends: libtracker-extract-0.10-0 (= ${binary:Version}),
          ${misc:Depends},
-         libtracker-client-0.10-dev,
+         libtracker-sparql-0.10-dev,
          libglib2.0-dev
 Description: tracker extractor library - development files
  This package contains the static libraries and header files needed to link

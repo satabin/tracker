@@ -55,8 +55,8 @@ static TrackerExtractData data[] = {
 };
 
 typedef struct {
-    unsigned int   byteCount;
-    char          *bytes;
+	unsigned int   byteCount;
+	char          *bytes;
 } ExtBlock;
 
 
@@ -152,8 +152,8 @@ read_metadata (TrackerSparqlBuilder *preupdate,
 				}
 
 				xd = tracker_xmp_new (extBlock.bytes,
-						      extBlock.byteCount-XMP_MAGIC_TRAILER_LENGTH,
-						      uri);
+				                      extBlock.byteCount-XMP_MAGIC_TRAILER_LENGTH,
+				                      uri);
 
 				g_free (extBlock.bytes);
 			} else
@@ -435,8 +435,8 @@ read_metadata (TrackerSparqlBuilder *preupdate,
 		tracker_sparql_builder_object_unvalidated (metadata, xd->coverage);
 	}
 
-	if (xd->address || xd->country || xd->city) {
-		gchar *addruri;
+	if (xd->address || xd->state || xd->country || xd->city ||
+	    xd->gps_altitude || xd->gps_latitude || xd-> gps_longitude) {
 
 		tracker_sparql_builder_predicate (metadata, "slo:location");
 
@@ -444,43 +444,65 @@ read_metadata (TrackerSparqlBuilder *preupdate,
 		tracker_sparql_builder_predicate (metadata, "a");
 		tracker_sparql_builder_object (metadata, "slo:GeoLocation");
 
-		addruri = tracker_sparql_get_uuid_urn ();
+		if (xd->address || xd->state || xd->country || xd->city)  {
+			gchar *addruri;
+			addruri = tracker_sparql_get_uuid_urn ();
 
-		tracker_sparql_builder_predicate (metadata, "slo:postalAddress");
-		tracker_sparql_builder_object_iri (metadata, addruri);
+			tracker_sparql_builder_predicate (metadata, "slo:postalAddress");
+			tracker_sparql_builder_object_iri (metadata, addruri);			
+
+			tracker_sparql_builder_insert_open (preupdate, NULL);
+			tracker_sparql_builder_subject_iri (preupdate, addruri);
+
+			g_free (addruri);
+
+			tracker_sparql_builder_predicate (preupdate, "a");
+			tracker_sparql_builder_object (preupdate, "nco:PostalAddress");
+
+			if (xd->address) {
+				tracker_sparql_builder_predicate (preupdate, "nco:streetAddress");
+				tracker_sparql_builder_object_unvalidated (preupdate, xd->address);
+			}
+
+			if (xd->state) {
+				tracker_sparql_builder_predicate (preupdate, "nco:region");
+				tracker_sparql_builder_object_unvalidated (preupdate, xd->state);
+			}
+
+			if (xd->city) {
+				tracker_sparql_builder_predicate (preupdate, "nco:locality");
+				tracker_sparql_builder_object_unvalidated (preupdate, xd->city);
+			}
+
+			if (xd->country) {
+				tracker_sparql_builder_predicate (preupdate, "nco:country");
+				tracker_sparql_builder_object_unvalidated (preupdate, xd->country);
+			}
+
+			tracker_sparql_builder_insert_close (preupdate);
+		}
+
+		if (xd->gps_altitude) {
+			tracker_sparql_builder_predicate (metadata, "slo:altitude");
+			tracker_sparql_builder_object_unvalidated (metadata, xd->gps_altitude);
+		}
+
+		if (xd->gps_latitude) {
+			tracker_sparql_builder_predicate (metadata, "slo:latitude");
+			tracker_sparql_builder_object_unvalidated (metadata, xd->gps_latitude);
+		}
+
+		if (xd->gps_longitude) {
+			tracker_sparql_builder_predicate (metadata, "slo:longitude");
+			tracker_sparql_builder_object_unvalidated (metadata, xd->gps_longitude);
+		}
 
 		tracker_sparql_builder_object_blank_close (metadata); /* GeoLocation */
+	}
 
-		tracker_sparql_builder_insert_open (preupdate, NULL);
-		tracker_sparql_builder_subject_iri (preupdate, addruri);
-
-		g_free (addruri);
-
-		tracker_sparql_builder_predicate (preupdate, "a");
-		tracker_sparql_builder_object (preupdate, "nco:PostalAddress");
-
-		if (xd->address) {
-			tracker_sparql_builder_predicate (preupdate, "nco:streetAddress");
-			tracker_sparql_builder_object_unvalidated (preupdate, xd->address);
-		}
-
-		if (xd->state) {
-			tracker_sparql_builder_predicate (preupdate, "nco:region");
-			tracker_sparql_builder_object_unvalidated (preupdate, xd->state);
-		}
-
-		if (xd->city) {
-			tracker_sparql_builder_predicate (preupdate, "nco:locality");
-			tracker_sparql_builder_object_unvalidated (preupdate, xd->city);
-		}
-
-		if (xd->country) {
-			tracker_sparql_builder_predicate (preupdate, "nco:country");
-			tracker_sparql_builder_object_unvalidated (preupdate, xd->country);
-		}
-
-		tracker_sparql_builder_insert_close (preupdate);
-
+	if (xd->gps_direction) {
+		tracker_sparql_builder_predicate (metadata, "nfo:heading");
+		tracker_sparql_builder_object_unvalidated (metadata, xd->gps_direction);
 	}
 
 	if (gd.width) {

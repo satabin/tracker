@@ -386,6 +386,11 @@ writeback_xmp_update_file_metadata (TrackerWritebackFile    *wbf,
 			g_free (work_on);
 		}
 #endif /* SET_TYPICAL_CAMERA_FIELDS */
+
+		if (g_strcmp0 (row[2], TRACKER_NFO_PREFIX "heading") == 0) {
+			xmp_delete_property (xmp, NS_EXIF, "GPSImgDirection");
+			xmp_set_property (xmp, NS_EXIF, "GPSImgDirection", row[3], 0);
+		}
 	}
 
 	if (urn != NULL) {
@@ -398,6 +403,9 @@ writeback_xmp_update_file_metadata (TrackerWritebackFile    *wbf,
 		                         "nco:region (?addr) "
 		                         "nco:streetAddress (?addr) "
 		                         "nco:country (?addr) "
+		                         "slo:altitude (?loc) "
+		                         "slo:longitude (?loc) "
+		                         "slo:latitude (?loc) "
 		                         "WHERE { <%s> slo:location ?loc . "
 		                                 "?loc slo:postalAddress ?addr . }",
 		                         urn);
@@ -406,49 +414,89 @@ writeback_xmp_update_file_metadata (TrackerWritebackFile    *wbf,
 		g_free (query);
 		if (!error) {
 			if (tracker_sparql_cursor_next (cursor, NULL, NULL)) {
-				const gchar *city, *subl, *country, *state;
+				const gchar *city = NULL, *subl = NULL, *country = NULL,
+				            *state = NULL, *altitude = NULL, *longitude = NULL,
+				            *latitude = NULL;
 
-				city = tracker_sparql_cursor_get_string (cursor, 0, NULL);
-				state = tracker_sparql_cursor_get_string (cursor, 1, NULL);
-				subl = tracker_sparql_cursor_get_string (cursor, 2, NULL);
-				country = tracker_sparql_cursor_get_string (cursor, 3, NULL);
+				if (tracker_sparql_cursor_get_value_type (cursor, 0) != TRACKER_SPARQL_VALUE_TYPE_UNBOUND) {
+					city = tracker_sparql_cursor_get_string (cursor, 0, NULL);
+				}
+
+				if (tracker_sparql_cursor_get_value_type (cursor, 1) != TRACKER_SPARQL_VALUE_TYPE_UNBOUND) {
+					state = tracker_sparql_cursor_get_string (cursor, 1, NULL);
+				}
+
+				if (tracker_sparql_cursor_get_value_type (cursor, 2) != TRACKER_SPARQL_VALUE_TYPE_UNBOUND) {
+					subl = tracker_sparql_cursor_get_string (cursor, 2, NULL);
+				}
+
+				if (tracker_sparql_cursor_get_value_type (cursor, 3) != TRACKER_SPARQL_VALUE_TYPE_UNBOUND) {
+					country = tracker_sparql_cursor_get_string (cursor, 3, NULL);
+				}
+
+				if (tracker_sparql_cursor_get_value_type (cursor, 4) != TRACKER_SPARQL_VALUE_TYPE_UNBOUND) {
+					altitude = tracker_sparql_cursor_get_string (cursor, 4, NULL);
+				}
+
+				if (tracker_sparql_cursor_get_value_type (cursor, 5) != TRACKER_SPARQL_VALUE_TYPE_UNBOUND) {
+					longitude = tracker_sparql_cursor_get_string (cursor, 5, NULL);
+				}
+				
+				if (tracker_sparql_cursor_get_value_type (cursor, 6) != TRACKER_SPARQL_VALUE_TYPE_UNBOUND) {
+					latitude = tracker_sparql_cursor_get_string (cursor, 6, NULL);
+				}
 
 				/* TODO: A lot of these location fields are pretty vague and ambigious.
 				 * We should go through them one by one and ensure that all of them are
 				 * used sanely */
 
-				if (!tracker_is_blank_string (city)) {
-					xmp_delete_property (xmp, NS_IPTC4XMP, "City");
+				xmp_delete_property (xmp, NS_IPTC4XMP, "City");
+				xmp_delete_property (xmp, NS_PHOTOSHOP, "City");
+				if (city != NULL) {
 					xmp_set_property (xmp, NS_IPTC4XMP, "City", city, 0);
-					xmp_delete_property (xmp, NS_PHOTOSHOP, "City");
 					xmp_set_property (xmp, NS_PHOTOSHOP, "City", city, 0);
 				}
 
-				if (!tracker_is_blank_string (state)) {
-					xmp_delete_property (xmp, NS_IPTC4XMP, "State");
+				xmp_delete_property (xmp, NS_IPTC4XMP, "State");
+				xmp_delete_property (xmp, NS_IPTC4XMP, "Province");
+				xmp_delete_property (xmp, NS_PHOTOSHOP, "State");
+				if (state != NULL) {
 					xmp_set_property (xmp, NS_IPTC4XMP, "State", state, 0);
-					xmp_delete_property (xmp, NS_IPTC4XMP, "Province");
 					xmp_set_property (xmp, NS_IPTC4XMP, "Province", state, 0);
-					xmp_delete_property (xmp, NS_PHOTOSHOP, "State");
 					xmp_set_property (xmp, NS_PHOTOSHOP, "State", state, 0);
 				}
 
-				if (!tracker_is_blank_string (subl)) {
-					xmp_delete_property (xmp, NS_IPTC4XMP, "SubLocation");
+				xmp_delete_property (xmp, NS_IPTC4XMP, "SubLocation");
+				xmp_delete_property (xmp, NS_PHOTOSHOP, "Location");
+				if (subl != NULL) {
 					xmp_set_property (xmp, NS_IPTC4XMP, "SubLocation", subl, 0);
-					xmp_delete_property (xmp, NS_PHOTOSHOP, "Location");
 					xmp_set_property (xmp, NS_PHOTOSHOP, "Location", subl, 0);
 				}
 
-				if (!tracker_is_blank_string (country)) {
-					xmp_delete_property (xmp, NS_PHOTOSHOP, "Country");
+				xmp_delete_property (xmp, NS_PHOTOSHOP, "Country");
+				xmp_delete_property (xmp, NS_IPTC4XMP, "Country");
+				xmp_delete_property (xmp, NS_IPTC4XMP, "PrimaryLocationName");
+				xmp_delete_property (xmp, NS_IPTC4XMP, "CountryName");
+				if (country != NULL) {
 					xmp_set_property (xmp, NS_PHOTOSHOP, "Country", country, 0);
-					xmp_delete_property (xmp, NS_IPTC4XMP, "Country");
 					xmp_set_property (xmp, NS_IPTC4XMP, "Country", country, 0);
-					xmp_delete_property (xmp, NS_IPTC4XMP, "PrimaryLocationName");
 					xmp_set_property (xmp, NS_IPTC4XMP, "PrimaryLocationName", country, 0);
-					xmp_delete_property (xmp, NS_IPTC4XMP, "CountryName");
 					xmp_set_property (xmp, NS_IPTC4XMP, "CountryName", country, 0);
+				}
+
+				xmp_delete_property (xmp, NS_EXIF, "GPSAltitude");
+				if (altitude != NULL) {
+					xmp_set_property (xmp, NS_EXIF, "GPSAltitude", altitude, 0);
+				}
+
+				xmp_delete_property (xmp, NS_EXIF, "GPSLongitude");
+				if (longitude != NULL) {
+					xmp_set_property (xmp, NS_EXIF, "GPSLongitude", longitude, 0);
+				}
+
+				xmp_delete_property (xmp, NS_EXIF, "GPSLatitude");
+				if (latitude != NULL) {
+					xmp_set_property (xmp, NS_EXIF, "GPSLatitude", latitude, 0);
 				}
 			}
 		}

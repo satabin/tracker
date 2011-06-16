@@ -82,6 +82,14 @@ typedef struct {
 	gchar *country;
 	gchar *state;
 	gchar *city;
+
+	/* ABI barrier (don't change things above this) */
+	gchar *gps_altitude;
+	gchar *gps_altitude_ref;
+	gchar *gps_latitude;
+	gchar *gps_longitude;
+	gchar *gps_direction;
+
 } TrackerXmpData;
 
 TrackerXmpData * tracker_xmp_new   (const gchar          *buffer,

@@ -92,7 +92,7 @@ TrackerMiner implements
 <pre class="synopsis">
   "<a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner--name" title='The "name" property'>name</a>"                     <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write / Construct Only
   "<a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner--progress" title='The "progress" property'>progress</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>               : Read / Write / Construct
-  "<a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner--status" title='The "status" property'>status</a>"                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write
+  "<a class="link" href="libtracker-miner-tracker-miner.html#TrackerMiner--status" title='The "status" property'>status</a>"                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write / Construct
 </pre>
 </div>
 <div class="refsect1">
@@ -546,9 +546,9 @@ Gets the DBus path registered by <em class="parameter"><code>miner</code></em>
 <hr>
 <div class="refsect2">
 <a name="TrackerMiner--status"></a><h3>The <code class="literal">"status"</code> property</h3>
-<pre class="programlisting">  "status"                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write</pre>
+<pre class="programlisting">  "status"                   <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a>*                : Read / Write / Construct</pre>
 <p>Translatable string with status description.</p>
-<p>Default value: NULL</p>
+<p>Default value: "Idle"</p>
 </div>
 </div>
 <div class="refsect1">

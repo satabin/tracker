@@ -1,3 +1,183 @@
+2011-06-16  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.18
+
+2011-06-16  Carlos Garnacho  <carlos@lanedo.com>
+
+	tests: Fix tracker-monitor test to reflect changes in 35bdcb09
+	CREATE+MOVE != CREATE from now on, but UPDATE. Reflect this in the
+	unit test
+
+	tracker-monitor: translate CREATE(a)+MOVE(a->b)=UPDATE(b)
+	Fixes NB#251032. Tracker-writeback often creates a temporary hidden
+	file that, after modification, is moved onto the original file location,
+	This tricked TrackerMonitor so that the create and move operations there
+	were translated as a create operation, and create operations are
+	compressed with delete events into a noop. So if a quick delete came
+	after, TrackerMonitor was emitting no signal for a truly deleted file.
+
+	Instead, translate create+move as update, the miners handle creates
+	and updates equally, and these won't get compressed with delete
+	events, so those are still emitted.
+
+2011-06-16  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Do not begin ontology transaction when not needed
+	This allows tracker-store startup with full partition. Updates will fail
+	as long as partition is full.
+
+	Fixes NB#263203.
+
+2011-06-16  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-miner-fs: Postpone sparql update on mount after cancellation
+	This is a less critical task than cancellation, which might be holding
+	unmount, so perform it after the rush is gone.
+
+	tracker-extract: _exit() abruptly if cancelled due to pre-unmount
+	g_main_loop_quit() docs say it could wait for already dispatched sources,
+	time consuming extraction tasks in this case. Given that in pre-unmount
+	situation we prefer fast to orderly, just _exit() here.
+
+2011-06-16  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Make sure status is set to 'Idle' on object construction
+	This was done for progress, but not status for some reason.
+
+	libtracker-miner: Special case .xsession-errors and ignore all about it
+	This includes events, debugging and handling.
+
+2011-06-16  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Use libmeegotouch ICU data if available
+	Fixes NB#261635.
+
+2011-06-16  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Fix inconsistent status with progress signals
+	Quite often, we see progress of 100% and still have status messages
+	saying Processing... which is not true. So we use an idle timeout to
+	help that situation. This happens because miners can use the
+	g_object_set() API with multiple properties and we were signalling the
+	update between each property being set.
+
+	This commit also enforces setting the status to 'Idle' or
+	'Initializing' when the progress is either 1.0 or 0.0
+
+	The output shown in tracker-control is now much cleaner.
+
+	The trace macro was also added to follow state/progress changes along
+	with signal emissions more easily.
+
+	libtracker-miner: Make sure "Processing..." is 2% or higher in progress
+	Before it was possible to still be 1% (which is usually reserved for
+	crawling) while processing the items we have in our queues.
+
+	Also, don't have tigher conditions for when we can issue "Processing..."
+
+	tracker-control: Clean up store progress reporting
+	Make it more consistent with the miner reporting.
+	Also don't represent 0% with a ✓ (i.e. done)
+
+	tracker-control: Don't represent 0% with a ✓ (i.e. done)
+
+	libtracker-miner: Fixed -0.00 progress being reported
+	This occurred because progress of 0.00 was being rounded up from -0.49
+	with ceil() and negative 0.00 is given to represented the direction it
+	was rounded from.
+
+	This fixes GB#652433, Progress signal gives faulty value just before finishing
+
+2011-06-16  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-06-16  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract, -writeback, libtracker-extract, NMM, NFO: Use nfo:heading instead of nmm:direction
+
+	NMM: Fix syntax error
+
+	NMM: More clear comment for nmm:direction property
+
+	libtracker-extract: Fix some casting and codestyle problems
+
+	tracker-writeback: Use get_value_type instead of is_blank
+
+	tracker-writeback, xmp: Writeback the GPS direction property
+
+	libtracker-extract, tracker-extract: Fix whitespace issues
+
+2011-06-16  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	libtracker-extract, tracker-extract: Add extraction of image compass direction
+
+2011-06-16  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-miner-fs: Unset nie:url to set our own on file updates.
+	This is so tracker-miner-fs can check it in order to know whether the
+	file is known to tracker or not.
+
+2011-06-16  Philip Van Hoof  <philip@codeminded.be>
+
+	SLO: Update nao:lastModified
+
+	tracker-writeback: Always clear existing fields
+
+2011-06-16  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-miner-fs: Do not ignore IgnoreNextUpdate for CREATED events on old files
+	Partly fixes #261767. There are two usecases where we could get a CREATED event
+	during writeback, one is due to 3rd party apps inserting preliminary sparql
+	before actually writing the file, so tracker-miner-fs should index that new
+	file anyways.
+
+	The other usecase is on atomic move over an old file, tracker-writeback itself
+	would trigger a CREATED event over an already known file, which is safe to
+	ignore as it is the result of the just written back metadata.
+
+	writeback: guarantee atomic updates on the file
+	We do this by copying the file to a temporary location, modifying
+	the temporary file, and moving it onto the original location.
+
+	This generally should be done by the libraries we use in
+	tracker-writeback, but we don't get any guarantees that it'll be
+	like that...
+
+	ontology: set cardinality 1 to slo:location.
+
+2011-06-16  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract, gif: Fix indentation issues
+
+	tracker-extract, jpeg: Fix indentation issues
+
+	tracker-extract, pdf: Fix indentation issues
+
+	tracker-extract, tiff: Fix indentation issues
+
+	tracker-extract, png: Fix indentation issues
+
+	libtracker-extract, xmp: Fix misindentation of a function
+
+	libtracker-extract, xmp, exif: Make sure we don't break the ABI
+
+	libtracker-extract, exif: Fix indendation issues
+
+	libtracker-extract, xmp: Fix indentation issues
+
+	tracker-writeback, xmp: Write back altitude, longitude and latitude
+
+2011-06-16  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Add extraction of GPS coordinates
+
+2011-06-13  Ivan Frade  <ivan.frade@nokia.com>
+
+	Fix extractor test cases: parse correctly the tags
+	Parse correctly the tags from the extractor output. This fixes some
+	extraction and writeback test cases.
+
 2011-06-09  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.17

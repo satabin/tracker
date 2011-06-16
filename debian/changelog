@@ -1,6 +1,15 @@
 tracker (0.10.18-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Enable gobject introspection support.
+    - Add Build-Depends on libgirepository1.0-dev, gobject-introspection and
+      gir1.2-glib-2.0.
+    - Add package gir1.2-tracker-0.10 containing the typelib files for
+      libtracker-extract, libtracker-miner and libtracker-sparql.
+    - Install gir files in libtracker-{extract,miner,sparql}-0.10-dev.install.
+    - Make libtracker-{extract,miner,sparql}-0.10-dev depend on
+      gir1.2-tracker-0.10 (= ${binary:Version})
+    - Add override for dh_shlibdeps and call dh_girepository.
 
  -- Michael Biebl <biebl@debian.org>  Thu, 16 Jun 2011 18:32:01 +0200
 

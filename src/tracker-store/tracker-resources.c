@@ -248,6 +248,7 @@ void tracker_store_sparql_update_blank (const gchar* sparql, TrackerStorePriorit
 GVariant* tracker_store_sparql_update_blank_finish (GAsyncResult* _res_, GError** error);
 static void tracker_resources_sparql_update_blank_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
 void tracker_resources_sync (TrackerResources* self, const char* sender);
+void tracker_store_wal_checkpoint (void);
 static void tracker_resources_batch_sparql_update_data_free (gpointer _data);
 void tracker_resources_batch_sparql_update (TrackerResources* self, const char* sender, const gchar* update, GAsyncReadyCallback _callback_, gpointer _user_data_);
 void tracker_resources_batch_sparql_update_finish (TrackerResources* self, GAsyncResult* _res_, GError** error);
@@ -958,6 +959,7 @@ void tracker_resources_sync (TrackerResources* self, const char* sender) {
 	g_return_if_fail (sender != NULL);
 	_tmp0_ = tracker_dbus_request_begin ((const gchar*) sender, "Resources.Sync", NULL);
 	request = _tmp0_;
+	tracker_store_wal_checkpoint ();
 	tracker_data_sync ();
 	tracker_dbus_request_end (request, NULL);
 }

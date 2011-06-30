@@ -183,9 +183,9 @@ initialize_priority (void)
 	 * successful call so we have to check value of errno too.
 	 * Stupid...
 	 */
-	g_message ("Setting process priority");
 
-	if (nice (19) == -1) {
+	errno = 0;
+	if (nice (19) == -1 && errno != 0) {
 		const gchar *str = g_strerror (errno);
 
 		g_message ("Couldn't set nice value to 19, %s",
@@ -712,11 +712,6 @@ main (gint argc, gchar *argv[])
 	g_print ("Initializing tracker-miner-fs...\n");
 
 	initialize_signal_handler ();
-
-	/* Check XDG spec locations XDG_DATA_HOME _MUST_ be writable. */
-	if (!tracker_env_check_xdg_dirs ()) {
-		return EXIT_FAILURE;
-	}
 
 	/* This makes sure we don't steal all the system's resources */
 	initialize_priority ();

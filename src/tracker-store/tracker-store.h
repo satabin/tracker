@@ -261,6 +261,7 @@ void tracker_value_take_store (GValue* value, gpointer v_object);
 gpointer tracker_value_get_store (const GValue* value);
 GType tracker_store_get_type (void) G_GNUC_CONST;
 GType tracker_store_priority_get_type (void) G_GNUC_CONST;
+void tracker_store_wal_checkpoint (void);
 void tracker_store_init (void);
 void tracker_store_shutdown (void);
 void tracker_store_sparql_query (const gchar* sparql, TrackerStorePriority priority, TrackerStoreSparqlQueryInThread in_thread, void* in_thread_target, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);

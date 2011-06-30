@@ -187,11 +187,6 @@ License which can be viewed at:
 
 		initialize_signal_handler ();
 
-		/* Check XDG spec locations XDG_DATA_HOME _MUST_ be writable. */
-		if (!Tracker.env_check_xdg_dirs ()) {
-			return 1;
-		}
-
 		/* This makes sure we don't steal all the system's resources */
 		initialize_priority ();
 
@@ -199,18 +194,9 @@ License which can be viewed at:
 		var config = new Tracker.Config ();
 		var db_config = new Tracker.DBConfig ();
 
-		ulong config_verbosity_id = config.notify["verbosity"].connect (config_verbosity_changed_cb);
-
 		/* Daemon command line arguments */
 		if (verbosity > -1) {
 			config.verbosity = verbosity;
-		} else {
-			/* Make sure we enable/disable the dbus client lookup */
-			config_verbosity_changed_cb (config, null);
-		}
-
-		if (!Tracker.DBus.init ()) {
-			return 1;
 		}
 
 		/* Initialize other subsystems */
@@ -218,6 +204,14 @@ License which can be viewed at:
 		print ("Starting log:\n  File:'%s'\n", log_filename);
 
 		sanity_check_option_values (config);
+
+		if (!Tracker.DBus.init ()) {
+			return 1;
+		}
+
+		/* Make sure we enable/disable the dbus client lookup */
+		config_verbosity_changed_cb (config, null);
+		ulong config_verbosity_id = config.notify["verbosity"].connect (config_verbosity_changed_cb);
 
 		DBManagerFlags flags = DBManagerFlags.REMOVE_CACHE;
 
@@ -278,6 +272,7 @@ License which can be viewed at:
 			                           null,
 			                           out is_first_time_index,
 			                           true,
+			                           false,
 			                           select_cache_size,
 			                           update_cache_size,
 			                           busy_callback,

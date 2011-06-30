@@ -107,8 +107,8 @@ am_libtracker_data_la_OBJECTS = tracker-sparql-expression.lo \
 	tracker-data-update.lo tracker-db-config.lo \
 	tracker-db-interface.lo tracker-db-interface-sqlite.lo \
 	tracker-db-manager.lo tracker-db-journal.lo \
-	tracker-namespace.lo tracker-ontology.lo tracker-ontologies.lo \
-	tracker-property.lo
+	tracker-db-backup.lo tracker-namespace.lo tracker-ontology.lo \
+	tracker-ontologies.lo tracker-property.lo
 libtracker_data_la_OBJECTS = $(am_libtracker_data_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -494,6 +494,7 @@ libtracker_data_la_SOURCES = \
 	tracker-db-interface-sqlite.c                  \
 	tracker-db-manager.c                           \
 	tracker-db-journal.c                           \
+	tracker-db-backup.c                            \
 	tracker-namespace.c                            \
 	tracker-ontology.c                             \
 	tracker-ontologies.c                           \
@@ -518,6 +519,7 @@ noinst_HEADERS = \
 	tracker-db-interface-sqlite.h                  \
 	tracker-db-manager.h                           \
 	tracker-db-journal.h                           \
+	tracker-db-backup.h                            \
 	tracker-namespace.h                            \
 	tracker-ontology.h                             \
 	tracker-ontologies.h                           \
@@ -611,6 +613,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-query.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-data-update.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-backup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-config.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-interface-sqlite.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-db-interface.Plo@am__quote@

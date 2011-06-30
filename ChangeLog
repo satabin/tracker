@@ -1,3 +1,120 @@
+2011-06-30  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.19
+
+	Merge branch 'checkpoint' into tracker-0.10
+
+2011-06-30  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-common: Remove tracker_env_check_xdg_dirs
+	This was used as a workaround on broken platforms where XDG_DATA_HOME
+	was not writable.
+
+	libtracker-data: Drop unused sql_dir variable
+
+2011-06-30  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-extract: Do some basic checks for GPS coordinates in EXIF tags
+	On some photos it would get the ExifEntries, but the coordinates wouldn't
+	be meaningful, so at least check the rational numbers' denominators to
+	avoid division by zero.
+
+2011-06-30  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-data: Make sure we don't leak sql_dir on multiple _init() calls
+
+2011-06-30  Jürg Billeter  <j@bitron.ch>
+
+	tracker-miner-fs: Fix error check after setting process priority
+
+	tracker-miner-fs: Remove early log message when setting process priority
+
+	tracker-store: Initialize D-Bus after initializing log
+	This prevents log messages below configured verbosity.
+
+	tracker-miner-fs: Check XDG directories after initializing log
+	This prevents log messages below configured verbosity.
+
+	tracker-store: Check XDG directories after initializing log
+	This prevents log messages below configured verbosity.
+
+2011-06-30  Daniel Nylander  <po@danielnylander.se>
+
+	Updated Swedish translation
+
+2011-06-29  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Set synchronous = OFF if journal is enabled
+
+2011-06-29  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-data: Don't leak string when locale is unknown
+
+2011-06-28  Aleksander Morgado  <aleksander@lanedo.com>
+
+	build: report in configure output whether support for journal is built
+
+2011-06-28  Jürg Billeter  <j@bitron.ch>
+
+	tracker-store: Fix Resources.Sync with disabled journal
+
+	libtracker-data: Backup in separate thread in single step
+	Using SQLite backup in multiple steps may restart the process due to
+	concurrent update operations.
+
+	libtracker-data: Switch to manual WAL checkpointing in a separate thread
+
+	libtracker-data: Do not print critical if db-locale.txt does not exist
+
+2011-06-28  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Initialization of db during restore must be handled if fails
+	In case the initialization of the db fails during the restore of a
+	backup, and only in case of --disable-journal, then should the init
+	fail with an error instead of trying to recreate a clean meta.db
+
+2011-06-28  Jürg Billeter  <j@bitron.ch>
+
+	functional-tests: Handle DISABLE_JOURNAL in backup-restore tests
+
+	functional-tests: Handle DISABLE_JOURNAL in ontology-changes tests
+
+2011-06-28  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data, tests: Fix failing unit tests
+
+	libtracker-data: Removed fts restore, not needed anymore
+
+	libtracker-data: Implement backup/restore with disabled journal
+
+	libtracker-data: Add disabling the journal as compile feature
+	Fixes NB#268105.
+
+2011-06-28  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Change WAL checkpoint threshold to improve performance
+
+	libtracker-data: Set synchronous = NORMAL
+	This prevents database corruption followed by expensive journal replay
+	on OS crash or loss of power.
+
+	functional-tests: When corrupting database file, also corrupt wal file
+	In some circumstances, the database file will be silently fixed with the
+	wal file. This needs to be prevented in the tests.
+
+	libtracker-data: Create ontologies.gvdb on startup if necessary
+
+	libtracker-data: Use temporary directory for restore recovery
+	This is now handled in tracker-data-backup, which allows us to shutdown
+	TrackerDataManager before moving files to the temporary directory.
+
+	libtracker-data: Store backup in subdirectory in backup test
+	Restore will move backup file to temporary location otherwise.
+
+2011-06-27  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Propagate errors from db_get_static_data
+
 2011-06-16  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.18

@@ -1,3 +1,9 @@
+tracker (0.10.19-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 30 Jun 2011 17:49:51 +0200
+
 tracker (0.10.18-1) experimental; urgency=low
 
   * New upstream release.

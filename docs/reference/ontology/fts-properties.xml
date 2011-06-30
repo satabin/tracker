@@ -15,6 +15,11 @@
 <tbody>
 <tr>
   <td>
+<link linkend='mtp-creator'>mtp:creator</link>,   </td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>
 <link linkend='nmm-category'>nmm:category</link>,   </td>
   <td>4</td>
 </tr>
@@ -155,16 +160,6 @@
 </tr>
 <tr>
   <td>
-<link linkend='nao-prefLabel'>nao:prefLabel</link>,   </td>
-  <td>10</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nao-description'>nao:description</link>,   </td>
-  <td>3</td>
-</tr>
-<tr>
-  <td>
 <link linkend='nid3-title'>nid3:title</link>,   </td>
   <td>10</td>
 </tr>
@@ -180,58 +175,8 @@
 </tr>
 <tr>
   <td>
-<link linkend='mtp-creator'>mtp:creator</link>,   </td>
-  <td>3</td>
-</tr>
-<tr>
-  <td>
 <link linkend='nmo-messageSubject'>nmo:messageSubject</link>,   </td>
   <td>5</td>
-</tr>
-<tr>
-  <td>
-<link linkend='ncal-summary'>ncal:summary</link>,   </td>
-  <td>5</td>
-</tr>
-<tr>
-  <td>
-<link linkend='ncal-description'>ncal:description</link>,   </td>
-  <td>3</td>
-</tr>
-<tr>
-  <td>
-<link linkend='ncal-location'>ncal:location</link>,   </td>
-  <td>3</td>
-</tr>
-<tr>
-  <td>
-<link linkend='ncal-contact'>ncal:contact</link>,   </td>
-  <td>4</td>
-</tr>
-<tr>
-  <td>
-<link linkend='ncal-comment'>ncal:comment</link>,   </td>
-  <td>3</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nfo-tableOfContents'>nfo:tableOfContents</link>,   </td>
-  <td>5</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nfo-fontFamily'>nfo:fontFamily</link>,   </td>
-  <td>5</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nfo-fileName'>nfo:fileName</link>,   </td>
-  <td>7</td>
-</tr>
-<tr>
-  <td>
-<link linkend='nfo-genre'>nfo:genre</link>,   </td>
-  <td>4</td>
 </tr>
 <tr>
   <td>
@@ -262,5 +207,60 @@
   <td>
 <link linkend='nie-title'>nie:title</link>,   </td>
   <td>10</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nfo-tableOfContents'>nfo:tableOfContents</link>,   </td>
+  <td>5</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nfo-fontFamily'>nfo:fontFamily</link>,   </td>
+  <td>5</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nfo-fileName'>nfo:fileName</link>,   </td>
+  <td>7</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nfo-genre'>nfo:genre</link>,   </td>
+  <td>4</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nao-prefLabel'>nao:prefLabel</link>,   </td>
+  <td>10</td>
+</tr>
+<tr>
+  <td>
+<link linkend='nao-description'>nao:description</link>,   </td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>
+<link linkend='ncal-summary'>ncal:summary</link>,   </td>
+  <td>5</td>
+</tr>
+<tr>
+  <td>
+<link linkend='ncal-description'>ncal:description</link>,   </td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>
+<link linkend='ncal-location'>ncal:location</link>,   </td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>
+<link linkend='ncal-contact'>ncal:contact</link>,   </td>
+  <td>4</td>
+</tr>
+<tr>
+  <td>
+<link linkend='ncal-comment'>ncal:comment</link>,   </td>
+  <td>3</td>
 </tr>
 </tbody></table></chapter>

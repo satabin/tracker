@@ -31,6 +31,8 @@
 #include <libtracker-data/tracker-data-query.h>
 #include <libtracker-data/tracker-data-update.h>
 #include <libtracker-data/tracker-data-backup.h>
+#include <libtracker-data/tracker-db-manager.h>
+#include <libtracker-data/tracker-db-interface-sqlite.h>
 #include <tracker-store/tracker-events.h>
 #include <gobject/gvaluecollector.h>
 
@@ -281,6 +283,11 @@ struct _TrackerStorePauseData {
 	GAsyncResult* _res_;
 	GSimpleAsyncResult* _async_result;
 	gboolean _tmp0_;
+	gint _tmp1_;
+	GThreadPool* _tmp2_;
+	GThreadPool* _tmp3_;
+	GError * e;
+	GError * _inner_error_;
 };
 
 struct _TrackerStoreParamSpecTask {
@@ -305,6 +312,8 @@ static GThreadPool* tracker_store_update_pool;
 static GThreadPool* tracker_store_update_pool = NULL;
 static GThreadPool* tracker_store_query_pool;
 static GThreadPool* tracker_store_query_pool = NULL;
+static GThreadPool* tracker_store_checkpoint_pool;
+static GThreadPool* tracker_store_checkpoint_pool = NULL;
 static GPtrArray* tracker_store_running_tasks;
 static GPtrArray* tracker_store_running_tasks = NULL;
 static gint tracker_store_max_task_time;
@@ -317,6 +326,8 @@ static GDestroyNotify tracker_store_active_callback_target_destroy_notify;
 static GSourceFunc tracker_store_active_callback = NULL;
 static gpointer tracker_store_active_callback_target = NULL;
 static GDestroyNotify tracker_store_active_callback_target_destroy_notify = NULL;
+static gint tracker_store_checkpointing;
+static gint tracker_store_checkpointing = 0;
 static gpointer tracker_store_task_parent_class = NULL;
 static gpointer tracker_store_query_task_parent_class = NULL;
 static gpointer tracker_store_update_task_parent_class = NULL;
@@ -355,12 +366,17 @@ static gboolean tracker_store_task_finish_cb (TrackerStoreTask* task);
 static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task);
 static Block8Data* block8_data_ref (Block8Data* _data8_);
 static void block8_data_unref (Block8Data* _data8_);
+static void tracker_store_wal_hook (gint n_pages);
+static void _tracker_store_wal_hook_tracker_db_wal_callback (gint n_pages);
 static GType tracker_store_turtle_task_get_type (void) G_GNUC_CONST G_GNUC_UNUSED;
 static gboolean _lambda1_ (Block8Data* _data8_);
 static gboolean __lambda1__gsource_func (gpointer self);
+void tracker_store_wal_checkpoint (void);
+static void tracker_store_checkpoint_dispatch_cb (gboolean task);
 void tracker_store_init (void);
 static void _tracker_store_task_unref0_ (gpointer var);
 static void _tracker_store_pool_dispatch_cb_gfunc (gconstpointer data, gpointer self);
+static void _tracker_store_checkpoint_dispatch_cb_gfunc (gconstpointer data, gpointer self);
 void tracker_store_shutdown (void);
 static void tracker_store_sparql_query_data_free (gpointer _data);
 void tracker_store_sparql_query (const gchar* sparql, TrackerStorePriority priority, TrackerStoreSparqlQueryInThread in_thread, void* in_thread_target, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_);
@@ -759,6 +775,16 @@ static void block8_data_unref (Block8Data* _data8_) {
 }
 
 
+static gpointer _g_object_ref0 (gpointer self) {
+	return self ? g_object_ref (self) : NULL;
+}
+
+
+static void _tracker_store_wal_hook_tracker_db_wal_callback (gint n_pages) {
+	tracker_store_wal_hook (n_pages);
+}
+
+
 static gboolean _lambda1_ (Block8Data* _data8_) {
 	gboolean result = FALSE;
 	tracker_store_task_finish_cb (_data8_->task);
@@ -803,44 +829,53 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 		_g_object_unref0 (cursor);
 		_tracker_store_task_unref0 (query_task);
 	} else {
+		TrackerDBInterface* _tmp2_ = NULL;
+		TrackerDBInterface* _tmp3_;
+		TrackerDBInterface* iface;
+		_tmp2_ = tracker_db_manager_get_db_interface ();
+		_tmp3_ = _g_object_ref0 (_tmp2_);
+		iface = _tmp3_;
+		tracker_db_interface_sqlite_wal_hook (iface, _tracker_store_wal_hook_tracker_db_wal_callback);
 		if (_data8_->task->type == TRACKER_STORE_TASK_TYPE_UPDATE) {
-			TrackerStoreUpdateTask* _tmp2_;
+			TrackerStoreUpdateTask* _tmp4_;
 			TrackerStoreUpdateTask* update_task;
-			_tmp2_ = _tracker_store_task_ref0 (TRACKER_STORE_UPDATE_TASK (_data8_->task));
-			update_task = _tmp2_;
+			_tmp4_ = _tracker_store_task_ref0 (TRACKER_STORE_UPDATE_TASK (_data8_->task));
+			update_task = _tmp4_;
 			tracker_data_update_sparql (update_task->query, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				_tracker_store_task_unref0 (update_task);
+				_g_object_unref0 (iface);
 				goto __catch20_g_error;
 			}
 			_tracker_store_task_unref0 (update_task);
 		} else {
 			if (_data8_->task->type == TRACKER_STORE_TASK_TYPE_UPDATE_BLANK) {
-				TrackerStoreUpdateTask* _tmp3_;
+				TrackerStoreUpdateTask* _tmp5_;
 				TrackerStoreUpdateTask* update_task;
-				GVariant* _tmp4_ = NULL;
-				GVariant* _tmp5_;
-				_tmp3_ = _tracker_store_task_ref0 (TRACKER_STORE_UPDATE_TASK (_data8_->task));
-				update_task = _tmp3_;
-				_tmp4_ = tracker_data_update_sparql_blank (update_task->query, &_inner_error_);
-				_tmp5_ = _tmp4_;
+				GVariant* _tmp6_ = NULL;
+				GVariant* _tmp7_;
+				_tmp5_ = _tracker_store_task_ref0 (TRACKER_STORE_UPDATE_TASK (_data8_->task));
+				update_task = _tmp5_;
+				_tmp6_ = tracker_data_update_sparql_blank (update_task->query, &_inner_error_);
+				_tmp7_ = _tmp6_;
 				if (_inner_error_ != NULL) {
 					_tracker_store_task_unref0 (update_task);
+					_g_object_unref0 (iface);
 					goto __catch20_g_error;
 				}
 				_g_variant_unref0 (update_task->blank_nodes);
-				update_task->blank_nodes = _tmp5_;
+				update_task->blank_nodes = _tmp7_;
 				_tracker_store_task_unref0 (update_task);
 			} else {
 				if (_data8_->task->type == TRACKER_STORE_TASK_TYPE_TURTLE) {
-					TrackerStoreTurtleTask* _tmp6_;
+					TrackerStoreTurtleTask* _tmp8_;
 					TrackerStoreTurtleTask* turtle_task;
-					GFile* _tmp7_ = NULL;
+					GFile* _tmp9_ = NULL;
 					GFile* file;
-					_tmp6_ = _tracker_store_task_ref0 (TRACKER_STORE_TURTLE_TASK (_data8_->task));
-					turtle_task = _tmp6_;
-					_tmp7_ = g_file_new_for_path (turtle_task->path);
-					file = _tmp7_;
+					_tmp8_ = _tracker_store_task_ref0 (TRACKER_STORE_TURTLE_TASK (_data8_->task));
+					turtle_task = _tmp8_;
+					_tmp9_ = g_file_new_for_path (turtle_task->path);
+					file = _tmp9_;
 					tracker_events_freeze ();
 					tracker_data_load_turtle_file (file, &_inner_error_);
 					if (_inner_error_ != NULL) {
@@ -851,6 +886,7 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 					if (_inner_error_ != NULL) {
 						_g_object_unref0 (file);
 						_tracker_store_task_unref0 (turtle_task);
+						_g_object_unref0 (iface);
 						goto __catch20_g_error;
 					}
 					_g_object_unref0 (file);
@@ -858,17 +894,18 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 				}
 			}
 		}
+		_g_object_unref0 (iface);
 	}
 	goto __finally20;
 	__catch20_g_error:
 	{
 		GError * e;
-		GError* _tmp8_;
+		GError* _tmp10_;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		_tmp8_ = _g_error_copy0 (e);
+		_tmp10_ = _g_error_copy0 (e);
 		_g_error_free0 (_data8_->task->error);
-		_data8_->task->error = _tmp8_;
+		_data8_->task->error = _tmp10_;
 		_g_error_free0 (e);
 	}
 	__finally20:
@@ -885,6 +922,82 @@ static void tracker_store_pool_dispatch_cb (TrackerStoreTask* task) {
 }
 
 
+void tracker_store_wal_checkpoint (void) {
+	TrackerDBInterface* _tmp0_ = NULL;
+	TrackerDBInterface* _tmp1_;
+	TrackerDBInterface* iface;
+	GError * _inner_error_ = NULL;
+	g_debug ("Checkpointing database...");
+	_tmp0_ = tracker_db_manager_get_db_interface ();
+	_tmp1_ = _g_object_ref0 (_tmp0_);
+	iface = _tmp1_;
+	tracker_db_interface_execute_query (iface, &_inner_error_, "PRAGMA wal_checkpoint");
+	if (_inner_error_ != NULL) {
+		_g_object_unref0 (iface);
+		goto __catch22_g_error;
+	}
+	g_debug ("Checkpointing complete...");
+	_g_object_unref0 (iface);
+	goto __finally22;
+	__catch22_g_error:
+	{
+		GError * e;
+		e = _inner_error_;
+		_inner_error_ = NULL;
+		g_warning ("%s", e->message);
+		_g_error_free0 (e);
+	}
+	__finally22:
+	if (_inner_error_ != NULL) {
+		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
+		return;
+	}
+}
+
+
+static void tracker_store_wal_hook (gint n_pages) {
+	GError * _inner_error_ = NULL;
+	g_debug ("WAL: %d pages", n_pages);
+	if (n_pages >= 10000) {
+		tracker_store_wal_checkpoint ();
+	} else {
+		if (n_pages >= 1000) {
+			gboolean _tmp0_;
+			_tmp0_ = g_atomic_int_compare_and_exchange (&tracker_store_checkpointing, 0, 1);
+			if (_tmp0_) {
+				g_thread_pool_push (tracker_store_checkpoint_pool, GINT_TO_POINTER (TRUE), &_inner_error_);
+				if (_inner_error_ != NULL) {
+					goto __catch23_g_error;
+				}
+				goto __finally23;
+				__catch23_g_error:
+				{
+					GError * e;
+					e = _inner_error_;
+					_inner_error_ = NULL;
+					g_warning ("%s", e->message);
+					g_atomic_int_set (&tracker_store_checkpointing, 0);
+					_g_error_free0 (e);
+				}
+				__finally23:
+				if (_inner_error_ != NULL) {
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return;
+				}
+			}
+		}
+	}
+}
+
+
+static void tracker_store_checkpoint_dispatch_cb (gboolean task) {
+	tracker_store_wal_checkpoint ();
+	g_atomic_int_set (&tracker_store_checkpointing, 0);
+}
+
+
 static void _tracker_store_task_unref0_ (gpointer var) {
 	(var == NULL) ? NULL : (var = (tracker_store_task_unref (var), NULL));
 }
@@ -892,6 +1005,11 @@ static void _tracker_store_task_unref0_ (gpointer var) {
 
 static void _tracker_store_pool_dispatch_cb_gfunc (gconstpointer data, gpointer self) {
 	tracker_store_pool_dispatch_cb (data);
+}
+
+
+static void _tracker_store_checkpoint_dispatch_cb_gfunc (gconstpointer data, gpointer self) {
+	tracker_store_checkpoint_dispatch_cb (data);
 }
 
 
@@ -904,6 +1022,8 @@ void tracker_store_init (void) {
 	GThreadPool* _tmp10_;
 	GThreadPool* _tmp11_ = NULL;
 	GThreadPool* _tmp12_;
+	GThreadPool* _tmp13_ = NULL;
+	GThreadPool* _tmp14_;
 	GError * _inner_error_ = NULL;
 	_tmp0_ = g_getenv ("TRACKER_STORE_MAX_TASK_TIME");
 	_tmp1_ = g_strdup (_tmp0_);
@@ -950,19 +1070,26 @@ void tracker_store_init (void) {
 	_tmp9_ = g_thread_pool_new (_tracker_store_pool_dispatch_cb_gfunc, NULL, 1, TRUE, &_inner_error_);
 	_tmp10_ = _tmp9_;
 	if (_inner_error_ != NULL) {
-		goto __catch22_g_error;
+		goto __catch24_g_error;
 	}
 	_g_thread_pool_free0 (tracker_store_update_pool);
 	tracker_store_update_pool = _tmp10_;
 	_tmp11_ = g_thread_pool_new (_tracker_store_pool_dispatch_cb_gfunc, NULL, TRACKER_STORE_MAX_CONCURRENT_QUERIES, TRUE, &_inner_error_);
 	_tmp12_ = _tmp11_;
 	if (_inner_error_ != NULL) {
-		goto __catch22_g_error;
+		goto __catch24_g_error;
 	}
 	_g_thread_pool_free0 (tracker_store_query_pool);
 	tracker_store_query_pool = _tmp12_;
-	goto __finally22;
-	__catch22_g_error:
+	_tmp13_ = g_thread_pool_new (_tracker_store_checkpoint_dispatch_cb_gfunc, NULL, 1, TRUE, &_inner_error_);
+	_tmp14_ = _tmp13_;
+	if (_inner_error_ != NULL) {
+		goto __catch24_g_error;
+	}
+	_g_thread_pool_free0 (tracker_store_checkpoint_pool);
+	tracker_store_checkpoint_pool = _tmp14_;
+	goto __finally24;
+	__catch24_g_error:
 	{
 		GError * e;
 		e = _inner_error_;
@@ -970,7 +1097,7 @@ void tracker_store_init (void) {
 		g_warning ("%s", e->message);
 		_g_error_free0 (e);
 	}
-	__finally22:
+	__finally24:
 	if (_inner_error_ != NULL) {
 		_g_free0 (max_task_time_env);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -988,6 +1115,8 @@ void tracker_store_shutdown (void) {
 	tracker_store_query_pool = NULL;
 	_g_thread_pool_free0 (tracker_store_update_pool);
 	tracker_store_update_pool = NULL;
+	_g_thread_pool_free0 (tracker_store_checkpoint_pool);
+	tracker_store_checkpoint_pool = NULL;
 	{
 		gint i;
 		i = 0;
@@ -1349,11 +1478,6 @@ static void tracker_store_queue_turtle_import_data_free (gpointer _data) {
 }
 
 
-static gpointer _g_object_ref0 (gpointer self) {
-	return self ? g_object_ref (self) : NULL;
-}
-
-
 void tracker_store_queue_turtle_import (GFile* file, const gchar* client_id, GAsyncReadyCallback _callback_, gpointer _user_data_) {
 	TrackerStoreQueueTurtleImportData* _data_;
 	_data_ = g_slice_new0 (TrackerStoreQueueTurtleImportData);
@@ -1668,6 +1792,33 @@ static gboolean tracker_store_pause_co (TrackerStorePauseData* data) {
 		tracker_store_active_callback = NULL;
 		tracker_store_active_callback_target = NULL;
 		tracker_store_active_callback_target_destroy_notify = NULL;
+	}
+	data->_tmp1_ = g_atomic_int_get (&tracker_store_checkpointing);
+	if (data->_tmp1_ != 0) {
+		_g_thread_pool_free0 (tracker_store_checkpoint_pool);
+		tracker_store_checkpoint_pool = NULL;
+		data->_tmp2_ = NULL;
+		data->_tmp2_ = g_thread_pool_new (_tracker_store_checkpoint_dispatch_cb_gfunc, NULL, 1, TRUE, &data->_inner_error_);
+		data->_tmp3_ = data->_tmp2_;
+		if (data->_inner_error_ != NULL) {
+			goto __catch25_g_error;
+		}
+		_g_thread_pool_free0 (tracker_store_checkpoint_pool);
+		tracker_store_checkpoint_pool = data->_tmp3_;
+		goto __finally25;
+		__catch25_g_error:
+		{
+			data->e = data->_inner_error_;
+			data->_inner_error_ = NULL;
+			g_warning ("%s", data->e->message);
+			_g_error_free0 (data->e);
+		}
+		__finally25:
+		if (data->_inner_error_ != NULL) {
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, data->_inner_error_->message, g_quark_to_string (data->_inner_error_->domain), data->_inner_error_->code);
+			g_clear_error (&data->_inner_error_);
+			return FALSE;
+		}
 	}
 	if (tracker_store_active) {
 		tracker_store_sched ();

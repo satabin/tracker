@@ -181,6 +181,7 @@ test_ontology_init (void)
 	                           NULL,
 	                           NULL,
 	                           FALSE,
+	                           FALSE,
 	                           100,
 	                           100,
 	                           NULL,
@@ -198,6 +199,7 @@ test_ontology_init (void)
 	tracker_data_manager_init (0,
 	                           NULL,
 	                           NULL,
+	                           FALSE,
 	                           FALSE,
 	                           100,
 	                           100,
@@ -236,6 +238,7 @@ test_query (gconstpointer test_data)
 	tracker_data_manager_init (TRACKER_DB_MANAGER_FORCE_REINDEX,
 	                           NULL,
 	                           NULL,
+	                           FALSE,
 	                           FALSE,
 	                           100,
 	                           100,
@@ -289,7 +292,6 @@ main (int argc, char **argv)
 
 	g_setenv ("XDG_DATA_HOME", data_dir, TRUE);
 	g_setenv ("XDG_CACHE_HOME", data_dir, TRUE);
-	g_setenv ("TRACKER_DB_SQL_DIR", TOP_SRCDIR "/data/db/", TRUE);
 	g_setenv ("TRACKER_DB_ONTOLOGIES_DIR", TOP_SRCDIR "/data/ontologies/", TRUE);
 
 	/* add test cases */

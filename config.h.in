@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define if we disable the journal */
+#undef DISABLE_JOURNAL
+
 /* Include functional tests in the installation */
 #undef DIST_FUNCTIONAL_TESTS
 

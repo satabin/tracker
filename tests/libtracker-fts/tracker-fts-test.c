@@ -74,7 +74,8 @@ test_sparql_query (gconstpointer test_data)
 	tracker_db_journal_set_rotating (FALSE, G_MAXSIZE, NULL);
 	tracker_data_manager_init (TRACKER_DB_MANAGER_FORCE_REINDEX,
 	                           test_schemas,
-	                           NULL, FALSE, 100, 100, NULL, NULL, NULL, &error);
+	                           NULL, FALSE, FALSE,
+	                           100, 100, NULL, NULL, NULL, &error);
 
 	g_assert_no_error (error);
 
@@ -190,7 +191,6 @@ main (int argc, char **argv)
 
 	g_setenv ("XDG_DATA_HOME", current_dir, TRUE);
 	g_setenv ("XDG_CACHE_HOME", current_dir, TRUE);
-	g_setenv ("TRACKER_DB_SQL_DIR", TOP_SRCDIR "/data/db/", TRUE);
 	g_setenv ("TRACKER_DB_ONTOLOGIES_DIR", TOP_SRCDIR "/data/ontologies/", TRUE);
 	g_setenv ("TRACKER_FTS_STOP_WORDS", "0", TRUE);
 

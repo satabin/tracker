@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [18])
-m4_define([tracker_interface_age], [7])
+m4_define([tracker_micro_version], [19])
+m4_define([tracker_interface_age], [8])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -613,6 +613,28 @@ AM_CONDITIONAL(HAVE_MAEMO, test "x$enable_maemo" = "xyes")
 
 if test "x$enable_maemo" = "xyes" ; then
    AC_DEFINE(HAVE_MAEMO, 1, [Define if we enable Maemo specific features])
+fi
+
+####################################################################
+# Check if we should disable the journal
+####################################################################
+
+AC_ARG_ENABLE(journal,
+              AS_HELP_STRING([--enable-journal],
+                             [enable journal [[default=yes]]]),
+             [enable_journal="$enableval"],
+             [enable_journal=yes])
+
+if test "x$enable_journal" != "xno" ; then
+   have_tracker_journal="yes"
+else
+   have_tracker_journal="no  (disabled)"
+fi
+
+AM_CONDITIONAL(DISABLE_JOURNAL, test "x$enable_journal" = "xno")
+
+if test "x$enable_journal" = "xno" ; then
+   AC_DEFINE(DISABLE_JOURNAL, 1, [Define if we disable the journal])
 fi
 
 ####################################################################
@@ -2168,6 +2190,7 @@ Build Configuration:
 
 Applications:
 
+	Build with Journal support:             $have_tracker_journal
 	Build with SQLite FTS support:          $have_tracker_fts
 
 	Build tracker-preferences:              $have_tracker_preferences

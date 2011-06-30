@@ -134,8 +134,8 @@ static void _vala_array_add1 (gchar*** array, int* length, int* size, gchar* val
 static void tracker_main_config_verbosity_changed_cb (GObject* object, GParamSpec* spec);
 static gint tracker_main_main (gchar** args, int args_length1);
 void tzset (void);
-static void _tracker_main_config_verbosity_changed_cb_g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
 gboolean tracker_dbus_init (void);
+static void _tracker_main_config_verbosity_changed_cb_g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
 GType tracker_status_get_type (void) G_GNUC_CONST;
 guint tracker_status_register_object (void* object, GDBusConnection* connection, const gchar* path, GError** error);
 TrackerStatus* tracker_dbus_register_notifier (void);
@@ -359,45 +359,44 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	const gchar* _tmp0_ = NULL;
 	GOptionContext* _tmp1_ = NULL;
 	GOptionContext* context;
-	gboolean _tmp2_;
-	TrackerConfig* _tmp3_ = NULL;
+	TrackerConfig* _tmp2_ = NULL;
 	TrackerConfig* config;
-	TrackerDBConfig* _tmp4_ = NULL;
+	TrackerDBConfig* _tmp3_ = NULL;
 	TrackerDBConfig* db_config;
-	gulong _tmp5_;
-	gulong config_verbosity_id;
+	gint _tmp4_;
+	gchar* _tmp5_ = NULL;
 	gboolean _tmp6_;
-	gint _tmp7_;
-	gchar* _tmp8_ = NULL;
+	gulong _tmp7_;
+	gulong config_verbosity_id;
 	TrackerDBManagerFlags flags;
-	TrackerStatus* _tmp9_ = NULL;
+	TrackerStatus* _tmp8_ = NULL;
 	TrackerStatus* notifier;
-	void* _tmp10_ = NULL;
-	GDestroyNotify _tmp11_ = NULL;
-	TrackerBusyCallback _tmp12_ = NULL;
+	void* _tmp9_ = NULL;
+	GDestroyNotify _tmp10_ = NULL;
+	TrackerBusyCallback _tmp11_ = NULL;
 	TrackerBusyCallback busy_callback;
 	void* busy_callback_target = NULL;
 	GDestroyNotify busy_callback_target_destroy_notify = NULL;
+	gboolean _tmp12_;
 	gboolean _tmp13_;
-	gboolean _tmp14_;
-	gint _tmp15_;
+	gint _tmp14_;
 	gint chunk_size_mb;
 	gsize chunk_size;
-	const gchar* _tmp16_ = NULL;
-	gchar* _tmp17_;
+	const gchar* _tmp15_ = NULL;
+	gchar* _tmp16_;
 	gchar* rotate_to;
 	gboolean do_rotating;
 	gint select_cache_size = 0;
 	gint update_cache_size = 0;
 	gchar* cache_size_s = NULL;
-	const gchar* _tmp18_ = NULL;
-	gchar* _tmp19_;
-	gboolean _tmp20_ = FALSE;
-	const gchar* _tmp22_ = NULL;
-	gchar* _tmp23_;
-	gboolean _tmp24_ = FALSE;
+	const gchar* _tmp17_ = NULL;
+	gchar* _tmp18_;
+	gboolean _tmp19_ = FALSE;
+	const gchar* _tmp21_ = NULL;
+	gchar* _tmp22_;
+	gboolean _tmp23_ = FALSE;
 	gboolean is_first_time_index = FALSE;
-	gboolean _tmp26_;
+	gboolean _tmp25_;
 	GError * _inner_error_ = NULL;
 	setlocale (LC_ALL, "");
 	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -439,23 +438,20 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 	}
 	g_print ("Initializing tracker-store...\n");
 	tracker_main_initialize_signal_handler ();
-	_tmp2_ = tracker_env_check_xdg_dirs ();
-	if (!_tmp2_) {
-		result = 1;
-		return result;
-	}
 	tracker_main_initialize_priority ();
-	_tmp3_ = tracker_config_new ();
-	config = _tmp3_;
-	_tmp4_ = tracker_db_config_new ();
-	db_config = _tmp4_;
-	_tmp5_ = g_signal_connect ((GObject*) config, "notify::verbosity", (GCallback) _tracker_main_config_verbosity_changed_cb_g_object_notify, NULL);
-	config_verbosity_id = _tmp5_;
+	_tmp2_ = tracker_config_new ();
+	config = _tmp2_;
+	_tmp3_ = tracker_db_config_new ();
+	db_config = _tmp3_;
 	if (tracker_main_verbosity > (-1)) {
 		tracker_config_set_verbosity (config, tracker_main_verbosity);
-	} else {
-		tracker_main_config_verbosity_changed_cb ((GObject*) config, NULL);
 	}
+	_tmp4_ = tracker_config_get_verbosity (config);
+	tracker_log_init (_tmp4_, &_tmp5_);
+	_g_free0 (tracker_main_log_filename);
+	tracker_main_log_filename = _tmp5_;
+	g_print ("Starting log:\n  File:'%s'\n", tracker_main_log_filename);
+	tracker_main_sanity_check_option_values (config);
 	_tmp6_ = tracker_dbus_init ();
 	if (!_tmp6_) {
 		result = 1;
@@ -463,24 +459,33 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		_g_object_unref0 (config);
 		return result;
 	}
-	_tmp7_ = tracker_config_get_verbosity (config);
-	tracker_log_init (_tmp7_, &_tmp8_);
-	_g_free0 (tracker_main_log_filename);
-	tracker_main_log_filename = _tmp8_;
-	g_print ("Starting log:\n  File:'%s'\n", tracker_main_log_filename);
-	tracker_main_sanity_check_option_values (config);
+	tracker_main_config_verbosity_changed_cb ((GObject*) config, NULL);
+	_tmp7_ = g_signal_connect ((GObject*) config, "notify::verbosity", (GCallback) _tracker_main_config_verbosity_changed_cb_g_object_notify, NULL);
+	config_verbosity_id = _tmp7_;
 	flags = TRACKER_DB_MANAGER_REMOVE_CACHE;
 	if (tracker_main_force_reindex) {
 		flags = flags | TRACKER_DB_MANAGER_FORCE_REINDEX;
 	}
-	_tmp9_ = tracker_dbus_register_notifier ();
-	notifier = _tmp9_;
-	_tmp12_ = tracker_status_get_callback (notifier, &_tmp10_, &_tmp11_);
-	busy_callback = _tmp12_;
-	busy_callback_target = _tmp10_;
-	busy_callback_target_destroy_notify = _tmp11_;
+	_tmp8_ = tracker_dbus_register_notifier ();
+	notifier = _tmp8_;
+	_tmp11_ = tracker_status_get_callback (notifier, &_tmp9_, &_tmp10_);
+	busy_callback = _tmp11_;
+	busy_callback_target = _tmp9_;
+	busy_callback_target_destroy_notify = _tmp10_;
 	tracker_store_init ();
-	_tmp13_ = tracker_dbus_register_objects ();
+	_tmp12_ = tracker_dbus_register_objects ();
+	if (!_tmp12_) {
+		result = 1;
+		(busy_callback_target_destroy_notify == NULL) ? NULL : (busy_callback_target_destroy_notify (busy_callback_target), NULL);
+		busy_callback = NULL;
+		busy_callback_target = NULL;
+		busy_callback_target_destroy_notify = NULL;
+		_g_object_unref0 (notifier);
+		_g_object_unref0 (db_config);
+		_g_object_unref0 (config);
+		return result;
+	}
+	_tmp13_ = tracker_dbus_register_names ();
 	if (!_tmp13_) {
 		result = 1;
 		(busy_callback_target_destroy_notify == NULL) ? NULL : (busy_callback_target_destroy_notify (busy_callback_target), NULL);
@@ -492,64 +497,52 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		_g_object_unref0 (config);
 		return result;
 	}
-	_tmp14_ = tracker_dbus_register_names ();
-	if (!_tmp14_) {
-		result = 1;
-		(busy_callback_target_destroy_notify == NULL) ? NULL : (busy_callback_target_destroy_notify (busy_callback_target), NULL);
-		busy_callback = NULL;
-		busy_callback_target = NULL;
-		busy_callback_target_destroy_notify = NULL;
-		_g_object_unref0 (notifier);
-		_g_object_unref0 (db_config);
-		_g_object_unref0 (config);
-		return result;
-	}
-	_tmp15_ = tracker_db_config_get_journal_chunk_size (db_config);
-	chunk_size_mb = _tmp15_;
+	_tmp14_ = tracker_db_config_get_journal_chunk_size (db_config);
+	chunk_size_mb = _tmp14_;
 	chunk_size = (gsize) ((((gsize) chunk_size_mb) * ((gsize) 1024)) * ((gsize) 1024));
-	_tmp16_ = tracker_db_config_get_journal_rotate_destination (db_config);
-	_tmp17_ = g_strdup (_tmp16_);
-	rotate_to = _tmp17_;
+	_tmp15_ = tracker_db_config_get_journal_rotate_destination (db_config);
+	_tmp16_ = g_strdup (_tmp15_);
+	rotate_to = _tmp16_;
 	if (g_strcmp0 (rotate_to, "") == 0) {
 		_g_free0 (rotate_to);
 		rotate_to = NULL;
 	}
 	do_rotating = chunk_size_mb != (-1);
 	tracker_db_journal_set_rotating (do_rotating, chunk_size, rotate_to);
-	_tmp18_ = g_getenv ("TRACKER_STORE_SELECT_CACHE_SIZE");
-	_tmp19_ = g_strdup (_tmp18_);
+	_tmp17_ = g_getenv ("TRACKER_STORE_SELECT_CACHE_SIZE");
+	_tmp18_ = g_strdup (_tmp17_);
 	_g_free0 (cache_size_s);
-	cache_size_s = _tmp19_;
+	cache_size_s = _tmp18_;
 	if (cache_size_s != NULL) {
-		_tmp20_ = g_strcmp0 (cache_size_s, "") != 0;
+		_tmp19_ = g_strcmp0 (cache_size_s, "") != 0;
 	} else {
-		_tmp20_ = FALSE;
+		_tmp19_ = FALSE;
 	}
-	if (_tmp20_) {
-		gint _tmp21_;
-		_tmp21_ = atoi (cache_size_s);
-		select_cache_size = _tmp21_;
+	if (_tmp19_) {
+		gint _tmp20_;
+		_tmp20_ = atoi (cache_size_s);
+		select_cache_size = _tmp20_;
 	} else {
 		select_cache_size = TRACKER_MAIN_SELECT_CACHE_SIZE;
 	}
-	_tmp22_ = g_getenv ("TRACKER_STORE_UPDATE_CACHE_SIZE");
-	_tmp23_ = g_strdup (_tmp22_);
+	_tmp21_ = g_getenv ("TRACKER_STORE_UPDATE_CACHE_SIZE");
+	_tmp22_ = g_strdup (_tmp21_);
 	_g_free0 (cache_size_s);
-	cache_size_s = _tmp23_;
+	cache_size_s = _tmp22_;
 	if (cache_size_s != NULL) {
-		_tmp24_ = g_strcmp0 (cache_size_s, "") != 0;
+		_tmp23_ = g_strcmp0 (cache_size_s, "") != 0;
 	} else {
-		_tmp24_ = FALSE;
+		_tmp23_ = FALSE;
 	}
-	if (_tmp24_) {
-		gint _tmp25_;
-		_tmp25_ = atoi (cache_size_s);
-		update_cache_size = _tmp25_;
+	if (_tmp23_) {
+		gint _tmp24_;
+		_tmp24_ = atoi (cache_size_s);
+		update_cache_size = _tmp24_;
 	} else {
 		update_cache_size = TRACKER_MAIN_UPDATE_CACHE_SIZE;
 	}
-	tracker_data_manager_init (flags, NULL, &_tmp26_, TRUE, (guint) select_cache_size, (guint) update_cache_size, busy_callback, busy_callback_target, "Initializing", &_inner_error_);
-	is_first_time_index = _tmp26_;
+	tracker_data_manager_init (flags, NULL, &_tmp25_, TRUE, FALSE, (guint) select_cache_size, (guint) update_cache_size, busy_callback, busy_callback_target, "Initializing", &_inner_error_);
+	is_first_time_index = _tmp25_;
 	if (_inner_error_ != NULL) {
 		goto __catch7_g_error;
 	}
@@ -601,10 +594,10 @@ static gint tracker_main_main (gchar** args, int args_length1) {
 		g_message ("Waiting for D-Bus requests...");
 	}
 	if (!tracker_main_shutdown) {
-		GMainLoop* _tmp27_ = NULL;
-		_tmp27_ = g_main_loop_new (NULL, FALSE);
+		GMainLoop* _tmp26_ = NULL;
+		_tmp26_ = g_main_loop_new (NULL, FALSE);
 		_g_main_loop_unref0 (tracker_main_main_loop);
-		tracker_main_main_loop = _tmp27_;
+		tracker_main_main_loop = _tmp26_;
 		g_main_loop_run (tracker_main_main_loop);
 	}
 	g_message ("Shutdown started");

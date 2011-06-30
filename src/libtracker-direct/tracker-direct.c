@@ -153,7 +153,7 @@ TrackerDirectConnection* tracker_direct_connection_construct (GType object_type,
 			_tmp2_ = atoi (env_cache_size);
 			select_cache_size = (guint) _tmp2_;
 		}
-		tracker_data_manager_init (TRACKER_DB_MANAGER_READONLY, NULL, NULL, FALSE, select_cache_size, (guint) 0, NULL, NULL, NULL, &_inner_error_);
+		tracker_data_manager_init (TRACKER_DB_MANAGER_READONLY, NULL, NULL, FALSE, FALSE, select_cache_size, (guint) 0, NULL, NULL, NULL, &_inner_error_);
 		if (_inner_error_ != NULL) {
 			_g_free0 (env_cache_size);
 			goto __catch1_g_error;

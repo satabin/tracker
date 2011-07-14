@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Sparql builder</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
 <link rel="home" href="index.html" title="Tracker Client Library Reference Manual">
 <link rel="up" href="ch03.html" title="Building Queries">
 <link rel="prev" href="ch03.html" title="Building Queries">
@@ -123,34 +123,67 @@ for the same subject, and several objects for the same predicate.
 </p>
 <div class="example">
 <a name="example-sparql-builder"></a><p class="title"><b>Example 2. Using TrackerSparqlBuilder</b></p>
-<div class="example-contents"><pre class="programlisting">
-  TrackerSparqlBuilder *builder;
-  const gchar *iri = "urn:example:0001";
+<div class="example-contents">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26</pre></td>
+        <td class="listing_code"><pre class="programlisting">TrackerSparqlBuilder *builder;
+  <span class="type">const</span> gchar *iri = <span class="number">&quot;urn:example:0001&quot;</span>;
   gchar *query_str;
   
-  /* Create builder */
+  <span class="comment">/*</span><span class="comment"> Create builder </span><span class="comment">*/</span>
   builder = tracker_sparql_builder_new_update ();
   
-  /* Drop previous data */
+  <span class="comment">/*</span><span class="comment"> Drop previous data </span><span class="comment">*/</span>
   tracker_sparql_builder_drop_graph (builder, iri);
   
-  /* Insert new data */
+  <span class="comment">/*</span><span class="comment"> Insert new data </span><span class="comment">*/</span>
   tracker_sparql_builder_insert_open (builder, iri);
   
   tracker_sparql_builder_subject_iri (builder, iri);
   
-  tracker_sparql_builder_predicate (builder, "a");
-  tracker_sparql_builder_object (builder, "nie:DataObject");
-  tracker_sparql_builder_object (builder, "nfo:FileDataObject");
+  tracker_sparql_builder_predicate (builder, <span class="number">&quot;a&quot;</span>);
+  tracker_sparql_builder_object (builder, <span class="number">&quot;nie:DataObject&quot;</span>);
+  tracker_sparql_builder_object (builder, <span class="number">&quot;nfo:FileDataObject&quot;</span>);
   
-  tracker_sparql_builder_predicate (builder, "nfo:fileLastModified");
-  tracker_sparql_builder_object_date (builder, time (NULL));
+  tracker_sparql_builder_predicate (builder, <span class="number">&quot;nfo:fileLastModified&quot;</span>);
+  tracker_sparql_builder_object_date (builder, time (<span class="number">NULL</span>));
   
   tracker_sparql_builder_insert_close (builder);
   
-  /* Get query as string */
-  query_str = tracker_sparql_builder_get_result (builder);
-  </pre></div>
+  <span class="comment">/*</span><span class="comment"> Get query as string </span><span class="comment">*/</span>
+  query_str = tracker_sparql_builder_get_result (builder);</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 </div>
 <br class="example-break">
 </div>
@@ -451,7 +484,7 @@ Opens an insertion statement.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>graph</code></em> :</span></p></td>
-<td>Graph name, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+<td>Graph name, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -544,7 +577,7 @@ a query to delete them.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>graph</code></em> :</span></p></td>
-<td>Graph name, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+<td>Graph name, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
 </tr>
 </tbody>
 </table></div>

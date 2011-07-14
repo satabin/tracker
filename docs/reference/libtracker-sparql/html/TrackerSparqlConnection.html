@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerSparqlConnection</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
 <link rel="home" href="index.html" title="Tracker SPARQL Library Reference Manual">
 <link rel="up" href="libtracker-sparql-reference.html" title="Part II. Reference">
 <link rel="prev" href="TrackerSparqlBuilder.html" title="TrackerSparqlBuilder">
@@ -274,7 +274,7 @@ or an error in cases of failure.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>The error which occurred or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>The error which occurred or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -351,7 +351,7 @@ requested or an error in cases of failure.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>The error which occurred or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>The error which occurred or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -397,8 +397,8 @@ it may block.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
-On error, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em> is set accordingly.
+<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
+On error, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em> is set accordingly.
 Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer needed.</td>
 </tr>
 </tbody>
@@ -446,8 +446,8 @@ Finishes the asynchronous SPARQL query operation.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
-On error, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em> is set accordingly.
+<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> if results were found, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a> otherwise.
+On error, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a> is returned and the <em class="parameter"><code>error</code></em> is set accordingly.
 Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer needed.</td>
 </tr>
 </tbody>
@@ -641,29 +641,56 @@ Finishes the asynchronous SPARQL update_array operation.
 <p>
 </p>
 <div class="example">
-<a name="id390128"></a><p class="title"><b>Example 1. </b></p>
-<div class="example-contents"><pre class="programlisting">
-static void
+<a name="id403378"></a><p class="title"><b>Example 1. </b></p>
+<div class="example-contents">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="type">static</span> <span class="type">void</span>
 async_update_array_callback (GObject      *source_object,
                              GAsyncResult *result,
                              gpointer      user_data)
 {
-    GError *error = NULL;
+    GError *error = <span class="number">NULL</span>;
     GPtrArray *errors;
     guint i;
 
     errors = tracker_sparql_connection_update_array_finish (connection, result, &amp;error);
     g_assert_no_error (error);
 
-    for (i = 0; i &lt; errors-&gt;len; i++) {
-        const GError *e = g_ptr_array_index (errors, i);
+    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; errors-&gt;len; i++) {
+        <span class="type">const</span> GError *e = g_ptr_array_index (errors, i);
 
         ...
     }
 
     g_ptr_array_unref (errors);
-}
-</pre></div>
+}</pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 </div>
 <p><br class="example-break">
 </p>
@@ -970,7 +997,7 @@ synchronous, so it may block.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>
+<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a>
 on error. Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer
 needed.</td>
 </tr>
@@ -1044,7 +1071,7 @@ Finishes the asynchronous retrieval of statistics from the Store.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><span class="type">NULL</span></a>
+<td>a <a class="link" href="TrackerSparqlCursor.html" title="TrackerSparqlCursor"><span class="type">TrackerSparqlCursor</span></a> to iterate the reply if successful, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><span class="type">NULL</span></a>
 on error. Call <a href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-unref"><code class="function">g_object_unref()</code></a> on the returned cursor when no longer
 needed.</td>
 </tr>

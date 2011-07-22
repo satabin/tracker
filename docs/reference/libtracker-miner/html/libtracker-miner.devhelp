@@ -90,7 +90,6 @@
     <function name="The &quot;initial-crawling&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--initial-crawling"/>
     <function name="The &quot;mtime-checking&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--mtime-checking"/>
     <function name="The &quot;processing-pool-ready-limit&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--processing-pool-ready-limit"/>
-    <function name="The &quot;processing-pool-requests-limit&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--processing-pool-requests-limit"/>
     <function name="The &quot;processing-pool-wait-limit&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--processing-pool-wait-limit"/>
     <function name="The &quot;throttle&quot; property" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--throttle"/>
     <function name="The &quot;check-directory&quot; signal" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-check-directory"/>

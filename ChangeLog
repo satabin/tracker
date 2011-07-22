@@ -1,3 +1,154 @@
+2011-07-22  Jürg Billeter  <j@bitron.ch>
+
+	Release 0.10.21
+
+2011-07-22  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	miner: don't use G_CONST_RETURN
+	Just use const instead.
+	https://mail.gnome.org/archives/desktop-devel-list/2011-March/msg00044.html
+	https://mail.gnome.org/archives/desktop-devel-list/2011-June/msg00071.html
+
+	Fixes GB#654653.
+
+2011-07-22  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-miner: Fix typo in tracker_task_pool_foreach()
+	Tasks are the value of the hashtable, not the key.
+
+	libtracker-miner: Ensure recursive parent inspection on parentless files is done orderly
+
+	libtracker-miner: Fix nasty typo in TrackerPriorityQueue
+	binary search wasn't working quite ok, even though it wasn't really
+	noticeable in the most common case of having just 2 priorities in
+	the segments array.
+
+	libtracker-miner: don't clamp priority in the TrackerPriorityQueue
+	This is so the miner can indefinitely force prepend of a task
+
+	libtracker-miner: Run the async result on high priority sparql buffer updates
+
+	tracker-miner-fs: Don't set no longer existing property on TrackerMinerApplications
+	TrackerMinerFS::processing-pool-requests-limit no longer exists.
+
+	libtracker-miner: make tracker_miner_fs_check_file() use high priority
+	This will boost the file to be inspected most promptly, which is usually
+	the desired effect of this call, as it's exposed by the IndexFile dbus
+	method in tracker-miner-fs.
+
+	libtracker-miner: Add priorities to the sparql buffer
+	If a task is of priority G_PRIORITY_HIGH, it will issue an Update()
+	instead of a UpdateArray(), so updates are most immediate.
+
+	libtracker-miner: propagate priority throughout file insertions/updates in TrackerMinerFS
+
+	libtracker-miner: Ensure harder process_stop() is only called once
+	QUEUE_WAIT is now used more extensively, meaning item_queue_handlers_cb()
+	onky gets QUEUE_NONE if there really is nothing left to process, be it
+	items in the task pool, pending to be crawled, or in the processing queues.
+
+	libtracker-miner: slightly improve IRI cache performance
+	For most cases, fs->priv->current_iri_cache_parent_urn has the
+	parent folder URN, so just use it in the query when filling in
+	 the IRI cache.
+
+	libtracker-miner: Ensure prioritized tasks always have parents indexed first
+	We now check before item_add_or_update() for those files that have a parent
+	that should have been indexed, but actually isn't.
+
+	In that case, the file is inserted back to the queue, prepended by its
+	parent to ensure it is indexed, if the file meeting these conditions is
+	deep in the hierarchy, the parent file will be treated the same, so
+	the operation will unroll until an indexed/root directory is found.
+
+	libtracker-miner: Remove TrackerProcessingPool
+	It is now unused in favor of TrackerTaskPool/TrackerSparqlBuffer
+
+	libtracker-miner: Use TrackerSparqlBuffer for metadata insertions
+	As a side effect, the TrackerMinerFS::processing-pool-requests-limit property
+	has been removed, as flow control has been simplified to not needing this third
+	queue.
+
+	libtracker-miner: Add TrackerSparqlBuffer
+	This object inherits from TrackerTaskPool, and takes care of
+	dispatching tasks containing SPARQL updates.
+
+	It is meant to replace the sparql buffers in TrackerProcessingPool,
+	and in fact inherits much code from there, the main difference being
+	that there is no "processing" queue for already packed up batches,
+	instead it relies on linear processing of updates.
+
+	That last queue was sheldomly used (if at all), as it requires a
+	choking tracker-store that can't insert stuff at the same pace
+	that miner-fs processes it, this situation looks quite unlikely,
+	and makes the code simpler.
+
+	tracker-miner-fs: Use TrackerTaskPool for the extraction pool
+
+	libtracker-miner: Add TrackerTaskPool
+	This is a simple task pool implementation, where an external
+	entity has to do task pushing/popping.
+
+	Eventually, the TrackerProcessingPool object will be split
+	into two of these objects, one for the wait queue, and
+	another for the ready/processing queues.
+
+	tracker-miner-fs: Add tracker_miner_fs_check_*_with_priority()
+	These functions allow scheduling tasks at a different priority.
+
+	tracker-miner-fs: Add priority argument to tracker_miner_fs_directory_add_internal()
+
+	libtracker-miner: remove TRACKER_QUEUE_PRIORITY* in favor of G_PRIORITY*
+	No need to reinvent the wheel
+
+	tracker-miner-fs: Use priority queues for created/deleted/updated/moved items
+	At the moment each of these still has its own queue, items are usually added
+	with DEFAULT/LOW priority at the moment.
+
+	libtracker-miner: Add tracker_priority_queue_get_length
+
+	libtracker-miner: Make tracker_priority_queue_foreach_remove return gboolean
+	it will return TRUE if some item has been removed, FALSE otherwise
+
+	tracker-miner-fs: remove duplicated code
+	tracker_miner_fs_has_items_to_process() may just be called there
+
+	tracker-miner-fs: Put CrawledDirectoryData into a priority queue
+
+	tracker-miner-fs: Use a priority queue for directories to be inspected.
+	This allows for prioritization of directories, the crawler is never
+	stopped in the middle of processing, so if a higher priority directory
+	arrives than the one currently processed, it still gets to wait
+	as a good boy.
+
+	libtracker-miner: Add TrackerPriorityQueue
+	This is a simple type that allows insertion of elements with
+	priorities, so doing pop() returns the highest/earliest element
+	in the queue.
+
+2011-07-22  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	libtracker-data: Implement get_property() for n-columns in SQLite cursor
+	n-columns is an abstract property, so it should be implemented by all
+	the TrackerCursor subclasses
+
+	Fixes GB#654407.
+
+2011-07-22  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Fix unused variables in case of --disable-journal
+
+	libtracker-common: Fix compiler warning
+
+2011-07-22  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Do not compile journal functions with --disable-journal
+	This reduces difference to master. No functional change.
+
+2011-07-22  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract-gstreamer: plug a few leaks
+
 2011-07-14  Jürg Billeter  <j@bitron.ch>
 
 	Release 0.10.20

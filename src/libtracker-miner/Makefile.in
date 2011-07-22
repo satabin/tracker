@@ -119,9 +119,10 @@ am__libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES_DIST =  \
 	tracker-miner-object.h tracker-miner-fs.c tracker-miner-fs.h \
 	tracker-miner-manager.c tracker-miner-manager.h \
 	tracker-miner-web.c tracker-miner-web.h \
-	tracker-miner-fs-processing-pool.h \
-	tracker-miner-fs-processing-pool.c tracker-storage.c \
-	tracker-storage.h tracker-network-provider.c \
+	tracker-priority-queue.h tracker-priority-queue.c \
+	tracker-task-pool.h tracker-task-pool.c \
+	tracker-sparql-buffer.h tracker-sparql-buffer.c \
+	tracker-storage.c tracker-storage.h tracker-network-provider.c \
 	tracker-password-provider.c tracker-thumbnailer.c \
 	tracker-thumbnailer.h tracker-albumart.c tracker-albumart.h
 @HAVE_NETWORK_MANAGER_FALSE@am__objects_1 =  \
@@ -138,7 +139,8 @@ am__objects_6 = tracker-monitor.lo
 am__objects_7 = $(am__objects_6) $(am__objects_4) \
 	tracker-miner-object.lo tracker-miner-fs.lo \
 	tracker-miner-manager.lo tracker-miner-web.lo
-am__objects_8 = tracker-miner-fs-processing-pool.lo tracker-storage.lo
+am__objects_8 = tracker-priority-queue.lo tracker-task-pool.lo \
+	tracker-sparql-buffer.lo tracker-storage.lo
 am_libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	$(am__objects_1) $(am__objects_2) $(am__objects_5) \
 	$(am__objects_7) $(am__objects_8) tracker-network-provider.lo \
@@ -531,8 +533,12 @@ crawler_sources = \
 	tracker-utils.h					
 
 private_sources = \
-	tracker-miner-fs-processing-pool.h             \
-	tracker-miner-fs-processing-pool.c             \
+	tracker-priority-queue.h                       \
+	tracker-priority-queue.c                       \
+	tracker-task-pool.h                            \
+	tracker-task-pool.c                            \
+	tracker-sparql-buffer.h                        \
+	tracker-sparql-buffer.c                        \
 	tracker-storage.c                              \
 	tracker-storage.h                              
 
@@ -614,8 +620,6 @@ INTROSPECTION_SCANNER_ARGS = \
 	-I $(top_srcdir)/src \
 	-D TRACKER_COMPILATION \
 	--c-include="libtracker-miner/tracker-miner.h" \
-	--identifier-prefix=TrackerProcessor \
-	--symbol-prefix=tracker_processing \
 	--identifier-prefix=Tracker \
 	--symbol-prefix=tracker \
 	--warn-all
@@ -717,7 +721,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crawler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-fs-processing-pool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-fs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-manager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-object.Plo@am__quote@
@@ -729,7 +732,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-password-provider-gnome.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-password-provider-keyfile.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-password-provider.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-priority-queue.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-sparql-buffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-storage.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-task-pool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-thumbnailer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Plo@am__quote@
 

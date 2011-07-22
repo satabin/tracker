@@ -113,7 +113,6 @@ TrackerMinerFS implements
   "<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--initial-crawling" title='The "initial-crawling" property'>initial-crawling</a>"         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write
   "<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--mtime-checking" title='The "mtime-checking" property'>mtime-checking</a>"           <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a>              : Read / Write / Construct
   "<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--processing-pool-ready-limit" title='The "processing-pool-ready-limit" property'>processing-pool-ready-limit</a>" <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write / Construct
-  "<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--processing-pool-requests-limit" title='The "processing-pool-requests-limit" property'>processing-pool-requests-limit</a>" <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write / Construct
   "<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--processing-pool-wait-limit" title='The "processing-pool-wait-limit" property'>processing-pool-wait-limit</a>" <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write / Construct
   "<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--throttle" title='The "throttle" property'>throttle</a>"                 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a>               : Read / Write
 </pre>
@@ -752,14 +751,6 @@ queues, otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Sta
 <p>Maximum number of SPARQL updates that can be merged in a single connection to the store.</p>
 <p>Allowed values: &gt;= 1</p>
 <p>Default value: 1</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="TrackerMinerFS--processing-pool-requests-limit"></a><h3>The <code class="literal">"processing-pool-requests-limit"</code> property</h3>
-<pre class="programlisting">  "processing-pool-requests-limit" <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a>                 : Read / Write / Construct</pre>
-<p>Maximum number of SPARQL requests that can be sent to the store in parallel.</p>
-<p>Allowed values: &gt;= 1</p>
-<p>Default value: 10</p>
 </div>
 <hr>
 <div class="refsect2">

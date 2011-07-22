@@ -34,8 +34,12 @@ crawler_sources = 				       \
 	tracker-utils.h					
 
 private_sources = 				       \
-	tracker-miner-fs-processing-pool.h             \
-	tracker-miner-fs-processing-pool.c             \
+	tracker-priority-queue.h                       \
+	tracker-priority-queue.c                       \
+	tracker-task-pool.h                            \
+	tracker-task-pool.c                            \
+	tracker-sparql-buffer.h                        \
+	tracker-sparql-buffer.c                        \
 	tracker-storage.c                              \
 	tracker-storage.h                              
 
@@ -141,8 +145,6 @@ INTROSPECTION_SCANNER_ARGS = \
 	-I $(top_srcdir)/src \
 	-D TRACKER_COMPILATION \
 	--c-include="libtracker-miner/tracker-miner.h" \
-	--identifier-prefix=TrackerProcessor \
-	--symbol-prefix=tracker_processing \
 	--identifier-prefix=Tracker \
 	--symbol-prefix=tracker \
 	--warn-all

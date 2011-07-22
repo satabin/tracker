@@ -114,6 +114,14 @@ gboolean              tracker_miner_fs_directory_remove     (TrackerMinerFS *fs,
                                                              GFile          *file);
 gboolean              tracker_miner_fs_directory_remove_full (TrackerMinerFS *fs,
                                                               GFile          *file);
+void                  tracker_miner_fs_check_file_with_priority (TrackerMinerFS *fs,
+                                                                 GFile          *file,
+                                                                 gint            priority,
+                                                                 gboolean        check_parents);
+void                  tracker_miner_fs_check_directory_with_priority (TrackerMinerFS *fs,
+                                                                      GFile          *file,
+	                                                              gint            priority,
+                                                                      gboolean        check_parents);
 void                  tracker_miner_fs_check_file           (TrackerMinerFS *fs,
                                                              GFile          *file,
                                                              gboolean        check_parents);
@@ -126,9 +134,9 @@ void                  tracker_miner_fs_file_notify          (TrackerMinerFS *fs,
 void                  tracker_miner_fs_set_throttle         (TrackerMinerFS *fs,
                                                              gdouble         throttle);
 gdouble               tracker_miner_fs_get_throttle         (TrackerMinerFS *fs);
-G_CONST_RETURN gchar *tracker_miner_fs_get_urn              (TrackerMinerFS *fs,
+const gchar          *tracker_miner_fs_get_urn              (TrackerMinerFS *fs,
                                                              GFile          *file);
-G_CONST_RETURN gchar *tracker_miner_fs_get_parent_urn       (TrackerMinerFS *fs,
+const gchar          *tracker_miner_fs_get_parent_urn       (TrackerMinerFS *fs,
                                                              GFile          *file);
 gchar                *tracker_miner_fs_query_urn            (TrackerMinerFS *fs,
                                                              GFile          *file);

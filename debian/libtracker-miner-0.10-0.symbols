@@ -9,7 +9,9 @@ libtracker-miner-0.10.so.0 libtracker-miner-0.10-0 #MINVER#
  tracker_miner_error_quark@Base 0.8.0
  tracker_miner_fs_add_directory_without_parent@Base 0.10.0
  tracker_miner_fs_check_directory@Base 0.10.0
+ tracker_miner_fs_check_directory_with_priority@Base 0.10.21
  tracker_miner_fs_check_file@Base 0.10.0
+ tracker_miner_fs_check_file_with_priority@Base 0.10.21
  tracker_miner_fs_directory_add@Base 0.8.0
  tracker_miner_fs_directory_remove@Base 0.8.0
  tracker_miner_fs_directory_remove_full@Base 0.10.0

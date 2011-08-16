@@ -4,6 +4,9 @@ tracker (0.10.22-1) UNRELEASED; urgency=low
   * Drop Build-Depends on libnotify-dev, not used anymore.
   * Disable nautilus extension in preparation for the nautilus 3 transition.
     (Closes: #637328)
+  * debian/libtracker-miner-0.10-0.symbols
+    - Add new API for pausing miners during process life time and filesystem
+      writeback control.
 
  -- Michael Biebl <biebl@debian.org>  Tue, 16 Aug 2011 11:06:37 +0200
 

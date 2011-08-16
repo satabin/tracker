@@ -28,6 +28,8 @@ libtracker-miner-0.10.so.0 libtracker-miner-0.10-0 #MINVER#
  tracker_miner_fs_set_initial_crawling@Base 0.10.0
  tracker_miner_fs_set_mtime_checking@Base 0.10.0
  tracker_miner_fs_set_throttle@Base 0.8.0
+ tracker_miner_fs_writeback_file@Base 0.10.22
+ tracker_miner_fs_writeback_notify@Base 0.10.22
  tracker_miner_get_connection@Base 0.10.0
  tracker_miner_get_dbus_connection@Base 0.10.0
  tracker_miner_get_dbus_full_name@Base 0.10.0
@@ -51,6 +53,7 @@ libtracker-miner-0.10.so.0 libtracker-miner-0.10-0 #MINVER#
  tracker_miner_manager_new@Base 0.8.0
  tracker_miner_manager_new_full@Base 0.10.5
  tracker_miner_manager_pause@Base 0.8.0
+ tracker_miner_manager_pause_for_process@Base 0.10.22
  tracker_miner_manager_reindex_by_mimetype@Base 0.10.0
  tracker_miner_manager_resume@Base 0.8.0
  tracker_miner_pause@Base 0.8.0

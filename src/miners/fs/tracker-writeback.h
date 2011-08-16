@@ -17,18 +17,22 @@
  * Boston, MA  02110-1301, USA.
  */
 
-#ifndef __TRACKER_WRITEBACK_DBUS_H__
-#define __TRACKER_WRITEBACK_DBUS_H__
+#ifndef __TRACKER_MINER_FS_WRITEBACK_H__
+#define __TRACKER_MINER_FS_WRITEBACK_H__
+
+#include <libtracker-miner/tracker-miner.h>
+
+#include "tracker-config.h"
+
+#include "tracker-miner-files.h"
 
 G_BEGIN_DECLS
 
-#include "tracker-writeback-dispatcher.h"
-
-#define TRACKER_WRITEBACK_DBUS_INTERFACE "org.freedesktop.Tracker1.Writeback"
-#define TRACKER_WRITEBACK_DBUS_NAME      "org.freedesktop.Tracker1.Writeback"
-#define TRACKER_WRITEBACK_DBUS_PATH      "/org/freedesktop/Tracker1/Writeback"
-
+void tracker_writeback_init     (TrackerMinerFiles  *miner_files,
+                                 TrackerConfig      *config,
+                                 GError            **error);
+void tracker_writeback_shutdown (void);
 
 G_END_DECLS
 
-#endif /* __TRACKER_WRITEBACK_DBUS_H__ */
+#endif /* __TRACKER_MINER_FS_WRITEBACK_H__ */

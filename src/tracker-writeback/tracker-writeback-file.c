@@ -19,13 +19,19 @@
 
 #include "config.h"
 
+#include <stdio.h>
+#include <fcntl.h> /* O_WRONLY */
+
+#include <gio/gunixoutputstream.h>
+
 #include <libtracker-common/tracker-file-utils.h>
 
 #include "tracker-writeback-file.h"
 
 static gboolean tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
                                                         GPtrArray               *values,
-                                                        TrackerSparqlConnection *connection);
+                                                        TrackerSparqlConnection *connection,
+                                                        GCancellable            *cancellable);
 
 G_DEFINE_ABSTRACT_TYPE (TrackerWritebackFile, tracker_writeback_file, TRACKER_TYPE_WRITEBACK)
 
@@ -42,40 +48,76 @@ tracker_writeback_file_init (TrackerWritebackFile *writeback_file)
 {
 }
 
-static gboolean
-file_unlock_cb (gpointer user_data)
-{
-	GFile *file;
-	gchar *path;
-
-	file = user_data;
-	path = g_file_get_path (file);
-	g_message ("Unlocking file '%s'", path);
-	g_free (path);
-
-	tracker_file_unlock (file);
-	g_object_unref (file);
-
-	return FALSE;
-}
-
 static GFile *
-get_tmp_file (GFile *file)
+create_temporary_file (GFile     *file,
+                       GFileInfo *file_info)
 {
+	GInputStream *input_stream;
+	GOutputStream *output_stream;
 	GFile *tmp_file, *parent;
-	gchar *tmp_name, *name;
+	gchar *dir, *name, *tmp_path;
+	guint32 mode;
+	gint fd;
+	GError *error = NULL;
 
-	/* Create a temporary, hidden file
-	 * within the same directory */
+	if (!g_file_is_native (file)) {
+		gchar *uri;
+
+		uri = g_file_get_uri (file);
+		g_warning ("Could not create temporary file, file is not native: '%s'", uri);
+		g_free (uri);
+
+		return NULL;
+	}
+
+	/* Create input stream */
+	input_stream = G_INPUT_STREAM (g_file_read (file, NULL, &error));
+
+	if (error) {
+		g_critical ("Could not create temporary file, %s", error->message);
+		g_error_free (error);
+		return NULL;
+	}
+
+	/* Create output stream in a tmp file */
 	parent = g_file_get_parent (file);
-	name = g_file_get_basename (file);
-
-	tmp_name = g_strdup_printf ("._tracker_%s", name);
-	tmp_file = g_file_get_child (parent, tmp_name);
-
+	dir = g_file_get_path (parent);
 	g_object_unref (parent);
-	g_free (tmp_name);
+
+	name = g_file_get_basename (file);
+	tmp_path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S ".tracker-XXXXXX.%s",
+	                            dir, name);
+	g_free (dir);
 	g_free (name);
+
+	mode = g_file_info_get_attribute_uint32 (file_info,
+	                                         G_FILE_ATTRIBUTE_UNIX_MODE);
+	fd = g_mkstemp_full (tmp_path, O_WRONLY, mode);
+
+	output_stream = g_unix_output_stream_new (fd, TRUE);
+
+	/* Splice the original file into the tmp file */
+	g_output_stream_splice (output_stream,
+	                        input_stream,
+	                        G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE |
+	                        G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET,
+	                        NULL, &error);
+
+	g_object_unref (output_stream);
+	g_object_unref (input_stream);
+
+	tmp_file = g_file_new_for_path (tmp_path);
+	g_free (tmp_path);
+
+	if (error) {
+		g_critical ("Could not copy temporary file, %s", error->message);
+		g_error_free (error);
+
+		g_file_delete (tmp_file, NULL, NULL);
+		g_object_unref (tmp_file);
+
+		return NULL;
+	}
 
 	return tmp_file;
 }
@@ -83,13 +125,13 @@ get_tmp_file (GFile *file)
 static gboolean
 tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
                                         GPtrArray               *values,
-                                        TrackerSparqlConnection *connection)
+                                        TrackerSparqlConnection *connection,
+                                        GCancellable            *cancellable)
 {
 	TrackerWritebackFileClass *writeback_file_class;
 	gboolean retval;
 	GFile *file, *tmp_file;
 	GFileInfo *file_info;
-	const gchar *urls[2] = { NULL, NULL };
 	GStrv row;
 	const gchar * const *content_types;
 	const gchar *mime_type;
@@ -114,21 +156,13 @@ tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
 	file = g_file_new_for_uri (row[0]);
 
 	file_info = g_file_query_info (file,
+	                               G_FILE_ATTRIBUTE_UNIX_MODE ","
 	                               G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
 	                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 	                               NULL, NULL);
 
 	if (!file_info) {
 		g_object_unref (file);
-		return FALSE;
-	}
-
-	/* Copy to a temporary file so we can perform an atomic write on move */
-	tmp_file = get_tmp_file (file);
-	if (!g_file_copy (file, tmp_file, 0,
-			  NULL, NULL, NULL, NULL)) {
-		g_object_unref (file);
-		g_object_unref (tmp_file);
 		return FALSE;
 	}
 
@@ -144,74 +178,42 @@ tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
 		}
 	}
 
-	g_object_unref (file_info);
+	if (!retval) {
+		/* module does not support writeback for this file */
+		g_object_unref (file);
+		g_object_unref (file_info);
 
-	if (retval) {
-		g_message ("Locking file '%s' in order to write metadata", row[0]);
-
-		tracker_file_lock (file);
-
-		urls[0] = row[0];
-
-		tracker_miner_manager_ignore_next_update (tracker_writeback_get_miner_manager (),
-		                                          "org.freedesktop.Tracker1.Miner.Files",
-		                                          urls);
-
-		/* A note on IgnoreNextUpdate + Writeback. Consider this situation
-		 * I see with an application recording a video:
-		 *  - Application creates a resource for a video in the store and
-		 *    sets slo:location
-		 *  - Application starts writting the new video file.
-		 *  - Store tells writeback to write the new slo:location in the file
-		 *  - Writeback reaches this exact function and sends IgnoreNextUpdate,
-		 *    then tries to update metadata.
-		 *  - Miner-fs gets the IgnoreNextUpdate (sent by the line above).
-		 *  - Application is still recording the video, which gets translated
-		 *    into an original CREATED event plus multiple UPDATE events which
-		 *    are being merged at tracker-monitor level, still not notified to
-		 *    TrackerMinerFS.
-		 *  - TrackerWriteback tries to updte file metadata (line below) but cannot
-		 *    do it yet as application is still updating the file, thus, the real
-		 *    metadata update gets delayed until the application ends writing
-		 *    the video.
-		 *  - Application ends writing the video.
-		 *  - Now TrackerWriteback really updates the file. This happened N seconds
-		 *    after we sent the IgnoreNextUpdate, being N the length of the video...
-		 *  - TrackerMonitor sends the merged CREATED event to TrackerMinerFS,
-		 *    detects the IgnoreNextUpdate request and in this case we ignore the
-		 *    IgnoreNextUpdate request as this is a CREATED event.
-		 *
-		 * Need to review the whole writeback+IgnoreNextUpdate mechanism to cope
-		 * with situations like the one above.
-		 */
-
-		retval = (writeback_file_class->update_file_metadata) (TRACKER_WRITEBACK_FILE (writeback),
-		                                                       tmp_file, values, connection);
-
-		/*
-		 * This timeout value was 3s before, which could have been in
-		 * order to have miner-fs skip the updates we just made, something
-		 * along the purpose of IgnoreNextUpdate.
-		 *
-		 * But this is a problem when the event being ignored is a CREATED
-		 * event. This is, tracker-writeback modifies a file that was just
-		 * created. If we ignore this in the miner-fs, it will never index
-		 * it, and that is not good. As there is already the
-		 * IgnoreNextUpdate mechanism in place, I'm moving this timeout
-		 * value to 1s. So, once writeback has written the file, only 1s
-		 * after will unlock it. This synchronizes well with the 2s timeout
-		 * in the miner-fs between detecting the file update and the actual
-		 * processing.
-		 */
-		g_timeout_add_seconds (1, file_unlock_cb, g_object_ref (file));
+		return FALSE;
 	}
 
-	/* Move back the modified file to the original location */
-	g_file_move (tmp_file, file,
-		     G_FILE_COPY_OVERWRITE,
-		     NULL, NULL, NULL, NULL);
+	/* Copy to a temporary file so we can perform an atomic write on move */
+	tmp_file = create_temporary_file (file, file_info);
+
+	if (!tmp_file) {
+		g_object_unref (file);
+		g_object_unref (file_info);
+
+		return FALSE;
+	}
+
+	retval = (writeback_file_class->update_file_metadata) (TRACKER_WRITEBACK_FILE (writeback),
+	                                                       tmp_file,
+	                                                       values,
+	                                                       connection,
+	                                                       cancellable);
+
+	if (!retval) {
+		/* Delete the temporary file and preserve original */
+		g_file_delete (tmp_file, NULL, NULL);
+	} else {
+		/* Move back the modified file to the original location */
+		g_file_move (tmp_file, file,
+			     G_FILE_COPY_OVERWRITE,
+			     NULL, NULL, NULL, NULL);
+	}
 
 	g_object_unref (tmp_file);
+	g_object_unref (file_info);
 	g_object_unref (file);
 
 	return retval;

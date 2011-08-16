@@ -79,8 +79,10 @@ am__tracker_miner_fs_SOURCES_DIST = tracker-power-hal.c \
 	tracker-miner-applications-locale.c \
 	tracker-miner-applications-locale.h tracker-miner-files.c \
 	tracker-miner-files.h tracker-miner-files-index.c \
-	tracker-miner-files-index.h \
-	tracker-miner-applications-meego.cpp \
+	tracker-miner-files-index.h tracker-writeback-listener.c \
+	tracker-writeback-listener.h tracker-writeback-dispatcher.c \
+	tracker-writeback-dispatcher.h tracker-writeback.c \
+	tracker-writeback.h tracker-miner-applications-meego.cpp \
 	tracker-miner-applications-meego.h
 @HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@am__objects_1 =  \
 @HAVE_HAL_TRUE@@HAVE_UPOWER_FALSE@	tracker-power-hal.$(OBJEXT)
@@ -92,7 +94,10 @@ am_tracker_miner_fs_OBJECTS = $(am__objects_1) $(am__objects_2) \
 	tracker-miner-applications.$(OBJEXT) \
 	tracker-miner-applications-locale.$(OBJEXT) \
 	tracker-miner-files.$(OBJEXT) \
-	tracker-miner-files-index.$(OBJEXT) $(am__objects_3)
+	tracker-miner-files-index.$(OBJEXT) \
+	tracker-writeback-listener.$(OBJEXT) \
+	tracker-writeback-dispatcher.$(OBJEXT) \
+	tracker-writeback.$(OBJEXT) $(am__objects_3)
 tracker_miner_fs_OBJECTS = $(am_tracker_miner_fs_OBJECTS)
 am__DEPENDENCIES_1 =
 tracker_miner_fs_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
@@ -179,7 +184,6 @@ DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DIA = @DIA@
-DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -296,7 +300,6 @@ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
 LT_RELEASE = @LT_RELEASE@
 LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
-MANIFEST_TOOL = @MANIFEST_TOOL@
 MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
 MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
 MKDIR_P = @MKDIR_P@
@@ -322,6 +325,8 @@ PANGO_CFLAGS = @PANGO_CFLAGS@
 PANGO_LIBS = @PANGO_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POPPLER_CFLAGS = @POPPLER_CFLAGS@
 POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
@@ -396,7 +401,6 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
-ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
@@ -431,6 +435,7 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
+lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -480,7 +485,10 @@ tracker_miner_fs_SOURCES = $(power_sources) $(power_headers) \
 	tracker-miner-applications-locale.c \
 	tracker-miner-applications-locale.h tracker-miner-files.c \
 	tracker-miner-files.h tracker-miner-files-index.c \
-	tracker-miner-files-index.h $(am__append_1)
+	tracker-miner-files-index.h tracker-writeback-listener.c \
+	tracker-writeback-listener.h tracker-writeback-dispatcher.c \
+	tracker-writeback-dispatcher.h tracker-writeback.c \
+	tracker-writeback.h $(am__append_1)
 tracker_miner_fs_LDADD = \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
@@ -596,6 +604,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-files.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-power-hal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-power-upower.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-writeback-dispatcher.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-writeback-listener.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-writeback.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

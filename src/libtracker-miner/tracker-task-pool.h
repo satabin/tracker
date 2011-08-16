@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, Carlos Garnacho <carlos@lanedo.com>
+ * Copyright (C) 2011, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,12 +15,13 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
+ *
+ * Author: Carlos Garnacho <carlos@lanedo.com>
  */
 
-#ifndef __TRACKER_TASK_POOL_H__
-#define __TRACKER_TASK_POOL_H__
+#ifndef __LIBTRACKER_MINER_TASK_POOL_H__
+#define __LIBTRACKER_MINER_TASK_POOL_H__
 
-#include <glib.h>
 #include <glib-object.h>
 #include <gio/gio.h>
 
@@ -86,7 +87,6 @@ void          tracker_task_unref       (TrackerTask    *task);
 gpointer      tracker_task_get_data    (TrackerTask    *task);
 
 
-
 G_END_DECLS
 
-#endif /* __TRACKER_TASK_POOL_H__ */
+#endif /* __LIBTRACKER_MINER_TASK_POOL_H__ */

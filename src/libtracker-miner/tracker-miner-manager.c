@@ -617,9 +617,9 @@ tracker_miner_manager_new_full (gboolean   auto_start,
  * Returns a list of references for all active miners. Active miners
  * are miners which are running within a process.
  *
- * Returns: (transfer full): a #GSList which must be freed with g_slist_free() and all
- * contained data with g_free(). Otherwise %NULL is returned if there
- * are no miners.
+ * Returns: (transfer full) (element-type utf8): a #GSList which must
+ * be freed with g_slist_free() and all contained data with g_free().
+ * Otherwise %NULL is returned if there are no miners.
  *
  * Since: 0.8
  **/
@@ -795,9 +795,9 @@ initialize_miners_data (TrackerMinerManager *manager)
  * miners are miners which may or may not be running in a process at
  * the current time.
  *
- * Returns: (transfer full): a #GSList which must be freed with g_slist_free() and all
- * contained data with g_free(). Otherwise %NULL is returned if there
- * are no miners.
+ * Returns: (transfer full) (element-type utf8): a #GSList which must
+ * be freed with g_slist_free() and all contained data with g_free().
+ * Otherwise %NULL is returned if there are no miners.
  *
  * Since: 0.8
  **/
@@ -824,7 +824,7 @@ tracker_miner_manager_get_available (TrackerMinerManager *manager)
  * @manager: a #TrackerMinerManager.
  * @miner: miner reference
  * @reason: reason to pause
- * @cookie: return location for the pause cookie ID
+ * @cookie: (out) (allow-none): return location for the pause cookie ID
  *
  * Asks @miner to pause. a miner could be paused by
  * several reasons, and its activity won't be resumed
@@ -870,6 +870,80 @@ tracker_miner_manager_pause (TrackerMinerManager *manager,
 
 	v = g_dbus_proxy_call_sync (proxy,
 	                            "Pause",
+	                            g_variant_new ("(ss)", app_name, reason),
+	                            G_DBUS_CALL_FLAGS_NONE,
+	                            -1,
+	                            NULL,
+	                            &error);
+
+	if (error) {
+		g_critical ("Could not pause miner '%s': %s", miner, error->message);
+		g_error_free (error);
+		return FALSE;
+	}
+
+	if (cookie) {
+		g_variant_get (v, "(i)", cookie);
+	}
+
+	g_variant_unref (v);
+
+	return TRUE;
+}
+
+/**
+ * tracker_miner_manager_pause_for_process:
+ * @manager: a #TrackerMinerManager.
+ * @miner: miner reference
+ * @reason: reason to pause
+ * @cookie: (out) (allow-none): return location for the pause cookie ID
+ *
+ * This function operates exactly the same way as
+ * tracker_miner_manager_pause() with the exception that if the calling
+ * process dies, the pause is resumed. This API is useful for cases
+ * where the calling process has a risk of crashing without resuming
+ * the pause.
+ *
+ * Returns: %TRUE if the miner was paused successfully, otherwise
+ * %FALSE.
+ *
+ * Since: 0.10.15
+ **/
+gboolean
+tracker_miner_manager_pause_for_process (TrackerMinerManager *manager,
+                                         const gchar         *miner,
+                                         const gchar         *reason,
+                                         guint32             *cookie)
+{
+	GDBusProxy *proxy;
+	const gchar *app_name;
+	GError *error = NULL;
+	GVariant *v;
+
+	g_return_val_if_fail (TRACKER_IS_MINER_MANAGER (manager), FALSE);
+	g_return_val_if_fail (miner != NULL, FALSE);
+	g_return_val_if_fail (reason != NULL, FALSE);
+
+	proxy = find_miner_proxy (manager, miner, TRUE);
+
+	if (!proxy) {
+		g_critical ("No D-Bus proxy found for miner '%s'", miner);
+		return FALSE;
+	}
+
+	/* Find a reasonable app name */
+	app_name = g_get_application_name ();
+
+	if (!app_name) {
+		app_name = g_get_prgname ();
+	}
+
+	if (!app_name) {
+		app_name = "TrackerMinerManager client";
+	}
+
+	v = g_dbus_proxy_call_sync (proxy,
+	                            "PauseForProcess",
 	                            g_variant_new ("(ss)", app_name, reason),
 	                            G_DBUS_CALL_FLAGS_NONE,
 	                            -1,
@@ -1084,8 +1158,10 @@ tracker_miner_manager_get_status (TrackerMinerManager  *manager,
  * tracker_miner_manager_is_paused:
  * @manager: a #TrackerMinerManager
  * @miner: miner reference
- * @applications: (out callee-allocates) (allow-none) (transfer full): return location for application names.
- * @reasons: (out callee-allocates) (allow-none) (transfer full): return location for pause reasons.
+ * @applications: (out callee-allocates) (allow-none) (transfer full):
+ * return location for application names.
+ * @reasons: (out callee-allocates) (allow-none) (transfer full):
+ * return location for pause reasons.
  *
  * This function either returns %FALSE if the miner is not paused,
  * or returns %TRUE and fills in @applications and @reasons with
@@ -1245,6 +1321,7 @@ tracker_miner_manager_get_description (TrackerMinerManager *manager,
  * Returns: %TRUE on success, otherwise %FALSE.
  *
  * Since: 0.8
+ * Deprecated since 0.12
  **/
 gboolean
 tracker_miner_manager_ignore_next_update (TrackerMinerManager *manager,

@@ -1,3 +1,321 @@
+2011-08-05  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.22
+
+	tracker-extract: Drop real media / helix extractor
+	The work is all covered in the tracker-extract-gstreamer extractor
+
+2011-08-05  Stefano Facchini  <stefano.facchini@gmail.com>
+
+	libtracker-miner: make MinerManager GLib.Initable in VAPI file
+	Fixes GB#655987
+
+2011-08-05  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Add support for COALESCE
+	Implemented as an alias to tracker:coalesce.
+
+	tracker-preferences: Fix apply button
+
+	tracker-extract-playlist: Limit playlists to 1000 entries
+	Fixes NB#269986.
+
+	SPARQL: Add support for HAVING
+
+	tracker-store: Improve UpdateArray performance
+	Attempt to perform all updates in an UpdateArray at once in a single
+	transaction. Only if that fails, roll the transaction back and perform
+	updates in separate transactions.
+
+	Fixes NB#270774.
+
+	libtracker-data: Add support for xsd:date
+	Fixes NB#271747.
+
+2011-08-04  Jürg Billeter  <j@bitron.ch>
+
+	tracker-extract-gstreamer: Assume UTC for dates
+	GDate does not carry time zone information. Using local time does not
+	make sense.
+
+2011-08-04  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Line wrap documentation with annotations
+	This improves Stefano Facchini's commit:
+	  b2a3dabad0881a686f95ee773199d9133a0845be
+
+	Fixes GB#655789
+
+2011-08-04  Stefano Facchini  <stefano.facchini@gmail.com>
+
+	libtracker-miner: add some introspection annotations to TrackerMinerManager methods
+
+2011-08-04  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: Make JPEG module handle DLNA profiles
+	In this extractor makes little sense to perform calls to any
+	dlna library as we have all the necessary data right there.
+
+	tracker-extract: Make PNG module handle DLNA profiles
+	In this extractor makes little sense to perform calls to any
+	dlna library as we have all the necessary data right there.
+
+	tracker-extract: Make MP3 module handle DLNA profiles
+	In this custom extractor makes little sense to call any dlna
+	library since we have already all necessary data at hand.
+
+2011-08-01  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-fs: Disable writeback by default.
+	It was disabled before and enabling it changes behaviour unexpectedly for
+	users. Also the team is not completely decided it should be enabled at this
+	point.
+
+2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-writeback: Do not unref the GFileInfo too early
+	it is used in the creation of the temporary file.
+
+2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Add code comment explaining strange FF D8 FF check
+
+	tracker-extract: Check header bytes for JPeg files
+	Fixes NB#271389.
+
+2011-08-01  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-writeback: Fixed distcheck breakages
+
+	tracker-control: Add command line switch for new pause-for-process APIs
+	To test the libtracker-miner APIs and allow callers to pause until the
+	process is killed, this has been added to tracker-control.
+
+	libtracker-miner: Added APIs for pausing miners during process life time
+	This adds:
+	 - tracker_miner_manager_pause_for_process()
+
+	This also adds the dbus equivalent APIs.
+
+	Note, this feature is only available using D-Bus, there is no C API for
+	watching processes available.
+
+	Fixes NB#254896, tracker-miner-fs should pause itself when camera starts
+	recording video
+
+2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-writeback: preserve original file if writeback fails
+	The temporary file is now deleted instead, leaving the original
+	file unmodified.
+
+2011-08-01  Gabriel Speckhahn  <gabspeck@gmail.com>
+
+	Updated Brazilian Portuguese Translation
+
+2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+
+	UTF-16 strings' length with 3 \0 bytes at the end was calculated wrong
+	Fixes NB#274181.
+
+2011-08-01  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-fs: Fix critical warnings when cleaning up NULL GFile/GPtrArrays
+
+	libtracker-miner: Fix copyright for priority-queue, sparql-buffer and task-pool
+
+	libtracker-miner: Fix #ifndefs for priority-queue, sparql-buffer and task-pool
+	This is a consistency fix.
+
+	tracker-miner-fs: Fix licensing errors in files
+	Some were changed from GPL to LGPL for some reason. Now they're all GPL as
+	they should be.
+
+	tracker-writeback: Fix licensing errors in files
+	Some were changed from GPL to LGPL for some reason. Now they're all GPL as
+	they should be.
+
+	tracker-writeback: Add g_warning when file !native + improve other errors
+	The error messages didn't pertain to what the function was doing which made
+	it quite generic. It's better to explain what we were attempting to give the
+	logs more context when it occurs.
+
+	libtracker-miner, tracker-miner-fs: Improved debugging
+
+	tracker-writeback: Add man page
+	Added information about supported types and also the new --disable-shutdown
+	option
+
+	tracker-miner-fs: Fix inconsistencies in #ifndef and #define names
+	Files have been moved around but the defines need to be updated in case
+	similar names are used in other binaries elsewhere (e.g. tracker-config.[ch].
+
+	tracker-extract: Fix include orders
+
+	tracker-miner-fs: Fix small whitespace issue
+
+	tracker-writeback: Fixed include orders
+
+	tracker-extract,writeback: Don't use same #define for headers
+	Both were using __TRACKER_CONTROLLER_H__
+
+	tracker-writeback: Don't LDADD $(LIBTRACKER_MINER_LIBS)
+	We don't do this anywhere else and it should be necessary because those
+	dependencies should be either drawn in from libtracker-miner's .la or the
+	TRACKER_WRITEBACK configure dependencies
+
+2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-miner-fs: Fix ref leak
+	The created GDBusMessage already sinks the floating reference
+	to the GVariant, no need to double ref here.
+
+	libtracker-miner: fix indenting issues
+
+2011-08-01  Jürg Billeter  <j@bitron.ch>
+
+	tracker-writeback: Do not touch unsupported files
+	Fixes NB#274498.
+
+2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-miner: Ensure writeback operations are cancelled on unmounted volumes
+
+	libtracker-miner: Cancel writeback when the file is deleted/moved
+	In these situations, writeback is no longer reliable, and prone to
+	leave an unwanted copy of the file, so cancel writeback if the file
+	is being manipulated that way externally to tracker.
+
+	libtracker-miner: Implement cancellation of writeback operations
+	There are situations where we want writeback to be cancelled, so expose
+	a GCancellable as with ::process-file.
+
+2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-miner, miners/fs: Fix issues after review
+
+	libtracker-miner, dbus: Use stable version for deprecation
+
+	libtracker-miner, dbus: Add deprecation markers for IgnoreNextUpdate
+
+	data/dbus: Fix XML file for D-Bus service
+
+	miners/fs: Codestyle improvements
+
+	miners/fs: Codestyle changes, typedefs belong to the top of the file
+
+	miners/fs: Fix enabling/disabling writeback
+
+	libtracker-miner: Rename and change to boolean return of a GEqualFunc
+
+2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-miner: check writeback task pool when translating MOVED events to CREATED
+	A move event from an ignored file to a non-ignored one will be translated to a CREATED
+	event, So check first whether there are no writeback tasks for the "new" file, since
+	this is a common operation.
+
+	libtracker-miner: Ensure no items are left to process after writeback
+
+	libtracker-miner: Separate writeback tasks to their own task pool
+	Tasks now have a gboolean* as the data, indicating whether the task
+	was already notified or not, the code hooking to the monitor events
+	has been modified so the UPDATED event needs to happen on a notified
+	file in order to consider the writeback task finished.
+
+	libtracker-miner: Move writeback task removal to UPDATE monitor events
+	The last monitor event that's bound to happen from a writeback is a
+	UPDATED event caused by:
+
+	UPDATED(a) + MOVE(a->b) = MOVE(a->b) + UPDATED(b), caused by the delay
+	in handling the UPDATED so they're merged together. So don't remove
+	writeback tasks until we've gotten an update event for that file.
+
+2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-miner: Ignore EVENT_MOVED during Writeback
+
+2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-miner-fs: Ignore monitor events on files being written back
+
+	writeback: Update return value to signal connecting to ::writeback-file
+
+2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-writeback: Remove IgnoreNextUpdate and file locking from writeback
+
+2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-miner: Use the task pool for ongoing writeback operations
+
+2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-writeback: Exit the writeback process in case of unmount event
+
+	tracker-writeback: Add missing .service.in file
+
+	miners/fs: Don't retry unmount handlding forever
+
+	libtracker-miner, miners-fs: Error handling unmount of FS during writeback, add timeout
+
+	libtracker-miner: Add code comment about endless retrying
+
+	miners/fs, libtracker-miner: Retry writeback on unmount event
+
+	miners/fs: Cleanup debugging
+
+	miners/fs: Implement dispatcher
+
+2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-writeback: Use g_mkstemp_full() and preserve permissions on copy
+	This way we ensure there is no intromission on the temporary file,
+	plus we don't potentially change permissions on the final file.
+	writeback usually happens on a copy, which is moved atomically onto
+	of the original file, so we now ensure there are
+
+2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-writeback: Pass cancellable around to also the modules
+
+	tracker-writeback: Implement cancel on unmount and cancel on API call
+
+	tracker-writeback: Add shutdown timeout to Writeback service
+
+	miners/fs: Make it possible to enable/disable Writeback
+
+	tracker-writeback: Use GIO scheduler for actual writeback
+
+	tracker-writeback: Fix up cancelling
+
+	tracker-writeback: Add warning about IgnoreNextUpdate removal
+
+	tracker-writeback: Use tempnam instead of home brewn system
+
+	miners/fs: Integrate writeback, start it up
+
+	tracker-writeback: Remove unneeded file
+
+	Rewrite of tracker-writeback
+
+	miners/fs: Implement listener class
+
+	libtracker-miner: Add rdf_types to the signal for Writeback
+
+	libtracker-miner: Add signal to connect to for writeback
+
+	libtracker-miner: Integrate queues with writeback capability
+
+	miner/fs: Add an empty dispatcher class for writeback
+
+	miner/fs: Add an empty listener class for writeback
+
+2011-07-29  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: ensure mtime checks on directories found during crawling
+	Fixes NB#273120
+
 2011-07-22  Jürg Billeter  <j@bitron.ch>
 
 	Release 0.10.21
@@ -3493,7 +3811,7 @@
 
 	libtracker-data: Fix C warning in tracker-db-interface-sqlite.c
 
-2011-01-22  Javier Jardón  <jjardon@gnome.org>
+2011-01-21  Javier Jardón  <jjardon@gnome.org>
 
 	tracker-needle: Use accessor functions instead direct access
 	Fixes https://bugzilla.gnome.org/show_bug.cgi?id=640231
@@ -3935,6 +4253,8 @@
 
 	tracker-needle: Add Ctrl+W to close window
 	Fixes GB#639543, Ctrl+W should close the window
+
+2011-01-14  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-needle: Use a meaningful window title "Desktop Search"
 	Fixes GB#639552, Give needle window a name that means something
@@ -4913,7 +5233,7 @@
 
 	docs: Document the TRACKER_PRAGMAS_FILE environment variable
 
-2010-11-28  Martyn Russell  <martyn@lanedo.com>
+2010-11-27  Martyn Russell  <martyn@lanedo.com>
 
 	Fixes GB#635757, missing test file in tarball
 
@@ -5482,7 +5802,7 @@
 
 	Updated Slovenian translation
 
-2010-10-30  Carles Ferrando  <carles.ferrando@gmail.com>
+2010-10-29  Carles Ferrando  <carles.ferrando@gmail.com>
 
 	Added Catalan (Valencian) translation
 
@@ -5506,7 +5826,7 @@
 
 	tracker-preferences: Fixed check which used "text" not "test"
 
-2010-10-29  Jorge González  <jorgegonz@svn.gnome.org>
+2010-10-28  Jorge González  <jorgegonz@svn.gnome.org>
 
 	Updated Spanish translation
 
@@ -6166,7 +6486,7 @@
 	Those classes shouldn't be run in the tests. Are there to organize the code
 	but don't contain useful tests by themselves.
 
-2010-10-14  Mikael Ottela  <mikael.ottela@ixonos.com>
+2010-10-13  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Fix the gupnp-dlna extractor to use the tracker_sparql_escape_uri_printf
 
@@ -7021,7 +7341,7 @@
 	tracker-store: Send D-Bus replies for BatchCommit
 	Fixes NB#189896.
 
-2010-09-03  Daniel Nylander  <po@danielnylander.se>
+2010-09-02  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -8367,7 +8687,7 @@
 	    Thus, adding an extra reference during the g_file_enumerate_children_async()
 	    for the specific GFile being used.
 
-2010-08-02  Gabor Kelemen  <kelemeng@gnome.hu>
+2010-08-01  Gabor Kelemen  <kelemeng@gnome.hu>
 
 	Updated Hungarian translation
 
@@ -10555,7 +10875,7 @@
 
 	tracker-extract: gstreamer: Bugfix for NB#169119, critical about unref of an object
 
-2010-05-17  Petr Kovar  <pknbe@volny.cz>
+2010-05-16  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -10942,7 +11262,7 @@
 
 	Update Czech translation by Marek Cernocky
 
-2010-05-02  Mario Blättermann  <mariobl@gnome.org>
+2010-05-01  Mario Blättermann  <mariobl@gnome.org>
 
 	Updated German translation
 
@@ -10976,9 +11296,9 @@
 
 	libtracker-data: Fixed compilation warning
 
-	libtracker-db: Fix for last commit, || should be &&
-
 2010-04-29  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-db: Fix for last commit, || should be &&
 
 	libtracker-db: Avoid strstr in uri_is_parent and uri_is_descendant
 
@@ -11171,7 +11491,7 @@
 
 	libstemmer: Bugfix NB#164958, FTS doesn't work for "beautif" and "beautifu"
 
-2010-04-23  Petr Kovar  <pknbe@volny.cz>
+2010-04-22  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -11751,7 +12071,7 @@
 
 	Fix build failures on none Linux platforms
 
-2010-04-09  Debarshi Ray  <debarshir@src.gnome.org>
+2010-04-08  Debarshi Ray  <debarshir@src.gnome.org>
 
 	tracker-miner-rss: Implicitly link the RSS miner against GTHREAD_LIBS
 
@@ -11884,7 +12204,7 @@
 	regex string. This fix changes the regex from a bound literal to being part
 	of the SQL query string itself.
 
-2010-04-06  Mikael Ottela  <mikael.ottela@ixonos.com>
+2010-04-05  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Added indices to message ontology for query performance
 
@@ -11994,7 +12314,7 @@
 
 	libtracker-miner: Don't install tracker-miner-dbus.h to /usr/include
 
-2010-04-01  Aurimas Černius  <aurisc4@gmail.com>
+2010-03-31  Aurimas Černius  <aurisc4@gmail.com>
 
 	Updated Lithuanian translation
 
@@ -14495,7 +14815,7 @@
 
 	Updated Norwegian bokmål translation
 
-2010-02-10  Martyn Russell  <martyn@lanedo.com>
+2010-02-09  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Removed tracker_miner_fs_get_directories()
 	This is no longer needed.
@@ -18223,7 +18543,7 @@
 	 --image-files to --images
 	 --music-files to --music
 
-2009-09-24  Michael Biebl  <biebl@debian.org>
+2009-09-23  Michael Biebl  <biebl@debian.org>
 
 	Add missing files to POTFILES.in
 	According to 4ddf3304d4c3909ab9ec9cf56edcb495e1d634c3 the miner desktop
@@ -18233,8 +18553,6 @@
 	This reverts commit 336b0bff94af3e96e1d5722ff1cd2e9cfa559b6c.
 
 	Add missing "\"
-
-2009-09-23  Michael Biebl  <biebl@debian.org>
 
 	Fix a few typos in the man pages
 
@@ -18333,7 +18651,7 @@
 
 	Fixes bug #584607, Search does not work for Hungarian
 
-2009-09-21  Daniel Nylander  <po@danielnylander.se>
+2009-09-20  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -21287,13 +21605,13 @@
 
 	Arbitrary lowering priority of SetMany() items
 
+2009-06-14  Philip Van Hoof  <philip@codeminded.be>
+
 	Don't do all the g_idle_add nonsense in the push modules
 	These were causing a GSource source for each 2000 items being pushed using the
 	DBus SetMany() call. Making it actually worse than better. I just removed them
 	for now, we might have to replace it with an internal, but static global for
 	the module, queue (not a queue per SetMany, like what is being removed here).
-
-2009-06-14  Philip Van Hoof  <philip@codeminded.be>
 
 	Fixed push modules, bugfix closing the query
 
@@ -22026,6 +22344,8 @@
 	Another include path fix
 	libtracker-gtk uses <tracker.h>, so we also need to add
 	$(top_srcdir)/src/libtracker for tracker-search-tool.
+
+2009-05-11  Michael Biebl  <biebl@debian.org>
 
 	Fix include path
 	tracker-search-tool-callbacks.c uses
@@ -22822,7 +23142,7 @@
 	Add gitlog-to-changelog script from gnulib and a dist-hook to
 	generate ChangeLog file when creating tarballs.
 
-2009-04-14  Khaled Hosny  <khaledhosny@eglug.org>
+2009-04-13  Khaled Hosny  <khaledhosny@eglug.org>
 
 	Updated Arabic translaion
 

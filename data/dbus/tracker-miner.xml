@@ -22,11 +22,18 @@
       <arg type="s" name="reason" direction="in" />
       <arg type="i" name="cookie" direction="out" />
     </method>
+    <method name="PauseForProcess">
+      <annotation name="org.freedesktop.DBus.GLib.Async"  value="true"/>
+      <arg type="s" name="application" direction="in" />
+      <arg type="s" name="reason" direction="in" />
+      <arg type="i" name="cookie" direction="out" />
+    </method>
     <method name="Resume">
       <annotation name="org.freedesktop.DBus.GLib.Async" value="true"/>
       <arg type="i" name="cookie" direction="in" />
     </method>
 
+    <!-- Deprecated since 0.12 -->
     <method name="IgnoreNextUpdate">
       <annotation name="org.freedesktop.DBus.GLib.Async" value="true"/>
       <arg type="as" name="urls" direction="in" />

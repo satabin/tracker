@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, Carlos Garnacho <carlos@lanedo.com>
+ * Copyright (C) 2011, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,15 +15,18 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
+ *
+ * Author: Carlos Garnacho <carlos@lanedo.com>
  */
 
-#ifndef __TRACKER_SPARQL_BUFFER_H__
-#define __TRACKER_SPARQL_BUFFER_H__
+#ifndef __LIBTRACKER_MINER_SPARQL_BUFFER_H__
+#define __LIBTRACKER_MINER_SPARQL_BUFFER_H__
 
-#include <glib.h>
 #include <glib-object.h>
 #include <gio/gio.h>
+
 #include <libtracker-sparql/tracker-sparql.h>
+
 #include "tracker-task-pool.h"
 
 G_BEGIN_DECLS
@@ -81,4 +84,4 @@ TrackerTask *        tracker_sparql_task_new_bulk            (GFile             
 
 G_END_DECLS
 
-#endif /* __TRACKER_METADATA_EXTRACT_POOL_H__ */
+#endif /* __LIBTRACKER_MINER_SPARQL_BUFFER_H__ */

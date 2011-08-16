@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>TrackerMinerFS</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Tracker Miner Library Reference Manual">
 <link rel="up" href="ch03.html" title="Additional miners">
 <link rel="prev" href="ch03.html" title="Additional miners">
@@ -128,6 +128,7 @@ TrackerMinerFS implements
   "<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-monitor-directory" title='The "monitor-directory" signal'>monitor-directory</a>"                              : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
   "<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-process-file" title='The "process-file" signal'>process-file</a>"                                   : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
   "<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-process-file-attributes" title='The "process-file-attributes" signal'>process-file-attributes</a>"                        : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
+  "<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-writeback-file" title='The "writeback-file" signal'>writeback-file</a>"                                 : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a>
 </pre>
 </div>
 <div class="refsect1">
@@ -183,6 +184,10 @@ Abstract miner implementation to get data from the filesystem.
 	                                       GFile                *file,
 	                                       TrackerSparqlBuilder *builder,
 	                                       GCancellable         *cancellable);
+	gboolean (* writeback_file)           (TrackerMinerFS       *fs,
+	                                       GFile                *file,
+	                                       GStrv                 rdf_types,
+	                                       GPtrArray            *results);
 } TrackerMinerFSClass;
 </pre>
 <p>
@@ -221,7 +226,7 @@ requested.</td>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerFSClass.ignore-next-update-file"></a>ignore_next_update_file</code></em> ()</span></p></td>
 <td>Called after a writeback event happens on
-a file.</td>
+a file (deprecated since 0.12).</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerFSClass.monitor-directory"></a>monitor_directory</code></em> ()</span></p></td>
@@ -236,6 +241,10 @@ modified.</td>
 <td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerFSClass.process-file-attributes"></a>process_file_attributes</code></em> ()</span></p></td>
 <td>Called when the metadata associated with
 a file's attributes changes, for example, the mtime.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="structfield"><code><a name="TrackerMinerFSClass.writeback-file"></a>writeback_file</code></em> ()</span></p></td>
+<td>Called when a file must be written back</td>
 </tr>
 </tbody>
 </table></div>
@@ -407,7 +416,7 @@ store.
 <p>
 Notifies <em class="parameter"><code>fs</code></em> that all processing on <em class="parameter"><code>file</code></em> has been finished, if any error
 happened during file data processing, it should be passed in <em class="parameter"><code>error</code></em>, else
-that parameter will contain <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> to reflect success.
+that parameter will contain <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to reflect success.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -424,7 +433,7 @@ that parameter will contain <a href="/usr/share/gtk-doc/html/liboil/liboil-liboi
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> with the error that happened during processing, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> with the error that happened during processing, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -499,7 +508,7 @@ useful to set the nie:belongsToContainer relationship. The
 processing order of <a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> guarantees that a folder
 has been already fully processed for indexing before any
 children is processed, so most usually this function should
-return non-<a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>.
+return non-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -516,7 +525,7 @@ return non-<a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:C
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The parent folder URN, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span>
+<td>The parent folder URN, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span>
 </td>
 </tr>
 </tbody>
@@ -534,7 +543,7 @@ the URN for a <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><
 </p>
 <p>
 If <em class="parameter"><code>file</code></em> is not being currently processed by <em class="parameter"><code>fs</code></em>, or doesn't
-exist in the store yet, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned.
+exist in the store yet, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -552,7 +561,7 @@ exist in the store yet, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljun
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>The URN containing the data associated to <em class="parameter"><code>file</code></em>,
-or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span>
+or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<a href="http://foldoc.org/transfer%20none"><span class="acronym">transfer none</span></a>]</span>
 </td>
 </tr>
 </tbody>
@@ -569,7 +578,7 @@ If the item exists in the store, this function retrieves
 the URN of the given <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>
 </p>
 <p>
-If <em class="parameter"><code>file</code></em> doesn't exist in the store yet, <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned.
+If <em class="parameter"><code>file</code></em> doesn't exist in the store yet, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> will be returned.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -587,7 +596,7 @@ If <em class="parameter"><code>file</code></em> doesn't exist in the store yet, 
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A newly allocated string with the URN containing the data associated
-to <em class="parameter"><code>file</code></em>, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a>]</span>
+to <em class="parameter"><code>file</code></em>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<a href="http://foldoc.org/transfer%20full"><span class="acronym">transfer full</span></a>]</span>
 </td>
 </tr>
 </tbody>
@@ -944,7 +953,7 @@ all pending processing.
 <a name="TrackerMinerFS-ignore-next-update-file"></a><h3>The <code class="literal">"ignore-next-update-file"</code> signal</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>       *miner_fs,
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>                *file,
-                                                        <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *builder,
+                                                        <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *builder,
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>         *cancellable,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>              user_data)        : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
@@ -952,7 +961,7 @@ The ::ignore-next-update-file signal is emitted whenever a file should
 be marked as to ignore on next update, and it's metadata prepared for that.
 </p>
 <p>
-<em class="parameter"><code>builder</code></em> is the <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
+<em class="parameter"><code>builder</code></em> is the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
 to be performed for <em class="parameter"><code>file</code></em> will be appended.
 </p>
 <div class="variablelist"><table border="0">
@@ -970,7 +979,7 @@ to be performed for <em class="parameter"><code>file</code></em> will be appende
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>builder</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
@@ -1034,7 +1043,7 @@ check whether <em class="parameter"><code>directory</code></em> must be monitore
 <a name="TrackerMinerFS-process-file"></a><h3>The <code class="literal">"process-file"</code> signal</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>       *miner_fs,
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>                *file,
-                                                        <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *builder,
+                                                        <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *builder,
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>         *cancellable,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>              user_data)        : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
@@ -1042,7 +1051,7 @@ The ::process-file signal is emitted whenever a file should
 be processed, and it's metadata extracted.
 </p>
 <p>
-<em class="parameter"><code>builder</code></em> is the <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
+<em class="parameter"><code>builder</code></em> is the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
 to be performed for <em class="parameter"><code>file</code></em> will be appended.
 </p>
 <p>
@@ -1068,7 +1077,7 @@ the SPARQL updates and continue processing other files.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>builder</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
@@ -1095,7 +1104,7 @@ the SPARQL updates and continue processing other files.
 <a name="TrackerMinerFS-process-file-attributes"></a><h3>The <code class="literal">"process-file-attributes"</code> signal</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>       *miner_fs,
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>                *file,
-                                                        <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> *builder,
+                                                        <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *builder,
                                                         <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>         *cancellable,
                                                         <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>              user_data)        : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
 <p>
@@ -1103,7 +1112,7 @@ The ::process-file-attributes signal is emitted whenever a file should
 be processed, but only the attribute-related metadata extracted.
 </p>
 <p>
-<em class="parameter"><code>builder</code></em> is the <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
+<em class="parameter"><code>builder</code></em> is the <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> where all sparql updates
 to be performed for <em class="parameter"><code>file</code></em> will be appended. For the properties being
 updated, the DELETE statements should be included as well.
 </p>
@@ -1130,7 +1139,7 @@ the SPARQL updates and continue processing other files.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>builder</code></em> :</span></p></td>
-<td>a <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a>
+<td>a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a>
 </td>
 </tr>
 <tr>
@@ -1151,6 +1160,58 @@ the SPARQL updates and continue processing other files.
 </tbody>
 </table></div>
 <p class="since">Since 0.10</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="TrackerMinerFS-writeback-file"></a><h3>The <code class="literal">"writeback-file"</code> signal</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            user_function                      (<a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS"><span class="type">TrackerMinerFS</span></a> *miner_fs,
+                                                        <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>          *file,
+                                                        <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Boxed-Types.html#GStrv"><span class="type">GStrv</span></a>           rdf_types,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="type">GPtrArray</span></a>      *results,
+                                                        <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>   *cancellable,
+                                                        <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>        user_data)        : <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#G-SIGNAL-RUN-LAST:CAPS"><code class="literal">Run Last</code></a></pre>
+<p>
+The ::writeback-file signal is emitted whenever a file must be written
+back
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>miner_fs</code></em> :</span></p></td>
+<td>the <a class="link" href="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS"><span class="type">TrackerMinerFS</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>rdf_types</code></em> :</span></p></td>
+<td>the set of RDF types</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>results</code></em> :</span></p></td>
+<td>a set of results prepared by the preparation query</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> on success, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.10.20</p>
 </div>
 </div>
 </div>

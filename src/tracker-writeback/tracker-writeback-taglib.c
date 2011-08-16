@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010, Adrien Bustany <abustany@gnome.org>
+ * Copyright (C) 2010, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -20,9 +20,11 @@
 
 #include "config.h"
 
-#include <glib-object.h>
-#include <taglib/tag_c.h>
 #include <stdlib.h>
+
+#include <taglib/tag_c.h>
+
+#include <glib-object.h>
 
 #include <libtracker-common/tracker-ontologies.h>
 
@@ -45,7 +47,8 @@ static GType                tracker_writeback_taglib_get_type         (void) G_G
 static gboolean             writeback_taglib_update_file_metadata     (TrackerWritebackFile    *wbf,
                                                                        GFile                   *file,
                                                                        GPtrArray               *values,
-                                                                       TrackerSparqlConnection *connection);
+                                                                       TrackerSparqlConnection *connection,
+                                                                       GCancellable            *cancellable);
 static const gchar * const *writeback_taglib_content_types            (TrackerWritebackFile    *wbf);
 static gchar*               writeback_taglib_get_artist_name          (TrackerSparqlConnection *connection,
                                                                        const gchar             *urn);
@@ -132,7 +135,8 @@ static gboolean
 writeback_taglib_update_file_metadata (TrackerWritebackFile     *writeback_file,
                                        GFile                    *file,
                                        GPtrArray                *values,
-                                       TrackerSparqlConnection  *connection)
+                                       TrackerSparqlConnection  *connection,
+                                       GCancellable            *cancellable)
 {
 	gboolean ret;
 	gchar *path;

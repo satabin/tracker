@@ -100,6 +100,7 @@
     <function name="The &quot;monitor-directory&quot; signal" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-monitor-directory"/>
     <function name="The &quot;process-file&quot; signal" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-process-file"/>
     <function name="The &quot;process-file-attributes&quot; signal" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-process-file-attributes"/>
+    <function name="The &quot;writeback-file&quot; signal" link="libtracker-miner-tracker-miner-fs.html#TrackerMinerFS-writeback-file"/>
     <function name="TRACKER_MINER_MANAGER_ERROR" link="TrackerMinerManager.html#TRACKER-MINER-MANAGER-ERROR:CAPS"/>
     <function name="enum TrackerMinerManagerError" link="TrackerMinerManager.html#TrackerMinerManagerError"/>
     <function name="tracker_miner_manager_error_quark ()" link="TrackerMinerManager.html#tracker-miner-manager-error-quark"/>

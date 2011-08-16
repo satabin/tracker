@@ -67,12 +67,13 @@ struct _TrackerMinerFS {
  * @process_file: Called when the metadata associated to a file is
  * requested.
  * @ignore_next_update_file: Called after a writeback event happens on
- * a file.
+ * a file (deprecated since 0.12).
  * @monitor_directory: Called to check whether a directory should be
  * modified.
  * @finished: Called when all processing has been performed.
  * @process_file_attributes: Called when the metadata associated with
  * a file's attributes changes, for example, the mtime.
+ * @writeback_file: Called when a file must be written back
  *
  * Prototype for the abstract class, @check_file, @check_directory,
  * @check_directory_contents, @process_file and @monitor_directory
@@ -104,6 +105,10 @@ typedef struct {
 	                                       GFile                *file,
 	                                       TrackerSparqlBuilder *builder,
 	                                       GCancellable         *cancellable);
+	gboolean (* writeback_file)           (TrackerMinerFS       *fs,
+	                                       GFile                *file,
+	                                       GStrv                 rdf_types,
+	                                       GPtrArray            *results);
 } TrackerMinerFSClass;
 
 GType                 tracker_miner_fs_get_type             (void) G_GNUC_CONST;
@@ -125,6 +130,13 @@ void                  tracker_miner_fs_check_directory_with_priority (TrackerMin
 void                  tracker_miner_fs_check_file           (TrackerMinerFS *fs,
                                                              GFile          *file,
                                                              gboolean        check_parents);
+void                  tracker_miner_fs_writeback_file       (TrackerMinerFS *fs,
+                                                             GFile          *file,
+                                                             GStrv           rdf_types,
+                                                             GPtrArray      *results);
+void                  tracker_miner_fs_writeback_notify     (TrackerMinerFS *fs,
+                                                             GFile          *file,
+                                                             const GError   *error);
 void                  tracker_miner_fs_check_directory      (TrackerMinerFS *fs,
                                                              GFile          *file,
                                                              gboolean        check_parents);

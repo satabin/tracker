@@ -18,4 +18,4 @@ usr/share/man/man1/tracker-preferences.1
 #usr/lib/tracker/tracker-search-bar
 
 # Nautilus extension for now in tracker-gui
-usr/lib/nautilus/extensions-*/libnautilus-tracker-tags.so
+#usr/lib/nautilus/extensions-*/libnautilus-tracker-tags.so

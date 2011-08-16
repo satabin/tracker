@@ -14,7 +14,7 @@ override_dh_auto_configure:
 		--disable-tracker-search-bar \
 		--enable-tracker-needle \
 		--enable-tracker-preferences \
-		--enable-nautilus-extension \
+		--disable-nautilus-extension \
 		--enable-libiptcdata \
 		--enable-exempi \
 		--enable-libexif \

@@ -1,8 +1,9 @@
-tracker (0.10.21-3) UNRELEASED; urgency=low
+tracker (0.10.22-1) UNRELEASED; urgency=low
 
+  * New upstream release.
   * Drop Build-Depends on libnotify-dev, not used anymore.
 
- -- Michael Biebl <biebl@debian.org>  Mon, 01 Aug 2011 04:19:36 +0200
+ -- Michael Biebl <biebl@debian.org>  Tue, 16 Aug 2011 11:06:37 +0200
 
 tracker (0.10.21-2) unstable; urgency=low
 

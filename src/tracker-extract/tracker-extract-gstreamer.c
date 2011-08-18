@@ -310,15 +310,13 @@ add_date_time_gst_tag (TrackerSparqlBuilder  *metadata,
 
 		gst_date_time_unref (date_time);
 	} else if (gst_tag_list_get_date (tag_list, tag_date, &date)) {
-		gboolean ret;
+		gboolean ret = FALSE;
 
 		if (date && g_date_valid (date)) {
 			if (date->julian)
 				ret = g_date_valid_julian (date->julian_days);
 			if (date->dmy)
 				ret = g_date_valid_dmy (date->day, date->month, date->year);
-		} else {
-			ret = FALSE;
 		}
 
 		if (ret) {
@@ -384,6 +382,43 @@ add_keywords_gst_tag (TrackerSparqlBuilder *metadata,
 		g_free (str);
 	}
 }
+
+static void
+replace_double_gst_tag (TrackerSparqlBuilder  *preupdate,
+                        const gchar           *uri,
+                        const gchar           *key,
+                        GstTagList            *tag_list,
+                        const gchar           *tag)
+{
+	gdouble  value;
+	gboolean has_it;
+
+	has_it = gst_tag_list_get_double (tag_list, tag, &value);
+
+	if (! has_it)
+		return;
+
+	tracker_sparql_builder_delete_open (preupdate, NULL);
+	tracker_sparql_builder_subject_iri (preupdate, uri);
+	tracker_sparql_builder_predicate (preupdate, key);
+	tracker_sparql_builder_object_variable (preupdate, "unknown");
+	tracker_sparql_builder_delete_close (preupdate);
+
+	tracker_sparql_builder_where_open (preupdate);
+	tracker_sparql_builder_subject_iri (preupdate, uri);
+	tracker_sparql_builder_predicate (preupdate, key);
+	tracker_sparql_builder_object_variable (preupdate, "unknown");
+	tracker_sparql_builder_where_close (preupdate);
+
+	tracker_sparql_builder_insert_open (preupdate, NULL);
+
+	tracker_sparql_builder_subject_iri (preupdate, uri);
+	tracker_sparql_builder_predicate (preupdate, key);
+	tracker_sparql_builder_object_double (preupdate, value);
+
+	tracker_sparql_builder_insert_close (preupdate);
+}
+
 
 static gboolean
 get_embedded_album_art(MetadataExtractor *extractor)
@@ -620,7 +655,6 @@ extract_metadata (MetadataExtractor      *extractor,
 		if (albumname) {
 			gboolean has_it;
 			guint count;
-			gdouble gain;
 
 			needs_audio = TRUE;
 
@@ -707,57 +741,8 @@ extract_metadata (MetadataExtractor      *extractor,
 			tracker_sparql_builder_object_iri (preupdate, album_uri);
 			tracker_sparql_builder_insert_close (preupdate);
 
-			has_it = gst_tag_list_get_double (extractor->tagcache,
-			                                  GST_TAG_ALBUM_GAIN,
-			                                  &gain);
-
-			if (has_it) {
-				tracker_sparql_builder_delete_open (preupdate, NULL);
-				tracker_sparql_builder_subject_iri (preupdate, album_uri);
-				tracker_sparql_builder_predicate (preupdate, "nmm:albumGain");
-				tracker_sparql_builder_object_variable (preupdate, "unknown");
-				tracker_sparql_builder_delete_close (preupdate);
-
-				tracker_sparql_builder_where_open (preupdate);
-				tracker_sparql_builder_subject_iri (preupdate, album_uri);
-				tracker_sparql_builder_predicate (preupdate, "nmm:albumGain");
-				tracker_sparql_builder_object_variable (preupdate, "unknown");
-				tracker_sparql_builder_where_close (preupdate);
-
-				tracker_sparql_builder_insert_open (preupdate, NULL);
-
-				tracker_sparql_builder_subject_iri (preupdate, album_uri);
-				tracker_sparql_builder_predicate (preupdate, "nmm:albumGain");
-				tracker_sparql_builder_object_double (preupdate, gain);
-
-				tracker_sparql_builder_insert_close (preupdate);
-			}
-
-			has_it = gst_tag_list_get_double (extractor->tagcache,
-			                                  GST_TAG_ALBUM_PEAK,
-			                                  &gain);
-
-			if (has_it) {
-				tracker_sparql_builder_delete_open (preupdate, NULL);
-				tracker_sparql_builder_subject_iri (preupdate, album_uri);
-				tracker_sparql_builder_predicate (preupdate, "nmm:albumPeakGain");
-				tracker_sparql_builder_object_variable (preupdate, "unknown");
-				tracker_sparql_builder_delete_close (preupdate);
-
-				tracker_sparql_builder_where_open (preupdate);
-				tracker_sparql_builder_subject_iri (preupdate, album_uri);
-				tracker_sparql_builder_predicate (preupdate, "nmm:albumPeakGain");
-				tracker_sparql_builder_object_variable (preupdate, "unknown");
-				tracker_sparql_builder_where_close (preupdate);
-
-				tracker_sparql_builder_insert_open (preupdate, NULL);
-
-				tracker_sparql_builder_subject_iri (preupdate, album_uri);
-				tracker_sparql_builder_predicate (preupdate, "nmm:albumPeakGain");
-				tracker_sparql_builder_object_double (preupdate, gain);
-
-				tracker_sparql_builder_insert_close (preupdate);
-			}
+			replace_double_gst_tag (preupdate, album_uri, "nmm:albumGain", extractor->tagcache, GST_TAG_ALBUM_GAIN);
+			replace_double_gst_tag (preupdate, album_uri, "nmm:albumPeakGain", extractor->tagcache, GST_TAG_ALBUM_PEAK);
 
 			*album = albumname;
 

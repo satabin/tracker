@@ -2247,6 +2247,117 @@ tracker_data_delete_statement (const gchar  *graph,
 	}
 }
 
+
+static void
+delete_all_objects (const gchar  *graph,
+                    const gchar  *subject,
+                    const gchar  *predicate,
+                    GError      **error)
+{
+	gint subject_id = 0;
+	gboolean change = FALSE;
+	GError *new_error = NULL;
+	TrackerProperty *field;
+
+	g_return_if_fail (subject != NULL);
+	g_return_if_fail (predicate != NULL);
+	g_return_if_fail (in_transaction);
+
+	subject_id = query_resource_id (subject);
+
+	if (subject_id == 0) {
+		/* subject not in database */
+		return;
+	}
+
+	resource_buffer_switch (graph, 0, subject, subject_id);
+
+	field = tracker_ontologies_get_property_by_uri (predicate);
+	if (field != NULL) {
+		GValueArray *old_values;
+
+		if (!tracker_property_get_transient (field)) {
+			has_persistent = TRUE;
+		}
+
+		old_values = get_old_property_values (field, &new_error);
+		if (new_error) {
+			g_propagate_error (error, new_error);
+			return;
+		}
+
+		while (old_values->n_values > 0) {
+			gint pred_id = 0, graph_id = 0;
+			const gchar *object = NULL;
+			gint object_id = 0;
+
+			pred_id = tracker_property_get_id (field);
+			graph_id = (graph != NULL ? query_resource_id (graph) : 0);
+
+			if (tracker_property_get_data_type (field) == TRACKER_PROPERTY_TYPE_RESOURCE) {
+				object_id = (gint) g_value_get_int64 (g_value_array_get_nth (old_values, 0));
+
+				/* This influences old_values, which is a reference, not a copy */
+				change = delete_metadata_decomposed (field, NULL, object_id, error);
+
+#ifndef DISABLE_JOURNAL
+				if (!in_journal_replay && change && !tracker_property_get_transient (field)) {
+					tracker_db_journal_append_delete_statement_id (graph_id,
+					                                               resource_buffer->id,
+					                                               pred_id,
+					                                               object_id);
+				}
+#endif /* DISABLE_JOURNAL */
+			} else {
+				object = g_value_get_string (g_value_array_get_nth (old_values, 0));
+				object_id = 0;
+
+				/* This influences old_values, which is a reference, not a copy */
+				change = delete_metadata_decomposed (field, object, 0, error);
+
+#ifndef DISABLE_JOURNAL
+				if (!in_journal_replay && change && !tracker_property_get_transient (field)) {
+					if (!tracker_property_get_force_journal (field) &&
+						g_strcmp0 (graph, TRACKER_MINER_FS_GRAPH_URN) == 0) {
+						/* do not journal this statement extracted from filesystem */
+						TrackerProperty *damaged;
+
+						damaged = tracker_ontologies_get_property_by_uri (TRACKER_TRACKER_PREFIX "damaged");
+
+						tracker_db_journal_append_insert_statement (graph_id,
+						                                            resource_buffer->id,
+						                                            tracker_property_get_id (damaged),
+						                                            "true");
+					} else {
+						tracker_db_journal_append_delete_statement (graph_id,
+						                                            resource_buffer->id,
+						                                            pred_id,
+						                                            object);
+					}
+				}
+#endif /* DISABLE_JOURNAL */
+
+				if (delete_callbacks && change) {
+					guint n;
+					for (n = 0; n < delete_callbacks->len; n++) {
+						TrackerStatementDelegate *delegate;
+
+						delegate = g_ptr_array_index (delete_callbacks, n);
+						delegate->callback (graph_id, graph, subject_id, subject,
+						                    pred_id, object_id,
+						                    object,
+						                    resource_buffer->types,
+						                    delegate->user_data);
+					}
+				}
+			}
+		}
+	} else {
+		g_set_error (error, TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY,
+		             "Property '%s' not found in the ontology", predicate);
+	}
+}
+
 static gboolean
 tracker_data_insert_statement_common (const gchar            *graph,
                                       const gchar            *subject,
@@ -2604,7 +2715,6 @@ tracker_data_update_statement_with_uri (const gchar            *graph,
 
 	g_return_if_fail (subject != NULL);
 	g_return_if_fail (predicate != NULL);
-	g_return_if_fail (object != NULL);
 	g_return_if_fail (in_transaction);
 
 	property = tracker_ontologies_get_property_by_uri (predicate);
@@ -2810,7 +2920,6 @@ tracker_data_update_statement_with_string (const gchar            *graph,
 
 	g_return_if_fail (subject != NULL);
 	g_return_if_fail (predicate != NULL);
-	g_return_if_fail (object != NULL);
 	g_return_if_fail (in_transaction);
 
 	property = tracker_ontologies_get_property_by_uri (predicate);
@@ -2943,15 +3052,42 @@ tracker_data_update_statement (const gchar            *graph,
 
 	g_return_if_fail (subject != NULL);
 	g_return_if_fail (predicate != NULL);
-	g_return_if_fail (object != NULL);
 	g_return_if_fail (in_transaction);
 
 	property = tracker_ontologies_get_property_by_uri (predicate);
 	if (property != NULL) {
-		if (tracker_property_get_data_type (property) == TRACKER_PROPERTY_TYPE_RESOURCE) {
-			tracker_data_update_statement_with_uri (graph, subject, predicate, object, error);
+		if (object == NULL) {
+			GError *new_error = NULL;
+			if (property == tracker_ontologies_get_rdf_type ()) {
+				g_set_error (error, TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED,
+				             "Using 'null' with '%s' is not supported", predicate);
+				return;
+			}
+
+			/* Flush upfront to make a null,x,null,y,z work: When x is set then
+			 * if a null comes, we need to be flushed */
+
+			tracker_data_update_buffer_flush (&new_error);
+			if (new_error) {
+				g_propagate_error (error, new_error);
+				return;
+			}
+
+			delete_all_objects (graph, subject, predicate, error);
+
+			/* Flush at the end to make null, x work. When x arrives the null
+			 * (delete all values of the multivalue) must be flushed */
+
+			tracker_data_update_buffer_flush (&new_error);
+			if (new_error) {
+				g_propagate_error (error, new_error);
+			}
 		} else {
-			tracker_data_update_statement_with_string (graph, subject, predicate, object, error);
+			if (tracker_property_get_data_type (property) == TRACKER_PROPERTY_TYPE_RESOURCE) {
+				tracker_data_update_statement_with_uri (graph, subject, predicate, object, error);
+			} else {
+				tracker_data_update_statement_with_string (graph, subject, predicate, object, error);
+			}
 		}
 	} else {
 		g_set_error (error, TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNKNOWN_PROPERTY,

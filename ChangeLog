@@ -1,3 +1,112 @@
+2011-08-18  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.23
+
+	tracker-miner-fs: Use XDG locations not static values for desktop files
+	We were using just $prefix/share/{applications|desktop-directories}. Now we
+	use {applications|desktop-directories} for all XDG system dirs and XDG user
+	dirs. This list can include for example:
+
+	: Setting up applications to iterate from XDG system directories
+	:   Adding:'/usr/share/gnome-classic/applications'
+	:   Adding:'/usr/share/gnome-classic/desktop-directories'
+	:   Adding:'/usr/share/gnome/applications'
+	:   Adding:'/usr/share/gnome/desktop-directories'
+	:   Adding:'/usr/local/share/applications'
+	:   Adding:'/usr/local/share/desktop-directories'
+	:   Adding:'/usr/share/applications'
+	:   Adding:'/usr/share/desktop-directories'
+	: Setting up applications to iterate from XDG user directories
+	:   Adding:'/home/martyn/.local/share/applications'
+	:   Adding:'/home/martyn/.local/share/desktop-directories'
+	: Setting up applications to iterate from MeegoTouch directories
+	:   Adding:'/usr/lib/duicontrolpanel/'
+
+	Previously the list was 3 locations. So now more applications are indexed.
+
+	This fixes NB#256958
+
+2011-08-18  Sam Thursfield  <samthursfield@codethink.co.uk>
+
+	functional-tests: Separate out test-runner.sh from Makefile
+
+2011-08-18  Jürg Billeter  <j@bitron.ch>
+
+	tracker-needle: Fix build with Vala master
+
+2011-08-18  Yuri Myasoedov  <omerta13@yandex.ru>
+
+	Updated Russian translation
+
+2011-08-18  Jürg Billeter  <j@bitron.ch>
+
+	NMO: Add nmo:delivery-status-temporarily-failed-offline
+	Fixes NB#247468.
+
+2011-08-18  Philip Van Hoof  <philip@codeminded.be>
+
+	tests/functional-test: Fixed insert or replace f. test for null support
+
+	libtracker-data: Cleanup of code after review
+
+	tests: Fix whitespace issues in new test
+
+	tests: Add functional test for multiple nulls use-case
+
+	libtracker-data: Make null,x,null,y,z work
+
+	tests: Fix glitch in functional test
+
+	tests: Add functional test for insert or replace null support
+
+	libtracker-data: Allow null upfront a new set for multivalue properties
+	When null deletes a set of a multivalue property, then the buffer must
+	be flushed. Else the merging in the buffer might make things go wrong.
+
+	libtracker-data: Add some code comments for clarification
+
+	libtracker-data: Insert or replace's null support for multivalue props
+
+	libtracker-data: Add stops and error handling for unsupported null cases
+
+	libtracker-data: Support for insert or replace null objects
+
+	libtracker-data: Add internal API for deleting all objects
+
+	tracker-extract: Do extra header check for jpg cover files
+	Fixes NB#259325.
+
+2011-08-18  Sam Thursfield  <samthursfield@codethink.co.uk>
+
+	tracker-extract-gstreamer: Fix compile warning
+	https://bugzilla.gnome.org/show_bug.cgi?id=656419
+
+	tracker-extract-gstreamer: Tiny refactor
+	https://bugzilla.gnome.org/show_bug.cgi?id=656419
+
+2011-08-18  Javier Jardón  <jjardon@gnome.org>
+
+	tracker-miner-flickr.desktop.in.in: Remove deprecated Encoding key
+
+2011-08-18  Daniel Nylander  <po@danielnylander.se>
+
+	Updated Swedish translation
+
+2011-08-18  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+
+	[l10n] Updated German translation
+
+2011-08-18  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-needle: Avoid g_markup_escape_text() critical with NULL
+	This is based on a similar patch in master but done from scratch for conflict
+	reasons during cherry-picking:
+
+	  689d6aa29bec498c15925131ed5c19b4ac45d2fd
+
+	tracker-needle: Show email subject as primary information not sender
+	Sender is now secondary in the second row.
+
 2011-08-05  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.22

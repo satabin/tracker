@@ -215,22 +215,25 @@ struct _TrackerResultStoreLoadOperationData {
 	gboolean _tmp6_;
 	const gchar* _tmp7_;
 	gchar* _tmp8_;
+	gchar* s;
 	gchar* _tmp9_;
-	const gchar* _tmp10_;
+	gchar* _tmp10_;
 	gchar* _tmp11_;
-	gchar* _tmp12_;
-	GtkTreeIter _tmp13_;
-	GtkTreeIter _tmp14_;
-	void* _tmp15_;
-	GtkTreePath* _tmp16_;
+	const gchar* _tmp12_;
+	gchar* _tmp13_;
+	gchar* _tmp14_;
+	GtkTreeIter _tmp15_;
+	GtkTreeIter _tmp16_;
+	void* _tmp17_;
+	GtkTreePath* _tmp18_;
 	GError * ie;
-	gint _tmp17_;
+	gint _tmp19_;
 	TrackerResultStoreOperation* next_to_start;
-	gint _tmp18_;
-	gconstpointer _tmp19_;
-	TrackerResultStoreOperation* _tmp20_;
-	TrackerResultStoreOperation* _tmp21_;
-	gint _tmp22_;
+	gint _tmp20_;
+	gconstpointer _tmp21_;
+	TrackerResultStoreOperation* _tmp22_;
+	TrackerResultStoreOperation* _tmp23_;
+	gint _tmp24_;
 	GError * _inner_error_;
 };
 
@@ -472,6 +475,7 @@ static TrackerResultStoreOperation* tracker_result_store_find_operation (Tracker
 	gint i = 0;
 	g_return_val_if_fail (self != NULL, NULL);
 	g_return_val_if_fail (array != NULL, NULL);
+	g_return_val_if_fail (node != NULL, NULL);
 	{
 		gboolean _tmp0_;
 		i = 0;
@@ -659,36 +663,45 @@ static gboolean tracker_result_store_load_operation_co (TrackerResultStoreLoadOp
 					if (data->j == (data->self->priv->n_columns - 1)) {
 						data->_tmp7_ = NULL;
 						data->_tmp7_ = tracker_sparql_cursor_get_string (data->cursor, data->j, NULL);
-						data->_tmp8_ = NULL;
-						data->_tmp8_ = g_markup_escape_text (data->_tmp7_, (gssize) (-1));
-						data->_tmp9_ = data->_tmp8_;
-						_g_free0 ((*data->_result_).values[data->j]);
-						(*data->_result_).values[data->j] = data->_tmp9_;
+						data->_tmp8_ = g_strdup (data->_tmp7_);
+						data->s = data->_tmp8_;
+						if (data->s != NULL) {
+							data->_tmp9_ = NULL;
+							data->_tmp9_ = g_markup_escape_text (data->s, (gssize) (-1));
+							data->_tmp10_ = data->_tmp9_;
+							_g_free0 ((*data->_result_).values[data->j]);
+							(*data->_result_).values[data->j] = data->_tmp10_;
+						} else {
+							data->_tmp11_ = NULL;
+							_g_free0 ((*data->_result_).values[data->j]);
+							(*data->_result_).values[data->j] = data->_tmp11_;
+						}
+						_g_free0 (data->s);
 					} else {
-						data->_tmp10_ = NULL;
-						data->_tmp10_ = tracker_sparql_cursor_get_string (data->cursor, data->j, NULL);
-						data->_tmp11_ = g_strdup (data->_tmp10_);
-						data->_tmp12_ = data->_tmp11_;
+						data->_tmp12_ = NULL;
+						data->_tmp12_ = tracker_sparql_cursor_get_string (data->cursor, data->j, NULL);
+						data->_tmp13_ = g_strdup (data->_tmp12_);
+						data->_tmp14_ = data->_tmp13_;
 						_g_free0 ((*data->_result_).values[data->j]);
-						(*data->_result_).values[data->j] = data->_tmp12_;
+						(*data->_result_).values[data->j] = data->_tmp14_;
 					}
 				}
 			}
-			memset (&data->_tmp13_, 0, sizeof (GtkTreeIter));
-			memset (&data->_tmp13_, 0, sizeof (GtkTreeIter));
-			memset (&data->_tmp14_, 0, sizeof (GtkTreeIter));
-			data->_tmp14_ = data->_tmp13_;
-			data->iter = data->_tmp14_;
+			memset (&data->_tmp15_, 0, sizeof (GtkTreeIter));
+			memset (&data->_tmp15_, 0, sizeof (GtkTreeIter));
+			memset (&data->_tmp16_, 0, sizeof (GtkTreeIter));
+			data->_tmp16_ = data->_tmp15_;
+			data->iter = data->_tmp16_;
 			data->iter.stamp = data->self->priv->timestamp;
 			data->iter.user_data = data->op->node;
 			data->iter.user_data2 = data->_result_;
-			data->_tmp15_ = NULL;
-			data->_tmp15_ = GINT_TO_POINTER (data->i);
-			data->iter.user_data3 = data->_tmp15_;
-			data->_tmp16_ = NULL;
-			data->_tmp16_ = gtk_tree_model_get_path ((GtkTreeModel*) data->self, &data->iter);
+			data->_tmp17_ = NULL;
+			data->_tmp17_ = GINT_TO_POINTER (data->i);
+			data->iter.user_data3 = data->_tmp17_;
+			data->_tmp18_ = NULL;
+			data->_tmp18_ = gtk_tree_model_get_path ((GtkTreeModel*) data->self, &data->iter);
 			_gtk_tree_path_free0 (data->path);
-			data->path = data->_tmp16_;
+			data->path = data->_tmp18_;
 			gtk_tree_model_row_changed ((GtkTreeModel*) data->self, data->path, &data->iter);
 			_gtk_tree_path_free0 (data->path);
 		}
@@ -699,7 +712,7 @@ static gboolean tracker_result_store_load_operation_co (TrackerResultStoreLoadOp
 	{
 		data->ie = data->_inner_error_;
 		data->_inner_error_ = NULL;
-		g_warning ("tracker-result-store.vala:136: Could not load items: %s\n", data->ie->message);
+		g_warning ("tracker-result-store.vala:140: Could not load items: %s\n", data->ie->message);
 		_g_error_free0 (data->ie);
 		_g_object_unref0 (data->cursor);
 		_tracker_query_unref0 (data->query);
@@ -719,22 +732,22 @@ static gboolean tracker_result_store_load_operation_co (TrackerResultStoreLoadOp
 		g_clear_error (&data->_inner_error_);
 		return FALSE;
 	}
-	data->_tmp17_ = g_ptr_array_get_length (data->self->priv->delayed_operations);
-	if (data->_tmp17_ > 0) {
-		data->_tmp18_ = g_ptr_array_get_length (data->self->priv->delayed_operations);
-		data->_tmp19_ = NULL;
-		data->_tmp19_ = g_ptr_array_index (data->self->priv->delayed_operations, (guint) (data->_tmp18_ - 1));
-		data->_tmp20_ = _g_object_ref0 ((TrackerResultStoreOperation*) data->_tmp19_);
+	data->_tmp19_ = g_ptr_array_get_length (data->self->priv->delayed_operations);
+	if (data->_tmp19_ > 0) {
+		data->_tmp20_ = g_ptr_array_get_length (data->self->priv->delayed_operations);
+		data->_tmp21_ = NULL;
+		data->_tmp21_ = g_ptr_array_index (data->self->priv->delayed_operations, (guint) (data->_tmp20_ - 1));
+		data->_tmp22_ = _g_object_ref0 ((TrackerResultStoreOperation*) data->_tmp21_);
 		_g_object_unref0 (data->next_to_start);
-		data->next_to_start = data->_tmp20_;
+		data->next_to_start = data->_tmp22_;
 		g_ptr_array_remove (data->self->priv->delayed_operations, data->next_to_start);
-		data->_tmp21_ = _g_object_ref0 (data->next_to_start);
-		g_ptr_array_add (data->self->priv->running_operations, data->_tmp21_);
+		data->_tmp23_ = _g_object_ref0 (data->next_to_start);
+		g_ptr_array_add (data->self->priv->running_operations, data->_tmp23_);
 		tracker_result_store_load_operation (data->self, data->next_to_start, data->cancellable, NULL, NULL);
 		_g_object_unref0 (data->next_to_start);
 	} else {
-		data->_tmp22_ = g_ptr_array_get_length (data->self->priv->running_operations);
-		if (data->_tmp22_ == 0) {
+		data->_tmp24_ = g_ptr_array_get_length (data->self->priv->running_operations);
+		if (data->_tmp24_ == 0) {
 			tracker_result_store_set_active (data->self, FALSE);
 		}
 	}
@@ -761,8 +774,10 @@ static void tracker_result_store_add_operation (TrackerResultStore* self, Tracke
 	TrackerResultStoreOperation* old = NULL;
 	TrackerResultStoreCategoryNode* _tmp1_;
 	TrackerResultStoreOperation* _tmp2_ = NULL;
-	TrackerResultStoreOperation* _tmp3_ = NULL;
-	gint _tmp4_;
+	TrackerResultStoreOperation* _tmp3_;
+	gboolean _tmp4_;
+	TrackerResultStoreOperation* _tmp5_ = NULL;
+	gint _tmp6_;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (cat != NULL);
 	_tmp0_ = tracker_result_store_operation_new ();
@@ -772,28 +787,31 @@ static void tracker_result_store_add_operation (TrackerResultStore* self, Tracke
 	op->node = _tmp1_;
 	op->offset = offset;
 	_tmp2_ = tracker_result_store_find_operation (self, self->priv->running_operations, cat, offset);
-	if (_tmp2_ != NULL) {
+	_tmp3_ = _tmp2_;
+	_tmp4_ = _tmp3_ != NULL;
+	_g_object_unref0 (_tmp3_);
+	if (_tmp4_) {
 		_g_object_unref0 (old);
 		_g_object_unref0 (op);
 		return;
 	}
-	_tmp3_ = tracker_result_store_find_operation (self, self->priv->delayed_operations, cat, offset);
+	_tmp5_ = tracker_result_store_find_operation (self, self->priv->delayed_operations, cat, offset);
 	_g_object_unref0 (old);
-	old = _tmp3_;
+	old = _tmp5_;
 	if (old != NULL) {
 		g_ptr_array_remove (self->priv->delayed_operations, old);
 	}
 	tracker_result_store_set_active (self, TRUE);
-	_tmp4_ = g_ptr_array_get_length (self->priv->running_operations);
-	if (_tmp4_ < 2) {
-		TrackerResultStoreOperation* _tmp5_;
-		_tmp5_ = _g_object_ref0 (op);
-		g_ptr_array_add (self->priv->running_operations, _tmp5_);
+	_tmp6_ = g_ptr_array_get_length (self->priv->running_operations);
+	if (_tmp6_ < 2) {
+		TrackerResultStoreOperation* _tmp7_;
+		_tmp7_ = _g_object_ref0 (op);
+		g_ptr_array_add (self->priv->running_operations, _tmp7_);
 		tracker_result_store_load_operation (self, op, self->priv->cancellable, NULL, NULL);
 	} else {
-		TrackerResultStoreOperation* _tmp6_;
-		_tmp6_ = _g_object_ref0 (op);
-		g_ptr_array_add (self->priv->delayed_operations, _tmp6_);
+		TrackerResultStoreOperation* _tmp8_;
+		_tmp8_ = _g_object_ref0 (op);
+		g_ptr_array_add (self->priv->delayed_operations, _tmp8_);
 	}
 	_g_object_unref0 (old);
 	_g_object_unref0 (op);
@@ -883,7 +901,7 @@ static gboolean tracker_result_store_load_category_co (TrackerResultStoreLoadCat
 	{
 		data->ie = data->_inner_error_;
 		data->_inner_error_ = NULL;
-		g_warning ("tracker-result-store.vala:202: Could not get count: %s\n", data->ie->message);
+		g_warning ("tracker-result-store.vala:206: Could not get count: %s\n", data->ie->message);
 		_g_error_free0 (data->ie);
 		if (data->_state_ == 0) {
 			g_simple_async_result_complete_in_idle (data->_async_result);
@@ -1371,7 +1389,7 @@ static gboolean tracker_result_store_fetch_thumbnail_co (TrackerResultStoreFetch
 	{
 		data->ie = data->_inner_error_;
 		data->_inner_error_ = NULL;
-		g_warning ("tracker-result-store.vala:471: Could not get thumbnail: %s", data->ie->message);
+		g_warning ("tracker-result-store.vala:479: Could not get thumbnail: %s", data->ie->message);
 		_g_error_free0 (data->ie);
 		_g_object_unref0 (data->pixbuf);
 		_g_free0 (data->thumb_path);
@@ -1476,7 +1494,7 @@ static gboolean tracker_result_store_fetch_thumbnail_co (TrackerResultStoreFetch
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
-		g_warning ("tracker-result-store.vala:500: Could not get icon pixbuf: %s\n", data->e->message);
+		g_warning ("tracker-result-store.vala:508: Could not get icon pixbuf: %s\n", data->e->message);
 		_g_error_free0 (data->e);
 	}
 	__finally10:
@@ -2186,7 +2204,7 @@ void tracker_result_store_add_query (TrackerResultStore* self, TrackerQueryType 
 		}
 	}
 	if (args_length1 != self->priv->n_columns) {
-		g_warning ("tracker-result-store.vala:822: Arguments and number of columns doesn't" \
+		g_warning ("tracker-result-store.vala:830: Arguments and number of columns doesn't" \
 " match");
 		tracker_result_store_query_data_destroy (&query_data);
 		args = (_vala_array_free (args, args_length1, (GDestroyNotify) g_free), NULL);

@@ -671,7 +671,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Predefined instances</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nmo-delivery-status-permanently-failed'>nmo:delivery-status-permanently-failed</link>, <link linkend='nmo-delivery-status-temporarily-failed'>nmo:delivery-status-temporarily-failed</link>, <link linkend='nmo-delivery-status-delivered'>nmo:delivery-status-delivered</link>, <link linkend='nmo-delivery-status-sent'>nmo:delivery-status-sent</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nmo-delivery-status-permanently-failed'>nmo:delivery-status-permanently-failed</link>, <link linkend='nmo-delivery-status-temporarily-failed-offline'>nmo:delivery-status-temporarily-failed-offline</link>, <link linkend='nmo-delivery-status-temporarily-failed'>nmo:delivery-status-temporarily-failed</link>, <link linkend='nmo-delivery-status-delivered'>nmo:delivery-status-delivered</link>, <link linkend='nmo-delivery-status-sent'>nmo:delivery-status-sent</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>

@@ -61,7 +61,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		set;
 	}
 
-	private Operation * find_operation (GenericArray<Operation> array, CategoryNode *node, int offset) {
+	private Operation? find_operation (GenericArray<Operation> array, CategoryNode node, int offset) {
 		Operation op;
 		int i;
 
@@ -113,8 +113,12 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 
 				for (j = 0; j < n_columns; j++) {
 					if (j == n_columns - 1) {
-						// FIXME: Set markup for tooltip column in a nicer way
-						result.values[j] = Markup.escape_text (cursor.get_string (j));
+						string s = cursor.get_string (j);
+
+						if (s != null)
+							result.values[j] = Markup.escape_text (s);
+						else
+							result.values[j] = null;
 					} else {
 						result.values[j] = cursor.get_string (j);
 					}
@@ -427,7 +431,11 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		return n_columns + n_extra_columns;
 	}
 
+#if VALA_0_14
+	public Gtk.TreePath? get_path (Gtk.TreeIter iter) {
+#else
 	public Gtk.TreePath get_path (Gtk.TreeIter iter) {
+#endif
 		TreePath path = new TreePath ();
 		CategoryNode cat;
 		int i;

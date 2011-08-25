@@ -13,6 +13,9 @@
 /* Use new evolution-shell API */
 #undef EVOLUTION_SHELL_2_91
 
+/* Use new evolution-shell API */
+#undef EVOLUTION_SHELL_3_2
+
 /* The gettext translation domain */
 #undef GETTEXT_PACKAGE
 

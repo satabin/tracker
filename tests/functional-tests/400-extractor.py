@@ -23,7 +23,7 @@ metadata is extracted. Load dynamically the test information from a data
 directory (containing xxx.expected files)
 """
 from common.utils import configuration as cfg
-from common.utils.helpers import ExtractorHelper
+from common.utils.helpers import ExtractorHelper, NoMetadataException
 import unittest2 as ut
 import os
 import types
@@ -118,9 +118,13 @@ class ExtractionTestCase (ut.TestCase):
         except Exception, e:
             self.fail ("%s in %s"
                        % (e, abs_description))
-        result = self.extractor.get_metadata ("file://" + self.file_to_extract, "")
 
-        self.__assert_extraction_ok (result)
+        try:
+            result = self.extractor.get_metadata ("file://" + self.file_to_extract, "")
+
+            self.__assert_extraction_ok (result)
+        except NoMetadataException, e:
+            self.fail ("Probably a missing gstreamer plugin (or crash in the extractor?)")
 
 
     def assertDictHasKey (self, d, key, msg=None):
@@ -213,7 +217,7 @@ class ExtractionTestCase (ut.TestCase):
                                                           section))
 
 
-if __name__ == "__main__":
+def run_all ():
     ##
     # Traverse the TEST_DATA_PATH directory looking for .description files
     # Add a new TestCase to the suite per .description file and run the suite.
@@ -237,3 +241,26 @@ if __name__ == "__main__":
     result = ut.TextTestRunner (verbosity=1).run (extractionTestSuite)
     sys.exit(not result.wasSuccessful())
 
+def run_one (filename):
+    ##
+    # Run just one .description file
+    ##
+    description = os.path.join (os.getcwd (), filename) 
+
+    extractionTestSuite = ut.TestSuite ()
+    tc = ExtractionTestCase(descfile=description)
+    extractionTestSuite.addTest(tc)
+
+    result = ut.TextTestRunner (verbosity=2).run (extractionTestSuite)
+    sys.exit(not result.wasSuccessful())
+
+
+if __name__ == "__main__":
+    if (len (sys.argv) == 1):
+        run_all ()
+    else:
+        if os.path.exists (sys.argv[1]) and sys.argv[1].endswith (".expected"):
+            run_one (sys.argv[1])
+        else:
+            print "Usage: %s [FILE.expected]" % (sys.argv[0])
+        

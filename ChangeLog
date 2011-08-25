@@ -1,3 +1,155 @@
+2011-08-25  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.24
+
+2011-08-25  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	functional-tests: Only run tests that are +x
+	This fixes a regression from the existing behaviour
+
+	Fixes GB#655898
+
+2011-08-25  Sam Thursfield  <samthursfield@codethink.co.uk>
+
+	functional-tests: Run tests inside an isolated DBus instance
+
+2011-08-25  Stefano Facchini  <stefano.facchini@gmail.com>
+
+	libtracker-miner: fix error propagation in tracker_miner_manager_new_full
+	Propagate inner_error and remove the warning message, letting the caller
+	handle the error
+
+	Fixes GB#657161
+
+2011-08-25  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Use single hash table and array for all update solutions
+	This reduces peak memory usage for updates with a WHERE clause that
+	returns many solutions.
+
+	SPARQL: Add Solution helper class
+
+	libtracker-data: Do not error out when deleting non-existing statement
+	There is no need to report an error for domain mismatch on delete.
+	This fixes DELETE { <foo:bar> ?p ?v } WHERE { <foo:bar> ?p ?v}
+
+	SPARQL: Ensure that WHERE clause is evaluated before performing updates
+	This will increase peak memory usage for updates with a WHERE clause
+	that returns many solutions.
+
+	Fixes NB#242979.
+
+2011-08-25  Ivan Frade  <ivan.frade@gmail.com>
+
+	functional-tests: Print the current test name before running it
+
+2011-08-25  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	functional-tests: Use correct argv in 400-extractor.py
+
+2011-08-25  Ivan Frade  <ivan.frade@gmail.com>
+
+	functional-tests: Fail instead of error when gstreamer plugin not preset. Handle correctly nao:Tags.
+
+	functional-tests: Allow to run one specific .expected file in the 400-extractor.py
+
+2011-08-25  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	tracker-evolution: Fix compile with Evolution 2.9x
+
+2011-08-25  Carlos Garnacho  <carlos@lanedo.com>
+
+	ontology: Remove tracker:writeback property from nao:prefLabel
+	Fixes NB#278806, this property only applies to nao:Tag entities, not
+	on files, so whenever a file with XMP keywords was added, the insertion
+	of the keywords would trigger a writeback petition in the miner. This
+	would add a writeback task that would issue a costly query only to find
+	out it doesn't directly affect any nfo:FileDataObject.
+
+	If several files with these characteristics were created, the effect
+	would be multiplied as writeback petitions would be requested faster
+	than delivered, filling the writeback queue and hence blocking any
+	other processing.
+
+2011-08-25  Jürg Billeter  <j@bitron.ch>
+
+	tracker-evolution: Add support for Evolution 3.2
+	Fixes GB#654824.
+
+	tracker-evolution: Refactor convert_url_to_whatever to message_uri_build
+
+2011-08-25  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Improve error debugging for album art handling
+
+2011-08-25  Jürg Billeter  <j@bitron.ch>
+
+	tests/libtracker-extract: Fix orientation test
+
+2011-08-22  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Fix memory leak on stream
+
+2011-08-22  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	libtracker-extract: Fix the orientation handling in xmp
+	Fixes NB#277799
+
+2011-08-22  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Fix memleak after own review, obvious one
+
+2011-08-22  Jürg Billeter  <j@bitron.ch>
+
+	tracker-extract-mp3: Do not always use guessed encoding for ID3v2
+	Always using guessed 8-bit encoding for ID3v2 breaks some valid MP3
+	files. This commit disables use of guessed encoding for ID3v2 except
+	for Cyrillic locales where broken ID3v2 tags appear to be common.
+
+	Fixes NB#278171.
+
+2011-08-22  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Bugfix, strcmp wrongly used and double free
+
+	tracker-extract: Support detecting non-jpeg embedded album art
+
+	tracker-extract: Use incremental checksum calc to avoid memory use
+	For large files the use of g_file_get_contents wasn't a very good
+	idea. Instead with this patch we change that to use the support
+	for incrementally calculating the checksum, and then using a
+	GFileInputStream to read from the file in chunks of 1024 bytes.
+
+	tracker-extract: Fix whitespace issues
+
+	tracker-extract: Set retval to false if contents can't be read
+
+	tracker-extract: Handle artist=null use-case for cover.jpg/png too
+
+	tracker-extract: Remove temp file in case of convert + symlink
+
+	tracker-extract: Add code comments about handling album art
+
+	tracker-extract: Avoid albumart duplicates for cover.png
+
+	tracker-extract: Avoid albumart duplicates for cover.jpg
+
+	tracker-extract: Avoid albumart duplicates for embedded
+
+2011-08-22  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	tracker-extract-gstreamer: Remove redundant tag definitions
+	GST_TAG_DEVICE_MODEL and GST_TAG_DEVICE_MANUFACTURER are upstream
+	since 0.10.30.
+
+2011-08-21  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
+
+2011-08-18  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
 2011-08-18  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.23

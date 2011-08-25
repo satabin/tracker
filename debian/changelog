@@ -1,3 +1,9 @@
+tracker (0.10.24-1) UNRLEASED; urgency=low
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 26 Aug 2011 00:24:10 +0200
+
 tracker (0.10.23-1) unstable; urgency=low
 
   * New upstream release.

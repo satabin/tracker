@@ -1,3 +1,36 @@
+2011-09-01  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.25
+
+	tracker-miner-fs: Check URL is provided for desktop file Type=Link
+	Also free the url after use.
+
+2011-09-01  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-miner-applications: Handle desktop files of type=Link
+	Fixes NB#256958. Such desktop files are often just links to some URL,
+	so handle these as nfo:Bookmark in the applications miner.
+
+2011-09-01  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Use ontology from database if cache is unavailable
+	Fixes NB#279789.
+
+2011-09-01  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-sparql: Don't package .gir/.typelib files in tarballs
+	Fixes GB#657354.
+
+2011-09-01  Jürg Billeter  <j@bitron.ch>
+
+	tracker-miner-fs: Reindex applications on locale change
+	Fixes NB#276858.
+
+2011-09-01  Philip Van Hoof  <philip@codeminded.be>
+
+	Fix crash in case of error in MeeGo Harmattan locale handling
+	Fixes NB#276830.
+
 2011-08-25  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.24

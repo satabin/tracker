@@ -53,11 +53,6 @@ DIST_COMMON = $(libtracker_sparqlinclude_HEADERS) \
 	tracker-connection.c tracker-cursor.c \
 	tracker-generated-no-checks.h tracker-sparql.vapi \
 	tracker-utils.c
-
-# We don't clean the gir/typelib data for *Vala* generated g-ir files.
-# However, we do for *C* generated g-ir files due to Vala not being
-# required when building from a tarball.
-@HAVE_INTROSPECTION_TRUE@am__append_1 = $(gir_DATA) $(typelib_DATA)
 subdir = src/libtracker-sparql
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -508,13 +503,20 @@ MAINTAINERCLEANFILES = \
 CLEANFILES = \
 	tracker-sparql-$(TRACKER_API_VERSION).vapi
 
-EXTRA_DIST = tracker-sparql-$(TRACKER_API_VERSION).deps \
-	tracker-sparql.deps $(vala_header:.h=-no-checks.h) \
-	$(am__append_1)
+EXTRA_DIST = \
+	tracker-sparql-$(TRACKER_API_VERSION).deps     \
+	tracker-sparql.deps                            \
+	$(vala_header:.h=-no-checks.h)
+
 @HAVE_INTROSPECTION_TRUE@girdir = $(datadir)/gir-1.0
 @HAVE_INTROSPECTION_TRUE@gir_DATA = Tracker-$(TRACKER_API_VERSION).gir
 @HAVE_INTROSPECTION_TRUE@typelibdir = $(libdir)/girepository-1.0
 @HAVE_INTROSPECTION_TRUE@typelib_DATA = $(gir_DATA:.gir=.typelib)
+
+# We don't clean the gir/typelib data for *Vala* generated g-ir files.
+# However, we do for *C* generated g-ir files due to Vala not being
+# required when building from a tarball.
+@HAVE_INTROSPECTION_TRUE@DISTCLEANFILES = $(gir_DATA) $(typelib_DATA)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -837,6 +839,7 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"

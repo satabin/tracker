@@ -88,6 +88,7 @@
 <ANCHOR id="tracker-miner-fs-set-initial-crawling" href="libtracker-miner/libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-set-initial-crawling">
 <ANCHOR id="tracker-miner-fs-get-mtime-checking" href="libtracker-miner/libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-get-mtime-checking">
 <ANCHOR id="tracker-miner-fs-set-mtime-checking" href="libtracker-miner/libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-set-mtime-checking">
+<ANCHOR id="tracker-miner-fs-force-mtime-checking" href="libtracker-miner/libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-force-mtime-checking">
 <ANCHOR id="tracker-miner-fs-has-items-to-process" href="libtracker-miner/libtracker-miner-tracker-miner-fs.html#tracker-miner-fs-has-items-to-process">
 <ANCHOR id="libtracker-miner-tracker-miner-fs.property-details" href="libtracker-miner/libtracker-miner-tracker-miner-fs.html#libtracker-miner-tracker-miner-fs.property-details">
 <ANCHOR id="TrackerMinerFS--initial-crawling" href="libtracker-miner/libtracker-miner-tracker-miner-fs.html#TrackerMinerFS--initial-crawling">

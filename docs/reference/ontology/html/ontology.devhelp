@@ -194,6 +194,7 @@
     <function name="nfo:SourceCode" link="nfo-ontology.html#nfo-SourceCode"/>
     <function name="nfo:RemotePortAddress" link="nfo-ontology.html#nfo-RemotePortAddress"/>
     <function name="nfo:Cursor" link="nfo-ontology.html#nfo-Cursor"/>
+    <function name="nfo:RegionOfInterest" link="nfo-ontology.html#nfo-RegionOfInterest"/>
     <function name="nfo:Document" link="nfo-ontology.html#nfo-Document"/>
     <function name="http://www.tracker-project.org/ontologies/poi#ObjectOfInterest" link="poi#ObjectOfInterest"/>
     <function name="nfo:Presentation" link="nfo-ontology.html#nfo-Presentation"/>
@@ -238,6 +239,7 @@
     <function name="nfo:Archive" link="nfo-ontology.html#nfo-Archive"/>
     <function name="nfo:Visual" link="nfo-ontology.html#nfo-Visual"/>
     <function name="nfo:Icon" link="nfo-ontology.html#nfo-Icon"/>
+    <function name="nfo:RegionOfInterestContent" link="nfo-ontology.html#nfo-RegionOfInterestContent"/>
     <function name="nfo:Bookmark" link="nfo-ontology.html#nfo-Bookmark"/>
     <function name="nfo:SoftwareApplication" link="nfo-ontology.html#nfo-SoftwareApplication"/>
     <function name="nfo:Orientation" link="nfo-ontology.html#nfo-Orientation"/>
@@ -245,6 +247,8 @@
     <function name="nfo:hasMediaStream" link="nfo-properties.html#nfo-hasMediaStream"/>
     <function name="nfo:entryCounter" link="nfo-properties.html#nfo-entryCounter"/>
     <function name="nfo:isPasswordProtected" link="nfo-properties.html#nfo-isPasswordProtected"/>
+    <function name="nfo:regionOfInterestWidth" link="nfo-properties.html#nfo-regionOfInterestWidth"/>
+    <function name="nfo:hasRegionOfInterest" link="nfo-properties.html#nfo-hasRegionOfInterest"/>
     <function name="nfo:hashAlgorithm" link="nfo-properties.html#nfo-hashAlgorithm"/>
     <function name="nfo:frameCount" link="nfo-properties.html#nfo-frameCount"/>
     <function name="nfo:belongsToContainer" link="nfo-properties.html#nfo-belongsToContainer"/>
@@ -261,7 +265,9 @@
     <function name="nfo:containsBookmarkFolder" link="nfo-properties.html#nfo-containsBookmarkFolder"/>
     <function name="nfo:frameRate" link="nfo-properties.html#nfo-frameRate"/>
     <function name="nfo:rearChannels" link="nfo-properties.html#nfo-rearChannels"/>
+    <function name="nfo:regionOfInterestX" link="nfo-properties.html#nfo-regionOfInterestX"/>
     <function name="nfo:mediaListEntry" link="nfo-properties.html#nfo-mediaListEntry"/>
+    <function name="nfo:regionOfInterestY" link="nfo-properties.html#nfo-regionOfInterestY"/>
     <function name="nfo:bookmarks" link="nfo-properties.html#nfo-bookmarks"/>
     <function name="nfo:orientation" link="nfo-properties.html#nfo-orientation"/>
     <function name="nfo:supercedes" link="nfo-properties.html#nfo-supercedes"/>
@@ -273,6 +279,7 @@
     <function name="nfo:compressionType" link="nfo-properties.html#nfo-compressionType"/>
     <function name="nfo:model" link="nfo-properties.html#nfo-model"/>
     <function name="nfo:listDuration" link="nfo-properties.html#nfo-listDuration"/>
+    <function name="nfo:regionOfInterestHeight" link="nfo-properties.html#nfo-regionOfInterestHeight"/>
     <function name="nfo:aspectRatio" link="nfo-properties.html#nfo-aspectRatio"/>
     <function name="nfo:hashValue" link="nfo-properties.html#nfo-hashValue"/>
     <function name="nfo:heading" link="nfo-properties.html#nfo-heading"/>
@@ -306,6 +313,7 @@
     <function name="nfo:fileLastModified" link="nfo-properties.html#nfo-fileLastModified"/>
     <function name="nfo:hasMediaFileListEntry" link="nfo-properties.html#nfo-hasMediaFileListEntry"/>
     <function name="nfo:softwareCmdLine" link="nfo-properties.html#nfo-softwareCmdLine"/>
+    <function name="nfo:regionOfInterestType" link="nfo-properties.html#nfo-regionOfInterestType"/>
     <function name="nfo:bitsPerSample" link="nfo-properties.html#nfo-bitsPerSample"/>
     <function name="nfo:lineCount" link="nfo-properties.html#nfo-lineCount"/>
     <function name="nfo:averageVideoBitrate" link="nfo-properties.html#nfo-averageVideoBitrate"/>
@@ -329,6 +337,7 @@
     <function name="nfo:width" link="nfo-properties.html#nfo-width"/>
     <function name="nfo:height" link="nfo-properties.html#nfo-height"/>
     <function name="nfo:sampleRate" link="nfo-properties.html#nfo-sampleRate"/>
+    <function name="nfo:roiRefersTo" link="nfo-properties.html#nfo-roiRefersTo"/>
     <function name="nfo:verticalResolution" link="nfo-properties.html#nfo-verticalResolution"/>
     <function name="A contact in this ontology" link="nco-ontology.html#nco-ContactRepresentation"/>
     <function name="Postal Address" link="nco-ontology.html#nco-PostalAddressRepresentation"/>
@@ -792,6 +801,7 @@
     <function name="nmm:lyricist" link="nmm-properties.html#nmm-lyricist"/>
     <function name="nmm:videoAlbum" link="nmm-properties.html#nmm-videoAlbum"/>
     <function name="nmm:artistName" link="nmm-properties.html#nmm-artistName"/>
+    <function name="nmm:dlnaMime" link="nmm-properties.html#nmm-dlnaMime"/>
     <function name="nmm:albumGain" link="nmm-properties.html#nmm-albumGain"/>
     <function name="nmm:musicAlbum" link="nmm-properties.html#nmm-musicAlbum"/>
     <function name="nmm:trackNumber" link="nmm-properties.html#nmm-trackNumber"/>

@@ -194,6 +194,7 @@
     <keyword type="" name="nfo:SourceCode" link="nfo-ontology.html#nfo-SourceCode"/>
     <keyword type="" name="nfo:RemotePortAddress" link="nfo-ontology.html#nfo-RemotePortAddress"/>
     <keyword type="" name="nfo:Cursor" link="nfo-ontology.html#nfo-Cursor"/>
+    <keyword type="" name="nfo:RegionOfInterest" link="nfo-ontology.html#nfo-RegionOfInterest"/>
     <keyword type="" name="nfo:Document" link="nfo-ontology.html#nfo-Document"/>
     <keyword type="" name="http://www.tracker-project.org/ontologies/poi#ObjectOfInterest" link="poi#ObjectOfInterest"/>
     <keyword type="" name="nfo:Presentation" link="nfo-ontology.html#nfo-Presentation"/>
@@ -238,6 +239,7 @@
     <keyword type="" name="nfo:Archive" link="nfo-ontology.html#nfo-Archive"/>
     <keyword type="" name="nfo:Visual" link="nfo-ontology.html#nfo-Visual"/>
     <keyword type="" name="nfo:Icon" link="nfo-ontology.html#nfo-Icon"/>
+    <keyword type="" name="nfo:RegionOfInterestContent" link="nfo-ontology.html#nfo-RegionOfInterestContent"/>
     <keyword type="" name="nfo:Bookmark" link="nfo-ontology.html#nfo-Bookmark"/>
     <keyword type="" name="nfo:SoftwareApplication" link="nfo-ontology.html#nfo-SoftwareApplication"/>
     <keyword type="" name="nfo:Orientation" link="nfo-ontology.html#nfo-Orientation"/>
@@ -245,6 +247,8 @@
     <keyword type="" name="nfo:hasMediaStream" link="nfo-properties.html#nfo-hasMediaStream"/>
     <keyword type="" name="nfo:entryCounter" link="nfo-properties.html#nfo-entryCounter"/>
     <keyword type="" name="nfo:isPasswordProtected" link="nfo-properties.html#nfo-isPasswordProtected"/>
+    <keyword type="" name="nfo:regionOfInterestWidth" link="nfo-properties.html#nfo-regionOfInterestWidth"/>
+    <keyword type="" name="nfo:hasRegionOfInterest" link="nfo-properties.html#nfo-hasRegionOfInterest"/>
     <keyword type="" name="nfo:hashAlgorithm" link="nfo-properties.html#nfo-hashAlgorithm"/>
     <keyword type="" name="nfo:frameCount" link="nfo-properties.html#nfo-frameCount"/>
     <keyword type="" name="nfo:belongsToContainer" link="nfo-properties.html#nfo-belongsToContainer"/>
@@ -261,7 +265,9 @@
     <keyword type="" name="nfo:containsBookmarkFolder" link="nfo-properties.html#nfo-containsBookmarkFolder"/>
     <keyword type="" name="nfo:frameRate" link="nfo-properties.html#nfo-frameRate"/>
     <keyword type="" name="nfo:rearChannels" link="nfo-properties.html#nfo-rearChannels"/>
+    <keyword type="" name="nfo:regionOfInterestX" link="nfo-properties.html#nfo-regionOfInterestX"/>
     <keyword type="" name="nfo:mediaListEntry" link="nfo-properties.html#nfo-mediaListEntry"/>
+    <keyword type="" name="nfo:regionOfInterestY" link="nfo-properties.html#nfo-regionOfInterestY"/>
     <keyword type="" name="nfo:bookmarks" link="nfo-properties.html#nfo-bookmarks"/>
     <keyword type="" name="nfo:orientation" link="nfo-properties.html#nfo-orientation"/>
     <keyword type="" name="nfo:supercedes" link="nfo-properties.html#nfo-supercedes"/>
@@ -273,6 +279,7 @@
     <keyword type="" name="nfo:compressionType" link="nfo-properties.html#nfo-compressionType"/>
     <keyword type="" name="nfo:model" link="nfo-properties.html#nfo-model"/>
     <keyword type="" name="nfo:listDuration" link="nfo-properties.html#nfo-listDuration"/>
+    <keyword type="" name="nfo:regionOfInterestHeight" link="nfo-properties.html#nfo-regionOfInterestHeight"/>
     <keyword type="" name="nfo:aspectRatio" link="nfo-properties.html#nfo-aspectRatio"/>
     <keyword type="" name="nfo:hashValue" link="nfo-properties.html#nfo-hashValue"/>
     <keyword type="" name="nfo:heading" link="nfo-properties.html#nfo-heading"/>
@@ -306,6 +313,7 @@
     <keyword type="" name="nfo:fileLastModified" link="nfo-properties.html#nfo-fileLastModified"/>
     <keyword type="" name="nfo:hasMediaFileListEntry" link="nfo-properties.html#nfo-hasMediaFileListEntry"/>
     <keyword type="" name="nfo:softwareCmdLine" link="nfo-properties.html#nfo-softwareCmdLine"/>
+    <keyword type="" name="nfo:regionOfInterestType" link="nfo-properties.html#nfo-regionOfInterestType"/>
     <keyword type="" name="nfo:bitsPerSample" link="nfo-properties.html#nfo-bitsPerSample"/>
     <keyword type="" name="nfo:lineCount" link="nfo-properties.html#nfo-lineCount"/>
     <keyword type="" name="nfo:averageVideoBitrate" link="nfo-properties.html#nfo-averageVideoBitrate"/>
@@ -329,6 +337,7 @@
     <keyword type="" name="nfo:width" link="nfo-properties.html#nfo-width"/>
     <keyword type="" name="nfo:height" link="nfo-properties.html#nfo-height"/>
     <keyword type="" name="nfo:sampleRate" link="nfo-properties.html#nfo-sampleRate"/>
+    <keyword type="" name="nfo:roiRefersTo" link="nfo-properties.html#nfo-roiRefersTo"/>
     <keyword type="" name="nfo:verticalResolution" link="nfo-properties.html#nfo-verticalResolution"/>
     <keyword type="" name="A contact in this ontology" link="nco-ontology.html#nco-ContactRepresentation"/>
     <keyword type="" name="Postal Address" link="nco-ontology.html#nco-PostalAddressRepresentation"/>
@@ -792,6 +801,7 @@
     <keyword type="" name="nmm:lyricist" link="nmm-properties.html#nmm-lyricist"/>
     <keyword type="" name="nmm:videoAlbum" link="nmm-properties.html#nmm-videoAlbum"/>
     <keyword type="" name="nmm:artistName" link="nmm-properties.html#nmm-artistName"/>
+    <keyword type="" name="nmm:dlnaMime" link="nmm-properties.html#nmm-dlnaMime"/>
     <keyword type="" name="nmm:albumGain" link="nmm-properties.html#nmm-albumGain"/>
     <keyword type="" name="nmm:musicAlbum" link="nmm-properties.html#nmm-musicAlbum"/>
     <keyword type="" name="nmm:trackNumber" link="nmm-properties.html#nmm-trackNumber"/>

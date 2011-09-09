@@ -110,6 +110,7 @@
 <ANCHOR id="nfo-SourceCode" href="ontology/nfo-ontology.html#nfo-SourceCode">
 <ANCHOR id="nfo-RemotePortAddress" href="ontology/nfo-ontology.html#nfo-RemotePortAddress">
 <ANCHOR id="nfo-Cursor" href="ontology/nfo-ontology.html#nfo-Cursor">
+<ANCHOR id="nfo-RegionOfInterest" href="ontology/nfo-ontology.html#nfo-RegionOfInterest">
 <ANCHOR id="nfo-Document" href="ontology/nfo-ontology.html#nfo-Document">
 <ANCHOR id="http-//www.tracker-project.org/ontologies/poi#ObjectOfInterest" href="ontology/poi#ObjectOfInterest">
 <ANCHOR id="nfo-Presentation" href="ontology/nfo-ontology.html#nfo-Presentation">
@@ -154,6 +155,7 @@
 <ANCHOR id="nfo-Archive" href="ontology/nfo-ontology.html#nfo-Archive">
 <ANCHOR id="nfo-Visual" href="ontology/nfo-ontology.html#nfo-Visual">
 <ANCHOR id="nfo-Icon" href="ontology/nfo-ontology.html#nfo-Icon">
+<ANCHOR id="nfo-RegionOfInterestContent" href="ontology/nfo-ontology.html#nfo-RegionOfInterestContent">
 <ANCHOR id="nfo-Bookmark" href="ontology/nfo-ontology.html#nfo-Bookmark">
 <ANCHOR id="nfo-SoftwareApplication" href="ontology/nfo-ontology.html#nfo-SoftwareApplication">
 <ANCHOR id="nfo-Orientation" href="ontology/nfo-ontology.html#nfo-Orientation">
@@ -161,6 +163,8 @@
 <ANCHOR id="nfo-hasMediaStream" href="ontology/nfo-properties.html#nfo-hasMediaStream">
 <ANCHOR id="nfo-entryCounter" href="ontology/nfo-properties.html#nfo-entryCounter">
 <ANCHOR id="nfo-isPasswordProtected" href="ontology/nfo-properties.html#nfo-isPasswordProtected">
+<ANCHOR id="nfo-regionOfInterestWidth" href="ontology/nfo-properties.html#nfo-regionOfInterestWidth">
+<ANCHOR id="nfo-hasRegionOfInterest" href="ontology/nfo-properties.html#nfo-hasRegionOfInterest">
 <ANCHOR id="nfo-hashAlgorithm" href="ontology/nfo-properties.html#nfo-hashAlgorithm">
 <ANCHOR id="nfo-frameCount" href="ontology/nfo-properties.html#nfo-frameCount">
 <ANCHOR id="nfo-belongsToContainer" href="ontology/nfo-properties.html#nfo-belongsToContainer">
@@ -177,7 +181,9 @@
 <ANCHOR id="nfo-containsBookmarkFolder" href="ontology/nfo-properties.html#nfo-containsBookmarkFolder">
 <ANCHOR id="nfo-frameRate" href="ontology/nfo-properties.html#nfo-frameRate">
 <ANCHOR id="nfo-rearChannels" href="ontology/nfo-properties.html#nfo-rearChannels">
+<ANCHOR id="nfo-regionOfInterestX" href="ontology/nfo-properties.html#nfo-regionOfInterestX">
 <ANCHOR id="nfo-mediaListEntry" href="ontology/nfo-properties.html#nfo-mediaListEntry">
+<ANCHOR id="nfo-regionOfInterestY" href="ontology/nfo-properties.html#nfo-regionOfInterestY">
 <ANCHOR id="nfo-bookmarks" href="ontology/nfo-properties.html#nfo-bookmarks">
 <ANCHOR id="nfo-orientation" href="ontology/nfo-properties.html#nfo-orientation">
 <ANCHOR id="nfo-supercedes" href="ontology/nfo-properties.html#nfo-supercedes">
@@ -189,6 +195,7 @@
 <ANCHOR id="nfo-compressionType" href="ontology/nfo-properties.html#nfo-compressionType">
 <ANCHOR id="nfo-model" href="ontology/nfo-properties.html#nfo-model">
 <ANCHOR id="nfo-listDuration" href="ontology/nfo-properties.html#nfo-listDuration">
+<ANCHOR id="nfo-regionOfInterestHeight" href="ontology/nfo-properties.html#nfo-regionOfInterestHeight">
 <ANCHOR id="nfo-aspectRatio" href="ontology/nfo-properties.html#nfo-aspectRatio">
 <ANCHOR id="nfo-hashValue" href="ontology/nfo-properties.html#nfo-hashValue">
 <ANCHOR id="nfo-heading" href="ontology/nfo-properties.html#nfo-heading">
@@ -222,6 +229,7 @@
 <ANCHOR id="nfo-fileLastModified" href="ontology/nfo-properties.html#nfo-fileLastModified">
 <ANCHOR id="nfo-hasMediaFileListEntry" href="ontology/nfo-properties.html#nfo-hasMediaFileListEntry">
 <ANCHOR id="nfo-softwareCmdLine" href="ontology/nfo-properties.html#nfo-softwareCmdLine">
+<ANCHOR id="nfo-regionOfInterestType" href="ontology/nfo-properties.html#nfo-regionOfInterestType">
 <ANCHOR id="nfo-bitsPerSample" href="ontology/nfo-properties.html#nfo-bitsPerSample">
 <ANCHOR id="nfo-lineCount" href="ontology/nfo-properties.html#nfo-lineCount">
 <ANCHOR id="nfo-averageVideoBitrate" href="ontology/nfo-properties.html#nfo-averageVideoBitrate">
@@ -245,6 +253,7 @@
 <ANCHOR id="nfo-width" href="ontology/nfo-properties.html#nfo-width">
 <ANCHOR id="nfo-height" href="ontology/nfo-properties.html#nfo-height">
 <ANCHOR id="nfo-sampleRate" href="ontology/nfo-properties.html#nfo-sampleRate">
+<ANCHOR id="nfo-roiRefersTo" href="ontology/nfo-properties.html#nfo-roiRefersTo">
 <ANCHOR id="nfo-verticalResolution" href="ontology/nfo-properties.html#nfo-verticalResolution">
 <ANCHOR id="nco-ContactRepresentation" href="ontology/nco-ontology.html#nco-ContactRepresentation">
 <ANCHOR id="nco-PostalAddressRepresentation" href="ontology/nco-ontology.html#nco-PostalAddressRepresentation">
@@ -708,6 +717,7 @@
 <ANCHOR id="nmm-lyricist" href="ontology/nmm-properties.html#nmm-lyricist">
 <ANCHOR id="nmm-videoAlbum" href="ontology/nmm-properties.html#nmm-videoAlbum">
 <ANCHOR id="nmm-artistName" href="ontology/nmm-properties.html#nmm-artistName">
+<ANCHOR id="nmm-dlnaMime" href="ontology/nmm-properties.html#nmm-dlnaMime">
 <ANCHOR id="nmm-albumGain" href="ontology/nmm-properties.html#nmm-albumGain">
 <ANCHOR id="nmm-musicAlbum" href="ontology/nmm-properties.html#nmm-musicAlbum">
 <ANCHOR id="nmm-trackNumber" href="ontology/nmm-properties.html#nmm-trackNumber">

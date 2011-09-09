@@ -833,9 +833,10 @@ set_up_mount_point (TrackerMinerFiles *miner,
                                                 "INSERT INTO <%s> { <%s> a tracker:Volume; tracker:isMounted true } ",
                                                 removable_device_urn, removable_device_urn);
                 }
-		g_string_append_printf (queries,
-		                        "INSERT { GRAPH <%s> { ?do tracker:available true } } WHERE { ?do nie:dataSource <%s> OPTIONAL { ?do tracker:available ?available } FILTER (!bound(?available)) } ",
-		                        removable_device_urn, removable_device_urn);
+
+                g_string_append_printf (queries,
+                                        "INSERT { GRAPH <%s> { ?do tracker:available true } } WHERE { ?do nie:dataSource <%s> } ",
+                                        removable_device_urn, removable_device_urn);
 	} else {
 		gchar *now;
 
@@ -861,8 +862,9 @@ set_up_mount_point (TrackerMinerFiles *miner,
 		                        removable_device_urn, removable_device_urn);
 
 		g_string_append_printf (queries,
-		                        "DELETE { ?do tracker:available true } WHERE { ?do nie:dataSource <%s> ; tracker:available true } ",
+		                        "DELETE { ?do tracker:available true } WHERE { ?do nie:dataSource <%s> } ",
 		                        removable_device_urn);
+
 		g_free (now);
 	}
 
@@ -1050,6 +1052,16 @@ init_mount_points (TrackerMinerFiles *miner_files)
 				                         TRACKER_STORAGE_TYPE_IS_OPTICAL (type),
 				                         accumulator);
 
+				if (mount_point) {
+					GFile *file;
+
+					/* Add the current mount point as reported to have incorrect
+					 * state. We will force mtime checks on this mount points,
+					 * even if no-mtime-check-needed was set. */
+					file = g_file_new_for_path (mount_point);
+					tracker_miner_fs_force_mtime_checking (TRACKER_MINER_FS (miner), file);
+					g_object_unref (file);
+				}
 			}
 		} else if (!(state & VOLUME_MOUNTED) &&
 		           (state & VOLUME_MOUNTED_IN_STORE)) {
@@ -1063,6 +1075,8 @@ init_mount_points (TrackerMinerFiles *miner_files)
                                                     NULL,
 				                    FALSE,
 				                    accumulator);
+				/* There's no need to force mtime check in these inconsistent
+				 * mount points, as they are not mounted right now. */
 			}
 		}
 	}

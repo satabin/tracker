@@ -276,6 +276,35 @@
 </div>
 <hr>
 <div class="refsect2">
+<a name="nfo-RegionOfInterest"></a><h3>nfo:RegionOfInterest</h3>
+<p>Area on an image with relevant content. Following the spec in http://www.metadataworkinggroup.org</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
+<td>
+<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subclasses</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In domain of</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-properties.html#nfo-roiRefersTo" title="nfo:roiRefersTo">nfo:roiRefersTo</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestType" title="nfo:regionOfInterestType">nfo:regionOfInterestType</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestHeight" title="nfo:regionOfInterestHeight">nfo:regionOfInterestHeight</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestWidth" title="nfo:regionOfInterestWidth">nfo:regionOfInterestWidth</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestY" title="nfo:regionOfInterestY">nfo:regionOfInterestY</a>, <a class="link" href="nfo-properties.html#nfo-regionOfInterestX" title="nfo:regionOfInterestX">nfo:regionOfInterestX</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In range of</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-properties.html#nfo-hasRegionOfInterest" title="nfo:hasRegionOfInterest">nfo:hasRegionOfInterest</a>, </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="nfo-Document"></a><h3>nfo:Document</h3>
 <p>A generic document. A common superclass for all documents on the desktop.</p>
 <div class="variablelist"><table border="0">
@@ -1103,7 +1132,7 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>In domain of</code></em> :</span></p></td>
 <td>
-<a class="link" href="nfo-properties.html#nfo-depicts" title="nfo:depicts">nfo:depicts</a>, <a class="link" href="nfo-properties.html#nfo-orientation" title="nfo:orientation">nfo:orientation</a>, <a class="link" href="nfo-properties.html#nfo-horizontalResolution" title="nfo:horizontalResolution">nfo:horizontalResolution</a>, <a class="link" href="nfo-properties.html#nfo-verticalResolution" title="nfo:verticalResolution">nfo:verticalResolution</a>, </td>
+<a class="link" href="nfo-properties.html#nfo-hasRegionOfInterest" title="nfo:hasRegionOfInterest">nfo:hasRegionOfInterest</a>, <a class="link" href="nfo-properties.html#nfo-depicts" title="nfo:depicts">nfo:depicts</a>, <a class="link" href="nfo-properties.html#nfo-orientation" title="nfo:orientation">nfo:orientation</a>, <a class="link" href="nfo-properties.html#nfo-horizontalResolution" title="nfo:horizontalResolution">nfo:horizontalResolution</a>, <a class="link" href="nfo-properties.html#nfo-verticalResolution" title="nfo:verticalResolution">nfo:verticalResolution</a>, </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>In range of</code></em> :</span></p></td>
@@ -1514,6 +1543,39 @@ rdfs:Resource, </td>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>In range of</code></em> :</span></p></td>
 <td>--</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="nfo-RegionOfInterestContent"></a><h3>nfo:RegionOfInterestContent</h3>
+<p>Content in the area. There is a predefined set of contents in the spec: http://www.metadataworkinggroup.org</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Superclasses</code></em> :</span></p></td>
+<td>
+<a class="link" href="nie-classes.html#nie-InformationElement" title="nie:InformationElement">nie:InformationElement</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Subclasses</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In domain of</code></em> :</span></p></td>
+<td>--</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>In range of</code></em> :</span></p></td>
+<td>
+<a class="link" href="nfo-properties.html#nfo-regionOfInterestType" title="nfo:regionOfInterestType">nfo:regionOfInterestType</a>, </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>Predefined instances</code></em> :</span></p></td>
+<td>
+nfo:roi-content-undefined, nfo:roi-content-barcode, nfo:roi-content-focus, nfo:roi-content-pet, nfo:roi-content-face, </td>
 </tr>
 </tbody>
 </table></div>

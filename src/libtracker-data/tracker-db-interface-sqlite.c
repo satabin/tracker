@@ -1387,9 +1387,7 @@ execute_stmt (TrackerDBInterface  *interface,
 			            sqlite3_errmsg (interface->db),
 			            g_strerror (errno));
 
-			sqlite3_finalize (stmt);
-			sqlite3_close (interface->db);
-
+#ifndef DISABLE_JOURNAL
 			g_unlink (interface->filename);
 
 			g_error ("SQLite experienced an error with file:'%s'. "
@@ -1400,6 +1398,7 @@ execute_stmt (TrackerDBInterface  *interface,
 			         interface->filename);
 
 			return;
+#endif /* DISABLE_JOURNAL */
 		}
 
 		if (!error) {

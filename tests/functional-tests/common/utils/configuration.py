@@ -45,6 +45,9 @@ TRACKER_EXTRACT_IFACE = "org.freedesktop.Tracker1.Extract"
 
 WRITEBACK_BUSNAME = "org.freedesktop.Tracker1.Writeback"
 
+
+DCONF_MINER_SCHEMA = "org.freedesktop.Tracker.Miner.Files"
+
 def expandvars (variable):
     # Note: the order matters!
     result = variable
@@ -79,5 +82,14 @@ haveMaemo = ("#" == "")
 haveUpstart = ("" == "")
 disableJournal = ("#" == "")
 
-TEST_TMP_DIR = os.path.join (os.environ["HOME"], ".tracker-tests")
-        
+TEST_TMP_DIR = os.path.join (os.environ["HOME"], "tracker-tests")
+
+TEST_MONITORED_TMP_DIR = TEST_TMP_DIR
+
+if TEST_TMP_DIR.startswith('/tmp'):
+	if os.environ.has_key('REAL_HOME'):
+		TEST_MONITORED_TMP_DIR = os.path.join (os.environ["REAL_HOME"], "tracker-tests")
+	else:
+		print ("HOME is in the /tmp prefix - this will cause tests that rely " +
+		       "on filesystem monitoring to fail as changes in that prefix are " +
+		       "ignored.")

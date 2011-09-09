@@ -39,7 +39,6 @@ G_BEGIN_DECLS
 
 typedef struct TrackerExtract      TrackerExtract;
 typedef struct TrackerExtractClass TrackerExtractClass;
-typedef struct TrackerExtractInfo  TrackerExtractInfo;
 
 struct TrackerExtract {
 	GObject parent;
@@ -47,11 +46,6 @@ struct TrackerExtract {
 
 struct TrackerExtractClass {
 	GObjectClass parent;
-};
-
-struct TrackerExtractInfo {
-	TrackerSparqlBuilder *preupdate;
-	TrackerSparqlBuilder *statements;
 };
 
 GType           tracker_extract_get_type                (void);
@@ -62,6 +56,7 @@ TrackerExtract *tracker_extract_new                     (gboolean               
 void            tracker_extract_file                    (TrackerExtract         *extract,
                                                          const gchar            *file,
                                                          const gchar            *mimetype,
+                                                         const gchar            *graph,
                                                          GCancellable           *cancellable,
                                                          GAsyncReadyCallback     cb,
                                                          gpointer                user_data);

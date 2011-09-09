@@ -12,15 +12,15 @@ AC_PREREQ([2.64])
 # if backwards compatibility has been broken,
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
-m4_define([tracker_minor_version], [10])
-m4_define([tracker_micro_version], [26])
+m4_define([tracker_minor_version], [12])
+m4_define([tracker_micro_version], [0])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
           [tracker_major_version.tracker_minor_version.tracker_micro_version])
 # This is the X.Y used in -llibtracker-FOO-X.Y
-m4_define([tracker_api_version], [0.10])
+m4_define([tracker_api_version], [0.12])
 
 # libtool version related macros
 m4_define([tracker_lt_release], [tracker_major_version.tracker_minor_version])
@@ -38,7 +38,7 @@ m4_define([tracker_lt_current_minus_age],
 # for Tracker.
 #
 # TRACKER_BINARY_VERSION=$TRACKER_MAJOR_VERSION.$TRACKER_MINOR_VERSION.$LT_CURRENT
-m4_define([tracker_binary_version], [0.10.26])
+m4_define([tracker_binary_version], [0.12.0])
 
 AC_INIT([tracker],
         [tracker_version],
@@ -64,6 +64,9 @@ TRACKER_BINARY_AGE=tracker_binary_age
 TRACKER_VERSION=tracker_version
 TRACKER_API_VERSION=tracker_api_version
 TRACKER_BINARY_VERSION=tracker_binary_version
+
+dnl Note: this creates TRACKER_API_VERSION_UNDERSCORES and AC_SUBST's it
+AX_DOTS_TO_UNDERSCORES(TRACKER_API_VERSION, tracker_api_version)
 
 AC_SUBST(TRACKER_MAJOR_VERSION)
 AC_SUBST(TRACKER_MINOR_VERSION)
@@ -104,6 +107,8 @@ AC_PROG_CXX
 AC_PROG_LN_S
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
+
+GLIB_GSETTINGS
 
 # Initialize libtool
 LT_PREREQ([2.2])
@@ -179,9 +184,9 @@ PYTHON_REQUIRED=2.6
 # Library required versions
 DBUS_REQUIRED=1.3.1
 DBUS_GLIB_REQUIRED=0.82
-GLIB_REQUIRED=2.26.0
+GLIB_REQUIRED=2.28.0
 PANGO_REQUIRED=1.0.0
-GTK_REQUIRED=2.18.0
+GTK_REQUIRED=3.0.0
 LIBXML2_REQUIRED=2.6
 LIBNOTIFY_REQUIRED=0.4.3
 HAL_REQUIRED=0.5
@@ -242,17 +247,6 @@ LIBTRACKER_BUS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
                          gio-unix-2.0 >= $GLIB_REQUIRED"
 
 PKG_CHECK_MODULES(LIBTRACKER_BUS, [$LIBTRACKER_BUS_REQUIRED])
-
-# Check requirements for libtracker-client
-LIBTRACKER_CLIENT_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
-                            gobject-2.0  >= $GLIB_REQUIRED
-                            gio-unix-2.0 >= $GLIB_REQUIRED
-                            dbus-1       >= $DBUS_REQUIRED
-                            dbus-glib-1  >= $DBUS_GLIB_REQUIRED"
-
-PKG_CHECK_MODULES(LIBTRACKER_CLIENT, [$LIBTRACKER_CLIENT_REQUIRED])
-
-LIBTRACKER_CLIENT_CFLAGS="$LIBTRACKER_CLIENT_CFLAGS -Wno-deprecated-declarations"
 
 # Check requirements for libtracker-common
 LIBTRACKER_COMMON_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
@@ -315,7 +309,7 @@ TRACKER_EXPLORER_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
                            gio-unix-2.0 >= $GLIB_REQUIRED
                            gthread-2.0  >= $GLIB_REQUIRED
                            gmodule-2.0  >= $GLIB_REQUIRED
-                           gtk+-2.0     >= $GTK_REQUIRED
+                           gtk+-3.0     >= $GTK_REQUIRED
 			   gee-1.0      >= $GEE_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_EXPLORER, [$TRACKER_EXPLORER_REQUIRED],
@@ -421,6 +415,34 @@ else
    fi
 fi
 
+# Check requirements for tracker-miner-thunderbird
+TRACKER_MINER_THUNDERBIRD_REQUIRED=5.0
+have_tracker_miner_thunderbird="no "
+
+AC_PATH_PROG(THUNDERBIRD, thunderbird, thunderbird)
+if test -n $THUNDERBIRD; then
+   thunderbird_version=`$THUNDERBIRD --version | cut -d" " -f3`
+
+   AX_COMPARE_VERSION([$thunderbird_version], ge, [$TRACKER_MINER_THUNDERBIRD_REQUIRED],
+                      have_tracker_miner_thunderbird="yes",
+                      have_tracker_miner_thunderbird="no ")
+   AC_SUBST(THUNDERBIRD)
+fi
+
+# Check requirements for tracker-miner-firefox
+TRACKER_MINER_FIREFOX_REQUIRED=4.0
+have_tracker_miner_firefox="no "
+
+AC_PATH_PROG(FIREFOX, firefox, firefox)
+if test -n $FIREFOX; then
+   firefox_version=`$FIREFOX --version | cut -d" " -f3`
+
+   AX_COMPARE_VERSION([$firefox_version], ge, [$TRACKER_MINER_FIREFOX_REQUIRED],
+                      have_tracker_miner_firefox="yes",
+                      have_tracker_miner_firefox="no ")
+   AC_SUBST(FIREFOX)
+fi
+
 # Check requirements for tracker-miner-rss
 TRACKER_MINER_RSS_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
                             libgrss-0    >= $LIBGRSS_REQUIRED"
@@ -451,7 +473,7 @@ TRACKER_NEEDLE_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
                          gio-unix-2.0 >= $GLIB_REQUIRED
                          gthread-2.0  >= $GLIB_REQUIRED
                          gmodule-2.0  >= $GLIB_REQUIRED
-                         gtk+-2.0     >= $GTK_REQUIRED"
+                         gtk+-3.0     >= $GTK_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_NEEDLE, [$TRACKER_NEEDLE_REQUIRED],
                   [have_tracker_needle=yes],
@@ -462,7 +484,7 @@ TRACKER_PREFERENCES_REQUIRED="glib-2.0       >= $GLIB_REQUIRED
                               gio-unix-2.0   >= $GLIB_REQUIRED
                               gthread-2.0    >= $GLIB_REQUIRED
                               gmodule-2.0    >= $GLIB_REQUIRED
-                              gtk+-2.0       >= $GTK_REQUIRED"
+                              gtk+-3.0       >= $GTK_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_PREFERENCES, [$TRACKER_PREFERENCES_REQUIRED],
                   [have_tracker_preferences=yes],
@@ -487,7 +509,7 @@ PKG_CHECK_MODULES(TRACKER_SEARCH_BAR, [$TRACKER_SEARCH_BAR_REQUIRED],
 TRACKER_NAUTILUS_EXTENSION_REQUIRED="glib-2.0       >= $GLIB_REQUIRED
                                      gio-unix-2.0   >= $GLIB_REQUIRED
                                      gthread-2.0    >= $GLIB_REQUIRED
-                                     gtk+-2.0       >= $GTK_REQUIRED
+                                     gtk+-3.0       >= $GTK_REQUIRED
                                      libnautilus-extension"
 
 PKG_CHECK_MODULES(TRACKER_NAUTILUS_EXTENSION, [$TRACKER_NAUTILUS_EXTENSION_REQUIRED],
@@ -719,6 +741,10 @@ fi
 
 GLIB_GENMARSHAL=`$PKG_CONFIG glib-2.0 --variable=glib_genmarshal`
 AC_SUBST(GLIB_GENMARSHAL)
+
+# Introduced with GSettings
+GLIB_MKENUMS=`$PKG_CONFIG glib-2.0 --variable=glib_mkenums`
+AC_SUBST(GLIB_MKENUMS)
 
 ####################################################################
 # Should we build GLib based unit tests
@@ -1201,6 +1227,96 @@ TRACKER_MINER_EVOLUTION_INSTALL_DIR=$tracker_miner_evolution_install_dir
 AC_SUBST(TRACKER_MINER_EVOLUTION_INSTALL_DIR)
 
 AM_CONDITIONAL(HAVE_TRACKER_MINER_EVOLUTION, test "x$have_tracker_miner_evolution" = "xyes")
+
+####################################################################
+# Check for tracker-miner-thunderbird
+####################################################################
+
+tracker_miner_thunderbird_install_dir="/dev/null"
+
+AC_ARG_ENABLE([miner_thunderbird],
+              AS_HELP_STRING([--enable-miner-thunderbird],
+                             [enable Thunderbird email data miner [[default=auto]]]),,
+              [enable_miner_thunderbird=auto])
+
+enable_tracker_miner_thunderbird=$enable_miner_thunderbird
+
+if test "x$enable_tracker_miner_thunderbird" = "xyes"; then
+   if test "x$have_tracker_miner_thunderbird" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find Thunderbird ($TRACKER_MINER_THUNDERBIRD_REQUIRED).])
+   fi
+else
+   if test "x$enable_tracker_miner_thunderbird" = "xno"; then
+      have_tracker_miner_thunderbird="no  (disabled)"
+   fi
+fi
+
+if test "x$have_tracker_miner_thunderbird" = "xyes"; then
+
+   AC_ARG_WITH([thunderbird_plugin_dir],
+               AS_HELP_STRING([--with-thunderbird-plugin-dir],
+                              [path to Thunderbird plugin directory]))
+   if test "x$with_thunderbird_plugin_dir" = "x" ; then
+      # This is a symlinked to $prefix/share/xul-ext
+      tracker_miner_thunderbird_install_dir="${prefix}/lib/thunderbird-5.0/extensions"
+   else
+      tracker_miner_thunderbird_install_dir="$with_thunderbird_plugin_dir"
+   fi
+
+   if test -z $tracker_miner_thunderbird_install_dir; then
+      AC_MSG_ERROR([Couldn't find thunderbird plugin dir, consider using --with-thunderbird-plugin-dir.])
+   fi
+fi
+
+TRACKER_MINER_THUNDERBIRD_INSTALL_DIR=$tracker_miner_thunderbird_install_dir
+AC_SUBST(TRACKER_MINER_THUNDERBIRD_INSTALL_DIR)
+
+AM_CONDITIONAL(HAVE_TRACKER_MINER_THUNDERBIRD, test "x$have_tracker_miner_thunderbird" = "xyes")
+
+####################################################################
+# Check for tracker-miner-firefox
+####################################################################
+
+tracker_miner_firefox_install_dir="/dev/null"
+
+AC_ARG_ENABLE([miner_firefox],
+              AS_HELP_STRING([--enable-miner-firefox],
+                             [enable Firefox email data miner [[default=auto]]]),,
+              [enable_miner_firefox=auto])
+
+enable_tracker_miner_firefox=$enable_miner_firefox
+
+if test "x$enable_tracker_miner_firefox" = "xyes"; then
+   if test "x$have_tracker_miner_firefox" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find Firefox ($TRACKER_MINER_FIREFOX_REQUIRED).])
+   fi
+else
+   if test "x$enable_tracker_miner_firefox" = "xno"; then
+      have_tracker_miner_firefox="no  (disabled)"
+   fi
+fi
+
+if test "x$have_tracker_miner_firefox" = "xyes"; then
+
+   AC_ARG_WITH([firefox_plugin_dir],
+               AS_HELP_STRING([--with-firefox-plugin-dir],
+                              [path to Firefox plugin directory]))
+   if test "x$with_firefox_plugin_dir" = "x" ; then
+      # This is a symlinked to $prefix/share/xul-ext
+      tracker_miner_firefox_install_dir="${prefix}/lib/firefox-5.0/extensions"
+   else
+      tracker_miner_firefox_install_dir="$with_firefox_plugin_dir"
+   fi
+
+   if test -z $tracker_miner_firefox_install_dir; then
+      AC_MSG_ERROR([Couldn't find firefox plugin dir, consider using --with-firefox-plugin-dir.])
+   fi
+fi
+
+TRACKER_MINER_FIREFOX_INSTALL_DIR=$tracker_miner_firefox_install_dir
+AC_SUBST(TRACKER_MINER_FIREFOX_INSTALL_DIR)
+
+AM_CONDITIONAL(HAVE_TRACKER_MINER_FIREFOX, test "x$have_tracker_miner_firefox" = "xyes")
 
 ####################################################################
 # Check for nautilus extension
@@ -2007,14 +2123,6 @@ if test "x$enable_guarantee_metadata" != "xno"; then
   AC_DEFINE(GUARANTEE_METADATA, 1, [Guarantee existence of certain metadata])
 fi
 
-##################################################################
-# Check for tracker-extract: enable mockup extractor module?
-##################################################################
-
-have_mockup="no  (disabled)"
-
-AM_CONDITIONAL(HAVE_MOCKUP, test "x$have_mockup" = "xyes")
-
 ####################################################################
 # Check if we should use initctl or sysvinit
 ####################################################################
@@ -2030,6 +2138,7 @@ AM_CONDITIONAL(HAVE_UPSTART, test "x$INITCTL" != "x")
 
 AC_CONFIG_FILES([
 	data/dbus/Makefile
+	data/gschemas/Makefile
 	data/icons/16x16/Makefile
 	data/icons/22x22/Makefile
 	data/icons/24x24/Makefile
@@ -2042,15 +2151,12 @@ AC_CONFIG_FILES([
 	data/miners/Makefile
 	data/ontologies/Makefile
 	data/tracker-sparql.pc
-	data/tracker-client.pc
 	data/tracker-extract.pc
 	data/tracker-miner.pc
 	docs/Makefile
 	docs/design/Makefile
 	docs/manpages/Makefile
 	docs/reference/Makefile
-	docs/reference/libtracker-client/Makefile
-	docs/reference/libtracker-client/version.xml
 	docs/reference/libtracker-sparql/Makefile
 	docs/reference/libtracker-sparql/version.xml
 	docs/reference/libtracker-extract/Makefile
@@ -2072,7 +2178,6 @@ AC_CONFIG_FILES([
 	src/libtracker-sparql-backend/Makefile
 	src/libtracker-fts/Makefile
 	src/libtracker-extract/Makefile
-	src/libtracker-client/Makefile
 	src/libtracker-miner/Makefile
 	src/Makefile
 	src/miners/Makefile
@@ -2092,10 +2197,29 @@ AC_CONFIG_FILES([
 	src/tracker-writeback/Makefile
 	src/plugins/Makefile
 	src/plugins/evolution/Makefile
+	src/plugins/thunderbird/Makefile
+	src/plugins/thunderbird/install.rdf
+        src/plugins/thunderbird/chrome/Makefile
+        src/plugins/thunderbird/chrome/content/Makefile
+        src/plugins/thunderbird/chrome/locale/Makefile
+        src/plugins/thunderbird/chrome/locale/en-US/Makefile
+        src/plugins/thunderbird/chrome/skin/Makefile
+        src/plugins/thunderbird/defaults/Makefile
+        src/plugins/thunderbird/defaults/preferences/Makefile
+	src/plugins/firefox/Makefile
+	src/plugins/firefox/install.rdf
+        src/plugins/firefox/chrome/Makefile
+        src/plugins/firefox/chrome/content/Makefile
+        src/plugins/firefox/chrome/locale/Makefile
+        src/plugins/firefox/chrome/locale/en-US/Makefile
+        src/plugins/firefox/chrome/locale/es-ES/Makefile
+        src/plugins/firefox/chrome/locale/fr-FR/Makefile
+        src/plugins/firefox/chrome/skin/Makefile
+        src/plugins/firefox/defaults/Makefile
+        src/plugins/firefox/defaults/preferences/Makefile
 	src/plugins/nautilus/Makefile
 	src/vapi/Makefile
 	tests/common/Makefile
-	tests/libtracker-client/Makefile
 	tests/libtracker-common/Makefile
 	tests/libtracker-extract/Makefile
 	tests/libtracker-data/Makefile
@@ -2137,10 +2261,6 @@ AC_CONFIG_FILES([
 	tests/functional-tests/test-extraction-data/video/Makefile
 	tests/functional-tests/test-extraction-data/playlists/Makefile
 	tests/functional-tests/test-writeback-data/Makefile
-	tests/functional-tests/test-configurations/Makefile
-	tests/functional-tests/test-configurations/miner-basic-ops/Makefile
-	tests/functional-tests/test-configurations/writeback/Makefile
-	tests/functional-tests/test-configurations/applications/Makefile
 	tests/functional-tests/test-ontologies/Makefile
 	tests/functional-tests/test-ontologies/basic/Makefile
 	tests/functional-tests/test-ontologies/property-range-int-to-string/Makefile
@@ -2232,6 +2352,8 @@ Data Miners:
 	Applications:                           yes (MeeGo support: $have_meegotouch)
 	RSS:                                    $have_tracker_miner_rss
 	Evolution:                              $have_tracker_miner_evolution ($tracker_miner_evolution_install_dir)
+        Thunderbird:                            $have_tracker_miner_thunderbird ($tracker_miner_thunderbird_install_dir)
+        FireFox:                                $have_tracker_miner_firefox ($tracker_miner_firefox_install_dir)
 	Flickr:                                 $have_tracker_miner_flickr
 
 Plugins:

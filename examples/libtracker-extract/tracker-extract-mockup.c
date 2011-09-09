@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010, Your name <Your email address>
+ * Copyright (C) 2011, Your name <Your email address>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,22 +26,14 @@
 #include <libtracker-extract/tracker-extract.h>
 #include <libtracker-sparql/tracker-sparql.h>
 
-static void extract_mockup (const gchar          *uri,
-                            TrackerSparqlBuilder *preupdate,
-                            TrackerSparqlBuilder *metadata);
-
-static TrackerExtractData data[] = {
-	/* TODO: Insert mime types and functions here. */
-	{ "audio/mpeg",  extract_mockup },
-	{ "audio/x-mp3", extract_mockup },
-	{ NULL, NULL }
-};
-
-static void
-extract_mockup (const gchar          *uri,
-                TrackerSparqlBuilder *preupdate,
-                TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *info_)
 {
+	/* NOTE: This function has to exist, tracker-extract checks
+	 * the symbole table for this function and if it doesn't
+	 * exist, the module is not loaded to be used as an extractor.
+	 */
+
 	/* File information */
 	FILE *f;
 	GFileInfo *info;
@@ -77,10 +69,13 @@ extract_mockup (const gchar          *uri,
 	gint track_number;
 	gint track_count;
 	guint32 duration;
+	TrackerSparqlBuilder *metadata, *preupdate;
 
-	filename = g_filename_from_uri (uri, NULL, NULL);
+	metadata = tracker_extract_info_get_metadata_builder (info_);
+	preupdate = tracker_extract_info_get_preupdate_builder (info_);
 
-	file = g_file_new_for_path (filename);
+	file = tracker_extract_info_get_file (info_);
+	filename = g_file_get_path (file);
 	info = g_file_query_info (file,
 	                          G_FILE_ATTRIBUTE_STANDARD_SIZE,
 	                          G_FILE_QUERY_INFO_NONE,
@@ -105,7 +100,7 @@ extract_mockup (const gchar          *uri,
 	 */
 	if (size < 64) {
 		g_free (filename);
-		return;
+		return FALSE;
 	}
 
 	/* TODO: Open file */
@@ -113,7 +108,7 @@ extract_mockup (const gchar          *uri,
 
 	if (!f) {
 		g_free (filename);
-		return;
+		return FALSE;
 	}
 	
 	/* TODO: Get data from file.
@@ -335,14 +330,6 @@ extract_mockup (const gchar          *uri,
 	g_free (composer);
 	g_free (performer);
 	g_free (filename);
-}
 
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	/* NOTE: This function has to exist, tracker-extract checks
-	 * the symbole table for this function and if it doesn't
-	 * exist, the module is not loaded to be used as an extractor.
-	 */
-	return data;
+	return TRUE;
 }

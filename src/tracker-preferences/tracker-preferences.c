@@ -19,180 +19,696 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
- *
- * Author: Philip Van Hoof <philip@codeminded.be>
  */
 
 #include <glib.h>
 #include <glib-object.h>
-#include <miners/fs/tracker-config.h>
+#include <gio/gio.h>
+#include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
-#include <gtk/gtk.h>
+#include <glib/gi18n-lib.h>
 #include <float.h>
 #include <math.h>
-#include <glib/gi18n-lib.h>
-#include <gio/gio.h>
-#include <config.h>
+#include <gmodule.h>
 #include <stdio.h>
+#include <config.h>
+#include <gobject/gvaluecollector.h>
 
+
+#define TRACKER_TYPE_PREFERENCES (tracker_preferences_get_type ())
+#define TRACKER_PREFERENCES(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_TYPE_PREFERENCES, TrackerPreferences))
+#define TRACKER_PREFERENCES_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRACKER_TYPE_PREFERENCES, TrackerPreferencesClass))
+#define TRACKER_IS_PREFERENCES(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRACKER_TYPE_PREFERENCES))
+#define TRACKER_IS_PREFERENCES_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRACKER_TYPE_PREFERENCES))
+#define TRACKER_PREFERENCES_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRACKER_TYPE_PREFERENCES, TrackerPreferencesClass))
+
+typedef struct _TrackerPreferences TrackerPreferences;
+typedef struct _TrackerPreferencesClass TrackerPreferencesClass;
+typedef struct _TrackerPreferencesPrivate TrackerPreferencesPrivate;
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
+#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
+#define _g_module_close0(var) ((var == NULL) ? NULL : (var = (g_module_close (var), NULL)))
 #define _g_free0(var) (var = (g_free (var), NULL))
 #define __g_list_free__gtk_tree_path_free0_0(var) ((var == NULL) ? NULL : (var = (_g_list_free__gtk_tree_path_free0_ (var), NULL)))
 #define _gtk_tree_path_free0(var) ((var == NULL) ? NULL : (var = (gtk_tree_path_free (var), NULL)))
-#define __g_slist_free__g_free0_0(var) ((var == NULL) ? NULL : (var = (_g_slist_free__g_free0_ (var), NULL)))
-#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
+typedef struct _TrackerParamSpecPreferences TrackerParamSpecPreferences;
+#define _g_option_context_free0(var) ((var == NULL) ? NULL : (var = (g_option_context_free (var), NULL)))
+#define _tracker_preferences_unref0(var) ((var == NULL) ? NULL : (var = (tracker_preferences_unref (var), NULL)))
+
+struct _TrackerPreferences {
+	GTypeInstance parent_instance;
+	volatile int ref_count;
+	TrackerPreferencesPrivate * priv;
+};
+
+struct _TrackerPreferencesClass {
+	GTypeClass parent_class;
+	void (*finalize) (TrackerPreferences *self);
+};
+
+struct _TrackerPreferencesPrivate {
+	GSettings* settings;
+	GtkWindow* window;
+	GtkCheckButton* checkbutton_enable_index_on_battery_first_time;
+	GtkCheckButton* checkbutton_enable_index_on_battery;
+	GtkSpinButton* spinbutton_delay;
+	GtkCheckButton* checkbutton_enable_monitoring;
+	GtkCheckButton* checkbutton_index_removable_media;
+	GtkCheckButton* checkbutton_index_optical_discs;
+	GtkScale* hscale_disk_space_limit;
+	GtkScale* hscale_throttle;
+	GtkScale* hscale_drop_device_threshold;
+	GtkListStore* liststore_index_recursively;
+	GtkListStore* liststore_index_single;
+	GtkListStore* liststore_ignored_directories;
+	GtkListStore* liststore_ignored_files;
+	GtkListStore* liststore_gnored_directories_with_content;
+	GtkTreeView* treeview_index_recursively;
+	GtkTreeView* treeview_index_single;
+	GtkTreeView* treeview_ignored_directories;
+	GtkTreeView* treeview_ignored_directories_with_content;
+	GtkTreeView* treeview_ignored_files;
+	GtkToggleButton* togglebutton_home;
+	GtkNotebook* notebook;
+};
+
+struct _TrackerParamSpecPreferences {
+	GParamSpec parent_instance;
+};
 
 
-extern TrackerConfig* config;
-TrackerConfig* config = NULL;
-extern GtkWindow* window;
-GtkWindow* window = NULL;
-extern GtkCheckButton* checkbutton_enable_index_on_battery_first_time;
-GtkCheckButton* checkbutton_enable_index_on_battery_first_time = NULL;
-extern GtkCheckButton* checkbutton_enable_index_on_battery;
-GtkCheckButton* checkbutton_enable_index_on_battery = NULL;
-extern GtkSpinButton* spinbutton_delay;
-GtkSpinButton* spinbutton_delay = NULL;
-extern GtkCheckButton* checkbutton_enable_monitoring;
-GtkCheckButton* checkbutton_enable_monitoring = NULL;
-extern GtkCheckButton* checkbutton_index_removable_media;
-GtkCheckButton* checkbutton_index_removable_media = NULL;
-extern GtkCheckButton* checkbutton_index_optical_discs;
-GtkCheckButton* checkbutton_index_optical_discs = NULL;
-extern GtkScale* hscale_disk_space_limit;
-GtkScale* hscale_disk_space_limit = NULL;
-extern GtkScale* hscale_throttle;
-GtkScale* hscale_throttle = NULL;
-extern GtkScale* hscale_drop_device_threshold;
-GtkScale* hscale_drop_device_threshold = NULL;
-extern GtkListStore* liststore_index_recursively;
-GtkListStore* liststore_index_recursively = NULL;
-extern GtkListStore* liststore_index_single;
-GtkListStore* liststore_index_single = NULL;
-extern GtkListStore* liststore_ignored_directories;
-GtkListStore* liststore_ignored_directories = NULL;
-extern GtkListStore* liststore_ignored_files;
-GtkListStore* liststore_ignored_files = NULL;
-extern GtkListStore* liststore_gnored_directories_with_content;
-GtkListStore* liststore_gnored_directories_with_content = NULL;
-extern GtkTreeView* treeview_index_recursively;
-GtkTreeView* treeview_index_recursively = NULL;
-extern GtkTreeView* treeview_index_single;
-GtkTreeView* treeview_index_single = NULL;
-extern GtkTreeView* treeview_ignored_directories;
-GtkTreeView* treeview_ignored_directories = NULL;
-extern GtkTreeView* treeview_ignored_directories_with_content;
-GtkTreeView* treeview_ignored_directories_with_content = NULL;
-extern GtkTreeView* treeview_ignored_files;
-GtkTreeView* treeview_ignored_files = NULL;
-extern GtkToggleButton* togglebutton_home;
-GtkToggleButton* togglebutton_home = NULL;
-extern GtkNotebook* notebook;
-GtkNotebook* notebook = NULL;
-extern GtkRadioButton* radiobutton_display_never;
-GtkRadioButton* radiobutton_display_never = NULL;
-extern GtkRadioButton* radiobutton_display_active;
-GtkRadioButton* radiobutton_display_active = NULL;
-extern GtkRadioButton* radiobutton_display_always;
-GtkRadioButton* radiobutton_display_always = NULL;
+static gpointer tracker_preferences_parent_class = NULL;
+extern gboolean print_version;
+gboolean print_version = FALSE;
 
-#define HOME_STRING "$HOME"
-void spinbutton_delay_value_changed_cb (GtkSpinButton* source);
-void checkbutton_enable_monitoring_toggled_cb (GtkCheckButton* source);
-void checkbutton_enable_index_on_battery_toggled_cb (GtkCheckButton* source);
-void checkbutton_enable_index_on_battery_first_time_toggled_cb (GtkCheckButton* source);
-void checkbutton_index_removable_media_toggled_cb (GtkCheckButton* source);
-void checkbutton_index_optical_discs_toggled_cb (GtkCheckButton* source);
-gchar* hscale_disk_space_limit_format_value_cb (GtkScale* source, gdouble value);
-gchar* hscale_throttle_format_value_cb (GtkScale* source, gdouble value);
-gchar* hscale_drop_device_threshold_format_value_cb (GtkScale* source, gdouble value);
-void add_freevalue (GtkListStore* model);
-void add_dir (GtkListStore* model);
-void del_dir (GtkTreeView* view);
+gpointer tracker_preferences_ref (gpointer instance);
+void tracker_preferences_unref (gpointer instance);
+GParamSpec* tracker_param_spec_preferences (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags);
+void tracker_value_set_preferences (GValue* value, gpointer v_object);
+void tracker_value_take_preferences (GValue* value, gpointer v_object);
+gpointer tracker_value_get_preferences (const GValue* value);
+GType tracker_preferences_get_type (void) G_GNUC_CONST;
+#define TRACKER_PREFERENCES_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_PREFERENCES, TrackerPreferencesPrivate))
+enum  {
+	TRACKER_PREFERENCES_DUMMY_PROPERTY
+};
+#define TRACKER_PREFERENCES_UI_FILE "tracker-preferences.ui"
+#define TRACKER_PREFERENCES_HOME_STRING "$HOME"
+TrackerPreferences* tracker_preferences_new (void);
+TrackerPreferences* tracker_preferences_construct (GType object_type);
+static void _lambda0_ (const gchar* key, TrackerPreferences* self);
+static void __lambda0__g_settings_changed (GSettings* _sender, const gchar* key, gpointer self);
+void tracker_preferences_setup_ui (TrackerPreferences* self);
+static void tracker_preferences_setup_standard_treeview (TrackerPreferences* self, GtkTreeView* view, const gchar* title);
+static void tracker_preferences_fill_in_model (TrackerPreferences* self, GtkListStore* model, gchar** list, int list_length1);
+gboolean tracker_preferences_model_contains (TrackerPreferences* self, GtkTreeModel* model, const gchar* needle);
+static void tracker_preferences_connect_signals (GtkBuilder* builder, GObject* object, const gchar* signal_name, const gchar* handler_name, GObject* connect_object, GConnectFlags flags, TrackerPreferences* self);
+static void _tracker_preferences_connect_signals_gtk_builder_connect_func (GtkBuilder* builder, GObject* object, const gchar* signal_name, const gchar* handler_name, GObject* connect_object, GConnectFlags flags, gpointer self);
+void tracker_preferences_show (TrackerPreferences* self);
+void tracker_preferences_response_cb (GtkDialog* source, gint response_id, TrackerPreferences* self);
+static gchar** tracker_preferences_model_to_strv (TrackerPreferences* self, GtkListStore* model, int* result_length1);
+void tracker_preferences_spinbutton_delay_value_changed_cb (GtkSpinButton* source, TrackerPreferences* self);
+void tracker_preferences_checkbutton_enable_monitoring_toggled_cb (GtkCheckButton* source, TrackerPreferences* self);
+void tracker_preferences_checkbutton_enable_index_on_battery_toggled_cb (GtkCheckButton* source, TrackerPreferences* self);
+void tracker_preferences_checkbutton_enable_index_on_battery_first_time_toggled_cb (GtkCheckButton* source, TrackerPreferences* self);
+void tracker_preferences_checkbutton_index_removable_media_toggled_cb (GtkCheckButton* source, TrackerPreferences* self);
+void tracker_preferences_checkbutton_index_optical_discs_toggled_cb (GtkCheckButton* source, TrackerPreferences* self);
+gchar* tracker_preferences_hscale_disk_space_limit_format_value_cb (GtkScale* source, gdouble value, TrackerPreferences* self);
+gchar* tracker_preferences_hscale_throttle_format_value_cb (GtkScale* source, gdouble value, TrackerPreferences* self);
+gchar* tracker_preferences_hscale_drop_device_threshold_format_value_cb (GtkScale* source, gdouble value, TrackerPreferences* self);
+void tracker_preferences_button_index_recursively_add_clicked_cb (GtkButton* source, TrackerPreferences* self);
+static void tracker_preferences_add_dir (TrackerPreferences* self, GtkListStore* model);
+void tracker_preferences_button_index_recursively_remove_clicked_cb (GtkButton* source, TrackerPreferences* self);
+static void tracker_preferences_del_dir (TrackerPreferences* self, GtkTreeView* view);
+void tracker_preferences_button_index_single_remove_clicked_cb (GtkButton* source, TrackerPreferences* self);
+void tracker_preferences_button_index_single_add_clicked_cb (GtkButton* source, TrackerPreferences* self);
+void tracker_preferences_button_ignored_directories_globs_add_clicked_cb (GtkButton* source, TrackerPreferences* self);
+static void tracker_preferences_add_freevalue (TrackerPreferences* self, GtkListStore* model);
+void tracker_preferences_button_ignored_directories_add_clicked_cb (GtkButton* source, TrackerPreferences* self);
+void tracker_preferences_button_ignored_directories_remove_clicked_cb (GtkButton* source, TrackerPreferences* self);
+void tracker_preferences_button_ignored_directories_with_content_add_clicked_cb (GtkButton* source, TrackerPreferences* self);
+void tracker_preferences_button_ignored_directories_with_content_remove_clicked_cb (GtkButton* source, TrackerPreferences* self);
+void tracker_preferences_button_ignored_files_add_clicked_cb (GtkButton* source, TrackerPreferences* self);
+void tracker_preferences_button_ignored_files_remove_clicked_cb (GtkButton* source, TrackerPreferences* self);
+void tracker_preferences_togglebutton_home_toggled_cb (GtkToggleButton* source, TrackerPreferences* self);
 static void _gtk_tree_path_free0_ (gpointer var);
 static void _g_list_free__gtk_tree_path_free0_ (GList* self);
-void button_index_recursively_add_clicked_cb (GtkButton* source);
-void button_index_recursively_remove_clicked_cb (GtkButton* source);
-void button_index_single_remove_clicked_cb (GtkButton* source);
-void button_index_single_add_clicked_cb (GtkButton* source);
-void button_ignored_directories_globs_add_clicked_cb (GtkButton* source);
-void button_ignored_directories_add_clicked_cb (GtkButton* source);
-void button_ignored_directories_remove_clicked_cb (GtkButton* source);
-void button_ignored_directories_with_content_add_clicked_cb (GtkButton* source);
-void button_ignored_directories_with_content_remove_clicked_cb (GtkButton* source);
-void button_ignored_files_add_clicked_cb (GtkButton* source);
-void button_ignored_files_remove_clicked_cb (GtkButton* source);
-GSList* model_to_slist (GtkListStore* model);
-static void _g_free0_ (gpointer var);
-static void _g_slist_free__g_free0_ (GSList* self);
-gboolean model_contains (GtkTreeModel* model, const gchar* needle);
-void button_apply_clicked_cb (GtkButton* source);
-void button_close_clicked_cb (GtkButton* source);
-void togglebutton_home_toggled_cb (GtkToggleButton* source);
-void fill_in_model (GtkListStore* model, GSList* list);
-void setup_standard_treeview (GtkTreeView* view, const gchar* title);
+static void _vala_array_add1 (gchar*** array, int* length, int* size, gchar* value);
+static void tracker_preferences_finalize (TrackerPreferences* obj);
 gint _vala_main (gchar** args, int args_length1);
+static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func);
+static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
+static gint _vala_array_length (gpointer array);
+
+const GOptionEntry options[2] = {{"version", 'V', 0, G_OPTION_ARG_NONE, &print_version, "Print version", NULL}, {NULL}};
+
+static void _lambda0_ (const gchar* key, TrackerPreferences* self) {
+	g_return_if_fail (key != NULL);
+	g_print ("Key '%s' changed\n", key);
+}
 
 
-void spinbutton_delay_value_changed_cb (GtkSpinButton* source) {
+static void __lambda0__g_settings_changed (GSettings* _sender, const gchar* key, gpointer self) {
+	_lambda0_ (key, self);
+}
+
+
+TrackerPreferences* tracker_preferences_construct (GType object_type) {
+	TrackerPreferences* self = NULL;
+	GSettings* _tmp0_ = NULL;
+	self = (TrackerPreferences*) g_type_create_instance (object_type);
+	g_debug ("tracker-preferences.vala:61: Getting current settings");
+	_tmp0_ = g_settings_new ("org.freedesktop.Tracker.Miner.Files");
+	_g_object_unref0 (self->priv->settings);
+	self->priv->settings = _tmp0_;
+	g_signal_connect (self->priv->settings, "changed", (GCallback) __lambda0__g_settings_changed, self);
+	return self;
+}
+
+
+TrackerPreferences* tracker_preferences_new (void) {
+	return tracker_preferences_construct (TRACKER_TYPE_PREFERENCES);
+}
+
+
+static gpointer _g_object_ref0 (gpointer self) {
+	return self ? g_object_ref (self) : NULL;
+}
+
+
+static void _tracker_preferences_connect_signals_gtk_builder_connect_func (GtkBuilder* builder, GObject* object, const gchar* signal_name, const gchar* handler_name, GObject* connect_object, GConnectFlags flags, gpointer self) {
+	tracker_preferences_connect_signals (builder, object, signal_name, handler_name, connect_object, flags, self);
+}
+
+
+void tracker_preferences_setup_ui (TrackerPreferences* self) {
+	GtkBuilder* _tmp0_ = NULL;
+	GtkBuilder* builder;
+	GObject* _tmp2_ = NULL;
+	GObject* _tmp3_;
+	GtkWindow* _tmp4_;
+	GObject* _tmp5_ = NULL;
+	GObject* _tmp6_;
+	GtkNotebook* _tmp7_;
+	GObject* _tmp8_ = NULL;
+	GObject* _tmp9_;
+	GtkCheckButton* _tmp10_;
+	GObject* _tmp11_ = NULL;
+	GObject* _tmp12_;
+	GtkCheckButton* _tmp13_;
+	GObject* _tmp14_ = NULL;
+	GObject* _tmp15_;
+	GtkCheckButton* _tmp16_;
+	GObject* _tmp17_ = NULL;
+	GObject* _tmp18_;
+	GtkSpinButton* _tmp19_;
+	GObject* _tmp20_ = NULL;
+	GObject* _tmp21_;
+	GtkCheckButton* _tmp22_;
+	GObject* _tmp23_ = NULL;
+	GObject* _tmp24_;
+	GtkCheckButton* _tmp25_;
+	gboolean _tmp26_;
+	GObject* _tmp27_ = NULL;
+	GObject* _tmp28_;
+	GtkScale* _tmp29_;
+	GObject* _tmp30_ = NULL;
+	GObject* _tmp31_;
+	GtkScale* _tmp32_;
+	GObject* _tmp33_ = NULL;
+	GObject* _tmp34_;
+	GtkScale* _tmp35_;
+	GObject* _tmp36_ = NULL;
+	GObject* _tmp37_;
+	GtkToggleButton* _tmp38_;
+	GObject* _tmp39_ = NULL;
+	GObject* _tmp40_;
+	GtkTreeView* _tmp41_;
+	GObject* _tmp42_ = NULL;
+	GObject* _tmp43_;
+	GtkTreeView* _tmp44_;
+	GObject* _tmp45_ = NULL;
+	GObject* _tmp46_;
+	GtkTreeView* _tmp47_;
+	GObject* _tmp48_ = NULL;
+	GObject* _tmp49_;
+	GtkTreeView* _tmp50_;
+	GObject* _tmp51_ = NULL;
+	GObject* _tmp52_;
+	GtkTreeView* _tmp53_;
+	const gchar* _tmp54_ = NULL;
+	const gchar* _tmp55_ = NULL;
+	const gchar* _tmp56_ = NULL;
+	const gchar* _tmp57_ = NULL;
+	const gchar* _tmp58_ = NULL;
+	GObject* _tmp59_ = NULL;
+	GObject* _tmp60_;
+	GtkListStore* _tmp61_;
+	GObject* _tmp62_ = NULL;
+	GObject* _tmp63_;
+	GtkListStore* _tmp64_;
+	GObject* _tmp65_ = NULL;
+	GObject* _tmp66_;
+	GtkListStore* _tmp67_;
+	GObject* _tmp68_ = NULL;
+	GObject* _tmp69_;
+	GtkListStore* _tmp70_;
+	GObject* _tmp71_ = NULL;
+	GObject* _tmp72_;
+	GtkListStore* _tmp73_;
+	gboolean _tmp74_;
+	gboolean _tmp75_;
+	gboolean _tmp76_;
+	gint _tmp77_;
+	gboolean _tmp78_;
+	gboolean _tmp79_;
+	gboolean _tmp80_;
+	gint _tmp81_;
+	gint _tmp82_;
+	gint _tmp83_;
+	gchar** _tmp84_;
+	gchar** _tmp85_ = NULL;
+	gchar** _tmp86_;
+	gint _tmp86__length1;
+	gchar** _tmp87_;
+	gchar** _tmp88_ = NULL;
+	gchar** _tmp89_;
+	gint _tmp89__length1;
+	gchar** _tmp90_;
+	gchar** _tmp91_ = NULL;
+	gchar** _tmp92_;
+	gint _tmp92__length1;
+	gchar** _tmp93_;
+	gchar** _tmp94_ = NULL;
+	gchar** _tmp95_;
+	gint _tmp95__length1;
+	gchar** _tmp96_;
+	gchar** _tmp97_ = NULL;
+	gchar** _tmp98_;
+	gint _tmp98__length1;
+	gboolean _tmp99_;
+	GError * _inner_error_ = NULL;
+	g_return_if_fail (self != NULL);
+	_tmp0_ = gtk_builder_new ();
+	builder = _tmp0_;
+	g_debug ("tracker-preferences.vala:76: Trying to use UI file:'%s'", SRCDIR TRACKER_PREFERENCES_UI_FILE);
+	gtk_builder_add_from_file (builder, SRCDIR TRACKER_PREFERENCES_UI_FILE, &_inner_error_);
+	if (_inner_error_ != NULL) {
+		goto __catch0_g_error;
+	}
+	goto __finally0;
+	__catch0_g_error:
+	{
+		GError * e;
+		e = _inner_error_;
+		_inner_error_ = NULL;
+		g_debug ("tracker-preferences.vala:81: Trying to use UI file:'%s'", TRACKER_UI_DIR TRACKER_PREFERENCES_UI_FILE);
+		gtk_builder_add_from_file (builder, TRACKER_UI_DIR TRACKER_PREFERENCES_UI_FILE, &_inner_error_);
+		if (_inner_error_ != NULL) {
+			goto __catch1_g_error;
+		}
+		goto __finally1;
+		__catch1_g_error:
+		{
+			GError * e;
+			GtkMessageDialog* _tmp1_ = NULL;
+			GtkMessageDialog* msg;
+			e = _inner_error_;
+			_inner_error_ = NULL;
+			_tmp1_ = (GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CANCEL, "Failed to load UI file, %s\n", e->message);
+			msg = g_object_ref_sink (_tmp1_);
+			gtk_dialog_run ((GtkDialog*) msg);
+			gtk_main_quit ();
+			_g_object_unref0 (msg);
+			_g_error_free0 (e);
+		}
+		__finally1:
+		if (_inner_error_ != NULL) {
+			_g_error_free0 (e);
+			_g_error_free0 (e);
+			_g_object_unref0 (builder);
+			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+			g_clear_error (&_inner_error_);
+			return;
+		}
+		_g_error_free0 (e);
+	}
+	__finally0:
+	if (_inner_error_ != NULL) {
+		_g_object_unref0 (builder);
+		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
+		return;
+	}
+	_tmp2_ = gtk_builder_get_object (builder, "tracker-preferences");
+	_tmp3_ = _tmp2_;
+	_tmp4_ = _g_object_ref0 (GTK_IS_WINDOW (_tmp3_) ? ((GtkWindow*) _tmp3_) : NULL);
+	_g_object_unref0 (self->priv->window);
+	self->priv->window = _tmp4_;
+	_tmp5_ = gtk_builder_get_object (builder, "notebook");
+	_tmp6_ = _tmp5_;
+	_tmp7_ = _g_object_ref0 (GTK_IS_NOTEBOOK (_tmp6_) ? ((GtkNotebook*) _tmp6_) : NULL);
+	_g_object_unref0 (self->priv->notebook);
+	self->priv->notebook = _tmp7_;
+	_tmp8_ = gtk_builder_get_object (builder, "checkbutton_enable_monitoring");
+	_tmp9_ = _tmp8_;
+	_tmp10_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp9_) ? ((GtkCheckButton*) _tmp9_) : NULL);
+	_g_object_unref0 (self->priv->checkbutton_enable_monitoring);
+	self->priv->checkbutton_enable_monitoring = _tmp10_;
+	_tmp11_ = gtk_builder_get_object (builder, "checkbutton_enable_index_on_battery");
+	_tmp12_ = _tmp11_;
+	_tmp13_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp12_) ? ((GtkCheckButton*) _tmp12_) : NULL);
+	_g_object_unref0 (self->priv->checkbutton_enable_index_on_battery);
+	self->priv->checkbutton_enable_index_on_battery = _tmp13_;
+	_tmp14_ = gtk_builder_get_object (builder, "checkbutton_enable_index_on_battery_first_time");
+	_tmp15_ = _tmp14_;
+	_tmp16_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp15_) ? ((GtkCheckButton*) _tmp15_) : NULL);
+	_g_object_unref0 (self->priv->checkbutton_enable_index_on_battery_first_time);
+	self->priv->checkbutton_enable_index_on_battery_first_time = _tmp16_;
+	_tmp17_ = gtk_builder_get_object (builder, "spinbutton_delay");
+	_tmp18_ = _tmp17_;
+	_tmp19_ = _g_object_ref0 (GTK_IS_SPIN_BUTTON (_tmp18_) ? ((GtkSpinButton*) _tmp18_) : NULL);
+	_g_object_unref0 (self->priv->spinbutton_delay);
+	self->priv->spinbutton_delay = _tmp19_;
+	_tmp20_ = gtk_builder_get_object (builder, "checkbutton_index_removable_media");
+	_tmp21_ = _tmp20_;
+	_tmp22_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp21_) ? ((GtkCheckButton*) _tmp21_) : NULL);
+	_g_object_unref0 (self->priv->checkbutton_index_removable_media);
+	self->priv->checkbutton_index_removable_media = _tmp22_;
+	_tmp23_ = gtk_builder_get_object (builder, "checkbutton_index_optical_discs");
+	_tmp24_ = _tmp23_;
+	_tmp25_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp24_) ? ((GtkCheckButton*) _tmp24_) : NULL);
+	_g_object_unref0 (self->priv->checkbutton_index_optical_discs);
+	self->priv->checkbutton_index_optical_discs = _tmp25_;
+	_tmp26_ = gtk_toggle_button_get_active ((GtkToggleButton*) self->priv->checkbutton_index_removable_media);
+	gtk_widget_set_sensitive ((GtkWidget*) self->priv->checkbutton_index_optical_discs, _tmp26_);
+	_tmp27_ = gtk_builder_get_object (builder, "hscale_disk_space_limit");
+	_tmp28_ = _tmp27_;
+	_tmp29_ = _g_object_ref0 (GTK_IS_SCALE (_tmp28_) ? ((GtkScale*) _tmp28_) : NULL);
+	_g_object_unref0 (self->priv->hscale_disk_space_limit);
+	self->priv->hscale_disk_space_limit = _tmp29_;
+	_tmp30_ = gtk_builder_get_object (builder, "hscale_throttle");
+	_tmp31_ = _tmp30_;
+	_tmp32_ = _g_object_ref0 (GTK_IS_SCALE (_tmp31_) ? ((GtkScale*) _tmp31_) : NULL);
+	_g_object_unref0 (self->priv->hscale_throttle);
+	self->priv->hscale_throttle = _tmp32_;
+	_tmp33_ = gtk_builder_get_object (builder, "hscale_drop_device_threshold");
+	_tmp34_ = _tmp33_;
+	_tmp35_ = _g_object_ref0 (GTK_IS_SCALE (_tmp34_) ? ((GtkScale*) _tmp34_) : NULL);
+	_g_object_unref0 (self->priv->hscale_drop_device_threshold);
+	self->priv->hscale_drop_device_threshold = _tmp35_;
+	_tmp36_ = gtk_builder_get_object (builder, "togglebutton_home");
+	_tmp37_ = _tmp36_;
+	_tmp38_ = _g_object_ref0 (GTK_IS_TOGGLE_BUTTON (_tmp37_) ? ((GtkToggleButton*) _tmp37_) : NULL);
+	_g_object_unref0 (self->priv->togglebutton_home);
+	self->priv->togglebutton_home = _tmp38_;
+	_tmp39_ = gtk_builder_get_object (builder, "treeview_index_recursively");
+	_tmp40_ = _tmp39_;
+	_tmp41_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp40_) ? ((GtkTreeView*) _tmp40_) : NULL);
+	_g_object_unref0 (self->priv->treeview_index_recursively);
+	self->priv->treeview_index_recursively = _tmp41_;
+	_tmp42_ = gtk_builder_get_object (builder, "treeview_index_single");
+	_tmp43_ = _tmp42_;
+	_tmp44_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp43_) ? ((GtkTreeView*) _tmp43_) : NULL);
+	_g_object_unref0 (self->priv->treeview_index_single);
+	self->priv->treeview_index_single = _tmp44_;
+	_tmp45_ = gtk_builder_get_object (builder, "treeview_ignored_directories");
+	_tmp46_ = _tmp45_;
+	_tmp47_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp46_) ? ((GtkTreeView*) _tmp46_) : NULL);
+	_g_object_unref0 (self->priv->treeview_ignored_directories);
+	self->priv->treeview_ignored_directories = _tmp47_;
+	_tmp48_ = gtk_builder_get_object (builder, "treeview_ignored_directories_with_content");
+	_tmp49_ = _tmp48_;
+	_tmp50_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp49_) ? ((GtkTreeView*) _tmp49_) : NULL);
+	_g_object_unref0 (self->priv->treeview_ignored_directories_with_content);
+	self->priv->treeview_ignored_directories_with_content = _tmp50_;
+	_tmp51_ = gtk_builder_get_object (builder, "treeview_ignored_files");
+	_tmp52_ = _tmp51_;
+	_tmp53_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp52_) ? ((GtkTreeView*) _tmp52_) : NULL);
+	_g_object_unref0 (self->priv->treeview_ignored_files);
+	self->priv->treeview_ignored_files = _tmp53_;
+	_tmp54_ = _ ("Directory");
+	tracker_preferences_setup_standard_treeview (self, self->priv->treeview_index_recursively, _tmp54_);
+	_tmp55_ = _ ("Directory");
+	tracker_preferences_setup_standard_treeview (self, self->priv->treeview_index_single, _tmp55_);
+	_tmp56_ = _ ("Directory");
+	tracker_preferences_setup_standard_treeview (self, self->priv->treeview_ignored_directories, _tmp56_);
+	_tmp57_ = _ ("Directory");
+	tracker_preferences_setup_standard_treeview (self, self->priv->treeview_ignored_directories_with_content, _tmp57_);
+	_tmp58_ = _ ("File");
+	tracker_preferences_setup_standard_treeview (self, self->priv->treeview_ignored_files, _tmp58_);
+	_tmp59_ = gtk_builder_get_object (builder, "liststore_index_recursively");
+	_tmp60_ = _tmp59_;
+	_tmp61_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp60_) ? ((GtkListStore*) _tmp60_) : NULL);
+	_g_object_unref0 (self->priv->liststore_index_recursively);
+	self->priv->liststore_index_recursively = _tmp61_;
+	_tmp62_ = gtk_builder_get_object (builder, "liststore_index_single");
+	_tmp63_ = _tmp62_;
+	_tmp64_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp63_) ? ((GtkListStore*) _tmp63_) : NULL);
+	_g_object_unref0 (self->priv->liststore_index_single);
+	self->priv->liststore_index_single = _tmp64_;
+	_tmp65_ = gtk_builder_get_object (builder, "liststore_ignored_directories");
+	_tmp66_ = _tmp65_;
+	_tmp67_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp66_) ? ((GtkListStore*) _tmp66_) : NULL);
+	_g_object_unref0 (self->priv->liststore_ignored_directories);
+	self->priv->liststore_ignored_directories = _tmp67_;
+	_tmp68_ = gtk_builder_get_object (builder, "liststore_ignored_files");
+	_tmp69_ = _tmp68_;
+	_tmp70_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp69_) ? ((GtkListStore*) _tmp69_) : NULL);
+	_g_object_unref0 (self->priv->liststore_ignored_files);
+	self->priv->liststore_ignored_files = _tmp70_;
+	_tmp71_ = gtk_builder_get_object (builder, "liststore_gnored_directories_with_content");
+	_tmp72_ = _tmp71_;
+	_tmp73_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp72_) ? ((GtkListStore*) _tmp72_) : NULL);
+	_g_object_unref0 (self->priv->liststore_gnored_directories_with_content);
+	self->priv->liststore_gnored_directories_with_content = _tmp73_;
+	_tmp74_ = g_settings_get_boolean (self->priv->settings, "index-on-battery");
+	gtk_toggle_button_set_active ((GtkToggleButton*) self->priv->checkbutton_enable_index_on_battery, _tmp74_);
+	_tmp75_ = gtk_toggle_button_get_active ((GtkToggleButton*) self->priv->checkbutton_enable_index_on_battery);
+	gtk_widget_set_sensitive ((GtkWidget*) self->priv->checkbutton_enable_index_on_battery_first_time, !_tmp75_);
+	_tmp76_ = g_settings_get_boolean (self->priv->settings, "index-on-battery-first-time");
+	gtk_toggle_button_set_active ((GtkToggleButton*) self->priv->checkbutton_enable_index_on_battery_first_time, _tmp76_);
+	gtk_spin_button_set_increments (self->priv->spinbutton_delay, (gdouble) 1, (gdouble) 1);
+	_tmp77_ = g_settings_get_int (self->priv->settings, "initial-sleep");
+	gtk_spin_button_set_value (self->priv->spinbutton_delay, (gdouble) _tmp77_);
+	_tmp78_ = g_settings_get_boolean (self->priv->settings, "enable-monitors");
+	gtk_toggle_button_set_active ((GtkToggleButton*) self->priv->checkbutton_enable_monitoring, _tmp78_);
+	_tmp79_ = g_settings_get_boolean (self->priv->settings, "index-removable-devices");
+	gtk_toggle_button_set_active ((GtkToggleButton*) self->priv->checkbutton_index_removable_media, _tmp79_);
+	_tmp80_ = g_settings_get_boolean (self->priv->settings, "index-optical-discs");
+	gtk_toggle_button_set_active ((GtkToggleButton*) self->priv->checkbutton_index_optical_discs, _tmp80_);
+	_tmp81_ = g_settings_get_int (self->priv->settings, "low-disk-space-limit");
+	gtk_range_set_value ((GtkRange*) self->priv->hscale_disk_space_limit, (gdouble) _tmp81_);
+	_tmp82_ = g_settings_get_int (self->priv->settings, "throttle");
+	gtk_range_set_value ((GtkRange*) self->priv->hscale_throttle, (gdouble) _tmp82_);
+	_tmp83_ = g_settings_get_int (self->priv->settings, "removable-days-threshold");
+	gtk_range_set_value ((GtkRange*) self->priv->hscale_drop_device_threshold, (gdouble) _tmp83_);
+	_tmp85_ = _tmp84_ = g_settings_get_strv (self->priv->settings, "index-recursive-directories");
+	_tmp86_ = _tmp85_;
+	_tmp86__length1 = _vala_array_length (_tmp84_);
+	tracker_preferences_fill_in_model (self, self->priv->liststore_index_recursively, _tmp86_, _vala_array_length (_tmp84_));
+	_tmp86_ = (_vala_array_free (_tmp86_, _tmp86__length1, (GDestroyNotify) g_free), NULL);
+	_tmp88_ = _tmp87_ = g_settings_get_strv (self->priv->settings, "index-single-directories");
+	_tmp89_ = _tmp88_;
+	_tmp89__length1 = _vala_array_length (_tmp87_);
+	tracker_preferences_fill_in_model (self, self->priv->liststore_index_single, _tmp89_, _vala_array_length (_tmp87_));
+	_tmp89_ = (_vala_array_free (_tmp89_, _tmp89__length1, (GDestroyNotify) g_free), NULL);
+	_tmp91_ = _tmp90_ = g_settings_get_strv (self->priv->settings, "ignored-directories");
+	_tmp92_ = _tmp91_;
+	_tmp92__length1 = _vala_array_length (_tmp90_);
+	tracker_preferences_fill_in_model (self, self->priv->liststore_ignored_directories, _tmp92_, _vala_array_length (_tmp90_));
+	_tmp92_ = (_vala_array_free (_tmp92_, _tmp92__length1, (GDestroyNotify) g_free), NULL);
+	_tmp94_ = _tmp93_ = g_settings_get_strv (self->priv->settings, "ignored-files");
+	_tmp95_ = _tmp94_;
+	_tmp95__length1 = _vala_array_length (_tmp93_);
+	tracker_preferences_fill_in_model (self, self->priv->liststore_ignored_files, _tmp95_, _vala_array_length (_tmp93_));
+	_tmp95_ = (_vala_array_free (_tmp95_, _tmp95__length1, (GDestroyNotify) g_free), NULL);
+	_tmp97_ = _tmp96_ = g_settings_get_strv (self->priv->settings, "ignored-directories-with-content");
+	_tmp98_ = _tmp97_;
+	_tmp98__length1 = _vala_array_length (_tmp96_);
+	tracker_preferences_fill_in_model (self, self->priv->liststore_gnored_directories_with_content, _tmp98_, _vala_array_length (_tmp96_));
+	_tmp98_ = (_vala_array_free (_tmp98_, _tmp98__length1, (GDestroyNotify) g_free), NULL);
+	_tmp99_ = tracker_preferences_model_contains (self, (GtkTreeModel*) self->priv->liststore_index_recursively, TRACKER_PREFERENCES_HOME_STRING);
+	gtk_toggle_button_set_active (self->priv->togglebutton_home, _tmp99_);
+	gtk_notebook_remove_page (self->priv->notebook, 0);
+	gtk_builder_connect_signals_full (builder, _tracker_preferences_connect_signals_gtk_builder_connect_func, self);
+	_g_object_unref0 (builder);
+}
+
+
+void tracker_preferences_show (TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	tracker_preferences_setup_ui (self);
+	gtk_widget_show ((GtkWidget*) self->priv->window);
+}
+
+
+static void tracker_preferences_connect_signals (GtkBuilder* builder, GObject* object, const gchar* signal_name, const gchar* handler_name, GObject* connect_object, GConnectFlags flags, TrackerPreferences* self) {
+	GModule* _tmp0_ = NULL;
+	GModule* module;
+	void* sym = NULL;
+	void* _tmp1_ = NULL;
+	gboolean _tmp2_;
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (builder != NULL);
+	g_return_if_fail (object != NULL);
+	g_return_if_fail (signal_name != NULL);
+	g_return_if_fail (handler_name != NULL);
+	_tmp0_ = g_module_open (NULL, G_MODULE_BIND_LAZY);
+	module = _tmp0_;
+	_tmp2_ = g_module_symbol (module, handler_name, &_tmp1_);
+	sym = _tmp1_;
+	if (!_tmp2_) {
+		fprintf (stdout, "Symbol not found! %s\n", handler_name);
+	} else {
+		g_signal_connect (object, signal_name, (GCallback) sym, self);
+	}
+	_g_module_close0 (module);
+}
+
+
+void tracker_preferences_response_cb (GtkDialog* source, gint response_id, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	g_debug ("tracker-preferences.vala:186: Got response id %d (apply:%d, close:%d)", response_id, (gint) GTK_RESPONSE_APPLY, (gint) GTK_RESPONSE_CLOSE);
+	switch (response_id) {
+		case GTK_RESPONSE_APPLY:
+		{
+			gint _tmp0_;
+			gchar** _tmp1_ = NULL;
+			gchar** _tmp2_;
+			gint _tmp2__length1;
+			gint _tmp3_;
+			gchar** _tmp4_ = NULL;
+			gchar** _tmp5_;
+			gint _tmp5__length1;
+			gint _tmp6_;
+			gchar** _tmp7_ = NULL;
+			gchar** _tmp8_;
+			gint _tmp8__length1;
+			gint _tmp9_;
+			gchar** _tmp10_ = NULL;
+			gchar** _tmp11_;
+			gint _tmp11__length1;
+			gint _tmp12_;
+			gchar** _tmp13_ = NULL;
+			gchar** _tmp14_;
+			gint _tmp14__length1;
+			gdouble _tmp15_;
+			gdouble _tmp16_;
+			gdouble _tmp17_;
+			g_debug ("tracker-preferences.vala:190: Converting directories for storage");
+			_tmp1_ = tracker_preferences_model_to_strv (self, self->priv->liststore_index_single, &_tmp0_);
+			_tmp2_ = _tmp1_;
+			_tmp2__length1 = _tmp0_;
+			g_settings_set_strv (self->priv->settings, "index-single-directories", _tmp2_);
+			_tmp2_ = (_vala_array_free (_tmp2_, _tmp2__length1, (GDestroyNotify) g_free), NULL);
+			_tmp4_ = tracker_preferences_model_to_strv (self, self->priv->liststore_index_recursively, &_tmp3_);
+			_tmp5_ = _tmp4_;
+			_tmp5__length1 = _tmp3_;
+			g_settings_set_strv (self->priv->settings, "index-recursive-directories", _tmp5_);
+			_tmp5_ = (_vala_array_free (_tmp5_, _tmp5__length1, (GDestroyNotify) g_free), NULL);
+			_tmp7_ = tracker_preferences_model_to_strv (self, self->priv->liststore_ignored_directories, &_tmp6_);
+			_tmp8_ = _tmp7_;
+			_tmp8__length1 = _tmp6_;
+			g_settings_set_strv (self->priv->settings, "ignored-directories", _tmp8_);
+			_tmp8_ = (_vala_array_free (_tmp8_, _tmp8__length1, (GDestroyNotify) g_free), NULL);
+			_tmp10_ = tracker_preferences_model_to_strv (self, self->priv->liststore_ignored_files, &_tmp9_);
+			_tmp11_ = _tmp10_;
+			_tmp11__length1 = _tmp9_;
+			g_settings_set_strv (self->priv->settings, "ignored-files", _tmp11_);
+			_tmp11_ = (_vala_array_free (_tmp11_, _tmp11__length1, (GDestroyNotify) g_free), NULL);
+			_tmp13_ = tracker_preferences_model_to_strv (self, self->priv->liststore_gnored_directories_with_content, &_tmp12_);
+			_tmp14_ = _tmp13_;
+			_tmp14__length1 = _tmp12_;
+			g_settings_set_strv (self->priv->settings, "ignored-directories-with-content", _tmp14_);
+			_tmp14_ = (_vala_array_free (_tmp14_, _tmp14__length1, (GDestroyNotify) g_free), NULL);
+			_tmp15_ = gtk_range_get_value ((GtkRange*) self->priv->hscale_disk_space_limit);
+			g_settings_set_int (self->priv->settings, "low-disk-space-limit", (gint) _tmp15_);
+			_tmp16_ = gtk_range_get_value ((GtkRange*) self->priv->hscale_throttle);
+			g_settings_set_int (self->priv->settings, "throttle", (gint) _tmp16_);
+			_tmp17_ = gtk_range_get_value ((GtkRange*) self->priv->hscale_drop_device_threshold);
+			g_settings_set_int (self->priv->settings, "removable-days-threshold", (gint) _tmp17_);
+			g_debug ("tracker-preferences.vala:203: Saving settings...");
+			g_settings_apply (self->priv->settings);
+			g_debug ("tracker-preferences.vala:205: Done");
+			return;
+		}
+		default:
+		{
+			break;
+		}
+	}
+	gtk_main_quit ();
+}
+
+
+void tracker_preferences_spinbutton_delay_value_changed_cb (GtkSpinButton* source, TrackerPreferences* self) {
 	gint _tmp0_;
+	g_return_if_fail (self != NULL);
 	g_return_if_fail (source != NULL);
 	_tmp0_ = gtk_spin_button_get_value_as_int (source);
-	tracker_config_set_initial_sleep (config, _tmp0_);
+	g_settings_set_int (self->priv->settings, "initial-sleep", _tmp0_);
 }
 
 
-void checkbutton_enable_monitoring_toggled_cb (GtkCheckButton* source) {
+void tracker_preferences_checkbutton_enable_monitoring_toggled_cb (GtkCheckButton* source, TrackerPreferences* self) {
 	gboolean _tmp0_;
+	g_return_if_fail (self != NULL);
 	g_return_if_fail (source != NULL);
 	_tmp0_ = gtk_toggle_button_get_active ((GtkToggleButton*) source);
-	tracker_config_set_enable_monitors (config, _tmp0_);
+	g_settings_set_boolean (self->priv->settings, "enable-monitors", _tmp0_);
 }
 
 
-void checkbutton_enable_index_on_battery_toggled_cb (GtkCheckButton* source) {
-	gboolean _tmp0_;
-	gboolean _tmp1_;
-	g_return_if_fail (source != NULL);
-	_tmp0_ = gtk_toggle_button_get_active ((GtkToggleButton*) source);
-	tracker_config_set_index_on_battery (config, _tmp0_);
-	_tmp1_ = gtk_toggle_button_get_active ((GtkToggleButton*) source);
-	gtk_widget_set_sensitive ((GtkWidget*) checkbutton_enable_index_on_battery_first_time, !_tmp1_);
-}
-
-
-void checkbutton_enable_index_on_battery_first_time_toggled_cb (GtkCheckButton* source) {
-	gboolean _tmp0_;
-	g_return_if_fail (source != NULL);
-	_tmp0_ = gtk_toggle_button_get_active ((GtkToggleButton*) source);
-	tracker_config_set_index_on_battery_first_time (config, _tmp0_);
-}
-
-
-void checkbutton_index_removable_media_toggled_cb (GtkCheckButton* source) {
+void tracker_preferences_checkbutton_enable_index_on_battery_toggled_cb (GtkCheckButton* source, TrackerPreferences* self) {
 	gboolean _tmp0_;
 	gboolean _tmp1_;
+	g_return_if_fail (self != NULL);
 	g_return_if_fail (source != NULL);
 	_tmp0_ = gtk_toggle_button_get_active ((GtkToggleButton*) source);
-	tracker_config_set_index_removable_devices (config, _tmp0_);
+	g_settings_set_boolean (self->priv->settings, "index-on-battery", _tmp0_);
 	_tmp1_ = gtk_toggle_button_get_active ((GtkToggleButton*) source);
-	gtk_widget_set_sensitive ((GtkWidget*) checkbutton_index_optical_discs, _tmp1_);
+	gtk_widget_set_sensitive ((GtkWidget*) self->priv->checkbutton_enable_index_on_battery_first_time, !_tmp1_);
 }
 
 
-void checkbutton_index_optical_discs_toggled_cb (GtkCheckButton* source) {
+void tracker_preferences_checkbutton_enable_index_on_battery_first_time_toggled_cb (GtkCheckButton* source, TrackerPreferences* self) {
 	gboolean _tmp0_;
+	g_return_if_fail (self != NULL);
 	g_return_if_fail (source != NULL);
 	_tmp0_ = gtk_toggle_button_get_active ((GtkToggleButton*) source);
-	tracker_config_set_index_optical_discs (config, _tmp0_);
+	g_settings_set_boolean (self->priv->settings, "index-on-battery-first-time", _tmp0_);
 }
 
 
-gchar* hscale_disk_space_limit_format_value_cb (GtkScale* source, gdouble value) {
+void tracker_preferences_checkbutton_index_removable_media_toggled_cb (GtkCheckButton* source, TrackerPreferences* self) {
+	gboolean _tmp0_;
+	gboolean _tmp1_;
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	_tmp0_ = gtk_toggle_button_get_active ((GtkToggleButton*) source);
+	g_settings_set_boolean (self->priv->settings, "index-removable-devices", _tmp0_);
+	_tmp1_ = gtk_toggle_button_get_active ((GtkToggleButton*) source);
+	gtk_widget_set_sensitive ((GtkWidget*) self->priv->checkbutton_index_optical_discs, _tmp1_);
+}
+
+
+void tracker_preferences_checkbutton_index_optical_discs_toggled_cb (GtkCheckButton* source, TrackerPreferences* self) {
+	gboolean _tmp0_;
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	_tmp0_ = gtk_toggle_button_get_active ((GtkToggleButton*) source);
+	g_settings_set_boolean (self->priv->settings, "index-optical-discs", _tmp0_);
+}
+
+
+gchar* tracker_preferences_hscale_disk_space_limit_format_value_cb (GtkScale* source, gdouble value, TrackerPreferences* self) {
 	gchar* result = NULL;
 	const gchar* _tmp2_ = NULL;
 	gchar* _tmp3_ = NULL;
+	g_return_val_if_fail (self != NULL, NULL);
 	g_return_val_if_fail (source != NULL, NULL);
 	if (((gint) value) == (-1)) {
 		const gchar* _tmp0_ = NULL;
@@ -209,10 +725,11 @@ gchar* hscale_disk_space_limit_format_value_cb (GtkScale* source, gdouble value)
 }
 
 
-gchar* hscale_throttle_format_value_cb (GtkScale* source, gdouble value) {
+gchar* tracker_preferences_hscale_throttle_format_value_cb (GtkScale* source, gdouble value, TrackerPreferences* self) {
 	gchar* result = NULL;
 	const gchar* _tmp0_ = NULL;
 	gchar* _tmp1_ = NULL;
+	g_return_val_if_fail (self != NULL, NULL);
 	g_return_val_if_fail (source != NULL, NULL);
 	_tmp0_ = _ ("%d/20");
 	_tmp1_ = g_strdup_printf (_tmp0_, (gint) value);
@@ -221,10 +738,11 @@ gchar* hscale_throttle_format_value_cb (GtkScale* source, gdouble value) {
 }
 
 
-gchar* hscale_drop_device_threshold_format_value_cb (GtkScale* source, gdouble value) {
+gchar* tracker_preferences_hscale_drop_device_threshold_format_value_cb (GtkScale* source, gdouble value, TrackerPreferences* self) {
 	gchar* result = NULL;
 	const gchar* _tmp2_ = NULL;
 	gchar* _tmp3_ = NULL;
+	g_return_val_if_fail (self != NULL, NULL);
 	g_return_val_if_fail (source != NULL, NULL);
 	if (((gint) value) == 0) {
 		const gchar* _tmp0_ = NULL;
@@ -241,12 +759,155 @@ gchar* hscale_drop_device_threshold_format_value_cb (GtkScale* source, gdouble v
 }
 
 
-static gpointer _g_object_ref0 (gpointer self) {
-	return self ? g_object_ref (self) : NULL;
+void tracker_preferences_button_index_recursively_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_add_dir (self, self->priv->liststore_index_recursively);
 }
 
 
-void add_freevalue (GtkListStore* model) {
+void tracker_preferences_button_index_recursively_remove_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_del_dir (self, self->priv->treeview_index_recursively);
+}
+
+
+void tracker_preferences_button_index_single_remove_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_del_dir (self, self->priv->treeview_index_single);
+}
+
+
+void tracker_preferences_button_index_single_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_add_dir (self, self->priv->liststore_index_single);
+}
+
+
+void tracker_preferences_button_ignored_directories_globs_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_add_freevalue (self, self->priv->liststore_ignored_directories);
+}
+
+
+void tracker_preferences_button_ignored_directories_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_add_dir (self, self->priv->liststore_ignored_directories);
+}
+
+
+void tracker_preferences_button_ignored_directories_remove_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_del_dir (self, self->priv->treeview_ignored_directories);
+}
+
+
+void tracker_preferences_button_ignored_directories_with_content_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_add_freevalue (self, self->priv->liststore_gnored_directories_with_content);
+}
+
+
+void tracker_preferences_button_ignored_directories_with_content_remove_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_del_dir (self, self->priv->treeview_ignored_directories_with_content);
+}
+
+
+void tracker_preferences_button_ignored_files_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_add_freevalue (self, self->priv->liststore_ignored_files);
+}
+
+
+void tracker_preferences_button_ignored_files_remove_clicked_cb (GtkButton* source, TrackerPreferences* self) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	tracker_preferences_del_dir (self, self->priv->treeview_ignored_files);
+}
+
+
+void tracker_preferences_togglebutton_home_toggled_cb (GtkToggleButton* source, TrackerPreferences* self) {
+	gboolean _tmp0_ = FALSE;
+	gboolean _tmp1_;
+	gboolean _tmp4_ = FALSE;
+	gboolean _tmp5_;
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (source != NULL);
+	_tmp1_ = gtk_toggle_button_get_active (source);
+	if (_tmp1_) {
+		gboolean _tmp2_;
+		_tmp2_ = tracker_preferences_model_contains (self, (GtkTreeModel*) self->priv->liststore_index_recursively, TRACKER_PREFERENCES_HOME_STRING);
+		_tmp0_ = !_tmp2_;
+	} else {
+		_tmp0_ = FALSE;
+	}
+	if (_tmp0_) {
+		GtkTreeIter iter = {0};
+		GtkTreeIter _tmp3_ = {0};
+		GValue v = {0};
+		gtk_list_store_append (self->priv->liststore_index_recursively, &_tmp3_);
+		iter = _tmp3_;
+		g_value_init (&v, G_TYPE_STRING);
+		g_value_set_string (&v, TRACKER_PREFERENCES_HOME_STRING);
+		gtk_list_store_set_value (self->priv->liststore_index_recursively, &iter, 0, &v);
+		G_IS_VALUE (&v) ? (g_value_unset (&v), NULL) : NULL;
+	}
+	_tmp5_ = gtk_toggle_button_get_active (source);
+	if (!_tmp5_) {
+		gboolean _tmp6_;
+		_tmp6_ = tracker_preferences_model_contains (self, (GtkTreeModel*) self->priv->liststore_index_recursively, TRACKER_PREFERENCES_HOME_STRING);
+		_tmp4_ = _tmp6_;
+	} else {
+		_tmp4_ = FALSE;
+	}
+	if (_tmp4_) {
+		gboolean valid = FALSE;
+		GtkTreeIter iter = {0};
+		GtkTreeIter _tmp7_ = {0};
+		gboolean _tmp8_;
+		_tmp8_ = gtk_tree_model_get_iter_first ((GtkTreeModel*) self->priv->liststore_index_recursively, &_tmp7_);
+		iter = _tmp7_;
+		valid = _tmp8_;
+		while (TRUE) {
+			GValue value = {0};
+			GValue _tmp9_ = {0};
+			const gchar* _tmp10_ = NULL;
+			if (!valid) {
+				break;
+			}
+			gtk_tree_model_get_value ((GtkTreeModel*) self->priv->liststore_index_recursively, &iter, 0, &_tmp9_);
+			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
+			value = _tmp9_;
+			_tmp10_ = g_value_get_string (&value);
+			if (g_strcmp0 (_tmp10_, TRACKER_PREFERENCES_HOME_STRING) == 0) {
+				GtkTreeIter _tmp11_ = {0};
+				gboolean _tmp12_;
+				gtk_list_store_remove (self->priv->liststore_index_recursively, &iter);
+				_tmp12_ = gtk_tree_model_get_iter_first ((GtkTreeModel*) self->priv->liststore_index_recursively, &_tmp11_);
+				iter = _tmp11_;
+				valid = _tmp12_;
+			} else {
+				gboolean _tmp13_;
+				_tmp13_ = gtk_tree_model_iter_next ((GtkTreeModel*) self->priv->liststore_index_recursively, &iter);
+				valid = _tmp13_;
+			}
+			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
+		}
+	}
+}
+
+
+static void tracker_preferences_add_freevalue (TrackerPreferences* self, GtkListStore* model) {
 	GtkDialog* dialog = NULL;
 	GtkEntry* entry = NULL;
 	GtkContainer* content_area = NULL;
@@ -256,9 +917,10 @@ void add_freevalue (GtkListStore* model) {
 	GtkContainer* _tmp3_;
 	GtkEntry* _tmp4_ = NULL;
 	gint _tmp5_;
+	g_return_if_fail (self != NULL);
 	g_return_if_fail (model != NULL);
 	_tmp0_ = _ ("Enter value");
-	_tmp1_ = (GtkDialog*) gtk_dialog_new_with_buttons (_tmp0_, window, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
+	_tmp1_ = (GtkDialog*) gtk_dialog_new_with_buttons (_tmp0_, self->priv->window, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
 	_g_object_unref0 (dialog);
 	dialog = g_object_ref_sink (_tmp1_);
 	gtk_dialog_set_default_response (dialog, (gint) GTK_RESPONSE_ACCEPT);
@@ -299,21 +961,22 @@ void add_freevalue (GtkListStore* model) {
 		}
 		_g_free0 (text);
 	}
-	gtk_object_destroy ((GtkObject*) dialog);
+	gtk_widget_destroy ((GtkWidget*) dialog);
 	_g_object_unref0 (content_area);
 	_g_object_unref0 (entry);
 	_g_object_unref0 (dialog);
 }
 
 
-void add_dir (GtkListStore* model) {
+static void tracker_preferences_add_dir (TrackerPreferences* self, GtkListStore* model) {
 	const gchar* _tmp0_ = NULL;
 	GtkFileChooserDialog* _tmp1_ = NULL;
 	GtkFileChooserDialog* dialog;
 	gint _tmp2_;
+	g_return_if_fail (self != NULL);
 	g_return_if_fail (model != NULL);
 	_tmp0_ = _ ("Select directory");
-	_tmp1_ = (GtkFileChooserDialog*) gtk_file_chooser_dialog_new (_tmp0_, window, GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
+	_tmp1_ = (GtkFileChooserDialog*) gtk_file_chooser_dialog_new (_tmp0_, self->priv->window, GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
 	dialog = g_object_ref_sink (_tmp1_);
 	_tmp2_ = gtk_dialog_run ((GtkDialog*) dialog);
 	if (_tmp2_ == GTK_RESPONSE_ACCEPT) {
@@ -340,7 +1003,7 @@ void add_dir (GtkListStore* model) {
 		G_IS_VALUE (&v) ? (g_value_unset (&v), NULL) : NULL;
 		_g_object_unref0 (dir);
 	}
-	gtk_object_destroy ((GtkObject*) dialog);
+	gtk_widget_destroy ((GtkWidget*) dialog);
 	_g_object_unref0 (dialog);
 }
 
@@ -361,7 +1024,7 @@ static gpointer _gtk_tree_path_copy0 (gpointer self) {
 }
 
 
-void del_dir (GtkTreeView* view) {
+static void tracker_preferences_del_dir (TrackerPreferences* self, GtkTreeView* view) {
 	GList* list = NULL;
 	GtkListStore* store = NULL;
 	GtkTreeModel* model = NULL;
@@ -372,6 +1035,7 @@ void del_dir (GtkTreeView* view) {
 	GList* _tmp3_ = NULL;
 	GtkTreeModel* _tmp4_;
 	GtkListStore* _tmp5_;
+	g_return_if_fail (self != NULL);
 	g_return_if_fail (view != NULL);
 	_tmp0_ = gtk_tree_view_get_selection (view);
 	_tmp1_ = _g_object_ref0 (_tmp0_);
@@ -414,290 +1078,130 @@ void del_dir (GtkTreeView* view) {
 }
 
 
-void button_index_recursively_add_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	add_dir (liststore_index_recursively);
-}
-
-
-void button_index_recursively_remove_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	del_dir (treeview_index_recursively);
-}
-
-
-void button_index_single_remove_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	del_dir (treeview_index_single);
-}
-
-
-void button_index_single_add_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	add_dir (liststore_index_single);
-}
-
-
-void button_ignored_directories_globs_add_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	add_freevalue (liststore_ignored_directories);
-}
-
-
-void button_ignored_directories_add_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	add_dir (liststore_ignored_directories);
-}
-
-
-void button_ignored_directories_remove_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	del_dir (treeview_ignored_directories);
-}
-
-
-void button_ignored_directories_with_content_add_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	add_freevalue (liststore_gnored_directories_with_content);
-}
-
-
-void button_ignored_directories_with_content_remove_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	del_dir (treeview_ignored_directories_with_content);
-}
-
-
-void button_ignored_files_add_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	add_freevalue (liststore_ignored_files);
-}
-
-
-void button_ignored_files_remove_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	del_dir (treeview_ignored_files);
-}
-
-
-static void _g_free0_ (gpointer var) {
-	var = (g_free (var), NULL);
-}
-
-
-static void _g_slist_free__g_free0_ (GSList* self) {
-	g_slist_foreach (self, (GFunc) _g_free0_, NULL);
-	g_slist_free (self);
-}
-
-
-GSList* model_to_slist (GtkListStore* model) {
-	GSList* result = NULL;
-	gboolean valid = FALSE;
-	GSList* list;
-	GtkTreeIter iter = {0};
-	GtkTreeIter _tmp0_ = {0};
-	gboolean _tmp1_;
-	g_return_val_if_fail (model != NULL, NULL);
-	list = NULL;
-	_tmp1_ = gtk_tree_model_get_iter_first ((GtkTreeModel*) model, &_tmp0_);
-	iter = _tmp0_;
-	valid = _tmp1_;
-	while (TRUE) {
-		GValue value = {0};
-		GValue _tmp2_ = {0};
-		const gchar* _tmp3_ = NULL;
-		gchar* _tmp4_;
-		gboolean _tmp5_;
-		if (!valid) {
-			break;
-		}
-		gtk_tree_model_get_value ((GtkTreeModel*) model, &iter, 0, &_tmp2_);
-		G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-		value = _tmp2_;
-		_tmp3_ = g_value_get_string (&value);
-		_tmp4_ = g_strdup (_tmp3_);
-		list = g_slist_append (list, _tmp4_);
-		_tmp5_ = gtk_tree_model_iter_next ((GtkTreeModel*) model, &iter);
-		valid = _tmp5_;
-		G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
+static void _vala_array_add1 (gchar*** array, int* length, int* size, gchar* value) {
+	if ((*length) == (*size)) {
+		*size = (*size) ? (2 * (*size)) : 4;
+		*array = g_renew (gchar*, *array, (*size) + 1);
 	}
-	result = list;
+	(*array)[(*length)++] = value;
+	(*array)[*length] = NULL;
+}
+
+
+static gchar** tracker_preferences_model_to_strv (TrackerPreferences* self, GtkListStore* model, int* result_length1) {
+	gchar** result = NULL;
+	gchar** _tmp0_ = NULL;
+	gchar** list;
+	gint list_length1;
+	gint _list_size_;
+	GtkTreeIter iter = {0};
+	gboolean valid = FALSE;
+	gchar** _tmp8_;
+	g_return_val_if_fail (self != NULL, NULL);
+	g_return_val_if_fail (model != NULL, NULL);
+	_tmp0_ = g_new0 (gchar*, 0 + 1);
+	list = _tmp0_;
+	list_length1 = 0;
+	_list_size_ = 0;
+	{
+		GtkTreeIter _tmp1_ = {0};
+		gboolean _tmp2_;
+		gboolean _tmp3_;
+		_tmp2_ = gtk_tree_model_get_iter_first ((GtkTreeModel*) model, &_tmp1_);
+		iter = _tmp1_;
+		valid = _tmp2_;
+		_tmp3_ = TRUE;
+		while (TRUE) {
+			GValue value = {0};
+			GValue _tmp5_ = {0};
+			const gchar* _tmp6_ = NULL;
+			gchar* _tmp7_;
+			if (!_tmp3_) {
+				gboolean _tmp4_;
+				_tmp4_ = gtk_tree_model_iter_next ((GtkTreeModel*) model, &iter);
+				valid = _tmp4_;
+			}
+			_tmp3_ = FALSE;
+			if (!valid) {
+				break;
+			}
+			gtk_tree_model_get_value ((GtkTreeModel*) model, &iter, 0, &_tmp5_);
+			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
+			value = _tmp5_;
+			_tmp6_ = g_value_get_string (&value);
+			_tmp7_ = g_strdup (_tmp6_);
+			_vala_array_add1 (&list, &list_length1, &_list_size_, _tmp7_);
+			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
+		}
+	}
+	_tmp8_ = list;
+	*result_length1 = list_length1;
+	result = _tmp8_;
 	return result;
 }
 
 
-gboolean model_contains (GtkTreeModel* model, const gchar* needle) {
+gboolean tracker_preferences_model_contains (TrackerPreferences* self, GtkTreeModel* model, const gchar* needle) {
 	gboolean result = FALSE;
-	gboolean valid = FALSE;
 	GtkTreeIter iter = {0};
-	GtkTreeIter _tmp0_ = {0};
-	gboolean _tmp1_;
+	gboolean valid = FALSE;
+	g_return_val_if_fail (self != NULL, FALSE);
 	g_return_val_if_fail (model != NULL, FALSE);
 	g_return_val_if_fail (needle != NULL, FALSE);
-	_tmp1_ = gtk_tree_model_get_iter_first (model, &_tmp0_);
-	iter = _tmp0_;
-	valid = _tmp1_;
-	while (TRUE) {
-		GValue value = {0};
-		GValue _tmp2_ = {0};
-		const gchar* _tmp3_ = NULL;
-		gboolean _tmp4_;
-		if (!valid) {
-			break;
-		}
-		gtk_tree_model_get_value (model, &iter, 0, &_tmp2_);
-		G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-		value = _tmp2_;
-		_tmp3_ = g_value_get_string (&value);
-		if (g_strcmp0 (_tmp3_, needle) == 0) {
-			result = TRUE;
+	{
+		GtkTreeIter _tmp0_ = {0};
+		gboolean _tmp1_;
+		gboolean _tmp2_;
+		_tmp1_ = gtk_tree_model_get_iter_first (model, &_tmp0_);
+		iter = _tmp0_;
+		valid = _tmp1_;
+		_tmp2_ = TRUE;
+		while (TRUE) {
+			GValue value = {0};
+			GValue _tmp4_ = {0};
+			const gchar* _tmp5_ = NULL;
+			if (!_tmp2_) {
+				gboolean _tmp3_;
+				_tmp3_ = gtk_tree_model_iter_next (model, &iter);
+				valid = _tmp3_;
+			}
+			_tmp2_ = FALSE;
+			if (!valid) {
+				break;
+			}
+			gtk_tree_model_get_value (model, &iter, 0, &_tmp4_);
 			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-			return result;
+			value = _tmp4_;
+			_tmp5_ = g_value_get_string (&value);
+			if (g_strcmp0 (_tmp5_, needle) == 0) {
+				result = TRUE;
+				G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
+				return result;
+			}
+			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
 		}
-		_tmp4_ = gtk_tree_model_iter_next (model, &iter);
-		valid = _tmp4_;
-		G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
 	}
 	result = FALSE;
 	return result;
 }
 
 
-void button_apply_clicked_cb (GtkButton* source) {
-	GSList* _tmp0_ = NULL;
-	GSList* _tmp1_;
-	GSList* _tmp2_ = NULL;
-	GSList* _tmp3_;
-	GSList* _tmp4_ = NULL;
-	GSList* _tmp5_;
-	GSList* _tmp6_ = NULL;
-	GSList* _tmp7_;
-	GSList* _tmp8_ = NULL;
-	GSList* _tmp9_;
-	gdouble _tmp10_;
-	gdouble _tmp11_;
-	gdouble _tmp12_;
-	g_return_if_fail (source != NULL);
-	_tmp0_ = model_to_slist (liststore_index_single);
-	_tmp1_ = _tmp0_;
-	tracker_config_set_index_single_directories (config, _tmp1_);
-	__g_slist_free__g_free0_0 (_tmp1_);
-	_tmp2_ = model_to_slist (liststore_ignored_directories);
-	_tmp3_ = _tmp2_;
-	tracker_config_set_ignored_directories (config, _tmp3_);
-	__g_slist_free__g_free0_0 (_tmp3_);
-	_tmp4_ = model_to_slist (liststore_ignored_files);
-	_tmp5_ = _tmp4_;
-	tracker_config_set_ignored_files (config, _tmp5_);
-	__g_slist_free__g_free0_0 (_tmp5_);
-	_tmp6_ = model_to_slist (liststore_gnored_directories_with_content);
-	_tmp7_ = _tmp6_;
-	tracker_config_set_ignored_directories_with_content (config, _tmp7_);
-	__g_slist_free__g_free0_0 (_tmp7_);
-	_tmp8_ = model_to_slist (liststore_index_recursively);
-	_tmp9_ = _tmp8_;
-	tracker_config_set_index_recursive_directories (config, _tmp9_);
-	__g_slist_free__g_free0_0 (_tmp9_);
-	_tmp10_ = gtk_range_get_value ((GtkRange*) hscale_disk_space_limit);
-	tracker_config_set_low_disk_space_limit (config, (gint) _tmp10_);
-	_tmp11_ = gtk_range_get_value ((GtkRange*) hscale_throttle);
-	tracker_config_set_throttle (config, (gint) _tmp11_);
-	_tmp12_ = gtk_range_get_value ((GtkRange*) hscale_drop_device_threshold);
-	tracker_config_set_removable_days_threshold (config, (gint) _tmp12_);
-	tracker_config_save (config);
-}
-
-
-void button_close_clicked_cb (GtkButton* source) {
-	g_return_if_fail (source != NULL);
-	gtk_main_quit ();
-}
-
-
-void togglebutton_home_toggled_cb (GtkToggleButton* source) {
-	gboolean _tmp0_ = FALSE;
-	gboolean _tmp1_;
-	gboolean _tmp4_ = FALSE;
-	gboolean _tmp5_;
-	g_return_if_fail (source != NULL);
-	_tmp1_ = gtk_toggle_button_get_active (source);
-	if (_tmp1_) {
-		gboolean _tmp2_;
-		_tmp2_ = model_contains ((GtkTreeModel*) liststore_index_recursively, HOME_STRING);
-		_tmp0_ = !_tmp2_;
-	} else {
-		_tmp0_ = FALSE;
-	}
-	if (_tmp0_) {
-		GtkTreeIter iter = {0};
-		GtkTreeIter _tmp3_ = {0};
-		GValue v = {0};
-		gtk_list_store_append (liststore_index_recursively, &_tmp3_);
-		iter = _tmp3_;
-		g_value_init (&v, G_TYPE_STRING);
-		g_value_set_string (&v, HOME_STRING);
-		gtk_list_store_set_value (liststore_index_recursively, &iter, 0, &v);
-		G_IS_VALUE (&v) ? (g_value_unset (&v), NULL) : NULL;
-	}
-	_tmp5_ = gtk_toggle_button_get_active (source);
-	if (!_tmp5_) {
-		gboolean _tmp6_;
-		_tmp6_ = model_contains ((GtkTreeModel*) liststore_index_recursively, HOME_STRING);
-		_tmp4_ = _tmp6_;
-	} else {
-		_tmp4_ = FALSE;
-	}
-	if (_tmp4_) {
-		gboolean valid = FALSE;
-		GtkTreeIter iter = {0};
-		GtkTreeIter _tmp7_ = {0};
-		gboolean _tmp8_;
-		_tmp8_ = gtk_tree_model_get_iter_first ((GtkTreeModel*) liststore_index_recursively, &_tmp7_);
-		iter = _tmp7_;
-		valid = _tmp8_;
-		while (TRUE) {
-			GValue value = {0};
-			GValue _tmp9_ = {0};
-			const gchar* _tmp10_ = NULL;
-			if (!valid) {
-				break;
-			}
-			gtk_tree_model_get_value ((GtkTreeModel*) liststore_index_recursively, &iter, 0, &_tmp9_);
-			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-			value = _tmp9_;
-			_tmp10_ = g_value_get_string (&value);
-			if (g_strcmp0 (_tmp10_, HOME_STRING) == 0) {
-				GtkTreeIter _tmp11_ = {0};
-				gboolean _tmp12_;
-				gtk_list_store_remove (liststore_index_recursively, &iter);
-				_tmp12_ = gtk_tree_model_get_iter_first ((GtkTreeModel*) liststore_index_recursively, &_tmp11_);
-				iter = _tmp11_;
-				valid = _tmp12_;
-			} else {
-				gboolean _tmp13_;
-				_tmp13_ = gtk_tree_model_iter_next ((GtkTreeModel*) liststore_index_recursively, &iter);
-				valid = _tmp13_;
-			}
-			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-		}
-	}
-}
-
-
-void fill_in_model (GtkListStore* model, GSList* list) {
+static void tracker_preferences_fill_in_model (TrackerPreferences* self, GtkListStore* model, gchar** list, int list_length1) {
 	gint position;
 	GError * _inner_error_ = NULL;
+	g_return_if_fail (self != NULL);
 	g_return_if_fail (model != NULL);
 	position = 0;
 	{
-		GSList* str_collection;
-		GSList* str_it;
+		gchar** str_collection;
+		int str_collection_length1;
+		int str_it;
 		str_collection = list;
-		for (str_it = str_collection; str_it != NULL; str_it = str_it->next) {
+		str_collection_length1 = list_length1;
+		for (str_it = 0; str_it < list_length1; str_it = str_it + 1) {
 			gchar* _tmp0_;
 			gchar* str;
-			_tmp0_ = g_strdup ((const gchar*) str_it->data);
+			_tmp0_ = g_strdup (str_collection[str_it]);
 			str = _tmp0_;
 			{
 				gchar* _tmp1_ = NULL;
@@ -708,7 +1212,7 @@ void fill_in_model (GtkListStore* model, GSList* list) {
 				_tmp2_ = _tmp1_;
 				if (_inner_error_ != NULL) {
 					if (_inner_error_->domain == G_CONVERT_ERROR) {
-						goto __catch0_g_convert_error;
+						goto __catch2_g_convert_error;
 					}
 					_g_free0 (str);
 					g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -720,16 +1224,16 @@ void fill_in_model (GtkListStore* model, GSList* list) {
 				_tmp4_ = _tmp2_;
 				gtk_list_store_insert_with_values (model, NULL, _tmp3_, 0, _tmp4_, -1);
 				_g_free0 (_tmp4_);
-				goto __finally0;
-				__catch0_g_convert_error:
+				goto __finally2;
+				__catch2_g_convert_error:
 				{
 					GError * e;
 					e = _inner_error_;
 					_inner_error_ = NULL;
-					g_print ("%s", e->message);
+					g_print ("Could not convert filename to UTF8: %s", e->message);
 					_g_error_free0 (e);
 				}
-				__finally0:
+				__finally2:
 				if (_inner_error_ != NULL) {
 					_g_free0 (str);
 					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -743,12 +1247,13 @@ void fill_in_model (GtkListStore* model, GSList* list) {
 }
 
 
-void setup_standard_treeview (GtkTreeView* view, const gchar* title) {
+static void tracker_preferences_setup_standard_treeview (TrackerPreferences* self, GtkTreeView* view, const gchar* title) {
 	GtkCellRendererText* _tmp0_ = NULL;
 	GtkCellRendererText* _tmp1_;
 	GtkTreeViewColumn* _tmp2_ = NULL;
 	GtkTreeViewColumn* _tmp3_;
 	GtkTreeViewColumn* column;
+	g_return_if_fail (self != NULL);
 	g_return_if_fail (view != NULL);
 	g_return_if_fail (title != NULL);
 	_tmp0_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
@@ -762,292 +1267,312 @@ void setup_standard_treeview (GtkTreeView* view, const gchar* title) {
 }
 
 
+static void tracker_value_preferences_init (GValue* value) {
+	value->data[0].v_pointer = NULL;
+}
+
+
+static void tracker_value_preferences_free_value (GValue* value) {
+	if (value->data[0].v_pointer) {
+		tracker_preferences_unref (value->data[0].v_pointer);
+	}
+}
+
+
+static void tracker_value_preferences_copy_value (const GValue* src_value, GValue* dest_value) {
+	if (src_value->data[0].v_pointer) {
+		dest_value->data[0].v_pointer = tracker_preferences_ref (src_value->data[0].v_pointer);
+	} else {
+		dest_value->data[0].v_pointer = NULL;
+	}
+}
+
+
+static gpointer tracker_value_preferences_peek_pointer (const GValue* value) {
+	return value->data[0].v_pointer;
+}
+
+
+static gchar* tracker_value_preferences_collect_value (GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
+	if (collect_values[0].v_pointer) {
+		TrackerPreferences* object;
+		object = collect_values[0].v_pointer;
+		if (object->parent_instance.g_class == NULL) {
+			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
+		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
+			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
+		}
+		value->data[0].v_pointer = tracker_preferences_ref (object);
+	} else {
+		value->data[0].v_pointer = NULL;
+	}
+	return NULL;
+}
+
+
+static gchar* tracker_value_preferences_lcopy_value (const GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
+	TrackerPreferences** object_p;
+	object_p = collect_values[0].v_pointer;
+	if (!object_p) {
+		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+	}
+	if (!value->data[0].v_pointer) {
+		*object_p = NULL;
+	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
+		*object_p = value->data[0].v_pointer;
+	} else {
+		*object_p = tracker_preferences_ref (value->data[0].v_pointer);
+	}
+	return NULL;
+}
+
+
+GParamSpec* tracker_param_spec_preferences (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags) {
+	TrackerParamSpecPreferences* spec;
+	g_return_val_if_fail (g_type_is_a (object_type, TRACKER_TYPE_PREFERENCES), NULL);
+	spec = g_param_spec_internal (G_TYPE_PARAM_OBJECT, name, nick, blurb, flags);
+	G_PARAM_SPEC (spec)->value_type = object_type;
+	return G_PARAM_SPEC (spec);
+}
+
+
+gpointer tracker_value_get_preferences (const GValue* value) {
+	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_PREFERENCES), NULL);
+	return value->data[0].v_pointer;
+}
+
+
+void tracker_value_set_preferences (GValue* value, gpointer v_object) {
+	TrackerPreferences* old;
+	g_return_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_PREFERENCES));
+	old = value->data[0].v_pointer;
+	if (v_object) {
+		g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (v_object, TRACKER_TYPE_PREFERENCES));
+		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
+		value->data[0].v_pointer = v_object;
+		tracker_preferences_ref (value->data[0].v_pointer);
+	} else {
+		value->data[0].v_pointer = NULL;
+	}
+	if (old) {
+		tracker_preferences_unref (old);
+	}
+}
+
+
+void tracker_value_take_preferences (GValue* value, gpointer v_object) {
+	TrackerPreferences* old;
+	g_return_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_PREFERENCES));
+	old = value->data[0].v_pointer;
+	if (v_object) {
+		g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (v_object, TRACKER_TYPE_PREFERENCES));
+		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
+		value->data[0].v_pointer = v_object;
+	} else {
+		value->data[0].v_pointer = NULL;
+	}
+	if (old) {
+		tracker_preferences_unref (old);
+	}
+}
+
+
+static void tracker_preferences_class_init (TrackerPreferencesClass * klass) {
+	tracker_preferences_parent_class = g_type_class_peek_parent (klass);
+	TRACKER_PREFERENCES_CLASS (klass)->finalize = tracker_preferences_finalize;
+	g_type_class_add_private (klass, sizeof (TrackerPreferencesPrivate));
+}
+
+
+static void tracker_preferences_instance_init (TrackerPreferences * self) {
+	self->priv = TRACKER_PREFERENCES_GET_PRIVATE (self);
+	self->priv->settings = NULL;
+	self->ref_count = 1;
+}
+
+
+static void tracker_preferences_finalize (TrackerPreferences* obj) {
+	TrackerPreferences * self;
+	self = TRACKER_PREFERENCES (obj);
+	_g_object_unref0 (self->priv->settings);
+	_g_object_unref0 (self->priv->window);
+	_g_object_unref0 (self->priv->checkbutton_enable_index_on_battery_first_time);
+	_g_object_unref0 (self->priv->checkbutton_enable_index_on_battery);
+	_g_object_unref0 (self->priv->spinbutton_delay);
+	_g_object_unref0 (self->priv->checkbutton_enable_monitoring);
+	_g_object_unref0 (self->priv->checkbutton_index_removable_media);
+	_g_object_unref0 (self->priv->checkbutton_index_optical_discs);
+	_g_object_unref0 (self->priv->hscale_disk_space_limit);
+	_g_object_unref0 (self->priv->hscale_throttle);
+	_g_object_unref0 (self->priv->hscale_drop_device_threshold);
+	_g_object_unref0 (self->priv->liststore_index_recursively);
+	_g_object_unref0 (self->priv->liststore_index_single);
+	_g_object_unref0 (self->priv->liststore_ignored_directories);
+	_g_object_unref0 (self->priv->liststore_ignored_files);
+	_g_object_unref0 (self->priv->liststore_gnored_directories_with_content);
+	_g_object_unref0 (self->priv->treeview_index_recursively);
+	_g_object_unref0 (self->priv->treeview_index_single);
+	_g_object_unref0 (self->priv->treeview_ignored_directories);
+	_g_object_unref0 (self->priv->treeview_ignored_directories_with_content);
+	_g_object_unref0 (self->priv->treeview_ignored_files);
+	_g_object_unref0 (self->priv->togglebutton_home);
+	_g_object_unref0 (self->priv->notebook);
+}
+
+
+GType tracker_preferences_get_type (void) {
+	static volatile gsize tracker_preferences_type_id__volatile = 0;
+	if (g_once_init_enter (&tracker_preferences_type_id__volatile)) {
+		static const GTypeValueTable g_define_type_value_table = { tracker_value_preferences_init, tracker_value_preferences_free_value, tracker_value_preferences_copy_value, tracker_value_preferences_peek_pointer, "p", tracker_value_preferences_collect_value, "p", tracker_value_preferences_lcopy_value };
+		static const GTypeInfo g_define_type_info = { sizeof (TrackerPreferencesClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) tracker_preferences_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof (TrackerPreferences), 0, (GInstanceInitFunc) tracker_preferences_instance_init, &g_define_type_value_table };
+		static const GTypeFundamentalInfo g_define_type_fundamental_info = { (G_TYPE_FLAG_CLASSED | G_TYPE_FLAG_INSTANTIATABLE | G_TYPE_FLAG_DERIVABLE | G_TYPE_FLAG_DEEP_DERIVABLE) };
+		GType tracker_preferences_type_id;
+		tracker_preferences_type_id = g_type_register_fundamental (g_type_fundamental_next (), "TrackerPreferences", &g_define_type_info, &g_define_type_fundamental_info, 0);
+		g_once_init_leave (&tracker_preferences_type_id__volatile, tracker_preferences_type_id);
+	}
+	return tracker_preferences_type_id__volatile;
+}
+
+
+gpointer tracker_preferences_ref (gpointer instance) {
+	TrackerPreferences* self;
+	self = instance;
+	g_atomic_int_inc (&self->ref_count);
+	return instance;
+}
+
+
+void tracker_preferences_unref (gpointer instance) {
+	TrackerPreferences* self;
+	self = instance;
+	if (g_atomic_int_dec_and_test (&self->ref_count)) {
+		TRACKER_PREFERENCES_GET_CLASS (self)->finalize (self);
+		g_type_free_instance ((GTypeInstance *) self);
+	}
+}
+
+
 gint _vala_main (gchar** args, int args_length1) {
 	gint result = 0;
-	TrackerConfig* _tmp0_ = NULL;
-	GtkBuilder* _tmp1_ = NULL;
-	GtkBuilder* builder;
-	GObject* _tmp2_ = NULL;
-	GObject* _tmp3_;
-	GtkWindow* _tmp4_;
-	GObject* _tmp5_ = NULL;
-	GObject* _tmp6_;
-	GtkCheckButton* _tmp7_;
-	GObject* _tmp8_ = NULL;
-	GObject* _tmp9_;
-	GtkCheckButton* _tmp10_;
-	gboolean _tmp11_;
-	gboolean _tmp12_;
-	gboolean _tmp13_;
-	GObject* _tmp14_ = NULL;
-	GObject* _tmp15_;
-	GtkSpinButton* _tmp16_;
-	gint _tmp17_;
-	GObject* _tmp18_ = NULL;
-	GObject* _tmp19_;
-	GtkCheckButton* _tmp20_;
-	gboolean _tmp21_;
-	GObject* _tmp22_ = NULL;
-	GObject* _tmp23_;
-	GtkCheckButton* _tmp24_;
-	gboolean _tmp25_;
-	GObject* _tmp26_ = NULL;
-	GObject* _tmp27_;
-	GtkCheckButton* _tmp28_;
-	gboolean _tmp29_;
-	gboolean _tmp30_;
-	GObject* _tmp31_ = NULL;
-	GObject* _tmp32_;
-	GtkScale* _tmp33_;
-	gint _tmp34_;
-	GObject* _tmp35_ = NULL;
-	GObject* _tmp36_;
-	GtkScale* _tmp37_;
-	gint _tmp38_;
-	GObject* _tmp39_ = NULL;
-	GObject* _tmp40_;
-	GtkScale* _tmp41_;
-	gint _tmp42_;
-	GObject* _tmp43_ = NULL;
-	GObject* _tmp44_;
-	GtkToggleButton* _tmp45_;
-	GObject* _tmp46_ = NULL;
-	GObject* _tmp47_;
-	GtkNotebook* _tmp48_;
-	GObject* _tmp49_ = NULL;
-	GObject* _tmp50_;
-	GtkTreeView* _tmp51_;
-	GObject* _tmp52_ = NULL;
-	GObject* _tmp53_;
-	GtkTreeView* _tmp54_;
-	GObject* _tmp55_ = NULL;
-	GObject* _tmp56_;
-	GtkTreeView* _tmp57_;
-	GObject* _tmp58_ = NULL;
-	GObject* _tmp59_;
-	GtkTreeView* _tmp60_;
-	GObject* _tmp61_ = NULL;
-	GObject* _tmp62_;
-	GtkTreeView* _tmp63_;
-	const gchar* _tmp64_ = NULL;
-	const gchar* _tmp65_ = NULL;
-	const gchar* _tmp66_ = NULL;
-	const gchar* _tmp67_ = NULL;
-	const gchar* _tmp68_ = NULL;
-	GObject* _tmp69_ = NULL;
-	GObject* _tmp70_;
-	GtkListStore* _tmp71_;
-	GSList* _tmp72_ = NULL;
-	gboolean _tmp73_;
-	GObject* _tmp74_ = NULL;
-	GObject* _tmp75_;
-	GtkListStore* _tmp76_;
-	GSList* _tmp77_ = NULL;
-	GObject* _tmp78_ = NULL;
-	GObject* _tmp79_;
-	GtkListStore* _tmp80_;
-	GSList* _tmp81_ = NULL;
-	GObject* _tmp82_ = NULL;
-	GObject* _tmp83_;
-	GtkListStore* _tmp84_;
-	GSList* _tmp85_ = NULL;
-	GObject* _tmp86_ = NULL;
-	GObject* _tmp87_;
-	GtkListStore* _tmp88_;
-	GSList* _tmp89_ = NULL;
+	const gchar* _tmp0_ = NULL;
+	GOptionContext* _tmp1_ = NULL;
+	GOptionContext* context;
+	GOptionGroup* _tmp2_ = NULL;
+	TrackerPreferences* _tmp23_ = NULL;
+	TrackerPreferences* p;
 	GError * _inner_error_ = NULL;
-	gtk_init (&args_length1, &args);
-	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-	textdomain (GETTEXT_PACKAGE);
-	_tmp0_ = tracker_config_new_with_domain ("tracker-miner-fs");
-	_g_object_unref0 (config);
-	config = _tmp0_;
-	_tmp1_ = gtk_builder_new ();
-	builder = _tmp1_;
-	gtk_builder_add_from_file (builder, TRACKER_DATADIR G_DIR_SEPARATOR_S "tracker-preferences.ui", &_inner_error_);
+	_tmp0_ = _ ("Desktop Search preferences");
+	_tmp1_ = g_option_context_new (_tmp0_);
+	context = _tmp1_;
+	g_option_context_set_help_enabled (context, TRUE);
+	g_option_context_add_main_entries (context, options, NULL);
+	_tmp2_ = gtk_get_option_group (TRUE);
+	g_option_context_add_group (context, _tmp2_);
+	g_option_context_parse (context, &args_length1, &args, &_inner_error_);
 	if (_inner_error_ != NULL) {
-		_g_object_unref0 (builder);
-		goto __catch1_g_error;
+		goto __catch3_g_error;
 	}
-	_tmp2_ = gtk_builder_get_object (builder, "tracker-preferences");
-	_tmp3_ = _tmp2_;
-	_tmp4_ = _g_object_ref0 (GTK_IS_WINDOW (_tmp3_) ? ((GtkWindow*) _tmp3_) : NULL);
-	_g_object_unref0 (window);
-	window = _tmp4_;
-	_tmp5_ = gtk_builder_get_object (builder, "checkbutton_enable_index_on_battery");
-	_tmp6_ = _tmp5_;
-	_tmp7_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp6_) ? ((GtkCheckButton*) _tmp6_) : NULL);
-	_g_object_unref0 (checkbutton_enable_index_on_battery);
-	checkbutton_enable_index_on_battery = _tmp7_;
-	_tmp8_ = gtk_builder_get_object (builder, "checkbutton_enable_index_on_battery_first_time");
-	_tmp9_ = _tmp8_;
-	_tmp10_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp9_) ? ((GtkCheckButton*) _tmp9_) : NULL);
-	_g_object_unref0 (checkbutton_enable_index_on_battery_first_time);
-	checkbutton_enable_index_on_battery_first_time = _tmp10_;
-	_tmp11_ = tracker_config_get_index_on_battery (config);
-	gtk_toggle_button_set_active ((GtkToggleButton*) checkbutton_enable_index_on_battery, _tmp11_);
-	_tmp12_ = gtk_toggle_button_get_active ((GtkToggleButton*) checkbutton_enable_index_on_battery);
-	gtk_widget_set_sensitive ((GtkWidget*) checkbutton_enable_index_on_battery_first_time, !_tmp12_);
-	_tmp13_ = tracker_config_get_index_on_battery_first_time (config);
-	gtk_toggle_button_set_active ((GtkToggleButton*) checkbutton_enable_index_on_battery_first_time, _tmp13_);
-	_tmp14_ = gtk_builder_get_object (builder, "spinbutton_delay");
-	_tmp15_ = _tmp14_;
-	_tmp16_ = _g_object_ref0 (GTK_IS_SPIN_BUTTON (_tmp15_) ? ((GtkSpinButton*) _tmp15_) : NULL);
-	_g_object_unref0 (spinbutton_delay);
-	spinbutton_delay = _tmp16_;
-	gtk_spin_button_set_increments (spinbutton_delay, (gdouble) 1, (gdouble) 1);
-	_tmp17_ = tracker_config_get_initial_sleep (config);
-	gtk_spin_button_set_value (spinbutton_delay, (gdouble) _tmp17_);
-	_tmp18_ = gtk_builder_get_object (builder, "checkbutton_enable_monitoring");
-	_tmp19_ = _tmp18_;
-	_tmp20_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp19_) ? ((GtkCheckButton*) _tmp19_) : NULL);
-	_g_object_unref0 (checkbutton_enable_monitoring);
-	checkbutton_enable_monitoring = _tmp20_;
-	_tmp21_ = tracker_config_get_enable_monitors (config);
-	gtk_toggle_button_set_active ((GtkToggleButton*) checkbutton_enable_monitoring, _tmp21_);
-	_tmp22_ = gtk_builder_get_object (builder, "checkbutton_index_removable_media");
-	_tmp23_ = _tmp22_;
-	_tmp24_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp23_) ? ((GtkCheckButton*) _tmp23_) : NULL);
-	_g_object_unref0 (checkbutton_index_removable_media);
-	checkbutton_index_removable_media = _tmp24_;
-	_tmp25_ = tracker_config_get_index_removable_devices (config);
-	gtk_toggle_button_set_active ((GtkToggleButton*) checkbutton_index_removable_media, _tmp25_);
-	_tmp26_ = gtk_builder_get_object (builder, "checkbutton_index_optical_discs");
-	_tmp27_ = _tmp26_;
-	_tmp28_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp27_) ? ((GtkCheckButton*) _tmp27_) : NULL);
-	_g_object_unref0 (checkbutton_index_optical_discs);
-	checkbutton_index_optical_discs = _tmp28_;
-	_tmp29_ = gtk_toggle_button_get_active ((GtkToggleButton*) checkbutton_index_removable_media);
-	gtk_widget_set_sensitive ((GtkWidget*) checkbutton_index_optical_discs, _tmp29_);
-	_tmp30_ = tracker_config_get_index_optical_discs (config);
-	gtk_toggle_button_set_active ((GtkToggleButton*) checkbutton_index_optical_discs, _tmp30_);
-	_tmp31_ = gtk_builder_get_object (builder, "hscale_disk_space_limit");
-	_tmp32_ = _tmp31_;
-	_tmp33_ = _g_object_ref0 (GTK_IS_SCALE (_tmp32_) ? ((GtkScale*) _tmp32_) : NULL);
-	_g_object_unref0 (hscale_disk_space_limit);
-	hscale_disk_space_limit = _tmp33_;
-	_tmp34_ = tracker_config_get_low_disk_space_limit (config);
-	gtk_range_set_value ((GtkRange*) hscale_disk_space_limit, (gdouble) _tmp34_);
-	_tmp35_ = gtk_builder_get_object (builder, "hscale_throttle");
-	_tmp36_ = _tmp35_;
-	_tmp37_ = _g_object_ref0 (GTK_IS_SCALE (_tmp36_) ? ((GtkScale*) _tmp36_) : NULL);
-	_g_object_unref0 (hscale_throttle);
-	hscale_throttle = _tmp37_;
-	_tmp38_ = tracker_config_get_throttle (config);
-	gtk_range_set_value ((GtkRange*) hscale_throttle, (gdouble) _tmp38_);
-	_tmp39_ = gtk_builder_get_object (builder, "hscale_drop_device_threshold");
-	_tmp40_ = _tmp39_;
-	_tmp41_ = _g_object_ref0 (GTK_IS_SCALE (_tmp40_) ? ((GtkScale*) _tmp40_) : NULL);
-	_g_object_unref0 (hscale_drop_device_threshold);
-	hscale_drop_device_threshold = _tmp41_;
-	_tmp42_ = tracker_config_get_removable_days_threshold (config);
-	gtk_range_set_value ((GtkRange*) hscale_drop_device_threshold, (gdouble) _tmp42_);
-	_tmp43_ = gtk_builder_get_object (builder, "togglebutton_home");
-	_tmp44_ = _tmp43_;
-	_tmp45_ = _g_object_ref0 (GTK_IS_TOGGLE_BUTTON (_tmp44_) ? ((GtkToggleButton*) _tmp44_) : NULL);
-	_g_object_unref0 (togglebutton_home);
-	togglebutton_home = _tmp45_;
-	_tmp46_ = gtk_builder_get_object (builder, "notebook");
-	_tmp47_ = _tmp46_;
-	_tmp48_ = _g_object_ref0 (GTK_IS_NOTEBOOK (_tmp47_) ? ((GtkNotebook*) _tmp47_) : NULL);
-	_g_object_unref0 (notebook);
-	notebook = _tmp48_;
-	gtk_notebook_remove_page (notebook, 0);
-	_tmp49_ = gtk_builder_get_object (builder, "treeview_index_recursively");
-	_tmp50_ = _tmp49_;
-	_tmp51_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp50_) ? ((GtkTreeView*) _tmp50_) : NULL);
-	_g_object_unref0 (treeview_index_recursively);
-	treeview_index_recursively = _tmp51_;
-	_tmp52_ = gtk_builder_get_object (builder, "treeview_index_single");
-	_tmp53_ = _tmp52_;
-	_tmp54_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp53_) ? ((GtkTreeView*) _tmp53_) : NULL);
-	_g_object_unref0 (treeview_index_single);
-	treeview_index_single = _tmp54_;
-	_tmp55_ = gtk_builder_get_object (builder, "treeview_ignored_directories");
-	_tmp56_ = _tmp55_;
-	_tmp57_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp56_) ? ((GtkTreeView*) _tmp56_) : NULL);
-	_g_object_unref0 (treeview_ignored_directories);
-	treeview_ignored_directories = _tmp57_;
-	_tmp58_ = gtk_builder_get_object (builder, "treeview_ignored_directories_with_content");
-	_tmp59_ = _tmp58_;
-	_tmp60_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp59_) ? ((GtkTreeView*) _tmp59_) : NULL);
-	_g_object_unref0 (treeview_ignored_directories_with_content);
-	treeview_ignored_directories_with_content = _tmp60_;
-	_tmp61_ = gtk_builder_get_object (builder, "treeview_ignored_files");
-	_tmp62_ = _tmp61_;
-	_tmp63_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp62_) ? ((GtkTreeView*) _tmp62_) : NULL);
-	_g_object_unref0 (treeview_ignored_files);
-	treeview_ignored_files = _tmp63_;
-	_tmp64_ = _ ("Directory");
-	setup_standard_treeview (treeview_index_recursively, _tmp64_);
-	_tmp65_ = _ ("Directory");
-	setup_standard_treeview (treeview_index_single, _tmp65_);
-	_tmp66_ = _ ("Directory");
-	setup_standard_treeview (treeview_ignored_directories, _tmp66_);
-	_tmp67_ = _ ("Directory");
-	setup_standard_treeview (treeview_ignored_directories_with_content, _tmp67_);
-	_tmp68_ = _ ("File");
-	setup_standard_treeview (treeview_ignored_files, _tmp68_);
-	_tmp69_ = gtk_builder_get_object (builder, "liststore_index_recursively");
-	_tmp70_ = _tmp69_;
-	_tmp71_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp70_) ? ((GtkListStore*) _tmp70_) : NULL);
-	_g_object_unref0 (liststore_index_recursively);
-	liststore_index_recursively = _tmp71_;
-	_tmp72_ = tracker_config_get_index_recursive_directories_unfiltered (config);
-	fill_in_model (liststore_index_recursively, _tmp72_);
-	_tmp73_ = model_contains ((GtkTreeModel*) liststore_index_recursively, HOME_STRING);
-	gtk_toggle_button_set_active (togglebutton_home, _tmp73_);
-	_tmp74_ = gtk_builder_get_object (builder, "liststore_index_single");
-	_tmp75_ = _tmp74_;
-	_tmp76_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp75_) ? ((GtkListStore*) _tmp75_) : NULL);
-	_g_object_unref0 (liststore_index_single);
-	liststore_index_single = _tmp76_;
-	_tmp77_ = tracker_config_get_index_single_directories_unfiltered (config);
-	fill_in_model (liststore_index_single, _tmp77_);
-	_tmp78_ = gtk_builder_get_object (builder, "liststore_ignored_directories");
-	_tmp79_ = _tmp78_;
-	_tmp80_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp79_) ? ((GtkListStore*) _tmp79_) : NULL);
-	_g_object_unref0 (liststore_ignored_directories);
-	liststore_ignored_directories = _tmp80_;
-	_tmp81_ = tracker_config_get_ignored_directories (config);
-	fill_in_model (liststore_ignored_directories, _tmp81_);
-	_tmp82_ = gtk_builder_get_object (builder, "liststore_ignored_files");
-	_tmp83_ = _tmp82_;
-	_tmp84_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp83_) ? ((GtkListStore*) _tmp83_) : NULL);
-	_g_object_unref0 (liststore_ignored_files);
-	liststore_ignored_files = _tmp84_;
-	_tmp85_ = tracker_config_get_ignored_files (config);
-	fill_in_model (liststore_ignored_files, _tmp85_);
-	_tmp86_ = gtk_builder_get_object (builder, "liststore_gnored_directories_with_content");
-	_tmp87_ = _tmp86_;
-	_tmp88_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp87_) ? ((GtkListStore*) _tmp87_) : NULL);
-	_g_object_unref0 (liststore_gnored_directories_with_content);
-	liststore_gnored_directories_with_content = _tmp88_;
-	_tmp89_ = tracker_config_get_ignored_directories_with_content (config);
-	fill_in_model (liststore_gnored_directories_with_content, _tmp89_);
-	gtk_builder_connect_signals (builder, NULL);
-	gtk_widget_show_all ((GtkWidget*) window);
-	gtk_main ();
-	_g_object_unref0 (builder);
-	goto __finally1;
-	__catch1_g_error:
+	goto __finally3;
+	__catch3_g_error:
 	{
 		GError * e;
+		gchar* _tmp3_;
+		gchar* _tmp4_;
+		gchar* _tmp5_ = NULL;
+		gchar* _tmp6_;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		fprintf (stderr, "Could not load UI: %s\n", e->message);
+		_tmp3_ = g_strconcat (e->message, "\n\n", NULL);
+		_tmp4_ = _tmp3_;
+		g_printerr ("%s", _tmp4_);
+		_g_free0 (_tmp4_);
+		_tmp5_ = g_option_context_get_help (context, TRUE, NULL);
+		_tmp6_ = _tmp5_;
+		g_printerr ("%s", _tmp6_);
+		_g_free0 (_tmp6_);
 		result = 1;
 		_g_error_free0 (e);
+		_g_option_context_free0 (context);
 		return result;
 	}
-	__finally1:
+	__finally3:
 	if (_inner_error_ != NULL) {
+		_g_option_context_free0 (context);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return 0;
 	}
+	if (print_version) {
+		gchar* _tmp7_;
+		gchar* about;
+		gchar* _tmp8_;
+		gchar* license;
+		gchar* _tmp9_;
+		gchar* _tmp10_;
+		gchar* _tmp11_;
+		gchar* _tmp12_;
+		gchar* _tmp13_;
+		gchar* _tmp14_;
+		gchar* _tmp15_;
+		gchar* _tmp16_;
+		gchar* _tmp17_;
+		gchar* _tmp18_;
+		gchar* _tmp19_;
+		gchar* _tmp20_;
+		gchar* _tmp21_;
+		gchar* _tmp22_;
+		_tmp7_ = g_strdup ("");
+		about = _tmp7_;
+		_tmp8_ = g_strdup ("");
+		license = _tmp8_;
+		_tmp9_ = g_strconcat (about, "Tracker " PACKAGE_VERSION "\n", NULL);
+		_g_free0 (about);
+		about = _tmp9_;
+		_tmp10_ = g_strconcat (license, "This program is free software and comes without any warranty.\n", NULL);
+		_g_free0 (license);
+		license = _tmp10_;
+		_tmp11_ = g_strconcat (license, "It is licensed under version 2 or later of the General Public ", NULL);
+		_g_free0 (license);
+		license = _tmp11_;
+		_tmp12_ = g_strconcat (license, "License which can be viewed at:\n", NULL);
+		_g_free0 (license);
+		license = _tmp12_;
+		_tmp13_ = g_strconcat (license, "\n", NULL);
+		_g_free0 (license);
+		license = _tmp13_;
+		_tmp14_ = g_strconcat (license, "  http://www.gnu.org/licenses/gpl.txt\n", NULL);
+		_g_free0 (license);
+		license = _tmp14_;
+		_tmp15_ = g_strconcat ("\n", about, NULL);
+		_tmp16_ = _tmp15_;
+		_tmp17_ = g_strconcat (_tmp16_, "\n", NULL);
+		_tmp18_ = _tmp17_;
+		_tmp19_ = g_strconcat (_tmp18_, license, NULL);
+		_tmp20_ = _tmp19_;
+		_tmp21_ = g_strconcat (_tmp20_, "\n", NULL);
+		_tmp22_ = _tmp21_;
+		g_print ("%s", _tmp22_);
+		_g_free0 (_tmp22_);
+		_g_free0 (_tmp20_);
+		_g_free0 (_tmp18_);
+		_g_free0 (_tmp16_);
+		result = 0;
+		_g_free0 (license);
+		_g_free0 (about);
+		_g_option_context_free0 (context);
+		return result;
+	}
+	gtk_init (&args_length1, &args);
+	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
+	_tmp23_ = tracker_preferences_new ();
+	p = _tmp23_;
+	tracker_preferences_show (p);
+	gtk_main ();
 	result = 0;
+	_tracker_preferences_unref0 (p);
+	_g_option_context_free0 (context);
 	return result;
 }
 
@@ -1055,6 +1580,36 @@ gint _vala_main (gchar** args, int args_length1) {
 int main (int argc, char ** argv) {
 	g_type_init ();
 	return _vala_main (argv, argc);
+}
+
+
+static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func) {
+	if ((array != NULL) && (destroy_func != NULL)) {
+		int i;
+		for (i = 0; i < array_length; i = i + 1) {
+			if (((gpointer*) array)[i] != NULL) {
+				destroy_func (((gpointer*) array)[i]);
+			}
+		}
+	}
+}
+
+
+static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func) {
+	_vala_array_destroy (array, array_length, destroy_func);
+	g_free (array);
+}
+
+
+static gint _vala_array_length (gpointer array) {
+	int length;
+	length = 0;
+	if (array) {
+		while (((gpointer*) array)[length]) {
+			length++;
+		}
+	}
+	return length;
 }
 
 

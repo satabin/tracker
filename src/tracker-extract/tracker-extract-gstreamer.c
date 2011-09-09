@@ -88,10 +88,6 @@
 #define GST_TAG_FRAMERATE "framerate"
 #endif
 
-#ifndef GST_TAG_DEVICE_MAKE
-#define GST_TAG_DEVICE_MAKE "device-make"
-#endif
-
 typedef enum {
 	EXTRACT_MIME_AUDIO,
 	EXTRACT_MIME_VIDEO,
@@ -151,22 +147,6 @@ typedef struct {
 #endif
 } MetadataExtractor;
 
-static void extract_gstreamer_audio (const gchar          *uri,
-                                     TrackerSparqlBuilder *preupdate,
-                                     TrackerSparqlBuilder *metadata);
-static void extract_gstreamer_video (const gchar          *uri,
-                                     TrackerSparqlBuilder *preupdate,
-                                     TrackerSparqlBuilder *metadata);
-static void extract_gstreamer_image (const gchar          *uri,
-                                     TrackerSparqlBuilder *preupdate,
-                                     TrackerSparqlBuilder *metadata);
-static void extract_gstreamer_svg   (const gchar          *uri,
-                                     TrackerSparqlBuilder *preupdate,
-                                     TrackerSparqlBuilder *metadata);
-static void extract_gstreamer_guess (const gchar          *uri,
-                                     TrackerSparqlBuilder *preupdate,
-                                     TrackerSparqlBuilder *metadata);
-
 #if defined(GSTREAMER_BACKEND_TAGREADBIN)
 static void tagreadbin_extract_stream_metadata (MetadataExtractor    *extractor,
                                                 const gchar          *uri,
@@ -176,24 +156,6 @@ static void common_extract_stream_metadata (MetadataExtractor    *extractor,
                                             const gchar          *uri,
                                             TrackerSparqlBuilder *metadata);
 #endif /* DECODEBIN2/DISCOVERER/GUPnP-DLNA */
-
-static TrackerExtractData data[] = {
-	{ "audio/*", extract_gstreamer_audio },
-	{ "video/*", extract_gstreamer_video },
-	{ "image/*", extract_gstreamer_image },
-	{ "image/svg+xml", extract_gstreamer_svg },
-	/* Tell gstreamer to guess if mimetype guessing returns video also for audio files */
-	{ "video/3gpp", extract_gstreamer_guess },
-	{ "video/mp4", extract_gstreamer_guess },
-	{ "video/x-ms-asf", extract_gstreamer_guess },
-#ifdef HAVE_GUPNP_DLNA
-	{ "dlna/*", extract_gstreamer_guess },
-#endif /* HAVE_GUPNP_DLNA */
-	/* Added to fix broken Real media detection, see MeeGo bug #18159 */
-	{ "application/vnd.rn-realmedia", extract_gstreamer_guess },
-	{ NULL, NULL }
-};
-
 
 static void
 add_string_gst_tag (TrackerSparqlBuilder *metadata,
@@ -339,7 +301,8 @@ replace_double_gst_tag (TrackerSparqlBuilder  *preupdate,
                         const gchar           *uri,
                         const gchar           *key,
                         GstTagList            *tag_list,
-                        const gchar           *tag)
+                        const gchar           *tag,
+                        const gchar           *graph)
 {
 	gdouble  value;
 	gboolean has_it;
@@ -362,11 +325,17 @@ replace_double_gst_tag (TrackerSparqlBuilder  *preupdate,
 	tracker_sparql_builder_where_close (preupdate);
 
 	tracker_sparql_builder_insert_open (preupdate, NULL);
+	if (graph) {
+		tracker_sparql_builder_graph_open (preupdate, graph);
+	}
 
 	tracker_sparql_builder_subject_iri (preupdate, uri);
 	tracker_sparql_builder_predicate (preupdate, key);
 	tracker_sparql_builder_object_double (preupdate, value);
 
+	if (graph) {
+		tracker_sparql_builder_graph_close (preupdate);
+	}
 	tracker_sparql_builder_insert_close (preupdate);
 }
 
@@ -439,10 +408,11 @@ extract_metadata (MetadataExtractor      *extractor,
                   TrackerSparqlBuilder   *metadata,
                   gchar                 **artist,
                   gchar                 **album,
-                  gchar                 **scount)
+                  gchar                 **scount,
+                  const gchar            *graph)
 {
 	const gchar *temp;
-	gchar *make = NULL, *model = NULL, *manuf = NULL;
+	gchar *model = NULL, *manuf = NULL;
 	gchar *composer = NULL, *albumname = NULL, *genre = NULL;
 	gboolean needs_audio = FALSE;
 
@@ -504,11 +474,19 @@ extract_metadata (MetadataExtractor      *extractor,
 				artist_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", artist_local);
 
 				tracker_sparql_builder_insert_open (preupdate, NULL);
+				if (graph) {
+					tracker_sparql_builder_graph_open (preupdate, graph);
+				}
+
 				tracker_sparql_builder_subject_iri (preupdate, artist_uri);
 				tracker_sparql_builder_predicate (preupdate, "a");
 				tracker_sparql_builder_object (preupdate, "nmm:Artist");
 				tracker_sparql_builder_predicate (preupdate, "nmm:artistName");
 				tracker_sparql_builder_object_unvalidated (preupdate, artist_local);
+
+				if (graph) {
+					tracker_sparql_builder_graph_close (preupdate);
+				}
 				tracker_sparql_builder_insert_close (preupdate);
 			}
 
@@ -518,11 +496,19 @@ extract_metadata (MetadataExtractor      *extractor,
 				performer_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", temp);
 
 				tracker_sparql_builder_insert_open (preupdate, NULL);
+				if (graph) {
+					tracker_sparql_builder_graph_open (preupdate, graph);
+				}
+
 				tracker_sparql_builder_subject_iri (preupdate, performer_uri);
 				tracker_sparql_builder_predicate (preupdate, "a");
 				tracker_sparql_builder_object (preupdate, "nmm:Artist");
 				tracker_sparql_builder_predicate (preupdate, "nmm:artistName");
 				tracker_sparql_builder_object_unvalidated (preupdate, temp);
+
+				if (graph) {
+					tracker_sparql_builder_graph_close (preupdate);
+				}
 				tracker_sparql_builder_insert_close (preupdate);
 
 				*artist = g_strdup (temp);
@@ -536,11 +522,19 @@ extract_metadata (MetadataExtractor      *extractor,
 			if (composer) {
 				composer_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", composer);
 				tracker_sparql_builder_insert_open (preupdate, NULL);
+				if (graph) {
+					tracker_sparql_builder_graph_open (preupdate, graph);
+				}
+
 				tracker_sparql_builder_subject_iri (preupdate, composer_uri);
 				tracker_sparql_builder_predicate (preupdate, "a");
 				tracker_sparql_builder_object (preupdate, "nmm:Artist");
 				tracker_sparql_builder_predicate (preupdate, "nmm:artistName");
 				tracker_sparql_builder_object_unvalidated (preupdate, composer);
+
+				if (graph) {
+					tracker_sparql_builder_graph_close (preupdate);
+				}
 				tracker_sparql_builder_insert_close (preupdate);
 				g_free (composer);
 			}
@@ -562,6 +556,9 @@ extract_metadata (MetadataExtractor      *extractor,
 			album_uri = tracker_sparql_escape_uri_printf ("urn:album:%s", albumname);
 
 			tracker_sparql_builder_insert_open (preupdate, NULL);
+			if (graph) {
+				tracker_sparql_builder_graph_open (preupdate, graph);
+			}
 
 			tracker_sparql_builder_subject_iri (preupdate, album_uri);
 			tracker_sparql_builder_predicate (preupdate, "a");
@@ -577,6 +574,9 @@ extract_metadata (MetadataExtractor      *extractor,
 				tracker_sparql_builder_object_iri (preupdate, artist_uri);
 			}
 
+			if (graph) {
+				tracker_sparql_builder_graph_close (preupdate);
+			}
 			tracker_sparql_builder_insert_close (preupdate);
 
 			has_it = gst_tag_list_get_uint (extractor->tagcache,
@@ -596,9 +596,17 @@ extract_metadata (MetadataExtractor      *extractor,
 				tracker_sparql_builder_where_close (preupdate);
 
 				tracker_sparql_builder_insert_open (preupdate, NULL);
+				if (graph) {
+					tracker_sparql_builder_graph_open (preupdate, graph);
+				}
+
 				tracker_sparql_builder_subject_iri (preupdate, album_uri);
 				tracker_sparql_builder_predicate (preupdate, "nmm:albumTrackCount");
 				tracker_sparql_builder_object_int64 (preupdate, count);
+
+				if (graph) {
+					tracker_sparql_builder_graph_close (preupdate);
+				}
 				tracker_sparql_builder_insert_close (preupdate);
 			}
 
@@ -633,6 +641,10 @@ extract_metadata (MetadataExtractor      *extractor,
 			tracker_sparql_builder_where_close (preupdate);
 
 			tracker_sparql_builder_insert_open (preupdate, NULL);
+			if (graph) {
+				tracker_sparql_builder_graph_open (preupdate, graph);
+			}
+
 			tracker_sparql_builder_subject_iri (preupdate, album_disc_uri);
 			tracker_sparql_builder_predicate (preupdate, "a");
 			tracker_sparql_builder_object (preupdate, "nmm:MusicAlbumDisc");
@@ -640,10 +652,14 @@ extract_metadata (MetadataExtractor      *extractor,
 			tracker_sparql_builder_object_int64 (preupdate, has_it ? count : 1);
 			tracker_sparql_builder_predicate (preupdate, "nmm:albumDiscAlbum");
 			tracker_sparql_builder_object_iri (preupdate, album_uri);
+
+			if (graph) {
+				tracker_sparql_builder_graph_close (preupdate);
+			}
 			tracker_sparql_builder_insert_close (preupdate);
 
-			replace_double_gst_tag (preupdate, album_uri, "nmm:albumGain", extractor->tagcache, GST_TAG_ALBUM_GAIN);
-			replace_double_gst_tag (preupdate, album_uri, "nmm:albumPeakGain", extractor->tagcache, GST_TAG_ALBUM_PEAK);
+			replace_double_gst_tag (preupdate, album_uri, "nmm:albumGain", extractor->tagcache, GST_TAG_ALBUM_GAIN, graph);
+			replace_double_gst_tag (preupdate, album_uri, "nmm:albumPeakGain", extractor->tagcache, GST_TAG_ALBUM_PEAK, graph);
 
 			*album = albumname;
 
@@ -693,28 +709,35 @@ extract_metadata (MetadataExtractor      *extractor,
 		add_string_gst_tag (metadata, uri, "nie:comment", extractor->tagcache, GST_TAG_COMMENT);
 
 		gst_tag_list_get_string (extractor->tagcache, GST_TAG_DEVICE_MODEL, &model);
-		gst_tag_list_get_string (extractor->tagcache, GST_TAG_DEVICE_MAKE, &make);
 		gst_tag_list_get_string (extractor->tagcache, GST_TAG_DEVICE_MANUFACTURER, &manuf);
 
-		if (make || model || manuf) {
+		if (model || manuf) {
 			gchar *equip_uri;
 
 			equip_uri = tracker_sparql_escape_uri_printf ("urn:equipment:%s:%s:",
-			                                              manuf ? manuf : make ? make : "",
+			                                              manuf ? manuf : "",
 			                                              model ? model : "");
 
 			tracker_sparql_builder_insert_open (preupdate, NULL);
+			if (graph) {
+				tracker_sparql_builder_graph_open (preupdate, graph);
+			}
+
 			tracker_sparql_builder_subject_iri (preupdate, equip_uri);
 			tracker_sparql_builder_predicate (preupdate, "a");
 			tracker_sparql_builder_object (preupdate, "nfo:Equipment");
 
-			if (make || manuf) {
+			if (manuf) {
 				tracker_sparql_builder_predicate (preupdate, "nfo:manufacturer");
-				tracker_sparql_builder_object_unvalidated (preupdate, manuf ? manuf : make);
+				tracker_sparql_builder_object_unvalidated (preupdate, manuf);
 			}
 			if (model) {
 				tracker_sparql_builder_predicate (preupdate, "nfo:model");
 				tracker_sparql_builder_object_unvalidated (preupdate, model);
+			}
+
+			if (graph) {
+				tracker_sparql_builder_graph_close (preupdate);
 			}
 			tracker_sparql_builder_insert_close (preupdate);
 
@@ -723,7 +746,6 @@ extract_metadata (MetadataExtractor      *extractor,
 			g_free (equip_uri);
 		}
 
-		g_free (make);
 		g_free (model);
 		g_free (manuf);
 
@@ -1212,26 +1234,6 @@ pipeline_poll_for_ready (MetadataExtractor *extractor,
 #if defined(GSTREAMER_BACKEND_DECODEBIN2)
 
 static void
-add_int64_info (TrackerSparqlBuilder *metadata,
-                const gchar          *uri,
-                const gchar          *key,
-                gint64                info)
-{
-	tracker_sparql_builder_predicate (metadata, key);
-	tracker_sparql_builder_object_int64 (metadata, info);
-}
-
-static void
-add_uint_info (TrackerSparqlBuilder *metadata,
-               const gchar          *uri,
-               const gchar          *key,
-               guint                 info)
-{
-	tracker_sparql_builder_predicate (metadata, key);
-	tracker_sparql_builder_object_int64 (metadata, info);
-}
-
-static void
 decodebin2_unlink_fsink (void *obj,
                          void *data)
 {
@@ -1627,7 +1629,8 @@ static void
 tracker_extract_gstreamer (const gchar          *uri,
                            TrackerSparqlBuilder *preupdate,
                            TrackerSparqlBuilder *metadata,
-                           ExtractMime           type)
+                           ExtractMime           type,
+                           const gchar          *graph)
 {
 	MetadataExtractor *extractor;
 	gchar *artist, *album, *scount;
@@ -1659,7 +1662,7 @@ tracker_extract_gstreamer (const gchar          *uri,
 	scount = NULL;
 	artist = NULL;
 
-	extract_metadata (extractor, uri, preupdate, metadata, &artist, &album, &scount);
+	extract_metadata (extractor, uri, preupdate, metadata, &artist, &album, &scount, graph);
 
 	tracker_albumart_process (extractor->album_art_data,
 	                          extractor->album_art_size,
@@ -1687,49 +1690,47 @@ tracker_extract_gstreamer (const gchar          *uri,
 	g_slice_free (MetadataExtractor, extractor);
 }
 
-static void
-extract_gstreamer_audio (const gchar          *uri,
-                         TrackerSparqlBuilder *preupdate,
-                         TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *info)
 {
-	tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_AUDIO);
-}
+	TrackerSparqlBuilder *metadata, *preupdate;
+	const gchar *mimetype;
+	GFile *file;
+	gchar *uri;
+	const gchar *graph;
 
-static void
-extract_gstreamer_video (const gchar          *uri,
-                         TrackerSparqlBuilder *preupdate,
-                         TrackerSparqlBuilder *metadata)
-{
-	tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_VIDEO);
-}
+	graph = tracker_extract_info_get_graph (info);
+	metadata = tracker_extract_info_get_metadata_builder (info);
+	preupdate = tracker_extract_info_get_preupdate_builder (info);
+	mimetype = tracker_extract_info_get_mimetype (info);
 
-static void
-extract_gstreamer_image (const gchar          *uri,
-                         TrackerSparqlBuilder *preupdate,
-                         TrackerSparqlBuilder *metadata)
-{
-	tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_IMAGE);
-}
+	file = tracker_extract_info_get_file (info);
+	uri = g_file_get_uri (file);
 
-static void
-extract_gstreamer_svg (const gchar          *uri,
-                       TrackerSparqlBuilder *preupdate,
-                       TrackerSparqlBuilder *metadata)
-{
-	tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_SVG);
-}
+#if defined(GSTREAMER_BACKEND_GUPNP_DLNA)
+	if (g_str_has_prefix (mimetype, "dlna/")) {
+		tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_GUESS, graph);
+	} else
+#endif /* GSTREAMER_BACKEND_GUPNP_DLNA */
 
-static void
-extract_gstreamer_guess (const gchar          *uri,
-                         TrackerSparqlBuilder *preupdate,
-                         TrackerSparqlBuilder *metadata)
-{
-	tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_GUESS);
-}
+	if (strcmp (mimetype, "image/svg+xml") == 0) {
+		tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_SVG, graph);
+	} else if (strcmp (mimetype, "video/3gpp") == 0 ||
+	           strcmp (mimetype, "video/mp4") == 0 ||
+	           strcmp (mimetype, "video/x-ms-asf") == 0 ||
+	           strcmp (mimetype, "application/vnd.rn-realmedia") == 0) {
+		tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_GUESS, graph);
+	} else if (g_str_has_prefix (mimetype, "audio/")) {
+		tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_AUDIO, graph);
+	} else if (g_str_has_prefix (mimetype, "video/")) {
+		tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_VIDEO, graph);
+	} else if (g_str_has_prefix (mimetype, "image/")) {
+		tracker_extract_gstreamer (uri, preupdate, metadata, EXTRACT_MIME_IMAGE, graph);
+	} else {
+		g_free (uri);
+		return FALSE;
+	}
 
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return data;
+	g_free (uri);
+	return TRUE;
 }
-

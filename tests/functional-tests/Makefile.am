@@ -3,7 +3,6 @@ include $(top_srcdir)/Makefile.decl
 SUBDIRS = \
 	ipc \
 	common \
-	test-configurations \
 	test-extraction-data \
 	test-writeback-data \
 	test-apps-data \
@@ -23,6 +22,9 @@ config_SCRIPTS += \
 	tests.xml \
 	tracker-tests.aegis
 endif
+
+dconfdir = $(sysconfdir)/dconf/profile
+dconf_DATA = trackertest
 
 standard_tests = \
 	01-insertion.py \
@@ -93,6 +95,7 @@ functional-test-slow: ${slow_tests}
 
 EXTRA_DIST = \
 	$(config_SCRIPTS) \
+	$(dconf_DATA) \
 	create-tests-xml.py
 
 if HAVE_MAEMO

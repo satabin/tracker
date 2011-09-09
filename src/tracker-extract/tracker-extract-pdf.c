@@ -42,15 +42,6 @@ typedef struct {
 	gchar *keywords;
 } PDFData;
 
-static void extract_pdf (const gchar          *uri,
-                         TrackerSparqlBuilder *preupdate,
-                         TrackerSparqlBuilder *metadata);
-
-static TrackerExtractData data[] = {
-	{ "application/pdf", extract_pdf },
-	{ NULL, NULL }
-};
-
 static void
 read_toc (PopplerIndexIter  *index,
           GString          **toc)
@@ -273,26 +264,34 @@ write_pdf_data (PDFData               data,
 	}
 }
 
-static void
-extract_pdf (const gchar          *uri,
-             TrackerSparqlBuilder *preupdate,
-             TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *info)
 {
 	TrackerConfig *config;
 	GTime creation_date;
 	GError *error = NULL;
+	TrackerSparqlBuilder *metadata, *preupdate;
+	const gchar *graph;
 	TrackerXmpData *xd = NULL;
 	PDFData pd = { 0 }; /* actual data */
 	PDFData md = { 0 }; /* for merging */
 	PopplerDocument *document;
 	gchar *xml = NULL;
-	gchar *content;
+	gchar *content, *uri;
 	guint n_bytes;
 	GPtrArray *keywords;
+	GString *where;
 	guint i;
-	GString *where = NULL;
+	GFile *file;
 
 	g_type_init ();
+
+	metadata = tracker_extract_info_get_metadata_builder (info);
+	preupdate = tracker_extract_info_get_preupdate_builder (info);
+	graph = tracker_extract_info_get_graph (info);
+
+	file = tracker_extract_info_get_file (info);
+	uri = g_file_get_uri (file);
 
 	document = poppler_document_new_from_file (uri, NULL, &error);
 
@@ -303,22 +302,29 @@ extract_pdf (const gchar          *uri,
 
 			tracker_sparql_builder_predicate (metadata, "nfo:isContentEncrypted");
 			tracker_sparql_builder_object_boolean (metadata, TRUE);
-			return;
+
+			g_error_free (error);
+			g_free (uri);
+
+			return TRUE;
 		} else {
 			g_warning ("Couldn't create PopplerDocument from uri:'%s', %s",
 			           uri,
 			           error->message ? error->message : "no error given");
-		}
 
-		g_error_free (error);
-		return;
+			g_error_free (error);
+			g_free (uri);
+
+			return FALSE;
+		}
 	}
 
 	if (!document) {
 		g_warning ("Could not create PopplerDocument from uri:'%s', "
 		           "NULL returned without an error",
 		           uri);
-		return;
+		g_free (uri);
+		return FALSE;
 	}
 
 	tracker_sparql_builder_predicate (metadata, "a");
@@ -415,6 +421,10 @@ extract_pdf (const gchar          *uri,
 			                                              xd->model ? xd->model : "");
 
 			tracker_sparql_builder_insert_open (preupdate, NULL);
+			if (graph) {
+				tracker_sparql_builder_graph_open (preupdate, graph);
+			}
+
 			tracker_sparql_builder_subject_iri (preupdate, equip_uri);
 			tracker_sparql_builder_predicate (preupdate, "a");
 			tracker_sparql_builder_object (preupdate, "nfo:Equipment");
@@ -428,7 +438,12 @@ extract_pdf (const gchar          *uri,
 				tracker_sparql_builder_predicate (preupdate, "nfo:model");
 				tracker_sparql_builder_object_unvalidated (preupdate, xd->model);
 			}
+
+			if (graph) {
+				tracker_sparql_builder_graph_close (preupdate);
+			}
 			tracker_sparql_builder_insert_close (preupdate);
+
 			tracker_sparql_builder_predicate (metadata, "nfo:equipment");
 			tracker_sparql_builder_object_iri (metadata, equip_uri);
 			g_free (equip_uri);
@@ -528,6 +543,10 @@ extract_pdf (const gchar          *uri,
 				tracker_sparql_builder_object_iri (metadata, addruri);			
 
 				tracker_sparql_builder_insert_open (preupdate, NULL);
+				if (graph) {
+					tracker_sparql_builder_graph_open (preupdate, graph);
+				}
+
 				tracker_sparql_builder_subject_iri (preupdate, addruri);
 
 				g_free (addruri);
@@ -555,6 +574,9 @@ extract_pdf (const gchar          *uri,
 				        tracker_sparql_builder_object_unvalidated (preupdate, xd->country);
 				}
 
+				if (graph) {
+					tracker_sparql_builder_graph_close (preupdate);
+				}
 				tracker_sparql_builder_insert_close (preupdate);
 			}
 
@@ -577,7 +599,7 @@ extract_pdf (const gchar          *uri,
 		}
 
                 if (xd->regions) {
-	                tracker_xmp_apply_regions (preupdate, metadata, NULL, xd);
+	                tracker_xmp_apply_regions (preupdate, metadata, graph, xd);
                 }
 
 		tracker_xmp_free (xd);
@@ -588,6 +610,8 @@ extract_pdf (const gchar          *uri,
 		write_pdf_data (pd, metadata, keywords);
 	}
 
+	where = g_string_new ("");
+
 	for (i = 0; i < keywords->len; i++) {
 		gchar *p, *escaped, *var;
 
@@ -596,11 +620,26 @@ extract_pdf (const gchar          *uri,
 		var = g_strdup_printf ("tag%d", i + 1);
 
 		/* ensure tag with specified label exists */
+		tracker_sparql_builder_append (preupdate, "INSERT { ");
+
+		if (graph) {
+			tracker_sparql_builder_append (preupdate, "GRAPH <");
+			tracker_sparql_builder_append (preupdate, graph);
+			tracker_sparql_builder_append (preupdate, "> { ");
+		}
+
 		tracker_sparql_builder_append (preupdate,
-		                               "INSERT { _:tag a nao:Tag ; nao:prefLabel \"");
+		                               "_:tag a nao:Tag ; nao:prefLabel \"");
 		tracker_sparql_builder_append (preupdate, escaped);
+		tracker_sparql_builder_append (preupdate, "\"");
+
+		if (graph) {
+			tracker_sparql_builder_append (preupdate, " } ");
+		}
+
+		tracker_sparql_builder_append (preupdate, " }\n");
 		tracker_sparql_builder_append (preupdate,
-		                               "\" }\nWHERE { FILTER (NOT EXISTS { "
+		                               "WHERE { FILTER (NOT EXISTS { "
 		                               "?tag a nao:Tag ; nao:prefLabel \"");
 		tracker_sparql_builder_append (preupdate, escaped);
 		tracker_sparql_builder_append (preupdate,
@@ -610,10 +649,6 @@ extract_pdf (const gchar          *uri,
 		tracker_sparql_builder_predicate (metadata, "nao:hasTag");
 		tracker_sparql_builder_object_variable (metadata, var);
 
-		if (where == NULL) {
-			where = g_string_new ("} } WHERE { {\n");
-		}
-
 		g_string_append_printf (where, "?%s a nao:Tag ; nao:prefLabel \"%s\" .\n", var, escaped);
 
 		g_free (var);
@@ -621,6 +656,9 @@ extract_pdf (const gchar          *uri,
 		g_free (p);
 	}
 	g_ptr_array_free (keywords, TRUE);
+
+	tracker_extract_info_set_where_clause (info, where->str);
+	g_string_free (where, TRUE);
 
 	tracker_sparql_builder_predicate (metadata, "nfo:pageCount");
 	tracker_sparql_builder_object_int64 (metadata, poppler_document_get_n_pages (document));
@@ -637,11 +675,6 @@ extract_pdf (const gchar          *uri,
 
 	read_outline (document, metadata);
 
-	if (where != NULL) {
-		tracker_sparql_builder_append (metadata, where->str);
-		g_string_free (where, TRUE);
-	}
-
 	g_free (xml);
 	g_free (pd.keywords);
 	g_free (pd.title);
@@ -649,12 +682,9 @@ extract_pdf (const gchar          *uri,
 	g_free (pd.creation_date);
 	g_free (pd.author);
 	g_free (pd.date);
+	g_free (uri);
 
 	g_object_unref (document);
-}
 
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return data;
+	return TRUE;
 }

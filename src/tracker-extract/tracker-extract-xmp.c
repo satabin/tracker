@@ -23,15 +23,6 @@
 
 #include <libtracker-extract/tracker-extract.h>
 
-static void extract_xmp (const gchar          *filename,
-                         TrackerSparqlBuilder *preupdate,
-                         TrackerSparqlBuilder *metadata);
-
-static TrackerExtractData data[] = {
-	{ "application/rdf+xml", extract_xmp },
-	{ NULL, NULL }
-};
-
 /* This function is used to find the URI for a file.xmp file. The point here is
  * that the URI for file.xmp is not file:///file.xmp but instead for example
  * file:///file.jpeg or file:///file.png. The reason is that file.xmp is a
@@ -128,18 +119,25 @@ find_orig_uri (const gchar *xmp_filename)
 	return found_file;
 }
 
-static void
-extract_xmp (const gchar          *uri,
-             TrackerSparqlBuilder *preupdate,
-             TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *info)
 {
+	TrackerSparqlBuilder *metadata, *preupdate;
 	TrackerXmpData *xd = NULL;
 	GError *error = NULL;
-	gchar *filename;
+	gchar *filename, *uri;
 	gchar *contents;
 	gsize length;
+	GFile *file;
+	const gchar *graph;
 
-	filename = g_filename_from_uri (uri, NULL, NULL);
+	file = tracker_extract_info_get_file (info);
+	filename = g_file_get_path (file);
+	uri = g_file_get_uri (file);
+
+	graph = tracker_extract_info_get_graph (info);
+	preupdate = tracker_extract_info_get_preupdate_builder (info);
+	metadata = tracker_extract_info_get_metadata_builder (info);
 
 	if (g_file_get_contents (filename, &contents, &length, &error)) {
 		gchar *original_uri;
@@ -154,19 +152,25 @@ extract_xmp (const gchar          *uri,
 		                      original_uri ? original_uri : uri);
 
 		if (xd) {
-			tracker_xmp_apply (preupdate, metadata, uri, xd);
+			GString *where;
+
+			where = g_string_new ("");
+			tracker_xmp_apply (preupdate, metadata, graph, where, uri, xd);
+			tracker_extract_info_set_where_clause (info, where->str);
+			g_string_free (where, TRUE);
 		}
 
 		g_free (original_uri);
 		tracker_xmp_free (xd);
 		g_free (contents);
+		g_free (filename);
+		g_free (uri);
+
+		return TRUE;
 	}
 
 	g_free (filename);
-}
+	g_free (uri);
 
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return data;
+	return FALSE;
 }

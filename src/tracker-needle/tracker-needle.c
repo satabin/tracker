@@ -128,7 +128,7 @@ struct _TrackerNeedlePrivate {
 	GtkToggleToolButton* find_in_titles;
 	GtkToggleToolButton* find_in_all;
 	GtkToolItem* search_entry;
-	GtkComboBoxEntry* search_list;
+	GtkComboBoxText* search_list;
 	GtkEntry* search;
 	GtkSpinner* spinner;
 	GtkToolItem* spinner_shell;
@@ -233,7 +233,7 @@ static void tracker_needle_setup_ui (TrackerNeedle* self);
 void tracker_needle_set_search (TrackerNeedle* self, gchar** args, int args_length1);
 static void tracker_needle_store_state_changed (TrackerNeedle* self, GObject* object, GParamSpec* p);
 gboolean tracker_result_store_get_active (TrackerResultStore* self);
-static void _gtk_main_quit_gtk_object_destroy (GtkObject* _sender, gpointer self);
+static void _gtk_main_quit_gtk_widget_destroy (GtkWidget* _sender, gpointer self);
 static gboolean tracker_needle_window_key_press_event (TrackerNeedle* self, GtkWidget* widget, GdkEventKey* event);
 static gboolean _tracker_needle_window_key_press_event_gtk_widget_key_press_event (GtkWidget* _sender, GdkEventKey* event, gpointer self);
 static void tracker_needle_view_toggled (TrackerNeedle* self);
@@ -415,7 +415,7 @@ static void tracker_needle_store_state_changed (TrackerNeedle* self, GObject* ob
 }
 
 
-static void _gtk_main_quit_gtk_object_destroy (GtkObject* _sender, gpointer self) {
+static void _gtk_main_quit_gtk_widget_destroy (GtkWidget* _sender, gpointer self) {
 	gtk_main_quit ();
 }
 
@@ -507,7 +507,7 @@ static void tracker_needle_setup_ui (TrackerNeedle* self) {
 	GtkToolItem* _tmp31_;
 	GObject* _tmp32_ = NULL;
 	GObject* _tmp33_;
-	GtkComboBoxEntry* _tmp34_;
+	GtkComboBoxText* _tmp34_;
 	GtkWidget* _tmp35_ = NULL;
 	GtkWidget* _tmp36_;
 	GtkEntry* _tmp37_;
@@ -608,7 +608,7 @@ static void tracker_needle_setup_ui (TrackerNeedle* self) {
 	_tmp7_ = _g_object_ref0 (GTK_IS_WINDOW (_tmp6_) ? ((GtkWindow*) _tmp6_) : NULL);
 	_g_object_unref0 (self->priv->window);
 	self->priv->window = _tmp7_;
-	g_signal_connect ((GtkObject*) self->priv->window, "destroy", (GCallback) _gtk_main_quit_gtk_object_destroy, NULL);
+	g_signal_connect ((GtkWidget*) self->priv->window, "destroy", (GCallback) _gtk_main_quit_gtk_widget_destroy, NULL);
 	g_signal_connect ((GtkWidget*) self->priv->window, "key-press-event", (GCallback) _tracker_needle_window_key_press_event_gtk_widget_key_press_event, self);
 	_tmp8_ = gtk_builder_get_object (builder, "toolbutton_view_filelist");
 	_tmp9_ = _tmp8_;
@@ -656,9 +656,9 @@ static void tracker_needle_setup_ui (TrackerNeedle* self) {
 	_tmp31_ = _g_object_ref0 (GTK_IS_TOOL_ITEM (_tmp30_) ? ((GtkToolItem*) _tmp30_) : NULL);
 	_g_object_unref0 (self->priv->search_entry);
 	self->priv->search_entry = _tmp31_;
-	_tmp32_ = gtk_builder_get_object (builder, "comboboxentry_search");
+	_tmp32_ = gtk_builder_get_object (builder, "comboboxtext_search");
 	_tmp33_ = _tmp32_;
-	_tmp34_ = _g_object_ref0 (GTK_IS_COMBO_BOX_ENTRY (_tmp33_) ? ((GtkComboBoxEntry*) _tmp33_) : NULL);
+	_tmp34_ = _g_object_ref0 (GTK_IS_COMBO_BOX_TEXT (_tmp33_) ? ((GtkComboBoxText*) _tmp33_) : NULL);
 	_g_object_unref0 (self->priv->search_list);
 	self->priv->search_list = _tmp34_;
 	_tmp35_ = gtk_bin_get_child ((GtkBin*) self->priv->search_list);
@@ -761,7 +761,7 @@ static gboolean tracker_needle_window_key_press_event (TrackerNeedle* self, GtkW
 		_tmp0_ = FALSE;
 	}
 	if (_tmp0_) {
-		gtk_object_destroy ((GtkObject*) widget);
+		gtk_widget_destroy (widget);
 	}
 	result = FALSE;
 	return result;
@@ -833,7 +833,7 @@ static gpointer __gtk_tree_iter_dup0 (gpointer self) {
 static GtkTreeIter* tracker_needle_search_history_find_or_insert (TrackerNeedle* self, const gchar* criteria, gboolean* add_to_model) {
 	GtkTreeIter* result = NULL;
 	gint _tmp0_;
-	GtkComboBoxEntry* _tmp1_;
+	GtkComboBoxText* _tmp1_;
 	GtkComboBox* _tmp2_;
 	GtkComboBox* combo;
 	GtkTreeModel* _tmp3_ = NULL;

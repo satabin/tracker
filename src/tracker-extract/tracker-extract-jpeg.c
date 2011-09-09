@@ -81,15 +81,6 @@ typedef struct {
 	const gchar *gps_direction;
 } MergeData;
 
-static void extract_jpeg (const gchar          *filename,
-                          TrackerSparqlBuilder *preupdate,
-                          TrackerSparqlBuilder *metadata);
-
-static TrackerExtractData data[] = {
-	{ "image/jpeg", extract_jpeg },
-	{ NULL, NULL }
-};
-
 struct tej_error_mgr {
 	struct jpeg_error_mgr jpeg;
 	jmp_buf setjmp_buffer;
@@ -109,7 +100,7 @@ guess_dlna_profile (gint          width,
                     const gchar **dlna_profile,
                     const gchar **dlna_mimetype)
 {
-	gchar *profile = NULL;
+	const gchar *profile = NULL;
 
 	if (dlna_profile) {
 		*dlna_profile = NULL;
@@ -148,42 +139,50 @@ guess_dlna_profile (gint          width,
 	return FALSE;
 }
 
-static void
-extract_jpeg (const gchar          *uri,
-              TrackerSparqlBuilder *preupdate,
-              TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *info)
 {
 	struct jpeg_decompress_struct cinfo;
 	struct tej_error_mgr tejerr;
 	struct jpeg_marker_struct *marker;
+	TrackerSparqlBuilder *preupdate, *metadata;
 	TrackerXmpData *xd = NULL;
 	TrackerExifData *ed = NULL;
 	TrackerIptcData *id = NULL;
 	MergeData md = { 0 };
+	GFile *file;
 	FILE *f;
 	goffset size;
-	gchar *filename;
+	gchar *filename, *uri;
 	gchar *comment = NULL;
-	const gchar *dlna_profile;
+	const gchar *dlna_profile, *graph;
 	GPtrArray *keywords;
+	gboolean success = TRUE;
+	GString *where;
 	guint i;
-	GString *where = NULL;
 
-	filename = g_filename_from_uri (uri, NULL, NULL);
+	metadata = tracker_extract_info_get_metadata_builder (info);
+	preupdate = tracker_extract_info_get_preupdate_builder (info);
+	graph = tracker_extract_info_get_graph (info);
+
+	file = tracker_extract_info_get_file (info);
+	filename = g_file_get_path (file);
 
 	size = tracker_file_get_size (filename);
 
 	if (size < 18) {
 		g_free (filename);
-		return;
+		return FALSE;
 	}
 
 	f = tracker_file_open (filename, "rb", FALSE);
 	g_free (filename);
 
 	if (!f) {
-		return;
+		return FALSE;
 	}
+
+	uri = g_file_get_uri (file);
 
 	tracker_sparql_builder_predicate (metadata, "a");
 	tracker_sparql_builder_object (metadata, "nfo:Image");
@@ -193,6 +192,7 @@ extract_jpeg (const gchar          *uri,
 	cinfo.err = jpeg_std_error (&tejerr.jpeg);
 	tejerr.jpeg.error_exit = extract_jpeg_error_exit;
 	if (setjmp (tejerr.setjmp_buffer)) {
+		success = FALSE;
 		goto fail;
 	}
 
@@ -331,11 +331,19 @@ extract_jpeg (const gchar          *uri,
 		gchar *uri = tracker_sparql_escape_uri_printf ("urn:contact:%s", id->contact);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
+
 		tracker_sparql_builder_subject_iri (preupdate, uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nco:Contact");
 		tracker_sparql_builder_predicate (preupdate, "nco:fullname");
 		tracker_sparql_builder_object_unvalidated (preupdate, id->contact);
+
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 
 		tracker_sparql_builder_predicate (metadata, "nco:representative");
@@ -361,11 +369,19 @@ extract_jpeg (const gchar          *uri,
 		gchar *uri = tracker_sparql_escape_uri_printf ("urn:contact:%s", xd->publisher);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
+
 		tracker_sparql_builder_subject_iri (preupdate, uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nco:Contact");
 		tracker_sparql_builder_predicate (preupdate, "nco:fullname");
 		tracker_sparql_builder_object_unvalidated (preupdate, xd->publisher);
+
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 
 		tracker_sparql_builder_predicate (metadata, "nco:publisher");
@@ -419,12 +435,14 @@ extract_jpeg (const gchar          *uri,
 	}
 
         if (xd->regions) {
-	        tracker_xmp_apply_regions (preupdate, metadata, NULL, xd);
+	        tracker_xmp_apply_regions (preupdate, metadata, graph, xd);
         }
 
 	if (id->keywords) {
 		tracker_keywords_parse (keywords, id->keywords);
 	}
+
+	where = g_string_new ("");
 
 	for (i = 0; i < keywords->len; i++) {
 		gchar *p, *escaped, *var;
@@ -434,11 +452,26 @@ extract_jpeg (const gchar          *uri,
 		var = g_strdup_printf ("tag%d", i + 1);
 
 		/* ensure tag with specified label exists */
+		tracker_sparql_builder_append (preupdate, "INSERT { ");
+
+		if (graph) {
+			tracker_sparql_builder_append (preupdate, "GRAPH <");
+			tracker_sparql_builder_append (preupdate, graph);
+			tracker_sparql_builder_append (preupdate, "> { ");
+		}
+
 		tracker_sparql_builder_append (preupdate,
-		                               "INSERT { _:tag a nao:Tag ; nao:prefLabel \"");
+		                               "_:tag a nao:Tag ; nao:prefLabel \"");
 		tracker_sparql_builder_append (preupdate, escaped);
+		tracker_sparql_builder_append (preupdate, "\"");
+
+		if (graph) {
+			tracker_sparql_builder_append (preupdate, " } ");
+		}
+
+		tracker_sparql_builder_append (preupdate, " }\n");
 		tracker_sparql_builder_append (preupdate,
-		                               "\" }\nWHERE { FILTER (NOT EXISTS { "
+		                               "WHERE { FILTER (NOT EXISTS { "
 		                               "?tag a nao:Tag ; nao:prefLabel \"");
 		tracker_sparql_builder_append (preupdate, escaped);
 		tracker_sparql_builder_append (preupdate,
@@ -448,10 +481,6 @@ extract_jpeg (const gchar          *uri,
 		tracker_sparql_builder_predicate (metadata, "nao:hasTag");
 		tracker_sparql_builder_object_variable (metadata, var);
 
-		if (where == NULL) {
-			where = g_string_new ("} } WHERE { {\n");
-		}
-
 		g_string_append_printf (where, "?%s a nao:Tag ; nao:prefLabel \"%s\" .\n", var, escaped);
 
 		g_free (var);
@@ -459,6 +488,9 @@ extract_jpeg (const gchar          *uri,
 		g_free (p);
 	}
 	g_ptr_array_free (keywords, TRUE);
+
+	tracker_extract_info_set_where_clause (info, where->str);
+	g_string_free (where, TRUE);
 
 	if (md.make || md.model) {
 		gchar *equip_uri;
@@ -468,6 +500,10 @@ extract_jpeg (const gchar          *uri,
 		                                              md.model ? md.model : "");
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
+
 		tracker_sparql_builder_subject_iri (preupdate, equip_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nfo:Equipment");
@@ -480,7 +516,12 @@ extract_jpeg (const gchar          *uri,
 			tracker_sparql_builder_predicate (preupdate, "nfo:model");
 			tracker_sparql_builder_object_unvalidated (preupdate, md.model);
 		}
+
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
+
 		tracker_sparql_builder_predicate (metadata, "nfo:equipment");
 		tracker_sparql_builder_object_iri (metadata, equip_uri);
 		g_free (equip_uri);
@@ -531,11 +572,19 @@ extract_jpeg (const gchar          *uri,
 		gchar *uri = tracker_sparql_escape_uri_printf ("urn:contact:%s", md.artist);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
+
 		tracker_sparql_builder_subject_iri (preupdate, uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nco:Contact");
 		tracker_sparql_builder_predicate (preupdate, "nco:fullname");
 		tracker_sparql_builder_object_unvalidated (preupdate, md.artist);
+
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 
 		tracker_sparql_builder_predicate (metadata, "nco:contributor");
@@ -578,11 +627,19 @@ extract_jpeg (const gchar          *uri,
 		gchar *uri = tracker_sparql_escape_uri_printf ("urn:contact:%s", md.creator);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
+
 		tracker_sparql_builder_subject_iri (preupdate, uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nco:Contact");
 		tracker_sparql_builder_predicate (preupdate, "nco:fullname");
 		tracker_sparql_builder_object_unvalidated (preupdate, md.creator);
+
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 
 		/* NOTE: We only have affiliation with
@@ -636,6 +693,10 @@ extract_jpeg (const gchar          *uri,
 			tracker_sparql_builder_object_iri (metadata, addruri);
 
 			tracker_sparql_builder_insert_open (preupdate, NULL);
+			if (graph) {
+				tracker_sparql_builder_graph_open (preupdate, graph);
+			}
+
 			tracker_sparql_builder_subject_iri (preupdate, addruri);
 
 			g_free (addruri);
@@ -663,6 +724,9 @@ extract_jpeg (const gchar          *uri,
 				tracker_sparql_builder_object_unvalidated (preupdate, md.country);
 			}
 
+			if (graph) {
+				tracker_sparql_builder_graph_close (preupdate);
+			}
 			tracker_sparql_builder_insert_close (preupdate);
 		}
 
@@ -727,11 +791,6 @@ extract_jpeg (const gchar          *uri,
 		tracker_sparql_builder_object_double (metadata, value);
 	}
 
-	if (where != NULL) {
-		tracker_sparql_builder_append (metadata, where->str);
-		g_string_free (where, TRUE);
-	}
-
 	jpeg_destroy_decompress (&cinfo);
 
 	tracker_exif_free (ed);
@@ -741,10 +800,7 @@ extract_jpeg (const gchar          *uri,
 
 fail:
 	tracker_file_close (f, FALSE);
-}
+	g_free (uri);
 
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return data;
+	return success;
 }

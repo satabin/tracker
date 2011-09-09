@@ -112,6 +112,8 @@ TrackerXmpData *tracker_xmp_new           (const gchar          *buffer,
 void            tracker_xmp_free          (TrackerXmpData       *data);
 gboolean        tracker_xmp_apply         (TrackerSparqlBuilder *preupdate,
                                            TrackerSparqlBuilder *metadata,
+                                           const gchar          *graph,
+                                           GString              *where,
                                            const gchar          *uri,
                                            TrackerXmpData       *data);
 gboolean        tracker_xmp_apply_regions (TrackerSparqlBuilder *preupdate,

@@ -217,13 +217,13 @@ enum  {
 };
 #define EXPLORER_UI_FILE "tracker-explorer.ui"
 void explorer_show (Explorer* self);
-static void _gtk_main_quit_gtk_object_destroy (GtkObject* _sender, gpointer self);
+static void _gtk_main_quit_gtk_widget_destroy (GtkWidget* _sender, gpointer self);
 static void explorer_entry_changed (Explorer* self, GtkEditable* editable);
 static void _explorer_entry_changed_gtk_editable_changed (GtkEditable* _sender, gpointer self);
 static void explorer_setup_uris (Explorer* self, GtkTreeView* urisview);
 static void explorer_setup_relationships (Explorer* self, GtkTreeView* relationshipsview);
 static void explorer_update_types_page (Explorer* self, GtkWidget* w);
-static void _explorer_update_types_page_gtk_container_set_focus_child (GtkContainer* _sender, GtkWidget* widget, gpointer self);
+static void _explorer_update_types_page_gtk_container_set_focus_child (GtkContainer* _sender, GtkWidget* child, gpointer self);
 static void explorer_forward_clicked (Explorer* self);
 static void _explorer_forward_clicked_gtk_button_clicked (GtkButton* _sender, gpointer self);
 static void explorer_back_clicked (Explorer* self);
@@ -958,7 +958,7 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-static void _gtk_main_quit_gtk_object_destroy (GtkObject* _sender, gpointer self) {
+static void _gtk_main_quit_gtk_widget_destroy (GtkWidget* _sender, gpointer self) {
 	gtk_main_quit ();
 }
 
@@ -968,8 +968,8 @@ static void _explorer_entry_changed_gtk_editable_changed (GtkEditable* _sender, 
 }
 
 
-static void _explorer_update_types_page_gtk_container_set_focus_child (GtkContainer* _sender, GtkWidget* widget, gpointer self) {
-	explorer_update_types_page (self, widget);
+static void _explorer_update_types_page_gtk_container_set_focus_child (GtkContainer* _sender, GtkWidget* child, gpointer self) {
+	explorer_update_types_page (self, child);
 }
 
 
@@ -1099,7 +1099,7 @@ void explorer_show (Explorer* self) {
 	_tmp6_ = _tmp5_;
 	_tmp7_ = _g_object_ref0 (GTK_IS_WINDOW (_tmp6_) ? ((GtkWindow*) _tmp6_) : NULL);
 	window = _tmp7_;
-	g_signal_connect ((GtkObject*) window, "destroy", (GCallback) _gtk_main_quit_gtk_object_destroy, NULL);
+	g_signal_connect ((GtkWidget*) window, "destroy", (GCallback) _gtk_main_quit_gtk_widget_destroy, NULL);
 	_tmp8_ = gtk_builder_get_object (builder, "text-search");
 	_tmp9_ = _tmp8_;
 	_tmp10_ = _g_object_ref0 (GTK_IS_ENTRY (_tmp9_) ? ((GtkEntry*) _tmp9_) : NULL);

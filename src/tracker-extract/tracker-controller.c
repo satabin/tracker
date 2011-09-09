@@ -33,11 +33,11 @@
 #warning Stayalive traces enabled
 #endif /* STAYALIVE_ENABLE_TRACE */
 
-#define THREAD_ENABLE_TRACE
-
 #ifdef THREAD_ENABLE_TRACE
 #warning Controller thread traces enabled
 #endif /* THREAD_ENABLE_TRACE */
+
+#define WATCHDOG_TIMEOUT 20
 
 typedef struct TrackerControllerPrivate TrackerControllerPrivate;
 typedef struct GetMetadataData GetMetadataData;
@@ -74,6 +74,8 @@ struct GetMetadataData {
 	gchar *uri;
 	gchar *mimetype;
 	gint fd; /* Only for fast queries */
+
+	GSource *watchdog_source;
 };
 
 #define TRACKER_EXTRACT_SERVICE   "org.freedesktop.Tracker1.Extract"
@@ -91,12 +93,15 @@ static const gchar *introspection_xml =
 	"    <method name='GetMetadata'>"
 	"      <arg type='s' name='uri' direction='in' />"
 	"      <arg type='s' name='mime' direction='in' />"
+	"      <arg type='s' name='graph' direction='in' />"
 	"      <arg type='s' name='preupdate' direction='out' />"
 	"      <arg type='s' name='embedded' direction='out' />"
+	"      <arg type='s' name='where' direction='out' />"
 	"    </method>"
 	"    <method name='GetMetadataFast'>"
 	"      <arg type='s' name='uri' direction='in' />"
 	"      <arg type='s' name='mime' direction='in' />"
+	"      <arg type='s' name='graph' direction='in' />"
 	"      <arg type='h' name='fd' direction='in' />"
 	"    </method>"
 	"    <method name='CancelTasks'>"
@@ -229,6 +234,37 @@ tracker_controller_class_init (TrackerControllerClass *klass)
 	g_type_class_add_private (object_class, sizeof (TrackerControllerPrivate));
 }
 
+static GSource *
+controller_timeout_source_new (guint       interval,
+                               GSourceFunc func,
+                               gpointer    user_data)
+{
+	GMainContext *context;
+	GSource *source;
+
+	context = g_main_context_get_thread_default ();
+
+	source = g_timeout_source_new_seconds (interval);
+	g_source_set_callback (source, func, user_data, NULL);
+	g_source_attach (source, context);
+
+	return source;
+}
+
+static gboolean
+watchdog_timeout_cb (gpointer user_data)
+{
+	GetMetadataData *data = user_data;
+	TrackerControllerPrivate *priv = data->controller->priv;
+
+	g_critical ("Extraction task for '%s' went rogue and took more than %d seconds. Forcing exit.",
+	            data->uri, WATCHDOG_TIMEOUT);
+
+	g_main_loop_quit (priv->main_loop);
+
+	return FALSE;
+}
+
 static GetMetadataData *
 metadata_data_new (TrackerController     *controller,
                    const gchar           *uri,
@@ -246,6 +282,9 @@ metadata_data_new (TrackerController     *controller,
 	data->invocation = invocation;
 	data->request = request;
 
+	data->watchdog_source = controller_timeout_source_new (WATCHDOG_TIMEOUT,
+	                                                       watchdog_timeout_cb,
+	                                                       data);
 	return data;
 }
 
@@ -258,6 +297,7 @@ metadata_data_free (GetMetadataData *data)
 	g_free (data->uri);
 	g_free (data->mimetype);
 	g_object_unref (data->cancellable);
+	g_source_destroy (data->watchdog_source);
 	g_slice_free (GetMetadataData, data);
 }
 
@@ -279,20 +319,9 @@ cancel_tasks_in_file (TrackerController *controller,
 
 		if (g_file_equal (task_file, file) ||
 		    g_file_has_prefix (task_file, file)) {
-			/* Mount path contains one of the files being processed */
-			if (!elem->next) {
-				/* The last element in the list is
-				 * the one currently being processed,
-				 * so exit abruptly.
-				 */
-				g_message ("Cancelled task ('%s') is currently being processed, quitting",
-				           data->uri);
-				_exit (0);
-			} else {
-				g_message ("Cancelling not yet processed task ('%s')",
-				           data->uri);
-				g_cancellable_cancel (data->cancellable);
-			}
+			/* Mount path contains some file being processed */
+			g_message ("Cancelling task ('%s')", data->uri);
+			g_cancellable_cancel (data->cancellable);
 		}
 
 		g_object_unref (task_file);
@@ -333,7 +362,6 @@ static void
 reset_shutdown_timeout (TrackerController *controller)
 {
 	TrackerControllerPrivate *priv;
-	GSource *source;
 
 	priv = controller->priv;
 
@@ -350,13 +378,9 @@ reset_shutdown_timeout (TrackerController *controller)
 		priv->shutdown_source = NULL;
 	}
 
-	source = g_timeout_source_new_seconds (priv->shutdown_timeout);
-	g_source_set_callback (source,
-	                       reset_shutdown_timeout_cb,
-	                       controller, NULL);
-
-	g_source_attach (source, priv->context);
-	priv->shutdown_source = source;
+	priv->shutdown_source = controller_timeout_source_new (priv->shutdown_timeout,
+	                                                       reset_shutdown_timeout_cb,
+	                                                       controller);
 }
 
 static void
@@ -418,20 +442,26 @@ get_metadata_cb (GObject      *object,
 	info = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res));
 
 	if (info) {
-		if (tracker_sparql_builder_get_length (info->statements) > 0) {
-			const gchar *preupdate_str = NULL;
+		const gchar *preupdate, *statements, *where;
+		TrackerSparqlBuilder *builder;
 
-			if (tracker_sparql_builder_get_length (info->preupdate) > 0) {
-				preupdate_str = tracker_sparql_builder_get_result (info->preupdate);
-			}
+		builder = tracker_extract_info_get_preupdate_builder (info);
+		preupdate = tracker_sparql_builder_get_result (builder);
 
+		builder = tracker_extract_info_get_metadata_builder (info);
+		statements = tracker_sparql_builder_get_result (builder);
+
+		where = tracker_extract_info_get_where_clause (info);
+
+		if (statements && *statements) {
 			g_dbus_method_invocation_return_value (data->invocation,
-			                                       g_variant_new ("(ss)",
-			                                                      preupdate_str ? preupdate_str : "",
-			                                                      tracker_sparql_builder_get_result (info->statements)));
+			                                       g_variant_new ("(sss)",
+			                                                      preupdate ? preupdate : "",
+			                                                      statements,
+			                                                      where ? where : ""));
 		} else {
 			g_dbus_method_invocation_return_value (data->invocation,
-			                                       g_variant_new ("(ss)", "", ""));
+			                                       g_variant_new ("(sss)", "", "", ""));
 		}
 
 		tracker_dbus_request_end (data->request, NULL);
@@ -461,16 +491,17 @@ handle_method_call_get_metadata (TrackerController     *controller,
 	TrackerControllerPrivate *priv;
 	GetMetadataData *data;
 	TrackerDBusRequest *request;
-	const gchar *uri, *mime;
+	const gchar *uri, *mime, *graph;
 
 	priv = controller->priv;
-	g_variant_get (parameters, "(&s&s)", &uri, &mime);
+	g_variant_get (parameters, "(&s&s&s)", &uri, &mime, &graph);
 
 	reset_shutdown_timeout (controller);
 	request = tracker_dbus_request_begin (NULL, "%s (%s, %s)", __FUNCTION__, uri, mime);
 
 	data = metadata_data_new (controller, uri, mime, invocation, request);
-	tracker_extract_file (priv->extractor, uri, mime, data->cancellable,
+	tracker_extract_file (priv->extractor, uri, mime, graph,
+	                      data->cancellable,
 	                      get_metadata_cb, data);
 	priv->ongoing_tasks = g_list_prepend (priv->ongoing_tasks, data);
 }
@@ -525,6 +556,8 @@ get_metadata_fast_cb (GObject      *object,
 		GOutputStream *unix_output_stream;
 		GOutputStream *buffered_output_stream;
 		GDataOutputStream *data_output_stream;
+		const gchar *preupdate, *statements, *where;
+		TrackerSparqlBuilder *builder;
 		GError *error = NULL;
 
 #ifdef THREAD_ENABLE_TRACE
@@ -539,15 +572,17 @@ get_metadata_fast_cb (GObject      *object,
 		g_data_output_stream_set_byte_order (G_DATA_OUTPUT_STREAM (data_output_stream),
 		                                     G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
 
-		if (tracker_sparql_builder_get_length (info->statements) > 0) {
-			const gchar *preupdate_str = NULL;
+		builder = tracker_extract_info_get_preupdate_builder (info);
+		preupdate = tracker_sparql_builder_get_result (builder);
 
-			if (tracker_sparql_builder_get_length (info->preupdate) > 0) {
-				preupdate_str = tracker_sparql_builder_get_result (info->preupdate);
-			}
+		builder = tracker_extract_info_get_metadata_builder (info);
+		statements = tracker_sparql_builder_get_result (builder);
 
+		where = tracker_extract_info_get_where_clause (info);
+
+		if (statements && *statements) {
 			g_data_output_stream_put_string (data_output_stream,
-			                                 preupdate_str ? preupdate_str : "",
+			                                 preupdate ? preupdate : "",
 			                                 NULL,
 			                                 &error);
 
@@ -560,7 +595,21 @@ get_metadata_fast_cb (GObject      *object,
 
 			if (!error) {
 				g_data_output_stream_put_string (data_output_stream,
-				                                 tracker_sparql_builder_get_result (info->statements),
+				                                 statements,
+				                                 NULL,
+				                                 &error);
+			}
+
+			if (!error) {
+				g_data_output_stream_put_byte (data_output_stream,
+				                               0,
+				                               NULL,
+				                               &error);
+			}
+
+			if (!error && where) {
+				g_data_output_stream_put_string (data_output_stream,
+				                                 where,
 				                                 NULL,
 				                                 &error);
 			}
@@ -619,14 +668,15 @@ handle_method_call_get_metadata_fast (TrackerController     *controller,
 	if (g_dbus_connection_get_capabilities (connection) & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING) {
 		TrackerControllerPrivate *priv;
 		GetMetadataData *data;
-		const gchar *uri, *mime;
+		const gchar *uri, *mime, *graph;
 		gint index_fd, fd;
 		GUnixFDList *fd_list;
 		GError *error = NULL;
 
 		priv = controller->priv;
 
-		g_variant_get (parameters, "(&s&sh)", &uri, &mime, &index_fd);
+		g_variant_get (parameters, "(&s&s&sh)",
+		               &uri, &mime, &graph, &index_fd);
 
 		request = tracker_dbus_request_begin (NULL,
 		                                      "%s (uri:'%s', mime:'%s', index_fd:%d)",
@@ -642,7 +692,8 @@ handle_method_call_get_metadata_fast (TrackerController     *controller,
 			data = metadata_data_new (controller, uri, mime, invocation, request);
 			data->fd = fd;
 
-			tracker_extract_file (priv->extractor, uri, mime, data->cancellable,
+			tracker_extract_file (priv->extractor, uri, mime, graph,
+			                      data->cancellable,
 			                      get_metadata_fast_cb, data);
 			priv->ongoing_tasks = g_list_prepend (priv->ongoing_tasks, data);
 		} else {

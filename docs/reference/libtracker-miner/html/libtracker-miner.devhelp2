@@ -47,6 +47,7 @@
     <keyword type="function" name="tracker_miner_get_dbus_full_path ()" link="libtracker-miner-tracker-miner.html#tracker-miner-get-dbus-full-path" since="0.10"/>
     <keyword type="property" name="The &quot;name&quot; property" link="libtracker-miner-tracker-miner.html#TrackerMiner--name"/>
     <keyword type="property" name="The &quot;progress&quot; property" link="libtracker-miner-tracker-miner.html#TrackerMiner--progress"/>
+    <keyword type="property" name="The &quot;remaining-time&quot; property" link="libtracker-miner-tracker-miner.html#TrackerMiner--remaining-time"/>
     <keyword type="property" name="The &quot;status&quot; property" link="libtracker-miner-tracker-miner.html#TrackerMiner--status"/>
     <keyword type="signal" name="The &quot;ignore-next-update&quot; signal" link="libtracker-miner-tracker-miner.html#TrackerMiner-ignore-next-update"/>
     <keyword type="signal" name="The &quot;paused&quot; signal" link="libtracker-miner-tracker-miner.html#TrackerMiner-paused"/>
@@ -115,7 +116,7 @@
     <keyword type="function" name="tracker_miner_manager_resume ()" link="TrackerMinerManager.html#tracker-miner-manager-resume" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_is_active ()" link="TrackerMinerManager.html#tracker-miner-manager-is-active" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_is_paused ()" link="TrackerMinerManager.html#tracker-miner-manager-is-paused" since="0.8"/>
-    <keyword type="function" name="tracker_miner_manager_get_status ()" link="TrackerMinerManager.html#tracker-miner-manager-get-status" since="0.8"/>
+    <keyword type="function" name="tracker_miner_manager_get_status ()" link="TrackerMinerManager.html#tracker-miner-manager-get-status" since="0.12"/>
     <keyword type="function" name="tracker_miner_manager_get_display_name ()" link="TrackerMinerManager.html#tracker-miner-manager-get-display-name" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_get_description ()" link="TrackerMinerManager.html#tracker-miner-manager-get-description" since="0.8"/>
     <keyword type="function" name="tracker_miner_manager_index_file ()" link="TrackerMinerManager.html#tracker-miner-manager-index-file" since="0.10"/>

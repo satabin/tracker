@@ -29,6 +29,7 @@
 <ANCHOR id="libtracker-miner-tracker-miner.property-details" href="libtracker-miner/libtracker-miner-tracker-miner.html#libtracker-miner-tracker-miner.property-details">
 <ANCHOR id="TrackerMiner--name" href="libtracker-miner/libtracker-miner-tracker-miner.html#TrackerMiner--name">
 <ANCHOR id="TrackerMiner--progress" href="libtracker-miner/libtracker-miner-tracker-miner.html#TrackerMiner--progress">
+<ANCHOR id="TrackerMiner--remaining-time" href="libtracker-miner/libtracker-miner-tracker-miner.html#TrackerMiner--remaining-time">
 <ANCHOR id="TrackerMiner--status" href="libtracker-miner/libtracker-miner-tracker-miner.html#TrackerMiner--status">
 <ANCHOR id="libtracker-miner-tracker-miner.signal-details" href="libtracker-miner/libtracker-miner-tracker-miner.html#libtracker-miner-tracker-miner.signal-details">
 <ANCHOR id="TrackerMiner-ignore-next-update" href="libtracker-miner/libtracker-miner-tracker-miner.html#TrackerMiner-ignore-next-update">

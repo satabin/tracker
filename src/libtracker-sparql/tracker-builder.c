@@ -149,9 +149,8 @@ TrackerSparqlBuilder* tracker_sparql_builder_construct_embedded_insert (GType ob
 static void _vala_array_add2 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 static void _vala_array_add3 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 static void _vala_array_add4 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
-void tracker_sparql_builder_drop_graph (TrackerSparqlBuilder* self, const gchar* iri);
-TrackerSparqlBuilderState tracker_sparql_builder_get_state (TrackerSparqlBuilder* self);
 void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar* graph);
+TrackerSparqlBuilderState tracker_sparql_builder_get_state (TrackerSparqlBuilder* self);
 static void _vala_array_add5 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
 void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, const gchar* graph);
 static void _vala_array_add6 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value);
@@ -307,25 +306,6 @@ TrackerSparqlBuilder* tracker_sparql_builder_construct_embedded_insert (GType ob
 
 TrackerSparqlBuilder* tracker_sparql_builder_new_embedded_insert (void) {
 	return tracker_sparql_builder_construct_embedded_insert (TRACKER_SPARQL_TYPE_BUILDER);
-}
-
-
-/**
- * tracker_sparql_builder_drop_graph:
- * @self: a #TrackerSparqlBuilder
- * @iri: a graph name.
- *
- * Deprecated 0.10.5: There is no replacement for this API.
- *
- * Since: 0.10
- */
-void tracker_sparql_builder_drop_graph (TrackerSparqlBuilder* self, const gchar* iri) {
-	TrackerSparqlBuilderState _tmp0_;
-	g_return_if_fail (self != NULL);
-	g_return_if_fail (iri != NULL);
-	_tmp0_ = tracker_sparql_builder_get_state (self);
-	g_return_if_fail (_tmp0_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE);
-	g_critical ("tracker-builder.vala:203: Use of DROP GRAPH is deprecated");
 }
 
 
@@ -1270,8 +1250,20 @@ TrackerSparqlBuilder* tracker_sparql_builder_new (void) {
 
 const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self) {
 	const gchar* result;
+	gboolean _tmp0_ = FALSE;
 	g_return_val_if_fail (self != NULL, NULL);
-	g_warn_if_fail (self->priv->states_length1 == 1);
+	if (self->priv->states_length1 == 1) {
+		_tmp0_ = TRUE;
+	} else {
+		gboolean _tmp1_ = FALSE;
+		if (self->priv->states[0] == TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT) {
+			_tmp1_ = self->priv->states_length1 == 3;
+		} else {
+			_tmp1_ = FALSE;
+		}
+		_tmp0_ = _tmp1_;
+	}
+	g_warn_if_fail (_tmp0_);
 	result = self->priv->str->str;
 	return result;
 }

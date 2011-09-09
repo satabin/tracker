@@ -38,13 +38,13 @@ extern void tracker_marshal_VOID__DOUBLE_UINT_UINT_UINT_UINT (GClosure     *clos
                                                               gpointer      invocation_hint,
                                                               gpointer      marshal_data);
 
-/* VOID:STRING,DOUBLE (tracker-marshal.list:5) */
-extern void tracker_marshal_VOID__STRING_DOUBLE (GClosure     *closure,
-                                                 GValue       *return_value,
-                                                 guint         n_param_values,
-                                                 const GValue *param_values,
-                                                 gpointer      invocation_hint,
-                                                 gpointer      marshal_data);
+/* VOID:STRING,DOUBLE,INT (tracker-marshal.list:5) */
+extern void tracker_marshal_VOID__STRING_DOUBLE_INT (GClosure     *closure,
+                                                     GValue       *return_value,
+                                                     guint         n_param_values,
+                                                     const GValue *param_values,
+                                                     gpointer      invocation_hint,
+                                                     gpointer      marshal_data);
 
 /* VOID:STRING,STRING (tracker-marshal.list:6) */
 extern void tracker_marshal_VOID__STRING_STRING (GClosure     *closure,
@@ -54,13 +54,13 @@ extern void tracker_marshal_VOID__STRING_STRING (GClosure     *closure,
                                                  gpointer      invocation_hint,
                                                  gpointer      marshal_data);
 
-/* VOID:STRING,STRING,DOUBLE (tracker-marshal.list:7) */
-extern void tracker_marshal_VOID__STRING_STRING_DOUBLE (GClosure     *closure,
-                                                        GValue       *return_value,
-                                                        guint         n_param_values,
-                                                        const GValue *param_values,
-                                                        gpointer      invocation_hint,
-                                                        gpointer      marshal_data);
+/* VOID:STRING,STRING,DOUBLE,INT (tracker-marshal.list:7) */
+extern void tracker_marshal_VOID__STRING_STRING_DOUBLE_INT (GClosure     *closure,
+                                                            GValue       *return_value,
+                                                            guint         n_param_values,
+                                                            const GValue *param_values,
+                                                            gpointer      invocation_hint,
+                                                            gpointer      marshal_data);
 
 /* VOID:STRING,STRING,BOOLEAN,BOOLEAN (tracker-marshal.list:8) */
 extern void tracker_marshal_VOID__STRING_STRING_BOOLEAN_BOOLEAN (GClosure     *closure,

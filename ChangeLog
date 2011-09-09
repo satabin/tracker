@@ -1,13 +1,38 @@
+2011-09-09  Jürg Billeter  <j@bitron.ch>
+
+	functional-tests: Remove expected failure annotation from NB#281201 test
+	The bug was fixed by commit f595906.
+
+2011-09-09  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-09-09  Martyn Russell  <martyn@lanedo.com>
+
+	build: Require GLib 2.28 (was 2.26)
+	Recent code uses g_slist_free_full() which is only in 2.28.
+
+2011-09-08  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2011-09-08  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-sparql: Reference .so.0 instead of .so in typelib
+	.so files are commonly packaged in -devel, separate from the main
+	library package.
+
+	Fixes GB#658588.
+
 2011-09-08  Martyn Russell  <martyn@lanedo.com>
 
-	Release 0.10.26
-
-2011-09-08  Philip Van Hoof  <philip@codeminded.be>
-
-	libtracker-miner: Add the file to which the symlinks point in don't-remove list
-	Fixes NB#281183.
+	Merge branch 'forced-mtime-check-per-directory'
 
 2011-09-08  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-extract: plug a leak
+
+	libtracker-extract: ensure valid dbus connection when cancelling tasks
 
 	libtracker-miner: clear forced mtime check directories once first crawled
 
@@ -25,27 +50,31 @@
 
 	tests: fix indentation in libtracker-extract/xmp functional tests
 
+2011-09-08  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-miner: Add the file to which the symlinks point in don't-remove list
+	Fixes NB#281183.
+
 2011-09-08  Bruce Cowan  <bruce@bcowan.me.uk>
 
 	Updated British English translation
 
-2011-09-08  Aleksander Morgado  <aleksander@lanedo.com>
-
-	tests: ensure XMP test files are found when srcdir != builddir
-
-	tests: fix indentation in libtracker-extract/xmp functional tests
-
-2011-09-08  Philip Van Hoof  <philip@codeminded.be>
+2011-09-07  Philip Van Hoof  <philip@codeminded.be>
 
 	First delete in case superprop is multivalue and prop isn't for IorR
 	Fixes NB#281201.
 
+	tracker-extract, gif: Fix compilation error for GIF extractor
+
 	libtracker-data: Fix using null with date fields in insert or replace
 	Fixes NB#281540.
 
-	tracker-extract, gif: Fix compilation error for GIF extractor
+2011-09-07  Martyn Russell  <martyn@lanedo.com>
 
-2011-09-08  Martyn Russell  <martyn@lanedo.com>
+	tracker-extract: Don't leak where clause in image extractions
+	This was leaking for gif, jpeg, pdf, png, tiff and xmp
+
+	Merge branch 'experiment-with-roi'
 
 	libtracker-extract: Remove where and uri args from tracker_xmp_apply_regions()
 	These were unused.
@@ -53,9 +82,21 @@
 	Also documented the function to explain where it's used compared to
 	tracker_xmp_apply().
 
+2011-09-06  Martin Srebotnjak  <miles@filmsi.net>
+
+	Updated Slovenian translation
+
+2011-09-06  Martyn Russell  <martyn@lanedo.com>
+
 	libtracker-extract: Support graph in tracker_xmp_apply_regions()
 
 	libtracker-extract: Return TRUE in tracker_xmp_apply_regions() if no regions
+
+	tracker-extract: Fix a number of memory leaks
+	- mimetype in extract_task_new()
+	- task_mutex in TrackerExtract private struct
+	- TrackerMimetypeInfo in extract_task_free()
+	- graph string in extract_task_free()
 
 	libtracker-extract: Fixed memory leak in iterate_simple() for XMP data
 
@@ -74,7 +115,7 @@
 
 	Use a GSList for regions not a GList (which isn't necessary).
 
-2011-09-08  Ivan Frade  <ivan.frade@gmail.com>
+2011-09-06  Ivan Frade  <ivan.frade@gmail.com>
 
 	functional-tests: JPG with regions of interest to test extraction
 
@@ -89,6 +130,8 @@
 	code missing in tracker-xmp... Moving on but this deserves a look.
 
 	functional-tests: extraction test, support <uuid> urls
+
+	functional-tests: Test for "INSERT OR REPLACE does not update superproperties"
 
 	tracker-extract: JPEG: generate sparql for the regions of interest in the metadata
 	Fixes NB#271437
@@ -111,12 +154,112 @@
 
 	libtracker-extract: Unit test to read regions in the XMP metadata
 
-2011-09-08  Jürg Billeter  <j@bitron.ch>
+2011-09-06  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'wip/extract-graphs'
+
+	libtracker-extract: Fixed unit tests which now require a graph parameter
+
+2011-09-06  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-common: Do not delete old log
 	Avoid losing information from previous runs.
 
-2011-09-08  Martyn Russell  <martyn@lanedo.com>
+2011-09-06  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract, libtracker-extract, xmp: Do all inserts in miner-fs's graph
+
+	tracker-extract, vorbis: Do all inserts in miner-fs's graph
+
+	tracker-extract, totem: Do all inserts in miner-fs's graph
+
+	tracker-extract, tiff: Do all inserts in miner-fs's graph
+
+	tracker-extract, png: Do all inserts in miner-fs's graph
+
+	tracker-extract, pdf: Do all inserts in miner-fs's graph
+
+	tracker-extract, mplayer: Do all inserts in miner-fs's graph
+
+	tracker-extract, libxine: Do all inserts in miner-fs's graph
+
+	tracker-extract, jpeg: Do all inserts in miner-fs's graph
+
+	tracker-extract, gstreamer: Do all inserts in miner-fs's graph
+
+	tracker-extract, gif: Do all inserts in miner-fs's graph
+
+2011-09-06  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-extract: Fixed missing "Since" in documentation
+
+2011-09-06  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract, flac: Do all inserts in miner-fs's graph
+
+	tracker-extract, mp3: Don't use the graph in the deletes
+
+	examples/libtracker-extract: Fix mockup example's API usage
+
+	tracker-extract, mp3: Do all inserts in miner-fs's graph
+
+2011-09-06  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Fixed reference to non-existent variable
+	This whole are is quite broken inside HAVE_LIBSTREAMANALYZER anyway.
+
+	tracker-extract: Fix potential memory leak with XMP where string
+
+	libtracker-extract: Fixed some small coding style issues
+
+2011-09-06  Carlos Garnacho  <carlosg@gnome.org>
+
+	Revert "ontology: Remove tracker:writeback property from nao:prefLabel"
+	This reverts commit 9dcee2bdc0ef2beb9be83b31180c18fb2c0ecfbd.
+
+	Tracker-extract won't trigger anymore a writeback petition when inserting
+	tags. So, even if it doesn't work yet as expected, is not harmful in normal
+	operations.
+
+	tracker-extract: use provided graph when inserting keywords from PDF documents
+
+	tracker-extract: use provided graph when inserting keywords from PNG images
+
+	tracker-extract: use provided graph when inserting keywords from TIFF images
+
+	tracker-extract: use provided graph when inserting keywords from JPEG images
+
+	tracker-extract: use provided graph when inserting keywords from GIF images
+
+	tracker-extract: Pass the graph down to extract modules
+	The passed TrackerExtractInfo will now contain the graph that should
+	be used for data modifications
+
+	tracker-extract: Add a "graph" parameter to dbus methods
+	Now the requester may provide a graph, that should be used by tracker-extract
+	for any insert clause it generates in the preupdate sparql builder.
+
+	tracker-extract: Pass a TrackerExtractInfo to the exported extract function
+	This struct replaces all previous arguments, with the advantage that it can
+	be extended at any time, containing all necessary information for modules
+	to to their work correctly.
+
+	All modules have been changed to deal with the new function signature.
+
+	libtracker-extract: Move TrackerExtractInfo out to its own header
+	The API has changed slightly too, it is a refcounted boxed object, and
+	contains TrackerSparqlBuilders for preinsert/metadata contents. This is
+	so it may be passed on to extract modules.
+
+	Current users of TrackerExtractInfo have been modified to deal with the
+	API change.
+
+	libtracker-sparql: Allow append() on embedded inserts in TrackerSparqlBuilder
+	The result() method was returning nothing for these if only append() is used
+	to introduce content in a TrackerSparqlBuilder created through the embedded_insert()
+	constructor.
+
+2011-09-06  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-miner-fs: Improve query performance for updating tracker:available on mounting
 	Previously we had an OPTIONAL and FILTER in the query. This translated into
@@ -129,34 +272,6 @@
 
 	This fixes NB#272441
 
-2011-09-08  Mario Blättermann  <mariobl@gnome.org>
-
-	[l10n] Updated German translation
-
-2011-09-08  Jürg Billeter  <j@bitron.ch>
-
-	libtracker-data: Do not delete database and do not exit on corruption
-	If there is no journal, deleting the database will cause data loss. Do
-	not do this automatically as it should not be common with SQLite fsync
-	enabled and we cannot be sure that database file is not usable anymore.
-
-	libtracker-data: Remove useless calls before exit on database corruption
-
-2011-09-08  Fran Dieguez  <fran@openhost.es>
-
-	Updated galician translations
-
-2011-09-06  Martyn Russell  <martyn@lanedo.com>
-
-	tracker-extract-gstreamer: Don't mention URI for dlna debugging
-	We don't do this because the URI is already mentioned several times before we
-	get to this point and it just spams the logs
-
-2011-09-06  Mikael Ottela  <mikael.ottela@ixonos.com>
-
-	NMM: Add property nmm:dlnaMime for dlna specific mimetypes tracker-extract-gstreamer: Add support for dlnaMime
-	Fixes NB#246131, DLNA mime-types needed
-
 2011-09-06  Aleksander Morgado  <aleksander@lanedo.com>
 
 	tracker-extract,gstreamer: if possible, use Tagreadbin backend in the Discoverer
@@ -167,85 +282,105 @@
 	 https://bugzilla.gnome.org/show_bug.cgi?id=564749
 	 https://bugzilla.gnome.org/show_bug.cgi?id=656345
 
+2011-09-05  Mario Blättermann  <mariobl@gnome.org>
+
+	[l10n] Updated German translation
+
+2011-09-05  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Do not delete database and do not exit on corruption
+	If there is no journal, deleting the database will cause data loss. Do
+	not do this automatically as it should not be common with SQLite fsync
+	enabled and we cannot be sure that database file is not usable anymore.
+
+	libtracker-data: Remove useless calls before exit on database corruption
+
+	thunderbird: Fix Makefile
+
+2011-09-05  Vincent Untz  <vuntz@gnome.org>
+
+	thunderbird: Do not call update-desktop-database when building packages
+	Fixes GB#658232
+
+	thunderbird: Fix .desktop file
+	The MimeType value is a list and therefore should end with a ;.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=658231
+
+2011-09-05  Fran Dieguez  <fran@openhost.es>
+
+	Updated galician translations
+
+2011-09-03  Claude Paroz  <claude@2xlibre.net>
+
+	Updated French translation
+
+2011-09-02  Aleksander Morgado  <aleksander@lanedo.com>
+
 	tracker-extract: remove unneeded source file
 	The GUPnP-DLNA extractor was merged into tracker-extract-gstreamer.c
 
-2011-09-06  Martyn Russell  <martyn@lanedo.com>
+2011-09-01  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
-	tracker-extract: Small coding style clean ups
-
-2011-09-06  Aleksander Morgado  <aleksander@lanedo.com>
-
-	build: require gstreamer-pbutils when using Discoverer backend
-
-	tracker-extract,gstreamer: avoid code duplication
-
-	build: treat GUPnP-DLNA as another GStreamer backend
-
-	tracker-extract,gstreamer: integrate GUPnP-DLNA extractor within the GStreamer one
-
-	tracker-extract,gstreamer: don't compile both tagreadbin and decodebin2
-	... and prepare for the Discoverer API based implementation
-
-	build: minor spaces vs tabs fixes
-
-	build: rename --enable-video-extractor to --enable-generic-media-extractor
-	We really use gstreamer and such as a generic media extractor, not just for
-	video files, so this configure switch name makes more sense.
-
-	Fixes GB#654441.
-
-	build: new --with-gstreamer-backend=[tagreadbin,decodebin2,discoverer]
-	Allows selecting among 'tagreadbin', 'decodebin2' and 'discoverer', and replaces
-	the previous --enable-gstreamer-tagreadbin boolean switch.
-
-	Also makes sure that discoverer is requested when enabling the GUPnP-DLNA
-	enabled GStreamer extractor
-
-	build: explictly require gstreamer when building gupnp-dlna enabled extractor
-
-	tracker-extract: let gstreamer extractor handle 'dlna/*' mimetypes
-
-	tracker-extract: disable compilation of the gupnp-dlna extractor
+	Updated Spanish translation
 
 2011-09-01  Martyn Russell  <martyn@lanedo.com>
 
-	Release 0.10.25
+	Merge branch 'handle-desktop-links'
 
 	tracker-miner-fs: Check URL is provided for desktop file Type=Link
 	Also free the url after use.
-
-2011-09-01  Carlos Garnacho  <carlos@lanedo.com>
-
-	tracker-miner-applications: Handle desktop files of type=Link
-	Fixes NB#256958. Such desktop files are often just links to some URL,
-	so handle these as nfo:Bookmark in the applications miner.
 
 2011-09-01  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-data: Use ontology from database if cache is unavailable
 	Fixes NB#279789.
 
-2011-09-01  Martyn Russell  <martyn@lanedo.com>
+2011-09-01  Adrien Bustany  <adrien.bustany@nokia.com>
+
+	Firefox plugin: bump compatibility to 6.0.*
+
+	Thunderbird plugin: bump compatibility to 7.0.*
+
+2011-08-31  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-miner-applications: Handle desktop files of type=Link
+	Fixes NB#256958. Such desktop files are often just links to some URL,
+	so handle these as nfo:Bookmark in the applications miner.
+
+2011-08-31  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'tracker-control-verbosity'
+
+	tracker-control: Added man page documentation for --{get|set}-log-verbosity
+
+	tracker-control: Add work for initial --set-log-verbosity
+
+	tracker-control: Add work for initial --get-log-verbosity
 
 	libtracker-sparql: Don't package .gir/.typelib files in tarballs
 	Fixes GB#657354.
 
-2011-09-01  Jürg Billeter  <j@bitron.ch>
+2011-08-30  Jürg Billeter  <j@bitron.ch>
 
 	tracker-miner-fs: Reindex applications on locale change
 	Fixes NB#276858.
 
-2011-09-01  Philip Van Hoof  <philip@codeminded.be>
+	libtracker-sparql: Add tracker_sparql_cursor_close
+	This allows resetting the underlying SQLite statement before freeing
+	the cursor, mainly needed when using libtracker-sparql from garbage
+	collected languages.
+
+	Based on patch by Cosimo Cecchi.
+
+2011-08-26  Philip Van Hoof  <philip@codeminded.be>
 
 	Fix crash in case of error in MeeGo Harmattan locale handling
 	Fixes NB#276830.
 
-2011-08-25  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.24
-
 2011-08-25  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	Merge branch 'functional-test-improvements'
 
 	functional-tests: Only run tests that are +x
 	This fixes a regression from the existing behaviour
@@ -253,6 +388,41 @@
 	Fixes GB#655898
 
 2011-08-25  Sam Thursfield  <samthursfield@codethink.co.uk>
+
+	functional-tests: Make quiet by default
+	Add -v / --verbose option, which enables output of the helper status
+	messages and also stdin/stderr of the tracker processes being tested.
+
+	functional-tests: Run all tests with a fake $HOME sandbox
+	Prefer storing test data in /tmp to avoid leaving cruft around the
+	home directory.
+
+	For tests that rely on filesystem monitoring, we must use the real
+	home directory anyway because FS miner currently ignores paths under
+	/tmp.
+
+	If /tmp is too small/unsuitable for test data, the preferred method
+	for using a different location is to set TMPDIR.
+
+	functional-tests: Refactor common/utils/helpers.py
+	* Add Helper base class.
+
+	* New setup behaviour: start() runs the process and blocks until it is
+	  available on the bus. connect() and wait() are removed.
+
+	* A new process is always explicitly spawned, instead of relying on DBus
+	  activation. This allows passing environment variables to the tracker
+	  processes being tested, regardless of whether they are being run in
+	  the session dbus or a nested bus from test-helper.sh.
+
+	* common/utils/system.py: use Helper instead of our own LifeCycle
+	  classes because they now do the same thing.
+
+	* StoreHelper: don't try to respawn the tracker-store unless it actually
+	  has disappeared from the bus - other exceptions are now passed to the
+	  caller.
+
+	All tests fixed for new behaviour.
 
 	functional-tests: Run tests inside an isolated DBus instance
 
@@ -265,6 +435,8 @@
 	Fixes GB#657161
 
 2011-08-25  Jürg Billeter  <j@bitron.ch>
+
+	Merge branch 'nb242979'
 
 	SPARQL: Use single hash table and array for all update solutions
 	This reduces peak memory usage for updates with a WHERE clause that
@@ -286,21 +458,21 @@
 
 	functional-tests: Print the current test name before running it
 
-2011-08-25  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+2011-08-24  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	functional-tests: Use correct argv in 400-extractor.py
 
-2011-08-25  Ivan Frade  <ivan.frade@gmail.com>
+2011-08-24  Ivan Frade  <ivan.frade@gmail.com>
 
 	functional-tests: Fail instead of error when gstreamer plugin not preset. Handle correctly nao:Tags.
 
 	functional-tests: Allow to run one specific .expected file in the 400-extractor.py
 
-2011-08-25  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+2011-08-24  Sam Thursfield  <sam.thursfield@codethink.co.uk>
 
 	tracker-evolution: Fix compile with Evolution 2.9x
 
-2011-08-25  Carlos Garnacho  <carlos@lanedo.com>
+2011-08-24  Carlos Garnacho  <carlos@lanedo.com>
 
 	ontology: Remove tracker:writeback property from nao:prefLabel
 	Fixes NB#278806, this property only applies to nao:Tag entities, not
@@ -314,18 +486,18 @@
 	than delivered, filling the writeback queue and hence blocking any
 	other processing.
 
-2011-08-25  Jürg Billeter  <j@bitron.ch>
+2011-08-23  Jürg Billeter  <j@bitron.ch>
 
 	tracker-evolution: Add support for Evolution 3.2
 	Fixes GB#654824.
 
 	tracker-evolution: Refactor convert_url_to_whatever to message_uri_build
 
-2011-08-25  Philip Van Hoof  <philip@codeminded.be>
+2011-08-23  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-extract: Improve error debugging for album art handling
 
-2011-08-25  Jürg Billeter  <j@bitron.ch>
+2011-08-22  Jürg Billeter  <j@bitron.ch>
 
 	tests/libtracker-extract: Fix orientation test
 
@@ -333,16 +505,20 @@
 
 	tracker-extract: Fix memory leak on stream
 
+2011-08-22  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'orientation-fix'
+
 2011-08-22  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	libtracker-extract: Fix the orientation handling in xmp
 	Fixes NB#277799
 
-2011-08-22  Philip Van Hoof  <philip@codeminded.be>
+2011-08-21  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-extract: Fix memleak after own review, obvious one
 
-2011-08-22  Jürg Billeter  <j@bitron.ch>
+2011-08-20  Jürg Billeter  <j@bitron.ch>
 
 	tracker-extract-mp3: Do not always use guessed encoding for ID3v2
 	Always using guessed 8-bit encoding for ID3v2 breaks some valid MP3
@@ -351,7 +527,9 @@
 
 	Fixes NB#278171.
 
-2011-08-22  Philip Van Hoof  <philip@codeminded.be>
+2011-08-19  Philip Van Hoof  <philip@codeminded.be>
+
+	Merge branch 'avoid-album-art-duplicates'
 
 	tracker-extract: Bugfix, strcmp wrongly used and double free
 
@@ -379,23 +557,34 @@
 
 	tracker-extract: Avoid albumart duplicates for embedded
 
-2011-08-22  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+2011-08-19  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract-gupnp-dlna: Initialise all variables in MetadataExtractor struct
+
+	tracker-extract-gstreamer: Don't mention URI for dlna debugging
+	We don't do this because the URI is already mentioned several times before we
+	get to this point and it just spams the logs
+
+	Merge branch 'dlna-mime'
+
+2011-08-19  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	NMM: Add property nmm:dlnaMime for dlna specific mimetypes tracker-extract-gstreamer: Add support for dlnaMime
+	Fixes NB#246131, DLNA mime-types needed
+
+2011-08-19  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	tracker-extract-gstreamer: Don't check for GST_TAG_DEVICE_MAKE
+	The xmp and exif elements return GST_TAG_DEVICE_MANUFACTURER; nobody
+	is using GST_TAG_DEVICE_MAKE any more.
+
+	Fixes GB#656838
 
 	tracker-extract-gstreamer: Remove redundant tag definitions
 	GST_TAG_DEVICE_MODEL and GST_TAG_DEVICE_MANUFACTURER are upstream
 	since 0.10.30.
 
-2011-08-21  Takeshi AIHANA  <takeshi.aihana@gmail.com>
-
-	Updated Japanese translation.
-
-2011-08-18  Piotr Drąg  <piotrdrag@gmail.com>
-
-	Updated Polish translation
-
 2011-08-18  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.23
 
 	tracker-miner-fs: Use XDG locations not static values for desktop files
 	We were using just $prefix/share/{applications|desktop-directories}. Now we
@@ -421,24 +610,34 @@
 
 	This fixes NB#256958
 
-2011-08-18  Sam Thursfield  <samthursfield@codethink.co.uk>
+2011-08-17  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.11.2
+
+2011-08-17  Sam Thursfield  <samthursfield@codethink.co.uk>
+
+	functional-tests: Disable optical & removable indexing for tests
 
 	functional-tests: Separate out test-runner.sh from Makefile
 
-2011-08-18  Jürg Billeter  <j@bitron.ch>
+2011-08-16  Jürg Billeter  <j@bitron.ch>
 
 	tracker-needle: Fix build with Vala master
 
-2011-08-18  Yuri Myasoedov  <omerta13@yandex.ru>
+2011-08-16  Yuri Myasoedov  <omerta13@yandex.ru>
 
 	Updated Russian translation
 
-2011-08-18  Jürg Billeter  <j@bitron.ch>
+2011-08-16  Martyn Russell  <martyn@lanedo.com>
+
+	build: Fixed distcheck issues
+
+2011-08-16  Jürg Billeter  <j@bitron.ch>
 
 	NMO: Add nmo:delivery-status-temporarily-failed-offline
 	Fixes NB#247468.
 
-2011-08-18  Philip Van Hoof  <philip@codeminded.be>
+2011-08-15  Philip Van Hoof  <philip@codeminded.be>
 
 	tests/functional-test: Fixed insert or replace f. test for null support
 
@@ -471,7 +670,10 @@
 	tracker-extract: Do extra header check for jpg cover files
 	Fixes NB#259325.
 
-2011-08-18  Sam Thursfield  <samthursfield@codethink.co.uk>
+2011-08-12  Sam Thursfield  <samthursfield@codethink.co.uk>
+
+	tracker-extract-gstreamer: Remove unused functions
+	https://bugzilla.gnome.org/show_bug.cgi?id=656419
 
 	tracker-extract-gstreamer: Fix compile warning
 	https://bugzilla.gnome.org/show_bug.cgi?id=656419
@@ -479,70 +681,110 @@
 	tracker-extract-gstreamer: Tiny refactor
 	https://bugzilla.gnome.org/show_bug.cgi?id=656419
 
-2011-08-18  Javier Jardón  <jjardon@gnome.org>
+2011-08-10  Javier Jardón  <jjardon@gnome.org>
 
 	tracker-miner-flickr.desktop.in.in: Remove deprecated Encoding key
 
-2011-08-18  Daniel Nylander  <po@danielnylander.se>
+2011-08-07  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
-2011-08-18  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+2011-08-07  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-08-06  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-08-05  Christian Kirbach  <Christian.Kirbach@googlemail.com>
 
 	[l10n] Updated German translation
 
-2011-08-18  Martyn Russell  <martyn@lanedo.com>
+2011-08-05  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-needle: Avoid g_markup_escape_text() critical with NULL
-	This is based on a similar patch in master but done from scratch for conflict
-	reasons during cherry-picking:
 
-	  689d6aa29bec498c15925131ed5c19b4ac45d2fd
+	thunderbird: Add desktop file so needle opens email on activation
 
 	tracker-needle: Show email subject as primary information not sender
 	Sender is now secondary in the second row.
 
-2011-08-05  Martyn Russell  <martyn@lanedo.com>
+	Merge branch 'drop-helix-extractor'
 
-	Release 0.10.22
-
-	tracker-extract: Drop real media / helix extractor
-	The work is all covered in the tracker-extract-gstreamer extractor
-
-2011-08-05  Stefano Facchini  <stefano.facchini@gmail.com>
+2011-08-04  Stefano Facchini  <stefano.facchini@gmail.com>
 
 	libtracker-miner: make MinerManager GLib.Initable in VAPI file
 	Fixes GB#655987
 
-2011-08-05  Jürg Billeter  <j@bitron.ch>
+2011-08-04  Adrien Bustany  <adrien.bustany@nokia.com>
 
-	SPARQL: Add support for COALESCE
-	Implemented as an alias to tracker:coalesce.
+	firefox: Use asynchronous connection opening
 
-	tracker-preferences: Fix apply button
+	firefox: Add bindings for tracker_sparql_connection_get_async
 
-	tracker-extract-playlist: Limit playlists to 1000 entries
-	Fixes NB#269986.
+	firefox: Raise compatibility level to 5.0.*
 
-	SPARQL: Add support for HAVING
+	thunderbird: Use asynchronous connection opening
 
-	tracker-store: Improve UpdateArray performance
-	Attempt to perform all updates in an UpdateArray at once in a single
-	transaction. Only if that fails, roll the transaction back and perform
-	updates in separate transactions.
+	thunderbird: Fix parameters types in bindings.js
+	Use ctypes.voidptr_t instead of ctypes.void_t.ptr, and use GObject where
+	possible.
 
-	Fixes NB#270774.
+	thunderbird: Add bindings for tracker_sparql_connection_get_async
 
-	libtracker-data: Add support for xsd:date
-	Fixes NB#271747.
+	thunderbird: Move indexing startup out of MailStore initialization
+	The call initializing the folder walking is now in plugin.js::onLoad
 
-2011-08-04  Jürg Billeter  <j@bitron.ch>
+2011-08-03  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Make sure we check filtered modules for dbus calls too
+	The --force-module command line option was ignored for dbus calls and only
+	available for command line use.
+
+	tracker-extract: Improve checks for mimetype guessing
+	Previously mimetype had to be NULL, but over dbus, it can only be an empty
+	string. The check has been improved here.
+
+	Additionally, we were leaking a GSimpleAsyncResult.
+
+	There was also an issue with error conditions of the mimetype check where we
+	would return and the client would be left hanging because we didn't complete
+	the simple_async_result in that condition. That's now been fixed and any error
+	reported by getting the mimetype also reported back to the client.
+
+	tracker-extract: Improve debugging for filtered modules and mime guessing
+
+	tracker-extract: Drop real media / helix extractor
+	The work is all covered in the tracker-extract-gstreamer extractor
+
+	Merge branch 'bump_api_version_0.12'
+
+	libtracker-extract: Don't install examples/ rules mock up
+	This was causing the MP3 extractor to be used even if the MP3 rules file was
+	removed because the mockup uses a similar configuration
+
+	firefox, thunderbird: Require 0.10 or 0.12 .so files not 0.11
+
+	build: Bump tracker_api_version to 0.12 but keep major/miner as 0.11
+	Add AX_DOTS_TO_UNDERSCORES macro to allow independent
+	TRACKER_API_VERSION_UNDERSCORES value (which is used to convert "0.12" to
+	"0_12".
+
+	We need this because for 0.11.x releases, we want the files to be named *0.12*
+	which requires changing only tracker_api_version in configure. This breaks
+	Makefiles which build introspection files because they use
+	$TRACKER_MAJOR_VERSION_$TRACKER_MINER_VERSION and that's not updated.
+	Additionally, $TRACKER_API_VERSION can't be used because it contains a dot not
+	an underscore. The only way to fix this was to do it in configure.
+
+2011-08-02  Jürg Billeter  <j@bitron.ch>
 
 	tracker-extract-gstreamer: Assume UTC for dates
 	GDate does not carry time zone information. Using local time does not
 	make sense.
 
-2011-08-04  Martyn Russell  <martyn@lanedo.com>
+2011-08-02  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Line wrap documentation with annotations
 	This improves Stefano Facchini's commit:
@@ -550,11 +792,39 @@
 
 	Fixes GB#655789
 
-2011-08-04  Stefano Facchini  <stefano.facchini@gmail.com>
+	thunderbird, firefox: Use -f with ln to force destination and use $(MKDIR_P)
+	Without this make install after the initial attempt would cause errors due to
+	destination already existing.
+
+	Also switched mkdir -p to $(MKDIR_P)
+
+2011-08-02  Stefano Facchini  <stefano.facchini@gmail.com>
 
 	libtracker-miner: add some introspection annotations to TrackerMinerManager methods
 
-2011-08-04  Carlos Garnacho  <carlosg@gnome.org>
+2011-08-02  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-extract: Added some debugging to know what rules files are loaded
+	Useful to know how the module is decided in tracker-extract
+
+2011-08-02  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-extract: Fix --force-module for commandline extraction
+	This only works with --file, and the forced module must be one of those
+	that typically handle the file (i.e. mp3/gstreamer/gupnp-dlna for mp3
+	files)
+
+	tracker-extract: Use TrackerMimetypeInfo in commandline extraction
+	This is so it falls back through different extract modules if any
+	of these fails to extract information, likewise to the dbus method.
+
+2011-08-02  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'gstreamer-with-dlna'
+
+	tracker-extract: Small coding style clean ups
+
+2011-08-02  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-extract: Make JPEG module handle DLNA profiles
 	In this extractor makes little sense to perform calls to any
@@ -568,6 +838,12 @@
 	In this custom extractor makes little sense to call any dlna
 	library since we have already all necessary data at hand.
 
+2011-08-01  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+	Updated Czech translation
+
 2011-08-01  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-miner-fs: Disable writeback by default.
@@ -575,21 +851,126 @@
 	users. Also the team is not completely decided it should be enabled at this
 	point.
 
-2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+2011-08-01  Vincent Untz  <vuntz@gnome.org>
+
+	Firefox, Thunderbird: Fix build system for plugins to work for packaging
+	Fixes GB#655701
+
+2011-08-01  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.11.1
+
+	build: Disable firefox, thunderbird for distcheck
+	The ln -s hook fails with permission issues
+
+	firefox, thunderbird: Fixed distcheck issues
+	All _DATA variables were missing from EXTRA_DIST
+
+2011-08-01  Adrien Bustany  <adrien.bustany@nokia.com>
+
+	Thunderbird: Fix memory leak in TrackerStore.escapeString
+	When getting C strings through CTypes, the memory has to be freed
+	manually.
+
+2011-07-30  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-07-29  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-07-29  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'firefox'
+
+	.gitignore: Added install.rdf common in Mozilla extensions
+
+2011-07-29  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-writeback: preserve original file if writeback fails
+	The temporary file is now deleted instead, leaving the original
+	file unmodified.
+
+	tracker-writeback: Revert 3ff16879, sort of
+	This patch was blindly cherry-picked from writeback-refactor-0.10
+	to master, meanwhile Jürg had already fixed it in commit 7504d0a2
+
+2011-07-28  Carlos Garnacho  <carlos@lanedo.com>
 
 	tracker-writeback: Do not unref the GFileInfo too early
 	it is used in the creation of the temporary file.
 
-2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+2011-07-28  Adrien Bustany  <abustany@gnome.org>
+
+	firefox: Fix --with-firefox-plugin-dir configure argument
+	The configure argument would not work and cause the configure script to abort
+	when used due to a typo.
+
+	thunderbird: Fix --with-thunderbird-plugin-dir configure argument
+	The configure argument would not work and cause the configure script to abort
+	when used due to a typo.
+
+2011-07-28  Martyn Russell  <martyn@lanedo.com>
+
+	firefox: Added missing Makefile.am
+
+	tracker-search: Add support for -b, --bookmarks
+
+	firefox: Added build system to install this plugin
+
+2011-07-28  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-07-28  Martyn Russell  <martyn@lanedo.com>
+
+	Add 'src/plugins/firefox/' from commit '5e79d3fea70cdff76415a86b26dd2d3c7e2548de'
+	git-subtree-dir: src/plugins/firefox
+	git-subtree-mainline: 6875bf346073c2d12cb28186384e6f89513d5956
+	git-subtree-split: 5e79d3fea70cdff76415a86b26dd2d3c7e2548de
+
+	Merge branch 'thunderbird'
+
+	thunderbird: Use a proper version comparison function
+	Right now, we fix the v5.0b3 version by truncating the string, but if we have
+	a v5.1 then this also won't work. This does a proper comparison.
+
+2011-07-28  Adrien Bustany  <adrien.bustany@nokia.com>
+
+	thunderbird: Ensure the extensions dir exists when installing
+
+	thunderbird: Update README file
+
+	thunderbird: Also detect beta versions in version check
+
+2011-07-28  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-extract: Add code comment explaining strange FF D8 FF check
 
 	tracker-extract: Check header bytes for JPeg files
 	Fixes NB#271389.
 
-2011-08-01  Martyn Russell  <martyn@lanedo.com>
+2011-07-28  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-writeback: Fixed distcheck breakages
+
+	thunderbird: Build system and plugin now work properly with TB >= 5.0
+
+2011-07-27  Martyn Russell  <martyn@lanedo.com>
+
+	thunderbird: Add initial build system around extension
+
+	Add 'src/plugins/thunderbird/' from commit '574f3b414badae0adc0377e624584226219f951d'
+	git-subtree-dir: src/plugins/thunderbird
+	git-subtree-mainline: af1e7fbf39c2ae28614981491d36dca2d52add3b
+	git-subtree-split: 574f3b414badae0adc0377e624584226219f951d
+
+2011-07-27  Jürg Billeter  <j@bitron.ch>
+
+	tracker-writeback: Fix use after free of GFileInfo object
+
+2011-07-27  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-control: Add command line switch for new pause-for-process APIs
 	To test the libtracker-miner APIs and allow callers to pause until the
@@ -607,22 +988,7 @@
 	Fixes NB#254896, tracker-miner-fs should pause itself when camera starts
 	recording video
 
-2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
-
-	tracker-writeback: preserve original file if writeback fails
-	The temporary file is now deleted instead, leaving the original
-	file unmodified.
-
-2011-08-01  Gabriel Speckhahn  <gabspeck@gmail.com>
-
-	Updated Brazilian Portuguese Translation
-
-2011-08-01  Philip Van Hoof  <philip@codeminded.be>
-
-	UTF-16 strings' length with 3 \0 bytes at the end was calculated wrong
-	Fixes NB#274181.
-
-2011-08-01  Martyn Russell  <martyn@lanedo.com>
+	tracker-writeback: Remove all references of .cfg files in man pages
 
 	tracker-miner-fs: Fix critical warnings when cleaning up NULL GFile/GPtrArrays
 
@@ -643,6 +1009,12 @@
 	The error messages didn't pertain to what the function was doing which made
 	it quite generic. It's better to explain what we were attempting to give the
 	logs more context when it occurs.
+
+2011-07-27  Adrien Bustany  <adrien.bustany@nokia.com>
+
+	queue.js: Keep a reference to the timer to ensure it gets fired
+
+2011-07-26  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner, tracker-miner-fs: Improved debugging
 
@@ -668,7 +1040,7 @@
 	dependencies should be either drawn in from libtracker-miner's .la or the
 	TRACKER_WRITEBACK configure dependencies
 
-2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+2011-07-26  Carlos Garnacho  <carlos@lanedo.com>
 
 	tracker-miner-fs: Fix ref leak
 	The created GDBusMessage already sinks the floating reference
@@ -676,12 +1048,12 @@
 
 	libtracker-miner: fix indenting issues
 
-2011-08-01  Jürg Billeter  <j@bitron.ch>
+2011-07-26  Jürg Billeter  <j@bitron.ch>
 
 	tracker-writeback: Do not touch unsupported files
 	Fixes NB#274498.
 
-2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+2011-07-26  Carlos Garnacho  <carlos@lanedo.com>
 
 	libtracker-miner: Ensure writeback operations are cancelled on unmounted volumes
 
@@ -694,7 +1066,7 @@
 	There are situations where we want writeback to be cancelled, so expose
 	a GCancellable as with ::process-file.
 
-2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+2011-07-26  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-miner, miners/fs: Fix issues after review
 
@@ -710,9 +1082,11 @@
 
 	miners/fs: Fix enabling/disabling writeback
 
+	miners/fs, data/gschemas: Add enable-writeback to miner-fs's config schema
+
 	libtracker-miner: Rename and change to boolean return of a GEqualFunc
 
-2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+2011-07-26  Carlos Garnacho  <carlos@lanedo.com>
 
 	libtracker-miner: check writeback task pool when translating MOVED events to CREATED
 	A move event from an ignored file to a non-ignored one will be translated to a CREATED
@@ -735,25 +1109,25 @@
 	in handling the UPDATED so they're merged together. So don't remove
 	writeback tasks until we've gotten an update event for that file.
 
-2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+2011-07-26  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-miner: Ignore EVENT_MOVED during Writeback
 
-2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+2011-07-26  Carlos Garnacho  <carlos@lanedo.com>
 
 	tracker-miner-fs: Ignore monitor events on files being written back
 
 	writeback: Update return value to signal connecting to ::writeback-file
 
-2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+2011-07-26  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-writeback: Remove IgnoreNextUpdate and file locking from writeback
 
-2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+2011-07-26  Carlos Garnacho  <carlos@lanedo.com>
 
 	libtracker-miner: Use the task pool for ongoing writeback operations
 
-2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+2011-07-26  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-writeback: Exit the writeback process in case of unmount event
 
@@ -771,7 +1145,7 @@
 
 	miners/fs: Implement dispatcher
 
-2011-08-01  Carlos Garnacho  <carlos@lanedo.com>
+2011-07-26  Carlos Garnacho  <carlos@lanedo.com>
 
 	tracker-writeback: Use g_mkstemp_full() and preserve permissions on copy
 	This way we ensure there is no intromission on the temporary file,
@@ -779,7 +1153,7 @@
 	writeback usually happens on a copy, which is moved atomically onto
 	of the original file, so we now ensure there are
 
-2011-08-01  Philip Van Hoof  <philip@codeminded.be>
+2011-07-26  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-writeback: Pass cancellable around to also the modules
 
@@ -815,28 +1189,21 @@
 
 	miner/fs: Add an empty listener class for writeback
 
-2011-07-29  Aleksander Morgado  <aleksander@lanedo.com>
+2011-07-23  Gabriel Speckhahn  <gabspeck@gmail.com>
 
-	libtracker-miner: ensure mtime checks on directories found during crawling
-	Fixes NB#273120
-
-2011-07-22  Jürg Billeter  <j@bitron.ch>
-
-	Release 0.10.21
-
-2011-07-22  Cosimo Cecchi  <cosimoc@gnome.org>
-
-	miner: don't use G_CONST_RETURN
-	Just use const instead.
-	https://mail.gnome.org/archives/desktop-devel-list/2011-March/msg00044.html
-	https://mail.gnome.org/archives/desktop-devel-list/2011-June/msg00071.html
-
-	Fixes GB#654653.
+	Updated Brazilian Portuguese Translation
 
 2011-07-22  Carlos Garnacho  <carlos@lanedo.com>
 
 	libtracker-miner: Fix typo in tracker_task_pool_foreach()
 	Tasks are the value of the hashtable, not the key.
+
+2011-07-22  Philip Van Hoof  <philip@codeminded.be>
+
+	UTF-16 strings' length with 3 \0 bytes at the end was calculated wrong
+	Fixes NB#274181.
+
+2011-07-21  Carlos Garnacho  <carlos@lanedo.com>
 
 	libtracker-miner: Ensure recursive parent inspection on parentless files is done orderly
 
@@ -849,6 +1216,44 @@
 	This is so the miner can indefinitely force prepend of a task
 
 	libtracker-miner: Run the async result on high priority sparql buffer updates
+
+2011-07-21  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Add support for xsd:date
+	Fixes NB#271747.
+
+2011-07-21  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	miner: don't use G_CONST_RETURN
+	Just use const instead.
+	https://mail.gnome.org/archives/desktop-devel-list/2011-March/msg00044.html
+	https://mail.gnome.org/archives/desktop-devel-list/2011-June/msg00071.html
+
+	Fixes GB#654653.
+
+2011-07-20  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Add support for COALESCE
+	Implemented as an alias to tracker:coalesce.
+
+2011-07-20  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: update event queue traces with new TrackerPriorityQueue
+
+	libtracker-miner: ensure mtime checks on directories found during crawling
+	Fixes NB#273120
+
+2011-07-20  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-miner-fs: Plug a leak.
+
+	libtracker-extract: Plug some leaks
+
+2011-07-20  Jürg Billeter  <j@bitron.ch>
+
+	tracker-preferences: Fix apply button
+
+2011-07-19  Carlos Garnacho  <carlos@lanedo.com>
 
 	tracker-miner-fs: Don't set no longer existing property on TrackerMinerApplications
 	TrackerMinerFS::processing-pool-requests-limit no longer exists.
@@ -863,6 +1268,18 @@
 	instead of a UpdateArray(), so updates are most immediate.
 
 	libtracker-miner: propagate priority throughout file insertions/updates in TrackerMinerFS
+
+	libtracker-miner: Avoid triggering too often the ensure_mtime_cache() hack
+	The hack introduced in commit 22087297 is meant to cope with the "delete
+	folder and move another on top" situation, forcing reindex if the operation
+	was in the middle of being processed. This situation is most relevant for
+	monitor events, as deletes can take quite some time to happen recursively.
+
+	However, on unclean shutdowns, this condition also happens often. Even if
+	the directory is already indexed in the store, it is pushed for mtime
+	check into the queues, which looks exactly the same to ensure_mtime_check().
+	The final effect was that plenty of files were being reindexed for the sake
+	of it.
 
 	libtracker-miner: Ensure harder process_stop() is only called once
 	QUEUE_WAIT is now used more extensively, meaning item_queue_handlers_cb()
@@ -948,7 +1365,186 @@
 	priorities, so doing pop() returns the highest/earliest element
 	in the queue.
 
-2011-07-22  Cosimo Cecchi  <cosimoc@gnome.org>
+2011-07-19  Jürg Billeter  <j@bitron.ch>
+
+	tracker-extract-playlist: Limit playlists to 1000 entries
+	Fixes NB#269986.
+
+2011-07-18  Kjartan Maraas  <kmaraas@gnome.org>
+
+	Updated Norwegian bokmål translation
+
+2011-07-18  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-extract: handle RealMedia files with the GStreamer extractor
+	Fix ported from the tracker-0.10 branch, see commits 6713d2a and abe2677.
+
+2011-07-16  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-07-15  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Cleaning up code and indentation fixes
+
+2011-07-14  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-07-13  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-07-13  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-miner-fs: Ensure datasource is also set on error
+	This is so files that trigger an extractor error within a removable
+	volume gets correctly associated to it.
+
+	libtracker-extract: Remove traces of debugging g_print()s
+
+	tracker-extract: disable again threading traces
+
+	tracker-extract: Use TrackerExtractInfo from libtracker-extract
+	Asynchronous tasks in both tracker-extract internals and tracker-extract-client
+	actually hold the same information, but each being at one side of D-Bus, so
+	make both use the same TrackerExtractInfo data type.
+
+2011-07-13  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Use tracker_processing_task_unref() instead of _free() to fix build
+
+2011-07-13  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-extract: Use API to iterate through extract modules
+	This API is always used on the main thread, if some module
+	(whatever the thread policy it has) can't handle a file, the
+	task is put back in the main thread so the next module is
+	called.
+
+	libtracker-extract: Add API to iterate through the modules handling a mimetype
+	There are situations where the most specific miner could just not know
+	enough about the file, this API allows falling back to less specific
+	modules.
+
+	tracker-extract: Rework stats reporting and task cancellation
+	Both things share the same threading model, so these are now dealt
+	with together.
+
+2011-07-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: Mark text extractor as thread aware
+
+	tracker-extract: Implement thread awareness for modules
+	Tracker extract modules may provide now an init() function, which
+	also reports the thread awareness of the given module, allowing
+	these to run sequentially in the main thread, on a dedicated thread
+	for the extract module, or in a thread pool.
+
+	At the moment no extractor modules do this, so they run by default
+	in the main thread as before.
+
+	Conflicts:
+
+		src/tracker-extract/tracker-extract.c
+
+2011-07-13  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-miner-fs: Avoid multiple calls to extractor_process_failsafe()
+	The accounting of currently processed files has been also improved, all
+	to ensure extractor_process_failsafe() is called just once, and tasks
+	waiting for process_file_cb() don't sneak in and break failsafe
+	extraction.
+
+	tracker-miner-fs: Don't remove item from queue until it's been processed
+	Mostly to keep consistency.
+
+	libtracker-extract: Do not use G_CONST_RETURN
+	just use const, G_CONST_RETURN doesn't exist in modern glib
+
+	libtracker-extract: Document tracker-client API
+
+2011-07-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: Implement watchdog for stale tasks.
+	This forces extraction exit if some task takes more than 20 seconds
+	to be finished.
+
+	tracker-miner-fs: Implement failsafe metadata extraction
+	This method is independent of how the extractor works, unlike the
+	previous method. Now on a extractor failure, the miner does:
+
+	1) Pause itself
+	2) Wait for all pending extractor requests to finish
+	3) Accumulate all failed extractions on a list
+	4) Run through that list items, extracting again one file at a time.
+	5) Resume itself
+
+	tracker-miner-fs: Move "retry on extraction failed" code to TrackerMinerFiles
+	Currently the simplest approach of retrying just once
+	every failed file is taken, after that, the sparql without
+	embedded metadata is added.
+
+	libtracker-extract: Add tracker-extract-client API
+	This API is meant to replace the code in TrackerMinerFiles to
+	deal with the communication with the extractor.
+
+	tracker-miner-fs: Revert commit 3dd75bacc30
+	Minimal sparql insertion is going to be handled from
+	TrackerMinerFiles instead.
+
+2011-07-13  Jürg Billeter  <j@bitron.ch>
+
+	tracker-store: Improve UpdateArray performance
+	Attempt to perform all updates in an UpdateArray at once in a single
+	transaction. Only if that fails, roll the transaction back and perform
+	updates in separate transactions.
+
+	Fixes NB#270774.
+
+2011-07-13  Aleksander Morgado  <aleksander@lanedo.com>
+
+	build: require gstreamer-pbutils when using Discoverer backend
+
+	tracker-extract,gstreamer: avoid code duplication
+
+2011-07-13  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Add support for HAVING
+
+2011-07-13  Aleksander Morgado  <aleksander@lanedo.com>
+
+	build: treat GUPnP-DLNA as another GStreamer backend
+
+	tracker-extract,gstreamer: integrate GUPnP-DLNA extractor within the GStreamer one
+
+2011-07-12  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-extract,gstreamer: don't compile both tagreadbin and decodebin2
+	... and prepare for the Discoverer API based implementation
+
+	build: minor spaces vs tabs fixes
+
+	build: rename --enable-video-extractor to --enable-generic-media-extractor
+	We really use gstreamer and such as a generic media extractor, not just for
+	video files, so this configure switch name makes more sense.
+
+	Fixes GB#654441.
+
+	build: new --with-gstreamer-backend=[tagreadbin,decodebin2,discoverer]
+	Allows selecting among 'tagreadbin', 'decodebin2' and 'discoverer', and replaces
+	the previous --enable-gstreamer-tagreadbin boolean switch.
+
+	Also makes sure that discoverer is requested when enabling the GUPnP-DLNA
+	enabled GStreamer extractor
+
+	build: explictly require gstreamer when building gupnp-dlna enabled extractor
+
+	tracker-extract: let gstreamer extractor handle 'dlna/*' mimetypes
+
+	tracker-extract: disable compilation of the gupnp-dlna extractor
+
+2011-07-12  Cosimo Cecchi  <cosimoc@gnome.org>
 
 	libtracker-data: Implement get_property() for n-columns in SQLite cursor
 	n-columns is an abstract property, so it should be implemented by all
@@ -956,152 +1552,115 @@
 
 	Fixes GB#654407.
 
-2011-07-22  Philip Van Hoof  <philip@codeminded.be>
+2011-07-11  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-07-10  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-07-10  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated POTFILES.in
+
+2011-07-05  Philip Van Hoof  <philip@codeminded.be>
+
+	miners/fs: Fix compiler warning
 
 	libtracker-data: Fix unused variables in case of --disable-journal
 
+	libtracker-data: Unused variable in case of --disable-journal
+
+	libtracker-data: Also in fail-case should it return newly allocated data
+
 	libtracker-common: Fix compiler warning
 
-2011-07-22  Jürg Billeter  <j@bitron.ch>
+2011-07-04  Yinghua Wang  <wantinghard@gmail.com>
 
-	libtracker-data: Do not compile journal functions with --disable-journal
-	This reduces difference to master. No functional change.
+	update Simplified Chinese (zh_CN) translation
 
-2011-07-22  Carlos Garnacho  <carlosg@gnome.org>
-
-	tracker-extract-gstreamer: plug a few leaks
-
-2011-07-14  Jürg Billeter  <j@bitron.ch>
-
-	Release 0.10.20
-
-	libtracker-extract: Ignore keywords containing invalid UTF-8
-	Fixes NB#269931.
-
-	libtracker-data: Do not try to shutdown journal with --disable-journal
-
-2011-07-14  Philip Van Hoof  <philip@codeminded.be>
-
-	libtracker-data: Handle errors of manager_init by shutting down systems
-
-	libtracker-data: Shutdown locale in error case
-	Fixes NB#266579.
-
-2011-07-14  Jürg Billeter  <j@bitron.ch>
+2011-07-01  Jürg Billeter  <j@bitron.ch>
 
 	tracker-extract-mp3: Use guessed ID3v1 8-bit encoding also for ID3v2
 	Fixes NB#259942.
 
-2011-07-14  Carlos Garnacho  <carlos@lanedo.com>
+2011-06-30  Carlos Garnacho  <carlos@lanedo.com>
 
 	libtracker-miner: Make TrackerProcessingTask refcounted
 	Fixes NB#269766. Tasks need to cope with the convoluted life cycle
 	between the different queues in TrackerProcessingPool, the sparql
 	buffer and the bulk tasks' buffers.
 
-2011-07-10  Piotr Drąg  <piotrdrag@gmail.com>
-
-	Updated Polish translation
-
-2011-06-30  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.19
-
-	Merge branch 'checkpoint' into tracker-0.10
-
 2011-06-30  Jürg Billeter  <j@bitron.ch>
 
-	libtracker-common: Remove tracker_env_check_xdg_dirs
-	This was used as a workaround on broken platforms where XDG_DATA_HOME
-	was not writable.
+	libtracker-extract: Ignore keywords containing invalid UTF-8
+	Fixes NB#269931.
 
-	libtracker-data: Drop unused sql_dir variable
+2011-06-30  Adrien Bustany  <adrien.bustany@nokia.com>
 
-2011-06-30  Carlos Garnacho  <carlos@lanedo.com>
-
-	libtracker-extract: Do some basic checks for GPS coordinates in EXIF tags
-	On some photos it would get the ExifEntries, but the coordinates wouldn't
-	be meaningful, so at least check the rational numbers' denominators to
-	avoid division by zero.
-
-2011-06-30  Martyn Russell  <martyn@lanedo.com>
-
-	libtracker-data: Make sure we don't leak sql_dir on multiple _init() calls
-
-2011-06-30  Jürg Billeter  <j@bitron.ch>
-
-	tracker-miner-fs: Fix error check after setting process priority
-
-	tracker-miner-fs: Remove early log message when setting process priority
-
-	tracker-store: Initialize D-Bus after initializing log
-	This prevents log messages below configured verbosity.
-
-	tracker-miner-fs: Check XDG directories after initializing log
-	This prevents log messages below configured verbosity.
-
-	tracker-store: Check XDG directories after initializing log
-	This prevents log messages below configured verbosity.
-
-2011-06-30  Daniel Nylander  <po@danielnylander.se>
-
-	Updated Swedish translation
+	TrackerStore: Fix date generation
 
 2011-06-29  Jürg Billeter  <j@bitron.ch>
 
-	libtracker-data: Set synchronous = OFF if journal is enabled
-
-2011-06-29  Martyn Russell  <martyn@lanedo.com>
-
-	libtracker-data: Don't leak string when locale is unknown
-
-2011-06-28  Aleksander Morgado  <aleksander@lanedo.com>
-
-	build: report in configure output whether support for journal is built
-
-2011-06-28  Jürg Billeter  <j@bitron.ch>
+	libtracker-data: Fix leak in db_get_locale
 
 	tracker-store: Fix Resources.Sync with disabled journal
 
-	libtracker-data: Backup in separate thread in single step
-	Using SQLite backup in multiple steps may restart the process due to
-	concurrent update operations.
+	functional-tests: Handle DISABLE_JOURNAL in backup-restore tests
 
-	libtracker-data: Switch to manual WAL checkpointing in a separate thread
+	functional-tests: Handle DISABLE_JOURNAL in ontology-changes tests
 
-	libtracker-data: Do not print critical if db-locale.txt does not exist
+2011-06-29  Philip Van Hoof  <philip@codeminded.be>
 
-2011-06-28  Philip Van Hoof  <philip@codeminded.be>
+	libtracker-data: Disable journal with --disable-journal
+	Fixes NB#268105.
+
+	libtracker-data, tests: Fix failing unit tests
 
 	libtracker-data: Initialization of db during restore must be handled if fails
 	In case the initialization of the db fails during the restore of a
 	backup, and only in case of --disable-journal, then should the init
 	fail with an error instead of trying to recreate a clean meta.db
 
-2011-06-28  Jürg Billeter  <j@bitron.ch>
+	libtracker-data: Implement backup/restore with disabled journal
 
-	functional-tests: Handle DISABLE_JOURNAL in backup-restore tests
+2011-06-29  Jürg Billeter  <j@bitron.ch>
 
-	functional-tests: Handle DISABLE_JOURNAL in ontology-changes tests
+	libtracker-data: Set synchronous = NORMAL with --disable-journal
+	This prevents database corruption followed by expensive journal replay
+	on OS crash or loss of power.
 
-2011-06-28  Philip Van Hoof  <philip@codeminded.be>
+2011-06-29  Aleksander Morgado  <aleksander@lanedo.com>
 
-	libtracker-data, tests: Fix failing unit tests
+	build: report in configure output whether support for journal is built
+
+2011-06-29  Philip Van Hoof  <philip@codeminded.be>
+
+	build: Add --disable-journal configure option
+
+2011-06-29  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Do not print critical if db-locale.txt does not exist
+
+	libtracker-data: Backup in separate thread in single step
+	Using SQLite backup in multiple steps may restart the process due to
+	concurrent update operations.
+
+2011-06-29  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-data: Removed fts restore, not needed anymore
 
-	libtracker-data: Implement backup/restore with disabled journal
+	libtracker-data: Add tracker-db-backup using SQLite backup API
 
-	libtracker-data: Add disabling the journal as compile feature
-	Fixes NB#268105.
+2011-06-29  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Switch to manual WAL checkpointing in a separate thread
 
 2011-06-28  Jürg Billeter  <j@bitron.ch>
 
-	libtracker-data: Change WAL checkpoint threshold to improve performance
-
-	libtracker-data: Set synchronous = NORMAL
-	This prevents database corruption followed by expensive journal replay
-	on OS crash or loss of power.
+	tracker-control: Fix crash when unable to get miner pause details
+	Fixes NB#269359.
 
 	functional-tests: When corrupting database file, also corrupt wal file
 	In some circumstances, the database file will be silently fixed with the
@@ -1116,19 +1675,78 @@
 	libtracker-data: Store backup in subdirectory in backup test
 	Restore will move backup file to temporary location otherwise.
 
-2011-06-27  Jürg Billeter  <j@bitron.ch>
-
 	libtracker-data: Propagate errors from db_get_static_data
 
-2011-06-16  Martyn Russell  <martyn@lanedo.com>
+	libtracker-common: Remove tracker_env_check_xdg_dirs
+	This was used as a workaround on broken platforms where XDG_DATA_HOME
+	was not writable.
 
-	Release 0.10.18
+	libtracker-data: Drop unused sql_dir variable
+
+2011-06-26  Adrien Bustany  <abustany@gnome.org>
+
+	Index new messages as they arrive
+	Hooks into nsIFolderListener to detect message arrival, deletion and
+	move (handled as arrival in another folder + deletion in old folder).
+
+	Add addImmediate to Queue class
+
+	Simplify code using nsIMsgDBHdr.folder
+	Rather than passing the folder explicitely, just fetch it from the
+	nsIMsgDBHdr.
+
+2011-06-24  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-extract: Do some basic checks for GPS coordinates in EXIF tags
+	On some photos it would get the ExifEntries, but the coordinates wouldn't
+	be meaningful, so at least check the rational numbers' denominators to
+	avoid division by zero.
+
+2011-06-23  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-data: Make sure we don't leak sql_dir on multiple _init() calls
+
+2011-06-22  Jürg Billeter  <j@bitron.ch>
+
+	tracker-miner-fs: Fix error check after setting process priority
+
+	tracker-miner-fs: Remove early log message when setting process priority
+
+	tracker-store: Initialize D-Bus after initializing log
+	This prevents log messages below configured verbosity.
+
+	tracker-miner-fs: Check XDG directories after initializing log
+	This prevents log messages below configured verbosity.
+
+	tracker-store: Check XDG directories after initializing log
+	This prevents log messages below configured verbosity.
+
+2011-06-19  Adrien Bustany  <abustany@gnome.org>
+
+	Use versioned .so names in bindings.js
+
+	Use correct library names in bindings.js
+	Use the versioned .so names, not the unversioned ones that require the
+	development packages.
+
+2011-06-16  Daniel Nylander  <po@danielnylander.se>
+
+	Updated Swedish translation
 
 2011-06-16  Carlos Garnacho  <carlos@lanedo.com>
 
 	tests: Fix tracker-monitor test to reflect changes in 35bdcb09
 	CREATE+MOVE != CREATE from now on, but UPDATE. Reflect this in the
 	unit test
+
+2011-06-16  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Handle errors of manager_init by shutting down systems
+
+	libtracker-data: Shutdown locale in error case
+	Fixes NB#266579.
+
+2011-06-16  Carlos Garnacho  <carlos@lanedo.com>
 
 	tracker-monitor: translate CREATE(a)+MOVE(a->b)=UPDATE(b)
 	Fixes NB#251032. Tracker-writeback often creates a temporary hidden
@@ -1142,7 +1760,7 @@
 	and updates equally, and these won't get compressed with delete
 	events, so those are still emitted.
 
-2011-06-16  Jürg Billeter  <j@bitron.ch>
+2011-06-15  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-data: Do not begin ontology transaction when not needed
 	This allows tracker-store startup with full partition. Updates will fail
@@ -1150,7 +1768,7 @@
 
 	Fixes NB#263203.
 
-2011-06-16  Carlos Garnacho  <carlos@lanedo.com>
+2011-06-14  Carlos Garnacho  <carlos@lanedo.com>
 
 	tracker-miner-fs: Postpone sparql update on mount after cancellation
 	This is a less critical task than cancellation, which might be holding
@@ -1161,7 +1779,7 @@
 	time consuming extraction tasks in this case. Given that in pre-unmount
 	situation we prefer fast to orderly, just _exit() here.
 
-2011-06-16  Martyn Russell  <martyn@lanedo.com>
+2011-06-14  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Make sure status is set to 'Idle' on object construction
 	This was done for progress, but not status for some reason.
@@ -1169,12 +1787,12 @@
 	libtracker-miner: Special case .xsession-errors and ignore all about it
 	This includes events, debugging and handling.
 
-2011-06-16  Jürg Billeter  <j@bitron.ch>
+2011-06-14  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-data: Use libmeegotouch ICU data if available
 	Fixes NB#261635.
 
-2011-06-16  Martyn Russell  <martyn@lanedo.com>
+2011-06-13  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Fix inconsistent status with progress signals
 	Quite often, we see progress of 100% and still have status messages
@@ -1210,11 +1828,11 @@
 
 	This fixes GB#652433, Progress signal gives faulty value just before finishing
 
-2011-06-16  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+2011-06-10  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
 
 	Updated Slovenian translation
 
-2011-06-16  Philip Van Hoof  <philip@codeminded.be>
+2011-06-10  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-extract, -writeback, libtracker-extract, NMM, NFO: Use nfo:heading instead of nmm:direction
 
@@ -1230,23 +1848,23 @@
 
 	libtracker-extract, tracker-extract: Fix whitespace issues
 
-2011-06-16  Mikael Ottela  <mikael.ottela@ixonos.com>
+2011-06-10  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	libtracker-extract, tracker-extract: Add extraction of image compass direction
 
-2011-06-16  Carlos Garnacho  <carlosg@gnome.org>
+2011-06-10  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-miner-fs: Unset nie:url to set our own on file updates.
 	This is so tracker-miner-fs can check it in order to know whether the
 	file is known to tracker or not.
 
-2011-06-16  Philip Van Hoof  <philip@codeminded.be>
+2011-06-10  Philip Van Hoof  <philip@codeminded.be>
 
 	SLO: Update nao:lastModified
 
 	tracker-writeback: Always clear existing fields
 
-2011-06-16  Carlos Garnacho  <carlosg@gnome.org>
+2011-06-10  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-miner-fs: Do not ignore IgnoreNextUpdate for CREATED events on old files
 	Partly fixes #261767. There are two usecases where we could get a CREATED event
@@ -1268,7 +1886,7 @@
 
 	ontology: set cardinality 1 to slo:location.
 
-2011-06-16  Philip Van Hoof  <philip@codeminded.be>
+2011-06-10  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-extract, gif: Fix indentation issues
 
@@ -1290,36 +1908,65 @@
 
 	tracker-writeback, xmp: Write back altitude, longitude and latitude
 
-2011-06-16  Mikael Ottela  <mikael.ottela@ixonos.com>
+2011-06-10  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Add extraction of GPS coordinates
 
-2011-06-13  Ivan Frade  <ivan.frade@nokia.com>
-
-	Fix extractor test cases: parse correctly the tags
-	Parse correctly the tags from the extractor output. This fixes some
-	extraction and writeback test cases.
-
-2011-06-09  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.17
+2011-06-08  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-needle: Improve the information shown about bookmarks
 	The link was broken and so was the tooltip.
 
 	tracker-needle: Added bookmarks to the stats dialog
 
-2011-06-09  Adrien Bustany  <abustany@gnome.org>
+	tracker-needle: Fixed crash for null cursor and calling next() on it
+
+2011-06-08  Adrien Bustany  <abustany@gnome.org>
 
 	tracker-needle: Add support for bookmarks
 
-2011-06-09  Olav Vitters  <olav@vitters.nl>
+2011-06-08  Olav Vitters  <olav@vitters.nl>
 
 	Add description to DOAP file
 
-2011-06-09  Jürg Billeter  <j@bitron.ch>
+2011-06-08  Adrien Bustany  <adrien.bustany@nokia.com>
+
+	Properly use nfo:bookmarks in place of nie:url to store bookmark URI
+
+	Try to use libtracker-sparql 0.11 if 0.10 is not available
+
+	Fix logic in 0.11 fallback
+
+	Use right RDF predicate for message date
+
+	Fix 0.11 lib fallback
+
+2011-06-07  Adrien Bustany  <abustany@gnome.org>
+
+	Add 'meta' table to persistent storage
+
+	Remove dead code
+
+	Insert nie:url for messages
+
+	Also index message body
+
+	Use libtracker-sparql 0.11 if available
+
+2011-06-07  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.11.0
+
+	docs/manpages: Fixed the way we include man pages.
+	This is fixed a different way for tracker-0.10.
+	This fixes distcheck
+
+2011-06-07  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-sparql-backend: Drop unnecessary connection variable
+
+	libtracker-sparql: Deprecate tracker_sparql_connection_get_direct
+	It is equivalent to tracker_sparql_connection_get.
 
 	libtracker-sparql-backend: Drop direct_only flag
 	As the connection is a singleton, it does not make sense to have a
@@ -1334,65 +1981,73 @@
 	Direct-only can still be enforced on the process level by setting
 	TRACKER_SPARQL_BACKEND=direct.
 
+2011-06-07  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-06-07  Jürg Billeter  <j@bitron.ch>
+
 	libtracker-bus: Use lazy initialization for D-Bus proxy objects
 
-2011-06-09  Daniel Mustieles  <daniel.mustieles@gmail.com>
+2011-06-06  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
 	Updated Spanish translation
 
-2011-06-09  Jürg Billeter  <j@bitron.ch>
+2011-06-06  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-sparql-backend: Use GError instead of critical warnings
 	Direct-only connections do not support updates or statistics. Report
 	this limitation using GError instead of return_if_fail.
 
-2011-06-09  Carlos Garnacho  <carlosg@gnome.org>
+2011-06-05  Adrien Bustany  <abustany@gnome.org>
+
+	Error properly if libtracker-sparql can't be loaded
+
+	Revert "Try to use Tracker 0.8 if 0.10 is missing"
+	This reverts commit f16800483a915c1393b81d4a1464274b6f9066d1.
+
+	This commit made no sense since there is no libtracker-sparql in 0.8
+
+	Remove garbage file
+
+	Better error reporting in UI
+
+	Try to use Tracker 0.8 if 0.10 is missing
+
+	Add README
+
+	First rougly function version (when it does not stop in the middle)
+
+	Insert nco:EmailAddress resources
+
+2011-06-04  Adrien Bustany  <abustany@gnome.org>
+
+	Add indexing delay to prefs
+
+	Can build SPARQL to insert messages
+
+	Can list all messages
+
+2011-06-03  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-extract: Fix compiler warning
-
-2011-06-09  Jürg Billeter  <j@bitron.ch>
-
-	libtracker-direct: Fix use_count on failed initialization
-
-2011-06-09  Carlos Garnacho  <carlosg@gnome.org>
-
-	Fix typo when cherry-picking
-	s/private/priv/ ...
-
-	tracker-miner-fs: Do not insert minimal sparql on cancellation
-	Cancellation only happens on unmount, the file is gone anyway and
-	would be reindexed the next time it is available, so don't do
-	potentially long operations here such as flushing the sparql buffer.
-
-	Together with my previous commit (3cdb6ba91), these commits are meant
-	to have Tracker react even faster to unmount events, finally fixing
-	NB#258488, hopefully.
 
 	libtracker-miner: Do not connect anything to cancellable::cancel
 	This isn't the right way of handling cancellation, instead let the
 	callbacks use the GError just set to do so.
 
 	libtracker-miner: Avoid possible race condition when cancelling extraction
-	Fixes NB#262992. Operations for files that aren't sent to the extractor were
-	instead finished an idle function, which could lead to double frees if the
-	task was cancelled right in between (one resulting from cancellable::cancel,
-	the other when dispatching the idle function).
+	Operations for files that aren't sent to the extractor were instead finished
+	an idle function, which could lead to double frees if the task was cancelled
+	right in between (one resulting from cancellable::cancel, the other when
+	dispatching the idle function).
 
 	So, instead, don't do that in an idle at all, there is no reason why
 	we can't call tracker_miner_fs_file_notify() right away.
 
-2011-06-07  Jean-Luc Lamadon  <jean-luc.lamadon@nokia.com>
+2011-06-03  Jürg Billeter  <j@bitron.ch>
 
-	tracker-extract: real-media could be audio only
-	Fixes: NB#262953 - real media audio files are listed in video application
-
-2011-06-04  Takeshi AIHANA  <takeshi.aihana@gmail.com>
-
-	Updated Japanese translation.
-
-2011-06-03  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.16
+	libtracker-direct: Fix use_count on failed initialization
 
 2011-06-03  Carlos Garnacho  <carlosg@gnome.org>
 
@@ -1419,16 +2074,6 @@
 
 	libtracker-miner: Improve password provider error handling and reporting
 
-2011-06-03  Jürg Billeter  <j@bitron.ch>
-
-	docs: Always distribute all man pages
-	Fixes GB#650804.
-
-2011-06-02  Maitrey Mishra  <ext-maitrey.mishra@nokia.com>
-
-	tracker-extract: Fix gstreamer + real media extraction
-	Fixes MB#18159, tracker can't index real media
-
 2011-06-02  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-control: Fixed memory leak when getting pause details
@@ -1449,34 +2094,6 @@
 	We didn't use the auto_start parameter at all, just passed FALSE each
 	time we created the object
 
-2011-06-02  Gil Forcada  <gforcada@gnome.org>
-
-	[l10n]Updated Catalan translation
-
-2011-06-02  Kristjan SCHMIDT  <kristjan.schmidt@googlemail.com>
-
-	Add Esperanto translation
-
-2011-06-02  maimishr  <ext-maitrey.mishra@nokia.com>
-
-	functional-tests: Support cases with AND without Upstart
-
-2011-06-02  Carlos Garnacho  <carlosg@gnome.org>
-
-	libtracker-data: plug a leak.
-
-	tracker-miner-fs: Do not spam log on recursive monitors removal
-	This part is known to work well, no need to spew a line for each dir
-	monitor removed.
-
-2011-06-02  Kostas Papadimas  <pkst@gnome.org>
-
-	l10n: Updated Greek translation for tracker
-
-2011-06-02  Georgios Stefanakis  <george.stefanakis@gmail.com>
-
-	l10n: Updated Greek translation for tracker
-
 2011-06-02  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-miner-fs: Create bus names before touching sensitive files
@@ -1491,9 +2108,42 @@
 	acquire the bus name, leaving the other with a bus name but
 	ignorant about the mtime check needed.
 
-2011-05-26  Martyn Russell  <martyn@lanedo.com>
+2011-06-01  Gil Forcada  <gforcada@gnome.org>
 
-	Release 0.10.15
+	[l10n]Updated Catalan translation
+
+2011-06-01  Kristjan SCHMIDT  <kristjan.schmidt@googlemail.com>
+
+	Add Esperanto translation
+
+2011-06-01  maimishr  <ext-maitrey.mishra@nokia.com>
+
+	functional-tests: Support cases with AND without Upstart
+
+2011-05-30  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: plug a few leaks
+
+	tracker-miner-fs: plug a leak
+
+	libtracker-data: plug a leak.
+
+	tracker-miner-fs: Close sparql insert/graph braces on extractor cancellation.
+	Fixes NB#258459.
+
+	tracker-miner-fs: Do not spam log on recursive monitors removal
+	This part is known to work well, no need to spew a line for each dir
+	monitor removed.
+
+2011-05-27  Kostas Papadimas  <pkst@gnome.org>
+
+	l10n: Updated Greek translation for tracker
+
+2011-05-27  Georgios Stefanakis  <george.stefanakis@gmail.com>
+
+	l10n: Updated Greek translation for tracker
+
+2011-05-26  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-evolution: When reporting "Updating Folder" state which one
 	tracker-control wasn't useful without this since it could be on any folder
@@ -1527,7 +2177,11 @@
 
 	Fixes NB#254855.
 
-2011-05-26  Philip Van Hoof  <philip@codeminded.be>
+2011-05-25  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-miner-fs: Do not shutdown cleanly if ctrl+c is hit during initial sleep
+
+2011-05-24  Philip Van Hoof  <philip@codeminded.be>
 
 	Fix a crash when destructing QApplication
 	Apparently it's not ok to destroy a QApplication which seems to be
@@ -1536,32 +2190,18 @@
 
 	Fixes NB#259000.
 
-2011-05-26  Martyn Russell  <martyn@lanedo.com>
+2011-05-24  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-miner-fs: Don't do initial sleep if no mtime check is going to happen
+	Crawling will be fairly fast if no mtime checks are to be done (which is the
+	most usual case), so avoid initial sleep so we get the monitors in place ASAP.
+	Fixes NB#252898.
+
+2011-05-24  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Fix builds including this library using g++
-	Conflicts:
 
-		src/libtracker-miner/tracker-miner-fs.c
-		src/libtracker-miner/tracker-miner-object.c
-
-2011-05-26  Jürg Billeter  <j@bitron.ch>
-
-	tracker-store: Reenable signals after failing to load Turtle file
-
-2011-05-26  Lionel Landwerlin  <lionel.g.landwerlin@linux.intel.com>
-
-	libtracker-miner: install missing header
-
-2011-05-26  Jürg Billeter  <j@bitron.ch>
-
-	libtracker-data: Protect cursor finalization with mutex
-	This is necessary for parallel queries with direct access.
-
-	Fixes NB#244556.
-
-	libtracker-sparql-backend: Fix deadlock on initialization error
-
-2011-05-25  Carlos Garnacho  <carlosg@gnome.org>
+2011-05-23  Carlos Garnacho  <carlosg@gnome.org>
 
 	libtracker-miner: Make tracker_miner_fs_directory_remove() more robust
 	the tasks that are likely to perform I/O (extraction, crawling) are
@@ -1582,21 +2222,22 @@
 	(say removing monitors). Also, the timeout is longer so we aren't
 	overzealous on slow unmounts.
 
-	tracker-miner-fs: Do not shutdown cleanly if ctrl+c is hit during initial sleep
+2011-05-23  Jürg Billeter  <j@bitron.ch>
 
-	tracker-miner-fs: Don't do initial sleep if no mtime check is going to happen
-	Crawling will be fairly fast if no mtime checks are to be done (which is the
-	most usual case), so avoid initial sleep so we get the monitors in place ASAP.
-	Fixes NB#252898.
+	tracker-store: Reenable signals after failing to load Turtle file
 
-2011-05-24  Carlos Garnacho  <carlosg@gnome.org>
+2011-05-20  Lionel Landwerlin  <lionel.g.landwerlin@linux.intel.com>
 
-	tracker-miner-fs: Close sparql insert/graph braces on extractor cancellation.
-	Fixes NB#258459.
+	libtracker-miner: install missing header
 
-2011-05-19  Martyn Russell  <martyn@lanedo.com>
+2011-05-20  Jürg Billeter  <j@bitron.ch>
 
-	Release 0.10.14
+	libtracker-data: Protect cursor finalization with mutex
+	This is necessary for parallel queries with direct access.
+
+	Fixes NB#244556.
+
+	libtracker-sparql-backend: Fix deadlock on initialization error
 
 2011-05-19  Jean-Luc Lamadon  <jean-luc.lamadon@nokia.com>
 
@@ -1606,13 +2247,7 @@
 
 	libtracker-common: Fixed documentation version typo, s/0.10.4/0.10.14/
 
-2011-05-19  Carlos Garnacho  <carlosg@gnome.org>
-
-	libtracker-miner: perform task merging for monitor events
-	This only kicks in after initial crawling, and makes most sense
-	in paused miners, so consecutive, longer term monitor events
-	are merged together with previous unhandled events to avoid
-	useless operations after resuming.
+	Merge branch 'miner-check-queues'
 
 2011-05-19  Philip Van Hoof  <philip@codeminded.be>
 
@@ -1648,6 +2283,8 @@
 
 	libtracker-sparql-backend: Improve debug message for direct connection
 
+2011-05-17  Jürg Billeter  <j@bitron.ch>
+
 	libtracker-data: Do not trigger replay with invalid ontology journal
 	Use same criteria as with data journal.
 
@@ -1679,11 +2316,40 @@
 
 	libtracker-data: Propagate errors for ontology transactions
 
+2011-05-16  Jürg Billeter  <j@bitron.ch>
+
 	tracker-store: Improve Data.Manager.init error handling
 	The only noticeable difference is that exit code was 0 when journal
 	error was encountered during initialization.
 
+2011-05-13  Claude Paroz  <claude@2xlibre.net>
+
+	Updated French translation
+
+2011-05-13  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Don't crash if TrackerMonitor can't create a sample monitor
+	Neither G_OBJECT_TYPE() or g_type_name() can handle NULL, leading to a crash,
+	now a critical warning is issued instead.
+
+	libtracker-miner: perform task merging for monitor events
+	This only kicks in after initial crawling, and makes most sense
+	in paused miners, so consecutive, longer term monitor events
+	are merged together with previous unhandled events to avoid
+	useless operations after resuming.
+
+2011-05-13  Jürg Billeter  <j@bitron.ch>
+
+	functional-tests: Update miner progress signal handler
+	D-Bus API was changed by commit f96b30b8.
+
+	functional-tests: Fix dconf profile name
+	It is used as component of a D-Bus object path, which does not allow
+	hyphens.
+
 	libtracker-data: Fix build with FTS
+
+2011-05-12  Jürg Billeter  <j@bitron.ch>
 
 	tracker-extract: Fix C warnings
 
@@ -1695,17 +2361,7 @@
 
 	libtracker-common: Fix C warnings
 
-2011-05-13  Carlos Garnacho  <carlosg@gnome.org>
-
-	libtracker-miner: Don't crash if TrackerMonitor can't create a sample monitor
-	Neither G_OBJECT_TYPE() or g_type_name() can handle NULL, leading to a crash,
-	now a critical warning is issued instead.
-
-2011-05-12  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.13
-
-2011-05-12  Jürg Billeter  <j@bitron.ch>
+2011-05-11  Jürg Billeter  <j@bitron.ch>
 
 	tracker-store: Stop signal timeout for sequential batch updates
 	If tracker-store receives a batch request after processing all previous
@@ -1728,42 +2384,6 @@
 
 	tracker-extract-mp3: Add simple frame tracing to ID3v2.2 and ID3v2.3
 
-2011-05-12  Yinghua Wang  <wantinghard@gmail.com>
-
-	Updated zh_CN translation.
-
-2011-05-12  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
-
-	Updated Slovenian translation
-
-2011-05-12  Jürg Billeter  <j@bitron.ch>
-
-	SPARQL: Test local time handling with optional patterns
-
-	SPARQL: Fix local time handling with optional patterns
-	Fixes NB#253807.
-
-	Fix Vala warnings
-
-2011-05-12  Mario Blättermann  <mariobl@gnome.org>
-
-	[l10n] Updated German translation
-
-2011-05-12  Daniel Mustieles  <daniel.mustieles@gmail.com>
-
-	Updated Spanish translation
-
-2011-05-12  Jürg Billeter  <j@bitron.ch>
-
-	tracker-store: Use lazy initialization for statistics
-	This reduces startup time of tracker-store.
-
-2011-05-12  Carlos Garnacho  <carlosg@gnome.org>
-
-	libtracker-miner: Cancel TrackerMinerFS cancellables on finalize()
-	This also gets rid of a related comment in TrackerMinerFiles, since
-	the cancellables there are those that TrackerMinerFS create.
-
 2011-05-11  Carlos Garnacho  <carlosg@gnome.org>
 
 	libtracker-miner: Add watchdog for failed unmounts
@@ -1772,44 +2392,83 @@
 	::mount-point-added again so Tracker keeps monitoring any further
 	change in there.
 
-2011-05-07  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+2011-05-10  Yinghua Wang  <wantinghard@gmail.com>
 
-	Updated Japanese translation.
+	Updated zh_CN translation.
 
-2011-05-05  Piotr Drąg  <piotrdrag@gmail.com>
+2011-05-09  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
 
-	Updated Polish translation
+	Updated Slovenian translation
 
-2011-05-05  Martyn Russell  <martyn@lanedo.com>
+2011-05-09  Jürg Billeter  <j@bitron.ch>
 
-	Release 0.10.12
+	SPARQL: Test local time handling with optional patterns
 
-	tracker-miner-rss: Make sure manpage is distributed even if miner is disabled
+	SPARQL: Fix local time handling with optional patterns
+	Fixes NB#253807.
+
+	Fix Vala warnings
+
+2011-05-07  Mario Blättermann  <mariobl@gnome.org>
+
+	[l10n] Updated German translation
+
+2011-05-07  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-05-06  Jürg Billeter  <j@bitron.ch>
+
+	tracker-store: Use lazy initialization for statistics
+	This reduces startup time of tracker-store.
+
+2011-05-06  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Cancel TrackerMinerFS cancellables on finalize()
+	This also gets rid of a related comment in TrackerMinerFiles, since
+	the cancellables there are those that TrackerMinerFS create.
+
+2011-05-06  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'gtk3'
+
+2011-05-06  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
 
 2011-05-05  Carlos Garnacho  <carlosg@gnome.org>
 
-	tracker-needle: Fix date strings wrt i18n
-	Fixes GB#520670 - Timestring not internationalized, reported by
-	Yang Zhang.
+	extract/gupnp: Fix warning if no GST tags were found at all
+
+	tracker-needle: Fix crash when showing stats
+	GtkDialog's content area is a GtkBox in 3.0, not a GtkVBox
+
+	tracker-needle: check cancellable after all yielded operations
+	This avoids corruptions in the model if the cancellable is cancelled
+	in the right moment, this could be triggered often by switching views.
+
+	tracker-needle: Make the taglist use Gtk.CellRendererText
+
+	nautilus: Update extension to compile with GTK+3
+
+	tracker-needle: Use GTK+3
+	* GtkComboBoxText is now used
+	* GtkDialog::has-separator usage is removed
+	* Tracker's cell renderer isn't actually used, removed.
+
+	tracker-preferences: Use GTK+3
+
+	tracker-explorer: Use GTK+3
 
 2011-05-05  Martyn Russell  <martyn@lanedo.com>
 
-	tracker-control: Disable default dbus timeout on backup/restore
-	It's quite likely backup or restore may take > 25 seconds which is the
-	default timeout for dbus calls. This was causing errors when there was
-	no real timeout issue.
+	Merge branch 'miner-rss-0.11-fixes'
 
-2011-05-05  Carlos Garnacho  <carlosg@gnome.org>
-
-	tracker-extract: make Abiword extractor use GMarkup
-	This enables us to do content extraction properly. Fixes GB#633105,
-	reported by Aleksander Morgado.
-
-2011-05-05  Martyn Russell  <martyn@lanedo.com>
+	Merge branch 'tracker-control-with-backup-and-restore'
 
 	tracker-miner-fs: Explain why we don't close the sparql object on cancellation
 
-2011-05-05  Philip Van Hoof  <philip@codeminded.be>
+2011-05-04  Philip Van Hoof  <philip@codeminded.be>
 
 	miners/fs, libtracker-miner: On extractor error insert minimal FS info of the file
 	This commit can be ported to tracker-0.10
@@ -1818,53 +2477,20 @@
 
 	Fix encoding unit test to the initialize locale system
 
-2011-05-05  Jürg Billeter  <j@bitron.ch>
+2011-05-04  Jürg Billeter  <j@bitron.ch>
 
 	tracker-store: Do not export internal methods via D-Bus
 
-	libtracker-miner: Do not try to load thumbnailer properties
-	The thumbnailer D-Bus objects do not have any properties. We can save
-	two D-Bus calls by not trying to load them.
+2011-05-03  Martyn Russell  <martyn@lanedo.com>
 
-2011-05-05  Daniel Mustieles  <daniel.mustieles@gmail.com>
-
-	Updated Spanish translation
-
-2011-05-05  Carlos Garnacho  <carlosg@gnome.org>
-
-	tracker-needle: Update result list icons on icon theme change
-	Fixes GB#397205, reported by Luca Ferretti.
-
-2011-05-05  Mario Blättermann  <mariobl@gnome.org>
-
-	[l10n] Updated German translation
-
-2011-05-05  Marek Černocký  <marek@manet.cz>
-
-	Updated Czech translation
-
-2011-05-05  Daniel Mustieles  <daniel.mustieles@gmail.com>
-
-	Updated Spanish translation
-
-2011-05-05  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
-
-	Updated Slovenian translation
-
-2011-05-05  Philip Van Hoof  <philip@codeminded.be>
-
-	tracker-store: Improve error reporting in restore
-
-	libtracker-data, tracker-store: Improve error reporting for backup
-
-2011-05-05  Martyn Russell  <martyn@lanedo.com>
+	tracker-control: Disable default dbus timeout on backup/restore
+	It's quite likely backup or restore may take > 25 seconds which is the
+	default timeout for dbus calls. This was causing errors when there was
+	no real timeout issue.
 
 	tracker-control: Allow backup/restore to take local file names
 	This will now convert the arguments given into a real URI because a
 	URI is expected in tracker-store.
-
-	tracker-control: Add --backup and --restore support
-	These command line options provide an easy way to use the d-bus interfaces
 
 	tracker-miner-rss: Remove check for our update in GraphUpdated
 	Before we used GraphUpdated signals and filtered out our updates for
@@ -1877,6 +2503,76 @@
 	Also used proper GCancellable for all SPARQL calls
 
 	tracker-miner-rss: Rename functions to make more sense
+
+2011-05-03  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: make Abiword extractor use GMarkup
+	This enables us to do content extraction properly. Fixes GB#633105,
+	reported by Aleksander Morgado.
+
+2011-05-02  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-miner: Do not try to load thumbnailer properties
+	The thumbnailer D-Bus objects do not have any properties. We can save
+	two D-Bus calls by not trying to load them.
+
+2011-04-29  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-04-29  Claude Paroz  <claude@2xlibre.net>
+
+	Replace string concatenation by printf syntax (Fixes #648892)
+
+2011-04-29  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-needle: Update result list icons on icon theme change
+	Fixes GB#397205, reported by Luca Ferretti.
+
+2011-04-29  Mario Blättermann  <mariobl@gnome.org>
+
+	[l10n] Updated German translation
+
+2011-04-29  Marek Černocký  <marek@manet.cz>
+
+	Added message flag for gettext
+
+	Updated Czech translation
+
+2011-04-28  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-04-28  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-04-28  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-store: Improve error reporting in restore
+
+	libtracker-data, tracker-store: Improve error reporting for backup
+
+2011-04-28  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-control: Add --backup and --restore support
+	These command line options provide an easy way to use the d-bus interfaces
+
+2011-04-28  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data, miners/fs: Indentation fixes
+
+	tracker-store: Indentation fixes
+
+	tracker-extract, epub: Indentation fixes
+
+2011-04-28  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-needle: Fix date strings wrt i18n
+	Fixes GB#520670 - Timestring not internationalized, reported by
+	Yang Zhang.
+
+2011-04-28  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-miner-rss: Fixed ASK SPARQL to check true/false not 0/1
 
@@ -1891,10 +2587,6 @@
 
 	tracker-miner-rss: Fixed crash trying to cast TrackerSparqlConnection to TrackerMinerRSS
 
-2011-04-28  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.11
-
 2011-04-28  Jürg Billeter  <j@bitron.ch>
 
 	NCO: Add index on nco:phoneNumber
@@ -1903,7 +2595,11 @@
 
 	Fixes NB#250959.
 
-2011-04-28  Carlos Garnacho  <carlosg@gnome.org>
+2011-04-27  Carlos Garnacho  <carlosg@gnome.org>
+
+	Add EPub extractor.
+	Fixes GB#642288. At the moment title/author/creation date/text content
+	are extracted.
 
 	tracker-extract: Don't skip the last metadata iterator element in flac files.
 	Fixes GB#633108 - FLAC extractor doesn't work properly, reported by
@@ -1912,7 +2608,7 @@
 	tracker-extract: Sort parts before extracting .pptx files content
 	Fixes GB#632876, Reported by Aleksander Morgado.
 
-2011-04-28  Jürg Billeter  <j@bitron.ch>
+2011-04-27  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-sparql-backend: Fix memory leak in Connection.get
 	The leak was caused by a bug in valac (fixed in master). This changes
@@ -1922,7 +2618,7 @@
 
 	tracker-store: Fix callback in sparql_update_blank
 
-2011-04-28  Philip Van Hoof  <philip@codeminded.be>
+2011-04-27  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-data: Set errors in these two fatal cases
 
@@ -1934,22 +2630,18 @@
 
 	tests, libtracker-common: Fix tests when meegotouch is enabled
 
-2011-04-28  Jürg Billeter  <j@bitron.ch>
+2011-04-26  Martyn Russell  <martyn@lanedo.com>
 
-	Move tracker-encoding from libtracker-common to libtracker-extract
-	Fixes NB#249787.
+	Merge branch 'meegotouch'
 
-2011-04-28  Philip Van Hoof  <philip@codeminded.be>
+2011-04-26  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-common: Reading locale from gconf-dbus is only for meegotouch
 
-2011-04-28  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+2011-04-21  Jürg Billeter  <j@bitron.ch>
 
-	Updated Japanese translation.
-
-2011-04-21  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.10
+	Move tracker-encoding from libtracker-common to libtracker-extract
+	Fixes NB#249787.
 
 2011-04-20  Martyn Russell  <martyn@lanedo.com>
 
@@ -1970,7 +2662,7 @@
 
 	build: Require rest 0.7, Fedora and Ubuntu don't have 0.6 anymore
 
-2011-04-20  Aleksander Morgado  <aleksander@lanedo.com>
+2011-04-19  Aleksander Morgado  <aleksander@lanedo.com>
 
 	libtracker-miner: Pool documentation updated  ... to include:  * Bulk tasks  * Always-buffered tasks  * New limit of requests to tracker-store
 
@@ -1986,33 +2678,35 @@
 
 	libtracker-miner: New limit for the number of requests sent to the store
 
-2011-04-20  Jürg Billeter  <j@bitron.ch>
+2011-04-19  Jürg Billeter  <j@bitron.ch>
 
 	tracker-extract: Complete relicensing from GPL to LGPL
 	Copyright headers of header files and C++ files were not updated during
 	relicensing in January 2011.
 
-2011-04-20  Philip Van Hoof  <philip@codeminded.be>
+2011-04-18  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-extract: Fix critical about locale in case of standalone mode
 
-2011-04-20  Mario Blättermann  <mariobl@gnome.org>
+2011-04-17  Mario Blättermann  <mariobl@gnome.org>
 
 	[l10n] Updated German translation
 
-2011-04-20  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+2011-04-16  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
 
 	Updated Slovenian translation
 
-2011-04-20  Marek Černocký  <marek@manet.cz>
+2011-04-16  Marek Černocký  <marek@manet.cz>
 
 	Updated Czech translation
 
-2011-04-20  Daniel Mustieles  <daniel.mustieles@gmail.com>
+2011-04-15  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
 	Updated Spanish translation
 
-2011-04-20  Philip Van Hoof  <philip@codeminded.be>
+2011-04-15  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Indentation fixes in config
 
 	tracker-extract: Indentation problems in controller
 
@@ -2032,23 +2726,12 @@
 
 	libtracker-data: Support detecting nrl:InverseFunctionalProperty changes
 
-2011-04-20  Carlos Garnacho  <carlosg@gnome.org>
+2011-04-14  Carlos Garnacho  <carlosg@gnome.org>
 
 	needle: Fix emails query
 	There was no second argument for the tracker:coalesce() call
 
-2011-04-18  Jürg Billeter  <j@bitron.ch>
-
-	tracker-extract: Fix use of uninitialized memory
-	Fixes NB#248059.
-
-2011-04-15  Piotr Drąg  <piotrdrag@gmail.com>
-
-	Updated Polish translation
-
 2011-04-14  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.9
 
 	tracker-info: Additional fixes for the --turtle command line option
 	- Make sure we escape strings
@@ -2072,83 +2755,6 @@
 	emissions as instances of these helper classes are never modified after
 	creation.
 
-	libtracker-sparql: Fix deadlock when tracker is not available
-	If a connection attempt failed, subsequent connection attempts
-	deadlocked.
-
-	libtracker-sparql: Fix fallback from direct access to D-Bus
-	Fixes NB#238770.
-
-2011-04-14  Philip Van Hoof  <philip@codeminded.be>
-
-	tracker-writeback: Fix crash when not possible to get D-Bus connection
-	Fixes NB#245998.
-
-2011-04-14  Aleksander Morgado  <aleksander@lanedo.com>
-
-	functional tests: New test to ensure correct iptcdata records are read
-	Testing fix in NB#244267
-
-	functional tests: minor whitespace changes in extractor tester
-
-2011-04-14  Philip Van Hoof  <philip@codeminded.be>
-
-	tests/functional-tests: Use "true" and "false" for ASK
-
-2011-04-14  Aleksander Morgado  <aleksander@lanedo.com>
-
-	libtracker-extract: Process only record-2 tags in libiptcdata
-	Fixes NB#244267
-
-2011-04-14  Martyn Russell  <martyn@lanedo.com>
-
-	libtracker-sparql: Build typelib and so introspection works
-
-2011-04-14  Jürg Billeter  <j@bitron.ch>
-
-	libtracker-miner: Fix mtime check
-	Due to a bug in the query used for mtime checking, all files were
-	considered updated and hence reextracted.
-
-	Fixes NB#241302.
-
-2011-04-14  Philip Van Hoof  <philip@codeminded.be>
-
-	libtracker-data: Add check for eof at end of ASK queries
-
-	libtracker-data: Error when OFFSET, LIMIT, etc are used with ASK
-
-	libtracker-data: Use "true" in the unit test too, for ASK
-
-	libtracker-data: Make ASK use the same 'true' and 'false' as xsd:boolean
-	Fixes NB#245589.
-
-2011-04-14  Jürg Billeter  <j@bitron.ch>
-
-	SPARQL: Test GRAPH template followed by DOT
-
-	SPARQL: Accept DOT after GRAPH template
-	Fixes NB#245373.
-
-2011-04-14  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
-
-	Updated Slovenian translation
-
-2011-04-14  Michael Biebl  <biebl@debian.org>
-
-	build: add missing "\" to libtracker_sparql_LDFLAGS
-
-2011-04-14  Jürg Billeter  <j@bitron.ch>
-
-	SPARQL: Implicitly convert all fn:concat arguments to strings
-	It previously converted only the first two arguments.
-
-	Fixes NB#213419.
-
-2011-04-14  Carlos Garnacho  <carlosg@gnome.org>
-
-	tracker-store: plug a leak.
-
 2011-04-13  Carlos Garnacho  <carlosg@gnome.org>
 
 	configure: Add --enable-meegotouch argument
@@ -2157,6 +2763,8 @@
 	additional ontologies, these are now 2 separate arguments.
 
 2011-04-13  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'extractor-controller-thread'
 
 	tracker-extract: Make sure we finalize the extractor object to print summary
 
@@ -2184,22 +2792,112 @@
 
 	This was done to fix my desktop with 4Gb going OOM from a broken PNG file
 
-2011-04-12  Carlos Garnacho  <carlosg@gnome.org>
+2011-04-13  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-extract: Handle errors when owning the bus name.
 
 	tracker-extract: Keep the GSource itself in TrackerController
 
-	tracker-extract: quit on pre-unmount if the mount point any processed file
+	tracker-extract: Quit on pre-unmount if the mount point any processed file
+	Fixes NB#240681, Tracker should process pre-unmount signal from usb_mode
+
+2011-04-13  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-sparql: Fix deadlock when tracker is not available
+	If a connection attempt failed, subsequent connection attempts
+	deadlocked.
+
+2011-04-12  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-sparql: Fix fallback from direct access to D-Bus
+	Fixes NB#238770.
+
+2011-04-12  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-writeback: Fix crash when not possible to get D-Bus connection
+	Fixes NB#245998.
+
+2011-04-12  Aleksander Morgado  <aleksander@lanedo.com>
+
+	functional tests: New test to ensure correct iptcdata records are read
+	Testing fix in NB#244267
+
+	functional tests: minor whitespace changes in extractor tester
+
+2011-04-11  Adrien Bustany  <abustany@gnome.org>
+
+	Add README and COPYRIGHT
+
+	Fix summary
+
+	Add French and Spanish locales
+
+	Cleanup unneeded code
+
+2011-04-11  Philip Van Hoof  <philip@codeminded.be>
+
+	tests/functional-tests: Use "true" and "false" for ASK
+
+2011-04-11  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-extract: Process only record-2 tags in libiptcdata
+	Fixes NB#244267
+
+2011-04-11  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-sparql: Build typelib and so introspection works
+
+2011-04-11  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-miner: Fix mtime check
+	Due to a bug in the query used for mtime checking, all files were
+	considered updated and hence reextracted.
+
+	Fixes NB#241302.
+
+2011-04-11  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Add check for eof at end of ASK queries
+
+	libtracker-data: Error when OFFSET, LIMIT, etc are used with ASK
+
+	libtracker-data: Use "true" in the unit test too, for ASK
+
+	libtracker-data: Make ASK use the same 'true' and 'false' as xsd:boolean
+	Fixes NB#245589.
+
+2011-04-11  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Test GRAPH template followed by DOT
+
+	SPARQL: Accept DOT after GRAPH template
+	Fixes NB#245373.
+
+2011-04-10  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-04-08  Michael Biebl  <biebl@debian.org>
+
+	build: add missing "\" to libtracker_sparql_LDFLAGS
+
+2011-04-08  Jürg Billeter  <j@bitron.ch>
+
+	SPARQL: Implicitly convert all fn:concat arguments to strings
+	It previously converted only the first two arguments.
+
+	Fixes NB#213419.
+
+2011-04-08  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-store: plug a leak.
+
+	libtracker-extract: Plug a leak
 
 	tracker-extract: Add controller thread
 	This thread takes care of DBus dispatching and extractor lifetime
 	control, the main thread still carries out metadata extraction in
 	a synchronous manner.
-
-2011-04-08  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.8
 
 2011-04-08  Jürg Billeter  <j@bitron.ch>
 
@@ -2216,18 +2914,23 @@
 
 	build: Fix build from tarball in libtracker-sparql
 
+2011-04-07  Jürg Billeter  <j@bitron.ch>
+
 	tracker-store: Fix UpdateArray to use low priority requests
 
 	libtracker-bus: There is no BatchUpdateArray
 	UpdateArray is always considered a batch operation.
 
-2011-04-07  Martyn Russell  <martyn@lanedo.com>
+2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
 
-	Release 0.10.7
+	tracker-miner-fs: resolve $HOME in config paths correctly
 
 2011-04-07  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-sparql: Fix header filename in generated vapi
+
+	build: Remove gsettings enums.xml from EXTRA_DIST
+	Breaks distcheck with strict validation in GLib 2.28.
 
 2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
 
@@ -2239,6 +2942,8 @@
 	tracker-store missing.
 
 2011-04-07  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'miner-fs-initial-sleep'
 
 	tracker-miner-fs: Update man page given --no-daemon / --initial-sleep exclusivity
 
@@ -2297,24 +3002,24 @@
 	libtracker-data: Do not insert bogus extra data for anon blank nodes
 	Fixes NB#244536.
 
-2011-04-07  Daniel Mustieles  <daniel.mustieles@gmail.com>
+2011-04-06  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
 	Updated Spanish translation
 
 	Updated Spanish translation
 
-2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
+2011-04-06  Carlos Garnacho  <carlosg@gnome.org>
 
 	extract: Plug huge leak
 	Every GDBusMethodInvocation in handle_method_get_metadata_fast() was
 	being leaked, since that function is handling the replies itself.
 
-2011-04-07  Philip Van Hoof  <philip@codeminded.be>
+2011-04-06  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-extract: Also find small albumart, however only as secondary choice
 	Fixes NB#242253.
 
-2011-04-07  Martyn Russell  <martyn@lanedo.com>
+2011-04-06  Martyn Russell  <martyn@lanedo.com>
 
 	build: Fixed the disparities between gir_DATA and girdir
 	Some copy/paste errors not helping with distcheck
@@ -2332,75 +3037,7 @@
 
 	Fixes GB#646365, Add macro to check Tracker version
 
-	libtracker-miner: Don't use specific version numbers for .gir files
-
-	libtracker-extract: Don't use specific version numbers for .gir files
-
-	libtracker-sparql: Fix gir generation dependencies
-
-2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
-
-	libtracker-miner: Add introspection annotation to docs.
-
-	libtracker-extract: run introspection with --warn-all
-
-2011-04-07  Ivan Frade  <ivan.frade@nokia.com>
-
-	libtracker-sparql: Another sed trick to fix vala GIR
-	Add scope="true" to all the async function descriptions.
-
-	libtracker-miner: No need for different .gir for TrackerCrawler
-	All TrackerMiner definitions can go in TrackerMiner .gir
-
-	libtracker-miner, libtracker-sparql: Added introspection examples
-	Miner and Async query are not working as expected yet, but the code
-	should be correct.
-
-	libtracker-extract: Depend on Tracker-0.10.gir
-	Do not depend in the old TrackerSparql gir.
-
-	build: Require g-ir 0.9.5 or higher
-	Vala generates .gir with repository version="1.2" .
-
-	Quoting gobject-introspection changelog:
-	Update to version 0.9.5: Major rewrite, that leads to a bump in the gir format (version 1.2).
-
-	libtracker-sparql: Dirty 'sed' only when really needed
-	If vala is recent enough, the "sed" operation is not needed.
-	Also, run the sed trick only once on the file.
-
-	Vala version is checked via new m4 function.
-
-	Removed the .gir from the CLEANFILES. It must be cleaned only when
-	the library it comes from is cleaned.
-
-	libtracker-miner: Add (transfer x) annotation to some methods
-	g-ir-scanner was warning the lack of those annotations
-
-	libtracker-miner: Generate 2 gir to fix namespaces
-	Due problems with namespaces, now TrackerMiner classes are described in one gir
-	(TrackerMiner) and the Crawler in another (TrackerCrawler).
-
-	Reorganized the source files in different variables. Internal files, not
-	intended to be exposed in GI under private_sources.
-
-	libtracker-sparql: Use valac to generate the .gir file. Fix Namespace.
-	Use valac --gir instead of g-ir-scanner to generate the .gir file.
-	Nested namespaces are not supported: use Tracker instead of TrackerSparql for this.
-	Set introspection="0" to a function using va_list. This is a workaround for a bug
-	in vala. Remove in the next vala upgrade.
-
-2011-04-07  Martyn Russell  <martyn@lanedo.com>
-
-	libtracker-miner: Added introspection .gir file generation
-
-	libtracker-extract: Added introspection .gir file generation
-
-	libtracker-sparql: Added introspection .gir file generation
-
-	build: Added initial introspection support
-
-2011-04-07  Jürg Billeter  <j@bitron.ch>
+2011-04-06  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-miner: Do not ignore DELETED event for IgnoreNextUpdate
 	We should never see DELETED on update (atomic rename or in-place
@@ -2409,11 +3046,11 @@
 
 	Fixes NB#229461.
 
-2011-04-07  Philip Van Hoof  <philip@codeminded.be>
+2011-04-06  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-common: A warning is sufficient here, no need for critical
 
-2011-04-07  Jürg Billeter  <j@bitron.ch>
+2011-04-05  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-sparql: Ensure Builder.length is not 0 when not empty
 	This caused preupdate fragments from extractors to be dropped in
@@ -2423,7 +3060,7 @@
 
 	tracker-extract-pdf: Fix SPARQL preupdate for location information
 
-2011-04-07  Philip Van Hoof  <philip@codeminded.be>
+2011-04-05  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-common: Make sure the first_time trick survives locale_shutdown
 
@@ -2463,15 +3100,110 @@
 
 	libtracker-common: Remove reading meegotouch locale config over GConf
 
-2011-04-07  Markus Schley  <marqus@gmx.net>
+2011-04-05  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Don't use specific version numbers for .gir files
+
+	libtracker-extract: Don't use specific version numbers for .gir files
+
+	libtracker-sparql: Fix gir generation dependencies
+
+2011-04-05  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-miner: Add introspection annotation to docs.
+
+	libtracker-extract: run introspection with --warn-all
+
+2011-04-05  Ivan Frade  <ivan.frade@nokia.com>
+
+	libtracker-sparql: Another sed trick to fix vala GIR
+	Add scope="true" to all the async function descriptions.
+
+	libtracker-miner: No need for different .gir for TrackerCrawler
+	All TrackerMiner definitions can go in TrackerMiner .gir
+
+	libtracker-miner, libtracker-sparql: Added introspection examples
+	Miner and Async query are not working as expected yet, but the code
+	should be correct.
+
+	libtracker-extract: Depend on Tracker-0.10.gir
+	Do not depend in the old TrackerSparql gir.
+
+	build: Require g-ir 0.9.5 or higher
+	Vala generates .gir with repository version="1.2" .
+
+	Quoting gobject-introspection changelog:
+	Update to version 0.9.5: Major rewrite, that leads to a bump in the gir format (version 1.2).
+
+	libtracker-sparql: Dirty 'sed' only when really needed
+	If vala is recent enough, the "sed" operation is not needed.
+	Also, run the sed trick only once on the file.
+
+	Vala version is checked via new m4 function.
+
+	Removed the .gir from the CLEANFILES. It must be cleaned only when
+	the library it comes from is cleaned.
+
+	libtracker-miner: Add (transfer x) annotation to some methods
+	g-ir-scanner was warning the lack of those annotations
+
+	libtracker-miner: Generate 2 gir to fix namespaces
+	Due problems with namespaces, now TrackerMiner classes are described in one gir
+	(TrackerMiner) and the Crawler in another (TrackerCrawler).
+
+	Reorganized the source files in different variables. Internal files, not
+	intended to be exposed in GI under private_sources.
+
+	libtracker-sparql: Set correct library in gir
+	This is needed when linked from other gir files.
+
+	libtracker-sparql: Use valac to generate the .gir file. Fix Namespace.
+	Use valac --gir instead of g-ir-scanner to generate the .gir file.
+	Nested namespaces are not supported: use Tracker instead of TrackerSparql for this.
+	Set introspection="0" to a function using va_list. This is a workaround for a bug
+	in vala. Remove in the next vala upgrade.
+
+2011-04-05  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Added introspection .gir file generation
+
+	libtracker-extract: Added introspection .gir file generation
+
+	libtracker-sparql: Added introspection .gir file generation
+
+	build: Added initial introspection support
+
+2011-04-04  Adrien Bustany  <abustany@gnome.org>
+
+	Bookmarks: add an observer for live saving/deletion in Tracker
+
+	Bookmarks: Fix itemId/identifier confusion
+
+2011-04-04  Markus Schley  <marqus@gmx.net>
 
 	[l10n] Updated German translation
 
-2011-04-07  Jürg Billeter  <j@bitron.ch>
+2011-04-04  Jürg Billeter  <j@bitron.ch>
 
 	tests/libtracker-sparql: Fix cancellation error check
 
 	tests/tracker-steroids: Test with the D-Bus backend
+
+2011-04-04  Martyn Russell  <martyn@lanedo.com>
+
+	build: Bump version to 0.11
+
+	libtracker-data: Fixed distcheck with dconf files not cleaned up
+	dconf/user is the filename
+
+	libtracker-fts: Fixed distcheck with dconf files not cleaned up
+	dconf/user is the filename
+
+	build: Fixed missing gschema .xml.in files in distcheck
+
+	functional-tests: Fixed distcheck issue with dconf
+
+2011-04-04  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-sparql: Use static linking instead of plugins
 	Plugin loading in threads may be problematic in certain environments.
@@ -2481,22 +3213,30 @@
 
 	Fixes NB#241659.
 
-2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
+2011-04-04  Carlos Garnacho  <carlosg@gnome.org>
 
 	needle: Cancel operations on hidden views.
 
-2011-04-07  Ivan Frade  <ivan.frade@nokia.com>
+2011-04-04  Ivan Frade  <ivan.frade@nokia.com>
 
 	DOAP file describing the project
 	Fixes GB#646374, Add a doap file to keep master.gnome.org happy when releasing
 
 	Added also in EXTRA_DIST
 
-2011-04-07  Daniel Nylander  <po@danielnylander.se>
+2011-04-04  Adrien Bustany  <abustany@gnome.org>
+
+	Plugin: remove dead code
+
+	Bookmarks: add missing cursor unref
+
+	Initial commit
+
+2011-04-03  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
-2011-04-07  Martyn Russell  <martyn@lanedo.com>
+2011-04-02  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-needle: Improve "icons" or "images" category to allow filtering by all or title
 	Now there is a new matching mechanism, "all" which doesn't require
@@ -2506,19 +3246,11 @@
 
 	tracker-needle: Cleaned up some whitespace issues
 
-2011-04-07  Carlos Garnacho  <carlosg@gnome.org>
+2011-04-01  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-extract-oasis: NULLify variable
 	It was leading to invalid frees if there was any error on extracting
 	the document file content.
-
-2011-04-04  Piotr Drąg  <piotrdrag@gmail.com>
-
-	Updated Polish translation
-
-2011-03-31  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.6
 
 2011-03-31  Philip Van Hoof  <philip@codeminded.be>
 
@@ -2549,57 +3281,36 @@
 	Fixes GB#645380.
 	Fixes NB#235445.
 
-2011-03-31  Philip Van Hoof  <philip@codeminded.be>
+2011-03-31  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-03-30  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'miner-fs-remaining-time'
+
+	tracker-control: Use tracker_seconds_to_string() for nicer output
+	Displays not just seconds, but hours and days remaining too.
+
+	libtracker-miner: Use "Since: 0.12", not 0.11.
+	We always use stable versions in our documentation
+
+2011-03-30  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-control: Report miner's processing remaining time in --follow
+	Note that this commit breaks TrackerMinerManager API w.r.t 0.10
+
+	Fixes GB#611471
+
+	tracker-control: Simplify getting pause status when showing pause details
+
+2011-03-30  Philip Van Hoof  <philip@codeminded.be>
 
 	tests, libtracker-data: Add a comment so that wally wont change the h
 
 	tests, libtracker-data: Added unit tests for Unicode lower-case and case-fold
 
-	libtracker-data: Add tracker:case-fold function to SPARQL
-
-2011-03-31  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
-
-	Updated Slovenian translation
-
-2011-03-31  Marek Černocký  <marek@manet.cz>
-
-	Updated Czech translation
-
-	Updated Czech translation
-
-2011-03-31  Yinghua Wang  <wantinghard@gmail.com>
-
-	Update Simplified Chinese translation.
-
-2011-03-31  Daniel Mustieles  <daniel.mustieles@gmail.com>
-
-	Updated Spanish translation
-
-2011-03-31  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
-
-	Updated Slovenian translation
-
-2011-03-31  Daniel Mustieles  <daniel.mustieles@gmail.com>
-
-	Updated Spanish translation
-
-2011-03-31  Joe Hansen  <joedalton2@yahoo.dk>
-
-	Updated Danish translation
-
-2011-03-31  Daniel Mustieles  <daniel.mustieles@gmail.com>
-
-	Updated Spanish translation
-
-2011-03-31  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
-
-	Updated Slovenian translation
-
-2011-03-31  Marek Černocký  <marek@manet.cz>
-
-	Updated Czech translation
-
-2011-03-31  Jürg Billeter  <j@bitron.ch>
+2011-03-30  Jürg Billeter  <j@bitron.ch>
 
 	build: Support build with evolution 2.91.6 and later
 	Fixes GB#645934.
@@ -2609,7 +3320,11 @@
 	tracker-extract, mp3: Length of elements in this table is 3, not 4
 	Fixes NB#241206.
 
-2011-03-30  Jürg Billeter  <j@bitron.ch>
+2011-03-29  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-03-29  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-direct: Use thread-default main context for async callback
 	This fixes the main context used for invoking the async ready callback
@@ -2617,7 +3332,7 @@
 
 	Fixes GB#645963.
 
-2011-03-30  Philip Van Hoof  <philip@codeminded.be>
+2011-03-29  Philip Van Hoof  <philip@codeminded.be>
 
 	functional-tests: Cleanup test_insert_08
 
@@ -2637,11 +3352,11 @@
 
 	functional-tests: Use the newest qtcontact queries for REPLACE
 
-2011-03-30  Adrien Bustany  <adrien.bustany@nokia.com>
+2011-03-29  Adrien Bustany  <adrien.bustany@nokia.com>
 
 	functional-tests: Fix contacts queries in benchmark
 
-2011-03-30  Philip Van Hoof  <philip@codeminded.be>
+2011-03-29  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-data: Update my beautiful ascii art that explains the journal
 
@@ -2682,7 +3397,7 @@
 
 	libtracker-data: Add an UPDATE operation to the journaling
 
-2011-03-30  Sam Thursfield  <ssssam@gmail.com>
+2011-03-28  Sam Thursfield  <ssssam@gmail.com>
 
 	ontologies: SLO/MLO use 'false' instead of 'False'
 	Fixes GB#645675 - mlo and slo contain invalid Turtle literals: 'False' instead of 'false'
@@ -2694,29 +3409,45 @@
 	case independent. In Turtle they are not, only lowercase forms
 	are allowed."
 
-2011-03-30  Philip Van Hoof  <philip@codeminded.be>
+2011-03-28  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Add tracker:case-fold function to SPARQL
 
 	libtracker-data: Specify how many bytes are ok in libunistring's case
+
+2011-03-28  Jürg Billeter  <j@bitron.ch>
+
+	tracker-extract: Support extra string for WHERE patterns in GetMetadata
+
+2011-03-28  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-data: Use libicu, libunistring or glib for fn:lower-case
 	Fixes NB#240168.
 
 	configure.ac: This strange Evolution-plugin stuff doesn't belong here
 
-2011-03-30  Jürg Billeter  <j@bitron.ch>
+2011-03-28  Jürg Billeter  <j@bitron.ch>
 
 	SPARQL: Handle double and dateTime typed string literals
 	Fixes NB#240582.
 
-2011-03-30  Adrien Bustany  <abustany@gnome.org>
+2011-03-27  Adrien Bustany  <abustany@gnome.org>
 
 	tracker-miner-web: Fix GVariant signature for "Associated" property
 
-2011-03-30  Jürg Billeter  <j@bitron.ch>
+2011-03-26  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-03-25  Jürg Billeter  <j@bitron.ch>
 
 	tracker-needle: Fix C warnings on 64-bit platforms
 
-2011-03-30  Carlos Garnacho  <carlosg@gnome.org>
+2011-03-25  Yinghua Wang  <wantinghard@gmail.com>
+
+	Update Simplified Chinese translation.
+
+2011-03-24  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-needle: Fix alignment of folders without known parent
 
@@ -2784,10 +3515,6 @@
 	This model takes care of querying and queueing operations for incremental
 	loading.
 
-2011-03-24  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.5
-
 2011-03-24  Jürg Billeter  <j@bitron.ch>
 
 	tracker-extract: Do not create duplicate tags
@@ -2818,25 +3545,77 @@
 
 	tracker-needle: Set proper application icon
 
-2011-03-23  Martyn Russell  <martyn@lanedo.com>
+2011-03-23  Jürg Billeter  <j@bitron.ch>
 
-	libtracker-sparql: Improve documentation reasoning for removing _builder_drop_graph()
+	Update .gitignore
 
 2011-03-23  Ivan Frade  <ivan.frade@nokia.com>
 
-	functional-tests: Update expectations now that bug has been fixed.
-	Reported by Jean-Luc Lamadon <jean-luc.lamadon@nokia.com>
-
-2011-03-23  Martyn Russell  <martyn@lanedo.com>
-
-	tracker-control: Fixed some whitespace issues
+	functional-tests: Remove test dconf db only when it exists
 
 2011-03-23  Jürg Billeter  <j@bitron.ch>
 
-	libtracker-data: Skip subclass query when deleting whole resource
-	This improves resource deletion performance.
+	build: Remove test-configurations from configure.ac
 
-2011-03-23  Aleksander Morgado  <aleksander@lanedo.com>
+2011-03-22  Ivan Frade  <ivan.frade@nokia.com>
+
+	functional-tests: Remove test-configurations. Not needed anymore.
+
+	functional-tests: Updated application tests using dconf
+
+	functional-tests: Updated writeback tests using dconf
+
+	functional-tests: Make sure to use a fresh dconf profile
+
+	functional-tests: Miner tests take configuration from a dconf test profile
+
+	functional-tests: Defined miner dconf schema name in a constant
+
+	functional-tests: Updated miner tests using dconf
+
+	functional-tests: Use dconf instead of cfg file when configuring the env
+
+	functional-tests: Added a Python wrapper to access DConf
+
+	functional-tests: Install a dconf profile for testing
+
+2011-03-22  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-fs: Renamed schemas "FileSystem" to "Files" for consistency
+	Also renamed "fs" to "files".
+	Also renamed "miners" to "miner".
+
+	schemas: Include DB and fix FTS in Tracker.gschema.xml.in
+
+	tracker-extract: Renamed schemas "Extractor" to "Extract" for consistency
+
+	po: Added FTS and DB dconf schema files to POTFILES.in
+
+	libtracker-data: Fixed memory leaks and updated db-config API
+	The db-config API to get the journal rotate destination did return a
+	const gchar * but with gsettings a new string is returned each time, so
+	the API was updated and memory freed in all places it is called.
+
+	tracker-miner-fs: Removed unused structure
+
+	libtracker-data: Rename Store.DB to just DB
+	FTS is also part of the store but we don't attach it there either
+
+	libtracker-fts: Improve documentation for FTS schema
+
+2011-03-22  Ivan Frade  <ivan.frade@nokia.com>
+
+	libtracker-fts: Port TrackerFTSConfig to gsettings.
+	Remove manpage and add gsetting schema
+
+	libtracker-data: Port TrackerDBConfig to gsettings
+	Add also GSettings schema under Store
+
+2011-03-22  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-control: Fixed some whitespace issues
+
+2011-03-22  Aleksander Morgado  <aleksander@lanedo.com>
 
 	tracker-control: Don't start miners when querying status
 	Fixes GB#642012
@@ -2851,17 +3630,26 @@
 	tracker-control: Assume --list-processes and --status when running without args
 	Fixes GB#645000
 
-2011-03-23  Philip Van Hoof  <philip@codeminded.be>
+2011-03-22  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Skip subclass query when deleting whole resource
+	This improves resource deletion performance.
+
+2011-03-22  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-sparql, -common: GConfClient's get_default isn't thread-safe, workaround this issue
 	Fixes NB#238447.
 
-2011-03-23  Lionel Landwerlin  <lionel.g.landwerlin@linux.intel.com>
+2011-03-21  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-03-21  Lionel Landwerlin  <lionel.g.landwerlin@linux.intel.com>
 
 	libtracker-extract: Improve extraction of title from filenames with multiple dots
 	Fixes GB#645052
 
-2011-03-23  Jürg Billeter  <j@bitron.ch>
+2011-03-21  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-sparql: Use thread-default main context for async callback
 	This fixes the main context used for invoking the async ready callback
@@ -2871,7 +3659,7 @@
 
 	libtracker-data: Fix graph check for anonymous blank nodes
 
-2011-03-23  Lionel Landwerlin  <lionel.g.landwerlin@linux.intel.com>
+2011-03-21  Lionel Landwerlin  <lionel.g.landwerlin@linux.intel.com>
 
 	tracker-extract: Fix original resolution conversion in EXIF data
 	According to the specification (http://www.exif.org/Exif2-2.PDF),
@@ -2882,11 +3670,15 @@
 
 	Fixes GB#645375
 
-2011-03-23  Philip Van Hoof  <philip@codeminded.be>
+2011-03-21  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-sparql: Remove drop_graph from sparql builder
+	Don't cherry-pick this to the tracker-0.10 branch, as it's a
+	unallowed API, ABI change
 
 	libtracker-sparql: Deprecate drop_graph in sparql builder
 
-2011-03-23  Aleksander Morgado  <aleksander@lanedo.com>
+2011-03-21  Aleksander Morgado  <aleksander@lanedo.com>
 
 	tracker-control: Better name for internal ENABLED macros
 
@@ -2896,7 +3688,12 @@
 
 	 Fixes GB#644998
 
-2011-03-23  Philip Van Hoof  <philip@codeminded.be>
+2011-03-21  Ivan Frade  <ivan.frade@nokia.com>
+
+	functional-tests: Update expectations now that bug has been fixed.
+	Reported by Jean-Luc Lamadon <jean-luc.lamadon@nokia.com>
+
+2011-03-21  Philip Van Hoof  <philip@codeminded.be>
 
 	plugins, evolution: Fix trailing whitespace
 
@@ -2906,7 +3703,11 @@
 
 	plugins, evolution: Don't use DROP GRAPH any more
 
-2011-03-23  Martyn Russell  <martyn@lanedo.com>
+2011-03-18  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-03-18  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-sparql: Don't export symbols which are internal
 	This includes:
@@ -2915,13 +3716,18 @@
 
 	tracker-miner-fs: Add --no-daemon command line to exit when indexing done
 
-2011-03-23  Philip Van Hoof  <philip@codeminded.be>
+2011-03-18  Jürg Billeter  <j@bitron.ch>
+
+	Update .gitignore
+
+2011-03-18  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-extract: Add parameter to QApplication to allow running without X11
 
-2011-03-17  Martyn Russell  <martyn@lanedo.com>
+2011-03-17  Carlos Garnacho  <carlosg@gnome.org>
 
-	Release 0.10.4
+	libtracker-extract: plug 2 memleaks in module manager.
+	Spotted by Aleksander.
 
 2011-03-17  Philip Van Hoof  <philip@codeminded.be>
 
@@ -2930,10 +3736,16 @@
 
 2011-03-17  Martyn Russell  <martyn@lanedo.com>
 
+	Merge branch 'sparql-init'
+
 	libtracker-sparql: Add test case for the bug this fixes.
 	Fixes NB#237150, Second tracker_sparql_connection_get_async never returns
 
-2011-03-17  Jürg Billeter  <j@bitron.ch>
+2011-03-16  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Fixed make distdir issue (playlist vs playlists)
+
+2011-03-16  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-data: Remove unused tracker_data_manager_init_async
 
@@ -2945,19 +3757,74 @@
 
 	libtracker-sparql: Fix race between unlock and return in get_internal
 
-2011-03-17  Aleksander Morgado  <aleksander@lanedo.com>
+2011-03-15  Aleksander Morgado  <aleksander@lanedo.com>
 
 	libtracker-miner,miner-fs,extract: Don't assume g_dbus_info_new_for_xml() never fails
 	Not a big deal because the introspection XML is hardcoded and thus shouldn't
 	break g_dbus_info_new_for_xml(), but anyway, better get an error message than
 	a segfault if the xml is ever broken...
 
-2011-03-15  Jürg Billeter  <j@bitron.ch>
+2011-03-15  Martyn Russell  <martyn@lanedo.com>
 
-	functional-tests: Fix XDG dir handling
+	Merge branch 'extractor-rules-list'
+
+	libtracker-extract: Updated documentation example for tracker_extract_get_metadata()
+	Also updated the Since: and added information about what changed since
+	0.10 for people upgrading
+
+	tracker-extract: Updated man page to include env var TRACKER_EXTRACTOR_RULES_DIR
+
+	tracker-extract: Added note about why rule files are not in a separate dir
+
+	libtracker-extract: Renamed tracker-extract-module-manager to remove "extract".
+	None of the other .[ch] files use that convention in libtracker-extract
+
+	libtracker-extract: Whitespace fixes
+
+	libtracker-extract: Use same exclusion preprocessor rules as other headers
+	i.e. use #error if the header is included outside of tracker-extract.h
+
+2011-03-15  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-miner-fs: avoid roundtrips to the extractor
+	The miner now queries the extractor module manager whether a
+	file is actually handled by the extractors before sending it
+	over.
+
+	tracker-extract: Add rule files for the extractors
+	The final effect of these rules should resemble the specific vs
+	generic approach previously used in the extractor.
+
+	tracker-extract: mass change extractors
+	The API has changed, now the following function must be exported:
+
+	gboolean tracker_extract_get_metadata (const gchar          *uri,
+	                                       const gchar          *mimetype,
+	                                       TrackerSparqlBuilder *preupdate,
+	                                       TrackerSparqlBuilder *metadata);
+
+	This was done in one go as there's no painless way to do this...
+
+	tracker-extract: Use module manager from libtracker-extract
+	Also fixed mockup example to use new APIs
+
+2011-03-15  Jürg Billeter  <j@bitron.ch>
 
 	libtracker-data: Do not share anonymous blank nodes between graphs
 	Fixes NB#236387.
+
+2011-03-15  Carlos Garnacho  <carlosg@gnome.org>
+
+	libtracker-extract: Add extractor modules manager.
+	This manager parses a directory of keyfiles, describing rules
+	for matches, the modules aren't preloaded on initialization,
+	instead they are loaded lazily as needed.
+
+	This supersedes the module loading within
+	src/tracker-extract/tracker-extract.c, and will be used
+	as a replacement in following commits. The specific/generic
+	matching there can be replaced by rules at different priorities
+	calling the same module.
 
 2011-03-15  Philip Van Hoof  <philip@codeminded.be>
 
@@ -2973,6 +3840,16 @@
 
 	doc: Add missing libtracker-miner API methods to documentation
 
+2011-03-14  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-03-14  Jürg Billeter  <j@bitron.ch>
+
+	functional-tests: Fix XDG dir handling
+
+2011-03-14  Aleksander Morgado  <aleksander@lanedo.com>
+
 	build: ignore some built files in git
 
 	libtracker-extract: Fix usage of strptime() when parsing dates without timezone
@@ -2982,9 +3859,21 @@
 
 	libtracker-extract: Improve some comments
 
-2011-03-11  Martyn Russell  <martyn@lanedo.com>
+2011-03-13  Joe Hansen  <joedalton2@yahoo.dk>
 
-	Release 0.10.3
+	Updated Danish translation
+
+2011-03-13  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-03-12  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-03-12  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
 
 2011-03-11  Carlos Garnacho  <carlosg@gnome.org>
 
@@ -2999,19 +3888,17 @@
 
 2011-03-10  Martyn Russell  <martyn@lanedo.com>
 
-	Release 0.10.2
-
 	libtracker-miner: Don't delete nie:contentCreated when updating files
 	Fixes NB#232574, nie::ContentCreated is updated when the mtime of a file changes
+
+2011-03-10  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
 
 2011-03-10  Aleksander Morgado  <aleksander@lanedo.com>
 
 	tracker-miner-fs,applications: If locale change detected always do mtime checks during crawling
 	Fixes NB#235118
-
-2011-03-10  Piotr Drąg  <piotrdrag@gmail.com>
-
-	Updated Polish translation
 
 2011-03-10  Tshepang Lekhonkhobe  <tshepang@gmail.com>
 
@@ -3020,25 +3907,73 @@
 
 	  http://build.meego.com/package/files?package=tracker&project=Trunk
 
-2011-03-10  Ivan Frade  <ivan.frade@nokia.com>
+2011-03-10  Martyn Russell  <martyn@lanedo.com>
+
+	po: Fixed POTFILES.in which was missing gschema xml files
+
+	schemas: Fix make check with new gschemas directory
+
+	tracker-preferences: Switch from GKeyFile to GSettings
+
+	tracker-preferences: Refactored the Vala code and cleaned things up a bit
+
+2011-03-09  Ivan Frade  <ivan.frade@nokia.com>
 
 	ontologies (NFO): new Note class to store Tomboy-alike notes
 
-2011-03-10  Carlos Garnacho  <carlosg@gnome.org>
+2011-03-09  Martyn Russell  <martyn@lanedo.com>
+
+	Merge branch 'grouped-deletes'
+
+2011-03-09  Carlos Garnacho  <carlosg@gnome.org>
 
 	processing-pool: Map correctly errors to tasks after array updates
 	An error map is now passed, so the error position in the returned
 	array can be guessed for all tasks.
 
-2011-03-10  Kjartan Maraas  <kmaraas@gnome.org>
+2011-03-09  Kjartan Maraas  <kmaraas@gnome.org>
 
 	Adjust to API change in libpanel-applet
 
-2011-03-10  Aleksander Morgado  <aleksander@lanedo.com>
+2011-03-09  Martyn Russell  <martyn@lanedo.com>
+
+	build: Remove .cfg man page documentation now we use gsettings
+
+2011-03-09  Aleksander Morgado  <aleksander@lanedo.com>
 
 	libtracker-miner: Avoid use of already disposed memory
 
-2011-03-10  Carlos Garnacho  <carlosg@gnome.org>
+2011-03-08  Martyn Russell  <martyn@lanedo.com>
+
+	build: Migrate to GSettings
+	Fixes GB#622288, Migrate to GSettings to make it easier to change default settings
+
+	Note this commit is a place holder for the bug association with
+	the feature being added in the previous merge commit
+
+	schemas: Use tracker-enums.h, not tracker-settings.h to fix build
+
+2011-03-08  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-miner-fs: Use GSettings for configuration storage.
+
+	tracker-store: Use GSettings for configuration storage.
+
+	tracker-writeback: Use GSettings for configuration storage
+
+	tracker-extract: Use GSettings for configuration storage.
+
+	libtracker-common: Add type generation for libtracker-common enums.
+
+	libtracker-common: Add migration code to TrackerConfigFile
+	This is no longer an abstract object, and the
+	tracker_config_file_migrate() function may be used
+	to dump the configuration to GSettings and get rid
+	of the key file.
+
+	schemas: Add initial GSettings schemas
+
+2011-03-07  Carlos Garnacho  <carlosg@gnome.org>
 
 	miner-fs: Make use of bulk operations when deleting resources.
 	As a consequence, delete operations aren't flushed immediately anymore,
@@ -3054,7 +3989,7 @@
 	Now the parameters are (parent1, parent2, ..., parentN, child), so
 	it stays compatible with the older behavior.
 
-2011-03-09  Philip Van Hoof  <philip@codeminded.be>
+2011-03-04  Philip Van Hoof  <philip@codeminded.be>
 
 	tracker-extract,mp3: Add comment and fix size param of get_encoding
 
@@ -3065,7 +4000,7 @@
 	tracker-extract,mp3: Add comment and genre for encoding detection
 	Fixes NB#229713.
 
-2011-03-09  Aleksander Morgado  <aleksander@lanedo.com>
+2011-03-04  Aleksander Morgado  <aleksander@lanedo.com>
 
 	libtracker-common: Improve logging when guessing charsets
 
@@ -3077,7 +4012,7 @@
 
 	libtracker-common: Added libenca-based encoding detection method
 
-2011-03-09  Ivan Frade  <ivan.frade@nokia.com>
+2011-03-04  Ivan Frade  <ivan.frade@nokia.com>
 
 	functional-tests: Allow whitespaces in the tags and creators labels
 	More flexible parsing the results coming from the extractor, to allow
@@ -3085,23 +4020,19 @@
 
 	functional-tests: Force english locale for the tests
 
-2011-03-09  Michael Biebl  <biebl@debian.org>
+2011-03-04  Michael Biebl  <biebl@debian.org>
 
 	tracker-preferences: Enable gettext translations
 	While at it, clean up unused defines.
 
-2011-03-09  Ivan Frade  <ivan.frade@nokia.com>
+2011-03-04  Ivan Frade  <ivan.frade@nokia.com>
 
 	functional-tests: Fix expectations for audio extractions
 	Template values where still in the file making the test fail
 
-2011-03-09  Philip Van Hoof  <philip@codeminded.be>
+2011-03-03  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-data: Fix tracker_ namespace use for non-publ. function
-
-2011-03-03  Martyn Russell  <martyn@lanedo.com>
-
-	Release 0.10.1
 
 2011-03-03  Vincent Untz  <vuntz@gnome.org>
 
@@ -3128,6 +4059,15 @@
 	With this it should be possible to mix using tracker_sparql_connection_get
 	and tracker_sparql_connection_get_async without having to worry about
 	concurrency.
+
+2011-03-02  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-flickr: Remove --includedir=libtracker-client
+	Didn't seem to have any effect
+
+2011-03-02  Ivan Frade  <ivan.frade@nokia.com>
+
+	Removing libtracker-client related files
 
 2011-03-02  Martyn Russell  <martyn@lanedo.com>
 
@@ -3205,7 +4145,7 @@
 
 	examples/async-connection: Updated to be fully async
 
-2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+2011-03-01  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-data: Remove ] character from previous commit, oeps
 
@@ -3218,32 +4158,34 @@
 
 	tracker-writeback: Make dispatcher GInitable
 
-2011-03-02  Gabriel F. Vilar  <cogumm@gmail.com>
+2011-02-28  Gabriel F. Vilar  <cogumm@gmail.com>
 
 	Updated Brazilian Portuguese translation
 
-2011-03-02  Lionel Landwerling  <lionel.g.landwerlin@linux.intel.com>
+2011-02-28  Lionel Landwerling  <lionel.g.landwerlin@linux.intel.com>
 
 	libtracker-miner: Add mount-name to tracker:Volume as nie:title Author:    Lionel Landwerling <lionel.g.landwerlin@linux.intel.com>
 
-2011-03-02  Joe Hansen  <joedalton2@yahoo.dk>
+2011-02-26  Joe Hansen  <joedalton2@yahoo.dk>
 
 	Updated Danish translation
 
-2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+2011-02-25  Aleksander Morgado  <aleksander@lanedo.com>
 
 	tracker-control: let --detailed imply --follow
 
-2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+2011-02-24  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-common: Missing glib includes for G_BEGIN_DECLS
 
-2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+2011-02-24  Aleksander Morgado  <aleksander@lanedo.com>
 
 	tracker-extract,gstreamer: On _DECRYPT errors, keep on reading tags
 	Fixes NB#230255
 
 	tracker-miner-fs: Avoid trying to extract embedded metadata from directories
+
+2011-02-23  Aleksander Morgado  <aleksander@lanedo.com>
 
 	build: Always include all man pages in dist
 	Fixes GB#643140
@@ -3252,30 +4194,34 @@
 
 	libtracker-common: Don't print paths, print uris which are always UTF-8
 
-2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+2011-02-23  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-common, libtracker-extract: Don't confuse uri with path
 
 	libtracker-common, tracker-extract: Use of path vs. uri is wrong here
 
-2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+2011-02-23  Aleksander Morgado  <aleksander@lanedo.com>
 
 	libtracker-miner: When reporting progress, ensure items processed <= total items
 	Fixes GB#642581
 
-2011-03-02  Cosimo Cecchi  <cosimoc@gnome.org>
+2011-02-23  Cosimo Cecchi  <cosimoc@gnome.org>
 
 	nautilus-extension: don't implement _get_toolbar_items()
 	It got removed from nautilus 2.91.90, and that code does nothing anyway.
 
-2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+2011-02-23  Aleksander Morgado  <aleksander@lanedo.com>
 
 	tracker-extract: Initialize to zero the module data, to fix the statistics
 	Fixes GB#643090
 
 	libtracker-miner: Update processing pool explanation with new default queue sizes
 
-2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+2011-02-23  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	Updated Hungarian translation
+
+2011-02-22  Philip Van Hoof  <philip@codeminded.be>
 
 	miners/fs, applications: Use the processing-pool for .desktop files too
 
@@ -3283,19 +4229,19 @@
 
 	libtracker-data, -bus, -sparql: Asynchronous init of direct backend
 
-2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+2011-02-22  Aleksander Morgado  <aleksander@lanedo.com>
 
 	libtracker-common: Fix comment, date specs is ISO 8601
 
-2011-03-02  Mikael Ottela  <mikael.ottela@ixonos.com>
+2011-02-22  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	data-generators:Add slo scripts to data generators
 
-2011-03-02  Aleksander Morgado  <aleksander@lanedo.com>
+2011-02-21  Aleksander Morgado  <aleksander@lanedo.com>
 
 	tracker-miner-fs,applications: Chain up parent's finalize
 
-2011-03-02  Philip Van Hoof  <philip@codeminded.be>
+2011-02-21  Philip Van Hoof  <philip@codeminded.be>
 
 	utils/tracker-resdump: Added tool to dump a resource as TTL
 
@@ -3306,17 +4252,13 @@
 	miners/fs: Initialize QApplication object only once
 	Fixes NB#228760.
 
-2011-03-02  Daniel Mustieles  <daniel.mustieles@gmail.com>
+2011-02-19  Daniel Mustieles  <daniel.mustieles@gmail.com>
 
 	Updated Spanish translation
 
-2011-03-02  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+2011-02-19  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
 
 	Updated Slovenian translation
-
-2011-02-23  Gabor Kelemen  <kelemeng@gnome.hu>
-
-	Updated Hungarian translation
 
 2011-02-17  Martyn Russell  <martyn@lanedo.com>
 

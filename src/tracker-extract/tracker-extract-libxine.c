@@ -28,38 +28,39 @@
 
 #include <libtracker-extract/tracker-extract.h>
 
-static void
-tracker_extract_xine (const gchar          *uri,
-                      TrackerSparqlBuilder *preupdate,
-		      TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *info)
 {
-	xine_t            *xine_base;
+	xine_t *xine_base;
 	xine_audio_port_t *audio_port;
 	xine_video_port_t *video_port;
-	xine_stream_t     *stream;
-	char              *mrl;
+	xine_stream_t *stream;
+	char *mrl;
+	gboolean has_audio;
+	gboolean has_video;
+	int pos_stream;
+	int pos_time;
+	int length_time;
+	const char *comment;
+	const char *title;
+	const char *author;
+	const char *album;
+	gchar *year;
+	const char *genre;
+	const char *track;
+	const gchar *graph;
+	TrackerSparqlBuilder *metadata, *preupdate;
+	GFile  *file;
 
-	gboolean          has_audio;
-	gboolean          has_video;
-
-	int               pos_stream;
-	int               pos_time;
-	int               length_time;
-
-	const char        *comment;
-	const char        *title;
-	const char        *author;
-	const char        *album;
-	gchar             *year;
-	const char        *genre;
-	const char        *track;
-
-	g_return_if_fail (uri && metadata);
+	file = tracker_extract_info_get_file (info);
+	metadata = tracker_extract_info_get_metadata_builder (info);
+	preupdate = tracker_extract_info_get_preupdate_builder (info);
+	graph = tracker_extract_info_get_graph (info);
 
 	xine_base = xine_new ();
 
 	if (!xine_base) {
-		return;
+		return FALSE;
 	}
 
 	xine_init (xine_base);
@@ -69,7 +70,7 @@ tracker_extract_xine (const gchar          *uri,
 
 	if (!audio_port || !video_port) {
 		xine_exit (xine_base);
-		return;
+		return FALSE;
 	}
 
 	stream = xine_stream_new (xine_base, audio_port, video_port);
@@ -78,10 +79,10 @@ tracker_extract_xine (const gchar          *uri,
 		xine_close_audio_driver (xine_base, audio_port);
 		xine_close_video_driver (xine_base, video_port);
 		xine_exit (xine_base);
-		return;
+		return FALSE;
 	}
 
-	mrl = g_filename_from_uri (uri, NULL, NULL);
+	mrl = g_file_get_path (file);
 
 	if (!xine_open (stream, mrl)) {
 		g_free (mrl);
@@ -89,7 +90,7 @@ tracker_extract_xine (const gchar          *uri,
 		xine_close_audio_driver (xine_base, audio_port);
 		xine_close_video_driver (xine_base, video_port);
 		xine_exit (xine_base);
-		return;
+		return FALSE;
 	}
 
 	g_free (mrl);
@@ -102,11 +103,17 @@ tracker_extract_xine (const gchar          *uri,
 		gchar *canonical_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", author);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
 
 		tracker_sparql_builder_subject_iri (preupdate, canonical_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nmm:Artist");
 
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 
 		g_free (canonical_uri);
@@ -117,6 +124,9 @@ tracker_extract_xine (const gchar          *uri,
 		gchar *canonical_uri = tracker_sparql_escape_uri_printf ("urn:album:%s", album);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
 
 		tracker_sparql_builder_subject_iri (preupdate, canonical_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
@@ -127,6 +137,9 @@ tracker_extract_xine (const gchar          *uri,
 		tracker_sparql_builder_predicate (preupdate, "nmm:albumTitle");
 		tracker_sparql_builder_object_unvalidated (preupdate, album);
 
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 
 		g_free (canonical_uri);
@@ -269,16 +282,6 @@ endofit:
 	xine_close_video_driver (xine_base, video_port);
 
 	xine_exit (xine_base);
-}
 
-TrackerExtractData data[] = {
-	{ "audio/*", tracker_extract_xine },
-	{ "video/*", tracker_extract_xine },
-	{ NULL, NULL }
-};
-
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return data;
+	return TRUE;
 }

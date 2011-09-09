@@ -105,7 +105,9 @@ public class Tracker.Sparql.Builder : Object {
 	 */
 	public string result {
 		get {
-			warn_if_fail (states.length == 1);
+			warn_if_fail (states.length == 1 ||
+			              (states[0] == State.EMBEDDED_INSERT &&
+			               states.length == 3));
 			return str.str;
 		}
 	}
@@ -186,21 +188,6 @@ public class Tracker.Sparql.Builder : Object {
 		states += State.EMBEDDED_INSERT;
 		states += State.INSERT;
 		states += State.SUBJECT;
-	}
-
-	/**
-	 * tracker_sparql_builder_drop_graph:
-	 * @self: a #TrackerSparqlBuilder
-	 * @iri: a graph name.
-	 *
-	 * Deprecated 0.10.5: There is no replacement for this API.
-	 *
-	 * Since: 0.10
-	 */
-	public void drop_graph (string iri)
-		requires (state == State.UPDATE)
-	{
-		critical ("Use of DROP GRAPH is deprecated");
 	}
 
 	/**

@@ -19,14 +19,21 @@
 #
 from common.utils import configuration as cfg
 from common.utils.system import TrackerSystemAbstraction
-from common.utils.helpers import StoreHelper
+from common.utils.helpers import log
 import unittest2 as ut
 
 import shutil
 import os
 import time
 
-APPLICATIONS_TMP_DIR = os.path.join (cfg.TEST_TMP_DIR, "test-applications-monitored")
+APPLICATIONS_TMP_DIR = os.path.join (cfg.TEST_MONITORED_TMP_DIR, "test-applications-monitored")
+
+CONF_OPTIONS = [
+    (cfg.DCONF_MINER_SCHEMA, "index-recursive-directories", [APPLICATIONS_TMP_DIR]),
+    (cfg.DCONF_MINER_SCHEMA, "index-single-directories", "[]"),
+    (cfg.DCONF_MINER_SCHEMA, "index-optical-discs", "false"),
+    (cfg.DCONF_MINER_SCHEMA, "index-removable-devices", "false")
+    ]
 
 # Copy rate, 10KBps (1024b/100ms)
 SLOWCOPY_RATE = 1024
@@ -62,7 +69,7 @@ class CommonTrackerApplicationTest (ut.TestCase):
         """
         @rate: bytes per 100ms
         """
-        print "Copying slowly\n '%s' to\n '%s'" % (src, fdest.name)
+        log ("Copying slowly\n '%s' to\n '%s'" % (src, fdest.name))
         fsrc = open (src, 'rb')
         buffer_ = fsrc.read (rate)
         while (buffer_ != ""):
@@ -99,27 +106,12 @@ class CommonTrackerApplicationTest (ut.TestCase):
 
 
         self.system = TrackerSystemAbstraction ()
-
-        if (os.path.exists (os.path.join (os.getcwd(),
-                                          "test-configurations",
-                                          "applications"))):
-            # Use local directory if available
-            confdir = os.path.join (os.getcwd(),
-                                    "test-configurations",
-                                    "applications")
-        else:
-            confdir = os.path.join (cfg.DATADIR,
-                                    "tracker-tests",
-                                    "test-configurations",
-                                    "applications")
-
-        self.system.tracker_all_testing_start (confdir)
+        self.system.tracker_all_testing_start (CONF_OPTIONS)
 
         # Returns when ready
-        self.tracker = StoreHelper ()
-        self.tracker.wait ()
+        self.tracker = self.system.store
 
-        print "Ready to go!"
+        log ("Ready to go!")
 
     @classmethod
     def tearDown (self):

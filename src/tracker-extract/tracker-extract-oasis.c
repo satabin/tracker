@@ -97,18 +97,10 @@ static void xml_text_handler_content           (GMarkupParseContext   *context,
                                                 gsize                  text_len,
                                                 gpointer               user_data,
                                                 GError               **error);
-static void extract_oasis                      (const gchar           *filename,
-                                                TrackerSparqlBuilder  *preupdate,
-                                                TrackerSparqlBuilder  *metadata);
 static void extract_oasis_content              (const gchar           *uri,
                                                 gulong                 total_bytes,
                                                 ODTFileType            file_type,
                                                 TrackerSparqlBuilder  *metadata);
-
-static TrackerExtractData extract_data[] = {
-	{ "application/vnd.oasis.opendocument.*", extract_oasis },
-	{ NULL, NULL }
-};
 
 static void
 extract_oasis_content (const gchar          *uri,
@@ -164,16 +156,15 @@ extract_oasis_content (const gchar          *uri,
 	g_markup_parse_context_free (context);
 }
 
-static void
-extract_oasis (const gchar          *uri,
-               TrackerSparqlBuilder *preupdate,
-               TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *extract_info)
 {
+	TrackerSparqlBuilder *metadata;
 	TrackerConfig *config;
 	ODTMetadataParseInfo info;
 	ODTFileType file_type;
-	GFile *file = NULL;
-	GFileInfo *file_info = NULL;
+	GFile *file;
+	gchar *uri;
 	const gchar *mime_used;
 	GMarkupParseContext *context;
 	GMarkupParser parser = {
@@ -187,6 +178,12 @@ extract_oasis (const gchar          *uri,
 	if (G_UNLIKELY (maximum_size_error_quark == 0)) {
 		maximum_size_error_quark = g_quark_from_static_string ("maximum_size_error");
 	}
+
+	metadata = tracker_extract_info_get_metadata_builder (extract_info);
+	mime_used = tracker_extract_info_get_mimetype (extract_info);
+
+	file = tracker_extract_info_get_file (extract_info);
+	uri = g_file_get_uri (file);
 
 	/* Setup conf */
 	config = tracker_main_get_config ();
@@ -212,30 +209,6 @@ extract_oasis (const gchar          *uri,
 	tracker_gsf_parse_xml_in_zip (uri, "meta.xml", context, NULL);
 	g_markup_parse_context_free (context);
 
-	/* Next, parse contents */
-	file = g_file_new_for_uri (uri);
-
-	if (!file) {
-		g_warning ("Could not create GFile for URI:'%s'",
-		           uri);
-		return;
-	}
-
-	file_info = g_file_query_info (file,
-	                               G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-	                               G_FILE_QUERY_INFO_NONE,
-	                               NULL,
-	                               NULL);
-	g_object_unref (file);
-
-	if (!file_info) {
-		g_warning ("Could not get GFileInfo for URI:'%s'",
-		           uri);
-		return;
-	}
-
-	mime_used = g_file_info_get_content_type (file_info);
-
 	if (g_ascii_strcasecmp (mime_used, "application/vnd.oasis.opendocument.text") == 0) {
 		file_type = FILE_TYPE_ODT;
 	} else if (g_ascii_strcasecmp (mime_used, "application/vnd.oasis.opendocument.presentation") == 0) {
@@ -247,13 +220,15 @@ extract_oasis (const gchar          *uri,
 		file_type = FILE_TYPE_INVALID;
 	}
 
-	g_object_unref (file_info);
-
 	/* Extract content with the given limitations */
 	extract_oasis_content (uri,
 	                       tracker_config_get_max_bytes (config),
 	                       file_type,
 	                       metadata);
+
+	g_free (uri);
+
+	return TRUE;
 }
 
 static void
@@ -537,10 +512,4 @@ xml_text_handler_content (GMarkupParseContext  *context,
 	default:
 		break;
 	}
-}
-
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return extract_data;
 }

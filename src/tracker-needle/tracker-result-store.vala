@@ -92,52 +92,59 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 
 			cursor = yield query.perform_async (op.node.query.type, op.node.query.match, op.node.query.args, cancellable);
 
-			for (i = op.offset; i < op.offset + 100; i++) {
-				ResultNode *result;
-				TreeIter iter;
-				TreePath path;
-				bool b = false;
-				int j;
+			cancellable.set_error_if_cancelled ();
 
-				try {
-					b = yield cursor.next_async (cancellable);
-				} catch (GLib.Error ge) {
-					warning ("Could not fetch row: %s\n", ge.message);
-				}
+			if (cursor != null) {
+				for (i = op.offset; i < op.offset + 100; i++) {
+					ResultNode *result;
+					TreeIter iter;
+					TreePath path;
+					bool b = false;
+					int j;
 
-				if (!b) {
-					break;
-				}
-
-				result = &op.node.results[i];
-
-				for (j = 0; j < n_columns; j++) {
-					if (j == n_columns - 1) {
-						string s = cursor.get_string (j);
-
-						if (s != null)
-							result.values[j] = Markup.escape_text (s);
-						else
-							result.values[j] = null;
-					} else {
-						result.values[j] = cursor.get_string (j);
+					try {
+						b = yield cursor.next_async (cancellable);
+					} catch (GLib.Error ge) {
+						warning ("Could not fetch row: %s\n", ge.message);
 					}
+
+					if (!b) {
+						break;
+					}
+
+					result = &op.node.results[i];
+
+					for (j = 0; j < n_columns; j++) {
+						if (j == n_columns - 1) {
+							// FIXME: Set markup for tooltip column in a nicer way
+							string s = cursor.get_string (j);
+
+							if (s != null)
+								result.values[j] = Markup.escape_text (s);
+							else
+								result.values[j] = null;
+						} else {
+							result.values[j] = cursor.get_string (j);
+						}
+					}
+
+					// Emit row-changed
+					iter = TreeIter ();
+					iter.stamp = this.timestamp;
+					iter.user_data = op.node;
+					iter.user_data2 = result;
+					iter.user_data3 = i.to_pointer ();
+
+					path = this.get_path (iter);
+					row_changed (path, iter);
 				}
-
-				// Emit row-changed
-				iter = TreeIter ();
-				iter.stamp = this.timestamp;
-				iter.user_data = op.node;
-				iter.user_data2 = result;
-				iter.user_data3 = i.to_pointer ();
-
-				path = this.get_path (iter);
-				row_changed (path, iter);
 			}
 
 			running_operations.remove (op);
 		} catch (GLib.IOError ie) {
-			warning ("Could not load items: %s\n", ie.message);
+			if (!cancellable.is_cancelled ()) {
+				warning ("Could not load items: %s\n", ie.message);
+			}
 			return;
 		}
 
@@ -202,8 +209,11 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 			query.criteria = _search_term;
 
 			count = yield query.get_count_async (query_data.type, query_data.match, cancellable);
+			cancellable.set_error_if_cancelled ();
 		} catch (GLib.IOError ie) {
-			warning ("Could not get count: %s\n", ie.message);
+			if (!cancellable.is_cancelled ()) {
+				warning ("Could not get count: %s\n", ie.message);
+			}
 			return;
 		}
 
@@ -301,16 +311,11 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		set {
 			int i;
 
+			cancel_search ();
 			_search_term = value;
-
-			if (cancellable != null) {
-				cancellable.cancel ();
-				cancellable = null;
-			}
 
 			cancellable = new Cancellable ();
 
-			clear_results ();
 			this.active = true;
 
 			categories = new GenericArray<CategoryNode> ();

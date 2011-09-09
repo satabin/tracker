@@ -212,7 +212,6 @@ struct _TrackerMinerFSPrivate {
 
 	/* Extraction tasks */
 	TrackerTaskPool *task_pool;
-	GList *extraction_tasks;
 
 	/* Writeback tasks */
 	TrackerTaskPool *writeback_pool;
@@ -888,7 +887,6 @@ fs_finalize (GObject *object)
 	                           task_pool_cancel_foreach,
 	                           NULL);
 	g_object_unref (priv->task_pool);
-	g_list_free (priv->extraction_tasks);
 
 	g_object_unref (priv->writeback_pool);
 
@@ -1045,6 +1043,7 @@ miner_started (TrackerMiner *miner)
 	g_object_set (miner,
 	              "progress", 0.0,
 	              "status", "Initializing",
+	              "remaining-time", 0,
 	              NULL);
 
 	crawl_directories_start (fs);
@@ -1058,6 +1057,7 @@ miner_stopped (TrackerMiner *miner)
 	g_object_set (miner,
 	              "progress", 1.0,
 	              "status", "Idle",
+	              "remaining-time", -1,
 	              NULL);
 }
 
@@ -1191,6 +1191,7 @@ process_stop (TrackerMinerFS *fs)
 	g_object_set (fs,
 	              "progress", 1.0,
 	              "status", "Idle",
+	              "remaining-time", 0,
 	              NULL);
 
 	g_signal_emit (fs, signals[FINISHED], 0,
@@ -1854,7 +1855,6 @@ do_process_file (TrackerMinerFS *fs,
 			            "implementation error", G_OBJECT_TYPE_NAME (fs), uri);
 		} else {
 			tracker_task_pool_remove (priv->task_pool, task);
-			priv->extraction_tasks = g_list_remove (priv->extraction_tasks, task);
 			tracker_task_unref (task);
 		}
 	}
@@ -1878,120 +1878,67 @@ item_add_or_update_cb (TrackerMinerFS *fs,
 	task_file = tracker_task_get_file (extraction_task);
 	uri = g_file_get_uri (task_file);
 
-	if (error) {
-		TrackerTask *first_item_task = NULL;
-		GList *first_task;
-
-		first_task = g_list_last (fs->priv->extraction_tasks);
-
-		if (first_task) {
-			first_item_task = first_task->data;
-		}
-
-		/* Perhaps this is too specific to TrackerMinerFiles, if the extractor
-		 * is choking on some file, the miner will get a timeout for all files
-		 * being currently processed, but the one that is actually causing it
-		 * is the first one that was added to the processing pool, so we retry
-		 * the others.
-		 */
-		if (extraction_task != first_item_task &&
-		    (error->code == G_DBUS_ERROR_NO_REPLY ||
-		     error->code == G_DBUS_ERROR_TIMEOUT ||
-		     error->code == G_DBUS_ERROR_TIMED_OUT)) {
-			g_debug ("  Got DBus timeout error on '%s', but it could not be caused by it. Retrying file.", uri);
-
-			/* Reset the TrackerSparqlBuilder */
-			g_object_unref (ctxt->builder);
-			ctxt->builder = tracker_sparql_builder_new_update ();
-
-			do_process_file (fs, extraction_task);
-			g_free (uri);
-
-			return;
-
-		} else {
-			fs->priv->total_files_notified_error++;
-			g_message ("Could not process '%s': %s", uri, error->message);
-
-			if (error->code == G_IO_ERROR_CANCELLED) {
-				/* Cancelled is cancelled, just move along in this case */
-				tracker_task_pool_remove (fs->priv->task_pool, extraction_task);
-				fs->priv->extraction_tasks = g_list_remove (fs->priv->extraction_tasks,
-									    extraction_task);
-				tracker_task_unref (extraction_task);
-
-				item_queue_handlers_set_up (fs);
-				return;
-			}
-		}
-	}
-
 	tracker_task_pool_remove (fs->priv->task_pool, extraction_task);
-	fs->priv->extraction_tasks = g_list_remove (fs->priv->extraction_tasks,
-						    extraction_task);
 
-	if (ctxt->urn) {
-		gboolean attribute_update_only;
+	if (error) {
+		g_message ("Could not process '%s': %s", uri, error->message);
 
-		attribute_update_only = GPOINTER_TO_INT (g_object_steal_qdata (G_OBJECT (task_file),
-		                                                               fs->priv->quark_attribute_updated));
-		g_debug ("Updating item%s%s%s '%s' with urn '%s'%s",
-		         error != NULL ? " (which had extractor error '" : "",
-		         error != NULL ? (error->message ? error->message : "No error given") : "",
-		         error != NULL ? "')" : "",
-		         uri,
-		         ctxt->urn,
-		         attribute_update_only ? " (attributes only)" : "");
-
-		if (!attribute_update_only) {
-			gchar *full_sparql;
-
-			/* Update, delete all statements inserted by miner except:
-			 *  - rdf:type statements as they could cause implicit deletion of user data
-			 *  - nie:contentCreated so it persists across updates
-			 *
-			 * Additionally, delete also nie:url as it might have been set by 3rd parties,
-			 * and it's used to know whether a file is known to tracker or not.
-			 */
-			full_sparql = g_strdup_printf ("DELETE {"
-			                               "  GRAPH <%s> {"
-			                               "    <%s> ?p ?o"
-			                               "  } "
-			                               "} "
-			                               "WHERE {"
-			                               "  GRAPH <%s> {"
-			                               "    <%s> ?p ?o"
-			                               "    FILTER (?p != rdf:type && ?p != nie:contentCreated)"
-			                               "  } "
-			                               "} "
-						       "DELETE {"
-						       "  <%s> nie:url ?o"
-						       "} WHERE {"
-						       "  <%s> nie:url ?o"
-						       "}"
-			                               "%s",
-			                               TRACKER_MINER_FS_GRAPH_URN, ctxt->urn,
-			                               TRACKER_MINER_FS_GRAPH_URN, ctxt->urn,
-						       ctxt->urn, ctxt->urn,
-			                               tracker_sparql_builder_get_result (ctxt->builder));
-
-			sparql_task = tracker_sparql_task_new_take_sparql_str (task_file, full_sparql);
-		} else {
-			/* Do not drop graph if only updating attributes, the SPARQL builder
-			 * will already contain the necessary DELETE statements for the properties
-			 * being updated */
-			sparql_task = tracker_sparql_task_new_with_sparql (task_file, ctxt->builder);
-		}
+		fs->priv->total_files_notified_error++;
+		sparql_task = tracker_sparql_task_new_with_sparql (task_file, ctxt->builder);
 	} else {
-		if (error != NULL) {
-			g_debug ("Creating minimal info for new item '%s' which had error: '%s'",
+		if (ctxt->urn) {
+			gboolean attribute_update_only;
+
+			attribute_update_only = GPOINTER_TO_INT (g_object_steal_qdata (G_OBJECT (task_file),
+			                                                               fs->priv->quark_attribute_updated));
+			g_debug ("Updating item '%s' with urn '%s'%s",
 			         uri,
-			         error->message ? error->message : "No error given");
+			         ctxt->urn,
+			         attribute_update_only ? " (attributes only)" : "");
+
+			if (!attribute_update_only) {
+				gchar *full_sparql;
+
+				/* Update, delete all statements inserted by miner except:
+				 *  - rdf:type statements as they could cause implicit deletion of user data
+				 *  - nie:contentCreated so it persists across updates
+				 *
+				 * Additionally, delete also nie:url as it might have been set by 3rd parties,
+				 * and it's used to know whether a file is known to tracker or not.
+				 */
+				full_sparql = g_strdup_printf ("DELETE {"
+				                               "  GRAPH <%s> {"
+				                               "    <%s> ?p ?o"
+				                               "  } "
+				                               "} "
+				                               "WHERE {"
+				                               "  GRAPH <%s> {"
+				                               "    <%s> ?p ?o"
+				                               "    FILTER (?p != rdf:type && ?p != nie:contentCreated)"
+				                               "  } "
+				                               "} "
+				                               "DELETE {"
+				                               "  <%s> nie:url ?o"
+				                               "} WHERE {"
+				                               "  <%s> nie:url ?o"
+				                               "}"
+				                               "%s",
+				                               TRACKER_MINER_FS_GRAPH_URN, ctxt->urn,
+				                               TRACKER_MINER_FS_GRAPH_URN, ctxt->urn,
+				                               ctxt->urn, ctxt->urn,
+				                               tracker_sparql_builder_get_result (ctxt->builder));
+
+				sparql_task = tracker_sparql_task_new_take_sparql_str (task_file, full_sparql);
+			} else {
+				/* Do not drop graph if only updating attributes, the SPARQL builder
+				 * will already contain the necessary DELETE statements for the properties
+				 * being updated */
+				sparql_task = tracker_sparql_task_new_with_sparql (task_file, ctxt->builder);
+			}
 		} else {
 			g_debug ("Creating new item '%s'", uri);
+			sparql_task = tracker_sparql_task_new_with_sparql (task_file, ctxt->builder);
 		}
-
-		sparql_task = tracker_sparql_task_new_with_sparql (task_file, ctxt->builder);
 	}
 
 	tracker_sparql_buffer_push (fs->priv->sparql_buffer,
@@ -2045,7 +1992,6 @@ item_add_or_update (TrackerMinerFS *fs,
 	task = tracker_task_new (file, ctxt,
 	                         (GDestroyNotify) update_processing_task_context_free);
 	tracker_task_pool_add (priv->task_pool, task);
-	priv->extraction_tasks = g_list_prepend (priv->extraction_tasks, task);
 
 	if (do_process_file (fs, task)) {
 		fs->priv->total_files_processed++;
@@ -2992,6 +2938,7 @@ item_queue_handlers_cb (gpointer user_data)
 		gdouble progress_now;
 		static gdouble progress_last = 0.0;
 		static gint info_last = 0;
+		gdouble seconds_elapsed;
 
 		time_last = time_now;
 
@@ -2999,11 +2946,18 @@ item_queue_handlers_cb (gpointer user_data)
 		progress_now = item_queue_get_progress (fs,
 		                                        &items_processed,
 		                                        &items_remaining);
+		seconds_elapsed = g_timer_elapsed (fs->priv->timer, NULL);
 
 		if (!fs->priv->is_crawling) {
 			gchar *status;
+			gint remaining_time;
 
 			g_object_get (fs, "status", &status, NULL);
+
+			/* Compute remaining time */
+			remaining_time = (gint)tracker_seconds_estimate (seconds_elapsed,
+			                                                 items_processed,
+			                                                 items_remaining);
 
 			/* CLAMP progress so it doesn't go back below
 			 * 2% (which we use for crawling)
@@ -3014,10 +2968,12 @@ item_queue_handlers_cb (gpointer user_data)
 				g_object_set (fs,
 				              "status", "Processing…",
 				              "progress", CLAMP (progress_now, 0.02, 1.00),
+				              "remaining-time", remaining_time,
 				              NULL);
 			} else {
 				g_object_set (fs,
 				              "progress", CLAMP (progress_now, 0.02, 1.00),
+				              "remaining-time", remaining_time,
 				              NULL);
 			}
 
@@ -3027,13 +2983,11 @@ item_queue_handlers_cb (gpointer user_data)
 		if (++info_last >= 5 &&
 		    (gint) (progress_last * 100) != (gint) (progress_now * 100)) {
 			gchar *str1, *str2;
-			gdouble seconds_elapsed;
 
 			info_last = 0;
 			progress_last = progress_now;
 
 			/* Log estimated remaining time */
-			seconds_elapsed = g_timer_elapsed (fs->priv->timer, NULL);
 			str1 = tracker_seconds_estimate_to_string (seconds_elapsed,
 			                                           TRUE,
 			                                           items_processed,
@@ -3787,17 +3741,6 @@ monitor_item_created_cb (TrackerMonitor *monitor,
 	gchar *uri;
 
 	fs = user_data;
-
-	/* Writeback tasks would receive an updated after move,
-	 * consequence of the data being written back in the
-	 * copy, and its monitor events being propagated to
-	 * the destination file.
-	 */
-	if (remove_writeback_task (fs, file)) {
-		item_queue_handlers_set_up (fs);
-		return;
-	}
-
 	should_process = should_check_file (fs, file, is_directory);
 
 	uri = g_file_get_uri (file);
@@ -3836,6 +3779,17 @@ monitor_item_updated_cb (TrackerMonitor *monitor,
 	gchar *uri;
 
 	fs = user_data;
+
+	/* Writeback tasks would receive an updated after move,
+	 * consequence of the data being written back in the
+	 * copy, and its monitor events being propagated to
+	 * the destination file.
+	 */
+	if (remove_writeback_task (fs, file)) {
+		item_queue_handlers_set_up (fs);
+		return;
+	}
+
 	should_process = should_check_file (fs, file, is_directory);
 
 	uri = g_file_get_uri (file);
@@ -4426,10 +4380,13 @@ crawl_directories_cb (gpointer user_data)
 
 	tracker_info ("%s", str);
 
-	/* Always set the progress here to at least 1% */
+	/* Always set the progress here to at least 1%, and the remaining time
+	 * to -1 as we cannot guess during crawling (we don't know how many directories
+	 * we will find) */
 	g_object_set (fs,
 	              "progress", 0.01,
 	              "status", str,
+	              "remaining-time", -1,
 	              NULL);
 	g_free (str);
 
@@ -5587,56 +5544,62 @@ miner_fs_has_children_without_parent (TrackerMinerFS *fs,
 #ifdef EVENT_QUEUE_ENABLE_TRACE
 
 static void
-miner_fs_trace_queue_with_files (TrackerMinerFS *fs,
-                                 const gchar    *queue_name,
-                                 GQueue         *queue)
+miner_fs_trace_queue_with_files_foreach (gpointer file,
+                                         gpointer fs)
 {
-	GList *li;
+	gchar *uri;
 
-	trace_eq ("(%s) Queue '%s' has %u elements:",
-	          G_OBJECT_TYPE_NAME (fs),
-	          queue_name,
-	          queue->length);
-
-	for (li = queue->head; li; li = g_list_next (li)) {
-		gchar *uri;
-
-		uri = g_file_get_uri (li->data);
-		trace_eq ("(%s)     Queue '%s' has '%s'",
-		          G_OBJECT_TYPE_NAME (fs),
-		          queue_name,
-		          uri);
-		g_free (uri);
-	}
+	uri = g_file_get_uri (G_FILE (file));
+	trace_eq ("(%s)     '%s'",
+	          G_OBJECT_TYPE_NAME (G_OBJECT (fs)),
+	          uri);
+	g_free (uri);
 }
 
 static void
-miner_fs_trace_queue_with_data (TrackerMinerFS *fs,
-                                const gchar    *queue_name,
-                                GQueue         *queue)
+miner_fs_trace_queue_with_files (TrackerMinerFS       *fs,
+                                 const gchar          *queue_name,
+                                 TrackerPriorityQueue *queue)
 {
-	GList *li;
-
 	trace_eq ("(%s) Queue '%s' has %u elements:",
 	          G_OBJECT_TYPE_NAME (fs),
 	          queue_name,
-	          queue->length);
+	          tracker_priority_queue_get_length (queue));
+	tracker_priority_queue_foreach (queue,
+	                                miner_fs_trace_queue_with_files_foreach,
+	                                fs);
+}
 
-	for (li = queue->head; li; li = g_list_next (li)) {
-		ItemMovedData *data = li->data;
-		gchar *source_uri;
-		gchar *dest_uri;
+static void
+miner_fs_trace_queue_with_data_foreach (gpointer moved_data,
+                                        gpointer fs)
+{
+	ItemMovedData *data = moved_data;
+	gchar *source_uri;
+	gchar *dest_uri;
 
-		source_uri = g_file_get_uri (data->source_file);
-		dest_uri = g_file_get_uri (data->file);
-		trace_eq ("(%s)     Queue '%s' has '%s->%s'",
-		          G_OBJECT_TYPE_NAME (fs),
-		          queue_name,
-		          source_uri,
-		          dest_uri);
-		g_free (source_uri);
-		g_free (dest_uri);
-	}
+	source_uri = g_file_get_uri (data->source_file);
+	dest_uri = g_file_get_uri (data->file);
+	trace_eq ("(%s)     '%s->%s'",
+	          G_OBJECT_TYPE_NAME (G_OBJECT (fs)),
+	          source_uri,
+	          dest_uri);
+	g_free (source_uri);
+	g_free (dest_uri);
+}
+
+static void
+miner_fs_trace_queue_with_data (TrackerMinerFS       *fs,
+                                const gchar          *queue_name,
+                                TrackerPriorityQueue *queue)
+{
+	trace_eq ("(%s) Queue '%s' has %u elements:",
+	          G_OBJECT_TYPE_NAME (fs),
+	          queue_name,
+	          tracker_priority_queue_get_length (queue));
+	tracker_priority_queue_foreach (queue,
+	                                miner_fs_trace_queue_with_data_foreach,
+	                                fs);
 }
 
 static gboolean

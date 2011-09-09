@@ -19,3 +19,17 @@ libextract_mockup_la_LIBADD =                          \
 	$(BUILD_LIBS)                                  \
 	$(LIBTRACKER_EXTRACT_LIBS)
 
+rules_in_files = 01-mockup.rule.in
+
+%.rule: %.rule.in
+	@sed -e "s|@modulesdir[@]|${modulesdir}|" $< > $@
+
+# This is noinst_ only because it's an example, normally this would be
+# "rules" (for rules_DATA and rulesdir) or whatever name you want to
+# give for your rules files.
+noinstdir = $(datadir)/tracker/extract-rules
+noinst_DATA = 01-mockup.rule
+
+CLEANFILES = $(noinst_DATA)
+
+EXTRA_DIST = $(rules_in_files)

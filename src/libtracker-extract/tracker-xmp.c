@@ -833,11 +833,16 @@ tracker_xmp_free (TrackerXmpData *data)
 
 /**
  * tracker_xmp_apply:
+ * @preupdate: the preupdate object to apply XMP data to.
  * @metadata: the metadata object to apply XMP data to.
+ * @graph: the graph to apply XMP data to.
+ * @where: the where object.
  * @uri: the URI this is related to.
  * @data: the data to push into @metadata.
  *
  * This function applies all data in @data to @metadata.
+ *
+ * The @graph parameter was added in 0.12.
  *
  * This function also calls tracker_xmp_apply_regions(), so there is
  * no need to call both functions.
@@ -850,12 +855,13 @@ tracker_xmp_free (TrackerXmpData *data)
 gboolean
 tracker_xmp_apply (TrackerSparqlBuilder *preupdate,
                    TrackerSparqlBuilder *metadata,
+                   const gchar          *graph,
+                   GString              *where,
                    const gchar          *uri,
                    TrackerXmpData       *data)
 {
 	GPtrArray *keywords;
 	guint i;
-	GString *where = NULL;
 
 	g_return_val_if_fail (TRACKER_SPARQL_IS_BUILDER (preupdate), FALSE);
 	g_return_val_if_fail (TRACKER_SPARQL_IS_BUILDER (metadata), FALSE);
@@ -885,8 +891,21 @@ tracker_xmp_apply (TrackerSparqlBuilder *preupdate,
 
 		/* ensure tag with specified label exists */
 		tracker_sparql_builder_append (preupdate,
-		                               "INSERT { _:tag a nao:Tag ; nao:prefLabel \"");
+		                               "INSERT { ");
+
+		if (graph) {
+			tracker_sparql_builder_append (preupdate, "GRAPH <");
+			tracker_sparql_builder_append (preupdate, graph);
+			tracker_sparql_builder_append (preupdate, "> { ");
+		}
+
+		tracker_sparql_builder_append (preupdate,"_:tag a nao:Tag ; nao:prefLabel \"");
 		tracker_sparql_builder_append (preupdate, escaped);
+
+		if (graph) {
+			tracker_sparql_builder_append (preupdate, " } ");
+		}
+
 		tracker_sparql_builder_append (preupdate,
 		                               "\" }\nWHERE { FILTER (NOT EXISTS { "
 		                               "?tag a nao:Tag ; nao:prefLabel \"");
@@ -897,10 +916,6 @@ tracker_xmp_apply (TrackerSparqlBuilder *preupdate,
 		/* associate file with tag */
 		tracker_sparql_builder_predicate (metadata, "nao:hasTag");
 		tracker_sparql_builder_object_variable (metadata, var);
-
-		if (where == NULL) {
-			where = g_string_new ("} } WHERE { {\n");
-		}
 
 		g_string_append_printf (where, "?%s a nao:Tag ; nao:prefLabel \"%s\" .\n", var, escaped);
 
@@ -970,6 +985,10 @@ tracker_xmp_apply (TrackerSparqlBuilder *preupdate,
 		                                              data->model ? data->model : "");
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
+
 		tracker_sparql_builder_subject_iri (preupdate, equip_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nfo:Equipment");
@@ -982,7 +1001,12 @@ tracker_xmp_apply (TrackerSparqlBuilder *preupdate,
 			tracker_sparql_builder_predicate (preupdate, "nfo:model");
 			tracker_sparql_builder_object_unvalidated (preupdate, data->model);
 		}
+
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
+
 		tracker_sparql_builder_predicate (metadata, "nfo:equipment");
 		tracker_sparql_builder_object_iri (metadata, equip_uri);
 		g_free (equip_uri);
@@ -1156,13 +1180,9 @@ tracker_xmp_apply (TrackerSparqlBuilder *preupdate,
 		tracker_sparql_builder_object_unvalidated (metadata, data->gps_direction);
 	}
 
-	if (where != NULL) {
-		tracker_sparql_builder_append (metadata, where->str);
-		g_string_free (where, TRUE);
-	}
 
         if (data->regions) {
-	        tracker_xmp_apply_regions (preupdate, metadata, NULL, data);
+	        tracker_xmp_apply_regions (preupdate, metadata, graph, data);
         }
 
 	return TRUE;
@@ -1189,7 +1209,7 @@ tracker_xmp_apply (TrackerSparqlBuilder *preupdate,
  * Returns: %TRUE if the @data was applied to @preupdate and @metadata
  * successfully, otherwise %FALSE is returned.
  *
- * Since: 0.10.26
+ * Since: 0.12
  **/
 gboolean
 tracker_xmp_apply_regions (TrackerSparqlBuilder *preupdate,

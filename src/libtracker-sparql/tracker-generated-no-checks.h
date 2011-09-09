@@ -138,6 +138,7 @@ struct _TrackerSparqlCursorClass {
 	void (*next_async) (TrackerSparqlCursor* self, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 	gboolean (*next_finish) (TrackerSparqlCursor* self, GAsyncResult* _res_, GError** error);
 	void (*rewind) (TrackerSparqlCursor* self);
+	void (*close) (TrackerSparqlCursor* self);
 	gint64 (*get_integer) (TrackerSparqlCursor* self, gint column);
 	gdouble (*get_double) (TrackerSparqlCursor* self, gint column);
 	gboolean (*get_boolean) (TrackerSparqlCursor* self, gint column);
@@ -152,7 +153,6 @@ TrackerSparqlBuilder* tracker_sparql_builder_new_update (void);
 TrackerSparqlBuilder* tracker_sparql_builder_construct_update (GType object_type);
 TrackerSparqlBuilder* tracker_sparql_builder_new_embedded_insert (void);
 TrackerSparqlBuilder* tracker_sparql_builder_construct_embedded_insert (GType object_type);
-void tracker_sparql_builder_drop_graph (TrackerSparqlBuilder* self, const gchar* iri);
 void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar* graph);
 void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, const gchar* graph);
 void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self);
@@ -202,7 +202,7 @@ TrackerSparqlConnection* tracker_sparql_connection_get_finish (GAsyncResult* _re
 TrackerSparqlConnection* tracker_sparql_connection_get (GCancellable* cancellable, GError** error);
 void tracker_sparql_connection_get_direct_async (GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 TrackerSparqlConnection* tracker_sparql_connection_get_direct_finish (GAsyncResult* _res_, GError** error);
-TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* cancellable, GError** error);
+TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* cancellable, GError** error) G_GNUC_DEPRECATED;
 TrackerSparqlCursor* tracker_sparql_connection_query (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GError** error);
 void tracker_sparql_connection_query_async (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 TrackerSparqlCursor* tracker_sparql_connection_query_finish (TrackerSparqlConnection* self, GAsyncResult* _res_, GError** error);
@@ -229,6 +229,7 @@ gboolean tracker_sparql_cursor_next (TrackerSparqlCursor* self, GCancellable* ca
 void tracker_sparql_cursor_next_async (TrackerSparqlCursor* self, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 gboolean tracker_sparql_cursor_next_finish (TrackerSparqlCursor* self, GAsyncResult* _res_, GError** error);
 void tracker_sparql_cursor_rewind (TrackerSparqlCursor* self);
+void tracker_sparql_cursor_close (TrackerSparqlCursor* self);
 gint64 tracker_sparql_cursor_get_integer (TrackerSparqlCursor* self, gint column);
 gdouble tracker_sparql_cursor_get_double (TrackerSparqlCursor* self, gint column);
 gboolean tracker_sparql_cursor_get_boolean (TrackerSparqlCursor* self, gint column);

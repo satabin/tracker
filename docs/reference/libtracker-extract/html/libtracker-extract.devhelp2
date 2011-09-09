@@ -18,16 +18,12 @@
     </sub>
   </chapters>
   <functions>
-    <keyword type="function" name="TrackerExtractMimeFunc ()" link="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractMimeFunc" since="0.8"/>
-    <keyword type="function" name="TrackerExtractDataFunc ()" link="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractDataFunc" since="0.6"/>
-    <keyword type="struct" name="TrackerExtractData" link="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData" since="0.8"/>
-    <keyword type="function" name="tracker_extract_get_data ()" link="libtracker-extract-How-to-use-libtracker-extract.html#tracker-extract-get-data" since="0.8"/>
-    <keyword type="function" name="tracker_coalesce ()" link="libtracker-extract-Data-utilities.html#tracker-coalesce" deprecated="1.0: Use tracker_coalesce_strip() instead." since="0.8"/>
+    <keyword type="function" name="tracker_coalesce ()" link="libtracker-extract-Data-utilities.html#tracker-coalesce" deprecated="0.10: Use tracker_coalesce_strip() instead." since="0.8"/>
     <keyword type="function" name="tracker_coalesce_strip ()" link="libtracker-extract-Data-utilities.html#tracker-coalesce-strip" since="0.10"/>
-    <keyword type="function" name="tracker_merge ()" link="libtracker-extract-Data-utilities.html#tracker-merge" deprecated="1.0: Use tracker_merge_const() instead." since="0.8"/>
+    <keyword type="function" name="tracker_merge ()" link="libtracker-extract-Data-utilities.html#tracker-merge" deprecated="0.10: Use tracker_merge_const() instead." since="0.8"/>
     <keyword type="function" name="tracker_merge_const ()" link="libtracker-extract-Data-utilities.html#tracker-merge-const" since="0.10"/>
     <keyword type="function" name="tracker_getline ()" link="libtracker-extract-Data-utilities.html#tracker-getline" since="0.10"/>
-    <keyword type="function" name="tracker_text_normalize ()" link="libtracker-extract-Data-utilities.html#tracker-text-normalize" deprecated="1.0: Use tracker_text_validate_utf8() instead." since="0.8"/>
+    <keyword type="function" name="tracker_text_normalize ()" link="libtracker-extract-Data-utilities.html#tracker-text-normalize" deprecated="0.10: Use tracker_text_validate_utf8() instead." since="0.8"/>
     <keyword type="function" name="tracker_text_validate_utf8 ()" link="libtracker-extract-Data-utilities.html#tracker-text-validate-utf8" since="0.10"/>
     <keyword type="function" name="tracker_date_format_to_iso8601 ()" link="libtracker-extract-Data-utilities.html#tracker-date-format-to-iso8601" since="0.8"/>
     <keyword type="function" name="tracker_date_guess ()" link="libtracker-extract-Data-utilities.html#tracker-date-guess" since="0.8"/>

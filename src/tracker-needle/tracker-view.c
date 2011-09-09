@@ -523,7 +523,8 @@ static void tracker_view_renderer_background_func (TrackerView* self, GtkCellLay
 	gint sum_normal;
 	gint sum_selected;
 	GtkTreePath* _tmp2_ = NULL;
-	gint* _tmp3_ = NULL;
+	gint _tmp3_;
+	gint* _tmp4_ = NULL;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (cell_layout != NULL);
 	g_return_if_fail (cell != NULL);
@@ -549,8 +550,8 @@ static void tracker_view_renderer_background_func (TrackerView* self, GtkCellLay
 	_tmp2_ = gtk_tree_model_get_path (tree_model, iter);
 	_gtk_tree_path_free0 (path);
 	path = _tmp2_;
-	_tmp3_ = gtk_tree_path_get_indices (path);
-	if ((_tmp3_[0] % 2) != 0) {
+	_tmp4_ = gtk_tree_path_get_indices_with_depth (path, &_tmp3_);
+	if ((_tmp4_[0] % 2) != 0) {
 		g_object_set ((GObject*) cell, "cell-background-gdk", &color, NULL);
 	} else {
 		g_object_set ((GObject*) cell, "cell-background-gdk", NULL, NULL);

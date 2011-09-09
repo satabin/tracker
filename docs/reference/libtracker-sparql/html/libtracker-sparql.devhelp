@@ -41,7 +41,6 @@
     <function name="tracker_sparql_builder_delete_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-delete-close"/>
     <function name="tracker_sparql_builder_graph_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-graph-open"/>
     <function name="tracker_sparql_builder_graph_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-graph-close"/>
-    <function name="tracker_sparql_builder_drop_graph ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-drop-graph"/>
     <function name="tracker_sparql_builder_subject_variable ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject-variable"/>
     <function name="tracker_sparql_builder_subject_iri ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri"/>
     <function name="tracker_sparql_builder_subject ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject"/>

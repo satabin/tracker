@@ -334,7 +334,6 @@ TrackerStats* tracker_stats_construct (GType object_type) {
 	TrackerStats * self = NULL;
 	self = (TrackerStats*) g_object_new (object_type, NULL);
 	gtk_window_set_title ((GtkWindow*) self, "Statistics");
-	gtk_dialog_set_has_separator ((GtkDialog*) self, FALSE);
 	gtk_container_set_border_width ((GtkContainer*) self, (guint) 12);
 	gtk_window_set_resizable ((GtkWindow*) self, FALSE);
 	tracker_stats_setup_dbus (self);
@@ -353,7 +352,7 @@ static void tracker_stats_setup_dbus (TrackerStats* self) {
 	Statistics* _tmp1_;
 	GError * _inner_error_ = NULL;
 	g_return_if_fail (self != NULL);
-	g_debug ("tracker-stats.vala:44: Setting up statistics D-Bus connection");
+	g_debug ("tracker-stats.vala:43: Setting up statistics D-Bus connection");
 	_tmp0_ = g_initable_new (TYPE_STATISTICS_PROXY, NULL, &_inner_error_, "g-flags", G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS, "g-name", "org.freedesktop.Tracker1", "g-bus-type", G_BUS_TYPE_SESSION, "g-object-path", "/org/freedesktop/Tracker1/Statistics", "g-interface-name", "org.freedesktop.Tracker1.Statistics", NULL);
 	_tmp1_ = (Statistics*) _tmp0_;
 	if (_inner_error_ != NULL) {
@@ -403,8 +402,8 @@ static void _tracker_stats_on_response_gtk_dialog_response (GtkDialog* _sender, 
 static void tracker_stats_setup_ui (TrackerStats* self) {
 	GtkWidget* _tmp0_ = NULL;
 	GtkWidget* _tmp1_;
-	GtkVBox* _tmp2_;
-	GtkVBox* vbox;
+	GtkBox* _tmp2_;
+	GtkBox* vbox;
 	GtkLabel* _tmp3_ = NULL;
 	GtkLabel* label;
 	GtkSizeGroup* _tmp4_ = NULL;
@@ -417,19 +416,19 @@ static void tracker_stats_setup_ui (TrackerStats* self) {
 	gint _result__length2;
 	GError * _inner_error_ = NULL;
 	g_return_if_fail (self != NULL);
-	g_debug ("tracker-stats.vala:64: Setting up statistics UI");
+	g_debug ("tracker-stats.vala:63: Setting up statistics UI");
 	_tmp0_ = gtk_dialog_get_content_area ((GtkDialog*) self);
 	_tmp1_ = _tmp0_;
-	_tmp2_ = _g_object_ref0 (GTK_IS_VBOX (_tmp1_) ? ((GtkVBox*) _tmp1_) : NULL);
+	_tmp2_ = _g_object_ref0 (GTK_IS_BOX (_tmp1_) ? ((GtkBox*) _tmp1_) : NULL);
 	vbox = _tmp2_;
-	gtk_box_set_spacing ((GtkBox*) vbox, 18);
+	gtk_box_set_spacing (vbox, 18);
 	gtk_container_set_border_width ((GtkContainer*) vbox, (guint) 0);
 	_tmp3_ = (GtkLabel*) gtk_label_new ("The statistics represented here do not reflect their availability, rat" \
 "her the total data stored:");
 	label = g_object_ref_sink (_tmp3_);
 	gtk_label_set_line_wrap (label, TRUE);
 	gtk_misc_set_alignment ((GtkMisc*) label, 0.0f, 0.5f);
-	gtk_box_pack_start ((GtkBox*) vbox, (GtkWidget*) label, TRUE, TRUE, (guint) 0);
+	gtk_box_pack_start (vbox, (GtkWidget*) label, TRUE, TRUE, (guint) 0);
 	_tmp4_ = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 	sizegroup = _tmp4_;
 	_tmp7_ = statistics_Get (self->priv->tracker, &_tmp5_, &_tmp6_, &_inner_error_);
@@ -493,7 +492,7 @@ static void tracker_stats_setup_ui (TrackerStats* self) {
 				key = _tmp9_;
 				_tmp10_ = g_strdup (_result_[(i * _result__length2) + 1]);
 				val = _tmp10_;
-				g_debug ("tracker-stats.vala:88: --> %s = %s", key, val);
+				g_debug ("tracker-stats.vala:87: --> %s = %s", key, val);
 				_tmp11_ = key;
 				_tmp12_ = (NULL == _tmp11_) ? 0 : g_quark_from_string (_tmp11_);
 				if (_tmp12_ == ((0 != _tmp12__label0) ? _tmp12__label0 : (_tmp12__label0 = g_quark_from_static_string ("nao:Tag")))) {
@@ -740,7 +739,7 @@ static void tracker_stats_setup_ui (TrackerStats* self) {
 				gtk_box_pack_start ((GtkBox*) hbox, (GtkWidget*) label_key, TRUE, TRUE, (guint) 0);
 				gtk_box_pack_start ((GtkBox*) hbox, (GtkWidget*) label_val, FALSE, TRUE, (guint) 0);
 				gtk_size_group_add_widget (sizegroup, (GtkWidget*) label_key);
-				gtk_box_pack_start ((GtkBox*) vbox, (GtkWidget*) hbox, TRUE, TRUE, (guint) 0);
+				gtk_box_pack_start (vbox, (GtkWidget*) hbox, TRUE, TRUE, (guint) 0);
 				_g_object_unref0 (label_val);
 				_g_object_unref0 (label_key);
 				_g_object_unref0 (hbox);
@@ -761,7 +760,7 @@ static void tracker_stats_setup_ui (TrackerStats* self) {
 		_inner_error_ = NULL;
 		_tmp61_ = g_strconcat ("Could not get Tracker statistics: ", e->message, NULL);
 		_tmp62_ = _tmp61_;
-		g_warning ("tracker-stats.vala:156: %s", _tmp62_);
+		g_warning ("tracker-stats.vala:155: %s", _tmp62_);
 		_g_free0 (_tmp62_);
 		_g_error_free0 (e);
 	}
@@ -774,7 +773,7 @@ static void tracker_stats_setup_ui (TrackerStats* self) {
 		g_clear_error (&_inner_error_);
 		return;
 	}
-	gtk_box_set_spacing ((GtkBox*) vbox, 10);
+	gtk_box_set_spacing (vbox, 10);
 	gtk_dialog_add_button ((GtkDialog*) self, GTK_STOCK_CLOSE, (gint) GTK_RESPONSE_CLOSE);
 	g_signal_connect_object ((GtkDialog*) self, "response", (GCallback) _tracker_stats_on_response_gtk_dialog_response, self, 0);
 	gtk_widget_show_all ((GtkWidget*) self);
@@ -790,7 +789,7 @@ static void tracker_stats_on_response (TrackerStats* self, GtkDialog* source, gi
 	switch (response_id) {
 		case GTK_RESPONSE_CLOSE:
 		{
-			gtk_object_destroy ((GtkObject*) self);
+			gtk_widget_destroy ((GtkWidget*) self);
 			break;
 		}
 		default:

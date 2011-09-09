@@ -28,10 +28,6 @@
 
 #include <libtracker-extract/tracker-extract.h>
 
-static void extract_totem (const gchar          *uri,
-                           TrackerSparqlBuilder *preupdate,
-                           TrackerSparqlBuilder *metadata);
-
 static const gchar *tags[][2] = {
 	{ "TOTEM_INFO_VIDEO_HEIGHT",      "nfo:height"         },
 	{ "TOTEM_INFO_VIDEO_WIDTH",       "nfo:width"          },
@@ -48,12 +44,6 @@ static const gchar *tags[][2] = {
 	{ NULL, NULL }
 };
 
-static TrackerExtractData data[] = {
-	{ "audio/*", extract_totem },
-	{ "video/*", extract_totem },
-	{ NULL, NULL }
-};
-
 static void
 metadata_write_foreach (gpointer key,
                         gpointer value,
@@ -65,18 +55,24 @@ metadata_write_foreach (gpointer key,
 	tracker_sparql_builder_object_unvalidated (metadata, (const gchar *) value);
 }
 
-static void
-extract_totem (const gchar          *uri,
-               TrackerSparqlBuilder *preupdate,
-               TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *info)
 {
 	gchar *argv[3];
 	gchar *totem;
 	gboolean has_video = FALSE;
 	GHashTable *tmp_metadata;
+	TrackerSparqlBuilder *metadata, *preupdate;
+	GFile *file;
+	const gchar *graph;
+
+	file = tracker_extract_info_get_file (info);
+	preupdate = tracker_extract_info_get_preupdate_builder (info);
+	metadata = tracker_extract_info_get_metadata_builder (info);
+	graph = tracker_extract_info_get_graph (info);
 
 	argv[0] = g_strdup ("totem-video-indexer");
-	argv[1] = g_filename_from_uri (uri, NULL, NULL);
+	argv[1] = g_file_get_path (file);
 	argv[2] = NULL;
 
 	tmp_metadata = g_hash_table_new_full (g_str_hash,
@@ -118,6 +114,9 @@ extract_totem (const gchar          *uri,
 
 		if (artist) {
 			tracker_sparql_builder_insert_open (preupdate, NULL);
+			if (graph) {
+				tracker_sparql_builder_graph_open (preupdate, graph);
+			}
 
 			tracker_sparql_builder_subject_iri (preupdate, artist_uri);
 			tracker_sparql_builder_predicate (preupdate, "a");
@@ -132,6 +131,9 @@ extract_totem (const gchar          *uri,
 			tracker_sparql_builder_predicate (preupdate, "nmm:artistName");
 			tracker_sparql_builder_object_unvalidated (preupdate, artist);
 
+			if (graph) {
+				tracker_sparql_builder_graph_close (preupdate);
+			}
 			tracker_sparql_builder_insert_close (preupdate);
 		}
 
@@ -176,17 +178,16 @@ extract_totem (const gchar          *uri,
 			tracker_sparql_builder_object_iri (metadata, album_uri);
 		}
 
+		g_hash_table_destroy (tmp_metadata);
 		g_free (album_uri);
 		g_free (artist_uri);
 		g_free (album);
 		g_free (artist);
+
+		return TRUE;
 	}
 
 	g_hash_table_destroy (tmp_metadata);
-}
 
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return data;
+	return FALSE;
 }

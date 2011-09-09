@@ -55,6 +55,8 @@ Stable, unless otherwise indicated
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libtracker-extract-XMP.html#tracker-xmp-apply" title="tracker_xmp_apply ()">tracker_xmp_apply</a>                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Strings.html#GString"><span class="type">GString</span></a> *where</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);
 </pre>
@@ -253,10 +255,15 @@ data found in <em class="parameter"><code>uri</code></em>.
 <a name="tracker-xmp-apply"></a><h3>tracker_xmp_apply ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            tracker_xmp_apply                   (<em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *preupdate</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> *metadata</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Strings.html#GString"><span class="type">GString</span></a> *where</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *uri</code></em>,
                                                          <em class="parameter"><code><a class="link" href="libtracker-extract-XMP.html#TrackerXmpData" title="TrackerXmpData"><span class="type">TrackerXmpData</span></a> *data</code></em>);</pre>
 <p>
 This function applies all data in <em class="parameter"><code>data</code></em> to <em class="parameter"><code>metadata</code></em>.
+</p>
+<p>
+The <em class="parameter"><code>graph</code></em> parameter was added in 0.12.
 </p>
 <p>
 This function also calls <code class="function">tracker_xmp_apply_regions()</code>, so there is
@@ -266,8 +273,20 @@ no need to call both functions.
 <col align="left" valign="top">
 <tbody>
 <tr>
+<td><p><span class="term"><em class="parameter"><code>preupdate</code></em> :</span></p></td>
+<td>the preupdate object to apply XMP data to.</td>
+</tr>
+<tr>
 <td><p><span class="term"><em class="parameter"><code>metadata</code></em> :</span></p></td>
 <td>the metadata object to apply XMP data to.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>graph</code></em> :</span></p></td>
+<td>the graph to apply XMP data to.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>where</code></em> :</span></p></td>
+<td>the where object.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>uri</code></em> :</span></p></td>

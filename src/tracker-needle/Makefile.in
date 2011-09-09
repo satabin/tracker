@@ -47,10 +47,10 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/tracker-needle.desktop.in.in \
-	$(top_srcdir)/Makefile.decl tracker-cell-renderer-text.c \
-	tracker-history.c tracker-needle.c tracker-query.c \
-	tracker-result-store.c tracker-stats.c tracker-taglist.c \
-	tracker-utils.c tracker-view.c tracker_needle_vala.stamp
+	$(top_srcdir)/Makefile.decl tracker-history.c tracker-needle.c \
+	tracker-query.c tracker-result-store.c tracker-stats.c \
+	tracker-taglist.c tracker-utils.c tracker-view.c \
+	tracker_needle_vala.stamp
 bin_PROGRAMS = tracker-needle$(EXEEXT)
 subdir = src/tracker-needle
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -74,11 +74,11 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(desktopdir)" \
 	"$(DESTDIR)$(uidir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_tracker_needle_OBJECTS = tracker-cell-renderer-text.$(OBJEXT) \
-	tracker-history.$(OBJEXT) tracker-query.$(OBJEXT) \
-	tracker-result-store.$(OBJEXT) tracker-stats.$(OBJEXT) \
-	tracker-taglist.$(OBJEXT) tracker-utils.$(OBJEXT) \
-	tracker-needle.$(OBJEXT) tracker-view.$(OBJEXT)
+am_tracker_needle_OBJECTS = tracker-history.$(OBJEXT) \
+	tracker-query.$(OBJEXT) tracker-result-store.$(OBJEXT) \
+	tracker-stats.$(OBJEXT) tracker-taglist.$(OBJEXT) \
+	tracker-utils.$(OBJEXT) tracker-needle.$(OBJEXT) \
+	tracker-view.$(OBJEXT)
 tracker_needle_OBJECTS = $(am_tracker_needle_OBJECTS)
 tracker_needle_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
@@ -187,6 +187,7 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
+FIREFOX = @FIREFOX@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
@@ -194,13 +195,16 @@ GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
+GLIB_MKENUMS = @GLIB_MKENUMS@
 GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
 GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
 GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
 GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
+GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GSTREAMER_PBUTILS_CFLAGS = @GSTREAMER_PBUTILS_CFLAGS@
@@ -262,8 +266,6 @@ LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
 LIBTRACKER_BUS_CFLAGS = @LIBTRACKER_BUS_CFLAGS@
 LIBTRACKER_BUS_LIBS = @LIBTRACKER_BUS_LIBS@
-LIBTRACKER_CLIENT_CFLAGS = @LIBTRACKER_CLIENT_CFLAGS@
-LIBTRACKER_CLIENT_LIBS = @LIBTRACKER_CLIENT_LIBS@
 LIBTRACKER_COMMON_CFLAGS = @LIBTRACKER_COMMON_CFLAGS@
 LIBTRACKER_COMMON_LIBS = @LIBTRACKER_COMMON_LIBS@
 LIBTRACKER_DATA_CFLAGS = @LIBTRACKER_DATA_CFLAGS@
@@ -335,9 +337,11 @@ SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
 TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
 TAGLIB_LIBS = @TAGLIB_LIBS@
+THUNDERBIRD = @THUNDERBIRD@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
+TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
 TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
@@ -354,12 +358,14 @@ TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
+TRACKER_MINER_FIREFOX_INSTALL_DIR = @TRACKER_MINER_FIREFOX_INSTALL_DIR@
 TRACKER_MINER_FLICKR_CFLAGS = @TRACKER_MINER_FLICKR_CFLAGS@
 TRACKER_MINER_FLICKR_LIBS = @TRACKER_MINER_FLICKR_LIBS@
 TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
 TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
+TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -414,6 +420,7 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+gsettingsschemadir = @gsettingsschemadir@
 gtester = @gtester@
 host = @host@
 host_alias = @host_alias@
@@ -450,7 +457,7 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 AM_VALAFLAGS = \
-	--pkg gtk+-2.0 --pkg gio-2.0 \
+	--pkg gtk+-3.0 --pkg gio-2.0 \
 	$(BUILD_VALAFLAGS) \
 	$(top_srcdir)/src/libtracker-sparql/tracker-sparql-$(TRACKER_API_VERSION).vapi \
 	config.vapi
@@ -472,7 +479,6 @@ LDADD = \
 	$(TRACKER_NEEDLE_LIBS)
 
 tracker_needle_SOURCES = \
-	tracker-cell-renderer-text.vala                \
 	tracker-history.vala                           \
 	tracker-query.vala                             \
 	tracker-result-store.vala                      \
@@ -587,7 +593,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-cell-renderer-text.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-history.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-needle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-query.Po@am__quote@
@@ -620,11 +625,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
-$(srcdir)/tracker-cell-renderer-text.c: $(srcdir)/tracker_needle_vala.stamp
-	@if test -f $@; then :; else \
-	  rm -f $(srcdir)/tracker_needle_vala.stamp; \
-	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) tracker_needle_vala.stamp; \
-	fi
 $(srcdir)/tracker-history.c: $(srcdir)/tracker_needle_vala.stamp
 	@if test -f $@; then :; else \
 	  rm -f $(srcdir)/tracker_needle_vala.stamp; \
@@ -833,7 +833,6 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-rm -f tracker-cell-renderer-text.c
 	-rm -f tracker-history.c
 	-rm -f tracker-needle.c
 	-rm -f tracker-query.c

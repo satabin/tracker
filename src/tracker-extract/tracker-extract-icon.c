@@ -22,15 +22,6 @@
 #include <libtracker-common/tracker-file-utils.h>
 #include <libtracker-extract/tracker-extract.h>
 
-static void extract_icon (const gchar          *filename,
-                          TrackerSparqlBuilder *preupdate,
-                          TrackerSparqlBuilder *metadata);
-
-static TrackerExtractData data[] = {
-	{ "image/vnd.microsoft.icon", extract_icon },
-	{ NULL, NULL }
-};
-
 #define ICON_HEADER_SIZE_16 3
 #define ICON_IMAGE_METADATA_SIZE_8 16
 
@@ -133,13 +124,18 @@ find_max_width_and_height (const gchar *uri,
 	return TRUE;
 }
 
-static void
-extract_icon (const gchar          *uri,
-              TrackerSparqlBuilder *preupdate,
-              TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *info)
 {
+	TrackerSparqlBuilder *metadata;
 	guint max_width;
 	guint max_height;
+	GFile *file;
+	gchar *uri;
+
+	metadata = tracker_extract_info_get_metadata_builder (info);
+	file = tracker_extract_info_get_file (info);
+	uri = g_file_get_uri (file);
 
 	/* The Windows Icon file format may contain the same icon with different
 	 * sizes inside, so there's no clear way of setting single width and
@@ -158,10 +154,8 @@ extract_icon (const gchar          *uri,
 			tracker_sparql_builder_object_int64 (metadata, (gint64) max_height);
 		}
 	}
-}
 
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return data;
+	g_free (uri);
+
+	return TRUE;
 }

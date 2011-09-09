@@ -102,6 +102,7 @@ struct _TrackerSparqlCursorClass {
 	void (*next_async) (TrackerSparqlCursor* self, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 	gboolean (*next_finish) (TrackerSparqlCursor* self, GAsyncResult* _res_, GError** error);
 	void (*rewind) (TrackerSparqlCursor* self);
+	void (*close) (TrackerSparqlCursor* self);
 	gint64 (*get_integer) (TrackerSparqlCursor* self, gint column);
 	gdouble (*get_double) (TrackerSparqlCursor* self, gint column);
 	gboolean (*get_boolean) (TrackerSparqlCursor* self, gint column);
@@ -137,6 +138,8 @@ void tracker_sparql_cursor_next_async (TrackerSparqlCursor* self, GCancellable* 
 gboolean tracker_sparql_cursor_next_finish (TrackerSparqlCursor* self, GAsyncResult* _res_, GError** error);
 void tracker_sparql_cursor_rewind (TrackerSparqlCursor* self);
 static void tracker_sparql_cursor_real_rewind (TrackerSparqlCursor* self);
+void tracker_sparql_cursor_close (TrackerSparqlCursor* self);
+static void tracker_sparql_cursor_real_close (TrackerSparqlCursor* self);
 gint64 tracker_sparql_cursor_get_integer (TrackerSparqlCursor* self, gint column);
 static gint64 tracker_sparql_cursor_real_get_integer (TrackerSparqlCursor* self, gint column);
 gdouble tracker_sparql_cursor_get_double (TrackerSparqlCursor* self, gint column);
@@ -305,6 +308,24 @@ static void tracker_sparql_cursor_real_rewind (TrackerSparqlCursor* self) {
 
 void tracker_sparql_cursor_rewind (TrackerSparqlCursor* self) {
 	TRACKER_SPARQL_CURSOR_GET_CLASS (self)->rewind (self);
+}
+
+
+/**
+ * tracker_sparql_cursor_close:
+ * @self: a #TrackerSparqlCursor
+ *
+ * Closes the iterator, making it invalid.
+ *
+ * Since: 0.12
+ */
+static void tracker_sparql_cursor_real_close (TrackerSparqlCursor* self) {
+	g_return_if_fail (self != NULL);
+}
+
+
+void tracker_sparql_cursor_close (TrackerSparqlCursor* self) {
+	TRACKER_SPARQL_CURSOR_GET_CLASS (self)->close (self);
 }
 
 
@@ -525,6 +546,7 @@ static void tracker_sparql_cursor_class_init (TrackerSparqlCursorClass * klass) 
 	TRACKER_SPARQL_CURSOR_CLASS (klass)->get_string = tracker_sparql_cursor_real_get_string;
 	TRACKER_SPARQL_CURSOR_CLASS (klass)->next = tracker_sparql_cursor_real_next;
 	TRACKER_SPARQL_CURSOR_CLASS (klass)->rewind = tracker_sparql_cursor_real_rewind;
+	TRACKER_SPARQL_CURSOR_CLASS (klass)->close = tracker_sparql_cursor_real_close;
 	TRACKER_SPARQL_CURSOR_CLASS (klass)->get_integer = tracker_sparql_cursor_real_get_integer;
 	TRACKER_SPARQL_CURSOR_CLASS (klass)->get_double = tracker_sparql_cursor_real_get_double;
 	TRACKER_SPARQL_CURSOR_CLASS (klass)->get_boolean = tracker_sparql_cursor_real_get_boolean;

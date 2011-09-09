@@ -183,10 +183,6 @@ typedef struct {
 	id3v2tag id3v24;
 } MP3Data;
 
-static void extract_mp3 (const gchar           *uri,
-                         TrackerSparqlBuilder  *preupdate,
-                         TrackerSparqlBuilder  *metadata);
-
 enum {
 	MPEG_ERR,
 	MPEG_V1,
@@ -440,14 +436,6 @@ static gint freq_table[4][3] = {
 static gint spf_table[6] = {
 	48, 144, 144, 48, 144,  72
 };
-
-static TrackerExtractData extract_data[] = {
-	{ "audio/mpeg", extract_mp3 },
-	{ "audio/x-mp3", extract_mp3 },
-	{ NULL, NULL }
-};
-
-
 
 static void
 id3tag_free (id3tag *tags)
@@ -2071,12 +2059,10 @@ parse_id3v2 (const gchar          *data,
 	return offset;
 }
 
-static void
-extract_mp3 (const gchar          *uri,
-             TrackerSparqlBuilder *preupdate,
-             TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *info)
 {
-	gchar *filename;
+	gchar *filename, *uri;
 	int fd;
 	void *buffer;
 	void *id3v1_buffer;
@@ -2084,14 +2070,22 @@ extract_mp3 (const gchar          *uri,
 	goffset  buffer_size;
 	goffset audio_offset;
 	MP3Data md = { 0 };
+	TrackerSparqlBuilder *metadata, *preupdate;
+	GFile *file;
+	const gchar *graph;
 
-	filename = g_filename_from_uri (uri, NULL, NULL);
+	graph = tracker_extract_info_get_graph (info);
+	metadata = tracker_extract_info_get_metadata_builder (info);
+	preupdate = tracker_extract_info_get_preupdate_builder (info);
+
+	file = tracker_extract_info_get_file (info);
+	filename = g_file_get_path (file);
 
 	size = tracker_file_get_size (filename);
 
 	if (size == 0) {
 		g_free (filename);
-		return;
+		return FALSE;
 	}
 
 	md.size = size;
@@ -2107,13 +2101,13 @@ extract_mp3 (const gchar          *uri,
 		fd = open (filename, O_RDONLY);
 
 		if (fd == -1) {
-			return;
+			return FALSE;
 		}
 	}
 #else
 	fd = open (filename, O_RDONLY);
 	if (fd == -1) {
-		return;
+		return FALSE;
 	}
 #endif
 
@@ -2137,7 +2131,7 @@ extract_mp3 (const gchar          *uri,
 
 	if (buffer == NULL || buffer == (void*) -1) {
 		g_free (filename);
-		return;
+		return FALSE;
 	}
 
 	if (!get_id3 (id3v1_buffer, ID3V1_SIZE, &md.id3v1)) {
@@ -2162,6 +2156,7 @@ extract_mp3 (const gchar          *uri,
 	}
 
 	/* Get other embedded tags */
+	uri = g_file_get_uri (file);
 	audio_offset = parse_id3v2 (buffer, buffer_size, &md.id3v1, uri, metadata, &md);
 
 	md.title = tracker_coalesce_strip (4, md.id3v24.title2,
@@ -2265,6 +2260,9 @@ extract_mp3 (const gchar          *uri,
 		md.performer_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", md.performer);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
 
 		tracker_sparql_builder_subject_iri (preupdate, md.performer_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
@@ -2272,6 +2270,9 @@ extract_mp3 (const gchar          *uri,
 		tracker_sparql_builder_predicate (preupdate, "nmm:artistName");
 		tracker_sparql_builder_object_unvalidated (preupdate, md.performer);
 
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 	}
 
@@ -2279,6 +2280,9 @@ extract_mp3 (const gchar          *uri,
 		md.composer_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", md.composer);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
 
 		tracker_sparql_builder_subject_iri (preupdate, md.composer_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
@@ -2286,6 +2290,9 @@ extract_mp3 (const gchar          *uri,
 		tracker_sparql_builder_predicate (preupdate, "nmm:artistName");
 		tracker_sparql_builder_object_unvalidated (preupdate, md.composer);
 
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 	}
 
@@ -2293,11 +2300,19 @@ extract_mp3 (const gchar          *uri,
 		md.lyricist_uri = tracker_sparql_escape_uri_printf ("urn:artist:%s", md.lyricist);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
+
 		tracker_sparql_builder_subject_iri (preupdate, md.lyricist_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nmm:Artist");
 		tracker_sparql_builder_predicate (preupdate, "nmm:artistName");
 		tracker_sparql_builder_object_unvalidated (preupdate, md.lyricist);
+
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 	}
 
@@ -2305,6 +2320,9 @@ extract_mp3 (const gchar          *uri,
 		md.album_uri = tracker_sparql_escape_uri_printf ("urn:album:%s", md.album);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
 
 		tracker_sparql_builder_subject_iri (preupdate, md.album_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
@@ -2320,6 +2338,9 @@ extract_mp3 (const gchar          *uri,
 			tracker_sparql_builder_object_iri (preupdate, md.performer_uri);
 		}
 
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 
 		if (md.track_count > 0) {
@@ -2335,11 +2356,17 @@ extract_mp3 (const gchar          *uri,
 			tracker_sparql_builder_where_close (preupdate);
 
 			tracker_sparql_builder_insert_open (preupdate, NULL);
+			if (graph) {
+				tracker_sparql_builder_graph_open (preupdate, graph);
+			}
 
 			tracker_sparql_builder_subject_iri (preupdate, md.album_uri);
 			tracker_sparql_builder_predicate (preupdate, "nmm:albumTrackCount");
 			tracker_sparql_builder_object_int64 (preupdate, md.track_count);
 
+			if (graph) {
+				tracker_sparql_builder_graph_close (preupdate);
+			}
 			tracker_sparql_builder_insert_close (preupdate);
 		}
 	}
@@ -2446,6 +2473,10 @@ extract_mp3 (const gchar          *uri,
 		tracker_sparql_builder_where_close (preupdate);
 
 		tracker_sparql_builder_insert_open (preupdate, NULL);
+		if (graph) {
+			tracker_sparql_builder_graph_open (preupdate, graph);
+		}
+
 		tracker_sparql_builder_subject_iri (preupdate, album_disc_uri);
 		tracker_sparql_builder_predicate (preupdate, "a");
 		tracker_sparql_builder_object (preupdate, "nmm:MusicAlbumDisc");
@@ -2453,6 +2484,10 @@ extract_mp3 (const gchar          *uri,
 		tracker_sparql_builder_object_int64 (preupdate, md.set_number > 0 ? md.set_number : 1);
 		tracker_sparql_builder_predicate (preupdate, "nmm:albumDiscAlbum");
 		tracker_sparql_builder_object_iri (preupdate, md.album_uri);
+
+		if (graph) {
+			tracker_sparql_builder_graph_close (preupdate);
+		}
 		tracker_sparql_builder_insert_close (preupdate);
 
 		tracker_sparql_builder_predicate (metadata, "nmm:musicAlbumDisc");
@@ -2485,11 +2520,8 @@ extract_mp3 (const gchar          *uri,
 #endif
 
 	g_free (filename);
-}
+	g_free (uri);
 
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return extract_data;
+	return TRUE;
 }
 

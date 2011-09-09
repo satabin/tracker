@@ -98,24 +98,25 @@ am__DEPENDENCIES_1 =
 libtracker_common_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__append_5)
 am__libtracker_common_la_SOURCES_DIST = tracker-marshal.h \
-	tracker-marshal.c tracker-os-dependant-unix.c \
-	tracker-os-dependant-win.c tracker-config-file.c \
-	tracker-date-time.c tracker-dbus.c tracker-file-utils.c \
-	tracker-ioprio.c tracker-keyfile-object.c tracker-log.c \
-	tracker-type-utils.c tracker-utils.c tracker-crc32.c \
-	tracker-locale.c tracker-albumart.c tracker-language.c \
-	tracker-locale-gconfdbus.c
+	tracker-marshal.c tracker-enum-types.c tracker-enum-types.h \
+	tracker-os-dependant-unix.c tracker-os-dependant-win.c \
+	tracker-config-file.c tracker-date-time.c tracker-dbus.c \
+	tracker-file-utils.c tracker-ioprio.c tracker-keyfile-object.c \
+	tracker-log.c tracker-type-utils.c tracker-utils.c \
+	tracker-crc32.c tracker-locale.c tracker-albumart.c \
+	tracker-language.c tracker-locale-gconfdbus.c
 am__objects_1 = tracker-marshal.lo
-@OS_WIN32_FALSE@am__objects_2 = tracker-os-dependant-unix.lo
-@OS_WIN32_TRUE@am__objects_2 = tracker-os-dependant-win.lo
-@HAVE_TRACKER_FTS_TRUE@am__objects_3 = tracker-language.lo
-@HAVE_MEEGOTOUCH_TRUE@am__objects_4 = tracker-locale-gconfdbus.lo
-am_libtracker_common_la_OBJECTS = $(am__objects_1) $(am__objects_2) \
+am__objects_2 = $(am__objects_1) tracker-enum-types.lo
+@OS_WIN32_FALSE@am__objects_3 = tracker-os-dependant-unix.lo
+@OS_WIN32_TRUE@am__objects_3 = tracker-os-dependant-win.lo
+@HAVE_TRACKER_FTS_TRUE@am__objects_4 = tracker-language.lo
+@HAVE_MEEGOTOUCH_TRUE@am__objects_5 = tracker-locale-gconfdbus.lo
+am_libtracker_common_la_OBJECTS = $(am__objects_2) $(am__objects_3) \
 	tracker-config-file.lo tracker-date-time.lo tracker-dbus.lo \
 	tracker-file-utils.lo tracker-ioprio.lo \
 	tracker-keyfile-object.lo tracker-log.lo tracker-type-utils.lo \
 	tracker-utils.lo tracker-crc32.lo tracker-locale.lo \
-	tracker-albumart.lo $(am__objects_3) $(am__objects_4)
+	tracker-albumart.lo $(am__objects_4) $(am__objects_5)
 libtracker_common_la_OBJECTS = $(am_libtracker_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -152,13 +153,13 @@ am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libtracker_common_la_SOURCES)
 DIST_SOURCES = $(am__libtracker_common_la_SOURCES_DIST)
-am__noinst_HEADERS_DIST = tracker-dbus.h tracker-ioprio.h \
-	tracker-log.h tracker-os-dependant.h tracker-config-file.h \
-	tracker-common.h tracker-date-time.h tracker-file-utils.h \
-	tracker-keyfile-object.h tracker-ontologies.h \
-	tracker-type-utils.h tracker-utils.h tracker-crc32.h \
-	tracker-locale.h tracker-albumart.h tracker-language.h \
-	tracker-locale-gconfdbus.h
+am__noinst_HEADERS_DIST = tracker-dbus.h tracker-enums.h \
+	tracker-ioprio.h tracker-log.h tracker-os-dependant.h \
+	tracker-config-file.h tracker-common.h tracker-date-time.h \
+	tracker-file-utils.h tracker-keyfile-object.h \
+	tracker-ontologies.h tracker-type-utils.h tracker-utils.h \
+	tracker-crc32.h tracker-locale.h tracker-albumart.h \
+	tracker-language.h tracker-locale-gconfdbus.h
 HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -203,6 +204,7 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
+FIREFOX = @FIREFOX@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
@@ -210,13 +212,16 @@ GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
+GLIB_MKENUMS = @GLIB_MKENUMS@
 GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
 GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
 GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
 GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
+GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GSTREAMER_PBUTILS_CFLAGS = @GSTREAMER_PBUTILS_CFLAGS@
@@ -278,8 +283,6 @@ LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
 LIBTRACKER_BUS_CFLAGS = @LIBTRACKER_BUS_CFLAGS@
 LIBTRACKER_BUS_LIBS = @LIBTRACKER_BUS_LIBS@
-LIBTRACKER_CLIENT_CFLAGS = @LIBTRACKER_CLIENT_CFLAGS@
-LIBTRACKER_CLIENT_LIBS = @LIBTRACKER_CLIENT_LIBS@
 LIBTRACKER_COMMON_CFLAGS = @LIBTRACKER_COMMON_CFLAGS@
 LIBTRACKER_COMMON_LIBS = @LIBTRACKER_COMMON_LIBS@
 LIBTRACKER_DATA_CFLAGS = @LIBTRACKER_DATA_CFLAGS@
@@ -351,9 +354,11 @@ SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
 TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
 TAGLIB_LIBS = @TAGLIB_LIBS@
+THUNDERBIRD = @THUNDERBIRD@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
+TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
 TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
@@ -370,12 +375,14 @@ TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
+TRACKER_MINER_FIREFOX_INSTALL_DIR = @TRACKER_MINER_FIREFOX_INSTALL_DIR@
 TRACKER_MINER_FLICKR_CFLAGS = @TRACKER_MINER_FLICKR_CFLAGS@
 TRACKER_MINER_FLICKR_LIBS = @TRACKER_MINER_FLICKR_LIBS@
 TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
 TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
+TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -430,6 +437,7 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+gsettingsschemadir = @gsettingsschemadir@
 gtester = @gtester@
 host = @host@
 host_alias = @host_alias@
@@ -475,15 +483,15 @@ libtracker_commondir = $(libdir)/tracker-$(TRACKER_API_VERSION)
 libtracker_common_LTLIBRARIES = libtracker-common.la
 @OS_WIN32_FALSE@os_sources = tracker-os-dependant-unix.c
 @OS_WIN32_TRUE@os_sources = tracker-os-dependant-win.c
-libtracker_common_la_SOURCES = $(marshal_sources) $(os_sources) \
+libtracker_common_la_SOURCES = $(BUILT_SOURCES) $(os_sources) \
 	tracker-config-file.c tracker-date-time.c tracker-dbus.c \
 	tracker-file-utils.c tracker-ioprio.c tracker-keyfile-object.c \
 	tracker-log.c tracker-type-utils.c tracker-utils.c \
 	tracker-crc32.c tracker-locale.c tracker-albumart.c \
 	$(am__append_1) $(am__append_3)
-noinst_HEADERS = tracker-dbus.h tracker-ioprio.h tracker-log.h \
-	tracker-os-dependant.h tracker-config-file.h tracker-common.h \
-	tracker-date-time.h tracker-file-utils.h \
+noinst_HEADERS = tracker-dbus.h tracker-enums.h tracker-ioprio.h \
+	tracker-log.h tracker-os-dependant.h tracker-config-file.h \
+	tracker-common.h tracker-date-time.h tracker-file-utils.h \
 	tracker-keyfile-object.h tracker-ontologies.h \
 	tracker-type-utils.h tracker-utils.h tracker-crc32.h \
 	tracker-locale.h tracker-albumart.h $(am__append_2) \
@@ -497,11 +505,21 @@ marshal_sources = \
 	tracker-marshal.h \
 	tracker-marshal.c
 
-BUILT_SOURCES = $(marshal_sources)
-CLEANFILES = $(marshal_sources)
+BUILT_SOURCES = \
+	$(marshal_sources)                             \
+	tracker-enum-types.c                           \
+	tracker-enum-types.h
+
+CLEANFILES = \
+	$(marshal_sources)                             \
+	tracker-enum-types.c                           \
+	tracker-enum-types.h
+
 EXTRA_DIST = \
-	tracker-marshal.list \
-	libtracker-common.vapi
+	tracker-marshal.list                           \
+	libtracker-common.vapi                         \
+	tracker-enum-types.c.template                  \
+	tracker-enum-types.h.template
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -583,6 +601,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crc32.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-date-time.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-enum-types.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-utils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-ioprio.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-keyfile-object.Plo@am__quote@
@@ -889,6 +908,12 @@ tracker-marshal.h: tracker-marshal.list
 tracker-marshal.c: tracker-marshal.list
 	$(AM_V_GEN)echo "#include \"tracker-marshal.h\"" > $@ && \
 		   $(GLIB_GENMARSHAL) $< --prefix=tracker_marshal --body >> $@
+
+tracker-enum-types.h: tracker-enum-types.h.template $(NOINST_H_FILES)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-enum-types.h.template $(noinst_HEADERS)) > $@
+
+tracker-enum-types.c: tracker-enum-types.c.template $(NOINST_H_FILES)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template tracker-enum-types.c.template $(noinst_HEADERS)) > $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

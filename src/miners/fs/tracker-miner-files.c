@@ -42,23 +42,16 @@
 
 #include <libtracker-data/tracker-db-manager.h>
 
+#include <libtracker-extract/tracker-module-manager.h>
+#include <libtracker-extract/tracker-extract-client.h>
+
 #include "tracker-power.h"
 #include "tracker-miner-files.h"
 #include "tracker-config.h"
 #include "tracker-marshal.h"
 
-/* Size of buffers used when sending data over a pipe, using DBus FD passing */
-#define DBUS_PIPE_BUFFER_SIZE      65536
-
-#define DBUS_SERVICE_EXTRACT       "org.freedesktop.Tracker1.Extract"
-#define DBUS_PATH_EXTRACT          "/org/freedesktop/Tracker1/Extract"
-#define DBUS_INTERFACE_EXTRACT     "org.freedesktop.Tracker1.Extract"
-
 #define DISK_SPACE_CHECK_FREQUENCY 10
 #define SECONDS_PER_DAY 86400
-
-/* Default DBus timeout to be used in requests to extractor (milliseconds) */
-#define EXTRACTOR_DBUS_TIMEOUT 60000
 
 #define TRACKER_MINER_FILES_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_TYPE_MINER_FILES, TrackerMinerFilesPrivate))
 
@@ -71,34 +64,8 @@ struct ProcessFileData {
 	TrackerSparqlBuilder *sparql;
 	GCancellable *cancellable;
 	GFile *file;
+	gchar *mime_type;
 };
-
-typedef void (*fast_async_cb) (const gchar *preupdate,
-                               const gchar *sparql,
-                               GError      *error,
-                               gpointer     user_data);
-
-typedef void (*TrackerDBusSendAndSpliceCallback) (void     *buffer,
-                                                  gssize    buffer_size,
-                                                  GError   *error, /* Don't free */
-                                                  gpointer  user_data);
-
-typedef struct {
-	GInputStream *unix_input_stream;
-	GInputStream *buffered_input_stream;
-	GOutputStream *output_stream;
-	TrackerDBusSendAndSpliceCallback callback;
-	GCancellable *cancellable;
-	gpointer user_data;
-	gboolean splice_finished;
-	gboolean dbus_finished;
-	GError *error;
-} SendAndSpliceData;
-
-typedef struct {
-	fast_async_cb callback;
-	gpointer user_data;
-} FastAsyncData;
 
 struct TrackerMinerFilesPrivate {
 	TrackerConfig *config;
@@ -133,6 +100,12 @@ struct TrackerMinerFilesPrivate {
 	gboolean mount_points_initialized;
 
 	guint stale_volumes_check_id;
+
+	guint failed_extraction_pause_cookie;
+	GList *extraction_queue;
+	GList *failed_extraction_queue;
+
+	gboolean failsafe_extraction;
 };
 
 enum {
@@ -241,8 +214,9 @@ static void        miner_files_in_removable_media_remove_by_date  (TrackerMinerF
 static void        miner_files_add_removable_or_optical_directory (TrackerMinerFiles *mf,
                                                                    const gchar       *mount_path,
                                                                    const gchar       *uuid);
-static void        extractor_cancel_tasks                         (GDBusConnection   *connection,
-                                                                   GFile             *prefix);
+
+static void        extractor_process_failsafe                     (TrackerMinerFiles *miner);
+
 
 static GInitableIface* miner_files_initable_parent_iface;
 
@@ -668,6 +642,9 @@ miner_files_finalize (GObject *object)
 		g_source_remove (priv->stale_volumes_check_id);
 		priv->stale_volumes_check_id = 0;
 	}
+
+	g_list_free (priv->extraction_queue);
+	g_list_free (priv->failed_extraction_queue);
 
 	G_OBJECT_CLASS (tracker_miner_files_parent_class)->finalize (object);
 }
@@ -1161,7 +1138,7 @@ mount_point_removed_cb (TrackerStorage *storage,
 	mount_point_file = g_file_new_for_path (mount_point);
 
 	/* Notify extractor about cancellation of all tasks under the mount point */
-	extractor_cancel_tasks (miner->private->connection, mount_point_file);
+	tracker_extract_client_cancel_for_prefix (mount_point_file);
 
 	/* Tell TrackerMinerFS to skip monitoring everything under the mount
 	 *  point (in case there was no pre-unmount notification) */
@@ -1954,27 +1931,17 @@ process_file_data_free (ProcessFileData *data)
 	g_object_unref (data->sparql);
 	g_object_unref (data->cancellable);
 	g_object_unref (data->file);
+	g_free (data->mime_type);
 	g_slice_free (ProcessFileData, data);
 }
 
 static void
-extractor_get_embedded_metadata_cb (const gchar *preupdate,
-                                    const gchar *sparql,
-                                    GError      *error,
-                                    gpointer     user_data)
+sparql_builder_finish (ProcessFileData *data,
+                       const gchar     *preupdate,
+                       const gchar     *sparql,
+                       const gchar     *where)
 {
-	ProcessFileData *data = user_data;
 	const gchar *uuid;
-
-	if (error) {
-		tracker_sparql_builder_graph_close (data->sparql);
-		tracker_sparql_builder_insert_close (data->sparql);
-
-		/* Something bad happened, notify about the error */
-		tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), data->file, error);
-		process_file_data_free (data);
-		return;
-	}
 
 	if (sparql && *sparql) {
 		gboolean is_iri;
@@ -1997,6 +1964,12 @@ extractor_get_embedded_metadata_cb (const gchar *preupdate,
 
 	tracker_sparql_builder_graph_close (data->sparql);
 	tracker_sparql_builder_insert_close (data->sparql);
+
+	if (where && *where) {
+		tracker_sparql_builder_where_open (data->sparql);
+		tracker_sparql_builder_append (data->sparql, where);
+		tracker_sparql_builder_where_close (data->sparql);
+	}
 
 	/* Prepend preupdate queries */
 	if (preupdate && *preupdate) {
@@ -2039,332 +2012,190 @@ extractor_get_embedded_metadata_cb (const gchar *preupdate,
 		g_free (removable_device_urn);
 		g_free (uri);
 	}
+}
 
-	/* Notify about the success */
-	tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), data->file, NULL);
+static void
+extractor_get_failsafe_metadata_cb (GObject      *object,
+                                    GAsyncResult *res,
+                                    gpointer      user_data)
+{
+	ProcessFileData *data = user_data;
+	TrackerMinerFiles *miner = data->miner;
+	TrackerMinerFilesPrivate *priv = miner->private;
+	const gchar *preupdate, *sparql, *where;
+	TrackerExtractInfo *info;
+	GError *error = NULL;
+	gchar *uri;
 
+	info = tracker_extract_client_get_metadata_finish (G_FILE (object), res, &error);
+	preupdate = sparql = where = NULL;
+
+	if (error) {
+		uri = g_file_get_uri (data->file);
+		g_warning ("  Got second extraction DBus error on '%s'. "
+			   "Adding only non-embedded metadata to the SparQL, "
+			   "the error was: %s",
+			   uri, error->message);
+		g_error_free (error);
+		g_free (uri);
+	} else {
+		TrackerSparqlBuilder *builder;
+
+		g_debug ("  Extraction succeeded the second time");
+
+		builder = tracker_extract_info_get_preupdate_builder (info);
+		preupdate = tracker_sparql_builder_get_result (builder);
+
+		builder = tracker_extract_info_get_metadata_builder (info);
+		sparql = tracker_sparql_builder_get_result (builder);
+
+		where = tracker_extract_info_get_where_clause (info);
+	}
+
+	sparql_builder_finish (data, preupdate, sparql, where);
+
+	/* Notify success even if the extraction failed
+	 * again, so we get the essential data in the store.
+	 */
+	tracker_miner_fs_file_notify (TRACKER_MINER_FS (miner), data->file, NULL);
+
+	priv->failed_extraction_queue = g_list_remove (priv->failed_extraction_queue, data);
 	process_file_data_free (data);
+
+	/* Get on to the next failed extraction, or resume miner */
+	extractor_process_failsafe (miner);
 }
 
-static SendAndSpliceData *
-send_and_splice_data_new (GInputStream                     *unix_input_stream,
-                          GInputStream                     *buffered_input_stream,
-                          GOutputStream                    *output_stream,
-                          GCancellable                     *cancellable,
-                          TrackerDBusSendAndSpliceCallback  callback,
-                          gpointer                          user_data)
-{
-	SendAndSpliceData *data;
-
-	data = g_slice_new0 (SendAndSpliceData);
-	data->unix_input_stream = unix_input_stream;
-	data->buffered_input_stream = buffered_input_stream;
-	data->output_stream = output_stream;
-	if (cancellable) {
-		data->cancellable = g_object_ref (cancellable);
-	}
-	data->callback = callback;
-	data->user_data = user_data;
-
-	return data;
-}
-
+/* This function processes failed files one by one,
+ * the function will be called after each operation
+ * is finished, so elements are processed linearly.
+ */
 static void
-send_and_splice_data_free (SendAndSpliceData *data)
+extractor_process_failsafe (TrackerMinerFiles *miner)
 {
-	g_object_unref (data->unix_input_stream);
-	g_object_unref (data->buffered_input_stream);
-	g_object_unref (data->output_stream);
-	if (data->cancellable) {
-		g_object_unref (data->cancellable);
-	}
-	if (data->error) {
-		g_error_free (data->error);
-	}
-	g_slice_free (SendAndSpliceData, data);
-}
+	TrackerMinerFilesPrivate *priv;
+	ProcessFileData *data;
 
-static void
-dbus_send_and_splice_async_finish (SendAndSpliceData *data)
-{
-	if (!data->error) {
-		(* data->callback) (g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (data->output_stream)),
-		                    g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (data->output_stream)),
-		                    NULL,
-		                    data->user_data);
+	priv = miner->private;
+
+	if (priv->failed_extraction_queue) {
+		gchar *uri;
+
+		data = priv->failed_extraction_queue->data;
+
+		uri = g_file_get_uri (data->file);
+		g_message ("Performing failsafe extraction on '%s'", uri);
+		g_free (uri);
+
+		tracker_extract_client_get_metadata (data->file,
+						     data->mime_type,
+		                                     TRACKER_MINER_FS_GRAPH_URN,
+						     data->cancellable,
+						     extractor_get_failsafe_metadata_cb,
+						     data);
 	} else {
-		(* data->callback) (NULL, -1, data->error, data->user_data);
-	}
+		g_debug ("Failsafe extraction finished. Resuming miner...");
 
-	send_and_splice_data_free (data);
-}
+		if (priv->failed_extraction_pause_cookie != 0) {
+			tracker_miner_resume (TRACKER_MINER (miner),
+					      priv->failed_extraction_pause_cookie,
+					      NULL);
 
-static void
-send_and_splice_splice_callback (GObject      *source,
-                                 GAsyncResult *result,
-                                 gpointer      user_data)
-{
-	SendAndSpliceData *data = user_data;
-	GError *error = NULL;
-
-	g_output_stream_splice_finish (G_OUTPUT_STREAM (source), result, &error);
-
-	if (error) {
-		if (!data->error) {
-			data->error = error;
-		} else {
-			g_error_free (error);
+			priv->failed_extraction_pause_cookie = 0;
 		}
-	}
 
-	data->splice_finished = TRUE;
-
-	if (data->dbus_finished) {
-		dbus_send_and_splice_async_finish (data);
+		priv->failsafe_extraction = FALSE;
 	}
 }
 
 static void
-send_and_splice_dbus_callback (GObject      *source,
-                               GAsyncResult *result,
-                               gpointer      user_data)
+extractor_check_process_failsafe (TrackerMinerFiles *miner)
 {
-	SendAndSpliceData *data = user_data;
-	GDBusMessage *reply;
-	GError *error = NULL;
+	TrackerMinerFilesPrivate *priv;
 
-	reply = g_dbus_connection_send_message_with_reply_finish (G_DBUS_CONNECTION (source),
-	                                                          result, &error);
+	priv = miner->private;
 
-	if (reply) {
-		if (g_dbus_message_get_message_type (reply) == G_DBUS_MESSAGE_TYPE_ERROR) {
-			g_dbus_message_to_gerror (reply, &error);
-		}
-
-		g_object_unref (reply);
-	}
-
-	if (error) {
-		if (!data->error) {
-			data->error = error;
-		} else {
-			g_error_free (error);
-		}
-	}
-
-	data->dbus_finished = TRUE;
-
-	if (data->splice_finished) {
-		dbus_send_and_splice_async_finish (data);
-	}
-}
-
-static gboolean
-dbus_send_and_splice_async (GDBusConnection                  *connection,
-                            GDBusMessage                     *message,
-                            int                               fd,
-                            GCancellable                     *cancellable,
-                            TrackerDBusSendAndSpliceCallback  callback,
-                            gpointer                          user_data)
-{
-	SendAndSpliceData *data;
-	GInputStream *unix_input_stream;
-	GInputStream *buffered_input_stream;
-	GOutputStream *output_stream;
-
-	g_return_val_if_fail (connection != NULL, FALSE);
-	g_return_val_if_fail (message != NULL, FALSE);
-	g_return_val_if_fail (fd > 0, FALSE);
-	g_return_val_if_fail (callback != NULL, FALSE);
-
-	unix_input_stream = g_unix_input_stream_new (fd, TRUE);
-	buffered_input_stream = g_buffered_input_stream_new_sized (unix_input_stream,
-	                                                           DBUS_PIPE_BUFFER_SIZE);
-	output_stream = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
-
-	data = send_and_splice_data_new (unix_input_stream,
-	                                 buffered_input_stream,
-	                                 output_stream,
-	                                 cancellable,
-	                                 callback,
-	                                 user_data);
-
-	g_dbus_connection_send_message_with_reply (connection,
-	                                           message,
-	                                           G_DBUS_SEND_MESSAGE_FLAGS_NONE,
-	                                           -1,
-	                                           NULL,
-	                                           cancellable,
-	                                           send_and_splice_dbus_callback,
-	                                           data);
-
-	g_output_stream_splice_async (data->output_stream,
-	                              data->buffered_input_stream,
-	                              G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE |
-	                              G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET,
-	                              0,
-	                              data->cancellable,
-	                              send_and_splice_splice_callback,
-	                              data);
-
-	return TRUE;
-}
-
-static FastAsyncData*
-fast_async_data_new (fast_async_cb  callback,
-                     gpointer       user_data)
-{
-	FastAsyncData *data;
-
-	data = g_slice_new0 (FastAsyncData);
-
-	data->callback = callback;
-	data->user_data = user_data;
-
-	return data;
-}
-
-static void
-fast_async_data_free (FastAsyncData *data)
-{
-	g_slice_free (FastAsyncData, data);
-}
-
-static void
-get_metadata_fast_cb (void     *buffer,
-                      gssize    buffer_size,
-                      GError   *error,
-                      gpointer  user_data)
-{
-	FastAsyncData *data;
-	ProcessFileData *process_data;
-	gboolean free_error = FALSE;
-	const gchar *preupdate = NULL;
-	const gchar *sparql = NULL;
-
-	data = user_data;
-	process_data = data->user_data;
-
-	if (!error && buffer_size) {
-		gsize preupdate_length;
-
-		preupdate = buffer;
-		preupdate_length = strnlen (preupdate, buffer_size);
-		if (preupdate_length < buffer_size && preupdate[buffer_size - 1] == '\0') {
-			/* sparql is stored just after preupdate in the original buffer */
-			sparql = preupdate + preupdate_length + 1;
-		} else {
-			error = g_error_new_literal (miner_files_error_quark,
-			                             0,
-			                             "Invalid data received from GetMetadataFast");
-			free_error = TRUE;
-		}
-	}
-
-	if (G_UNLIKELY (error)) {
-		(* data->callback) (NULL, NULL, error, process_data);
-
-		if (free_error) {
-			g_error_free (error);
-		}
-	} else {
-		(* data->callback) (preupdate, sparql, NULL, data->user_data);
-	}
-
-	fast_async_data_free (data);
-}
-
-static void
-get_metadata_fast_async (GDBusConnection *connection,
-                         const gchar     *uri,
-                         const gchar     *mime_type,
-                         GCancellable    *cancellable,
-                         fast_async_cb    callback,
-                         ProcessFileData *user_data)
-{
-	GDBusMessage *message;
-	GUnixFDList *fd_list;
-	FastAsyncData *data;
-	int pipefd[2];
-
-	g_return_if_fail (connection);
-	g_return_if_fail (uri);
-	g_return_if_fail (mime_type);
-	g_return_if_fail (callback);
-
-	if (pipe (pipefd) < 0) {
-		g_critical ("Coudln't open pipe");
+	if (priv->failsafe_extraction) {
+		/* already on failsafe extraction */
 		return;
 	}
 
-	message = g_dbus_message_new_method_call (DBUS_SERVICE_EXTRACT,
-	                                          DBUS_PATH_EXTRACT,
-	                                          DBUS_INTERFACE_EXTRACT,
-	                                          "GetMetadataFast");
+	if (priv->extraction_queue ||
+	    !priv->failed_extraction_queue) {
+		/* No reasons (yet) to start failsafe extraction */
+		return;
+	}
 
-	fd_list = g_unix_fd_list_new ();
-
-	g_dbus_message_set_body (message, g_variant_new ("(ssh)",
-	                                                 uri,
-	                                                 mime_type,
-	                                                 g_unix_fd_list_append (fd_list,
-	                                                                        pipefd[1],
-	                                                                        NULL)));
-	g_dbus_message_set_unix_fd_list (message, fd_list);
-
-	/* We need to close the fd as g_unix_fd_list_append duplicates the fd */
-
-	close (pipefd[1]);
-
-	g_object_unref (fd_list);
-
-	data = fast_async_data_new (callback,
-	                            user_data);
-
-	dbus_send_and_splice_async (connection,
-	                            message,
-	                            pipefd[0],
-	                            cancellable,
-	                            get_metadata_fast_cb,
-	                            data);
-
-	g_object_unref (message);
+	priv->failsafe_extraction = TRUE;
+	extractor_process_failsafe (miner);
 }
 
 static void
-extractor_get_embedded_metadata (ProcessFileData *data,
-                                 const gchar     *uri,
-                                 const gchar     *mime_type)
+extractor_get_embedded_metadata_cb (GObject      *object,
+                                    GAsyncResult *res,
+                                    gpointer      user_data)
 {
-	get_metadata_fast_async (data->miner->private->connection,
-	                         uri,
-	                         mime_type,
-	                         data->cancellable,
-	                         extractor_get_embedded_metadata_cb,
-	                         data);
-}
+	TrackerMinerFilesPrivate *priv;
+	TrackerMinerFiles *miner;
+	ProcessFileData *data = user_data;
+	TrackerSparqlBuilder *preupdate, *sparql;
+	const gchar *where;
+	TrackerExtractInfo *info;
+	GError *error = NULL;
 
-static void
-extractor_cancel_tasks (GDBusConnection *connection,
-                        GFile           *prefix)
-{
-	GDBusMessage *message;
-	gchar *uris[2];
+	miner = data->miner;
+	priv = miner->private;
+	priv->extraction_queue = g_list_remove (priv->extraction_queue, data);
+	info = tracker_extract_client_get_metadata_finish (G_FILE (object), res, &error);
 
-	uris[0] = g_file_get_uri (prefix);
-	uris[1] = NULL;
+	if (error) {
+		if (error->code == G_DBUS_ERROR_NO_REPLY ||
+		    error->code == G_DBUS_ERROR_TIMEOUT ||
+		    error->code == G_DBUS_ERROR_TIMED_OUT) {
+			gchar *uri;
 
-	message = g_dbus_message_new_method_call (DBUS_SERVICE_EXTRACT,
-	                                          DBUS_PATH_EXTRACT,
-	                                          DBUS_INTERFACE_EXTRACT,
-	                                          "CancelTasks");
+			uri = g_file_get_uri (data->file);
+			g_warning ("  Got extraction DBus error on '%s': %s", uri, error->message);
 
-	g_dbus_message_set_body (message, g_variant_new ("(^as)", uris));
-	g_dbus_connection_send_message (connection, message,
-	                                G_DBUS_SEND_MESSAGE_FLAGS_NONE,
-	                                NULL, NULL);
+			if (priv->failed_extraction_pause_cookie != 0) {
+				priv->failed_extraction_pause_cookie =
+					tracker_miner_pause (TRACKER_MINER (data->miner),
+							     _("Extractor error, performing "
+							       "failsafe embedded metadata extraction"),
+							     NULL);
+			}
 
-	g_free (uris[0]);
+			priv->failed_extraction_queue = g_list_prepend (priv->failed_extraction_queue, data);
+			g_free (uri);
+		} else {
+			sparql_builder_finish (data, NULL, NULL, NULL);
+
+			/* Something bad happened, notify about the error */
+			tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), data->file, error);
+			process_file_data_free (data);
+		}
+
+		g_error_free (error);
+	} else {
+		preupdate = tracker_extract_info_get_preupdate_builder (info);
+		sparql = tracker_extract_info_get_metadata_builder (info);
+		where = tracker_extract_info_get_where_clause (info);
+
+		sparql_builder_finish (data,
+		                       tracker_sparql_builder_get_result (preupdate),
+		                       tracker_sparql_builder_get_result (sparql),
+		                       where);
+
+		/* Notify about the success */
+		tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), data->file, NULL);
+
+		process_file_data_free (data);
+	}
+
+	/* Wait until there are no pending extraction requests
+	 * before starting failsafe extraction process.
+	 */
+	extractor_check_process_failsafe (miner);
 }
 
 static void
@@ -2372,6 +2203,7 @@ process_file_cb (GObject      *object,
                  GAsyncResult *result,
                  gpointer      user_data)
 {
+	TrackerMinerFilesPrivate *priv;
 	TrackerSparqlBuilder *sparql;
 	ProcessFileData *data;
 	const gchar *mime_type, *urn, *parent_urn;
@@ -2387,6 +2219,7 @@ process_file_cb (GObject      *object,
 	file = G_FILE (object);
 	sparql = data->sparql;
 	file_info = g_file_query_info_finish (file, result, &error);
+	priv = TRACKER_MINER_FILES (data->miner)->private;
 
 	if (error) {
 		/* Something bad happened, notify about the error */
@@ -2399,6 +2232,8 @@ process_file_cb (GObject      *object,
 	uri = g_file_get_uri (file);
 	mime_type = g_file_info_get_content_type (file_info);
 	urn = miner_files_get_file_urn (TRACKER_MINER_FILES (data->miner), file, &is_iri);
+
+	data->mime_type = g_strdup (mime_type);
 
 	tracker_sparql_builder_insert_silent_open (sparql, NULL);
 	tracker_sparql_builder_graph_open (sparql, TRACKER_MINER_FS_GRAPH_URN);
@@ -2457,14 +2292,23 @@ process_file_cb (GObject      *object,
 
 	miner_files_add_to_datasource (data->miner, file, sparql);
 
-	if (!is_directory) {
-		/* Next step, if NOT a directory, get embedded metadata */
-		extractor_get_embedded_metadata (data, uri, mime_type);
+	if (tracker_extract_module_manager_mimetype_is_handled (mime_type)) {
+		/* Next step, if handled by the extractor, get embedded metadata */
+		tracker_extract_client_get_metadata (data->file,
+		                                     mime_type,
+		                                     TRACKER_MINER_FS_GRAPH_URN,
+		                                     data->cancellable,
+		                                     extractor_get_embedded_metadata_cb,
+		                                     data);
 	} else {
-		/* For directories, don't request embedded metadata extraction.
-		 * We setup an idle so that we keep the previous behavior. */
-		g_debug ("Avoiding embedded metadata request for directory '%s'", uri);
-		extractor_get_embedded_metadata_cb (NULL, NULL, NULL, user_data);
+		/* Otherwise, don't request embedded metadata extraction. */
+		g_debug ("Avoiding embedded metadata request for uri '%s'", uri);
+		sparql_builder_finish (data, NULL, NULL, NULL);
+		tracker_miner_fs_file_notify (TRACKER_MINER_FS (data->miner), data->file, NULL);
+
+		priv->extraction_queue = g_list_remove (priv->extraction_queue, data);
+		extractor_check_process_failsafe (data->miner);
+		process_file_data_free (data);
 	}
 
 	g_object_unref (file_info);
@@ -2477,6 +2321,7 @@ miner_files_process_file (TrackerMinerFS       *fs,
                           TrackerSparqlBuilder *sparql,
                           GCancellable         *cancellable)
 {
+	TrackerMinerFilesPrivate *priv;
 	ProcessFileData *data;
 	const gchar *attrs;
 
@@ -2485,6 +2330,9 @@ miner_files_process_file (TrackerMinerFS       *fs,
 	data->cancellable = g_object_ref (cancellable);
 	data->sparql = g_object_ref (sparql);
 	data->file = g_object_ref (file);
+
+	priv = TRACKER_MINER_FILES (fs)->private;
+	priv->extraction_queue = g_list_prepend (priv->extraction_queue, data);
 
 	attrs = G_FILE_ATTRIBUTE_STANDARD_TYPE ","
 		G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","

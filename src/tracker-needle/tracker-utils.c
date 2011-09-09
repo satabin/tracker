@@ -291,7 +291,7 @@ GdkPixbuf* tracker_pixbuf_new_from_file (GtkIconTheme* theme, const gchar* filen
 			_inner_error_ = NULL;
 			_tmp8_ = g_strconcat ("Error loading icon pixbuf: ", e->message, NULL);
 			_tmp9_ = _tmp8_;
-			g_warning ("tracker-utils.vala:123: %s", _tmp9_);
+			g_warning ("tracker-utils.vala:124: %s", _tmp9_);
 			_g_free0 (_tmp9_);
 			_g_error_free0 (e);
 		}
@@ -370,7 +370,7 @@ GdkPixbuf* tracker_pixbuf_new_from_file (GtkIconTheme* theme, const gchar* filen
 				_inner_error_ = NULL;
 				_tmp24_ = g_strconcat ("Error loading icon pixbuf: ", e->message, NULL);
 				_tmp25_ = _tmp24_;
-				g_warning ("tracker-utils.vala:147: %s", _tmp25_);
+				g_warning ("tracker-utils.vala:148: %s", _tmp25_);
 				_g_free0 (_tmp25_);
 				_g_error_free0 (e);
 			}
@@ -393,7 +393,7 @@ GdkPixbuf* tracker_pixbuf_new_from_file (GtkIconTheme* theme, const gchar* filen
 			_inner_error_ = NULL;
 			_tmp26_ = g_strconcat ("Error looking up file for pixbuf: ", e->message, NULL);
 			_tmp27_ = _tmp26_;
-			g_warning ("tracker-utils.vala:151: %s", _tmp27_);
+			g_warning ("tracker-utils.vala:152: %s", _tmp27_);
 			_g_free0 (_tmp27_);
 			_g_error_free0 (e);
 		}
@@ -445,7 +445,7 @@ GdkPixbuf* tracker_pixbuf_new_from_name (GtkIconTheme* theme, const gchar* name,
 		GError * e;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		g_warning ("tracker-utils.vala:169: Could not load default icon pixbuf from theme " \
+		g_warning ("tracker-utils.vala:170: Could not load default icon pixbuf from theme " \
 "for '%s': %s", name, e->message);
 		_g_error_free0 (e);
 	}

@@ -37,15 +37,6 @@
 
 #include <libtracker-extract/tracker-extract.h>
 
-static void extract_abw (const gchar          *uri,
-                         TrackerSparqlBuilder *preupdate,
-                         TrackerSparqlBuilder *metadata);
-
-static TrackerExtractData data[] = {
-	{ "application/x-abiword", extract_abw },
-	{ NULL, NULL }
-};
-
 typedef struct AbwParserData AbwParserData;
 typedef enum {
 	ABW_PARSER_TAG_UNHANDLED,
@@ -170,23 +161,27 @@ static GMarkupParser parser = {
 	NULL, NULL
 };
 
-static void
-extract_abw (const gchar          *uri,
-             TrackerSparqlBuilder *preupdate,
-             TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *info)
 {
+	TrackerSparqlBuilder *preupdate, *metadata;
 	GMappedFile *file;
 	gchar *filename, *contents;
 	GError *error = NULL;
 	gboolean retval = FALSE;
+	GFile *f;
 	gsize len;
 
-	filename = g_filename_from_uri (uri, NULL, &error);
+	preupdate = tracker_extract_info_get_preupdate_builder (info);
+	metadata = tracker_extract_info_get_metadata_builder (info);
+
+	f = tracker_extract_info_get_file (info);
+	filename = g_file_get_path (f);
 
 	if (error) {
 		g_warning ("Could not get filename: %s\n", error->message);
 		g_error_free (error);
-		return;
+		return retval;
 	}
 
 	file = g_mapped_file_new (filename, FALSE, &error);
@@ -195,7 +190,7 @@ extract_abw (const gchar          *uri,
 	if (error) {
 		g_warning ("Could not mmap abw file: %s\n", error->message);
 		g_error_free (error);
-		return;
+		return retval;
 	}
 
 	contents = g_mapped_file_get_contents (file);
@@ -231,10 +226,6 @@ extract_abw (const gchar          *uri,
 	}
 
 	g_mapped_file_unref (file);
-}
 
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return data;
+	return retval;
 }

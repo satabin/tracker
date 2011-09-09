@@ -180,8 +180,8 @@ tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
 
 	if (!retval) {
 		/* module does not support writeback for this file */
-		g_object_unref (file);
 		g_object_unref (file_info);
+		g_object_unref (file);
 
 		return FALSE;
 	}
@@ -189,9 +189,10 @@ tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
 	/* Copy to a temporary file so we can perform an atomic write on move */
 	tmp_file = create_temporary_file (file, file_info);
 
+	g_object_unref (file_info);
+
 	if (!tmp_file) {
 		g_object_unref (file);
-		g_object_unref (file_info);
 
 		return FALSE;
 	}
@@ -213,7 +214,6 @@ tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
 	}
 
 	g_object_unref (tmp_file);
-	g_object_unref (file_info);
 	g_object_unref (file);
 
 	return retval;

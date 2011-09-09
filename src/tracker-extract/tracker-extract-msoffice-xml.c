@@ -92,10 +92,6 @@ typedef struct {
 	GList *parts;
 } MsOfficeXMLParserInfo;
 
-static void extract_msoffice_xml                   (const gchar          *uri,
-                                                    TrackerSparqlBuilder *preupdate,
-                                                    TrackerSparqlBuilder *metadata);
-
 static void msoffice_xml_content_parse_start       (GMarkupParseContext  *context,
                                                     const gchar          *element_name,
                                                     const gchar         **attribute_names,
@@ -160,15 +156,6 @@ static const GMarkupParser content_types_parser = {
 };
 
 static GQuark maximum_size_error_quark = 0;
-
-static TrackerExtractData data[] = {
-	/* MSoffice2007*/
-	{ "application/vnd.openxmlformats-officedocument.presentationml.presentation", extract_msoffice_xml },
-	{ "application/vnd.openxmlformats-officedocument.presentationml.slideshow",    extract_msoffice_xml },
-	{ "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",         extract_msoffice_xml },
-	{ "application/vnd.openxmlformats-officedocument.wordprocessingml.document",   extract_msoffice_xml },
-	{ NULL, NULL }
-};
 
 /* ------------------------- CONTENT files parsing -----------------------------------*/
 
@@ -765,20 +752,25 @@ extract_content (MsOfficeXMLParserInfo *info)
 	}
 }
 
-static void
-extract_msoffice_xml (const gchar          *uri,
-                      TrackerSparqlBuilder *preupdate,
-                      TrackerSparqlBuilder *metadata)
+G_MODULE_EXPORT gboolean
+tracker_extract_get_metadata (TrackerExtractInfo *extract_info)
 {
 	MsOfficeXMLParserInfo info = { 0 };
 	MsOfficeXMLFileType file_type;
+	TrackerSparqlBuilder *metadata;
 	TrackerConfig *config;
 	GMarkupParseContext *context = NULL;
 	GError *error = NULL;
+	GFile *file;
+	gchar *uri;
 
 	if (G_UNLIKELY (maximum_size_error_quark == 0)) {
 		maximum_size_error_quark = g_quark_from_static_string ("maximum_size_error");
 	}
+
+	metadata = tracker_extract_info_get_metadata_builder (extract_info);
+	file = tracker_extract_info_get_file (extract_info);
+	uri = g_file_get_uri (file);
 
 	/* Get current Content Type */
 	file_type = msoffice_xml_get_file_type (uri);
@@ -845,10 +837,7 @@ extract_msoffice_xml (const gchar          *uri,
 
 	g_timer_destroy (info.timer);
 	g_markup_parse_context_free (context);
-}
+	g_free (uri);
 
-TrackerExtractData *
-tracker_extract_get_data (void)
-{
-	return data;
+	return TRUE;
 }

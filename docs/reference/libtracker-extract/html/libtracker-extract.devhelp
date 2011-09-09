@@ -18,10 +18,6 @@
     </sub>
   </chapters>
   <functions>
-    <function name="TrackerExtractMimeFunc ()" link="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractMimeFunc"/>
-    <function name="TrackerExtractDataFunc ()" link="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractDataFunc"/>
-    <function name="TrackerExtractData" link="libtracker-extract-How-to-use-libtracker-extract.html#TrackerExtractData"/>
-    <function name="tracker_extract_get_data ()" link="libtracker-extract-How-to-use-libtracker-extract.html#tracker-extract-get-data"/>
     <function name="tracker_coalesce ()" link="libtracker-extract-Data-utilities.html#tracker-coalesce"/>
     <function name="tracker_coalesce_strip ()" link="libtracker-extract-Data-utilities.html#tracker-coalesce-strip"/>
     <function name="tracker_merge ()" link="libtracker-extract-Data-utilities.html#tracker-merge"/>

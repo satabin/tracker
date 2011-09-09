@@ -46,6 +46,8 @@
  * object when no longer used.
  *
  * Since: 0.10
+ *
+ * Deprecated: 0.12: Use tracker_sparql_connection_get_finish instead.
  */
 /**
  * tracker_sparql_connection_query_finish:
@@ -285,7 +287,7 @@ TrackerSparqlConnection* tracker_sparql_connection_get_finish (GAsyncResult* _re
 TrackerSparqlConnection* tracker_sparql_connection_get (GCancellable* cancellable, GError** error);
 void tracker_sparql_connection_get_direct_async (GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 TrackerSparqlConnection* tracker_sparql_connection_get_direct_finish (GAsyncResult* _res_, GError** error);
-TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* cancellable, GError** error);
+TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* cancellable, GError** error) G_GNUC_DEPRECATED;
 TrackerSparqlCursor* tracker_sparql_connection_query (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GError** error);
 static TrackerSparqlCursor* tracker_sparql_connection_real_query (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GError** error);
 void tracker_sparql_connection_query_async (TrackerSparqlConnection* self, const gchar* sparql, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
@@ -387,6 +389,8 @@ GQuark tracker_sparql_error_quark (void) {
  * object when no longer used.
  *
  * Since: 0.10
+ *
+ * Deprecated: 0.12: Use tracker_sparql_connection_get instead.
  */
 /**
  * tracker_sparql_connection_query:
@@ -442,7 +446,7 @@ TrackerSparqlCursor* tracker_sparql_connection_query_finish (TrackerSparqlConnec
 static void tracker_sparql_connection_real_update (TrackerSparqlConnection* self, const gchar* sparql, gint priority, GCancellable* cancellable, GError** error) {
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (sparql != NULL);
-	g_warning ("tracker-connection.vala:265: Interface 'update' not implemented");
+	g_warning ("tracker-connection.vala:273: Interface 'update' not implemented");
 }
 
 
@@ -506,7 +510,7 @@ static gboolean tracker_sparql_connection_real_update_async_co (TrackerSparqlCon
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_warning ("tracker-connection.vala:294: Interface 'update_async' not implemented");
+	g_warning ("tracker-connection.vala:302: Interface 'update_async' not implemented");
 	if (data->_state_ == 0) {
 		g_simple_async_result_complete_in_idle (data->_async_result);
 	} else {
@@ -628,7 +632,7 @@ static gboolean tracker_sparql_connection_real_update_array_async_co (TrackerSpa
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_warning ("tracker-connection.vala:359: Interface 'update_array_async' not implem" \
+	g_warning ("tracker-connection.vala:367: Interface 'update_array_async' not implem" \
 "ented");
 	data->result = NULL;
 	if (data->_state_ == 0) {
@@ -678,7 +682,7 @@ static GVariant* tracker_sparql_connection_real_update_blank (TrackerSparqlConne
 	GVariant* result = NULL;
 	g_return_val_if_fail (self != NULL, NULL);
 	g_return_val_if_fail (sparql != NULL, NULL);
-	g_warning ("tracker-connection.vala:380: Interface 'update_blank' not implemented");
+	g_warning ("tracker-connection.vala:388: Interface 'update_blank' not implemented");
 	result = NULL;
 	return result;
 }
@@ -748,7 +752,7 @@ static gboolean tracker_sparql_connection_real_update_blank_async_co (TrackerSpa
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_warning ("tracker-connection.vala:414: Interface 'update_blank_async' not implem" \
+	g_warning ("tracker-connection.vala:422: Interface 'update_blank_async' not implem" \
 "ented");
 	data->result = NULL;
 	if (data->_state_ == 0) {
@@ -793,7 +797,7 @@ GVariant* tracker_sparql_connection_update_blank_finish (TrackerSparqlConnection
 static void tracker_sparql_connection_real_load (TrackerSparqlConnection* self, GFile* file, GCancellable* cancellable, GError** error) {
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (file != NULL);
-	g_warning ("tracker-connection.vala:431: Interface 'load' not implemented");
+	g_warning ("tracker-connection.vala:439: Interface 'load' not implemented");
 }
 
 
@@ -851,7 +855,7 @@ static gboolean tracker_sparql_connection_real_load_async_co (TrackerSparqlConne
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_warning ("tracker-connection.vala:459: Interface 'load_async' not implemented");
+	g_warning ("tracker-connection.vala:467: Interface 'load_async' not implemented");
 	if (data->_state_ == 0) {
 		g_simple_async_result_complete_in_idle (data->_async_result);
 	} else {
@@ -890,7 +894,7 @@ void tracker_sparql_connection_load_finish (TrackerSparqlConnection* self, GAsyn
 static TrackerSparqlCursor* tracker_sparql_connection_real_statistics (TrackerSparqlConnection* self, GCancellable* cancellable, GError** error) {
 	TrackerSparqlCursor* result = NULL;
 	g_return_val_if_fail (self != NULL, NULL);
-	g_warning ("tracker-connection.vala:478: Interface 'statistics' not implemented");
+	g_warning ("tracker-connection.vala:486: Interface 'statistics' not implemented");
 	result = NULL;
 	return result;
 }
@@ -957,7 +961,7 @@ static gboolean tracker_sparql_connection_real_statistics_async_co (TrackerSparq
 		g_assert_not_reached ();
 	}
 	_state_0:
-	g_warning ("tracker-connection.vala:510: Interface 'statistics_async' not implemen" \
+	g_warning ("tracker-connection.vala:518: Interface 'statistics_async' not implemen" \
 "ted");
 	data->result = NULL;
 	if (data->_state_ == 0) {

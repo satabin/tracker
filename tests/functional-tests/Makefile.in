@@ -25,6 +25,7 @@
 # full-report: like test-report: with -m perf and -m slow
 #
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -92,7 +93,7 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(configdir)"
+am__installdirs = "$(DESTDIR)$(configdir)" "$(DESTDIR)$(dconfdir)"
 SCRIPTS = $(config_SCRIPTS)
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
@@ -109,6 +110,7 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	install-pdf-recursive install-ps-recursive install-recursive \
 	installcheck-recursive installdirs-recursive pdf-recursive \
 	ps-recursive uninstall-recursive
+DATA = $(dconf_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
@@ -183,6 +185,7 @@ EXEEXT = @EXEEXT@
 EXEMPI_CFLAGS = @EXEMPI_CFLAGS@
 EXEMPI_LIBS = @EXEMPI_LIBS@
 FGREP = @FGREP@
+FIREFOX = @FIREFOX@
 GCOV_CFLAGS = @GCOV_CFLAGS@
 GCOV_LIBS = @GCOV_LIBS@
 GCOV_VALAFLAGS = @GCOV_VALAFLAGS@
@@ -190,13 +193,16 @@ GDKPIXBUF_CFLAGS = @GDKPIXBUF_CFLAGS@
 GDKPIXBUF_LIBS = @GDKPIXBUF_LIBS@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
+GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
+GLIB_MKENUMS = @GLIB_MKENUMS@
 GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
 GNOME_KEYRING_CFLAGS = @GNOME_KEYRING_CFLAGS@
 GNOME_KEYRING_LIBS = @GNOME_KEYRING_LIBS@
 GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
+GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GSTREAMER_PBUTILS_CFLAGS = @GSTREAMER_PBUTILS_CFLAGS@
@@ -258,8 +264,6 @@ LIBTIFF_LIBS = @LIBTIFF_LIBS@
 LIBTOOL = @LIBTOOL@
 LIBTRACKER_BUS_CFLAGS = @LIBTRACKER_BUS_CFLAGS@
 LIBTRACKER_BUS_LIBS = @LIBTRACKER_BUS_LIBS@
-LIBTRACKER_CLIENT_CFLAGS = @LIBTRACKER_CLIENT_CFLAGS@
-LIBTRACKER_CLIENT_LIBS = @LIBTRACKER_CLIENT_LIBS@
 LIBTRACKER_COMMON_CFLAGS = @LIBTRACKER_COMMON_CFLAGS@
 LIBTRACKER_COMMON_LIBS = @LIBTRACKER_COMMON_LIBS@
 LIBTRACKER_DATA_CFLAGS = @LIBTRACKER_DATA_CFLAGS@
@@ -331,9 +335,11 @@ SQLITE3_LIBS = @SQLITE3_LIBS@
 STRIP = @STRIP@
 TAGLIB_CFLAGS = @TAGLIB_CFLAGS@
 TAGLIB_LIBS = @TAGLIB_LIBS@
+THUNDERBIRD = @THUNDERBIRD@
 TOTEM_PL_PARSER_CFLAGS = @TOTEM_PL_PARSER_CFLAGS@
 TOTEM_PL_PARSER_LIBS = @TOTEM_PL_PARSER_LIBS@
 TRACKER_API_VERSION = @TRACKER_API_VERSION@
+TRACKER_API_VERSION_UNDERSCORES = @TRACKER_API_VERSION_UNDERSCORES@
 TRACKER_BINARY_AGE = @TRACKER_BINARY_AGE@
 TRACKER_BINARY_VERSION = @TRACKER_BINARY_VERSION@
 TRACKER_CONTROL_CFLAGS = @TRACKER_CONTROL_CFLAGS@
@@ -350,12 +356,14 @@ TRACKER_MICRO_VERSION = @TRACKER_MICRO_VERSION@
 TRACKER_MINER_EVOLUTION_CFLAGS = @TRACKER_MINER_EVOLUTION_CFLAGS@
 TRACKER_MINER_EVOLUTION_INSTALL_DIR = @TRACKER_MINER_EVOLUTION_INSTALL_DIR@
 TRACKER_MINER_EVOLUTION_LIBS = @TRACKER_MINER_EVOLUTION_LIBS@
+TRACKER_MINER_FIREFOX_INSTALL_DIR = @TRACKER_MINER_FIREFOX_INSTALL_DIR@
 TRACKER_MINER_FLICKR_CFLAGS = @TRACKER_MINER_FLICKR_CFLAGS@
 TRACKER_MINER_FLICKR_LIBS = @TRACKER_MINER_FLICKR_LIBS@
 TRACKER_MINER_FS_CFLAGS = @TRACKER_MINER_FS_CFLAGS@
 TRACKER_MINER_FS_LIBS = @TRACKER_MINER_FS_LIBS@
 TRACKER_MINER_RSS_CFLAGS = @TRACKER_MINER_RSS_CFLAGS@
 TRACKER_MINER_RSS_LIBS = @TRACKER_MINER_RSS_LIBS@
+TRACKER_MINER_THUNDERBIRD_INSTALL_DIR = @TRACKER_MINER_THUNDERBIRD_INSTALL_DIR@
 TRACKER_MINOR_VERSION = @TRACKER_MINOR_VERSION@
 TRACKER_NAUTILUS_EXTENSION_CFLAGS = @TRACKER_NAUTILUS_EXTENSION_CFLAGS@
 TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR = @TRACKER_NAUTILUS_EXTENSION_INSTALL_DIR@
@@ -410,6 +418,7 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
+gsettingsschemadir = @gsettingsschemadir@
 gtester = @gtester@
 host = @host@
 host_alias = @host_alias@
@@ -448,7 +457,6 @@ TEST_PROGS =
 SUBDIRS = \
 	ipc \
 	common \
-	test-configurations \
 	test-extraction-data \
 	test-writeback-data \
 	test-apps-data \
@@ -459,6 +467,8 @@ SUBDIRS = \
 configdir = $(datadir)/tracker-tests
 config_SCRIPTS = __init__.py $(slow_tests) $(standard_tests) \
 	$(am__append_1)
+dconfdir = $(sysconfdir)/dconf/profile
+dconf_DATA = trackertest
 standard_tests = 01-insertion.py 02-sparql-bugs.py $(am__append_2) \
 	04-group-concat.py 05-coalesce.py 06-distance.py 07-graph.py \
 	08-unique-insertions.py 09-concurrent-query.py 14-signals.py \
@@ -476,6 +486,7 @@ slow_tests = \
 
 EXTRA_DIST = \
 	$(config_SCRIPTS) \
+	$(dconf_DATA) \
 	create-tests-xml.py
 
 @HAVE_MAEMO_TRUE@CLEANFILES = \
@@ -555,6 +566,26 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-dconfDATA: $(dconf_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(dconfdir)" || $(MKDIR_P) "$(DESTDIR)$(dconfdir)"
+	@list='$(dconf_DATA)'; test -n "$(dconfdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(dconfdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(dconfdir)" || exit $$?; \
+	done
+
+uninstall-dconfDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dconf_DATA)'; test -n "$(dconfdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(dconfdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(dconfdir)" && rm -f $$files
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
@@ -752,10 +783,10 @@ distdir: $(DISTFILES)
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) check-local
 check: check-recursive
-all-am: Makefile $(SCRIPTS)
+all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(configdir)"; do \
+	for dir in "$(DESTDIR)$(configdir)" "$(DESTDIR)$(dconfdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -804,7 +835,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-configSCRIPTS
+install-data-am: install-configSCRIPTS install-dconfDATA
 
 install-dvi: install-dvi-recursive
 
@@ -848,7 +879,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-configSCRIPTS
+uninstall-am: uninstall-configSCRIPTS uninstall-dconfDATA
 
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) check-am \
 	ctags-recursive install-am install-strip tags-recursive
@@ -858,15 +889,16 @@ uninstall-am: uninstall-configSCRIPTS
 	clean-libtool ctags ctags-recursive distclean \
 	distclean-generic distclean-libtool distclean-tags distdir dvi \
 	dvi-am html html-am info info-am install install-am \
-	install-configSCRIPTS install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	installdirs-am maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
-	ps ps-am tags tags-recursive uninstall uninstall-am \
-	uninstall-configSCRIPTS
+	install-configSCRIPTS install-data install-data-am \
+	install-dconfDATA install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-recursive \
+	uninstall uninstall-am uninstall-configSCRIPTS \
+	uninstall-dconfDATA
 
 
 ### testing rules

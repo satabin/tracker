@@ -292,6 +292,10 @@ object when no longer used.</td>
 <pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *  tracker_sparql_connection_get_direct
                                                         (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_sparql_connection_get_direct</code> has been deprecated since version 0.12 and should not be used in newly-written code. Use tracker_sparql_connection_get instead.</p>
+</div>
 <p>
 This behaves the same way <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get" title="tracker_sparql_connection_get ()"><code class="function">tracker_sparql_connection_get()</code></a> does, however,
 the <a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="type">TrackerSparqlConnection</span></a> can only be used for read-only requests.
@@ -336,6 +340,10 @@ object when no longer used.</td>
 <pre class="programlisting"><a class="link" href="TrackerSparqlConnection.html" title="TrackerSparqlConnection"><span class="returnvalue">TrackerSparqlConnection</span></a> *  tracker_sparql_connection_get_direct_finish
                                                         (<em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *_res_</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">tracker_sparql_connection_get_direct_finish</code> has been deprecated since version 0.12 and should not be used in newly-written code. Use tracker_sparql_connection_get_finish instead.</p>
+</div>
 <p>
 This function is called from the callback provided for
 <a class="link" href="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-async" title="tracker_sparql_connection_get_direct_async ()"><code class="function">tracker_sparql_connection_get_direct_async()</code></a> to return the connection
@@ -641,7 +649,7 @@ Finishes the asynchronous SPARQL update_array operation.
 <p>
 </p>
 <div class="example">
-<a name="id481060"></a><p class="title"><b>Example 1. </b></p>
+<a name="id609722"></a><p class="title"><b>Example 1. </b></p>
 <div class="example-contents"><pre class="programlisting">
 static void
 async_update_array_callback (GObject      *source_object,

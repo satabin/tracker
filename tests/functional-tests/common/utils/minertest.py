@@ -25,16 +25,25 @@ import unittest2 as ut
 import shutil
 import os
 
-BASEDIR = os.environ['HOME']
+MINER_TMP_DIR = cfg.TEST_MONITORED_TMP_DIR
 
 def path (filename):
-    return os.path.join (BASEDIR, filename)
+    return os.path.join (MINER_TMP_DIR, filename)
 
 def uri (filename):
-    return "file://" + os.path.join (BASEDIR, filename)
+    return "file://" + os.path.join (MINER_TMP_DIR, filename)
 
 
 DEFAULT_TEXT = "Some stupid content, to have a test file"
+
+CONF_OPTIONS = [
+    (cfg.DCONF_MINER_SCHEMA, "index-recursive-directories", [os.path.join (MINER_TMP_DIR, "test-monitored")]),
+    (cfg.DCONF_MINER_SCHEMA, "index-single-directories", "[]"),
+    (cfg.DCONF_MINER_SCHEMA, "index-optical-discs", "false"),
+    (cfg.DCONF_MINER_SCHEMA, "index-removable-devices", "false"),
+    (cfg.DCONF_MINER_SCHEMA, "throttle", 5)
+    ]
+
 
 class CommonTrackerMinerTest (ut.TestCase):
 
@@ -57,7 +66,7 @@ class CommonTrackerMinerTest (ut.TestCase):
                   "test-monitored/dir1",
                   "test-monitored/dir1/dir2",
                   "test-no-monitored"]:
-            directory = os.path.join (BASEDIR, d)
+            directory = os.path.join (MINER_TMP_DIR, d)
             if (os.path.exists (directory)):
                 shutil.rmtree (directory)
             os.makedirs (directory)
@@ -66,7 +75,7 @@ class CommonTrackerMinerTest (ut.TestCase):
                    "test-monitored/dir1/file2.txt",
                    "test-monitored/dir1/dir2/file3.txt",
                    "test-no-monitored/file0.txt"]:
-            testfile = os.path.join (BASEDIR, tf)
+            testfile = os.path.join (MINER_TMP_DIR, tf)
             if (os.path.exists (testfile)):
                 os.remove (testfile)
             f = open (testfile, 'w')
@@ -87,11 +96,9 @@ class CommonTrackerMinerTest (ut.TestCase):
         else:
             confdir = os.path.join (cfg.DATADIR, "tracker-tests",
                                     "test-configurations", "miner-basic-ops")
-        self.system.tracker_miner_fs_testing_start (confdir)
-        # Returns when ready
-        self.tracker = StoreHelper ()
-        self.tracker.wait ()
-        print "Ready to go!"
+        self.system.tracker_miner_fs_testing_start (CONF_OPTIONS)
+        self.system.tracker_miner_fs_wait_for_idle ()
+        self.tracker = self.system.store
         
     @classmethod
     def tearDownClass (self):

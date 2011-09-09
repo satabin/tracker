@@ -41,16 +41,6 @@ typedef struct _TrackerTagList TrackerTagList;
 typedef struct _TrackerTagListClass TrackerTagListClass;
 typedef struct _TrackerTagListPrivate TrackerTagListPrivate;
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
-
-#define TRACKER_TYPE_CELL_RENDERER_TEXT (tracker_cell_renderer_text_get_type ())
-#define TRACKER_CELL_RENDERER_TEXT(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_TYPE_CELL_RENDERER_TEXT, TrackerCellRendererText))
-#define TRACKER_CELL_RENDERER_TEXT_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TRACKER_TYPE_CELL_RENDERER_TEXT, TrackerCellRendererTextClass))
-#define TRACKER_IS_CELL_RENDERER_TEXT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRACKER_TYPE_CELL_RENDERER_TEXT))
-#define TRACKER_IS_CELL_RENDERER_TEXT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TRACKER_TYPE_CELL_RENDERER_TEXT))
-#define TRACKER_CELL_RENDERER_TEXT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TRACKER_TYPE_CELL_RENDERER_TEXT, TrackerCellRendererTextClass))
-
-typedef struct _TrackerCellRendererText TrackerCellRendererText;
-typedef struct _TrackerCellRendererTextClass TrackerCellRendererTextClass;
 #define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 #define _g_free0(var) (var = (g_free (var), NULL))
 typedef struct _TrackerTagListGetTagsData TrackerTagListGetTagsData;
@@ -115,15 +105,19 @@ enum  {
 };
 TrackerTagList* tracker_tag_list_new (void);
 TrackerTagList* tracker_tag_list_construct (GType object_type);
-TrackerCellRendererText* tracker_cell_renderer_text_new (void);
-TrackerCellRendererText* tracker_cell_renderer_text_construct (GType object_type);
-GType tracker_cell_renderer_text_get_type (void) G_GNUC_CONST;
+static void tracker_tag_list_text_renderer_func (TrackerTagList* self, GtkCellLayout* cell_layout, GtkCellRenderer* cell, GtkTreeModel* tree_model, GtkTreeIter* iter);
+static void _tracker_tag_list_text_renderer_func_gtk_cell_layout_data_func (GtkCellLayout* cell_layout, GtkCellRenderer* cell, GtkTreeModel* tree_model, GtkTreeIter* iter, gpointer self);
 static void tracker_tag_list_get_tags (TrackerTagList* self, GAsyncReadyCallback _callback_, gpointer _user_data_);
 static void tracker_tag_list_get_tags_finish (TrackerTagList* self, GAsyncResult* _res_);
 static void tracker_tag_list_get_tags_data_free (gpointer _data);
 static gboolean tracker_tag_list_get_tags_co (TrackerTagListGetTagsData* data);
 static void tracker_tag_list_get_tags_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
 static void tracker_tag_list_finalize (GObject* obj);
+
+
+static void _tracker_tag_list_text_renderer_func_gtk_cell_layout_data_func (GtkCellLayout* cell_layout, GtkCellRenderer* cell, GtkTreeModel* tree_model, GtkTreeIter* iter, gpointer self) {
+	tracker_tag_list_text_renderer_func (self, cell_layout, cell, tree_model, iter);
+}
 
 
 TrackerTagList* tracker_tag_list_construct (GType object_type) {
@@ -134,8 +128,8 @@ TrackerTagList* tracker_tag_list_construct (GType object_type) {
 	GtkCellRenderer* renderer = NULL;
 	GtkTreeViewColumn* _tmp2_ = NULL;
 	const gchar* _tmp3_ = NULL;
-	TrackerCellRendererText* _tmp4_ = NULL;
-	TrackerCellRendererText* _tmp5_ = NULL;
+	GtkCellRendererText* _tmp4_ = NULL;
+	GtkCellRendererText* _tmp5_ = NULL;
 	TrackerSparqlConnection* _tmp6_ = NULL;
 	TrackerSparqlConnection* _tmp7_;
 	GError * _inner_error_ = NULL;
@@ -158,13 +152,12 @@ TrackerTagList* tracker_tag_list_construct (GType object_type) {
 	gtk_tree_view_column_set_resizable (col, TRUE);
 	gtk_tree_view_column_set_expand (col, TRUE);
 	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-	_tmp4_ = tracker_cell_renderer_text_new ();
+	_tmp4_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
 	_g_object_unref0 (renderer);
 	renderer = (GtkCellRenderer*) g_object_ref_sink (_tmp4_);
 	gtk_cell_layout_pack_start ((GtkCellLayout*) col, renderer, TRUE);
-	gtk_cell_layout_add_attribute ((GtkCellLayout*) col, renderer, "text", 1);
-	gtk_cell_layout_add_attribute ((GtkCellLayout*) col, renderer, "subtext", 2);
-	_tmp5_ = tracker_cell_renderer_text_new ();
+	gtk_cell_layout_set_cell_data_func ((GtkCellLayout*) col, renderer, _tracker_tag_list_text_renderer_func_gtk_cell_layout_data_func, g_object_ref (self), g_object_unref);
+	_tmp5_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
 	_g_object_unref0 (renderer);
 	renderer = (GtkCellRenderer*) g_object_ref_sink (_tmp5_);
 	g_object_set (renderer, "xpad", (guint) 5, NULL);
@@ -187,7 +180,7 @@ TrackerTagList* tracker_tag_list_construct (GType object_type) {
 		GError * e;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		g_warning ("tracker-taglist.vala:81: Could not get Sparql connection: %s", e->message);
+		g_warning ("tracker-taglist.vala:80: Could not get Sparql connection: %s", e->message);
 		_g_error_free0 (e);
 		_g_object_unref0 (renderer);
 		_g_object_unref0 (col);
@@ -210,6 +203,45 @@ TrackerTagList* tracker_tag_list_construct (GType object_type) {
 
 TrackerTagList* tracker_tag_list_new (void) {
 	return tracker_tag_list_construct (TRACKER_TYPE_TAG_LIST);
+}
+
+
+static void tracker_tag_list_text_renderer_func (TrackerTagList* self, GtkCellLayout* cell_layout, GtkCellRenderer* cell, GtkTreeModel* tree_model, GtkTreeIter* iter) {
+	gchar* text = NULL;
+	gchar* subtext = NULL;
+	gchar* markup;
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (cell_layout != NULL);
+	g_return_if_fail (cell != NULL);
+	g_return_if_fail (tree_model != NULL);
+	markup = NULL;
+	gtk_tree_model_get (tree_model, iter, 1, &text, 2, &subtext, -1, -1);
+	if (text != NULL) {
+		gchar* _tmp0_ = NULL;
+		_tmp0_ = g_markup_escape_text (text, (gssize) (-1));
+		_g_free0 (markup);
+		markup = _tmp0_;
+		if (subtext != NULL) {
+			gchar* _tmp1_ = NULL;
+			gchar* _tmp2_;
+			gchar* _tmp3_ = NULL;
+			gchar* _tmp4_;
+			gchar* _tmp5_;
+			_tmp1_ = g_markup_escape_text (subtext, (gssize) (-1));
+			_tmp2_ = _tmp1_;
+			_tmp3_ = g_strdup_printf ("\n<small><span color='grey'>%s</span></small>", _tmp2_);
+			_tmp4_ = _tmp3_;
+			_tmp5_ = g_strconcat (markup, _tmp4_, NULL);
+			_g_free0 (markup);
+			markup = _tmp5_;
+			_g_free0 (_tmp4_);
+			_g_free0 (_tmp2_);
+		}
+	}
+	g_object_set ((GObject*) cell, "markup", markup, NULL);
+	_g_free0 (markup);
+	_g_free0 (subtext);
+	_g_free0 (text);
 }
 
 
@@ -290,7 +322,7 @@ static gboolean tracker_tag_list_get_tags_co (TrackerTagListGetTagsData* data) {
 	_g_free0 (data->_tmp3_);
 	_g_free0 (data->_tmp1_);
 	data->query = data->_tmp5_;
-	g_debug ("tracker-taglist.vala:108: Getting tags");
+	g_debug ("tracker-taglist.vala:127: Getting tags");
 	data->cursor = NULL;
 	data->_state_ = 1;
 	tracker_sparql_connection_query_async (tracker_tag_list_connection, data->query, NULL, tracker_tag_list_get_tags_ready, data);
@@ -333,11 +365,11 @@ static gboolean tracker_tag_list_get_tags_co (TrackerTagListGetTagsData* data) {
 					if (data->i == 0) {
 						data->_tmp12_ = NULL;
 						data->_tmp12_ = tracker_sparql_cursor_get_string (data->cursor, data->i, NULL);
-						g_debug ("tracker-taglist.vala:118: --> %s", data->_tmp12_);
+						g_debug ("tracker-taglist.vala:137: --> %s", data->_tmp12_);
 					} else {
 						data->_tmp13_ = NULL;
 						data->_tmp13_ = tracker_sparql_cursor_get_string (data->cursor, data->i, NULL);
-						g_debug ("tracker-taglist.vala:120:   --> %s", data->_tmp13_);
+						g_debug ("tracker-taglist.vala:139:   --> %s", data->_tmp13_);
 					}
 				}
 			}
@@ -358,7 +390,7 @@ static gboolean tracker_tag_list_get_tags_co (TrackerTagListGetTagsData* data) {
 	{
 		data->e = data->_inner_error_;
 		data->_inner_error_ = NULL;
-		g_warning ("tracker-taglist.vala:136: Could not run Sparql query: %s", data->e->message);
+		g_warning ("tracker-taglist.vala:155: Could not run Sparql query: %s", data->e->message);
 		_g_error_free0 (data->e);
 	}
 	__finally14:
@@ -369,7 +401,7 @@ static gboolean tracker_tag_list_get_tags_co (TrackerTagListGetTagsData* data) {
 		g_clear_error (&data->_inner_error_);
 		return FALSE;
 	}
-	g_debug ("tracker-taglist.vala:139:   Done");
+	g_debug ("tracker-taglist.vala:158:   Done");
 	_g_object_unref0 (data->cursor);
 	_g_free0 (data->query);
 	if (data->_state_ == 0) {

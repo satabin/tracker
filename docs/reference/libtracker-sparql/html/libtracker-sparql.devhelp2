@@ -41,7 +41,6 @@
     <keyword type="function" name="tracker_sparql_builder_delete_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-delete-close" since="0.10"/>
     <keyword type="function" name="tracker_sparql_builder_graph_open ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-graph-open" since="0.10"/>
     <keyword type="function" name="tracker_sparql_builder_graph_close ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-graph-close" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_builder_drop_graph ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-drop-graph" since="0.10"/>
     <keyword type="function" name="tracker_sparql_builder_subject_variable ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject-variable" since="0.10"/>
     <keyword type="function" name="tracker_sparql_builder_subject_iri ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject-iri" since="0.10"/>
     <keyword type="function" name="tracker_sparql_builder_subject ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-subject" since="0.10"/>
@@ -66,9 +65,9 @@
     <keyword type="function" name="tracker_sparql_connection_get ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_get_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-async"/>
     <keyword type="function" name="tracker_sparql_connection_get_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-finish" since="0.10"/>
-    <keyword type="function" name="tracker_sparql_connection_get_direct ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_connection_get_direct ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct" deprecated="0.12: Use tracker_sparql_connection_get instead." since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_get_direct_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-async"/>
-    <keyword type="function" name="tracker_sparql_connection_get_direct_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-finish" since="0.10"/>
+    <keyword type="function" name="tracker_sparql_connection_get_direct_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-get-direct-finish" deprecated="0.12: Use tracker_sparql_connection_get_finish instead." since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_query ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query" since="0.10"/>
     <keyword type="function" name="tracker_sparql_connection_query_async ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query-async"/>
     <keyword type="function" name="tracker_sparql_connection_query_finish ()" link="TrackerSparqlConnection.html#tracker-sparql-connection-query-finish" since="0.10"/>

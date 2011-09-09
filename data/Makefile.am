@@ -1,6 +1,6 @@
 include $(top_srcdir)/Makefile.decl
 
-SUBDIRS = dbus languages icons ontologies miners
+SUBDIRS = dbus languages icons ontologies miners gschemas
 
 # First we fix the VERSION and libexecdir in the desktop files
 tracker-store.desktop.in: tracker-store.desktop.in.in
@@ -52,14 +52,10 @@ endif
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA =                                       \
 	tracker-sparql-$(TRACKER_API_VERSION).pc       \
-	tracker-client-$(TRACKER_API_VERSION).pc       \
 	tracker-extract-$(TRACKER_API_VERSION).pc      \
 	tracker-miner-$(TRACKER_API_VERSION).pc
 
 tracker-sparql-$(TRACKER_API_VERSION).pc: tracker-sparql.pc
-	cp $< $@
-
-tracker-client-$(TRACKER_API_VERSION).pc: tracker-client.pc
 	cp $< $@
 
 tracker-extract-$(TRACKER_API_VERSION).pc: tracker-extract.pc
@@ -72,7 +68,6 @@ CLEANFILES =                                           \
 	$(autostart_DATA)                              \
 	$(desktop_in_files)                            \
 	tracker-sparql-$(TRACKER_API_VERSION).pc       \
-	tracker-client-$(TRACKER_API_VERSION).pc       \
 	tracker-extract-$(TRACKER_API_VERSION).pc      \
 	tracker-miner-$(TRACKER_API_VERSION).pc
 

@@ -5,6 +5,7 @@ AM_CPPFLAGS =                                          \
 	-I$(top_srcdir)/src                            \
 	-I$(top_builddir)/src                          \
 	-DSHAREDIR=\""$(datadir)"\"                    \
+	-DTRACKER_EXTRACTOR_RULES_DIR=\""$(datadir)/tracker/extract-rules"\" \
 	$(LIBTRACKER_EXTRACT_CFLAGS)
 
 lib_LTLIBRARIES = libtracker-extract-@TRACKER_API_VERSION@.la
@@ -16,10 +17,16 @@ libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES =  \
 	tracker-encoding.c                             \
 	tracker-exif.c                                 \
 	tracker-exif.h                                 \
+	tracker-extract-client.c                       \
+	tracker-extract-client.h                       \
+	tracker-extract-info.c                         \
+	tracker-extract-info.h                         \
 	tracker-guarantee.c                            \
 	tracker-guarantee.h                            \
 	tracker-iptc.c                                 \
 	tracker-iptc.h                                 \
+	tracker-module-manager.c                       \
+	tracker-module-manager.h                       \
 	tracker-utils.c                                \
 	tracker-xmp.c                                  \
 	tracker-xmp.h
@@ -30,9 +37,12 @@ libtracker_extractinclude_HEADERS =                    \
 	tracker-data.h                                 \
 	tracker-encoding.h                             \
 	tracker-exif.h                                 \
+	tracker-extract-client.h                       \
+	tracker-extract-info.h                         \
 	tracker-extract.h                              \
 	tracker-guarantee.h                            \
 	tracker-iptc.h                                 \
+	tracker-module-manager.h                       \
 	tracker-utils.h                                \
 	tracker-xmp.h
 
@@ -73,12 +83,12 @@ if HAVE_INTROSPECTION
 INTROSPECTION_CFLAGS += $(AM_CPPFLAGS)
 introspection_sources = $(libtracker_extract_@TRACKER_API_VERSION@_la_SOURCES)
 TrackerExtract-@TRACKER_API_VERSION@.gir: $(INTROSPECTION_SCANNER) $(lib_LTLIBRARIES) Makefile
-TrackerExtract_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_INCLUDES = GObject-2.0 GModule-2.0
-TrackerExtract_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_SCANNERFLAGS = \
+TrackerExtract_@TRACKER_API_VERSION_UNDERSCORES@_gir_INCLUDES = GObject-2.0 GModule-2.0
+TrackerExtract_@TRACKER_API_VERSION_UNDERSCORES@_gir_SCANNERFLAGS = \
 	--include-uninstalled=$(top_srcdir)/src/libtracker-sparql/Tracker-$(TRACKER_API_VERSION).gir
-TrackerExtract_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_CFLAGS = $(INCLUDES)
-TrackerExtract_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_LIBS = $(lib_LTLIBRARIES)
-TrackerExtract_@TRACKER_MAJOR_VERSION@_@TRACKER_MINOR_VERSION@_gir_FILES = $(introspection_sources)
+TrackerExtract_@TRACKER_API_VERSION_UNDERSCORES@_gir_CFLAGS = $(INCLUDES)
+TrackerExtract_@TRACKER_API_VERSION_UNDERSCORES@_gir_LIBS = $(lib_LTLIBRARIES)
+TrackerExtract_@TRACKER_API_VERSION_UNDERSCORES@_gir_FILES = $(introspection_sources)
 
 INTROSPECTION_GIRS += TrackerExtract-$(TRACKER_API_VERSION).gir
 

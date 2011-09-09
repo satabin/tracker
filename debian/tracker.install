@@ -12,8 +12,6 @@ usr/share/tracker/tracker-status.xml
 usr/lib/tracker/tracker-store
 
 usr/share/man/man1/tracker-store.1
-usr/share/man/man5/tracker-store.cfg.5
-usr/share/man/man5/tracker-fts.cfg.5
 
 usr/share/locale/
 usr/share/tracker/ontologies/

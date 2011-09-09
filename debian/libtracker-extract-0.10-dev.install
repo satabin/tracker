@@ -1,5 +1,0 @@
-usr/lib/libtracker-extract-0.10.so
-usr/lib/pkgconfig/tracker-extract-0.10.pc
-usr/include/tracker-0.10/libtracker-extract/*.h
-usr/share/gtk-doc/html/libtracker-extract/
-usr/share/gir-1.0/TrackerExtract-0.10.gir

@@ -1,7 +1,0 @@
-usr/lib/libtracker-miner-0.10.so
-usr/lib/pkgconfig/tracker-miner-0.10.pc
-usr/include/tracker-0.10/libtracker-miner/*.h
-usr/share/vala/vapi/tracker-miner-0.10.vapi
-usr/share/vala/vapi/tracker-miner-0.10.deps
-usr/share/gtk-doc/html/libtracker-miner/
-usr/share/gir-1.0/TrackerMiner-0.10.gir

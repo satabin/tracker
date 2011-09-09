@@ -1,2 +1,2 @@
-libtracker-common 0 libtracker-sparql-0.10-0 (= ${binary:Version})
-libtracker-data 0 libtracker-sparql-0.10-0 (= ${binary:Version})
+libtracker-common 0 libtracker-sparql-0.12-0 (= ${binary:Version})
+libtracker-data 0 libtracker-sparql-0.12-0 (= ${binary:Version})

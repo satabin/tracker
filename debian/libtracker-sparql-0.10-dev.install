@@ -1,7 +1,0 @@
-usr/lib/libtracker-sparql-0.10.so
-usr/lib/pkgconfig/tracker-sparql-0.10.pc
-usr/include/tracker-0.10/libtracker-sparql/*.h
-usr/share/vala/vapi/tracker-sparql-0.10.vapi
-usr/share/vala/vapi/tracker-sparql-0.10.deps
-usr/share/gtk-doc/html/libtracker-sparql/
-usr/share/gir-1.0/Tracker-0.10.gir

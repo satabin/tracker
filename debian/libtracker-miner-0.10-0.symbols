@@ -16,6 +16,7 @@ libtracker-miner-0.10.so.0 libtracker-miner-0.10-0 #MINVER#
  tracker_miner_fs_directory_remove@Base 0.8.0
  tracker_miner_fs_directory_remove_full@Base 0.10.0
  tracker_miner_fs_file_notify@Base 0.8.0
+ tracker_miner_fs_force_mtime_checking@Base 0.10.26
  tracker_miner_fs_force_recheck@Base 0.8.0
  tracker_miner_fs_get_initial_crawling@Base 0.10.0
  tracker_miner_fs_get_mtime_checking@Base 0.10.0

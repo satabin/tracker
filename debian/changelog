@@ -1,6 +1,7 @@
 tracker (0.10.26-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Update symbols files for libtracker-extract and libtracker-miner.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 09 Sep 2011 18:18:26 +0200
 

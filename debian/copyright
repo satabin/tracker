@@ -19,20 +19,6 @@ License:
     All files if not specified otherwise are licensed under the GPL v2 or later.
 
 ===============================================================================
-src/libinotify/*
-
-Copyright (C) 2005 Ryan Lortie <desrt@desrt.ca>
-License: LGPL v2.1 or later
-
-===============================================================================
-src/libtracker-client/*
-
-Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
-Copyright (C) 2008-2010, Nokia <ivan.frade@nokia.com>
-Copyright (C) 2010, Adrien Bustany <abustany@gnome.org>
-License: LGPL v2.1 or later
-
-===============================================================================
 src/libtracker-common/*
 
 Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>

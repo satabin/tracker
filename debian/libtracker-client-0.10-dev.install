@@ -1,5 +1,0 @@
-usr/lib/libtracker-client-0.10.so
-usr/lib/pkgconfig/tracker-client-0.10.pc
-usr/include/tracker-0.10/libtracker-client/*.h
-usr/share/vala/vapi/tracker-client-0.10.vapi
-usr/share/gtk-doc/html/libtracker-client/

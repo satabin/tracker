@@ -5,7 +5,6 @@ libtracker-sparql-0.12.so.0 libtracker-sparql-0.12-0 #MINVER#
  tracker_sparql_builder_construct_update@Base 0.10.0
  tracker_sparql_builder_delete_close@Base 0.10.0
  tracker_sparql_builder_delete_open@Base 0.10.0
- tracker_sparql_builder_drop_graph@Base 0.10.0
  tracker_sparql_builder_get_length@Base 0.10.0
  tracker_sparql_builder_get_result@Base 0.10.0
  tracker_sparql_builder_get_state@Base 0.10.0
@@ -63,6 +62,7 @@ libtracker-sparql-0.12.so.0 libtracker-sparql-0.12-0 #MINVER#
  tracker_sparql_connection_update_blank_async@Base 0.10.0
  tracker_sparql_connection_update_blank_finish@Base 0.10.0
  tracker_sparql_connection_update_finish@Base 0.10.0
+ tracker_sparql_cursor_close@Base 0.12.0
  tracker_sparql_cursor_construct@Base 0.10.0
  tracker_sparql_cursor_get_boolean@Base 0.10.0
  tracker_sparql_cursor_get_connection@Base 0.10.0

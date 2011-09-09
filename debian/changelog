@@ -7,6 +7,7 @@ tracker (0.12.0-1) UNRELEASED; urgency=low
   * Drop libtracker-client packages.
     This library has been deprecated in 0.10 and removed upstream in 0.12.
   * Update library packages for the API version bump 0.10 → 0.12.
+  * Update symbols files for libtracker-extract and libtracker-sparql.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 09 Sep 2011 21:31:23 +0200
 

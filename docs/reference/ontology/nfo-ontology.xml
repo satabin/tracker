@@ -231,6 +231,29 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nfo-RegionOfInterest'>
+<title>nfo:RegionOfInterest</title>
+<para>Area on an image with relevant content. Following the spec in http://www.metadataworkinggroup.org</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-roiRefersTo'>nfo:roiRefersTo</link>, <link linkend='nfo-regionOfInterestType'>nfo:regionOfInterestType</link>, <link linkend='nfo-regionOfInterestHeight'>nfo:regionOfInterestHeight</link>, <link linkend='nfo-regionOfInterestWidth'>nfo:regionOfInterestWidth</link>, <link linkend='nfo-regionOfInterestY'>nfo:regionOfInterestY</link>, <link linkend='nfo-regionOfInterestX'>nfo:regionOfInterestX</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-hasRegionOfInterest'>nfo:hasRegionOfInterest</link>, </simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nfo-Document'>
 <title>nfo:Document</title>
 <para>A generic document. A common superclass for all documents on the desktop.</para>
@@ -918,7 +941,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-depicts'>nfo:depicts</link>, <link linkend='nfo-orientation'>nfo:orientation</link>, <link linkend='nfo-horizontalResolution'>nfo:horizontalResolution</link>, <link linkend='nfo-verticalResolution'>nfo:verticalResolution</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-hasRegionOfInterest'>nfo:hasRegionOfInterest</link>, <link linkend='nfo-depicts'>nfo:depicts</link>, <link linkend='nfo-orientation'>nfo:orientation</link>, <link linkend='nfo-horizontalResolution'>nfo:horizontalResolution</link>, <link linkend='nfo-verticalResolution'>nfo:verticalResolution</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -1261,6 +1284,33 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nfo-RegionOfInterestContent'>
+<title>nfo:RegionOfInterestContent</title>
+<para>Content in the area. There is a predefined set of contents in the spec: http://www.metadataworkinggroup.org</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Superclasses</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subclasses</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In domain of</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>In range of</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-regionOfInterestType'>nfo:regionOfInterestType</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Predefined instances</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-roi-content-undefined'>nfo:roi-content-undefined</link>, <link linkend='nfo-roi-content-barcode'>nfo:roi-content-barcode</link>, <link linkend='nfo-roi-content-focus'>nfo:roi-content-focus</link>, <link linkend='nfo-roi-content-pet'>nfo:roi-content-pet</link>, <link linkend='nfo-roi-content-face'>nfo:roi-content-face</link>, </simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nfo-Bookmark'>
 <title>nfo:Bookmark</title>
 <para>A bookmark of a webbrowser. Use nie:title for the name/label, nie:contentCreated to represent the date when the user added the bookmark, and nie:contentLastModified for modifications. nfo:bookmarks to store the link.</para>
@@ -1465,6 +1515,64 @@
 <varlistentry>
 <term><parameter>Cardinality</parameter>&#160;:</term>
 <listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-regionOfInterestWidth'>
+<title>nfo:regionOfInterestWidth</title>
+<para>Width of the region. It is normalized (values between 0 and 1) to the total width of the picture.</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-RegionOfInterest'>nfo:RegionOfInterest</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-hasRegionOfInterest'>
+<title>nfo:hasRegionOfInterest</title>
+<para>Link an element with a defined region</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Image'>nfo:Image</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-RegionOfInterest'>nfo:RegionOfInterest</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -1965,6 +2073,37 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nfo-regionOfInterestX'>
+<title>nfo:regionOfInterestX</title>
+<para>Coordinate X where the region starts. It is normalized (values between 0 and 1) to the width of the picture. Starting in the upper left corner.</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-RegionOfInterest'>nfo:RegionOfInterest</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nfo-mediaListEntry'>
 <title>nfo:mediaListEntry</title>
 <para>A certain item belongs to a media list. This can reflect that a song is in a playlist, an image or video in an Album</para>
@@ -1988,6 +2127,37 @@
 <varlistentry>
 <term><parameter>Subproperties</parameter>&#160;:</term>
 <listitem><simpara>--</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-regionOfInterestY'>
+<title>nfo:regionOfInterestY</title>
+<para>Coordinate y where the region starts. It is normalized (values between 0 and 1) to the height of the picture. Starting in the upper left corner.</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-RegionOfInterest'>nfo:RegionOfInterest</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>
@@ -2311,6 +2481,37 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-regionOfInterestHeight'>
+<title>nfo:regionOfInterestHeight</title>
+<para>Height of the region. It is normalized (values between 0 and 1) to the total height of the picture.</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-RegionOfInterest'>nfo:RegionOfInterest</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>
@@ -3340,6 +3541,37 @@
 </variablelist>
 </refsect2>
 
+<refsect2 id='nfo-regionOfInterestType'>
+<title>nfo:regionOfInterestType</title>
+<para>The content of a region can be one of the predefined types in the spec</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-RegionOfInterest'>nfo:RegionOfInterest</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-RegionOfInterestContent'>nfo:RegionOfInterestContent</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
 <refsect2 id='nfo-bitsPerSample'>
 <title>nfo:bitsPerSample</title>
 <para>Amount of bits in each audio sample.</para>
@@ -4044,6 +4276,37 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-roiRefersTo'>
+<title>nfo:roiRefersTo</title>
+<para>Link to an item that is represented in the region. The 'type' of the region can give a clue of what exact content is linked in this property</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-RegionOfInterest'>nfo:RegionOfInterest</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nie-InformationElement'>nie:InformationElement</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>

@@ -1,3 +1,213 @@
+2011-09-08  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.10.26
+
+2011-09-08  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-miner: Add the file to which the symlinks point in don't-remove list
+	Fixes NB#281183.
+
+2011-09-08  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: clear forced mtime check directories once first crawled
+
+	tracker-miner-fs: force mtime checks on inconsistent mounts
+	If a mount is reported to be unmounted in the store, but was found mounted when
+	tracker-miner-fs started, force a mtime check in the mount.
+
+	libtracker-miner: new tracker_miner_fs_force_mtime_checking() method
+	This method allows specifying which directories will be forced to have mtime
+	checks, regardless of the global mtime checking configuration.
+
+	Fixes NB#277052.
+
+	tests: ensure XMP test files are found when srcdir != builddir
+
+	tests: fix indentation in libtracker-extract/xmp functional tests
+
+2011-09-08  Bruce Cowan  <bruce@bcowan.me.uk>
+
+	Updated British English translation
+
+2011-09-08  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tests: ensure XMP test files are found when srcdir != builddir
+
+	tests: fix indentation in libtracker-extract/xmp functional tests
+
+2011-09-08  Philip Van Hoof  <philip@codeminded.be>
+
+	First delete in case superprop is multivalue and prop isn't for IorR
+	Fixes NB#281201.
+
+	libtracker-data: Fix using null with date fields in insert or replace
+	Fixes NB#281540.
+
+	tracker-extract, gif: Fix compilation error for GIF extractor
+
+2011-09-08  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-extract: Remove where and uri args from tracker_xmp_apply_regions()
+	These were unused.
+
+	Also documented the function to explain where it's used compared to
+	tracker_xmp_apply().
+
+	libtracker-extract: Support graph in tracker_xmp_apply_regions()
+
+	libtracker-extract: Return TRUE in tracker_xmp_apply_regions() if no regions
+
+	libtracker-extract: Fixed memory leak in iterate_simple() for XMP data
+
+	libtracker-extract: Use GSlice and free TrackerXmpRegion structures
+	We weren't freeing the TrackerXmpRegion structures and GSlice makes sense when
+	we have multiple regions (which is expected).
+
+	libtracker-extract: Don't assume ':' exists in every path we iterate
+	This makes sure we don't accidentally return g_strdup(NULL + 1) when iterating
+	XMP data
+
+	libtracker-extract: Fix coding style issues
+	Also make sure tracker_xmp_apply_regions:
+	- returns a boolean for success
+	- checks parameters input (given it's a public API)
+
+	Use a GSList for regions not a GList (which isn't necessary).
+
+2011-09-08  Ivan Frade  <ivan.frade@gmail.com>
+
+	functional-tests: JPG with regions of interest to test extraction
+
+	tracker-extract: TIFF: build sparql for regions of interest in XMP
+
+	tracker-extract: PDF: build sparql for regions of interest in XMP
+
+	tracker-extrcat: GIF: build Sparql for regions of interest in XMP
+
+	functional-tests: PNG with regions of interest for the extraction test data
+	Expected failure at the moment. Could be a wrong XMP in the file or
+	code missing in tracker-xmp... Moving on but this deserves a look.
+
+	functional-tests: extraction test, support <uuid> urls
+
+	tracker-extract: JPEG: generate sparql for the regions of interest in the metadata
+	Fixes NB#271437
+
+	libtracker-extract: new function to generate sparql of the region struct
+	Input arguments "uri" and "where" are not needed, but I keep the there
+	for consistency with the other sparql-generation function.
+
+	libtracker-extract: handle correctly XMP namespaces
+	We instruct XMP to use a known prefix for the namespaces, so we can
+	use it in the comparison in the code
+
+	libtracker-extract: test for XMP with custom namespaces prefixes
+
+	NFO: Add cardinality restrictions to the properties
+
+	NFO: Regions of interest in images
+
+	libtracker-extract: Very first implementation of the Region extraction from XMP
+
+	libtracker-extract: Unit test to read regions in the XMP metadata
+
+2011-09-08  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-common: Do not delete old log
+	Avoid losing information from previous runs.
+
+2011-09-08  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-fs: Improve query performance for updating tracker:available on mounting
+	Previously we had an OPTIONAL and FILTER in the query. This translated into
+	quite a delay when updating even a small number of resources in the database
+	and subsequently affected the crawling speed upon re-mounting.
+
+	Given we don't *ever* expect there to be resources for the given
+	nie:dataSource which are in the wrong tracker:available state, we don't need
+	the OPTIONAL or FILTER there.
+
+	This fixes NB#272441
+
+2011-09-08  Mario Blättermann  <mariobl@gnome.org>
+
+	[l10n] Updated German translation
+
+2011-09-08  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Do not delete database and do not exit on corruption
+	If there is no journal, deleting the database will cause data loss. Do
+	not do this automatically as it should not be common with SQLite fsync
+	enabled and we cannot be sure that database file is not usable anymore.
+
+	libtracker-data: Remove useless calls before exit on database corruption
+
+2011-09-08  Fran Dieguez  <fran@openhost.es>
+
+	Updated galician translations
+
+2011-09-06  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract-gstreamer: Don't mention URI for dlna debugging
+	We don't do this because the URI is already mentioned several times before we
+	get to this point and it just spams the logs
+
+2011-09-06  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	NMM: Add property nmm:dlnaMime for dlna specific mimetypes tracker-extract-gstreamer: Add support for dlnaMime
+	Fixes NB#246131, DLNA mime-types needed
+
+2011-09-06  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-extract,gstreamer: if possible, use Tagreadbin backend in the Discoverer
+	By default, the GUPnP-DLNA and GStreamer discoverers use Decodebin2 backend to
+	read tags. But, if Tagreadbin is available, we should really use it instead.
+
+	See:
+	 https://bugzilla.gnome.org/show_bug.cgi?id=564749
+	 https://bugzilla.gnome.org/show_bug.cgi?id=656345
+
+	tracker-extract: remove unneeded source file
+	The GUPnP-DLNA extractor was merged into tracker-extract-gstreamer.c
+
+2011-09-06  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract: Small coding style clean ups
+
+2011-09-06  Aleksander Morgado  <aleksander@lanedo.com>
+
+	build: require gstreamer-pbutils when using Discoverer backend
+
+	tracker-extract,gstreamer: avoid code duplication
+
+	build: treat GUPnP-DLNA as another GStreamer backend
+
+	tracker-extract,gstreamer: integrate GUPnP-DLNA extractor within the GStreamer one
+
+	tracker-extract,gstreamer: don't compile both tagreadbin and decodebin2
+	... and prepare for the Discoverer API based implementation
+
+	build: minor spaces vs tabs fixes
+
+	build: rename --enable-video-extractor to --enable-generic-media-extractor
+	We really use gstreamer and such as a generic media extractor, not just for
+	video files, so this configure switch name makes more sense.
+
+	Fixes GB#654441.
+
+	build: new --with-gstreamer-backend=[tagreadbin,decodebin2,discoverer]
+	Allows selecting among 'tagreadbin', 'decodebin2' and 'discoverer', and replaces
+	the previous --enable-gstreamer-tagreadbin boolean switch.
+
+	Also makes sure that discoverer is requested when enabling the GUPnP-DLNA
+	enabled GStreamer extractor
+
+	build: explictly require gstreamer when building gupnp-dlna enabled extractor
+
+	tracker-extract: let gstreamer extractor handle 'dlna/*' mimetypes
+
+	tracker-extract: disable compilation of the gupnp-dlna extractor
+
 2011-09-01  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.10.25

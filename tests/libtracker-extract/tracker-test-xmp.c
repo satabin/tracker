@@ -24,7 +24,7 @@
 #include <libtracker-extract/tracker-extract.h>
 
 #define BROKEN_XMP "This is not even XML"
-#define EXAMPLE_XMP   \
+#define EXAMPLE_XMP	  \
 "   <x:xmpmeta   " \
 "      xmlns:x=\'adobe:ns:meta/\'" \
 "      xmlns:dc=\"http://purl.org/dc/elements/1.1/\"" \
@@ -32,9 +32,9 @@
 "      xmlns:exif=\"http://ns.adobe.com/exif/1.0/\"" \
 "      xmlns:tiff=\"http://ns.adobe.com/tiff/1.0/\">" \
 "     <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">" \
-"        <rdf:Description rdf:about=\"\">"\
+"        <rdf:Description rdf:about=\"\">" \
 "         <dc:format>application/pdf</dc:format>" \
-"         <dc:title>Title of the content</dc:title>"   \
+"         <dc:title>Title of the content</dc:title>" \
 "         <dc:rights>CC share alike</dc:rights> " \
 "         <dc:description>Description of the content</dc:description>" \
 "         <dc:date>2010-03-18T15:17:04Z</dc:date>" \
@@ -63,30 +63,31 @@
 "         <exif:WhiteBalance>1</exif:WhiteBalance>" \
 "         <exif:Copyright>Copyright in exif</exif:Copyright>" \
 "         <tiff:Orientation>1</tiff:Orientation>" \
-"         <xmp:CreateDate>2002-08-15T17:10:04Z</xmp:CreateDate>"\
+"         <xmp:CreateDate>2002-08-15T17:10:04Z</xmp:CreateDate>" \
 "        </rdf:Description> " \
 "     </rdf:RDF> " \
 "   </x:xmpmeta>"
 
 #define METERING_MODE_XMP \
-"   <x:xmpmeta   "                            \
-"      xmlns:x=\'adobe:ns:meta/\'"                              \
-"      xmlns:exif=\"http://ns.adobe.com/exif/1.0/\">"           \
+"   <x:xmpmeta   " \
+"      xmlns:x=\'adobe:ns:meta/\'" \
+"      xmlns:exif=\"http://ns.adobe.com/exif/1.0/\">" \
 "     <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">" \
-"        <rdf:Description rdf:about=\"\">"                      \
-"         <exif:MeteringMode>%d</exif:MeteringMode>"            \
-"        </rdf:Description>"                                    \
+"        <rdf:Description rdf:about=\"\">" \
+"         <exif:MeteringMode>%d</exif:MeteringMode>" \
+"        </rdf:Description>" \
 "     </rdf:RDF></x:xmpmeta> "
 
-#define ORIENTATION_XMP \
-"   <x:xmpmeta   "                            \
-"      xmlns:x=\'adobe:ns:meta/\'"                              \
-"      xmlns:tiff=\"http://ns.adobe.com/tiff/1.0/\">"           \
+#define ORIENTATION_XMP	  \
+"   <x:xmpmeta   " \
+"      xmlns:x=\'adobe:ns:meta/\'" \
+"      xmlns:tiff=\"http://ns.adobe.com/tiff/1.0/\">" \
 "     <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">" \
-"        <rdf:Description rdf:about=\"\">"                      \
-"         <tiff:Orientation>%s</tiff:Orientation>"              \
-"        </rdf:Description>"                                    \
+"        <rdf:Description rdf:about=\"\">" \
+"         <tiff:Orientation>%s</tiff:Orientation>" \
+"        </rdf:Description>" \
 "     </rdf:RDF></x:xmpmeta> "
+
 
 typedef struct {
 	const gchar *exif_value;
@@ -164,7 +165,7 @@ get_example_expected (void)
 	data->iso_speed_ratings = g_strdup ("400");                   /* iso speed rating */
 	data->white_balance = g_strdup ("nmm:white-balance-manual");
 	data->copyright = g_strdup ("Copyright in exif");
-	
+
 	/* NS_XAP */
 	data->rating = NULL;
 
@@ -174,7 +175,7 @@ get_example_expected (void)
 	data->country = NULL;                /* country */
 	data->state = NULL;                  /* state */
 	data->city = NULL;                   /* city */
-	
+
 	return data;
 };
 
@@ -255,7 +256,7 @@ test_xmp_metering_mode (void)
 static void
 test_xmp_orientation (void)
 {
-	gint i;
+	guint i;
 
 	for (i = 0; i < G_N_ELEMENTS (ORIENTATIONS); i++) {
 		TrackerXmpData *data;
@@ -326,10 +327,174 @@ test_xmp_apply_location (void)
 
 	/* The builder just contains this:
 	   <urn:uuid:test> slo:location [ a slo:GeoLocation ;
-		 slo:postalAddress <urn:uuid:c50c4305-c617-4188-b3d3-42ba2291d0de>] .
-	} */
+	   slo:postalAddress <urn:uuid:c50c4305-c617-4188-b3d3-42ba2291d0de>] .
+	   } */
 
 	g_assert_cmpint (tracker_sparql_builder_get_length (metadata), >=, 3);
+}
+
+
+/*
+ * The generated sparql cannot be validated automatically.
+ * Debug function to print it in the terminal.
+ */
+static void
+debug_print_sparql (TrackerXmpData *data)
+{
+	/* To print the sparql */
+	TrackerSparqlBuilder *metadata, *preupdate;
+
+	metadata = tracker_sparql_builder_new_update ();
+	preupdate = tracker_sparql_builder_new_update ();
+
+	tracker_sparql_builder_insert_open (metadata, NULL);
+	tracker_sparql_builder_subject_iri (metadata, "urn:uuid:test");
+
+	tracker_xmp_apply (preupdate, metadata, "urn:uuid:test", data);
+
+	tracker_sparql_builder_insert_close (metadata);
+
+	g_print ("%s\n", tracker_sparql_builder_get_result (preupdate));
+	g_print ("%s\n", tracker_sparql_builder_get_result (metadata));
+
+	g_object_unref (metadata);
+	g_object_unref (preupdate);
+}
+
+static void
+test_xmp_regions (void)
+{
+	TrackerXmpData *data;
+	TrackerXmpRegion *region;
+
+	GFile *f;
+	gchar *contents;
+	gsize  size;
+	gchar *filepath;
+
+	filepath = g_build_filename (TOP_SRCDIR, "tests", "libtracker-extract", "areas.xmp", NULL);
+	f = g_file_new_for_path (filepath);
+	g_assert (g_file_load_contents (f, NULL, &contents, &size, NULL, NULL));
+	g_object_unref (f);
+	g_free (filepath);
+
+	data = tracker_xmp_new (contents, size, "test://file");
+
+	g_assert_cmpint (2, ==, g_slist_length (data->regions));
+
+	/* Regions are stacked while parsing.*/
+	region = g_slist_nth_data (data->regions, 0);
+	g_assert_cmpstr (region->x, ==, "0.51");
+	g_assert_cmpstr (region->y, ==, "0.51");
+	g_assert_cmpstr (region->width, ==, "0.01");
+	g_assert_cmpstr (region->height, ==, "0.09");
+	g_assert_cmpstr (region->type, ==, "Pet");
+	g_assert_cmpstr (region->title, ==, "Fido");
+	g_assert_cmpstr (region->description, ==, "Fido looks happy!");
+
+	region = g_slist_nth_data (data->regions, 1);
+	g_assert_cmpstr (region->x, ==, "0.5");
+	g_assert_cmpstr (region->y, ==, "0.5");
+	g_assert_cmpstr (region->width, ==, "0.06");
+	g_assert_cmpstr (region->height, ==, "0.09");
+	g_assert_cmpstr (region->type, ==, "Face");
+	g_assert_cmpstr (region->title, ==, "John Doe");
+
+	if (0) {
+		debug_print_sparql (data);
+	}
+
+	tracker_xmp_free (data);
+}
+
+static void
+test_xmp_regions_quill (void)
+{
+	TrackerXmpData *data;
+	TrackerXmpRegion *region;
+
+	GFile *f;
+	gchar *contents;
+	gsize  size;
+	gchar *filepath;
+
+	filepath = g_build_filename (TOP_SRCDIR, "tests", "libtracker-extract", "areas-with-contacts.xmp", NULL);
+	f = g_file_new_for_path (filepath);
+	g_assert (g_file_load_contents (f, NULL, &contents, &size, NULL, NULL));
+	g_object_unref (f);
+	g_free (filepath);
+
+	data = tracker_xmp_new (contents, size, "test://file");
+
+	g_assert_cmpint (2, ==, g_slist_length (data->regions));
+
+	region = g_slist_nth_data (data->regions, 0);
+	g_assert_cmpstr (region->x, ==, "0.4");
+	g_assert_cmpstr (region->y, ==, "0.3");
+	g_assert_cmpstr (region->width, ==, "0.17");
+	g_assert_cmpstr (region->height, ==, "0.15");
+	g_assert_cmpstr (region->type, ==, "Face");
+	g_assert_cmpstr (region->title, ==, "Dilbert");
+	g_assert_cmpstr (region->link_class, ==, "nco:PersonContact");
+	g_assert_cmpstr (region->link_uri, ==, "urn:uuid:2");
+
+	region = g_slist_nth_data (data->regions, 1);
+	g_assert_cmpstr (region->x, ==, "0.3");
+	g_assert_cmpstr (region->y, ==, "0.4");
+	g_assert_cmpstr (region->width, ==, "0.15");
+	g_assert_cmpstr (region->height, ==, "0.17");
+	g_assert_cmpstr (region->type, ==, "Face");
+	g_assert_cmpstr (region->title, ==, "Albert Einstein");
+	g_assert_cmpstr (region->link_class, ==, "nco:PersonContact");
+	g_assert_cmpstr (region->link_uri, ==, "urn:uuid:1");
+
+	//debug_print_sparql (data);
+
+	tracker_xmp_free (data);
+}
+
+static void
+test_xmp_regions_ns_prefix (void)
+{
+	TrackerXmpData *data;
+	TrackerXmpRegion *region;
+
+	GFile *f;
+	gchar *contents;
+	gsize  size;
+	gchar *filepath;
+
+	filepath = g_build_filename (TOP_SRCDIR, "tests", "libtracker-extract", "areas-ns.xmp", NULL);
+	f = g_file_new_for_path (filepath);
+	g_assert(g_file_load_contents (f, NULL, &contents, &size, NULL, NULL));
+	g_object_unref (f);
+	g_free (filepath);
+
+	data = tracker_xmp_new (contents, size, "test://file");
+
+	g_assert_cmpint (2, ==, g_slist_length (data->regions));
+
+	/* Regions are stacked while parsing.*/
+	region = g_slist_nth_data (data->regions, 0);
+	g_assert_cmpstr (region->x, ==, "0.51");
+	g_assert_cmpstr (region->y, ==, "0.51");
+	g_assert_cmpstr (region->width, ==, "0.01");
+	g_assert_cmpstr (region->height, ==, "0.09");
+	g_assert_cmpstr (region->type, ==, "Pet");
+	g_assert_cmpstr (region->title, ==, "Fidoz");
+	g_assert_cmpstr (region->description, ==, "Fido looks happy!");
+
+	region = g_slist_nth_data (data->regions, 1);
+	g_assert_cmpstr (region->x, ==, "0.5");
+	g_assert_cmpstr (region->y, ==, "0.5");
+	g_assert_cmpstr (region->width, ==, "0.06");
+	g_assert_cmpstr (region->height, ==, "0.09");
+	g_assert_cmpstr (region->type, ==, "Face");
+	g_assert_cmpstr (region->title, ==, "Average Joe");
+
+	//debug_print_sparql (data);
+
+	tracker_xmp_free (data);
 }
 
 int
@@ -345,6 +510,7 @@ main (int    argc,
 	g_test_message ("Testing XMP");
 
 #ifdef HAVE_EXEMPI
+
 	g_test_add_func ("/libtracker-extract/tracker-xmp/parsing_xmp",
 	                 test_parsing_xmp);
 
@@ -357,8 +523,15 @@ main (int    argc,
 	g_test_add_func ("/libtracker-extract/tracker-xmp/sparql_translation",
 	                 test_xmp_apply);
 
-#endif
+	g_test_add_func ("/libtracker-extract/tracker-xmp/xmp_regions",
+	                 test_xmp_regions);
 
+	g_test_add_func ("/libtracker-extract/tracker-xmp/xmp_regions_2",
+	                 test_xmp_regions_quill);
+
+	g_test_add_func ("/libtracker-extract/tracker-xmp/xmp_regions_ns_prefix",
+	                 test_xmp_regions_ns_prefix);
+#endif
 	g_test_add_func ("/libtracker-extract/tracker-xmp/sparql_translation_location",
 	                 test_xmp_apply_location);
 

@@ -189,6 +189,8 @@ GRAPHVIZ_FDP = @GRAPHVIZ_FDP@
 GREP = @GREP@
 GSTREAMER_CFLAGS = @GSTREAMER_CFLAGS@
 GSTREAMER_LIBS = @GSTREAMER_LIBS@
+GSTREAMER_PBUTILS_CFLAGS = @GSTREAMER_PBUTILS_CFLAGS@
+GSTREAMER_PBUTILS_LIBS = @GSTREAMER_PBUTILS_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
@@ -453,7 +455,7 @@ LDADD = \
 tracker_encoding_SOURCES = tracker-encoding-test.c
 tracker_test_utils_SOURCES = tracker-test-utils.c
 tracker_test_xmp_SOURCES = tracker-test-xmp.c
-EXTRA_DIST = encoding-detect.bin
+EXTRA_DIST = encoding-detect.bin areas.xmp areas-with-contacts.xmp areas-ns.xmp
 all: all-am
 
 .SUFFIXES:

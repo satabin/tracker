@@ -19,6 +19,18 @@
 /* The gettext translation domain */
 #undef GETTEXT_PACKAGE
 
+/* Define that GStreamer Decodebin2 should be used */
+#undef GSTREAMER_BACKEND_DECODEBIN2
+
+/* Define that GStreamer Discoverer should be used */
+#undef GSTREAMER_BACKEND_DISCOVERER
+
+/* Define that GUPnP-DLNA should be used */
+#undef GSTREAMER_BACKEND_GUPNP_DLNA
+
+/* Define that GStreamer Tagreadbin should be used */
+#undef GSTREAMER_BACKEND_TAGREADBIN
+
 /* Guarantee existence of certain metadata */
 #undef GUARANTEE_METADATA
 
@@ -67,9 +79,6 @@
 
 /* Define if we have gtk-doc (with gtk-doc) */
 #undef HAVE_GTK_DOC
-
-/* Define if we have GUPnP-DLNA */
-#undef HAVE_GUPNP_DLNA
 
 /* Define if we have HAL */
 #undef HAVE_HAL
@@ -231,9 +240,6 @@
 /* Define to the Tracker binary age */
 #undef TRACKER_BINARY_AGE
 
-/* Use tagreadbin in gstreamer extraction */
-#undef TRACKER_EXTRACT_GSTREAMER_USE_TAGREADBIN
-
 /* Define to the Tracker interface age */
 #undef TRACKER_INTERFACE_AGE
 
@@ -246,8 +252,8 @@
 /* Define to the Tracker minor version */
 #undef TRACKER_MINOR_VERSION
 
-/* Define that Tracker will try to use external video players */
-#undef USING_EXTERNAL_VIDEO_PLAYER
+/* Define that Tracker will try to use external generic media players */
+#undef USING_EXTERNAL_GENERIC_MEDIA_PLAYER
 
 /* Unzip ps.gz files */
 #undef USING_UNZIPPSFILES

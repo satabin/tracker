@@ -13,6 +13,7 @@ usr/lib/tracker/tracker-store
 
 usr/share/man/man1/tracker-store.1
 
+usr/share/glib-2.0/schemas/
 usr/share/locale/
 usr/share/tracker/ontologies/
 usr/share/tracker/languages/

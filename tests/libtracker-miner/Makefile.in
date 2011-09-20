@@ -57,6 +57,8 @@ DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	tracker_miner_manager_test_vala.stamp \
 	tracker_monitor_test_vala.stamp \
 	tracker_password_provider_test_vala.stamp \
+	tracker_priority_queue_test_vala.stamp \
+	tracker_task_pool_test_vala.stamp \
 	tracker_thumbnailer_test_vala.stamp
 noinst_PROGRAMS = $(am__EXEEXT_1)
 subdir = tests/libtracker-miner
@@ -90,7 +92,9 @@ am__EXEEXT_1 = tracker-crawler-test$(EXEEXT) \
 	tracker-miner-manager-test$(EXEEXT) \
 	tracker-password-provider-test$(EXEEXT) \
 	tracker-thumbnailer-test$(EXEEXT) \
-	tracker-monitor-test$(EXEEXT)
+	tracker-monitor-test$(EXEEXT) \
+	tracker-priority-queue-test$(EXEEXT) \
+	tracker-task-pool-test$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 am_tracker_crawler_test_OBJECTS = tracker-crawler-test.$(OBJEXT)
 tracker_crawler_test_OBJECTS = $(am_tracker_crawler_test_OBJECTS)
@@ -127,6 +131,22 @@ tracker_password_provider_test_OBJECTS =  \
 	$(am_tracker_password_provider_test_OBJECTS)
 tracker_password_provider_test_DEPENDENCIES =  \
 	libtracker-miner-tests.la $(am__DEPENDENCIES_2)
+am_tracker_priority_queue_test_OBJECTS =  \
+	tracker-priority-queue-test.$(OBJEXT)
+tracker_priority_queue_test_OBJECTS =  \
+	$(am_tracker_priority_queue_test_OBJECTS)
+tracker_priority_queue_test_LDADD = $(LDADD)
+tracker_priority_queue_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_task_pool_test_OBJECTS = tracker-task-pool-test.$(OBJEXT)
+tracker_task_pool_test_OBJECTS = $(am_tracker_task_pool_test_OBJECTS)
+tracker_task_pool_test_LDADD = $(LDADD)
+tracker_task_pool_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_tracker_thumbnailer_test_OBJECTS =  \
 	tracker-thumbnailer-test.$(OBJEXT) thumbnailer-mock.$(OBJEXT) \
 	empty-gobject.$(OBJEXT)
@@ -175,12 +195,16 @@ SOURCES = $(libtracker_miner_tests_la_SOURCES) \
 	$(tracker_miner_manager_test_SOURCES) \
 	$(tracker_monitor_test_SOURCES) \
 	$(tracker_password_provider_test_SOURCES) \
+	$(tracker_priority_queue_test_SOURCES) \
+	$(tracker_task_pool_test_SOURCES) \
 	$(tracker_thumbnailer_test_SOURCES)
 DIST_SOURCES = $(libtracker_miner_tests_la_SOURCES) \
 	$(tracker_crawler_test_SOURCES) \
 	$(tracker_miner_manager_test_SOURCES) \
 	$(tracker_monitor_test_SOURCES) \
 	$(tracker_password_provider_test_SOURCES) \
+	$(tracker_priority_queue_test_SOURCES) \
+	$(tracker_task_pool_test_SOURCES) \
 	$(tracker_thumbnailer_test_SOURCES)
 HEADERS = $(noinst_HEADERS)
 ETAGS = etags
@@ -496,7 +520,8 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = tracker-crawler-test tracker-miner-manager-test \
 	tracker-password-provider-test tracker-thumbnailer-test \
-	tracker-monitor-test
+	tracker-monitor-test tracker-priority-queue-test \
+	tracker-task-pool-test
 libtracker_miner_marshal_sources = \
 	$(top_builddir)/src/libtracker-miner/tracker-marshal.c
 
@@ -575,6 +600,12 @@ tracker_monitor_test_SOURCES = \
 	$(libtracker_miner_marshal_sources)            \
 	$(libtracker_miner_monitor_sources)            \
 	tracker-monitor-test.c
+
+tracker_priority_queue_test_SOURCES = \
+	tracker-priority-queue-test.c
+
+tracker_task_pool_test_SOURCES = \
+	tracker-task-pool-test.c
 
 noinst_HEADERS = \
 	$(libtracker_miner_marshal_headers)            \
@@ -663,6 +694,12 @@ tracker-monitor-test$(EXEEXT): $(tracker_monitor_test_OBJECTS) $(tracker_monitor
 tracker-password-provider-test$(EXEEXT): $(tracker_password_provider_test_OBJECTS) $(tracker_password_provider_test_DEPENDENCIES) 
 	@rm -f tracker-password-provider-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_password_provider_test_OBJECTS) $(tracker_password_provider_test_LDADD) $(LIBS)
+tracker-priority-queue-test$(EXEEXT): $(tracker_priority_queue_test_OBJECTS) $(tracker_priority_queue_test_DEPENDENCIES) 
+	@rm -f tracker-priority-queue-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_priority_queue_test_OBJECTS) $(tracker_priority_queue_test_LDADD) $(LIBS)
+tracker-task-pool-test$(EXEEXT): $(tracker_task_pool_test_OBJECTS) $(tracker_task_pool_test_DEPENDENCIES) 
+	@rm -f tracker-task-pool-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_task_pool_test_OBJECTS) $(tracker_task_pool_test_LDADD) $(LIBS)
 tracker-thumbnailer-test$(EXEEXT): $(tracker_thumbnailer_test_OBJECTS) $(tracker_thumbnailer_test_DEPENDENCIES) 
 	@rm -f tracker-thumbnailer-test$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_thumbnailer_test_OBJECTS) $(tracker_thumbnailer_test_LDADD) $(LIBS)
@@ -683,6 +720,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-monitor-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-monitor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-password-provider-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-priority-queue-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-task-pool-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-thumbnailer-test.Po@am__quote@
 
 .c.o:
@@ -749,8 +788,14 @@ tracker_monitor_test_vala.stamp: $(tracker_monitor_test_SOURCES)
 tracker_thumbnailer_test_vala.stamp: $(tracker_thumbnailer_test_SOURCES)
 	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_thumbnailer_test_SOURCES)
 	$(AM_V_at)touch $@
+tracker_task_pool_test_vala.stamp: $(tracker_task_pool_test_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_task_pool_test_SOURCES)
+	$(AM_V_at)touch $@
 tracker_miner_manager_test_vala.stamp: $(tracker_miner_manager_test_SOURCES)
 	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_miner_manager_test_SOURCES)
+	$(AM_V_at)touch $@
+tracker_priority_queue_test_vala.stamp: $(tracker_priority_queue_test_SOURCES)
+	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_priority_queue_test_SOURCES)
 	$(AM_V_at)touch $@
 tracker_crawler_test_vala.stamp: $(tracker_crawler_test_SOURCES)
 	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_crawler_test_SOURCES)
@@ -896,6 +941,8 @@ maintainer-clean-generic:
 	-rm -f tracker_miner_manager_test_vala.stamp
 	-rm -f tracker_monitor_test_vala.stamp
 	-rm -f tracker_password_provider_test_vala.stamp
+	-rm -f tracker_priority_queue_test_vala.stamp
+	-rm -f tracker_task_pool_test_vala.stamp
 	-rm -f tracker_thumbnailer_test_vala.stamp
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am

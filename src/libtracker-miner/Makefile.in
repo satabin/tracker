@@ -52,9 +52,14 @@ host_triplet = @host@
 DIST_COMMON = $(libtracker_minerinclude_HEADERS) \
 	$(srcdir)/Makefile-shared-sources.decl $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/Makefile.decl COPYING.LIB
-@HAVE_INTROSPECTION_TRUE@am__append_1 = $(AM_CPPFLAGS)
-@HAVE_INTROSPECTION_TRUE@am__append_2 = TrackerMiner-$(TRACKER_API_VERSION).gir
-@HAVE_INTROSPECTION_TRUE@am__append_3 = $(gir_DATA) $(typelib_DATA)
+# Using enable_gcov instead of have_unit_test because when doing a release
+#  we disable gcov but NOT the unit tests
+@ENABLE_GCOV_FALSE@am__append_1 = \
+@ENABLE_GCOV_FALSE@	-export-symbols-regex '^tracker_(miner|thumbnailer|crawler|storage|priority|task|password_provider|network_provider)_.*'
+
+@HAVE_INTROSPECTION_TRUE@am__append_2 = $(AM_CPPFLAGS)
+@HAVE_INTROSPECTION_TRUE@am__append_3 = TrackerMiner-$(TRACKER_API_VERSION).gir
+@HAVE_INTROSPECTION_TRUE@am__append_4 = $(gir_DATA) $(typelib_DATA)
 subdir = src/libtracker-miner
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -274,7 +279,7 @@ INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
-INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@ $(am__append_1)
+INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@ $(am__append_2)
 INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
 INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
 INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
@@ -591,10 +596,8 @@ libtracker_minerinclude_HEADERS = \
 	tracker-storage.h                              \
 	tracker-thumbnailer.h
 
-libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS = \
-	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-symbols-regex '^tracker_(miner|thumbnailer|crawler|storage|password_provider|network_provider)_.*'
-
+libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS = -version-info \
+	$(LT_CURRENT):$(LT_REVISION):$(LT_AGE) $(am__append_1)
 libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD = \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
@@ -618,13 +621,13 @@ BUILT_SOURCES = \
 	$(libtracker_miner_marshal_headers)            \
 	$(vapi_DATA)
 
-CLEANFILES = $(BUILT_SOURCES) $(am__append_3)
+CLEANFILES = $(BUILT_SOURCES) $(am__append_4)
 EXTRA_DIST = \
 	tracker-marshal.list                           \
 	tracker-miner.vapi                             \
 	tracker-miner.deps
 
-INTROSPECTION_GIRS = $(am__append_2)
+INTROSPECTION_GIRS = $(am__append_3)
 INTROSPECTION_SCANNER_ARGS = \
 	-I $(top_srcdir)/src \
 	-D TRACKER_COMPILATION \

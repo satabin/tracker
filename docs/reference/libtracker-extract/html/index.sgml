@@ -4,6 +4,23 @@
 <ANCHOR id="libtracker-extract-How-to-use-libtracker-extract.synopsis" href="libtracker-extract/libtracker-extract-How-to-use-libtracker-extract.html#libtracker-extract-How-to-use-libtracker-extract.synopsis">
 <ANCHOR id="libtracker-extract-How-to-use-libtracker-extract.description" href="libtracker-extract/libtracker-extract-How-to-use-libtracker-extract.html#libtracker-extract-How-to-use-libtracker-extract.description">
 <ANCHOR id="libtracker-extract-How-to-use-libtracker-extract.details" href="libtracker-extract/libtracker-extract-How-to-use-libtracker-extract.html#libtracker-extract-How-to-use-libtracker-extract.details">
+<ANCHOR id="tracker-extract-get-metadata" href="libtracker-extract/libtracker-extract-How-to-use-libtracker-extract.html#tracker-extract-get-metadata">
+<ANCHOR id="libtracker-extract-TrackerExtractInfo" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html">
+<ANCHOR id="libtracker-extract-TrackerExtractInfo.stability-level" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#libtracker-extract-TrackerExtractInfo.stability-level">
+<ANCHOR id="libtracker-extract-TrackerExtractInfo.synopsis" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#libtracker-extract-TrackerExtractInfo.synopsis">
+<ANCHOR id="libtracker-extract-TrackerExtractInfo.description" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#libtracker-extract-TrackerExtractInfo.description">
+<ANCHOR id="libtracker-extract-TrackerExtractInfo.details" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#libtracker-extract-TrackerExtractInfo.details">
+<ANCHOR id="TrackerExtractInfo" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo">
+<ANCHOR id="tracker-extract-info-new" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-new">
+<ANCHOR id="tracker-extract-info-ref" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-ref">
+<ANCHOR id="tracker-extract-info-unref" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-unref">
+<ANCHOR id="tracker-extract-info-get-preupdate-builder" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-preupdate-builder">
+<ANCHOR id="tracker-extract-info-get-metadata-builder" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-metadata-builder">
+<ANCHOR id="tracker-extract-info-get-where-clause" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-where-clause">
+<ANCHOR id="tracker-extract-info-set-where-clause" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-set-where-clause">
+<ANCHOR id="tracker-extract-info-get-file" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-file">
+<ANCHOR id="tracker-extract-info-get-mimetype" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-mimetype">
+<ANCHOR id="tracker-extract-info-get-graph" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-graph">
 <ANCHOR id="libtracker-extract-Data-utilities" href="libtracker-extract/libtracker-extract-Data-utilities.html">
 <ANCHOR id="libtracker-extract-Data-utilities.stability-level" href="libtracker-extract/libtracker-extract-Data-utilities.html#libtracker-extract-Data-utilities.stability-level">
 <ANCHOR id="libtracker-extract-Data-utilities.synopsis" href="libtracker-extract/libtracker-extract-Data-utilities.html#libtracker-extract-Data-utilities.synopsis">
@@ -47,3 +64,8 @@
 <ANCHOR id="tracker-exif-new" href="libtracker-extract/libtracker-extract-Exif.html#tracker-exif-new">
 <ANCHOR id="tracker-exif-free" href="libtracker-extract/libtracker-extract-Exif.html#tracker-exif-free">
 <ANCHOR id="tracker-exif-read" href="libtracker-extract/libtracker-extract-Exif.html#tracker-exif-read">
+<ANCHOR id="annotation-glossterm-scope async" href="libtracker-extract/annotation-glossary.html#annotation-glossterm-scope async">
+<ANCHOR id="annotation-glossterm-allow-none" href="libtracker-extract/annotation-glossary.html#annotation-glossterm-allow-none">
+<ANCHOR id="annotation-glossterm-transfer full" href="libtracker-extract/annotation-glossary.html#annotation-glossterm-transfer full">
+<ANCHOR id="annotation-glossterm-closure" href="libtracker-extract/annotation-glossary.html#annotation-glossterm-closure">
+<ANCHOR id="annotation-glossterm-transfer none" href="libtracker-extract/annotation-glossary.html#annotation-glossterm-transfer none">

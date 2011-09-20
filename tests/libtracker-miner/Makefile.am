@@ -21,7 +21,9 @@ TEST_PROGS +=                                          \
 	tracker-miner-manager-test                     \
 	tracker-password-provider-test                 \
 	tracker-thumbnailer-test                       \
-	tracker-monitor-test
+	tracker-monitor-test			       \
+	tracker-priority-queue-test		       \
+	tracker-task-pool-test
 
 AM_CPPFLAGS =                                          \
 	$(BUILD_CFLAGS)                                \
@@ -77,6 +79,12 @@ tracker_monitor_test_SOURCES =                         \
 	$(libtracker_miner_marshal_sources)            \
 	$(libtracker_miner_monitor_sources)            \
 	tracker-monitor-test.c
+
+tracker_priority_queue_test_SOURCES = 		       \
+	tracker-priority-queue-test.c
+
+tracker_task_pool_test_SOURCES = 		       \
+	tracker-task-pool-test.c
 
 noinst_HEADERS =                                       \
 	$(libtracker_miner_marshal_headers)            \

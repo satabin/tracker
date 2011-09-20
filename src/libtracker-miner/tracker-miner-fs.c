@@ -3651,7 +3651,7 @@ check_item_queues (TrackerMinerFS *fs,
 			g_debug ("  Deleting previous unhandled UPDATED event");
 		}
 
-		if (tracker_priority_queue_foreach_remove (fs->priv->items_updated,
+		if (tracker_priority_queue_foreach_remove (fs->priv->items_created,
 		                                           (GEqualFunc) g_file_equal,
 		                                           file,
 		                                           (GDestroyNotify) g_object_unref)) {
@@ -5466,7 +5466,8 @@ tracker_miner_fs_has_items_to_process (TrackerMinerFS *fs)
 {
 	g_return_val_if_fail (TRACKER_IS_MINER_FS (fs), FALSE);
 
-	if (!tracker_priority_queue_is_empty (fs->priv->crawled_directories) ||
+	if (fs->priv->is_crawling ||
+	    !tracker_priority_queue_is_empty (fs->priv->crawled_directories) ||
 	    !tracker_priority_queue_is_empty (fs->priv->items_deleted) ||
 	    !tracker_priority_queue_is_empty (fs->priv->items_created) ||
 	    !tracker_priority_queue_is_empty (fs->priv->items_updated) ||

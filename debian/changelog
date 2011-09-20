@@ -4,6 +4,7 @@ tracker (0.12.1-1) UNRELEASED; urgency=low
   * Update build dependencies:
     - Bump libglib2.0-dev to (>= 2.28.0).
     - Update libgtk2.0-dev to libgtk-3-dev (>= 3.0.0).
+    - Drop libdbus-glib-1-dev.
   * Drop libtracker-client packages.
     This library has been deprecated in 0.10 and removed upstream in 0.12.
   * Update library packages for the API version bump 0.10 → 0.12.

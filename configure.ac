@@ -13,7 +13,7 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [12])
-m4_define([tracker_micro_version], [0])
+m4_define([tracker_micro_version], [1])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -183,7 +183,6 @@ PYTHON_REQUIRED=2.6
 
 # Library required versions
 DBUS_REQUIRED=1.3.1
-DBUS_GLIB_REQUIRED=0.82
 GLIB_REQUIRED=2.28.0
 PANGO_REQUIRED=1.0.0
 GTK_REQUIRED=3.0.0
@@ -226,12 +225,6 @@ SQLITE_REQUIRED=3.7.0
 # Needed to generate .gir files,
 # see http://live.gnome.org/GnomeGoals/AddGObjectIntrospectionSupport
 GOBJECT_INTROSPECTION_CHECK([0.9.5])
-
-# NOTE: dbus and dbus-glib-1 are only used now for libtracker-client
-# which is deprecated and tracker-writeback which will be refactored
-# shortly to use gdbus. The other place which requires dbus-glib-1 is
-# for HAL used in tracker-miner-fs if the alternative libraries are
-# not available.
 
 # Check for libpng 1.2 or higher
 PKG_CHECK_MODULES(LIBPNG, [libpng >= 1.2])
@@ -351,9 +344,7 @@ PKG_CHECK_MODULES(TRACKER_EXTRACT_MODULES, [$TRACKER_EXTRACT_MODULES_REQUIRED])
 TRACKER_WRITEBACK_REQUIRED="glib-2.0     >= $GLIB_REQUIRED
                             gio-unix-2.0 >= $GLIB_REQUIRED
                             gthread-2.0  >= $GLIB_REQUIRED
-                            gmodule-2.0  >= $GLIB_REQUIRED
-                            dbus-1       >= $DBUS_REQUIRED
-                            dbus-glib-1  >= $DBUS_GLIB_REQUIRED"
+                            gmodule-2.0  >= $GLIB_REQUIRED"
 
 PKG_CHECK_MODULES(TRACKER_WRITEBACK, [$TRACKER_WRITEBACK_REQUIRED])
 
@@ -506,24 +497,11 @@ PKG_CHECK_MODULES(TRACKER_SEARCH_BAR, [$TRACKER_SEARCH_BAR_REQUIRED],
                   [have_tracker_search_bar=no])
 
 # Check requirements for Nautilus extension
-TRACKER_NAUTILUS_EXTENSION_REQUIRED="glib-2.0       >= $GLIB_REQUIRED
-                                     gio-unix-2.0   >= $GLIB_REQUIRED
-                                     gthread-2.0    >= $GLIB_REQUIRED
-                                     gtk+-3.0       >= $GTK_REQUIRED
-                                     libnautilus-extension"
+TRACKER_NAUTILUS_EXTENSION_REQUIRED="libnautilus-extension"
 
 PKG_CHECK_MODULES(TRACKER_NAUTILUS_EXTENSION, [$TRACKER_NAUTILUS_EXTENSION_REQUIRED],
                   [have_tracker_nautilus_extension=yes],
                   [have_tracker_nautilus_extension=no])
-
-# General VALAFLAGS/CFLAGS/LIBS
-BUILD_VALAFLAGS="-g --target-glib=2.26"
-BUILD_CFLAGS="${WARN_CFLAGS} ${GCOV_CFLAGS} -DG_LOG_DOMAIN=\\\"Tracker\\\" -DTRACKER_COMPILATION"
-BUILD_LIBS="${GCOV_LIBS}"
-
-AC_SUBST(BUILD_VALAFLAGS)
-AC_SUBST(BUILD_CFLAGS)
-AC_SUBST(BUILD_LIBS)
 
 # Check we have Vala valac command we need
 AC_PATH_PROG(VALAC, valac, valac)
@@ -568,6 +546,18 @@ fi
 AC_SUBST(GCOV_VALAFLAGS)
 AC_SUBST(GCOV_CFLAGS)
 AC_SUBST(GCOV_LIBS)
+
+####################################################################
+# General VALAFLAGS/CFLAGS/LIBS
+####################################################################
+BUILD_VALAFLAGS="-g --target-glib=2.26"
+BUILD_CFLAGS="${WARN_CFLAGS} ${GCOV_CFLAGS} -DG_LOG_DOMAIN=\\\"Tracker\\\" -DTRACKER_COMPILATION"
+BUILD_LIBS="${GCOV_LIBS}"
+
+AC_SUBST(BUILD_VALAFLAGS)
+AC_SUBST(BUILD_CFLAGS)
+AC_SUBST(BUILD_LIBS)
+
 
 ####################################################################
 # Check for functional-test include/exclude
@@ -815,7 +805,6 @@ AC_ARG_ENABLE(hal,
 if test "x$have_upower" != "xyes" && test "x$enable_hal" != "xno"; then
    PKG_CHECK_MODULES(HAL,
                      [dbus-1      >= $DBUS_REQUIRED
-                      dbus-glib-1 >= $DBUS_GLIB_REQUIRED
                       hal         >= $HAL_REQUIRED],
                      [have_hal=yes] ,
                      [have_hal=no])

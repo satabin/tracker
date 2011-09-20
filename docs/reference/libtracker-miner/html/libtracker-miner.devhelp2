@@ -25,6 +25,7 @@
         <sub name="TrackerThumbnailer" link="libtracker-miner-TrackerThumbnailer.html"/>
       </sub>
     </sub>
+    <sub name="Annotation Glossary" link="annotation-glossary.html"/>
   </chapters>
   <functions>
     <keyword type="struct" name="TrackerMinerPrivate" link="libtracker-miner-tracker-miner.html#TrackerMinerPrivate"/>

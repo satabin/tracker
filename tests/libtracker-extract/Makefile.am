@@ -3,9 +3,16 @@ include $(top_srcdir)/Makefile.decl
 noinst_PROGRAMS = $(TEST_PROGS)
 
 TEST_PROGS +=                                          \
-	tracker-encoding                               \
 	tracker-test-utils                             \
 	tracker-test-xmp
+
+if HAVE_ENCA
+TEST_PROGS += tracker-encoding
+else 
+  if HAVE_MEEGOTOUCH
+    TEST_PROGS += tracker-encoding
+  endif
+endif
 
 AM_CPPFLAGS =                                          \
 	-DTOP_SRCDIR=\"$(abs_top_srcdir)\"             \
@@ -30,4 +37,4 @@ tracker_test_utils_SOURCES = tracker-test-utils.c
 
 tracker_test_xmp_SOURCES = tracker-test-xmp.c
 
-EXTRA_DIST = encoding-detect.bin areas.xmp areas-with-contacts.xmp areas-ns.xmp
+EXTRA_DIST = encoding-detect.bin areas.xmp areas-with-contacts.xmp areas-ns.xmp nb282393.xmp nb282393_simple.xmp

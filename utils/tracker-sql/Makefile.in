@@ -71,7 +71,7 @@ am_tracker_sql_OBJECTS = tracker-sql.$(OBJEXT)
 tracker_sql_OBJECTS = $(am_tracker_sql_OBJECTS)
 tracker_sql_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-tracker_sql_DEPENDENCIES =  \
+tracker_sql_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
@@ -426,6 +426,7 @@ INCLUDES = \
 	$(TRACKER_UTILS_CFLAGS)
 
 LDADD = \
+	$(BUILD_LIBS)					\
 	$(top_builddir)/src/libtracker-data/libtracker-data.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \

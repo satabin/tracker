@@ -1,3 +1,204 @@
+2011-09-15  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.12.1
+
+2011-09-15  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	tracker-miner-fs: Don't index removable devices by default
+	This has been done for a few reasons, most notably:
+	- Most people don't want CDs or other removable media indexed *always*
+	- Common places (like external HDs) can and will be added by most anyway
+	- If GVFS says a mount point is removable, we recursively index that which
+	  recently caused Fedora 16 beta users to have horrendous desktop performance
+
+	Fixes GB#659062.
+
+2011-09-15  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-miner, libtracker-sparql: Update build instructions for 0.12
+
+2011-09-15  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	tracker-miner-fs: Enable indexing when on battery power on by default
+	The team decided this makes more sense too given you don't expect content to
+	be unavailable when running on battery (because we paused operations). Also if
+	an index has already been complete, there is usual little upkeep required.
+
+	Fixes GB#659063.
+
+2011-09-15  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-miner: Include introspection annotations glossary
+
+	libtracker-sparql: Include introspection annotations glossary
+
+	libtracker-extract: Fix doc build breakage
+	This was mostly caused by the way we implement entities for pages and it seems
+	them not conforming to the xi namespace
+
+2011-09-15  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-miner: Add tracker_task_* API to exported symbols
+	Test cases require this to build.
+
+2011-09-15  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	libtracker-extract: Documentation fixes
+	* Add TrackerExtractInfo section
+	* Update compile instructions for 0.12
+	* Include introspection annotations glossary (avoids parse errors)
+	* Fix tracker_extract_get_metadata() example for 0.12
+	* Fix miscellaneous variable name mismatches etc.
+
+2011-09-15  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-miner, tracker-extract: Use NULL and not " ", which gets stripped to ""
+	Our internal API, tracker_albumart_get_path, strips " " into "". This meant that
+	for forming the album media-art filename the md5 of "" was taken instead of of
+	the single-space string " ". When we pass NULL it returns the correct filename.
+
+	Fixes NB#282190.
+
+2011-09-15  dmustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-09-15  Ivan Frade  <ivan.frade@gmail.com>
+
+	libtracker-extract: Generate correct Sparql for the regions of interest
+
+	tests/libtracker-extract: Yet another test for the Regions of interest
+
+2011-09-15  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-miner: Fix typo in check_item_queues()
+	The check to turn create + delete into noop was wrong, although
+	in a harmless way.
+
+2011-09-15  Ivan Frade  <ivan.frade@gmail.com>
+
+	libtracker-extract: RoI creation doesn't depend on the order in the XML
+	Fixes NB#282393: tracker-extract crashes parsing XMP metadata which contains regions of interest
+
+	libtracker-extract: Use correct namespace for stArea
+
+	libtracker-extract: Remove useless debug message
+
+	tests/libtracker-extract: More XMP tests for the RoI
+	Fixed the Area namespace according to the spec.
+
+2011-09-15  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: if miner still crawling, don't consider it as cleanly shutdown
+	Fixes NB#277052.
+
+2011-09-15  Ivan Frade  <ivan.frade@gmail.com>
+
+	functional-tests: New parameter (graph) for the new extractor API
+
+	tests/libtracker-miner: unittest for TrackerTaskPool
+
+2011-09-15  Philip Van Hoof  <philip@codeminded.be>
+
+	libtracker-data: Support for removing rdfs:subPropertyOf
+	Fixes NB#281335.
+
+	libtracker-data: Detect unsupported ontology change rdfs:subPropertyOf
+
+2011-09-15  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Log error message on unsupported ontology change
+
+	libtracker-data: Do not reset database on unsupported ontology change
+	If the journal is disabled, do not reset database on unsupported
+	ontology change as this would loose data. Instead, continue operation
+	with old ontology version.
+
+	libtracker-data: Rollback transaction on unsupported ontology change
+	This does not make a difference when replaying journal, however, if
+	the journal is disabled, we want to continue using the old ontology
+	if we cannot use the new version.
+
+	libtracker-data: Fix error check for unsupported ontology change
+
+2011-09-15  Martyn Russell  <martyn@lanedo.com>
+
+	build: Don't require explicitly GTK+ 3.x for nautilus, it can cause crashes
+	This is because nautilus uses GTK+ 2.x on some systems and we require 3.x,
+	this causes crashes and stack overflows, etc which we want to avoid.
+
+	Fixes GB#651815 (possibly)
+
+	There have been a number of crash situations reported with nautilus and all
+	random and impossible to reproduce. I am considering this the fix for now
+	since I see no other reason.
+
+	nautilus: Don't re-define tracker_sparql_escape_string() instead re-use it
+
+	nautilus: Remove tracker_glist_copy_with_nautilus_files(), no longer used
+
+	nautilus: Improve the code generally
+	- Use nautilusr APIs for copying lists, etc.
+	- Use G_DEFINE_DYNAMIC_TYPE for TrackerTagsView
+	- Don't dereference from object into private everywhere
+	- Remove unused code for background interface
+	- Add some small debug
+
+2011-09-15  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-miner-fs, apps: avoid trying to parse directories as desktop files
+
+2011-09-15  Javier Jardón  <jjardon@gnome.org>
+
+	configure.ac: remove dbus-glib dependencies
+	This completes commit 559877e02ab0da358a64e6f19afa743db131ccc4
+
+2011-09-15  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-fs, tracker-writeback: Remove all dbus-glib occurrences
+	This fixes GB#658645.
+
+	libtracker-miner: Added tracker_priority_queue* API to exported symbols
+	The tests cases fail without this.
+
+	build: Require Vala >= 0.13.4
+	Fixes GB#658706.
+
+2011-09-15  Ivan Frade  <ivan.frade@gmail.com>
+
+	src/libtracker-extract: move fix_region_type to ifdef-free area
+	The function was defined inside an ifdef and used outside.
+
+	test/libtracker-miner: Unit test for the priority queue
+
+	src/libtracker-miner: Export all symbols if GCov is enabled
+	So we can unit-test internal code of libtracker-miner
+	Note that on release GCov is disabled and the symbols will be filtered then
+
+2011-09-15  Jürg Billeter  <j@bitron.ch>
+
+	coverage: Ignore generated .c files
+
+2011-09-15  Ivan Frade  <ivan.frade@gmail.com>
+
+	configure.ac: define BUILD_ flags and libs after GCov checking
+	Otherwise the gcov flags are never set and it is not possible to get
+	test coverage results.
+
+	tests/libtracker-extract: compile/run encoding testing only with right deps
+	The test will only work if enca or libmeegotouch are installed.
+
+2011-09-12  Aleksander Morgado  <aleksander@lanedo.com>
+
+	build: include gstreamer-dlna rules in EXTRA_DIST
+	The template for the GStreamer DLNA rules was missing from the dist tarball.
+
+	Fixes GB#658787.
+
+2011-09-09  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.12.0
+
 2011-09-09  Jürg Billeter  <j@bitron.ch>
 
 	functional-tests: Remove expected failure annotation from NB#281201 test

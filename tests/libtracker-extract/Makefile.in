@@ -48,7 +48,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
 noinst_PROGRAMS = $(am__EXEEXT_3)
 @HAVE_ENCA_TRUE@am__append_1 = tracker-encoding
-@HAVE_ENCA_FALSE@am__append_2 = tracker-encoding
+@HAVE_ENCA_FALSE@@HAVE_MEEGOTOUCH_TRUE@am__append_2 = tracker-encoding
 subdir = tests/libtracker-extract
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -69,7 +69,7 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 @HAVE_ENCA_TRUE@am__EXEEXT_1 = tracker-encoding$(EXEEXT)
-@HAVE_ENCA_FALSE@am__EXEEXT_2 = tracker-encoding$(EXEEXT)
+@HAVE_ENCA_FALSE@@HAVE_MEEGOTOUCH_TRUE@am__EXEEXT_2 = tracker-encoding$(EXEEXT)
 am__EXEEXT_3 = tracker-test-utils$(EXEEXT) tracker-test-xmp$(EXEEXT) \
 	$(am__EXEEXT_1) $(am__EXEEXT_2)
 PROGRAMS = $(noinst_PROGRAMS)
@@ -809,8 +809,6 @@ test-report perf-report full-report:	${TEST_PROGS}
 .PHONY: test test-report perf-report full-report
 # run make test as part of make check
 check-local: test
-@HAVE_ENCA_FALSE@  if HAVE_MEEGOTOUCH
-@HAVE_ENCA_FALSE@  endif
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

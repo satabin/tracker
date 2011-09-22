@@ -55,7 +55,7 @@ DIST_COMMON = $(libtracker_minerinclude_HEADERS) \
 # Using enable_gcov instead of have_unit_test because when doing a release
 #  we disable gcov but NOT the unit tests
 @ENABLE_GCOV_FALSE@am__append_1 = \
-@ENABLE_GCOV_FALSE@	-export-symbols-regex '^tracker_(miner|thumbnailer|crawler|storage|priority|task|password_provider|network_provider)_.*'
+@ENABLE_GCOV_FALSE@	-export-symbols-regex '^tracker_(miner|thumbnailer|crawler|storage|password_provider|network_provider)_.*'
 
 @HAVE_INTROSPECTION_TRUE@am__append_2 = $(AM_CPPFLAGS)
 @HAVE_INTROSPECTION_TRUE@am__append_3 = TrackerMiner-$(TRACKER_API_VERSION).gir
@@ -103,9 +103,10 @@ am__base_list = \
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(girdir)" \
 	"$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(vapidir)" \
 	"$(DESTDIR)$(libtracker_minerincludedir)"
-LTLIBRARIES = $(lib_LTLIBRARIES)
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 libtracker_miner_@TRACKER_API_VERSION@_la_DEPENDENCIES =  \
+	libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -124,12 +125,9 @@ am__libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES_DIST =  \
 	tracker-miner-object.h tracker-miner-fs.c tracker-miner-fs.h \
 	tracker-miner-manager.c tracker-miner-manager.h \
 	tracker-miner-web.c tracker-miner-web.h \
-	tracker-priority-queue.h tracker-priority-queue.c \
-	tracker-task-pool.h tracker-task-pool.c \
-	tracker-sparql-buffer.h tracker-sparql-buffer.c \
-	tracker-storage.c tracker-storage.h tracker-network-provider.c \
-	tracker-password-provider.c tracker-thumbnailer.c \
-	tracker-thumbnailer.h tracker-albumart.c tracker-albumart.h
+	tracker-network-provider.c tracker-password-provider.c \
+	tracker-thumbnailer.c tracker-thumbnailer.h tracker-albumart.c \
+	tracker-albumart.h
 @HAVE_NETWORK_MANAGER_FALSE@am__objects_1 =  \
 @HAVE_NETWORK_MANAGER_FALSE@	tracker-network-provider-dummy.lo
 @HAVE_NETWORK_MANAGER_TRUE@am__objects_1 = tracker-network-provider-network-manager.lo
@@ -144,11 +142,9 @@ am__objects_6 = tracker-monitor.lo
 am__objects_7 = $(am__objects_6) $(am__objects_4) \
 	tracker-miner-object.lo tracker-miner-fs.lo \
 	tracker-miner-manager.lo tracker-miner-web.lo
-am__objects_8 = tracker-priority-queue.lo tracker-task-pool.lo \
-	tracker-sparql-buffer.lo tracker-storage.lo
 am_libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS =  \
 	$(am__objects_1) $(am__objects_2) $(am__objects_5) \
-	$(am__objects_7) $(am__objects_8) tracker-network-provider.lo \
+	$(am__objects_7) tracker-network-provider.lo \
 	tracker-password-provider.lo tracker-thumbnailer.lo \
 	tracker-albumart.lo
 libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS =  \
@@ -161,6 +157,12 @@ libtracker_miner_@TRACKER_API_VERSION@_la_LINK = $(LIBTOOL) $(AM_V_lt) \
 	$(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
+libtracker_miner_private_la_LIBADD =
+am__objects_8 = tracker-priority-queue.lo tracker-task-pool.lo \
+	tracker-sparql-buffer.lo tracker-storage.lo
+am_libtracker_miner_private_la_OBJECTS = $(am__objects_8)
+libtracker_miner_private_la_OBJECTS =  \
+	$(am_libtracker_miner_private_la_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -187,9 +189,11 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES)
+SOURCES = $(libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES) \
+	$(libtracker_miner_private_la_SOURCES)
 DIST_SOURCES =  \
-	$(am__libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES_DIST)
+	$(am__libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES_DIST) \
+	$(libtracker_miner_private_la_SOURCES)
 DATA = $(gir_DATA) $(typelib_DATA) $(vapi_DATA)
 HEADERS = $(libtracker_minerinclude_HEADERS)
 ETAGS = etags
@@ -536,6 +540,7 @@ AM_CPPFLAGS = \
 	$(LIBTRACKER_MINER_CFLAGS)
 
 lib_LTLIBRARIES = libtracker-miner-@TRACKER_API_VERSION@.la
+noinst_LTLIBRARIES = libtracker-miner-private.la
 libtracker_minerdir = $(libdir)/tracker-$(TRACKER_API_VERSION)
 libtracker_minerincludedir = $(includedir)/tracker-$(TRACKER_API_VERSION)/libtracker-miner/
 crawler_sources = \
@@ -569,12 +574,14 @@ miner_sources = \
 	tracker-miner-web.c                            \
 	tracker-miner-web.h                            
 
+libtracker_miner_private_la_SOURCES = \
+	$(private_sources)
+
 libtracker_miner_@TRACKER_API_VERSION@_la_SOURCES = \
 	$(network_provider_sources)                    \
 	$(password_provider_sources)                   \
 	$(crawler_sources)			       \
 	$(miner_sources)			       \
-	$(private_sources)			       \
 	tracker-network-provider.c                     \
 	tracker-password-provider.c                    \
 	tracker-thumbnailer.c                          \
@@ -599,6 +606,7 @@ libtracker_minerinclude_HEADERS = \
 libtracker_miner_@TRACKER_API_VERSION@_la_LDFLAGS = -version-info \
 	$(LT_CURRENT):$(LT_REVISION):$(LT_AGE) $(am__append_1)
 libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD = \
+	libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	-lm                                            \
@@ -721,8 +729,19 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
+
+clean-noinstLTLIBRARIES:
+	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
+	@list='$(noinst_LTLIBRARIES)'; for p in $$list; do \
+	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
+	  test "$$dir" != "$$p" || dir=.; \
+	  echo "rm -f \"$${dir}/so_locations\""; \
+	  rm -f "$${dir}/so_locations"; \
+	done
 libtracker-miner-@TRACKER_API_VERSION@.la: $(libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS) $(libtracker_miner_@TRACKER_API_VERSION@_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libtracker_miner_@TRACKER_API_VERSION@_la_LINK) -rpath $(libdir) $(libtracker_miner_@TRACKER_API_VERSION@_la_OBJECTS) $(libtracker_miner_@TRACKER_API_VERSION@_la_LIBADD) $(LIBS)
+libtracker-miner-private.la: $(libtracker_miner_private_la_OBJECTS) $(libtracker_miner_private_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libtracker_miner_private_la_OBJECTS) $(libtracker_miner_private_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -999,7 +1018,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	mostlyclean-am
+	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -1074,21 +1093,21 @@ uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
 .MAKE: all check check-am install install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am check-local clean \
-	clean-generic clean-libLTLIBRARIES clean-libtool ctags \
-	distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-girDATA install-html install-html-am \
-	install-info install-info-am install-libLTLIBRARIES \
-	install-libtracker_minerincludeHEADERS install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	install-typelibDATA install-vapiDATA installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-girDATA \
-	uninstall-libLTLIBRARIES \
+	clean-generic clean-libLTLIBRARIES clean-libtool \
+	clean-noinstLTLIBRARIES ctags distclean distclean-compile \
+	distclean-generic distclean-libtool distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-girDATA install-html \
+	install-html-am install-info install-info-am \
+	install-libLTLIBRARIES install-libtracker_minerincludeHEADERS \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip install-typelibDATA \
+	install-vapiDATA installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags uninstall uninstall-am \
+	uninstall-girDATA uninstall-libLTLIBRARIES \
 	uninstall-libtracker_minerincludeHEADERS uninstall-typelibDATA \
 	uninstall-vapiDATA
 

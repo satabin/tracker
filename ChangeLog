@@ -1,3 +1,217 @@
+2011-09-22  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.12.2
+
+2011-09-22  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract, gif: Don't use a FILE* when we don't have to
+
+	tracker-extract, tiff: Don't use a FILE* when we don't have to
+
+	tracker-extract, text: Use O_NOATIME for opening text files
+
+	tracker-extract, xmp: Use mmap with a fd with O_NOATIME for xmp files
+
+	tracker-extract, tiff: Use O_NOATIME for opening tiff files
+
+	tracker-extract, pdf: Use mmap with an fd that has O_NOATIME for pdfs
+
+	tracker-extract, msoffice: Use O_NOATIME for opening msoffice files
+
+	tracker-extract, gif: Open GIF files with O_NOATIME
+
+	libtracker-common, tracker-extract: Change the internal tracker_file_open API
+
+	tracker-extract, flac: preserve file stats for flac files (simulates O_NOATIME)
+
+	tracker-extract: Use O_NOATIME for files opened by libgsf (ie. EPub files)
+
+	libtracker-common: Fix tracker_file_open, original had various problems
+
+	tracker-extract, abw: Don't use _O_BINARY and handle error on mmap
+
+	tracker-extract: Don't use g_mapped_file_new which doesn't allow O_NOATIME
+
+2011-09-22  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-miner-fs: Change default for low-disk-space-limit to be disabled (-1)
+	This has been done to avoid the poll() call every 10 seconds we have in place
+	given the store already has mechanisms in place for handling out of disk
+	space.
+
+	tracker-control: Reset GSettings config on -c option
+	Previously we only removed config files.
+
+	Fixes GB#659806
+
+2011-09-22  Mario Blättermann  <mariobl@gnome.org>
+
+	[l10n] Updated German translation
+
+2011-09-22  Aleksander Morgado  <aleksander@lanedo.com>
+
+	libtracker-miner: improve event queue traces
+
+2011-09-22  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fix the Imagemagick png raw profile magic.
+
+2011-09-22  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2011-09-22  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-control: Don't finalize TrackerMinerManager with --pause-for-process
+	This command line option was useless, the finalize meant we resumed
+	immediately afterwards instead of waiting for the Ctrl+C for the main loop we
+	use.
+
+	This was noticed by Rainer M. Krug.
+
+	libtracker-miner: Improve docs for tracker_miner_manager_pause_for_process()
+	When finalizing the manager, it will resume the pause. The tracker-control
+	utility was demonstrating this. Let people calling it know.
+
+	tracker-control: Missing plural handling for "Found %d miners {running|installed}"
+	Fixes GB#659470.
+
+2011-09-22  Jasper Lievisse Adriaanse  <jasper@humppa.nl>
+
+	libtracker-sparql: Fix pkg-config file
+	OpenBSD has it's own pkg-config implementation which has a stricter parser
+	than the "original" freedesktop one. As such, the tracker-sqarl.pc file
+	doesn't work due to the linebreak in Description.
+
+	Fixes GB#659620
+
+2011-09-22  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tests: avoid compilation warnings
+
+	libtracker-miner: avoid logging global error in update array multiple times
+
+	libtracker-miner: improve logging of partial errors when using update array
+
+	libtracker-miner: minor indentation fixes
+
+2011-09-22  Michael Biebl  <biebl@debian.org>
+
+	libtracker-miner: Hide private tracker_task_* and tracker_priority_queue_* API
+	Instead of adding the tracker_task_* and tracker_priority_queue_* API to
+	the list of exported symbols, add a private convenience library which
+	the test suite can link against.
+
+	This supersedes commit 34b06efed92bc2eb084e055c1ec78b98994f901e and
+	f9e335dc7b39273b8848943eba037ba0a7c32c9f
+
+2011-09-22  Ivan Frade  <ivan.frade@gmail.com>
+
+	tests/libtracker-extract: Fix mem-leaks in the tests
+	No memleaks in the tests help us to find memory leaks in the real code!
+
+	libtracker-extract: Do not leak GMatchInfo objects.
+	Glib doc:
+	A GMatchInfo structure, used to get information on the match,
+	is stored in match_info if not NULL. Note that if match_info
+	is not NULL then it is created even if the function returns FALSE,
+	 i.e. you must free it regardless if regular expression actually matched.
+
+2011-09-22  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-writeback: Propagate all errors of writeback over DBus
+	All these error conditions would put miner-fs in a detect state unless
+	propagated over D-Bus. Even criticals in tracker-writeback shouldn't
+	leave miner-fs in a defect state (waiting for rename() to happen).
+
+	tracker-writeback: Handle if there's no module for the passed rdf types
+
+	tracker-writeback: Do proper error handling in the writeback program
+	The writeback_file_finished in the miner-fs requires that in case no rename()
+	happens at the end (which is the case in case the module's function returned
+	FALSE at the end of tracker_writeback_file_update_metadata), that an error is
+	returned for the DBus Method PerformWriteback.
+
+	I encountered a situation where xmp_files_open_new returned NULL in the module
+	function writeback_xmp_update_file_metadata of tracker-writeback-xmp.c, this
+	resulted in a FALSE return causing a unlink instead of rename of the temporary
+	file. This made miner-fs's handling for that fail.
+
+2011-09-22  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-09-22  Ivan Frade  <ivan.frade@gmail.com>
+
+	ontologies: NFO updating lastModified timestamp.
+	Forgot in the previous commit, so the DB in tracker is not updated
+	with the new properties and class.
+
+2011-09-22  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2011-09-22  Ivan Frade  <ivan.frade@gmail.com>
+
+	tests/functional-tests: update writeback test to new extractors output
+
+2011-09-22  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tests: ignore built programs in git
+
+	tracker-miner-fs, applications: Keep track of MLocale-reported locale
+	When MeegoTouch libraries are available, we use the MLocale Translation
+	catalogue to get translated application names in the Applications Miner.
+
+	Until now, we assumed that the language locale in MLocale would be completely
+	equal to the one stored in the GConf keys, but this is no longer true; the
+	'/meegotouch/i18n/language' key may not hold the country code, while the
+	MLocale-reported language now it does (NB#276653). Therefore, it is better to
+	keep track of the MLocale-reported locale instead of the GConf-retrieved one.
+
+	Fixes NB#282957
+
+2011-09-22  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-preferences: Updated text used on Locations tab from feedback
+	Had some good feedback from blog comments which I have used here
+
+2011-09-22  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-09-22  Mario Blättermann  <mariobl@gnome.org>
+
+	[l10n] Updated German translation
+
+2011-09-22  Jürg Billeter  <j@bitron.ch>
+
+	tests/libtracker-extract: Fix build without enca
+
+2011-09-22  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-09-22  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-09-22  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-preferences: Use one list for locations and add XDG toggle buttons
+
+2011-09-22  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Drop all indexes before index recreation
+	Recreating an index with new collation while indexes with old collation
+	still exist may result in SQLite reporting database corruption.
+
+	Fixes NB#282541.
+
+	libtracker-data: Make index recreation less verbose
+	fix_indexed already prints the index name before all SQL statements
+	executed, no need to print class and property name in recreate_indexes.
+
 2011-09-15  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.12.1

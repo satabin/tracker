@@ -28,10 +28,11 @@
 
 #include "tracker-writeback-file.h"
 
-static gboolean tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
-                                                        GPtrArray               *values,
-                                                        TrackerSparqlConnection *connection,
-                                                        GCancellable            *cancellable);
+static gboolean tracker_writeback_file_update_metadata (TrackerWriteback         *writeback,
+                                                        GPtrArray                *values,
+                                                        TrackerSparqlConnection  *connection,
+                                                        GCancellable             *cancellable,
+                                                        GError                  **error);
 
 G_DEFINE_ABSTRACT_TYPE (TrackerWritebackFile, tracker_writeback_file, TRACKER_TYPE_WRITEBACK)
 
@@ -49,8 +50,9 @@ tracker_writeback_file_init (TrackerWritebackFile *writeback_file)
 }
 
 static GFile *
-create_temporary_file (GFile     *file,
-                       GFileInfo *file_info)
+create_temporary_file (GFile      *file,
+                       GFileInfo  *file_info,
+                       GError    **in_error)
 {
 	GInputStream *input_stream;
 	GOutputStream *output_stream;
@@ -67,6 +69,12 @@ create_temporary_file (GFile     *file,
 		g_warning ("Could not create temporary file, file is not native: '%s'", uri);
 		g_free (uri);
 
+		g_set_error (in_error,
+		             G_IO_ERROR,
+		             G_IO_ERROR_FAILED,
+		             "Could not create temporary file, file is not native: '%s'",
+		             uri);
+
 		return NULL;
 	}
 
@@ -75,7 +83,7 @@ create_temporary_file (GFile     *file,
 
 	if (error) {
 		g_critical ("Could not create temporary file, %s", error->message);
-		g_error_free (error);
+		g_propagate_error (in_error, error);
 		return NULL;
 	}
 
@@ -111,8 +119,7 @@ create_temporary_file (GFile     *file,
 
 	if (error) {
 		g_critical ("Could not copy temporary file, %s", error->message);
-		g_error_free (error);
-
+		g_propagate_error (in_error, error);
 		g_file_delete (tmp_file, NULL, NULL);
 		g_object_unref (tmp_file);
 
@@ -123,10 +130,11 @@ create_temporary_file (GFile     *file,
 }
 
 static gboolean
-tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
-                                        GPtrArray               *values,
-                                        TrackerSparqlConnection *connection,
-                                        GCancellable            *cancellable)
+tracker_writeback_file_update_metadata (TrackerWriteback         *writeback,
+                                        GPtrArray                *values,
+                                        TrackerSparqlConnection  *connection,
+                                        GCancellable             *cancellable,
+                                        GError                  **error)
 {
 	TrackerWritebackFileClass *writeback_file_class;
 	gboolean retval;
@@ -136,18 +144,33 @@ tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
 	const gchar * const *content_types;
 	const gchar *mime_type;
 	guint n;
+	GError *n_error = NULL;
 
 	writeback_file_class = TRACKER_WRITEBACK_FILE_GET_CLASS (writeback);
 
 	if (!writeback_file_class->update_file_metadata) {
 		g_critical ("%s doesn't implement update_file_metadata()",
 		            G_OBJECT_TYPE_NAME (writeback));
+
+		g_set_error (error,
+		             G_IO_ERROR,
+		             G_IO_ERROR_FAILED,
+		             "%s doesn't implement update_file_metadata()",
+		             G_OBJECT_TYPE_NAME (writeback));
+
 		return FALSE;
 	}
 
 	if (!writeback_file_class->content_types) {
 		g_critical ("%s doesn't implement content_types()",
 		            G_OBJECT_TYPE_NAME (writeback));
+
+		g_set_error (error,
+		             G_IO_ERROR,
+		             G_IO_ERROR_FAILED,
+		             "%s doesn't implement content_types()",
+		             G_OBJECT_TYPE_NAME (writeback));
+
 		return FALSE;
 	}
 
@@ -163,6 +186,13 @@ tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
 
 	if (!file_info) {
 		g_object_unref (file);
+
+		g_set_error (error,
+		             G_IO_ERROR,
+		             G_IO_ERROR_FAILED,
+		             "%s doesn't exist",
+		             row[0]);
+
 		return FALSE;
 	}
 
@@ -183,17 +213,22 @@ tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
 		g_object_unref (file_info);
 		g_object_unref (file);
 
+		g_set_error_literal (error,
+		                     G_IO_ERROR,
+		                     G_IO_ERROR_FAILED,
+		                     "Module does not support writeback for this file");
+
 		return FALSE;
 	}
 
 	/* Copy to a temporary file so we can perform an atomic write on move */
-	tmp_file = create_temporary_file (file, file_info);
+	tmp_file = create_temporary_file (file, file_info, &n_error);
 
 	g_object_unref (file_info);
 
 	if (!tmp_file) {
 		g_object_unref (file);
-
+		g_propagate_error (error, n_error);
 		return FALSE;
 	}
 
@@ -201,7 +236,8 @@ tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
 	                                                       tmp_file,
 	                                                       values,
 	                                                       connection,
-	                                                       cancellable);
+	                                                       cancellable,
+	                                                       &n_error);
 
 	if (!retval) {
 		/* Delete the temporary file and preserve original */
@@ -215,6 +251,10 @@ tracker_writeback_file_update_metadata (TrackerWriteback        *writeback,
 
 	g_object_unref (tmp_file);
 	g_object_unref (file);
+
+	if (n_error) {
+		g_propagate_error (error, n_error);
+	}
 
 	return retval;
 }

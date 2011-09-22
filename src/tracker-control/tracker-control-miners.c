@@ -138,11 +138,19 @@ miner_pause (const gchar *miner,
 	str = g_strdup_printf (_("Cookie is %d"), cookie);
 	g_print ("  %s\n", str);
 	g_free (str);
-	g_object_unref (manager);
 
 	if (for_process) {
+		GMainLoop *main_loop;
+
 		g_print ("%s\n", _("Press Ctrl+C to end pause"));
+
+		main_loop = g_main_loop_new (NULL, FALSE);
+		/* Block until Ctrl+C */
+		g_main_loop_run (main_loop);
+		g_object_unref (main_loop);
 	}
+
+	g_object_unref (manager);
 
 	return EXIT_SUCCESS;
 }
@@ -275,8 +283,11 @@ miner_list (gboolean available,
 
 		miners_available = tracker_miner_manager_get_available (manager);
 
-		str = g_strdup_printf (_("Found %d miners installed"),
+		str = g_strdup_printf (ngettext ("Found %d miner installed",
+		                                 "Found %d miners installed",
+		                                 g_slist_length (miners_available)),
 		                       g_slist_length (miners_available));
+
 		g_print ("%s%s\n", str, g_slist_length (miners_available) > 0 ? ":" : "");
 		g_free (str);
 
@@ -295,8 +306,11 @@ miner_list (gboolean available,
 
 		miners_running = tracker_miner_manager_get_running (manager);
 
-		str = g_strdup_printf (_("Found %d miners running"),
+		str = g_strdup_printf (ngettext ("Found %d miner running",
+		                                 "Found %d miners running",
+		                                 g_slist_length (miners_running)),
 		                       g_slist_length (miners_running));
+
 		g_print ("%s%s\n", str, g_slist_length (miners_running) > 0 ? ":" : "");
 		g_free (str);
 
@@ -446,20 +460,7 @@ tracker_control_miners_run (void)
 	}
 
 	if (pause_for_process_reason) {
-		gint retval;
-
-		retval = miner_pause (miner_name, pause_for_process_reason, TRUE);
-
-		if (retval == EXIT_SUCCESS) {
-			GMainLoop *main_loop;
-
-			main_loop = g_main_loop_new (NULL, FALSE);
-			/* Block until Ctrl+C */
-			g_main_loop_run (main_loop);
-			g_object_unref (main_loop);
-		}
-
-		return retval;
+		return miner_pause (miner_name, pause_for_process_reason, TRUE);
 	}
 
 	if (resume_cookie != -1) {

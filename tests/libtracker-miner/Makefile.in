@@ -101,6 +101,7 @@ tracker_crawler_test_OBJECTS = $(am_tracker_crawler_test_OBJECTS)
 tracker_crawler_test_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
 tracker_crawler_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -110,6 +111,7 @@ am_tracker_miner_manager_test_OBJECTS =  \
 tracker_miner_manager_test_OBJECTS =  \
 	$(am_tracker_miner_manager_test_OBJECTS)
 am__DEPENDENCIES_2 = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -122,6 +124,7 @@ am_tracker_monitor_test_OBJECTS = $(am__objects_1) $(am__objects_2) \
 tracker_monitor_test_OBJECTS = $(am_tracker_monitor_test_OBJECTS)
 tracker_monitor_test_LDADD = $(LDADD)
 tracker_monitor_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -137,6 +140,7 @@ tracker_priority_queue_test_OBJECTS =  \
 	$(am_tracker_priority_queue_test_OBJECTS)
 tracker_priority_queue_test_LDADD = $(LDADD)
 tracker_priority_queue_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -144,6 +148,7 @@ am_tracker_task_pool_test_OBJECTS = tracker-task-pool-test.$(OBJEXT)
 tracker_task_pool_test_OBJECTS = $(am_tracker_task_pool_test_OBJECTS)
 tracker_task_pool_test_LDADD = $(LDADD)
 tracker_task_pool_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -154,6 +159,7 @@ tracker_thumbnailer_test_OBJECTS =  \
 	$(am_tracker_thumbnailer_test_OBJECTS)
 tracker_thumbnailer_test_LDADD = $(LDADD)
 tracker_thumbnailer_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -559,6 +565,7 @@ AM_CPPFLAGS = \
 
 LDADD = \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(BUILD_LIBS)                                  \

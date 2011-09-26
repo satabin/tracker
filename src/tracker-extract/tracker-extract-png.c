@@ -79,8 +79,6 @@ rfc1123_to_iso8601_date (const gchar *date)
 	return tracker_date_format_to_iso8601 (date, RFC1123_DATE_FORMAT);
 }
 
-#if defined(HAVE_EXEMPI) && defined(PNG_iTXt_SUPPORTED)
-
 /* Handle raw profiles by Imagemagick (at least). Hex encoded with
  * line-changes and other (undocumented/unofficial) twists.
  */
@@ -183,8 +181,6 @@ raw_profile_new (const gchar *input,
 	return output;
 }
 
-#endif /* HAVE_EXEMPI && PNG_iTXt_SUPPORTED */
-
 static void
 read_metadata (TrackerSparqlBuilder *preupdate,
                TrackerSparqlBuilder *metadata,
@@ -263,14 +259,29 @@ read_metadata (TrackerSparqlBuilder *preupdate,
 #endif
 
 #if defined(HAVE_LIBEXIF) && defined(PNG_iTXt_SUPPORTED)
-			/* I'm not certain this is the key for EXIF. Using key according to
-			 * this document about exiftool:
-			 * http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/PNG.html#TextualData 
-			 */
 			if (g_strcmp0 ("Raw profile type exif", text_ptr[i].key) == 0) {
-				ed = tracker_exif_new (text_ptr[i].text,
-					               text_ptr[i].itxt_length,
-					               uri);
+				gchar *exif_buffer;
+				guint exif_buffer_length = 0;
+				guint input_len;
+
+				if (text_ptr[i].text_length) {
+					input_len = text_ptr[i].text_length;
+				} else {
+					input_len = text_ptr[i].itxt_length;
+				}
+
+				exif_buffer = raw_profile_new (text_ptr[i].text,
+				                               input_len,
+				                               &exif_buffer_length);
+
+				if (exif_buffer) {
+					ed = tracker_exif_new (exif_buffer,
+					                       exif_buffer_length,
+					                       uri);
+				}
+
+				g_free (exif_buffer);
+
 				continue;
 			}
 #endif /* HAVE_LIBEXIF */

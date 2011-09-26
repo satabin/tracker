@@ -102,9 +102,10 @@ am__libtracker_common_la_SOURCES_DIST = tracker-marshal.h \
 	tracker-os-dependant-unix.c tracker-os-dependant-win.c \
 	tracker-config-file.c tracker-date-time.c tracker-dbus.c \
 	tracker-file-utils.c tracker-ioprio.c tracker-keyfile-object.c \
-	tracker-log.c tracker-type-utils.c tracker-utils.c \
-	tracker-crc32.c tracker-locale.c tracker-albumart.c \
-	tracker-language.c tracker-locale-gconfdbus.c
+	tracker-log.c tracker-sched.c tracker-type-utils.c \
+	tracker-utils.c tracker-crc32.c tracker-locale.c \
+	tracker-albumart.c tracker-language.c \
+	tracker-locale-gconfdbus.c
 am__objects_1 = tracker-marshal.lo
 am__objects_2 = $(am__objects_1) tracker-enum-types.lo
 @OS_WIN32_FALSE@am__objects_3 = tracker-os-dependant-unix.lo
@@ -114,9 +115,10 @@ am__objects_2 = $(am__objects_1) tracker-enum-types.lo
 am_libtracker_common_la_OBJECTS = $(am__objects_2) $(am__objects_3) \
 	tracker-config-file.lo tracker-date-time.lo tracker-dbus.lo \
 	tracker-file-utils.lo tracker-ioprio.lo \
-	tracker-keyfile-object.lo tracker-log.lo tracker-type-utils.lo \
-	tracker-utils.lo tracker-crc32.lo tracker-locale.lo \
-	tracker-albumart.lo $(am__objects_4) $(am__objects_5)
+	tracker-keyfile-object.lo tracker-log.lo tracker-sched.lo \
+	tracker-type-utils.lo tracker-utils.lo tracker-crc32.lo \
+	tracker-locale.lo tracker-albumart.lo $(am__objects_4) \
+	$(am__objects_5)
 libtracker_common_la_OBJECTS = $(am_libtracker_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -157,9 +159,10 @@ am__noinst_HEADERS_DIST = tracker-dbus.h tracker-enums.h \
 	tracker-ioprio.h tracker-log.h tracker-os-dependant.h \
 	tracker-config-file.h tracker-common.h tracker-date-time.h \
 	tracker-file-utils.h tracker-keyfile-object.h \
-	tracker-ontologies.h tracker-type-utils.h tracker-utils.h \
-	tracker-crc32.h tracker-locale.h tracker-albumart.h \
-	tracker-language.h tracker-locale-gconfdbus.h
+	tracker-ontologies.h tracker-sched.h tracker-type-utils.h \
+	tracker-utils.h tracker-crc32.h tracker-locale.h \
+	tracker-albumart.h tracker-language.h \
+	tracker-locale-gconfdbus.h
 HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -486,13 +489,13 @@ libtracker_common_LTLIBRARIES = libtracker-common.la
 libtracker_common_la_SOURCES = $(BUILT_SOURCES) $(os_sources) \
 	tracker-config-file.c tracker-date-time.c tracker-dbus.c \
 	tracker-file-utils.c tracker-ioprio.c tracker-keyfile-object.c \
-	tracker-log.c tracker-type-utils.c tracker-utils.c \
-	tracker-crc32.c tracker-locale.c tracker-albumart.c \
-	$(am__append_1) $(am__append_3)
+	tracker-log.c tracker-sched.c tracker-type-utils.c \
+	tracker-utils.c tracker-crc32.c tracker-locale.c \
+	tracker-albumart.c $(am__append_1) $(am__append_3)
 noinst_HEADERS = tracker-dbus.h tracker-enums.h tracker-ioprio.h \
 	tracker-log.h tracker-os-dependant.h tracker-config-file.h \
 	tracker-common.h tracker-date-time.h tracker-file-utils.h \
-	tracker-keyfile-object.h tracker-ontologies.h \
+	tracker-keyfile-object.h tracker-ontologies.h tracker-sched.h \
 	tracker-type-utils.h tracker-utils.h tracker-crc32.h \
 	tracker-locale.h tracker-albumart.h $(am__append_2) \
 	$(am__append_4)
@@ -612,6 +615,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-os-dependant-unix.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-os-dependant-win.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-sched.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-type-utils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Plo@am__quote@
 

@@ -51,9 +51,9 @@ Stable, unless otherwise indicated
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *graph</code></em>);
 <a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="returnvalue">TrackerExtractInfo</span></a> *   <a class="link" href="libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-ref" title="tracker_extract_info_ref ()">tracker_extract_info_ref</a>         (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-unref" title="tracker_extract_info_unref ()">tracker_extract_info_unref</a>          (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);
-<a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> * <a class="link" href="libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-preupdate-builder" title="tracker_extract_info_get_preupdate_builder ()">tracker_extract_info_get_preupdate_builder</a>
+<a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="returnvalue">TrackerSparqlBuilder</span></a> * <a class="link" href="libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-preupdate-builder" title="tracker_extract_info_get_preupdate_builder ()">tracker_extract_info_get_preupdate_builder</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);
-<a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> * <a class="link" href="libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-metadata-builder" title="tracker_extract_info_get_metadata_builder ()">tracker_extract_info_get_metadata_builder</a>
+<a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="returnvalue">TrackerSparqlBuilder</span></a> * <a class="link" href="libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-metadata-builder" title="tracker_extract_info_get_metadata_builder ()">tracker_extract_info_get_metadata_builder</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *          <a class="link" href="libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-where-clause" title="tracker_extract_info_get_where_clause ()">tracker_extract_info_get_where_clause</a>
                                                         (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);
@@ -162,10 +162,10 @@ if it reaches 0.
 <hr>
 <div class="refsect2">
 <a name="tracker-extract-info-get-preupdate-builder"></a><h3>tracker_extract_info_get_preupdate_builder ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> * tracker_extract_info_get_preupdate_builder
+<pre class="programlisting"><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="returnvalue">TrackerSparqlBuilder</span></a> * tracker_extract_info_get_preupdate_builder
                                                         (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);</pre>
 <p>
-Returns a <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> containing any
+Returns a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> containing any
 separate updates that could apply to the file,
 such as author/band information in audio files,
 and so on.
@@ -190,10 +190,10 @@ and so on.
 <hr>
 <div class="refsect2">
 <a name="tracker-extract-info-get-metadata-builder"></a><h3>tracker_extract_info_get_metadata_builder ()</h3>
-<pre class="programlisting"><a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="returnvalue">TrackerSparqlBuilder</span></a> * tracker_extract_info_get_metadata_builder
+<pre class="programlisting"><a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="returnvalue">TrackerSparqlBuilder</span></a> * tracker_extract_info_get_metadata_builder
                                                         (<em class="parameter"><code><a class="link" href="libtracker-extract-TrackerExtractInfo.html#TrackerExtractInfo" title="TrackerExtractInfo"><span class="type">TrackerExtractInfo</span></a> *info</code></em>);</pre>
 <p>
-Returns a <a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> containing the
+Returns a <a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> containing the
 file metadata.
 </p>
 <div class="variablelist"><table border="0">

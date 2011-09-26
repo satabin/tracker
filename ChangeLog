@@ -1,3 +1,84 @@
+2011-09-26  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.12.3
+
+	tracker-preferences: Remove throttle implementation
+	Now less useful with SCHED_IDLE work
+
+	tracker-miner-fs, tracker-extract: Add config option SchedIdle
+	The config option allows 3 states, 'always', 'first-index' or 'never'. The
+	default is 'first-index'.
+
+	The tracker-preferences dialog now has 3 radio buttons explaining this too.
+
+	This is a first attempt at fixing GB#659422
+
+	libtracker-common: Added functionality for SCHED_IDLE scheduler priority
+	Also added calls the tracker-miner-fs and tracker-extract
+
+2011-09-26  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-09-26  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+
+	[l10n] Updated German translation
+
+2011-09-26  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2011-09-26  Wylmer Wang  <wantinghard@gmail.com>
+
+	update Simplified Chinese (zh_CN) translation
+
+2011-09-26  Jürg Billeter  <j@bitron.ch>
+
+	libtracker-data: Do not consider index recreation failure fatal
+	Tracker can operate with missing indices.
+
+	Fixes NB#283501.
+
+2011-09-26  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract, xmp: O_NOATIME requires owner to match, allow fallback
+
+	tracker-extract, mp3: Also check for errno for fallback for open
+
+	tracker-extract, tiff: O_NOATIME requires owner to match, allow fallback
+
+	tracker-extract, text: O_NOATIME requires owner to match, allow fallback
+
+	tracker-extract, pdf: O_NOATIME requires owner to match, allow fallback
+
+	tracker-extract, mp3: Use g_open instead of open
+
+	tracker-extract, gif: O_NOATIME requires owner to match, allow fallback
+
+	tracker-extract, abw: O_NOATIME requires owner to match, allow fallback
+
+	libtracker-common: O_NOATIME requires owner to match, have a fallback
+
+2011-09-26  Mikael Ottela  <mikael.ottela@ixonos.com>
+
+	Fix the Imagemagick png raw profile magic.
+
+2011-09-26  Martyn Russell  <martyn@lanedo.com>
+
+	Revert "Fix the Imagemagick png raw profile magic."
+	This reverts commit 373147928efe09921cb23f649272c7486645687f.
+
+	Branch 'roi-png-fix' with this commit was merged when 'roi-png-fixed' should
+	have been instead.
+
+2011-09-26  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-09-22  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
 2011-09-22  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.12.2

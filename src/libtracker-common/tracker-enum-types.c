@@ -73,6 +73,27 @@ tracker_verbosity_get_type (void)
   return g_define_type_id__volatile;
 }
 
+GType
+tracker_sched_idle_get_type (void)
+{
+  static volatile gsize g_define_type_id__volatile = 0;
+ 
+  if (g_once_init_enter (&g_define_type_id__volatile)) {
+    static const GEnumValue values[] = {
+      { TRACKER_SCHED_IDLE_ALWAYS, "TRACKER_SCHED_IDLE_ALWAYS", "always" },
+      { TRACKER_SCHED_IDLE_FIRST_INDEX, "TRACKER_SCHED_IDLE_FIRST_INDEX", "first-index" },
+      { TRACKER_SCHED_IDLE_NEVER, "TRACKER_SCHED_IDLE_NEVER", "never" },
+      { 0, NULL, NULL }
+    };
+    GType g_define_type_id = 
+       g_enum_register_static (g_intern_static_string ("TrackerSchedIdle"), values);
+      
+    g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
+  }
+    
+  return g_define_type_id__volatile;
+}
+
 /* enumerations from "tracker-date-time.h" */
 #include "tracker-date-time.h"
 GType

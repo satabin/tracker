@@ -22,7 +22,7 @@ License:
 src/libtracker-common/*
 
 Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
-Copyright (C) 2008, Nokia <ivan.frade@nokia.com>
+Copyright (C) 2008-2010, Nokia <ivan.frade@nokia.com>
 
 License: LGPL v2.1 or later
 
@@ -36,10 +36,17 @@ Copyright (C) 2008-2010, Nokia <ivan.frade@nokia.com>
 License: LGPL v2.1 or later
 
 ===============================================================================
-src/libtracker-db/*
+src/libtracker-fts/*
 
 Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
 Copyright (C) 2008-2009, Nokia <ivan.frade@nokia.com>
+License: LGPL v2.1 or later
+
+===============================================================================
+src/libtracker-miner/*
+
+Copyright (C) 2008-2011, Nokia <ivan.frade@nokia.com>
+Copyright (C) 2009-2010, Adrien Bustany <abustany@gnome.org>
 License: LGPL v2.1 or later
 
 ===============================================================================
@@ -50,17 +57,9 @@ Copyright (C) 2009-2010, Nokia <ivan.frade@nokia.com>
 License: LGPL v2.1 or later
 
 ===============================================================================
-src/libtracker-fts/*
+src/libtracker-sparql/*
 
-Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
-Copyright (C) 2008-2009, Nokia <ivan.frade@nokia.com>
-License: LGPL v2.1 or later
-
-===============================================================================
-src/libtracker-miner/*
-
-Copyright (C) 2008-2009, Nokia <ivan.frade@nokia.com>
-Copyright (C) 2009-2010, Adrien Bustany <abustany@gnome.org>
+Copyright (C) 2008-2011, Nokia <ivan.frade@nokia.com>
 License: LGPL v2.1 or later
 
 ===============================================================================
@@ -97,6 +96,13 @@ src/tracker-utils/*
 
 Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
 Copyright (C) 2008-2009, Nokia <ivan.frade@nokia.com>
+License: LGPL v2.1 or later
+
+===============================================================================
+src/tracker-extract/*
+
+Copyright (C) 2006, Jamie McCracken <jamiemcc@gnome.org>
+Copyright (C) 2008-2011 Nokia <ivan.frade@nokia.com>
 License: LGPL v2.1 or later
 
 ===============================================================================

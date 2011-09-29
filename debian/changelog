@@ -14,6 +14,7 @@ tracker (0.12.3-1) UNRELEASED; urgency=low
   * Install gsettings schema files.
   * Fix html markup error in German translation.
   * Install tracker-writeback.
+  * Update debian/copyright.
 
  -- Michael Biebl <biebl@debian.org>  Fri, 23 Sep 2011 01:01:24 +0200
 

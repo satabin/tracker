@@ -4,6 +4,3 @@ usr/lib/tracker/tracker-extract
 usr/lib/tracker-0.12/extract-modules/*.so
 usr/share/tracker/extract-rules/
 usr/share/man/man1/tracker-extract.1
-#usr/share/tracker/tracker-writeback.xml (move to tracker-store?)
-#usr/lib/tracker/tracker-writeback (move to tracker-store?)
-#usr/lib/tracker-0.12/writeback-modules/*.so (move to tracker-store?)

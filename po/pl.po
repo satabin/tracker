@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tracker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-22 20:30+0200\n"
-"PO-Revision-Date: 2011-09-22 20:31+0200\n"
+"POT-Creation-Date: 2011-10-05 18:37+0200\n"
+"PO-Revision-Date: 2011-10-05 18:38+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -104,6 +104,22 @@ msgstr "Maksymalnie bajtów do wypakowania"
 #: ../data/gschemas/org.freedesktop.Tracker.Extract.gschema.xml.in.h:4
 msgid "Maximum number of UTF-8 bytes to extract."
 msgstr "Maksymalna liczba bajtów UTF-8 do wypakowania."
+
+#: ../data/gschemas/org.freedesktop.Tracker.Extract.gschema.xml.in.h:5
+#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:27
+msgid "Scheduler priority when idle"
+msgstr "Priorytet planisty podczas bezczynności"
+
+#: ../data/gschemas/org.freedesktop.Tracker.Extract.gschema.xml.in.h:6
+#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:34
+msgid ""
+"The scheduler is the kernel component that decides which runnable "
+"application will be executed by the CPU next. Each application has an "
+"associated scheduling policy and priority."
+msgstr ""
+"Planista to część jądra decydująca o kolejności wykonywania programów przez "
+"procesor. Każdy program posiada powiązaną ze sobą politykę i priorytet "
+"planowania."
 
 #: ../data/gschemas/org.freedesktop.Tracker.FTS.gschema.xml.in.h:1
 msgid "Enable stemmer"
@@ -303,17 +319,17 @@ msgstr "Wykonywanie początkowego indeksowania podczas zasilania z akumulatora"
 msgid "Removable devices' data permanence threshold"
 msgstr "Próg zezwolenia danych nośników wymiennych"
 
-#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:27
+#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:28
 msgid "Set to false to completely disable any file monitoring"
 msgstr ""
 "Ustawienie na wartość \"false\" całkowicie wyłącza monitorowanie plików"
 
-#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:28
+#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:29
 msgid "Set to false to completely disable any file writeback"
 msgstr ""
 "Ustawienie na wartość \"false\" całkowicie wyłącza zapisy zwrotne plików"
 
-#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:29
+#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:30
 msgid ""
 "Set to true to enable indexing CDs, DVDs, and generally optical media (if "
 "removable devices are not indexed, optical discs won't be either)"
@@ -322,26 +338,26 @@ msgstr ""
 "nośników optycznych (jeśli nośniki wymienne nie są indeksowane, to płyty "
 "optyczne też nie będą)"
 
-#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:30
+#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:31
 msgid ""
 "Set to true to enable indexing mounted directories for removable devices."
 msgstr ""
 "Ustawienie na wartość \"true\" włącza indeksowanie zamontowanych katalogów "
 "nośników wymiennych."
 
-#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:31
+#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:32
 msgid "Set to true to index while running on battery"
 msgstr ""
 "Ustawienie na wartość \"true\" powoduje indeksowanie podczas zasilania z "
 "akumulatora"
 
-#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:32
+#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:33
 msgid "Set to true to index while running on battery for the first time only"
 msgstr ""
 "Ustawienie na wartość \"true\" powoduje indeksowanie podczas zasilania z "
 "akumulatora tylko za pierwszym razem"
 
-#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:33
+#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:35
 msgid ""
 "Threshold in days after which files from removables devices will be removed "
 "from database if not mounted. 0 means never, maximum is 365."
@@ -350,7 +366,7 @@ msgstr ""
 "danych, jeśli nie są zamontowane. Wartość 0 oznacza nigdy, maksymalnie to "
 "365."
 
-#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:34
+#: ../data/gschemas/org.freedesktop.Tracker.Miner.Files.gschema.xml.in.h:36
 msgid "Throttle"
 msgstr "Przełącznik"
 
@@ -530,7 +546,7 @@ msgstr "Wy_szukiwanie:"
 msgid "_URN:"
 msgstr "_URN:"
 
-#: ../src/tracker-extract/tracker-main.c:88
+#: ../src/tracker-extract/tracker-main.c:87
 #: ../src/tracker-store/tracker-main.vala:48
 msgid ""
 "Logging, 0 = errors only, 1 = minimal, 2 = detailed and 3 = debug (default = "
@@ -539,11 +555,11 @@ msgstr ""
 "Zapisywanie do dziennika, 0 = tylko błędy, 1 = minimalne, 2 = szczegółowe i "
 "3 = debugowania (domyślnie = 0)"
 
-#: ../src/tracker-extract/tracker-main.c:93
+#: ../src/tracker-extract/tracker-main.c:92
 msgid "File to extract metadata for"
 msgstr "Pliki, z których wydobyć metadane"
 
-#: ../src/tracker-extract/tracker-main.c:94 ../src/miners/fs/tracker-main.c:96
+#: ../src/tracker-extract/tracker-main.c:93 ../src/miners/fs/tracker-main.c:94
 #: ../src/tracker-control/tracker-control-general.c:107
 #: ../src/tracker-control/tracker-control-general.c:110
 #: ../src/tracker-control/tracker-control-miners.c:60
@@ -555,37 +571,37 @@ msgstr "Pliki, z których wydobyć metadane"
 msgid "FILE"
 msgstr "PLIK"
 
-#: ../src/tracker-extract/tracker-main.c:97
+#: ../src/tracker-extract/tracker-main.c:96
 msgid "MIME type for file (if not provided, this will be guessed)"
 msgstr "Typ MIME pliku (jeśli nie podano, zostanie odgadnięty)"
 
-#: ../src/tracker-extract/tracker-main.c:98
+#: ../src/tracker-extract/tracker-main.c:97
 #: ../src/tracker-control/tracker-control-miners.c:57
 msgid "MIME"
 msgstr "MIME"
 
-#: ../src/tracker-extract/tracker-main.c:103
+#: ../src/tracker-extract/tracker-main.c:102
 #: ../src/tracker-writeback/tracker-main.c:62
 msgid "Disable shutting down after 30 seconds of inactivity"
 msgstr "Wyłączenie kończenia pracy po 30 sekundach bezczynności"
 
-#: ../src/tracker-extract/tracker-main.c:107
+#: ../src/tracker-extract/tracker-main.c:106
 msgid "Force internal extractors over 3rd parties like libstreamanalyzer"
 msgstr ""
 "Wymuszenie wewnętrznych modułów rozpakowujących zamiast zewnętrznych, takich "
 "jak libstreamanalyzer"
 
-#: ../src/tracker-extract/tracker-main.c:111
+#: ../src/tracker-extract/tracker-main.c:110
 msgid "Force a module to be used for extraction (e.g. \"foo\" for \"foo.so\")"
 msgstr "Wymuszenie użycia modułu do rozpakowania (np. \"foo\" dla \"foo.so\")"
 
-#: ../src/tracker-extract/tracker-main.c:112
+#: ../src/tracker-extract/tracker-main.c:111
 msgid "MODULE"
 msgstr "MODUŁ"
 
 #. Daemon options
-#: ../src/tracker-extract/tracker-main.c:115
-#: ../src/miners/fs/tracker-main.c:99
+#: ../src/tracker-extract/tracker-main.c:114
+#: ../src/miners/fs/tracker-main.c:97
 #: ../src/tracker-store/tracker-main.vala:47
 #: ../src/tracker-writeback/tracker-main.c:51
 msgid "Displays version information"
@@ -593,22 +609,22 @@ msgstr "Wyświetla informacje o wersji"
 
 #. Translators: this message will appear immediately after the
 #. usage string - Usage: COMMAND [OPTION]... <THIS_MESSAGE>
-#: ../src/tracker-extract/tracker-main.c:324
+#: ../src/tracker-extract/tracker-main.c:333
 msgid "- Extract file meta data"
 msgstr "- wydobywa metadane pliku"
 
-#: ../src/tracker-extract/tracker-main.c:333
+#: ../src/tracker-extract/tracker-main.c:342
 msgid "Filename and mime type must be provided together"
 msgstr "Nazwa pliku i typ MIME muszą zostać podane razem"
 
-#: ../src/tracker-extract/tracker-main.c:347
+#: ../src/tracker-extract/tracker-main.c:356
 msgid ""
 "Options --force-internal-extractors and --force-module can't be used together"
 msgstr ""
 "Nie można używać jednocześnie opcji --force-internal-extractors i --force-"
 "module."
 
-#: ../src/miners/fs/tracker-main.c:81 ../src/miners/rss/tracker-main.c:39
+#: ../src/miners/fs/tracker-main.c:79 ../src/miners/rss/tracker-main.c:39
 #: ../src/tracker-writeback/tracker-main.c:55
 msgid ""
 "Logging, 0 = errors only, 1 = minimal, 2 = detailed and 3 = debug (default=0)"
@@ -616,101 +632,101 @@ msgstr ""
 "Zapisywanie do dziennika, 0 = tylko błędy, 1 = minimalne, 2 = szczegółowe i "
 "3 = debugowania (domyślnie=0)"
 
-#: ../src/miners/fs/tracker-main.c:86
+#: ../src/miners/fs/tracker-main.c:84
 msgid "Initial sleep time in seconds, 0->1000 (default=15)"
 msgstr "Początkowy czas uśpienia w sekundach, 0->1000 (domyślnie=15)"
 
-#: ../src/miners/fs/tracker-main.c:91
+#: ../src/miners/fs/tracker-main.c:89
 msgid "Runs until all configured locations are indexed and then exits"
 msgstr ""
 "Działa, aż wszystkie skonfigurowane położenia zostaną zindeksowane i wtedy "
 "kończy działanie"
 
-#: ../src/miners/fs/tracker-main.c:95
+#: ../src/miners/fs/tracker-main.c:93
 msgid "Checks if FILE is eligible for being mined based on configuration"
 msgstr ""
 "Sprawdza, czy PLIK nadaje się do przeszukiwania w oparciu o konfigurację"
 
-#: ../src/miners/fs/tracker-main.c:455
+#: ../src/miners/fs/tracker-main.c:464
 #, c-format
 msgid "Data object '%s' currently exists"
 msgstr "Obiekt danych \"%s\" obecnie istnieje"
 
-#: ../src/miners/fs/tracker-main.c:456
+#: ../src/miners/fs/tracker-main.c:465
 #, c-format
 msgid "Data object '%s' currently does not exist"
 msgstr "Obiekt danych \"%s\" obecnie nie istnieje"
 
-#: ../src/miners/fs/tracker-main.c:471
+#: ../src/miners/fs/tracker-main.c:480
 msgid "Directory is eligible to be mined (based on rules)"
 msgstr "Katalog nadaje się do przeszukiwania (w oparciu o reguły)"
 
-#: ../src/miners/fs/tracker-main.c:472
+#: ../src/miners/fs/tracker-main.c:481
 msgid "Directory is NOT eligible to be mined (based on rules)"
 msgstr "Katalog NIE nadaje się do przeszukiwania (w oparciu o reguły)"
 
-#: ../src/miners/fs/tracker-main.c:492
+#: ../src/miners/fs/tracker-main.c:501
 msgid "Directory is eligible to be mined (based on contents)"
 msgstr "Katalog nadaje się do przeszukiwania (w oparciu o zawartość)"
 
-#: ../src/miners/fs/tracker-main.c:493
+#: ../src/miners/fs/tracker-main.c:502
 msgid "Directory is NOT eligible to be mined (based on contents)"
 msgstr "Katalog NIE nadaje się do przeszukiwania (w oparciu o zawartość)"
 
-#: ../src/miners/fs/tracker-main.c:540
+#: ../src/miners/fs/tracker-main.c:549
 msgid "Directory is eligible to be monitored (based on config)"
 msgstr "Katalog nadaje się do monitorowania (w oparciu o konfigurację)"
 
-#: ../src/miners/fs/tracker-main.c:541
+#: ../src/miners/fs/tracker-main.c:550
 msgid "Directory is NOT eligible to be monitored (based on config)"
 msgstr "Katalog NIE nadaje się do monitorowania (w oparciu o konfigurację)"
 
-#: ../src/miners/fs/tracker-main.c:545
+#: ../src/miners/fs/tracker-main.c:554
 msgid "File is eligible to be monitored (based on config)"
 msgstr "Plik nadaje się do monitorowania (w oparciu o konfigurację)"
 
-#: ../src/miners/fs/tracker-main.c:546
+#: ../src/miners/fs/tracker-main.c:555
 msgid "File is NOT eligible to be monitored (based on config)"
 msgstr "Plik NIE nadaje się do monitorowania (w oparciu o konfigurację)"
 
-#: ../src/miners/fs/tracker-main.c:550
+#: ../src/miners/fs/tracker-main.c:559
 msgid "File or Directory is eligible to be monitored (based on config)"
 msgstr ""
 "Plik lub katalog nadaje się do monitorowania (w oparciu o konfigurację)"
 
-#: ../src/miners/fs/tracker-main.c:551
+#: ../src/miners/fs/tracker-main.c:560
 msgid "File or Directory is NOT eligible to be monitored (based on config)"
 msgstr ""
 "Plik lub katalog NIE nadaje się do monitorowania (w oparciu o konfigurację)"
 
-#: ../src/miners/fs/tracker-main.c:566
+#: ../src/miners/fs/tracker-main.c:575
 msgid "File is eligible to be mined (based on rules)"
 msgstr "Plik nadaje się do przeszukiwania (w oparciu o konfigurację)"
 
-#: ../src/miners/fs/tracker-main.c:567
+#: ../src/miners/fs/tracker-main.c:576
 msgid "File is NOT eligible to be mined (based on rules)"
 msgstr "Plik NIE nadaje się do przeszukiwania (w oparciu o konfigurację)"
 
-#: ../src/miners/fs/tracker-main.c:576
+#: ../src/miners/fs/tracker-main.c:585
 msgid "Would be indexed"
 msgstr "Będzie indeksowane"
 
-#: ../src/miners/fs/tracker-main.c:577 ../src/miners/fs/tracker-main.c:579
+#: ../src/miners/fs/tracker-main.c:586 ../src/miners/fs/tracker-main.c:588
 msgid "Yes"
 msgstr "Tak"
 
-#: ../src/miners/fs/tracker-main.c:577 ../src/miners/fs/tracker-main.c:579
+#: ../src/miners/fs/tracker-main.c:586 ../src/miners/fs/tracker-main.c:588
 msgid "No"
 msgstr "Nie"
 
-#: ../src/miners/fs/tracker-main.c:578
+#: ../src/miners/fs/tracker-main.c:587
 msgid "Would be monitored"
 msgstr "Będzie monitorowane"
 
 #. Translators: this messagge will apper immediately after the
 #. * usage string - Usage: COMMAND <THIS_MESSAGE>
 #.
-#: ../src/miners/fs/tracker-main.c:697
+#: ../src/miners/fs/tracker-main.c:706
 msgid "- start the tracker indexer"
 msgstr "- uruchomia program indeksujący Tracker"
 
@@ -722,7 +738,7 @@ msgstr "Niski poziom naładowania akumulatora"
 msgid "Low disk space"
 msgstr "Mało miejsca na dysku"
 
-#: ../src/miners/fs/tracker-miner-files.c:2163
+#: ../src/miners/fs/tracker-miner-files.c:2172
 msgid "Extractor error, performing failsafe embedded metadata extraction"
 msgstr ""
 "Błąd podczas wydobywania, wykonywanie bezpiecznego wydobywania osadzonych "
@@ -783,50 +799,49 @@ msgstr "Konfiguracja indeksowania plików za pomocą programu Tracker"
 msgid "Search and Indexing"
 msgstr "Wyszukiwanie i indeksowanie"
 
-#: ../src/tracker-preferences/tracker-preferences.vala:133
-#: ../src/tracker-preferences/tracker-preferences.vala:134
-#: ../src/tracker-preferences/tracker-preferences.vala:135
+#: ../src/tracker-preferences/tracker-preferences.vala:146
+#: ../src/tracker-preferences/tracker-preferences.vala:147
+#: ../src/tracker-preferences/tracker-preferences.vala:148
 msgid "Directory"
 msgstr "Katalog"
 
-#: ../src/tracker-preferences/tracker-preferences.vala:136
+#: ../src/tracker-preferences/tracker-preferences.vala:149
 #: ../src/tracker-needle/tracker-view.vala:180
+#: ../src/tracker-needle/tracker-stats.vala:103
 msgid "File"
-msgstr "Plik"
+msgid_plural "Files"
+msgstr[0] "Plik"
+msgstr[1] "Pliki"
+msgstr[2] "Pliki"
 
-#: ../src/tracker-preferences/tracker-preferences.vala:270
-#: ../src/tracker-preferences/tracker-preferences.vala:284
+#: ../src/tracker-preferences/tracker-preferences.vala:329
+#: ../src/tracker-preferences/tracker-preferences.vala:338
 msgid "Disabled"
 msgstr "Wyłączone"
 
-#: ../src/tracker-preferences/tracker-preferences.vala:273
+#: ../src/tracker-preferences/tracker-preferences.vala:332
 #, c-format
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../src/tracker-preferences/tracker-preferences.vala:278
-#, c-format
-msgid "%d/20"
-msgstr "%d/20"
-
-#: ../src/tracker-preferences/tracker-preferences.vala:287
+#: ../src/tracker-preferences/tracker-preferences.vala:341
 #, c-format
 msgid "%d"
 msgstr "%d"
 
-#: ../src/tracker-preferences/tracker-preferences.vala:431
+#: ../src/tracker-preferences/tracker-preferences.vala:485
 msgid "Enter value"
 msgstr "Wprowadzenie wartości"
 
-#: ../src/tracker-preferences/tracker-preferences.vala:460
+#: ../src/tracker-preferences/tracker-preferences.vala:514
 msgid "Select directory"
 msgstr "Wybór katalogu"
 
-#: ../src/tracker-preferences/tracker-preferences.vala:481
+#: ../src/tracker-preferences/tracker-preferences.vala:535
 msgid "That directory is already selected as a location to index"
 msgstr "Ten katalog został już wybrany jako położenie do indeksowania"
 
-#: ../src/tracker-preferences/tracker-preferences.vala:752
+#: ../src/tracker-preferences/tracker-preferences.vala:892
 #: ../src/tracker-needle/tracker-needle.vala:622
 #: ../src/tracker-control/tracker-control.c:53
 #: ../src/tracker-utils/tracker-import.c:50
@@ -838,35 +853,35 @@ msgstr "Ten katalog został już wybrany jako położenie do indeksowania"
 msgid "Print version"
 msgstr "Wersja do druku"
 
-#: ../src/tracker-preferences/tracker-preferences.vala:758
+#: ../src/tracker-preferences/tracker-preferences.vala:898
 msgid "Desktop Search preferences"
 msgstr "Preferencje wyszukiwania na pulpicie"
 
 #: ../src/tracker-preferences/tracker-preferences.ui.h:1
+msgid "<b>Garbage Collection</b>"
+msgstr "<b>Odśmiecanie pamięci</b>"
+
+#: ../src/tracker-preferences/tracker-preferences.ui.h:2
 msgid "<b>Where is your content?</b>"
 msgstr "<b>Gdzie są dane użytkownika?</b>"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:2
+#: ../src/tracker-preferences/tracker-preferences.ui.h:3
 msgid "Days before deleting removable devices / files since last mounted:"
 msgstr ""
 "Liczba dni od ostatniego zamontowania, po których zostaną usunięte "
 "urządzenia wymienne/pliki:"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:3
+#: ../src/tracker-preferences/tracker-preferences.ui.h:4
 msgid "Directories"
 msgstr "Katalogi"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:4
-msgid "Enable for _first time"
-msgstr "Włączenie za pierwszym _razem"
-
 #: ../src/tracker-preferences/tracker-preferences.ui.h:5
-msgid "Enable when running on _battery"
-msgstr "Wyłączenie podczas zasilania z a_kumulatora"
+msgid "Enable for _initial data population"
+msgstr "Włączenie dla p_oczątkowego zebrania danych"
 
 #: ../src/tracker-preferences/tracker-preferences.ui.h:6
-msgid "Faster"
-msgstr "Szybciej"
+msgid "Enable when running on _battery"
+msgstr "Wyłączenie podczas zasilania z a_kumulatora"
 
 #: ../src/tracker-preferences/tracker-preferences.ui.h:7
 #: ../src/tracker-utils/tracker-search.c:445
@@ -902,17 +917,16 @@ msgid "Include optical di_scs"
 msgstr "Dołączenie płyt _optycznych"
 
 #: ../src/tracker-preferences/tracker-preferences.ui.h:15
+msgid "Index content in the background:"
+msgstr "Indeksowanie zawartości w tle:"
+
+#: ../src/tracker-preferences/tracker-preferences.ui.h:16
 msgid "Indexing"
 msgstr "Indeksowanie"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:16
+#: ../src/tracker-preferences/tracker-preferences.ui.h:17
 msgid "Indexing Preferences"
 msgstr "Preferencje indeksowania"
-
-#: ../src/tracker-preferences/tracker-preferences.ui.h:17
-msgid "Indexing s_peed (faster consumes more resources):"
-msgstr ""
-"Prędkość i_ndeksowania (im szybciej, tym zużywane jest więcej zasobów):"
 
 #: ../src/tracker-preferences/tracker-preferences.ui.h:18
 msgid "Limitations"
@@ -923,22 +937,30 @@ msgid "Locations"
 msgstr "Położenia"
 
 #: ../src/tracker-preferences/tracker-preferences.ui.h:20
+msgid "O_nly when computer is not being used"
+msgstr "Tylko, kiedy komputer nie jest używany"
+
+#: ../src/tracker-preferences/tracker-preferences.ui.h:21
+msgid ""
+"One or more special locations have the same path.\n"
+"Those which are the same are disabled!"
+msgstr ""
+"Jedno lub więcej specjalnych położeń ma tą samą ścieżkę.\n"
+"Zostały one wyłączone."
+
+#: ../src/tracker-preferences/tracker-preferences.ui.h:23
 msgid "Opens text entry for glob patterns"
 msgstr "Otwiera pole wprowadzania tekstu dla wzorów dopasowania"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:21
+#: ../src/tracker-preferences/tracker-preferences.ui.h:24
 msgid "Opens the filechooser dialogue"
 msgstr "Otwiera okno wybierania plików"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:22
+#: ../src/tracker-preferences/tracker-preferences.ui.h:25
 msgid "Semantics"
 msgstr "Semantyka"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:23
-msgid "Slower"
-msgstr "Wolniej"
-
-#: ../src/tracker-preferences/tracker-preferences.ui.h:24
+#: ../src/tracker-preferences/tracker-preferences.ui.h:26
 msgid ""
 "Special locations such as your <b>Home</b>, <b>Desktop</b> or <b>Documents</"
 "b> directory, can be easily toggled below. This will add or remove their "
@@ -956,32 +978,60 @@ msgstr ""
 "podkatalogi także będą indeksowane. W innym przypadku indeksowane będą tylko "
 "pliki znajdujące się bezpośrednio w danym katalogu."
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:27
+#: ../src/tracker-preferences/tracker-preferences.ui.h:29
 msgid "Start up"
 msgstr "Uruchamianie"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:28
+#: ../src/tracker-preferences/tracker-preferences.ui.h:30
 msgid "Stop indexing when _disk space is below:"
 msgstr "Zatrzymanie indeksowania, kiedy na _dysku jest mniej miejsca niż:"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:29
+#: ../src/tracker-preferences/tracker-preferences.ui.h:31
+msgid ""
+"The  scheduler  is  the kernel component that decides which runnable "
+"application will be executed by the CPU next.  Each application has an "
+"associated scheduling  policy and priority.\n"
+"\n"
+"This option allows you to make Tracker take a back seat and not eat up too "
+"much CPU time if you have other applications more deserving of it."
+msgstr ""
+"Planista to część jądra decydująca o kolejności wykonywania programów przez "
+"procesor. Każdy program posiada powiązaną ze sobą politykę i priorytet "
+"planowania.\n"
+"\n"
+"Ta opcja umożliwia nakazanie programowi Tracker przejścia do działania w tle "
+"i zmniejszenie zużycia mocy obliczeniowej procesora, aby ważniejsze programy "
+"mogły z niej korzystać."
+
+#: ../src/tracker-preferences/tracker-preferences.ui.h:34
 msgid "This covers ALL removable media, memory cards, CDs, DVDs, etc."
 msgstr ""
 "Pokrywa to WSZYSTKIE nośniki wymienne, karty pamięci, płyty CD i DVD itp."
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:30
+#: ../src/tracker-preferences/tracker-preferences.ui.h:35
+msgid "While _other applications are running"
+msgstr "Kiedy _inne programy są uruchomione"
+
+#: ../src/tracker-preferences/tracker-preferences.ui.h:36
 msgid "With specific files:"
 msgstr "Z podanymi plikami:"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:31
+#: ../src/tracker-preferences/tracker-preferences.ui.h:37
 msgid "_Delay"
 msgstr "Opóźni_enie:"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:32
+#: ../src/tracker-preferences/tracker-preferences.ui.h:38
 msgid "_Monitor file and directory changes"
 msgstr "_Monitorowanie zmian plików i katalogów"
 
-#: ../src/tracker-preferences/tracker-preferences.ui.h:33
+#: ../src/tracker-preferences/tracker-preferences.ui.h:39
+msgid ""
+"_While other applications are running, except for initial data population"
+msgstr ""
+"_Kiedy inne programy są uruchomione, z wyjątkiem początkowego zbierania "
+"danych"
+
+#: ../src/tracker-preferences/tracker-preferences.ui.h:40
 msgid "seconds"
 msgstr "s"
 
@@ -1108,6 +1158,116 @@ msgstr "Wczytywanie..."
 msgid "Pages"
 msgstr "Strony"
 
+#. Label for dialog
+#: ../src/tracker-needle/tracker-stats.vala:71
+msgid ""
+"The statistics represented here do not reflect their availability, rather "
+"the total data stored:"
+msgstr ""
+"Przedstawione tu statystyki nie odpowiadają ich dostępności, tylko całkowity "
+"rozmiar przechowywanych danych:"
+
+#: ../src/tracker-needle/tracker-stats.vala:91
+msgid "Tag"
+msgid_plural "Tags"
+msgstr[0] "Etykieta"
+msgstr[1] "Etykiety"
+msgstr[2] "Etykiety"
+
+#: ../src/tracker-needle/tracker-stats.vala:94
+msgid "Contact"
+msgid_plural "Contacts"
+msgstr[0] "Kontakt"
+msgstr[1] "Kontakty"
+msgstr[2] "Kontakty"
+
+#: ../src/tracker-needle/tracker-stats.vala:97
+#: ../src/tracker-search-bar/tracker-results-window.c:724
+msgid "Audio"
+msgid_plural "Audios"
+msgstr[0] "Nagranie dźwiękowe"
+msgstr[1] "Nagrania dźwiękowe"
+msgstr[2] "Nagrania dźwiękowe"
+
+#: ../src/tracker-needle/tracker-stats.vala:100
+msgid "Document"
+msgid_plural "Documents"
+msgstr[0] "Dokument"
+msgstr[1] "Dokumenty"
+msgstr[2] "Dokumenty"
+
+#: ../src/tracker-needle/tracker-stats.vala:106
+msgid "Folder"
+msgid_plural "Folders"
+msgstr[0] "Katalog"
+msgstr[1] "Katalogi"
+msgstr[2] "Katalogi"
+
+#: ../src/tracker-needle/tracker-stats.vala:109
+msgid "Image"
+msgid_plural "Images"
+msgstr[0] "Obraz"
+msgstr[1] "Obrazy"
+msgstr[2] "Obrazy"
+
+#: ../src/tracker-needle/tracker-stats.vala:112
+#: ../src/tracker-control/tracker-control-miners.c:392
+msgid "Application"
+msgid_plural "Applications"
+msgstr[0] "Program"
+msgstr[1] "Programy"
+msgstr[2] "Programy"
+
+#. case "nmm:Video":
+#: ../src/tracker-needle/tracker-stats.vala:116
+msgid "Video"
+msgid_plural "Videos"
+msgstr[0] "Nagranie wideo"
+msgstr[1] "Nagrania wideo"
+msgstr[2] "Nagrania wideo"
+
+#: ../src/tracker-needle/tracker-stats.vala:119
+msgid "Album"
+msgid_plural "Albums"
+msgstr[0] "Album"
+msgstr[1] "Albumy"
+msgstr[2] "Albumy"
+
+#: ../src/tracker-needle/tracker-stats.vala:122
+msgid "Music Track"
+msgid_plural "Music Tracks"
+msgstr[0] "Utwór muzyczny"
+msgstr[1] "Utwory muzyczne"
+msgstr[2] "Utwory muzyczne"
+
+#: ../src/tracker-needle/tracker-stats.vala:125
+msgid "Photo"
+msgid_plural "Photos"
+msgstr[0] "Zdjęcie"
+msgstr[1] "Zdjęcia"
+msgstr[2] "Zdjęcia"
+
+#: ../src/tracker-needle/tracker-stats.vala:128
+msgid "Playlist"
+msgid_plural "Playlists"
+msgstr[0] "Lista odtwarzania"
+msgstr[1] "Listy odtwarzania"
+msgstr[2] "Listy odtwarzania"
+
+#: ../src/tracker-needle/tracker-stats.vala:131
+msgid "Email"
+msgid_plural "Emails"
+msgstr[0] "Wiadomość e-mail"
+msgstr[1] "Wiadomości e-mail"
+msgstr[2] "Wiadomości e-mail"
+
+#: ../src/tracker-needle/tracker-stats.vala:134
+msgid "Bookmark"
+msgid_plural "Bookmarks"
+msgstr[0] "Zakładka"
+msgstr[1] "Zakładki"
+msgstr[2] "Zakładki"
+
 #: ../src/tracker-needle/tracker-needle.ui.h:2
 msgid "Display found images"
 msgstr "Wyświetl odnalezione obrazy"
@@ -1147,10 +1307,6 @@ msgstr "Kontakty"
 #: ../src/tracker-search-bar/tracker-results-window.c:720
 msgid "Email Addresses"
 msgstr "Adresy e-mail"
-
-#: ../src/tracker-search-bar/tracker-results-window.c:724
-msgid "Audio"
-msgstr "Dźwięk"
 
 #: ../src/tracker-search-bar/tracker-results-window.c:726
 msgid "Fonts"
@@ -1638,10 +1794,6 @@ msgstr ""
 #: ../src/tracker-control/tracker-control-miners.c:351
 msgid "No miners are running"
 msgstr "Brak uruchomionych przeszukiwań"
-
-#: ../src/tracker-control/tracker-control-miners.c:392
-msgid "Application"
-msgstr "Program"
 
 #: ../src/tracker-control/tracker-control-miners.c:394
 msgid "Reason"

@@ -13,7 +13,7 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [12])
-m4_define([tracker_micro_version], [3])
+m4_define([tracker_micro_version], [4])
 m4_define([tracker_interface_age], [0])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
@@ -151,31 +151,6 @@ if test "x$have_function" = "xno" ; then
    AC_DEFINE(__FUNCTION__,
              __func__,
             [Defined for compilers not supporting __FUNCTION__])
-fi
-
-# Check ioprio support
-AC_CACHE_CHECK([if we have ioprio],[tracker_cv_have_ioprio],
-   [AC_RUN_IFELSE(
-      [AC_LANG_PROGRAM([[
-         #include <stdlib.h>
-         #include <errno.h>
-         #include <sys/syscall.h>
-         #include <unistd.h>
-         inline int ioprio_get (int which, int who)
-         {
-             return syscall (__NR_ioprio_get, which, who);
-         }
-         ]],
-         [[
-             return !(ioprio_get (1, 0) != -1);
-         ]])],
-   [tracker_cv_have_ioprio=yes],
-   [tracker_cv_have_ioprio=no],
-   [AC_MSG_ERROR([cross-compiling: please set 'tracker_cv_have_ioprio'])])
-])
-
-if test "x$tracker_cv_have_ioprio" = "xyes" ; then
-   AC_DEFINE(HAVE_IOPRIO, 1, [Define if we have ioprio])
 fi
 
 # Binary required versions
@@ -586,11 +561,20 @@ AM_CONDITIONAL(DIST_FUNCTIONAL_TESTS, test "x$enable_functional_tests" != "xno")
 # Check for gtk-doc and docbook-tools
 ####################################################################
 
+# Check for GTK_DOC_CHECK availability. The GTK_DOC_CHECK invocation
+# must be on its own line, gtkdocize relies on it
+m4_ifdef([GTK_DOC_CHECK], [
 GTK_DOC_CHECK([1.8])
 
-if test "x$enable_gtk_doc" != "xno"; then
-   AC_DEFINE(HAVE_GTK_DOC, 1, [Define if we have gtk-doc (with gtk-doc)])
+# NOTE: We need to use a separate automake conditional for this
+#       to make this work with the tarballs.
+AM_CONDITIONAL([ENABLE_GTK_DOC], test "x$enable_gtk_doc" = xyes)
+],
+[
+AM_CONDITIONAL([ENABLE_GTK_DOC], false)
+])
 
+if test "x$enable_gtk_doc" != xno; then
    # Check for dia if we are building gtk_doc
    AC_PATH_PROG(DIA, dia)
    AC_SUBST(DIA)
@@ -608,7 +592,6 @@ if test "x$enable_gtk_doc" != "xno"; then
    fi
 fi
 
-AM_CONDITIONAL(HAVE_GTK_DOC, test "$enable_gtk_doc" = "yes")
 AM_CONDITIONAL(HAVE_GRAPHVIZ_FDP, test -n "$GRAPHVIZ_FDP")
 
 ####################################################################
@@ -2057,6 +2040,39 @@ fi
 AM_CONDITIONAL(HAVE_LIBFLAC, test "x$have_libflac" = "xyes")
 
 ####################################################################
+# Check for tracker-extract-gstreamer: libcue
+####################################################################
+
+AC_ARG_ENABLE(libcue,
+              AS_HELP_STRING([--enable-libcue],
+                             [enable external cuesheet parsing  [[default=auto]]]),,
+              [enable_libcue=auto])
+
+if test "x$enable_libcue" != "xno" ; then
+   PKG_CHECK_MODULES(LIBCUE,
+                     [libcue],
+                     [have_libcue=yes],
+                     [have_libcue=no])
+
+   AC_SUBST(LIBCUE_CFLAGS)
+   AC_SUBST(LIBCUE_LIBS)
+
+   if test "x$have_libcue" = "xyes"; then
+      AC_DEFINE(HAVE_LIBCUE, [], [Define if we have libcue])
+   fi
+else
+   have_libcue="no  (disabled)"
+fi
+
+if test "x$enable_libcue" = "xyes"; then
+   if test "x$have_libcue" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find libcue.])
+   fi
+fi
+
+AM_CONDITIONAL(HAVE_LIBCUE, test "x$have_libcue" = "xyes")
+
+####################################################################
 # Check for tracker-extract, tracker-writeback: totem-pl-parser
 ####################################################################
 
@@ -2302,7 +2318,6 @@ Build Configuration:
 	Enable functional tests:                $enable_functional_tests
 	Enable unit tests:                      $have_unit_tests
 
-	Support for ioprio:                     $tracker_cv_have_ioprio
 	Support for HAL:                        $have_hal
 	Support for UPower:                     $have_upower
 	Support for Cyrillic languages (enca):  $have_enca
@@ -2334,6 +2349,7 @@ Metadata Extractors:
 	Support embedded / sidecar XMP:         $have_exempi
 	Support generic media formats:          $have_generic_media_handler ($have_generic_media_handler_app) (backend: $gstreamer_backend)
 	Support MP3 album art:                  $selected_for_albumart
+	Support cue sheet parsing:              $have_libcue
 	Support playlists (w/ Totem):           $have_playlist
 
 Data Miners:

@@ -197,10 +197,11 @@ libextract_gif_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 @HAVE_GSTREAMER_PBUTILS_TRUE@	$(am__DEPENDENCIES_1)
 libextract_gstreamer_la_DEPENDENCIES = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
-	$(am__DEPENDENCIES_3)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3)
 am_libextract_gstreamer_la_OBJECTS =  \
-	libextract_gstreamer_la-tracker-extract-gstreamer.lo
+	libextract_gstreamer_la-tracker-extract-gstreamer.lo \
+	libextract_gstreamer_la-tracker-cue-sheet.lo
 libextract_gstreamer_la_OBJECTS =  \
 	$(am_libextract_gstreamer_la_OBJECTS)
 libextract_gstreamer_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
@@ -552,6 +553,7 @@ DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DIA = @DIA@
+DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -587,6 +589,8 @@ GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GSTREAMER_PBUTILS_CFLAGS = @GSTREAMER_PBUTILS_CFLAGS@
 GSTREAMER_PBUTILS_LIBS = @GSTREAMER_PBUTILS_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
+GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
 GUPNP_DLNA_CFLAGS = @GUPNP_DLNA_CFLAGS@
@@ -618,6 +622,8 @@ INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
 INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
+LIBCUE_CFLAGS = @LIBCUE_CFLAGS@
+LIBCUE_LIBS = @LIBCUE_LIBS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
 LIBFLAC_CFLAGS = @LIBFLAC_CFLAGS@
@@ -672,6 +678,7 @@ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
 LT_RELEASE = @LT_RELEASE@
 LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
 MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
 MKDIR_P = @MKDIR_P@
@@ -777,6 +784,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
@@ -812,7 +820,6 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -1089,13 +1096,19 @@ libextract_pdf_la_LIBADD = \
 
 
 # GStreamer
-libextract_gstreamer_la_SOURCES = tracker-extract-gstreamer.c
+libextract_gstreamer_la_SOURCES = \
+	tracker-extract-gstreamer.c \
+	tracker-cue-sheet.h \
+	tracker-cue-sheet.c
+
 libextract_gstreamer_la_CFLAGS = $(TRACKER_EXTRACT_MODULES_CFLAGS) \
-	$(GSTREAMER_CFLAGS) $(am__append_28) $(am__append_30)
+	$(GSTREAMER_CFLAGS) $(LIBCUE_CFLAGS) $(am__append_28) \
+	$(am__append_30)
 libextract_gstreamer_la_LDFLAGS = $(module_flags)
 libextract_gstreamer_la_LIBADD = $(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
 	$(BUILD_LIBS) $(TRACKER_EXTRACT_MODULES_LIBS) \
-	$(GSTREAMER_LIBS) $(am__append_29) $(am__append_31)
+	$(GSTREAMER_LIBS) $(LIBCUE_LIBS) $(am__append_29) \
+	$(am__append_31)
 
 # Xine
 libextract_xine_la_SOURCES = tracker-extract-libxine.c
@@ -1382,6 +1395,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_epub_la-tracker-extract-epub.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_flac_la-tracker-extract-flac.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_gif_la-tracker-extract-gif.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_gstreamer_la-tracker-cue-sheet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_gstreamer_la-tracker-extract-gstreamer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_html_la-tracker-extract-html.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libextract_icon_la-tracker-extract-icon.Plo@am__quote@
@@ -1477,6 +1491,14 @@ libextract_gstreamer_la-tracker-extract-gstreamer.lo: tracker-extract-gstreamer.
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-extract-gstreamer.c' object='libextract_gstreamer_la-tracker-extract-gstreamer.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -c -o libextract_gstreamer_la-tracker-extract-gstreamer.lo `test -f 'tracker-extract-gstreamer.c' || echo '$(srcdir)/'`tracker-extract-gstreamer.c
+
+libextract_gstreamer_la-tracker-cue-sheet.lo: tracker-cue-sheet.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -MT libextract_gstreamer_la-tracker-cue-sheet.lo -MD -MP -MF $(DEPDIR)/libextract_gstreamer_la-tracker-cue-sheet.Tpo -c -o libextract_gstreamer_la-tracker-cue-sheet.lo `test -f 'tracker-cue-sheet.c' || echo '$(srcdir)/'`tracker-cue-sheet.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libextract_gstreamer_la-tracker-cue-sheet.Tpo $(DEPDIR)/libextract_gstreamer_la-tracker-cue-sheet.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-cue-sheet.c' object='libextract_gstreamer_la-tracker-cue-sheet.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_gstreamer_la_CFLAGS) $(CFLAGS) -c -o libextract_gstreamer_la-tracker-cue-sheet.lo `test -f 'tracker-cue-sheet.c' || echo '$(srcdir)/'`tracker-cue-sheet.c
 
 libextract_html_la-tracker-extract-html.lo: tracker-extract-html.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libextract_html_la_CFLAGS) $(CFLAGS) -MT libextract_html_la-tracker-extract-html.lo -MD -MP -MF $(DEPDIR)/libextract_html_la-tracker-extract-html.Tpo -c -o libextract_html_la-tracker-extract-html.lo `test -f 'tracker-extract-html.c' || echo '$(srcdir)/'`tracker-extract-html.c

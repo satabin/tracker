@@ -274,7 +274,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>Predefined instances</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nco-gender-female'>nco:gender-female</link>, <link linkend='nco-gender-male'>nco:gender-male</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nco-gender-other'>nco:gender-other</link>, <link linkend='nco-gender-female'>nco:gender-female</link>, <link linkend='nco-gender-male'>nco:gender-male</link>, </simpara></listitem>
 </varlistentry>
 </variablelist>
 </refsect2>

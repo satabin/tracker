@@ -8,7 +8,7 @@
 <link rel="up" href="ch04.html" title="Managing miners">
 <link rel="prev" href="ch04.html" title="Managing miners">
 <link rel="next" href="ch05.html" title="Base abstract utilities">
-<meta name="generator" content="GTK-Doc V1.17 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -56,9 +56,8 @@ struct              <a class="link" href="TrackerMinerManager.html#TrackerMinerM
 <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-new" title="tracker_miner_manager_new ()">tracker_miner_manager_new</a>         (<em class="parameter"><code><span class="type">void</span></code></em>);
 <a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="returnvalue">TrackerMinerManager</span></a> * <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-new-full" title="tracker_miner_manager_new_full ()">tracker_miner_manager_new_full</a>    (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> auto_start</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *              <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-running" title="tracker_miner_manager_get_running ()">tracker_miner_manager_get_running</a> (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *              <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-available" title="tracker_miner_manager_get_available ()">tracker_miner_manager_get_available</a>
-                                                        (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-running" title="tracker_miner_manager_get_running ()">tracker_miner_manager_get_running</a>   (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-available" title="tracker_miner_manager_get_available ()">tracker_miner_manager_get_available</a> (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-pause" title="tracker_miner_manager_pause ()">tracker_miner_manager_pause</a>         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reason</code></em>,
@@ -77,10 +76,10 @@ struct              <a class="link" href="TrackerMinerManager.html#TrackerMinerM
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **status</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *progress</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *remaining_time</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *         <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-display-name" title="tracker_miner_manager_get_display_name ()">tracker_miner_manager_get_display_name</a>
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-display-name" title="tracker_miner_manager_get_display_name ()">tracker_miner_manager_get_display_name</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *         <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-description" title="tracker_miner_manager_get_description ()">tracker_miner_manager_get_description</a>
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-get-description" title="tracker_miner_manager_get_description ()">tracker_miner_manager_get_description</a>
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="TrackerMinerManager.html#tracker-miner-manager-index-file" title="tracker_miner_manager_index_file ()">tracker_miner_manager_index_file</a>    (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
@@ -291,7 +290,7 @@ accordingly.</td>
 <hr>
 <div class="refsect2">
 <a name="tracker-miner-manager-get-running"></a><h3>tracker_miner_manager_get_running ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *              tracker_miner_manager_get_running (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            tracker_miner_manager_get_running   (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);</pre>
 <p>
 Returns a list of references for all active miners. Active miners
 are miners which are running within a process.
@@ -318,8 +317,7 @@ Otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Ma
 <hr>
 <div class="refsect2">
 <a name="tracker-miner-manager-get-available"></a><h3>tracker_miner_manager_get_available ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *              tracker_miner_manager_get_available
-                                                        (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Singly-Linked-Lists.html#GSList"><span class="returnvalue">GSList</span></a> *            tracker_miner_manager_get_available (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>);</pre>
 <p>
 Returns a list of references for all available miners. Available
 miners are miners which may or may not be running in a process at
@@ -550,7 +548,7 @@ otherwise <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Ma
 <hr>
 <div class="refsect2">
 <a name="tracker-miner-manager-get-display-name"></a><h3>tracker_miner_manager_get_display_name ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *         tracker_miner_manager_get_display_name
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       tracker_miner_manager_get_display_name
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>);</pre>
 <p>
@@ -580,7 +578,7 @@ Returns a translated display name for <em class="parameter"><code>miner</code></
 <hr>
 <div class="refsect2">
 <a name="tracker-miner-manager-get-description"></a><h3>tracker_miner_manager_get_description ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *         tracker_miner_manager_get_description
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       tracker_miner_manager_get_description
                                                         (<em class="parameter"><code><a class="link" href="TrackerMinerManager.html" title="TrackerMinerManager"><span class="type">TrackerMinerManager</span></a> *manager</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *miner</code></em>);</pre>
 <p>
@@ -908,6 +906,6 @@ The ::miner-resumed signal will be emitted whenever a miner
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.17</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

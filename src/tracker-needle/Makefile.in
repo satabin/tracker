@@ -49,8 +49,8 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/tracker-needle.desktop.in.in \
 	$(top_srcdir)/Makefile.decl tracker-history.c tracker-needle.c \
 	tracker-query.c tracker-result-store.c tracker-stats.c \
-	tracker-taglist.c tracker-utils.c tracker-view.c \
-	tracker_needle_vala.stamp
+	tracker-tags-filter.c tracker-tags-view.c tracker-utils.c \
+	tracker-view.c tracker_needle_vala.stamp
 bin_PROGRAMS = tracker-needle$(EXEEXT)
 subdir = src/tracker-needle
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -76,9 +76,9 @@ am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(desktopdir)" \
 PROGRAMS = $(bin_PROGRAMS)
 am_tracker_needle_OBJECTS = tracker-history.$(OBJEXT) \
 	tracker-query.$(OBJEXT) tracker-result-store.$(OBJEXT) \
-	tracker-stats.$(OBJEXT) tracker-taglist.$(OBJEXT) \
-	tracker-utils.$(OBJEXT) tracker-needle.$(OBJEXT) \
-	tracker-view.$(OBJEXT)
+	tracker-stats.$(OBJEXT) tracker-tags-filter.$(OBJEXT) \
+	tracker-tags-view.$(OBJEXT) tracker-utils.$(OBJEXT) \
+	tracker-needle.$(OBJEXT) tracker-view.$(OBJEXT)
 tracker_needle_OBJECTS = $(am_tracker_needle_OBJECTS)
 tracker_needle_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
@@ -175,6 +175,7 @@ DBUS_SERVICES_DIR = @DBUS_SERVICES_DIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DIA = @DIA@
+DLLTOOL = @DLLTOOL@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -210,6 +211,8 @@ GSTREAMER_LIBS = @GSTREAMER_LIBS@
 GSTREAMER_PBUTILS_CFLAGS = @GSTREAMER_PBUTILS_CFLAGS@
 GSTREAMER_PBUTILS_LIBS = @GSTREAMER_PBUTILS_LIBS@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
+GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
 GUPNP_DLNA_CFLAGS = @GUPNP_DLNA_CFLAGS@
@@ -241,6 +244,8 @@ INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
 INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
+LIBCUE_CFLAGS = @LIBCUE_CFLAGS@
+LIBCUE_LIBS = @LIBCUE_LIBS@
 LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
 LIBEXIF_LIBS = @LIBEXIF_LIBS@
 LIBFLAC_CFLAGS = @LIBFLAC_CFLAGS@
@@ -295,6 +300,7 @@ LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
 LT_RELEASE = @LT_RELEASE@
 LT_REVISION = @LT_REVISION@
 MAKEINFO = @MAKEINFO@
+MANIFEST_TOOL = @MANIFEST_TOOL@
 MEEGOTOUCH_CFLAGS = @MEEGOTOUCH_CFLAGS@
 MEEGOTOUCH_LIBS = @MEEGOTOUCH_LIBS@
 MKDIR_P = @MKDIR_P@
@@ -400,6 +406,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
@@ -435,7 +442,6 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
-lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -479,13 +485,14 @@ LDADD = \
 	$(TRACKER_NEEDLE_LIBS)
 
 tracker_needle_SOURCES = \
-	tracker-history.vala                           \
-	tracker-query.vala                             \
-	tracker-result-store.vala                      \
-	tracker-stats.vala                             \
-	tracker-taglist.vala                           \
-	tracker-utils.vala                             \
-	tracker-needle.vala                            \
+	tracker-history.vala \
+	tracker-query.vala \
+	tracker-result-store.vala \
+	tracker-stats.vala \
+	tracker-tags-filter.vala \
+	tracker-tags-view.vala \
+	tracker-utils.vala \
+	tracker-needle.vala \
 	tracker-view.vala
 
 uidir = $(datadir)/tracker
@@ -598,7 +605,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-query.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-result-store.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-stats.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-taglist.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-tags-filter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-tags-view.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-view.Po@am__quote@
 
@@ -645,7 +653,12 @@ $(srcdir)/tracker-stats.c: $(srcdir)/tracker_needle_vala.stamp
 	  rm -f $(srcdir)/tracker_needle_vala.stamp; \
 	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) tracker_needle_vala.stamp; \
 	fi
-$(srcdir)/tracker-taglist.c: $(srcdir)/tracker_needle_vala.stamp
+$(srcdir)/tracker-tags-filter.c: $(srcdir)/tracker_needle_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/tracker_needle_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) tracker_needle_vala.stamp; \
+	fi
+$(srcdir)/tracker-tags-view.c: $(srcdir)/tracker_needle_vala.stamp
 	@if test -f $@; then :; else \
 	  rm -f $(srcdir)/tracker_needle_vala.stamp; \
 	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) tracker_needle_vala.stamp; \
@@ -838,7 +851,8 @@ maintainer-clean-generic:
 	-rm -f tracker-query.c
 	-rm -f tracker-result-store.c
 	-rm -f tracker-stats.c
-	-rm -f tracker-taglist.c
+	-rm -f tracker-tags-filter.c
+	-rm -f tracker-tags-view.c
 	-rm -f tracker-utils.c
 	-rm -f tracker-view.c
 	-rm -f tracker_needle_vala.stamp

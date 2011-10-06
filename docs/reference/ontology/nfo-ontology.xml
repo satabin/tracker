@@ -1202,7 +1202,7 @@
 </varlistentry>
 <varlistentry>
 <term><parameter>In domain of</parameter>&#160;:</term>
-<listitem><simpara><link linkend='nfo-peakGain'>nfo:peakGain</link>, <link linkend='nfo-gain'>nfo:gain</link>, <link linkend='nfo-rearChannels'>nfo:rearChannels</link>, <link linkend='nfo-averageAudioBitrate'>nfo:averageAudioBitrate</link>, <link linkend='nfo-sampleRate'>nfo:sampleRate</link>, <link linkend='nfo-frontChannels'>nfo:frontChannels</link>, <link linkend='nfo-bitsPerSample'>nfo:bitsPerSample</link>, <link linkend='nfo-sampleCount'>nfo:sampleCount</link>, <link linkend='nfo-lfeChannels'>nfo:lfeChannels</link>, <link linkend='nfo-sideChannels'>nfo:sideChannels</link>, <link linkend='nfo-channels'>nfo:channels</link>, </simpara></listitem>
+<listitem><simpara><link linkend='nfo-audioOffset'>nfo:audioOffset</link>, <link linkend='nfo-peakGain'>nfo:peakGain</link>, <link linkend='nfo-gain'>nfo:gain</link>, <link linkend='nfo-rearChannels'>nfo:rearChannels</link>, <link linkend='nfo-averageAudioBitrate'>nfo:averageAudioBitrate</link>, <link linkend='nfo-sampleRate'>nfo:sampleRate</link>, <link linkend='nfo-frontChannels'>nfo:frontChannels</link>, <link linkend='nfo-bitsPerSample'>nfo:bitsPerSample</link>, <link linkend='nfo-sampleCount'>nfo:sampleCount</link>, <link linkend='nfo-lfeChannels'>nfo:lfeChannels</link>, <link linkend='nfo-sideChannels'>nfo:sideChannels</link>, <link linkend='nfo-channels'>nfo:channels</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>In range of</parameter>&#160;:</term>
@@ -3374,6 +3374,37 @@
 <varlistentry>
 <term><parameter>Range</parameter>&#160;:</term>
 <listitem><simpara><link linkend='xsd-integer'>xsd:integer</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Superproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Subproperties</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Cardinality</parameter>&#160;:</term>
+<listitem><simpara>1</simpara></listitem>
+</varlistentry>
+</variablelist>
+</refsect2>
+
+<refsect2 id='nfo-audioOffset'>
+<title>nfo:audioOffset</title>
+<para>Specifies the start offset of this resource within a larger file, such as a single song within a recording of a radio broadcast or a CD rip.</para>
+<variablelist>
+<varlistentry>
+<term><parameter>Type</parameter>&#160;:</term>
+<listitem><simpara>--</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Domain</parameter>&#160;:</term>
+<listitem><simpara><link linkend='nfo-Audio'>nfo:Audio</link>, </simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><parameter>Range</parameter>&#160;:</term>
+<listitem><simpara><link linkend='xsd-double'>xsd:double</link>, </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><parameter>Superproperties</parameter>&#160;:</term>

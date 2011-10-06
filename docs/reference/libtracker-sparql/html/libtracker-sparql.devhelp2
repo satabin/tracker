@@ -23,7 +23,7 @@
   </chapters>
   <functions>
     <keyword type="struct" name="struct TrackerSparqlBuilder" link="TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct"/>
-    <keyword type="enum" name="enum TrackerSparqlBuilderState" link="TrackerSparqlBuilder.html#TrackerSparqlBuilderState"/>
+    <keyword type="enum" name="enum TrackerSparqlBuilderState" link="TrackerSparqlBuilder.html#TrackerSparqlBuilderState-enum"/>
     <keyword type="function" name="tracker_sparql_builder_new ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-new" since="0.10"/>
     <keyword type="function" name="tracker_sparql_builder_new_embedded_insert ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert" since="0.10"/>
     <keyword type="function" name="tracker_sparql_builder_new_update ()" link="TrackerSparqlBuilder.html#tracker-sparql-builder-new-update" since="0.10"/>

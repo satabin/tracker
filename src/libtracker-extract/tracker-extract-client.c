@@ -251,11 +251,11 @@ get_metadata_fast_cb (void     *buffer,
 	if (G_UNLIKELY (error)) {
 		g_simple_async_result_set_from_error (data->res, error);
 	} else {
-		const gchar *preupdate, *sparql, *where, *end;
+		const gchar *preupdate, *postupdate, *sparql, *where, *end;
 		TrackerSparqlBuilder *builder;
 		gsize len;
 
-		preupdate = sparql = where = NULL;
+		preupdate = postupdate = sparql = where = NULL;
 		end = (gchar *) buffer + buffer_size;
 
 		if (buffer) {
@@ -263,23 +263,38 @@ get_metadata_fast_cb (void     *buffer,
 			len = strlen (preupdate);
 
 			if (preupdate + len < end) {
-				buffer_size -= len;
-				sparql = preupdate + len + 1;
-				len = strlen (sparql);
+				postupdate = preupdate + len + 1;
+				len = strlen (postupdate);
 
-				if (sparql + len < end) {
-					where = sparql + len + 1;
+				if (postupdate + len < end) {
+					sparql = postupdate + len + 1;
+					len = strlen (sparql);
+
+					if (sparql + len < end) {
+						where = sparql + len + 1;
+					}
 				}
 			}
 		}
 
-		tracker_extract_info_set_where_clause (data->info, where);
+		if (where) {
+			tracker_extract_info_set_where_clause (data->info, where);
+		}
 
-		builder = tracker_extract_info_get_preupdate_builder (data->info);
-		tracker_sparql_builder_prepend (builder, preupdate);
+		if (preupdate) {
+			builder = tracker_extract_info_get_preupdate_builder (data->info);
+			tracker_sparql_builder_prepend (builder, preupdate);
+		}
 
-		builder = tracker_extract_info_get_metadata_builder (data->info);
-		tracker_sparql_builder_prepend (builder, sparql);
+		if (postupdate) {
+			builder = tracker_extract_info_get_postupdate_builder (data->info);
+			tracker_sparql_builder_prepend (builder, postupdate);
+		}
+
+		if (sparql) {
+			builder = tracker_extract_info_get_metadata_builder (data->info);
+			tracker_sparql_builder_prepend (builder, sparql);
+		}
 
 		g_simple_async_result_set_op_res_gpointer (data->res,
 		                                           tracker_extract_info_ref (data->info),

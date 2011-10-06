@@ -308,6 +308,7 @@
     <keyword type="" name="nfo:codec" link="nfo-properties.html#nfo-codec"/>
     <keyword type="" name="nfo:streamDuration" link="nfo-properties.html#nfo-streamDuration"/>
     <keyword type="" name="nfo:pageNumber" link="nfo-properties.html#nfo-pageNumber"/>
+    <keyword type="" name="nfo:audioOffset" link="nfo-properties.html#nfo-audioOffset"/>
     <keyword type="" name="nfo:fileSize" link="nfo-properties.html#nfo-fileSize"/>
     <keyword type="" name="nfo:originalLocation" link="nfo-properties.html#nfo-originalLocation"/>
     <keyword type="" name="nfo:fileLastModified" link="nfo-properties.html#nfo-fileLastModified"/>

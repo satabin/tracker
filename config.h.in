@@ -77,9 +77,6 @@
 /* Define if we have GStreamer */
 #undef HAVE_GSTREAMER
 
-/* Define if we have gtk-doc (with gtk-doc) */
-#undef HAVE_GTK_DOC
-
 /* Define if we have HAL */
 #undef HAVE_HAL
 
@@ -89,8 +86,8 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define if we have ioprio */
-#undef HAVE_IOPRIO
+/* Define if we have libcue */
+#undef HAVE_LIBCUE
 
 /* Define if we have libexif */
 #undef HAVE_LIBEXIF

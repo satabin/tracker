@@ -8,7 +8,7 @@
 <ANCHOR id="TrackerSparqlBuilder.description" href="libtracker-sparql/TrackerSparqlBuilder.html#TrackerSparqlBuilder.description">
 <ANCHOR id="TrackerSparqlBuilder.details" href="libtracker-sparql/TrackerSparqlBuilder.html#TrackerSparqlBuilder.details">
 <ANCHOR id="TrackerSparqlBuilder-struct" href="libtracker-sparql/TrackerSparqlBuilder.html#TrackerSparqlBuilder-struct">
-<ANCHOR id="TrackerSparqlBuilderState" href="libtracker-sparql/TrackerSparqlBuilder.html#TrackerSparqlBuilderState">
+<ANCHOR id="TrackerSparqlBuilderState-enum" href="libtracker-sparql/TrackerSparqlBuilder.html#TrackerSparqlBuilderState-enum">
 <ANCHOR id="TRACKER-SPARQL-BUILDER-STATE-UPDATE:CAPS" href="libtracker-sparql/TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-UPDATE:CAPS">
 <ANCHOR id="TRACKER-SPARQL-BUILDER-STATE-INSERT:CAPS" href="libtracker-sparql/TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-INSERT:CAPS">
 <ANCHOR id="TRACKER-SPARQL-BUILDER-STATE-DELETE:CAPS" href="libtracker-sparql/TrackerSparqlBuilder.html#TRACKER-SPARQL-BUILDER-STATE-DELETE:CAPS">

@@ -1,3 +1,337 @@
+2011-10-06  Martyn Russell  <martyn@lanedo.com>
+
+	Release 0.12.4
+
+	tracker-needle: Make sure new strings are translated
+
+2011-10-06  Philip Van Hoof  <philip@codeminded.be>
+
+	miners/fs: Don't let writeback block incoming DBus calls
+	Fixes NB#285251.
+
+2011-10-06  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-needle: Do not warn on cancelled operations
+
+	tracker-needle: Fix some valac compiler warnings
+
+	tracker-needle: Set tags list scrolledwindow shadow
+	This is so it stands out a bit more, as the side pane it is
+
+	tracker-needle: Put the tags list in a GtkPaned
+	This is to make it resizable within the view.
+
+	tracker-needle: tell the user when a query is too generic
+	There's now a limit of 500 items per category, and the info bar
+	is used whenever a query is too generic to fit in the limit
+
+	tracker-needle: Add GtkInfoBar and API to control its content
+
+	tracker-needle: Use "primary-toolbar" style on toolbar
+
+2011-10-06  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-common: Fixed tracker_filename_casecmp_without_extension() test case failed
+
+	tracker-needle: Fixed POTFILES.{in|skip} changes needed for distcheck
+
+	tracker-needle: Have a more inviting message for "no results" view
+
+	tracker-needle: Don't use requires and check for null without use of "?"
+	This is done by Vala
+
+	tracker-needle: Update tooltip for 'filter by tags' toolbar button
+
+	tracker-needle: Renamed tracker-taglist to tracker-tags-filter
+
+	tracker-needle: Added tracker-tags-view to edit tags as GtkVBox
+	Made available through right click on hits
+
+	tracker-needle: Don't add same renderer x2 to a column and show tag count
+
+	tracker-needle: Ellipsize tag list so long tags don't obstruct window
+
+	tracker-needle: Add initial context menu for views and launching parent dirs
+	This means it is now possible to launch nautilus with the parent folder of a given uri
+
+	tracker-needle: Disable search entry when filtering by tag list
+	Also fixes some criticals when filtering by tags
+
+	tracker-needle: Include tags in search results and only show files for selected tag
+	This means searching for "foo" will find that using fts:match AND nao:prefLabel.
+
+	This also means the tags list on the right side will show ONLY those files in
+	the selected view.
+
+2011-10-05  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+	Updated Polish translation
+
+2011-10-05  Andrej Žnidaršič  <andrej.znidarsic@gmail.com>
+
+	Updated Slovenian translation
+
+2011-10-05  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-10-05  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-10-05  Jürg Billeter  <j@bitron.ch>
+
+	tests/libtracker-common: Add missing include directive
+
+2011-10-05  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-extract: include DLNA mimetype in non-gstreamer media extractors
+	Fixes GB#647575.
+
+2011-10-05  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-preferences: Disable special user dir toggles if they duplicate others
+	Fixes GB#660350.
+
+	build: Don't use HAVE_GTK_DOC to determine building docs
+	Now we use ENABLE_GTK_DOC like other projects and have updated configure
+	according to the latest recommendations from the gtk-doc documentation.
+	Additionally, we only use ENABLE_GTK_DOC to disable building ontology
+	documentation because we use that before detection of the other tools we need
+	when building documentation (such as dia and graphviz).
+
+	Fixes GB#659995.
+
+2011-10-05  Gert Michael Kulyk  <gkulyk@yahoo.de>
+
+	tracker-preferences: Use correct names for icons in preferences dialog
+	Fixes GB#660589.
+
+	tracker-needle: Mark a string in tracker-stats.vala for translation
+	Fixes GB#660601.
+
+2011-10-05  Jorge González  <jorgegonz@svn.gnome.org>
+
+	Updated Spanish translation
+
+2011-10-05  Carlos Garnacho  <carlosg@gnome.org>
+
+	tracker-extract: Add geolocation to GStreamer extractor
+	Fixes NB#257478.
+
+2011-10-05  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract-gstreamer: Fix cue sheet build error
+
+2011-10-05  Sam Thursfield  <ssssam@gmail.com>
+
+	tracker-extract: Fix bug in cue sheet extraction
+
+	tracker-extract: Fix cuesheet track numbers
+	The TrackerToc object only stores entries relevant to the file currently
+	being extracted. We need to calculate the track number earlier when we
+	have knowledge of every track in the cue sheet.
+
+2011-10-05  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract-gstreamer: Avoid additional NULL check for cuesheet TOC
+
+	tracker-extract-gstreamer: Small code style/warning clean ups
+
+2011-10-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	tracker-extract-gstreamer: Fix memory leak
+	* Avoid leaking extractor info on failure
+	* Be consistent about where extraction data is freed
+	* Remove pointless check
+
+2011-10-05  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-extract-gstreamer: Don't test for NULL tagcache, it's never NULL
+	Instead use !gst_tag_list_is_empty()
+
+	tracker-extract-gstreamer: Use strcmp() not g_ascii_strcasecmp() for artists
+	This breaks the way artist URIs are formed/used otherwise.
+
+	tracker-extract: Use g_strchug() functionality to avoid allocating memory
+	Previously the work from Sam just returned buffer and the returned string
+	required a +9 to get past the cuesheet=, however, I thought it better to
+	just move the memory in a similar way to g_strchug() so we don't allocated any
+	memory and the returned value can be used straight away.
+
+	tracker-extract: Rename public functions to prefix tracker_cue_sheet_
+
+	tracker-extract: Fixed various coding style issues
+
+	libtracker-extract: Bump version tracker_extract_info_get_postupdate_builder() was introduced
+
+	libtracker-common: Remove unnecessary condition in tracker_filename_casecmp_without_extension()
+
+	libtracker-common: Renamed function to casecmp filenames without extension
+	New name is tracker_filename_casecmp_without_extension()
+
+2011-10-05  Jürg Billeter  <j@bitron.ch>
+
+	NCO: Add nco:gender-other as predefined instance
+	Fixes NB#284711.
+
+2011-10-05  Martyn Russell  <martyn@lanedo.com>
+
+	thunderbird: Don't try to use older versions of Tracker
+
+	firefox: Don't try to load 0.10.x libraries, we're using APIs not available there
+	Fixes GB#660123.
+
+2011-10-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	ontologies,tracker-extract: Rename nfo:containerStartTime to nfo:audioOffset
+	Based on discussions at
+	http://mail.kde.org/pipermail/nepomuk/2011-September/001860.html
+
+	tracker-extract-gstreamer: Return more metadata in 1 file==1 track cases
+
+	tracker-extract: Avoid crash when no postupdate string
+
+	functional-tests: Test for previous tracker-miner-fs commit
+
+	functional-tests: Disable initial sleep of tracker-miner-fs when testing.
+
+	tracker-miner-fs: Delete any associated logical resources when removing a file
+	With the cuesheets support it's now possible to have multiple
+	nie:InformationElement resources stored in one file resource. The miner must
+	make sure these are correctly deleted when the file resource is removed,
+	either due to the file being deleted or it being on a stale removable volume.
+
+	tracker-extract-gstreamer: Remove existing tracks for a file when extracting
+
+	tracker-extract-gstreamer: Don't give each track its own URL
+	Start time inside the larger container is specified now using a
+	new property nfo:containerStartTime, and the track is related to the
+	container nfo:FileDataObject in the standard way (nie:isStoredAs).
+
+	This avoids problems of having a number of nfo:FileDataObject
+	resources all pointing to the same file, such as duplication of
+	file metadata and the need for special code to update the nie:url
+	on moves/renames.
+
+	tracker-extract: Add 'postupdate' field
+	Normally in Tracker the nfo:FileDataObject resource representing a file
+	and the nie:InformationElement subclasses representing its contents are
+	one and the same.
+
+	If a file contains more than one logical resource, the extractor needs
+	to create these separately and link them to the file resource using
+	nie:isStoredAs - this cannot be done until the file resource has been
+	inserted in the store, because it is difficult to know how to refer to
+	the file object. The 'postupdate' field provides a way to do this.
+
+	tracker-extract-gstreamer: Fix class/property name mistakes
+
+	tracker-extract-gstreamer: Use ToC information
+	Fixes GB#657183
+
+	tracker-extract: Add libcue-based CUE sheet parser
+	This is currently only usable by the GStreamer extractor due to the
+	use of GstTagList.
+
+2011-10-05  Sam Thursfield  <samthursfield@codethink.co.uk>
+
+	libtracker-common: Add tracker_case_match_filename_without_extension()
+	This is used by the cue sheet parser to match audio files which are
+	listed with incorrect extensions.
+
+2011-10-05  Sam Thursfield  <sam.thursfield@codethink.co.uk>
+
+	tracker-extract-gstreamer: Pass tag list explicitly
+	This allows smarter processing in future using information from cue
+	sheets and other sources.
+
+	tracker-extract-gstreamer: Factor out type setting code
+
+	tracker-extract-gstreamer: Break up extract_metadata() into functions
+
+	tracker-extract-gstreamer: Avoid duplicate nmm:Artist inserts
+	Maintain an internal list to avoid creating more than one INSERT per
+	nmm:Artist. Once CUE reading lands, a single file may contain 15 songs
+	by one artist and previously this would have resulted in 15 identical
+	INSERT statements in the preupdate.
+
+	tracker-extract-gstreamer: Rework album info reading
+	* Use GST_TAG_ALBUM_ARTIST for album artist if available (otherwise fall back
+	  on performer/artist)
+
+	* Be consistant with variable names
+
+	* Remove unused 'scount' parameter
+
+	tracker-extract-gstreamer: Don't pass file URL needlessly
+	Also some changes to avoid confusion:
+
+	* Rename 'uri' to 'file_url' when there are lots of URIs around
+
+	* Rename add_date_time_gst_tag() (which still uses the file URL
+	  to guarantee metadata) to add_date_time_gst_tag_with_mtime_fallback()
+
+	tracker-extract-gstreamer: Simplify tagcache behaviour
+	Avoid having a NULL tagcache, which allows us to use
+	gst_tag_list_insert() to merge new tags.
+
+	tracker-extract-gstreamer: Remove check for GST_VERSION > 0.10.20
+	Tracker now requires at least 0.10.30 in any case.
+
+	tracker-extract-gstreamer: Remove 'needs_audio' flag
+	Refactor away this variable, it's not needed
+
+2011-10-05  Jürg Billeter  <j@bitron.ch>
+
+	functional-tests: Remove expected failure annotation from NB#217566 test
+	This bug was fixed in SQLite 3.7.8.
+
+2011-10-05  Marek Černocký  <marek@manet.cz>
+
+	Updated Czech translation
+
+2011-10-05  Jürg Billeter  <j@bitron.ch>
+
+	tracker-extract: Fix critical when FD list is missing
+
+	tracker-extract-oasis: Ignore empty values and invalid dates
+
+	tracker-extract-gstreamer: Fix division by zero
+
+	tracker-extract-gif: Fix file descriptor leak in error case
+
+	tracker-extract-pdf: Fix file descriptor leak in error cases
+
+	libtracker-extract: Do not pass NULL to tracker_sparql_builder_prepend
+
+	libtracker-data: Set journal_size_limit to 10 MB
+	The WAL file may grow larger than that temporarily, but SQLite will
+	truncate it to 10 MB as soon as it can.
+
+	tracker-miner-applications: Fix theme icon URIs
+
+2011-10-05  Martyn Russell  <martyn@lanedo.com>
+
+	libtracker-common: Disable configure.ac checks for ioprio_set()
+	We expect this to be defined for all linux architectures and now use #ifdef
+	__linux__ instead.
+
+	This should avoid errors like:
+
+	checking if we have ioprio... configure: error: cross-compiling: please set
+	'tracker_cv_have_ioprio'
+
+2011-10-05  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2011-09-26  Michael Biebl  <biebl@debian.org>
+
+	fix html markup error in German translation
+
 2011-09-26  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.12.3

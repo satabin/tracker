@@ -835,3 +835,76 @@ tracker_file_cmp (GFile *file_a,
 	 * Useful to be used in g_list_find_custom() or g_queue_find_custom() */
 	return !g_file_equal (file_a, file_b);
 }
+
+/**
+ * tracker_filename_casecmp_without_extension:
+ * @a: a string containing a file name
+ * @b: filename to be compared with @a
+ *
+ * This function performs a case-insensitive comparison of @a and @b.
+ * Additionally, text beyond the last '.' in a string is not considered
+ * part of the match, so for example given the inputs "file.mp3" and
+ * "file.wav" this function will return %TRUE.
+ *
+ * Internally, the g_ascii_tolower() function is used - this means that
+ * @a and @b must be in an encoding in which ASCII characters always
+ * represent themselves, such as UTF-8 or the ISO-8859-* charsets.
+ *
+ * Returns: %TRUE if the two file names match.
+ **/
+gboolean
+tracker_filename_casecmp_without_extension (const gchar *a,
+                                            const gchar *b)
+{
+	gchar *pa;
+	gchar *pb;
+	gint len_a;
+	gint len_b;
+
+	g_return_val_if_fail (a != NULL, FALSE);
+	g_return_val_if_fail (b != NULL, FALSE);
+
+	pa = strrchr (a, '.');
+	pb = strrchr (b, '.');
+
+	/* Did we find a "." */
+	if (pa) {
+		len_a = pa - a;
+	} else {
+		len_a = -1;
+	}
+
+	if (pb) {
+		len_b = pb - b;
+	} else {
+		len_b = -1;
+	}
+
+	/* If one has a "." and the other doesn't, we do length
+	 * comparison with strlen() which is less optimal but this is
+	 * not a case we consider common operation.
+	 */
+	if (len_a == -1 && len_b > -1) {
+		len_a = strlen (a);
+	} else if (len_b == -1 && len_a > -1) {
+		len_b = strlen (b);
+	}
+
+	/* If we have length for both and it's different then these
+	 * strings are not the same. If we have no length for the
+	 * strings then it's a simple -1 != -1 comparison.
+	 */
+	if (len_a != len_b) {
+		return FALSE;
+	}
+
+	/* Now we know we either have the same length string or no
+	 * extension in a and b, meaning it's a strcmp() of the
+	 * string only. We test only len_a or len_b here for that:
+	 */
+	if (G_UNLIKELY (len_a == -1)) {
+		return g_ascii_strcasecmp (a, b) == 0;
+	}
+
+	return g_ascii_strncasecmp (a, b, len_a) == 0;
+}

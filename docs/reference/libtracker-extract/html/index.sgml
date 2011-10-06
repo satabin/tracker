@@ -15,6 +15,7 @@
 <ANCHOR id="tracker-extract-info-ref" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-ref">
 <ANCHOR id="tracker-extract-info-unref" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-unref">
 <ANCHOR id="tracker-extract-info-get-preupdate-builder" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-preupdate-builder">
+<ANCHOR id="tracker-extract-info-get-postupdate-builder" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-postupdate-builder">
 <ANCHOR id="tracker-extract-info-get-metadata-builder" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-metadata-builder">
 <ANCHOR id="tracker-extract-info-get-where-clause" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-where-clause">
 <ANCHOR id="tracker-extract-info-set-where-clause" href="libtracker-extract/libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-set-where-clause">

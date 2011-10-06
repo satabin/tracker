@@ -61,6 +61,13 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		set;
 	}
 
+        public uint limit {
+                get;
+                set;
+        }
+
+	public signal void result_overflow ();
+
 	private Operation? find_operation (GenericArray<Operation> array, CategoryNode node, int offset) {
 		Operation op;
 		int i;
@@ -87,7 +94,8 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 
 			query = new Tracker.Query ();
 			query.criteria = _search_term;
-			query.limit = 100;
+			query.tags = search_tags;
+			query.limit = limit;
 			query.offset = op.offset;
 
 			cursor = yield query.perform_async (op.node.query.type, op.node.query.match, op.node.query.args, cancellable);
@@ -105,7 +113,9 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 					try {
 						b = yield cursor.next_async (cancellable);
 					} catch (GLib.Error ge) {
-						warning ("Could not fetch row: %s\n", ge.message);
+						if (!cancellable.is_cancelled ()) {
+							warning ("Could not fetch row: %s\n", ge.message);
+						}
 					}
 
 					if (!b) {
@@ -207,6 +217,7 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 
 			Tracker.Query query = new Tracker.Query ();
 			query.criteria = _search_term;
+			query.tags = search_tags;
 
 			count = yield query.get_count_async (query_data.type, query_data.match, cancellable);
 			cancellable.set_error_if_cancelled ();
@@ -221,6 +232,11 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 			CategoryNode cat;
 			ResultNode *res;
 			int i;
+
+			if (count > limit) {
+				result_overflow ();
+				count = limit;
+			}
 
 			Gtk.TreeIter iter;
 			Gtk.TreePath path;
@@ -329,6 +345,8 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		}
 	}
 
+	public GenericArray<string> search_tags { get; set; }
+
 	public bool active {
 		get;
 		private set;
@@ -397,6 +415,8 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 		unowned int [] indices = path.get_indices ();
 		CategoryNode cat;
 		int i = 0;
+
+		iter = TreeIter ();
 
 		if (queries.length > 1) {
 			if (indices[i] >= categories.length) {
@@ -481,7 +501,9 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 			                                    GLib.Priority.DEFAULT,
 			                                    cancellable);
 		} catch (GLib.Error ie) {
-			warning ("Could not get thumbnail: %s", ie.message);
+			if (!cancellable.is_cancelled ()) {
+				warning ("Could not get thumbnail: %s", ie.message);
+			}
 			return;
 		}
 
@@ -525,12 +547,13 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 	public void get_value (Gtk.TreeIter iter, int column, out GLib.Value value) {
 		CategoryNode cat;
 
+		value = GLib.Value (this.get_column_type (column));
+
 		if (column >= n_columns + n_extra_columns) {
 			return;
 		}
 
 		cat = (CategoryNode) iter.user_data;
-		value.init (this.get_column_type (column));
 
 		if (column == n_columns + 1) {
 			// Type column
@@ -606,6 +629,8 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 
 	public bool iter_children (out Gtk.TreeIter iter, Gtk.TreeIter? parent) {
 		CategoryNode cat;
+
+		iter = TreeIter ();
 
 		if (parent == null) {
 			if (categories.length == 0) {
@@ -718,6 +743,8 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 	public bool iter_nth_child (out Gtk.TreeIter iter, Gtk.TreeIter? parent, int n) {
 		CategoryNode cat;
 
+		iter = TreeIter ();
+
 		if (parent != null) {
 			cat = (CategoryNode) parent.user_data;
 
@@ -759,6 +786,8 @@ public class Tracker.ResultStore : Gtk.TreeModel, GLib.Object {
 	}
 
 	public bool iter_parent (out Gtk.TreeIter iter, Gtk.TreeIter child) {
+		iter = TreeIter ();
+
 		if (queries.length > 1 &&
 		    child.user_data2 != null) {
 			// child within a category

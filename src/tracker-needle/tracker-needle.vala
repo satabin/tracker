@@ -37,7 +37,7 @@ public class Tracker.Needle {
 	private ToggleToolButton find_in_titles;
 	private ToggleToolButton find_in_all;
 	private ToolItem search_entry;
-	private ComboBoxText search_list;
+	private ComboBox search_list;
 	private Entry search;
 	private Spinner spinner;
 	private ToolItem spinner_shell;
@@ -48,11 +48,14 @@ public class Tracker.Needle {
 	private Tracker.View sw_categories;
 	private Tracker.View sw_filelist;
 	private Tracker.View sw_icons;
-	private Tracker.TagList taglist;
+	private InfoBar info_bar;
+	private Label info_bar_label;
+	private TrackerTagsFilter tags_filter;
 	private uint last_search_id = 0;
 	private int size_small = 0;
 	private int size_medium = 0;
 	private int size_big = 0;
+	private uint limit = 500;
 	static bool current_find_in_filelist = true;
 	static bool current_find_in_icons = true;
 
@@ -62,9 +65,17 @@ public class Tracker.Needle {
 	private ResultStore images_model;
 	private ResultStore images_in_title_model;
 
+	private void result_overflow () {
+		string str = "%s\n<small>%s</small>".printf (_("Search criteria was too generic"),
+		                                             _("Only the first 500 items will be displayed"));
+		show_info_message (str, MessageType.INFO);
+	}
+
 	private void create_models () {
 		// Categories model
 		categories_model = new ResultStore (6);
+		categories_model.limit = limit;
+		categories_model.result_overflow.connect (result_overflow);
 		categories_model.add_query (Tracker.Query.Type.APPLICATIONS,
 		                            Tracker.Query.Match.FTS,
 		                            "?urn",
@@ -133,6 +144,8 @@ public class Tracker.Needle {
 
 		// Files model
 		files_model = new ResultStore (7);
+		files_model.limit = limit;
+		files_model.result_overflow.connect (result_overflow);
 		files_model.add_query (Tracker.Query.Type.ALL,
 		                       Tracker.Query.Match.FTS,
 		                       "?urn",
@@ -144,6 +157,8 @@ public class Tracker.Needle {
 		                       "nie:url(?urn)");
 
 		files_in_title_model = new ResultStore (7);
+		files_in_title_model.limit = limit;
+		files_in_title_model.result_overflow.connect (result_overflow);
 		files_in_title_model.add_query (Tracker.Query.Type.ALL,
 		                                Tracker.Query.Match.TITLES,
 		                                "?urn",
@@ -156,6 +171,8 @@ public class Tracker.Needle {
 
 		// Images model
 		images_model = new ResultStore (6);
+		images_model.limit = limit;
+		images_model.result_overflow.connect (result_overflow);
 		images_model.icon_size = 128;
 		images_model.add_query (Tracker.Query.Type.IMAGES,
 		                        Tracker.Query.Match.NONE,
@@ -168,6 +185,8 @@ public class Tracker.Needle {
 		                        "nie:url(?urn)");
 
 		images_in_title_model = new ResultStore (6);
+		images_in_title_model.limit = limit;
+		images_in_title_model.result_overflow.connect (result_overflow);
 		images_in_title_model.icon_size = 128;
 		images_in_title_model.add_query (Tracker.Query.Type.IMAGES,
 		                                 Tracker.Query.Match.TITLES,
@@ -221,6 +240,9 @@ public class Tracker.Needle {
 
 	private void setup_ui () {
 		var builder = new Gtk.Builder ();
+		Button info_bar_button;
+		Toolbar toolbar;
+		Paned paned;
 
 		try {
 			//try load from source tree first.
@@ -249,6 +271,14 @@ public class Tracker.Needle {
 		window.destroy.connect (Gtk.main_quit);
 		window.key_press_event.connect (window_key_press_event);
 
+		toolbar = builder.get_object ("toolbar_main") as Toolbar;
+		toolbar.get_style_context().add_class (STYLE_CLASS_PRIMARY_TOOLBAR);
+
+		info_bar = builder.get_object("info_bar") as InfoBar;
+		info_bar_label = builder.get_object ("info_bar_label") as Label;
+		info_bar_button = builder.get_object("info_bar_button") as Button;
+		info_bar_button.clicked.connect (info_bar_closed);
+
 		view_filelist = builder.get_object ("toolbutton_view_filelist") as ToggleToolButton;
 		view_filelist.toggled.connect (view_toggled);
 
@@ -270,7 +300,7 @@ public class Tracker.Needle {
 		find_in_all.toggled.connect (find_in_toggled);
 
 		search_entry = builder.get_object ("toolitem_search_entry") as ToolItem;
-		search_list = builder.get_object ("comboboxtext_search") as ComboBoxText;
+		search_list = builder.get_object ("combobox_search") as ComboBox;
 		search = search_list.get_child () as Entry;
 		search.changed.connect (search_changed);
 		search.activate.connect (search_activated);
@@ -311,22 +341,33 @@ public class Tracker.Needle {
 		iconview.item_activated.connect (icon_item_selected);
 		view.pack_start (sw_icons, true, true, 0);
 
-		// Set up taglist
-		taglist = new Tracker.TagList ();
-		taglist.hide ();
-		view.pack_end (taglist, false, true, 0);
+		// Set up tags_filter
+		paned = builder.get_object ("hpaned") as Paned;
+		tags_filter = new TrackerTagsFilter ();
+		tags_filter.hide ();
+		paned.pack2 (tags_filter, false, false);
+		tags_filter.selection_changed.connect (tags_filter_selection_changed);
 
 		view_categories.set_active (true);
 	}
 
-	private bool window_key_press_event (Gtk.Widget   widget,
-	                                     Gdk.EventKey event) {
+	private bool window_key_press_event (Gtk.Widget widget, Gdk.EventKey event) {
 		// Add Ctrl+W close window semantics
 		if (Gdk.ModifierType.CONTROL_MASK in event.state && Gdk.keyval_name (event.keyval) == "w") {
 			widget.destroy();
 		}
 
 		return false;
+	}
+
+	private void tags_filter_selection_changed (GenericArray<string> new_tags) {
+		if (new_tags != null && new_tags.length > 0) {
+			debug ("Tags selected changed, first:'%s', ...", new_tags[0]);
+		} else {
+			debug ("Tags selected changed, none selected");
+		}
+
+		search_run ();
 	}
 
 	private void search_changed (Editable editable) {
@@ -408,15 +449,17 @@ public class Tracker.Needle {
 		string criteria = str.strip ();
 		ResultStore store = null;
 
-		if (criteria.length < 3) {
-			// Allow empty search criteria for finding all
-			if (!view_icons.active || !find_in_all.active) {
-				search_finished (store);
-				return false;
+		if (!show_tags.active) {
+			if (criteria.length < 3) {
+				// Allow empty search criteria for finding all
+				if (!view_icons.active || !find_in_all.active) {
+					search_finished (store);
+					return false;
+				}
 			}
-		}
 
-		search_history_find_or_insert (criteria, true);
+			search_history_find_or_insert (criteria, true);
+		}
 
 		// Show correct window
 		sw_noresults.hide ();
@@ -457,6 +500,19 @@ public class Tracker.Needle {
 		}
 
 		if (store != null) {
+			// Set tags first
+			if (show_tags.active) {
+				store.search_tags = tags_filter.tags;
+
+				// Don't search if no tags are selected
+				if (store.search_tags.length < 1) {
+					search_finished (store);
+					return false;
+				}
+			} else {
+				store.search_tags = null;
+			}
+
 			store.search_term = search.get_text ();
 		}
 
@@ -535,77 +591,46 @@ public class Tracker.Needle {
 		}
 	}
 
-	private void launch_selected (TreeModel model, TreePath path, int col) {
-		TreeIter iter;
-		model.get_iter (out iter, path);
-
-		weak string uri;
-		model.get (iter, col, out uri);
-
-		if (uri == null) {
-			return;
-		}
-
-		debug ("Selected uri:'%s'", uri);
-
-		// Bit of a hack for now if there is no URI scheme, we assume that
-		// the uri is actually a command line to launch.
-		if (uri.index_of ("://") < 1) {
-			var command = uri.split (" ");
-			debug ("Attempting to spawn_async() '%s'", command[0]);
-
-			Pid child_pid;
-			string[] argv = new string[1];
-			argv[0] = command[0];
-
-			try {
-				Process.spawn_async ("/usr/bin",
-				                     argv,
-				                     null, // environment
-				                     SpawnFlags.SEARCH_PATH,
-				                     null, // child_setup
-				                     out child_pid);
-			} catch (Error e) {
-				warning ("Could not launch '%s', %d->%s", command[0], e.code, GLib.strerror (e.code));
-				return;
-			}
-
-			debug ("Launched application with PID:%d", child_pid);
-			return;
-		}
-
-		try {
-			debug ("Attempting to launch application for uri:'%s'", uri);
-			AppInfo.launch_default_for_uri (uri, null);
-		} catch (GLib.Error e) {
-			warning ("Could not launch application: " + e.message);
-		}
-	}
-
 	private void view_row_selected (TreeView view, TreePath path, TreeViewColumn column) {
 		var model = view.get_model ();
-		launch_selected (model, path, 1);
+		tracker_model_launch_selected (model, path, 1);
 	}
 
 	private void icon_item_selected (IconView view, TreePath path) {
 		var model = view.get_model ();
-		launch_selected (model, path, 1);
+		tracker_model_launch_selected (model, path, 1);
 	}
 
 	private void show_tags_clicked () {
 		if (show_tags.active) {
 			debug ("Showing tags");
-			taglist.show ();
+			tags_filter.show ();
+			search_entry.sensitive = false;
 		} else {
 			debug ("Hiding tags");
-			taglist.hide ();
+			tags_filter.hide ();
+			search_entry.sensitive = true;
 		}
+
+		// Re-run search to filter with or without tags
+		search_run ();
 	}
 
 	private void show_stats_clicked () {
 		debug ("Showing stats dialog");
 		Tracker.Stats s = new Tracker.Stats ();
 		s.show ();
+	}
+
+	public void show_info_message (string          message,
+	                               Gtk.MessageType type) {
+		info_bar.set_message_type (type);
+		info_bar_label.set_markup (message);
+		info_bar.show ();
+	}
+
+	private void info_bar_closed () {
+		info_bar.hide ();
 	}
 }
 

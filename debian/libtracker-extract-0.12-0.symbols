@@ -15,6 +15,7 @@ libtracker-extract-0.12.so.0 libtracker-extract-0.12-0 #MINVER#
  tracker_extract_info_get_graph@Base 0.12.0
  tracker_extract_info_get_metadata_builder@Base 0.12.0
  tracker_extract_info_get_mimetype@Base 0.12.0
+ tracker_extract_info_get_postupdate_builder@Base 0.12.4
  tracker_extract_info_get_preupdate_builder@Base 0.12.0
  tracker_extract_info_get_type@Base 0.12.0
  tracker_extract_info_get_where_clause@Base 0.12.0

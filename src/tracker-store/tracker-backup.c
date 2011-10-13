@@ -260,20 +260,20 @@ static const GDBusInterfaceVTable _tracker_backup_dbus_interface_vtable = {track
 static void tracker_backup_save_data_free (gpointer _data) {
 	TrackerBackupSaveData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_g_free0 (_data_->destination_uri);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	g_slice_free (TrackerBackupSaveData, _data_);
 #line 272 "tracker-backup.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	return self ? g_object_ref (self) : NULL;
 #line 279 "tracker-backup.c"
 }
@@ -286,29 +286,29 @@ void tracker_backup_save (TrackerBackup* self, const char* sender, const gchar* 
 	const char* _tmp2_;
 	const gchar* _tmp3_;
 	const gchar* _tmp4_;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_ = g_slice_new0 (TrackerBackupSaveData);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_backup_save);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_backup_save_data_free);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp3_ = destination_uri;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp4_ = g_strdup (_tmp3_);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->destination_uri = _tmp4_;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_save_co (_data_);
 #line 314 "tracker-backup.c"
 }
@@ -316,33 +316,33 @@ void tracker_backup_save (TrackerBackup* self, const char* sender, const gchar* 
 
 void tracker_backup_save_finish (TrackerBackup* self, GAsyncResult* _res_, GError** error) {
 	TrackerBackupSaveData* _data_;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		return;
 #line 324 "tracker-backup.c"
 	}
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
 #line 328 "tracker-backup.c"
 }
 
 
 static Block1Data* block1_data_ref (Block1Data* _data1_) {
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	g_atomic_int_inc (&_data1_->_ref_count_);
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	return _data1_;
 #line 337 "tracker-backup.c"
 }
 
 
 static void block1_data_unref (Block1Data* _data1_) {
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_g_object_unref0 (_data1_->self);
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_slice_free (Block1Data, _data1_);
 #line 348 "tracker-backup.c"
 	}
@@ -350,24 +350,24 @@ static void block1_data_unref (Block1Data* _data1_) {
 
 
 static Block2Data* block2_data_ref (Block2Data* _data2_) {
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	g_atomic_int_inc (&_data2_->_ref_count_);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	return _data2_;
 #line 358 "tracker-backup.c"
 }
 
 
 static void block2_data_unref (Block2Data* _data2_) {
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	if (g_atomic_int_dec_and_test (&_data2_->_ref_count_)) {
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		block1_data_unref (_data2_->_data1_);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data2_->_data1_ = NULL;
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_g_error_free0 (_data2_->backup_error);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_slice_free (Block2Data, _data2_);
 #line 373 "tracker-backup.c"
 	}
@@ -376,20 +376,20 @@ static void block2_data_unref (Block2Data* _data2_) {
 
 static void tracker_backup_save_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerBackupSaveData* _data_;
-#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 40 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_ = _user_data_;
-#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 40 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_source_object_ = source_object;
-#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 40 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_res_ = _res_;
-#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 40 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_save_co (_data_);
 #line 388 "tracker-backup.c"
 }
 
 
 static gpointer _g_error_copy0 (gpointer self) {
-#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 44 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	return self ? g_error_copy (self) : NULL;
 #line 395 "tracker-backup.c"
 }
@@ -400,302 +400,302 @@ static void ___lambda6_ (Block2Data* _data2_, GError* _error_) {
 	TrackerBackup * self;
 	GError* _tmp0_;
 	GError* _tmp1_;
-#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data1_ = _data2_->_data1_;
-#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	self = _data1_->self;
-#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 44 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp0_ = _error_;
-#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 44 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp1_ = _g_error_copy0 (_tmp0_);
-#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 44 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_g_error_free0 (_data2_->backup_error);
-#line 44 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 44 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data2_->backup_error = _tmp1_;
-#line 45 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 45 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_save_co (_data1_->_async_data_);
 #line 418 "tracker-backup.c"
 }
 
 
 static void ____lambda6__tracker_data_backup_finished (GError* _error_, gpointer self) {
-#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	___lambda6_ (self, _error_);
 #line 425 "tracker-backup.c"
 }
 
 
 static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	switch (_data_->_state_) {
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		case 0:
 #line 434 "tracker-backup.c"
 		goto _state_0;
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		case 1:
 #line 438 "tracker-backup.c"
 		goto _state_1;
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		case 2:
 #line 442 "tracker-backup.c"
 		goto _state_2;
 		default:
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_assert_not_reached ();
 #line 447 "tracker-backup.c"
 	}
 	_state_0:
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_data1_ = g_slice_new0 (Block1Data);
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_data1_->_ref_count_ = 1;
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_data1_->self = g_object_ref (_data_->self);
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_data1_->_async_data_ = _data_;
-#line 26 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 26 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp0_ = NULL;
-#line 26 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 26 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp0_ = tracker_dbus_get_object (TRACKER_TYPE_RESOURCES);
-#line 26 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 26 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->resources = TRACKER_RESOURCES (_data_->_tmp0_);
-#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 27 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp1_ = _data_->resources;
-#line 27 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 27 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	if (_data_->_tmp1_ != NULL) {
-#line 28 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 28 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp2_ = _data_->resources;
-#line 28 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 28 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_resources_disable_signals (_data_->_tmp2_);
-#line 29 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 29 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_events_shutdown ();
 #line 474 "tracker-backup.c"
 	}
-#line 32 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 32 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp3_ = _data_->sender;
-#line 32 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 32 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp4_ = _data_->destination_uri;
-#line 32 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 32 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp5_ = NULL;
-#line 32 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 32 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp5_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp3_, "D-Bus request to save backup into '%s'", _data_->_tmp4_, NULL);
-#line 32 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 32 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->request = _data_->_tmp5_;
 #line 486 "tracker-backup.c"
 	{
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_data2_ = g_slice_new0 (Block2Data);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_data2_->_ref_count_ = 1;
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_data2_->_data1_ = block1_data_ref (_data_->_data1_);
-#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 34 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp6_ = _data_->destination_uri;
-#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 34 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp7_ = NULL;
-#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 34 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp7_ = g_file_new_for_uri (_data_->_tmp6_);
-#line 34 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 34 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->destination = _data_->_tmp7_;
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp9_ = _data_->destination;
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_tmp9_ == NULL) {
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp8_ = TRUE;
 #line 508 "tracker-backup.c"
 		} else {
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp10_ = _data_->destination;
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp11_ = NULL;
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp11_ = g_file_get_path (_data_->_tmp10_);
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp12_ = _data_->_tmp11_;
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp8_ = _data_->_tmp12_ == NULL;
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_free0 (_data_->_tmp12_);
 #line 522 "tracker-backup.c"
 		}
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp13_ = _data_->_tmp8_;
-#line 36 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 36 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_tmp13_) {
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp14_ = _data_->destination_uri;
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp15_ = g_strconcat ("'", _data_->_tmp14_, NULL);
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp16_ = _data_->_tmp15_;
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp17_ = g_strconcat (_data_->_tmp16_, "' is not a valid uri", NULL);
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp18_ = _data_->_tmp17_;
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp19_ = g_error_new_literal (TRACKER_DATA_BACKUP_ERROR, TRACKER_DATA_BACKUP_ERROR_INVALID_URI, _data_->_tmp18_);
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp20_ = _data_->_tmp19_;
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_free0 (_data_->_tmp18_);
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_free0 (_data_->_tmp16_);
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_inner_error_ = _data_->_tmp20_;
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_object_unref0 (_data_->destination);
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			block2_data_unref (_data_->_data2_);
-#line 37 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_data2_ = NULL;
 #line 554 "tracker-backup.c"
 			goto __catch0_g_error;
 		}
-#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 40 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_state_ = 1;
-#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 40 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_pause (tracker_backup_save_ready, _data_);
-#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 40 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		return FALSE;
 #line 563 "tracker-backup.c"
 		_state_1:
-#line 40 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 40 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_pause_finish (_data_->_res_);
-#line 42 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 42 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_data2_->backup_error = NULL;
-#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp21_ = _data_->destination;
-#line 43 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_data_backup_save (_data_->_tmp21_, ____lambda6__tracker_data_backup_finished, block2_data_ref (_data_->_data2_), block2_data_unref);
-#line 47 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 47 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_state_ = 2;
-#line 47 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 47 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		return FALSE;
 #line 577 "tracker-backup.c"
 		_state_2:
 		;
-#line 49 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 49 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp22_ = _data_->_data2_->backup_error;
-#line 49 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 49 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_tmp22_ != NULL) {
-#line 50 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 50 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp23_ = _data_->_data2_->backup_error;
-#line 50 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 50 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp24_ = _g_error_copy0 (_data_->_tmp23_);
-#line 50 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 50 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_inner_error_ = _data_->_tmp24_;
-#line 50 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 50 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_object_unref0 (_data_->destination);
-#line 50 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 50 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			block2_data_unref (_data_->_data2_);
-#line 50 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 50 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_data2_ = NULL;
 #line 596 "tracker-backup.c"
 			goto __catch0_g_error;
 		}
-#line 53 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 53 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp25_ = _data_->request;
-#line 53 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 53 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_dbus_request_end (_data_->_tmp25_, NULL);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_g_object_unref0 (_data_->destination);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		block2_data_unref (_data_->_data2_);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_data2_ = NULL;
 #line 609 "tracker-backup.c"
 	}
 	goto __finally0;
 	__catch0_g_error:
 	{
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->e = _data_->_inner_error_;
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_inner_error_ = NULL;
-#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 55 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp26_ = _data_->request;
-#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 55 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp27_ = _data_->e;
-#line 55 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 55 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_dbus_request_end (_data_->_tmp26_, _data_->_tmp27_);
-#line 56 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 56 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp28_ = _data_->e;
-#line 56 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 56 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp29_ = _g_error_copy0 (_data_->_tmp28_);
-#line 56 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 56 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_inner_error_ = _data_->_tmp29_;
-#line 56 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 56 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_g_error_free0 (_data_->e);
 #line 632 "tracker-backup.c"
 		goto __finally0;
 	}
 	__finally0:
 	{
-#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp30_ = _data_->resources;
-#line 58 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_tmp30_ != NULL) {
-#line 59 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 59 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			tracker_events_init ();
-#line 60 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 60 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp31_ = _data_->resources;
-#line 60 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 60 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			tracker_resources_enable_signals (_data_->_tmp31_);
 #line 647 "tracker-backup.c"
 		}
-#line 63 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 63 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_resume ();
 #line 651 "tracker-backup.c"
 	}
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_error_free (_data_->_inner_error_);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_g_object_unref0 (_data_->resources);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		block1_data_unref (_data_->_data1_);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_data1_ = NULL;
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_state_ == 0) {
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 669 "tracker-backup.c"
 		} else {
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 673 "tracker-backup.c"
 		}
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_object_unref (_data_->_async_result);
-#line 33 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		return FALSE;
 #line 679 "tracker-backup.c"
 	}
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_g_object_unref0 (_data_->resources);
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	block1_data_unref (_data_->_data1_);
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_data1_ = NULL;
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	if (_data_->_state_ == 0) {
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 691 "tracker-backup.c"
 	} else {
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 695 "tracker-backup.c"
 	}
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	g_object_unref (_data_->_async_result);
-#line 25 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 25 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	return FALSE;
 #line 701 "tracker-backup.c"
 }
@@ -704,13 +704,13 @@ static gboolean tracker_backup_save_co (TrackerBackupSaveData* _data_) {
 static void tracker_backup_restore_data_free (gpointer _data) {
 	TrackerBackupRestoreData* _data_;
 	_data_ = _data;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_g_free0 (_data_->sender);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_g_free0 (_data_->journal_uri);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_g_object_unref0 (_data_->self);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	g_slice_free (TrackerBackupRestoreData, _data_);
 #line 716 "tracker-backup.c"
 }
@@ -723,29 +723,29 @@ void tracker_backup_restore (TrackerBackup* self, const char* sender, const gcha
 	const char* _tmp2_;
 	const gchar* _tmp3_;
 	const gchar* _tmp4_;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_ = g_slice_new0 (TrackerBackupRestoreData);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_backup_restore);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_backup_restore_data_free);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->self = _tmp0_;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp1_ = sender;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->sender = _tmp2_;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp3_ = journal_uri;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_tmp4_ = g_strdup (_tmp3_);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->journal_uri = _tmp4_;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_restore_co (_data_);
 #line 751 "tracker-backup.c"
 }
@@ -753,13 +753,13 @@ void tracker_backup_restore (TrackerBackup* self, const char* sender, const gcha
 
 void tracker_backup_restore_finish (TrackerBackup* self, GAsyncResult* _res_, GError** error) {
 	TrackerBackupRestoreData* _data_;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		return;
 #line 761 "tracker-backup.c"
 	}
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
 #line 765 "tracker-backup.c"
 }
@@ -767,280 +767,280 @@ void tracker_backup_restore_finish (TrackerBackup* self, GAsyncResult* _res_, GE
 
 static void tracker_backup_restore_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerBackupRestoreData* _data_;
-#line 76 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_ = _user_data_;
-#line 76 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_source_object_ = source_object;
-#line 76 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_res_ = _res_;
-#line 76 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_restore_co (_data_);
 #line 779 "tracker-backup.c"
 }
 
 
 static gboolean tracker_backup_restore_co (TrackerBackupRestoreData* _data_) {
-#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	switch (_data_->_state_) {
-#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		case 0:
 #line 788 "tracker-backup.c"
 		goto _state_0;
-#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		case 1:
 #line 792 "tracker-backup.c"
 		goto _state_1;
 		default:
-#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_assert_not_reached ();
 #line 797 "tracker-backup.c"
 	}
 	_state_0:
-#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp0_ = NULL;
-#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp0_ = tracker_dbus_get_object (TRACKER_TYPE_RESOURCES);
-#line 68 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 68 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->resources = TRACKER_RESOURCES (_data_->_tmp0_);
-#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 69 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp1_ = _data_->resources;
-#line 69 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 69 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	if (_data_->_tmp1_ != NULL) {
-#line 70 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 70 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp2_ = _data_->resources;
-#line 70 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 70 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_resources_disable_signals (_data_->_tmp2_);
-#line 71 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 71 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_events_shutdown ();
 #line 816 "tracker-backup.c"
 	}
-#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 74 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp3_ = _data_->sender;
-#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 74 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp4_ = _data_->journal_uri;
-#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 74 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp5_ = NULL;
-#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 74 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->_tmp5_ = tracker_dbus_request_begin ((const gchar*) _data_->_tmp3_, "D-Bus request to restore backup from '%s'", _data_->_tmp4_, NULL);
-#line 74 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 74 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_data_->request = _data_->_tmp5_;
 #line 828 "tracker-backup.c"
 	{
-#line 76 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_state_ = 1;
-#line 76 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_pause (tracker_backup_restore_ready, _data_);
-#line 76 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		return FALSE;
 #line 836 "tracker-backup.c"
 		_state_1:
-#line 76 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_pause_finish (_data_->_res_);
-#line 78 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 78 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp6_ = _data_->journal_uri;
-#line 78 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 78 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp7_ = NULL;
-#line 78 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 78 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp7_ = g_file_new_for_uri (_data_->_tmp6_);
-#line 78 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 78 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->journal = _data_->_tmp7_;
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp9_ = _data_->journal;
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_tmp9_ == NULL) {
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp8_ = TRUE;
 #line 854 "tracker-backup.c"
 		} else {
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp10_ = _data_->journal;
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp11_ = NULL;
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp11_ = g_file_get_path (_data_->_tmp10_);
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp12_ = _data_->_tmp11_;
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp8_ = _data_->_tmp12_ == NULL;
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_free0 (_data_->_tmp12_);
 #line 868 "tracker-backup.c"
 		}
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp13_ = _data_->_tmp8_;
-#line 80 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 80 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_tmp13_) {
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp14_ = _data_->journal_uri;
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp15_ = g_strconcat ("'", _data_->_tmp14_, NULL);
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp16_ = _data_->_tmp15_;
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp17_ = g_strconcat (_data_->_tmp16_, "' is not a valid uri", NULL);
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp18_ = _data_->_tmp17_;
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp19_ = g_error_new_literal (TRACKER_DATA_BACKUP_ERROR, TRACKER_DATA_BACKUP_ERROR_INVALID_URI, _data_->_tmp18_);
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp20_ = _data_->_tmp19_;
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_free0 (_data_->_tmp18_);
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_free0 (_data_->_tmp16_);
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_inner_error_ = _data_->_tmp20_;
-#line 81 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_object_unref0 (_data_->journal);
 #line 896 "tracker-backup.c"
 			goto __catch1_g_error;
 		}
-#line 84 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 84 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp21_ = NULL;
-#line 84 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 84 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp21_ = tracker_dbus_get_object (TRACKER_TYPE_STATUS);
-#line 84 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 84 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->notifier = TRACKER_STATUS (_data_->_tmp21_);
-#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp22_ = _data_->notifier;
-#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp23_ = NULL;
-#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp24_ = NULL;
-#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp25_ = NULL;
-#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp25_ = tracker_status_get_callback (_data_->_tmp22_, &_data_->_tmp23_, &_data_->_tmp24_);
-#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback = _data_->_tmp25_;
-#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback_target = _data_->_tmp23_;
-#line 85 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback_target_destroy_notify = _data_->_tmp24_;
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp26_ = _data_->journal;
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp27_ = _data_->busy_callback;
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp27__target = _data_->busy_callback_target;
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_data_backup_restore (_data_->_tmp26_, NULL, _data_->_tmp27_, _data_->_tmp27__target, &_data_->_inner_error_);
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			(_data_->busy_callback_target_destroy_notify == NULL) ? NULL : (_data_->busy_callback_target_destroy_notify (_data_->busy_callback_target), NULL);
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->busy_callback = NULL;
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->busy_callback_target = NULL;
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->busy_callback_target_destroy_notify = NULL;
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_object_unref0 (_data_->notifier);
-#line 87 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_g_object_unref0 (_data_->journal);
 #line 943 "tracker-backup.c"
 			goto __catch1_g_error;
 		}
-#line 89 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 89 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp28_ = _data_->request;
-#line 89 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 89 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_dbus_request_end (_data_->_tmp28_, NULL);
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		(_data_->busy_callback_target_destroy_notify == NULL) ? NULL : (_data_->busy_callback_target_destroy_notify (_data_->busy_callback_target), NULL);
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback = NULL;
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback_target = NULL;
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->busy_callback_target_destroy_notify = NULL;
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_g_object_unref0 (_data_->notifier);
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_g_object_unref0 (_data_->journal);
 #line 962 "tracker-backup.c"
 	}
 	goto __finally1;
 	__catch1_g_error:
 	{
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->e = _data_->_inner_error_;
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_inner_error_ = NULL;
-#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 91 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp29_ = _data_->request;
-#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 91 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp30_ = _data_->e;
-#line 91 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 91 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_dbus_request_end (_data_->_tmp29_, _data_->_tmp30_);
-#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 92 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp31_ = _data_->e;
-#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 92 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp32_ = _g_error_copy0 (_data_->_tmp31_);
-#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 92 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_inner_error_ = _data_->_tmp32_;
-#line 92 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 92 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_g_error_free0 (_data_->e);
 #line 985 "tracker-backup.c"
 		goto __finally1;
 	}
 	__finally1:
 	{
-#line 94 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 94 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_data_->_tmp33_ = _data_->resources;
-#line 94 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 94 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_tmp33_ != NULL) {
-#line 95 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 95 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			tracker_events_init ();
-#line 96 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 96 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			_data_->_tmp34_ = _data_->resources;
-#line 96 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 96 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			tracker_resources_enable_signals (_data_->_tmp34_);
 #line 1000 "tracker-backup.c"
 		}
-#line 99 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		tracker_store_resume ();
 #line 1004 "tracker-backup.c"
 	}
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_error_free (_data_->_inner_error_);
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		_g_object_unref0 (_data_->resources);
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		if (_data_->_state_ == 0) {
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1018 "tracker-backup.c"
 		} else {
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 1022 "tracker-backup.c"
 		}
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_object_unref (_data_->_async_result);
-#line 75 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		return FALSE;
 #line 1028 "tracker-backup.c"
 	}
-#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	_g_object_unref0 (_data_->resources);
-#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	if (_data_->_state_ == 0) {
-#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1036 "tracker-backup.c"
 	} else {
-#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1040 "tracker-backup.c"
 	}
-#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	g_object_unref (_data_->_async_result);
-#line 67 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	return FALSE;
 #line 1046 "tracker-backup.c"
 }
@@ -1048,23 +1048,23 @@ static gboolean tracker_backup_restore_co (TrackerBackupRestoreData* _data_) {
 
 TrackerBackup* tracker_backup_construct (GType object_type) {
 	TrackerBackup * self = NULL;
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	self = (TrackerBackup*) g_object_new (object_type, NULL);
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	return self;
 #line 1056 "tracker-backup.c"
 }
 
 
 TrackerBackup* tracker_backup_new (void) {
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	return tracker_backup_construct (TRACKER_TYPE_BACKUP);
 #line 1063 "tracker-backup.c"
 }
 
 
 static void tracker_backup_class_init (TrackerBackupClass * klass) {
-#line 22 "/home/martyn/Source/tracker/src/tracker-store/tracker-backup.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/tracker-store/tracker-backup.vala"
 	tracker_backup_parent_class = g_type_class_peek_parent (klass);
 #line 1070 "tracker-backup.c"
 }

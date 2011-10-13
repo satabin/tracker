@@ -43,34 +43,34 @@ gint _vala_main (gchar** args, int args_length1) {
 		TestApp* app;
 		TestApp* _tmp5_;
 		gint _tmp6_ = 0;
-#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 8 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_tmp0_ = tracker_bus_connection_new (&_inner_error_);
-#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 8 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_tmp1_ = _tmp0_;
-#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 8 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		if (_inner_error_ != NULL) {
 #line 53 "test-bus-query.c"
 			goto __catch3_g_error;
 		}
-#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 8 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_tmp2_ = _tmp1_;
-#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 8 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_tmp3_ = test_app_new ((TrackerSparqlConnection*) _tmp2_);
-#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 8 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_tmp4_ = _tmp3_;
-#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 8 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_g_object_unref0 (_tmp2_);
-#line 8 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 8 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		app = _tmp4_;
-#line 10 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 10 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_tmp5_ = app;
-#line 10 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 10 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_tmp6_ = test_app_run (_tmp5_);
-#line 10 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 10 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		result = _tmp6_;
-#line 10 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 10 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_g_object_unref0 (app);
-#line 10 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 10 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		return result;
 #line 76 "test-bus-query.c"
 	}
@@ -80,39 +80,39 @@ gint _vala_main (gchar** args, int args_length1) {
 		GError* e = NULL;
 		GError* _tmp7_;
 		const gchar* _tmp8_;
-#line 7 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 7 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		e = _inner_error_;
-#line 7 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 7 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_inner_error_ = NULL;
-#line 12 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 12 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_tmp7_ = e;
-#line 12 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 12 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_tmp8_ = _tmp7_->message;
-#line 12 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 12 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		g_warning ("test-bus-query.vala:12: Couldn't perform test: %s", _tmp8_);
-#line 13 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 13 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		result = 1;
-#line 13 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 13 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		_g_error_free0 (e);
-#line 13 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 13 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 		return result;
 #line 100 "test-bus-query.c"
 	}
 	__finally3:
-#line 7 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 7 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 	g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 7 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 7 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 	g_clear_error (&_inner_error_);
-#line 7 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 7 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 	return 0;
 #line 109 "test-bus-query.c"
 }
 
 
 int main (int argc, char ** argv) {
-#line 4 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 4 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 	g_type_init ();
-#line 4 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-bus-query.vala"
+#line 4 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-bus-query.vala"
 	return _vala_main (argv, argc);
 #line 118 "test-bus-query.c"
 }

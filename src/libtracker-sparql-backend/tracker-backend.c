@@ -388,7 +388,7 @@ static GType tracker_sparql_backend_backend_get_type (void) {
 TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GError** error) {
 	TrackerSparqlBackend * self = NULL;
 	GError * _inner_error_ = NULL;
-#line 30 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 30 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) tracker_sparql_connection_construct (object_type);
 #line 394 "tracker-backend.c"
 	{
@@ -402,75 +402,75 @@ TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GErro
 		GDBusMessage* _tmp5_ = NULL;
 		GDBusMessage* _tmp6_;
 		GDBusMessage* _tmp7_;
-#line 33 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 33 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_debug ("tracker-backend.vala:33: Waiting for service to become available...");
-#line 37 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &_inner_error_);
-#line 37 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		bus = _tmp0_;
-#line 37 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 37 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
 #line 414 "tracker-backend.c"
 			goto __catch0_g_error;
 		}
-#line 38 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 38 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = g_dbus_message_new_method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_STATUS, TRACKER_DBUS_INTERFACE_STATUS, "Wait");
-#line 38 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 38 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		msg = _tmp1_;
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = bus;
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = msg;
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = G_MAXINT;
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp5_ = g_dbus_connection_send_message_with_reply_sync (_tmp2_, _tmp3_, 0, _tmp4_, NULL, NULL, &_inner_error_);
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp6_ = _tmp5_;
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (msg);
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (bus);
 #line 437 "tracker-backend.c"
 			goto __catch0_g_error;
 		}
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp7_ = _tmp6_;
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_dbus_message_to_gerror (_tmp7_, &_inner_error_);
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_tmp7_);
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (msg);
-#line 39 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (bus);
 #line 452 "tracker-backend.c"
 			goto __catch0_g_error;
 		}
-#line 41 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 41 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_debug ("tracker-backend.vala:41: Service is ready");
-#line 43 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_debug ("tracker-backend.vala:43: Constructing connection");
-#line 44 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 44 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		tracker_sparql_backend_load_plugins (self, &_inner_error_);
-#line 44 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 44 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 44 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 44 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (msg);
-#line 44 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 44 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (bus);
 #line 467 "tracker-backend.c"
 			goto __catch0_g_error;
 		}
-#line 45 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 45 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_debug ("tracker-backend.vala:45: Backend is ready");
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (msg);
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (bus);
 #line 476 "tracker-backend.c"
 	}
@@ -481,55 +481,55 @@ TrackerSparqlBackend* tracker_sparql_backend_construct (GType object_type, GErro
 		GError* _tmp8_;
 		const gchar* _tmp9_;
 		GError* _tmp10_;
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e = _inner_error_;
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 47 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 47 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp8_ = e;
-#line 47 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 47 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp9_ = _tmp8_->message;
-#line 47 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 47 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp10_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _tmp9_);
-#line 47 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 47 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp10_;
-#line 47 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 47 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e);
 #line 499 "tracker-backend.c"
 		goto __finally0;
 	}
 	__finally0:
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (self);
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 513 "tracker-backend.c"
 		} else {
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 31 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 31 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 521 "tracker-backend.c"
 		}
 	}
-#line 50 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 50 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self->priv->initialized = TRUE;
-#line 30 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 30 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self;
 #line 528 "tracker-backend.c"
 }
 
 
 TrackerSparqlBackend* tracker_sparql_backend_new (GError** error) {
-#line 30 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 30 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return tracker_sparql_backend_construct (TRACKER_SPARQL_TYPE_BACKEND, error);
 #line 535 "tracker-backend.c"
 }
@@ -539,44 +539,44 @@ static void tracker_sparql_backend_real_dispose (GObject* base) {
 	TrackerSparqlBackend * self;
 	gboolean _tmp0_;
 	GError * _inner_error_ = NULL;
-#line 53 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 53 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 55 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 55 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = self->priv->initialized;
-#line 55 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 55 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_) {
-#line 56 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 56 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_static_mutex_lock (&tracker_sparql_backend_door);
 #line 551 "tracker-backend.c"
 		{
 			TrackerSparqlConnection* _tmp1_;
-#line 63 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 63 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp1_ = tracker_sparql_backend_singleton;
-#line 63 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 63 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp1_ == TRACKER_SPARQL_CONNECTION (self)) {
-#line 64 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 64 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				tracker_sparql_backend_singleton = NULL;
 #line 560 "tracker-backend.c"
 			}
 		}
 		__finally1:
 		{
-#line 67 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_static_mutex_unlock (&tracker_sparql_backend_door);
 #line 567 "tracker-backend.c"
 		}
-#line 58 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 58 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 58 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 58 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
 #line 577 "tracker-backend.c"
 		}
 	}
-#line 71 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 71 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	G_OBJECT_CLASS (tracker_sparql_backend_parent_class)->dispose ((GObject*) TRACKER_SPARQL_CONNECTION (self));
 #line 582 "tracker-backend.c"
 }
@@ -588,17 +588,17 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 	const gchar* _tmp0_;
 	TrackerSparqlConnection* _tmp1_;
 	GError * _inner_error_ = NULL;
-#line 74 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 74 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 74 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 74 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 75 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = sparql;
-#line 75 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 75 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_debug ("tracker-backend.vala:75: %s(): '%s'", "Tracker.Sparql.Backend.query", _tmp0_);
-#line 76 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 76 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = self->priv->direct;
-#line 76 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 76 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp1_ != NULL) {
 #line 604 "tracker-backend.c"
 		TrackerSparqlConnection* _tmp2_;
@@ -606,38 +606,38 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 		GCancellable* _tmp4_;
 		TrackerSparqlCursor* _tmp5_ = NULL;
 		TrackerSparqlCursor* _tmp6_;
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = self->priv->direct;
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = sparql;
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = cancellable;
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp5_ = tracker_sparql_connection_query (_tmp2_, _tmp3_, _tmp4_, &_inner_error_);
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp6_ = _tmp5_;
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
 #line 628 "tracker-backend.c"
 			} else {
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_inner_error_);
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
 #line 636 "tracker-backend.c"
 			}
 		}
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _tmp6_;
-#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
 #line 643 "tracker-backend.c"
 	} else {
@@ -646,38 +646,38 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 		GCancellable* _tmp9_;
 		TrackerSparqlCursor* _tmp10_ = NULL;
 		TrackerSparqlCursor* _tmp11_;
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp7_ = self->priv->bus;
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp8_ = sparql;
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp9_ = cancellable;
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp10_ = tracker_sparql_connection_query (_tmp7_, _tmp8_, _tmp9_, &_inner_error_);
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp11_ = _tmp10_;
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
 #line 668 "tracker-backend.c"
 			} else {
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_inner_error_);
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
 #line 676 "tracker-backend.c"
 			}
 		}
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _tmp11_;
-#line 79 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
 #line 683 "tracker-backend.c"
 	}
@@ -687,22 +687,22 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query (TrackerSparqlConn
 static void tracker_sparql_backend_real_query_async_data_free (gpointer _data) {
 	TrackerSparqlBackendQueryAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->result);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendQueryAsyncData, _data_);
 #line 701 "tracker-backend.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self ? g_object_ref (self) : NULL;
 #line 708 "tracker-backend.c"
 }
@@ -716,31 +716,31 @@ static void tracker_sparql_backend_real_query_async (TrackerSparqlConnection* ba
 	const gchar* _tmp2_;
 	GCancellable* _tmp3_;
 	GCancellable* _tmp4_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendQueryAsyncData);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_sparql_backend_real_query_async);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_sparql_backend_real_query_async_data_free);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql = _tmp2_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = cancellable;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp4_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_query_async_co (_data_);
 #line 746 "tracker-backend.c"
 }
@@ -749,19 +749,19 @@ static void tracker_sparql_backend_real_query_async (TrackerSparqlConnection* ba
 static TrackerSparqlCursor* tracker_sparql_backend_real_query_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlCursor* result;
 	TrackerSparqlBackendQueryAsyncData* _data_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
 #line 757 "tracker-backend.c"
 	}
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _data_->result;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = NULL;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 767 "tracker-backend.c"
 }
@@ -769,202 +769,202 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_query_finish (TrackerSpa
 
 static void tracker_sparql_backend_query_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendQueryAsyncData* _data_;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_query_async_co (_data_);
 #line 781 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_query_async_co (TrackerSparqlBackendQueryAsyncData* _data_) {
-#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
 #line 790 "tracker-backend.c"
 		goto _state_0;
-#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
 #line 794 "tracker-backend.c"
 		goto _state_1;
-#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 2:
 #line 798 "tracker-backend.c"
 		goto _state_2;
 		default:
-#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
 #line 803 "tracker-backend.c"
 	}
 	_state_0:
-#line 84 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 84 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->sparql;
-#line 84 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 84 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_debug ("tracker-backend.vala:84: %s(): '%s'", "Tracker.Sparql.Backend.query_async", _data_->_tmp0_);
-#line 85 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->self->priv->direct;
-#line 85 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp1_ != NULL) {
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp2_ = _data_->self->priv->direct;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = _data_->sparql;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = _data_->cancellable;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_state_ = 1;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		tracker_sparql_connection_query_async (_data_->_tmp2_, _data_->_tmp3_, _data_->_tmp4_, tracker_sparql_backend_query_async_ready, _data_);
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
 #line 826 "tracker-backend.c"
 		_state_1:
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp5_ = NULL;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp5_ = tracker_sparql_connection_query_finish (_data_->_tmp2_, _data_->_res_, &_data_->_inner_error_);
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp6_ = _data_->_tmp5_;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_error_free (_data_->_inner_error_);
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (_data_->_state_ == 0) {
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 846 "tracker-backend.c"
 				} else {
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_complete (_data_->_async_result);
 #line 850 "tracker-backend.c"
 				}
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_object_unref (_data_->_async_result);
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
 #line 856 "tracker-backend.c"
 			} else {
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_data_->_inner_error_);
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
 #line 864 "tracker-backend.c"
 			}
 		}
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->result = _data_->_tmp6_;
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_state_ == 0) {
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 873 "tracker-backend.c"
 		} else {
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 877 "tracker-backend.c"
 		}
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
 #line 883 "tracker-backend.c"
 	} else {
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp7_ = _data_->self->priv->bus;
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp8_ = _data_->sparql;
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp9_ = _data_->cancellable;
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_state_ = 2;
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		tracker_sparql_connection_query_async (_data_->_tmp7_, _data_->_tmp8_, _data_->_tmp9_, tracker_sparql_backend_query_async_ready, _data_);
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
 #line 897 "tracker-backend.c"
 		_state_2:
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp10_ = NULL;
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp10_ = tracker_sparql_connection_query_finish (_data_->_tmp7_, _data_->_res_, &_data_->_inner_error_);
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp11_ = _data_->_tmp10_;
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_error_free (_data_->_inner_error_);
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (_data_->_state_ == 0) {
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 917 "tracker-backend.c"
 				} else {
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_complete (_data_->_async_result);
 #line 921 "tracker-backend.c"
 				}
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_object_unref (_data_->_async_result);
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
 #line 927 "tracker-backend.c"
 			} else {
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_data_->_inner_error_);
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
 #line 935 "tracker-backend.c"
 			}
 		}
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->result = _data_->_tmp11_;
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_state_ == 0) {
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 944 "tracker-backend.c"
 		} else {
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_complete (_data_->_async_result);
 #line 948 "tracker-backend.c"
 		}
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_object_unref (_data_->_async_result);
-#line 88 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
 #line 954 "tracker-backend.c"
 	}
-#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 960 "tracker-backend.c"
 	} else {
-#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 964 "tracker-backend.c"
 	}
-#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 970 "tracker-backend.c"
 }
@@ -980,68 +980,68 @@ static void tracker_sparql_backend_real_update (TrackerSparqlConnection* base, c
 	gint _tmp6_;
 	GCancellable* _tmp7_;
 	GError * _inner_error_ = NULL;
-#line 92 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 92 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 92 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 92 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (sparql != NULL);
-#line 93 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 93 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = priority;
-#line 93 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 93 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 93 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 93 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_debug ("tracker-backend.vala:93: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update", _tmp0_, _tmp1_);
-#line 94 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 94 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = self->priv->bus;
-#line 94 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 94 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp2_ == NULL) {
 #line 998 "tracker-backend.c"
 		GError* _tmp3_;
-#line 95 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 95 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 95 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 95 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp3_;
-#line 95 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 95 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 95 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 95 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 95 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 95 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
 #line 1010 "tracker-backend.c"
 		} else {
-#line 95 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 95 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 95 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 95 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 95 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 95 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
 #line 1018 "tracker-backend.c"
 		}
 	}
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = self->priv->bus;
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = sparql;
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = priority;
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = cancellable;
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update (_tmp4_, _tmp5_, _tmp6_, _tmp7_, &_inner_error_);
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
 #line 1039 "tracker-backend.c"
 		} else {
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 97 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
 #line 1047 "tracker-backend.c"
 		}
@@ -1062,77 +1062,77 @@ static GVariant* tracker_sparql_backend_real_update_blank (TrackerSparqlConnecti
 	GVariant* _tmp8_ = NULL;
 	GVariant* _tmp9_;
 	GError * _inner_error_ = NULL;
-#line 100 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 100 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 100 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 100 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 101 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 101 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = priority;
-#line 101 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 101 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 101 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 101 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_debug ("tracker-backend.vala:101: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank", _tmp0_, _tmp1_);
-#line 102 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 102 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = self->priv->bus;
-#line 102 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 102 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp2_ == NULL) {
 #line 1080 "tracker-backend.c"
 		GError* _tmp3_;
-#line 103 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 103 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp3_;
-#line 103 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 103 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 103 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 1092 "tracker-backend.c"
 		} else {
-#line 103 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 103 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 103 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 1100 "tracker-backend.c"
 		}
 	}
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = self->priv->bus;
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = sparql;
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = priority;
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = cancellable;
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp8_ = tracker_sparql_connection_update_blank (_tmp4_, _tmp5_, _tmp6_, _tmp7_, &_inner_error_);
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp9_ = _tmp8_;
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 1123 "tracker-backend.c"
 		} else {
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 1131 "tracker-backend.c"
 		}
 	}
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp9_;
-#line 105 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 105 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 1138 "tracker-backend.c"
 }
@@ -1141,13 +1141,13 @@ static GVariant* tracker_sparql_backend_real_update_blank (TrackerSparqlConnecti
 static void tracker_sparql_backend_real_update_async_data_free (gpointer _data) {
 	TrackerSparqlBackendUpdateAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendUpdateAsyncData, _data_);
 #line 1153 "tracker-backend.c"
 }
@@ -1162,35 +1162,35 @@ static void tracker_sparql_backend_real_update_async (TrackerSparqlConnection* b
 	gint _tmp3_;
 	GCancellable* _tmp4_;
 	GCancellable* _tmp5_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendUpdateAsyncData);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_sparql_backend_real_update_async);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_sparql_backend_real_update_async_data_free);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql = _tmp2_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = priority;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->priority = _tmp3_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = cancellable;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = _g_object_ref0 (_tmp4_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp5_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_async_co (_data_);
 #line 1196 "tracker-backend.c"
 }
@@ -1198,13 +1198,13 @@ static void tracker_sparql_backend_real_update_async (TrackerSparqlConnection* b
 
 static void tracker_sparql_backend_real_update_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlBackendUpdateAsyncData* _data_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return;
 #line 1206 "tracker-backend.c"
 	}
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
 #line 1210 "tracker-backend.c"
 }
@@ -1212,144 +1212,144 @@ static void tracker_sparql_backend_real_update_finish (TrackerSparqlConnection* 
 
 static void tracker_sparql_backend_update_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendUpdateAsyncData* _data_;
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_async_co (_data_);
 #line 1224 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_update_async_co (TrackerSparqlBackendUpdateAsyncData* _data_) {
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
 #line 1233 "tracker-backend.c"
 		goto _state_0;
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
 #line 1237 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
 #line 1242 "tracker-backend.c"
 	}
 	_state_0:
-#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->priority;
-#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->sparql;
-#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_debug ("tracker-backend.vala:109: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_async", _data_->_tmp0_, _data_->_tmp1_);
-#line 110 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 110 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->self->priv->bus;
-#line 110 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 110 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp2_ == NULL) {
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp3_;
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1269 "tracker-backend.c"
 			} else {
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 1273 "tracker-backend.c"
 			}
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1279 "tracker-backend.c"
 		} else {
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1287 "tracker-backend.c"
 		}
 	}
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->self->priv->bus;
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->sparql;
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->priority;
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->cancellable;
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_async (_data_->_tmp4_, _data_->_tmp5_, _data_->_tmp6_, _data_->_tmp7_, tracker_sparql_backend_update_async_ready, _data_);
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 1304 "tracker-backend.c"
 	_state_1:
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_finish (_data_->_tmp4_, _data_->_res_, &_data_->_inner_error_);
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1320 "tracker-backend.c"
 			} else {
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 1324 "tracker-backend.c"
 			}
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1330 "tracker-backend.c"
 		} else {
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1338 "tracker-backend.c"
 		}
 	}
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1345 "tracker-backend.c"
 	} else {
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1349 "tracker-backend.c"
 	}
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 1355 "tracker-backend.c"
 }
@@ -1358,15 +1358,15 @@ static gboolean tracker_sparql_backend_real_update_async_co (TrackerSparqlBacken
 static void tracker_sparql_backend_real_update_array_async_data_free (gpointer _data) {
 	TrackerSparqlBackendUpdateArrayAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql = (_vala_array_free (_data_->sparql, _data_->sparql_length1, (GDestroyNotify) g_free), NULL);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_ptr_array_unref0 (_data_->result);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendUpdateArrayAsyncData, _data_);
 #line 1372 "tracker-backend.c"
 }
@@ -1375,19 +1375,19 @@ static void tracker_sparql_backend_real_update_array_async_data_free (gpointer _
 static gchar** _vala_array_dup1 (gchar** self, int length) {
 	gchar** result;
 	int i;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = g_new0 (gchar*, length + 1);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	for (i = 0; i < length; i++) {
 #line 1383 "tracker-backend.c"
 		gchar* _tmp0_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = g_strdup (self[i]);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result[i] = _tmp0_;
 #line 1389 "tracker-backend.c"
 	}
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 1393 "tracker-backend.c"
 }
@@ -1404,41 +1404,41 @@ static void tracker_sparql_backend_real_update_array_async (TrackerSparqlConnect
 	gint _tmp3_;
 	GCancellable* _tmp4_;
 	GCancellable* _tmp5_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendUpdateArrayAsyncData);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_sparql_backend_real_update_array_async);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_sparql_backend_real_update_array_async_data_free);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1__length1 = sparql_length1;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = (_tmp1_ != NULL) ? _vala_array_dup1 (_tmp1_, _tmp1__length1) : ((gpointer) _tmp1_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2__length1 = _tmp1__length1;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql = _tmp2_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql_length1 = _tmp2__length1;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = priority;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->priority = _tmp3_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = cancellable;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = _g_object_ref0 (_tmp4_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp5_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_array_async_co (_data_);
 #line 1444 "tracker-backend.c"
 }
@@ -1447,19 +1447,19 @@ static void tracker_sparql_backend_real_update_array_async (TrackerSparqlConnect
 static GPtrArray* tracker_sparql_backend_real_update_array_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	GPtrArray* result;
 	TrackerSparqlBackendUpdateArrayAsyncData* _data_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
 #line 1455 "tracker-backend.c"
 	}
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _data_->result;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = NULL;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 1465 "tracker-backend.c"
 }
@@ -1467,160 +1467,160 @@ static GPtrArray* tracker_sparql_backend_real_update_array_finish (TrackerSparql
 
 static void tracker_sparql_backend_update_array_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendUpdateArrayAsyncData* _data_;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_array_async_co (_data_);
 #line 1479 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_update_array_async_co (TrackerSparqlBackendUpdateArrayAsyncData* _data_) {
-#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
 #line 1488 "tracker-backend.c"
 		goto _state_0;
-#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
 #line 1492 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
 #line 1497 "tracker-backend.c"
 	}
 	_state_0:
-#line 117 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->self->priv->bus;
-#line 117 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 117 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp0_ == NULL) {
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp1_;
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1518 "tracker-backend.c"
 			} else {
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 1522 "tracker-backend.c"
 			}
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1528 "tracker-backend.c"
 		} else {
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 118 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1536 "tracker-backend.c"
 		}
 	}
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->self->priv->bus;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->sparql;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3__length1 = _data_->sparql_length1;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->priority;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->cancellable;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_array_async (_data_->_tmp2_, _data_->_tmp3_, _data_->_tmp3__length1, _data_->_tmp4_, _data_->_tmp5_, tracker_sparql_backend_update_array_async_ready, _data_);
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 1555 "tracker-backend.c"
 	_state_1:
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = NULL;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = tracker_sparql_connection_update_array_finish (_data_->_tmp2_, _data_->_res_, &_data_->_inner_error_);
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->_tmp6_;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1575 "tracker-backend.c"
 			} else {
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 1579 "tracker-backend.c"
 			}
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1585 "tracker-backend.c"
 		} else {
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1593 "tracker-backend.c"
 		}
 	}
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp7_;
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1602 "tracker-backend.c"
 	} else {
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1606 "tracker-backend.c"
 	}
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 120 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 120 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1616 "tracker-backend.c"
 	} else {
-#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1620 "tracker-backend.c"
 	}
-#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 1626 "tracker-backend.c"
 }
@@ -1629,15 +1629,15 @@ static gboolean tracker_sparql_backend_real_update_array_async_co (TrackerSparql
 static void tracker_sparql_backend_real_update_blank_async_data_free (gpointer _data) {
 	TrackerSparqlBackendUpdateBlankAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->sparql);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_variant_unref0 (_data_->result);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendUpdateBlankAsyncData, _data_);
 #line 1643 "tracker-backend.c"
 }
@@ -1652,35 +1652,35 @@ static void tracker_sparql_backend_real_update_blank_async (TrackerSparqlConnect
 	gint _tmp3_;
 	GCancellable* _tmp4_;
 	GCancellable* _tmp5_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendUpdateBlankAsyncData);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_sparql_backend_real_update_blank_async);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_sparql_backend_real_update_blank_async_data_free);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = sparql;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->sparql = _tmp2_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = priority;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->priority = _tmp3_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = cancellable;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = _g_object_ref0 (_tmp4_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp5_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_blank_async_co (_data_);
 #line 1686 "tracker-backend.c"
 }
@@ -1689,19 +1689,19 @@ static void tracker_sparql_backend_real_update_blank_async (TrackerSparqlConnect
 static GVariant* tracker_sparql_backend_real_update_blank_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	GVariant* result;
 	TrackerSparqlBackendUpdateBlankAsyncData* _data_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
 #line 1697 "tracker-backend.c"
 	}
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _data_->result;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = NULL;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 1707 "tracker-backend.c"
 }
@@ -1709,164 +1709,164 @@ static GVariant* tracker_sparql_backend_real_update_blank_finish (TrackerSparqlC
 
 static void tracker_sparql_backend_update_blank_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendUpdateBlankAsyncData* _data_;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_update_blank_async_co (_data_);
 #line 1721 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_update_blank_async_co (TrackerSparqlBackendUpdateBlankAsyncData* _data_) {
-#line 123 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 123 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
 #line 1730 "tracker-backend.c"
 		goto _state_0;
-#line 123 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
 #line 1734 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 123 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
 #line 1739 "tracker-backend.c"
 	}
 	_state_0:
-#line 124 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 124 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->priority;
-#line 124 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 124 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _data_->sparql;
-#line 124 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 124 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_debug ("tracker-backend.vala:124: %s(priority:%d): '%s'", "Tracker.Sparql.Backend.update_blank_async", _data_->_tmp0_, _data_->_tmp1_);
-#line 125 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 125 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->self->priv->bus;
-#line 125 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 125 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp2_ == NULL) {
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp3_;
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1766 "tracker-backend.c"
 			} else {
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 1770 "tracker-backend.c"
 			}
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1776 "tracker-backend.c"
 		} else {
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 126 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1784 "tracker-backend.c"
 		}
 	}
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = _data_->self->priv->bus;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->sparql;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->priority;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->cancellable;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_update_blank_async (_data_->_tmp4_, _data_->_tmp5_, _data_->_tmp6_, _data_->_tmp7_, tracker_sparql_backend_update_blank_async_ready, _data_);
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 1801 "tracker-backend.c"
 	_state_1:
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp8_ = NULL;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp8_ = tracker_sparql_connection_update_blank_finish (_data_->_tmp4_, _data_->_res_, &_data_->_inner_error_);
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp9_ = _data_->_tmp8_;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1821 "tracker-backend.c"
 			} else {
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 1825 "tracker-backend.c"
 			}
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1831 "tracker-backend.c"
 		} else {
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 1839 "tracker-backend.c"
 		}
 	}
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp9_;
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1848 "tracker-backend.c"
 	} else {
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1852 "tracker-backend.c"
 	}
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 128 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 128 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 123 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 123 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1862 "tracker-backend.c"
 	} else {
-#line 123 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1866 "tracker-backend.c"
 	}
-#line 123 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 123 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 1872 "tracker-backend.c"
 }
@@ -1883,83 +1883,83 @@ static void tracker_sparql_backend_real_load (TrackerSparqlConnection* base, GFi
 	GFile* _tmp6_;
 	GCancellable* _tmp7_;
 	GError * _inner_error_ = NULL;
-#line 131 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 131 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (file != NULL);
-#line 132 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 132 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = file;
-#line 132 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 132 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = g_file_get_uri (_tmp0_);
-#line 132 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 132 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	uri = _tmp1_;
-#line 133 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = uri;
-#line 133 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 133 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_debug ("tracker-backend.vala:133: %s(): '%s'", "Tracker.Sparql.Backend.load", _tmp2_);
-#line 134 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 134 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = self->priv->bus;
-#line 134 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 134 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp3_ == NULL) {
 #line 1905 "tracker-backend.c"
 		GError* _tmp4_;
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp4_;
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
 #line 1919 "tracker-backend.c"
 		} else {
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
 #line 1929 "tracker-backend.c"
 		}
 	}
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = self->priv->bus;
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = file;
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = cancellable;
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_load (_tmp5_, _tmp6_, _tmp7_, &_inner_error_);
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
 #line 1950 "tracker-backend.c"
 		} else {
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (uri);
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 137 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 137 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return;
 #line 1960 "tracker-backend.c"
 		}
 	}
-#line 131 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (uri);
 #line 1965 "tracker-backend.c"
 }
@@ -1968,13 +1968,13 @@ static void tracker_sparql_backend_real_load (TrackerSparqlConnection* base, GFi
 static void tracker_sparql_backend_real_load_async_data_free (gpointer _data) {
 	TrackerSparqlBackendLoadAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->file);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendLoadAsyncData, _data_);
 #line 1980 "tracker-backend.c"
 }
@@ -1988,31 +1988,31 @@ static void tracker_sparql_backend_real_load_async (TrackerSparqlConnection* bas
 	GFile* _tmp2_;
 	GCancellable* _tmp3_;
 	GCancellable* _tmp4_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendLoadAsyncData);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_sparql_backend_real_load_async);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_sparql_backend_real_load_async_data_free);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = file;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _g_object_ref0 (_tmp1_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->file = _tmp2_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = cancellable;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp4_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_load_async_co (_data_);
 #line 2018 "tracker-backend.c"
 }
@@ -2020,13 +2020,13 @@ static void tracker_sparql_backend_real_load_async (TrackerSparqlConnection* bas
 
 static void tracker_sparql_backend_real_load_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlBackendLoadAsyncData* _data_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return;
 #line 2028 "tracker-backend.c"
 	}
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
 #line 2032 "tracker-backend.c"
 }
@@ -2034,158 +2034,158 @@ static void tracker_sparql_backend_real_load_finish (TrackerSparqlConnection* ba
 
 static void tracker_sparql_backend_load_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendLoadAsyncData* _data_;
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_load_async_co (_data_);
 #line 2046 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_load_async_co (TrackerSparqlBackendLoadAsyncData* _data_) {
-#line 140 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 140 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
 #line 2055 "tracker-backend.c"
 		goto _state_0;
-#line 140 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
 #line 2059 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 140 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
 #line 2064 "tracker-backend.c"
 	}
 	_state_0:
-#line 141 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->file;
-#line 141 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = NULL;
-#line 141 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = g_file_get_uri (_data_->_tmp0_);
-#line 141 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->uri = _data_->_tmp1_;
-#line 142 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->uri;
-#line 142 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_debug ("tracker-backend.vala:142: %s(): '%s'", "Tracker.Sparql.Backend.load_async", _data_->_tmp2_);
-#line 143 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->self->priv->bus;
-#line 143 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 143 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp3_ == NULL) {
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Update support not available for direct-only connection");
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp4_;
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2099 "tracker-backend.c"
 			} else {
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 2103 "tracker-backend.c"
 			}
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 2109 "tracker-backend.c"
 		} else {
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 144 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 144 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 2119 "tracker-backend.c"
 		}
 	}
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->self->priv->bus;
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = _data_->file;
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _data_->cancellable;
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_load_async (_data_->_tmp5_, _data_->_tmp6_, _data_->_tmp7_, tracker_sparql_backend_load_async_ready, _data_);
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 2134 "tracker-backend.c"
 	_state_1:
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_load_finish (_data_->_tmp5_, _data_->_res_, &_data_->_inner_error_);
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2152 "tracker-backend.c"
 			} else {
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 2156 "tracker-backend.c"
 			}
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 2162 "tracker-backend.c"
 		} else {
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_free0 (_data_->uri);
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 146 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 2172 "tracker-backend.c"
 		}
 	}
-#line 140 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (_data_->uri);
-#line 140 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 140 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2181 "tracker-backend.c"
 	} else {
-#line 140 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2185 "tracker-backend.c"
 	}
-#line 140 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 140 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 2191 "tracker-backend.c"
 }
@@ -2200,67 +2200,67 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_statistics (TrackerSparq
 	TrackerSparqlCursor* _tmp4_ = NULL;
 	TrackerSparqlCursor* _tmp5_;
 	GError * _inner_error_ = NULL;
-#line 149 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 150 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_debug ("tracker-backend.vala:150: %s()", "Tracker.Sparql.Backend.statistics");
-#line 151 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = self->priv->bus;
-#line 151 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_ == NULL) {
 #line 2212 "tracker-backend.c"
 		GError* _tmp1_;
-#line 152 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Statistics support not available for direct-only connection");
-#line 152 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = _tmp1_;
-#line 152 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 152 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 152 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 2224 "tracker-backend.c"
 		} else {
-#line 152 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 152 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 152 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 2232 "tracker-backend.c"
 		}
 	}
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = self->priv->bus;
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = cancellable;
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = tracker_sparql_connection_statistics (_tmp2_, _tmp3_, &_inner_error_);
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = _tmp4_;
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 2251 "tracker-backend.c"
 		} else {
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 2259 "tracker-backend.c"
 		}
 	}
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp5_;
-#line 154 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 2266 "tracker-backend.c"
 }
@@ -2269,13 +2269,13 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_statistics (TrackerSparq
 static void tracker_sparql_backend_real_statistics_async_data_free (gpointer _data) {
 	TrackerSparqlBackendStatisticsAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->result);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendStatisticsAsyncData, _data_);
 #line 2281 "tracker-backend.c"
 }
@@ -2287,25 +2287,25 @@ static void tracker_sparql_backend_real_statistics_async (TrackerSparqlConnectio
 	TrackerSparqlBackend* _tmp0_;
 	GCancellable* _tmp1_;
 	GCancellable* _tmp2_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = (TrackerSparqlBackend*) base;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendStatisticsAsyncData);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_sparql_backend_real_statistics_async);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_sparql_backend_real_statistics_async_data_free);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->self = _tmp0_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = cancellable;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _g_object_ref0 (_tmp1_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp2_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_statistics_async_co (_data_);
 #line 2311 "tracker-backend.c"
 }
@@ -2314,19 +2314,19 @@ static void tracker_sparql_backend_real_statistics_async (TrackerSparqlConnectio
 static TrackerSparqlCursor* tracker_sparql_backend_real_statistics_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlCursor* result;
 	TrackerSparqlBackendStatisticsAsyncData* _data_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
 #line 2322 "tracker-backend.c"
 	}
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _data_->result;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = NULL;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 2332 "tracker-backend.c"
 }
@@ -2334,156 +2334,156 @@ static TrackerSparqlCursor* tracker_sparql_backend_real_statistics_finish (Track
 
 static void tracker_sparql_backend_statistics_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlBackendStatisticsAsyncData* _data_;
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_real_statistics_async_co (_data_);
 #line 2346 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_real_statistics_async_co (TrackerSparqlBackendStatisticsAsyncData* _data_) {
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
 #line 2355 "tracker-backend.c"
 		goto _state_0;
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
 #line 2359 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
 #line 2364 "tracker-backend.c"
 	}
 	_state_0:
-#line 158 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 158 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_debug ("tracker-backend.vala:158: %s()", "Tracker.Sparql.Backend.statistics_async");
-#line 159 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 159 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->self->priv->bus;
-#line 159 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 159 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp0_ == NULL) {
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp1_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_UNSUPPORTED, "Statistics support not available for direct-only connection");
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp1_;
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2387 "tracker-backend.c"
 			} else {
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 2391 "tracker-backend.c"
 			}
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 2397 "tracker-backend.c"
 		} else {
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 2405 "tracker-backend.c"
 		}
 	}
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->self->priv->bus;
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp3_ = _data_->cancellable;
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_statistics_async (_data_->_tmp2_, _data_->_tmp3_, tracker_sparql_backend_statistics_async_ready, _data_);
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 2418 "tracker-backend.c"
 	_state_1:
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = NULL;
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp4_ = tracker_sparql_connection_statistics_finish (_data_->_tmp2_, _data_->_res_, &_data_->_inner_error_);
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp5_ = _data_->_tmp4_;
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2438 "tracker-backend.c"
 			} else {
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 2442 "tracker-backend.c"
 			}
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 2448 "tracker-backend.c"
 		} else {
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 2456 "tracker-backend.c"
 		}
 	}
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp5_;
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2465 "tracker-backend.c"
 	} else {
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2469 "tracker-backend.c"
 	}
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 162 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 2479 "tracker-backend.c"
 	} else {
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 2483 "tracker-backend.c"
 	}
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 2489 "tracker-backend.c"
 }
@@ -2498,78 +2498,78 @@ static void tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, GEr
 	TrackerSparqlBackendBackend _tmp8_;
 	TrackerSparqlBackendBackend _tmp9_;
 	GError * _inner_error_ = NULL;
-#line 166 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (self != NULL);
-#line 167 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 167 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = g_getenv ("TRACKER_SPARQL_BACKEND");
-#line 167 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 167 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = g_strdup (_tmp0_);
-#line 167 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 167 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	env_backend = _tmp1_;
-#line 168 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 168 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	backend = TRACKER_SPARQL_BACKEND_BACKEND_AUTO;
-#line 170 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = env_backend;
-#line 170 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp2_ != NULL) {
 #line 2516 "tracker-backend.c"
 		const gchar* _tmp3_;
 		gint _tmp4_ = 0;
-#line 171 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 171 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = env_backend;
-#line 171 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 171 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = g_ascii_strcasecmp (_tmp3_, "direct");
-#line 171 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 171 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_tmp4_ == 0) {
-#line 172 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 172 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			backend = TRACKER_SPARQL_BACKEND_BACKEND_DIRECT;
-#line 173 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 173 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_debug ("tracker-backend.vala:173: Using backend = 'DIRECT'");
 #line 2529 "tracker-backend.c"
 		} else {
 			const gchar* _tmp5_;
 			gint _tmp6_ = 0;
-#line 174 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp5_ = env_backend;
-#line 174 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp6_ = g_ascii_strcasecmp (_tmp5_, "bus");
-#line 174 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp6_ == 0) {
-#line 175 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 175 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				backend = TRACKER_SPARQL_BACKEND_BACKEND_BUS;
-#line 176 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 176 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_debug ("tracker-backend.vala:176: Using backend = 'BUS'");
 #line 2543 "tracker-backend.c"
 			} else {
 				const gchar* _tmp7_;
-#line 178 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 178 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp7_ = env_backend;
-#line 178 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 178 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_warning ("tracker-backend.vala:178: Environment variable TRACKER_SPARQL_BACKEND " \
 "set to unknown value '%s'", _tmp7_);
 #line 2550 "tracker-backend.c"
 			}
 		}
 	}
-#line 182 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp8_ = backend;
-#line 182 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 182 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp8_ == TRACKER_SPARQL_BACKEND_BACKEND_AUTO) {
-#line 183 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 183 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_debug ("tracker-backend.vala:183: Using backend = 'AUTO'");
 #line 2560 "tracker-backend.c"
 	}
-#line 186 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 186 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp9_ = backend;
-#line 186 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 186 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_tmp9_) {
 #line 2566 "tracker-backend.c"
 		TrackerSparqlBackendBackend _tmp10_;
 		TrackerSparqlBackendBackend _tmp19_;
 		TrackerSparqlBackendBackend _tmp22_;
-#line 186 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 186 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp10_ = backend;
-#line 186 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 186 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case TRACKER_SPARQL_BACKEND_BACKEND_AUTO:
 #line 2574 "tracker-backend.c"
 		{
@@ -2578,22 +2578,22 @@ static void tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, GEr
 			{
 				TrackerDirectConnection* _tmp11_;
 				TrackerDirectConnection* _tmp12_;
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp11_ = tracker_direct_connection_new (&_inner_error_);
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp12_ = _tmp11_;
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (_inner_error_ != NULL) {
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 #line 2589 "tracker-backend.c"
 						goto __catch2_tracker_sparql_error;
 					}
 					goto __finally2;
 				}
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (self->priv->direct);
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				self->priv->direct = (TrackerSparqlConnection*) _tmp12_;
 #line 2598 "tracker-backend.c"
 			}
@@ -2605,127 +2605,127 @@ static void tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, GEr
 				const gchar* _tmp14_;
 				gchar* _tmp15_;
 				gchar* _tmp16_;
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				e = _inner_error_;
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_inner_error_ = NULL;
-#line 191 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 191 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp13_ = e;
-#line 191 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 191 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp14_ = _tmp13_->message;
-#line 191 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 191 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp15_ = g_strconcat ("Unable to initialize direct backend: ", _tmp14_, NULL);
-#line 191 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 191 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp16_ = _tmp15_;
-#line 191 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 191 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_debug ("tracker-backend.vala:191: %s", _tmp16_);
-#line 191 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 191 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (_tmp16_);
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_error_free0 (e);
 #line 2626 "tracker-backend.c"
 			}
 			__finally2:
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_ != NULL) {
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (env_backend);
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return;
 #line 2637 "tracker-backend.c"
 			}
-#line 194 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 194 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp17_ = tracker_bus_connection_new (&_inner_error_);
-#line 194 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 194 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp18_ = _tmp17_;
-#line 194 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 194 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_ != NULL) {
-#line 194 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 194 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 194 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 194 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (env_backend);
-#line 194 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 194 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return;
 #line 2651 "tracker-backend.c"
 			}
-#line 194 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 194 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (self->priv->bus);
-#line 194 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 194 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			self->priv->bus = (TrackerSparqlConnection*) _tmp18_;
-#line 195 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 195 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
 #line 2659 "tracker-backend.c"
 		}
-#line 186 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 186 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp19_ = backend;
-#line 186 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 186 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case TRACKER_SPARQL_BACKEND_BACKEND_DIRECT:
 #line 2665 "tracker-backend.c"
 		{
 			TrackerDirectConnection* _tmp20_;
 			TrackerDirectConnection* _tmp21_;
-#line 198 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 198 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp20_ = tracker_direct_connection_new (&_inner_error_);
-#line 198 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 198 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp21_ = _tmp20_;
-#line 198 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 198 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_ != NULL) {
-#line 198 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 198 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 198 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 198 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (env_backend);
-#line 198 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 198 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return;
 #line 2681 "tracker-backend.c"
 			}
-#line 198 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 198 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (self->priv->direct);
-#line 198 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 198 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			self->priv->direct = (TrackerSparqlConnection*) _tmp21_;
-#line 199 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 199 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
 #line 2689 "tracker-backend.c"
 		}
-#line 186 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 186 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp22_ = backend;
-#line 186 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 186 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case TRACKER_SPARQL_BACKEND_BACKEND_BUS:
 #line 2695 "tracker-backend.c"
 		{
 			TrackerBusConnection* _tmp23_;
 			TrackerBusConnection* _tmp24_;
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp23_ = tracker_bus_connection_new (&_inner_error_);
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp24_ = _tmp23_;
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_ != NULL) {
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_free0 (env_backend);
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return;
 #line 2711 "tracker-backend.c"
 			}
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (self->priv->bus);
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			self->priv->bus = (TrackerSparqlConnection*) _tmp24_;
-#line 203 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 203 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
 #line 2719 "tracker-backend.c"
 		}
 		default:
 		{
-#line 206 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_assert_not_reached ();
 #line 2725 "tracker-backend.c"
 		}
 	}
-#line 166 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (env_backend);
 #line 2730 "tracker-backend.c"
 }
@@ -2734,7 +2734,7 @@ static void tracker_sparql_backend_load_plugins (TrackerSparqlBackend* self, GEr
 static TrackerSparqlConnection* tracker_sparql_backend_get (GCancellable* cancellable, GError** error) {
 	TrackerSparqlConnection* result = NULL;
 	GError * _inner_error_ = NULL;
-#line 215 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 215 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_static_mutex_lock (&tracker_sparql_backend_door);
 #line 2739 "tracker-backend.c"
 	{
@@ -2742,15 +2742,15 @@ static TrackerSparqlConnection* tracker_sparql_backend_get (GCancellable* cancel
 		TrackerSparqlConnection* _tmp1_;
 		TrackerSparqlConnection* _result_;
 		TrackerSparqlConnection* _tmp2_;
-#line 219 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 219 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = tracker_sparql_backend_singleton;
-#line 219 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 219 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 219 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 219 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_result_ = _tmp1_;
-#line 221 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 221 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = _result_;
-#line 221 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 221 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_tmp2_ == NULL) {
 #line 2755 "tracker-backend.c"
 			TrackerSparqlBackend* _tmp3_;
@@ -2759,94 +2759,94 @@ static TrackerSparqlConnection* tracker_sparql_backend_get (GCancellable* cancel
 			GCancellable* _tmp6_;
 			gboolean _tmp9_;
 			TrackerSparqlConnection* _tmp11_;
-#line 222 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 222 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			tracker_sparql_backend_log_init ();
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp3_ = tracker_sparql_backend_new (&_inner_error_);
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp4_ = _tmp3_;
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_ != NULL) {
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (_result_);
 #line 2772 "tracker-backend.c"
 				goto __finally3;
 			}
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_object_unref0 (_result_);
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_result_ = (TrackerSparqlConnection*) _tmp4_;
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp6_ = cancellable;
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp6_ != NULL) {
 #line 2783 "tracker-backend.c"
 				GCancellable* _tmp7_;
 				gboolean _tmp8_ = FALSE;
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp7_ = cancellable;
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp8_ = g_cancellable_is_cancelled (_tmp7_);
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp5_ = _tmp8_;
 #line 2792 "tracker-backend.c"
 			} else {
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp5_ = FALSE;
 #line 2796 "tracker-backend.c"
 			}
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp9_ = _tmp5_;
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_tmp9_) {
 #line 2802 "tracker-backend.c"
 				GError* _tmp10_;
-#line 227 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_tmp10_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
-#line 227 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_inner_error_ = _tmp10_;
-#line 227 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_g_object_unref0 (_result_);
 #line 2810 "tracker-backend.c"
 				goto __finally3;
 			}
-#line 230 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 230 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_tmp11_ = _result_;
-#line 230 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 230 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			tracker_sparql_backend_singleton = _tmp11_;
 #line 2817 "tracker-backend.c"
 		}
-#line 233 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 233 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _result_;
 #line 2821 "tracker-backend.c"
 		{
-#line 235 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 235 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_static_mutex_unlock (&tracker_sparql_backend_door);
 #line 2825 "tracker-backend.c"
 		}
-#line 233 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 233 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
 #line 2829 "tracker-backend.c"
 	}
 	__finally3:
 	{
-#line 235 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 235 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_static_mutex_unlock (&tracker_sparql_backend_door);
 #line 2835 "tracker-backend.c"
 	}
-#line 217 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 217 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 217 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 217 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_propagate_error (error, _inner_error_);
-#line 217 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 217 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
 #line 2843 "tracker-backend.c"
 	} else {
-#line 217 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 217 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 217 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 217 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_clear_error (&_inner_error_);
-#line 217 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 217 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
 #line 2851 "tracker-backend.c"
 	}
@@ -2854,22 +2854,22 @@ static TrackerSparqlConnection* tracker_sparql_backend_get (GCancellable* cancel
 
 
 static Block1Data* block1_data_ref (Block1Data* _data1_) {
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_atomic_int_inc (&_data1_->_ref_count_);
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return _data1_;
 #line 2861 "tracker-backend.c"
 }
 
 
 static void block1_data_unref (Block1Data* _data1_) {
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data1_->async_result);
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_main_loop_unref0 (_data1_->loop);
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_slice_free (Block1Data, _data1_);
 #line 2874 "tracker-backend.c"
 	}
@@ -2880,28 +2880,28 @@ static void __lambda2_ (Block1Data* _data1_, GObject* obj, GAsyncResult* res) {
 	GAsyncResult* _tmp0_;
 	GAsyncResult* _tmp1_;
 	GMainLoop* _tmp2_;
-#line 252 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 252 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (res != NULL);
-#line 253 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 253 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = res;
-#line 253 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 253 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 253 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 253 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data1_->async_result);
-#line 253 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 253 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->async_result = _tmp1_;
-#line 254 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 254 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _data1_->loop;
-#line 254 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 254 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_loop_quit (_tmp2_);
 #line 2897 "tracker-backend.c"
 }
 
 
 static void ___lambda2__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
-#line 252 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 252 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	__lambda2_ (self, source_object, res);
-#line 252 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 252 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	block1_data_unref (self);
 #line 2906 "tracker-backend.c"
 }
@@ -2923,135 +2923,135 @@ TrackerSparqlConnection* tracker_sparql_backend_get_internal (GCancellable* canc
 	TrackerSparqlConnection* _tmp12_ = NULL;
 	TrackerSparqlConnection* _tmp13_;
 	GError * _inner_error_ = NULL;
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_ = g_slice_new0 (Block1Data);
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->_ref_count_ = 1;
-#line 240 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 240 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = g_main_context_get_thread_default ();
-#line 240 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 240 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_ == NULL) {
 #line 2934 "tracker-backend.c"
 		GCancellable* _tmp1_;
 		TrackerSparqlConnection* _tmp2_ = NULL;
 		TrackerSparqlConnection* _tmp3_;
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = cancellable;
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = tracker_sparql_backend_get (_tmp1_, &_inner_error_);
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = _tmp2_;
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_propagate_error (error, _inner_error_);
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block1_data_unref (_data1_);
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data1_ = NULL;
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
 #line 2956 "tracker-backend.c"
 			} else {
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block1_data_unref (_data1_);
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data1_ = NULL;
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_inner_error_);
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return NULL;
 #line 2968 "tracker-backend.c"
 			}
 		}
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		result = _tmp3_;
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		block1_data_unref (_data1_);
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data1_ = NULL;
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return result;
 #line 2979 "tracker-backend.c"
 	}
-#line 246 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 246 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp4_ = g_main_context_new ();
-#line 246 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 246 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	context = _tmp4_;
-#line 247 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp5_ = context;
-#line 247 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = g_main_loop_new (_tmp5_, FALSE);
-#line 247 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 247 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->loop = _tmp6_;
-#line 248 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 248 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_->async_result = NULL;
-#line 250 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 250 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = context;
-#line 250 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 250 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_context_push_thread_default (_tmp7_);
-#line 252 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 252 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp8_ = cancellable;
-#line 252 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 252 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async (_tmp8_, ___lambda2__gasync_ready_callback, block1_data_ref (_data1_));
-#line 257 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 257 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp9_ = _data1_->loop;
-#line 257 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 257 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_loop_run (_tmp9_);
-#line 259 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp10_ = context;
-#line 259 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 259 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_main_context_pop_thread_default (_tmp10_);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp11_ = _data1_->async_result;
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp12_ = tracker_sparql_backend_get_internal_finish (_tmp11_, &_inner_error_);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp13_ = _tmp12_;
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_main_context_unref0 (context);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block1_data_unref (_data1_);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data1_ = NULL;
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 3029 "tracker-backend.c"
 		} else {
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_g_main_context_unref0 (context);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block1_data_unref (_data1_);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data1_ = NULL;
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 3043 "tracker-backend.c"
 		}
 	}
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp13_;
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_main_context_unref0 (context);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	block1_data_unref (_data1_);
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data1_ = NULL;
-#line 261 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 3056 "tracker-backend.c"
 }
@@ -3060,11 +3060,11 @@ TrackerSparqlConnection* tracker_sparql_backend_get_internal (GCancellable* canc
 static void tracker_sparql_backend_get_internal_async_data_free (gpointer _data) {
 	TrackerSparqlBackendGetInternalAsyncData* _data_;
 	_data_ = _data;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (_data_->result);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_slice_free (TrackerSparqlBackendGetInternalAsyncData, _data_);
 #line 3069 "tracker-backend.c"
 }
@@ -3074,19 +3074,19 @@ void tracker_sparql_backend_get_internal_async (GCancellable* cancellable, GAsyn
 	TrackerSparqlBackendGetInternalAsyncData* _data_;
 	GCancellable* _tmp0_;
 	GCancellable* _tmp1_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_slice_new0 (TrackerSparqlBackendGetInternalAsyncData);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_async_result = g_simple_async_result_new (NULL, _callback_, _user_data_, tracker_sparql_backend_get_internal_async);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_sparql_backend_get_internal_async_data_free);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = cancellable;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->cancellable = _tmp1_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async_co (_data_);
 #line 3091 "tracker-backend.c"
 }
@@ -3095,51 +3095,51 @@ void tracker_sparql_backend_get_internal_async (GCancellable* cancellable, GAsyn
 TrackerSparqlConnection* tracker_sparql_backend_get_internal_finish (GAsyncResult* _res_, GError** error) {
 	TrackerSparqlConnection* result;
 	TrackerSparqlBackendGetInternalAsyncData* _data_;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return NULL;
 #line 3102 "tracker-backend.c"
 	}
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _data_->result;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = NULL;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 3112 "tracker-backend.c"
 }
 
 
 static Block2Data* block2_data_ref (Block2Data* _data2_) {
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_atomic_int_inc (&_data2_->_ref_count_);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return _data2_;
 #line 3121 "tracker-backend.c"
 }
 
 
 static void block2_data_unref (Block2Data* _data2_) {
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (g_atomic_int_dec_and_test (&_data2_->_ref_count_)) {
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_main_context_unref0 (_data2_->context);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data2_->_result_);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->spawn_error);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->dbus_error);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->io_error);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->sparql_error);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data2_->cancellable);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_slice_free (Block2Data, _data2_);
 #line 3144 "tracker-backend.c"
 	}
@@ -3147,14 +3147,14 @@ static void block2_data_unref (Block2Data* _data2_) {
 
 
 static gpointer _g_main_context_ref0 (gpointer self) {
-#line 283 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 283 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self ? g_main_context_ref (self) : NULL;
 #line 3152 "tracker-backend.c"
 }
 
 
 static gpointer _g_error_copy0 (gpointer self) {
-#line 289 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 289 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return self ? g_error_copy (self) : NULL;
 #line 3159 "tracker-backend.c"
 }
@@ -3162,11 +3162,11 @@ static gpointer _g_error_copy0 (gpointer self) {
 
 static gboolean __lambda1_ (Block2Data* _data2_) {
 	gboolean result = FALSE;
-#line 300 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 300 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async_co (_data2_->_async_data_);
-#line 301 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 301 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = FALSE;
-#line 301 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 301 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 3171 "tracker-backend.c"
 }
@@ -3175,7 +3175,7 @@ static gboolean __lambda1_ (Block2Data* _data2_) {
 static gboolean ___lambda1__gsource_func (gpointer self) {
 	gboolean result;
 	result = __lambda1_ (self);
-#line 299 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 299 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 3180 "tracker-backend.c"
 }
@@ -3187,52 +3187,52 @@ static gboolean __lambda0_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 	GSource* source;
 	GMainContext* _tmp12_;
 	GError * _inner_error_ = NULL;
-#line 285 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 285 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_val_if_fail (job != NULL, FALSE);
 #line 3192 "tracker-backend.c"
 	{
 		GCancellable* _tmp0_;
 		TrackerSparqlConnection* _tmp1_ = NULL;
 		TrackerSparqlConnection* _tmp2_;
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp0_ = _data2_->cancellable;
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp1_ = tracker_sparql_backend_get (_tmp0_, &_inner_error_);
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp2_ = _tmp1_;
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_inner_error_ != NULL) {
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == G_IO_ERROR) {
 #line 3207 "tracker-backend.c"
 				goto __catch4_g_io_error;
 			}
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
 #line 3212 "tracker-backend.c"
 				goto __catch4_tracker_sparql_error;
 			}
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == G_DBUS_ERROR) {
 #line 3217 "tracker-backend.c"
 				goto __catch4_g_dbus_error;
 			}
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_inner_error_->domain == G_SPAWN_ERROR) {
 #line 3222 "tracker-backend.c"
 				goto __catch4_g_spawn_error;
 			}
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 3231 "tracker-backend.c"
 		}
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data2_->_result_);
-#line 287 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->_result_ = _tmp2_;
 #line 3237 "tracker-backend.c"
 	}
@@ -3242,19 +3242,19 @@ static gboolean __lambda0_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_io = NULL;
 		GError* _tmp3_;
 		GError* _tmp4_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_io = _inner_error_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 289 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 289 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp3_ = e_io;
-#line 289 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 289 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = _g_error_copy0 (_tmp3_);
-#line 289 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 289 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->io_error);
-#line 289 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 289 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->io_error = _tmp4_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_io);
 #line 3259 "tracker-backend.c"
 	}
@@ -3264,19 +3264,19 @@ static gboolean __lambda0_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_spql = NULL;
 		GError* _tmp5_;
 		GError* _tmp6_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_spql = _inner_error_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 291 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp5_ = e_spql;
-#line 291 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp6_ = _g_error_copy0 (_tmp5_);
-#line 291 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->sparql_error);
-#line 291 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 291 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->sparql_error = _tmp6_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_spql);
 #line 3281 "tracker-backend.c"
 	}
@@ -3286,19 +3286,19 @@ static gboolean __lambda0_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_dbus = NULL;
 		GError* _tmp7_;
 		GError* _tmp8_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_dbus = _inner_error_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 293 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 293 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp7_ = e_dbus;
-#line 293 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 293 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp8_ = _g_error_copy0 (_tmp7_);
-#line 293 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 293 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->dbus_error);
-#line 293 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 293 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->dbus_error = _tmp8_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_dbus);
 #line 3303 "tracker-backend.c"
 	}
@@ -3308,48 +3308,48 @@ static gboolean __lambda0_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 		GError* e_spawn = NULL;
 		GError* _tmp9_;
 		GError* _tmp10_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		e_spawn = _inner_error_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_inner_error_ = NULL;
-#line 295 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 295 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp9_ = e_spawn;
-#line 295 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 295 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp10_ = _g_error_copy0 (_tmp9_);
-#line 295 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 295 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (_data2_->spawn_error);
-#line 295 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 295 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data2_->spawn_error = _tmp10_;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_error_free0 (e_spawn);
 #line 3325 "tracker-backend.c"
 	}
 	__finally4:
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_clear_error (&_inner_error_);
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return FALSE;
 #line 3336 "tracker-backend.c"
 	}
-#line 298 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 298 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp11_ = g_idle_source_new ();
-#line 298 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 298 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	source = _tmp11_;
-#line 299 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 299 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_source_set_callback (source, ___lambda1__gsource_func, block2_data_ref (_data2_), block2_data_unref);
-#line 303 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 303 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp12_ = _data2_->context;
-#line 303 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 303 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_source_attach (source, _tmp12_);
-#line 305 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 305 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = FALSE;
-#line 305 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 305 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_source_unref0 (source);
-#line 305 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 305 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 3354 "tracker-backend.c"
 }
@@ -3358,361 +3358,361 @@ static gboolean __lambda0_ (Block2Data* _data2_, GIOSchedulerJob* job) {
 static gboolean ___lambda0__gio_scheduler_job_func (GIOSchedulerJob* job, GCancellable* cancellable, gpointer self) {
 	gboolean result;
 	result = __lambda0_ (self, job);
-#line 285 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 285 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 3363 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_backend_get_internal_async_co (TrackerSparqlBackendGetInternalAsyncData* _data_) {
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
 #line 3372 "tracker-backend.c"
 		goto _state_0;
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
 #line 3376 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
 #line 3381 "tracker-backend.c"
 	}
 	_state_0:
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_ = g_slice_new0 (Block2Data);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->_ref_count_ = 1;
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->cancellable;
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = _g_object_ref0 (_data_->_tmp0_);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->cancellable = _data_->_tmp1_;
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->_async_data_ = _data_;
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = FALSE;
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = g_static_mutex_trylock (&tracker_sparql_backend_door);
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp2_) {
-#line 268 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp3_ = tracker_sparql_backend_singleton;
-#line 268 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp4_ = _g_object_ref0 (_data_->_tmp3_);
-#line 268 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_result_ = _data_->_tmp4_;
-#line 270 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 270 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_static_mutex_unlock (&tracker_sparql_backend_door);
-#line 272 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 272 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp5_ = _data_->_result_;
-#line 272 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 272 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_tmp5_ != NULL) {
-#line 273 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->result = _data_->_result_;
-#line 273 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block2_data_unref (_data_->_data2_);
-#line 273 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_data2_ = NULL;
-#line 273 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 273 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3424 "tracker-backend.c"
 			} else {
-#line 273 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 3428 "tracker-backend.c"
 			}
-#line 273 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 273 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 3434 "tracker-backend.c"
 		}
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_g_object_unref0 (_data_->_result_);
 #line 3438 "tracker-backend.c"
 	}
-#line 278 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 278 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->sparql_error = NULL;
-#line 279 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 279 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->io_error = NULL;
-#line 280 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 280 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->dbus_error = NULL;
-#line 281 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->spawn_error = NULL;
-#line 282 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 282 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->_result_ = NULL;
-#line 283 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 283 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = NULL;
-#line 283 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 283 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp6_ = g_main_context_get_thread_default ();
-#line 283 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 283 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp7_ = _g_main_context_ref0 (_data_->_tmp6_);
-#line 283 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 283 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_->context = _data_->_tmp7_;
-#line 285 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 285 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_io_scheduler_push_job (___lambda0__gio_scheduler_job_func, block2_data_ref (_data_->_data2_), block2_data_unref, G_PRIORITY_DEFAULT, NULL);
-#line 307 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 307 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 307 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 3464 "tracker-backend.c"
 	_state_1:
 	;
-#line 309 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 309 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp8_ = _data_->_data2_->sparql_error;
-#line 309 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 309 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_tmp8_ != NULL) {
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp9_ = _data_->_data2_->sparql_error;
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp10_ = _g_error_copy0 (_data_->_tmp9_);
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_inner_error_ = _data_->_tmp10_;
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block2_data_unref (_data_->_data2_);
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_data2_ = NULL;
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3491 "tracker-backend.c"
 			} else {
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 3495 "tracker-backend.c"
 			}
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 3501 "tracker-backend.c"
 		} else {
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			block2_data_unref (_data_->_data2_);
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_data2_ = NULL;
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 310 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 3513 "tracker-backend.c"
 		}
 	} else {
-#line 311 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 311 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_data_->_tmp11_ = _data_->_data2_->io_error;
-#line 311 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 311 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if (_data_->_tmp11_ != NULL) {
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp12_ = _data_->_data2_->io_error;
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp13_ = _g_error_copy0 (_data_->_tmp12_);
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_inner_error_ = _data_->_tmp13_;
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_error_free (_data_->_inner_error_);
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block2_data_unref (_data_->_data2_);
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_data2_ = NULL;
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (_data_->_state_ == 0) {
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3540 "tracker-backend.c"
 				} else {
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_complete (_data_->_async_result);
 #line 3544 "tracker-backend.c"
 				}
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_object_unref (_data_->_async_result);
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
 #line 3550 "tracker-backend.c"
 			} else {
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				block2_data_unref (_data_->_data2_);
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_data2_ = NULL;
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_clear_error (&_data_->_inner_error_);
-#line 312 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				return FALSE;
 #line 3562 "tracker-backend.c"
 			}
 		} else {
-#line 313 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 313 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			_data_->_tmp14_ = _data_->_data2_->dbus_error;
-#line 313 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 313 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_tmp14_ != NULL) {
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp15_ = _data_->_data2_->dbus_error;
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp16_ = _g_error_copy0 (_data_->_tmp15_);
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_inner_error_ = _data_->_tmp16_;
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_error_free (_data_->_inner_error_);
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					block2_data_unref (_data_->_data2_);
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_data2_ = NULL;
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if (_data_->_state_ == 0) {
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3589 "tracker-backend.c"
 					} else {
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_simple_async_result_complete (_data_->_async_result);
 #line 3593 "tracker-backend.c"
 					}
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_object_unref (_data_->_async_result);
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					return FALSE;
 #line 3599 "tracker-backend.c"
 				} else {
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					block2_data_unref (_data_->_data2_);
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_data2_ = NULL;
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_clear_error (&_data_->_inner_error_);
-#line 314 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					return FALSE;
 #line 3611 "tracker-backend.c"
 				}
 			} else {
-#line 315 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				_data_->_tmp17_ = _data_->_data2_->spawn_error;
-#line 315 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 315 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				if (_data_->_tmp17_ != NULL) {
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp18_ = _data_->_data2_->spawn_error;
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp19_ = _g_error_copy0 (_data_->_tmp18_);
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_inner_error_ = _data_->_tmp19_;
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_error_free (_data_->_inner_error_);
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						block2_data_unref (_data_->_data2_);
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						_data_->_data2_ = NULL;
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						if (_data_->_state_ == 0) {
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 							g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3638 "tracker-backend.c"
 						} else {
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 							g_simple_async_result_complete (_data_->_async_result);
 #line 3642 "tracker-backend.c"
 						}
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_object_unref (_data_->_async_result);
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						return FALSE;
 #line 3648 "tracker-backend.c"
 					} else {
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						block2_data_unref (_data_->_data2_);
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						_data_->_data2_ = NULL;
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_clear_error (&_data_->_inner_error_);
-#line 316 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 316 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						return FALSE;
 #line 3660 "tracker-backend.c"
 					}
 				} else {
-#line 318 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp20_ = _data_->_data2_->_result_;
-#line 318 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_tmp21_ = _g_object_ref0 (_data_->_tmp20_);
-#line 318 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->result = _data_->_tmp21_;
-#line 318 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					block2_data_unref (_data_->_data2_);
-#line 318 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					_data_->_data2_ = NULL;
-#line 318 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					if (_data_->_state_ == 0) {
-#line 318 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3677 "tracker-backend.c"
 					} else {
-#line 318 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 						g_simple_async_result_complete (_data_->_async_result);
 #line 3681 "tracker-backend.c"
 					}
-#line 318 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					g_object_unref (_data_->_async_result);
-#line 318 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 					return FALSE;
 #line 3687 "tracker-backend.c"
 				}
 			}
 		}
 	}
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	block2_data_unref (_data_->_data2_);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_data2_ = NULL;
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 3700 "tracker-backend.c"
 	} else {
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 3704 "tracker-backend.c"
 	}
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 264 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 3710 "tracker-backend.c"
 }
 
 
 static void _tracker_sparql_backend_remove_log_handler_glog_func (const gchar* log_domain, GLogLevelFlags log_levels, const gchar* message, gpointer self) {
-#line 363 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 363 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_remove_log_handler (log_domain, log_levels, message);
 #line 3717 "tracker-backend.c"
 }
@@ -3728,163 +3728,163 @@ static void tracker_sparql_backend_log_init (void) {
 	GLogLevelFlags remove_levels;
 	gint _tmp6_;
 	GLogLevelFlags _tmp7_;
-#line 323 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = tracker_sparql_backend_log_initialized;
-#line 323 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp0_) {
-#line 324 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		return;
 #line 3737 "tracker-backend.c"
 	}
-#line 327 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 327 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_log_initialized = TRUE;
-#line 330 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 330 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	verbosity = 0;
-#line 331 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = g_getenv ("TRACKER_VERBOSITY");
-#line 331 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 331 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	env_verbosity = _tmp2_;
-#line 332 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp3_ = env_verbosity;
-#line 332 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 332 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp3_ != NULL) {
 #line 3753 "tracker-backend.c"
 		const gchar* _tmp4_;
 		gint _tmp5_ = 0;
-#line 333 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp4_ = env_verbosity;
-#line 333 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp5_ = atoi (_tmp4_);
-#line 333 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 333 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		verbosity = _tmp5_;
 #line 3762 "tracker-backend.c"
 	}
-#line 335 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 335 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	remove_levels = 0;
-#line 337 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 337 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp6_ = verbosity;
-#line 337 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 337 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_tmp6_) {
-#line 337 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 337 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 3:
 #line 3772 "tracker-backend.c"
 		{
-#line 340 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
 #line 3776 "tracker-backend.c"
 		}
-#line 337 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 337 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 2:
 #line 3780 "tracker-backend.c"
 		{
-#line 344 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 344 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			remove_levels = G_LOG_LEVEL_DEBUG;
-#line 345 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 345 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
 #line 3786 "tracker-backend.c"
 		}
-#line 337 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 337 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
 #line 3790 "tracker-backend.c"
 		{
-#line 349 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 349 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			remove_levels = G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE;
-#line 351 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 351 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
 #line 3796 "tracker-backend.c"
 		}
 		default:
-#line 337 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 337 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
 #line 3801 "tracker-backend.c"
 		{
-#line 356 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 356 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			remove_levels = (G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_MESSAGE) | G_LOG_LEVEL_INFO;
-#line 359 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			break;
 #line 3807 "tracker-backend.c"
 		}
 	}
-#line 362 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 362 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp7_ = remove_levels;
-#line 362 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 362 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_tmp7_ != 0) {
 #line 3814 "tracker-backend.c"
 		GLogLevelFlags _tmp8_;
-#line 363 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 363 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		_tmp8_ = remove_levels;
-#line 363 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 363 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_log_set_handler ("Tracker", _tmp8_, _tracker_sparql_backend_remove_log_handler_glog_func, NULL);
 #line 3820 "tracker-backend.c"
 	}
-#line 322 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 322 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_free0 (env_verbosity);
 #line 3824 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_remove_log_handler (const gchar* log_domain, GLogLevelFlags log_level, const gchar* message) {
-#line 367 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 367 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_return_if_fail (message != NULL);
 #line 3831 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_class_init (TrackerSparqlBackendClass * klass) {
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_parent_class = g_type_class_peek_parent (klass);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_type_class_add_private (klass, sizeof (TrackerSparqlBackendPrivate));
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	G_OBJECT_CLASS (klass)->dispose = tracker_sparql_backend_real_dispose;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query = tracker_sparql_backend_real_query;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_async = tracker_sparql_backend_real_query_async;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_finish = tracker_sparql_backend_real_query_finish;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update = tracker_sparql_backend_real_update;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_blank = tracker_sparql_backend_real_update_blank;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_async = tracker_sparql_backend_real_update_async;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_finish = tracker_sparql_backend_real_update_finish;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_array_async = tracker_sparql_backend_real_update_array_async;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_array_finish = tracker_sparql_backend_real_update_array_finish;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_blank_async = tracker_sparql_backend_real_update_blank_async;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_blank_finish = tracker_sparql_backend_real_update_blank_finish;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->load = tracker_sparql_backend_real_load;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->load_async = tracker_sparql_backend_real_load_async;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->load_finish = tracker_sparql_backend_real_load_finish;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->statistics = tracker_sparql_backend_real_statistics;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->statistics_async = tracker_sparql_backend_real_statistics_async;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->statistics_finish = tracker_sparql_backend_real_statistics_finish;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_sparql_backend_finalize;
 #line 3878 "tracker-backend.c"
 }
 
 
 static void tracker_sparql_backend_instance_init (TrackerSparqlBackend * self) {
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self->priv = TRACKER_SPARQL_BACKEND_GET_PRIVATE (self);
-#line 22 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self->priv->direct = NULL;
-#line 23 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self->priv->bus = NULL;
 #line 3889 "tracker-backend.c"
 }
@@ -3892,13 +3892,13 @@ static void tracker_sparql_backend_instance_init (TrackerSparqlBackend * self) {
 
 static void tracker_sparql_backend_finalize (GObject* obj) {
 	TrackerSparqlBackend * self;
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	self = TRACKER_SPARQL_BACKEND (obj);
-#line 22 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 22 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (self->priv->direct);
-#line 23 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 23 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_g_object_unref0 (self->priv->bus);
-#line 20 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 20 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	G_OBJECT_CLASS (tracker_sparql_backend_parent_class)->finalize (obj);
 #line 3903 "tracker-backend.c"
 }
@@ -3954,113 +3954,113 @@ TrackerSparqlConnection* tracker_sparql_connection_get_finish (GAsyncResult* _re
 
 static void tracker_sparql_connection_get_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlConnectionGetAsyncData* _data_;
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_get_async_co (_data_);
 #line 3965 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_connection_get_async_co (TrackerSparqlConnectionGetAsyncData* _data_) {
-#line 372 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 372 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 372 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 372 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
 #line 3974 "tracker-backend.c"
 		goto _state_0;
-#line 372 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 372 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
 #line 3978 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 372 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 372 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
 #line 3983 "tracker-backend.c"
 	}
 	_state_0:
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->cancellable;
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async (_data_->_tmp0_, tracker_sparql_connection_get_async_ready, _data_);
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 3994 "tracker-backend.c"
 	_state_1:
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = NULL;
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = tracker_sparql_backend_get_internal_finish (_data_->_res_, &_data_->_inner_error_);
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->_tmp1_;
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 4014 "tracker-backend.c"
 			} else {
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 4018 "tracker-backend.c"
 			}
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 4024 "tracker-backend.c"
 		} else {
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 4032 "tracker-backend.c"
 		}
 	}
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp2_;
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 4041 "tracker-backend.c"
 	} else {
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 4045 "tracker-backend.c"
 	}
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 372 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 372 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 372 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 372 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 4055 "tracker-backend.c"
 	} else {
-#line 372 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 372 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 4059 "tracker-backend.c"
 	}
-#line 372 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 372 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 372 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 372 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 4065 "tracker-backend.c"
 }
@@ -4072,34 +4072,34 @@ TrackerSparqlConnection* tracker_sparql_connection_get (GCancellable* cancellabl
 	TrackerSparqlConnection* _tmp1_ = NULL;
 	TrackerSparqlConnection* _tmp2_;
 	GError * _inner_error_ = NULL;
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = cancellable;
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = tracker_sparql_backend_get_internal (_tmp0_, &_inner_error_);
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _tmp1_;
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 4089 "tracker-backend.c"
 		} else {
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 4097 "tracker-backend.c"
 		}
 	}
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp2_;
-#line 377 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 377 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 4104 "tracker-backend.c"
 }
@@ -4143,113 +4143,113 @@ TrackerSparqlConnection* tracker_sparql_connection_get_direct_finish (GAsyncResu
 
 static void tracker_sparql_connection_get_direct_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerSparqlConnectionGetDirectAsyncData* _data_;
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_ = _user_data_;
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_source_object_ = source_object;
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_res_ = _res_;
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_connection_get_direct_async_co (_data_);
 #line 4154 "tracker-backend.c"
 }
 
 
 static gboolean tracker_sparql_connection_get_direct_async_co (TrackerSparqlConnectionGetDirectAsyncData* _data_) {
-#line 380 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 380 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	switch (_data_->_state_) {
-#line 380 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 380 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 0:
 #line 4163 "tracker-backend.c"
 		goto _state_0;
-#line 380 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 380 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		case 1:
 #line 4167 "tracker-backend.c"
 		goto _state_1;
 		default:
-#line 380 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 380 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_assert_not_reached ();
 #line 4172 "tracker-backend.c"
 	}
 	_state_0:
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp0_ = _data_->cancellable;
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_state_ = 1;
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	tracker_sparql_backend_get_internal_async (_data_->_tmp0_, tracker_sparql_connection_get_direct_async_ready, _data_);
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 4183 "tracker-backend.c"
 	_state_1:
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = NULL;
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp1_ = tracker_sparql_backend_get_internal_finish (_data_->_res_, &_data_->_inner_error_);
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->_tmp2_ = _data_->_tmp1_;
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) || (_data_->_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_error_free (_data_->_inner_error_);
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			if (_data_->_state_ == 0) {
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 4203 "tracker-backend.c"
 			} else {
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 				g_simple_async_result_complete (_data_->_async_result);
 #line 4207 "tracker-backend.c"
 			}
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_object_unref (_data_->_async_result);
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 4213 "tracker-backend.c"
 		} else {
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return FALSE;
 #line 4221 "tracker-backend.c"
 		}
 	}
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_data_->result = _data_->_tmp2_;
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 4230 "tracker-backend.c"
 	} else {
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 4234 "tracker-backend.c"
 	}
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 381 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 381 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
-#line 380 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 380 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_data_->_state_ == 0) {
-#line 380 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 380 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 4244 "tracker-backend.c"
 	} else {
-#line 380 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 380 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 4248 "tracker-backend.c"
 	}
-#line 380 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 380 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	g_object_unref (_data_->_async_result);
-#line 380 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 380 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return FALSE;
 #line 4254 "tracker-backend.c"
 }
@@ -4261,34 +4261,34 @@ TrackerSparqlConnection* tracker_sparql_connection_get_direct (GCancellable* can
 	TrackerSparqlConnection* _tmp1_ = NULL;
 	TrackerSparqlConnection* _tmp2_;
 	GError * _inner_error_ = NULL;
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp0_ = cancellable;
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp1_ = tracker_sparql_backend_get_internal (_tmp0_, &_inner_error_);
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	_tmp2_ = _tmp1_;
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	if (_inner_error_ != NULL) {
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 		if ((((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) || (_inner_error_->domain == G_SPAWN_ERROR)) {
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_propagate_error (error, _inner_error_);
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 4278 "tracker-backend.c"
 		} else {
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			g_clear_error (&_inner_error_);
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 			return NULL;
 #line 4286 "tracker-backend.c"
 		}
 	}
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	result = _tmp2_;
-#line 385 "/home/martyn/Source/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
+#line 385 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql-backend/tracker-backend.vala"
 	return result;
 #line 4293 "tracker-backend.c"
 }

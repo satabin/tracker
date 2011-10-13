@@ -204,18 +204,18 @@ static const GDBusInterfaceVTable _resources_dbus_interface_vtable = {resources_
 
 Event* event_dup (const Event* self) {
 	Event* dup;
-#line 27 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 27 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	dup = g_new0 (Event, 1);
-#line 27 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 27 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	memcpy (dup, self, sizeof (Event));
-#line 27 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 27 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return dup;
 #line 214 "test-class-signal.c"
 }
 
 
 void event_free (Event* self) {
-#line 27 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 27 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_free (self);
 #line 221 "test-class-signal.c"
 }
@@ -233,14 +233,14 @@ GType event_get_type (void) {
 
 
 void resources_sparql_update_async (Resources* self, const gchar* query, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	RESOURCES_GET_INTERFACE (self)->sparql_update_async (self, query, _callback_, _user_data_);
 #line 239 "test-class-signal.c"
 }
 
 
 void resources_sparql_update_finish (Resources* self, GAsyncResult* _res_, GError** error) {
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	RESOURCES_GET_INTERFACE (self)->sparql_update_finish (self, _res_, error);
 #line 246 "test-class-signal.c"
 }
@@ -253,38 +253,38 @@ static void g_cclosure_user_marshal_VOID__STRING_POINTER_INT_POINTER_INT (GClosu
 	register gpointer data1;
 	register gpointer data2;
 	cc = (GCClosure *) closure;
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_if_fail (n_param_values == 6);
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (G_CCLOSURE_SWAP_DATA (closure)) {
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		data1 = closure->data;
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		data2 = param_values->data[0].v_pointer;
 #line 265 "test-class-signal.c"
 	} else {
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		data1 = param_values->data[0].v_pointer;
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		data2 = closure->data;
 #line 271 "test-class-signal.c"
 	}
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	callback = (GMarshalFunc_VOID__STRING_POINTER_INT_POINTER_INT) (marshal_data ? marshal_data : cc->callback);
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	callback (data1, g_value_get_string (param_values + 1), g_value_get_pointer (param_values + 2), g_value_get_int (param_values + 3), g_value_get_pointer (param_values + 4), g_value_get_int (param_values + 5), data2);
 #line 277 "test-class-signal.c"
 }
 
 
 static void resources_base_init (ResourcesIface * iface) {
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	static gboolean initialized = FALSE;
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (!initialized) {
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		initialized = TRUE;
-#line 35 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 35 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_signal_new ("graph_updated", TYPE_RESOURCES, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_user_marshal_VOID__STRING_POINTER_INT_POINTER_INT, G_TYPE_NONE, 5, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT, G_TYPE_POINTER, G_TYPE_INT);
 #line 290 "test-class-signal.c"
 	}
@@ -614,14 +614,14 @@ static void _resources_unregister_object (gpointer user_data) {
 
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 58 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return self ? g_object_ref (self) : NULL;
 #line 620 "test-class-signal.c"
 }
 
 
 static void _test_app_on_graph_updated_received_resources_graph_updated (Resources* _sender, const gchar* class_name, Event* deletes, int deletes_length1, Event* inserts, int inserts_length1, gpointer self) {
-#line 65 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 65 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	test_app_on_graph_updated_received (self, class_name, deletes, deletes_length1, inserts, inserts_length1);
 #line 627 "test-class-signal.c"
 }
@@ -631,11 +631,11 @@ TestApp* test_app_construct (GType object_type) {
 	TestApp* self = NULL;
 	gboolean _tmp0_;
 	GError * _inner_error_ = NULL;
-#line 52 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 52 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	self = (TestApp*) g_type_create_instance (object_type);
-#line 52 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 52 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp0_ = self->priv->initialized;
-#line 52 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 52 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_val_if_fail (!_tmp0_, NULL);
 #line 641 "test-class-signal.c"
 	{
@@ -646,43 +646,43 @@ TestApp* test_app_construct (GType object_type) {
 		Resources* _tmp5_ = NULL;
 		Resources* _tmp6_;
 		Resources* _tmp7_;
-#line 55 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 55 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp1_ = tracker_sparql_connection_get (NULL, &_inner_error_);
-#line 55 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 55 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp2_ = _tmp1_;
-#line 55 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 55 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		if (_inner_error_ != NULL) {
 #line 656 "test-class-signal.c"
 			goto __catch0_g_error;
 		}
-#line 55 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 55 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_g_object_unref0 (self->priv->con);
-#line 55 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 55 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		self->priv->con = _tmp2_;
-#line 58 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp3_ = self->priv->con;
-#line 58 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 58 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_g_object_unref0 (self->priv->signal_con);
-#line 58 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 58 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		self->priv->signal_con = _tmp4_;
-#line 60 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 60 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp5_ = g_initable_new (TYPE_RESOURCES_PROXY, NULL, &_inner_error_, "g-flags", G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS, "g-name", "org.freedesktop.Tracker1", "g-bus-type", G_BUS_TYPE_SESSION, "g-object-path", "/org/freedesktop/Tracker1/Resources", "g-interface-name", "org.freedesktop.Tracker1.Resources", NULL);
-#line 60 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 60 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp6_ = (Resources*) _tmp5_;
-#line 60 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 60 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		if (_inner_error_ != NULL) {
 #line 677 "test-class-signal.c"
 			goto __catch0_g_error;
 		}
-#line 60 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 60 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_g_object_unref0 (test_app_resources_object);
-#line 60 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 60 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		test_app_resources_object = _tmp6_;
-#line 65 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 65 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp7_ = test_app_resources_object;
-#line 65 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 65 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_signal_connect (_tmp7_, "graph-updated", (GCallback) _test_app_on_graph_updated_received_resources_graph_updated, self);
 #line 688 "test-class-signal.c"
 	}
@@ -692,47 +692,47 @@ TestApp* test_app_construct (GType object_type) {
 		GError* e = NULL;
 		GError* _tmp8_;
 		const gchar* _tmp9_;
-#line 54 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 54 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		e = _inner_error_;
-#line 54 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 54 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_inner_error_ = NULL;
-#line 68 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 68 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp8_ = e;
-#line 68 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 68 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp9_ = _tmp8_->message;
-#line 68 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 68 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_warning ("test-class-signal.vala:68: Could not connect to D-Bus service: %s", _tmp9_);
-#line 69 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 69 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		self->priv->initialized = FALSE;
-#line 70 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 70 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		self->priv->res = -1;
-#line 71 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 71 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_g_error_free0 (e);
-#line 71 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 71 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		return self;
 #line 714 "test-class-signal.c"
 	}
 	__finally0:
-#line 54 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 54 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (_inner_error_ != NULL) {
-#line 54 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 54 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 54 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 54 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_clear_error (&_inner_error_);
-#line 54 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 54 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		return NULL;
 #line 725 "test-class-signal.c"
 	}
-#line 73 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 73 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	self->priv->initialized = TRUE;
-#line 52 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 52 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return self;
 #line 731 "test-class-signal.c"
 }
 
 
 TestApp* test_app_new (void) {
-#line 52 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 52 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return test_app_construct (TYPE_TEST_APP);
 #line 738 "test-class-signal.c"
 }
@@ -749,29 +749,29 @@ static GString* test_app_build_title_query (TestApp* self, const gchar* class_na
 	Event* _tmp4_;
 	gint _tmp4__length1;
 	GString* _tmp12_;
-#line 81 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 81 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 81 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_val_if_fail (class_name != NULL, NULL);
-#line 82 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 82 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	first = TRUE;
-#line 83 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp0_ = g_string_new ("SELECT ?r ?t { ?r a <");
-#line 83 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 83 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	builder = _tmp0_;
-#line 84 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 84 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp1_ = builder;
-#line 84 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 84 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp2_ = class_name;
-#line 84 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 84 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_string_append (_tmp1_, _tmp2_);
-#line 85 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp3_ = builder;
-#line 85 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 85 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_string_append (_tmp3_, ">; nie:title ?t . FILTER (tracker:id (?r) IN (");
-#line 86 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp4_ = ids;
-#line 86 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp4__length1 = ids_length1;
 #line 777 "test-class-signal.c"
 	{
@@ -779,63 +779,63 @@ static GString* test_app_build_title_query (TestApp* self, const gchar* class_na
 		gint event_collection_length1 = 0;
 		gint _event_collection_size_ = 0;
 		gint event_it = 0;
-#line 86 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		event_collection = _tmp4_;
-#line 86 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		event_collection_length1 = _tmp4__length1;
-#line 86 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		for (event_it = 0; event_it < _tmp4__length1; event_it = event_it + 1) {
 #line 789 "test-class-signal.c"
 			Event event = {0};
-#line 86 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 86 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			event = event_collection[event_it];
 #line 793 "test-class-signal.c"
 			{
 				gboolean _tmp5_;
-#line 87 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 				_tmp5_ = first;
-#line 87 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 87 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 				if (_tmp5_) {
 #line 800 "test-class-signal.c"
 					GString* _tmp6_;
 					Event _tmp7_;
 					gint _tmp8_;
-#line 88 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 					_tmp6_ = builder;
-#line 88 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 					_tmp7_ = event;
-#line 88 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 					_tmp8_ = _tmp7_.subject_id;
-#line 88 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 88 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 					g_string_append_printf (_tmp6_, "%d", _tmp8_);
 #line 812 "test-class-signal.c"
 				} else {
 					GString* _tmp9_;
 					Event _tmp10_;
 					gint _tmp11_;
-#line 90 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 90 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 					_tmp9_ = builder;
-#line 90 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 90 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 					_tmp10_ = event;
-#line 90 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 90 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 					_tmp11_ = _tmp10_.subject_id;
-#line 90 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 90 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 					g_string_append_printf (_tmp9_, " , %d", _tmp11_);
 #line 825 "test-class-signal.c"
 				}
-#line 91 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 91 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 				first = FALSE;
 #line 829 "test-class-signal.c"
 			}
 		}
 	}
-#line 93 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 93 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp12_ = builder;
-#line 93 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 93 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_string_append (_tmp12_, ")) }");
-#line 94 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 94 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	result = builder;
-#line 94 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 94 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return result;
 #line 841 "test-class-signal.c"
 }
@@ -844,15 +844,15 @@ static GString* test_app_build_title_query (TestApp* self, const gchar* class_na
 static gint test_app_iter_cursor (TestApp* self, const gchar* kind, TrackerSparqlCursor* cursor) {
 	gint result = 0;
 	GError * _inner_error_ = NULL;
-#line 97 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_val_if_fail (self != NULL, 0);
-#line 97 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_val_if_fail (kind != NULL, 0);
-#line 97 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 97 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_val_if_fail (cursor != NULL, 0);
 #line 854 "test-class-signal.c"
 	{
-#line 99 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 99 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		while (TRUE) {
 #line 858 "test-class-signal.c"
 			TrackerSparqlCursor* _tmp0_;
@@ -868,58 +868,58 @@ static gint test_app_iter_cursor (TestApp* self, const gchar* kind, TrackerSparq
 			const gchar* _tmp9_ = NULL;
 			gint _tmp10_;
 			gint _tmp11_;
-#line 99 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 99 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp0_ = cursor;
-#line 99 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 99 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp1_ = tracker_sparql_cursor_next (_tmp0_, NULL, &_inner_error_);
-#line 99 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 99 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp2_ = _tmp1_;
-#line 99 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 99 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			if (_inner_error_ != NULL) {
 #line 880 "test-class-signal.c"
 				goto __catch1_g_error;
 			}
-#line 99 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 99 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			if (!_tmp2_) {
-#line 99 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 99 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 				break;
 #line 887 "test-class-signal.c"
 			}
-#line 100 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 100 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp3_ = cursor;
-#line 100 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 100 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp4_ = tracker_sparql_cursor_get_string (_tmp3_, 0, NULL);
-#line 100 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 100 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp5_ = g_strdup (_tmp4_);
-#line 100 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 100 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			resource = _tmp5_;
-#line 102 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 102 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp6_ = kind;
-#line 102 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 102 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp7_ = resource;
-#line 102 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 102 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp8_ = cursor;
-#line 102 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 102 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp9_ = tracker_sparql_cursor_get_string (_tmp8_, 1, NULL);
-#line 102 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 102 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			g_print ("%s <%s> nie:title '%s'\n", _tmp6_, _tmp7_, _tmp9_);
-#line 106 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 106 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp10_ = self->priv->total_signals_seen;
-#line 106 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 106 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			self->priv->total_signals_seen = _tmp10_ + 1;
-#line 110 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 110 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp11_ = self->priv->total_signals_seen;
-#line 110 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 110 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			if (_tmp11_ >= (max_signals * 2)) {
 #line 915 "test-class-signal.c"
 				GMainLoop* _tmp12_;
-#line 111 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 				_tmp12_ = self->priv->loop;
-#line 111 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 				g_main_loop_quit (_tmp12_);
 #line 921 "test-class-signal.c"
 			}
-#line 99 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 99 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_g_free0 (resource);
 #line 925 "test-class-signal.c"
 		}
@@ -930,40 +930,40 @@ static gint test_app_iter_cursor (TestApp* self, const gchar* kind, TrackerSparq
 		GError* e = NULL;
 		GError* _tmp13_;
 		const gchar* _tmp14_;
-#line 98 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 98 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		e = _inner_error_;
-#line 98 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 98 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_inner_error_ = NULL;
-#line 115 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 115 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp13_ = e;
-#line 115 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 115 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp14_ = _tmp13_->message;
-#line 115 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 115 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_warning ("test-class-signal.vala:115: Couldn't iterate query results: %s", _tmp14_);
-#line 116 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 116 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		self->priv->res = -1;
-#line 117 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 117 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		result = -1;
-#line 117 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 117 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_g_error_free0 (e);
-#line 117 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 117 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		return result;
 #line 952 "test-class-signal.c"
 	}
 	__finally1:
-#line 98 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 98 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (_inner_error_ != NULL) {
-#line 98 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 98 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 98 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 98 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_clear_error (&_inner_error_);
-#line 98 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 98 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		return 0;
 #line 963 "test-class-signal.c"
 	}
-#line 119 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 119 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	result = 0;
-#line 119 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 119 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return result;
 #line 969 "test-class-signal.c"
 }
@@ -972,20 +972,20 @@ static gint test_app_iter_cursor (TestApp* self, const gchar* kind, TrackerSparq
 static void test_app_on_graph_updated_received_async_data_free (gpointer _data) {
 	TestAppOnGraphUpdatedReceivedAsyncData* _data_;
 	_data_ = _data;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_g_free0 (_data_->dels_query);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_g_free0 (_data_->ins_query);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_test_app_unref0 (_data_->self);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_slice_free (TestAppOnGraphUpdatedReceivedAsyncData, _data_);
 #line 984 "test-class-signal.c"
 }
 
 
 static gpointer _test_app_ref0 (gpointer self) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return self ? test_app_ref (self) : NULL;
 #line 991 "test-class-signal.c"
 }
@@ -998,29 +998,29 @@ static void test_app_on_graph_updated_received_async (TestApp* self, const gchar
 	const gchar* _tmp2_;
 	const gchar* _tmp3_;
 	const gchar* _tmp4_;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_data_ = g_slice_new0 (TestAppOnGraphUpdatedReceivedAsyncData);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_data_->_async_result = g_simple_async_result_new (NULL, _callback_, _user_data_, test_app_on_graph_updated_received_async);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, test_app_on_graph_updated_received_async_data_free);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp0_ = _test_app_ref0 (self);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_data_->self = _tmp0_;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp1_ = dels_query;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_data_->dels_query = _tmp2_;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp3_ = ins_query;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp4_ = g_strdup (_tmp3_);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_data_->ins_query = _tmp4_;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	test_app_on_graph_updated_received_async_co (_data_);
 #line 1026 "test-class-signal.c"
 }
@@ -1028,7 +1028,7 @@ static void test_app_on_graph_updated_received_async (TestApp* self, const gchar
 
 static void test_app_on_graph_updated_received_finish (TestApp* self, GAsyncResult* _res_) {
 	TestAppOnGraphUpdatedReceivedAsyncData* _data_;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
 #line 1034 "test-class-signal.c"
 }
@@ -1036,173 +1036,173 @@ static void test_app_on_graph_updated_received_finish (TestApp* self, GAsyncResu
 
 static void test_app_on_graph_updated_received_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TestAppOnGraphUpdatedReceivedAsyncData* _data_;
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_data_ = _user_data_;
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_data_->_source_object_ = source_object;
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_data_->_res_ = _res_;
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	test_app_on_graph_updated_received_async_co (_data_);
 #line 1048 "test-class-signal.c"
 }
 
 
 static gboolean test_app_on_graph_updated_received_async_co (TestAppOnGraphUpdatedReceivedAsyncData* _data_) {
-#line 122 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 122 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	switch (_data_->_state_) {
-#line 122 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 122 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		case 0:
 #line 1057 "test-class-signal.c"
 		goto _state_0;
-#line 122 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 122 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		case 1:
 #line 1061 "test-class-signal.c"
 		goto _state_1;
-#line 122 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 122 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		case 2:
 #line 1065 "test-class-signal.c"
 		goto _state_2;
 		default:
-#line 122 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 122 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_assert_not_reached ();
 #line 1070 "test-class-signal.c"
 	}
 	_state_0:
 	{
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp0_ = _data_->self->priv->signal_con;
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp1_ = _data_->dels_query;
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_state_ = 1;
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		tracker_sparql_connection_query_async (_data_->_tmp0_, _data_->_tmp1_, NULL, test_app_on_graph_updated_received_async_ready, _data_);
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		return FALSE;
 #line 1084 "test-class-signal.c"
 		_state_1:
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp2_ = NULL;
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp2_ = tracker_sparql_connection_query_finish (_data_->_tmp0_, _data_->_res_, &_data_->_inner_error_);
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp3_ = _data_->_tmp2_;
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_g_object_unref0 (_data_->cursor2);
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_g_object_unref0 (_data_->cursor1);
 #line 1098 "test-class-signal.c"
 			goto __catch2_g_error;
 		}
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_g_object_unref0 (_data_->cursor1);
-#line 126 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 126 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->cursor1 = _data_->_tmp3_;
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp4_ = _data_->self->priv->signal_con;
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp5_ = _data_->ins_query;
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_state_ = 2;
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		tracker_sparql_connection_query_async (_data_->_tmp4_, _data_->_tmp5_, NULL, test_app_on_graph_updated_received_async_ready, _data_);
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		return FALSE;
 #line 1115 "test-class-signal.c"
 		_state_2:
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp6_ = NULL;
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp6_ = tracker_sparql_connection_query_finish (_data_->_tmp4_, _data_->_res_, &_data_->_inner_error_);
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp7_ = _data_->_tmp6_;
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		if (_data_->_inner_error_ != NULL) {
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_g_object_unref0 (_data_->cursor2);
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_g_object_unref0 (_data_->cursor1);
 #line 1129 "test-class-signal.c"
 			goto __catch2_g_error;
 		}
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_g_object_unref0 (_data_->cursor2);
-#line 127 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 127 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->cursor2 = _data_->_tmp7_;
-#line 129 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 129 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp8_ = _data_->cursor1;
-#line 129 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 129 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp9_ = 0;
-#line 129 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 129 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp9_ = test_app_iter_cursor (_data_->self, "delete of: ", _data_->_tmp8_);
-#line 129 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 129 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->self->priv->res = _data_->_tmp9_;
-#line 130 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 130 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp10_ = _data_->self->priv->res;
-#line 130 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 130 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		if (_data_->_tmp10_ != (-1)) {
-#line 131 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 131 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_data_->_tmp11_ = _data_->cursor2;
-#line 131 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 131 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_data_->_tmp12_ = 0;
-#line 131 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 131 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_data_->_tmp12_ = test_app_iter_cursor (_data_->self, "insert of: ", _data_->_tmp11_);
-#line 131 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 131 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_data_->self->priv->res = _data_->_tmp12_;
 #line 1156 "test-class-signal.c"
 		}
-#line 123 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_g_object_unref0 (_data_->cursor2);
-#line 123 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_g_object_unref0 (_data_->cursor1);
 #line 1162 "test-class-signal.c"
 	}
 	goto __finally2;
 	__catch2_g_error:
 	{
-#line 123 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->e = _data_->_inner_error_;
-#line 123 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_inner_error_ = NULL;
-#line 134 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 134 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp13_ = _data_->e;
-#line 134 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 134 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->_tmp14_ = _data_->_tmp13_->message;
-#line 134 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 134 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_warning ("test-class-signal.vala:134: Couldn't iterate query results: %s", _data_->_tmp14_);
-#line 135 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_data_->self->priv->res = -1;
-#line 123 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_g_error_free0 (_data_->e);
 #line 1181 "test-class-signal.c"
 	}
 	__finally2:
-#line 123 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 123 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 123 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_clear_error (&_data_->_inner_error_);
-#line 123 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 123 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		return FALSE;
 #line 1192 "test-class-signal.c"
 	}
-#line 122 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 122 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (_data_->_state_ == 0) {
-#line 122 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 122 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
 #line 1198 "test-class-signal.c"
 	} else {
-#line 122 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 122 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_simple_async_result_complete (_data_->_async_result);
 #line 1202 "test-class-signal.c"
 	}
-#line 122 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 122 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_object_unref (_data_->_async_result);
-#line 122 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 122 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return FALSE;
 #line 1208 "test-class-signal.c"
 }
@@ -1227,55 +1227,55 @@ static void test_app_on_graph_updated_received (TestApp* self, const gchar* clas
 	gchar* _tmp12_;
 	gchar* _tmp13_;
 	gchar* ins_qry;
-#line 139 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 139 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_if_fail (self != NULL);
-#line 139 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 139 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_if_fail (class_name != NULL);
-#line 140 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp0_ = class_name;
-#line 140 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp1_ = deletes;
-#line 140 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp1__length1 = deletes_length1;
-#line 140 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp2_ = test_app_build_title_query (self, _tmp0_, _tmp1_, _tmp1__length1);
-#line 140 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp3_ = _tmp2_;
-#line 140 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp4_ = _tmp3_->str;
-#line 140 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp5_ = g_strdup (_tmp4_);
-#line 140 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp6_ = _tmp5_;
-#line 140 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_g_string_free0 (_tmp3_);
-#line 140 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 140 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	dels_qry = _tmp6_;
-#line 141 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp7_ = class_name;
-#line 141 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp8_ = deletes;
-#line 141 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp8__length1 = deletes_length1;
-#line 141 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp9_ = test_app_build_title_query (self, _tmp7_, _tmp8_, _tmp8__length1);
-#line 141 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp10_ = _tmp9_;
-#line 141 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp11_ = _tmp10_->str;
-#line 141 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp12_ = g_strdup (_tmp11_);
-#line 141 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp13_ = _tmp12_;
-#line 141 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_g_string_free0 (_tmp10_);
-#line 141 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 141 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	ins_qry = _tmp13_;
-#line 143 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 143 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	test_app_on_graph_updated_received_async (self, dels_qry, ins_qry, NULL, NULL);
-#line 139 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 139 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_g_free0 (ins_qry);
-#line 139 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 139 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_g_free0 (dels_qry);
 #line 1281 "test-class-signal.c"
 }
@@ -1283,16 +1283,16 @@ static void test_app_on_graph_updated_received (TestApp* self, const gchar* clas
 
 static void test_app_insert_data (TestApp* self) {
 	gint i = 0;
-#line 146 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 146 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_if_fail (self != NULL);
 #line 1289 "test-class-signal.c"
 	{
 		gboolean _tmp0_;
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		i = 0;
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		_tmp0_ = TRUE;
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		while (TRUE) {
 #line 1298 "test-class-signal.c"
 			gboolean _tmp1_;
@@ -1304,46 +1304,46 @@ static void test_app_insert_data (TestApp* self) {
 			gchar* upqry;
 			Resources* _tmp8_;
 			const gchar* _tmp9_;
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp1_ = _tmp0_;
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			if (!_tmp1_) {
 #line 1312 "test-class-signal.c"
 				gint _tmp2_;
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 				_tmp2_ = i;
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 				i = _tmp2_ + 1;
 #line 1318 "test-class-signal.c"
 			}
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp0_ = FALSE;
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp3_ = i;
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			if (!(_tmp3_ <= max_signals)) {
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 				break;
 #line 1328 "test-class-signal.c"
 			}
-#line 150 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 150 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp4_ = i;
-#line 150 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 150 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp5_ = i;
-#line 150 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 150 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp6_ = i;
-#line 150 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 150 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp7_ = g_strdup_printf ("DELETE { <%d> a rdfs:Resource } INSERT { <%d> a nmm:MusicPiece ; nie:t" \
 "itle '%s %d' }", _tmp4_, _tmp5_, title_data, _tmp6_);
-#line 150 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 150 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			upqry = _tmp7_;
-#line 152 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp8_ = test_app_resources_object;
-#line 152 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_tmp9_ = upqry;
-#line 152 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 152 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			resources_sparql_update_async (_tmp8_, _tmp9_, NULL, NULL);
-#line 149 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 149 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			_g_free0 (upqry);
 #line 1348 "test-class-signal.c"
 		}
@@ -1353,13 +1353,13 @@ static void test_app_insert_data (TestApp* self) {
 
 static gboolean test_app_in_mainloop (TestApp* self) {
 	gboolean result = FALSE;
-#line 160 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 161 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 161 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	test_app_insert_data (self);
-#line 163 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 163 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	result = FALSE;
-#line 163 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 163 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return result;
 #line 1364 "test-class-signal.c"
 }
@@ -1368,7 +1368,7 @@ static gboolean test_app_in_mainloop (TestApp* self) {
 static gboolean _test_app_in_mainloop_gsource_func (gpointer self) {
 	gboolean result;
 	result = test_app_in_mainloop (self);
-#line 168 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 168 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return result;
 #line 1373 "test-class-signal.c"
 }
@@ -1379,41 +1379,41 @@ gint test_app_run (TestApp* self) {
 	GMainLoop* _tmp0_;
 	GMainLoop* _tmp1_;
 	gint _tmp2_;
-#line 166 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 166 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_val_if_fail (self != NULL, 0);
-#line 167 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 167 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp0_ = g_main_loop_new (NULL, FALSE);
-#line 167 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 167 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_g_main_loop_unref0 (self->priv->loop);
-#line 167 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 167 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	self->priv->loop = _tmp0_;
-#line 168 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 168 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, _test_app_in_mainloop_gsource_func, test_app_ref (self), test_app_unref);
-#line 169 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 169 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp1_ = self->priv->loop;
-#line 169 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 169 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_main_loop_run (_tmp1_);
-#line 170 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 170 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp2_ = self->priv->res;
-#line 170 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 170 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	result = _tmp2_;
-#line 170 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 170 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return result;
 #line 1402 "test-class-signal.c"
 }
 
 
 static void value_test_app_init (GValue* value) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	value->data[0].v_pointer = NULL;
 #line 1409 "test-class-signal.c"
 }
 
 
 static void value_test_app_free_value (GValue* value) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (value->data[0].v_pointer) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		test_app_unref (value->data[0].v_pointer);
 #line 1418 "test-class-signal.c"
 	}
@@ -1421,13 +1421,13 @@ static void value_test_app_free_value (GValue* value) {
 
 
 static void value_test_app_copy_value (const GValue* src_value, GValue* dest_value) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (src_value->data[0].v_pointer) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		dest_value->data[0].v_pointer = test_app_ref (src_value->data[0].v_pointer);
 #line 1428 "test-class-signal.c"
 	} else {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		dest_value->data[0].v_pointer = NULL;
 #line 1432 "test-class-signal.c"
 	}
@@ -1435,37 +1435,37 @@ static void value_test_app_copy_value (const GValue* src_value, GValue* dest_val
 
 
 static gpointer value_test_app_peek_pointer (const GValue* value) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return value->data[0].v_pointer;
 #line 1440 "test-class-signal.c"
 }
 
 
 static gchar* value_test_app_collect_value (GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (collect_values[0].v_pointer) {
 #line 1447 "test-class-signal.c"
 		TestApp* object;
 		object = collect_values[0].v_pointer;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		if (object->parent_instance.g_class == NULL) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
 #line 1454 "test-class-signal.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
 #line 1458 "test-class-signal.c"
 		}
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		value->data[0].v_pointer = test_app_ref (object);
 #line 1462 "test-class-signal.c"
 	} else {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		value->data[0].v_pointer = NULL;
 #line 1466 "test-class-signal.c"
 	}
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return NULL;
 #line 1470 "test-class-signal.c"
 }
@@ -1474,27 +1474,27 @@ static gchar* value_test_app_collect_value (GValue* value, guint n_collect_value
 static gchar* value_test_app_lcopy_value (const GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
 	TestApp** object_p;
 	object_p = collect_values[0].v_pointer;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (!object_p) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
 #line 1481 "test-class-signal.c"
 	}
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (!value->data[0].v_pointer) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		*object_p = NULL;
 #line 1487 "test-class-signal.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		*object_p = value->data[0].v_pointer;
 #line 1491 "test-class-signal.c"
 	} else {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		*object_p = test_app_ref (value->data[0].v_pointer);
 #line 1495 "test-class-signal.c"
 	}
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return NULL;
 #line 1499 "test-class-signal.c"
 }
@@ -1502,22 +1502,22 @@ static gchar* value_test_app_lcopy_value (const GValue* value, guint n_collect_v
 
 GParamSpec* param_spec_test_app (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags) {
 	ParamSpecTestApp* spec;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_val_if_fail (g_type_is_a (object_type, TYPE_TEST_APP), NULL);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	spec = g_param_spec_internal (G_TYPE_PARAM_OBJECT, name, nick, blurb, flags);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	G_PARAM_SPEC (spec)->value_type = object_type;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return G_PARAM_SPEC (spec);
 #line 1513 "test-class-signal.c"
 }
 
 
 gpointer value_get_test_app (const GValue* value) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TYPE_TEST_APP), NULL);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return value->data[0].v_pointer;
 #line 1522 "test-class-signal.c"
 }
@@ -1525,29 +1525,29 @@ gpointer value_get_test_app (const GValue* value) {
 
 void value_set_test_app (GValue* value, gpointer v_object) {
 	TestApp* old;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TYPE_TEST_APP));
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	old = value->data[0].v_pointer;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (v_object) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_TEST_APP));
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		value->data[0].v_pointer = v_object;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		test_app_ref (value->data[0].v_pointer);
 #line 1542 "test-class-signal.c"
 	} else {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		value->data[0].v_pointer = NULL;
 #line 1546 "test-class-signal.c"
 	}
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (old) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		test_app_unref (old);
 #line 1552 "test-class-signal.c"
 	}
@@ -1556,27 +1556,27 @@ void value_set_test_app (GValue* value, gpointer v_object) {
 
 void value_take_test_app (GValue* value, gpointer v_object) {
 	TestApp* old;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_return_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TYPE_TEST_APP));
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	old = value->data[0].v_pointer;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (v_object) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_TEST_APP));
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		value->data[0].v_pointer = v_object;
 #line 1571 "test-class-signal.c"
 	} else {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		value->data[0].v_pointer = NULL;
 #line 1575 "test-class-signal.c"
 	}
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (old) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		test_app_unref (old);
 #line 1581 "test-class-signal.c"
 	}
@@ -1584,26 +1584,26 @@ void value_take_test_app (GValue* value, gpointer v_object) {
 
 
 static void test_app_class_init (TestAppClass * klass) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	test_app_parent_class = g_type_class_peek_parent (klass);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	TEST_APP_CLASS (klass)->finalize = test_app_finalize;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_type_class_add_private (klass, sizeof (TestAppPrivate));
 #line 1593 "test-class-signal.c"
 }
 
 
 static void test_app_instance_init (TestApp * self) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	self->priv = TEST_APP_GET_PRIVATE (self);
-#line 45 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 45 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	self->priv->res = -1;
-#line 47 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 47 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	self->priv->initialized = FALSE;
-#line 50 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 50 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	self->priv->total_signals_seen = 0;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	self->ref_count = 1;
 #line 1608 "test-class-signal.c"
 }
@@ -1611,13 +1611,13 @@ static void test_app_instance_init (TestApp * self) {
 
 static void test_app_finalize (TestApp* obj) {
 	TestApp * self;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	self = TEST_APP (obj);
-#line 46 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 46 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_g_main_loop_unref0 (self->priv->loop);
-#line 48 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 48 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_g_object_unref0 (self->priv->signal_con);
-#line 49 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 49 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_g_object_unref0 (self->priv->con);
 #line 1622 "test-class-signal.c"
 }
@@ -1640,9 +1640,9 @@ GType test_app_get_type (void) {
 gpointer test_app_ref (gpointer instance) {
 	TestApp* self;
 	self = instance;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_atomic_int_inc (&self->ref_count);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return instance;
 #line 1647 "test-class-signal.c"
 }
@@ -1651,11 +1651,11 @@ gpointer test_app_ref (gpointer instance) {
 void test_app_unref (gpointer instance) {
 	TestApp* self;
 	self = instance;
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	if (g_atomic_int_dec_and_test (&self->ref_count)) {
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		TEST_APP_GET_CLASS (self)->finalize (self);
-#line 43 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 43 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 		g_type_free_instance ((GTypeInstance *) self);
 #line 1660 "test-class-signal.c"
 	}
@@ -1667,26 +1667,26 @@ gint _vala_main (gchar** args, int args_length1) {
 	TestApp* _tmp0_;
 	TestApp* app;
 	gint _tmp1_ = 0;
-#line 175 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 175 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp0_ = test_app_new ();
-#line 175 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 175 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	app = _tmp0_;
-#line 177 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 177 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_tmp1_ = test_app_run (app);
-#line 177 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 177 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	result = _tmp1_;
-#line 177 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 177 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	_test_app_unref0 (app);
-#line 177 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 177 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return result;
 #line 1682 "test-class-signal.c"
 }
 
 
 int main (int argc, char ** argv) {
-#line 174 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 174 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	g_type_init ();
-#line 174 "/home/martyn/Source/tracker/tests/functional-tests/ipc/test-class-signal.vala"
+#line 174 "/home/juerg/Code/tracker/tracker/tests/functional-tests/ipc/test-class-signal.vala"
 	return _vala_main (argv, argc);
 #line 1691 "test-class-signal.c"
 }

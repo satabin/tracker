@@ -235,15 +235,15 @@ GType tracker_sparql_builder_state_get_type (void) {
  * Since: 0.10
  */
 static void _vala_array_add1 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 173 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 173 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 173 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 173 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 173 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 173 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 245 "tracker-builder.c"
 	}
-#line 173 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 173 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 249 "tracker-builder.c"
 }
@@ -253,22 +253,22 @@ TrackerSparqlBuilder* tracker_sparql_builder_construct_update (GType object_type
 	TrackerSparqlBuilder * self = NULL;
 	TrackerSparqlBuilderState* _tmp0_;
 	gint _tmp0__length1;
-#line 172 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 172 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self = (TrackerSparqlBuilder*) g_object_new (object_type, NULL);
-#line 173 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 173 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = self->priv->states;
-#line 173 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 173 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0__length1 = self->priv->states_length1;
-#line 173 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 173 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add1 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_UPDATE);
-#line 172 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 172 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return self;
 #line 267 "tracker-builder.c"
 }
 
 
 TrackerSparqlBuilder* tracker_sparql_builder_new_update (void) {
-#line 172 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 172 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return tracker_sparql_builder_construct_update (TRACKER_SPARQL_TYPE_BUILDER);
 #line 274 "tracker-builder.c"
 }
@@ -286,45 +286,45 @@ TrackerSparqlBuilder* tracker_sparql_builder_new_update (void) {
  * Since: 0.10
  */
 static void _vala_array_add2 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 296 "tracker-builder.c"
 	}
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 300 "tracker-builder.c"
 }
 
 
 static void _vala_array_add3 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 311 "tracker-builder.c"
 	}
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 315 "tracker-builder.c"
 }
 
 
 static void _vala_array_add4 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 190 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 190 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 190 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 326 "tracker-builder.c"
 	}
-#line 190 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 330 "tracker-builder.c"
 }
@@ -338,34 +338,34 @@ TrackerSparqlBuilder* tracker_sparql_builder_construct_embedded_insert (GType ob
 	gint _tmp1__length1;
 	TrackerSparqlBuilderState* _tmp2_;
 	gint _tmp2__length1;
-#line 187 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 187 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self = (TrackerSparqlBuilder*) g_object_new (object_type, NULL);
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = self->priv->states;
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0__length1 = self->priv->states_length1;
-#line 188 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add2 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT);
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = self->priv->states;
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1__length1 = self->priv->states_length1;
-#line 189 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add3 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_INSERT);
-#line 190 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 190 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 190 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add4 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_SUBJECT);
-#line 187 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 187 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return self;
 #line 364 "tracker-builder.c"
 }
 
 
 TrackerSparqlBuilder* tracker_sparql_builder_new_embedded_insert (void) {
-#line 187 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 187 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return tracker_sparql_builder_construct_embedded_insert (TRACKER_SPARQL_TYPE_BUILDER);
 #line 371 "tracker-builder.c"
 }
@@ -381,15 +381,15 @@ TrackerSparqlBuilder* tracker_sparql_builder_new_embedded_insert (void) {
  * Since: 0.10
  */
 static void _vala_array_add5 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 205 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 205 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 205 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 205 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 205 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 205 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 391 "tracker-builder.c"
 	}
-#line 205 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 205 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 395 "tracker-builder.c"
 }
@@ -401,47 +401,47 @@ void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar
 	TrackerSparqlBuilderState* _tmp2_;
 	gint _tmp2__length1;
 	const gchar* _tmp3_;
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 202 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE);
-#line 205 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 205 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 205 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 205 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 205 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 205 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add5 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_INSERT);
-#line 206 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = graph;
-#line 206 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp3_ != NULL) {
 #line 423 "tracker-builder.c"
 		GString* _tmp4_;
 		const gchar* _tmp5_;
 		gchar* _tmp6_ = NULL;
 		gchar* _tmp7_;
-#line 207 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp4_ = self->priv->str;
-#line 207 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp5_ = graph;
-#line 207 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = g_strdup_printf ("INSERT INTO <%s> {\n", _tmp5_);
-#line 207 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = _tmp6_;
-#line 207 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp4_, _tmp7_);
-#line 207 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_g_free0 (_tmp7_);
 #line 440 "tracker-builder.c"
 	} else {
 		GString* _tmp8_;
-#line 209 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 209 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp8_ = self->priv->str;
-#line 209 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 209 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp8_, "INSERT {\n");
 #line 447 "tracker-builder.c"
 	}
@@ -458,15 +458,15 @@ void tracker_sparql_builder_insert_open (TrackerSparqlBuilder* self, const gchar
  * Since: 0.10
  */
 static void _vala_array_add6 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 468 "tracker-builder.c"
 	}
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 472 "tracker-builder.c"
 }
@@ -478,47 +478,47 @@ void tracker_sparql_builder_insert_silent_open (TrackerSparqlBuilder* self, cons
 	TrackerSparqlBuilderState* _tmp2_;
 	gint _tmp2__length1;
 	const gchar* _tmp3_;
-#line 221 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 221 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 221 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 221 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 221 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 221 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 221 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 221 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE);
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 224 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add6 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_INSERT);
-#line 225 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 225 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = graph;
-#line 225 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 225 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp3_ != NULL) {
 #line 500 "tracker-builder.c"
 		GString* _tmp4_;
 		const gchar* _tmp5_;
 		gchar* _tmp6_ = NULL;
 		gchar* _tmp7_;
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp4_ = self->priv->str;
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp5_ = graph;
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = g_strdup_printf ("INSERT SILENT INTO <%s> {\n", _tmp5_);
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = _tmp6_;
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp4_, _tmp7_);
-#line 226 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_g_free0 (_tmp7_);
 #line 517 "tracker-builder.c"
 	} else {
 		GString* _tmp8_;
-#line 228 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp8_ = self->priv->str;
-#line 228 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp8_, "INSERT SILENT {\n");
 #line 524 "tracker-builder.c"
 	}
@@ -543,52 +543,52 @@ void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self) {
 	gint _tmp8_;
 	TrackerSparqlBuilderState _tmp9_;
 	TrackerSparqlBuilderState _tmp10_;
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 239 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 239 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_INSERT) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT));
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 242 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
 #line 565 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 243 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 243 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 243 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 243 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " .\n");
-#line 244 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 244 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 244 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 244 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
 #line 576 "tracker-builder.c"
 	}
-#line 246 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 246 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->states_length1;
-#line 246 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 246 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states_length1 = _tmp8_ - 1;
-#line 248 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 248 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = tracker_sparql_builder_get_state (self);
-#line 248 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 248 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = _tmp9_;
-#line 248 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 248 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp10_ != TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT) {
 #line 588 "tracker-builder.c"
 		GString* _tmp11_;
-#line 249 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 249 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp11_ = self->priv->str;
-#line 249 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 249 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp11_, "}\n");
 #line 594 "tracker-builder.c"
 	}
@@ -606,15 +606,15 @@ void tracker_sparql_builder_insert_close (TrackerSparqlBuilder* self) {
  * Since: 0.10
  */
 static void _vala_array_add7 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 616 "tracker-builder.c"
 	}
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 620 "tracker-builder.c"
 }
@@ -626,47 +626,47 @@ void tracker_sparql_builder_delete_open (TrackerSparqlBuilder* self, const gchar
 	TrackerSparqlBuilderState* _tmp2_;
 	gint _tmp2__length1;
 	const gchar* _tmp3_;
-#line 263 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 263 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 263 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 263 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 263 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 263 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 263 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 263 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE);
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 266 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add7 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_DELETE);
-#line 267 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 267 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = graph;
-#line 267 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 267 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp3_ != NULL) {
 #line 648 "tracker-builder.c"
 		GString* _tmp4_;
 		const gchar* _tmp5_;
 		gchar* _tmp6_ = NULL;
 		gchar* _tmp7_;
-#line 268 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp4_ = self->priv->str;
-#line 268 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp5_ = graph;
-#line 268 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = g_strdup_printf ("DELETE FROM <%s> {\n", _tmp5_);
-#line 268 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = _tmp6_;
-#line 268 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp4_, _tmp7_);
-#line 268 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_g_free0 (_tmp7_);
 #line 665 "tracker-builder.c"
 	} else {
 		GString* _tmp8_;
-#line 270 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 270 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp8_ = self->priv->str;
-#line 270 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 270 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp8_, "DELETE {\n");
 #line 672 "tracker-builder.c"
 	}
@@ -690,44 +690,44 @@ void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp5_;
 	gint _tmp8_;
 	GString* _tmp9_;
-#line 281 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 281 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 281 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 281 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 281 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 281 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_DELETE) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT));
-#line 284 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 284 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 284 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 284 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 284 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 284 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
 #line 712 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 285 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 285 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 285 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 285 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " .\n");
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 286 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
 #line 723 "tracker-builder.c"
 	}
-#line 288 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 288 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->states_length1;
-#line 288 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 288 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states_length1 = _tmp8_ - 1;
-#line 290 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 290 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = self->priv->str;
-#line 290 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 290 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp9_, "}\n");
 #line 733 "tracker-builder.c"
 }
@@ -743,15 +743,15 @@ void tracker_sparql_builder_delete_close (TrackerSparqlBuilder* self) {
  * Since: 0.10
  */
 static void _vala_array_add8 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 305 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 305 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 305 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 305 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 305 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 305 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 753 "tracker-builder.c"
 	}
-#line 305 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 305 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 757 "tracker-builder.c"
 }
@@ -772,43 +772,43 @@ void tracker_sparql_builder_graph_open (TrackerSparqlBuilder* self, const gchar*
 	gint _tmp10__length1;
 	GString* _tmp11_;
 	const gchar* _tmp12_;
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (graph != NULL);
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = tracker_sparql_builder_get_state (self);
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp6_;
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = tracker_sparql_builder_get_state (self);
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = _tmp8_;
-#line 302 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (((((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_INSERT) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_DELETE)) || (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT)) || (_tmp7_ == TRACKER_SPARQL_BUILDER_STATE_WHERE)) || (_tmp9_ == TRACKER_SPARQL_BUILDER_STATE_GRAPH));
-#line 305 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 305 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = self->priv->states;
-#line 305 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 305 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10__length1 = self->priv->states_length1;
-#line 305 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 305 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add8 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_GRAPH);
-#line 306 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11_ = self->priv->str;
-#line 306 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12_ = graph;
-#line 306 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append_printf (_tmp11_, "GRAPH <%s> {\n", _tmp12_);
 #line 814 "tracker-builder.c"
 }
@@ -831,44 +831,44 @@ void tracker_sparql_builder_graph_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp5_;
 	gint _tmp8_;
 	GString* _tmp9_;
-#line 317 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 317 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 317 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 317 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 317 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 317 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 317 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 317 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 317 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 317 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 317 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 317 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_GRAPH) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT));
-#line 320 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 320 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 320 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 320 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 320 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 320 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
 #line 853 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 321 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 321 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " .\n");
-#line 322 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 322 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 322 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 322 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
 #line 864 "tracker-builder.c"
 	}
-#line 324 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->states_length1;
-#line 324 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states_length1 = _tmp8_ - 1;
-#line 326 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 326 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = self->priv->str;
-#line 326 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 326 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp9_, "}\n");
 #line 874 "tracker-builder.c"
 }
@@ -884,15 +884,15 @@ void tracker_sparql_builder_graph_close (TrackerSparqlBuilder* self) {
  * Since: 0.10
  */
 static void _vala_array_add9 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 341 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 341 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 341 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 341 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 341 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 341 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 894 "tracker-builder.c"
 	}
-#line 341 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 341 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 898 "tracker-builder.c"
 }
@@ -904,23 +904,23 @@ void tracker_sparql_builder_where_open (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState* _tmp2_;
 	gint _tmp2__length1;
 	GString* _tmp3_;
-#line 338 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 338 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 338 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 338 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 338 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 338 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 338 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 338 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_UPDATE);
-#line 341 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 341 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 341 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 341 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 341 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 341 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add9 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_WHERE);
-#line 342 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 342 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = self->priv->str;
-#line 342 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 342 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp3_, "WHERE {\n");
 #line 926 "tracker-builder.c"
 }
@@ -943,44 +943,44 @@ void tracker_sparql_builder_where_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState _tmp5_;
 	gint _tmp8_;
 	GString* _tmp9_;
-#line 353 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 353 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 353 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 353 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 353 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 353 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 353 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 353 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 353 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 353 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 353 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 353 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_WHERE) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT));
-#line 356 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 356 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 356 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 356 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 356 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 356 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
 #line 965 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 357 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 357 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 357 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 357 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " .\n");
-#line 358 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 358 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 358 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 358 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
 #line 976 "tracker-builder.c"
 	}
-#line 360 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 360 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->states_length1;
-#line 360 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 360 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states_length1 = _tmp8_ - 1;
-#line 361 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 361 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = self->priv->str;
-#line 361 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 361 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp9_, "}\n");
 #line 986 "tracker-builder.c"
 }
@@ -999,19 +999,19 @@ void tracker_sparql_builder_subject_variable (TrackerSparqlBuilder* self, const 
 	const gchar* _tmp0_;
 	gchar* _tmp1_ = NULL;
 	gchar* _tmp2_;
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 373 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 373 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (var_name != NULL);
-#line 374 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 374 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = var_name;
-#line 374 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 374 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("?%s", _tmp0_);
-#line 374 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 374 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 374 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 374 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_subject (self, _tmp2_);
-#line 374 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 374 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
 #line 1017 "tracker-builder.c"
 }
@@ -1030,19 +1030,19 @@ void tracker_sparql_builder_object_variable (TrackerSparqlBuilder* self, const g
 	const gchar* _tmp0_;
 	gchar* _tmp1_ = NULL;
 	gchar* _tmp2_;
-#line 386 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 386 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 386 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 386 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (var_name != NULL);
-#line 387 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 387 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = var_name;
-#line 387 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 387 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("?%s", _tmp0_);
-#line 387 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 387 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 387 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 387 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object (self, _tmp2_);
-#line 387 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 387 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
 #line 1048 "tracker-builder.c"
 }
@@ -1062,19 +1062,19 @@ void tracker_sparql_builder_subject_iri (TrackerSparqlBuilder* self, const gchar
 	const gchar* _tmp0_;
 	gchar* _tmp1_ = NULL;
 	gchar* _tmp2_;
-#line 400 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 400 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 400 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 400 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (iri != NULL);
-#line 401 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 401 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = iri;
-#line 401 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 401 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("<%s>", _tmp0_);
-#line 401 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 401 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 401 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 401 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_subject (self, _tmp2_);
-#line 401 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 401 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
 #line 1080 "tracker-builder.c"
 }
@@ -1090,15 +1090,15 @@ void tracker_sparql_builder_subject_iri (TrackerSparqlBuilder* self, const gchar
  * Since: 0.10
  */
 static void _vala_array_add10 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 421 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 421 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 421 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 421 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 421 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 421 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 1100 "tracker-builder.c"
 	}
-#line 421 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 421 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 1104 "tracker-builder.c"
 }
@@ -1123,66 +1123,66 @@ void tracker_sparql_builder_subject (TrackerSparqlBuilder* self, const gchar* s)
 	const gchar* _tmp17_;
 	TrackerSparqlBuilderState* _tmp18_;
 	gint _tmp18__length1;
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (s != NULL);
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp6_;
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = _tmp8_;
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = tracker_sparql_builder_get_state (self);
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11_ = _tmp10_;
-#line 413 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 413 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail ((((((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_INSERT) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT)) || (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT)) || (_tmp7_ == TRACKER_SPARQL_BUILDER_STATE_DELETE)) || (_tmp9_ == TRACKER_SPARQL_BUILDER_STATE_WHERE)) || (_tmp11_ == TRACKER_SPARQL_BUILDER_STATE_GRAPH));
-#line 416 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 416 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12_ = tracker_sparql_builder_get_state (self);
-#line 416 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 416 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp13_ = _tmp12_;
-#line 416 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 416 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp13_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
 #line 1163 "tracker-builder.c"
 		GString* _tmp14_;
 		gint _tmp15_;
-#line 417 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 417 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp14_ = self->priv->str;
-#line 417 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 417 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp14_, " .\n");
-#line 418 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 418 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 418 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 418 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp15_ = self->priv->states_length1;
 #line 1174 "tracker-builder.c"
 	}
-#line 420 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 420 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp16_ = self->priv->str;
-#line 420 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 420 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp17_ = s;
-#line 420 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 420 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp16_, _tmp17_);
-#line 421 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 421 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp18_ = self->priv->states;
-#line 421 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 421 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp18__length1 = self->priv->states_length1;
-#line 421 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 421 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add10 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_SUBJECT);
 #line 1188 "tracker-builder.c"
 }
@@ -1201,19 +1201,19 @@ void tracker_sparql_builder_predicate_iri (TrackerSparqlBuilder* self, const gch
 	const gchar* _tmp0_;
 	gchar* _tmp1_ = NULL;
 	gchar* _tmp2_;
-#line 433 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 433 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 433 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 433 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (iri != NULL);
-#line 434 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 434 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = iri;
-#line 434 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 434 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("<%s>", _tmp0_);
-#line 434 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 434 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 434 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 434 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_predicate (self, _tmp2_);
-#line 434 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 434 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
 #line 1219 "tracker-builder.c"
 }
@@ -1229,15 +1229,15 @@ void tracker_sparql_builder_predicate_iri (TrackerSparqlBuilder* self, const gch
  * Since: 0.10
  */
 static void _vala_array_add11 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 455 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 455 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 455 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 455 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 455 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 455 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 1239 "tracker-builder.c"
 	}
-#line 455 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 455 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 1243 "tracker-builder.c"
 }
@@ -1257,58 +1257,58 @@ void tracker_sparql_builder_predicate (TrackerSparqlBuilder* self, const gchar* 
 	const gchar* _tmp12_;
 	TrackerSparqlBuilderState* _tmp13_;
 	gint _tmp13__length1;
-#line 446 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 446 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 446 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 446 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (s != NULL);
-#line 446 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 446 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 446 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 446 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 446 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 446 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 446 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 446 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 446 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 446 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 446 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 446 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 446 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 446 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_SUBJECT) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT)) || (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_BLANK));
-#line 449 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 449 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = tracker_sparql_builder_get_state (self);
-#line 449 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 449 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp6_;
-#line 449 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 449 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp7_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
 #line 1285 "tracker-builder.c"
 		GString* _tmp8_;
 		gint _tmp9_;
-#line 450 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 450 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp8_ = self->priv->str;
-#line 450 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 450 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp8_, " ;\n\t");
-#line 451 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 451 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 2;
-#line 451 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 451 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp9_ = self->priv->states_length1;
 #line 1296 "tracker-builder.c"
 	}
-#line 453 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 453 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = self->priv->str;
-#line 453 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 453 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp10_, " ");
-#line 454 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 454 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11_ = self->priv->str;
-#line 454 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 454 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12_ = s;
-#line 454 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 454 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp11_, _tmp12_);
-#line 455 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 455 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp13_ = self->priv->states;
-#line 455 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 455 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp13__length1 = self->priv->states_length1;
-#line 455 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 455 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add11 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_PREDICATE);
 #line 1314 "tracker-builder.c"
 }
@@ -1327,19 +1327,19 @@ void tracker_sparql_builder_object_iri (TrackerSparqlBuilder* self, const gchar*
 	const gchar* _tmp0_;
 	gchar* _tmp1_ = NULL;
 	gchar* _tmp2_;
-#line 467 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 467 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 467 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 467 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (iri != NULL);
-#line 468 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 468 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = iri;
-#line 468 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 468 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("<%s>", _tmp0_);
-#line 468 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 468 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 468 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 468 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object (self, _tmp2_);
-#line 468 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 468 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
 #line 1345 "tracker-builder.c"
 }
@@ -1355,15 +1355,15 @@ void tracker_sparql_builder_object_iri (TrackerSparqlBuilder* self, const gchar*
  * Since: 0.10
  */
 static void _vala_array_add12 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 489 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 489 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 489 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 489 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 489 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 489 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 1365 "tracker-builder.c"
 	}
-#line 489 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 489 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 1369 "tracker-builder.c"
 }
@@ -1382,58 +1382,58 @@ void tracker_sparql_builder_object (TrackerSparqlBuilder* self, const gchar* s) 
 	TrackerSparqlBuilderState* _tmp11_;
 	gint _tmp11__length1;
 	gint _tmp12_;
-#line 480 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 480 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 480 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 480 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (s != NULL);
-#line 480 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 480 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 480 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 480 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 480 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 480 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 480 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 480 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 480 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 480 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_PREDICATE) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT));
-#line 483 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 483 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 483 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 483 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 483 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 483 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
 #line 1406 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 484 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 484 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 484 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 484 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " ,");
-#line 485 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 485 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
-#line 485 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 485 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = _tmp7_ - 1;
 #line 1417 "tracker-builder.c"
 	}
-#line 487 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 487 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->str;
-#line 487 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 487 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp8_, " ");
-#line 488 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 488 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = self->priv->str;
-#line 488 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 488 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = s;
-#line 488 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 488 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp9_, _tmp10_);
-#line 489 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 489 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11_ = self->priv->states;
-#line 489 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 489 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11__length1 = self->priv->states_length1;
-#line 489 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 489 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add12 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
-#line 491 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 491 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12_ = self->priv->_length;
-#line 491 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 491 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp12_ + 1);
 #line 1439 "tracker-builder.c"
 }
@@ -1450,15 +1450,15 @@ void tracker_sparql_builder_object (TrackerSparqlBuilder* self, const gchar* s) 
  * Since: 0.10
  */
 static void _vala_array_add13 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 543 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 543 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 543 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 543 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 543 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 543 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 1460 "tracker-builder.c"
 	}
-#line 543 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 543 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 1464 "tracker-builder.c"
 }
@@ -1478,48 +1478,48 @@ void tracker_sparql_builder_object_string (TrackerSparqlBuilder* self, const gch
 	TrackerSparqlBuilderState* _tmp26_;
 	gint _tmp26__length1;
 	gint _tmp27_;
-#line 504 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 504 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 504 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 504 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (literal != NULL);
-#line 504 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 504 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 504 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 504 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 504 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 504 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 504 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 504 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 504 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 504 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_PREDICATE) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT));
-#line 507 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 507 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 507 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 507 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 507 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 507 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
 #line 1502 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 508 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 508 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 508 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 508 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " ,");
-#line 509 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 509 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
-#line 509 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 509 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = _tmp7_ - 1;
 #line 1513 "tracker-builder.c"
 	}
-#line 512 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 512 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->str;
-#line 512 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 512 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp8_, " \"");
-#line 514 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 514 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = literal;
-#line 514 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 514 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	p = _tmp9_;
-#line 515 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 515 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	while (TRUE) {
 #line 1525 "tracker-builder.c"
 		gchar* _tmp10_;
@@ -1533,129 +1533,129 @@ void tracker_sparql_builder_object_string (TrackerSparqlBuilder* self, const gch
 		gsize _tmp17_;
 		gchar* _tmp18_;
 		gchar* _tmp24_;
-#line 515 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 515 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp10_ = p;
-#line 515 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 515 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		if (!((*_tmp10_) != '\0')) {
-#line 515 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 515 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			break;
 #line 1543 "tracker-builder.c"
 		}
-#line 516 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 516 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp11_ = p;
-#line 516 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 516 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp12_ = strcspn ((const gchar*) _tmp11_, "\t\n\r\"\\");
-#line 516 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 516 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		len = _tmp12_;
-#line 517 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 517 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp13_ = self->priv->str;
-#line 517 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 517 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp14_ = p;
-#line 517 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 517 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp15_ = len;
-#line 517 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 517 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append_len (_tmp13_, (const gchar*) _tmp14_, (gssize) ((glong) _tmp15_));
-#line 518 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 518 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp16_ = p;
-#line 518 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 518 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp17_ = len;
-#line 518 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 518 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		p = _tmp16_ + _tmp17_;
-#line 519 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp18_ = p;
-#line 519 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		switch (*_tmp18_) {
-#line 519 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			case '\t':
 #line 1571 "tracker-builder.c"
 			{
 				GString* _tmp19_;
-#line 521 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 521 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				_tmp19_ = self->priv->str;
-#line 521 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 521 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				g_string_append (_tmp19_, "\\t");
-#line 522 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 522 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				break;
 #line 1580 "tracker-builder.c"
 			}
-#line 519 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			case '\n':
 #line 1584 "tracker-builder.c"
 			{
 				GString* _tmp20_;
-#line 524 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 524 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				_tmp20_ = self->priv->str;
-#line 524 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 524 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				g_string_append (_tmp20_, "\\n");
-#line 525 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 525 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				break;
 #line 1593 "tracker-builder.c"
 			}
-#line 519 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			case '\r':
 #line 1597 "tracker-builder.c"
 			{
 				GString* _tmp21_;
-#line 527 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 527 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				_tmp21_ = self->priv->str;
-#line 527 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 527 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				g_string_append (_tmp21_, "\\r");
-#line 528 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 528 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				break;
 #line 1606 "tracker-builder.c"
 			}
-#line 519 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			case '"':
 #line 1610 "tracker-builder.c"
 			{
 				GString* _tmp22_;
-#line 530 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 530 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				_tmp22_ = self->priv->str;
-#line 530 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 530 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				g_string_append (_tmp22_, "\\\"");
-#line 531 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 531 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				break;
 #line 1619 "tracker-builder.c"
 			}
-#line 519 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 519 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			case '\\':
 #line 1623 "tracker-builder.c"
 			{
 				GString* _tmp23_;
-#line 533 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 533 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				_tmp23_ = self->priv->str;
-#line 533 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 533 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				g_string_append (_tmp23_, "\\\\");
-#line 534 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 534 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				break;
 #line 1632 "tracker-builder.c"
 			}
 			default:
 			{
-#line 536 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 536 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 				continue;
 #line 1638 "tracker-builder.c"
 			}
 		}
-#line 538 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 538 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp24_ = p;
-#line 538 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 538 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		p = _tmp24_ + 1;
 #line 1645 "tracker-builder.c"
 	}
-#line 541 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 541 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp25_ = self->priv->str;
-#line 541 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 541 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp25_, "\"");
-#line 543 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 543 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp26_ = self->priv->states;
-#line 543 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 543 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp26__length1 = self->priv->states_length1;
-#line 543 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 543 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add13 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
-#line 545 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 545 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp27_ = self->priv->_length;
-#line 545 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 545 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp27_ + 1);
 #line 1661 "tracker-builder.c"
 }
@@ -1847,26 +1847,26 @@ void tracker_sparql_builder_object_unvalidated (TrackerSparqlBuilder* self, cons
 	gchar* _tmp1_ = NULL;
 	gboolean _tmp2_ = FALSE;
 	const gchar* _tmp10_;
-#line 557 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 557 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 557 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 557 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (value != NULL);
-#line 560 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 560 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = value;
-#line 560 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 560 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = g_utf8_validate (_tmp0_, (gssize) (-1), &_tmp1_);
-#line 560 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 560 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	end = _tmp1_;
-#line 560 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 560 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (!_tmp2_) {
 #line 1863 "tracker-builder.c"
 		const gchar* _tmp3_;
 		gchar* _tmp4_;
-#line 561 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 561 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp3_ = value;
-#line 561 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 561 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp4_ = end;
-#line 561 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 561 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		if (_tmp3_ != _tmp4_) {
 #line 1872 "tracker-builder.c"
 			const gchar* _tmp5_;
@@ -1874,33 +1874,33 @@ void tracker_sparql_builder_object_unvalidated (TrackerSparqlBuilder* self, cons
 			const gchar* _tmp7_;
 			gchar* _tmp8_ = NULL;
 			gchar* _tmp9_;
-#line 562 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 562 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp5_ = value;
-#line 562 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 562 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp6_ = end;
-#line 562 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 562 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp7_ = value;
-#line 562 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 562 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp8_ = string_substring (_tmp5_, (glong) 0, (glong) (_tmp6_ - ((gchar*) _tmp7_)));
-#line 562 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 562 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp9_ = _tmp8_;
-#line 562 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 562 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			tracker_sparql_builder_object_string (self, _tmp9_);
-#line 562 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 562 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_g_free0 (_tmp9_);
 #line 1892 "tracker-builder.c"
 		} else {
-#line 564 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 564 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			tracker_sparql_builder_object_string (self, "(invalid data)");
 #line 1896 "tracker-builder.c"
 		}
-#line 567 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 567 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		return;
 #line 1900 "tracker-builder.c"
 	}
-#line 570 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 570 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = value;
-#line 570 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 570 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object_string (self, _tmp10_);
 #line 1906 "tracker-builder.c"
 }
@@ -1919,23 +1919,23 @@ void tracker_sparql_builder_object_boolean (TrackerSparqlBuilder* self, gboolean
 	const gchar* _tmp0_ = NULL;
 	gboolean _tmp1_;
 	const gchar* _tmp2_;
-#line 582 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 582 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 583 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 583 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = literal;
-#line 583 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 583 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp1_) {
-#line 583 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 583 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = "true";
 #line 1931 "tracker-builder.c"
 	} else {
-#line 583 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 583 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = "false";
 #line 1935 "tracker-builder.c"
 	}
-#line 583 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 583 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp0_;
-#line 583 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 583 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object (self, _tmp2_);
 #line 1941 "tracker-builder.c"
 }
@@ -1954,17 +1954,17 @@ void tracker_sparql_builder_object_int64 (TrackerSparqlBuilder* self, gint64 lit
 	gint64 _tmp0_;
 	gchar* _tmp1_ = NULL;
 	gchar* _tmp2_;
-#line 595 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 595 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 596 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 596 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = literal;
-#line 596 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 596 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = g_strdup_printf ("%" G_GINT64_FORMAT, _tmp0_);
-#line 596 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 596 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 596 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 596 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object (self, _tmp2_);
-#line 596 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 596 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
 #line 1970 "tracker-builder.c"
 }
@@ -2013,45 +2013,45 @@ void tracker_sparql_builder_object_date (TrackerSparqlBuilder* self, time_t* lit
 	gint _tmp13_;
 	gchar* _tmp14_ = NULL;
 	gchar* _tmp15_;
-#line 609 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 609 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 610 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 610 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = *literal;
-#line 610 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 610 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_time_gm (_tmp0_, &_tmp1_);
-#line 610 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 610 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tm = _tmp1_;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tm;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_.tm_year;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tm;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_.tm_mon;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = tm;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp6_.tm_mday;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = tm;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = _tmp8_.tm_hour;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = tm;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp11_ = _tmp10_.tm_min;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp12_ = tm;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp13_ = _tmp12_.tm_sec;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp14_ = g_strdup_printf ("%04d-%02d-%02dT%02d:%02d:%02dZ", _tmp3_ + 1900, _tmp5_ + 1, _tmp7_, _tmp9_, _tmp11_, _tmp13_);
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp15_ = _tmp14_;
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object_string (self, _tmp15_);
-#line 612 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 612 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp15_);
 #line 2057 "tracker-builder.c"
 }
@@ -2100,17 +2100,17 @@ void tracker_sparql_builder_object_double (TrackerSparqlBuilder* self, gdouble l
 	gdouble _tmp0_;
 	gchar* _tmp1_ = NULL;
 	gchar* _tmp2_;
-#line 624 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 624 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 625 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 625 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = literal;
-#line 625 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 625 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = double_to_string (_tmp0_);
-#line 625 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 625 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp1_;
-#line 625 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 625 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_object (self, _tmp2_);
-#line 625 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 625 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp2_);
 #line 2116 "tracker-builder.c"
 }
@@ -2127,15 +2127,15 @@ void tracker_sparql_builder_object_double (TrackerSparqlBuilder* self, gdouble l
  * Since: 0.10
  */
 static void _vala_array_add14 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 646 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 646 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 646 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 2137 "tracker-builder.c"
 	}
-#line 646 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 2141 "tracker-builder.c"
 }
@@ -2151,46 +2151,46 @@ void tracker_sparql_builder_object_blank_open (TrackerSparqlBuilder* self) {
 	GString* _tmp8_;
 	TrackerSparqlBuilderState* _tmp9_;
 	gint _tmp9__length1;
-#line 638 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 638 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 638 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 638 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 638 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 638 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 638 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 638 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = tracker_sparql_builder_get_state (self);
-#line 638 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 638 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 638 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 638 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_PREDICATE) || (_tmp3_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT));
-#line 641 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 641 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = tracker_sparql_builder_get_state (self);
-#line 641 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 641 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = _tmp4_;
-#line 641 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 641 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp5_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
 #line 2173 "tracker-builder.c"
 		GString* _tmp6_;
 		gint _tmp7_;
-#line 642 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 642 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = self->priv->str;
-#line 642 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 642 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp6_, " ,");
-#line 643 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 643 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp7_ = self->priv->states_length1;
-#line 643 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 643 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = _tmp7_ - 1;
 #line 2184 "tracker-builder.c"
 	}
-#line 645 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 645 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->str;
-#line 645 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 645 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp8_, " [");
-#line 646 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = self->priv->states;
-#line 646 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9__length1 = self->priv->states_length1;
-#line 646 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 646 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add14 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_BLANK);
 #line 2196 "tracker-builder.c"
 }
@@ -2205,15 +2205,15 @@ void tracker_sparql_builder_object_blank_open (TrackerSparqlBuilder* self) {
  * Since: 0.10
  */
 static void _vala_array_add15 (TrackerSparqlBuilderState** array, int* length, int* size, TrackerSparqlBuilderState value) {
-#line 662 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 662 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if ((*length) == (*size)) {
-#line 662 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 662 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 662 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 662 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		*array = g_renew (TrackerSparqlBuilderState, *array, *size);
 #line 2215 "tracker-builder.c"
 	}
-#line 662 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 662 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	(*array)[(*length)++] = value;
 #line 2219 "tracker-builder.c"
 }
@@ -2234,45 +2234,45 @@ void tracker_sparql_builder_object_blank_close (TrackerSparqlBuilder* self) {
 	TrackerSparqlBuilderState* _tmp9_;
 	gint _tmp9__length1;
 	gint _tmp10_;
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = self->priv->states;
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2__length1 = self->priv->states_length1;
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = self->priv->states;
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3__length1 = self->priv->states_length1;
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = _tmp2_[_tmp3__length1 - 3];
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = tracker_sparql_builder_get_state (self);
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = _tmp5_;
-#line 657 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 657 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail ((_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) && (_tmp4_ == TRACKER_SPARQL_BUILDER_STATE_BLANK));
-#line 660 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 660 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = self->priv->str;
-#line 660 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 660 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp7_, "]");
-#line 661 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 661 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 661 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 661 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->states_length1;
-#line 662 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 662 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = self->priv->states;
-#line 662 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 662 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9__length1 = self->priv->states_length1;
-#line 662 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 662 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_vala_array_add15 (&self->priv->states, &self->priv->states_length1, &self->priv->_states_size_, TRACKER_SPARQL_BUILDER_STATE_OBJECT);
-#line 664 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 664 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp10_ = self->priv->_length;
-#line 664 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 664 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp10_ + 1);
 #line 2278 "tracker-builder.c"
 }
@@ -2293,25 +2293,25 @@ void tracker_sparql_builder_prepend (TrackerSparqlBuilder* self, const gchar* ra
 	gchar* _tmp2_ = NULL;
 	gchar* _tmp3_;
 	gint _tmp4_;
-#line 676 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 676 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 676 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 676 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (raw != NULL);
-#line 678 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 678 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = self->priv->str;
-#line 678 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 678 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = raw;
-#line 678 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 678 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = g_strdup_printf ("%s\n", _tmp1_);
-#line 678 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 678 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp3_ = _tmp2_;
-#line 678 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 678 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_prepend (_tmp0_, _tmp3_);
-#line 678 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 678 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_free0 (_tmp3_);
-#line 680 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 680 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = self->priv->_length;
-#line 680 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 680 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp4_ + 1);
 #line 2317 "tracker-builder.c"
 }
@@ -2332,38 +2332,38 @@ void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw
 	GString* _tmp4_;
 	const gchar* _tmp5_;
 	gint _tmp6_;
-#line 692 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 692 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 692 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 692 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (raw != NULL);
-#line 694 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 694 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = tracker_sparql_builder_get_state (self);
-#line 694 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 694 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = _tmp0_;
-#line 694 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 694 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp1_ == TRACKER_SPARQL_BUILDER_STATE_OBJECT) {
 #line 2346 "tracker-builder.c"
 		GString* _tmp2_;
 		gint _tmp3_;
-#line 695 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 695 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp2_ = self->priv->str;
-#line 695 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 695 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_string_append (_tmp2_, " .\n");
-#line 696 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 696 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		self->priv->states_length1 = self->priv->states_length1 - 3;
-#line 696 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 696 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp3_ = self->priv->states_length1;
 #line 2357 "tracker-builder.c"
 	}
-#line 699 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 699 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp4_ = self->priv->str;
-#line 699 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 699 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp5_ = raw;
-#line 699 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 699 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_string_append (_tmp4_, _tmp5_);
-#line 701 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 701 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp6_ = self->priv->_length;
-#line 701 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 701 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_set_length (self, _tmp6_ + 1);
 #line 2369 "tracker-builder.c"
 }
@@ -2371,16 +2371,16 @@ void tracker_sparql_builder_append (TrackerSparqlBuilder* self, const gchar* raw
 
 TrackerSparqlBuilder* tracker_sparql_builder_construct (GType object_type) {
 	TrackerSparqlBuilder * self = NULL;
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self = (TrackerSparqlBuilder*) g_object_new (object_type, NULL);
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return self;
 #line 2379 "tracker-builder.c"
 }
 
 
 TrackerSparqlBuilder* tracker_sparql_builder_new (void) {
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return tracker_sparql_builder_construct (TRACKER_SPARQL_TYPE_BUILDER);
 #line 2386 "tracker-builder.c"
 }
@@ -2394,15 +2394,15 @@ const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self) {
 	gboolean _tmp7_;
 	GString* _tmp8_;
 	const gchar* _tmp9_;
-#line 107 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 107 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = self->priv->states;
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1__length1 = self->priv->states_length1;
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	if (_tmp1__length1 == 1) {
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = TRUE;
 #line 2408 "tracker-builder.c"
 	} else {
@@ -2411,46 +2411,46 @@ const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self) {
 		gint _tmp3__length1;
 		TrackerSparqlBuilderState _tmp4_;
 		gboolean _tmp6_;
-#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp3_ = self->priv->states;
-#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp3__length1 = self->priv->states_length1;
-#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp4_ = _tmp3_[0];
-#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		if (_tmp4_ == TRACKER_SPARQL_BUILDER_STATE_EMBEDDED_INSERT) {
 #line 2423 "tracker-builder.c"
 			TrackerSparqlBuilderState* _tmp5_;
 			gint _tmp5__length1;
-#line 110 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 110 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp5_ = self->priv->states;
-#line 110 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 110 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp5__length1 = self->priv->states_length1;
-#line 110 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 110 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp2_ = _tmp5__length1 == 3;
 #line 2432 "tracker-builder.c"
 		} else {
-#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 			_tmp2_ = FALSE;
 #line 2436 "tracker-builder.c"
 		}
-#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp6_ = _tmp2_;
-#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		_tmp0_ = _tmp6_;
 #line 2442 "tracker-builder.c"
 	}
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp7_ = _tmp0_;
-#line 108 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_warn_if_fail (_tmp7_);
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp8_ = self->priv->str;
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp9_ = _tmp8_->str;
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	result = _tmp9_;
-#line 111 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return result;
 #line 2456 "tracker-builder.c"
 }
@@ -2459,13 +2459,13 @@ const gchar* tracker_sparql_builder_get_result (TrackerSparqlBuilder* self) {
 gint tracker_sparql_builder_get_length (TrackerSparqlBuilder* self) {
 	gint result;
 	gint _tmp0_;
-#line 134 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 134 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_val_if_fail (self != NULL, 0);
-#line 134 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 134 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = self->priv->_length;
-#line 134 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 134 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	result = _tmp0_;
-#line 134 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 134 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return result;
 #line 2471 "tracker-builder.c"
 }
@@ -2473,13 +2473,13 @@ gint tracker_sparql_builder_get_length (TrackerSparqlBuilder* self) {
 
 static void tracker_sparql_builder_set_length (TrackerSparqlBuilder* self, gint value) {
 	gint _tmp0_;
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_if_fail (self != NULL);
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = value;
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->_length = _tmp0_;
-#line 135 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 135 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_notify ((GObject *) self, "length");
 #line 2485 "tracker-builder.c"
 }
@@ -2492,36 +2492,36 @@ TrackerSparqlBuilderState tracker_sparql_builder_get_state (TrackerSparqlBuilder
 	TrackerSparqlBuilderState* _tmp1_;
 	gint _tmp1__length1;
 	TrackerSparqlBuilderState _tmp2_;
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_return_val_if_fail (self != NULL, 0);
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = self->priv->states;
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0__length1 = self->priv->states_length1;
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1_ = self->priv->states;
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp1__length1 = self->priv->states_length1;
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp2_ = _tmp0_[_tmp1__length1 - 1];
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	result = _tmp2_;
-#line 157 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	return result;
 #line 2512 "tracker-builder.c"
 }
 
 
 static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass) {
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	tracker_sparql_builder_parent_class = g_type_class_peek_parent (klass);
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_type_class_add_private (klass, sizeof (TrackerSparqlBuilderPrivate));
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	G_OBJECT_CLASS (klass)->get_property = _vala_tracker_sparql_builder_get_property;
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	G_OBJECT_CLASS (klass)->set_property = _vala_tracker_sparql_builder_set_property;
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_sparql_builder_finalize;
 #line 2527 "tracker-builder.c"
 	/**
@@ -2531,7 +2531,7 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 	 *
 	 * Since: 0.10
 	 */
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_SPARQL_BUILDER_RESULT, g_param_spec_string ("result", "result", "result", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
 #line 2537 "tracker-builder.c"
 	/**
@@ -2541,7 +2541,7 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 	 *
 	 * Since: 0.10
 	 */
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_SPARQL_BUILDER_LENGTH, g_param_spec_int ("length", "length", "length", G_MININT, G_MAXINT, 0, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
 #line 2547 "tracker-builder.c"
 	/**
@@ -2551,7 +2551,7 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 	 *
 	 * Since: 0.10
 	 */
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_SPARQL_BUILDER_STATE, g_param_spec_enum ("state", "state", "state", TRACKER_SPARQL_BUILDER_TYPE_STATE, 0, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
 #line 2557 "tracker-builder.c"
 }
@@ -2559,11 +2559,11 @@ static void tracker_sparql_builder_class_init (TrackerSparqlBuilderClass * klass
 
 static void tracker_sparql_builder_instance_init (TrackerSparqlBuilder * self) {
 	GString* _tmp0_;
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv = TRACKER_SPARQL_BUILDER_GET_PRIVATE (self);
-#line 161 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 161 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_tmp0_ = g_string_new ("");
-#line 161 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 161 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->str = _tmp0_;
 #line 2569 "tracker-builder.c"
 }
@@ -2571,13 +2571,13 @@ static void tracker_sparql_builder_instance_init (TrackerSparqlBuilder * self) {
 
 static void tracker_sparql_builder_finalize (GObject* obj) {
 	TrackerSparqlBuilder * self;
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self = TRACKER_SPARQL_BUILDER (obj);
-#line 160 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	self->priv->states = (g_free (self->priv->states), NULL);
-#line 161 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 161 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	_g_string_free0 (self->priv->str);
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	G_OBJECT_CLASS (tracker_sparql_builder_parent_class)->finalize (obj);
 #line 2583 "tracker-builder.c"
 }
@@ -2607,31 +2607,31 @@ GType tracker_sparql_builder_get_type (void) {
 static void _vala_tracker_sparql_builder_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
 	TrackerSparqlBuilder * self;
 	self = TRACKER_SPARQL_BUILDER (object);
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	switch (property_id) {
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		case TRACKER_SPARQL_BUILDER_RESULT:
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_value_set_string (value, tracker_sparql_builder_get_result (self));
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		case TRACKER_SPARQL_BUILDER_LENGTH:
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_value_set_int (value, tracker_sparql_builder_get_length (self));
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		case TRACKER_SPARQL_BUILDER_STATE:
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		g_value_set_enum (value, tracker_sparql_builder_get_state (self));
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
 #line 2631 "tracker-builder.c"
 		default:
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
 #line 2637 "tracker-builder.c"
 	}
@@ -2641,19 +2641,19 @@ static void _vala_tracker_sparql_builder_get_property (GObject * object, guint p
 static void _vala_tracker_sparql_builder_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
 	TrackerSparqlBuilder * self;
 	self = TRACKER_SPARQL_BUILDER (object);
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 	switch (property_id) {
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		case TRACKER_SPARQL_BUILDER_LENGTH:
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		tracker_sparql_builder_set_length (self, g_value_get_int (value));
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
 #line 2653 "tracker-builder.c"
 		default:
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-builder.vala"
+#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-builder.vala"
 		break;
 #line 2659 "tracker-builder.c"
 	}

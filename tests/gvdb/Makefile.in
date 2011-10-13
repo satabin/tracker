@@ -46,8 +46,8 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-noinst_PROGRAMS = ontology-graph$(EXEEXT) ttl2sgml$(EXEEXT)
-subdir = docs/tools
+noinst_PROGRAMS = $(am__EXEEXT_1)
+subdir = tests/gvdb
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
 	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/iconv.m4 \
@@ -66,28 +66,20 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
+am__EXEEXT_1 = gvdb-test$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
-am_ontology_graph_OBJECTS = ontology-graph.$(OBJEXT)
-ontology_graph_OBJECTS = $(am_ontology_graph_OBJECTS)
-ontology_graph_LDADD = $(LDADD)
+am_gvdb_test_OBJECTS = gvdb_test-gvdb-test.$(OBJEXT)
+gvdb_test_OBJECTS = $(am_gvdb_test_OBJECTS)
 am__DEPENDENCIES_1 =
-ontology_graph_DEPENDENCIES =  \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-data/libtracker-data.la \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+gvdb_test_DEPENDENCIES = $(top_builddir)/src/gvdb/libgvdb.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
-am_ttl2sgml_OBJECTS = ttl2sgml.$(OBJEXT) ttl_loader.$(OBJEXT) \
-	ttl_model.$(OBJEXT) qname.$(OBJEXT) ttl_sgml.$(OBJEXT)
-ttl2sgml_OBJECTS = $(am_ttl2sgml_OBJECTS)
-ttl2sgml_LDADD = $(LDADD)
-ttl2sgml_DEPENDENCIES =  \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-data/libtracker-data.la \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+gvdb_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(gvdb_test_CFLAGS) \
+	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -114,8 +106,8 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(ontology_graph_SOURCES) $(ttl2sgml_SOURCES)
-DIST_SOURCES = $(ontology_graph_SOURCES) $(ttl2sgml_SOURCES)
+SOURCES = $(gvdb_test_SOURCES)
+DIST_SOURCES = $(gvdb_test_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -433,36 +425,23 @@ GTESTER = gtester 			# for non-GLIB packages
 GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
-TEST_PROGS = 
+TEST_PROGS = gvdb-test
 AM_CPPFLAGS = \
-	$(BUILD_CFLAGS)                                \
-	-DTOP_SRCDIR=\"$(top_srcdir)\"                 \
 	-I$(top_srcdir)/src                            \
 	-I$(top_builddir)/src                          \
+	-DSHAREDIR=\""$(datadir)"\"                    \
 	$(LIBTRACKER_DATA_CFLAGS)
 
-LDADD = \
-	$(top_builddir)/src/libtracker-common/libtracker-common.la \
-	$(top_builddir)/src/libtracker-data/libtracker-data.la \
-	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
-	$(LIBTRACKER_DATA_LIBS) \
-	$(BUILD_LIBS)
+gvdb_test_SOURCES = gvdb-test.c
+gvdb_test_LDADD = $(top_builddir)/src/gvdb/libgvdb.la 	\
+			$(BUILD_LIBS) 				\
+			$(GVDB_LIBS) 				\
+			$(TRACKER_UTILS_LIBS)
 
-ontology_graph_SOURCES = \
-	ontology-graph.c
+gvdb_test_CFLAGS = $(BUILD_CFLAGS) \
+			$(GVDB_CFLAGS) 	\
+			$(TRACKER_UTILS_CFLAGS)
 
-ttl2sgml_SOURCES = \
-	ttl2sgml.c                                     \
-	ttl_loader.h                                   \
-	ttl_loader.c                                   \
-	ttl_model.h                                    \
-	ttl_model.c                                    \
-	qname.h                                        \
-	qname.c                                        \
-	ttl_sgml.h                                     \
-	ttl_sgml.c
-
-EXTRA_DIST = gen-doc.sh
 all: all-am
 
 .SUFFIXES:
@@ -476,9 +455,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/Makefile.decl $(am__
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu docs/tools/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu tests/gvdb/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu docs/tools/Makefile
+	  $(AUTOMAKE) --gnu tests/gvdb/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -506,12 +485,9 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-ontology-graph$(EXEEXT): $(ontology_graph_OBJECTS) $(ontology_graph_DEPENDENCIES) 
-	@rm -f ontology-graph$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(ontology_graph_OBJECTS) $(ontology_graph_LDADD) $(LIBS)
-ttl2sgml$(EXEEXT): $(ttl2sgml_OBJECTS) $(ttl2sgml_DEPENDENCIES) 
-	@rm -f ttl2sgml$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(ttl2sgml_OBJECTS) $(ttl2sgml_LDADD) $(LIBS)
+gvdb-test$(EXEEXT): $(gvdb_test_OBJECTS) $(gvdb_test_DEPENDENCIES) 
+	@rm -f gvdb-test$(EXEEXT)
+	$(AM_V_CCLD)$(gvdb_test_LINK) $(gvdb_test_OBJECTS) $(gvdb_test_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -519,12 +495,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ontology-graph.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qname.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ttl2sgml.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ttl_loader.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ttl_model.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ttl_sgml.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gvdb_test-gvdb-test.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -549,6 +520,22 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+gvdb_test-gvdb-test.o: gvdb-test.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gvdb_test_CFLAGS) $(CFLAGS) -MT gvdb_test-gvdb-test.o -MD -MP -MF $(DEPDIR)/gvdb_test-gvdb-test.Tpo -c -o gvdb_test-gvdb-test.o `test -f 'gvdb-test.c' || echo '$(srcdir)/'`gvdb-test.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/gvdb_test-gvdb-test.Tpo $(DEPDIR)/gvdb_test-gvdb-test.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='gvdb-test.c' object='gvdb_test-gvdb-test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gvdb_test_CFLAGS) $(CFLAGS) -c -o gvdb_test-gvdb-test.o `test -f 'gvdb-test.c' || echo '$(srcdir)/'`gvdb-test.c
+
+gvdb_test-gvdb-test.obj: gvdb-test.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gvdb_test_CFLAGS) $(CFLAGS) -MT gvdb_test-gvdb-test.obj -MD -MP -MF $(DEPDIR)/gvdb_test-gvdb-test.Tpo -c -o gvdb_test-gvdb-test.obj `if test -f 'gvdb-test.c'; then $(CYGPATH_W) 'gvdb-test.c'; else $(CYGPATH_W) '$(srcdir)/gvdb-test.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/gvdb_test-gvdb-test.Tpo $(DEPDIR)/gvdb_test-gvdb-test.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='gvdb-test.c' object='gvdb_test-gvdb-test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gvdb_test_CFLAGS) $(CFLAGS) -c -o gvdb_test-gvdb-test.obj `if test -f 'gvdb-test.c'; then $(CYGPATH_W) 'gvdb-test.c'; else $(CYGPATH_W) '$(srcdir)/gvdb-test.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

@@ -88,7 +88,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = common libtracker-common libtracker-extract \
+DIST_SUBDIRS = common gvdb libtracker-common libtracker-extract \
 	libtracker-miner libtracker-data libtracker-sparql \
 	tracker-steroids tracker-writeback functional-tests \
 	libtracker-fts
@@ -433,9 +433,10 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = 
-SUBDIRS = common libtracker-common libtracker-extract libtracker-miner \
-	libtracker-data libtracker-sparql tracker-steroids \
-	tracker-writeback $(am__append_1) $(am__append_2)
+SUBDIRS = common gvdb libtracker-common libtracker-extract \
+	libtracker-miner libtracker-data libtracker-sparql \
+	tracker-steroids tracker-writeback $(am__append_1) \
+	$(am__append_2)
 all: all-recursive
 
 .SUFFIXES:

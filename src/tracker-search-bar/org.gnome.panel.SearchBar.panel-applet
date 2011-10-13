@@ -1,6 +1,6 @@
 [Applet Factory]
 Id=SearchBarFactory
-Location=/usr/libexec/tracker-search-bar
+Location=/usr/lib/tracker-search-bar
 Name=Search Bar
 Name[el]=Μπάρα αναζήτησης
 Name[et]=Otsiriba
@@ -18,4 +18,4 @@ BonoboId=OAFIID:GNOME_SearchBar
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=tracker
 X-GNOME-Bugzilla-Component=Applet / Search Bar
-X-GNOME-Bugzilla-Version=0.12.4
+X-GNOME-Bugzilla-Version=0.12.5

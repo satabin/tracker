@@ -1,3 +1,66 @@
+2011-10-13  Jürg Billeter  <j@bitron.ch>
+
+	Release 0.12.5
+
+2011-10-13  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-extract: Use black background for transparant album art
+	Fixes NB#272997.
+
+2011-10-13  Ivan Frade  <ivan.frade@gmail.com>
+
+	doc/tools: Include GCov flags (fixes building error with doc + coverage)
+
+	tests: Testing gvdb to get a good coverage report
+
+2011-10-12  Jürg Billeter  <j@bitron.ch>
+
+	tracker-miner-fs: Fix crash in ReindexMimeTypes
+	TrackerDBusRequest and GDBusMethodInvocation were freed twice.
+
+	Fixes NB#286103.
+
+	SPARQL: Support DELETE WHERE {...}
+	The DELETE WHERE operation is a short form where the pattern is also
+	used as the template for deletion. Syntax is specified in current
+	SPARQL 1.1 Update draft.
+
+	SPARQL: Support SELECT (Expression AS Var) syntax
+	Syntax specified in current SPARQL 1.1 Query draft.
+
+2011-10-12  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-writeback: Don't warn in case of unsupported format for writeback
+	Fixes NB#285979.
+
+2011-10-12  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-control: List/control processes for the calling user only
+	Fixes GB#655177.
+
+2011-10-12  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-10-12  Aleksander Morgado  <aleksander@lanedo.com>
+
+	tracker-extract,gstreamer: flag renamed from TAGS to LIGHTWEIGHT in GStreamer
+	See:
+	  https://bugzilla.gnome.org/show_bug.cgi?id=656345#c2
+	  https://projects.maemo.org/bugzilla/show_bug.cgi?id=284430#c15
+
+2011-10-12  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-bus: Plug 2 leaks
+
+2011-10-12  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2011-10-06  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
 2011-10-06  Martyn Russell  <martyn@lanedo.com>
 
 	Release 0.12.4
@@ -1527,7 +1590,7 @@
 
 	Updated Slovenian translation
 
-2011-08-05  Christian Kirbach  <Christian.Kirbach@googlemail.com>
+2011-08-06  Christian Kirbach  <Christian.Kirbach@googlemail.com>
 
 	[l10n] Updated German translation
 
@@ -2850,11 +2913,11 @@
 
 	Insert nco:EmailAddress resources
 
-2011-06-04  Adrien Bustany  <abustany@gnome.org>
-
 	Add indexing delay to prefs
 
 	Can build SPARQL to insert messages
+
+2011-06-04  Adrien Bustany  <abustany@gnome.org>
 
 	Can list all messages
 
@@ -2938,7 +3001,7 @@
 	acquire the bus name, leaving the other with a bus name but
 	ignorant about the mtime check needed.
 
-2011-06-01  Gil Forcada  <gforcada@gnome.org>
+2011-06-02  Gil Forcada  <gforcada@gnome.org>
 
 	[l10n]Updated Catalan translation
 
@@ -4277,7 +4340,7 @@
 
 	Update Simplified Chinese translation.
 
-2011-03-24  Carlos Garnacho  <carlosg@gnome.org>
+2011-03-25  Carlos Garnacho  <carlosg@gnome.org>
 
 	tracker-needle: Fix alignment of folders without known parent
 
@@ -6087,7 +6150,7 @@
 
 	libtracker-data: Fix C warning in tracker-db-interface-sqlite.c
 
-2011-01-21  Javier Jardón  <jjardon@gnome.org>
+2011-01-22  Javier Jardón  <jjardon@gnome.org>
 
 	tracker-needle: Use accessor functions instead direct access
 	Fixes https://bugzilla.gnome.org/show_bug.cgi?id=640231
@@ -6529,8 +6592,6 @@
 
 	tracker-needle: Add Ctrl+W to close window
 	Fixes GB#639543, Ctrl+W should close the window
-
-2011-01-14  Martyn Russell  <martyn@lanedo.com>
 
 	tracker-needle: Use a meaningful window title "Desktop Search"
 	Fixes GB#639552, Give needle window a name that means something
@@ -7509,7 +7570,7 @@
 
 	docs: Document the TRACKER_PRAGMAS_FILE environment variable
 
-2010-11-27  Martyn Russell  <martyn@lanedo.com>
+2010-11-28  Martyn Russell  <martyn@lanedo.com>
 
 	Fixes GB#635757, missing test file in tarball
 
@@ -8078,7 +8139,7 @@
 
 	Updated Slovenian translation
 
-2010-10-29  Carles Ferrando  <carles.ferrando@gmail.com>
+2010-10-30  Carles Ferrando  <carles.ferrando@gmail.com>
 
 	Added Catalan (Valencian) translation
 
@@ -8102,7 +8163,7 @@
 
 	tracker-preferences: Fixed check which used "text" not "test"
 
-2010-10-28  Jorge González  <jorgegonz@svn.gnome.org>
+2010-10-29  Jorge González  <jorgegonz@svn.gnome.org>
 
 	Updated Spanish translation
 
@@ -8762,7 +8823,7 @@
 	Those classes shouldn't be run in the tests. Are there to organize the code
 	but don't contain useful tests by themselves.
 
-2010-10-13  Mikael Ottela  <mikael.ottela@ixonos.com>
+2010-10-14  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Fix the gupnp-dlna extractor to use the tracker_sparql_escape_uri_printf
 
@@ -9617,7 +9678,7 @@
 	tracker-store: Send D-Bus replies for BatchCommit
 	Fixes NB#189896.
 
-2010-09-02  Daniel Nylander  <po@danielnylander.se>
+2010-09-03  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -10963,7 +11024,7 @@
 	    Thus, adding an extra reference during the g_file_enumerate_children_async()
 	    for the specific GFile being used.
 
-2010-08-01  Gabor Kelemen  <kelemeng@gnome.hu>
+2010-08-02  Gabor Kelemen  <kelemeng@gnome.hu>
 
 	Updated Hungarian translation
 
@@ -13151,7 +13212,7 @@
 
 	tracker-extract: gstreamer: Bugfix for NB#169119, critical about unref of an object
 
-2010-05-16  Petr Kovar  <pknbe@volny.cz>
+2010-05-17  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -13538,7 +13599,7 @@
 
 	Update Czech translation by Marek Cernocky
 
-2010-05-01  Mario Blättermann  <mariobl@gnome.org>
+2010-05-02  Mario Blättermann  <mariobl@gnome.org>
 
 	Updated German translation
 
@@ -13572,9 +13633,9 @@
 
 	libtracker-data: Fixed compilation warning
 
-2010-04-29  Philip Van Hoof  <philip@codeminded.be>
-
 	libtracker-db: Fix for last commit, || should be &&
+
+2010-04-29  Philip Van Hoof  <philip@codeminded.be>
 
 	libtracker-db: Avoid strstr in uri_is_parent and uri_is_descendant
 
@@ -13767,7 +13828,7 @@
 
 	libstemmer: Bugfix NB#164958, FTS doesn't work for "beautif" and "beautifu"
 
-2010-04-22  Petr Kovar  <pknbe@volny.cz>
+2010-04-23  Petr Kovar  <pknbe@volny.cz>
 
 	Update Czech translation by Marek Cernocky
 
@@ -14347,7 +14408,7 @@
 
 	Fix build failures on none Linux platforms
 
-2010-04-08  Debarshi Ray  <debarshir@src.gnome.org>
+2010-04-09  Debarshi Ray  <debarshir@src.gnome.org>
 
 	tracker-miner-rss: Implicitly link the RSS miner against GTHREAD_LIBS
 
@@ -14480,7 +14541,7 @@
 	regex string. This fix changes the regex from a bound literal to being part
 	of the SQL query string itself.
 
-2010-04-05  Mikael Ottela  <mikael.ottela@ixonos.com>
+2010-04-06  Mikael Ottela  <mikael.ottela@ixonos.com>
 
 	Added indices to message ontology for query performance
 
@@ -14590,7 +14651,7 @@
 
 	libtracker-miner: Don't install tracker-miner-dbus.h to /usr/include
 
-2010-03-31  Aurimas Černius  <aurisc4@gmail.com>
+2010-04-01  Aurimas Černius  <aurisc4@gmail.com>
 
 	Updated Lithuanian translation
 
@@ -17091,7 +17152,7 @@
 
 	Updated Norwegian bokmål translation
 
-2010-02-09  Martyn Russell  <martyn@lanedo.com>
+2010-02-10  Martyn Russell  <martyn@lanedo.com>
 
 	libtracker-miner: Removed tracker_miner_fs_get_directories()
 	This is no longer needed.
@@ -20819,7 +20880,7 @@
 	 --image-files to --images
 	 --music-files to --music
 
-2009-09-23  Michael Biebl  <biebl@debian.org>
+2009-09-24  Michael Biebl  <biebl@debian.org>
 
 	Add missing files to POTFILES.in
 	According to 4ddf3304d4c3909ab9ec9cf56edcb495e1d634c3 the miner desktop
@@ -20829,6 +20890,8 @@
 	This reverts commit 336b0bff94af3e96e1d5722ff1cd2e9cfa559b6c.
 
 	Add missing "\"
+
+2009-09-23  Michael Biebl  <biebl@debian.org>
 
 	Fix a few typos in the man pages
 
@@ -20927,7 +20990,7 @@
 
 	Fixes bug #584607, Search does not work for Hungarian
 
-2009-09-20  Daniel Nylander  <po@danielnylander.se>
+2009-09-21  Daniel Nylander  <po@danielnylander.se>
 
 	Updated Swedish translation
 
@@ -23881,13 +23944,13 @@
 
 	Arbitrary lowering priority of SetMany() items
 
-2009-06-14  Philip Van Hoof  <philip@codeminded.be>
-
 	Don't do all the g_idle_add nonsense in the push modules
 	These were causing a GSource source for each 2000 items being pushed using the
 	DBus SetMany() call. Making it actually worse than better. I just removed them
 	for now, we might have to replace it with an internal, but static global for
 	the module, queue (not a queue per SetMany, like what is being removed here).
+
+2009-06-14  Philip Van Hoof  <philip@codeminded.be>
 
 	Fixed push modules, bugfix closing the query
 
@@ -24620,8 +24683,6 @@
 	Another include path fix
 	libtracker-gtk uses <tracker.h>, so we also need to add
 	$(top_srcdir)/src/libtracker for tracker-search-tool.
-
-2009-05-11  Michael Biebl  <biebl@debian.org>
 
 	Fix include path
 	tracker-search-tool-callbacks.c uses
@@ -25418,7 +25479,7 @@
 	Add gitlog-to-changelog script from gnulib and a dist-hook to
 	generate ChangeLog file when creating tarballs.
 
-2009-04-13  Khaled Hosny  <khaledhosny@eglug.org>
+2009-04-14  Khaled Hosny  <khaledhosny@eglug.org>
 
 	Updated Arabic translaion
 

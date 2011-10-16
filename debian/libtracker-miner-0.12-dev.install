@@ -3,5 +3,4 @@ usr/lib/pkgconfig/tracker-miner-0.12.pc
 usr/include/tracker-0.12/libtracker-miner/*.h
 usr/share/vala/vapi/tracker-miner-0.12.vapi
 usr/share/vala/vapi/tracker-miner-0.12.deps
-usr/share/gtk-doc/html/libtracker-miner/
 usr/share/gir-1.0/TrackerMiner-0.12.gir

@@ -1,4 +1,4 @@
-tracker (0.12.5-2) UNRELEASED; urgency=low
+tracker (0.12.5-2) experimental; urgency=low
 
   * Add -doc packages for libtracker-sparql, libtracker-miner and
     libtracker-extract and move the gtk-doc API documentation out of the -dev
@@ -6,7 +6,7 @@ tracker (0.12.5-2) UNRELEASED; urgency=low
   * Add Build-Depends on libglib2.0-doc for proper cross references in the
     gtk-doc API documentation.
 
- -- Michael Biebl <biebl@debian.org>  Sun, 16 Oct 2011 11:21:31 +0200
+ -- Michael Biebl <biebl@debian.org>  Sun, 16 Oct 2011 12:39:12 +0200
 
 tracker (0.12.5-1) experimental; urgency=low
 

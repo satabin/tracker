@@ -1,3 +1,9 @@
+tracker (0.12.6-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Fri, 21 Oct 2011 16:38:20 +0200
+
 tracker (0.12.5-3) experimental; urgency=low
 
   * Re-enable tracker-search-bar panel applet and nautilus tagging extension.

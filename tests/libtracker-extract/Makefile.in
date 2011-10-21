@@ -46,9 +46,12 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-noinst_PROGRAMS = $(am__EXEEXT_3)
-@HAVE_ENCA_TRUE@am__append_1 = tracker-encoding
-@HAVE_ENCA_FALSE@@HAVE_MEEGOTOUCH_TRUE@am__append_2 = tracker-encoding
+noinst_PROGRAMS = $(am__EXEEXT_4)
+
+# This test also requires libjpeg...
+@HAVE_IPTC_TRUE@am__append_1 = tracker-iptc-test
+@HAVE_ENCA_TRUE@am__append_2 = tracker-encoding
+@HAVE_ENCA_FALSE@@HAVE_MEEGOTOUCH_TRUE@am__append_3 = tracker-encoding
 subdir = tests/libtracker-extract
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -68,10 +71,13 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-@HAVE_ENCA_TRUE@am__EXEEXT_1 = tracker-encoding$(EXEEXT)
-@HAVE_ENCA_FALSE@@HAVE_MEEGOTOUCH_TRUE@am__EXEEXT_2 = tracker-encoding$(EXEEXT)
-am__EXEEXT_3 = tracker-test-utils$(EXEEXT) tracker-test-xmp$(EXEEXT) \
-	$(am__EXEEXT_1) $(am__EXEEXT_2)
+@HAVE_IPTC_TRUE@am__EXEEXT_1 = tracker-iptc-test$(EXEEXT)
+@HAVE_ENCA_TRUE@am__EXEEXT_2 = tracker-encoding$(EXEEXT)
+@HAVE_ENCA_FALSE@@HAVE_MEEGOTOUCH_TRUE@am__EXEEXT_3 = tracker-encoding$(EXEEXT)
+am__EXEEXT_4 = tracker-test-utils$(EXEEXT) tracker-test-xmp$(EXEEXT) \
+	tracker-extract-info-test$(EXEEXT) tracker-exif-test$(EXEEXT) \
+	tracker-guarantee-test$(EXEEXT) $(am__EXEEXT_1) \
+	$(am__EXEEXT_2) $(am__EXEEXT_3)
 PROGRAMS = $(noinst_PROGRAMS)
 am_tracker_encoding_OBJECTS = tracker-encoding-test.$(OBJEXT)
 tracker_encoding_OBJECTS = $(am_tracker_encoding_OBJECTS)
@@ -86,6 +92,50 @@ tracker_encoding_DEPENDENCIES =  \
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
+am_tracker_exif_test_OBJECTS = tracker-exif-test.$(OBJEXT)
+tracker_exif_test_OBJECTS = $(am_tracker_exif_test_OBJECTS)
+tracker_exif_test_LDADD = $(LDADD)
+tracker_exif_test_DEPENDENCIES =  \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_extract_info_test_OBJECTS =  \
+	tracker-extract-info-test.$(OBJEXT)
+tracker_extract_info_test_OBJECTS =  \
+	$(am_tracker_extract_info_test_OBJECTS)
+tracker_extract_info_test_LDADD = $(LDADD)
+tracker_extract_info_test_DEPENDENCIES =  \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_guarantee_test_OBJECTS = tracker-guarantee-test.$(OBJEXT)
+tracker_guarantee_test_OBJECTS = $(am_tracker_guarantee_test_OBJECTS)
+tracker_guarantee_test_LDADD = $(LDADD)
+tracker_guarantee_test_DEPENDENCIES =  \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_iptc_test_OBJECTS =  \
+	tracker_iptc_test-tracker-iptc-test.$(OBJEXT)
+tracker_iptc_test_OBJECTS = $(am_tracker_iptc_test_OBJECTS)
+am__DEPENDENCIES_2 =  \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-extract/libtracker-extract-@TRACKER_API_VERSION@.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+tracker_iptc_test_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_1)
+tracker_iptc_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(tracker_iptc_test_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+	-o $@
 am_tracker_test_utils_OBJECTS = tracker-test-utils.$(OBJEXT)
 tracker_test_utils_OBJECTS = $(am_tracker_test_utils_OBJECTS)
 tracker_test_utils_LDADD = $(LDADD)
@@ -130,9 +180,14 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(tracker_encoding_SOURCES) $(tracker_test_utils_SOURCES) \
-	$(tracker_test_xmp_SOURCES)
+SOURCES = $(tracker_encoding_SOURCES) $(tracker_exif_test_SOURCES) \
+	$(tracker_extract_info_test_SOURCES) \
+	$(tracker_guarantee_test_SOURCES) $(tracker_iptc_test_SOURCES) \
+	$(tracker_test_utils_SOURCES) $(tracker_test_xmp_SOURCES)
 DIST_SOURCES = $(tracker_encoding_SOURCES) \
+	$(tracker_exif_test_SOURCES) \
+	$(tracker_extract_info_test_SOURCES) \
+	$(tracker_guarantee_test_SOURCES) $(tracker_iptc_test_SOURCES) \
 	$(tracker_test_utils_SOURCES) $(tracker_test_xmp_SOURCES)
 ETAGS = etags
 CTAGS = ctags
@@ -451,8 +506,10 @@ GTESTER = gtester 			# for non-GLIB packages
 GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
-TEST_PROGS = tracker-test-utils tracker-test-xmp $(am__append_1) \
-	$(am__append_2)
+TEST_PROGS = tracker-test-utils tracker-test-xmp \
+	tracker-extract-info-test tracker-exif-test \
+	tracker-guarantee-test $(am__append_1) $(am__append_2) \
+	$(am__append_3)
 AM_CPPFLAGS = \
 	-DTOP_SRCDIR=\"$(abs_top_srcdir)\"             \
 	-DTOP_BUILDDIR=\"$(abs_top_builddir)\"         \
@@ -473,7 +530,24 @@ LDADD = \
 tracker_encoding_SOURCES = tracker-encoding-test.c
 tracker_test_utils_SOURCES = tracker-test-utils.c
 tracker_test_xmp_SOURCES = tracker-test-xmp.c
-EXTRA_DIST = encoding-detect.bin areas.xmp areas-with-contacts.xmp areas-ns.xmp nb282393.xmp nb282393_simple.xmp
+tracker_extract_info_test_SOURCES = tracker-extract-info-test.c
+tracker_exif_test_SOURCES = tracker-exif-test.c
+tracker_guarantee_test_SOURCES = tracker-guarantee-test.c
+tracker_iptc_test_SOURCES = tracker-iptc-test.c
+tracker_iptc_test_LDADD = $(LDADD) $(LIBJPEG_LIBS)
+tracker_iptc_test_CFLAGS = $(LIBJPEG_CFLAGS)
+EXTRA_DIST = encoding-detect.bin 	\
+	areas.xmp 			\
+	areas-with-contacts.xmp 	\
+	areas-ns.xmp 			\
+	nb282393.xmp 			\
+	nb282393_simple.xmp		\
+	exif-img.jpg			\
+	exif-free-img.jpg		\
+	guarantee-mtime-test.txt	\
+	getline-test.txt		\
+	iptc-img.jpg
+
 all: all-am
 
 .SUFFIXES:
@@ -520,6 +594,18 @@ clean-noinstPROGRAMS:
 tracker-encoding$(EXEEXT): $(tracker_encoding_OBJECTS) $(tracker_encoding_DEPENDENCIES) 
 	@rm -f tracker-encoding$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_encoding_OBJECTS) $(tracker_encoding_LDADD) $(LIBS)
+tracker-exif-test$(EXEEXT): $(tracker_exif_test_OBJECTS) $(tracker_exif_test_DEPENDENCIES) 
+	@rm -f tracker-exif-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_exif_test_OBJECTS) $(tracker_exif_test_LDADD) $(LIBS)
+tracker-extract-info-test$(EXEEXT): $(tracker_extract_info_test_OBJECTS) $(tracker_extract_info_test_DEPENDENCIES) 
+	@rm -f tracker-extract-info-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_extract_info_test_OBJECTS) $(tracker_extract_info_test_LDADD) $(LIBS)
+tracker-guarantee-test$(EXEEXT): $(tracker_guarantee_test_OBJECTS) $(tracker_guarantee_test_DEPENDENCIES) 
+	@rm -f tracker-guarantee-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_guarantee_test_OBJECTS) $(tracker_guarantee_test_LDADD) $(LIBS)
+tracker-iptc-test$(EXEEXT): $(tracker_iptc_test_OBJECTS) $(tracker_iptc_test_DEPENDENCIES) 
+	@rm -f tracker-iptc-test$(EXEEXT)
+	$(AM_V_CCLD)$(tracker_iptc_test_LINK) $(tracker_iptc_test_OBJECTS) $(tracker_iptc_test_LDADD) $(LIBS)
 tracker-test-utils$(EXEEXT): $(tracker_test_utils_OBJECTS) $(tracker_test_utils_DEPENDENCIES) 
 	@rm -f tracker-test-utils$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_test_utils_OBJECTS) $(tracker_test_utils_LDADD) $(LIBS)
@@ -534,8 +620,12 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-encoding-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-exif-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-extract-info-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-guarantee-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-test-utils.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-test-xmp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker_iptc_test-tracker-iptc-test.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -560,6 +650,22 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+tracker_iptc_test-tracker-iptc-test.o: tracker-iptc-test.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_iptc_test_CFLAGS) $(CFLAGS) -MT tracker_iptc_test-tracker-iptc-test.o -MD -MP -MF $(DEPDIR)/tracker_iptc_test-tracker-iptc-test.Tpo -c -o tracker_iptc_test-tracker-iptc-test.o `test -f 'tracker-iptc-test.c' || echo '$(srcdir)/'`tracker-iptc-test.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_iptc_test-tracker-iptc-test.Tpo $(DEPDIR)/tracker_iptc_test-tracker-iptc-test.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-iptc-test.c' object='tracker_iptc_test-tracker-iptc-test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_iptc_test_CFLAGS) $(CFLAGS) -c -o tracker_iptc_test-tracker-iptc-test.o `test -f 'tracker-iptc-test.c' || echo '$(srcdir)/'`tracker-iptc-test.c
+
+tracker_iptc_test-tracker-iptc-test.obj: tracker-iptc-test.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_iptc_test_CFLAGS) $(CFLAGS) -MT tracker_iptc_test-tracker-iptc-test.obj -MD -MP -MF $(DEPDIR)/tracker_iptc_test-tracker-iptc-test.Tpo -c -o tracker_iptc_test-tracker-iptc-test.obj `if test -f 'tracker-iptc-test.c'; then $(CYGPATH_W) 'tracker-iptc-test.c'; else $(CYGPATH_W) '$(srcdir)/tracker-iptc-test.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/tracker_iptc_test-tracker-iptc-test.Tpo $(DEPDIR)/tracker_iptc_test-tracker-iptc-test.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='tracker-iptc-test.c' object='tracker_iptc_test-tracker-iptc-test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(tracker_iptc_test_CFLAGS) $(CFLAGS) -c -o tracker_iptc_test-tracker-iptc-test.obj `if test -f 'tracker-iptc-test.c'; then $(CYGPATH_W) 'tracker-iptc-test.c'; else $(CYGPATH_W) '$(srcdir)/tracker-iptc-test.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

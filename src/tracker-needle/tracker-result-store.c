@@ -4362,14 +4362,14 @@ static gint tracker_result_store_real_iter_n_children (GtkTreeModel* base, GtkTr
 	TrackerResultStore * self;
 	gint result = 0;
 	GtkTreeIter* _tmp0_;
-	GtkTreeIter* _tmp8_;
-	void* _tmp9_;
-	GtkTreeIter* _tmp10_;
-	void* _tmp11_;
-	TrackerResultStoreCategoryNode* _tmp12_;
+	GtkTreeIter* _tmp11_;
+	void* _tmp12_;
+	GtkTreeIter* _tmp13_;
+	void* _tmp14_;
+	TrackerResultStoreCategoryNode* _tmp15_;
 	TrackerResultStoreCategoryNode* cat;
-	TrackerResultStoreCategoryNode* _tmp13_;
-	gint _tmp14_;
+	TrackerResultStoreCategoryNode* _tmp16_;
+	gint _tmp17_;
 #line 689 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self = (TrackerResultStore*) base;
 #line 690 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
@@ -4402,52 +4402,71 @@ static gint tracker_result_store_real_iter_n_children (GtkTreeModel* base, GtkTr
 #line 4403 "tracker-result-store.c"
 		} else {
 			GPtrArray* _tmp5_;
-			gconstpointer _tmp6_ = NULL;
+			gint _tmp6_;
 			gint _tmp7_;
-#line 694 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 693 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp5_ = self->priv->categories;
+#line 693 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+			_tmp6_ = g_ptr_array_get_length (_tmp5_);
+#line 693 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+			_tmp7_ = _tmp6_;
+#line 693 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+			if (_tmp7_ > 0) {
+#line 4416 "tracker-result-store.c"
+				GPtrArray* _tmp8_;
+				gconstpointer _tmp9_ = NULL;
+				gint _tmp10_;
 #line 694 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-			_tmp6_ = g_ptr_array_index (_tmp5_, (guint) 0);
+				_tmp8_ = self->priv->categories;
 #line 694 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-			_tmp7_ = ((TrackerResultStoreCategoryNode*) _tmp6_)->count;
+				_tmp9_ = g_ptr_array_index (_tmp8_, (guint) 0);
 #line 694 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-			result = _tmp7_;
+				_tmp10_ = ((TrackerResultStoreCategoryNode*) _tmp9_)->count;
 #line 694 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-			return result;
-#line 4418 "tracker-result-store.c"
+				result = _tmp10_;
+#line 694 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+				return result;
+#line 4430 "tracker-result-store.c"
+			} else {
+#line 696 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+				result = -1;
+#line 696 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+				return result;
+#line 4436 "tracker-result-store.c"
+			}
 		}
 	}
-#line 698 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	_tmp8_ = iter;
-#line 698 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	_tmp9_ = (*_tmp8_).user_data2;
-#line 698 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	if (_tmp9_ != NULL) {
 #line 700 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	_tmp11_ = iter;
+#line 700 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	_tmp12_ = (*_tmp11_).user_data2;
+#line 700 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	if (_tmp12_ != NULL) {
+#line 702 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		result = -1;
-#line 700 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 702 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		return result;
-#line 4431 "tracker-result-store.c"
+#line 4450 "tracker-result-store.c"
 	}
-#line 703 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	_tmp10_ = iter;
-#line 703 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	_tmp11_ = (*_tmp10_).user_data;
-#line 703 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	_tmp12_ = _tracker_result_store_category_node_ref0 (TRACKER_RESULT_STORE_CATEGORY_NODE (_tmp11_));
-#line 703 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	cat = _tmp12_;
 #line 705 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	_tmp13_ = cat;
+	_tmp13_ = iter;
 #line 705 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	_tmp14_ = _tmp13_->count;
+	_tmp14_ = (*_tmp13_).user_data;
 #line 705 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	result = _tmp14_;
+	_tmp15_ = _tracker_result_store_category_node_ref0 (TRACKER_RESULT_STORE_CATEGORY_NODE (_tmp14_));
 #line 705 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	cat = _tmp15_;
+#line 707 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	_tmp16_ = cat;
+#line 707 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	_tmp17_ = _tmp16_->count;
+#line 707 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	result = _tmp17_;
+#line 707 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tracker_result_store_category_node_unref0 (cat);
-#line 705 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 707 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 4451 "tracker-result-store.c"
+#line 4470 "tracker-result-store.c"
 }
 
 
@@ -4461,27 +4480,27 @@ static gboolean tracker_result_store_real_iter_next (GtkTreeModel* base, GtkTree
 	TrackerResultStoreCategoryNode* _tmp2_;
 	GtkTreeIter _tmp3_;
 	void* _tmp4_;
-#line 708 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self = (TrackerResultStore*) base;
-#line 708 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_return_val_if_fail (iter != NULL, FALSE);
-#line 712 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 714 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp0_ = *iter;
-#line 712 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 714 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp1_ = _tmp0_.user_data;
-#line 712 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 714 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp2_ = _tracker_result_store_category_node_ref0 (TRACKER_RESULT_STORE_CATEGORY_NODE (_tmp1_));
-#line 712 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 714 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tracker_result_store_category_node_unref0 (cat);
-#line 712 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 714 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	cat = _tmp2_;
-#line 714 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 716 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp3_ = *iter;
-#line 714 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 716 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp4_ = _tmp3_.user_data2;
-#line 714 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 716 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (_tmp4_ == NULL) {
-#line 4485 "tracker-result-store.c"
+#line 4504 "tracker-result-store.c"
 		TrackerResultStoreCategoryNode* _tmp5_;
 		gint _tmp6_ = 0;
 		gboolean _tmp7_ = FALSE;
@@ -4491,69 +4510,69 @@ static gboolean tracker_result_store_real_iter_next (GtkTreeModel* base, GtkTree
 		GPtrArray* _tmp15_;
 		gint _tmp16_;
 		gconstpointer _tmp17_ = NULL;
-#line 715 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp5_ = cat;
-#line 715 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp6_ = tracker_result_store_find_nth_category_index (self, _tmp5_, 1);
-#line 715 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		i = _tmp6_;
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp8_ = i;
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		if (_tmp8_ < 0) {
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp7_ = TRUE;
-#line 4507 "tracker-result-store.c"
+#line 4526 "tracker-result-store.c"
 		} else {
 			gint _tmp9_;
 			GPtrArray* _tmp10_;
 			gint _tmp11_;
 			gint _tmp12_;
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp9_ = i;
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp10_ = self->priv->categories;
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp11_ = g_ptr_array_get_length (_tmp10_);
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp12_ = _tmp11_;
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp7_ = _tmp9_ >= _tmp12_;
-#line 4523 "tracker-result-store.c"
+#line 4542 "tracker-result-store.c"
 		}
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp13_ = _tmp7_;
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		if (_tmp13_) {
-#line 718 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 720 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			(*iter).stamp = 0;
-#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 721 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			result = FALSE;
-#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 721 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tracker_result_store_category_node_unref0 (cat);
-#line 719 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 721 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			return result;
-#line 4537 "tracker-result-store.c"
+#line 4556 "tracker-result-store.c"
 		}
-#line 722 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 724 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp14_ = self->priv->timestamp;
-#line 722 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 724 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		(*iter).stamp = _tmp14_;
-#line 723 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 725 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp15_ = self->priv->categories;
-#line 723 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 725 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp16_ = i;
-#line 723 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 725 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp17_ = g_ptr_array_index (_tmp15_, (guint) _tmp16_);
-#line 723 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 725 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		(*iter).user_data = (TrackerResultStoreCategoryNode*) _tmp17_;
-#line 725 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 727 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		result = TRUE;
-#line 725 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 727 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tracker_result_store_category_node_unref0 (cat);
-#line 725 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 727 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		return result;
-#line 4557 "tracker-result-store.c"
+#line 4576 "tracker-result-store.c"
 	} else {
 		GtkTreeIter _tmp18_;
 		void* _tmp19_;
@@ -4567,61 +4586,61 @@ static gboolean tracker_result_store_real_iter_next (GtkTreeModel* base, GtkTree
 		gint _tmp26_;
 		gint _tmp27_;
 		void* _tmp28_ = NULL;
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 730 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp18_ = *iter;
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 730 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp19_ = _tmp18_.user_data3;
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 730 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		i = (gint) ((glong) _tmp19_);
-#line 729 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 731 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp20_ = i;
-#line 729 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 731 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		i = _tmp20_ + 1;
-#line 731 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp21_ = i;
-#line 731 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp22_ = cat;
-#line 731 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp23_ = _tmp22_->count;
-#line 731 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		if (_tmp21_ >= _tmp23_) {
-#line 732 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 734 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			(*iter).stamp = 0;
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			result = FALSE;
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tracker_result_store_category_node_unref0 (cat);
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			return result;
-#line 4597 "tracker-result-store.c"
+#line 4616 "tracker-result-store.c"
 		}
-#line 736 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 738 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp24_ = cat;
-#line 736 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 738 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp25_ = _tmp24_->results;
-#line 736 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 738 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp25__length1 = _tmp24_->results_length1;
-#line 736 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 738 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp26_ = i;
-#line 736 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 738 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		(*iter).user_data2 = &_tmp25_[_tmp26_];
-#line 737 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 739 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp27_ = i;
-#line 737 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 739 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp28_ = GINT_TO_POINTER (_tmp27_);
-#line 737 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 739 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		(*iter).user_data3 = _tmp28_;
-#line 739 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 741 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		result = TRUE;
-#line 739 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 741 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tracker_result_store_category_node_unref0 (cat);
-#line 739 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 741 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		return result;
-#line 4621 "tracker-result-store.c"
+#line 4640 "tracker-result-store.c"
 	}
-#line 708 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tracker_result_store_category_node_unref0 (cat);
-#line 4625 "tracker-result-store.c"
+#line 4644 "tracker-result-store.c"
 }
 
 
@@ -4632,17 +4651,17 @@ static gboolean tracker_result_store_real_iter_nth_child (GtkTreeModel* base, Gt
 	TrackerResultStoreCategoryNode* cat = NULL;
 	GtkTreeIter _tmp0_ = {0};
 	GtkTreeIter* _tmp1_;
-#line 743 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 745 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self = (TrackerResultStore*) base;
-#line 746 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 748 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	memset (&_tmp0_, 0, sizeof (GtkTreeIter));
-#line 746 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 748 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_vala_iter = _tmp0_;
-#line 748 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp1_ = parent;
-#line 748 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (_tmp1_ != NULL) {
-#line 4646 "tracker-result-store.c"
+#line 4665 "tracker-result-store.c"
 		GtkTreeIter* _tmp2_;
 		void* _tmp3_;
 		TrackerResultStoreCategoryNode* _tmp4_;
@@ -4657,77 +4676,77 @@ static gboolean tracker_result_store_real_iter_nth_child (GtkTreeModel* base, Gt
 		gint _tmp12_;
 		gint _tmp13_;
 		void* _tmp14_ = NULL;
-#line 749 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp2_ = parent;
-#line 749 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp3_ = (*_tmp2_).user_data;
-#line 749 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp4_ = _tracker_result_store_category_node_ref0 (TRACKER_RESULT_STORE_CATEGORY_NODE (_tmp3_));
-#line 749 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tracker_result_store_category_node_unref0 (cat);
-#line 749 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		cat = _tmp4_;
-#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 753 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp5_ = n;
-#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 753 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp6_ = cat;
-#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 753 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp7_ = _tmp6_->count;
-#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 753 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		if (_tmp5_ >= _tmp7_) {
-#line 752 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 754 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_vala_iter.stamp = 0;
-#line 753 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			result = FALSE;
-#line 753 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tracker_result_store_category_node_unref0 (cat);
-#line 753 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			if (iter) {
-#line 753 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				*iter = _vala_iter;
-#line 4689 "tracker-result-store.c"
+#line 4708 "tracker-result-store.c"
 			}
-#line 753 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			return result;
-#line 4693 "tracker-result-store.c"
+#line 4712 "tracker-result-store.c"
 		}
-#line 756 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 758 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp8_ = self->priv->timestamp;
-#line 756 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 758 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_vala_iter.stamp = _tmp8_;
-#line 757 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 759 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp9_ = cat;
-#line 757 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 759 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_vala_iter.user_data = _tmp9_;
-#line 758 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 760 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp10_ = cat;
-#line 758 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 760 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp11_ = _tmp10_->results;
-#line 758 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 760 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp11__length1 = _tmp10_->results_length1;
-#line 758 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 760 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp12_ = n;
-#line 758 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 760 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_vala_iter.user_data2 = &_tmp11_[_tmp12_];
-#line 759 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 761 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp13_ = n;
-#line 759 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 761 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp14_ = GINT_TO_POINTER (_tmp13_);
-#line 759 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 761 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_vala_iter.user_data3 = _tmp14_;
-#line 760 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 762 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		result = TRUE;
-#line 760 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 762 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tracker_result_store_category_node_unref0 (cat);
-#line 760 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 762 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		if (iter) {
-#line 760 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 762 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			*iter = _vala_iter;
-#line 4727 "tracker-result-store.c"
+#line 4746 "tracker-result-store.c"
 		}
-#line 760 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 762 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		return result;
-#line 4731 "tracker-result-store.c"
+#line 4750 "tracker-result-store.c"
 	} else {
 		gint index = 0;
 		TrackerResultStoreQueryData* _tmp15_;
@@ -4740,139 +4759,139 @@ static gboolean tracker_result_store_real_iter_nth_child (GtkTreeModel* base, Gt
 		TrackerResultStoreCategoryNode* _tmp30_;
 		TrackerResultStoreQueryData* _tmp31_;
 		gint _tmp31__length1;
-#line 764 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp15_ = self->priv->queries;
-#line 764 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp15__length1 = self->priv->queries_length1;
-#line 764 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		if (_tmp15__length1 > 1) {
-#line 4750 "tracker-result-store.c"
+#line 4769 "tracker-result-store.c"
 			gint _tmp16_;
 			gint _tmp17_ = 0;
 			gboolean _tmp18_ = FALSE;
 			gint _tmp19_;
 			gboolean _tmp24_;
-#line 765 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp16_ = n;
-#line 765 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp17_ = tracker_result_store_find_nth_category_index (self, NULL, _tmp16_);
-#line 765 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			index = _tmp17_;
-#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp19_ = index;
-#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			if (_tmp19_ < 0) {
-#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp18_ = TRUE;
-#line 4768 "tracker-result-store.c"
+#line 4787 "tracker-result-store.c"
 			} else {
 				gint _tmp20_;
 				GPtrArray* _tmp21_;
 				gint _tmp22_;
 				gint _tmp23_;
-#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp20_ = index;
-#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp21_ = self->priv->categories;
-#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp22_ = g_ptr_array_get_length (_tmp21_);
-#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp23_ = _tmp22_;
-#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp18_ = _tmp20_ >= _tmp23_;
-#line 4784 "tracker-result-store.c"
+#line 4803 "tracker-result-store.c"
 			}
-#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp24_ = _tmp18_;
-#line 767 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			if (_tmp24_) {
-#line 768 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 770 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_vala_iter.stamp = 0;
-#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 771 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				result = FALSE;
-#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 771 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tracker_result_store_category_node_unref0 (cat);
-#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 771 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				if (iter) {
-#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 771 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					*iter = _vala_iter;
-#line 4800 "tracker-result-store.c"
+#line 4819 "tracker-result-store.c"
 				}
-#line 769 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 771 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				return result;
-#line 4804 "tracker-result-store.c"
+#line 4823 "tracker-result-store.c"
 			}
 		} else {
-#line 772 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 774 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			index = 0;
-#line 4809 "tracker-result-store.c"
+#line 4828 "tracker-result-store.c"
 		}
-#line 775 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp25_ = self->priv->categories;
-#line 775 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp26_ = index;
-#line 775 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp27_ = g_ptr_array_index (_tmp25_, (guint) _tmp26_);
-#line 775 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp28_ = _tracker_result_store_category_node_ref0 ((TrackerResultStoreCategoryNode*) _tmp27_);
-#line 775 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tracker_result_store_category_node_unref0 (cat);
-#line 775 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		cat = _tmp28_;
-#line 776 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 778 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp29_ = self->priv->timestamp;
-#line 776 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 778 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_vala_iter.stamp = _tmp29_;
-#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 779 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp30_ = cat;
-#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 779 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_vala_iter.user_data = _tmp30_;
-#line 779 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 781 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp31_ = self->priv->queries;
-#line 779 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 781 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp31__length1 = self->priv->queries_length1;
-#line 779 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 781 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		if (_tmp31__length1 > 1) {
-#line 4837 "tracker-result-store.c"
+#line 4856 "tracker-result-store.c"
 			TrackerResultStoreCategoryNode* _tmp32_;
 			TrackerResultStoreResultNode* _tmp33_;
 			gint _tmp33__length1;
 			void* _tmp34_ = NULL;
-#line 780 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 782 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp32_ = cat;
-#line 780 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 782 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp33_ = _tmp32_->results;
-#line 780 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 782 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp33__length1 = _tmp32_->results_length1;
-#line 780 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 782 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_vala_iter.user_data2 = &_tmp33_[0];
-#line 781 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 783 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp34_ = GINT_TO_POINTER (0);
-#line 781 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 783 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_vala_iter.user_data3 = _tmp34_;
-#line 4854 "tracker-result-store.c"
+#line 4873 "tracker-result-store.c"
 		}
-#line 784 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		result = TRUE;
-#line 784 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tracker_result_store_category_node_unref0 (cat);
-#line 784 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		if (iter) {
-#line 784 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			*iter = _vala_iter;
-#line 4864 "tracker-result-store.c"
+#line 4883 "tracker-result-store.c"
 		}
-#line 784 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		return result;
-#line 4868 "tracker-result-store.c"
+#line 4887 "tracker-result-store.c"
 	}
-#line 743 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 745 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tracker_result_store_category_node_unref0 (cat);
-#line 743 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 745 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (iter) {
-#line 743 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 745 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		*iter = _vala_iter;
-#line 4876 "tracker-result-store.c"
+#line 4895 "tracker-result-store.c"
 	}
 }
 
@@ -4886,102 +4905,102 @@ static gboolean tracker_result_store_real_iter_parent (GtkTreeModel* base, GtkTr
 	TrackerResultStoreQueryData* _tmp2_;
 	gint _tmp2__length1;
 	gboolean _tmp5_;
-#line 788 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 790 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self = (TrackerResultStore*) base;
-#line 788 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 790 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_return_val_if_fail (child != NULL, FALSE);
-#line 789 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	memset (&_tmp0_, 0, sizeof (GtkTreeIter));
-#line 789 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_vala_iter = _tmp0_;
-#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp2_ = self->priv->queries;
-#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp2__length1 = self->priv->queries_length1;
-#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (_tmp2__length1 > 1) {
-#line 4904 "tracker-result-store.c"
+#line 4923 "tracker-result-store.c"
 		GtkTreeIter _tmp3_;
 		void* _tmp4_;
-#line 792 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 794 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp3_ = *child;
-#line 792 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 794 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp4_ = _tmp3_.user_data2;
-#line 792 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 794 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp1_ = _tmp4_ != NULL;
-#line 4913 "tracker-result-store.c"
+#line 4932 "tracker-result-store.c"
 	} else {
-#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp1_ = FALSE;
-#line 4917 "tracker-result-store.c"
+#line 4936 "tracker-result-store.c"
 	}
-#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp5_ = _tmp1_;
-#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (_tmp5_) {
-#line 4923 "tracker-result-store.c"
+#line 4942 "tracker-result-store.c"
 		gint _tmp6_;
 		GtkTreeIter _tmp7_;
 		void* _tmp8_;
-#line 794 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-		_tmp6_ = self->priv->timestamp;
-#line 794 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-		_vala_iter.stamp = _tmp6_;
-#line 795 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-		_tmp7_ = *child;
-#line 795 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-		_tmp8_ = _tmp7_.user_data;
-#line 795 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-		_vala_iter.user_data = _tmp8_;
 #line 796 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-		_vala_iter.user_data2 = NULL;
+		_tmp6_ = self->priv->timestamp;
+#line 796 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+		_vala_iter.stamp = _tmp6_;
 #line 797 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+		_tmp7_ = *child;
+#line 797 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+		_tmp8_ = _tmp7_.user_data;
+#line 797 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+		_vala_iter.user_data = _tmp8_;
+#line 798 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+		_vala_iter.user_data2 = NULL;
+#line 799 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_vala_iter.user_data3 = NULL;
-#line 798 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 800 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		result = TRUE;
-#line 798 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 800 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		if (iter) {
-#line 798 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 800 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			*iter = _vala_iter;
-#line 4947 "tracker-result-store.c"
+#line 4966 "tracker-result-store.c"
 		}
-#line 798 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 800 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		return result;
-#line 4951 "tracker-result-store.c"
+#line 4970 "tracker-result-store.c"
 	}
-#line 801 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 803 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_vala_iter.stamp = 0;
-#line 802 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 804 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	result = FALSE;
-#line 802 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 804 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (iter) {
-#line 802 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 804 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		*iter = _vala_iter;
-#line 4961 "tracker-result-store.c"
+#line 4980 "tracker-result-store.c"
 	}
-#line 802 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 804 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 4965 "tracker-result-store.c"
+#line 4984 "tracker-result-store.c"
 }
 
 
 static void tracker_result_store_real_ref_node (GtkTreeModel* base, GtkTreeIter* iter) {
 	TrackerResultStore * self;
-#line 805 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 807 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self = (TrackerResultStore*) base;
-#line 805 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 807 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_return_if_fail (iter != NULL);
-#line 4975 "tracker-result-store.c"
+#line 4994 "tracker-result-store.c"
 }
 
 
 static void tracker_result_store_real_unref_node (GtkTreeModel* base, GtkTreeIter* iter) {
 	TrackerResultStore * self;
-#line 808 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 810 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self = (TrackerResultStore*) base;
-#line 808 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 810 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_return_if_fail (iter != NULL);
-#line 4985 "tracker-result-store.c"
+#line 5004 "tracker-result-store.c"
 }
 
 
@@ -4991,28 +5010,28 @@ static void tracker_result_store_theme_changed (TrackerResultStore* self, GtkIco
 	gint j = 0;
 	GtkTreeIter _tmp0_ = {0};
 	gint _tmp1_;
-#line 811 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 813 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_return_if_fail (self != NULL);
-#line 811 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 813 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_return_if_fail (theme != NULL);
-#line 815 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 817 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	memset (&_tmp0_, 0, sizeof (GtkTreeIter));
-#line 815 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 817 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	iter = _tmp0_;
-#line 816 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp1_ = self->priv->timestamp;
-#line 816 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	iter.stamp = _tmp1_;
-#line 5007 "tracker-result-store.c"
+#line 5026 "tracker-result-store.c"
 	{
 		gboolean _tmp2_;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		i = 0;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp2_ = TRUE;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		while (TRUE) {
-#line 5016 "tracker-result-store.c"
+#line 5035 "tracker-result-store.c"
 			gboolean _tmp3_;
 			gint _tmp5_;
 			GPtrArray* _tmp6_;
@@ -5024,64 +5043,64 @@ static void tracker_result_store_theme_changed (TrackerResultStore* self, GtkIco
 			TrackerResultStoreCategoryNode* _tmp12_;
 			TrackerResultStoreCategoryNode* cat;
 			TrackerResultStoreCategoryNode* _tmp13_;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp3_ = _tmp2_;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			if (!_tmp3_) {
-#line 5032 "tracker-result-store.c"
+#line 5051 "tracker-result-store.c"
 				gint _tmp4_;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp4_ = i;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				i = _tmp4_ + 1;
-#line 5038 "tracker-result-store.c"
+#line 5057 "tracker-result-store.c"
 			}
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp2_ = FALSE;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp5_ = i;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp6_ = self->priv->categories;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp7_ = g_ptr_array_get_length (_tmp6_);
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp8_ = _tmp7_;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			if (!(_tmp5_ < _tmp8_)) {
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				break;
-#line 5054 "tracker-result-store.c"
+#line 5073 "tracker-result-store.c"
 			}
-#line 819 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 821 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp9_ = self->priv->categories;
-#line 819 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 821 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp10_ = i;
-#line 819 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 821 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp11_ = g_ptr_array_index (_tmp9_, (guint) _tmp10_);
-#line 819 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 821 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp12_ = _tracker_result_store_category_node_ref0 ((TrackerResultStoreCategoryNode*) _tmp11_);
-#line 819 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 821 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			cat = _tmp12_;
-#line 821 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp13_ = cat;
-#line 821 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			iter.user_data = _tmp13_;
-#line 5070 "tracker-result-store.c"
+#line 5089 "tracker-result-store.c"
 			{
 				TrackerResultStoreCategoryNode* _tmp14_;
 				gint _tmp15_;
 				gboolean _tmp16_;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp14_ = cat;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp15_ = _tmp14_->count;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				j = _tmp15_ - 1;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp16_ = TRUE;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				while (TRUE) {
-#line 5085 "tracker-result-store.c"
+#line 5104 "tracker-result-store.c"
 					gboolean _tmp17_;
 					gint _tmp19_;
 					TrackerResultStoreCategoryNode* _tmp20_;
@@ -5099,103 +5118,103 @@ static void tracker_result_store_theme_changed (TrackerResultStore* self, GtkIco
 					void* _tmp29_ = NULL;
 					TrackerResultStoreResultNode _tmp30_;
 					GdkPixbuf* _tmp31_;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp17_ = _tmp16_;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					if (!_tmp17_) {
-#line 5107 "tracker-result-store.c"
+#line 5126 "tracker-result-store.c"
 						gint _tmp18_;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 						_tmp18_ = j;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 						j = _tmp18_ - 1;
-#line 5113 "tracker-result-store.c"
+#line 5132 "tracker-result-store.c"
 					}
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp16_ = FALSE;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp19_ = j;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					if (!(_tmp19_ >= 0)) {
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 						break;
-#line 5123 "tracker-result-store.c"
+#line 5142 "tracker-result-store.c"
 					}
-#line 824 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp20_ = cat;
-#line 824 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp21_ = _tmp20_->results;
-#line 824 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp21__length1 = _tmp20_->results_length1;
-#line 824 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp22_ = j;
-#line 824 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp23_ = _tmp21_[_tmp22_];
-#line 824 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					tracker_result_store_result_node_copy (&_tmp23_, &_tmp24_);
-#line 824 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_result_ = _tmp24_;
-#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp25_ = cat;
-#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp26_ = _tmp25_->results;
-#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp26__length1 = _tmp25_->results_length1;
-#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp27_ = j;
-#line 826 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					iter.user_data2 = &_tmp26_[_tmp27_];
-#line 827 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 829 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp28_ = j;
-#line 827 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 829 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp29_ = GINT_TO_POINTER (_tmp28_);
-#line 827 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 829 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					iter.user_data3 = _tmp29_;
-#line 829 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 831 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp30_ = _result_;
-#line 829 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 831 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					_tmp31_ = _tmp30_.pixbuf;
-#line 829 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 831 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					if (_tmp31_ != NULL) {
-#line 5161 "tracker-result-store.c"
+#line 5180 "tracker-result-store.c"
 						GtkTreeIter _tmp32_;
-#line 830 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 832 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 						_tmp32_ = iter;
-#line 830 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 832 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 						tracker_result_store_fetch_thumbnail (self, &_tmp32_, NULL, NULL);
-#line 5167 "tracker-result-store.c"
+#line 5186 "tracker-result-store.c"
 					}
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					tracker_result_store_result_node_destroy (&_result_);
-#line 5171 "tracker-result-store.c"
+#line 5190 "tracker-result-store.c"
 				}
 			}
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tracker_result_store_category_node_unref0 (cat);
-#line 5176 "tracker-result-store.c"
+#line 5195 "tracker-result-store.c"
 		}
 	}
 }
 
 
 static void _tracker_result_store_category_node_unref0_ (gpointer var) {
-#line 837 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	(var == NULL) ? NULL : (var = (tracker_result_store_category_node_unref (var), NULL));
-#line 5185 "tracker-result-store.c"
+#line 5204 "tracker-result-store.c"
 }
 
 
 static void _g_object_unref0_ (gpointer var) {
-#line 838 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 840 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	(var == NULL) ? NULL : (var = (g_object_unref (var), NULL));
-#line 5192 "tracker-result-store.c"
+#line 5211 "tracker-result-store.c"
 }
 
 
 static void _tracker_result_store_theme_changed_gtk_icon_theme_changed (GtkIconTheme* _sender, gpointer self) {
-#line 846 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 848 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	tracker_result_store_theme_changed (self, _sender);
-#line 5199 "tracker-result-store.c"
+#line 5218 "tracker-result-store.c"
 }
 
 
@@ -5209,109 +5228,109 @@ TrackerResultStore* tracker_result_store_construct (GType object_type, gint _n_c
 	GtkIconTheme* _tmp5_ = NULL;
 	GtkIconTheme* _tmp6_;
 	GtkIconTheme* theme;
-#line 836 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 838 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self = (TrackerResultStore*) g_object_new (object_type, NULL);
-#line 837 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp0_ = g_ptr_array_new_with_free_func (_tracker_result_store_category_node_unref0_);
-#line 837 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_g_ptr_array_unref0 (self->priv->categories);
-#line 837 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self->priv->categories = _tmp0_;
-#line 838 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 840 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp1_ = g_ptr_array_new_with_free_func (_g_object_unref0_);
-#line 838 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 840 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_g_ptr_array_unref0 (self->priv->running_operations);
-#line 838 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 840 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self->priv->running_operations = _tmp1_;
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 841 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp2_ = g_ptr_array_new_with_free_func (_g_object_unref0_);
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 841 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_g_ptr_array_unref0 (self->priv->delayed_operations);
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 841 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self->priv->delayed_operations = _tmp2_;
-#line 841 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	_tmp3_ = _n_columns;
-#line 841 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	self->priv->n_columns = _tmp3_;
-#line 842 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	self->priv->timestamp = 1;
 #line 843 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	_tmp3_ = _n_columns;
+#line 843 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	self->priv->n_columns = _tmp3_;
+#line 844 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	self->priv->timestamp = 1;
+#line 845 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	tracker_result_store_set_icon_size (self, 24);
-#line 845 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 847 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp4_ = gdk_screen_get_default ();
-#line 845 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 847 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp5_ = gtk_icon_theme_get_for_screen (_tmp4_);
-#line 845 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 847 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp6_ = _g_object_ref0 (_tmp5_);
-#line 845 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 847 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	theme = _tmp6_;
-#line 846 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 848 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_signal_connect_object (theme, "changed", (GCallback) _tracker_result_store_theme_changed_gtk_icon_theme_changed, self, 0);
-#line 836 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 838 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_g_object_unref0 (theme);
-#line 836 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 838 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return self;
-#line 5255 "tracker-result-store.c"
+#line 5274 "tracker-result-store.c"
 }
 
 
 TrackerResultStore* tracker_result_store_new (gint _n_columns) {
-#line 836 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 838 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return tracker_result_store_construct (TRACKER_TYPE_RESULT_STORE, _n_columns);
-#line 5262 "tracker-result-store.c"
+#line 5281 "tracker-result-store.c"
 }
 
 
 static void _vala_array_add2 (gchar*** array, int* length, int* size, gchar* value) {
-#line 859 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if ((*length) == (*size)) {
-#line 859 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 859 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		*array = g_renew (gchar*, *array, (*size) + 1);
-#line 5273 "tracker-result-store.c"
+#line 5292 "tracker-result-store.c"
 	}
-#line 859 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	(*array)[(*length)++] = value;
-#line 859 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	(*array)[*length] = NULL;
-#line 5279 "tracker-result-store.c"
+#line 5298 "tracker-result-store.c"
 }
 
 
 static gchar** _vala_array_dup3 (gchar** self, int length) {
 	gchar** result;
 	int i;
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	result = g_new0 (gchar*, length + 1);
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	for (i = 0; i < length; i++) {
-#line 5290 "tracker-result-store.c"
+#line 5309 "tracker-result-store.c"
 		gchar* _tmp0_;
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp0_ = g_strdup (self[i]);
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		result[i] = _tmp0_;
-#line 5296 "tracker-result-store.c"
+#line 5315 "tracker-result-store.c"
 	}
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 5300 "tracker-result-store.c"
+#line 5319 "tracker-result-store.c"
 }
 
 
 static void _vala_array_add3 (TrackerResultStoreQueryData** array, int* length, int* size, const TrackerResultStoreQueryData* value) {
-#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if ((*length) == (*size)) {
-#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		*array = g_renew (TrackerResultStoreQueryData, *array, *size);
-#line 5311 "tracker-result-store.c"
+#line 5330 "tracker-result-store.c"
 	}
-#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	(*array)[(*length)++] = *value;
-#line 5315 "tracker-result-store.c"
+#line 5334 "tracker-result-store.c"
 }
 
 
@@ -5336,191 +5355,191 @@ void tracker_result_store_add_query (TrackerResultStore* self, TrackerQueryType 
 	gint _tmp16__length1;
 	TrackerResultStoreQueryData _tmp17_;
 	TrackerResultStoreQueryData _tmp18_ = {0};
-#line 849 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	g_return_if_fail (self != NULL);
-#line 850 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-	va_start (l, match);
 #line 851 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	g_return_if_fail (self != NULL);
+#line 852 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+	va_start (l, match);
+#line 853 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	str = NULL;
-#line 852 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	args = NULL;
-#line 852 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	args_length1 = 0;
-#line 852 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_args_size_ = args_length1;
-#line 5352 "tracker-result-store.c"
+#line 5371 "tracker-result-store.c"
 	{
 		gboolean _tmp0_;
-#line 855 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp0_ = TRUE;
-#line 855 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		while (TRUE) {
-#line 5359 "tracker-result-store.c"
+#line 5378 "tracker-result-store.c"
 			gboolean _tmp1_;
 			const gchar* _tmp3_ = NULL;
 			gchar* _tmp4_;
 			const gchar* _tmp5_;
-#line 855 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp1_ = _tmp0_;
-#line 855 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			if (!_tmp1_) {
-#line 5368 "tracker-result-store.c"
+#line 5387 "tracker-result-store.c"
 				const gchar* _tmp2_;
-#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 863 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp2_ = str;
-#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 863 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				if (!(_tmp2_ != NULL)) {
-#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 863 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 					break;
-#line 5376 "tracker-result-store.c"
+#line 5395 "tracker-result-store.c"
 				}
 			}
-#line 855 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp0_ = FALSE;
-#line 856 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp3_ = va_arg (l, gchar*);
-#line 856 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp4_ = g_strdup (_tmp3_);
-#line 856 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_g_free0 (str);
-#line 856 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			str = _tmp4_;
-#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 860 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp5_ = str;
-#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 860 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			if (_tmp5_ != NULL) {
-#line 5393 "tracker-result-store.c"
+#line 5412 "tracker-result-store.c"
 				gchar** _tmp6_;
 				gint _tmp6__length1;
 				const gchar* _tmp7_;
 				gchar* _tmp8_;
-#line 859 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp6_ = args;
-#line 859 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp6__length1 = args_length1;
-#line 859 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp7_ = str;
-#line 859 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp8_ = g_strdup (_tmp7_);
-#line 859 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_vala_array_add2 (&args, &args_length1, &_args_size_, _tmp8_);
-#line 5408 "tracker-result-store.c"
+#line 5427 "tracker-result-store.c"
 			}
 		}
 	}
-#line 863 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 865 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp9_ = args;
-#line 863 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 865 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp9__length1 = args_length1;
-#line 863 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 865 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp10_ = self->priv->n_columns;
-#line 863 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 865 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (_tmp9__length1 != _tmp10_) {
-#line 864 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
-		g_warning ("tracker-result-store.vala:864: Arguments and number of columns doesn't" \
+#line 866 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+		g_warning ("tracker-result-store.vala:866: Arguments and number of columns doesn't" \
 " match");
-#line 865 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 867 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		tracker_result_store_query_data_destroy (&query_data);
-#line 865 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 867 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		args = (_vala_array_free (args, args_length1, (GDestroyNotify) g_free), NULL);
-#line 865 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 867 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_g_free0 (str);
-#line 865 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 867 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		va_end (l);
-#line 865 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 867 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		return;
-#line 5432 "tracker-result-store.c"
+#line 5451 "tracker-result-store.c"
 	}
-#line 868 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 870 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	memset (&_tmp11_, 0, sizeof (TrackerResultStoreQueryData));
-#line 868 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 870 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	tracker_result_store_query_data_destroy (&query_data);
-#line 868 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 870 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	query_data = _tmp11_;
-#line 869 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp12_ = type;
-#line 869 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	query_data.type = _tmp12_;
-#line 870 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 872 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp13_ = match;
-#line 870 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 872 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	query_data.match = _tmp13_;
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp14_ = args;
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp14__length1 = args_length1;
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp15_ = (_tmp14_ != NULL) ? _vala_array_dup3 (_tmp14_, _tmp14__length1) : ((gpointer) _tmp14_);
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp15__length1 = _tmp14__length1;
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	query_data.args = (_vala_array_free (query_data.args, query_data.args_length1, (GDestroyNotify) g_free), NULL);
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	query_data.args = _tmp15_;
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	query_data.args_length1 = _tmp15__length1;
-#line 871 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	query_data._args_size_ = query_data.args_length1;
-#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp16_ = self->priv->queries;
-#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp16__length1 = self->priv->queries_length1;
-#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp17_ = query_data;
-#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	tracker_result_store_query_data_copy (&_tmp17_, &_tmp18_);
-#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_vala_array_add3 (&self->priv->queries, &self->priv->queries_length1, &self->priv->_queries_size_, &_tmp18_);
-#line 849 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 851 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	tracker_result_store_query_data_destroy (&query_data);
-#line 849 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 851 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	args = (_vala_array_free (args, args_length1, (GDestroyNotify) g_free), NULL);
-#line 849 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 851 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_g_free0 (str);
-#line 849 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 851 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	va_end (l);
-#line 5482 "tracker-result-store.c"
+#line 5501 "tracker-result-store.c"
 }
 
 
 gboolean tracker_result_store_has_results (TrackerResultStore* self) {
 	gboolean result = FALSE;
 	gint _tmp0_ = 0;
-#line 876 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 878 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 877 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 879 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp0_ = tracker_result_store_filled_categories_count (self);
-#line 877 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 879 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	result = _tmp0_ > 0;
-#line 877 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 879 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 5497 "tracker-result-store.c"
+#line 5516 "tracker-result-store.c"
 }
 
 
 void tracker_result_store_cancel_search (TrackerResultStore* self) {
 	GCancellable* _tmp0_;
-#line 880 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 882 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_return_if_fail (self != NULL);
-#line 881 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 883 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_tmp0_ = self->priv->cancellable;
-#line 881 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 883 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (_tmp0_ != NULL) {
-#line 5509 "tracker-result-store.c"
+#line 5528 "tracker-result-store.c"
 		GCancellable* _tmp1_;
-#line 882 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 884 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp1_ = self->priv->cancellable;
-#line 882 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 884 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		g_cancellable_cancel (_tmp1_);
-#line 883 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 885 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_g_object_unref0 (self->priv->cancellable);
-#line 883 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 885 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		self->priv->cancellable = NULL;
-#line 5519 "tracker-result-store.c"
+#line 5538 "tracker-result-store.c"
 	}
-#line 886 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
+#line 888 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	tracker_result_store_clear_results (self);
-#line 5523 "tracker-result-store.c"
+#line 5542 "tracker-result-store.c"
 }
 
 
@@ -5535,7 +5554,7 @@ gint tracker_result_store_get_icon_size (TrackerResultStore* self) {
 	result = _tmp0_;
 #line 60 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 5538 "tracker-result-store.c"
+#line 5557 "tracker-result-store.c"
 }
 
 
@@ -5549,7 +5568,7 @@ void tracker_result_store_set_icon_size (TrackerResultStore* self, gint value) {
 	self->priv->_icon_size = _tmp0_;
 #line 61 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_object_notify ((GObject *) self, "icon-size");
-#line 5552 "tracker-result-store.c"
+#line 5571 "tracker-result-store.c"
 }
 
 
@@ -5564,7 +5583,7 @@ guint tracker_result_store_get_limit (TrackerResultStore* self) {
 	result = _tmp0_;
 #line 65 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 5567 "tracker-result-store.c"
+#line 5586 "tracker-result-store.c"
 }
 
 
@@ -5578,7 +5597,7 @@ void tracker_result_store_set_limit (TrackerResultStore* self, guint value) {
 	self->priv->_limit = _tmp0_;
 #line 66 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_object_notify ((GObject *) self, "limit");
-#line 5581 "tracker-result-store.c"
+#line 5600 "tracker-result-store.c"
 }
 
 
@@ -5593,7 +5612,7 @@ const gchar* tracker_result_store_get_search_term (TrackerResultStore* self) {
 	result = _tmp0_;
 #line 325 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 5596 "tracker-result-store.c"
+#line 5615 "tracker-result-store.c"
 }
 
 
@@ -5648,7 +5667,7 @@ void tracker_result_store_set_search_term (TrackerResultStore* self, const gchar
 	_tmp6_ = self->priv->timestamp;
 #line 340 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self->priv->timestamp = _tmp6_ + 1;
-#line 5651 "tracker-result-store.c"
+#line 5670 "tracker-result-store.c"
 	{
 		gboolean _tmp7_;
 #line 342 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
@@ -5657,7 +5676,7 @@ void tracker_result_store_set_search_term (TrackerResultStore* self, const gchar
 		_tmp7_ = TRUE;
 #line 342 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		while (TRUE) {
-#line 5660 "tracker-result-store.c"
+#line 5679 "tracker-result-store.c"
 			gboolean _tmp8_;
 			gint _tmp10_;
 			TrackerResultStoreQueryData* _tmp11_;
@@ -5670,13 +5689,13 @@ void tracker_result_store_set_search_term (TrackerResultStore* self, const gchar
 			_tmp8_ = _tmp7_;
 #line 342 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			if (!_tmp8_) {
-#line 5673 "tracker-result-store.c"
+#line 5692 "tracker-result-store.c"
 				gint _tmp9_;
 #line 342 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				_tmp9_ = i;
 #line 342 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				i = _tmp9_ + 1;
-#line 5679 "tracker-result-store.c"
+#line 5698 "tracker-result-store.c"
 			}
 #line 342 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp7_ = FALSE;
@@ -5690,7 +5709,7 @@ void tracker_result_store_set_search_term (TrackerResultStore* self, const gchar
 			if (!(_tmp10_ < _tmp11__length1)) {
 #line 342 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 				break;
-#line 5693 "tracker-result-store.c"
+#line 5712 "tracker-result-store.c"
 			}
 #line 343 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			_tmp12_ = self->priv->queries;
@@ -5702,12 +5721,12 @@ void tracker_result_store_set_search_term (TrackerResultStore* self, const gchar
 			_tmp14_ = self->priv->cancellable;
 #line 343 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			tracker_result_store_load_category (self, &_tmp12_[_tmp13_], _tmp14_, NULL, NULL);
-#line 5705 "tracker-result-store.c"
+#line 5724 "tracker-result-store.c"
 		}
 	}
 #line 327 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_object_notify ((GObject *) self, "search-term");
-#line 5710 "tracker-result-store.c"
+#line 5729 "tracker-result-store.c"
 }
 
 
@@ -5722,14 +5741,14 @@ GPtrArray* tracker_result_store_get_search_tags (TrackerResultStore* self) {
 	result = _tmp0_;
 #line 348 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 5725 "tracker-result-store.c"
+#line 5744 "tracker-result-store.c"
 }
 
 
 static gpointer _g_ptr_array_ref0 (gpointer self) {
 #line 348 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return self ? g_ptr_array_ref (self) : NULL;
-#line 5732 "tracker-result-store.c"
+#line 5751 "tracker-result-store.c"
 }
 
 
@@ -5748,7 +5767,7 @@ void tracker_result_store_set_search_tags (TrackerResultStore* self, GPtrArray* 
 	self->priv->_search_tags = _tmp1_;
 #line 348 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_object_notify ((GObject *) self, "search-tags");
-#line 5751 "tracker-result-store.c"
+#line 5770 "tracker-result-store.c"
 }
 
 
@@ -5763,7 +5782,7 @@ gboolean tracker_result_store_get_active (TrackerResultStore* self) {
 	result = _tmp0_;
 #line 351 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 5766 "tracker-result-store.c"
+#line 5785 "tracker-result-store.c"
 }
 
 
@@ -5777,25 +5796,25 @@ static void tracker_result_store_set_active (TrackerResultStore* self, gboolean 
 	self->priv->_active = _tmp0_;
 #line 352 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_object_notify ((GObject *) self, "active");
-#line 5780 "tracker-result-store.c"
+#line 5799 "tracker-result-store.c"
 }
 
 
 static void _vala_TrackerResultStoreResultNode_array_free (TrackerResultStoreResultNode* array, gint array_length) {
 #line 33 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (array != NULL) {
-#line 5787 "tracker-result-store.c"
+#line 5806 "tracker-result-store.c"
 		int i;
 #line 33 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		for (i = 0; i < array_length; i = i + 1) {
 #line 33 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			tracker_result_store_result_node_destroy (&array[i]);
-#line 5793 "tracker-result-store.c"
+#line 5812 "tracker-result-store.c"
 		}
 	}
 #line 33 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_free (array);
-#line 5798 "tracker-result-store.c"
+#line 5817 "tracker-result-store.c"
 }
 
 
@@ -5805,21 +5824,21 @@ static TrackerResultStoreCategoryNode* tracker_result_store_category_node_constr
 	self = (TrackerResultStoreCategoryNode*) g_type_create_instance (object_type);
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return self;
-#line 5808 "tracker-result-store.c"
+#line 5827 "tracker-result-store.c"
 }
 
 
 static TrackerResultStoreCategoryNode* tracker_result_store_category_node_new (void) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return tracker_result_store_category_node_construct (TRACKER_RESULT_STORE_TYPE_CATEGORY_NODE);
-#line 5815 "tracker-result-store.c"
+#line 5834 "tracker-result-store.c"
 }
 
 
 static void tracker_result_store_value_category_node_init (GValue* value) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	value->data[0].v_pointer = NULL;
-#line 5822 "tracker-result-store.c"
+#line 5841 "tracker-result-store.c"
 }
 
 
@@ -5828,7 +5847,7 @@ static void tracker_result_store_value_category_node_free_value (GValue* value) 
 	if (value->data[0].v_pointer) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		tracker_result_store_category_node_unref (value->data[0].v_pointer);
-#line 5831 "tracker-result-store.c"
+#line 5850 "tracker-result-store.c"
 	}
 }
 
@@ -5838,11 +5857,11 @@ static void tracker_result_store_value_category_node_copy_value (const GValue* s
 	if (src_value->data[0].v_pointer) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		dest_value->data[0].v_pointer = tracker_result_store_category_node_ref (src_value->data[0].v_pointer);
-#line 5841 "tracker-result-store.c"
+#line 5860 "tracker-result-store.c"
 	} else {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		dest_value->data[0].v_pointer = NULL;
-#line 5845 "tracker-result-store.c"
+#line 5864 "tracker-result-store.c"
 	}
 }
 
@@ -5850,37 +5869,37 @@ static void tracker_result_store_value_category_node_copy_value (const GValue* s
 static gpointer tracker_result_store_value_category_node_peek_pointer (const GValue* value) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return value->data[0].v_pointer;
-#line 5853 "tracker-result-store.c"
+#line 5872 "tracker-result-store.c"
 }
 
 
 static gchar* tracker_result_store_value_category_node_collect_value (GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (collect_values[0].v_pointer) {
-#line 5860 "tracker-result-store.c"
+#line 5879 "tracker-result-store.c"
 		TrackerResultStoreCategoryNode* object;
 		object = collect_values[0].v_pointer;
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		if (object->parent_instance.g_class == NULL) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 5867 "tracker-result-store.c"
+#line 5886 "tracker-result-store.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 5871 "tracker-result-store.c"
+#line 5890 "tracker-result-store.c"
 		}
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		value->data[0].v_pointer = tracker_result_store_category_node_ref (object);
-#line 5875 "tracker-result-store.c"
+#line 5894 "tracker-result-store.c"
 	} else {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		value->data[0].v_pointer = NULL;
-#line 5879 "tracker-result-store.c"
+#line 5898 "tracker-result-store.c"
 	}
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return NULL;
-#line 5883 "tracker-result-store.c"
+#line 5902 "tracker-result-store.c"
 }
 
 
@@ -5891,25 +5910,25 @@ static gchar* tracker_result_store_value_category_node_lcopy_value (const GValue
 	if (!object_p) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
-#line 5894 "tracker-result-store.c"
+#line 5913 "tracker-result-store.c"
 	}
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (!value->data[0].v_pointer) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		*object_p = NULL;
-#line 5900 "tracker-result-store.c"
+#line 5919 "tracker-result-store.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		*object_p = value->data[0].v_pointer;
-#line 5904 "tracker-result-store.c"
+#line 5923 "tracker-result-store.c"
 	} else {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		*object_p = tracker_result_store_category_node_ref (value->data[0].v_pointer);
-#line 5908 "tracker-result-store.c"
+#line 5927 "tracker-result-store.c"
 	}
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return NULL;
-#line 5912 "tracker-result-store.c"
+#line 5931 "tracker-result-store.c"
 }
 
 
@@ -5923,7 +5942,7 @@ static GParamSpec* tracker_result_store_param_spec_category_node (const gchar* n
 	G_PARAM_SPEC (spec)->value_type = object_type;
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return G_PARAM_SPEC (spec);
-#line 5926 "tracker-result-store.c"
+#line 5945 "tracker-result-store.c"
 }
 
 
@@ -5932,7 +5951,7 @@ static gpointer tracker_result_store_value_get_category_node (const GValue* valu
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_RESULT_STORE_TYPE_CATEGORY_NODE), NULL);
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return value->data[0].v_pointer;
-#line 5935 "tracker-result-store.c"
+#line 5954 "tracker-result-store.c"
 }
 
 
@@ -5952,17 +5971,17 @@ static void tracker_result_store_value_set_category_node (GValue* value, gpointe
 		value->data[0].v_pointer = v_object;
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		tracker_result_store_category_node_ref (value->data[0].v_pointer);
-#line 5955 "tracker-result-store.c"
+#line 5974 "tracker-result-store.c"
 	} else {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		value->data[0].v_pointer = NULL;
-#line 5959 "tracker-result-store.c"
+#line 5978 "tracker-result-store.c"
 	}
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (old) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		tracker_result_store_category_node_unref (old);
-#line 5965 "tracker-result-store.c"
+#line 5984 "tracker-result-store.c"
 	}
 }
 
@@ -5981,17 +6000,17 @@ static void tracker_result_store_value_take_category_node (GValue* value, gpoint
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		value->data[0].v_pointer = v_object;
-#line 5984 "tracker-result-store.c"
+#line 6003 "tracker-result-store.c"
 	} else {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		value->data[0].v_pointer = NULL;
-#line 5988 "tracker-result-store.c"
+#line 6007 "tracker-result-store.c"
 	}
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	if (old) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		tracker_result_store_category_node_unref (old);
-#line 5994 "tracker-result-store.c"
+#line 6013 "tracker-result-store.c"
 	}
 }
 
@@ -6001,14 +6020,14 @@ static void tracker_result_store_category_node_class_init (TrackerResultStoreCat
 	tracker_result_store_category_node_parent_class = g_type_class_peek_parent (klass);
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	TRACKER_RESULT_STORE_CATEGORY_NODE_CLASS (klass)->finalize = tracker_result_store_category_node_finalize;
-#line 6004 "tracker-result-store.c"
+#line 6023 "tracker-result-store.c"
 }
 
 
 static void tracker_result_store_category_node_instance_init (TrackerResultStoreCategoryNode * self) {
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self->ref_count = 1;
-#line 6011 "tracker-result-store.c"
+#line 6030 "tracker-result-store.c"
 }
 
 
@@ -6020,7 +6039,7 @@ static void tracker_result_store_category_node_finalize (TrackerResultStoreCateg
 	self->results = (_vala_TrackerResultStoreResultNode_array_free (self->results, self->results_length1), NULL);
 #line 34 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_g_object_unref0 (self->pixbuf);
-#line 6023 "tracker-result-store.c"
+#line 6042 "tracker-result-store.c"
 }
 
 
@@ -6045,7 +6064,7 @@ static gpointer tracker_result_store_category_node_ref (gpointer instance) {
 	g_atomic_int_inc (&self->ref_count);
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return instance;
-#line 6048 "tracker-result-store.c"
+#line 6067 "tracker-result-store.c"
 }
 
 
@@ -6058,7 +6077,7 @@ static void tracker_result_store_category_node_unref (gpointer instance) {
 		TRACKER_RESULT_STORE_CATEGORY_NODE_GET_CLASS (self)->finalize (self);
 #line 30 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		g_type_free_instance ((GTypeInstance *) self);
-#line 6061 "tracker-result-store.c"
+#line 6080 "tracker-result-store.c"
 	}
 }
 
@@ -6069,14 +6088,14 @@ static TrackerResultStoreOperation* tracker_result_store_operation_construct (GT
 	self = (TrackerResultStoreOperation*) g_object_new (object_type, NULL);
 #line 47 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return self;
-#line 6072 "tracker-result-store.c"
+#line 6091 "tracker-result-store.c"
 }
 
 
 static TrackerResultStoreOperation* tracker_result_store_operation_new (void) {
 #line 47 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return tracker_result_store_operation_construct (TRACKER_RESULT_STORE_TYPE_OPERATION);
-#line 6079 "tracker-result-store.c"
+#line 6098 "tracker-result-store.c"
 }
 
 
@@ -6085,7 +6104,7 @@ static void tracker_result_store_operation_class_init (TrackerResultStoreOperati
 	tracker_result_store_operation_parent_class = g_type_class_peek_parent (klass);
 #line 47 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	G_OBJECT_CLASS (klass)->finalize = tracker_result_store_operation_finalize;
-#line 6088 "tracker-result-store.c"
+#line 6107 "tracker-result-store.c"
 }
 
 
@@ -6101,7 +6120,7 @@ static void tracker_result_store_operation_finalize (GObject* obj) {
 	_tracker_result_store_category_node_unref0 (self->node);
 #line 47 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	G_OBJECT_CLASS (tracker_result_store_operation_parent_class)->finalize (obj);
-#line 6104 "tracker-result-store.c"
+#line 6123 "tracker-result-store.c"
 }
 
 
@@ -6124,17 +6143,17 @@ static gchar** _vala_array_dup4 (gchar** self, int length) {
 	result = g_new0 (gchar*, length + 1);
 #line 25 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	for (i = 0; i < length; i++) {
-#line 6127 "tracker-result-store.c"
+#line 6146 "tracker-result-store.c"
 		gchar* _tmp0_;
 #line 25 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp0_ = g_strdup (self[i]);
 #line 25 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		result[i] = _tmp0_;
-#line 6133 "tracker-result-store.c"
+#line 6152 "tracker-result-store.c"
 	}
 #line 25 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 6137 "tracker-result-store.c"
+#line 6156 "tracker-result-store.c"
 }
 
 
@@ -6169,7 +6188,7 @@ static void tracker_result_store_result_node_copy (const TrackerResultStoreResul
 	_g_object_unref0 ((*dest).pixbuf);
 #line 25 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	(*dest).pixbuf = _tmp3_;
-#line 6172 "tracker-result-store.c"
+#line 6191 "tracker-result-store.c"
 }
 
 
@@ -6178,7 +6197,7 @@ static void tracker_result_store_result_node_destroy (TrackerResultStoreResultNo
 	(*self).values = (_vala_array_free ((*self).values, (*self).values_length1, (GDestroyNotify) g_free), NULL);
 #line 27 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	_g_object_unref0 ((*self).pixbuf);
-#line 6181 "tracker-result-store.c"
+#line 6200 "tracker-result-store.c"
 }
 
 
@@ -6190,7 +6209,7 @@ static TrackerResultStoreResultNode* tracker_result_store_result_node_dup (const
 	tracker_result_store_result_node_copy (self, dup);
 #line 25 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return dup;
-#line 6193 "tracker-result-store.c"
+#line 6212 "tracker-result-store.c"
 }
 
 
@@ -6199,7 +6218,7 @@ static void tracker_result_store_result_node_free (TrackerResultStoreResultNode*
 	tracker_result_store_result_node_destroy (self);
 #line 25 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_free (self);
-#line 6202 "tracker-result-store.c"
+#line 6221 "tracker-result-store.c"
 }
 
 
@@ -6221,17 +6240,17 @@ static gchar** _vala_array_dup5 (gchar** self, int length) {
 	result = g_new0 (gchar*, length + 1);
 #line 38 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	for (i = 0; i < length; i++) {
-#line 6224 "tracker-result-store.c"
+#line 6243 "tracker-result-store.c"
 		gchar* _tmp0_;
 #line 38 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		_tmp0_ = g_strdup (self[i]);
 #line 38 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		result[i] = _tmp0_;
-#line 6230 "tracker-result-store.c"
+#line 6249 "tracker-result-store.c"
 	}
 #line 38 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return result;
-#line 6234 "tracker-result-store.c"
+#line 6253 "tracker-result-store.c"
 }
 
 
@@ -6266,14 +6285,14 @@ static void tracker_result_store_query_data_copy (const TrackerResultStoreQueryD
 	(*dest).args_length1 = _tmp3__length1;
 #line 38 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	(*dest)._args_size_ = (*dest).args_length1;
-#line 6269 "tracker-result-store.c"
+#line 6288 "tracker-result-store.c"
 }
 
 
 static void tracker_result_store_query_data_destroy (TrackerResultStoreQueryData* self) {
 #line 41 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	(*self).args = (_vala_array_free ((*self).args, (*self).args_length1, (GDestroyNotify) g_free), NULL);
-#line 6276 "tracker-result-store.c"
+#line 6295 "tracker-result-store.c"
 }
 
 
@@ -6285,7 +6304,7 @@ static TrackerResultStoreQueryData* tracker_result_store_query_data_dup (const T
 	tracker_result_store_query_data_copy (self, dup);
 #line 38 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	return dup;
-#line 6288 "tracker-result-store.c"
+#line 6307 "tracker-result-store.c"
 }
 
 
@@ -6294,7 +6313,7 @@ static void tracker_result_store_query_data_free (TrackerResultStoreQueryData* s
 	tracker_result_store_query_data_destroy (self);
 #line 38 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_free (self);
-#line 6297 "tracker-result-store.c"
+#line 6316 "tracker-result-store.c"
 }
 
 
@@ -6332,7 +6351,7 @@ static void tracker_result_store_class_init (TrackerResultStoreClass * klass) {
 	g_object_class_install_property (G_OBJECT_CLASS (klass), TRACKER_RESULT_STORE_ACTIVE, g_param_spec_boolean ("active", "active", "active", FALSE, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
 #line 22 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	g_signal_new ("result_overflow", TRACKER_TYPE_RESULT_STORE, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
-#line 6335 "tracker-result-store.c"
+#line 6354 "tracker-result-store.c"
 }
 
 
@@ -6367,7 +6386,7 @@ static void tracker_result_store_gtk_tree_model_interface_init (GtkTreeModelIfac
 	iface->ref_node = (void (*)(GtkTreeModel*, GtkTreeIter*)) tracker_result_store_real_ref_node;
 #line 22 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	iface->unref_node = (void (*)(GtkTreeModel*, GtkTreeIter*)) tracker_result_store_real_unref_node;
-#line 6370 "tracker-result-store.c"
+#line 6389 "tracker-result-store.c"
 }
 
 
@@ -6376,7 +6395,7 @@ static void tracker_result_store_instance_init (TrackerResultStore * self) {
 	self->priv = TRACKER_RESULT_STORE_GET_PRIVATE (self);
 #line 55 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	self->priv->n_extra_columns = 2;
-#line 6379 "tracker-result-store.c"
+#line 6398 "tracker-result-store.c"
 }
 
 
@@ -6400,7 +6419,7 @@ static void tracker_result_store_finalize (GObject* obj) {
 	_g_ptr_array_unref0 (self->priv->_search_tags);
 #line 22 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 	G_OBJECT_CLASS (tracker_result_store_parent_class)->finalize (obj);
-#line 6403 "tracker-result-store.c"
+#line 6422 "tracker-result-store.c"
 }
 
 
@@ -6453,13 +6472,13 @@ static void _vala_tracker_result_store_get_property (GObject * object, guint pro
 		g_value_set_boolean (value, tracker_result_store_get_active (self));
 #line 22 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		break;
-#line 6456 "tracker-result-store.c"
+#line 6475 "tracker-result-store.c"
 		default:
 #line 22 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 22 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		break;
-#line 6462 "tracker-result-store.c"
+#line 6481 "tracker-result-store.c"
 	}
 }
 
@@ -6499,13 +6518,13 @@ static void _vala_tracker_result_store_set_property (GObject * object, guint pro
 		tracker_result_store_set_active (self, g_value_get_boolean (value));
 #line 22 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		break;
-#line 6502 "tracker-result-store.c"
+#line 6521 "tracker-result-store.c"
 		default:
 #line 22 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 #line 22 "/home/juerg/Code/tracker/tracker/src/tracker-needle/tracker-result-store.vala"
 		break;
-#line 6508 "tracker-result-store.c"
+#line 6527 "tracker-result-store.c"
 	}
 }
 

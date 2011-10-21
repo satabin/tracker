@@ -4485,14 +4485,15 @@ static void tracker_preferences_treeview_setup (TrackerPreferences* self, GtkTre
 		GtkCellRendererToggle* _tmp18_;
 		GtkCellRendererToggle* _tmp19_;
 		GtkCellRendererToggle* cell;
-		GtkCellRendererToggle* _tmp20_;
-		GtkTreeViewColumn* _tmp21_;
+		const gchar* _tmp20_ = NULL;
+		GtkCellRendererToggle* _tmp21_;
 		GtkTreeViewColumn* _tmp22_;
 		GtkTreeViewColumn* _tmp23_;
 		GtkTreeViewColumn* _tmp24_;
-		GtkTreeView* _tmp25_;
-		GtkTreeViewColumn* _tmp26_;
-		GtkCellRendererToggle* _tmp27_;
+		GtkTreeViewColumn* _tmp25_;
+		GtkTreeView* _tmp26_;
+		GtkTreeViewColumn* _tmp27_;
+		GtkCellRendererToggle* _tmp28_;
 #line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_data1_ = g_slice_new0 (Block1Data);
 #line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
@@ -4514,46 +4515,48 @@ static void tracker_preferences_treeview_setup (TrackerPreferences* self, GtkTre
 #line 795 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		cell = _tmp19_;
 #line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		_tmp20_ = cell;
+		_tmp20_ = _ ("Recurse");
 #line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		_tmp21_ = gtk_tree_view_column_new_with_attributes ("Recurse", (GtkCellRenderer*) _tmp20_, "active", 1, NULL, NULL);
+		_tmp21_ = cell;
 #line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		_tmp22_ = g_object_ref_sink (_tmp21_);
+		_tmp22_ = gtk_tree_view_column_new_with_attributes (_tmp20_, (GtkCellRenderer*) _tmp21_, "active", 1, NULL, NULL);
+#line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+		_tmp23_ = g_object_ref_sink (_tmp22_);
 #line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_object_unref0 (column);
 #line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		column = _tmp22_;
+		column = _tmp23_;
 #line 801 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		_tmp23_ = column;
-#line 801 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		gtk_tree_view_column_set_expand (_tmp23_, FALSE);
-#line 802 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp24_ = column;
+#line 801 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+		gtk_tree_view_column_set_expand (_tmp24_, FALSE);
 #line 802 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		gtk_tree_view_column_set_fixed_width (_tmp24_, 50);
+		_tmp25_ = column;
+#line 802 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+		gtk_tree_view_column_set_fixed_width (_tmp25_, 50);
 #line 803 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		_tmp25_ = view;
+		_tmp26_ = view;
 #line 803 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		_tmp26_ = column;
+		_tmp27_ = column;
 #line 803 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		gtk_tree_view_append_column (_tmp25_, _tmp26_);
+		gtk_tree_view_append_column (_tmp26_, _tmp27_);
 #line 805 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		_tmp27_ = cell;
+		_tmp28_ = cell;
 #line 805 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
-		g_signal_connect_data (_tmp27_, "toggled", (GCallback) ____lambda2__gtk_cell_renderer_toggle_toggled, block1_data_ref (_data1_), (GClosureNotify) block1_data_unref, 0);
+		g_signal_connect_data (_tmp28_, "toggled", (GCallback) ____lambda2__gtk_cell_renderer_toggle_toggled, block1_data_ref (_data1_), (GClosureNotify) block1_data_unref, 0);
 #line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_object_unref0 (cell);
 #line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		block1_data_unref (_data1_);
 #line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_data1_ = NULL;
-#line 4550 "tracker-preferences.c"
+#line 4553 "tracker-preferences.c"
 	}
 #line 777 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_list_free0 (columns);
 #line 777 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (column);
-#line 4556 "tracker-preferences.c"
+#line 4559 "tracker-preferences.c"
 }
 
 
@@ -4564,13 +4567,13 @@ static void _vala_array_add3 (gchar*** array, int* length, int* size, gchar* val
 		*size = (*size) ? (2 * (*size)) : 4;
 #line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*array = g_renew (gchar*, *array, (*size) + 1);
-#line 4567 "tracker-preferences.c"
+#line 4570 "tracker-preferences.c"
 	}
 #line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[(*length)++] = value;
 #line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[*length] = NULL;
-#line 4573 "tracker-preferences.c"
+#line 4576 "tracker-preferences.c"
 }
 
 
@@ -4581,11 +4584,11 @@ static void _vala_array_add4 (GUserDirectory** array, int* length, int* size, GU
 		*size = (*size) ? (2 * (*size)) : 4;
 #line 839 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*array = g_renew (GUserDirectory, *array, *size);
-#line 4584 "tracker-preferences.c"
+#line 4587 "tracker-preferences.c"
 	}
 #line 839 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[(*length)++] = value;
-#line 4588 "tracker-preferences.c"
+#line 4591 "tracker-preferences.c"
 }
 
 
@@ -4596,13 +4599,13 @@ static void _vala_array_add5 (gchar*** array, int* length, int* size, gchar* val
 		*size = (*size) ? (2 * (*size)) : 4;
 #line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*array = g_renew (gchar*, *array, (*size) + 1);
-#line 4599 "tracker-preferences.c"
+#line 4602 "tracker-preferences.c"
 	}
 #line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[(*length)++] = value;
 #line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[*length] = NULL;
-#line 4605 "tracker-preferences.c"
+#line 4608 "tracker-preferences.c"
 }
 
 
@@ -4634,19 +4637,19 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 	_tmp2_ = g_strdup (_tmp1_);
 #line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_vala_array_add3 (&all_dirs, &all_dirs_length1, &_all_dirs_size_, _tmp2_);
-#line 4637 "tracker-preferences.c"
+#line 4640 "tracker-preferences.c"
 	{
 		gint i;
 #line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		i = 0;
-#line 4642 "tracker-preferences.c"
+#line 4645 "tracker-preferences.c"
 		{
 			gboolean _tmp3_;
 #line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp3_ = TRUE;
 #line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 			while (TRUE) {
-#line 4649 "tracker-preferences.c"
+#line 4652 "tracker-preferences.c"
 				gboolean _tmp4_;
 				gint _tmp6_;
 				gint _tmp7_;
@@ -4666,13 +4669,13 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 				_tmp4_ = _tmp3_;
 #line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (!_tmp4_) {
-#line 4669 "tracker-preferences.c"
+#line 4672 "tracker-preferences.c"
 					gint _tmp5_;
 #line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp5_ = i;
 #line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					i = _tmp5_ + 1;
-#line 4675 "tracker-preferences.c"
+#line 4678 "tracker-preferences.c"
 				}
 #line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp3_ = FALSE;
@@ -4682,7 +4685,7 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 				if (!(_tmp6_ < ((gint) G_USER_N_DIRECTORIES))) {
 #line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					break;
-#line 4685 "tracker-preferences.c"
+#line 4688 "tracker-preferences.c"
 				}
 #line 821 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp7_ = i;
@@ -4704,13 +4707,13 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 					_g_free0 (dir);
 #line 825 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					continue;
-#line 4707 "tracker-preferences.c"
+#line 4710 "tracker-preferences.c"
 				}
 #line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp12_ = all_dirs;
 #line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp12__length1 = all_dirs_length1;
-#line 4713 "tracker-preferences.c"
+#line 4716 "tracker-preferences.c"
 				{
 					gchar** d_collection = NULL;
 					gint d_collection_length1 = 0;
@@ -4722,14 +4725,14 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 					d_collection_length1 = _tmp12__length1;
 #line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					for (d_it = 0; d_it < _tmp12__length1; d_it = d_it + 1) {
-#line 4725 "tracker-preferences.c"
+#line 4728 "tracker-preferences.c"
 						gchar* _tmp13_;
 						gchar* d = NULL;
 #line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp13_ = g_strdup (d_collection[d_it]);
 #line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 						d = _tmp13_;
-#line 4732 "tracker-preferences.c"
+#line 4735 "tracker-preferences.c"
 						{
 							const gchar* _tmp14_;
 							const gchar* _tmp15_;
@@ -4739,7 +4742,7 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 							_tmp15_ = dir;
 #line 829 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 							if (g_strcmp0 (_tmp14_, _tmp15_) == 0) {
-#line 4742 "tracker-preferences.c"
+#line 4745 "tracker-preferences.c"
 								const gchar* _tmp16_;
 								GUserDirectory _tmp17_;
 								GUserDirectory _tmp18_;
@@ -4765,7 +4768,7 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 									case G_USER_DIRECTORY_PICTURES:
 #line 832 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 									case G_USER_DIRECTORY_VIDEOS:
-#line 4768 "tracker-preferences.c"
+#line 4771 "tracker-preferences.c"
 									{
 										GUserDirectory* _tmp19_;
 										gint _tmp19__length1;
@@ -4780,24 +4783,24 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 										_vala_array_add4 (&self->priv->ignored_user_directories, &self->priv->ignored_user_directories_length1, &self->priv->_ignored_user_directories_size_, _tmp20_);
 #line 840 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 										break;
-#line 4783 "tracker-preferences.c"
+#line 4786 "tracker-preferences.c"
 									}
 									default:
 									{
 #line 845 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 										break;
-#line 4789 "tracker-preferences.c"
+#line 4792 "tracker-preferences.c"
 									}
 								}
 #line 848 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 								_g_free0 (d);
 #line 848 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 								break;
-#line 4796 "tracker-preferences.c"
+#line 4799 "tracker-preferences.c"
 							}
 #line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_g_free0 (d);
-#line 4800 "tracker-preferences.c"
+#line 4803 "tracker-preferences.c"
 						}
 					}
 				}
@@ -4813,7 +4816,7 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 				_vala_array_add5 (&all_dirs, &all_dirs_length1, &_all_dirs_size_, _tmp23_);
 #line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_free0 (dir);
-#line 4816 "tracker-preferences.c"
+#line 4819 "tracker-preferences.c"
 			}
 		}
 	}
@@ -4821,7 +4824,7 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 	_tmp24_ = self->priv->ignored_user_directories;
 #line 857 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp24__length1 = self->priv->ignored_user_directories_length1;
-#line 4824 "tracker-preferences.c"
+#line 4827 "tracker-preferences.c"
 	{
 		GUserDirectory* ud_collection = NULL;
 		gint ud_collection_length1 = 0;
@@ -4833,11 +4836,11 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 		ud_collection_length1 = _tmp24__length1;
 #line 857 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		for (ud_it = 0; ud_it < _tmp24__length1; ud_it = ud_it + 1) {
-#line 4836 "tracker-preferences.c"
+#line 4839 "tracker-preferences.c"
 			GUserDirectory ud = 0;
 #line 857 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 			ud = ud_collection[ud_it];
-#line 4840 "tracker-preferences.c"
+#line 4843 "tracker-preferences.c"
 			{
 				GUserDirectory _tmp25_;
 #line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
@@ -4846,7 +4849,7 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 				switch (_tmp25_) {
 #line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_DESKTOP:
-#line 4849 "tracker-preferences.c"
+#line 4852 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp26_;
 #line 860 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
@@ -4855,11 +4858,11 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp26_, FALSE);
 #line 861 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
-#line 4858 "tracker-preferences.c"
+#line 4861 "tracker-preferences.c"
 					}
 #line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_DOCUMENTS:
-#line 4862 "tracker-preferences.c"
+#line 4865 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp27_;
 #line 863 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
@@ -4868,11 +4871,11 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp27_, FALSE);
 #line 864 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
-#line 4871 "tracker-preferences.c"
+#line 4874 "tracker-preferences.c"
 					}
 #line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_DOWNLOAD:
-#line 4875 "tracker-preferences.c"
+#line 4878 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp28_;
 #line 866 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
@@ -4881,11 +4884,11 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp28_, FALSE);
 #line 867 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
-#line 4884 "tracker-preferences.c"
+#line 4887 "tracker-preferences.c"
 					}
 #line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_MUSIC:
-#line 4888 "tracker-preferences.c"
+#line 4891 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp29_;
 #line 869 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
@@ -4894,11 +4897,11 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp29_, FALSE);
 #line 870 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
-#line 4897 "tracker-preferences.c"
+#line 4900 "tracker-preferences.c"
 					}
 #line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_PICTURES:
-#line 4901 "tracker-preferences.c"
+#line 4904 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp30_;
 #line 872 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
@@ -4907,11 +4910,11 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp30_, FALSE);
 #line 873 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
-#line 4910 "tracker-preferences.c"
+#line 4913 "tracker-preferences.c"
 					}
 #line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_VIDEOS:
-#line 4914 "tracker-preferences.c"
+#line 4917 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp31_;
 #line 875 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
@@ -4920,13 +4923,13 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp31_, FALSE);
 #line 876 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
-#line 4923 "tracker-preferences.c"
+#line 4926 "tracker-preferences.c"
 					}
 					default:
 					{
 #line 878 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
-#line 4929 "tracker-preferences.c"
+#line 4932 "tracker-preferences.c"
 					}
 				}
 			}
@@ -4934,14 +4937,14 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 	}
 #line 815 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	all_dirs = (_vala_array_free (all_dirs, all_dirs_length1, (GDestroyNotify) g_free), NULL);
-#line 4937 "tracker-preferences.c"
+#line 4940 "tracker-preferences.c"
 }
 
 
 static void tracker_value_preferences_init (GValue* value) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	value->data[0].v_pointer = NULL;
-#line 4944 "tracker-preferences.c"
+#line 4947 "tracker-preferences.c"
 }
 
 
@@ -4950,7 +4953,7 @@ static void tracker_value_preferences_free_value (GValue* value) {
 	if (value->data[0].v_pointer) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		tracker_preferences_unref (value->data[0].v_pointer);
-#line 4953 "tracker-preferences.c"
+#line 4956 "tracker-preferences.c"
 	}
 }
 
@@ -4960,11 +4963,11 @@ static void tracker_value_preferences_copy_value (const GValue* src_value, GValu
 	if (src_value->data[0].v_pointer) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		dest_value->data[0].v_pointer = tracker_preferences_ref (src_value->data[0].v_pointer);
-#line 4963 "tracker-preferences.c"
+#line 4966 "tracker-preferences.c"
 	} else {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		dest_value->data[0].v_pointer = NULL;
-#line 4967 "tracker-preferences.c"
+#line 4970 "tracker-preferences.c"
 	}
 }
 
@@ -4972,37 +4975,37 @@ static void tracker_value_preferences_copy_value (const GValue* src_value, GValu
 static gpointer tracker_value_preferences_peek_pointer (const GValue* value) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return value->data[0].v_pointer;
-#line 4975 "tracker-preferences.c"
+#line 4978 "tracker-preferences.c"
 }
 
 
 static gchar* tracker_value_preferences_collect_value (GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (collect_values[0].v_pointer) {
-#line 4982 "tracker-preferences.c"
+#line 4985 "tracker-preferences.c"
 		TrackerPreferences* object;
 		object = collect_values[0].v_pointer;
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (object->parent_instance.g_class == NULL) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 4989 "tracker-preferences.c"
+#line 4992 "tracker-preferences.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
-#line 4993 "tracker-preferences.c"
+#line 4996 "tracker-preferences.c"
 		}
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = tracker_preferences_ref (object);
-#line 4997 "tracker-preferences.c"
+#line 5000 "tracker-preferences.c"
 	} else {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = NULL;
-#line 5001 "tracker-preferences.c"
+#line 5004 "tracker-preferences.c"
 	}
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return NULL;
-#line 5005 "tracker-preferences.c"
+#line 5008 "tracker-preferences.c"
 }
 
 
@@ -5013,25 +5016,25 @@ static gchar* tracker_value_preferences_lcopy_value (const GValue* value, guint 
 	if (!object_p) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
-#line 5016 "tracker-preferences.c"
+#line 5019 "tracker-preferences.c"
 	}
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (!value->data[0].v_pointer) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*object_p = NULL;
-#line 5022 "tracker-preferences.c"
+#line 5025 "tracker-preferences.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*object_p = value->data[0].v_pointer;
-#line 5026 "tracker-preferences.c"
+#line 5029 "tracker-preferences.c"
 	} else {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*object_p = tracker_preferences_ref (value->data[0].v_pointer);
-#line 5030 "tracker-preferences.c"
+#line 5033 "tracker-preferences.c"
 	}
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return NULL;
-#line 5034 "tracker-preferences.c"
+#line 5037 "tracker-preferences.c"
 }
 
 
@@ -5045,7 +5048,7 @@ GParamSpec* tracker_param_spec_preferences (const gchar* name, const gchar* nick
 	G_PARAM_SPEC (spec)->value_type = object_type;
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return G_PARAM_SPEC (spec);
-#line 5048 "tracker-preferences.c"
+#line 5051 "tracker-preferences.c"
 }
 
 
@@ -5054,7 +5057,7 @@ gpointer tracker_value_get_preferences (const GValue* value) {
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_PREFERENCES), NULL);
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return value->data[0].v_pointer;
-#line 5057 "tracker-preferences.c"
+#line 5060 "tracker-preferences.c"
 }
 
 
@@ -5074,17 +5077,17 @@ void tracker_value_set_preferences (GValue* value, gpointer v_object) {
 		value->data[0].v_pointer = v_object;
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		tracker_preferences_ref (value->data[0].v_pointer);
-#line 5077 "tracker-preferences.c"
+#line 5080 "tracker-preferences.c"
 	} else {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = NULL;
-#line 5081 "tracker-preferences.c"
+#line 5084 "tracker-preferences.c"
 	}
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (old) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		tracker_preferences_unref (old);
-#line 5087 "tracker-preferences.c"
+#line 5090 "tracker-preferences.c"
 	}
 }
 
@@ -5103,17 +5106,17 @@ void tracker_value_take_preferences (GValue* value, gpointer v_object) {
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = v_object;
-#line 5106 "tracker-preferences.c"
+#line 5109 "tracker-preferences.c"
 	} else {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = NULL;
-#line 5110 "tracker-preferences.c"
+#line 5113 "tracker-preferences.c"
 	}
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (old) {
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		tracker_preferences_unref (old);
-#line 5116 "tracker-preferences.c"
+#line 5119 "tracker-preferences.c"
 	}
 }
 
@@ -5125,7 +5128,7 @@ static void tracker_preferences_class_init (TrackerPreferencesClass * klass) {
 	TRACKER_PREFERENCES_CLASS (klass)->finalize = tracker_preferences_finalize;
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_type_class_add_private (klass, sizeof (TrackerPreferencesPrivate));
-#line 5128 "tracker-preferences.c"
+#line 5131 "tracker-preferences.c"
 }
 
 
@@ -5140,7 +5143,7 @@ static void tracker_preferences_instance_init (TrackerPreferences * self) {
 	self->priv->ignored_user_directories = NULL;
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->ref_count = 1;
-#line 5143 "tracker-preferences.c"
+#line 5146 "tracker-preferences.c"
 }
 
 
@@ -5218,7 +5221,7 @@ static void tracker_preferences_finalize (TrackerPreferences* obj) {
 	_g_object_unref0 (self->priv->hbox_duplicate_warning);
 #line 71 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->notebook);
-#line 5221 "tracker-preferences.c"
+#line 5224 "tracker-preferences.c"
 }
 
 
@@ -5243,7 +5246,7 @@ gpointer tracker_preferences_ref (gpointer instance) {
 	g_atomic_int_inc (&self->ref_count);
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return instance;
-#line 5246 "tracker-preferences.c"
+#line 5249 "tracker-preferences.c"
 }
 
 
@@ -5256,7 +5259,7 @@ void tracker_preferences_unref (gpointer instance) {
 		TRACKER_PREFERENCES_GET_CLASS (self)->finalize (self);
 #line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_type_free_instance ((GTypeInstance *) self);
-#line 5259 "tracker-preferences.c"
+#line 5262 "tracker-preferences.c"
 	}
 }
 
@@ -5277,7 +5280,7 @@ gint _vala_main (gchar** args, int args_length1) {
 	_tmp1_ = g_option_context_new (_tmp0_);
 #line 898 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	context = _tmp1_;
-#line 5280 "tracker-preferences.c"
+#line 5283 "tracker-preferences.c"
 	{
 		GOptionContext* _tmp2_;
 		GOptionContext* _tmp3_;
@@ -5304,7 +5307,7 @@ gint _vala_main (gchar** args, int args_length1) {
 		g_option_context_parse (_tmp6_, &args_length1, &args, &_inner_error_);
 #line 904 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (_inner_error_ != NULL) {
-#line 5307 "tracker-preferences.c"
+#line 5310 "tracker-preferences.c"
 			goto __catch3_g_error;
 		}
 	}
@@ -5353,7 +5356,7 @@ gint _vala_main (gchar** args, int args_length1) {
 		_g_option_context_free0 (context);
 #line 908 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return result;
-#line 5356 "tracker-preferences.c"
+#line 5359 "tracker-preferences.c"
 	}
 	__finally3:
 #line 900 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
@@ -5366,13 +5369,13 @@ gint _vala_main (gchar** args, int args_length1) {
 		g_clear_error (&_inner_error_);
 #line 900 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return 0;
-#line 5369 "tracker-preferences.c"
+#line 5372 "tracker-preferences.c"
 	}
 #line 911 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp14_ = print_version;
 #line 911 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp14_) {
-#line 5375 "tracker-preferences.c"
+#line 5378 "tracker-preferences.c"
 		gchar* _tmp15_;
 		gchar* about;
 		gchar* _tmp16_;
@@ -5495,7 +5498,7 @@ gint _vala_main (gchar** args, int args_length1) {
 		_g_option_context_free0 (context);
 #line 924 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return result;
-#line 5498 "tracker-preferences.c"
+#line 5501 "tracker-preferences.c"
 	}
 #line 927 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_init (&args_length1, &args);
@@ -5523,7 +5526,7 @@ gint _vala_main (gchar** args, int args_length1) {
 	_g_option_context_free0 (context);
 #line 938 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return result;
-#line 5526 "tracker-preferences.c"
+#line 5529 "tracker-preferences.c"
 }
 
 
@@ -5532,7 +5535,7 @@ int main (int argc, char ** argv) {
 	g_type_init ();
 #line 897 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return _vala_main (argv, argc);
-#line 5535 "tracker-preferences.c"
+#line 5538 "tracker-preferences.c"
 }
 
 

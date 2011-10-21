@@ -4,7 +4,15 @@ noinst_PROGRAMS = $(TEST_PROGS)
 
 TEST_PROGS +=                                          \
 	tracker-test-utils                             \
-	tracker-test-xmp
+	tracker-test-xmp			       \
+	tracker-extract-info-test		       \
+	tracker-exif-test			       \
+	tracker-guarantee-test
+
+if HAVE_IPTC
+# This test also requires libjpeg...
+TEST_PROGS += tracker-iptc-test
+endif
 
 if HAVE_ENCA
 TEST_PROGS += tracker-encoding
@@ -37,4 +45,24 @@ tracker_test_utils_SOURCES = tracker-test-utils.c
 
 tracker_test_xmp_SOURCES = tracker-test-xmp.c
 
-EXTRA_DIST = encoding-detect.bin areas.xmp areas-with-contacts.xmp areas-ns.xmp nb282393.xmp nb282393_simple.xmp
+tracker_extract_info_test_SOURCES = tracker-extract-info-test.c
+
+tracker_exif_test_SOURCES = tracker-exif-test.c
+
+tracker_guarantee_test_SOURCES = tracker-guarantee-test.c
+
+tracker_iptc_test_SOURCES = tracker-iptc-test.c
+tracker_iptc_test_LDADD = $(LDADD) $(LIBJPEG_LIBS)
+tracker_iptc_test_CFLAGS = $(LIBJPEG_CFLAGS)
+
+EXTRA_DIST = encoding-detect.bin 	\
+	areas.xmp 			\
+	areas-with-contacts.xmp 	\
+	areas-ns.xmp 			\
+	nb282393.xmp 			\
+	nb282393_simple.xmp		\
+	exif-img.jpg			\
+	exif-free-img.jpg		\
+	guarantee-mtime-test.txt	\
+	getline-test.txt		\
+	iptc-img.jpg

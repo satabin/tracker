@@ -1,3 +1,109 @@
+2011-10-21  Jürg Billeter  <j@bitron.ch>
+
+	Release 0.12.6
+
+	tests/libtracker-extract: Fix tests when srcdir != builddir
+
+	libtracker-miner: Ignore mtime difference of less than 2 seconds
+	FAT stores timestamps with 2 second granularity.
+
+	Fixes NB#287278.
+
+2011-10-21  Ivan Frade  <ivan.frade@gmail.com>
+
+	tests/libtracker-extract: unit tests for tracker-iptc
+
+2011-10-20  Piotr Drąg  <piotrdrag@gmail.com>
+
+	Updated Polish translation
+
+2011-10-20  Gert Michael Kulyk  <gkulyk@yahoo.de>
+
+	tracker-preferences: Make sure "Recurse" column title is translated
+	Fixes GB#662099.
+
+2011-10-20  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-needle: Fix crash in result store
+	n_children() would crash if there weren't any items
+	in the categories array. Fixes GB#661446, reported by
+	Damien Gombault <desintegr@gmail.com>
+
+	tracker-extract: Also complete cancelled tasks
+	If a task happened to be cancelled at the time of
+	get_metadata(), the error was set, but the async
+	result wasn't notified.
+
+2011-10-20  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-10-20  Ivan Frade  <ivan.frade@gmail.com>
+
+	tests/libtracker-extract: Add LGPL notice to the test code
+
+2011-10-20  Jürg Billeter  <j@bitron.ch>
+
+	functional-tests: Increase timeout in application tests
+
+2011-10-20  Gert Michael Kulyk  <gkulyk@yahoo.de>
+
+	tracker-preferences: Mark tooltips in tracker-preferences.ui for translation
+
+2011-10-20  Ivan Frade  <ivan.frade@gmail.com>
+
+	tests/libtracker-extract: Complete tracker-encoding tests
+
+	tests/libtracker-extract: Ignore deprecated function in LCOV
+
+	test/libtracker-extract: Complete tests for tracker-utils
+	New tests for some functions, ignore deprecated functions in LCOV.
+
+	tests/libtracker-extract: tracker-guaranteee unit tests
+
+	tests/libtracker-extract: Do not check exact value of a date
+	In the write/read process the timezone is recalculated. The expected
+	value should be also updated accordingly. Checking that the date is not
+	NULL is good enough for our purposes.
+
+2011-10-20  Jürg Billeter  <j@bitron.ch>
+
+	tracker-miner-fs: Fix uninitialized variable
+
+	tracker-extract-text: Fix crash if unable to open file
+
+	tracker-extract: Fix uninitialized variable in albumart
+
+	libtracker-common: Fix compile warning, no functional change
+
+	tracker-control: Fix crash when unable to get miner pause details
+
+	tracker-control: Do not call g_object_unref on NULL in error case
+
+	tracker-control: Use g_printerr instead of g_warning in get_uid_for_pid
+	This is in line with the rest of the code.
+
+	tracker-control: Fix a couple of typos, no functional change
+
+2011-10-20  Ivan Frade  <ivan.frade@gmail.com>
+
+	tests/libtracker-extract: Unit tests for tracker-exif
+
+	tests/libtracker-extract: Tests for TrackerExtractInfo
+
+	libtracker-extract: Initialize string as NULL
+	The pointer is used and shared later without any check. No know bug
+	about it and tests pass fine before and after.
+
+2011-10-20  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-writeback: Don't own the DBus name before registering the object
+	Fixes NB#286589.
+
+2011-10-15  Takeshi AIHANA  <takeshi.aihana@gmail.com>
+
+	Updated Japanese translation.
+
 2011-10-13  Jürg Billeter  <j@bitron.ch>
 
 	Release 0.12.5

@@ -543,11 +543,12 @@ get_uid_for_pid (const gchar  *pid_as_string,
 	                          &error);
 
 	if (error) {
-		g_warning ("Could not stat() file:'%s', %s", fn, error->message);
+		g_printerr ("Could not stat() file:'%s', %s", fn, error->message);
 		g_error_free (error);
 		uid = 0;
 	} else {
 		uid = g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_UID);
+		g_object_unref (info);
 	}
 
 	if (filename) {
@@ -556,7 +557,6 @@ get_uid_for_pid (const gchar  *pid_as_string,
 		g_free (fn);
 	}
 
-	g_object_unref (info);
 	g_object_unref (f);
 
 	return uid;
@@ -652,7 +652,7 @@ tracker_control_general_run (void)
 	    list_processes) {
 		guint32 own_pid;
 		guint32 own_uid;
-		gchar *own_uid_str;
+		gchar *own_pid_str;
 
 		pids = get_pids ();
 		str = g_strdup_printf (g_dngettext (NULL,
@@ -665,9 +665,9 @@ tracker_control_general_run (void)
 
 		/* Establish own uid/pid */
 		own_pid = (guint32) getpid ();
-		own_uid_str = g_strdup_printf ("%d", own_pid);
-		own_uid = get_uid_for_pid (own_uid_str, NULL);
-		g_free (own_uid_str);
+		own_pid_str = g_strdup_printf ("%d", own_pid);
+		own_uid = get_uid_for_pid (own_pid_str, NULL);
+		g_free (own_pid_str);
 
 		for (l = pids; l; l = l->next) {
 			GError *error = NULL;
@@ -683,7 +683,7 @@ tracker_control_general_run (void)
 				continue;
 			}
 
-			/* Get contents to determin basename */
+			/* Get contents to determine basename */
 			if (!g_file_get_contents (filename, &contents, NULL, &error)) {
 				str = g_strdup_printf (_("Could not open '%s'"), filename);
 				g_printerr ("%s, %s\n",

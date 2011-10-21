@@ -11,10 +11,10 @@ override_dh_auto_configure:
 		--enable-tracker-fts \
 		--enable-upower \
 		--enable-tracker-explorer \
-		--disable-tracker-search-bar \
+		--enable-tracker-search-bar \
 		--enable-tracker-needle \
 		--enable-tracker-preferences \
-		--disable-nautilus-extension \
+		--enable-nautilus-extension \
 		--enable-libiptcdata \
 		--enable-exempi \
 		--enable-libexif \

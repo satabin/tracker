@@ -1,8 +1,8 @@
-tracker (0.12.5-3) UNRELEASED; urgency=low
+tracker (0.12.5-3) experimental; urgency=low
 
   * Re-enable tracker-search-bar panel applet and nautilus tagging extension.
 
- -- Michael Biebl <biebl@debian.org>  Fri, 21 Oct 2011 05:57:51 +0200
+ -- Michael Biebl <biebl@debian.org>  Fri, 21 Oct 2011 06:13:23 +0200
 
 tracker (0.12.5-2) experimental; urgency=low
 

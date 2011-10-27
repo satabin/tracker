@@ -1,3 +1,9 @@
+tracker (0.12.6-2) UNRELEASED; urgency=low
+
+  * debian/watch: Track .xz tarballs.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 27 Oct 2011 22:00:43 +0200
+
 tracker (0.12.6-1) experimental; urgency=low
 
   * New upstream release.

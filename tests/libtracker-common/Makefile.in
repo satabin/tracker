@@ -67,23 +67,38 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__EXEEXT_1 = tracker-type-utils$(EXEEXT) tracker-dbus$(EXEEXT) \
-	tracker-file-utils$(EXEEXT) tracker-utils$(EXEEXT)
+	tracker-file-utils$(EXEEXT) tracker-utils$(EXEEXT) \
+	tracker-albumart-test$(EXEEXT) tracker-sched-test$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
-am_tracker_dbus_OBJECTS = tracker-dbus-test.$(OBJEXT)
-tracker_dbus_OBJECTS = $(am_tracker_dbus_OBJECTS)
-tracker_dbus_LDADD = $(LDADD)
+am_tracker_albumart_test_OBJECTS = tracker-albumart-test.$(OBJEXT)
+tracker_albumart_test_OBJECTS = $(am_tracker_albumart_test_OBJECTS)
+tracker_albumart_test_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-tracker_dbus_DEPENDENCIES =  \
+tracker_albumart_test_DEPENDENCIES =  \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
+am_tracker_dbus_OBJECTS = tracker-dbus-test.$(OBJEXT)
+tracker_dbus_OBJECTS = $(am_tracker_dbus_OBJECTS)
+tracker_dbus_LDADD = $(LDADD)
+tracker_dbus_DEPENDENCIES =  \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_tracker_file_utils_OBJECTS = tracker-file-utils-test.$(OBJEXT)
 tracker_file_utils_OBJECTS = $(am_tracker_file_utils_OBJECTS)
 tracker_file_utils_LDADD = $(LDADD)
 tracker_file_utils_DEPENDENCIES =  \
+	$(top_builddir)/tests/common/libtracker-testcommon.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_tracker_sched_test_OBJECTS = tracker-sched-test.$(OBJEXT)
+tracker_sched_test_OBJECTS = $(am_tracker_sched_test_OBJECTS)
+tracker_sched_test_LDADD = $(LDADD)
+tracker_sched_test_DEPENDENCIES =  \
 	$(top_builddir)/tests/common/libtracker-testcommon.la \
 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -127,10 +142,13 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(tracker_dbus_SOURCES) $(tracker_file_utils_SOURCES) \
+SOURCES = $(tracker_albumart_test_SOURCES) $(tracker_dbus_SOURCES) \
+	$(tracker_file_utils_SOURCES) $(tracker_sched_test_SOURCES) \
 	$(tracker_type_utils_SOURCES) $(tracker_utils_SOURCES)
-DIST_SOURCES = $(tracker_dbus_SOURCES) $(tracker_file_utils_SOURCES) \
-	$(tracker_type_utils_SOURCES) $(tracker_utils_SOURCES)
+DIST_SOURCES = $(tracker_albumart_test_SOURCES) \
+	$(tracker_dbus_SOURCES) $(tracker_file_utils_SOURCES) \
+	$(tracker_sched_test_SOURCES) $(tracker_type_utils_SOURCES) \
+	$(tracker_utils_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -449,7 +467,7 @@ GTESTER_REPORT = gtester-report
 
 # initialize variables for unconditional += appending
 TEST_PROGS = tracker-type-utils tracker-dbus tracker-file-utils \
-	tracker-utils
+	tracker-utils tracker-albumart-test tracker-sched-test
 AM_CPPFLAGS = \
 	-DTOP_SRCDIR=\"$(abs_top_srcdir)\"             \
 	-DTOP_BUILDDIR=\"$(abs_top_builddir)\"         \
@@ -470,6 +488,8 @@ tracker_dbus_SOURCES = \
 tracker_type_utils_SOURCES = tracker-type-utils-test.c
 tracker_file_utils_SOURCES = tracker-file-utils-test.c
 tracker_utils_SOURCES = tracker-utils-test.c
+tracker_albumart_test_SOURCES = tracker-albumart-test.c
+tracker_sched_test_SOURCES = tracker-sched-test.c
 EXTRA_DIST = non-utf8.txt
 all: all-am
 
@@ -514,12 +534,18 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+tracker-albumart-test$(EXEEXT): $(tracker_albumart_test_OBJECTS) $(tracker_albumart_test_DEPENDENCIES) 
+	@rm -f tracker-albumart-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_albumart_test_OBJECTS) $(tracker_albumart_test_LDADD) $(LIBS)
 tracker-dbus$(EXEEXT): $(tracker_dbus_OBJECTS) $(tracker_dbus_DEPENDENCIES) 
 	@rm -f tracker-dbus$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_dbus_OBJECTS) $(tracker_dbus_LDADD) $(LIBS)
 tracker-file-utils$(EXEEXT): $(tracker_file_utils_OBJECTS) $(tracker_file_utils_DEPENDENCIES) 
 	@rm -f tracker-file-utils$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_file_utils_OBJECTS) $(tracker_file_utils_LDADD) $(LIBS)
+tracker-sched-test$(EXEEXT): $(tracker_sched_test_OBJECTS) $(tracker_sched_test_DEPENDENCIES) 
+	@rm -f tracker-sched-test$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(tracker_sched_test_OBJECTS) $(tracker_sched_test_LDADD) $(LIBS)
 tracker-type-utils$(EXEEXT): $(tracker_type_utils_OBJECTS) $(tracker_type_utils_DEPENDENCIES) 
 	@rm -f tracker-type-utils$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(tracker_type_utils_OBJECTS) $(tracker_type_utils_LDADD) $(LIBS)
@@ -533,8 +559,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-albumart-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-dbus-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-file-utils-test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-sched-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-type-utils-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-utils-test.Po@am__quote@
 

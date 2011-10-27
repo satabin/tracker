@@ -1,3 +1,83 @@
+2011-10-27  Jürg Billeter  <j@bitron.ch>
+
+	Release 0.12.7
+
+	tests/libtracker-common: Add missing includes
+
+	tracker-extract-gstreamer: Rename flag also in the non-GUPnP-DLNA case
+
+2011-10-27  Ivan Frade  <ivan.frade@gmail.com>
+
+	tests/libtracker-extract: new tests binaries added to .gitignore
+
+	tests/libtracker-common: new test binaries added to .gitignore
+
+	tests/libtracker-common: Missing file in previous commit (sched test)
+
+	tests/libtracker-common: Complete tests for tracker-utils.c
+
+	tests/libtracker-common: testing tracker_sched_idle
+	Make a nice coverage. Maybe the file should be ignored right away...
+
+	tests/libtracker-common: Test for tracker-albumart
+
+2011-10-27  Philip Van Hoof  <philip@codeminded.be>
+
+	tracker-utils: Display nameGiven and nameFamily when fullname is empty
+	Fixes NB#287970.
+
+2011-10-27  Martyn Russell  <martyn@lanedo.com>
+
+	ttl2sgml: Fixed memory leak
+	Fixes NB#287972.
+
+2011-10-27  Carlos Garnacho  <carlos@lanedo.com>
+
+	tracker-writeback: Apply writeback handlers sequentially on a same file
+	Activating different writeback handlers on the same file in different threads
+	may bring in issues, and as the GDBusMethodInvocation is shared across the
+	(possibly multiple) spawned threads, there's a race condition to have it
+	handled.
+
+2011-10-27  Daniel Mustieles  <daniel.mustieles@gmail.com>
+
+	Updated Spanish translation
+
+2011-10-27  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-miner,crawler: Use a cancellable per crawled directory
+	Reusing the cancellable might bring in issues if tracker_crawler_start()
+	(which resets the cancellable) is called shortly after tracker_crawler_stop().
+	So pending async tasks that do check for g_cancellable_is_cancelled() might
+	run into the wrong state. Possibly fixes NB#287480.
+
+	The cancellable might be used to cancel the current operation, but then
+	reset and reused for the next one, while the previous operation could
+	still be on the way to be cancelled. Instead, create a new cancellable
+	to handle any following task.
+
+2011-10-27  Aurimas Černius  <aurisc4@gmail.com>
+
+	Updated Lithuanian translation
+
+2011-10-27  Martyn Russell  <martyn@lanedo.com>
+
+	tracker-search-bar: Don't display the results in a broken fashion
+	Fixes GB#662364.
+
+2011-10-27  Matej Urbančič  <mateju@svn.gnome.org>
+
+	Updated Slovenian translation
+
+2011-10-27  Carlos Garnacho  <carlos@lanedo.com>
+
+	libtracker-miner,buffer: Improve logging of sparql errors
+	On sparql error, both the faulty sparql string and the affected
+	file(s) are displayed, this is only shown with -v 3.
+
+	tracker-extract,gstreamer: Handle streams with no tags
+	This prevents critical warnings on certain files.
+
 2011-10-21  Jürg Billeter  <j@bitron.ch>
 
 	Release 0.12.6

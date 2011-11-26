@@ -389,8 +389,7 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 EXTRA_DIST = \
-	posix.vapi                                     \
-	glib-2.0-fixes.vapi
+	gio-2.0.vapi
 
 all: all-am
 

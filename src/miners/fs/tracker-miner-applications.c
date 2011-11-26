@@ -24,10 +24,10 @@
 #include <libtracker-common/tracker-locale.h>
 
 #include "tracker-miner-applications.h"
-#include "tracker-miner-applications-locale.h"
+#include "tracker-miner-locale.h"
 
 #ifdef HAVE_MEEGOTOUCH
-#include "tracker-miner-applications-meego.h"
+#include "tracker-miner-meego.h"
 #endif
 
 #define GROUP_DESKTOP_ENTRY          "Desktop Entry"
@@ -185,6 +185,21 @@ tracker_locale_notify_cb (TrackerLocaleID id,
 	}
 }
 
+static void
+miner_finished_cb (TrackerMinerFS *fs,
+                   gdouble         seconds_elapsed,
+                   guint           total_directories_found,
+                   guint           total_directories_ignored,
+                   guint           total_files_found,
+                   guint           total_files_ignored,
+                   gpointer        user_data)
+{
+	/* Update locale file if necessary */
+	if (tracker_miner_locale_changed ()) {
+		tracker_miner_locale_set_current ();
+	}
+}
+
 static gboolean
 miner_applications_initable_init (GInitable     *initable,
                                   GCancellable  *cancellable,
@@ -202,6 +217,10 @@ miner_applications_initable_init (GInitable     *initable,
 		g_propagate_error (error, inner_error);
 		return FALSE;
 	}
+
+	g_signal_connect (fs, "finished",
+	                  G_CALLBACK (miner_finished_cb),
+	                  NULL);
 
 	miner_applications_add_directories (fs);
 
@@ -314,13 +333,6 @@ get_desktop_key_file (GFile   *file,
 
 	if (!g_key_file_load_from_file (key_file, path, G_KEY_FILE_NONE, NULL)) {
 		g_set_error (error, miner_applications_error_quark, 0, "Couldn't load desktop file:'%s'", path);
-		g_key_file_free (key_file);
-		g_free (path);
-		return NULL;
-	}
-
-	if (g_key_file_get_boolean (key_file, GROUP_DESKTOP_ENTRY, "Hidden", NULL)) {
-		g_set_error_literal (error, miner_applications_error_quark, 0, "Desktop file is 'hidden', not gathering metadata for it");
 		g_key_file_free (key_file);
 		g_free (path);
 		return NULL;
@@ -832,6 +844,8 @@ process_file_cb (GObject      *object,
 			g_clear_error (&error);
 
 			error = g_error_new_literal (miner_applications_error_quark, 0, "File is not a key file");
+		} else if (g_key_file_get_boolean (data->key_file, GROUP_DESKTOP_ENTRY, "Hidden", NULL)) {
+			error = g_error_new_literal (miner_applications_error_quark, 0, "Desktop file is 'hidden', not gathering metadata for it");
 		} else {
 			process_desktop_file (data, file_info, &error);
 		}
@@ -990,7 +1004,7 @@ tracker_miner_applications_detect_locale_changed (TrackerMiner *miner)
 {
 	gboolean changed;
 
-	changed = tracker_miner_applications_locale_changed ();
+	changed = tracker_miner_locale_changed ();
 	if (changed) {
 		g_message ("Locale change detected, so resetting miner to "
 		           "remove all previously created items...");

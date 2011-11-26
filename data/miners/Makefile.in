@@ -46,9 +46,10 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/Makefile.decl
-@HAVE_TRACKER_MINER_EVOLUTION_TRUE@am__append_1 = tracker-miner-evolution.desktop
-@HAVE_TRACKER_MINER_RSS_TRUE@am__append_2 = tracker-miner-rss.desktop
-@HAVE_TRACKER_MINER_FLICKR_TRUE@am__append_3 = tracker-miner-flickr.desktop
+@HAVE_MAEMO_TRUE@am__append_1 = tracker-miner-userguides.desktop
+@HAVE_TRACKER_MINER_EVOLUTION_TRUE@am__append_2 = tracker-miner-evolution.desktop
+@HAVE_TRACKER_MINER_RSS_TRUE@am__append_3 = tracker-miner-rss.desktop
+@HAVE_TRACKER_MINER_FLICKR_TRUE@am__append_4 = tracker-miner-flickr.desktop
 subdir = data/miners
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -416,6 +417,7 @@ GTESTER_REPORT = gtester-report
 # initialize variables for unconditional += appending
 TEST_PROGS = 
 desktop_in_in_files = \
+	tracker-miner-userguides.desktop.in.in         \
 	tracker-miner-applications.desktop.in.in       \
 	tracker-miner-evolution.desktop.in.in          \
 	tracker-miner-files.desktop.in.in              \
@@ -423,6 +425,7 @@ desktop_in_in_files = \
 	tracker-miner-rss.desktop.in.in
 
 desktop_in_files = \
+	tracker-miner-userguides.desktop.in            \
 	tracker-miner-applications.desktop.in          \
 	tracker-miner-evolution.desktop.in             \
 	tracker-miner-files.desktop.in                 \
@@ -432,7 +435,7 @@ desktop_in_files = \
 tracker_minersdir = $(datadir)/tracker/miners
 tracker_miners_DATA = tracker-miner-applications.desktop \
 	tracker-miner-files.desktop $(am__append_1) $(am__append_2) \
-	$(am__append_3)
+	$(am__append_3) $(am__append_4)
 EXTRA_DIST = $(desktop_in_in_files)
 CLEANFILES = \
 	$(tracker_miners_DATA)                         \

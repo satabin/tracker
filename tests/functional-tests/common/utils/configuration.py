@@ -69,7 +69,7 @@ PREFIX = "/usr"
 # So we do the translation by hand in the expandvars function
 #
 RAW_EXEC_PREFIX = "${prefix}"
-RAW_EXEC_DIR = "${exec_prefix}/lib"
+RAW_EXEC_DIR = "${exec_prefix}/libexec"
 RAW_DATA_DIR = "${datarootdir}"
 RAW_DATAROOT_DIR = "${prefix}/share"
 RAW_BINDIR = "${exec_prefix}/bin"

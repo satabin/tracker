@@ -22,96 +22,7 @@
 
 #include <glib-object.h>
 
-#include <libtracker-common/tracker-date-time.h>
 #include <libtracker-common/tracker-type-utils.h>
-
-#include <tracker-test-helpers.h>
-
-
-static void
-test_string_to_date (void)
-{
-	GDate     *expected;
-	GDate     *result;
-	time_t     result_time_t;
-	const gchar  *input = "2008-06-16T11:10:10+0600";
-	gchar  *timezone = g_strdup (g_getenv ("TZ"));
-	GError *error = NULL;
-
-	if (! g_setenv ("TZ", "UTC", TRUE)) {
-		g_test_message ("unable to set timezone, test results are invalid, skipping\n");
-		if (timezone) {
-			g_free (timezone);
-		}
-		return;
-	}
-
-	expected = g_date_new_dmy (16, G_DATE_JUNE, 2008);
-
-	result_time_t = tracker_string_to_date (input, NULL, &error);
-	g_assert_no_error (error);
-
-	result = g_date_new ();
-	g_date_set_time_t (result, result_time_t);
-
-	g_setenv ("TZ", timezone, TRUE);
-	if (timezone) {
-		g_free (timezone);
-	}
-
-	g_assert_cmpint (g_date_get_year (expected), ==, g_date_get_year (result));
-	g_assert_cmpint (g_date_get_day (expected), ==, g_date_get_day (result));
-	g_assert_cmpint (g_date_get_month (expected), ==, g_date_get_month (result));
-
-	if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) {
-		result_time_t = tracker_string_to_date (NULL, NULL, NULL);
-	}
-	g_test_trap_assert_failed ();
-
-	result_time_t = tracker_string_to_date ("", NULL, &error);
-	g_assert_cmpint (result_time_t, ==, -1);
-	g_assert_error (error, TRACKER_DATE_ERROR, TRACKER_DATE_ERROR_INVALID_ISO8601);
-	g_error_free (error);
-	error = NULL;
-
-	result_time_t = tracker_string_to_date ("i am not a date", NULL, &error);
-	g_assert_cmpint (result_time_t, ==, -1);
-	g_assert_error (error, TRACKER_DATE_ERROR, TRACKER_DATE_ERROR_INVALID_ISO8601);
-	g_error_free (error);
-	error = NULL;
-
-	/* Fails! Check the code
-	   result_time_t = tracker_string_to_date ("2008-06-32T04:23:10+0000", NULL);
-	   g_assert_cmpint (result_time_t, ==, -1);
-	*/
-}
-
-static void
-test_date_to_string (void)
-{
-	struct tm *original;
-	time_t     input;
-	gchar     *result;
-
-	original = g_new0 (struct tm, 1);
-	original->tm_sec = 10;
-	original->tm_min = 53;
-	original->tm_hour = 23;
-	original->tm_mday = 16;
-	original->tm_mon = 5;
-	original->tm_year = 108;
-	original->tm_isdst = 0;
-
-#if !(defined(__FreeBSD__) || defined(__OpenBSD__))
-	input = mktime (original) - timezone;
-#else
-	input = timegm (original);
-#endif
-
-	result = tracker_date_to_string (input);
-
-	g_assert (result != NULL && strncmp (result, "2008-06-16T23:53:10Z", 19) == 0);
-}
 
 static void
 test_long_to_string (void)
@@ -121,12 +32,12 @@ test_long_to_string (void)
 
 	n = 10050;
 	result = tracker_glong_to_string (n);
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "10050"));
+	g_assert_cmpstr (result, ==, "10050");
 	g_free (result);
 
 	n = -9950;
 	result = tracker_glong_to_string (n);
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "-9950"));
+	g_assert_cmpstr (result, ==, "-9950");
 	g_free (result);
 }
 
@@ -138,12 +49,12 @@ test_int_to_string (void)
 
 	n = 654;
 	result = tracker_gint_to_string (n);
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "654"));
+	g_assert_cmpstr (result, ==, "654");
 	g_free (result);
 
 	n = -963;
 	result = tracker_gint_to_string (n);
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "-963"));
+	g_assert_cmpstr (result, ==, "-963");
 	g_free (result);
 
 }
@@ -156,7 +67,7 @@ test_uint_to_string (void)
 
 	n = 100;
 	result = tracker_guint_to_string (n);
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "100"));
+	g_assert_cmpstr (result, ==, "100");
 	g_free (result);
 }
 
@@ -168,12 +79,12 @@ test_gint32_to_string (void)
 
 	n = 100;
 	result = tracker_gint32_to_string (n);
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "100"));
+	g_assert_cmpstr (result, ==, "100");
 	g_free (result);
 
 	n = -96;
 	result = tracker_gint32_to_string (n);
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "-96"));
+	g_assert_cmpstr (result, ==, "-96");
 	g_free (result);
 
 }
@@ -186,7 +97,7 @@ test_guint32_to_string (void)
 
 	n = 100;
 	result = tracker_guint32_to_string (n);
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "100"));
+	g_assert_cmpstr (result, ==, "100");
 	g_free (result);
 
 }
@@ -280,10 +191,10 @@ test_gslist_to_string_list (void)
 
 	result = tracker_gslist_to_string_list (input);
 
-	g_assert (tracker_test_helpers_cmpstr_equal (result[0], "one") &&
-	          tracker_test_helpers_cmpstr_equal (result[1], "two") &&
-	          tracker_test_helpers_cmpstr_equal (result[2], "three") &&
-	          tracker_test_helpers_cmpstr_equal (result[3], "four"));
+	g_assert_cmpstr (result[0], ==, "one");
+	g_assert_cmpstr (result[1], ==, "two");
+        g_assert_cmpstr (result[2], ==, "three");
+	g_assert_cmpstr (result[3], ==, "four");
 
 	g_strfreev (result);
 
@@ -335,11 +246,11 @@ test_string_list_to_string (void)
 	pieces = g_strsplit (input, " ", 4);
 
 	result = tracker_string_list_to_string (pieces, 4, ' ');
-	g_assert (tracker_test_helpers_cmpstr_equal (input, result));
+	g_assert_cmpstr (input, ==, result);
 	g_free (result);
 
 	result = tracker_string_list_to_string (pieces, 3, '_');
-	g_assert (tracker_test_helpers_cmpstr_equal ("one_two_three", result));
+	g_assert_cmpstr ("one_two_three", ==, result);
 	g_free (result);
 
 
@@ -350,11 +261,11 @@ test_string_list_to_string (void)
 	g_test_trap_assert_failed ();
 
 	result = tracker_string_list_to_string (pieces, -1, ' ');
-	g_assert (tracker_test_helpers_cmpstr_equal (input, result));
+	g_assert_cmpstr (input, ==, result);
 	g_free (result);
 
 	result = tracker_string_list_to_string (pieces, 6, ' ');
-	g_assert (tracker_test_helpers_cmpstr_equal (input, result));
+	g_assert_cmpstr (input, ==, result);
 	g_free (result);
 
 	g_strfreev (pieces);
@@ -378,42 +289,42 @@ test_boolean_as_text_to_number (void)
 
 	/* Correct true values */
 	result = tracker_string_boolean_to_string_gint ("True");
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "1"));
+	g_assert_cmpstr (result, ==, "1");
 	g_free (result);
 
 
 	result = tracker_string_boolean_to_string_gint ("TRUE");
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "1"));
+	g_assert_cmpstr (result, ==, "1");
 	g_free (result);
 
 	result = tracker_string_boolean_to_string_gint ("true");
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "1"));
+	g_assert_cmpstr (result, ==, "1");
 	g_free (result);
 
 	/* Correct false values */
 	result = tracker_string_boolean_to_string_gint ("False");
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "0"));
+	g_assert_cmpstr (result, ==, "0");
 	g_free (result);
 
 	result = tracker_string_boolean_to_string_gint ("FALSE");
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "0"));
+	g_assert_cmpstr (result, ==, "0");
 	g_free (result);
 
 	result = tracker_string_boolean_to_string_gint ("false");
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "0"));
+	g_assert_cmpstr (result, ==, "0");
 	g_free (result);
 
 	/* Invalid values */
 	result = tracker_string_boolean_to_string_gint ("Thrue");
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "Thrue"));
+	g_assert_cmpstr (result, ==, "Thrue");
 	g_free (result);
 
 	result = tracker_string_boolean_to_string_gint ("Falsez");
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "Falsez"));
+	g_assert_cmpstr (result, ==, "Falsez");
 	g_free (result);
 
 	result = tracker_string_boolean_to_string_gint ("Other invalid value");
-	g_assert (tracker_test_helpers_cmpstr_equal (result, "Other invalid value"));
+        g_assert_cmpstr (result, ==, "Other invalid value");
 	g_free (result);
 
 
@@ -515,10 +426,6 @@ main (int argc, char **argv)
 	                 test_int_to_string);
 	g_test_add_func ("/libtracker-common/tracker-type-utils/long_to_string",
 	                 test_long_to_string);
-	g_test_add_func ("/libtracker-common/tracker-type-utils/date_to_string",
-	                 test_date_to_string);
-	g_test_add_func ("/libtracker-common/tracker-type-utils/string_to_date",
-	                 test_string_to_date);
 	g_test_add_func ("/libtracker-common/tracker-type-utils/gslist_with_string_data_equal",
 	                 test_gslist_with_string_data_equal);
 	g_test_add_func ("/libtracker-common/tracker-type-utils/glist_copy_with_string_data",

@@ -17,6 +17,8 @@ Name[pl]=Wyszukiwanie na pulpicie
 Name[pt_BR]=Pesquisa na área de trabalho
 Name[ru]=Поиск данных
 Name[sl]=Namizno iskanje
+Name[sr]=Претрага радне површи
+Name[sr@latin]=Pretraga radne površi
 Name[sv]=Skrivbordssökning
 Name[zh_CN]=桌面搜索
 Comment=Find what you're looking for on this computer by name or content using Tracker
@@ -47,5 +49,5 @@ StartupNotify=true
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=tracker
 X-GNOME-Bugzilla-Component=Tracker Needle
-X-GNOME-Bugzilla-Version=0.12.7
+X-GNOME-Bugzilla-Version=0.12.8
 

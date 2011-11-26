@@ -509,7 +509,7 @@ libtracker_common_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 libtracker_common_la_LIBADD = $(BUILD_LIBS) $(LIBTRACKER_COMMON_LIBS) \
-	$(am__append_5)
+	-lm $(am__append_5)
 marshal_sources = \
 	tracker-marshal.h \
 	tracker-marshal.c

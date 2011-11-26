@@ -25,6 +25,7 @@
 #include <gio/gunixoutputstream.h>
 
 #include <libtracker-common/tracker-file-utils.h>
+#include <libtracker-common/tracker-common.h>
 
 #include "tracker-writeback-file.h"
 
@@ -180,7 +181,8 @@ tracker_writeback_file_update_metadata (TrackerWriteback         *writeback,
 
 	file_info = g_file_query_info (file,
 	                               G_FILE_ATTRIBUTE_UNIX_MODE ","
-	                               G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+	                               G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","
+	                               G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE,
 	                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 	                               NULL, NULL);
 
@@ -191,6 +193,19 @@ tracker_writeback_file_update_metadata (TrackerWriteback         *writeback,
 		             G_IO_ERROR,
 		             G_IO_ERROR_FAILED,
 		             "%s doesn't exist",
+		             row[0]);
+
+		return FALSE;
+	}
+
+	if (!g_file_info_get_attribute_boolean (file_info, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE)) {
+		g_object_unref (file_info);
+		g_object_unref (file);
+
+		g_set_error (error,
+		             G_IO_ERROR,
+		             G_IO_ERROR_FAILED,
+		             "%s not writable",
 		             row[0]);
 
 		return FALSE;
@@ -214,8 +229,8 @@ tracker_writeback_file_update_metadata (TrackerWriteback         *writeback,
 		g_object_unref (file);
 
 		g_set_error_literal (error,
-		                     G_IO_ERROR,
-		                     G_IO_ERROR_FAILED,
+		                     TRACKER_DBUS_ERROR,
+		                     TRACKER_DBUS_ERROR_UNSUPPORTED,
 		                     "Module does not support writeback for this file");
 
 		return FALSE;
@@ -224,11 +239,10 @@ tracker_writeback_file_update_metadata (TrackerWriteback         *writeback,
 	/* Copy to a temporary file so we can perform an atomic write on move */
 	tmp_file = create_temporary_file (file, file_info, &n_error);
 
-	g_object_unref (file_info);
-
 	if (!tmp_file) {
 		g_object_unref (file);
 		g_propagate_error (error, n_error);
+		g_object_unref (file_info);
 		return FALSE;
 	}
 
@@ -243,12 +257,21 @@ tracker_writeback_file_update_metadata (TrackerWriteback         *writeback,
 		/* Delete the temporary file and preserve original */
 		g_file_delete (tmp_file, NULL, NULL);
 	} else {
+		GError *m_error = NULL;
 		/* Move back the modified file to the original location */
 		g_file_move (tmp_file, file,
-			     G_FILE_COPY_OVERWRITE,
-			     NULL, NULL, NULL, NULL);
+		             G_FILE_COPY_OVERWRITE,
+		             NULL, NULL, NULL, NULL);
+		/* Set file attributes on tmp_file using file_info of original file */
+		g_file_set_attributes_from_info (tmp_file, file_info, 0, NULL, &m_error);
+		if (m_error) {
+			g_warning ("Can't restore permissions of original file for %s",
+			           row[0]);
+			g_error_free (m_error);
+		}
 	}
 
+	g_object_unref (file_info);
 	g_object_unref (tmp_file);
 	g_object_unref (file);
 

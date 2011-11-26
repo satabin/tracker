@@ -273,6 +273,7 @@ void tracker_source_location_free (TrackerSourceLocation* self);
 void tracker_sparql_scanner_seek (TrackerSparqlScanner* self, TrackerSourceLocation* location);
 GType tracker_sparql_token_type_get_type (void) G_GNUC_CONST;
 TrackerSparqlTokenType tracker_sparql_scanner_read_token (TrackerSparqlScanner* self, TrackerSourceLocation* token_begin, TrackerSourceLocation* token_end, GError** error);
+void tracker_source_location_init (TrackerSourceLocation *self, gchar* pos, gint line, gint column);
 const gchar* tracker_sparql_token_type_to_string (TrackerSparqlTokenType self);
 GType tracker_turtle_reader_get_type (void) G_GNUC_CONST;
 TrackerTurtleReader* tracker_turtle_reader_new (const gchar* path, GError** error);

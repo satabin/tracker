@@ -52,8 +52,9 @@ host_triplet = @host@
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/Makefile.decl \
 	$(top_srcdir)/src/libtracker-miner/Makefile-shared-sources.decl \
-	libtracker_miner_tests_la_vala.stamp tracker-miner-mock.c \
-	tracker-miner-mock.h tracker_crawler_test_vala.stamp \
+	libtracker_miner_tests_la_vala.stamp tracker-connection-mock.c \
+	tracker-miner-mock.c tracker-miner-mock.h \
+	tracker_crawler_test_vala.stamp \
 	tracker_miner_manager_test_vala.stamp \
 	tracker_monitor_test_vala.stamp \
 	tracker_password_provider_test_vala.stamp \
@@ -61,6 +62,11 @@ DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	tracker_task_pool_test_vala.stamp \
 	tracker_thumbnailer_test_vala.stamp
 noinst_PROGRAMS = $(am__EXEEXT_1)
+# If gcov is enabled, libtracker-miner exports all symbols and this is not needed.
+@ENABLE_GCOV_FALSE@am__append_1 = \
+@ENABLE_GCOV_FALSE@	$(libtracker_miner_marshal_sources)            \
+@ENABLE_GCOV_FALSE@	$(libtracker_miner_monitor_sources)
+
 subdir = tests/libtracker-miner
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
@@ -81,8 +87,14 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libtracker_miner_tests_la_LIBADD =
-am_libtracker_miner_tests_la_OBJECTS = tracker-miner-mock.lo
+am__DEPENDENCIES_1 =
+libtracker_miner_tests_la_DEPENDENCIES =  \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(am__DEPENDENCIES_1)
+am_libtracker_miner_tests_la_OBJECTS = tracker-miner-mock.lo \
+	tracker-connection-mock.lo
 libtracker_miner_tests_la_OBJECTS =  \
 	$(am_libtracker_miner_tests_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -99,7 +111,6 @@ PROGRAMS = $(noinst_PROGRAMS)
 am_tracker_crawler_test_OBJECTS = tracker-crawler-test.$(OBJEXT)
 tracker_crawler_test_OBJECTS = $(am_tracker_crawler_test_OBJECTS)
 tracker_crawler_test_LDADD = $(LDADD)
-am__DEPENDENCIES_1 =
 tracker_crawler_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
 	$(top_builddir)/src/libtracker-miner/libtracker-miner-private.la \
 	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
@@ -117,10 +128,14 @@ am__DEPENDENCIES_2 = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRAC
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 tracker_miner_manager_test_DEPENDENCIES = libtracker-miner-tests.la \
 	$(am__DEPENDENCIES_2)
+am__tracker_monitor_test_SOURCES_DIST = tracker-monitor-test.c \
+	$(top_builddir)/src/libtracker-miner/tracker-marshal.c \
+	$(top_srcdir)/src/libtracker-miner/tracker-monitor.c
 am__objects_1 = tracker-marshal.$(OBJEXT)
 am__objects_2 = tracker-monitor.$(OBJEXT)
-am_tracker_monitor_test_OBJECTS = $(am__objects_1) $(am__objects_2) \
-	tracker-monitor-test.$(OBJEXT)
+@ENABLE_GCOV_FALSE@am__objects_3 = $(am__objects_1) $(am__objects_2)
+am_tracker_monitor_test_OBJECTS = tracker-monitor-test.$(OBJEXT) \
+	$(am__objects_3)
 tracker_monitor_test_OBJECTS = $(am_tracker_monitor_test_OBJECTS)
 tracker_monitor_test_LDADD = $(LDADD)
 tracker_monitor_test_DEPENDENCIES = $(top_builddir)/src/libtracker-miner/libtracker-miner-@TRACKER_API_VERSION@.la \
@@ -207,7 +222,7 @@ SOURCES = $(libtracker_miner_tests_la_SOURCES) \
 DIST_SOURCES = $(libtracker_miner_tests_la_SOURCES) \
 	$(tracker_crawler_test_SOURCES) \
 	$(tracker_miner_manager_test_SOURCES) \
-	$(tracker_monitor_test_SOURCES) \
+	$(am__tracker_monitor_test_SOURCES_DIST) \
 	$(tracker_password_provider_test_SOURCES) \
 	$(tracker_priority_queue_test_SOURCES) \
 	$(tracker_task_pool_test_SOURCES) \
@@ -580,10 +595,21 @@ LDADD = \
 libtracker_miner_tests_la_VALAFLAGS = \
 	--header tracker-miner-mock.h                  \
 	--pkg glib-2.0                                 \
+	--pkg gio-2.0                                  \
+	--pkg gio-unix-2.0                             \
+	--pkg posix				       \
+	$(top_srcdir)/src/libtracker-sparql/tracker-sparql-$(TRACKER_API_VERSION).vapi \
 	$(BUILD_VALAFLAGS)
 
 libtracker_miner_tests_la_SOURCES = \
-	tracker-miner-mock.vala
+	tracker-miner-mock.vala			       \
+	tracker-connection-mock.vala
+
+libtracker_miner_tests_la_LIBADD = \
+	$(top_builddir)/src/libtracker-data/libtracker-data.la \
+	$(top_builddir)/src/libtracker-common/libtracker-common.la \
+	$(top_builddir)/src/libtracker-sparql-backend/libtracker-sparql-@TRACKER_API_VERSION@.la \
+	$(BUILD_LIBS)
 
 tracker_crawler_test_SOURCES = \
 	tracker-crawler-test.c
@@ -609,11 +635,7 @@ tracker_thumbnailer_test_SOURCES = \
 	thumbnailer-mock.c                             \
 	empty-gobject.c
 
-tracker_monitor_test_SOURCES = \
-	$(libtracker_miner_marshal_sources)            \
-	$(libtracker_miner_monitor_sources)            \
-	tracker-monitor-test.c
-
+tracker_monitor_test_SOURCES = tracker-monitor-test.c $(am__append_1)
 tracker_priority_queue_test_SOURCES = \
 	tracker-priority-queue-test.c
 
@@ -726,6 +748,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/empty-gobject.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/miners-mock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/thumbnailer-mock.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-connection-mock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-crawler-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-marshal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tracker-miner-manager-test.Po@am__quote@
@@ -814,6 +837,11 @@ tracker_crawler_test_vala.stamp: $(tracker_crawler_test_SOURCES)
 	$(AM_V_VALAC)$(VALAC) $(AM_VALAFLAGS) $(VALAFLAGS) -C $(tracker_crawler_test_SOURCES)
 	$(AM_V_at)touch $@
 $(srcdir)/tracker-miner-mock.c: $(srcdir)/libtracker_miner_tests_la_vala.stamp
+	@if test -f $@; then :; else \
+	  rm -f $(srcdir)/libtracker_miner_tests_la_vala.stamp; \
+	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_miner_tests_la_vala.stamp; \
+	fi
+$(srcdir)/tracker-connection-mock.c: $(srcdir)/libtracker_miner_tests_la_vala.stamp
 	@if test -f $@; then :; else \
 	  rm -f $(srcdir)/libtracker_miner_tests_la_vala.stamp; \
 	  $(am__cd) $(srcdir) && $(MAKE) $(AM_MAKEFLAGS) libtracker_miner_tests_la_vala.stamp; \
@@ -948,6 +976,7 @@ maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 	-rm -f libtracker_miner_tests_la_vala.stamp
+	-rm -f tracker-connection-mock.c
 	-rm -f tracker-miner-mock.c
 	-rm -f tracker-miner-mock.h
 	-rm -f tracker_crawler_test_vala.stamp

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010, Nokia <ivan.frade@nokia.com>
+ * Copyright (C) 2011, Nokia <ivan.frade@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -16,20 +16,31 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA.
  */
+#include <glib.h>
+#include <glib-object.h>
 
-#ifndef __TRACKER_MINER_FS_APPLICATIONS_MEEGO_H__
-#define __TRACKER_MINER_FS_APPLICATIONS_MEEGO_H__
+#include <libtracker-common/tracker-crc32.h>
 
-G_BEGIN_DECLS
+// Using http://crc32-checksum.waraxe.us/ to check the result
+static void
+test_crc32_calculate ()
+{
+        guint32 result;
+        guint32 expected = 0x81F8B2A3;
 
-gchar *tracker_miner_applications_meego_translate (const gchar  *catalogue,
-                                                   const gchar  *id);
+        result = tracker_crc32 ("Who is Meego? Meego is dead, baby. Meego is dead", 48);
+        
+        g_assert_cmpint (expected, ==, result);
+}
 
-gchar *tracker_miner_applications_meego_get_locale (void);
+gint
+main (gint argc, gchar **argv)
+{
+        g_type_init ();
+        g_test_init (&argc, &argv, NULL);
 
-void   tracker_miner_applications_meego_init       (void);
-void   tracker_miner_applications_meego_shutdown   (void);
+        g_test_add_func ("/libtracker-common/crc32/calculate",
+                         test_crc32_calculate);
 
-G_END_DECLS
-
-#endif /* __TRACKER_MINER_FS_APPLICATIONS_MEEGO_H__ */
+        return g_test_run ();
+}

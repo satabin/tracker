@@ -70,17 +70,17 @@ gchar* tracker_sparql_escape_string (const gchar* literal) {
 	GString* _tmp19_;
 	const gchar* _tmp20_;
 	gchar* _tmp21_;
-#line 48 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 48 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	g_return_val_if_fail (literal != NULL, NULL);
-#line 49 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 49 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_tmp0_ = g_string_new ("");
-#line 49 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 49 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	str = _tmp0_;
-#line 50 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 50 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_tmp1_ = literal;
-#line 50 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 50 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	p = _tmp1_;
-#line 52 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 52 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	while (TRUE) {
 #line 86 "tracker-utils.c"
 		gchar* _tmp2_;
@@ -94,153 +94,153 @@ gchar* tracker_sparql_escape_string (const gchar* literal) {
 		gsize _tmp9_;
 		gchar* _tmp10_;
 		gchar* _tmp18_;
-#line 52 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 52 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		_tmp2_ = p;
-#line 52 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 52 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		if (!((*_tmp2_) != '\0')) {
-#line 52 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 52 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 			break;
 #line 104 "tracker-utils.c"
 		}
-#line 53 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 53 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		_tmp3_ = p;
-#line 53 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 53 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		_tmp4_ = strcspn ((const gchar*) _tmp3_, "\t\n\r\b\f\"\\");
-#line 53 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 53 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		len = _tmp4_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 54 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		_tmp5_ = str;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 54 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		_tmp6_ = p;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 54 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		_tmp7_ = len;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 54 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		g_string_append_len (_tmp5_, (const gchar*) _tmp6_, (gssize) ((glong) _tmp7_));
-#line 55 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 55 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		_tmp8_ = p;
-#line 55 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 55 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		_tmp9_ = len;
-#line 55 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 55 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		p = _tmp8_ + _tmp9_;
-#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		_tmp10_ = p;
-#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		switch (*_tmp10_) {
-#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 			case '\t':
 #line 132 "tracker-utils.c"
 			{
 				GString* _tmp11_;
-#line 59 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 59 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				_tmp11_ = str;
-#line 59 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 59 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				g_string_append (_tmp11_, "\\t");
-#line 60 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 60 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				break;
 #line 141 "tracker-utils.c"
 			}
-#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 			case '\n':
 #line 145 "tracker-utils.c"
 			{
 				GString* _tmp12_;
-#line 62 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 62 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				_tmp12_ = str;
-#line 62 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 62 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				g_string_append (_tmp12_, "\\n");
-#line 63 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 63 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				break;
 #line 154 "tracker-utils.c"
 			}
-#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 			case '\r':
 #line 158 "tracker-utils.c"
 			{
 				GString* _tmp13_;
-#line 65 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 65 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				_tmp13_ = str;
-#line 65 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 65 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				g_string_append (_tmp13_, "\\r");
-#line 66 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 66 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				break;
 #line 167 "tracker-utils.c"
 			}
-#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 			case '\b':
 #line 171 "tracker-utils.c"
 			{
 				GString* _tmp14_;
-#line 68 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 68 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				_tmp14_ = str;
-#line 68 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 68 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				g_string_append (_tmp14_, "\\b");
-#line 69 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				break;
 #line 180 "tracker-utils.c"
 			}
-#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 			case '\f':
 #line 184 "tracker-utils.c"
 			{
 				GString* _tmp15_;
-#line 71 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 71 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				_tmp15_ = str;
-#line 71 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 71 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				g_string_append (_tmp15_, "\\f");
-#line 72 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 72 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				break;
 #line 193 "tracker-utils.c"
 			}
-#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 			case '"':
 #line 197 "tracker-utils.c"
 			{
 				GString* _tmp16_;
-#line 74 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 74 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				_tmp16_ = str;
-#line 74 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 74 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				g_string_append (_tmp16_, "\\\"");
-#line 75 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 75 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				break;
 #line 206 "tracker-utils.c"
 			}
-#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 57 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 			case '\\':
 #line 210 "tracker-utils.c"
 			{
 				GString* _tmp17_;
-#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				_tmp17_ = str;
-#line 77 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 77 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				g_string_append (_tmp17_, "\\\\");
-#line 78 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 78 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				break;
 #line 219 "tracker-utils.c"
 			}
 			default:
 			{
-#line 80 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 80 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 				continue;
 #line 225 "tracker-utils.c"
 			}
 		}
-#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		_tmp18_ = p;
-#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 		p = _tmp18_ + 1;
 #line 232 "tracker-utils.c"
 	}
-#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_tmp19_ = str;
-#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_tmp20_ = _tmp19_->str;
-#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_tmp21_ = g_strdup (_tmp20_);
-#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	result = _tmp21_;
-#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_g_string_free0 (str);
-#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 86 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	return result;
 #line 246 "tracker-utils.c"
 }
@@ -268,31 +268,31 @@ gchar* tracker_sparql_get_uuid_urn (void) {
 	gchar* _tmp1_ = NULL;
 	gchar* lower;
 	gchar* _tmp2_ = NULL;
-#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_tmp0_ = g_new0 (guchar, 16);
-#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	base_uuid = _tmp0_;
-#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	base_uuid_length1 = 16;
-#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 109 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_base_uuid_size_ = base_uuid_length1;
-#line 110 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 110 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_tmp1_ = g_new0 (gchar, 37);
-#line 110 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 110 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	lower = (gchar*) _tmp1_;
-#line 112 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 112 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	uuid_generate (base_uuid);
-#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 113 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	uuid_unparse_lower (base_uuid, (gchar*) lower);
-#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_tmp2_ = g_strdup_printf ("urn:uuid:%s", lower);
-#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	result = _tmp2_;
-#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	_g_free0 (lower);
-#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	base_uuid = (g_free (base_uuid), NULL);
-#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-sparql/tracker-utils.vala"
+#line 116 "/home/martyn/Source/tracker/src/libtracker-sparql/tracker-utils.vala"
 	return result;
 #line 298 "tracker-utils.c"
 }

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>How to use libtracker-extract</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="Tracker Extract Library Reference Manual">
 <link rel="up" href="ch02.html" title="Core API">
 <link rel="prev" href="ch02.html" title="Core API">
@@ -63,7 +63,7 @@ do that.
 <p>
 </p>
 <div class="example">
-<a name="id597152"></a><p class="title"><b>Example 1. Basic extractor example</b></p>
+<a name="id457902"></a><p class="title"><b>Example 1. Basic extractor example</b></p>
 <div class="example-contents">
 An example of how to write an extractor to retrieve PNG embedded
 metadata.
@@ -124,8 +124,8 @@ each started plugin and making sure this function exists.
 The <em class="parameter"><code>info</code></em> parameter contains required information for the
 extraction and a location to store the results. The
 <a class="link" href="libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-metadata-builder" title="tracker_extract_info_get_metadata_builder ()"><code class="function">tracker_extract_info_get_metadata_builder()</code></a> function returns a
-<a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> constructed through
-<a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert"><code class="function">tracker_sparql_builder_new_embedded_insert()</code></a>. The subject
+<a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> constructed through
+<a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html#tracker-sparql-builder-new-embedded-insert"><code class="function">tracker_sparql_builder_new_embedded_insert()</code></a>. The subject
 is already set to be the file URN, so implementations of this
 function should just provide predicate/object(s) pairs. The
 triples contained in this object at the end of the function will be
@@ -137,12 +137,12 @@ should also be provided by this extractor (for example, album
 or artist information from a song), such insertions should be
 added to the preupdate object returned by
 <a class="link" href="libtracker-extract-TrackerExtractInfo.html#tracker-extract-info-get-preupdate-builder" title="tracker_extract_info_get_preupdate_builder ()"><code class="function">tracker_extract_info_get_preupdate_builder()</code></a>. This is a
-<a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#TrackerSparqlBuilder"><span class="type">TrackerSparqlBuilder</span></a> created through
-<a href="/usr/share/gtk-doc/html/libtracker-client/libtracker-client-TrackerSparqlBuilder.html#tracker-sparql-builder-new-update"><code class="function">tracker_sparql_builder_new_update()</code></a>.
+<a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html"><span class="type">TrackerSparqlBuilder</span></a> created through
+<a href="http://library.gnome.org/devel/libtracker-sparql/unstable/TrackerSparqlBuilder.html#tracker-sparql-builder-new-update"><code class="function">tracker_sparql_builder_new_update()</code></a>.
 </p>
 <p>
 NOTE: If upgrading from 0.10, this function replaces the old
-function named <a href="libtracker-extract-How-to-use-libtracker-extract.html#tracker-extract-get-data"><code class="function">tracker_extract_get_data()</code></a> and has a few subtle
+function named <code class="function">tracker_extract_get_data()</code> and has a few subtle
 differences. First, there is a return value for success and the
 parameters are contained in <em class="parameter"><code>info</code></em> instead of being passed
 individually. Second, the extractor is passed the detected

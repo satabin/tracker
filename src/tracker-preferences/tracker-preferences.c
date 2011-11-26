@@ -208,18 +208,18 @@ const GOptionEntry options[2] = {{"version", 'V', 0, G_OPTION_ARG_NONE, &print_v
 
 static void __lambda0_ (TrackerPreferences* self, const gchar* key) {
 	const gchar* _tmp0_;
-#line 82 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 82 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (key != NULL);
-#line 83 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 83 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = key;
-#line 83 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 83 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_print ("tracker-miner-fs: Key '%s' changed\n", _tmp0_);
 #line 218 "tracker-preferences.c"
 }
 
 
 static void ___lambda0__g_settings_changed (GSettings* _sender, const gchar* key, gpointer self) {
-#line 82 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 82 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	__lambda0_ (self, key);
 #line 225 "tracker-preferences.c"
 }
@@ -227,18 +227,18 @@ static void ___lambda0__g_settings_changed (GSettings* _sender, const gchar* key
 
 static void __lambda1_ (TrackerPreferences* self, const gchar* key) {
 	const gchar* _tmp0_;
-#line 86 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 86 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (key != NULL);
-#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 87 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = key;
-#line 87 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 87 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_print ("tracker-extract: Key '%s' changed\n", _tmp0_);
 #line 237 "tracker-preferences.c"
 }
 
 
 static void ___lambda1__g_settings_changed (GSettings* _sender, const gchar* key, gpointer self) {
-#line 86 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 86 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	__lambda1_ (self, key);
 #line 244 "tracker-preferences.c"
 }
@@ -251,58 +251,58 @@ TrackerPreferences* tracker_preferences_construct (GType object_type) {
 	GSettings* _tmp2_;
 	GSettings* _tmp3_;
 	GSettings* _tmp4_;
-#line 73 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self = (TrackerPreferences*) g_type_create_instance (object_type);
-#line 74 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 74 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_debug ("tracker-preferences.vala:74: Getting current settings");
-#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 76 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = tracker_preferences_dir_from_config (self, TRACKER_PREFERENCES_HOME_STRING);
-#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 76 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_free0 (self->priv->HOME_STRING_EVALUATED);
-#line 76 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 76 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->HOME_STRING_EVALUATED = _tmp0_;
-#line 78 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 78 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = g_settings_new ("org.freedesktop.Tracker.Miner.Files");
-#line 78 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 78 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->settings_miner_fs);
-#line 78 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 78 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->settings_miner_fs = _tmp1_;
-#line 79 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 79 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = g_settings_new ("org.freedesktop.Tracker.Extract");
-#line 79 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 79 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->settings_extract);
-#line 79 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 79 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->settings_extract = _tmp2_;
-#line 82 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 82 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = self->priv->settings_miner_fs;
-#line 82 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 82 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_signal_connect (_tmp3_, "changed", (GCallback) ___lambda0__g_settings_changed, self);
-#line 86 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 86 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp4_ = self->priv->settings_extract;
-#line 86 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 86 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_signal_connect (_tmp4_, "changed", (GCallback) ___lambda1__g_settings_changed, self);
-#line 73 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return self;
 #line 287 "tracker-preferences.c"
 }
 
 
 TrackerPreferences* tracker_preferences_new (void) {
-#line 73 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 73 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return tracker_preferences_construct (TRACKER_TYPE_PREFERENCES);
 #line 294 "tracker-preferences.c"
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 115 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 115 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return self ? g_object_ref (self) : NULL;
 #line 301 "tracker-preferences.c"
 }
 
 
 static void _tracker_preferences_connect_signals_gtk_builder_connect_func (GtkBuilder* builder, GObject* object, const gchar* signal_name, const gchar* handler_name, GObject* connect_object, GConnectFlags flags, gpointer self) {
-#line 216 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_connect_signals (builder, object, signal_name, handler_name, connect_object, flags, self);
 #line 308 "tracker-preferences.c"
 }
@@ -475,19 +475,19 @@ void tracker_preferences_setup_ui (TrackerPreferences* self) {
 	gboolean _tmp168_ = FALSE;
 	GtkNotebook* _tmp169_;
 	GError * _inner_error_ = NULL;
-#line 91 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 92 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = gtk_builder_new ();
-#line 92 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 92 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	builder = _tmp0_;
 #line 485 "tracker-preferences.c"
 	{
-#line 95 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 95 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_debug ("tracker-preferences.vala:95: Trying to use UI file:'%s'", SRCDIR TRACKER_PREFERENCES_UI_FILE);
-#line 96 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 96 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		gtk_builder_add_from_file (builder, SRCDIR TRACKER_PREFERENCES_UI_FILE, &_inner_error_);
-#line 96 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 96 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (_inner_error_ != NULL) {
 #line 493 "tracker-preferences.c"
 			goto __catch0_g_error;
@@ -497,17 +497,17 @@ void tracker_preferences_setup_ui (TrackerPreferences* self) {
 	__catch0_g_error:
 	{
 		GError* e = NULL;
-#line 94 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		e = _inner_error_;
-#line 94 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_inner_error_ = NULL;
 #line 505 "tracker-preferences.c"
 		{
-#line 100 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 100 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_debug ("tracker-preferences.vala:100: Trying to use UI file:'%s'", TRACKER_UI_DIR TRACKER_PREFERENCES_UI_FILE);
-#line 101 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 101 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_builder_add_from_file (builder, TRACKER_UI_DIR TRACKER_PREFERENCES_UI_FILE, &_inner_error_);
-#line 101 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 101 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (_inner_error_ != NULL) {
 #line 513 "tracker-preferences.c"
 				goto __catch1_g_error;
@@ -523,641 +523,641 @@ void tracker_preferences_setup_ui (TrackerPreferences* self) {
 			GtkMessageDialog* _tmp4_;
 			GtkMessageDialog* msg;
 			GtkMessageDialog* _tmp5_;
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			e = _inner_error_;
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_inner_error_ = NULL;
-#line 103 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 103 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp1_ = e;
-#line 103 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 103 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp2_ = _tmp1_->message;
-#line 103 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 103 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp3_ = (GtkMessageDialog*) gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CANCEL, "Failed to load UI file, %s\n", _tmp2_);
-#line 103 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 103 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp4_ = g_object_ref_sink (_tmp3_);
-#line 103 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 103 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			msg = _tmp4_;
-#line 109 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp5_ = msg;
-#line 109 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 109 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_dialog_run ((GtkDialog*) _tmp5_);
-#line 110 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 110 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_main_quit ();
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_object_unref0 (msg);
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_error_free0 (e);
 #line 551 "tracker-preferences.c"
 		}
 		__finally1:
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (_inner_error_ != NULL) {
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_error_free0 (e);
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_error_free0 (e);
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_object_unref0 (builder);
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_clear_error (&_inner_error_);
-#line 99 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 99 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			return;
 #line 568 "tracker-preferences.c"
 		}
-#line 94 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_error_free0 (e);
 #line 572 "tracker-preferences.c"
 	}
 	__finally0:
-#line 94 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_inner_error_ != NULL) {
-#line 94 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_object_unref0 (builder);
-#line 94 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 94 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_clear_error (&_inner_error_);
-#line 94 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 94 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return;
 #line 585 "tracker-preferences.c"
 	}
-#line 115 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 115 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp6_ = gtk_builder_get_object (builder, "tracker-preferences");
-#line 115 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 115 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp7_ = _g_object_ref0 (GTK_IS_WINDOW (_tmp6_) ? ((GtkWindow*) _tmp6_) : NULL);
-#line 115 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 115 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->window);
-#line 115 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 115 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->window = _tmp7_;
-#line 116 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp8_ = gtk_builder_get_object (builder, "notebook");
-#line 116 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp9_ = _g_object_ref0 (GTK_IS_NOTEBOOK (_tmp8_) ? ((GtkNotebook*) _tmp8_) : NULL);
-#line 116 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->notebook);
-#line 116 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 116 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->notebook = _tmp9_;
-#line 118 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 118 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp10_ = gtk_builder_get_object (builder, "checkbutton_enable_monitoring");
-#line 118 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 118 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp11_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp10_) ? ((GtkCheckButton*) _tmp10_) : NULL);
-#line 118 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 118 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->checkbutton_enable_monitoring);
-#line 118 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 118 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->checkbutton_enable_monitoring = _tmp11_;
-#line 119 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 119 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp12_ = gtk_builder_get_object (builder, "checkbutton_enable_index_on_battery");
-#line 119 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 119 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp13_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp12_) ? ((GtkCheckButton*) _tmp12_) : NULL);
-#line 119 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 119 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->checkbutton_enable_index_on_battery);
-#line 119 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 119 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->checkbutton_enable_index_on_battery = _tmp13_;
-#line 120 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp14_ = gtk_builder_get_object (builder, "checkbutton_enable_index_on_battery_first_time");
-#line 120 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp15_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp14_) ? ((GtkCheckButton*) _tmp14_) : NULL);
-#line 120 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->checkbutton_enable_index_on_battery_first_time);
-#line 120 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 120 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->checkbutton_enable_index_on_battery_first_time = _tmp15_;
-#line 121 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 121 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp16_ = gtk_builder_get_object (builder, "spinbutton_delay");
-#line 121 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 121 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp17_ = _g_object_ref0 (GTK_IS_SPIN_BUTTON (_tmp16_) ? ((GtkSpinButton*) _tmp16_) : NULL);
-#line 121 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 121 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->spinbutton_delay);
-#line 121 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 121 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->spinbutton_delay = _tmp17_;
-#line 122 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp18_ = gtk_builder_get_object (builder, "checkbutton_index_removable_media");
-#line 122 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp19_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp18_) ? ((GtkCheckButton*) _tmp18_) : NULL);
-#line 122 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->checkbutton_index_removable_media);
-#line 122 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 122 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->checkbutton_index_removable_media = _tmp19_;
-#line 123 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 123 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp20_ = gtk_builder_get_object (builder, "checkbutton_index_optical_discs");
-#line 123 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 123 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp21_ = _g_object_ref0 (GTK_IS_CHECK_BUTTON (_tmp20_) ? ((GtkCheckButton*) _tmp20_) : NULL);
-#line 123 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 123 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->checkbutton_index_optical_discs);
-#line 123 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 123 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->checkbutton_index_optical_discs = _tmp21_;
-#line 124 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 124 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp22_ = self->priv->checkbutton_index_optical_discs;
-#line 124 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 124 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp23_ = self->priv->checkbutton_index_removable_media;
-#line 124 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 124 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp24_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp23_);
-#line 124 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 124 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp25_ = _tmp24_;
-#line 124 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 124 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_widget_set_sensitive ((GtkWidget*) _tmp22_, _tmp25_);
-#line 125 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 125 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp26_ = gtk_builder_get_object (builder, "hscale_disk_space_limit");
-#line 125 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 125 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp27_ = _g_object_ref0 (GTK_IS_SCALE (_tmp26_) ? ((GtkScale*) _tmp26_) : NULL);
-#line 125 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 125 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->hscale_disk_space_limit);
-#line 125 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 125 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->hscale_disk_space_limit = _tmp27_;
-#line 126 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp28_ = gtk_builder_get_object (builder, "radiobutton_sched_idle_always");
-#line 126 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp29_ = _g_object_ref0 (GTK_IS_RADIO_BUTTON (_tmp28_) ? ((GtkRadioButton*) _tmp28_) : NULL);
-#line 126 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->radiobutton_sched_idle_always);
-#line 126 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 126 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->radiobutton_sched_idle_always = _tmp29_;
-#line 127 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp30_ = gtk_builder_get_object (builder, "radiobutton_sched_idle_first_index");
-#line 127 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp31_ = _g_object_ref0 (GTK_IS_RADIO_BUTTON (_tmp30_) ? ((GtkRadioButton*) _tmp30_) : NULL);
-#line 127 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->radiobutton_sched_idle_first_index);
-#line 127 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 127 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->radiobutton_sched_idle_first_index = _tmp31_;
-#line 128 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 128 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp32_ = gtk_builder_get_object (builder, "radiobutton_sched_idle_never");
-#line 128 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 128 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp33_ = _g_object_ref0 (GTK_IS_RADIO_BUTTON (_tmp32_) ? ((GtkRadioButton*) _tmp32_) : NULL);
-#line 128 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 128 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->radiobutton_sched_idle_never);
-#line 128 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 128 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->radiobutton_sched_idle_never = _tmp33_;
-#line 129 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp34_ = gtk_builder_get_object (builder, "hscale_drop_device_threshold");
-#line 129 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp35_ = _g_object_ref0 (GTK_IS_SCALE (_tmp34_) ? ((GtkScale*) _tmp34_) : NULL);
-#line 129 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->hscale_drop_device_threshold);
-#line 129 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 129 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->hscale_drop_device_threshold = _tmp35_;
-#line 130 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp36_ = gtk_builder_get_object (builder, "togglebutton_home");
-#line 130 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp37_ = _g_object_ref0 (GTK_IS_TOGGLE_BUTTON (_tmp36_) ? ((GtkToggleButton*) _tmp36_) : NULL);
-#line 130 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_home);
-#line 130 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 130 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->togglebutton_home = _tmp37_;
-#line 131 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp38_ = gtk_builder_get_object (builder, "togglebutton_desktop");
-#line 131 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp39_ = _g_object_ref0 (GTK_IS_TOGGLE_BUTTON (_tmp38_) ? ((GtkToggleButton*) _tmp38_) : NULL);
-#line 131 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_desktop);
-#line 131 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 131 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->togglebutton_desktop = _tmp39_;
-#line 132 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 132 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp40_ = gtk_builder_get_object (builder, "togglebutton_documents");
-#line 132 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 132 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp41_ = _g_object_ref0 (GTK_IS_TOGGLE_BUTTON (_tmp40_) ? ((GtkToggleButton*) _tmp40_) : NULL);
-#line 132 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 132 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_documents);
-#line 132 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 132 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->togglebutton_documents = _tmp41_;
-#line 133 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 133 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp42_ = gtk_builder_get_object (builder, "togglebutton_music");
-#line 133 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 133 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp43_ = _g_object_ref0 (GTK_IS_TOGGLE_BUTTON (_tmp42_) ? ((GtkToggleButton*) _tmp42_) : NULL);
-#line 133 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 133 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_music);
-#line 133 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 133 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->togglebutton_music = _tmp43_;
-#line 134 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 134 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp44_ = gtk_builder_get_object (builder, "togglebutton_pictures");
-#line 134 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 134 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp45_ = _g_object_ref0 (GTK_IS_TOGGLE_BUTTON (_tmp44_) ? ((GtkToggleButton*) _tmp44_) : NULL);
-#line 134 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 134 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_pictures);
-#line 134 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 134 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->togglebutton_pictures = _tmp45_;
-#line 135 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp46_ = gtk_builder_get_object (builder, "togglebutton_videos");
-#line 135 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp47_ = _g_object_ref0 (GTK_IS_TOGGLE_BUTTON (_tmp46_) ? ((GtkToggleButton*) _tmp46_) : NULL);
-#line 135 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_videos);
-#line 135 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 135 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->togglebutton_videos = _tmp47_;
-#line 136 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 136 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp48_ = gtk_builder_get_object (builder, "togglebutton_download");
-#line 136 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 136 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp49_ = _g_object_ref0 (GTK_IS_TOGGLE_BUTTON (_tmp48_) ? ((GtkToggleButton*) _tmp48_) : NULL);
-#line 136 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 136 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_download);
-#line 136 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 136 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->togglebutton_download = _tmp49_;
-#line 137 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 137 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp50_ = gtk_builder_get_object (builder, "hbox_duplicate_warning");
-#line 137 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 137 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp51_ = _g_object_ref0 (GTK_IS_HBOX (_tmp50_) ? ((GtkHBox*) _tmp50_) : NULL);
-#line 137 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 137 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->hbox_duplicate_warning);
-#line 137 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 137 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->hbox_duplicate_warning = _tmp51_;
-#line 139 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 139 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp52_ = gtk_builder_get_object (builder, "treeview_index");
-#line 139 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 139 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp53_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp52_) ? ((GtkTreeView*) _tmp52_) : NULL);
-#line 139 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 139 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeview_index);
-#line 139 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 139 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->treeview_index = _tmp53_;
-#line 140 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp54_ = gtk_builder_get_object (builder, "treeviewcolumn_index1");
-#line 140 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp55_ = _g_object_ref0 (GTK_IS_TREE_VIEW_COLUMN (_tmp54_) ? ((GtkTreeViewColumn*) _tmp54_) : NULL);
-#line 140 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeviewcolumn_index1);
-#line 140 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 140 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->treeviewcolumn_index1 = _tmp55_;
-#line 141 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp56_ = gtk_builder_get_object (builder, "treeviewcolumn_index1");
-#line 141 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp57_ = _g_object_ref0 (GTK_IS_TREE_VIEW_COLUMN (_tmp56_) ? ((GtkTreeViewColumn*) _tmp56_) : NULL);
-#line 141 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeviewcolumn_index2);
-#line 141 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 141 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->treeviewcolumn_index2 = _tmp57_;
-#line 142 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 142 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp58_ = gtk_builder_get_object (builder, "treeview_ignored_directories");
-#line 142 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 142 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp59_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp58_) ? ((GtkTreeView*) _tmp58_) : NULL);
-#line 142 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 142 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeview_ignored_directories);
-#line 142 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 142 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->treeview_ignored_directories = _tmp59_;
-#line 143 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 143 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp60_ = gtk_builder_get_object (builder, "treeview_ignored_directories_with_content");
-#line 143 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 143 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp61_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp60_) ? ((GtkTreeView*) _tmp60_) : NULL);
-#line 143 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 143 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeview_ignored_directories_with_content);
-#line 143 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 143 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->treeview_ignored_directories_with_content = _tmp61_;
-#line 144 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp62_ = gtk_builder_get_object (builder, "treeview_ignored_files");
-#line 144 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp63_ = _g_object_ref0 (GTK_IS_TREE_VIEW (_tmp62_) ? ((GtkTreeView*) _tmp62_) : NULL);
-#line 144 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeview_ignored_files);
-#line 144 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 144 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->treeview_ignored_files = _tmp63_;
-#line 146 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 146 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp64_ = self->priv->treeview_index;
-#line 146 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 146 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp65_ = _ ("Directory");
-#line 146 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 146 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_treeview_setup (self, _tmp64_, _tmp65_, TRUE);
-#line 147 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp66_ = self->priv->treeview_ignored_directories;
-#line 147 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp67_ = _ ("Directory");
-#line 147 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 147 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_treeview_setup (self, _tmp66_, _tmp67_, FALSE);
-#line 148 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 148 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp68_ = self->priv->treeview_ignored_directories_with_content;
-#line 148 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 148 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp69_ = _ ("Directory");
-#line 148 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 148 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_treeview_setup (self, _tmp68_, _tmp69_, FALSE);
-#line 149 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp70_ = self->priv->treeview_ignored_files;
-#line 149 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp71_ = _ ("File");
-#line 149 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 149 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_treeview_setup (self, _tmp70_, _tmp71_, FALSE);
-#line 151 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp72_ = gtk_builder_get_object (builder, "liststore_index");
-#line 151 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp73_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp72_) ? ((GtkListStore*) _tmp72_) : NULL);
-#line 151 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->liststore_index);
-#line 151 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 151 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->liststore_index = _tmp73_;
-#line 152 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 152 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp74_ = self->priv->liststore_index;
-#line 152 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 152 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_tree_sortable_set_sort_column_id ((GtkTreeSortable*) _tmp74_, 0, GTK_SORT_ASCENDING);
-#line 153 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 153 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp75_ = gtk_builder_get_object (builder, "liststore_ignored_directories");
-#line 153 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 153 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp76_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp75_) ? ((GtkListStore*) _tmp75_) : NULL);
-#line 153 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 153 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->liststore_ignored_directories);
-#line 153 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 153 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->liststore_ignored_directories = _tmp76_;
-#line 154 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp77_ = gtk_builder_get_object (builder, "liststore_ignored_files");
-#line 154 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp78_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp77_) ? ((GtkListStore*) _tmp77_) : NULL);
-#line 154 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->liststore_ignored_files);
-#line 154 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 154 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->liststore_ignored_files = _tmp78_;
-#line 155 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp79_ = gtk_builder_get_object (builder, "liststore_ignored_directories_with_content");
-#line 155 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp80_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp79_) ? ((GtkListStore*) _tmp79_) : NULL);
-#line 155 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->liststore_ignored_directories_with_content);
-#line 155 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 155 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->liststore_ignored_directories_with_content = _tmp80_;
-#line 158 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 158 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp81_ = self->priv->checkbutton_enable_index_on_battery;
-#line 158 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 158 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp82_ = self->priv->settings_miner_fs;
-#line 158 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 158 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp83_ = g_settings_get_boolean (_tmp82_, "index-on-battery");
-#line 158 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 158 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active ((GtkToggleButton*) _tmp81_, _tmp83_);
-#line 159 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp84_ = self->priv->checkbutton_enable_index_on_battery_first_time;
-#line 159 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp85_ = self->priv->checkbutton_enable_index_on_battery;
-#line 159 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp86_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp85_);
-#line 159 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp87_ = _tmp86_;
-#line 159 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 159 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_widget_set_sensitive ((GtkWidget*) _tmp84_, !_tmp87_);
-#line 160 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 160 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp88_ = self->priv->checkbutton_enable_index_on_battery_first_time;
-#line 160 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 160 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp89_ = self->priv->settings_miner_fs;
-#line 160 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 160 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp90_ = g_settings_get_boolean (_tmp89_, "index-on-battery-first-time");
-#line 160 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 160 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active ((GtkToggleButton*) _tmp88_, _tmp90_);
-#line 161 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp91_ = self->priv->spinbutton_delay;
-#line 161 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 161 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_spin_button_set_increments (_tmp91_, (gdouble) 1, (gdouble) 1);
-#line 162 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 162 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp92_ = self->priv->spinbutton_delay;
-#line 162 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 162 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp93_ = self->priv->settings_miner_fs;
-#line 162 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 162 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp94_ = g_settings_get_int (_tmp93_, "initial-sleep");
-#line 162 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 162 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_spin_button_set_value (_tmp92_, (gdouble) _tmp94_);
-#line 163 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp95_ = self->priv->checkbutton_enable_monitoring;
-#line 163 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp96_ = self->priv->settings_miner_fs;
-#line 163 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp97_ = g_settings_get_boolean (_tmp96_, "enable-monitors");
-#line 163 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 163 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active ((GtkToggleButton*) _tmp95_, _tmp97_);
-#line 164 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 164 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp98_ = self->priv->checkbutton_index_removable_media;
-#line 164 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 164 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp99_ = self->priv->settings_miner_fs;
-#line 164 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 164 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp100_ = g_settings_get_boolean (_tmp99_, "index-removable-devices");
-#line 164 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 164 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active ((GtkToggleButton*) _tmp98_, _tmp100_);
-#line 165 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 165 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp101_ = self->priv->checkbutton_index_optical_discs;
-#line 165 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 165 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp102_ = self->priv->settings_miner_fs;
-#line 165 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 165 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp103_ = g_settings_get_boolean (_tmp102_, "index-optical-discs");
-#line 165 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 165 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active ((GtkToggleButton*) _tmp101_, _tmp103_);
-#line 166 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 166 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp104_ = self->priv->hscale_disk_space_limit;
-#line 166 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 166 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp105_ = self->priv->settings_miner_fs;
-#line 166 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 166 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp106_ = g_settings_get_int (_tmp105_, "low-disk-space-limit");
-#line 166 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 166 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_range_set_value ((GtkRange*) _tmp104_, (gdouble) _tmp106_);
-#line 167 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 167 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp107_ = self->priv->hscale_drop_device_threshold;
-#line 167 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 167 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp108_ = self->priv->settings_miner_fs;
-#line 167 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 167 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp109_ = g_settings_get_int (_tmp108_, "removable-days-threshold");
-#line 167 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 167 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_range_set_value ((GtkRange*) _tmp107_, (gdouble) _tmp109_);
-#line 173 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 173 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp110_ = self->priv->settings_miner_fs;
-#line 173 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 173 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp111_ = g_settings_get_enum (_tmp110_, "sched-idle");
-#line 173 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 173 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	sched_idle = _tmp111_;
-#line 175 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp112_ = sched_idle;
-#line 175 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 175 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp112_ == 0) {
 #line 961 "tracker-preferences.c"
 		GtkRadioButton* _tmp113_;
-#line 176 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 176 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp113_ = self->priv->radiobutton_sched_idle_always;
-#line 176 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 176 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		gtk_toggle_button_set_active ((GtkToggleButton*) _tmp113_, TRUE);
 #line 967 "tracker-preferences.c"
 	} else {
 		gint _tmp114_;
-#line 177 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 177 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp114_ = sched_idle;
-#line 177 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 177 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (_tmp114_ == 1) {
 #line 974 "tracker-preferences.c"
 			GtkRadioButton* _tmp115_;
-#line 178 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp115_ = self->priv->radiobutton_sched_idle_first_index;
-#line 178 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 178 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_toggle_button_set_active ((GtkToggleButton*) _tmp115_, TRUE);
 #line 980 "tracker-preferences.c"
 		} else {
 			gint _tmp116_;
-#line 179 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp116_ = sched_idle;
-#line 179 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 179 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (_tmp116_ == 2) {
 #line 987 "tracker-preferences.c"
 				GtkRadioButton* _tmp117_;
-#line 180 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp117_ = self->priv->radiobutton_sched_idle_never;
-#line 180 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 180 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				gtk_toggle_button_set_active ((GtkToggleButton*) _tmp117_, TRUE);
 #line 993 "tracker-preferences.c"
 			} else {
 				GtkRadioButton* _tmp118_;
-#line 183 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp118_ = self->priv->radiobutton_sched_idle_first_index;
-#line 183 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 183 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				gtk_toggle_button_set_active ((GtkToggleButton*) _tmp118_, TRUE);
 #line 1000 "tracker-preferences.c"
 			}
 		}
 	}
-#line 187 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 187 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_sanitize_user_dirs (self);
-#line 190 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp119_ = self->priv->liststore_index;
-#line 190 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp120_ = self->priv->settings_miner_fs;
-#line 190 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp122_ = _tmp121_ = g_settings_get_strv (_tmp120_, "index-recursive-directories");
-#line 190 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp123_ = _tmp122_;
-#line 190 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp123__length1 = _vala_array_length (_tmp121_);
-#line 190 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_model_populate (self, _tmp119_, _tmp123_, _vala_array_length (_tmp121_), TRUE, TRUE);
-#line 190 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 190 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp123_ = (_vala_array_free (_tmp123_, _tmp123__length1, (GDestroyNotify) g_free), NULL);
-#line 191 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp124_ = self->priv->liststore_index;
-#line 191 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp125_ = self->priv->settings_miner_fs;
-#line 191 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp127_ = _tmp126_ = g_settings_get_strv (_tmp125_, "index-single-directories");
-#line 191 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp128_ = _tmp127_;
-#line 191 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp128__length1 = _vala_array_length (_tmp126_);
-#line 191 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_model_populate (self, _tmp124_, _tmp128_, _vala_array_length (_tmp126_), TRUE, FALSE);
-#line 191 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 191 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp128_ = (_vala_array_free (_tmp128_, _tmp128__length1, (GDestroyNotify) g_free), NULL);
-#line 192 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp129_ = self->priv->liststore_ignored_directories;
-#line 192 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp130_ = self->priv->settings_miner_fs;
-#line 192 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp132_ = _tmp131_ = g_settings_get_strv (_tmp130_, "ignored-directories");
-#line 192 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp133_ = _tmp132_;
-#line 192 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp133__length1 = _vala_array_length (_tmp131_);
-#line 192 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_model_populate (self, _tmp129_, _tmp133_, _vala_array_length (_tmp131_), FALSE, FALSE);
-#line 192 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 192 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp133_ = (_vala_array_free (_tmp133_, _tmp133__length1, (GDestroyNotify) g_free), NULL);
-#line 193 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp134_ = self->priv->liststore_ignored_files;
-#line 193 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp135_ = self->priv->settings_miner_fs;
-#line 193 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp137_ = _tmp136_ = g_settings_get_strv (_tmp135_, "ignored-files");
-#line 193 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp138_ = _tmp137_;
-#line 193 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp138__length1 = _vala_array_length (_tmp136_);
-#line 193 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_model_populate (self, _tmp134_, _tmp138_, _vala_array_length (_tmp136_), FALSE, FALSE);
-#line 193 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 193 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp138_ = (_vala_array_free (_tmp138_, _tmp138__length1, (GDestroyNotify) g_free), NULL);
-#line 194 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 194 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp139_ = self->priv->liststore_ignored_directories_with_content;
-#line 194 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 194 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp140_ = self->priv->settings_miner_fs;
-#line 194 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 194 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp142_ = _tmp141_ = g_settings_get_strv (_tmp140_, "ignored-directories-with-content");
-#line 194 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 194 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp143_ = _tmp142_;
-#line 194 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 194 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp143__length1 = _vala_array_length (_tmp141_);
-#line 194 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 194 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_model_populate (self, _tmp139_, _tmp143_, _vala_array_length (_tmp141_), FALSE, FALSE);
-#line 194 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 194 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp143_ = (_vala_array_free (_tmp143_, _tmp143__length1, (GDestroyNotify) g_free), NULL);
-#line 196 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 196 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp144_ = self->priv->ignored_user_directories;
-#line 196 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 196 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp144__length1 = self->priv->ignored_user_directories_length1;
-#line 196 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 196 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp144__length1 > 0) {
 #line 1082 "tracker-preferences.c"
 		GtkHBox* _tmp145_;
-#line 197 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 197 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp145_ = self->priv->hbox_duplicate_warning;
-#line 197 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 197 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		gtk_widget_show ((GtkWidget*) _tmp145_);
 #line 1088 "tracker-preferences.c"
 	} else {
 		GtkHBox* _tmp146_;
-#line 199 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 199 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp146_ = self->priv->hbox_duplicate_warning;
-#line 199 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 199 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		gtk_widget_hide ((GtkWidget*) _tmp146_);
 #line 1095 "tracker-preferences.c"
 	}
-#line 202 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp147_ = self->priv->togglebutton_home;
-#line 202 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp148_ = self->priv->liststore_index;
-#line 202 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp149_ = self->priv->HOME_STRING_EVALUATED;
-#line 202 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp150_ = tracker_preferences_model_contains (self, (GtkTreeModel*) _tmp148_, _tmp149_);
-#line 202 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 202 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active (_tmp147_, _tmp150_);
-#line 203 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp151_ = self->priv->togglebutton_desktop;
-#line 203 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp152_ = self->priv->liststore_index;
-#line 203 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp153_ = tracker_preferences_model_contains (self, (GtkTreeModel*) _tmp152_, "&DESKTOP");
-#line 203 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 203 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active (_tmp151_, _tmp153_);
-#line 204 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 204 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp154_ = self->priv->togglebutton_documents;
-#line 204 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 204 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp155_ = self->priv->liststore_index;
-#line 204 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 204 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp156_ = tracker_preferences_model_contains (self, (GtkTreeModel*) _tmp155_, "&DOCUMENTS");
-#line 204 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 204 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active (_tmp154_, _tmp156_);
-#line 205 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 205 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp157_ = self->priv->togglebutton_music;
-#line 205 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 205 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp158_ = self->priv->liststore_index;
-#line 205 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 205 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp159_ = tracker_preferences_model_contains (self, (GtkTreeModel*) _tmp158_, "&MUSIC");
-#line 205 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 205 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active (_tmp157_, _tmp159_);
-#line 206 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp160_ = self->priv->togglebutton_pictures;
-#line 206 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp161_ = self->priv->liststore_index;
-#line 206 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp162_ = tracker_preferences_model_contains (self, (GtkTreeModel*) _tmp161_, "&PICTURES");
-#line 206 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 206 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active (_tmp160_, _tmp162_);
-#line 207 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 207 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp163_ = self->priv->togglebutton_videos;
-#line 207 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 207 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp164_ = self->priv->liststore_index;
-#line 207 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 207 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp165_ = tracker_preferences_model_contains (self, (GtkTreeModel*) _tmp164_, "&VIDEOS");
-#line 207 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 207 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active (_tmp163_, _tmp165_);
-#line 208 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 208 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp166_ = self->priv->togglebutton_download;
-#line 208 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 208 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp167_ = self->priv->liststore_index;
-#line 208 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 208 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp168_ = tracker_preferences_model_contains (self, (GtkTreeModel*) _tmp167_, "&DOWNLOAD");
-#line 208 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 208 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_toggle_button_set_active (_tmp166_, _tmp168_);
-#line 212 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp169_ = self->priv->notebook;
-#line 212 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 212 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_notebook_remove_page (_tmp169_, 0);
-#line 216 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 216 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_builder_connect_signals_full (builder, _tracker_preferences_connect_signals_gtk_builder_connect_func, self);
-#line 91 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 91 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (builder);
 #line 1163 "tracker-preferences.c"
 }
@@ -1165,13 +1165,13 @@ void tracker_preferences_setup_ui (TrackerPreferences* self) {
 
 void tracker_preferences_show (TrackerPreferences* self) {
 	GtkWindow* _tmp0_;
-#line 219 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 219 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 220 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 220 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_setup_ui (self);
-#line 222 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 222 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->window;
-#line 222 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 222 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_widget_show ((GtkWidget*) _tmp0_);
 #line 1177 "tracker-preferences.c"
 }
@@ -1185,55 +1185,55 @@ static void tracker_preferences_connect_signals (GtkBuilder* builder, GObject* o
 	const gchar* _tmp2_;
 	void* _tmp3_ = NULL;
 	gboolean _tmp4_ = FALSE;
-#line 228 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 228 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 228 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 228 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (builder != NULL);
-#line 228 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 228 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (object != NULL);
-#line 228 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 228 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (signal_name != NULL);
-#line 228 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 228 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (handler_name != NULL);
-#line 232 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 232 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = g_module_open (NULL, G_MODULE_BIND_LAZY);
-#line 232 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 232 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	module = _tmp0_;
-#line 235 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 235 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = module;
-#line 235 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 235 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = handler_name;
-#line 235 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 235 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp4_ = g_module_symbol (_tmp1_, _tmp2_, &_tmp3_);
-#line 235 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 235 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	sym = _tmp3_;
-#line 235 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 235 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (!_tmp4_) {
 #line 1213 "tracker-preferences.c"
 		FILE* _tmp5_;
 		const gchar* _tmp6_;
-#line 236 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 236 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp5_ = stdout;
-#line 236 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 236 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp6_ = handler_name;
-#line 236 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 236 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		fprintf (_tmp5_, "Symbol not found! %s\n", _tmp6_);
 #line 1222 "tracker-preferences.c"
 	} else {
 		GObject* _tmp7_;
 		const gchar* _tmp8_;
 		void* _tmp9_;
-#line 238 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 238 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp7_ = object;
-#line 238 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 238 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp8_ = signal_name;
-#line 238 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 238 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp9_ = sym;
-#line 238 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 238 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_signal_connect (_tmp7_, _tmp8_, (GCallback) _tmp9_, self);
 #line 1235 "tracker-preferences.c"
 	}
-#line 228 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 228 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_module_close0 (module);
 #line 1239 "tracker-preferences.c"
 }
@@ -1242,19 +1242,19 @@ static void tracker_preferences_connect_signals (GtkBuilder* builder, GObject* o
 void tracker_preferences_response_cb (GtkDialog* source, gint response_id, TrackerPreferences* self) {
 	gint _tmp0_;
 	gint _tmp1_;
-#line 243 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 243 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 243 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 243 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 244 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 244 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = response_id;
-#line 244 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 244 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_debug ("tracker-preferences.vala:244: Got response id %d (apply:%d, close:%d)", _tmp0_, (gint) GTK_RESPONSE_APPLY, (gint) GTK_RESPONSE_CLOSE);
-#line 246 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 246 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = response_id;
-#line 246 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 246 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	switch (_tmp1_) {
-#line 246 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 246 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		case GTK_RESPONSE_APPLY:
 #line 1260 "tracker-preferences.c"
 		{
@@ -1304,180 +1304,180 @@ void tracker_preferences_response_cb (GtkDialog* source, gint response_id, Track
 			gint _tmp45_;
 			GSettings* _tmp46_;
 			GSettings* _tmp47_;
-#line 248 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 248 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_debug ("tracker-preferences.vala:248: Converting directories for storage");
-#line 250 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp2_ = self->priv->settings_miner_fs;
-#line 250 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp3_ = self->priv->liststore_index;
-#line 250 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp5_ = tracker_preferences_model_to_strv (self, _tmp3_, TRUE, FALSE, &_tmp4_);
-#line 250 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp6_ = _tmp5_;
-#line 250 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp6__length1 = _tmp4_;
-#line 250 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_set_strv (_tmp2_, "index-single-directories", _tmp6_);
-#line 250 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 250 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp6_ = (_vala_array_free (_tmp6_, _tmp6__length1, (GDestroyNotify) g_free), NULL);
-#line 251 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 251 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp7_ = self->priv->settings_miner_fs;
-#line 251 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 251 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp8_ = self->priv->liststore_index;
-#line 251 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 251 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp10_ = tracker_preferences_model_to_strv (self, _tmp8_, TRUE, TRUE, &_tmp9_);
-#line 251 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 251 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp11_ = _tmp10_;
-#line 251 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 251 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp11__length1 = _tmp9_;
-#line 251 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 251 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_set_strv (_tmp7_, "index-recursive-directories", _tmp11_);
-#line 251 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 251 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp11_ = (_vala_array_free (_tmp11_, _tmp11__length1, (GDestroyNotify) g_free), NULL);
-#line 252 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp12_ = self->priv->settings_miner_fs;
-#line 252 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp13_ = self->priv->liststore_ignored_directories;
-#line 252 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp15_ = tracker_preferences_model_to_strv (self, _tmp13_, FALSE, FALSE, &_tmp14_);
-#line 252 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp16_ = _tmp15_;
-#line 252 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp16__length1 = _tmp14_;
-#line 252 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_set_strv (_tmp12_, "ignored-directories", _tmp16_);
-#line 252 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 252 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp16_ = (_vala_array_free (_tmp16_, _tmp16__length1, (GDestroyNotify) g_free), NULL);
-#line 253 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp17_ = self->priv->settings_miner_fs;
-#line 253 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp18_ = self->priv->liststore_ignored_files;
-#line 253 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp20_ = tracker_preferences_model_to_strv (self, _tmp18_, FALSE, FALSE, &_tmp19_);
-#line 253 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp21_ = _tmp20_;
-#line 253 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp21__length1 = _tmp19_;
-#line 253 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_set_strv (_tmp17_, "ignored-files", _tmp21_);
-#line 253 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 253 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp21_ = (_vala_array_free (_tmp21_, _tmp21__length1, (GDestroyNotify) g_free), NULL);
-#line 254 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 254 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp22_ = self->priv->settings_miner_fs;
-#line 254 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 254 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp23_ = self->priv->liststore_ignored_directories_with_content;
-#line 254 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 254 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp25_ = tracker_preferences_model_to_strv (self, _tmp23_, FALSE, FALSE, &_tmp24_);
-#line 254 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 254 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp26_ = _tmp25_;
-#line 254 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 254 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp26__length1 = _tmp24_;
-#line 254 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 254 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_set_strv (_tmp22_, "ignored-directories-with-content", _tmp26_);
-#line 254 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 254 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp26_ = (_vala_array_free (_tmp26_, _tmp26__length1, (GDestroyNotify) g_free), NULL);
-#line 256 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 256 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp27_ = self->priv->settings_miner_fs;
-#line 256 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 256 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp28_ = self->priv->hscale_disk_space_limit;
-#line 256 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 256 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp29_ = gtk_range_get_value ((GtkRange*) _tmp28_);
-#line 256 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 256 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_set_int (_tmp27_, "low-disk-space-limit", (gint) _tmp29_);
-#line 257 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 257 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp30_ = self->priv->settings_miner_fs;
-#line 257 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 257 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp31_ = self->priv->hscale_drop_device_threshold;
-#line 257 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 257 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp32_ = gtk_range_get_value ((GtkRange*) _tmp31_);
-#line 257 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 257 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_set_int (_tmp30_, "removable-days-threshold", (gint) _tmp32_);
-#line 261 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 261 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp33_ = self->priv->radiobutton_sched_idle_always;
-#line 261 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 261 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp34_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp33_);
-#line 261 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 261 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp35_ = _tmp34_;
-#line 261 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 261 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (_tmp35_) {
-#line 262 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 262 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				sched_idle = 0;
 #line 1406 "tracker-preferences.c"
 			} else {
 				GtkRadioButton* _tmp36_;
 				gboolean _tmp37_;
 				gboolean _tmp38_;
-#line 263 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 263 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp36_ = self->priv->radiobutton_sched_idle_first_index;
-#line 263 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 263 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp37_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp36_);
-#line 263 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 263 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp38_ = _tmp37_;
-#line 263 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 263 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (_tmp38_) {
-#line 264 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 264 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					sched_idle = 1;
 #line 1421 "tracker-preferences.c"
 				} else {
 					GtkRadioButton* _tmp39_;
 					gboolean _tmp40_;
 					gboolean _tmp41_;
-#line 265 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 265 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp39_ = self->priv->radiobutton_sched_idle_never;
-#line 265 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 265 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp40_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp39_);
-#line 265 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 265 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp41_ = _tmp40_;
-#line 265 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 265 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					if (_tmp41_) {
-#line 266 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 266 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						sched_idle = 2;
 #line 1436 "tracker-preferences.c"
 					} else {
-#line 268 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 268 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						g_assert_not_reached ();
 #line 1440 "tracker-preferences.c"
 					}
 				}
 			}
-#line 275 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 275 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp42_ = self->priv->settings_miner_fs;
-#line 275 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 275 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp43_ = sched_idle;
-#line 275 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 275 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_set_enum (_tmp42_, "sched-idle", _tmp43_);
-#line 276 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 276 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp44_ = self->priv->settings_extract;
-#line 276 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 276 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp45_ = sched_idle;
-#line 276 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 276 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_set_enum (_tmp44_, "sched-idle", _tmp45_);
-#line 278 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 278 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_debug ("tracker-preferences.vala:278: Saving settings...");
-#line 279 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 279 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp46_ = self->priv->settings_miner_fs;
-#line 279 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 279 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_apply (_tmp46_);
-#line 280 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 280 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_debug ("tracker-preferences.vala:280:   tracker-miner-fs: Done");
-#line 281 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 281 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp47_ = self->priv->settings_extract;
-#line 281 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 281 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_settings_apply (_tmp47_);
-#line 282 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 282 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_debug ("tracker-preferences.vala:282:   tracker-extract: Done");
-#line 285 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 285 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			return;
 #line 1472 "tracker-preferences.c"
 		}
 		default:
 		{
-#line 288 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 288 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			break;
 #line 1478 "tracker-preferences.c"
 		}
 	}
-#line 291 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 291 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_main_quit ();
 #line 1483 "tracker-preferences.c"
 }
@@ -1487,17 +1487,17 @@ void tracker_preferences_spinbutton_delay_value_changed_cb (GtkSpinButton* sourc
 	GSettings* _tmp0_;
 	GtkSpinButton* _tmp1_;
 	gint _tmp2_ = 0;
-#line 295 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 295 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 295 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 295 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 296 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 296 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->settings_miner_fs;
-#line 296 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 296 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = source;
-#line 296 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 296 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = gtk_spin_button_get_value_as_int (_tmp1_);
-#line 296 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 296 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_settings_set_int (_tmp0_, "initial-sleep", _tmp2_);
 #line 1503 "tracker-preferences.c"
 }
@@ -1508,19 +1508,19 @@ void tracker_preferences_checkbutton_enable_monitoring_toggled_cb (GtkCheckButto
 	GtkCheckButton* _tmp1_;
 	gboolean _tmp2_;
 	gboolean _tmp3_;
-#line 300 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 300 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 300 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 300 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 301 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 301 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->settings_miner_fs;
-#line 301 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 301 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = source;
-#line 301 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 301 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp1_);
-#line 301 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 301 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = _tmp2_;
-#line 301 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 301 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_settings_set_boolean (_tmp0_, "enable-monitors", _tmp3_);
 #line 1526 "tracker-preferences.c"
 }
@@ -1535,29 +1535,29 @@ void tracker_preferences_checkbutton_enable_index_on_battery_toggled_cb (GtkChec
 	GtkCheckButton* _tmp5_;
 	gboolean _tmp6_;
 	gboolean _tmp7_;
-#line 305 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 305 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 305 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 305 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 306 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 306 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->settings_miner_fs;
-#line 306 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 306 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = source;
-#line 306 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 306 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp1_);
-#line 306 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 306 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = _tmp2_;
-#line 306 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 306 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_settings_set_boolean (_tmp0_, "index-on-battery", _tmp3_);
-#line 307 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 307 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp4_ = self->priv->checkbutton_enable_index_on_battery_first_time;
-#line 307 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 307 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp5_ = source;
-#line 307 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 307 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp6_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp5_);
-#line 307 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 307 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp7_ = _tmp6_;
-#line 307 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 307 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_widget_set_sensitive ((GtkWidget*) _tmp4_, !_tmp7_);
 #line 1563 "tracker-preferences.c"
 }
@@ -1568,19 +1568,19 @@ void tracker_preferences_checkbutton_enable_index_on_battery_first_time_toggled_
 	GtkCheckButton* _tmp1_;
 	gboolean _tmp2_;
 	gboolean _tmp3_;
-#line 311 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 311 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 311 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 311 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 312 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 312 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->settings_miner_fs;
-#line 312 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 312 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = source;
-#line 312 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 312 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp1_);
-#line 312 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 312 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = _tmp2_;
-#line 312 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 312 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_settings_set_boolean (_tmp0_, "index-on-battery-first-time", _tmp3_);
 #line 1586 "tracker-preferences.c"
 }
@@ -1595,29 +1595,29 @@ void tracker_preferences_checkbutton_index_removable_media_toggled_cb (GtkCheckB
 	GtkCheckButton* _tmp5_;
 	gboolean _tmp6_;
 	gboolean _tmp7_;
-#line 316 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 316 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 316 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 316 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 317 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 317 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->settings_miner_fs;
-#line 317 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 317 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = source;
-#line 317 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 317 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp1_);
-#line 317 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 317 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = _tmp2_;
-#line 317 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 317 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_settings_set_boolean (_tmp0_, "index-removable-devices", _tmp3_);
-#line 318 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 318 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp4_ = self->priv->checkbutton_index_optical_discs;
-#line 318 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 318 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp5_ = source;
-#line 318 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 318 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp6_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp5_);
-#line 318 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 318 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp7_ = _tmp6_;
-#line 318 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 318 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_widget_set_sensitive ((GtkWidget*) _tmp4_, _tmp7_);
 #line 1623 "tracker-preferences.c"
 }
@@ -1628,19 +1628,19 @@ void tracker_preferences_checkbutton_index_optical_discs_toggled_cb (GtkCheckBut
 	GtkCheckButton* _tmp1_;
 	gboolean _tmp2_;
 	gboolean _tmp3_;
-#line 322 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 322 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 322 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 322 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 323 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 323 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->settings_miner_fs;
-#line 323 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 323 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = source;
-#line 323 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 323 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = gtk_toggle_button_get_active ((GtkToggleButton*) _tmp1_);
-#line 323 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 323 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = _tmp2_;
-#line 323 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 323 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_settings_set_boolean (_tmp0_, "index-optical-discs", _tmp3_);
 #line 1646 "tracker-preferences.c"
 }
@@ -1652,36 +1652,36 @@ gchar* tracker_preferences_hscale_disk_space_limit_format_value_cb (GtkScale* so
 	const gchar* _tmp3_ = NULL;
 	gdouble _tmp4_;
 	gchar* _tmp5_ = NULL;
-#line 327 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 327 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 327 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (source != NULL, NULL);
-#line 328 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 328 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = value;
-#line 328 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 328 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (((gint) _tmp0_) == (-1)) {
 #line 1664 "tracker-preferences.c"
 		const gchar* _tmp1_ = NULL;
 		gchar* _tmp2_;
-#line 329 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 329 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp1_ = _ ("Disabled");
-#line 329 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 329 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp2_ = g_strdup (_tmp1_);
-#line 329 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 329 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		result = _tmp2_;
-#line 329 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 329 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return result;
 #line 1675 "tracker-preferences.c"
 	}
-#line 332 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = _ ("%d%%");
-#line 332 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp4_ = value;
-#line 332 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp5_ = g_strdup_printf (_tmp3_, (gint) _tmp4_);
-#line 332 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	result = _tmp5_;
-#line 332 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 332 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return result;
 #line 1687 "tracker-preferences.c"
 }
@@ -1693,36 +1693,36 @@ gchar* tracker_preferences_hscale_drop_device_threshold_format_value_cb (GtkScal
 	const gchar* _tmp3_ = NULL;
 	gdouble _tmp4_;
 	gchar* _tmp5_ = NULL;
-#line 336 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 336 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 336 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 336 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (source != NULL, NULL);
-#line 337 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 337 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = value;
-#line 337 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 337 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (((gint) _tmp0_) == 0) {
 #line 1705 "tracker-preferences.c"
 		const gchar* _tmp1_ = NULL;
 		gchar* _tmp2_;
-#line 338 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 338 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp1_ = _ ("Disabled");
-#line 338 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 338 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp2_ = g_strdup (_tmp1_);
-#line 338 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 338 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		result = _tmp2_;
-#line 338 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 338 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return result;
 #line 1716 "tracker-preferences.c"
 	}
-#line 341 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 341 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = _ ("%d");
-#line 341 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 341 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp4_ = value;
-#line 341 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 341 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp5_ = g_strdup_printf (_tmp3_, (gint) _tmp4_);
-#line 341 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 341 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	result = _tmp5_;
-#line 341 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 341 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return result;
 #line 1728 "tracker-preferences.c"
 }
@@ -1730,13 +1730,13 @@ gchar* tracker_preferences_hscale_drop_device_threshold_format_value_cb (GtkScal
 
 void tracker_preferences_button_index_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
 	GtkListStore* _tmp0_;
-#line 345 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 345 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 345 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 345 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 346 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 346 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->liststore_index;
-#line 346 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 346 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_store_add_dir (self, _tmp0_);
 #line 1742 "tracker-preferences.c"
 }
@@ -1744,13 +1744,13 @@ void tracker_preferences_button_index_add_clicked_cb (GtkButton* source, Tracker
 
 void tracker_preferences_button_index_remove_clicked_cb (GtkButton* source, TrackerPreferences* self) {
 	GtkTreeView* _tmp0_;
-#line 350 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 350 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 350 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 350 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 351 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 351 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->treeview_index;
-#line 351 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 351 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_store_del_dir (self, _tmp0_);
 #line 1756 "tracker-preferences.c"
 }
@@ -1758,13 +1758,13 @@ void tracker_preferences_button_index_remove_clicked_cb (GtkButton* source, Trac
 
 void tracker_preferences_button_ignored_directories_globs_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
 	GtkListStore* _tmp0_;
-#line 355 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 355 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 355 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 355 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 356 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 356 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->liststore_ignored_directories;
-#line 356 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 356 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_store_add_value_dialog (self, _tmp0_);
 #line 1770 "tracker-preferences.c"
 }
@@ -1772,13 +1772,13 @@ void tracker_preferences_button_ignored_directories_globs_add_clicked_cb (GtkBut
 
 void tracker_preferences_button_ignored_directories_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
 	GtkListStore* _tmp0_;
-#line 360 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 360 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 360 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 360 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 361 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 361 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->liststore_ignored_directories;
-#line 361 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 361 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_store_add_dir (self, _tmp0_);
 #line 1784 "tracker-preferences.c"
 }
@@ -1786,13 +1786,13 @@ void tracker_preferences_button_ignored_directories_add_clicked_cb (GtkButton* s
 
 void tracker_preferences_button_ignored_directories_remove_clicked_cb (GtkButton* source, TrackerPreferences* self) {
 	GtkTreeView* _tmp0_;
-#line 365 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 365 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 365 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 365 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 366 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 366 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->treeview_ignored_directories;
-#line 366 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 366 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_store_del_dir (self, _tmp0_);
 #line 1798 "tracker-preferences.c"
 }
@@ -1800,13 +1800,13 @@ void tracker_preferences_button_ignored_directories_remove_clicked_cb (GtkButton
 
 void tracker_preferences_button_ignored_directories_with_content_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
 	GtkListStore* _tmp0_;
-#line 370 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 370 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 370 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 370 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 371 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 371 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->liststore_ignored_directories_with_content;
-#line 371 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 371 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_store_add_value_dialog (self, _tmp0_);
 #line 1812 "tracker-preferences.c"
 }
@@ -1814,13 +1814,13 @@ void tracker_preferences_button_ignored_directories_with_content_add_clicked_cb 
 
 void tracker_preferences_button_ignored_directories_with_content_remove_clicked_cb (GtkButton* source, TrackerPreferences* self) {
 	GtkTreeView* _tmp0_;
-#line 375 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 375 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 375 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 375 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 376 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 376 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->treeview_ignored_directories_with_content;
-#line 376 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 376 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_store_del_dir (self, _tmp0_);
 #line 1826 "tracker-preferences.c"
 }
@@ -1828,13 +1828,13 @@ void tracker_preferences_button_ignored_directories_with_content_remove_clicked_
 
 void tracker_preferences_button_ignored_files_add_clicked_cb (GtkButton* source, TrackerPreferences* self) {
 	GtkListStore* _tmp0_;
-#line 380 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 380 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 380 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 380 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 381 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 381 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->liststore_ignored_files;
-#line 381 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 381 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_store_add_value_dialog (self, _tmp0_);
 #line 1840 "tracker-preferences.c"
 }
@@ -1842,13 +1842,13 @@ void tracker_preferences_button_ignored_files_add_clicked_cb (GtkButton* source,
 
 void tracker_preferences_button_ignored_files_remove_clicked_cb (GtkButton* source, TrackerPreferences* self) {
 	GtkTreeView* _tmp0_;
-#line 385 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 385 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 385 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 385 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 386 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 386 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = self->priv->treeview_ignored_files;
-#line 386 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 386 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_store_del_dir (self, _tmp0_);
 #line 1854 "tracker-preferences.c"
 }
@@ -1865,43 +1865,43 @@ static void tracker_preferences_togglebutton_directory_update_model (TrackerPref
 	gboolean _tmp23_;
 	gboolean _tmp24_;
 	gboolean _tmp28_;
-#line 389 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 389 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 389 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 389 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 389 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 389 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (store != NULL);
-#line 389 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 389 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (to_check != NULL);
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = source;
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = gtk_toggle_button_get_active (_tmp1_);
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = _tmp2_;
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp3_) {
 #line 1885 "tracker-preferences.c"
 		GtkListStore* _tmp4_;
 		const gchar* _tmp5_;
 		gboolean _tmp6_ = FALSE;
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp4_ = store;
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp5_ = to_check;
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp6_ = tracker_preferences_model_contains (self, (GtkTreeModel*) _tmp4_, _tmp5_);
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp0_ = !_tmp6_;
 #line 1897 "tracker-preferences.c"
 	} else {
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp0_ = FALSE;
 #line 1901 "tracker-preferences.c"
 	}
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp7_ = _tmp0_;
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp7_) {
 #line 1907 "tracker-preferences.c"
 		GtkTreeIter iter = {0};
@@ -1920,81 +1920,81 @@ static void tracker_preferences_togglebutton_directory_update_model (TrackerPref
 		GtkTreeIter _tmp18_;
 		gboolean _tmp19_;
 		GValue _tmp20_ = {0};
-#line 392 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 392 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp8_ = self->priv->liststore_index;
-#line 392 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 392 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		gtk_list_store_append (_tmp8_, &_tmp9_);
-#line 392 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 392 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		iter = _tmp9_;
-#line 393 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 393 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_value_init (&_tmp10_, G_TYPE_STRING);
-#line 393 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 393 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		v = _tmp10_;
-#line 394 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 394 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp11_ = to_check;
-#line 394 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 394 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_value_set_string (&v, _tmp11_);
-#line 396 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 396 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp12_ = to_check;
-#line 396 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 396 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp13_ = self->priv->HOME_STRING_EVALUATED;
-#line 396 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 396 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		recurse = g_strcmp0 (_tmp12_, _tmp13_) != 0;
-#line 397 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 397 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp14_ = self->priv->liststore_index;
-#line 397 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 397 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp15_ = iter;
-#line 397 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 397 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp16_ = v;
-#line 397 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 397 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		gtk_list_store_set_value (_tmp14_, &_tmp15_, 0, &_tmp16_);
-#line 398 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 398 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp17_ = self->priv->liststore_index;
-#line 398 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 398 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp18_ = iter;
-#line 398 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 398 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp19_ = recurse;
-#line 398 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 398 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_value_init (&_tmp20_, G_TYPE_BOOLEAN);
-#line 398 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 398 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_value_set_boolean (&_tmp20_, _tmp19_);
-#line 398 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 398 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		gtk_list_store_set_value (_tmp17_, &_tmp18_, 1, &_tmp20_);
-#line 398 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 398 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		G_IS_VALUE (&_tmp20_) ? (g_value_unset (&_tmp20_), NULL) : NULL;
-#line 390 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 390 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		G_IS_VALUE (&v) ? (g_value_unset (&v), NULL) : NULL;
 #line 1968 "tracker-preferences.c"
 	}
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp22_ = source;
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp23_ = gtk_toggle_button_get_active (_tmp22_);
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp24_ = _tmp23_;
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (!_tmp24_) {
 #line 1978 "tracker-preferences.c"
 		GtkListStore* _tmp25_;
 		const gchar* _tmp26_;
 		gboolean _tmp27_ = FALSE;
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp25_ = store;
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp26_ = to_check;
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp27_ = tracker_preferences_model_contains (self, (GtkTreeModel*) _tmp25_, _tmp26_);
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp21_ = _tmp27_;
 #line 1990 "tracker-preferences.c"
 	} else {
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp21_ = FALSE;
 #line 1994 "tracker-preferences.c"
 	}
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp28_ = _tmp21_;
-#line 401 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 401 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp28_) {
 #line 2000 "tracker-preferences.c"
 		gboolean valid = FALSE;
@@ -2002,15 +2002,15 @@ static void tracker_preferences_togglebutton_directory_update_model (TrackerPref
 		GtkListStore* _tmp29_;
 		GtkTreeIter _tmp30_ = {0};
 		gboolean _tmp31_ = FALSE;
-#line 405 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 405 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp29_ = store;
-#line 405 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 405 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp31_ = gtk_tree_model_get_iter_first ((GtkTreeModel*) _tmp29_, &_tmp30_);
-#line 405 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 405 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		iter = _tmp30_;
-#line 405 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 405 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		valid = _tmp31_;
-#line 406 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 406 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		while (TRUE) {
 #line 2016 "tracker-preferences.c"
 			gboolean _tmp32_;
@@ -2020,29 +2020,29 @@ static void tracker_preferences_togglebutton_directory_update_model (TrackerPref
 			GValue _tmp35_ = {0};
 			const gchar* _tmp36_ = NULL;
 			const gchar* _tmp37_;
-#line 406 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 406 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp32_ = valid;
-#line 406 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 406 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (!_tmp32_) {
-#line 406 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 406 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				break;
 #line 2030 "tracker-preferences.c"
 			}
-#line 408 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 408 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp33_ = store;
-#line 408 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 408 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp34_ = iter;
-#line 408 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 408 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_tree_model_get_value ((GtkTreeModel*) _tmp33_, &_tmp34_, 0, &_tmp35_);
-#line 408 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 408 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-#line 408 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 408 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			value = _tmp35_;
-#line 409 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 409 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp36_ = g_value_get_string (&value);
-#line 409 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 409 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp37_ = to_check;
-#line 409 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 409 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (g_strcmp0 (_tmp36_, _tmp37_) == 0) {
 #line 2048 "tracker-preferences.c"
 				GtkListStore* _tmp38_;
@@ -2050,33 +2050,33 @@ static void tracker_preferences_togglebutton_directory_update_model (TrackerPref
 				GtkListStore* _tmp40_;
 				GtkTreeIter _tmp41_ = {0};
 				gboolean _tmp42_ = FALSE;
-#line 410 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 410 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp38_ = store;
-#line 410 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 410 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp39_ = iter;
-#line 410 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 410 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				gtk_list_store_remove (_tmp38_, &_tmp39_);
-#line 411 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 411 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp40_ = store;
-#line 411 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 411 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp42_ = gtk_tree_model_get_iter_first ((GtkTreeModel*) _tmp40_, &_tmp41_);
-#line 411 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 411 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				iter = _tmp41_;
-#line 411 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 411 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				valid = _tmp42_;
 #line 2068 "tracker-preferences.c"
 			} else {
 				GtkListStore* _tmp43_;
 				gboolean _tmp44_ = FALSE;
-#line 413 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 413 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp43_ = store;
-#line 413 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 413 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp44_ = gtk_tree_model_iter_next ((GtkTreeModel*) _tmp43_, &iter);
-#line 413 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 413 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				valid = _tmp44_;
 #line 2078 "tracker-preferences.c"
 			}
-#line 406 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 406 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
 #line 2082 "tracker-preferences.c"
 		}
@@ -2088,17 +2088,17 @@ void tracker_preferences_togglebutton_home_toggled_cb (GtkToggleButton* source, 
 	GtkToggleButton* _tmp0_;
 	GtkListStore* _tmp1_;
 	const gchar* _tmp2_;
-#line 420 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 420 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 420 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 420 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 421 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 421 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = source;
-#line 421 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 421 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = self->priv->liststore_index;
-#line 421 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 421 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = self->priv->HOME_STRING_EVALUATED;
-#line 421 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 421 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_togglebutton_directory_update_model (self, _tmp0_, _tmp1_, _tmp2_);
 #line 2104 "tracker-preferences.c"
 }
@@ -2108,17 +2108,17 @@ void tracker_preferences_togglebutton_desktop_toggled_cb (GtkToggleButton* sourc
 	GtkToggleButton* _tmp0_;
 	GtkListStore* _tmp1_;
 	const gchar* _tmp2_ = NULL;
-#line 425 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 425 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 425 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 425 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 426 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 426 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = source;
-#line 426 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 426 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = self->priv->liststore_index;
-#line 426 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 426 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
-#line 426 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 426 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_togglebutton_directory_update_model (self, _tmp0_, _tmp1_, _tmp2_);
 #line 2124 "tracker-preferences.c"
 }
@@ -2128,17 +2128,17 @@ void tracker_preferences_togglebutton_documents_toggled_cb (GtkToggleButton* sou
 	GtkToggleButton* _tmp0_;
 	GtkListStore* _tmp1_;
 	const gchar* _tmp2_ = NULL;
-#line 430 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 430 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 430 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 430 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 431 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 431 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = source;
-#line 431 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 431 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = self->priv->liststore_index;
-#line 431 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 431 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS);
-#line 431 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 431 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_togglebutton_directory_update_model (self, _tmp0_, _tmp1_, _tmp2_);
 #line 2144 "tracker-preferences.c"
 }
@@ -2148,17 +2148,17 @@ void tracker_preferences_togglebutton_music_toggled_cb (GtkToggleButton* source,
 	GtkToggleButton* _tmp0_;
 	GtkListStore* _tmp1_;
 	const gchar* _tmp2_ = NULL;
-#line 435 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 435 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 435 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 435 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 436 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 436 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = source;
-#line 436 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 436 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = self->priv->liststore_index;
-#line 436 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 436 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = g_get_user_special_dir (G_USER_DIRECTORY_MUSIC);
-#line 436 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 436 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_togglebutton_directory_update_model (self, _tmp0_, _tmp1_, _tmp2_);
 #line 2164 "tracker-preferences.c"
 }
@@ -2168,17 +2168,17 @@ void tracker_preferences_togglebutton_pictures_toggled_cb (GtkToggleButton* sour
 	GtkToggleButton* _tmp0_;
 	GtkListStore* _tmp1_;
 	const gchar* _tmp2_ = NULL;
-#line 440 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 440 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 440 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 440 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 441 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 441 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = source;
-#line 441 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 441 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = self->priv->liststore_index;
-#line 441 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 441 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = g_get_user_special_dir (G_USER_DIRECTORY_PICTURES);
-#line 441 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 441 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_togglebutton_directory_update_model (self, _tmp0_, _tmp1_, _tmp2_);
 #line 2184 "tracker-preferences.c"
 }
@@ -2188,17 +2188,17 @@ void tracker_preferences_togglebutton_videos_toggled_cb (GtkToggleButton* source
 	GtkToggleButton* _tmp0_;
 	GtkListStore* _tmp1_;
 	const gchar* _tmp2_ = NULL;
-#line 445 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 445 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 445 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 445 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 446 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 446 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = source;
-#line 446 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 446 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = self->priv->liststore_index;
-#line 446 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 446 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS);
-#line 446 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 446 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_togglebutton_directory_update_model (self, _tmp0_, _tmp1_, _tmp2_);
 #line 2204 "tracker-preferences.c"
 }
@@ -2208,17 +2208,17 @@ void tracker_preferences_togglebutton_download_toggled_cb (GtkToggleButton* sour
 	GtkToggleButton* _tmp0_;
 	GtkListStore* _tmp1_;
 	const gchar* _tmp2_ = NULL;
-#line 450 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 450 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 450 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 450 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (source != NULL);
-#line 451 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 451 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = source;
-#line 451 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 451 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = self->priv->liststore_index;
-#line 451 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 451 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD);
-#line 451 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 451 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_togglebutton_directory_update_model (self, _tmp0_, _tmp1_, _tmp2_);
 #line 2224 "tracker-preferences.c"
 }
@@ -2227,11 +2227,11 @@ void tracker_preferences_togglebutton_download_toggled_cb (GtkToggleButton* sour
 static void tracker_preferences_toggles_update (TrackerPreferences* self, GUserDirectory* matches, int matches_length1, gboolean active) {
 	GUserDirectory* _tmp0_;
 	gint _tmp0__length1;
-#line 454 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 454 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 456 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 456 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = matches;
-#line 456 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 456 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0__length1 = matches_length1;
 #line 2237 "tracker-preferences.c"
 	{
@@ -2239,121 +2239,121 @@ static void tracker_preferences_toggles_update (TrackerPreferences* self, GUserD
 		gint ud_collection_length1 = 0;
 		gint _ud_collection_size_ = 0;
 		gint ud_it = 0;
-#line 456 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 456 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		ud_collection = _tmp0_;
-#line 456 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 456 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		ud_collection_length1 = _tmp0__length1;
-#line 456 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 456 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		for (ud_it = 0; ud_it < _tmp0__length1; ud_it = ud_it + 1) {
 #line 2249 "tracker-preferences.c"
 			GUserDirectory ud = 0;
-#line 456 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 456 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			ud = ud_collection[ud_it];
 #line 2253 "tracker-preferences.c"
 			{
 				GUserDirectory _tmp1_;
-#line 457 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 457 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp1_ = ud;
-#line 457 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 457 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				switch (_tmp1_) {
-#line 457 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 457 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_DESKTOP:
 #line 2262 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp2_;
 						gboolean _tmp3_;
-#line 459 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 459 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp2_ = self->priv->togglebutton_desktop;
-#line 459 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 459 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp3_ = active;
-#line 459 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 459 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_toggle_button_set_active (_tmp2_, _tmp3_);
-#line 460 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 460 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 2274 "tracker-preferences.c"
 					}
-#line 457 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 457 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_DOCUMENTS:
 #line 2278 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp4_;
 						gboolean _tmp5_;
-#line 462 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 462 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp4_ = self->priv->togglebutton_documents;
-#line 462 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 462 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp5_ = active;
-#line 462 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 462 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_toggle_button_set_active (_tmp4_, _tmp5_);
-#line 463 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 463 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 2290 "tracker-preferences.c"
 					}
-#line 457 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 457 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_DOWNLOAD:
 #line 2294 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp6_;
 						gboolean _tmp7_;
-#line 465 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 465 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp6_ = self->priv->togglebutton_download;
-#line 465 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 465 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp7_ = active;
-#line 465 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 465 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_toggle_button_set_active (_tmp6_, _tmp7_);
-#line 466 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 466 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 2306 "tracker-preferences.c"
 					}
-#line 457 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 457 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_MUSIC:
 #line 2310 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp8_;
 						gboolean _tmp9_;
-#line 468 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 468 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp8_ = self->priv->togglebutton_music;
-#line 468 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 468 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp9_ = active;
-#line 468 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 468 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_toggle_button_set_active (_tmp8_, _tmp9_);
-#line 469 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 469 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 2322 "tracker-preferences.c"
 					}
-#line 457 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 457 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_PICTURES:
 #line 2326 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp10_;
 						gboolean _tmp11_;
-#line 471 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 471 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp10_ = self->priv->togglebutton_pictures;
-#line 471 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 471 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp11_ = active;
-#line 471 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 471 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_toggle_button_set_active (_tmp10_, _tmp11_);
-#line 472 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 472 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 2338 "tracker-preferences.c"
 					}
-#line 457 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 457 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_VIDEOS:
 #line 2342 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp12_;
 						gboolean _tmp13_;
-#line 474 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 474 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp12_ = self->priv->togglebutton_videos;
-#line 474 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 474 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp13_ = active;
-#line 474 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 474 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_toggle_button_set_active (_tmp12_, _tmp13_);
-#line 475 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 475 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 2354 "tracker-preferences.c"
 					}
 					default:
-#line 457 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 457 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					break;
 #line 2359 "tracker-preferences.c"
 				}
@@ -2384,63 +2384,63 @@ static void tracker_preferences_store_add_value_dialog (TrackerPreferences* self
 	GtkDialog* _tmp14_;
 	gint _tmp15_ = 0;
 	GtkDialog* _tmp30_;
-#line 480 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 480 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 480 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 480 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (store != NULL);
-#line 485 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 485 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = _ ("Enter value");
-#line 485 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 485 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = self->priv->window;
-#line 485 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 485 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = (GtkDialog*) gtk_dialog_new_with_buttons (_tmp0_, _tmp1_, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
-#line 485 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 485 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = g_object_ref_sink (_tmp2_);
-#line 485 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 485 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (dialog);
-#line 485 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 485 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	dialog = _tmp3_;
-#line 491 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 491 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp4_ = dialog;
-#line 491 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 491 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_dialog_set_default_response (_tmp4_, (gint) GTK_RESPONSE_ACCEPT);
-#line 492 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 492 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp5_ = dialog;
-#line 492 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 492 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp6_ = gtk_dialog_get_content_area (_tmp5_);
-#line 492 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 492 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp7_ = _g_object_ref0 (GTK_CONTAINER (_tmp6_));
-#line 492 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 492 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (content_area);
-#line 492 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 492 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	content_area = _tmp7_;
-#line 493 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 493 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp8_ = (GtkEntry*) gtk_entry_new ();
-#line 493 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 493 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp9_ = g_object_ref_sink (_tmp8_);
-#line 493 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 493 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (entry);
-#line 493 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 493 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	entry = _tmp9_;
-#line 494 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 494 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp10_ = entry;
-#line 494 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 494 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_entry_set_activates_default (_tmp10_, TRUE);
-#line 495 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 495 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp11_ = entry;
-#line 495 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 495 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_widget_show ((GtkWidget*) _tmp11_);
-#line 496 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 496 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp12_ = content_area;
-#line 496 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 496 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp13_ = entry;
-#line 496 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 496 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_container_add (_tmp12_, (GtkWidget*) _tmp13_);
-#line 498 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 498 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp14_ = dialog;
-#line 498 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 498 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp15_ = gtk_dialog_run (_tmp14_);
-#line 498 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 498 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp15_ == ((gint) GTK_RESPONSE_ACCEPT)) {
 #line 2446 "tracker-preferences.c"
 		GtkEntry* _tmp16_;
@@ -2450,33 +2450,33 @@ static void tracker_preferences_store_add_value_dialog (TrackerPreferences* self
 		gboolean _tmp19_ = FALSE;
 		const gchar* _tmp20_;
 		gboolean _tmp22_;
-#line 499 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 499 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp16_ = entry;
-#line 499 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 499 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp17_ = gtk_entry_get_text (_tmp16_);
-#line 499 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 499 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp18_ = g_strdup (_tmp17_);
-#line 499 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 499 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		text = _tmp18_;
-#line 501 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 501 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp20_ = text;
-#line 501 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 501 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (_tmp20_ != NULL) {
 #line 2466 "tracker-preferences.c"
 			const gchar* _tmp21_;
-#line 501 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 501 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp21_ = text;
-#line 501 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 501 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp19_ = g_strcmp0 (_tmp21_, "") != 0;
 #line 2472 "tracker-preferences.c"
 		} else {
-#line 501 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 501 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp19_ = FALSE;
 #line 2476 "tracker-preferences.c"
 		}
-#line 501 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 501 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp22_ = _tmp19_;
-#line 501 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 501 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (_tmp22_) {
 #line 2482 "tracker-preferences.c"
 			GtkTreeIter iter = {0};
@@ -2488,45 +2488,45 @@ static void tracker_preferences_store_add_value_dialog (TrackerPreferences* self
 			GtkListStore* _tmp27_;
 			GtkTreeIter _tmp28_;
 			GValue _tmp29_;
-#line 503 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 503 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp23_ = store;
-#line 503 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 503 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_list_store_append (_tmp23_, &_tmp24_);
-#line 503 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 503 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			iter = _tmp24_;
-#line 504 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 504 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_value_init (&_tmp25_, G_TYPE_STRING);
-#line 504 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 504 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			v = _tmp25_;
-#line 505 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 505 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp26_ = text;
-#line 505 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 505 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_value_set_string (&v, _tmp26_);
-#line 506 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 506 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp27_ = store;
-#line 506 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 506 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp28_ = iter;
-#line 506 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 506 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp29_ = v;
-#line 506 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 506 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_list_store_set_value (_tmp27_, &_tmp28_, 0, &_tmp29_);
-#line 501 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 501 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			G_IS_VALUE (&v) ? (g_value_unset (&v), NULL) : NULL;
 #line 2516 "tracker-preferences.c"
 		}
-#line 498 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 498 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (text);
 #line 2520 "tracker-preferences.c"
 	}
-#line 510 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 510 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp30_ = dialog;
-#line 510 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 510 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_widget_destroy ((GtkWidget*) _tmp30_);
-#line 480 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 480 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (content_area);
-#line 480 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 480 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (entry);
-#line 480 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 480 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (dialog);
 #line 2532 "tracker-preferences.c"
 }
@@ -2539,30 +2539,30 @@ static void tracker_preferences_store_add_dir (TrackerPreferences* self, GtkList
 	GtkFileChooserDialog* _tmp3_;
 	GtkFileChooserDialog* dialog;
 	GtkFileChooserDialog* _tmp36_;
-#line 513 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 513 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 513 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 513 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (store != NULL);
-#line 514 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 514 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = _ ("Select directory");
-#line 514 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 514 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = self->priv->window;
-#line 514 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 514 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = (GtkFileChooserDialog*) gtk_file_chooser_dialog_new (_tmp0_, _tmp1_, GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
-#line 514 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 514 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = g_object_ref_sink (_tmp2_);
-#line 514 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 514 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	dialog = _tmp3_;
-#line 522 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 522 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	while (TRUE) {
 #line 2559 "tracker-preferences.c"
 		GtkFileChooserDialog* _tmp4_;
 		gint _tmp5_ = 0;
-#line 523 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 523 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp4_ = dialog;
-#line 523 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 523 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp5_ = gtk_dialog_run ((GtkDialog*) _tmp4_);
-#line 523 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 523 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (_tmp5_ == ((gint) GTK_RESPONSE_ACCEPT)) {
 #line 2568 "tracker-preferences.c"
 			GtkTreeIter iter = {0};
@@ -2597,29 +2597,29 @@ static void tracker_preferences_store_add_dir (TrackerPreferences* self, GtkList
 			gint _tmp32__length1;
 			const gchar* _tmp33_;
 			const gchar* _tmp34_;
-#line 527 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 527 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp6_ = dialog;
-#line 527 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 527 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp7_ = gtk_file_chooser_get_file ((GtkFileChooser*) _tmp6_);
-#line 527 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 527 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp8_ = _g_object_ref0 (_tmp7_);
-#line 527 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 527 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_object_unref0 (f);
-#line 527 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 527 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			f = _tmp8_;
-#line 528 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 528 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp9_ = f;
-#line 528 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 528 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp10_ = g_file_get_path (_tmp9_);
-#line 528 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 528 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			path = _tmp10_;
-#line 530 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 530 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp11_ = store;
-#line 530 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 530 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp12_ = path;
-#line 530 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 530 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp13_ = tracker_preferences_model_contains (self, (GtkTreeModel*) _tmp11_, _tmp12_);
-#line 530 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 530 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (_tmp13_) {
 #line 2625 "tracker-preferences.c"
 				GtkFileChooserDialog* _tmp14_;
@@ -2629,136 +2629,136 @@ static void tracker_preferences_store_add_dir (TrackerPreferences* self, GtkList
 				GtkMessageDialog* md;
 				GtkMessageDialog* _tmp18_;
 				GtkMessageDialog* _tmp19_;
-#line 531 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 531 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp14_ = dialog;
-#line 531 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 531 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp15_ = _ ("That directory is already selected as a location to index");
-#line 531 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 531 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp16_ = (GtkMessageDialog*) gtk_message_dialog_new ((GtkWindow*) _tmp14_, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, _tmp15_, NULL);
-#line 531 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 531 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp17_ = g_object_ref_sink (_tmp16_);
-#line 531 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 531 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				md = _tmp17_;
-#line 537 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 537 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp18_ = md;
-#line 537 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 537 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				gtk_dialog_run ((GtkDialog*) _tmp18_);
-#line 538 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 538 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp19_ = md;
-#line 538 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 538 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				gtk_widget_destroy ((GtkWidget*) _tmp19_);
-#line 539 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 539 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_object_unref0 (md);
-#line 539 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 539 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_free0 (path);
-#line 539 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 539 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_object_unref0 (f);
-#line 539 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 539 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				continue;
 #line 2659 "tracker-preferences.c"
 			}
-#line 542 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 542 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp20_ = f;
-#line 542 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 542 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp21_ = g_file_get_path (_tmp20_);
-#line 542 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 542 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			dir = _tmp21_;
-#line 545 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 545 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp22_ = dir;
-#line 545 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 545 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp24_ = tracker_preferences_dir_match_user_directories (self, _tmp22_, &_tmp23_);
-#line 545 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 545 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			matches = _tmp24_;
-#line 545 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 545 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			matches_length1 = _tmp23_;
-#line 545 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 545 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_matches_size_ = matches_length1;
-#line 548 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 548 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp25_ = store;
-#line 548 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 548 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_list_store_append (_tmp25_, &_tmp26_);
-#line 548 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 548 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			iter = _tmp26_;
-#line 549 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 549 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_value_init (&_tmp27_, G_TYPE_STRING);
-#line 549 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 549 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			v = _tmp27_;
-#line 550 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 550 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp28_ = dir;
-#line 550 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 550 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			g_value_set_string (&v, _tmp28_);
-#line 551 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 551 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp29_ = store;
-#line 551 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 551 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp30_ = iter;
-#line 551 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 551 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp31_ = v;
-#line 551 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 551 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_list_store_set_value (_tmp29_, &_tmp30_, 0, &_tmp31_);
-#line 553 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 553 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp32_ = matches;
-#line 553 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 553 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp32__length1 = matches_length1;
-#line 553 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 553 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			tracker_preferences_toggles_update (self, _tmp32_, _tmp32__length1, TRUE);
-#line 555 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 555 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp33_ = dir;
-#line 555 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 555 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp34_ = self->priv->HOME_STRING_EVALUATED;
-#line 555 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 555 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (g_strcmp0 (_tmp33_, _tmp34_) == 0) {
 #line 2711 "tracker-preferences.c"
 				GtkToggleButton* _tmp35_;
-#line 556 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 556 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp35_ = self->priv->togglebutton_home;
-#line 556 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 556 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				gtk_toggle_button_set_active (_tmp35_, TRUE);
 #line 2717 "tracker-preferences.c"
 			}
-#line 523 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 523 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			G_IS_VALUE (&v) ? (g_value_unset (&v), NULL) : NULL;
-#line 523 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 523 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			matches = (g_free (matches), NULL);
-#line 523 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 523 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_free0 (dir);
-#line 523 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 523 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_free0 (path);
-#line 523 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 523 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_object_unref0 (f);
 #line 2729 "tracker-preferences.c"
 		}
-#line 560 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 560 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		break;
 #line 2733 "tracker-preferences.c"
 	}
-#line 563 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 563 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp36_ = dialog;
-#line 563 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 563 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_widget_destroy ((GtkWidget*) _tmp36_);
-#line 513 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 513 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (dialog);
 #line 2741 "tracker-preferences.c"
 }
 
 
 static void _gtk_tree_path_free0_ (gpointer var) {
-#line 572 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 572 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(var == NULL) ? NULL : (var = (gtk_tree_path_free (var), NULL));
 #line 2748 "tracker-preferences.c"
 }
 
 
 static void _g_list_free__gtk_tree_path_free0_ (GList* self) {
-#line 572 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 572 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_list_foreach (self, (GFunc) _gtk_tree_path_free0_, NULL);
-#line 572 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 572 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_list_free (self);
 #line 2757 "tracker-preferences.c"
 }
 
 
 static gpointer _gtk_tree_path_copy0 (gpointer self) {
-#line 576 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 576 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return self ? gtk_tree_path_copy (self) : NULL;
 #line 2764 "tracker-preferences.c"
 }
@@ -2779,56 +2779,56 @@ static void tracker_preferences_store_del_dir (TrackerPreferences* self, GtkTree
 	GtkTreeModel* _tmp7_;
 	GtkListStore* _tmp8_;
 	GList* _tmp9_;
-#line 566 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 566 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 566 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 566 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (view != NULL);
-#line 571 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 571 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = view;
-#line 571 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 571 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = gtk_tree_view_get_selection (_tmp0_);
-#line 571 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 571 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = _g_object_ref0 (_tmp1_);
-#line 571 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 571 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	selection = _tmp2_;
-#line 572 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 572 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = selection;
-#line 572 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 572 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp5_ = gtk_tree_selection_get_selected_rows (_tmp3_, &_tmp4_);
-#line 572 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 572 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (model);
-#line 572 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 572 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp6_ = _g_object_ref0 (_tmp4_);
-#line 572 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 572 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	model = _tmp6_;
-#line 572 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 572 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	__g_list_free__gtk_tree_path_free0_0 (list);
-#line 572 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 572 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	list = _tmp5_;
-#line 574 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 574 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp7_ = model;
-#line 574 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 574 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp8_ = _g_object_ref0 (GTK_LIST_STORE (_tmp7_));
-#line 574 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 574 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (store);
-#line 574 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 574 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	store = _tmp8_;
-#line 576 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 576 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp9_ = list;
 #line 2819 "tracker-preferences.c"
 	{
 		GList* path_collection = NULL;
 		GList* path_it = NULL;
-#line 576 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 576 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		path_collection = _tmp9_;
-#line 576 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 576 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		for (path_it = path_collection; path_it != NULL; path_it = path_it->next) {
 #line 2827 "tracker-preferences.c"
 			GtkTreePath* _tmp10_;
 			GtkTreePath* path = NULL;
-#line 576 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 576 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp10_ = _gtk_tree_path_copy0 ((GtkTreePath*) path_it->data);
-#line 576 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 576 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			path = _tmp10_;
 #line 2834 "tracker-preferences.c"
 			{
@@ -2856,108 +2856,108 @@ static void tracker_preferences_store_del_dir (TrackerPreferences* self, GtkTree
 				gint _tmp25__length1;
 				const gchar* _tmp26_;
 				const gchar* _tmp27_;
-#line 579 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 579 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp11_ = model;
-#line 579 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 579 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp12_ = path;
-#line 579 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 579 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp14_ = gtk_tree_model_get_iter (_tmp11_, &_tmp13_, _tmp12_);
-#line 579 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 579 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				iter = _tmp13_;
-#line 579 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 579 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (!_tmp14_) {
-#line 580 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 580 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_gtk_tree_path_free0 (path);
-#line 580 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 580 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					continue;
 #line 2874 "tracker-preferences.c"
 				}
-#line 585 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 585 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp15_ = model;
-#line 585 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 585 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp16_ = iter;
-#line 585 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 585 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				gtk_tree_model_get_value (_tmp15_, &_tmp16_, 0, &_tmp17_);
-#line 585 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 585 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-#line 585 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 585 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				value = _tmp17_;
-#line 586 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 586 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp18_ = g_value_get_string (&value);
-#line 586 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 586 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp19_ = g_strdup (_tmp18_);
-#line 586 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 586 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				dir = _tmp19_;
-#line 589 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 589 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp20_ = dir;
-#line 589 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 589 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp22_ = tracker_preferences_dir_match_user_directories (self, _tmp20_, &_tmp21_);
-#line 589 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 589 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				matches = _tmp22_;
-#line 589 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 589 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				matches_length1 = _tmp21_;
-#line 589 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 589 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_matches_size_ = matches_length1;
-#line 591 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 591 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp23_ = store;
-#line 591 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 591 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp24_ = iter;
-#line 591 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 591 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				gtk_list_store_remove (_tmp23_, &_tmp24_);
-#line 594 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 594 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp25_ = matches;
-#line 594 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 594 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp25__length1 = matches_length1;
-#line 594 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 594 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				tracker_preferences_toggles_update (self, _tmp25_, _tmp25__length1, FALSE);
-#line 596 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 596 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp26_ = dir;
-#line 596 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 596 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp27_ = self->priv->HOME_STRING_EVALUATED;
-#line 596 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 596 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (g_strcmp0 (_tmp26_, _tmp27_) == 0) {
 #line 2920 "tracker-preferences.c"
 					GtkToggleButton* _tmp28_;
-#line 597 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 597 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp28_ = self->priv->togglebutton_home;
-#line 597 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 597 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					gtk_toggle_button_set_active (_tmp28_, FALSE);
 #line 2926 "tracker-preferences.c"
 				}
-#line 576 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 576 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				matches = (g_free (matches), NULL);
-#line 576 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 576 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_free0 (dir);
-#line 576 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 576 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-#line 576 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 576 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_gtk_tree_path_free0 (path);
 #line 2936 "tracker-preferences.c"
 			}
 		}
 	}
-#line 566 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 566 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (selection);
-#line 566 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 566 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (model);
-#line 566 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 566 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (store);
-#line 566 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 566 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	__g_list_free__gtk_tree_path_free0_0 (list);
 #line 2948 "tracker-preferences.c"
 }
 
 
 static void _vala_array_add1 (GUserDirectory** array, int* length, int* size, GUserDirectory value) {
-#line 611 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 611 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if ((*length) == (*size)) {
-#line 611 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 611 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 611 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 611 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*array = g_renew (GUserDirectory, *array, *size);
 #line 2959 "tracker-preferences.c"
 	}
-#line 611 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 611 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[(*length)++] = value;
 #line 2963 "tracker-preferences.c"
 }
@@ -2972,26 +2972,26 @@ static GUserDirectory* tracker_preferences_dir_match_user_directories (TrackerPr
 	gint i = 0;
 	GUserDirectory* _tmp12_;
 	gint _tmp12__length1;
-#line 601 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 601 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 601 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 601 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (input != NULL, NULL);
-#line 602 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 602 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = g_new0 (GUserDirectory, 0);
-#line 602 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 602 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	matches = _tmp0_;
-#line 602 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 602 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	matches_length1 = 0;
-#line 602 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 602 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_matches_size_ = matches_length1;
 #line 2988 "tracker-preferences.c"
 	{
 		gboolean _tmp1_;
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		i = 0;
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp1_ = TRUE;
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		while (TRUE) {
 #line 2997 "tracker-preferences.c"
 			gboolean _tmp2_;
@@ -3003,122 +3003,122 @@ static GUserDirectory* tracker_preferences_dir_match_user_directories (TrackerPr
 			const gchar* _tmp7_ = NULL;
 			const gchar* _tmp8_;
 			const gchar* _tmp9_;
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp2_ = _tmp1_;
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (!_tmp2_) {
 #line 3011 "tracker-preferences.c"
 				gint _tmp3_;
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp3_ = i;
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				i = _tmp3_ + 1;
 #line 3017 "tracker-preferences.c"
 			}
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp1_ = FALSE;
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp4_ = i;
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (!(_tmp4_ < ((gint) G_USER_N_DIRECTORIES))) {
-#line 605 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 605 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				break;
 #line 3027 "tracker-preferences.c"
 			}
-#line 606 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 606 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp5_ = i;
-#line 606 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 606 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			ud = (GUserDirectory) _tmp5_;
-#line 607 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 607 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			dir = NULL;
-#line 609 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 609 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp6_ = ud;
-#line 609 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 609 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp7_ = g_get_user_special_dir (_tmp6_);
-#line 609 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 609 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			dir = _tmp7_;
-#line 610 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 610 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp8_ = input;
-#line 610 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 610 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp9_ = dir;
-#line 610 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 610 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (g_strcmp0 (_tmp8_, _tmp9_) == 0) {
 #line 3047 "tracker-preferences.c"
 				GUserDirectory* _tmp10_;
 				gint _tmp10__length1;
 				GUserDirectory _tmp11_;
-#line 611 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 611 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp10_ = matches;
-#line 611 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 611 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp10__length1 = matches_length1;
-#line 611 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 611 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp11_ = ud;
-#line 611 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 611 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_vala_array_add1 (&matches, &matches_length1, &_matches_size_, _tmp11_);
 #line 3059 "tracker-preferences.c"
 			}
 		}
 	}
-#line 615 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 615 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp12_ = matches;
-#line 615 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 615 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp12__length1 = matches_length1;
-#line 615 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 615 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (result_length1) {
-#line 615 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 615 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*result_length1 = _tmp12__length1;
 #line 3071 "tracker-preferences.c"
 	}
-#line 615 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 615 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	result = _tmp12_;
-#line 615 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 615 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return result;
 #line 3077 "tracker-preferences.c"
 }
 
 
 static const char* _g_user_directory_to_string (GUserDirectory value) {
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	switch (value) {
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		case G_USER_DIRECTORY_DESKTOP:
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return "G_USER_DIRECTORY_DESKTOP";
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		case G_USER_DIRECTORY_DOCUMENTS:
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return "G_USER_DIRECTORY_DOCUMENTS";
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		case G_USER_DIRECTORY_DOWNLOAD:
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return "G_USER_DIRECTORY_DOWNLOAD";
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		case G_USER_DIRECTORY_MUSIC:
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return "G_USER_DIRECTORY_MUSIC";
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		case G_USER_DIRECTORY_PICTURES:
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return "G_USER_DIRECTORY_PICTURES";
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		case G_USER_DIRECTORY_PUBLIC_SHARE:
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return "G_USER_DIRECTORY_PUBLIC_SHARE";
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		case G_USER_DIRECTORY_TEMPLATES:
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return "G_USER_DIRECTORY_TEMPLATES";
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		case G_USER_DIRECTORY_VIDEOS:
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return "G_USER_DIRECTORY_VIDEOS";
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		case G_USER_N_DIRECTORIES:
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return "G_USER_N_DIRECTORIES";
 #line 3120 "tracker-preferences.c"
 	}
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return NULL;
 #line 3124 "tracker-preferences.c"
 }
@@ -3343,61 +3343,61 @@ static gchar* tracker_preferences_dir_to_config (TrackerPreferences* self, const
 	gboolean _tmp2_ = FALSE;
 	const gchar* _tmp3_;
 	gboolean _tmp6_;
-#line 618 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 618 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 618 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 618 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (input != NULL, NULL);
-#line 619 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 619 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = input;
-#line 619 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 619 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = g_strdup (_tmp0_);
-#line 619 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 619 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	output = _tmp1_;
-#line 621 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 621 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = self->priv->HOME_STRING_EVALUATED;
-#line 621 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 621 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp3_ != NULL) {
 #line 3361 "tracker-preferences.c"
 		const gchar* _tmp4_;
 		const gchar* _tmp5_;
-#line 621 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 621 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp4_ = self->priv->HOME_STRING_EVALUATED;
-#line 621 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 621 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp5_ = input;
-#line 621 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 621 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp2_ = g_strcmp0 (_tmp4_, _tmp5_) == 0;
 #line 3370 "tracker-preferences.c"
 	} else {
-#line 621 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 621 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp2_ = FALSE;
 #line 3374 "tracker-preferences.c"
 	}
-#line 621 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 621 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp6_ = _tmp2_;
-#line 621 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 621 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp6_) {
 #line 3380 "tracker-preferences.c"
 		gchar* _tmp7_;
-#line 622 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 622 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp7_ = g_strdup (TRACKER_PREFERENCES_HOME_STRING);
-#line 622 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 622 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		result = _tmp7_;
-#line 622 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 622 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (output);
-#line 622 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 622 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return result;
 #line 3390 "tracker-preferences.c"
 	}
 	{
 		gint i;
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		i = 0;
 #line 3396 "tracker-preferences.c"
 		{
 			gboolean _tmp8_;
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp8_ = TRUE;
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			while (TRUE) {
 #line 3403 "tracker-preferences.c"
 				gboolean _tmp9_;
@@ -3409,45 +3409,45 @@ static gchar* tracker_preferences_dir_to_config (TrackerPreferences* self, const
 				const gchar* _tmp14_ = NULL;
 				const gchar* _tmp15_;
 				const gchar* _tmp16_;
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp9_ = _tmp8_;
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (!_tmp9_) {
 #line 3417 "tracker-preferences.c"
 					gint _tmp10_;
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp10_ = i;
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					i = _tmp10_ + 1;
 #line 3423 "tracker-preferences.c"
 				}
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp8_ = FALSE;
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp11_ = i;
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (!(_tmp11_ < ((gint) G_USER_N_DIRECTORIES))) {
-#line 625 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 625 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					break;
 #line 3433 "tracker-preferences.c"
 				}
-#line 626 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 626 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp12_ = i;
-#line 626 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 626 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				ud = (GUserDirectory) _tmp12_;
-#line 627 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 627 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				dir = NULL;
-#line 629 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 629 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp13_ = ud;
-#line 629 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 629 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp14_ = g_get_user_special_dir (_tmp13_);
-#line 629 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 629 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				dir = _tmp14_;
-#line 630 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 630 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp15_ = input;
-#line 630 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 630 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp16_ = dir;
-#line 630 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 630 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (g_strcmp0 (_tmp15_, _tmp16_) == 0) {
 #line 3453 "tracker-preferences.c"
 					GUserDirectory _tmp17_;
@@ -3460,42 +3460,42 @@ static gchar* tracker_preferences_dir_to_config (TrackerPreferences* self, const
 					gchar* _tmp23_ = NULL;
 					gchar* _tmp24_;
 					gchar* _tmp25_ = NULL;
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp17_ = ud;
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp18_ = _g_user_directory_to_string (_tmp17_);
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp19_ = g_strdup (_tmp18_);
-#line 632 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 632 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					ud_string = _tmp19_;
-#line 633 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 633 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp20_ = ud_string;
-#line 633 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 633 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp21_ = ud_string;
-#line 633 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 633 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp22_ = string_last_index_of_char (_tmp21_, (gunichar) '_', 0);
-#line 633 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 633 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp23_ = string_substring (_tmp20_, (glong) (_tmp22_ + 1), (glong) (-1));
-#line 633 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 633 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp24_ = _tmp23_;
-#line 633 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 633 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp25_ = g_strdup_printf ("&%s", _tmp24_);
-#line 633 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 633 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_g_free0 (output);
-#line 633 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 633 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					output = _tmp25_;
-#line 633 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 633 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_g_free0 (_tmp24_);
-#line 630 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 630 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_g_free0 (ud_string);
 #line 3492 "tracker-preferences.c"
 				}
 			}
 		}
 	}
-#line 637 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 637 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	result = output;
-#line 637 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 637 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return result;
 #line 3501 "tracker-preferences.c"
 }
@@ -3508,21 +3508,21 @@ static gchar* tracker_preferences_dir_from_config (TrackerPreferences* self, con
 	gchar* output;
 	const gchar* _tmp2_;
 	gboolean _tmp3_ = FALSE;
-#line 640 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 640 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 640 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 640 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (input != NULL, NULL);
-#line 641 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 641 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = input;
-#line 641 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 641 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = g_strdup (_tmp0_);
-#line 641 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 641 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	output = _tmp1_;
-#line 643 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 643 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = input;
-#line 643 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 643 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp3_ = g_str_has_prefix (_tmp2_, "&");
-#line 643 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 643 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp3_) {
 #line 3528 "tracker-preferences.c"
 		const gchar* dir;
@@ -3531,27 +3531,27 @@ static gchar* tracker_preferences_dir_from_config (TrackerPreferences* self, con
 		gchar* _tmp6_ = NULL;
 		gchar* ud_input;
 		const gchar* _tmp20_;
-#line 644 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 644 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		dir = NULL;
-#line 647 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 647 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp4_ = input;
-#line 647 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 647 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp5_ = g_utf8_next_char (_tmp4_);
-#line 647 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 647 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp6_ = g_strdup_printf ("G_USER_DIRECTORY_%s", _tmp5_);
-#line 647 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 647 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		ud_input = _tmp6_;
 #line 3545 "tracker-preferences.c"
 		{
 			gint i;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			i = 0;
 #line 3550 "tracker-preferences.c"
 			{
 				gboolean _tmp7_;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp7_ = TRUE;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				while (TRUE) {
 #line 3557 "tracker-preferences.c"
 					gboolean _tmp8_;
@@ -3563,98 +3563,98 @@ static gchar* tracker_preferences_dir_from_config (TrackerPreferences* self, con
 					const gchar* _tmp15_;
 					GUserDirectory _tmp16_;
 					const gchar* _tmp17_ = NULL;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp8_ = _tmp7_;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					if (!_tmp8_) {
 #line 3571 "tracker-preferences.c"
 						gint _tmp9_;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp9_ = i;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						i = _tmp9_ + 1;
 #line 3577 "tracker-preferences.c"
 					}
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp7_ = FALSE;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp11_ = i;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					if (_tmp11_ < ((gint) G_USER_N_DIRECTORIES)) {
 #line 3585 "tracker-preferences.c"
 						const gchar* _tmp12_;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp12_ = dir;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp10_ = _tmp12_ == NULL;
 #line 3591 "tracker-preferences.c"
 					} else {
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp10_ = FALSE;
 #line 3595 "tracker-preferences.c"
 					}
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp13_ = _tmp10_;
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					if (!_tmp13_) {
-#line 649 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 649 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 3603 "tracker-preferences.c"
 					}
-#line 650 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 650 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp14_ = i;
-#line 650 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 650 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					ud = (GUserDirectory) _tmp14_;
-#line 652 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 652 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp15_ = ud_input;
-#line 652 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 652 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp16_ = ud;
-#line 652 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 652 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp17_ = _g_user_directory_to_string (_tmp16_);
-#line 652 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 652 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					if (g_strcmp0 (_tmp15_, _tmp17_) == 0) {
 #line 3617 "tracker-preferences.c"
 						GUserDirectory _tmp18_;
 						const gchar* _tmp19_ = NULL;
-#line 653 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 653 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp18_ = ud;
-#line 653 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 653 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp19_ = g_get_user_special_dir (_tmp18_);
-#line 653 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 653 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						dir = _tmp19_;
 #line 3626 "tracker-preferences.c"
 					}
 				}
 			}
 		}
-#line 659 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 659 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp20_ = dir;
-#line 659 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 659 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (_tmp20_ != NULL) {
 #line 3635 "tracker-preferences.c"
 			const gchar* _tmp21_;
 			gchar* _tmp22_;
-#line 660 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 660 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp21_ = dir;
-#line 660 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 660 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp22_ = g_strdup (_tmp21_);
-#line 660 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 660 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_free0 (output);
-#line 660 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 660 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			output = _tmp22_;
 #line 3646 "tracker-preferences.c"
 		}
-#line 643 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 643 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (ud_input);
 #line 3650 "tracker-preferences.c"
 	} else {
 		const gchar* _tmp23_;
 		gboolean _tmp24_ = FALSE;
-#line 661 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 661 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp23_ = input;
-#line 661 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 661 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp24_ = g_str_has_prefix (_tmp23_, "$");
-#line 661 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 661 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (_tmp24_) {
 #line 3660 "tracker-preferences.c"
 			const gchar* _tmp25_;
@@ -3664,59 +3664,59 @@ static gchar* tracker_preferences_dir_from_config (TrackerPreferences* self, con
 			const gchar* _tmp29_;
 			const gchar* env;
 			const gchar* _tmp30_;
-#line 662 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 662 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp25_ = input;
-#line 662 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 662 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp26_ = string_substring (_tmp25_, (glong) 1, (glong) (-1));
-#line 662 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 662 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp27_ = _tmp26_;
-#line 662 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 662 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp28_ = g_getenv (_tmp27_);
-#line 662 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 662 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp29_ = _tmp28_;
-#line 662 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 662 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_free0 (_tmp27_);
-#line 662 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 662 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			env = _tmp29_;
-#line 666 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 666 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp30_ = env;
-#line 666 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 666 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (_tmp30_ != NULL) {
 #line 3686 "tracker-preferences.c"
 				const gchar* _tmp31_;
 				gchar* _tmp32_;
-#line 667 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 667 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp31_ = env;
-#line 667 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 667 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp32_ = g_strdup (_tmp31_);
-#line 667 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 667 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_free0 (output);
-#line 667 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 667 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				output = _tmp32_;
 #line 3697 "tracker-preferences.c"
 			}
 		}
 	}
-#line 670 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 670 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	result = output;
-#line 670 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 670 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return result;
 #line 3705 "tracker-preferences.c"
 }
 
 
 static void _vala_array_add2 (gchar*** array, int* length, int* size, gchar* value) {
-#line 697 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 697 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if ((*length) == (*size)) {
-#line 697 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 697 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 697 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 697 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*array = g_renew (gchar*, *array, (*size) + 1);
 #line 3716 "tracker-preferences.c"
 	}
-#line 697 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 697 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[(*length)++] = value;
-#line 697 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 697 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[*length] = NULL;
 #line 3722 "tracker-preferences.c"
 }
@@ -3732,17 +3732,17 @@ static gchar** tracker_preferences_model_to_strv (TrackerPreferences* self, GtkL
 	gboolean valid = FALSE;
 	gchar** _tmp23_;
 	gint _tmp23__length1;
-#line 673 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 673 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (self != NULL, NULL);
-#line 673 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 673 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (model != NULL, NULL);
-#line 674 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 674 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = g_new0 (gchar*, 0 + 1);
-#line 674 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 674 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	list = _tmp0_;
-#line 674 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 674 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	list_length1 = 0;
-#line 674 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 674 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_list_size_ = list_length1;
 #line 3748 "tracker-preferences.c"
 	{
@@ -3750,17 +3750,17 @@ static gchar** tracker_preferences_model_to_strv (TrackerPreferences* self, GtkL
 		GtkTreeIter _tmp2_ = {0};
 		gboolean _tmp3_ = FALSE;
 		gboolean _tmp4_;
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp1_ = model;
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp3_ = gtk_tree_model_get_iter_first ((GtkTreeModel*) _tmp1_, &_tmp2_);
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		iter = _tmp2_;
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		valid = _tmp3_;
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp4_ = TRUE;
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		while (TRUE) {
 #line 3766 "tracker-preferences.c"
 			gboolean _tmp5_;
@@ -3777,44 +3777,44 @@ static gchar** tracker_preferences_model_to_strv (TrackerPreferences* self, GtkL
 			gint _tmp20__length1;
 			const gchar* _tmp21_;
 			gchar* _tmp22_;
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp5_ = _tmp4_;
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (!_tmp5_) {
 #line 3785 "tracker-preferences.c"
 				GtkListStore* _tmp6_;
 				gboolean _tmp7_ = FALSE;
-#line 680 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 680 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp6_ = model;
-#line 680 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 680 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp7_ = gtk_tree_model_iter_next ((GtkTreeModel*) _tmp6_, &iter);
-#line 680 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 680 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				valid = _tmp7_;
 #line 3794 "tracker-preferences.c"
 			}
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp4_ = FALSE;
-#line 679 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 679 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp8_ = valid;
-#line 679 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 679 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (!_tmp8_) {
-#line 679 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 679 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				break;
 #line 3804 "tracker-preferences.c"
 			}
-#line 683 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 683 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp9_ = model;
-#line 683 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 683 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp10_ = iter;
-#line 683 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 683 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_tree_model_get_value ((GtkTreeModel*) _tmp9_, &_tmp10_, 0, &_tmp11_);
-#line 683 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 683 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-#line 683 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 683 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			value = _tmp11_;
-#line 685 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 685 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp12_ = recurse_required;
-#line 685 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 685 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (_tmp12_) {
 #line 3820 "tracker-preferences.c"
 				GValue recurse = {0};
@@ -3823,70 +3823,70 @@ static gchar** tracker_preferences_model_to_strv (TrackerPreferences* self, GtkL
 				GValue _tmp15_ = {0};
 				gboolean _tmp16_;
 				gboolean _tmp17_ = FALSE;
-#line 688 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 688 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp13_ = model;
-#line 688 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 688 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp14_ = iter;
-#line 688 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 688 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				gtk_tree_model_get_value ((GtkTreeModel*) _tmp13_, &_tmp14_, 1, &_tmp15_);
-#line 688 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 688 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				G_IS_VALUE (&recurse) ? (g_value_unset (&recurse), NULL) : NULL;
-#line 688 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 688 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				recurse = _tmp15_;
-#line 690 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 690 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp16_ = recurse_value;
-#line 690 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 690 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp17_ = g_value_get_boolean (&recurse);
-#line 690 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 690 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (_tmp16_ != _tmp17_) {
-#line 691 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 691 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					G_IS_VALUE (&recurse) ? (g_value_unset (&recurse), NULL) : NULL;
-#line 691 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 691 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-#line 691 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 691 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					continue;
 #line 3849 "tracker-preferences.c"
 				}
-#line 685 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 685 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				G_IS_VALUE (&recurse) ? (g_value_unset (&recurse), NULL) : NULL;
 #line 3853 "tracker-preferences.c"
 			}
-#line 696 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 696 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp18_ = g_value_get_string (&value);
-#line 696 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 696 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp19_ = tracker_preferences_dir_to_config (self, _tmp18_);
-#line 696 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 696 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			dir = _tmp19_;
-#line 697 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 697 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp20_ = list;
-#line 697 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 697 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp20__length1 = list_length1;
-#line 697 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 697 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp21_ = dir;
-#line 697 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 697 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp22_ = g_strdup (_tmp21_);
-#line 697 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 697 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_vala_array_add2 (&list, &list_length1, &_list_size_, _tmp22_);
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_g_free0 (dir);
-#line 678 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 678 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
 #line 3875 "tracker-preferences.c"
 		}
 	}
-#line 700 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 700 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp23_ = list;
-#line 700 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 700 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp23__length1 = list_length1;
-#line 700 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 700 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (result_length1) {
-#line 700 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 700 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*result_length1 = _tmp23__length1;
 #line 3886 "tracker-preferences.c"
 	}
-#line 700 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 700 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	result = _tmp23_;
-#line 700 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 700 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return result;
 #line 3892 "tracker-preferences.c"
 }
@@ -3899,19 +3899,19 @@ gboolean tracker_preferences_model_contains (TrackerPreferences* self, GtkTreeMo
 	gboolean valid = FALSE;
 	const gchar* _tmp0_;
 	gchar* _tmp1_ = NULL;
-#line 703 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 703 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (self != NULL, FALSE);
-#line 703 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 703 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (model != NULL, FALSE);
-#line 703 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 703 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (needle != NULL, FALSE);
-#line 708 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 708 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = needle;
-#line 708 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 708 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = tracker_preferences_dir_from_config (self, _tmp0_);
-#line 708 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 708 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_free0 (needle_evaluated);
-#line 708 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 708 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	needle_evaluated = _tmp1_;
 #line 3917 "tracker-preferences.c"
 	{
@@ -3919,17 +3919,17 @@ gboolean tracker_preferences_model_contains (TrackerPreferences* self, GtkTreeMo
 		GtkTreeIter _tmp3_ = {0};
 		gboolean _tmp4_ = FALSE;
 		gboolean _tmp5_;
-#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 710 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp2_ = model;
-#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 710 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp4_ = gtk_tree_model_get_iter_first (_tmp2_, &_tmp3_);
-#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 710 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		iter = _tmp3_;
-#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 710 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		valid = _tmp4_;
-#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 710 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp5_ = TRUE;
-#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 710 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		while (TRUE) {
 #line 3935 "tracker-preferences.c"
 			gboolean _tmp6_;
@@ -3940,67 +3940,67 @@ gboolean tracker_preferences_model_contains (TrackerPreferences* self, GtkTreeMo
 			GValue _tmp12_ = {0};
 			const gchar* _tmp13_ = NULL;
 			const gchar* _tmp14_;
-#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 710 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp6_ = _tmp5_;
-#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 710 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (!_tmp6_) {
 #line 3948 "tracker-preferences.c"
 				GtkTreeModel* _tmp7_;
 				gboolean _tmp8_ = FALSE;
-#line 712 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 712 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp7_ = model;
-#line 712 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 712 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp8_ = gtk_tree_model_iter_next (_tmp7_, &iter);
-#line 712 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 712 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				valid = _tmp8_;
 #line 3957 "tracker-preferences.c"
 			}
-#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 710 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp5_ = FALSE;
-#line 711 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 711 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp9_ = valid;
-#line 711 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 711 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (!_tmp9_) {
-#line 711 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 711 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				break;
 #line 3967 "tracker-preferences.c"
 			}
-#line 715 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 715 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp10_ = model;
-#line 715 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 715 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp11_ = iter;
-#line 715 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 715 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			gtk_tree_model_get_value (_tmp10_, &_tmp11_, 0, &_tmp12_);
-#line 715 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 715 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-#line 715 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 715 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			value = _tmp12_;
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 717 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp13_ = g_value_get_string (&value);
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 717 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp14_ = needle_evaluated;
-#line 717 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 717 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			if (g_strcmp0 (_tmp13_, _tmp14_) == 0) {
-#line 718 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 718 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				result = TRUE;
-#line 718 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 718 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
-#line 718 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 718 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_free0 (needle_evaluated);
-#line 718 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 718 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				return result;
 #line 3993 "tracker-preferences.c"
 			}
-#line 710 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 710 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			G_IS_VALUE (&value) ? (g_value_unset (&value), NULL) : NULL;
 #line 3997 "tracker-preferences.c"
 		}
 	}
-#line 722 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 722 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	result = FALSE;
-#line 722 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 722 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_free0 (needle_evaluated);
-#line 722 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 722 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return result;
 #line 4006 "tracker-preferences.c"
 }
@@ -4011,15 +4011,15 @@ static void tracker_preferences_model_populate (TrackerPreferences* self, GtkLis
 	gchar** _tmp0_;
 	gint _tmp0__length1;
 	GError * _inner_error_ = NULL;
-#line 725 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 725 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 725 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 725 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (model != NULL);
-#line 726 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 726 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	position = 0;
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 728 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = list;
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 728 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0__length1 = list_length1;
 #line 4025 "tracker-preferences.c"
 	{
@@ -4027,18 +4027,18 @@ static void tracker_preferences_model_populate (TrackerPreferences* self, GtkLis
 		gint s_collection_length1 = 0;
 		gint _s_collection_size_ = 0;
 		gint s_it = 0;
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 728 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		s_collection = _tmp0_;
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 728 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		s_collection_length1 = _tmp0__length1;
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 728 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		for (s_it = 0; s_it < _tmp0__length1; s_it = s_it + 1) {
 #line 4037 "tracker-preferences.c"
 			gchar* _tmp1_;
 			gchar* s = NULL;
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 728 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp1_ = g_strdup (s_collection[s_it]);
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 728 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			s = _tmp1_;
 #line 4044 "tracker-preferences.c"
 			{
@@ -4049,11 +4049,11 @@ static void tracker_preferences_model_populate (TrackerPreferences* self, GtkLis
 				const gchar* _tmp17_;
 				gchar* _tmp18_ = NULL;
 				gchar* str;
-#line 730 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 730 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				ignore = FALSE;
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 733 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp2_ = self->priv->ignored_user_directories;
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 733 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp2__length1 = self->priv->ignored_user_directories_length1;
 #line 4059 "tracker-preferences.c"
 				{
@@ -4061,15 +4061,15 @@ static void tracker_preferences_model_populate (TrackerPreferences* self, GtkLis
 					gint ud_collection_length1 = 0;
 					gint _ud_collection_size_ = 0;
 					gint ud_it = 0;
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 733 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					ud_collection = _tmp2_;
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 733 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					ud_collection_length1 = _tmp2__length1;
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 733 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					for (ud_it = 0; ud_it < _tmp2__length1; ud_it = ud_it + 1) {
 #line 4071 "tracker-preferences.c"
 						GUserDirectory ud = 0;
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 733 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						ud = ud_collection[ud_it];
 #line 4075 "tracker-preferences.c"
 						{
@@ -4087,85 +4087,85 @@ static void tracker_preferences_model_populate (TrackerPreferences* self, GtkLis
 							gchar* output;
 							const gchar* _tmp13_;
 							const gchar* _tmp14_;
-#line 734 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 734 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp3_ = ud;
-#line 734 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 734 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp4_ = _g_user_directory_to_string (_tmp3_);
-#line 734 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 734 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp5_ = g_strdup (_tmp4_);
-#line 734 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 734 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							ud_string = _tmp5_;
-#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 735 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp6_ = ud_string;
-#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 735 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp7_ = ud_string;
-#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 735 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp8_ = string_last_index_of_char (_tmp7_, (gunichar) '_', 0);
-#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 735 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp9_ = string_substring (_tmp6_, (glong) (_tmp8_ + 1), (glong) (-1));
-#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 735 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp10_ = _tmp9_;
-#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 735 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp11_ = g_strdup_printf ("&%s", _tmp10_);
-#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 735 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp12_ = _tmp11_;
-#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 735 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_g_free0 (_tmp10_);
-#line 735 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 735 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							output = _tmp12_;
-#line 737 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 737 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp13_ = s;
-#line 737 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 737 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp14_ = output;
-#line 737 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 737 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							if (g_strcmp0 (_tmp13_, _tmp14_) == 0) {
-#line 738 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 738 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								ignore = TRUE;
-#line 739 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 739 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								_g_free0 (output);
-#line 739 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 739 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								_g_free0 (ud_string);
-#line 739 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 739 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								break;
 #line 4131 "tracker-preferences.c"
 							}
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 733 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_g_free0 (output);
-#line 733 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 733 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_g_free0 (ud_string);
 #line 4137 "tracker-preferences.c"
 						}
 					}
 				}
-#line 743 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 743 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp15_ = ignore;
-#line 743 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 743 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (_tmp15_) {
 #line 4145 "tracker-preferences.c"
 					const gchar* _tmp16_;
-#line 744 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 744 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp16_ = s;
-#line 744 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 744 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					g_debug ("tracker-preferences.vala:744: Ignoring '%s' (duplicates other entries " \
 "in config)", _tmp16_);
-#line 745 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 745 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_g_free0 (s);
-#line 745 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 745 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					continue;
 #line 4155 "tracker-preferences.c"
 				}
-#line 748 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 748 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp17_ = s;
-#line 748 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 748 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp18_ = tracker_preferences_dir_from_config (self, _tmp17_);
-#line 748 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 748 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				str = _tmp18_;
 #line 4163 "tracker-preferences.c"
 				{
 					gboolean _tmp19_;
-#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 751 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp19_ = have_recurse;
-#line 751 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 751 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					if (_tmp19_) {
 #line 4170 "tracker-preferences.c"
 						const gchar* _tmp20_;
@@ -4175,44 +4175,44 @@ static void tracker_preferences_model_populate (TrackerPreferences* self, GtkLis
 						gint _tmp24_;
 						gchar* _tmp25_;
 						gboolean _tmp26_;
-#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 755 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp20_ = str;
-#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 755 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp21_ = g_filename_to_utf8 (_tmp20_, (gssize) (-1), NULL, NULL, &_inner_error_);
-#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 755 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp22_ = _tmp21_;
-#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 755 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						if (_inner_error_ != NULL) {
-#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 755 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							if (_inner_error_->domain == G_CONVERT_ERROR) {
 #line 4188 "tracker-preferences.c"
 								goto __catch2_g_convert_error;
 							}
-#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 755 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_g_free0 (str);
-#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 755 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_g_free0 (s);
-#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 755 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 755 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							g_clear_error (&_inner_error_);
-#line 755 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 755 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							return;
 #line 4201 "tracker-preferences.c"
 						}
-#line 752 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 752 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp23_ = model;
-#line 752 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 752 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp24_ = position;
-#line 752 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 752 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						position = _tmp24_ + 1;
-#line 752 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 752 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp25_ = _tmp22_;
-#line 752 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 752 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp26_ = recurse;
-#line 752 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 752 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_list_store_insert_with_values (_tmp23_, NULL, _tmp24_, 0, _tmp25_, 1, _tmp26_, -1, -1);
-#line 752 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 752 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_g_free0 (_tmp25_);
 #line 4217 "tracker-preferences.c"
 					} else {
@@ -4222,42 +4222,42 @@ static void tracker_preferences_model_populate (TrackerPreferences* self, GtkLis
 						GtkListStore* _tmp30_;
 						gint _tmp31_;
 						gchar* _tmp32_;
-#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 766 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp27_ = str;
-#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 766 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp28_ = g_filename_to_utf8 (_tmp27_, (gssize) (-1), NULL, NULL, &_inner_error_);
-#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 766 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp29_ = _tmp28_;
-#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 766 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						if (_inner_error_ != NULL) {
-#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 766 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							if (_inner_error_->domain == G_CONVERT_ERROR) {
 #line 4235 "tracker-preferences.c"
 								goto __catch2_g_convert_error;
 							}
-#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 766 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_g_free0 (str);
-#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 766 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_g_free0 (s);
-#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 766 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 766 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							g_clear_error (&_inner_error_);
-#line 766 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 766 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							return;
 #line 4248 "tracker-preferences.c"
 						}
-#line 763 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 763 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp30_ = model;
-#line 763 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 763 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp31_ = position;
-#line 763 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 763 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						position = _tmp31_ + 1;
-#line 763 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 763 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp32_ = _tmp29_;
-#line 763 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 763 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_list_store_insert_with_values (_tmp30_, NULL, _tmp31_, 0, _tmp32_, -1, -1);
-#line 763 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 763 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_g_free0 (_tmp32_);
 #line 4262 "tracker-preferences.c"
 					}
@@ -4268,38 +4268,38 @@ static void tracker_preferences_model_populate (TrackerPreferences* self, GtkLis
 					GError* e = NULL;
 					GError* _tmp33_;
 					const gchar* _tmp34_;
-#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 750 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					e = _inner_error_;
-#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 750 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_inner_error_ = NULL;
-#line 772 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 772 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp33_ = e;
-#line 772 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 772 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp34_ = _tmp33_->message;
-#line 772 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 772 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					g_print ("Could not convert filename to UTF8: %s", _tmp34_);
-#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 750 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_g_error_free0 (e);
 #line 4283 "tracker-preferences.c"
 				}
 				__finally2:
-#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 750 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (_inner_error_ != NULL) {
-#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 750 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_g_free0 (str);
-#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 750 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_g_free0 (s);
-#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 750 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 750 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					g_clear_error (&_inner_error_);
-#line 750 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 750 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					return;
 #line 4298 "tracker-preferences.c"
 				}
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 728 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_free0 (str);
-#line 728 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 728 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_free0 (s);
 #line 4304 "tracker-preferences.c"
 			}
@@ -4309,22 +4309,22 @@ static void tracker_preferences_model_populate (TrackerPreferences* self, GtkLis
 
 
 static Block1Data* block1_data_ref (Block1Data* _data1_) {
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_atomic_int_inc (&_data1_->_ref_count_);
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return _data1_;
 #line 4316 "tracker-preferences.c"
 }
 
 
 static void block1_data_unref (Block1Data* _data1_) {
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tracker_preferences_unref0 (_data1_->self);
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_object_unref0 (_data1_->store);
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_slice_free (Block1Data, _data1_);
 #line 4329 "tracker-preferences.c"
 	}
@@ -4344,44 +4344,44 @@ static void ___lambda2_ (Block1Data* _data1_, GtkCellRendererToggle* toggle, con
 	GtkCellRendererToggle* _tmp6_;
 	gboolean _tmp7_;
 	gboolean _tmp8_;
-#line 805 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 805 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self = _data1_->self;
-#line 805 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 805 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (toggle != NULL);
-#line 805 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 805 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (path != NULL);
-#line 806 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 806 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = path;
-#line 806 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 806 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = gtk_tree_path_new_from_string (_tmp0_);
-#line 806 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 806 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tree_path = _tmp1_;
-#line 809 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 809 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = _data1_->store;
-#line 809 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 809 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_tree_model_get_iter ((GtkTreeModel*) _tmp2_, &_tmp3_, tree_path);
-#line 809 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 809 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	iter = _tmp3_;
-#line 810 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 810 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp4_ = _data1_->store;
-#line 810 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 810 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp5_ = iter;
-#line 810 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 810 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp6_ = toggle;
-#line 810 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 810 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp7_ = gtk_cell_renderer_toggle_get_active (_tmp6_);
-#line 810 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 810 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp8_ = _tmp7_;
-#line 810 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 810 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_list_store_set (_tmp4_, &_tmp5_, 1, !_tmp8_, -1);
-#line 805 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 805 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_gtk_tree_path_free0 (tree_path);
 #line 4379 "tracker-preferences.c"
 }
 
 
 static void ____lambda2__gtk_cell_renderer_toggle_toggled (GtkCellRendererToggle* _sender, const gchar* path, gpointer self) {
-#line 805 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 805 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	___lambda2_ (self, _sender, path);
 #line 4386 "tracker-preferences.c"
 }
@@ -4402,80 +4402,80 @@ static void tracker_preferences_treeview_setup (TrackerPreferences* self, GtkTre
 	GtkTreeView* _tmp12_;
 	GtkTreeViewColumn* _tmp13_;
 	gboolean _tmp14_;
-#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 777 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 777 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (view != NULL);
-#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 777 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (title != NULL);
-#line 779 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 779 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = view;
-#line 779 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 779 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = gtk_tree_view_get_columns (_tmp0_);
-#line 779 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 779 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	columns = _tmp1_;
-#line 782 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 782 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = columns;
 #line 4419 "tracker-preferences.c"
 	{
 		GList* c_collection = NULL;
 		GList* c_it = NULL;
-#line 782 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 782 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		c_collection = _tmp2_;
-#line 782 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 782 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		for (c_it = c_collection; c_it != NULL; c_it = c_it->next) {
 #line 4427 "tracker-preferences.c"
 			GtkTreeViewColumn* _tmp3_;
 			GtkTreeViewColumn* c = NULL;
-#line 782 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 782 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp3_ = _g_object_ref0 ((GtkTreeViewColumn*) c_it->data);
-#line 782 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 782 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			c = _tmp3_;
 #line 4434 "tracker-preferences.c"
 			{
 				GtkTreeView* _tmp4_;
 				GtkTreeViewColumn* _tmp5_;
-#line 783 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 783 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp4_ = view;
-#line 783 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 783 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp5_ = c;
-#line 783 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 783 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				gtk_tree_view_remove_column (_tmp4_, _tmp5_);
-#line 782 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 782 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_object_unref0 (c);
 #line 4446 "tracker-preferences.c"
 			}
 		}
 	}
-#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 786 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp6_ = title;
-#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 786 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp7_ = (GtkCellRendererText*) gtk_cell_renderer_text_new ();
-#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 786 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp8_ = g_object_ref_sink (_tmp7_);
-#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 786 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp9_ = gtk_tree_view_column_new_with_attributes (_tmp6_, (GtkCellRenderer*) _tmp8_, "text", 0, NULL, NULL);
-#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 786 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp10_ = g_object_ref_sink (_tmp9_);
-#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 786 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (column);
-#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 786 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	column = _tmp10_;
-#line 786 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 786 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (_tmp8_);
-#line 790 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 790 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp11_ = column;
-#line 790 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 790 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_tree_view_column_set_expand (_tmp11_, TRUE);
-#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 791 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp12_ = view;
-#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 791 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp13_ = column;
-#line 791 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 791 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_tree_view_append_column (_tmp12_, _tmp13_);
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp14_ = show_recurse_column;
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp14_) {
 #line 4480 "tracker-preferences.c"
 		Block1Data* _data1_;
@@ -4494,116 +4494,116 @@ static void tracker_preferences_treeview_setup (TrackerPreferences* self, GtkTre
 		GtkTreeView* _tmp26_;
 		GtkTreeViewColumn* _tmp27_;
 		GtkCellRendererToggle* _tmp28_;
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_data1_ = g_slice_new0 (Block1Data);
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_data1_->_ref_count_ = 1;
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_data1_->self = tracker_preferences_ref (self);
-#line 794 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 794 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp15_ = view;
-#line 794 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 794 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp16_ = gtk_tree_view_get_model (_tmp15_);
-#line 794 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 794 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp17_ = _g_object_ref0 (GTK_IS_LIST_STORE (_tmp16_) ? ((GtkListStore*) _tmp16_) : NULL);
-#line 794 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 794 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_data1_->store = _tmp17_;
-#line 795 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 795 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp18_ = (GtkCellRendererToggle*) gtk_cell_renderer_toggle_new ();
-#line 795 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 795 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp19_ = g_object_ref_sink (_tmp18_);
-#line 795 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 795 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		cell = _tmp19_;
-#line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 797 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp20_ = _ ("Recurse");
-#line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 797 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp21_ = cell;
-#line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 797 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp22_ = gtk_tree_view_column_new_with_attributes (_tmp20_, (GtkCellRenderer*) _tmp21_, "active", 1, NULL, NULL);
-#line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 797 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp23_ = g_object_ref_sink (_tmp22_);
-#line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 797 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_object_unref0 (column);
-#line 797 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 797 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		column = _tmp23_;
-#line 801 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 801 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp24_ = column;
-#line 801 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 801 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		gtk_tree_view_column_set_expand (_tmp24_, FALSE);
-#line 802 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 802 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp25_ = column;
-#line 802 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 802 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		gtk_tree_view_column_set_fixed_width (_tmp25_, 50);
-#line 803 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 803 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp26_ = view;
-#line 803 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 803 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp27_ = column;
-#line 803 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 803 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		gtk_tree_view_append_column (_tmp26_, _tmp27_);
-#line 805 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 805 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp28_ = cell;
-#line 805 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 805 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_signal_connect_data (_tmp28_, "toggled", (GCallback) ____lambda2__gtk_cell_renderer_toggle_toggled, block1_data_ref (_data1_), (GClosureNotify) block1_data_unref, 0);
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_object_unref0 (cell);
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		block1_data_unref (_data1_);
-#line 793 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 793 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_data1_ = NULL;
 #line 4553 "tracker-preferences.c"
 	}
-#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 777 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_list_free0 (columns);
-#line 777 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 777 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (column);
 #line 4559 "tracker-preferences.c"
 }
 
 
 static void _vala_array_add3 (gchar*** array, int* length, int* size, gchar* value) {
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 818 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if ((*length) == (*size)) {
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 818 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 818 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*array = g_renew (gchar*, *array, (*size) + 1);
 #line 4570 "tracker-preferences.c"
 	}
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 818 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[(*length)++] = value;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 818 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[*length] = NULL;
 #line 4576 "tracker-preferences.c"
 }
 
 
 static void _vala_array_add4 (GUserDirectory** array, int* length, int* size, GUserDirectory value) {
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 839 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if ((*length) == (*size)) {
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 839 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 839 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*array = g_renew (GUserDirectory, *array, *size);
 #line 4587 "tracker-preferences.c"
 	}
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 839 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[(*length)++] = value;
 #line 4591 "tracker-preferences.c"
 }
 
 
 static void _vala_array_add5 (gchar*** array, int* length, int* size, gchar* value) {
-#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 854 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if ((*length) == (*size)) {
-#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 854 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*size = (*size) ? (2 * (*size)) : 4;
-#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 854 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*array = g_renew (gchar*, *array, (*size) + 1);
 #line 4602 "tracker-preferences.c"
 	}
-#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 854 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[(*length)++] = value;
-#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 854 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	(*array)[*length] = NULL;
 #line 4608 "tracker-preferences.c"
 }
@@ -4619,35 +4619,35 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 	gchar* _tmp2_;
 	GUserDirectory* _tmp24_;
 	gint _tmp24__length1;
-#line 815 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 815 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (self != NULL);
-#line 816 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 816 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	all_dirs = NULL;
-#line 816 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 816 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	all_dirs_length1 = 0;
-#line 816 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 816 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_all_dirs_size_ = all_dirs_length1;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 818 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = all_dirs;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 818 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0__length1 = all_dirs_length1;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 818 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = self->priv->HOME_STRING_EVALUATED;
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 818 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 818 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 818 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_vala_array_add3 (&all_dirs, &all_dirs_length1, &_all_dirs_size_, _tmp2_);
 #line 4640 "tracker-preferences.c"
 	{
 		gint i;
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		i = 0;
 #line 4645 "tracker-preferences.c"
 		{
 			gboolean _tmp3_;
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			_tmp3_ = TRUE;
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			while (TRUE) {
 #line 4652 "tracker-preferences.c"
 				gboolean _tmp4_;
@@ -4665,53 +4665,53 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 				gint _tmp21__length1;
 				const gchar* _tmp22_;
 				gchar* _tmp23_;
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp4_ = _tmp3_;
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (!_tmp4_) {
 #line 4672 "tracker-preferences.c"
 					gint _tmp5_;
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_tmp5_ = i;
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					i = _tmp5_ + 1;
 #line 4678 "tracker-preferences.c"
 				}
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp3_ = FALSE;
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp6_ = i;
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (!(_tmp6_ < ((gint) G_USER_N_DIRECTORIES))) {
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					break;
 #line 4688 "tracker-preferences.c"
 				}
-#line 821 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 821 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp7_ = i;
-#line 821 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 821 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				ud = (GUserDirectory) _tmp7_;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 823 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp8_ = ud;
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 823 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp9_ = g_get_user_special_dir (_tmp8_);
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 823 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp10_ = g_strdup (_tmp9_);
-#line 823 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 823 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				dir = _tmp10_;
-#line 824 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 824 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp11_ = dir;
-#line 824 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 824 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				if (_tmp11_ == NULL) {
-#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 825 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					_g_free0 (dir);
-#line 825 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 825 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					continue;
 #line 4710 "tracker-preferences.c"
 				}
-#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 828 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp12_ = all_dirs;
-#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 828 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp12__length1 = all_dirs_length1;
 #line 4716 "tracker-preferences.c"
 				{
@@ -4719,110 +4719,110 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 					gint d_collection_length1 = 0;
 					gint _d_collection_size_ = 0;
 					gint d_it = 0;
-#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 828 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					d_collection = _tmp12_;
-#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 828 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					d_collection_length1 = _tmp12__length1;
-#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 828 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					for (d_it = 0; d_it < _tmp12__length1; d_it = d_it + 1) {
 #line 4728 "tracker-preferences.c"
 						gchar* _tmp13_;
 						gchar* d = NULL;
-#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 828 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp13_ = g_strdup (d_collection[d_it]);
-#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 828 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						d = _tmp13_;
 #line 4735 "tracker-preferences.c"
 						{
 							const gchar* _tmp14_;
 							const gchar* _tmp15_;
-#line 829 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 829 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp14_ = d;
-#line 829 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 829 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_tmp15_ = dir;
-#line 829 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 829 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							if (g_strcmp0 (_tmp14_, _tmp15_) == 0) {
 #line 4745 "tracker-preferences.c"
 								const gchar* _tmp16_;
 								GUserDirectory _tmp17_;
 								GUserDirectory _tmp18_;
-#line 830 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 830 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								_tmp16_ = d;
-#line 830 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 830 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								_tmp17_ = ud;
-#line 830 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 830 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								g_debug ("tracker-preferences.vala:830: Directory '%s' duplicated in XDG dir %d", _tmp16_, (gint) _tmp17_);
-#line 832 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 832 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								_tmp18_ = ud;
-#line 832 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 832 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								switch (_tmp18_) {
-#line 832 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 832 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 									case G_USER_DIRECTORY_DESKTOP:
-#line 832 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 832 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 									case G_USER_DIRECTORY_DOCUMENTS:
-#line 832 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 832 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 									case G_USER_DIRECTORY_DOWNLOAD:
-#line 832 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 832 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 									case G_USER_DIRECTORY_MUSIC:
-#line 832 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 832 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 									case G_USER_DIRECTORY_PICTURES:
-#line 832 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 832 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 									case G_USER_DIRECTORY_VIDEOS:
 #line 4771 "tracker-preferences.c"
 									{
 										GUserDirectory* _tmp19_;
 										gint _tmp19__length1;
 										GUserDirectory _tmp20_;
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 839 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 										_tmp19_ = self->priv->ignored_user_directories;
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 839 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 										_tmp19__length1 = self->priv->ignored_user_directories_length1;
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 839 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 										_tmp20_ = ud;
-#line 839 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 839 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 										_vala_array_add4 (&self->priv->ignored_user_directories, &self->priv->ignored_user_directories_length1, &self->priv->_ignored_user_directories_size_, _tmp20_);
-#line 840 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 840 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 										break;
 #line 4786 "tracker-preferences.c"
 									}
 									default:
 									{
-#line 845 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 845 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 										break;
 #line 4792 "tracker-preferences.c"
 									}
 								}
-#line 848 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 848 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								_g_free0 (d);
-#line 848 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 848 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 								break;
 #line 4799 "tracker-preferences.c"
 							}
-#line 828 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 828 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 							_g_free0 (d);
 #line 4803 "tracker-preferences.c"
 						}
 					}
 				}
-#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 854 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp21_ = all_dirs;
-#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 854 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp21__length1 = all_dirs_length1;
-#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 854 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp22_ = dir;
-#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 854 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp23_ = g_strdup (_tmp22_);
-#line 854 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 854 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_vala_array_add5 (&all_dirs, &all_dirs_length1, &_all_dirs_size_, _tmp23_);
-#line 820 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 820 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_g_free0 (dir);
 #line 4819 "tracker-preferences.c"
 			}
 		}
 	}
-#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 857 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp24_ = self->priv->ignored_user_directories;
-#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 857 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp24__length1 = self->priv->ignored_user_directories_length1;
 #line 4827 "tracker-preferences.c"
 	{
@@ -4830,104 +4830,104 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 		gint ud_collection_length1 = 0;
 		gint _ud_collection_size_ = 0;
 		gint ud_it = 0;
-#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 857 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		ud_collection = _tmp24_;
-#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 857 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		ud_collection_length1 = _tmp24__length1;
-#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 857 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		for (ud_it = 0; ud_it < _tmp24__length1; ud_it = ud_it + 1) {
 #line 4839 "tracker-preferences.c"
 			GUserDirectory ud = 0;
-#line 857 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 857 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			ud = ud_collection[ud_it];
 #line 4843 "tracker-preferences.c"
 			{
 				GUserDirectory _tmp25_;
-#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 858 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				_tmp25_ = ud;
-#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 858 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 				switch (_tmp25_) {
-#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 858 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_DESKTOP:
 #line 4852 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp26_;
-#line 860 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 860 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp26_ = self->priv->togglebutton_desktop;
-#line 860 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 860 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp26_, FALSE);
-#line 861 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 861 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 4861 "tracker-preferences.c"
 					}
-#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 858 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_DOCUMENTS:
 #line 4865 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp27_;
-#line 863 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 863 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp27_ = self->priv->togglebutton_documents;
-#line 863 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 863 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp27_, FALSE);
-#line 864 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 864 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 4874 "tracker-preferences.c"
 					}
-#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 858 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_DOWNLOAD:
 #line 4878 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp28_;
-#line 866 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 866 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp28_ = self->priv->togglebutton_download;
-#line 866 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 866 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp28_, FALSE);
-#line 867 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 867 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 4887 "tracker-preferences.c"
 					}
-#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 858 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_MUSIC:
 #line 4891 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp29_;
-#line 869 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 869 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp29_ = self->priv->togglebutton_music;
-#line 869 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 869 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp29_, FALSE);
-#line 870 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 870 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 4900 "tracker-preferences.c"
 					}
-#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 858 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_PICTURES:
 #line 4904 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp30_;
-#line 872 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 872 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp30_ = self->priv->togglebutton_pictures;
-#line 872 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 872 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp30_, FALSE);
-#line 873 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 873 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 4913 "tracker-preferences.c"
 					}
-#line 858 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 858 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 					case G_USER_DIRECTORY_VIDEOS:
 #line 4917 "tracker-preferences.c"
 					{
 						GtkToggleButton* _tmp31_;
-#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 875 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						_tmp31_ = self->priv->togglebutton_videos;
-#line 875 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 875 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						gtk_widget_set_sensitive ((GtkWidget*) _tmp31_, FALSE);
-#line 876 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 876 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 4926 "tracker-preferences.c"
 					}
 					default:
 					{
-#line 878 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 878 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 						break;
 #line 4932 "tracker-preferences.c"
 					}
@@ -4935,23 +4935,23 @@ static void tracker_preferences_sanitize_user_dirs (TrackerPreferences* self) {
 			}
 		}
 	}
-#line 815 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 815 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	all_dirs = (_vala_array_free (all_dirs, all_dirs_length1, (GDestroyNotify) g_free), NULL);
 #line 4940 "tracker-preferences.c"
 }
 
 
 static void tracker_value_preferences_init (GValue* value) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	value->data[0].v_pointer = NULL;
 #line 4947 "tracker-preferences.c"
 }
 
 
 static void tracker_value_preferences_free_value (GValue* value) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (value->data[0].v_pointer) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		tracker_preferences_unref (value->data[0].v_pointer);
 #line 4956 "tracker-preferences.c"
 	}
@@ -4959,13 +4959,13 @@ static void tracker_value_preferences_free_value (GValue* value) {
 
 
 static void tracker_value_preferences_copy_value (const GValue* src_value, GValue* dest_value) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (src_value->data[0].v_pointer) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		dest_value->data[0].v_pointer = tracker_preferences_ref (src_value->data[0].v_pointer);
 #line 4966 "tracker-preferences.c"
 	} else {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		dest_value->data[0].v_pointer = NULL;
 #line 4970 "tracker-preferences.c"
 	}
@@ -4973,37 +4973,37 @@ static void tracker_value_preferences_copy_value (const GValue* src_value, GValu
 
 
 static gpointer tracker_value_preferences_peek_pointer (const GValue* value) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return value->data[0].v_pointer;
 #line 4978 "tracker-preferences.c"
 }
 
 
 static gchar* tracker_value_preferences_collect_value (GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (collect_values[0].v_pointer) {
 #line 4985 "tracker-preferences.c"
 		TrackerPreferences* object;
 		object = collect_values[0].v_pointer;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (object->parent_instance.g_class == NULL) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			return g_strconcat ("invalid unclassed object pointer for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
 #line 4992 "tracker-preferences.c"
 		} else if (!g_value_type_compatible (G_TYPE_FROM_INSTANCE (object), G_VALUE_TYPE (value))) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 			return g_strconcat ("invalid object type `", g_type_name (G_TYPE_FROM_INSTANCE (object)), "' for value type `", G_VALUE_TYPE_NAME (value), "'", NULL);
 #line 4996 "tracker-preferences.c"
 		}
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = tracker_preferences_ref (object);
 #line 5000 "tracker-preferences.c"
 	} else {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = NULL;
 #line 5004 "tracker-preferences.c"
 	}
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return NULL;
 #line 5008 "tracker-preferences.c"
 }
@@ -5012,27 +5012,27 @@ static gchar* tracker_value_preferences_collect_value (GValue* value, guint n_co
 static gchar* tracker_value_preferences_lcopy_value (const GValue* value, guint n_collect_values, GTypeCValue* collect_values, guint collect_flags) {
 	TrackerPreferences** object_p;
 	object_p = collect_values[0].v_pointer;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (!object_p) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
 #line 5019 "tracker-preferences.c"
 	}
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (!value->data[0].v_pointer) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*object_p = NULL;
 #line 5025 "tracker-preferences.c"
 	} else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*object_p = value->data[0].v_pointer;
 #line 5029 "tracker-preferences.c"
 	} else {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		*object_p = tracker_preferences_ref (value->data[0].v_pointer);
 #line 5033 "tracker-preferences.c"
 	}
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return NULL;
 #line 5037 "tracker-preferences.c"
 }
@@ -5040,22 +5040,22 @@ static gchar* tracker_value_preferences_lcopy_value (const GValue* value, guint 
 
 GParamSpec* tracker_param_spec_preferences (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags) {
 	TrackerParamSpecPreferences* spec;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (g_type_is_a (object_type, TRACKER_TYPE_PREFERENCES), NULL);
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	spec = g_param_spec_internal (G_TYPE_PARAM_OBJECT, name, nick, blurb, flags);
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	G_PARAM_SPEC (spec)->value_type = object_type;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return G_PARAM_SPEC (spec);
 #line 5051 "tracker-preferences.c"
 }
 
 
 gpointer tracker_value_get_preferences (const GValue* value) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_val_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_PREFERENCES), NULL);
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return value->data[0].v_pointer;
 #line 5060 "tracker-preferences.c"
 }
@@ -5063,29 +5063,29 @@ gpointer tracker_value_get_preferences (const GValue* value) {
 
 void tracker_value_set_preferences (GValue* value, gpointer v_object) {
 	TrackerPreferences* old;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_PREFERENCES));
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	old = value->data[0].v_pointer;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (v_object) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (v_object, TRACKER_TYPE_PREFERENCES));
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = v_object;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		tracker_preferences_ref (value->data[0].v_pointer);
 #line 5080 "tracker-preferences.c"
 	} else {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = NULL;
 #line 5084 "tracker-preferences.c"
 	}
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (old) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		tracker_preferences_unref (old);
 #line 5090 "tracker-preferences.c"
 	}
@@ -5094,27 +5094,27 @@ void tracker_value_set_preferences (GValue* value, gpointer v_object) {
 
 void tracker_value_take_preferences (GValue* value, gpointer v_object) {
 	TrackerPreferences* old;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_return_if_fail (G_TYPE_CHECK_VALUE_TYPE (value, TRACKER_TYPE_PREFERENCES));
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	old = value->data[0].v_pointer;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (v_object) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (v_object, TRACKER_TYPE_PREFERENCES));
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value)));
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = v_object;
 #line 5109 "tracker-preferences.c"
 	} else {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		value->data[0].v_pointer = NULL;
 #line 5113 "tracker-preferences.c"
 	}
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (old) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		tracker_preferences_unref (old);
 #line 5119 "tracker-preferences.c"
 	}
@@ -5122,26 +5122,26 @@ void tracker_value_take_preferences (GValue* value, gpointer v_object) {
 
 
 static void tracker_preferences_class_init (TrackerPreferencesClass * klass) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_parent_class = g_type_class_peek_parent (klass);
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	TRACKER_PREFERENCES_CLASS (klass)->finalize = tracker_preferences_finalize;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_type_class_add_private (klass, sizeof (TrackerPreferencesPrivate));
 #line 5131 "tracker-preferences.c"
 }
 
 
 static void tracker_preferences_instance_init (TrackerPreferences * self) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv = TRACKER_PREFERENCES_GET_PRIVATE (self);
-#line 32 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 32 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->settings_miner_fs = NULL;
-#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->settings_extract = NULL;
-#line 39 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 39 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->ignored_user_directories = NULL;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->ref_count = 1;
 #line 5146 "tracker-preferences.c"
 }
@@ -5149,77 +5149,77 @@ static void tracker_preferences_instance_init (TrackerPreferences * self) {
 
 static void tracker_preferences_finalize (TrackerPreferences* obj) {
 	TrackerPreferences * self;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self = TRACKER_PREFERENCES (obj);
-#line 32 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 32 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->settings_miner_fs);
-#line 33 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 33 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->settings_extract);
-#line 37 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 37 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_free0 (self->priv->HOME_STRING_EVALUATED);
-#line 39 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 39 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	self->priv->ignored_user_directories = (g_free (self->priv->ignored_user_directories), NULL);
-#line 41 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 41 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->window);
-#line 42 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 42 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->checkbutton_enable_index_on_battery_first_time);
-#line 43 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 43 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->checkbutton_enable_index_on_battery);
-#line 44 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 44 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->spinbutton_delay);
-#line 45 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 45 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->checkbutton_enable_monitoring);
-#line 46 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 46 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->checkbutton_index_removable_media);
-#line 47 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 47 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->checkbutton_index_optical_discs);
-#line 48 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 48 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->hscale_disk_space_limit);
-#line 49 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 49 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->radiobutton_sched_idle_always);
-#line 50 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 50 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->radiobutton_sched_idle_first_index);
-#line 51 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 51 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->radiobutton_sched_idle_never);
-#line 52 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 52 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->hscale_drop_device_threshold);
-#line 53 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 53 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->liststore_index);
-#line 54 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 54 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->liststore_ignored_directories);
-#line 55 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 55 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->liststore_ignored_files);
-#line 56 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 56 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->liststore_ignored_directories_with_content);
-#line 57 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 57 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeview_index);
-#line 58 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 58 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeview_ignored_directories);
-#line 59 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 59 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeview_ignored_directories_with_content);
-#line 60 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 60 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeview_ignored_files);
-#line 61 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 61 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeviewcolumn_index1);
-#line 62 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 62 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->treeviewcolumn_index2);
-#line 63 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 63 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_home);
-#line 64 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 64 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_desktop);
-#line 65 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 65 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_documents);
-#line 66 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 66 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_music);
-#line 67 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 67 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_pictures);
-#line 68 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 68 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_videos);
-#line 69 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 69 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->togglebutton_download);
-#line 70 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 70 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->hbox_duplicate_warning);
-#line 71 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 71 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_object_unref0 (self->priv->notebook);
 #line 5224 "tracker-preferences.c"
 }
@@ -5242,9 +5242,9 @@ GType tracker_preferences_get_type (void) {
 gpointer tracker_preferences_ref (gpointer instance) {
 	TrackerPreferences* self;
 	self = instance;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_atomic_int_inc (&self->ref_count);
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return instance;
 #line 5249 "tracker-preferences.c"
 }
@@ -5253,11 +5253,11 @@ gpointer tracker_preferences_ref (gpointer instance) {
 void tracker_preferences_unref (gpointer instance) {
 	TrackerPreferences* self;
 	self = instance;
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (g_atomic_int_dec_and_test (&self->ref_count)) {
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		TRACKER_PREFERENCES_GET_CLASS (self)->finalize (self);
-#line 31 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 31 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_type_free_instance ((GTypeInstance *) self);
 #line 5262 "tracker-preferences.c"
 	}
@@ -5274,11 +5274,11 @@ gint _vala_main (gchar** args, int args_length1) {
 	TrackerPreferences* p;
 	TrackerPreferences* _tmp40_;
 	GError * _inner_error_ = NULL;
-#line 898 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 898 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp0_ = _ ("Desktop Search preferences");
-#line 898 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 898 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp1_ = g_option_context_new (_tmp0_);
-#line 898 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 898 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	context = _tmp1_;
 #line 5283 "tracker-preferences.c"
 	{
@@ -5287,25 +5287,25 @@ gint _vala_main (gchar** args, int args_length1) {
 		GOptionContext* _tmp4_;
 		GOptionGroup* _tmp5_ = NULL;
 		GOptionContext* _tmp6_;
-#line 901 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 901 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp2_ = context;
-#line 901 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 901 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_option_context_set_help_enabled (_tmp2_, TRUE);
-#line 902 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 902 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp3_ = context;
-#line 902 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 902 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_option_context_add_main_entries (_tmp3_, options, NULL);
-#line 903 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 903 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp4_ = context;
-#line 903 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 903 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp5_ = gtk_get_option_group (TRUE);
-#line 903 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 903 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_option_context_add_group (_tmp4_, _tmp5_);
-#line 904 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 904 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp6_ = context;
-#line 904 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 904 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_option_context_parse (_tmp6_, &args_length1, &args, &_inner_error_);
-#line 904 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 904 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		if (_inner_error_ != NULL) {
 #line 5310 "tracker-preferences.c"
 			goto __catch3_g_error;
@@ -5322,58 +5322,58 @@ gint _vala_main (gchar** args, int args_length1) {
 		GOptionContext* _tmp11_;
 		gchar* _tmp12_ = NULL;
 		gchar* _tmp13_;
-#line 900 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 900 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		e = _inner_error_;
-#line 900 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 900 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_inner_error_ = NULL;
-#line 906 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 906 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp7_ = e;
-#line 906 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 906 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp8_ = _tmp7_->message;
-#line 906 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 906 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp9_ = g_strconcat (_tmp8_, "\n\n", NULL);
-#line 906 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 906 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp10_ = _tmp9_;
-#line 906 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 906 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_printerr ("%s", _tmp10_);
-#line 906 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 906 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (_tmp10_);
-#line 907 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 907 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp11_ = context;
-#line 907 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 907 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp12_ = g_option_context_get_help (_tmp11_, TRUE, NULL);
-#line 907 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 907 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp13_ = _tmp12_;
-#line 907 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 907 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_printerr ("%s", _tmp13_);
-#line 907 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 907 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (_tmp13_);
-#line 908 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 908 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		result = 1;
-#line 908 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 908 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_error_free0 (e);
-#line 908 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 908 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_option_context_free0 (context);
-#line 908 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 908 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return result;
 #line 5359 "tracker-preferences.c"
 	}
 	__finally3:
-#line 900 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 900 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_inner_error_ != NULL) {
-#line 900 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 900 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_option_context_free0 (context);
-#line 900 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 900 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 900 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 900 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_clear_error (&_inner_error_);
-#line 900 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 900 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return 0;
 #line 5372 "tracker-preferences.c"
 	}
-#line 911 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 911 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp14_ = print_version;
-#line 911 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 911 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	if (_tmp14_) {
 #line 5378 "tracker-preferences.c"
 		gchar* _tmp15_;
@@ -5402,138 +5402,138 @@ gint _vala_main (gchar** args, int args_length1) {
 		gchar* _tmp36_;
 		gchar* _tmp37_;
 		gchar* _tmp38_;
-#line 912 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 912 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp15_ = g_strdup ("");
-#line 912 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 912 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		about = _tmp15_;
-#line 913 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 913 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp16_ = g_strdup ("");
-#line 913 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 913 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		license = _tmp16_;
-#line 915 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 915 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp17_ = about;
-#line 915 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 915 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp18_ = g_strconcat (_tmp17_, "Tracker " PACKAGE_VERSION "\n", NULL);
-#line 915 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 915 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (about);
-#line 915 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 915 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		about = _tmp18_;
-#line 917 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 917 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp19_ = license;
-#line 917 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 917 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp20_ = g_strconcat (_tmp19_, "This program is free software and comes without any warranty.\n", NULL);
-#line 917 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 917 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (license);
-#line 917 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 917 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		license = _tmp20_;
-#line 918 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 918 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp21_ = license;
-#line 918 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 918 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp22_ = g_strconcat (_tmp21_, "It is licensed under version 2 or later of the General Public ", NULL);
-#line 918 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 918 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (license);
-#line 918 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 918 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		license = _tmp22_;
-#line 919 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 919 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp23_ = license;
-#line 919 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 919 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp24_ = g_strconcat (_tmp23_, "License which can be viewed at:\n", NULL);
-#line 919 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 919 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (license);
-#line 919 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 919 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		license = _tmp24_;
-#line 920 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 920 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp25_ = license;
-#line 920 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 920 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp26_ = g_strconcat (_tmp25_, "\n", NULL);
-#line 920 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 920 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (license);
-#line 920 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 920 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		license = _tmp26_;
-#line 921 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 921 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp27_ = license;
-#line 921 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 921 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp28_ = g_strconcat (_tmp27_, "  http://www.gnu.org/licenses/gpl.txt\n", NULL);
-#line 921 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 921 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (license);
-#line 921 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 921 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		license = _tmp28_;
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp29_ = about;
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp30_ = g_strconcat ("\n", _tmp29_, NULL);
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp31_ = _tmp30_;
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp32_ = g_strconcat (_tmp31_, "\n", NULL);
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp33_ = _tmp32_;
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp34_ = license;
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp35_ = g_strconcat (_tmp33_, _tmp34_, NULL);
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp36_ = _tmp35_;
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp37_ = g_strconcat (_tmp36_, "\n", NULL);
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_tmp38_ = _tmp37_;
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		g_print ("%s", _tmp38_);
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (_tmp38_);
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (_tmp36_);
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (_tmp33_);
-#line 923 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 923 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (_tmp31_);
-#line 924 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 924 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		result = 0;
-#line 924 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 924 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (license);
-#line 924 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 924 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_free0 (about);
-#line 924 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 924 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		_g_option_context_free0 (context);
-#line 924 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 924 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 		return result;
 #line 5501 "tracker-preferences.c"
 	}
-#line 927 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 927 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_init (&args_length1, &args);
-#line 929 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 929 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-#line 930 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 930 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-#line 931 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 931 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	textdomain (GETTEXT_PACKAGE);
-#line 933 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 933 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp39_ = tracker_preferences_new ();
-#line 933 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 933 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	p = _tmp39_;
-#line 934 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 934 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tmp40_ = p;
-#line 934 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 934 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	tracker_preferences_show (_tmp40_);
-#line 936 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 936 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	gtk_main ();
-#line 938 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 938 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	result = 0;
-#line 938 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 938 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_tracker_preferences_unref0 (p);
-#line 938 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 938 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	_g_option_context_free0 (context);
-#line 938 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 938 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return result;
 #line 5529 "tracker-preferences.c"
 }
 
 
 int main (int argc, char ** argv) {
-#line 897 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 897 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	g_type_init ();
-#line 897 "/home/juerg/Code/tracker/tracker/src/tracker-preferences/tracker-preferences.vala"
+#line 897 "/home/martyn/Source/tracker/src/tracker-preferences/tracker-preferences.vala"
 	return _vala_main (argv, argc);
 #line 5538 "tracker-preferences.c"
 }

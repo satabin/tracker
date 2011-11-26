@@ -22,54 +22,15 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <libtracker-sparql/tracker-sparql.h>
 #include <gio/gio.h>
+#include <gio/gunixinputstream.h>
+#include <gio/gunixoutputstream.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <libtracker-sparql/tracker-sparql.h>
-#include <gio/gunixoutputstream.h>
-#include <gio/gunixinputstream.h>
 #include <gio/gunixfdlist.h>
-#include <unistd.h>
 
-
-#define TRACKER_BUS_TYPE_RESOURCES (tracker_bus_resources_get_type ())
-#define TRACKER_BUS_RESOURCES(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_BUS_TYPE_RESOURCES, TrackerBusResources))
-#define TRACKER_BUS_IS_RESOURCES(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRACKER_BUS_TYPE_RESOURCES))
-#define TRACKER_BUS_RESOURCES_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TRACKER_BUS_TYPE_RESOURCES, TrackerBusResourcesIface))
-
-typedef struct _TrackerBusResources TrackerBusResources;
-typedef struct _TrackerBusResourcesIface TrackerBusResourcesIface;
-
-#define TRACKER_BUS_TYPE_RESOURCES_PROXY (tracker_bus_resources_proxy_get_type ())
-typedef GDBusProxy TrackerBusResourcesProxy;
-typedef GDBusProxyClass TrackerBusResourcesProxyClass;
-#define _g_free0(var) (var = (g_free (var), NULL))
-
-#define TRACKER_BUS_TYPE_STEROIDS (tracker_bus_steroids_get_type ())
-#define TRACKER_BUS_STEROIDS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_BUS_TYPE_STEROIDS, TrackerBusSteroids))
-#define TRACKER_BUS_IS_STEROIDS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRACKER_BUS_TYPE_STEROIDS))
-#define TRACKER_BUS_STEROIDS_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TRACKER_BUS_TYPE_STEROIDS, TrackerBusSteroidsIface))
-
-typedef struct _TrackerBusSteroids TrackerBusSteroids;
-typedef struct _TrackerBusSteroidsIface TrackerBusSteroidsIface;
-
-#define TRACKER_BUS_TYPE_STEROIDS_PROXY (tracker_bus_steroids_proxy_get_type ())
-typedef GDBusProxy TrackerBusSteroidsProxy;
-typedef GDBusProxyClass TrackerBusSteroidsProxyClass;
-#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
-#define _g_variant_unref0(var) ((var == NULL) ? NULL : (var = (g_variant_unref (var), NULL)))
-
-#define TRACKER_BUS_TYPE_STATISTICS (tracker_bus_statistics_get_type ())
-#define TRACKER_BUS_STATISTICS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_BUS_TYPE_STATISTICS, TrackerBusStatistics))
-#define TRACKER_BUS_IS_STATISTICS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TRACKER_BUS_TYPE_STATISTICS))
-#define TRACKER_BUS_STATISTICS_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TRACKER_BUS_TYPE_STATISTICS, TrackerBusStatisticsIface))
-
-typedef struct _TrackerBusStatistics TrackerBusStatistics;
-typedef struct _TrackerBusStatisticsIface TrackerBusStatisticsIface;
-
-#define TRACKER_BUS_TYPE_STATISTICS_PROXY (tracker_bus_statistics_proxy_get_type ())
-typedef GDBusProxy TrackerBusStatisticsProxy;
-typedef GDBusProxyClass TrackerBusStatisticsProxyClass;
 
 #define TRACKER_BUS_TYPE_CONNECTION (tracker_bus_connection_get_type ())
 #define TRACKER_BUS_CONNECTION(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TRACKER_BUS_TYPE_CONNECTION, TrackerBusConnection))
@@ -81,9 +42,13 @@ typedef GDBusProxyClass TrackerBusStatisticsProxyClass;
 typedef struct _TrackerBusConnection TrackerBusConnection;
 typedef struct _TrackerBusConnectionClass TrackerBusConnectionClass;
 typedef struct _TrackerBusConnectionPrivate TrackerBusConnectionPrivate;
+#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
+#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
+#define _g_variant_unref0(var) ((var == NULL) ? NULL : (var = (g_variant_unref (var), NULL)))
 typedef struct _Block1Data Block1Data;
 #define _g_main_loop_unref0(var) ((var == NULL) ? NULL : (var = (g_main_loop_unref (var), NULL)))
 #define _g_main_context_unref0(var) ((var == NULL) ? NULL : (var = (g_main_context_unref (var), NULL)))
+#define _g_free0(var) (var = (g_free (var), NULL))
 typedef struct _Block2Data Block2Data;
 
 #define TRACKER_BUS_TYPE_FD_CURSOR (tracker_bus_fd_cursor_get_type ())
@@ -119,34 +84,6 @@ typedef struct _TrackerBusArrayCursor TrackerBusArrayCursor;
 typedef struct _TrackerBusArrayCursorClass TrackerBusArrayCursorClass;
 typedef struct _TrackerBusConnectionStatisticsAsyncData TrackerBusConnectionStatisticsAsyncData;
 
-struct _TrackerBusResourcesIface {
-	GTypeInterface parent_iface;
-	void (*load) (TrackerBusResources* self, const gchar* uri, GCancellable* cancellable, GError** error);
-	void (*load_async) (TrackerBusResources* self, const gchar* uri, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-	void (*load_finish) (TrackerBusResources* self, GAsyncResult* _res_, GError** error);
-};
-
-struct _TrackerBusSteroidsIface {
-	GTypeInterface parent_iface;
-	void (*query) (TrackerBusSteroids* self, const gchar* query, GUnixOutputStream* result_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-	gchar** (*query_finish) (TrackerBusSteroids* self, GAsyncResult* _res_, int* result_length1, GError** error);
-	void (*update) (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-	void (*update_finish) (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-	void (*update_blank) (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-	GVariant* (*update_blank_finish) (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-	void (*batch_update) (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-	void (*batch_update_finish) (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-	void (*update_array) (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-	GVariant* (*update_array_finish) (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-};
-
-struct _TrackerBusStatisticsIface {
-	GTypeInterface parent_iface;
-	gchar** (*Get) (TrackerBusStatistics* self, GCancellable* cancellable, int* result_length1, int* result_length2, GError** error);
-	void (*Get_async) (TrackerBusStatistics* self, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-	gchar** (*Get_finish) (TrackerBusStatistics* self, GAsyncResult* _res_, int* result_length1, int* result_length2, GError** error);
-};
-
 struct _TrackerBusConnection {
 	TrackerSparqlConnection parent_instance;
 	TrackerBusConnectionPrivate * priv;
@@ -154,12 +91,6 @@ struct _TrackerBusConnection {
 
 struct _TrackerBusConnectionClass {
 	TrackerSparqlConnectionClass parent_class;
-};
-
-struct _TrackerBusConnectionPrivate {
-	TrackerBusResources* resources_object;
-	TrackerBusSteroids* steroids_object;
-	TrackerBusStatistics* statistics_object;
 };
 
 struct _Block1Data {
@@ -191,32 +122,44 @@ struct _TrackerBusConnectionQueryAsyncData {
 	GUnixOutputStream* output;
 	GUnixInputStream* _tmp0_;
 	GUnixOutputStream* _tmp1_;
-	TrackerBusSteroids* _tmp2_;
-	const gchar* _tmp3_;
-	GUnixOutputStream* _tmp4_;
-	GCancellable* _tmp5_;
-	GMemoryOutputStream* _tmp6_;
+	GCancellable* _tmp2_;
+	GDBusConnection* _tmp3_;
+	GDBusConnection* connection;
+	GDBusConnection* _tmp4_;
+	const gchar* _tmp5_;
+	GUnixOutputStream* _tmp6_;
+	GCancellable* _tmp7_;
+	GMemoryOutputStream* _tmp8_;
 	GMemoryOutputStream* mem_stream;
-	GMemoryOutputStream* _tmp7_;
-	GUnixInputStream* _tmp8_;
-	GCancellable* _tmp9_;
-	GAsyncResult* _tmp10_;
-	TrackerBusSteroids* _tmp11_;
+	GMemoryOutputStream* _tmp9_;
+	GUnixInputStream* _tmp10_;
+	GCancellable* _tmp11_;
 	GAsyncResult* _tmp12_;
-	gint _tmp13_;
-	gchar** _tmp14_;
+	GDBusConnection* _tmp13_;
+	GAsyncResult* _tmp14_;
+	GDBusMessage* _tmp15_;
+	GDBusMessage* reply;
+	GDBusMessage* _tmp16_;
+	GDBusMessage* _tmp17_;
+	GVariant* _tmp18_;
+	GVariant* _tmp19_;
+	GVariant* _tmp20_;
+	gchar** _tmp21_;
+	gint _tmp21__length1;
+	gchar** _tmp25_;
+	gint _tmp25__length1;
 	gchar** variable_names;
 	gint variable_names_length1;
 	gint _variable_names_size_;
-	GMemoryOutputStream* _tmp15_;
-	GMemoryOutputStream* _tmp16_;
-	guint8* _tmp17_;
-	GMemoryOutputStream* _tmp18_;
-	gulong _tmp19_;
-	gulong _tmp20_;
-	gchar** _tmp21_;
-	gint _tmp21__length1;
-	TrackerBusFDCursor* _tmp22_;
+	GMemoryOutputStream* _tmp26_;
+	GMemoryOutputStream* _tmp27_;
+	guint8* _tmp28_;
+	GMemoryOutputStream* _tmp29_;
+	gulong _tmp30_;
+	gulong _tmp31_;
+	gchar** _tmp32_;
+	gint _tmp32__length1;
+	TrackerBusFDCursor* _tmp33_;
 	GError * _inner_error_;
 };
 
@@ -249,26 +192,31 @@ struct _TrackerBusConnectionUpdateAsyncData {
 	GUnixOutputStream* output;
 	GUnixInputStream* _tmp0_;
 	GUnixOutputStream* _tmp1_;
-	TrackerBusSteroids* _tmp2_;
-	GUnixInputStream* _tmp3_;
-	gint _tmp4_;
-	GCancellable* _tmp5_;
-	GUnixOutputStream* _tmp6_;
-	GDataOutputStream* _tmp7_;
+	GCancellable* _tmp2_;
+	GDBusConnection* _tmp3_;
+	GDBusConnection* connection;
+	const gchar* _tmp4_;
+	gint _tmp5_;
+	GDBusConnection* _tmp6_;
+	const gchar* _tmp7_;
+	GUnixInputStream* _tmp8_;
+	GCancellable* _tmp9_;
+	GUnixOutputStream* _tmp10_;
+	GDataOutputStream* _tmp11_;
 	GDataOutputStream* data_stream;
-	GDataOutputStream* _tmp8_;
-	GDataOutputStream* _tmp9_;
-	const gchar* _tmp10_;
-	gint _tmp11_;
-	gint _tmp12_;
+	GDataOutputStream* _tmp12_;
 	GDataOutputStream* _tmp13_;
 	const gchar* _tmp14_;
-	GAsyncResult* _tmp15_;
+	gint _tmp15_;
 	gint _tmp16_;
-	TrackerBusSteroids* _tmp17_;
-	GAsyncResult* _tmp18_;
-	TrackerBusSteroids* _tmp19_;
-	GAsyncResult* _tmp20_;
+	GDataOutputStream* _tmp17_;
+	const gchar* _tmp18_;
+	GAsyncResult* _tmp19_;
+	GDBusConnection* _tmp20_;
+	GAsyncResult* _tmp21_;
+	GDBusMessage* _tmp22_;
+	GDBusMessage* reply;
+	GDBusMessage* _tmp23_;
 	GError * _inner_error_;
 };
 
@@ -296,60 +244,67 @@ struct _TrackerBusConnectionUpdateArrayAsyncData {
 	GUnixOutputStream* output;
 	GUnixInputStream* _tmp0_;
 	GUnixOutputStream* _tmp1_;
-	TrackerBusSteroids* _tmp2_;
-	GUnixInputStream* _tmp3_;
-	GCancellable* _tmp4_;
-	GUnixOutputStream* _tmp5_;
-	GDataOutputStream* _tmp6_;
-	GDataOutputStream* data_stream;
-	GDataOutputStream* _tmp7_;
+	GCancellable* _tmp2_;
+	GDBusConnection* _tmp3_;
+	GDBusConnection* connection;
+	GDBusConnection* _tmp4_;
+	GUnixInputStream* _tmp5_;
+	GCancellable* _tmp6_;
+	GUnixOutputStream* _tmp7_;
 	GDataOutputStream* _tmp8_;
-	gchar** _tmp9_;
-	gint _tmp9__length1;
+	GDataOutputStream* data_stream;
+	GDataOutputStream* _tmp9_;
+	GDataOutputStream* _tmp10_;
+	gchar** _tmp11_;
+	gint _tmp11__length1;
 	gint i;
-	gboolean _tmp10_;
-	gboolean _tmp11_;
-	gint _tmp12_;
-	gint _tmp13_;
-	gchar** _tmp14_;
-	gint _tmp14__length1;
-	GDataOutputStream* _tmp15_;
+	gboolean _tmp12_;
+	gboolean _tmp13_;
+	gint _tmp14_;
+	gint _tmp15_;
 	gchar** _tmp16_;
 	gint _tmp16__length1;
-	gint _tmp17_;
-	const gchar* _tmp18_;
+	GDataOutputStream* _tmp17_;
+	gchar** _tmp18_;
+	gint _tmp18__length1;
 	gint _tmp19_;
-	gint _tmp20_;
-	GDataOutputStream* _tmp21_;
-	gchar** _tmp22_;
-	gint _tmp22__length1;
-	gint _tmp23_;
-	const gchar* _tmp24_;
-	GAsyncResult* _tmp25_;
-	GPtrArray* _tmp26_;
+	const gchar* _tmp20_;
+	gint _tmp21_;
+	gint _tmp22_;
+	GDataOutputStream* _tmp23_;
+	gchar** _tmp24_;
+	gint _tmp24__length1;
+	gint _tmp25_;
+	const gchar* _tmp26_;
+	GAsyncResult* _tmp27_;
+	GDBusConnection* _tmp28_;
+	GAsyncResult* _tmp29_;
+	GDBusMessage* _tmp30_;
+	GDBusMessage* reply;
+	GDBusMessage* _tmp31_;
+	GPtrArray* _tmp32_;
 	GPtrArray* _result_;
 	GVariant* resultv;
-	TrackerBusSteroids* _tmp27_;
-	GAsyncResult* _tmp28_;
-	GVariant* _tmp29_;
-	GVariant* _tmp30_;
-	GVariant* _tmp31_;
-	GVariantIter* _tmp32_;
+	GDBusMessage* _tmp33_;
+	GVariant* _tmp34_;
+	GVariant* _tmp35_;
+	GVariant* _tmp36_;
+	GVariantIter* _tmp37_;
 	GVariantIter* iter;
 	gchar* code;
 	gchar* message;
-	GVariantIter* _tmp33_;
-	gboolean _tmp34_;
-	GVariantIter* _tmp35_;
-	gboolean _tmp36_;
-	gboolean _tmp37_;
-	const gchar* _tmp38_;
-	const gchar* _tmp39_;
-	gboolean _tmp40_;
-	GPtrArray* _tmp41_;
-	const gchar* _tmp42_;
-	GError* _tmp43_;
-	GPtrArray* _tmp44_;
+	GVariantIter* _tmp38_;
+	gboolean _tmp39_;
+	GVariantIter* _tmp40_;
+	gboolean _tmp41_;
+	gboolean _tmp42_;
+	const gchar* _tmp43_;
+	const gchar* _tmp44_;
+	gboolean _tmp45_;
+	GPtrArray* _tmp46_;
+	const gchar* _tmp47_;
+	GError* _tmp48_;
+	GPtrArray* _tmp49_;
 	GError * _inner_error_;
 };
 
@@ -383,24 +338,31 @@ struct _TrackerBusConnectionUpdateBlankAsyncData {
 	GUnixOutputStream* output;
 	GUnixInputStream* _tmp0_;
 	GUnixOutputStream* _tmp1_;
-	TrackerBusSteroids* _tmp2_;
-	GUnixInputStream* _tmp3_;
-	GCancellable* _tmp4_;
-	GUnixOutputStream* _tmp5_;
-	GDataOutputStream* _tmp6_;
-	GDataOutputStream* data_stream;
-	GDataOutputStream* _tmp7_;
+	GCancellable* _tmp2_;
+	GDBusConnection* _tmp3_;
+	GDBusConnection* connection;
+	GDBusConnection* _tmp4_;
+	GUnixInputStream* _tmp5_;
+	GCancellable* _tmp6_;
+	GUnixOutputStream* _tmp7_;
 	GDataOutputStream* _tmp8_;
-	const gchar* _tmp9_;
-	gint _tmp10_;
-	gint _tmp11_;
-	GDataOutputStream* _tmp12_;
-	const gchar* _tmp13_;
-	GAsyncResult* _tmp14_;
-	TrackerBusSteroids* _tmp15_;
+	GDataOutputStream* data_stream;
+	GDataOutputStream* _tmp9_;
+	GDataOutputStream* _tmp10_;
+	const gchar* _tmp11_;
+	gint _tmp12_;
+	gint _tmp13_;
+	GDataOutputStream* _tmp14_;
+	const gchar* _tmp15_;
 	GAsyncResult* _tmp16_;
-	GVariant* _tmp17_;
-	GVariant* _tmp18_;
+	GDBusConnection* _tmp17_;
+	GAsyncResult* _tmp18_;
+	GDBusMessage* _tmp19_;
+	GDBusMessage* reply;
+	GDBusMessage* _tmp20_;
+	GDBusMessage* _tmp21_;
+	GVariant* _tmp22_;
+	GVariant* _tmp23_;
 	GError * _inner_error_;
 };
 
@@ -412,17 +374,24 @@ struct _TrackerBusConnectionLoadAsyncData {
 	TrackerBusConnection* self;
 	GFile* file;
 	GCancellable* cancellable;
-	TrackerBusResources* _tmp0_;
-	GFile* _tmp1_;
-	gchar* _tmp2_;
-	gchar* _tmp3_;
-	GCancellable* _tmp4_;
-	gboolean _tmp5_;
-	GCancellable* _tmp6_;
-	GCancellable* _tmp7_;
-	gboolean _tmp8_;
-	gboolean _tmp9_;
-	GError* _tmp10_;
+	GCancellable* _tmp0_;
+	GDBusConnection* _tmp1_;
+	GDBusConnection* connection;
+	GDBusMessage* _tmp2_;
+	GDBusMessage* message;
+	GDBusMessage* _tmp3_;
+	GFile* _tmp4_;
+	gchar* _tmp5_;
+	gchar* _tmp6_;
+	GVariant* _tmp7_;
+	GVariant* _tmp8_;
+	GDBusConnection* _tmp9_;
+	GDBusMessage* _tmp10_;
+	gint _tmp11_;
+	GCancellable* _tmp12_;
+	GDBusMessage* _tmp13_;
+	GDBusMessage* reply;
+	GDBusMessage* _tmp14_;
 	GError * _inner_error_;
 };
 
@@ -434,146 +403,84 @@ struct _TrackerBusConnectionStatisticsAsyncData {
 	TrackerBusConnection* self;
 	GCancellable* cancellable;
 	TrackerSparqlCursor* result;
-	TrackerBusStatistics* _tmp0_;
-	GCancellable* _tmp1_;
-	gint _tmp2_;
-	gint _tmp3_;
-	gchar** _tmp4_;
+	GCancellable* _tmp0_;
+	GDBusConnection* _tmp1_;
+	GDBusConnection* connection;
+	GDBusMessage* _tmp2_;
+	GDBusMessage* message;
+	GDBusConnection* _tmp3_;
+	GDBusMessage* _tmp4_;
+	gint _tmp5_;
+	GCancellable* _tmp6_;
+	GDBusMessage* _tmp7_;
+	GDBusMessage* reply;
+	GDBusMessage* _tmp8_;
+	GDBusMessage* _tmp9_;
+	GVariant* _tmp10_;
+	GVariant* _tmp11_;
+	GVariant* _tmp12_;
+	gchar** _tmp13_;
+	gint _tmp13__length1;
+	gint _tmp13__length2;
+	gchar** _tmp19_;
+	gint _tmp19__length1;
+	gint _tmp19__length2;
 	gchar** results;
 	gint results_length1;
 	gint results_length2;
-	TrackerSparqlValueType* _tmp5_;
+	TrackerSparqlValueType* _tmp20_;
 	TrackerSparqlValueType* types;
 	gint types_length1;
 	gint _types_size_;
-	gchar** _tmp6_;
+	gchar** _tmp21_;
 	gchar** var_names;
 	gint var_names_length1;
 	gint _var_names_size_;
-	gchar** _tmp7_;
-	gint _tmp7__length1;
-	gchar* _tmp8_;
-	gchar* _tmp9_;
-	gchar** _tmp10_;
-	gint _tmp10__length1;
-	gchar* _tmp11_;
-	gchar* _tmp12_;
-	TrackerSparqlValueType* _tmp13_;
-	gint _tmp13__length1;
-	TrackerSparqlValueType _tmp14_;
-	TrackerSparqlValueType* _tmp15_;
-	gint _tmp15__length1;
-	TrackerSparqlValueType _tmp16_;
-	gchar** _tmp17_;
-	gint _tmp17__length1;
-	gint _tmp17__length2;
-	gchar** _tmp18_;
-	gint _tmp18__length1;
-	gint _tmp18__length2;
-	gint _tmp19_;
-	gchar** _tmp20_;
-	gint _tmp20__length1;
-	gint _tmp20__length2;
-	gint _tmp21_;
 	gchar** _tmp22_;
 	gint _tmp22__length1;
-	TrackerSparqlValueType* _tmp23_;
-	gint _tmp23__length1;
-	TrackerBusArrayCursor* _tmp24_;
+	gchar* _tmp23_;
+	gchar* _tmp24_;
+	gchar** _tmp25_;
+	gint _tmp25__length1;
+	gchar* _tmp26_;
+	gchar* _tmp27_;
+	TrackerSparqlValueType* _tmp28_;
+	gint _tmp28__length1;
+	TrackerSparqlValueType _tmp29_;
+	TrackerSparqlValueType* _tmp30_;
+	gint _tmp30__length1;
+	TrackerSparqlValueType _tmp31_;
+	gchar** _tmp32_;
+	gint _tmp32__length1;
+	gint _tmp32__length2;
+	gchar** _tmp33_;
+	gint _tmp33__length1;
+	gint _tmp33__length2;
+	gint _tmp34_;
+	gchar** _tmp35_;
+	gint _tmp35__length1;
+	gint _tmp35__length2;
+	gint _tmp36_;
+	gchar** _tmp37_;
+	gint _tmp37__length1;
+	TrackerSparqlValueType* _tmp38_;
+	gint _tmp38__length1;
+	TrackerBusArrayCursor* _tmp39_;
 	GError * _inner_error_;
 };
 
 
 static gpointer tracker_bus_connection_parent_class = NULL;
 
-GType tracker_bus_resources_proxy_get_type (void) G_GNUC_CONST;
-guint tracker_bus_resources_register_object (void* object, GDBusConnection* connection, const gchar* path, GError** error);
-GType tracker_bus_resources_get_type (void) G_GNUC_CONST;
-void tracker_bus_resources_load (TrackerBusResources* self, const gchar* uri, GCancellable* cancellable, GError** error);
-void tracker_bus_resources_load_async (TrackerBusResources* self, const gchar* uri, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-void tracker_bus_resources_load_finish (TrackerBusResources* self, GAsyncResult* _res_, GError** error);
-static void tracker_bus_resources_proxy_g_signal (GDBusProxy* proxy, const gchar* sender_name, const gchar* signal_name, GVariant* parameters);
-static void tracker_bus_resources_proxy_load (TrackerBusResources* self, const gchar* uri, GCancellable* cancellable, GError** error);
-static void _vala_g_async_ready_callback (GObject *source_object, GAsyncResult *res, void *user_data);
-static void tracker_bus_resources_proxy_load_async_async (TrackerBusResources* self, const gchar* uri, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-static void tracker_bus_resources_proxy_load_async_finish (TrackerBusResources* self, GAsyncResult* _res_, GError** error);
-static void tracker_bus_resources_proxy_tracker_bus_resources_interface_init (TrackerBusResourcesIface* iface);
-static void _dbus_tracker_bus_resources_load (TrackerBusResources* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_bus_resources_load_async (TrackerBusResources* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_bus_resources_load_async_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
-static void tracker_bus_resources_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data);
-static GVariant* tracker_bus_resources_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data);
-static gboolean tracker_bus_resources_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data);
-static void _tracker_bus_resources_unregister_object (gpointer user_data);
-GType tracker_bus_steroids_proxy_get_type (void) G_GNUC_CONST;
-guint tracker_bus_steroids_register_object (void* object, GDBusConnection* connection, const gchar* path, GError** error);
-GType tracker_bus_steroids_get_type (void) G_GNUC_CONST;
-void tracker_bus_steroids_query (TrackerBusSteroids* self, const gchar* query, GUnixOutputStream* result_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-gchar** tracker_bus_steroids_query_finish (TrackerBusSteroids* self, GAsyncResult* _res_, int* result_length1, GError** error);
-void tracker_bus_steroids_update (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-void tracker_bus_steroids_update_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-void tracker_bus_steroids_update_blank (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-GVariant* tracker_bus_steroids_update_blank_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-void tracker_bus_steroids_batch_update (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-void tracker_bus_steroids_batch_update_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-void tracker_bus_steroids_update_array (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-GVariant* tracker_bus_steroids_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-void tracker_bus_steroids_update_begin (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, gint priority, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target);
-static void tracker_bus_steroids_proxy_g_signal (GDBusProxy* proxy, const gchar* sender_name, const gchar* signal_name, GVariant* parameters);
-static void tracker_bus_steroids_proxy_query_async (TrackerBusSteroids* self, const gchar* query, GUnixOutputStream* result_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-static gchar** tracker_bus_steroids_proxy_query_finish (TrackerBusSteroids* self, GAsyncResult* _res_, int* result_length1, GError** error);
-static void tracker_bus_steroids_proxy_update_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-static void tracker_bus_steroids_proxy_update_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-static void tracker_bus_steroids_proxy_update_blank_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-static GVariant* tracker_bus_steroids_proxy_update_blank_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-static void tracker_bus_steroids_proxy_batch_update_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-static void tracker_bus_steroids_proxy_batch_update_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-static void tracker_bus_steroids_proxy_update_array_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-static GVariant* tracker_bus_steroids_proxy_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error);
-static void tracker_bus_steroids_proxy_tracker_bus_steroids_interface_init (TrackerBusSteroidsIface* iface);
-static void _dbus_tracker_bus_steroids_query (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_bus_steroids_query_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
-static void _dbus_tracker_bus_steroids_update (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_bus_steroids_update_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
-static void _dbus_tracker_bus_steroids_update_blank (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_bus_steroids_update_blank_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
-static void _dbus_tracker_bus_steroids_batch_update (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_bus_steroids_batch_update_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
-static void _dbus_tracker_bus_steroids_update_array (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_bus_steroids_update_array_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
-static void tracker_bus_steroids_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data);
-static GVariant* tracker_bus_steroids_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data);
-static gboolean tracker_bus_steroids_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data);
-static void _tracker_bus_steroids_unregister_object (gpointer user_data);
-GType tracker_bus_statistics_proxy_get_type (void) G_GNUC_CONST;
-guint tracker_bus_statistics_register_object (void* object, GDBusConnection* connection, const gchar* path, GError** error);
-GType tracker_bus_statistics_get_type (void) G_GNUC_CONST;
-gchar** tracker_bus_statistics_Get (TrackerBusStatistics* self, GCancellable* cancellable, int* result_length1, int* result_length2, GError** error);
-void tracker_bus_statistics_Get_async (TrackerBusStatistics* self, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-gchar** tracker_bus_statistics_Get_finish (TrackerBusStatistics* self, GAsyncResult* _res_, int* result_length1, int* result_length2, GError** error);
-static void tracker_bus_statistics_proxy_g_signal (GDBusProxy* proxy, const gchar* sender_name, const gchar* signal_name, GVariant* parameters);
-static gchar** tracker_bus_statistics_proxy_Get (TrackerBusStatistics* self, GCancellable* cancellable, int* result_length1, int* result_length2, GError** error);
-static void tracker_bus_statistics_proxy_Get_async_async (TrackerBusStatistics* self, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
-static gchar** tracker_bus_statistics_proxy_Get_async_finish (TrackerBusStatistics* self, GAsyncResult* _res_, int* result_length1, int* result_length2, GError** error);
-static void tracker_bus_statistics_proxy_tracker_bus_statistics_interface_init (TrackerBusStatisticsIface* iface);
-static void _dbus_tracker_bus_statistics_Get (TrackerBusStatistics* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_bus_statistics_Get_async (TrackerBusStatistics* self, GVariant* parameters, GDBusMethodInvocation* invocation);
-static void _dbus_tracker_bus_statistics_Get_async_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_);
-static void tracker_bus_statistics_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data);
-static GVariant* tracker_bus_statistics_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data);
-static gboolean tracker_bus_statistics_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data);
-static void _tracker_bus_statistics_unregister_object (gpointer user_data);
 GType tracker_bus_connection_get_type (void) G_GNUC_CONST;
-#define TRACKER_BUS_CONNECTION_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TRACKER_BUS_TYPE_CONNECTION, TrackerBusConnectionPrivate))
 enum  {
 	TRACKER_BUS_CONNECTION_DUMMY_PROPERTY
 };
 TrackerBusConnection* tracker_bus_connection_new (GError** error);
 TrackerBusConnection* tracker_bus_connection_construct (GType object_type, GError** error);
-static void tracker_bus_connection_ensure_resources_object (TrackerBusConnection* self, GError** error);
-static void tracker_bus_connection_ensure_steroids_object (TrackerBusConnection* self, GError** error);
-static void tracker_bus_connection_ensure_statistics_object (TrackerBusConnection* self, GError** error);
 static void tracker_bus_connection_pipe (TrackerBusConnection* self, GUnixInputStream** input, GUnixOutputStream** output, GError** error);
+static void tracker_bus_connection_handle_error_reply (TrackerBusConnection* self, GDBusMessage* message, GError** error);
+static void tracker_bus_connection_send_query (TrackerBusConnection* self, GDBusConnection* connection, const gchar* sparql, GUnixOutputStream* output, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target, GError** error);
 static TrackerSparqlCursor* tracker_bus_connection_real_query (TrackerSparqlConnection* base, const gchar* sparql, GCancellable* cancellable, GError** error);
 static Block1Data* block1_data_ref (Block1Data* _data1_);
 static void block1_data_unref (Block1Data* _data1_);
@@ -589,9 +496,11 @@ static void ___lambda0__gasync_ready_callback (GObject* source_object, GAsyncRes
 static void* _g_realloc_grealloc_func (void* data, gsize size);
 static void _g_free_gdestroy_notify (void* data);
 static void tracker_bus_connection_query_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
+static gchar** _variant_get1 (GVariant* value, int* result_length1);
 TrackerBusFDCursor* tracker_bus_fd_cursor_new (gchar* buffer, gulong buffer_size, gchar** variable_names, int variable_names_length1);
 TrackerBusFDCursor* tracker_bus_fd_cursor_construct (GType object_type, gchar* buffer, gulong buffer_size, gchar** variable_names, int variable_names_length1);
 GType tracker_bus_fd_cursor_get_type (void) G_GNUC_CONST;
+static void tracker_bus_connection_send_update (TrackerBusConnection* self, GDBusConnection* connection, const gchar* method, GUnixInputStream* input, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target, GError** error);
 static void tracker_bus_connection_real_update (TrackerSparqlConnection* base, const gchar* sparql, gint priority, GCancellable* cancellable, GError** error);
 static Block3Data* block3_data_ref (Block3Data* _data3_);
 static void block3_data_unref (Block3Data* _data3_);
@@ -631,6 +540,7 @@ static void tracker_bus_connection_real_load_async (TrackerSparqlConnection* bas
 static gboolean tracker_bus_connection_real_load_async_co (TrackerBusConnectionLoadAsyncData* _data_);
 static void tracker_bus_connection_load_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
 static TrackerSparqlCursor* tracker_bus_connection_real_statistics (TrackerSparqlConnection* base, GCancellable* cancellable, GError** error);
+static gchar** _variant_get2 (GVariant* value, int* result_length1, int* result_length2);
 TrackerBusArrayCursor* tracker_bus_array_cursor_new (gchar** results, int results_length1, int results_length2, gint rows, gint cols, gchar** var_names, int var_names_length1, TrackerSparqlValueType* types, int types_length1);
 TrackerBusArrayCursor* tracker_bus_array_cursor_construct (GType object_type, gchar** results, int results_length1, int results_length2, gint rows, gint cols, gchar** var_names, int var_names_length1, TrackerSparqlValueType* types, int types_length1);
 GType tracker_bus_array_cursor_get_type (void) G_GNUC_CONST;
@@ -638,1526 +548,33 @@ static void tracker_bus_connection_real_statistics_async_data_free (gpointer _da
 static void tracker_bus_connection_real_statistics_async (TrackerSparqlConnection* base, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_);
 static gboolean tracker_bus_connection_real_statistics_async_co (TrackerBusConnectionStatisticsAsyncData* _data_);
 static void tracker_bus_connection_statistics_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_);
-static void tracker_bus_connection_finalize (GObject* obj);
+static gchar** _variant_get3 (GVariant* value, int* result_length1, int* result_length2);
 static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func);
 static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
-
-static const GDBusArgInfo _tracker_bus_resources_dbus_arg_info_load_uri = {-1, "uri", "s"};
-static const GDBusArgInfo * const _tracker_bus_resources_dbus_arg_info_load_in[] = {&_tracker_bus_resources_dbus_arg_info_load_uri, NULL};
-static const GDBusArgInfo * const _tracker_bus_resources_dbus_arg_info_load_out[] = {NULL};
-static const GDBusMethodInfo _tracker_bus_resources_dbus_method_info_load = {-1, "Load", (GDBusArgInfo **) (&_tracker_bus_resources_dbus_arg_info_load_in), (GDBusArgInfo **) (&_tracker_bus_resources_dbus_arg_info_load_out)};
-static const GDBusArgInfo _tracker_bus_resources_dbus_arg_info_load_async_uri = {-1, "uri", "s"};
-static const GDBusArgInfo * const _tracker_bus_resources_dbus_arg_info_load_async_in[] = {&_tracker_bus_resources_dbus_arg_info_load_async_uri, NULL};
-static const GDBusArgInfo * const _tracker_bus_resources_dbus_arg_info_load_async_out[] = {NULL};
-static const GDBusMethodInfo _tracker_bus_resources_dbus_method_info_load_async = {-1, "Load", (GDBusArgInfo **) (&_tracker_bus_resources_dbus_arg_info_load_async_in), (GDBusArgInfo **) (&_tracker_bus_resources_dbus_arg_info_load_async_out)};
-static const GDBusMethodInfo * const _tracker_bus_resources_dbus_method_info[] = {&_tracker_bus_resources_dbus_method_info_load, &_tracker_bus_resources_dbus_method_info_load_async, NULL};
-static const GDBusSignalInfo * const _tracker_bus_resources_dbus_signal_info[] = {NULL};
-static const GDBusPropertyInfo * const _tracker_bus_resources_dbus_property_info[] = {NULL};
-static const GDBusInterfaceInfo _tracker_bus_resources_dbus_interface_info = {-1, "org.freedesktop.Tracker1.Resources", (GDBusMethodInfo **) (&_tracker_bus_resources_dbus_method_info), (GDBusSignalInfo **) (&_tracker_bus_resources_dbus_signal_info), (GDBusPropertyInfo **) (&_tracker_bus_resources_dbus_property_info)};
-static const GDBusInterfaceVTable _tracker_bus_resources_dbus_interface_vtable = {tracker_bus_resources_dbus_interface_method_call, tracker_bus_resources_dbus_interface_get_property, tracker_bus_resources_dbus_interface_set_property};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_query_query = {-1, "query", "s"};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_query_result_stream = {-1, "result_stream", "h"};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_query_result = {-1, "result", "as"};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_query_in[] = {&_tracker_bus_steroids_dbus_arg_info_query_query, &_tracker_bus_steroids_dbus_arg_info_query_result_stream, NULL};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_query_out[] = {&_tracker_bus_steroids_dbus_arg_info_query_result, NULL};
-static const GDBusMethodInfo _tracker_bus_steroids_dbus_method_info_query = {-1, "Query", (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_query_in), (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_query_out)};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_update_sparql_stream = {-1, "sparql_stream", "h"};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_update_in[] = {&_tracker_bus_steroids_dbus_arg_info_update_sparql_stream, NULL};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_update_out[] = {NULL};
-static const GDBusMethodInfo _tracker_bus_steroids_dbus_method_info_update = {-1, "Update", (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_update_in), (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_update_out)};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_update_blank_sparql_stream = {-1, "sparql_stream", "h"};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_update_blank_result = {-1, "result", "aaa{ss}"};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_update_blank_in[] = {&_tracker_bus_steroids_dbus_arg_info_update_blank_sparql_stream, NULL};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_update_blank_out[] = {&_tracker_bus_steroids_dbus_arg_info_update_blank_result, NULL};
-static const GDBusMethodInfo _tracker_bus_steroids_dbus_method_info_update_blank = {-1, "UpdateBlank", (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_update_blank_in), (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_update_blank_out)};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_batch_update_sparql_stream = {-1, "sparql_stream", "h"};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_batch_update_in[] = {&_tracker_bus_steroids_dbus_arg_info_batch_update_sparql_stream, NULL};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_batch_update_out[] = {NULL};
-static const GDBusMethodInfo _tracker_bus_steroids_dbus_method_info_batch_update = {-1, "BatchUpdate", (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_batch_update_in), (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_batch_update_out)};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_update_array_sparql_stream = {-1, "sparql_stream", "h"};
-static const GDBusArgInfo _tracker_bus_steroids_dbus_arg_info_update_array_result = {-1, "result", "as"};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_update_array_in[] = {&_tracker_bus_steroids_dbus_arg_info_update_array_sparql_stream, NULL};
-static const GDBusArgInfo * const _tracker_bus_steroids_dbus_arg_info_update_array_out[] = {&_tracker_bus_steroids_dbus_arg_info_update_array_result, NULL};
-static const GDBusMethodInfo _tracker_bus_steroids_dbus_method_info_update_array = {-1, "UpdateArray", (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_update_array_in), (GDBusArgInfo **) (&_tracker_bus_steroids_dbus_arg_info_update_array_out)};
-static const GDBusMethodInfo * const _tracker_bus_steroids_dbus_method_info[] = {&_tracker_bus_steroids_dbus_method_info_query, &_tracker_bus_steroids_dbus_method_info_update, &_tracker_bus_steroids_dbus_method_info_update_blank, &_tracker_bus_steroids_dbus_method_info_batch_update, &_tracker_bus_steroids_dbus_method_info_update_array, NULL};
-static const GDBusSignalInfo * const _tracker_bus_steroids_dbus_signal_info[] = {NULL};
-static const GDBusPropertyInfo * const _tracker_bus_steroids_dbus_property_info[] = {NULL};
-static const GDBusInterfaceInfo _tracker_bus_steroids_dbus_interface_info = {-1, "org.freedesktop.Tracker1.Steroids", (GDBusMethodInfo **) (&_tracker_bus_steroids_dbus_method_info), (GDBusSignalInfo **) (&_tracker_bus_steroids_dbus_signal_info), (GDBusPropertyInfo **) (&_tracker_bus_steroids_dbus_property_info)};
-static const GDBusInterfaceVTable _tracker_bus_steroids_dbus_interface_vtable = {tracker_bus_steroids_dbus_interface_method_call, tracker_bus_steroids_dbus_interface_get_property, tracker_bus_steroids_dbus_interface_set_property};
-static const GDBusArgInfo _tracker_bus_statistics_dbus_arg_info_Get_result = {-1, "result", "aas"};
-static const GDBusArgInfo * const _tracker_bus_statistics_dbus_arg_info_Get_in[] = {NULL};
-static const GDBusArgInfo * const _tracker_bus_statistics_dbus_arg_info_Get_out[] = {&_tracker_bus_statistics_dbus_arg_info_Get_result, NULL};
-static const GDBusMethodInfo _tracker_bus_statistics_dbus_method_info_Get = {-1, "Get", (GDBusArgInfo **) (&_tracker_bus_statistics_dbus_arg_info_Get_in), (GDBusArgInfo **) (&_tracker_bus_statistics_dbus_arg_info_Get_out)};
-static const GDBusArgInfo _tracker_bus_statistics_dbus_arg_info_Get_async_result = {-1, "result", "aas"};
-static const GDBusArgInfo * const _tracker_bus_statistics_dbus_arg_info_Get_async_in[] = {NULL};
-static const GDBusArgInfo * const _tracker_bus_statistics_dbus_arg_info_Get_async_out[] = {&_tracker_bus_statistics_dbus_arg_info_Get_async_result, NULL};
-static const GDBusMethodInfo _tracker_bus_statistics_dbus_method_info_Get_async = {-1, "Get_async", (GDBusArgInfo **) (&_tracker_bus_statistics_dbus_arg_info_Get_async_in), (GDBusArgInfo **) (&_tracker_bus_statistics_dbus_arg_info_Get_async_out)};
-static const GDBusMethodInfo * const _tracker_bus_statistics_dbus_method_info[] = {&_tracker_bus_statistics_dbus_method_info_Get, &_tracker_bus_statistics_dbus_method_info_Get_async, NULL};
-static const GDBusSignalInfo * const _tracker_bus_statistics_dbus_signal_info[] = {NULL};
-static const GDBusPropertyInfo * const _tracker_bus_statistics_dbus_property_info[] = {NULL};
-static const GDBusInterfaceInfo _tracker_bus_statistics_dbus_interface_info = {-1, "org.freedesktop.Tracker1.Statistics", (GDBusMethodInfo **) (&_tracker_bus_statistics_dbus_method_info), (GDBusSignalInfo **) (&_tracker_bus_statistics_dbus_signal_info), (GDBusPropertyInfo **) (&_tracker_bus_statistics_dbus_property_info)};
-static const GDBusInterfaceVTable _tracker_bus_statistics_dbus_interface_vtable = {tracker_bus_statistics_dbus_interface_method_call, tracker_bus_statistics_dbus_interface_get_property, tracker_bus_statistics_dbus_interface_set_property};
-
-void tracker_bus_resources_load (TrackerBusResources* self, const gchar* uri, GCancellable* cancellable, GError** error) {
-#line 22 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_return_if_fail (self != NULL);
-#line 22 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_RESOURCES_GET_INTERFACE (self)->load (self, uri, cancellable, error);
-#line 707 "tracker-bus.c"
-}
-
-
-void tracker_bus_resources_load_async (TrackerBusResources* self, const gchar* uri, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-#line 21 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_RESOURCES_GET_INTERFACE (self)->load_async (self, uri, cancellable, _callback_, _user_data_);
-#line 714 "tracker-bus.c"
-}
-
-
-void tracker_bus_resources_load_finish (TrackerBusResources* self, GAsyncResult* _res_, GError** error) {
-#line 21 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_RESOURCES_GET_INTERFACE (self)->load_finish (self, _res_, error);
-#line 721 "tracker-bus.c"
-}
-
-
-static void tracker_bus_resources_base_init (TrackerBusResourcesIface * iface) {
-#line 21 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	static gboolean initialized = FALSE;
-#line 21 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (!initialized) {
-#line 21 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		initialized = TRUE;
-#line 732 "tracker-bus.c"
-	}
-}
-
-
-GType tracker_bus_resources_get_type (void) {
-	static volatile gsize tracker_bus_resources_type_id__volatile = 0;
-	if (g_once_init_enter (&tracker_bus_resources_type_id__volatile)) {
-		static const GTypeInfo g_define_type_info = { sizeof (TrackerBusResourcesIface), (GBaseInitFunc) tracker_bus_resources_base_init, (GBaseFinalizeFunc) NULL, (GClassInitFunc) NULL, (GClassFinalizeFunc) NULL, NULL, 0, 0, (GInstanceInitFunc) NULL, NULL };
-		GType tracker_bus_resources_type_id;
-		tracker_bus_resources_type_id = g_type_register_static (G_TYPE_INTERFACE, "TrackerBusResources", &g_define_type_info, 0);
-		g_type_interface_add_prerequisite (tracker_bus_resources_type_id, G_TYPE_DBUS_PROXY);
-		g_type_set_qdata (tracker_bus_resources_type_id, g_quark_from_static_string ("vala-dbus-proxy-type"), (void*) tracker_bus_resources_proxy_get_type);
-		g_type_set_qdata (tracker_bus_resources_type_id, g_quark_from_static_string ("vala-dbus-interface-name"), "org.freedesktop.Tracker1.Resources");
-		g_type_set_qdata (tracker_bus_resources_type_id, g_quark_from_static_string ("vala-dbus-register-object"), (void*) tracker_bus_resources_register_object);
-		g_once_init_leave (&tracker_bus_resources_type_id__volatile, tracker_bus_resources_type_id);
-	}
-	return tracker_bus_resources_type_id__volatile;
-}
-
-
-G_DEFINE_TYPE_EXTENDED (TrackerBusResourcesProxy, tracker_bus_resources_proxy, G_TYPE_DBUS_PROXY, 0, G_IMPLEMENT_INTERFACE (TRACKER_BUS_TYPE_RESOURCES, tracker_bus_resources_proxy_tracker_bus_resources_interface_init) )
-static void tracker_bus_resources_proxy_class_init (TrackerBusResourcesProxyClass* klass) {
-	G_DBUS_PROXY_CLASS (klass)->g_signal = tracker_bus_resources_proxy_g_signal;
-}
-
-
-static void tracker_bus_resources_proxy_g_signal (GDBusProxy* proxy, const gchar* sender_name, const gchar* signal_name, GVariant* parameters) {
-}
-
-
-static void tracker_bus_resources_proxy_init (TrackerBusResourcesProxy* self) {
-}
-
-
-static void tracker_bus_resources_proxy_load (TrackerBusResources* self, const gchar* uri, GCancellable* cancellable, GError** error) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	GDBusMessage *_reply_message;
-	TRACKER_SPARQL_ERROR;
-	G_DBUS_ERROR;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Resources", "Load");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	g_variant_builder_add_value (&_arguments_builder, g_variant_new_string (uri));
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	_reply_message = g_dbus_connection_send_message_with_reply_sync (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, cancellable, error);
-	g_object_unref (_message);
-	if (!_reply_message) {
-		return;
-	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
-		return;
-	}
-	g_object_unref (_reply_message);
-}
-
-
-static void _vala_g_async_ready_callback (GObject *source_object, GAsyncResult *res, void *user_data) {
-	g_simple_async_result_set_op_res_gpointer (user_data, g_object_ref (res), g_object_unref);
-	g_simple_async_result_complete (user_data);
-	g_object_unref (user_data);
-}
-
-
-static void tracker_bus_resources_proxy_load_async_async (TrackerBusResources* self, const gchar* uri, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	TRACKER_SPARQL_ERROR;
-	G_DBUS_ERROR;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Resources", "Load");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	g_variant_builder_add_value (&_arguments_builder, g_variant_new_string (uri));
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	g_dbus_connection_send_message_with_reply (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, cancellable, _vala_g_async_ready_callback, g_simple_async_result_new ((GObject *) self, _callback_, _user_data_, NULL));
-	g_object_unref (_message);
-}
-
-
-static void tracker_bus_resources_proxy_load_async_finish (TrackerBusResources* self, GAsyncResult* _res_, GError** error) {
-	GDBusMessage *_reply_message;
-	_reply_message = g_dbus_connection_send_message_with_reply_finish (g_dbus_proxy_get_connection ((GDBusProxy *) self), g_simple_async_result_get_op_res_gpointer ((GSimpleAsyncResult *) _res_), error);
-	if (!_reply_message) {
-		return;
-	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
-		return;
-	}
-	g_object_unref (_reply_message);
-}
-
-
-static void tracker_bus_resources_proxy_tracker_bus_resources_interface_init (TrackerBusResourcesIface* iface) {
-	iface->load = tracker_bus_resources_proxy_load;
-	iface->load_async = tracker_bus_resources_proxy_load_async_async;
-	iface->load_finish = tracker_bus_resources_proxy_load_async_finish;
-}
-
-
-static void _dbus_tracker_bus_resources_load (TrackerBusResources* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GError* error = NULL;
-	GVariantIter _arguments_iter;
-	gchar* uri = NULL;
-	GVariant* _tmp0_;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	_tmp0_ = g_variant_iter_next_value (&_arguments_iter);
-	uri = g_variant_dup_string (_tmp0_, NULL);
-	g_variant_unref (_tmp0_);
-	tracker_bus_resources_load (self, uri, NULL, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	_g_free0 (uri);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void _dbus_tracker_bus_resources_load_async (TrackerBusResources* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GVariantIter _arguments_iter;
-	gchar* uri = NULL;
-	GVariant* _tmp1_;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	_tmp1_ = g_variant_iter_next_value (&_arguments_iter);
-	uri = g_variant_dup_string (_tmp1_, NULL);
-	g_variant_unref (_tmp1_);
-	tracker_bus_resources_load_async (self, uri, NULL, (GAsyncReadyCallback) _dbus_tracker_bus_resources_load_async_ready, invocation);
-	_g_free0 (uri);
-}
-
-
-static void _dbus_tracker_bus_resources_load_async_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_) {
-	GDBusMethodInvocation * invocation;
-	GError* error = NULL;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	invocation = _user_data_;
-	tracker_bus_resources_load_finish ((TrackerBusResources*) source_object, _res_, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void tracker_bus_resources_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	if (strcmp (method_name, "Load") == 0) {
-		_dbus_tracker_bus_resources_load (object, parameters, invocation);
-	} else if (strcmp (method_name, "Load") == 0) {
-		_dbus_tracker_bus_resources_load_async (object, parameters, invocation);
-	} else {
-		g_object_unref (invocation);
-	}
-}
-
-
-static GVariant* tracker_bus_resources_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	return NULL;
-}
-
-
-static gboolean tracker_bus_resources_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	return FALSE;
-}
-
-
-guint tracker_bus_resources_register_object (gpointer object, GDBusConnection* connection, const gchar* path, GError** error) {
-	guint result;
-	gpointer *data;
-	data = g_new (gpointer, 3);
-	data[0] = g_object_ref (object);
-	data[1] = g_object_ref (connection);
-	data[2] = g_strdup (path);
-	result = g_dbus_connection_register_object (connection, path, (GDBusInterfaceInfo *) (&_tracker_bus_resources_dbus_interface_info), &_tracker_bus_resources_dbus_interface_vtable, data, _tracker_bus_resources_unregister_object, error);
-	if (!result) {
-		return 0;
-	}
-	return result;
-}
-
-
-static void _tracker_bus_resources_unregister_object (gpointer user_data) {
-	gpointer* data;
-	data = user_data;
-	g_object_unref (data[0]);
-	g_object_unref (data[1]);
-	g_free (data[2]);
-	g_free (data);
-}
-
-
-void tracker_bus_steroids_query (TrackerBusSteroids* self, const gchar* query, GUnixOutputStream* result_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->query (self, query, result_stream, cancellable, _callback_, _user_data_);
-#line 960 "tracker-bus.c"
-}
-
-
-gchar** tracker_bus_steroids_query_finish (TrackerBusSteroids* self, GAsyncResult* _res_, int* result_length1, GError** error) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	return TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->query_finish (self, _res_, result_length1, error);
-#line 967 "tracker-bus.c"
-}
-
-
-void tracker_bus_steroids_update (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->update (self, sparql_stream, cancellable, _callback_, _user_data_);
-#line 974 "tracker-bus.c"
-}
-
-
-void tracker_bus_steroids_update_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->update_finish (self, _res_, error);
-#line 981 "tracker-bus.c"
-}
-
-
-void tracker_bus_steroids_update_blank (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->update_blank (self, sparql_stream, cancellable, _callback_, _user_data_);
-#line 988 "tracker-bus.c"
-}
-
-
-GVariant* tracker_bus_steroids_update_blank_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	return TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->update_blank_finish (self, _res_, error);
-#line 995 "tracker-bus.c"
-}
-
-
-void tracker_bus_steroids_batch_update (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->batch_update (self, sparql_stream, cancellable, _callback_, _user_data_);
-#line 1002 "tracker-bus.c"
-}
-
-
-void tracker_bus_steroids_batch_update_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->batch_update_finish (self, _res_, error);
-#line 1009 "tracker-bus.c"
-}
-
-
-void tracker_bus_steroids_update_array (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->update_array (self, sparql_stream, cancellable, _callback_, _user_data_);
-#line 1016 "tracker-bus.c"
-}
-
-
-GVariant* tracker_bus_steroids_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	return TRACKER_BUS_STEROIDS_GET_INTERFACE (self)->update_array_finish (self, _res_, error);
-#line 1023 "tracker-bus.c"
-}
-
-
-void tracker_bus_steroids_update_begin (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, gint priority, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target) {
-	gint _tmp0_;
-#line 38 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_return_if_fail (sparql_stream != NULL);
-#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp0_ = priority;
-#line 39 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_tmp0_ <= G_PRIORITY_DEFAULT) {
-#line 1035 "tracker-bus.c"
-		GUnixInputStream* _tmp1_;
-		GCancellable* _tmp2_;
-		GAsyncReadyCallback _tmp3_;
-		void* _tmp3__target;
-#line 40 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp1_ = sparql_stream;
-#line 40 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp2_ = cancellable;
-#line 40 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp3_ = callback;
-#line 40 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp3__target = callback_target;
-#line 40 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		tracker_bus_steroids_update (self, _tmp1_, _tmp2_, _tmp3_, _tmp3__target);
-#line 1050 "tracker-bus.c"
-	} else {
-		GUnixInputStream* _tmp4_;
-		GCancellable* _tmp5_;
-		GAsyncReadyCallback _tmp6_;
-		void* _tmp6__target;
-#line 42 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp4_ = sparql_stream;
-#line 42 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp5_ = cancellable;
-#line 42 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp6_ = callback;
-#line 42 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp6__target = callback_target;
-#line 42 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		tracker_bus_steroids_batch_update (self, _tmp4_, _tmp5_, _tmp6_, _tmp6__target);
-#line 1066 "tracker-bus.c"
-	}
-}
-
-
-static void tracker_bus_steroids_base_init (TrackerBusSteroidsIface * iface) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	static gboolean initialized = FALSE;
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (!initialized) {
-#line 28 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		initialized = TRUE;
-#line 1078 "tracker-bus.c"
-	}
-}
-
-
-GType tracker_bus_steroids_get_type (void) {
-	static volatile gsize tracker_bus_steroids_type_id__volatile = 0;
-	if (g_once_init_enter (&tracker_bus_steroids_type_id__volatile)) {
-		static const GTypeInfo g_define_type_info = { sizeof (TrackerBusSteroidsIface), (GBaseInitFunc) tracker_bus_steroids_base_init, (GBaseFinalizeFunc) NULL, (GClassInitFunc) NULL, (GClassFinalizeFunc) NULL, NULL, 0, 0, (GInstanceInitFunc) NULL, NULL };
-		GType tracker_bus_steroids_type_id;
-		tracker_bus_steroids_type_id = g_type_register_static (G_TYPE_INTERFACE, "TrackerBusSteroids", &g_define_type_info, 0);
-		g_type_interface_add_prerequisite (tracker_bus_steroids_type_id, G_TYPE_DBUS_PROXY);
-		g_type_set_qdata (tracker_bus_steroids_type_id, g_quark_from_static_string ("vala-dbus-proxy-type"), (void*) tracker_bus_steroids_proxy_get_type);
-		g_type_set_qdata (tracker_bus_steroids_type_id, g_quark_from_static_string ("vala-dbus-interface-name"), "org.freedesktop.Tracker1.Steroids");
-		g_type_set_qdata (tracker_bus_steroids_type_id, g_quark_from_static_string ("vala-dbus-register-object"), (void*) tracker_bus_steroids_register_object);
-		g_once_init_leave (&tracker_bus_steroids_type_id__volatile, tracker_bus_steroids_type_id);
-	}
-	return tracker_bus_steroids_type_id__volatile;
-}
-
-
-G_DEFINE_TYPE_EXTENDED (TrackerBusSteroidsProxy, tracker_bus_steroids_proxy, G_TYPE_DBUS_PROXY, 0, G_IMPLEMENT_INTERFACE (TRACKER_BUS_TYPE_STEROIDS, tracker_bus_steroids_proxy_tracker_bus_steroids_interface_init) )
-static void tracker_bus_steroids_proxy_class_init (TrackerBusSteroidsProxyClass* klass) {
-	G_DBUS_PROXY_CLASS (klass)->g_signal = tracker_bus_steroids_proxy_g_signal;
-}
-
-
-static void tracker_bus_steroids_proxy_g_signal (GDBusProxy* proxy, const gchar* sender_name, const gchar* signal_name, GVariant* parameters) {
-}
-
-
-static void tracker_bus_steroids_proxy_init (TrackerBusSteroidsProxy* self) {
-}
-
-
-static void tracker_bus_steroids_proxy_query_async (TrackerBusSteroids* self, const gchar* query, GUnixOutputStream* result_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	GUnixFDList *_fd_list;
-	TRACKER_SPARQL_ERROR;
-	G_DBUS_ERROR;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Steroids", "Query");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	g_variant_builder_add_value (&_arguments_builder, g_variant_new_string (query));
-	g_variant_builder_add (&_arguments_builder, "h", g_unix_fd_list_append (_fd_list, g_unix_output_stream_get_fd (result_stream), NULL));
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	g_dbus_message_set_unix_fd_list (_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message_with_reply (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, cancellable, _vala_g_async_ready_callback, g_simple_async_result_new ((GObject *) self, _callback_, _user_data_, NULL));
-	g_object_unref (_message);
-}
-
-
-static gchar** tracker_bus_steroids_proxy_query_finish (TrackerBusSteroids* self, GAsyncResult* _res_, int* result_length1, GError** error) {
-	GDBusMessage *_reply_message;
-	gint _fd_index = 0;
-	GVariant *_reply;
-	GVariantIter _reply_iter;
-	gchar** _result;
-	int _result_length1;
-	GVariant* _tmp2_;
-	gchar** _tmp3_;
-	int _tmp3__length;
-	int _tmp3__size;
-	int _tmp3__length1;
-	GVariantIter _tmp4_;
-	GVariant* _tmp5_;
-	_reply_message = g_dbus_connection_send_message_with_reply_finish (g_dbus_proxy_get_connection ((GDBusProxy *) self), g_simple_async_result_get_op_res_gpointer ((GSimpleAsyncResult *) _res_), error);
-	if (!_reply_message) {
-		return NULL;
-	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
-		return NULL;
-	}
-	_reply = g_dbus_message_get_body (_reply_message);
-	g_variant_iter_init (&_reply_iter, _reply);
-	_result_length1 = 0;
-	_tmp2_ = g_variant_iter_next_value (&_reply_iter);
-	_tmp3_ = g_new (gchar*, 5);
-	_tmp3__length = 0;
-	_tmp3__size = 4;
-	_tmp3__length1 = 0;
-	g_variant_iter_init (&_tmp4_, _tmp2_);
-	for (; (_tmp5_ = g_variant_iter_next_value (&_tmp4_)) != NULL; _tmp3__length1++) {
-		if (_tmp3__size == _tmp3__length) {
-			_tmp3__size = 2 * _tmp3__size;
-			_tmp3_ = g_renew (gchar*, _tmp3_, _tmp3__size + 1);
-		}
-		_tmp3_[_tmp3__length++] = g_variant_dup_string (_tmp5_, NULL);
-		g_variant_unref (_tmp5_);
-	}
-	_result_length1 = _tmp3__length1;
-	_tmp3_[_tmp3__length] = NULL;
-	_result = _tmp3_;
-	g_variant_unref (_tmp2_);
-	*result_length1 = _result_length1;
-	g_object_unref (_reply_message);
-	return _result;
-}
-
-
-static void tracker_bus_steroids_proxy_update_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	GUnixFDList *_fd_list;
-	TRACKER_SPARQL_ERROR;
-	G_DBUS_ERROR;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Steroids", "Update");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	g_variant_builder_add (&_arguments_builder, "h", g_unix_fd_list_append (_fd_list, g_unix_input_stream_get_fd (sparql_stream), NULL));
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	g_dbus_message_set_unix_fd_list (_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message_with_reply (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, cancellable, _vala_g_async_ready_callback, g_simple_async_result_new ((GObject *) self, _callback_, _user_data_, NULL));
-	g_object_unref (_message);
-}
-
-
-static void tracker_bus_steroids_proxy_update_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error) {
-	GDBusMessage *_reply_message;
-	gint _fd_index = 0;
-	_reply_message = g_dbus_connection_send_message_with_reply_finish (g_dbus_proxy_get_connection ((GDBusProxy *) self), g_simple_async_result_get_op_res_gpointer ((GSimpleAsyncResult *) _res_), error);
-	if (!_reply_message) {
-		return;
-	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
-		return;
-	}
-	g_object_unref (_reply_message);
-}
-
-
-static void tracker_bus_steroids_proxy_update_blank_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	GUnixFDList *_fd_list;
-	TRACKER_SPARQL_ERROR;
-	G_DBUS_ERROR;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Steroids", "UpdateBlank");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	g_variant_builder_add (&_arguments_builder, "h", g_unix_fd_list_append (_fd_list, g_unix_input_stream_get_fd (sparql_stream), NULL));
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	g_dbus_message_set_unix_fd_list (_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message_with_reply (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, cancellable, _vala_g_async_ready_callback, g_simple_async_result_new ((GObject *) self, _callback_, _user_data_, NULL));
-	g_object_unref (_message);
-}
-
-
-static GVariant* tracker_bus_steroids_proxy_update_blank_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error) {
-	GDBusMessage *_reply_message;
-	gint _fd_index = 0;
-	GVariant *_reply;
-	GVariantIter _reply_iter;
-	GVariant* _result;
-	_reply_message = g_dbus_connection_send_message_with_reply_finish (g_dbus_proxy_get_connection ((GDBusProxy *) self), g_simple_async_result_get_op_res_gpointer ((GSimpleAsyncResult *) _res_), error);
-	if (!_reply_message) {
-		return NULL;
-	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
-		return NULL;
-	}
-	_reply = g_dbus_message_get_body (_reply_message);
-	g_variant_iter_init (&_reply_iter, _reply);
-	_result = g_variant_iter_next_value (&_reply_iter);
-	g_object_unref (_reply_message);
-	return _result;
-}
-
-
-static void tracker_bus_steroids_proxy_batch_update_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	GUnixFDList *_fd_list;
-	TRACKER_SPARQL_ERROR;
-	G_DBUS_ERROR;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Steroids", "BatchUpdate");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	g_variant_builder_add (&_arguments_builder, "h", g_unix_fd_list_append (_fd_list, g_unix_input_stream_get_fd (sparql_stream), NULL));
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	g_dbus_message_set_unix_fd_list (_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message_with_reply (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, cancellable, _vala_g_async_ready_callback, g_simple_async_result_new ((GObject *) self, _callback_, _user_data_, NULL));
-	g_object_unref (_message);
-}
-
-
-static void tracker_bus_steroids_proxy_batch_update_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error) {
-	GDBusMessage *_reply_message;
-	gint _fd_index = 0;
-	_reply_message = g_dbus_connection_send_message_with_reply_finish (g_dbus_proxy_get_connection ((GDBusProxy *) self), g_simple_async_result_get_op_res_gpointer ((GSimpleAsyncResult *) _res_), error);
-	if (!_reply_message) {
-		return;
-	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
-		return;
-	}
-	g_object_unref (_reply_message);
-}
-
-
-static void tracker_bus_steroids_proxy_update_array_async (TrackerBusSteroids* self, GUnixInputStream* sparql_stream, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	GUnixFDList *_fd_list;
-	TRACKER_SPARQL_ERROR;
-	G_DBUS_ERROR;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Steroids", "UpdateArray");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	g_variant_builder_add (&_arguments_builder, "h", g_unix_fd_list_append (_fd_list, g_unix_input_stream_get_fd (sparql_stream), NULL));
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	g_dbus_message_set_unix_fd_list (_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message_with_reply (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, cancellable, _vala_g_async_ready_callback, g_simple_async_result_new ((GObject *) self, _callback_, _user_data_, NULL));
-	g_object_unref (_message);
-}
-
-
-static GVariant* tracker_bus_steroids_proxy_update_array_finish (TrackerBusSteroids* self, GAsyncResult* _res_, GError** error) {
-	GDBusMessage *_reply_message;
-	gint _fd_index = 0;
-	GVariant *_reply;
-	GVariantIter _reply_iter;
-	GVariant* _result;
-	_reply_message = g_dbus_connection_send_message_with_reply_finish (g_dbus_proxy_get_connection ((GDBusProxy *) self), g_simple_async_result_get_op_res_gpointer ((GSimpleAsyncResult *) _res_), error);
-	if (!_reply_message) {
-		return NULL;
-	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
-		return NULL;
-	}
-	_reply = g_dbus_message_get_body (_reply_message);
-	g_variant_iter_init (&_reply_iter, _reply);
-	_result = g_variant_iter_next_value (&_reply_iter);
-	g_object_unref (_reply_message);
-	return _result;
-}
-
-
-static void tracker_bus_steroids_proxy_tracker_bus_steroids_interface_init (TrackerBusSteroidsIface* iface) {
-	iface->query = tracker_bus_steroids_proxy_query_async;
-	iface->query_finish = tracker_bus_steroids_proxy_query_finish;
-	iface->update = tracker_bus_steroids_proxy_update_async;
-	iface->update_finish = tracker_bus_steroids_proxy_update_finish;
-	iface->update_blank = tracker_bus_steroids_proxy_update_blank_async;
-	iface->update_blank_finish = tracker_bus_steroids_proxy_update_blank_finish;
-	iface->batch_update = tracker_bus_steroids_proxy_batch_update_async;
-	iface->batch_update_finish = tracker_bus_steroids_proxy_batch_update_finish;
-	iface->update_array = tracker_bus_steroids_proxy_update_array_async;
-	iface->update_array_finish = tracker_bus_steroids_proxy_update_array_finish;
-}
-
-
-static void _dbus_tracker_bus_steroids_query (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GVariantIter _arguments_iter;
-	gint _fd_index = 0;
-	gchar* query = NULL;
-	GVariant* _tmp6_;
-	GUnixOutputStream* result_stream = NULL;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	_tmp6_ = g_variant_iter_next_value (&_arguments_iter);
-	query = g_variant_dup_string (_tmp6_, NULL);
-	g_variant_unref (_tmp6_);
-	g_variant_iter_next (&_arguments_iter, "h", &_fd_index);
-	result_stream = (GUnixOutputStream *) g_unix_output_stream_new (g_unix_fd_list_get (g_dbus_message_get_unix_fd_list (g_dbus_method_invocation_get_message (invocation)), _fd_index, NULL), TRUE);
-	tracker_bus_steroids_query (self, query, result_stream, NULL, (GAsyncReadyCallback) _dbus_tracker_bus_steroids_query_ready, invocation);
-	_g_free0 (query);
-	_g_object_unref0 (result_stream);
-}
-
-
-static void _dbus_tracker_bus_steroids_query_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_) {
-	GDBusMethodInvocation * invocation;
-	GError* error = NULL;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	GUnixFDList *_fd_list;
-	gchar** result;
-	int result_length1 = 0;
-	gchar** _tmp7_;
-	GVariantBuilder _tmp8_;
-	int _tmp9_;
-	invocation = _user_data_;
-	result = tracker_bus_steroids_query_finish ((TrackerBusSteroids*) source_object, _res_, &result_length1, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	_tmp7_ = result;
-	g_variant_builder_init (&_tmp8_, G_VARIANT_TYPE ("as"));
-	for (_tmp9_ = 0; _tmp9_ < result_length1; _tmp9_++) {
-		g_variant_builder_add_value (&_tmp8_, g_variant_new_string (*_tmp7_));
-		_tmp7_++;
-	}
-	g_variant_builder_add_value (&_reply_builder, g_variant_builder_end (&_tmp8_));
-	result = (_vala_array_free (result, result_length1, (GDestroyNotify) g_free), NULL);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_message_set_unix_fd_list (_reply_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void _dbus_tracker_bus_steroids_update (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GVariantIter _arguments_iter;
-	gint _fd_index = 0;
-	GUnixInputStream* sparql_stream = NULL;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	g_variant_iter_next (&_arguments_iter, "h", &_fd_index);
-	sparql_stream = (GUnixInputStream *) g_unix_input_stream_new (g_unix_fd_list_get (g_dbus_message_get_unix_fd_list (g_dbus_method_invocation_get_message (invocation)), _fd_index, NULL), TRUE);
-	tracker_bus_steroids_update (self, sparql_stream, NULL, (GAsyncReadyCallback) _dbus_tracker_bus_steroids_update_ready, invocation);
-	_g_object_unref0 (sparql_stream);
-}
-
-
-static void _dbus_tracker_bus_steroids_update_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_) {
-	GDBusMethodInvocation * invocation;
-	GError* error = NULL;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	GUnixFDList *_fd_list;
-	invocation = _user_data_;
-	tracker_bus_steroids_update_finish ((TrackerBusSteroids*) source_object, _res_, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_message_set_unix_fd_list (_reply_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void _dbus_tracker_bus_steroids_update_blank (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GVariantIter _arguments_iter;
-	gint _fd_index = 0;
-	GUnixInputStream* sparql_stream = NULL;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	g_variant_iter_next (&_arguments_iter, "h", &_fd_index);
-	sparql_stream = (GUnixInputStream *) g_unix_input_stream_new (g_unix_fd_list_get (g_dbus_message_get_unix_fd_list (g_dbus_method_invocation_get_message (invocation)), _fd_index, NULL), TRUE);
-	tracker_bus_steroids_update_blank (self, sparql_stream, NULL, (GAsyncReadyCallback) _dbus_tracker_bus_steroids_update_blank_ready, invocation);
-	_g_object_unref0 (sparql_stream);
-}
-
-
-static void _dbus_tracker_bus_steroids_update_blank_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_) {
-	GDBusMethodInvocation * invocation;
-	GError* error = NULL;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	GUnixFDList *_fd_list;
-	GVariant* result;
-	invocation = _user_data_;
-	result = tracker_bus_steroids_update_blank_finish ((TrackerBusSteroids*) source_object, _res_, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	g_variant_builder_add_value (&_reply_builder, result);
-	_g_variant_unref0 (result);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_message_set_unix_fd_list (_reply_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void _dbus_tracker_bus_steroids_batch_update (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GVariantIter _arguments_iter;
-	gint _fd_index = 0;
-	GUnixInputStream* sparql_stream = NULL;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	g_variant_iter_next (&_arguments_iter, "h", &_fd_index);
-	sparql_stream = (GUnixInputStream *) g_unix_input_stream_new (g_unix_fd_list_get (g_dbus_message_get_unix_fd_list (g_dbus_method_invocation_get_message (invocation)), _fd_index, NULL), TRUE);
-	tracker_bus_steroids_batch_update (self, sparql_stream, NULL, (GAsyncReadyCallback) _dbus_tracker_bus_steroids_batch_update_ready, invocation);
-	_g_object_unref0 (sparql_stream);
-}
-
-
-static void _dbus_tracker_bus_steroids_batch_update_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_) {
-	GDBusMethodInvocation * invocation;
-	GError* error = NULL;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	GUnixFDList *_fd_list;
-	invocation = _user_data_;
-	tracker_bus_steroids_batch_update_finish ((TrackerBusSteroids*) source_object, _res_, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_message_set_unix_fd_list (_reply_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void _dbus_tracker_bus_steroids_update_array (TrackerBusSteroids* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GVariantIter _arguments_iter;
-	gint _fd_index = 0;
-	GUnixInputStream* sparql_stream = NULL;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	g_variant_iter_next (&_arguments_iter, "h", &_fd_index);
-	sparql_stream = (GUnixInputStream *) g_unix_input_stream_new (g_unix_fd_list_get (g_dbus_message_get_unix_fd_list (g_dbus_method_invocation_get_message (invocation)), _fd_index, NULL), TRUE);
-	tracker_bus_steroids_update_array (self, sparql_stream, NULL, (GAsyncReadyCallback) _dbus_tracker_bus_steroids_update_array_ready, invocation);
-	_g_object_unref0 (sparql_stream);
-}
-
-
-static void _dbus_tracker_bus_steroids_update_array_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_) {
-	GDBusMethodInvocation * invocation;
-	GError* error = NULL;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	GUnixFDList *_fd_list;
-	GVariant* result;
-	invocation = _user_data_;
-	result = tracker_bus_steroids_update_array_finish ((TrackerBusSteroids*) source_object, _res_, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_fd_list = g_unix_fd_list_new ();
-	g_variant_builder_add_value (&_reply_builder, result);
-	_g_variant_unref0 (result);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_message_set_unix_fd_list (_reply_message, _fd_list);
-	g_object_unref (_fd_list);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void tracker_bus_steroids_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	if (strcmp (method_name, "Query") == 0) {
-		_dbus_tracker_bus_steroids_query (object, parameters, invocation);
-	} else if (strcmp (method_name, "Update") == 0) {
-		_dbus_tracker_bus_steroids_update (object, parameters, invocation);
-	} else if (strcmp (method_name, "UpdateBlank") == 0) {
-		_dbus_tracker_bus_steroids_update_blank (object, parameters, invocation);
-	} else if (strcmp (method_name, "BatchUpdate") == 0) {
-		_dbus_tracker_bus_steroids_batch_update (object, parameters, invocation);
-	} else if (strcmp (method_name, "UpdateArray") == 0) {
-		_dbus_tracker_bus_steroids_update_array (object, parameters, invocation);
-	} else {
-		g_object_unref (invocation);
-	}
-}
-
-
-static GVariant* tracker_bus_steroids_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	return NULL;
-}
-
-
-static gboolean tracker_bus_steroids_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	return FALSE;
-}
-
-
-guint tracker_bus_steroids_register_object (gpointer object, GDBusConnection* connection, const gchar* path, GError** error) {
-	guint result;
-	gpointer *data;
-	data = g_new (gpointer, 3);
-	data[0] = g_object_ref (object);
-	data[1] = g_object_ref (connection);
-	data[2] = g_strdup (path);
-	result = g_dbus_connection_register_object (connection, path, (GDBusInterfaceInfo *) (&_tracker_bus_steroids_dbus_interface_info), &_tracker_bus_steroids_dbus_interface_vtable, data, _tracker_bus_steroids_unregister_object, error);
-	if (!result) {
-		return 0;
-	}
-	return result;
-}
-
-
-static void _tracker_bus_steroids_unregister_object (gpointer user_data) {
-	gpointer* data;
-	data = user_data;
-	g_object_unref (data[0]);
-	g_object_unref (data[1]);
-	g_free (data[2]);
-	g_free (data);
-}
-
-
-gchar** tracker_bus_statistics_Get (TrackerBusStatistics* self, GCancellable* cancellable, int* result_length1, int* result_length2, GError** error) {
-#line 49 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_return_val_if_fail (self != NULL, NULL);
-#line 49 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	return TRACKER_BUS_STATISTICS_GET_INTERFACE (self)->Get (self, cancellable, result_length1, result_length2, error);
-#line 1635 "tracker-bus.c"
-}
-
-
-void tracker_bus_statistics_Get_async (TrackerBusStatistics* self, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-#line 48 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	TRACKER_BUS_STATISTICS_GET_INTERFACE (self)->Get_async (self, cancellable, _callback_, _user_data_);
-#line 1642 "tracker-bus.c"
-}
-
-
-gchar** tracker_bus_statistics_Get_finish (TrackerBusStatistics* self, GAsyncResult* _res_, int* result_length1, int* result_length2, GError** error) {
-#line 48 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	return TRACKER_BUS_STATISTICS_GET_INTERFACE (self)->Get_finish (self, _res_, result_length1, result_length2, error);
-#line 1649 "tracker-bus.c"
-}
-
-
-static void tracker_bus_statistics_base_init (TrackerBusStatisticsIface * iface) {
-#line 48 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	static gboolean initialized = FALSE;
-#line 48 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (!initialized) {
-#line 48 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		initialized = TRUE;
-#line 1660 "tracker-bus.c"
-	}
-}
-
-
-GType tracker_bus_statistics_get_type (void) {
-	static volatile gsize tracker_bus_statistics_type_id__volatile = 0;
-	if (g_once_init_enter (&tracker_bus_statistics_type_id__volatile)) {
-		static const GTypeInfo g_define_type_info = { sizeof (TrackerBusStatisticsIface), (GBaseInitFunc) tracker_bus_statistics_base_init, (GBaseFinalizeFunc) NULL, (GClassInitFunc) NULL, (GClassFinalizeFunc) NULL, NULL, 0, 0, (GInstanceInitFunc) NULL, NULL };
-		GType tracker_bus_statistics_type_id;
-		tracker_bus_statistics_type_id = g_type_register_static (G_TYPE_INTERFACE, "TrackerBusStatistics", &g_define_type_info, 0);
-		g_type_interface_add_prerequisite (tracker_bus_statistics_type_id, G_TYPE_DBUS_PROXY);
-		g_type_set_qdata (tracker_bus_statistics_type_id, g_quark_from_static_string ("vala-dbus-proxy-type"), (void*) tracker_bus_statistics_proxy_get_type);
-		g_type_set_qdata (tracker_bus_statistics_type_id, g_quark_from_static_string ("vala-dbus-interface-name"), "org.freedesktop.Tracker1.Statistics");
-		g_type_set_qdata (tracker_bus_statistics_type_id, g_quark_from_static_string ("vala-dbus-register-object"), (void*) tracker_bus_statistics_register_object);
-		g_once_init_leave (&tracker_bus_statistics_type_id__volatile, tracker_bus_statistics_type_id);
-	}
-	return tracker_bus_statistics_type_id__volatile;
-}
-
-
-G_DEFINE_TYPE_EXTENDED (TrackerBusStatisticsProxy, tracker_bus_statistics_proxy, G_TYPE_DBUS_PROXY, 0, G_IMPLEMENT_INTERFACE (TRACKER_BUS_TYPE_STATISTICS, tracker_bus_statistics_proxy_tracker_bus_statistics_interface_init) )
-static void tracker_bus_statistics_proxy_class_init (TrackerBusStatisticsProxyClass* klass) {
-	G_DBUS_PROXY_CLASS (klass)->g_signal = tracker_bus_statistics_proxy_g_signal;
-}
-
-
-static void tracker_bus_statistics_proxy_g_signal (GDBusProxy* proxy, const gchar* sender_name, const gchar* signal_name, GVariant* parameters) {
-}
-
-
-static void tracker_bus_statistics_proxy_init (TrackerBusStatisticsProxy* self) {
-}
-
-
-static gchar** tracker_bus_statistics_proxy_Get (TrackerBusStatistics* self, GCancellable* cancellable, int* result_length1, int* result_length2, GError** error) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	GDBusMessage *_reply_message;
-	GVariant *_reply;
-	GVariantIter _reply_iter;
-	gchar** _result;
-	int _result_length1;
-	int _result_length2;
-	GVariant* _tmp10_;
-	gchar** _tmp11_;
-	int _tmp11__length;
-	int _tmp11__size;
-	int _tmp11__length1;
-	GVariantIter _tmp12_;
-	GVariant* _tmp13_;
-	G_DBUS_ERROR;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Statistics", "Get");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	_reply_message = g_dbus_connection_send_message_with_reply_sync (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, cancellable, error);
-	g_object_unref (_message);
-	if (!_reply_message) {
-		return NULL;
-	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
-		return NULL;
-	}
-	_reply = g_dbus_message_get_body (_reply_message);
-	g_variant_iter_init (&_reply_iter, _reply);
-	_result_length1 = 0;
-	_result_length2 = 0;
-	_tmp10_ = g_variant_iter_next_value (&_reply_iter);
-	_tmp11_ = g_new (gchar*, 5);
-	_tmp11__length = 0;
-	_tmp11__size = 4;
-	_tmp11__length1 = 0;
-	g_variant_iter_init (&_tmp12_, _tmp10_);
-	for (; (_tmp13_ = g_variant_iter_next_value (&_tmp12_)) != NULL; _tmp11__length1++) {
-		int _tmp11__length2;
-		GVariantIter _tmp14_;
-		GVariant* _tmp15_;
-		_tmp11__length2 = 0;
-		g_variant_iter_init (&_tmp14_, _tmp13_);
-		for (; (_tmp15_ = g_variant_iter_next_value (&_tmp14_)) != NULL; _tmp11__length2++) {
-			if (_tmp11__size == _tmp11__length) {
-				_tmp11__size = 2 * _tmp11__size;
-				_tmp11_ = g_renew (gchar*, _tmp11_, _tmp11__size + 1);
-			}
-			_tmp11_[_tmp11__length++] = g_variant_dup_string (_tmp15_, NULL);
-			g_variant_unref (_tmp15_);
-		}
-		_result_length2 = _tmp11__length2;
-		g_variant_unref (_tmp13_);
-	}
-	_result_length1 = _tmp11__length1;
-	_tmp11_[_tmp11__length] = NULL;
-	_result = _tmp11_;
-	g_variant_unref (_tmp10_);
-	*result_length1 = _result_length1;
-	*result_length2 = _result_length2;
-	g_object_unref (_reply_message);
-	return _result;
-}
-
-
-static void tracker_bus_statistics_proxy_Get_async_async (TrackerBusStatistics* self, GCancellable* cancellable, GAsyncReadyCallback _callback_, gpointer _user_data_) {
-	GDBusMessage *_message;
-	GVariant *_arguments;
-	GVariantBuilder _arguments_builder;
-	G_DBUS_ERROR;
-	_message = g_dbus_message_new_method_call (g_dbus_proxy_get_name ((GDBusProxy *) self), g_dbus_proxy_get_object_path ((GDBusProxy *) self), "org.freedesktop.Tracker1.Statistics", "Get_async");
-	g_variant_builder_init (&_arguments_builder, G_VARIANT_TYPE_TUPLE);
-	_arguments = g_variant_builder_end (&_arguments_builder);
-	g_dbus_message_set_body (_message, _arguments);
-	g_dbus_connection_send_message_with_reply (g_dbus_proxy_get_connection ((GDBusProxy *) self), _message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, g_dbus_proxy_get_default_timeout ((GDBusProxy *) self), NULL, cancellable, _vala_g_async_ready_callback, g_simple_async_result_new ((GObject *) self, _callback_, _user_data_, NULL));
-	g_object_unref (_message);
-}
-
-
-static gchar** tracker_bus_statistics_proxy_Get_async_finish (TrackerBusStatistics* self, GAsyncResult* _res_, int* result_length1, int* result_length2, GError** error) {
-	GDBusMessage *_reply_message;
-	GVariant *_reply;
-	GVariantIter _reply_iter;
-	gchar** _result;
-	int _result_length1;
-	int _result_length2;
-	GVariant* _tmp16_;
-	gchar** _tmp17_;
-	int _tmp17__length;
-	int _tmp17__size;
-	int _tmp17__length1;
-	GVariantIter _tmp18_;
-	GVariant* _tmp19_;
-	_reply_message = g_dbus_connection_send_message_with_reply_finish (g_dbus_proxy_get_connection ((GDBusProxy *) self), g_simple_async_result_get_op_res_gpointer ((GSimpleAsyncResult *) _res_), error);
-	if (!_reply_message) {
-		return NULL;
-	}
-	if (g_dbus_message_to_gerror (_reply_message, error)) {
-		g_object_unref (_reply_message);
-		return NULL;
-	}
-	_reply = g_dbus_message_get_body (_reply_message);
-	g_variant_iter_init (&_reply_iter, _reply);
-	_result_length1 = 0;
-	_result_length2 = 0;
-	_tmp16_ = g_variant_iter_next_value (&_reply_iter);
-	_tmp17_ = g_new (gchar*, 5);
-	_tmp17__length = 0;
-	_tmp17__size = 4;
-	_tmp17__length1 = 0;
-	g_variant_iter_init (&_tmp18_, _tmp16_);
-	for (; (_tmp19_ = g_variant_iter_next_value (&_tmp18_)) != NULL; _tmp17__length1++) {
-		int _tmp17__length2;
-		GVariantIter _tmp20_;
-		GVariant* _tmp21_;
-		_tmp17__length2 = 0;
-		g_variant_iter_init (&_tmp20_, _tmp19_);
-		for (; (_tmp21_ = g_variant_iter_next_value (&_tmp20_)) != NULL; _tmp17__length2++) {
-			if (_tmp17__size == _tmp17__length) {
-				_tmp17__size = 2 * _tmp17__size;
-				_tmp17_ = g_renew (gchar*, _tmp17_, _tmp17__size + 1);
-			}
-			_tmp17_[_tmp17__length++] = g_variant_dup_string (_tmp21_, NULL);
-			g_variant_unref (_tmp21_);
-		}
-		_result_length2 = _tmp17__length2;
-		g_variant_unref (_tmp19_);
-	}
-	_result_length1 = _tmp17__length1;
-	_tmp17_[_tmp17__length] = NULL;
-	_result = _tmp17_;
-	g_variant_unref (_tmp16_);
-	*result_length1 = _result_length1;
-	*result_length2 = _result_length2;
-	g_object_unref (_reply_message);
-	return _result;
-}
-
-
-static void tracker_bus_statistics_proxy_tracker_bus_statistics_interface_init (TrackerBusStatisticsIface* iface) {
-	iface->Get = tracker_bus_statistics_proxy_Get;
-	iface->Get_async = tracker_bus_statistics_proxy_Get_async_async;
-	iface->Get_finish = tracker_bus_statistics_proxy_Get_async_finish;
-}
-
-
-static void _dbus_tracker_bus_statistics_Get (TrackerBusStatistics* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GError* error = NULL;
-	GVariantIter _arguments_iter;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	gchar** result;
-	int result_length1 = 0;
-	int result_length2 = 0;
-	gchar** _tmp22_;
-	GVariantBuilder _tmp23_;
-	int _tmp24_;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	result = tracker_bus_statistics_Get (self, NULL, &result_length1, &result_length2, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_tmp22_ = result;
-	g_variant_builder_init (&_tmp23_, G_VARIANT_TYPE ("aas"));
-	for (_tmp24_ = 0; _tmp24_ < result_length1; _tmp24_++) {
-		GVariantBuilder _tmp25_;
-		int _tmp26_;
-		g_variant_builder_init (&_tmp25_, G_VARIANT_TYPE ("aas"));
-		for (_tmp26_ = 0; _tmp26_ < result_length2; _tmp26_++) {
-			g_variant_builder_add_value (&_tmp25_, g_variant_new_string (*_tmp22_));
-			_tmp22_++;
-		}
-		g_variant_builder_add_value (&_tmp23_, g_variant_builder_end (&_tmp25_));
-	}
-	g_variant_builder_add_value (&_reply_builder, g_variant_builder_end (&_tmp23_));
-	result = (_vala_array_free (result, result_length1 * result_length2, (GDestroyNotify) g_free), NULL);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void _dbus_tracker_bus_statistics_Get_async (TrackerBusStatistics* self, GVariant* parameters, GDBusMethodInvocation* invocation) {
-	GVariantIter _arguments_iter;
-	g_variant_iter_init (&_arguments_iter, parameters);
-	tracker_bus_statistics_Get_async (self, NULL, (GAsyncReadyCallback) _dbus_tracker_bus_statistics_Get_async_ready, invocation);
-}
-
-
-static void _dbus_tracker_bus_statistics_Get_async_ready (GObject * source_object, GAsyncResult * _res_, gpointer _user_data_) {
-	GDBusMethodInvocation * invocation;
-	GError* error = NULL;
-	GDBusMessage* _reply_message;
-	GVariant* _reply;
-	GVariantBuilder _reply_builder;
-	gchar** result;
-	int result_length1 = 0;
-	int result_length2 = 0;
-	gchar** _tmp27_;
-	GVariantBuilder _tmp28_;
-	int _tmp29_;
-	invocation = _user_data_;
-	result = tracker_bus_statistics_Get_finish ((TrackerBusStatistics*) source_object, _res_, &result_length1, &result_length2, &error);
-	if (error) {
-		g_dbus_method_invocation_return_gerror (invocation, error);
-		return;
-	}
-	_reply_message = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
-	g_variant_builder_init (&_reply_builder, G_VARIANT_TYPE_TUPLE);
-	_tmp27_ = result;
-	g_variant_builder_init (&_tmp28_, G_VARIANT_TYPE ("aas"));
-	for (_tmp29_ = 0; _tmp29_ < result_length1; _tmp29_++) {
-		GVariantBuilder _tmp30_;
-		int _tmp31_;
-		g_variant_builder_init (&_tmp30_, G_VARIANT_TYPE ("aas"));
-		for (_tmp31_ = 0; _tmp31_ < result_length2; _tmp31_++) {
-			g_variant_builder_add_value (&_tmp30_, g_variant_new_string (*_tmp27_));
-			_tmp27_++;
-		}
-		g_variant_builder_add_value (&_tmp28_, g_variant_builder_end (&_tmp30_));
-	}
-	g_variant_builder_add_value (&_reply_builder, g_variant_builder_end (&_tmp28_));
-	result = (_vala_array_free (result, result_length1 * result_length2, (GDestroyNotify) g_free), NULL);
-	_reply = g_variant_builder_end (&_reply_builder);
-	g_dbus_message_set_body (_reply_message, _reply);
-	g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), _reply_message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
-	g_object_unref (invocation);
-	g_object_unref (_reply_message);
-}
-
-
-static void tracker_bus_statistics_dbus_interface_method_call (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* method_name, GVariant* parameters, GDBusMethodInvocation* invocation, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	if (strcmp (method_name, "Get") == 0) {
-		_dbus_tracker_bus_statistics_Get (object, parameters, invocation);
-	} else if (strcmp (method_name, "Get_async") == 0) {
-		_dbus_tracker_bus_statistics_Get_async (object, parameters, invocation);
-	} else {
-		g_object_unref (invocation);
-	}
-}
-
-
-static GVariant* tracker_bus_statistics_dbus_interface_get_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GError** error, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	return NULL;
-}
-
-
-static gboolean tracker_bus_statistics_dbus_interface_set_property (GDBusConnection* connection, const gchar* sender, const gchar* object_path, const gchar* interface_name, const gchar* property_name, GVariant* value, GError** error, gpointer user_data) {
-	gpointer* data;
-	gpointer object;
-	data = user_data;
-	object = data[0];
-	return FALSE;
-}
-
-
-guint tracker_bus_statistics_register_object (gpointer object, GDBusConnection* connection, const gchar* path, GError** error) {
-	guint result;
-	gpointer *data;
-	data = g_new (gpointer, 3);
-	data[0] = g_object_ref (object);
-	data[1] = g_object_ref (connection);
-	data[2] = g_strdup (path);
-	result = g_dbus_connection_register_object (connection, path, (GDBusInterfaceInfo *) (&_tracker_bus_statistics_dbus_interface_info), &_tracker_bus_statistics_dbus_interface_vtable, data, _tracker_bus_statistics_unregister_object, error);
-	if (!result) {
-		return 0;
-	}
-	return result;
-}
-
-
-static void _tracker_bus_statistics_unregister_object (gpointer user_data) {
-	gpointer* data;
-	data = user_data;
-	g_object_unref (data[0]);
-	g_object_unref (data[1]);
-	g_free (data[2]);
-	g_free (data);
-}
 
 
 TrackerBusConnection* tracker_bus_connection_construct (GType object_type, GError** error) {
 	TrackerBusConnection * self = NULL;
-#line 59 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+	GError* _tmp0_;
+	GError* _tmp1_;
+#line 21 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) tracker_sparql_connection_construct (object_type);
-#line 59 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 23 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp0_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, "");
+#line 23 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp1_ = _tmp0_;
+#line 23 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_error_free0 (_tmp1_);
+#line 21 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return self;
-#line 2000 "tracker-bus.c"
+#line 571 "tracker-bus.c"
 }
 
 
 TrackerBusConnection* tracker_bus_connection_new (GError** error) {
-#line 59 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 21 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return tracker_bus_connection_construct (TRACKER_BUS_TYPE_CONNECTION, error);
-#line 2007 "tracker-bus.c"
-}
-
-
-static void tracker_bus_connection_ensure_resources_object (TrackerBusConnection* self, GError** error) {
-	TrackerBusResources* _tmp0_;
-	TrackerBusResources* _tmp1_ = NULL;
-	TrackerBusResources* _tmp2_;
-	TrackerBusResources* _tmp3_;
-	gint _tmp4_;
-	GError * _inner_error_ = NULL;
-#line 62 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_return_if_fail (self != NULL);
-#line 63 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp0_ = self->priv->resources_object;
-#line 63 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_tmp0_ != NULL) {
-#line 64 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		return;
-#line 2026 "tracker-bus.c"
-	}
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp1_ = g_initable_new (TRACKER_BUS_TYPE_RESOURCES_PROXY, NULL, &_inner_error_, "g-flags", G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS, "g-name", TRACKER_DBUS_SERVICE, "g-bus-type", G_BUS_TYPE_SESSION, "g-object-path", TRACKER_DBUS_OBJECT_RESOURCES, "g-interface-name", "org.freedesktop.Tracker1.Resources", NULL);
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp2_ = (TrackerBusResources*) _tmp1_;
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_inner_error_ != NULL) {
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if ((_inner_error_->domain == G_IO_ERROR) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_propagate_error (error, _inner_error_);
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return;
-#line 2040 "tracker-bus.c"
-		} else {
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_clear_error (&_inner_error_);
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return;
-#line 2048 "tracker-bus.c"
-		}
-	}
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (self->priv->resources_object);
-#line 67 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	self->priv->resources_object = _tmp2_;
-#line 71 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp3_ = self->priv->resources_object;
-#line 71 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp4_ = G_MAXINT;
-#line 71 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_dbus_proxy_set_default_timeout ((GDBusProxy*) _tmp3_, _tmp4_);
-#line 2061 "tracker-bus.c"
-}
-
-
-static void tracker_bus_connection_ensure_steroids_object (TrackerBusConnection* self, GError** error) {
-	TrackerBusSteroids* _tmp0_;
-	TrackerBusSteroids* _tmp1_ = NULL;
-	TrackerBusSteroids* _tmp2_;
-	TrackerBusSteroids* _tmp3_;
-	gint _tmp4_;
-	GError * _inner_error_ = NULL;
-#line 74 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_return_if_fail (self != NULL);
-#line 75 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp0_ = self->priv->steroids_object;
-#line 75 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_tmp0_ != NULL) {
-#line 76 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		return;
-#line 2080 "tracker-bus.c"
-	}
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp1_ = g_initable_new (TRACKER_BUS_TYPE_STEROIDS_PROXY, NULL, &_inner_error_, "g-flags", G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS, "g-name", TRACKER_DBUS_SERVICE, "g-bus-type", G_BUS_TYPE_SESSION, "g-object-path", TRACKER_DBUS_OBJECT_STEROIDS, "g-interface-name", "org.freedesktop.Tracker1.Steroids", NULL);
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp2_ = (TrackerBusSteroids*) _tmp1_;
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_inner_error_ != NULL) {
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if ((_inner_error_->domain == G_IO_ERROR) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_propagate_error (error, _inner_error_);
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return;
-#line 2094 "tracker-bus.c"
-		} else {
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_clear_error (&_inner_error_);
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return;
-#line 2102 "tracker-bus.c"
-		}
-	}
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (self->priv->steroids_object);
-#line 79 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	self->priv->steroids_object = _tmp2_;
-#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp3_ = self->priv->steroids_object;
-#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp4_ = G_MAXINT;
-#line 83 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_dbus_proxy_set_default_timeout ((GDBusProxy*) _tmp3_, _tmp4_);
-#line 2115 "tracker-bus.c"
-}
-
-
-static void tracker_bus_connection_ensure_statistics_object (TrackerBusConnection* self, GError** error) {
-	TrackerBusStatistics* _tmp0_;
-	TrackerBusStatistics* _tmp1_ = NULL;
-	TrackerBusStatistics* _tmp2_;
-	GError * _inner_error_ = NULL;
-#line 86 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_return_if_fail (self != NULL);
-#line 87 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp0_ = self->priv->statistics_object;
-#line 87 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_tmp0_ != NULL) {
-#line 88 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		return;
-#line 2132 "tracker-bus.c"
-	}
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp1_ = g_initable_new (TRACKER_BUS_TYPE_STATISTICS_PROXY, NULL, &_inner_error_, "g-flags", G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS, "g-name", TRACKER_DBUS_SERVICE, "g-bus-type", G_BUS_TYPE_SESSION, "g-object-path", TRACKER_DBUS_OBJECT_STATISTICS, "g-interface-name", "org.freedesktop.Tracker1.Statistics", NULL);
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp2_ = (TrackerBusStatistics*) _tmp1_;
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_inner_error_ != NULL) {
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if ((_inner_error_->domain == G_IO_ERROR) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_propagate_error (error, _inner_error_);
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return;
-#line 2146 "tracker-bus.c"
-		} else {
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_clear_error (&_inner_error_);
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return;
-#line 2154 "tracker-bus.c"
-		}
-	}
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (self->priv->statistics_object);
-#line 91 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	self->priv->statistics_object = _tmp2_;
-#line 2161 "tracker-bus.c"
+#line 578 "tracker-bus.c"
 }
 
 
@@ -2171,103 +588,357 @@ static void tracker_bus_connection_pipe (TrackerBusConnection* self, GUnixInputS
 	gint _tmp4_;
 	GUnixOutputStream* _tmp5_;
 	GError * _inner_error_ = NULL;
-#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 26 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_if_fail (self != NULL);
-#line 99 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 28 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = pipe (pipefd);
-#line 99 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 28 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_tmp0_ < 0) {
-#line 2181 "tracker-bus.c"
+#line 598 "tracker-bus.c"
 		GError* _tmp1_;
-#line 100 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 29 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_tmp1_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_FAILED, "Pipe creation failed");
-#line 100 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 29 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_inner_error_ = _tmp1_;
-#line 100 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 29 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (_inner_error_->domain == G_IO_ERROR) {
-#line 100 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 29 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_propagate_error (error, _inner_error_);
-#line 100 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 29 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return;
-#line 2193 "tracker-bus.c"
+#line 610 "tracker-bus.c"
 		} else {
-#line 100 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 29 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 100 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 29 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_inner_error_);
-#line 100 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 29 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return;
-#line 2201 "tracker-bus.c"
+#line 618 "tracker-bus.c"
 		}
 	}
-#line 102 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 31 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = pipefd[0];
-#line 102 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 31 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp3_ = (GUnixInputStream*) g_unix_input_stream_new (_tmp2_, TRUE);
-#line 102 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 31 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_vala_input);
-#line 102 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 31 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_vala_input = _tmp3_;
-#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 32 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp4_ = pipefd[1];
-#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 32 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp5_ = (GUnixOutputStream*) g_unix_output_stream_new (_tmp4_, TRUE);
-#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 32 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_vala_output);
-#line 103 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 32 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_vala_output = _tmp5_;
-#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 26 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (input) {
-#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 26 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		*input = _vala_input;
-#line 2224 "tracker-bus.c"
+#line 641 "tracker-bus.c"
 	} else {
-#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 26 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_vala_input);
-#line 2228 "tracker-bus.c"
+#line 645 "tracker-bus.c"
 	}
-#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 26 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (output) {
-#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 26 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		*output = _vala_output;
-#line 2234 "tracker-bus.c"
+#line 651 "tracker-bus.c"
 	} else {
-#line 97 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 26 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_vala_output);
-#line 2238 "tracker-bus.c"
+#line 655 "tracker-bus.c"
 	}
+}
+
+
+static gpointer _g_error_copy0 (gpointer self) {
+#line 39 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	return self ? g_error_copy (self) : NULL;
+#line 663 "tracker-bus.c"
+}
+
+
+static void tracker_bus_connection_handle_error_reply (TrackerBusConnection* self, GDBusMessage* message, GError** error) {
+	GError * _inner_error_ = NULL;
+#line 35 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_return_if_fail (self != NULL);
+#line 35 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_return_if_fail (message != NULL);
+#line 673 "tracker-bus.c"
+	{
+		GDBusMessage* _tmp0_;
+#line 37 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp0_ = message;
+#line 37 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		g_dbus_message_to_gerror (_tmp0_, &_inner_error_);
+#line 37 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (_inner_error_ != NULL) {
+#line 37 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_inner_error_->domain == G_IO_ERROR) {
+#line 684 "tracker-bus.c"
+				goto __catch0_g_io_error;
+			}
+#line 37 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_inner_error_->domain == TRACKER_SPARQL_ERROR) {
+#line 689 "tracker-bus.c"
+				goto __catch0_tracker_sparql_error;
+			}
+#line 37 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_inner_error_->domain == G_DBUS_ERROR) {
+#line 694 "tracker-bus.c"
+				goto __catch0_g_dbus_error;
+			}
+			goto __catch0_g_error;
+		}
+	}
+	goto __finally0;
+	__catch0_g_io_error:
+	{
+		GError* e_io = NULL;
+		GError* _tmp1_;
+		GError* _tmp2_;
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		e_io = _inner_error_;
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_inner_error_ = NULL;
+#line 39 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp1_ = e_io;
+#line 39 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp2_ = _g_error_copy0 (_tmp1_);
+#line 39 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_inner_error_ = _tmp2_;
+#line 39 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_g_error_free0 (e_io);
+#line 718 "tracker-bus.c"
+		goto __finally0;
+	}
+	goto __finally0;
+	__catch0_tracker_sparql_error:
+	{
+		GError* e_sparql = NULL;
+		GError* _tmp3_;
+		GError* _tmp4_;
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		e_sparql = _inner_error_;
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_inner_error_ = NULL;
+#line 41 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp3_ = e_sparql;
+#line 41 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp4_ = _g_error_copy0 (_tmp3_);
+#line 41 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_inner_error_ = _tmp4_;
+#line 41 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_g_error_free0 (e_sparql);
+#line 739 "tracker-bus.c"
+		goto __finally0;
+	}
+	goto __finally0;
+	__catch0_g_dbus_error:
+	{
+		GError* e_dbus = NULL;
+		GError* _tmp5_;
+		GError* _tmp6_;
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		e_dbus = _inner_error_;
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_inner_error_ = NULL;
+#line 43 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp5_ = e_dbus;
+#line 43 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp6_ = _g_error_copy0 (_tmp5_);
+#line 43 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_inner_error_ = _tmp6_;
+#line 43 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_g_error_free0 (e_dbus);
+#line 760 "tracker-bus.c"
+		goto __finally0;
+	}
+	goto __finally0;
+	__catch0_g_error:
+	{
+		GError* e = NULL;
+		GError* _tmp7_;
+		const gchar* _tmp8_;
+		GError* _tmp9_;
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		e = _inner_error_;
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_inner_error_ = NULL;
+#line 45 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp7_ = e;
+#line 45 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp8_ = _tmp7_->message;
+#line 45 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp9_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_FAILED, _tmp8_);
+#line 45 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_inner_error_ = _tmp9_;
+#line 45 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_g_error_free0 (e);
+#line 784 "tracker-bus.c"
+		goto __finally0;
+	}
+	__finally0:
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_inner_error_ != NULL) {
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_propagate_error (error, _inner_error_);
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return;
+#line 796 "tracker-bus.c"
+		} else {
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_inner_error_);
+#line 36 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return;
+#line 804 "tracker-bus.c"
+		}
+	}
+}
+
+
+static void tracker_bus_connection_send_query (TrackerBusConnection* self, GDBusConnection* connection, const gchar* sparql, GUnixOutputStream* output, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target, GError** error) {
+	GDBusMessage* _tmp0_;
+	GDBusMessage* message;
+	GUnixFDList* _tmp1_;
+	GUnixFDList* fd_list;
+	GUnixOutputStream* _tmp2_;
+	gint _tmp3_;
+	gint _tmp4_;
+	gint _tmp5_ = 0;
+	gint _tmp6_;
+	const gchar* _tmp7_;
+	GVariant* _tmp8_;
+	GVariant* _tmp9_;
+	GDBusConnection* _tmp10_;
+	gint _tmp11_;
+	GCancellable* _tmp12_;
+	GAsyncReadyCallback _tmp13_;
+	void* _tmp13__target;
+	GError * _inner_error_ = NULL;
+#line 49 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_return_if_fail (self != NULL);
+#line 49 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_return_if_fail (connection != NULL);
+#line 49 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_return_if_fail (sparql != NULL);
+#line 49 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_return_if_fail (output != NULL);
+#line 50 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp0_ = g_dbus_message_new_method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_STEROIDS, TRACKER_DBUS_INTERFACE_STEROIDS, "Query");
+#line 50 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	message = _tmp0_;
+#line 51 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp1_ = g_unix_fd_list_new ();
+#line 51 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	fd_list = _tmp1_;
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp2_ = output;
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp3_ = g_unix_output_stream_get_fd (_tmp2_);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp4_ = _tmp3_;
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp5_ = g_unix_fd_list_append (fd_list, _tmp4_, &_inner_error_);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp6_ = _tmp5_;
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_inner_error_ != NULL) {
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (_inner_error_->domain == G_IO_ERROR) {
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_propagate_error (error, _inner_error_);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (fd_list);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return;
+#line 867 "tracker-bus.c"
+		} else {
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (fd_list);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_inner_error_);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return;
+#line 879 "tracker-bus.c"
+		}
+	}
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp7_ = sparql;
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp8_ = g_variant_new ("(sh)", _tmp7_, _tmp6_, NULL);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp9_ = g_variant_ref_sink (_tmp8_);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_dbus_message_set_body (message, _tmp9_);
+#line 52 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_variant_unref0 (_tmp9_);
+#line 53 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_dbus_message_set_unix_fd_list (message, fd_list);
+#line 55 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp10_ = connection;
+#line 55 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp11_ = G_MAXINT;
+#line 55 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp12_ = cancellable;
+#line 55 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp13_ = callback;
+#line 55 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp13__target = callback_target;
+#line 55 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_dbus_connection_send_message_with_reply (_tmp10_, message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, _tmp11_, NULL, _tmp12_, _tmp13_, _tmp13__target);
+#line 49 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (fd_list);
+#line 49 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (message);
+#line 910 "tracker-bus.c"
 }
 
 
 static Block1Data* block1_data_ref (Block1Data* _data1_) {
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_atomic_int_inc (&_data1_->_ref_count_);
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return _data1_;
-#line 2248 "tracker-bus.c"
+#line 919 "tracker-bus.c"
 }
 
 
 static void block1_data_unref (Block1Data* _data1_) {
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data1_->self);
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data1_->async_res);
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_main_loop_unref0 (_data1_->loop);
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_slice_free (Block1Data, _data1_);
-#line 2263 "tracker-bus.c"
+#line 934 "tracker-bus.c"
 	}
 }
 
 
 static gpointer _g_object_ref0 (gpointer self) {
-#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 65 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return self ? g_object_ref (self) : NULL;
-#line 2271 "tracker-bus.c"
+#line 942 "tracker-bus.c"
 }
 
 
@@ -2275,30 +946,30 @@ static void __lambda1_ (Block1Data* _data1_, GObject* o, GAsyncResult* res) {
 	TrackerBusConnection * self;
 	GAsyncResult* _tmp0_;
 	GAsyncResult* _tmp1_;
-#line 112 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 64 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = _data1_->self;
-#line 112 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 64 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_if_fail (res != NULL);
-#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 65 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = res;
-#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 65 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 65 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data1_->async_res);
-#line 113 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 65 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data1_->async_res = _tmp1_;
-#line 114 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 66 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_loop_quit (_data1_->loop);
-#line 2293 "tracker-bus.c"
+#line 964 "tracker-bus.c"
 }
 
 
 static void ___lambda1__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
-#line 112 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 64 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	__lambda1_ (self, source_object, res);
-#line 112 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 64 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block1_data_unref (self);
-#line 2302 "tracker-bus.c"
+#line 973 "tracker-bus.c"
 }
 
 
@@ -2314,101 +985,101 @@ static TrackerSparqlCursor* tracker_bus_connection_real_query (TrackerSparqlConn
 	TrackerSparqlCursor* _tmp4_ = NULL;
 	TrackerSparqlCursor* _tmp5_;
 	GError * _inner_error_ = NULL;
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data1_ = g_slice_new0 (Block1Data);
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data1_->_ref_count_ = 1;
-#line 106 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 58 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data1_->self = g_object_ref (self);
-#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 60 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = g_main_context_new ();
-#line 108 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 60 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	context = _tmp0_;
-#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 61 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = g_main_loop_new (context, FALSE);
-#line 109 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 61 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data1_->loop = _tmp1_;
-#line 110 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 62 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_context_push_thread_default (context);
-#line 111 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 63 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data1_->async_res = NULL;
-#line 112 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 64 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = sparql;
-#line 112 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 64 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp3_ = cancellable;
-#line 112 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 64 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_sparql_connection_query_async ((TrackerSparqlConnection*) self, _tmp2_, _tmp3_, ___lambda1__gasync_ready_callback, block1_data_ref (_data1_));
-#line 116 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 68 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_loop_run (_data1_->loop);
-#line 117 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 69 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_context_pop_thread_default (context);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp4_ = tracker_sparql_connection_query_finish ((TrackerSparqlConnection*) self, _data1_->async_res, &_inner_error_);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp5_ = _tmp4_;
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_inner_error_ != NULL) {
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_propagate_error (error, _inner_error_);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_main_context_unref0 (context);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block1_data_unref (_data1_);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data1_ = NULL;
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return NULL;
-#line 2368 "tracker-bus.c"
+#line 1039 "tracker-bus.c"
 		} else {
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_main_context_unref0 (context);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block1_data_unref (_data1_);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data1_ = NULL;
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_inner_error_);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return NULL;
-#line 2382 "tracker-bus.c"
+#line 1053 "tracker-bus.c"
 		}
 	}
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	result = _tmp5_;
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_main_context_unref0 (context);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block1_data_unref (_data1_);
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data1_ = NULL;
-#line 118 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 70 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return result;
-#line 2395 "tracker-bus.c"
+#line 1066 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_real_query_async_data_free (gpointer _data) {
 	TrackerBusConnectionQueryAsyncData* _data_;
 	_data_ = _data;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_free0 (_data_->sparql);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->result);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_slice_free (TrackerBusConnectionQueryAsyncData, _data_);
-#line 2412 "tracker-bus.c"
+#line 1083 "tracker-bus.c"
 }
 
 
@@ -2420,76 +1091,76 @@ static void tracker_bus_connection_real_query_async (TrackerSparqlConnection* ba
 	const gchar* _tmp2_;
 	GCancellable* _tmp3_;
 	GCancellable* _tmp4_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_slice_new0 (TrackerBusConnectionQueryAsyncData);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_bus_connection_real_query_async);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_bus_connection_real_query_async_data_free);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->self = _tmp0_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = sparql;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->sparql = _tmp2_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp3_ = cancellable;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->cancellable = _tmp4_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_real_query_async_co (_data_);
-#line 2450 "tracker-bus.c"
+#line 1121 "tracker-bus.c"
 }
 
 
 static TrackerSparqlCursor* tracker_bus_connection_real_query_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlCursor* result;
 	TrackerBusConnectionQueryAsyncData* _data_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		return NULL;
-#line 2461 "tracker-bus.c"
+#line 1132 "tracker-bus.c"
 	}
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	result = _data_->result;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->result = NULL;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return result;
-#line 2471 "tracker-bus.c"
+#line 1142 "tracker-bus.c"
 }
 
 
 static Block2Data* block2_data_ref (Block2Data* _data2_) {
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_atomic_int_inc (&_data2_->_ref_count_);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return _data2_;
-#line 2480 "tracker-bus.c"
+#line 1151 "tracker-bus.c"
 }
 
 
 static void block2_data_unref (Block2Data* _data2_) {
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_atomic_int_dec_and_test (&_data2_->_ref_count_)) {
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data2_->self);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data2_->dbus_res);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_slice_free (Block2Data, _data2_);
-#line 2493 "tracker-bus.c"
+#line 1164 "tracker-bus.c"
 	}
 }
 
@@ -2499,535 +1170,852 @@ static void __lambda0_ (Block2Data* _data2_, GObject* o, GAsyncResult* res) {
 	GAsyncResult* _tmp0_;
 	GAsyncResult* _tmp1_;
 	gboolean _tmp2_;
-#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = _data2_->self;
-#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_if_fail (res != NULL);
-#line 132 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = res;
-#line 132 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 132 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data2_->dbus_res);
-#line 132 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 84 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data2_->dbus_res = _tmp1_;
-#line 133 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 85 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = _data2_->received_result;
-#line 133 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 85 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_tmp2_) {
-#line 134 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 86 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		tracker_bus_connection_real_query_async_co (_data2_->_async_data_);
-#line 2521 "tracker-bus.c"
+#line 1192 "tracker-bus.c"
 	}
 }
 
 
 static void ___lambda0__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
-#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	__lambda0_ (self, source_object, res);
-#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	block2_data_unref (self);
-#line 2531 "tracker-bus.c"
+#line 1200 "tracker-bus.c"
 }
 
 
 static void* _g_realloc_grealloc_func (void* data, gsize size) {
 	void* result;
 	result = g_realloc (data, size);
-#line 141 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 93 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return result;
-#line 2540 "tracker-bus.c"
+#line 1209 "tracker-bus.c"
 }
 
 
 static void _g_free_gdestroy_notify (void* data) {
-#line 141 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 93 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_free (data);
-#line 2547 "tracker-bus.c"
+#line 1216 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_query_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerBusConnectionQueryAsyncData* _data_;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = _user_data_;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_source_object_ = source_object;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_res_ = _res_;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_real_query_async_co (_data_);
-#line 2561 "tracker-bus.c"
+#line 1230 "tracker-bus.c"
+}
+
+
+static gchar** _variant_get1 (GVariant* value, int* result_length1) {
+	gchar** _tmp22_;
+	int _tmp22__length;
+	int _tmp22__size;
+	int _tmp22__length1;
+	GVariantIter _tmp23_;
+	GVariant* _tmp24_;
+	_tmp22_ = g_new (gchar*, 5);
+	_tmp22__length = 0;
+	_tmp22__size = 4;
+	_tmp22__length1 = 0;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_variant_iter_init (&_tmp23_, value);
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	for (; (_tmp24_ = g_variant_iter_next_value (&_tmp23_)) != NULL; _tmp22__length1++) {
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (_tmp22__size == _tmp22__length) {
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_tmp22__size = 2 * _tmp22__size;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_tmp22_ = g_renew (gchar*, _tmp22_, _tmp22__size + 1);
+#line 1255 "tracker-bus.c"
+		}
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_tmp22_[_tmp22__length++] = g_variant_dup_string (_tmp24_, NULL);
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		g_variant_unref (_tmp24_);
+#line 1261 "tracker-bus.c"
+	}
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	*result_length1 = _tmp22__length1;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp22_[_tmp22__length] = NULL;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	return _tmp22_;
+#line 1269 "tracker-bus.c"
 }
 
 
 static gboolean tracker_bus_connection_real_query_async_co (TrackerBusConnectionQueryAsyncData* _data_) {
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	switch (_data_->_state_) {
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 0:
-#line 2570 "tracker-bus.c"
+#line 1278 "tracker-bus.c"
 		goto _state_0;
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 1:
-#line 2574 "tracker-bus.c"
+#line 1282 "tracker-bus.c"
 		goto _state_1;
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 2:
-#line 2578 "tracker-bus.c"
+#line 1286 "tracker-bus.c"
 		goto _state_2;
 		default:
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_assert_not_reached ();
-#line 2583 "tracker-bus.c"
+#line 1291 "tracker-bus.c"
 	}
 	_state_0:
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data2_ = g_slice_new0 (Block2Data);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data2_->_ref_count_ = 1;
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data2_->self = g_object_ref (_data_->self);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data2_->_async_data_ = _data_;
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_connection_ensure_steroids_object (_data_->self, &_data_->_inner_error_);
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_inner_error_ != NULL) {
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_error_free (_data_->_inner_error_);
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			block2_data_unref (_data_->_data2_);
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_data2_ = NULL;
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			if (_data_->_state_ == 0) {
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2612 "tracker-bus.c"
-			} else {
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_simple_async_result_complete (_data_->_async_result);
-#line 2616 "tracker-bus.c"
-			}
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_object_unref (_data_->_async_result);
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return FALSE;
-#line 2622 "tracker-bus.c"
-		} else {
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			block2_data_unref (_data_->_data2_);
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_data2_ = NULL;
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_clear_error (&_data_->_inner_error_);
-#line 122 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return FALSE;
-#line 2634 "tracker-bus.c"
-		}
-	}
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp0_ = NULL;
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp1_ = NULL;
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_pipe (_data_->self, &_data_->_tmp0_, &_data_->_tmp1_, &_data_->_inner_error_);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->input);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->input = _data_->_tmp0_;
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->output);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->output = _data_->_tmp1_;
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block2_data_unref (_data_->_data2_);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data2_ = NULL;
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2671 "tracker-bus.c"
+#line 1336 "tracker-bus.c"
 			} else {
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 2675 "tracker-bus.c"
+#line 1340 "tracker-bus.c"
 			}
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 2681 "tracker-bus.c"
+#line 1346 "tracker-bus.c"
 		} else {
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block2_data_unref (_data_->_data2_);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data2_ = NULL;
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 126 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 76 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 2697 "tracker-bus.c"
+#line 1362 "tracker-bus.c"
 		}
 	}
-#line 129 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp2_ = _data_->cancellable;
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp3_ = NULL;
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp3_ = g_bus_get_sync (G_BUS_TYPE_SESSION, _data_->_tmp2_, &_data_->_inner_error_);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->connection = _data_->_tmp3_;
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block2_data_unref (_data_->_data2_);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data2_ = NULL;
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 1393 "tracker-bus.c"
+			} else {
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 1397 "tracker-bus.c"
+			}
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 1403 "tracker-bus.c"
+		} else {
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block2_data_unref (_data_->_data2_);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data2_ = NULL;
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 78 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 1419 "tracker-bus.c"
+		}
+	}
+#line 81 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data2_->dbus_res = NULL;
-#line 130 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 82 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data2_->received_result = FALSE;
-#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp2_ = _data_->self->priv->steroids_object;
-#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp3_ = _data_->sparql;
-#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp4_ = _data_->output;
-#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp5_ = _data_->cancellable;
-#line 131 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_steroids_query (_data_->_tmp2_, _data_->_tmp3_, _data_->_tmp4_, _data_->_tmp5_, ___lambda0__gasync_ready_callback, block2_data_ref (_data_->_data2_));
-#line 138 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (_data_->output);
-#line 138 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->output = NULL;
-#line 141 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp6_ = (GMemoryOutputStream*) g_memory_output_stream_new (NULL, 0, _g_realloc_grealloc_func, _g_free_gdestroy_notify);
-#line 141 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->mem_stream = _data_->_tmp6_;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp7_ = _data_->mem_stream;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp8_ = _data_->input;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp9_ = _data_->cancellable;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_state_ = 1;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_output_stream_splice_async ((GOutputStream*) _data_->_tmp7_, (GInputStream*) _data_->_tmp8_, G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET, G_PRIORITY_DEFAULT, _data_->_tmp9_, tracker_bus_connection_query_async_ready, _data_);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	return FALSE;
-#line 2734 "tracker-bus.c"
-	_state_1:
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_output_stream_splice_finish ((GOutputStream*) _data_->_tmp7_, _data_->_res_, &_data_->_inner_error_);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp4_ = _data_->connection;
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp5_ = _data_->sparql;
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp6_ = _data_->output;
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp7_ = _data_->cancellable;
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_send_query (_data_->self, _data_->_tmp4_, _data_->_tmp5_, _data_->_tmp6_, _data_->_tmp7_, ___lambda0__gasync_ready_callback, _data_->_data2_, &_data_->_inner_error_);
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_object_unref0 (_data_->mem_stream);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block2_data_unref (_data_->_data2_);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data2_ = NULL;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2760 "tracker-bus.c"
+#line 1458 "tracker-bus.c"
 			} else {
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 2764 "tracker-bus.c"
+#line 1462 "tracker-bus.c"
 			}
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 2770 "tracker-bus.c"
+#line 1468 "tracker-bus.c"
 		} else {
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_object_unref0 (_data_->mem_stream);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block2_data_unref (_data_->_data2_);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data2_ = NULL;
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 142 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 83 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 2788 "tracker-bus.c"
+#line 1486 "tracker-bus.c"
 		}
 	}
-#line 145 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 90 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->output);
+#line 90 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->output = NULL;
+#line 93 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp8_ = (GMemoryOutputStream*) g_memory_output_stream_new (NULL, 0, _g_realloc_grealloc_func, _g_free_gdestroy_notify);
+#line 93 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->mem_stream = _data_->_tmp8_;
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp9_ = _data_->mem_stream;
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp10_ = _data_->input;
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp11_ = _data_->cancellable;
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_state_ = 1;
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_output_stream_splice_async ((GOutputStream*) _data_->_tmp9_, (GInputStream*) _data_->_tmp10_, G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET, G_PRIORITY_DEFAULT, _data_->_tmp11_, tracker_bus_connection_query_async_ready, _data_);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	return FALSE;
+#line 1509 "tracker-bus.c"
+	_state_1:
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_output_stream_splice_finish ((GOutputStream*) _data_->_tmp9_, _data_->_res_, &_data_->_inner_error_);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->mem_stream);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block2_data_unref (_data_->_data2_);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data2_ = NULL;
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 1537 "tracker-bus.c"
+			} else {
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 1541 "tracker-bus.c"
+			}
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 1547 "tracker-bus.c"
+		} else {
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->mem_stream);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block2_data_unref (_data_->_data2_);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data2_ = NULL;
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 94 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 1567 "tracker-bus.c"
+		}
+	}
+#line 97 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data2_->received_result = TRUE;
-#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp10_ = _data_->_data2_->dbus_res;
-#line 146 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_tmp10_ == NULL) {
-#line 147 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 98 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp12_ = _data_->_data2_->dbus_res;
+#line 98 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_tmp12_ == NULL) {
+#line 99 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_data_->_state_ = 2;
-#line 147 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 99 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		return FALSE;
-#line 2801 "tracker-bus.c"
+#line 1580 "tracker-bus.c"
 		_state_2:
 		;
 	}
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp11_ = _data_->self->priv->steroids_object;
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp12_ = _data_->_data2_->dbus_res;
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp13_ = 0;
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp14_ = NULL;
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp14_ = tracker_bus_steroids_query_finish (_data_->_tmp11_, _data_->_tmp12_, &_data_->_tmp13_, &_data_->_inner_error_);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->variable_names = _data_->_tmp14_;
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->variable_names_length1 = _data_->_tmp13_;
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_variable_names_size_ = _data_->variable_names_length1;
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp13_ = _data_->connection;
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp14_ = _data_->_data2_->dbus_res;
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp15_ = NULL;
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp15_ = g_dbus_connection_send_message_with_reply_finish (_data_->_tmp13_, _data_->_tmp14_, &_data_->_inner_error_);
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->reply = _data_->_tmp15_;
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->mem_stream);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block2_data_unref (_data_->_data2_);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data2_ = NULL;
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2843 "tracker-bus.c"
+#line 1618 "tracker-bus.c"
 			} else {
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 2847 "tracker-bus.c"
+#line 1622 "tracker-bus.c"
 			}
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 2853 "tracker-bus.c"
+#line 1628 "tracker-bus.c"
 		} else {
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->mem_stream);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block2_data_unref (_data_->_data2_);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data2_ = NULL;
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 149 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 102 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 2871 "tracker-bus.c"
+#line 1648 "tracker-bus.c"
 		}
 	}
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp15_ = _data_->mem_stream;
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_output_stream_close ((GOutputStream*) _data_->_tmp15_, NULL, &_data_->_inner_error_);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp16_ = _data_->reply;
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_handle_error_reply (_data_->self, _data_->_tmp16_, &_data_->_inner_error_);
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->variable_names = (_vala_array_free (_data_->variable_names, _data_->variable_names_length1, (GDestroyNotify) g_free), NULL);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->mem_stream);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block2_data_unref (_data_->_data2_);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data2_ = NULL;
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2902 "tracker-bus.c"
+#line 1681 "tracker-bus.c"
 			} else {
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 2906 "tracker-bus.c"
+#line 1685 "tracker-bus.c"
 			}
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 2912 "tracker-bus.c"
+#line 1691 "tracker-bus.c"
 		} else {
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->variable_names = (_vala_array_free (_data_->variable_names, _data_->variable_names_length1, (GDestroyNotify) g_free), NULL);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->mem_stream);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block2_data_unref (_data_->_data2_);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data2_ = NULL;
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 150 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 103 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 2932 "tracker-bus.c"
+#line 1713 "tracker-bus.c"
 		}
 	}
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp16_ = _data_->mem_stream;
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp17_ = NULL;
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp17_ = g_memory_output_stream_steal_data (_data_->_tmp16_);
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp18_ = _data_->mem_stream;
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp19_ = g_memory_output_stream_get_data_size (_data_->_tmp18_);
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp17_ = _data_->reply;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp18_ = NULL;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp18_ = g_dbus_message_get_body (_data_->_tmp17_);
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp19_ = NULL;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp19_ = g_variant_get_child_value (_data_->_tmp18_, (gsize) 0);
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp20_ = _data_->_tmp19_;
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp21_ = _data_->variable_names;
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp21__length1 = _data_->variable_names_length1;
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp22_ = tracker_bus_fd_cursor_new (_data_->_tmp17_, _data_->_tmp20_, _data_->_tmp21_, _data_->_tmp21__length1);
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->result = (TrackerSparqlCursor*) _data_->_tmp22_;
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->variable_names = (_vala_array_free (_data_->variable_names, _data_->variable_names_length1, (GDestroyNotify) g_free), NULL);
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (_data_->mem_stream);
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (_data_->output);
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (_data_->input);
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	block2_data_unref (_data_->_data2_);
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_data2_ = NULL;
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_state_ == 0) {
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2971 "tracker-bus.c"
-	} else {
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		g_simple_async_result_complete (_data_->_async_result);
-#line 2975 "tracker-bus.c"
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp21_ = _variant_get1 (_data_->_tmp20_, &_data_->_tmp21__length1);
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp25_ = _data_->_tmp21_;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp25__length1 = _data_->_tmp21__length1;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_variant_unref0 (_data_->_tmp20_);
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->variable_names = _data_->_tmp25_;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->variable_names_length1 = _data_->_tmp25__length1;
+#line 105 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_variable_names_size_ = _data_->variable_names_length1;
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp26_ = _data_->mem_stream;
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_output_stream_close ((GOutputStream*) _data_->_tmp26_, NULL, &_data_->_inner_error_);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->variable_names = (_vala_array_free (_data_->variable_names, _data_->variable_names_length1, (GDestroyNotify) g_free), NULL);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->mem_stream);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block2_data_unref (_data_->_data2_);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data2_ = NULL;
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 1774 "tracker-bus.c"
+			} else {
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 1778 "tracker-bus.c"
+			}
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 1784 "tracker-bus.c"
+		} else {
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->variable_names = (_vala_array_free (_data_->variable_names, _data_->variable_names_length1, (GDestroyNotify) g_free), NULL);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->mem_stream);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block2_data_unref (_data_->_data2_);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data2_ = NULL;
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 106 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 1808 "tracker-bus.c"
+		}
 	}
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_object_unref (_data_->_async_result);
-#line 151 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	return FALSE;
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp27_ = _data_->mem_stream;
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp28_ = NULL;
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp28_ = g_memory_output_stream_steal_data (_data_->_tmp27_);
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp29_ = _data_->mem_stream;
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp30_ = g_memory_output_stream_get_data_size (_data_->_tmp29_);
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp31_ = _data_->_tmp30_;
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp32_ = _data_->variable_names;
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp32__length1 = _data_->variable_names_length1;
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp33_ = tracker_bus_fd_cursor_new (_data_->_tmp28_, _data_->_tmp31_, _data_->_tmp32_, _data_->_tmp32__length1);
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->result = (TrackerSparqlCursor*) _data_->_tmp33_;
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->variable_names = (_vala_array_free (_data_->variable_names, _data_->variable_names_length1, (GDestroyNotify) g_free), NULL);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->reply);
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->mem_stream);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->connection);
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->output);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->input);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block2_data_unref (_data_->_data2_);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data2_ = NULL;
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_state_ == 0) {
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 2997 "tracker-bus.c"
+#line 1851 "tracker-bus.c"
 	} else {
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 3001 "tracker-bus.c"
+#line 1855 "tracker-bus.c"
 	}
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_object_unref (_data_->_async_result);
-#line 121 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 107 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return FALSE;
-#line 3007 "tracker-bus.c"
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->variable_names = (_vala_array_free (_data_->variable_names, _data_->variable_names_length1, (GDestroyNotify) g_free), NULL);
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->reply);
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->mem_stream);
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->connection);
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->output);
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->input);
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	block2_data_unref (_data_->_data2_);
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_data2_ = NULL;
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_state_ == 0) {
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 1881 "tracker-bus.c"
+	} else {
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		g_simple_async_result_complete (_data_->_async_result);
+#line 1885 "tracker-bus.c"
+	}
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_object_unref (_data_->_async_result);
+#line 73 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	return FALSE;
+#line 1891 "tracker-bus.c"
+}
+
+
+static void tracker_bus_connection_send_update (TrackerBusConnection* self, GDBusConnection* connection, const gchar* method, GUnixInputStream* input, GCancellable* cancellable, GAsyncReadyCallback callback, void* callback_target, GError** error) {
+	const gchar* _tmp0_;
+	GDBusMessage* _tmp1_;
+	GDBusMessage* message;
+	GUnixFDList* _tmp2_;
+	GUnixFDList* fd_list;
+	GUnixInputStream* _tmp3_;
+	gint _tmp4_;
+	gint _tmp5_;
+	gint _tmp6_ = 0;
+	gint _tmp7_;
+	GVariant* _tmp8_;
+	GVariant* _tmp9_;
+	GDBusConnection* _tmp10_;
+	gint _tmp11_;
+	GCancellable* _tmp12_;
+	GAsyncReadyCallback _tmp13_;
+	void* _tmp13__target;
+	GError * _inner_error_ = NULL;
+#line 110 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_return_if_fail (self != NULL);
+#line 110 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_return_if_fail (connection != NULL);
+#line 110 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_return_if_fail (method != NULL);
+#line 110 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_return_if_fail (input != NULL);
+#line 111 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp0_ = method;
+#line 111 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp1_ = g_dbus_message_new_method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_STEROIDS, TRACKER_DBUS_INTERFACE_STEROIDS, _tmp0_);
+#line 111 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	message = _tmp1_;
+#line 112 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp2_ = g_unix_fd_list_new ();
+#line 112 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	fd_list = _tmp2_;
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp3_ = input;
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp4_ = g_unix_input_stream_get_fd (_tmp3_);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp5_ = _tmp4_;
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp6_ = g_unix_fd_list_append (fd_list, _tmp5_, &_inner_error_);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp7_ = _tmp6_;
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_inner_error_ != NULL) {
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (_inner_error_->domain == G_IO_ERROR) {
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_propagate_error (error, _inner_error_);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (fd_list);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return;
+#line 1954 "tracker-bus.c"
+		} else {
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (fd_list);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_inner_error_);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return;
+#line 1966 "tracker-bus.c"
+		}
+	}
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp8_ = g_variant_new ("(h)", _tmp7_, NULL);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp9_ = g_variant_ref_sink (_tmp8_);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_dbus_message_set_body (message, _tmp9_);
+#line 113 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_variant_unref0 (_tmp9_);
+#line 114 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_dbus_message_set_unix_fd_list (message, fd_list);
+#line 116 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp10_ = connection;
+#line 116 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp11_ = G_MAXINT;
+#line 116 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp12_ = cancellable;
+#line 116 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp13_ = callback;
+#line 116 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp13__target = callback_target;
+#line 116 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_dbus_connection_send_message_with_reply (_tmp10_, message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, _tmp11_, NULL, _tmp12_, _tmp13_, _tmp13__target);
+#line 110 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (fd_list);
+#line 110 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (message);
+#line 1995 "tracker-bus.c"
 }
 
 
 static Block3Data* block3_data_ref (Block3Data* _data3_) {
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_atomic_int_inc (&_data3_->_ref_count_);
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return _data3_;
-#line 3016 "tracker-bus.c"
+#line 2004 "tracker-bus.c"
 }
 
 
 static void block3_data_unref (Block3Data* _data3_) {
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_atomic_int_dec_and_test (&_data3_->_ref_count_)) {
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data3_->self);
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data3_->async_res);
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_main_loop_unref0 (_data3_->loop);
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_slice_free (Block3Data, _data3_);
-#line 3031 "tracker-bus.c"
+#line 2019 "tracker-bus.c"
 	}
 }
 
@@ -3036,30 +2024,30 @@ static void __lambda3_ (Block3Data* _data3_, GObject* o, GAsyncResult* res) {
 	TrackerBusConnection * self;
 	GAsyncResult* _tmp0_;
 	GAsyncResult* _tmp1_;
-#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 125 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = _data3_->self;
-#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 125 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_if_fail (res != NULL);
-#line 161 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = res;
-#line 161 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 161 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data3_->async_res);
-#line 161 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 126 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data3_->async_res = _tmp1_;
-#line 162 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 127 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_loop_quit (_data3_->loop);
-#line 3054 "tracker-bus.c"
+#line 2042 "tracker-bus.c"
 }
 
 
 static void ___lambda3__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
-#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 125 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	__lambda3_ (self, source_object, res);
-#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 125 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block3_data_unref (self);
-#line 3063 "tracker-bus.c"
+#line 2051 "tracker-bus.c"
 }
 
 
@@ -3073,95 +2061,95 @@ static void tracker_bus_connection_real_update (TrackerSparqlConnection* base, c
 	gint _tmp3_;
 	GCancellable* _tmp4_;
 	GError * _inner_error_ = NULL;
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_if_fail (sparql != NULL);
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data3_ = g_slice_new0 (Block3Data);
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data3_->_ref_count_ = 1;
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data3_->self = g_object_ref (self);
-#line 156 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 121 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = g_main_context_new ();
-#line 156 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 121 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	context = _tmp0_;
-#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = g_main_loop_new (context, FALSE);
-#line 157 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 122 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data3_->loop = _tmp1_;
-#line 158 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 123 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_context_push_thread_default (context);
-#line 159 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 124 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data3_->async_res = NULL;
-#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 125 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = sparql;
-#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 125 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp3_ = priority;
-#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 125 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp4_ = cancellable;
-#line 160 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 125 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_sparql_connection_update_async ((TrackerSparqlConnection*) self, _tmp2_, _tmp3_, _tmp4_, ___lambda3__gasync_ready_callback, block3_data_ref (_data3_));
-#line 164 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 129 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_loop_run (_data3_->loop);
-#line 165 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 130 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_context_pop_thread_default (context);
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_sparql_connection_update_finish ((TrackerSparqlConnection*) self, _data3_->async_res, &_inner_error_);
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_inner_error_ != NULL) {
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_propagate_error (error, _inner_error_);
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_main_context_unref0 (context);
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block3_data_unref (_data3_);
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data3_ = NULL;
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return;
-#line 3127 "tracker-bus.c"
+#line 2115 "tracker-bus.c"
 		} else {
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_main_context_unref0 (context);
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block3_data_unref (_data3_);
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data3_ = NULL;
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_inner_error_);
-#line 166 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 131 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return;
-#line 3141 "tracker-bus.c"
+#line 2129 "tracker-bus.c"
 		}
 	}
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_main_context_unref0 (context);
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block3_data_unref (_data3_);
-#line 154 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 119 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data3_ = NULL;
-#line 3150 "tracker-bus.c"
+#line 2138 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_real_update_async_data_free (gpointer _data) {
 	TrackerBusConnectionUpdateAsyncData* _data_;
 	_data_ = _data;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_free0 (_data_->sparql);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_slice_free (TrackerBusConnectionUpdateAsyncData, _data_);
-#line 3165 "tracker-bus.c"
+#line 2153 "tracker-bus.c"
 }
 
 
@@ -3174,73 +2162,73 @@ static void tracker_bus_connection_real_update_async (TrackerSparqlConnection* b
 	gint _tmp3_;
 	GCancellable* _tmp4_;
 	GCancellable* _tmp5_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_slice_new0 (TrackerBusConnectionUpdateAsyncData);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_bus_connection_real_update_async);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_bus_connection_real_update_async_data_free);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->self = _tmp0_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = sparql;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->sparql = _tmp2_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp3_ = priority;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->priority = _tmp3_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp4_ = cancellable;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp5_ = _g_object_ref0 (_tmp4_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->cancellable = _tmp5_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_real_update_async_co (_data_);
-#line 3208 "tracker-bus.c"
+#line 2196 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_real_update_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerBusConnectionUpdateAsyncData* _data_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		return;
-#line 3218 "tracker-bus.c"
+#line 2206 "tracker-bus.c"
 	}
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 3222 "tracker-bus.c"
+#line 2210 "tracker-bus.c"
 }
 
 
 static Block4Data* block4_data_ref (Block4Data* _data4_) {
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_atomic_int_inc (&_data4_->_ref_count_);
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return _data4_;
-#line 3231 "tracker-bus.c"
+#line 2219 "tracker-bus.c"
 }
 
 
 static void block4_data_unref (Block4Data* _data4_) {
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_atomic_int_dec_and_test (&_data4_->_ref_count_)) {
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data4_->self);
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data4_->dbus_res);
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_slice_free (Block4Data, _data4_);
-#line 3244 "tracker-bus.c"
+#line 2232 "tracker-bus.c"
 	}
 }
 
@@ -3250,518 +2238,617 @@ static void __lambda2_ (Block4Data* _data4_, GObject* o, GAsyncResult* res) {
 	GAsyncResult* _tmp0_;
 	GAsyncResult* _tmp1_;
 	gboolean _tmp2_;
-#line 179 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = _data4_->self;
-#line 179 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_if_fail (res != NULL);
-#line 180 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 145 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = res;
-#line 180 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 145 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 180 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 145 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data4_->dbus_res);
-#line 180 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 145 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data4_->dbus_res = _tmp1_;
-#line 181 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 146 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = _data4_->sent_update;
-#line 181 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 146 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_tmp2_) {
-#line 182 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 147 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		tracker_bus_connection_real_update_async_co (_data4_->_async_data_);
-#line 3272 "tracker-bus.c"
+#line 2260 "tracker-bus.c"
 	}
 }
 
 
 static void ___lambda2__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
-#line 179 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	__lambda2_ (self, source_object, res);
-#line 3280 "tracker-bus.c"
+#line 2268 "tracker-bus.c"
 }
 
 
 static gboolean tracker_bus_connection_real_update_async_co (TrackerBusConnectionUpdateAsyncData* _data_) {
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	switch (_data_->_state_) {
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 0:
-#line 3289 "tracker-bus.c"
+#line 2277 "tracker-bus.c"
 		goto _state_0;
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 1:
-#line 3293 "tracker-bus.c"
+#line 2281 "tracker-bus.c"
 		goto _state_1;
 		default:
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_assert_not_reached ();
-#line 3298 "tracker-bus.c"
+#line 2286 "tracker-bus.c"
 	}
 	_state_0:
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data4_ = g_slice_new0 (Block4Data);
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data4_->_ref_count_ = 1;
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data4_->self = g_object_ref (_data_->self);
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data4_->_async_data_ = _data_;
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_connection_ensure_steroids_object (_data_->self, &_data_->_inner_error_);
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_inner_error_ != NULL) {
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_error_free (_data_->_inner_error_);
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			block4_data_unref (_data_->_data4_);
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_data4_ = NULL;
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			if (_data_->_state_ == 0) {
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3327 "tracker-bus.c"
-			} else {
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_simple_async_result_complete (_data_->_async_result);
-#line 3331 "tracker-bus.c"
-			}
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_object_unref (_data_->_async_result);
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return FALSE;
-#line 3337 "tracker-bus.c"
-		} else {
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			block4_data_unref (_data_->_data4_);
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_data4_ = NULL;
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_clear_error (&_data_->_inner_error_);
-#line 170 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return FALSE;
-#line 3349 "tracker-bus.c"
-		}
-	}
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp0_ = NULL;
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp1_ = NULL;
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_pipe (_data_->self, &_data_->_tmp0_, &_data_->_tmp1_, &_data_->_inner_error_);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->input);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->input = _data_->_tmp0_;
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->output);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->output = _data_->_tmp1_;
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block4_data_unref (_data_->_data4_);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data4_ = NULL;
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3386 "tracker-bus.c"
+#line 2331 "tracker-bus.c"
 			} else {
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 3390 "tracker-bus.c"
+#line 2335 "tracker-bus.c"
 			}
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 3396 "tracker-bus.c"
+#line 2341 "tracker-bus.c"
 		} else {
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block4_data_unref (_data_->_data4_);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data4_ = NULL;
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 174 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 137 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 3412 "tracker-bus.c"
+#line 2357 "tracker-bus.c"
 		}
 	}
-#line 177 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp2_ = _data_->cancellable;
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp3_ = NULL;
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp3_ = g_bus_get_sync (G_BUS_TYPE_SESSION, _data_->_tmp2_, &_data_->_inner_error_);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->connection = _data_->_tmp3_;
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block4_data_unref (_data_->_data4_);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data4_ = NULL;
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 2388 "tracker-bus.c"
+			} else {
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 2392 "tracker-bus.c"
+			}
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 2398 "tracker-bus.c"
+		} else {
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block4_data_unref (_data_->_data4_);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data4_ = NULL;
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 139 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 2414 "tracker-bus.c"
+		}
+	}
+#line 142 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data4_->dbus_res = NULL;
-#line 178 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 143 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data4_->sent_update = FALSE;
-#line 179 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp2_ = _data_->self->priv->steroids_object;
-#line 179 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp3_ = _data_->input;
-#line 179 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp4_ = _data_->priority;
-#line 179 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp5_ = _data_->cancellable;
-#line 179 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_steroids_update_begin (_data_->_tmp2_, _data_->_tmp3_, _data_->_tmp4_, _data_->_tmp5_, ___lambda2__gasync_ready_callback, _data_->_data4_);
-#line 187 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp6_ = _data_->output;
-#line 187 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp7_ = g_data_output_stream_new ((GOutputStream*) _data_->_tmp6_);
-#line 187 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->data_stream = _data_->_tmp7_;
-#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp8_ = _data_->data_stream;
-#line 188 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_data_output_stream_set_byte_order (_data_->_tmp8_, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp9_ = _data_->data_stream;
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp10_ = _data_->sparql;
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp11_ = strlen (_data_->_tmp10_);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp12_ = _data_->_tmp11_;
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_data_output_stream_put_int32 (_data_->_tmp9_, (gint32) _data_->_tmp12_, NULL, &_data_->_inner_error_);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp5_ = _data_->priority;
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_tmp5_ <= G_PRIORITY_DEFAULT) {
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_data_->_tmp4_ = "Update";
+#line 2427 "tracker-bus.c"
+	} else {
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_data_->_tmp4_ = "BatchUpdate";
+#line 2431 "tracker-bus.c"
+	}
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp6_ = _data_->connection;
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp7_ = _data_->_tmp4_;
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp8_ = _data_->input;
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp9_ = _data_->cancellable;
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_send_update (_data_->self, _data_->_tmp6_, _data_->_tmp7_, _data_->_tmp8_, _data_->_tmp9_, ___lambda2__gasync_ready_callback, _data_->_data4_, &_data_->_inner_error_);
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_object_unref0 (_data_->data_stream);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block4_data_unref (_data_->_data4_);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data4_ = NULL;
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3471 "tracker-bus.c"
+#line 2465 "tracker-bus.c"
 			} else {
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 3475 "tracker-bus.c"
+#line 2469 "tracker-bus.c"
 			}
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 3481 "tracker-bus.c"
+#line 2475 "tracker-bus.c"
 		} else {
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_object_unref0 (_data_->data_stream);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block4_data_unref (_data_->_data4_);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data4_ = NULL;
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 189 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 144 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 3499 "tracker-bus.c"
+#line 2493 "tracker-bus.c"
 		}
 	}
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 152 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp10_ = _data_->output;
+#line 152 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp11_ = g_data_output_stream_new ((GOutputStream*) _data_->_tmp10_);
+#line 152 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->data_stream = _data_->_tmp11_;
+#line 153 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp12_ = _data_->data_stream;
+#line 153 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_data_output_stream_set_byte_order (_data_->_tmp12_, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp13_ = _data_->data_stream;
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp14_ = _data_->sparql;
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_data_output_stream_put_string (_data_->_tmp13_, _data_->_tmp14_, NULL, &_data_->_inner_error_);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp15_ = strlen (_data_->_tmp14_);
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp16_ = _data_->_tmp15_;
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_data_output_stream_put_int32 (_data_->_tmp13_, (gint32) _data_->_tmp16_, NULL, &_data_->_inner_error_);
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->data_stream);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block4_data_unref (_data_->_data4_);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data4_ = NULL;
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3530 "tracker-bus.c"
+#line 2540 "tracker-bus.c"
 			} else {
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 3534 "tracker-bus.c"
+#line 2544 "tracker-bus.c"
 			}
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 3540 "tracker-bus.c"
+#line 2550 "tracker-bus.c"
 		} else {
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->data_stream);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block4_data_unref (_data_->_data4_);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data4_ = NULL;
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 190 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 154 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 3558 "tracker-bus.c"
+#line 2570 "tracker-bus.c"
 		}
 	}
-#line 191 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp17_ = _data_->data_stream;
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp18_ = _data_->sparql;
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_data_output_stream_put_string (_data_->_tmp17_, _data_->_tmp18_, NULL, &_data_->_inner_error_);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block4_data_unref (_data_->_data4_);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data4_ = NULL;
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 2603 "tracker-bus.c"
+			} else {
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 2607 "tracker-bus.c"
+			}
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 2613 "tracker-bus.c"
+		} else {
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block4_data_unref (_data_->_data4_);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data4_ = NULL;
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 155 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 2633 "tracker-bus.c"
+		}
+	}
+#line 156 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->data_stream);
-#line 191 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 156 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->data_stream = NULL;
-#line 194 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 159 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data4_->sent_update = TRUE;
-#line 195 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp15_ = _data_->_data4_->dbus_res;
-#line 195 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_tmp15_ == NULL) {
-#line 196 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 160 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp19_ = _data_->_data4_->dbus_res;
+#line 160 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_tmp19_ == NULL) {
+#line 161 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_data_->_state_ = 1;
-#line 196 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 161 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		return FALSE;
-#line 3575 "tracker-bus.c"
+#line 2650 "tracker-bus.c"
 		_state_1:
 		;
 	}
-#line 199 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp16_ = _data_->priority;
-#line 199 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_tmp16_ <= G_PRIORITY_DEFAULT) {
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp17_ = _data_->self->priv->steroids_object;
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp18_ = _data_->_data4_->dbus_res;
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		tracker_bus_steroids_update_finish (_data_->_tmp17_, _data_->_tmp18_, &_data_->_inner_error_);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if (_data_->_inner_error_ != NULL) {
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_error_free (_data_->_inner_error_);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->data_stream);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->output);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->input);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				block4_data_unref (_data_->_data4_);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_data4_ = NULL;
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				if (_data_->_state_ == 0) {
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-					g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3611 "tracker-bus.c"
-				} else {
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-					g_simple_async_result_complete (_data_->_async_result);
-#line 3615 "tracker-bus.c"
-				}
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_object_unref (_data_->_async_result);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				return FALSE;
-#line 3621 "tracker-bus.c"
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp20_ = _data_->connection;
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp21_ = _data_->_data4_->dbus_res;
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp22_ = NULL;
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp22_ = g_dbus_connection_send_message_with_reply_finish (_data_->_tmp20_, _data_->_tmp21_, &_data_->_inner_error_);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->reply = _data_->_tmp22_;
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block4_data_unref (_data_->_data4_);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data4_ = NULL;
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 2688 "tracker-bus.c"
 			} else {
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->data_stream);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->output);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->input);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				block4_data_unref (_data_->_data4_);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_data4_ = NULL;
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_clear_error (&_data_->_inner_error_);
-#line 200 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				return FALSE;
-#line 3639 "tracker-bus.c"
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 2692 "tracker-bus.c"
 			}
-		}
-	} else {
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp19_ = _data_->self->priv->steroids_object;
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp20_ = _data_->_data4_->dbus_res;
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		tracker_bus_steroids_batch_update_finish (_data_->_tmp19_, _data_->_tmp20_, &_data_->_inner_error_);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if (_data_->_inner_error_ != NULL) {
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_error_free (_data_->_inner_error_);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->data_stream);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->output);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->input);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				block4_data_unref (_data_->_data4_);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_data4_ = NULL;
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				if (_data_->_state_ == 0) {
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-					g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3671 "tracker-bus.c"
-				} else {
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-					g_simple_async_result_complete (_data_->_async_result);
-#line 3675 "tracker-bus.c"
-				}
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_object_unref (_data_->_async_result);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				return FALSE;
-#line 3681 "tracker-bus.c"
-			} else {
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->data_stream);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->output);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_g_object_unref0 (_data_->input);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				block4_data_unref (_data_->_data4_);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_data4_ = NULL;
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_clear_error (&_data_->_inner_error_);
-#line 202 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				return FALSE;
-#line 3699 "tracker-bus.c"
-			}
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 2698 "tracker-bus.c"
+		} else {
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block4_data_unref (_data_->_data4_);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data4_ = NULL;
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 164 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 2718 "tracker-bus.c"
 		}
 	}
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp23_ = _data_->reply;
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_handle_error_reply (_data_->self, _data_->_tmp23_, &_data_->_inner_error_);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block4_data_unref (_data_->_data4_);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data4_ = NULL;
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 2751 "tracker-bus.c"
+			} else {
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 2755 "tracker-bus.c"
+			}
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 2761 "tracker-bus.c"
+		} else {
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block4_data_unref (_data_->_data4_);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data4_ = NULL;
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 165 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 2783 "tracker-bus.c"
+		}
+	}
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->reply);
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->data_stream);
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->connection);
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->output);
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->input);
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block4_data_unref (_data_->_data4_);
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data4_ = NULL;
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_state_ == 0) {
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3717 "tracker-bus.c"
+#line 2804 "tracker-bus.c"
 	} else {
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 3721 "tracker-bus.c"
+#line 2808 "tracker-bus.c"
 	}
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_object_unref (_data_->_async_result);
-#line 169 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 134 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return FALSE;
-#line 3727 "tracker-bus.c"
+#line 2814 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_real_update_array_async_data_free (gpointer _data) {
 	TrackerBusConnectionUpdateArrayAsyncData* _data_;
 	_data_ = _data;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->sparql = (_vala_array_free (_data_->sparql, _data_->sparql_length1, (GDestroyNotify) g_free), NULL);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_ptr_array_unref0 (_data_->result);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_slice_free (TrackerBusConnectionUpdateArrayAsyncData, _data_);
-#line 3744 "tracker-bus.c"
+#line 2831 "tracker-bus.c"
 }
 
 
 static gchar** _vala_array_dup1 (gchar** self, int length) {
 	gchar** result;
 	int i;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	result = g_new0 (gchar*, length + 1);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	for (i = 0; i < length; i++) {
-#line 3755 "tracker-bus.c"
+#line 2842 "tracker-bus.c"
 		gchar* _tmp0_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_tmp0_ = g_strdup (self[i]);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		result[i] = _tmp0_;
-#line 3761 "tracker-bus.c"
+#line 2848 "tracker-bus.c"
 	}
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return result;
-#line 3765 "tracker-bus.c"
+#line 2852 "tracker-bus.c"
 }
 
 
@@ -3776,86 +2863,86 @@ static void tracker_bus_connection_real_update_array_async (TrackerSparqlConnect
 	gint _tmp3_;
 	GCancellable* _tmp4_;
 	GCancellable* _tmp5_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_slice_new0 (TrackerBusConnectionUpdateArrayAsyncData);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_bus_connection_real_update_array_async);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_bus_connection_real_update_array_async_data_free);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->self = _tmp0_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = sparql;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1__length1 = sparql_length1;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = (_tmp1_ != NULL) ? _vala_array_dup1 (_tmp1_, _tmp1__length1) : ((gpointer) _tmp1_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2__length1 = _tmp1__length1;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->sparql = _tmp2_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->sparql_length1 = _tmp2__length1;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp3_ = priority;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->priority = _tmp3_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp4_ = cancellable;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp5_ = _g_object_ref0 (_tmp4_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->cancellable = _tmp5_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_real_update_array_async_co (_data_);
-#line 3816 "tracker-bus.c"
+#line 2903 "tracker-bus.c"
 }
 
 
 static GPtrArray* tracker_bus_connection_real_update_array_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	GPtrArray* result;
 	TrackerBusConnectionUpdateArrayAsyncData* _data_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		return NULL;
-#line 3827 "tracker-bus.c"
+#line 2914 "tracker-bus.c"
 	}
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	result = _data_->result;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->result = NULL;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return result;
-#line 3837 "tracker-bus.c"
+#line 2924 "tracker-bus.c"
 }
 
 
 static Block5Data* block5_data_ref (Block5Data* _data5_) {
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_atomic_int_inc (&_data5_->_ref_count_);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return _data5_;
-#line 3846 "tracker-bus.c"
+#line 2933 "tracker-bus.c"
 }
 
 
 static void block5_data_unref (Block5Data* _data5_) {
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_atomic_int_dec_and_test (&_data5_->_ref_count_)) {
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data5_->self);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data5_->dbus_res);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_slice_free (Block5Data, _data5_);
-#line 3859 "tracker-bus.c"
+#line 2946 "tracker-bus.c"
 	}
 }
 
@@ -3865,695 +2952,851 @@ static void __lambda4_ (Block5Data* _data5_, GObject* o, GAsyncResult* res) {
 	GAsyncResult* _tmp0_;
 	GAsyncResult* _tmp1_;
 	gboolean _tmp2_;
-#line 216 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = _data5_->self;
-#line 216 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_if_fail (res != NULL);
-#line 217 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 179 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = res;
-#line 217 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 179 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 217 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 179 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data5_->dbus_res);
-#line 217 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 179 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data5_->dbus_res = _tmp1_;
-#line 218 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 180 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = _data5_->sent_update;
-#line 218 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 180 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_tmp2_) {
-#line 219 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 181 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		tracker_bus_connection_real_update_array_async_co (_data5_->_async_data_);
-#line 3887 "tracker-bus.c"
+#line 2974 "tracker-bus.c"
 	}
 }
 
 
 static void ___lambda4__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
-#line 216 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	__lambda4_ (self, source_object, res);
-#line 216 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	block5_data_unref (self);
-#line 3897 "tracker-bus.c"
+#line 2982 "tracker-bus.c"
 }
 
 
 static void _g_error_free0_ (gpointer var) {
-#line 240 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 205 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	(var == NULL) ? NULL : (var = (g_error_free (var), NULL));
-#line 3904 "tracker-bus.c"
+#line 2989 "tracker-bus.c"
 }
 
 
 static gboolean tracker_bus_connection_real_update_array_async_co (TrackerBusConnectionUpdateArrayAsyncData* _data_) {
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	switch (_data_->_state_) {
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 0:
-#line 3913 "tracker-bus.c"
+#line 2998 "tracker-bus.c"
 		goto _state_0;
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 1:
-#line 3917 "tracker-bus.c"
+#line 3002 "tracker-bus.c"
 		goto _state_1;
 		default:
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_assert_not_reached ();
-#line 3922 "tracker-bus.c"
+#line 3007 "tracker-bus.c"
 	}
 	_state_0:
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data5_ = g_slice_new0 (Block5Data);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data5_->_ref_count_ = 1;
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data5_->self = g_object_ref (_data_->self);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data5_->_async_data_ = _data_;
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_connection_ensure_steroids_object (_data_->self, &_data_->_inner_error_);
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_inner_error_ != NULL) {
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_error_free (_data_->_inner_error_);
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			block5_data_unref (_data_->_data5_);
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_data5_ = NULL;
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			if (_data_->_state_ == 0) {
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 3951 "tracker-bus.c"
-			} else {
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_simple_async_result_complete (_data_->_async_result);
-#line 3955 "tracker-bus.c"
-			}
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_object_unref (_data_->_async_result);
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return FALSE;
-#line 3961 "tracker-bus.c"
-		} else {
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			block5_data_unref (_data_->_data5_);
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_data5_ = NULL;
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_clear_error (&_data_->_inner_error_);
-#line 207 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return FALSE;
-#line 3973 "tracker-bus.c"
-		}
-	}
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp0_ = NULL;
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp1_ = NULL;
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_pipe (_data_->self, &_data_->_tmp0_, &_data_->_tmp1_, &_data_->_inner_error_);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->input);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->input = _data_->_tmp0_;
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->output);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->output = _data_->_tmp1_;
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block5_data_unref (_data_->_data5_);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data5_ = NULL;
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4010 "tracker-bus.c"
+#line 3052 "tracker-bus.c"
 			} else {
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 4014 "tracker-bus.c"
+#line 3056 "tracker-bus.c"
 			}
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 4020 "tracker-bus.c"
+#line 3062 "tracker-bus.c"
 		} else {
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block5_data_unref (_data_->_data5_);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data5_ = NULL;
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 211 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 171 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 4036 "tracker-bus.c"
+#line 3078 "tracker-bus.c"
 		}
 	}
-#line 214 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_data5_->dbus_res = NULL;
-#line 215 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_data5_->sent_update = FALSE;
-#line 216 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp2_ = _data_->self->priv->steroids_object;
-#line 216 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp3_ = _data_->input;
-#line 216 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp4_ = _data_->cancellable;
-#line 216 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_steroids_update_array (_data_->_tmp2_, _data_->_tmp3_, _data_->_tmp4_, ___lambda4__gasync_ready_callback, block5_data_ref (_data_->_data5_));
-#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp5_ = _data_->output;
-#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp6_ = g_data_output_stream_new ((GOutputStream*) _data_->_tmp5_);
-#line 224 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->data_stream = _data_->_tmp6_;
-#line 225 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp7_ = _data_->data_stream;
-#line 225 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_data_output_stream_set_byte_order (_data_->_tmp7_, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp8_ = _data_->data_stream;
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp9_ = _data_->sparql;
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp9__length1 = _data_->sparql_length1;
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_data_output_stream_put_int32 (_data_->_tmp8_, (gint32) _data_->_tmp9__length1, NULL, &_data_->_inner_error_);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp2_ = _data_->cancellable;
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp3_ = NULL;
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp3_ = g_bus_get_sync (G_BUS_TYPE_SESSION, _data_->_tmp2_, &_data_->_inner_error_);
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->connection = _data_->_tmp3_;
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_object_unref0 (_data_->data_stream);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block5_data_unref (_data_->_data5_);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data5_ = NULL;
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4091 "tracker-bus.c"
+#line 3109 "tracker-bus.c"
 			} else {
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 4095 "tracker-bus.c"
+#line 3113 "tracker-bus.c"
 			}
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 4101 "tracker-bus.c"
+#line 3119 "tracker-bus.c"
 		} else {
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_object_unref0 (_data_->data_stream);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block5_data_unref (_data_->_data5_);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data5_ = NULL;
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 226 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 173 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 4119 "tracker-bus.c"
+#line 3135 "tracker-bus.c"
+		}
+	}
+#line 176 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_data5_->dbus_res = NULL;
+#line 177 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_data5_->sent_update = FALSE;
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp4_ = _data_->connection;
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp5_ = _data_->input;
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp6_ = _data_->cancellable;
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_send_update (_data_->self, _data_->_tmp4_, "UpdateArray", _data_->_tmp5_, _data_->_tmp6_, ___lambda4__gasync_ready_callback, _data_->_data5_, &_data_->_inner_error_);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block5_data_unref (_data_->_data5_);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data5_ = NULL;
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 3172 "tracker-bus.c"
+			} else {
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 3176 "tracker-bus.c"
+			}
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 3182 "tracker-bus.c"
+		} else {
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block5_data_unref (_data_->_data5_);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data5_ = NULL;
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 178 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 3200 "tracker-bus.c"
+		}
+	}
+#line 186 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp7_ = _data_->output;
+#line 186 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp8_ = g_data_output_stream_new ((GOutputStream*) _data_->_tmp7_);
+#line 186 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->data_stream = _data_->_tmp8_;
+#line 187 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp9_ = _data_->data_stream;
+#line 187 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_data_output_stream_set_byte_order (_data_->_tmp9_, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp10_ = _data_->data_stream;
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp11_ = _data_->sparql;
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp11__length1 = _data_->sparql_length1;
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_data_output_stream_put_int32 (_data_->_tmp10_, (gint32) _data_->_tmp11__length1, NULL, &_data_->_inner_error_);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block5_data_unref (_data_->_data5_);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data5_ = NULL;
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 3245 "tracker-bus.c"
+			} else {
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 3249 "tracker-bus.c"
+			}
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 3255 "tracker-bus.c"
+		} else {
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block5_data_unref (_data_->_data5_);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data5_ = NULL;
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 188 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 3275 "tracker-bus.c"
 		}
 	}
 	{
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_data_->i = 0;
-#line 4125 "tracker-bus.c"
+#line 3281 "tracker-bus.c"
 		{
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_tmp10_ = TRUE;
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_tmp12_ = TRUE;
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			while (TRUE) {
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp11_ = _data_->_tmp10_;
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				if (!_data_->_tmp11_) {
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-					_data_->_tmp12_ = _data_->i;
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-					_data_->i = _data_->_tmp12_ + 1;
-#line 4139 "tracker-bus.c"
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp13_ = _data_->_tmp12_;
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				if (!_data_->_tmp13_) {
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+					_data_->_tmp14_ = _data_->i;
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+					_data_->i = _data_->_tmp14_ + 1;
+#line 3295 "tracker-bus.c"
 				}
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp10_ = FALSE;
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp13_ = _data_->i;
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp14_ = _data_->sparql;
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp14__length1 = _data_->sparql_length1;
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				if (!(_data_->_tmp13_ < _data_->_tmp14__length1)) {
-#line 227 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-					break;
-#line 4153 "tracker-bus.c"
-				}
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp15_ = _data_->data_stream;
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp12_ = FALSE;
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp15_ = _data_->i;
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				_data_->_tmp16_ = _data_->sparql;
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				_data_->_tmp16__length1 = _data_->sparql_length1;
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp17_ = _data_->i;
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp18_ = _data_->_tmp16_[_data_->_tmp17_];
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp19_ = strlen (_data_->_tmp18_);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp20_ = _data_->_tmp19_;
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_data_output_stream_put_int32 (_data_->_tmp15_, (gint32) _data_->_tmp20_, NULL, &_data_->_inner_error_);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				if (!(_data_->_tmp15_ < _data_->_tmp16__length1)) {
+#line 189 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+					break;
+#line 3309 "tracker-bus.c"
+				}
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp17_ = _data_->data_stream;
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp18_ = _data_->sparql;
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp18__length1 = _data_->sparql_length1;
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp19_ = _data_->i;
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp20_ = _data_->_tmp18_[_data_->_tmp19_];
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp21_ = strlen (_data_->_tmp20_);
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp22_ = _data_->_tmp21_;
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_data_output_stream_put_int32 (_data_->_tmp17_, (gint32) _data_->_tmp22_, NULL, &_data_->_inner_error_);
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				if (_data_->_inner_error_ != NULL) {
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 					if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						g_error_free (_data_->_inner_error_);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->data_stream);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+						_g_object_unref0 (_data_->connection);
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->output);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->input);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						block5_data_unref (_data_->_data5_);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_data_->_data5_ = NULL;
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						if (_data_->_state_ == 0) {
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 							g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4193 "tracker-bus.c"
+#line 3351 "tracker-bus.c"
 						} else {
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 							g_simple_async_result_complete (_data_->_async_result);
-#line 4197 "tracker-bus.c"
+#line 3355 "tracker-bus.c"
 						}
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						g_object_unref (_data_->_async_result);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						return FALSE;
-#line 4203 "tracker-bus.c"
+#line 3361 "tracker-bus.c"
 					} else {
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->data_stream);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+						_g_object_unref0 (_data_->connection);
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->output);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->input);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						block5_data_unref (_data_->_data5_);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_data_->_data5_ = NULL;
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						g_clear_error (&_data_->_inner_error_);
-#line 228 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 190 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						return FALSE;
-#line 4221 "tracker-bus.c"
+#line 3381 "tracker-bus.c"
 					}
 				}
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp21_ = _data_->data_stream;
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp22_ = _data_->sparql;
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp22__length1 = _data_->sparql_length1;
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp23_ = _data_->i;
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp24_ = _data_->_tmp22_[_data_->_tmp23_];
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_data_output_stream_put_string (_data_->_tmp21_, _data_->_tmp24_, NULL, &_data_->_inner_error_);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp23_ = _data_->data_stream;
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp24_ = _data_->sparql;
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp24__length1 = _data_->sparql_length1;
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp25_ = _data_->i;
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp26_ = _data_->_tmp24_[_data_->_tmp25_];
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_data_output_stream_put_string (_data_->_tmp23_, _data_->_tmp26_, NULL, &_data_->_inner_error_);
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				if (_data_->_inner_error_ != NULL) {
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 					if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						g_error_free (_data_->_inner_error_);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->data_stream);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+						_g_object_unref0 (_data_->connection);
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->output);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->input);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						block5_data_unref (_data_->_data5_);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_data_->_data5_ = NULL;
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						if (_data_->_state_ == 0) {
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 							g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4258 "tracker-bus.c"
+#line 3420 "tracker-bus.c"
 						} else {
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 							g_simple_async_result_complete (_data_->_async_result);
-#line 4262 "tracker-bus.c"
+#line 3424 "tracker-bus.c"
 						}
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						g_object_unref (_data_->_async_result);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						return FALSE;
-#line 4268 "tracker-bus.c"
+#line 3430 "tracker-bus.c"
 					} else {
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->data_stream);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+						_g_object_unref0 (_data_->connection);
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->output);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_g_object_unref0 (_data_->input);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						block5_data_unref (_data_->_data5_);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						_data_->_data5_ = NULL;
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						g_clear_error (&_data_->_inner_error_);
-#line 229 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 191 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 						return FALSE;
-#line 4286 "tracker-bus.c"
+#line 3450 "tracker-bus.c"
 					}
 				}
 			}
 		}
 	}
-#line 231 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 193 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->data_stream);
-#line 231 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 193 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->data_stream = NULL;
-#line 234 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 196 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data5_->sent_update = TRUE;
-#line 235 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp25_ = _data_->_data5_->dbus_res;
-#line 235 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_tmp25_ == NULL) {
-#line 236 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 197 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp27_ = _data_->_data5_->dbus_res;
+#line 197 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_tmp27_ == NULL) {
+#line 198 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_data_->_state_ = 1;
-#line 236 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 198 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		return FALSE;
-#line 4306 "tracker-bus.c"
+#line 3470 "tracker-bus.c"
 		_state_1:
 		;
 	}
-#line 240 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp26_ = g_ptr_array_new_with_free_func (_g_error_free0_);
-#line 240 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_result_ = _data_->_tmp26_;
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp27_ = _data_->self->priv->steroids_object;
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp28_ = _data_->_data5_->dbus_res;
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp29_ = NULL;
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp29_ = tracker_bus_steroids_update_array_finish (_data_->_tmp27_, _data_->_tmp28_, &_data_->_inner_error_);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp30_ = _data_->_tmp29_;
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp28_ = _data_->connection;
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp29_ = _data_->_data5_->dbus_res;
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp30_ = NULL;
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp30_ = g_dbus_connection_send_message_with_reply_finish (_data_->_tmp28_, _data_->_tmp29_, &_data_->_inner_error_);
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->reply = _data_->_tmp30_;
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_variant_unref0 (_data_->resultv);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_ptr_array_unref0 (_data_->_result_);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->data_stream);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block5_data_unref (_data_->_data5_);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data5_ = NULL;
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4350 "tracker-bus.c"
+#line 3508 "tracker-bus.c"
 			} else {
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 4354 "tracker-bus.c"
+#line 3512 "tracker-bus.c"
 			}
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 4360 "tracker-bus.c"
+#line 3518 "tracker-bus.c"
 		} else {
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_variant_unref0 (_data_->resultv);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_ptr_array_unref0 (_data_->_result_);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->data_stream);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block5_data_unref (_data_->_data5_);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data5_ = NULL;
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 201 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 4382 "tracker-bus.c"
+#line 3538 "tracker-bus.c"
 		}
 	}
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp31_ = _data_->reply;
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_handle_error_reply (_data_->self, _data_->_tmp31_, &_data_->_inner_error_);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block5_data_unref (_data_->_data5_);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data5_ = NULL;
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 3571 "tracker-bus.c"
+			} else {
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 3575 "tracker-bus.c"
+			}
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 3581 "tracker-bus.c"
+		} else {
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block5_data_unref (_data_->_data5_);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data5_ = NULL;
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 202 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 3603 "tracker-bus.c"
+		}
+	}
+#line 205 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp32_ = g_ptr_array_new_with_free_func (_g_error_free0_);
+#line 205 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_result_ = _data_->_tmp32_;
+#line 207 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp33_ = _data_->reply;
+#line 207 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp34_ = NULL;
+#line 207 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp34_ = g_dbus_message_get_body (_data_->_tmp33_);
+#line 207 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp35_ = NULL;
+#line 207 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp35_ = g_variant_get_child_value (_data_->_tmp34_, (gsize) 0);
+#line 207 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_variant_unref0 (_data_->resultv);
-#line 242 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->resultv = _data_->_tmp30_;
-#line 243 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp31_ = _data_->resultv;
-#line 243 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp32_ = NULL;
-#line 243 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp32_ = g_variant_iter_new (_data_->_tmp31_);
-#line 243 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->iter = _data_->_tmp32_;
-#line 245 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 207 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->resultv = _data_->_tmp35_;
+#line 208 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp36_ = _data_->resultv;
+#line 208 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp37_ = NULL;
+#line 208 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp37_ = g_variant_iter_new (_data_->_tmp36_);
+#line 208 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->iter = _data_->_tmp37_;
+#line 210 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	while (TRUE) {
-#line 245 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp33_ = _data_->iter;
-#line 245 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp34_ = FALSE;
-#line 245 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp34_ = g_variant_iter_next (_data_->_tmp33_, "s", &_data_->code, NULL);
-#line 245 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if (!_data_->_tmp34_) {
-#line 245 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 210 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_data_->_tmp38_ = _data_->iter;
+#line 210 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_data_->_tmp39_ = FALSE;
+#line 210 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_data_->_tmp39_ = g_variant_iter_next (_data_->_tmp38_, "s", &_data_->code, NULL);
+#line 210 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (!_data_->_tmp39_) {
+#line 210 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			break;
-#line 4409 "tracker-bus.c"
+#line 3644 "tracker-bus.c"
 		}
-#line 246 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp35_ = _data_->iter;
-#line 246 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp36_ = FALSE;
-#line 246 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp36_ = g_variant_iter_next (_data_->_tmp35_, "s", &_data_->message, NULL);
-#line 246 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if (_data_->_tmp36_) {
-#line 247 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_tmp38_ = _data_->code;
-#line 247 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			if (g_strcmp0 (_data_->_tmp38_, "") != 0) {
-#line 247 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp39_ = _data_->message;
-#line 247 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp37_ = g_strcmp0 (_data_->_tmp39_, "") != 0;
-#line 4427 "tracker-bus.c"
+#line 211 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_data_->_tmp40_ = _data_->iter;
+#line 211 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_data_->_tmp41_ = FALSE;
+#line 211 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		_data_->_tmp41_ = g_variant_iter_next (_data_->_tmp40_, "s", &_data_->message, NULL);
+#line 211 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (_data_->_tmp41_) {
+#line 212 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_tmp43_ = _data_->code;
+#line 212 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (g_strcmp0 (_data_->_tmp43_, "") != 0) {
+#line 212 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp44_ = _data_->message;
+#line 212 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp42_ = g_strcmp0 (_data_->_tmp44_, "") != 0;
+#line 3662 "tracker-bus.c"
 			} else {
-#line 247 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp37_ = FALSE;
-#line 4431 "tracker-bus.c"
+#line 212 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp42_ = FALSE;
+#line 3666 "tracker-bus.c"
 			}
-#line 247 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_tmp40_ = _data_->_tmp37_;
-#line 247 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			if (_data_->_tmp40_) {
-#line 248 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp41_ = _data_->_result_;
-#line 248 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp42_ = _data_->message;
-#line 248 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp43_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp42_);
-#line 248 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_ptr_array_add (_data_->_tmp41_, _data_->_tmp43_);
-#line 4445 "tracker-bus.c"
+#line 212 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_tmp45_ = _data_->_tmp42_;
+#line 212 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_tmp45_) {
+#line 213 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp46_ = _data_->_result_;
+#line 213 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp47_ = _data_->message;
+#line 213 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp48_ = g_error_new_literal (TRACKER_SPARQL_ERROR, TRACKER_SPARQL_ERROR_INTERNAL, _data_->_tmp47_);
+#line 213 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_ptr_array_add (_data_->_tmp46_, _data_->_tmp48_);
+#line 3680 "tracker-bus.c"
 			} else {
-#line 250 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				_data_->_tmp44_ = _data_->_result_;
-#line 250 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_ptr_array_add (_data_->_tmp44_, NULL);
-#line 4451 "tracker-bus.c"
+#line 215 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_data_->_tmp49_ = _data_->_result_;
+#line 215 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_ptr_array_add (_data_->_tmp49_, NULL);
+#line 3686 "tracker-bus.c"
 			}
-#line 253 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 218 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_free0 (_data_->message);
-#line 253 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 218 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->message = NULL;
-#line 4457 "tracker-bus.c"
+#line 3692 "tracker-bus.c"
 		}
-#line 256 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 221 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_free0 (_data_->code);
-#line 256 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 221 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_data_->code = NULL;
-#line 4463 "tracker-bus.c"
+#line 3698 "tracker-bus.c"
 	}
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->result = _data_->_result_;
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_free0 (_data_->message);
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_free0 (_data_->code);
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_variant_iter_free0 (_data_->iter);
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_variant_unref0 (_data_->resultv);
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->reply);
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->data_stream);
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->connection);
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->output);
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->input);
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block5_data_unref (_data_->_data5_);
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data5_ = NULL;
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_state_ == 0) {
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4489 "tracker-bus.c"
+#line 3728 "tracker-bus.c"
 	} else {
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 4493 "tracker-bus.c"
+#line 3732 "tracker-bus.c"
 	}
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_object_unref (_data_->_async_result);
-#line 258 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 223 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return FALSE;
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_free0 (_data_->message);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_free0 (_data_->code);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_variant_iter_free0 (_data_->iter);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_variant_unref0 (_data_->resultv);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_ptr_array_unref0 (_data_->_result_);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->reply);
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->data_stream);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->connection);
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->output);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->input);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block5_data_unref (_data_->_data5_);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data5_ = NULL;
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_state_ == 0) {
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4523 "tracker-bus.c"
+#line 3766 "tracker-bus.c"
 	} else {
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 4527 "tracker-bus.c"
+#line 3770 "tracker-bus.c"
 	}
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_object_unref (_data_->_async_result);
-#line 206 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 168 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return FALSE;
-#line 4533 "tracker-bus.c"
+#line 3776 "tracker-bus.c"
 }
 
 
 static Block6Data* block6_data_ref (Block6Data* _data6_) {
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_atomic_int_inc (&_data6_->_ref_count_);
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return _data6_;
-#line 4542 "tracker-bus.c"
+#line 3785 "tracker-bus.c"
 }
 
 
 static void block6_data_unref (Block6Data* _data6_) {
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_atomic_int_dec_and_test (&_data6_->_ref_count_)) {
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data6_->self);
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data6_->async_res);
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_main_loop_unref0 (_data6_->loop);
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_slice_free (Block6Data, _data6_);
-#line 4557 "tracker-bus.c"
+#line 3800 "tracker-bus.c"
 	}
 }
 
@@ -4562,30 +3805,30 @@ static void __lambda6_ (Block6Data* _data6_, GObject* o, GAsyncResult* res) {
 	TrackerBusConnection * self;
 	GAsyncResult* _tmp0_;
 	GAsyncResult* _tmp1_;
-#line 267 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 232 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = _data6_->self;
-#line 267 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 232 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_if_fail (res != NULL);
-#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 233 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = res;
-#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 233 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 233 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data6_->async_res);
-#line 268 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 233 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data6_->async_res = _tmp1_;
-#line 269 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 234 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_loop_quit (_data6_->loop);
-#line 4580 "tracker-bus.c"
+#line 3823 "tracker-bus.c"
 }
 
 
 static void ___lambda6__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
-#line 267 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 232 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	__lambda6_ (self, source_object, res);
-#line 267 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 232 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block6_data_unref (self);
-#line 4589 "tracker-bus.c"
+#line 3832 "tracker-bus.c"
 }
 
 
@@ -4602,103 +3845,103 @@ static GVariant* tracker_bus_connection_real_update_blank (TrackerSparqlConnecti
 	GVariant* _tmp5_ = NULL;
 	GVariant* _tmp6_;
 	GError * _inner_error_ = NULL;
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_val_if_fail (sparql != NULL, NULL);
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data6_ = g_slice_new0 (Block6Data);
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data6_->_ref_count_ = 1;
-#line 261 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 226 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data6_->self = g_object_ref (self);
-#line 263 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 228 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = g_main_context_new ();
-#line 263 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 228 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	context = _tmp0_;
-#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 229 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = g_main_loop_new (context, FALSE);
-#line 264 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 229 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data6_->loop = _tmp1_;
-#line 265 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 230 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_context_push_thread_default (context);
-#line 266 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 231 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data6_->async_res = NULL;
-#line 267 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 232 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = sparql;
-#line 267 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 232 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp3_ = priority;
-#line 267 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 232 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp4_ = cancellable;
-#line 267 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 232 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_sparql_connection_update_blank_async ((TrackerSparqlConnection*) self, _tmp2_, _tmp3_, _tmp4_, ___lambda6__gasync_ready_callback, block6_data_ref (_data6_));
-#line 271 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 236 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_loop_run (_data6_->loop);
-#line 272 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 237 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_main_context_pop_thread_default (context);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp5_ = tracker_sparql_connection_update_blank_finish ((TrackerSparqlConnection*) self, _data6_->async_res, &_inner_error_);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp6_ = _tmp5_;
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_inner_error_ != NULL) {
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_propagate_error (error, _inner_error_);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_main_context_unref0 (context);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block6_data_unref (_data6_);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data6_ = NULL;
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return NULL;
-#line 4658 "tracker-bus.c"
+#line 3901 "tracker-bus.c"
 		} else {
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_main_context_unref0 (context);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block6_data_unref (_data6_);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data6_ = NULL;
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_inner_error_);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return NULL;
-#line 4672 "tracker-bus.c"
+#line 3915 "tracker-bus.c"
 		}
 	}
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	result = _tmp6_;
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_main_context_unref0 (context);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block6_data_unref (_data6_);
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data6_ = NULL;
-#line 273 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 238 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return result;
-#line 4685 "tracker-bus.c"
+#line 3928 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_real_update_blank_async_data_free (gpointer _data) {
 	TrackerBusConnectionUpdateBlankAsyncData* _data_;
 	_data_ = _data;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_free0 (_data_->sparql);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_variant_unref0 (_data_->result);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_slice_free (TrackerBusConnectionUpdateBlankAsyncData, _data_);
-#line 4702 "tracker-bus.c"
+#line 3945 "tracker-bus.c"
 }
 
 
@@ -4711,80 +3954,80 @@ static void tracker_bus_connection_real_update_blank_async (TrackerSparqlConnect
 	gint _tmp3_;
 	GCancellable* _tmp4_;
 	GCancellable* _tmp5_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_slice_new0 (TrackerBusConnectionUpdateBlankAsyncData);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_bus_connection_real_update_blank_async);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_bus_connection_real_update_blank_async_data_free);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->self = _tmp0_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = sparql;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = g_strdup (_tmp1_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->sparql = _tmp2_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp3_ = priority;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->priority = _tmp3_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp4_ = cancellable;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp5_ = _g_object_ref0 (_tmp4_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->cancellable = _tmp5_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_real_update_blank_async_co (_data_);
-#line 4745 "tracker-bus.c"
+#line 3988 "tracker-bus.c"
 }
 
 
 static GVariant* tracker_bus_connection_real_update_blank_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	GVariant* result;
 	TrackerBusConnectionUpdateBlankAsyncData* _data_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		return NULL;
-#line 4756 "tracker-bus.c"
+#line 3999 "tracker-bus.c"
 	}
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	result = _data_->result;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->result = NULL;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return result;
-#line 4766 "tracker-bus.c"
+#line 4009 "tracker-bus.c"
 }
 
 
 static Block7Data* block7_data_ref (Block7Data* _data7_) {
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_atomic_int_inc (&_data7_->_ref_count_);
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return _data7_;
-#line 4775 "tracker-bus.c"
+#line 4018 "tracker-bus.c"
 }
 
 
 static void block7_data_unref (Block7Data* _data7_) {
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_atomic_int_dec_and_test (&_data7_->_ref_count_)) {
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data7_->self);
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_g_object_unref0 (_data7_->dbus_res);
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_slice_free (Block7Data, _data7_);
-#line 4788 "tracker-bus.c"
+#line 4031 "tracker-bus.c"
 	}
 }
 
@@ -4794,578 +4037,776 @@ static void __lambda5_ (Block7Data* _data7_, GObject* o, GAsyncResult* res) {
 	GAsyncResult* _tmp0_;
 	GAsyncResult* _tmp1_;
 	gboolean _tmp2_;
-#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = _data7_->self;
-#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_if_fail (res != NULL);
-#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 252 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = res;
-#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 252 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = _g_object_ref0 (_tmp0_);
-#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 252 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data7_->dbus_res);
-#line 287 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 252 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data7_->dbus_res = _tmp1_;
-#line 288 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 253 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = _data7_->sent_update;
-#line 288 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 253 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_tmp2_) {
-#line 289 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 254 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		tracker_bus_connection_real_update_blank_async_co (_data7_->_async_data_);
-#line 4816 "tracker-bus.c"
+#line 4059 "tracker-bus.c"
 	}
 }
 
 
 static void ___lambda5__gasync_ready_callback (GObject* source_object, GAsyncResult* res, gpointer self) {
-#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	__lambda5_ (self, source_object, res);
-#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	block7_data_unref (self);
-#line 4826 "tracker-bus.c"
+#line 4067 "tracker-bus.c"
 }
 
 
 static gboolean tracker_bus_connection_real_update_blank_async_co (TrackerBusConnectionUpdateBlankAsyncData* _data_) {
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	switch (_data_->_state_) {
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 0:
-#line 4835 "tracker-bus.c"
+#line 4076 "tracker-bus.c"
 		goto _state_0;
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 1:
-#line 4839 "tracker-bus.c"
+#line 4080 "tracker-bus.c"
 		goto _state_1;
 		default:
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_assert_not_reached ();
-#line 4844 "tracker-bus.c"
+#line 4085 "tracker-bus.c"
 	}
 	_state_0:
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data7_ = g_slice_new0 (Block7Data);
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data7_->_ref_count_ = 1;
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data7_->self = g_object_ref (_data_->self);
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data7_->_async_data_ = _data_;
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_connection_ensure_steroids_object (_data_->self, &_data_->_inner_error_);
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_inner_error_ != NULL) {
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_error_free (_data_->_inner_error_);
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			block7_data_unref (_data_->_data7_);
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_data7_ = NULL;
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			if (_data_->_state_ == 0) {
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4873 "tracker-bus.c"
-			} else {
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-				g_simple_async_result_complete (_data_->_async_result);
-#line 4877 "tracker-bus.c"
-			}
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_object_unref (_data_->_async_result);
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return FALSE;
-#line 4883 "tracker-bus.c"
-		} else {
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			block7_data_unref (_data_->_data7_);
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_data_->_data7_ = NULL;
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			g_clear_error (&_data_->_inner_error_);
-#line 277 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			return FALSE;
-#line 4895 "tracker-bus.c"
-		}
-	}
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp0_ = NULL;
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp1_ = NULL;
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_pipe (_data_->self, &_data_->_tmp0_, &_data_->_tmp1_, &_data_->_inner_error_);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->input);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->input = _data_->_tmp0_;
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->output);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->output = _data_->_tmp1_;
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block7_data_unref (_data_->_data7_);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data7_ = NULL;
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 4932 "tracker-bus.c"
+#line 4130 "tracker-bus.c"
 			} else {
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 4936 "tracker-bus.c"
+#line 4134 "tracker-bus.c"
 			}
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 4942 "tracker-bus.c"
+#line 4140 "tracker-bus.c"
 		} else {
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block7_data_unref (_data_->_data7_);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data7_ = NULL;
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 281 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 244 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 4958 "tracker-bus.c"
+#line 4156 "tracker-bus.c"
 		}
 	}
-#line 284 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp2_ = _data_->cancellable;
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp3_ = NULL;
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp3_ = g_bus_get_sync (G_BUS_TYPE_SESSION, _data_->_tmp2_, &_data_->_inner_error_);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->connection = _data_->_tmp3_;
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block7_data_unref (_data_->_data7_);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data7_ = NULL;
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 4187 "tracker-bus.c"
+			} else {
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 4191 "tracker-bus.c"
+			}
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 4197 "tracker-bus.c"
+		} else {
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block7_data_unref (_data_->_data7_);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data7_ = NULL;
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 246 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 4213 "tracker-bus.c"
+		}
+	}
+#line 249 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data7_->dbus_res = NULL;
-#line 285 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 250 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data7_->sent_update = FALSE;
-#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp2_ = _data_->self->priv->steroids_object;
-#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp3_ = _data_->input;
-#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp4_ = _data_->cancellable;
-#line 286 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_steroids_update_blank (_data_->_tmp2_, _data_->_tmp3_, _data_->_tmp4_, ___lambda5__gasync_ready_callback, block7_data_ref (_data_->_data7_));
-#line 294 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp5_ = _data_->output;
-#line 294 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp6_ = g_data_output_stream_new ((GOutputStream*) _data_->_tmp5_);
-#line 294 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->data_stream = _data_->_tmp6_;
-#line 295 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp7_ = _data_->data_stream;
-#line 295 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_data_output_stream_set_byte_order (_data_->_tmp7_, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp8_ = _data_->data_stream;
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp9_ = _data_->sparql;
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp10_ = strlen (_data_->_tmp9_);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp11_ = _data_->_tmp10_;
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_data_output_stream_put_int32 (_data_->_tmp8_, (gint32) _data_->_tmp11_, NULL, &_data_->_inner_error_);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp4_ = _data_->connection;
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp5_ = _data_->input;
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp6_ = _data_->cancellable;
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_send_update (_data_->self, _data_->_tmp4_, "UpdateBlank", _data_->_tmp5_, _data_->_tmp6_, ___lambda5__gasync_ready_callback, _data_->_data7_, &_data_->_inner_error_);
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_object_unref0 (_data_->data_stream);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block7_data_unref (_data_->_data7_);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data7_ = NULL;
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 5015 "tracker-bus.c"
+#line 4250 "tracker-bus.c"
 			} else {
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 5019 "tracker-bus.c"
+#line 4254 "tracker-bus.c"
 			}
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5025 "tracker-bus.c"
+#line 4260 "tracker-bus.c"
 		} else {
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-			_g_object_unref0 (_data_->data_stream);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block7_data_unref (_data_->_data7_);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data7_ = NULL;
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 296 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 251 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5043 "tracker-bus.c"
+#line 4278 "tracker-bus.c"
 		}
 	}
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp12_ = _data_->data_stream;
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp13_ = _data_->sparql;
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_data_output_stream_put_string (_data_->_tmp12_, _data_->_tmp13_, NULL, &_data_->_inner_error_);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 259 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp7_ = _data_->output;
+#line 259 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp8_ = g_data_output_stream_new ((GOutputStream*) _data_->_tmp7_);
+#line 259 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->data_stream = _data_->_tmp8_;
+#line 260 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp9_ = _data_->data_stream;
+#line 260 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_data_output_stream_set_byte_order (_data_->_tmp9_, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp10_ = _data_->data_stream;
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp11_ = _data_->sparql;
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp12_ = strlen (_data_->_tmp11_);
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp13_ = _data_->_tmp12_;
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_data_output_stream_put_int32 (_data_->_tmp10_, (gint32) _data_->_tmp13_, NULL, &_data_->_inner_error_);
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->data_stream);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block7_data_unref (_data_->_data7_);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data7_ = NULL;
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 5074 "tracker-bus.c"
+#line 4325 "tracker-bus.c"
 			} else {
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 5078 "tracker-bus.c"
+#line 4329 "tracker-bus.c"
 			}
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5084 "tracker-bus.c"
+#line 4335 "tracker-bus.c"
 		} else {
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->data_stream);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block7_data_unref (_data_->_data7_);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data7_ = NULL;
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 297 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 261 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5102 "tracker-bus.c"
+#line 4355 "tracker-bus.c"
 		}
 	}
-#line 298 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp14_ = _data_->data_stream;
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp15_ = _data_->sparql;
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_data_output_stream_put_string (_data_->_tmp14_, _data_->_tmp15_, NULL, &_data_->_inner_error_);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block7_data_unref (_data_->_data7_);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data7_ = NULL;
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 4388 "tracker-bus.c"
+			} else {
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 4392 "tracker-bus.c"
+			}
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 4398 "tracker-bus.c"
+		} else {
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block7_data_unref (_data_->_data7_);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data7_ = NULL;
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 262 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 4418 "tracker-bus.c"
+		}
+	}
+#line 263 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->data_stream);
-#line 298 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 263 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->data_stream = NULL;
-#line 301 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 266 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data7_->sent_update = TRUE;
-#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp14_ = _data_->_data7_->dbus_res;
-#line 302 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_tmp14_ == NULL) {
-#line 303 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 267 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp16_ = _data_->_data7_->dbus_res;
+#line 267 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_tmp16_ == NULL) {
+#line 268 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		_data_->_state_ = 1;
-#line 303 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 268 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		return FALSE;
-#line 5119 "tracker-bus.c"
+#line 4435 "tracker-bus.c"
 		_state_1:
 		;
 	}
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp15_ = _data_->self->priv->steroids_object;
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp16_ = _data_->_data7_->dbus_res;
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp17_ = NULL;
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp17_ = tracker_bus_steroids_update_blank_finish (_data_->_tmp15_, _data_->_tmp16_, &_data_->_inner_error_);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp18_ = _data_->_tmp17_;
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp17_ = _data_->connection;
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp18_ = _data_->_data7_->dbus_res;
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp19_ = NULL;
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp19_ = g_dbus_connection_send_message_with_reply_finish (_data_->_tmp17_, _data_->_tmp18_, &_data_->_inner_error_);
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->reply = _data_->_tmp19_;
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->data_stream);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block7_data_unref (_data_->_data7_);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data7_ = NULL;
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 5155 "tracker-bus.c"
+#line 4473 "tracker-bus.c"
 			} else {
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 5159 "tracker-bus.c"
+#line 4477 "tracker-bus.c"
 			}
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5165 "tracker-bus.c"
+#line 4483 "tracker-bus.c"
 		} else {
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->data_stream);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->output);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_g_object_unref0 (_data_->input);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			block7_data_unref (_data_->_data7_);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			_data_->_data7_ = NULL;
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 271 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5183 "tracker-bus.c"
+#line 4503 "tracker-bus.c"
 		}
 	}
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->result = _data_->_tmp18_;
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (_data_->data_stream);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (_data_->output);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (_data_->input);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	block7_data_unref (_data_->_data7_);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_data7_ = NULL;
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_state_ == 0) {
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 5202 "tracker-bus.c"
-	} else {
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		g_simple_async_result_complete (_data_->_async_result);
-#line 5206 "tracker-bus.c"
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp20_ = _data_->reply;
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_handle_error_reply (_data_->self, _data_->_tmp20_, &_data_->_inner_error_);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block7_data_unref (_data_->_data7_);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data7_ = NULL;
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 4536 "tracker-bus.c"
+			} else {
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 4540 "tracker-bus.c"
+			}
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 4546 "tracker-bus.c"
+		} else {
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->data_stream);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->output);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->input);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			block7_data_unref (_data_->_data7_);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_data_->_data7_ = NULL;
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 272 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 4568 "tracker-bus.c"
+		}
 	}
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_object_unref (_data_->_async_result);
-#line 306 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	return FALSE;
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp21_ = _data_->reply;
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp22_ = NULL;
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp22_ = g_dbus_message_get_body (_data_->_tmp21_);
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp23_ = NULL;
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp23_ = g_variant_get_child_value (_data_->_tmp22_, (gsize) 0);
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->result = _data_->_tmp23_;
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->reply);
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->data_stream);
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->connection);
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->output);
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->input);
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	block7_data_unref (_data_->_data7_);
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_data7_ = NULL;
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_state_ == 0) {
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 5226 "tracker-bus.c"
+#line 4601 "tracker-bus.c"
 	} else {
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 5230 "tracker-bus.c"
+#line 4605 "tracker-bus.c"
 	}
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_object_unref (_data_->_async_result);
-#line 276 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 273 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return FALSE;
-#line 5236 "tracker-bus.c"
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->reply);
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->data_stream);
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->connection);
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->output);
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->input);
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	block7_data_unref (_data_->_data7_);
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_data7_ = NULL;
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_state_ == 0) {
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 4629 "tracker-bus.c"
+	} else {
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		g_simple_async_result_complete (_data_->_async_result);
+#line 4633 "tracker-bus.c"
+	}
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_object_unref (_data_->_async_result);
+#line 241 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	return FALSE;
+#line 4639 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_real_load (TrackerSparqlConnection* base, GFile* file, GCancellable* cancellable, GError** error) {
 	TrackerBusConnection * self;
-	TrackerBusResources* _tmp0_;
-	GFile* _tmp1_;
-	gchar* _tmp2_ = NULL;
-	gchar* _tmp3_;
-	GCancellable* _tmp4_;
-	gboolean _tmp5_ = FALSE;
-	GCancellable* _tmp6_;
-	gboolean _tmp9_;
+	GCancellable* _tmp0_;
+	GDBusConnection* _tmp1_ = NULL;
+	GDBusConnection* connection;
+	GDBusMessage* _tmp2_;
+	GDBusMessage* message;
+	GDBusMessage* _tmp3_;
+	GFile* _tmp4_;
+	gchar* _tmp5_ = NULL;
+	gchar* _tmp6_;
+	GVariant* _tmp7_;
+	GVariant* _tmp8_;
+	GDBusConnection* _tmp9_;
+	GDBusMessage* _tmp10_;
+	gint _tmp11_;
+	GCancellable* _tmp12_;
+	GDBusMessage* _tmp13_ = NULL;
+	GDBusMessage* reply;
+	GDBusMessage* _tmp14_;
 	GError * _inner_error_ = NULL;
-#line 309 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 276 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 309 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 276 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_return_if_fail (file != NULL);
-#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_connection_ensure_resources_object (self, &_inner_error_);
-#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 277 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp0_ = cancellable;
+#line 277 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp1_ = g_bus_get_sync (G_BUS_TYPE_SESSION, _tmp0_, &_inner_error_);
+#line 277 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	connection = _tmp1_;
+#line 277 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_inner_error_ != NULL) {
-#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 277 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 277 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_propagate_error (error, _inner_error_);
-#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 277 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return;
-#line 5265 "tracker-bus.c"
+#line 4682 "tracker-bus.c"
 		} else {
-#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 277 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 277 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_inner_error_);
-#line 310 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 277 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return;
-#line 5273 "tracker-bus.c"
+#line 4690 "tracker-bus.c"
 		}
 	}
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp0_ = self->priv->resources_object;
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp1_ = file;
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp2_ = g_file_get_uri (_tmp1_);
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp3_ = _tmp2_;
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp4_ = cancellable;
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_resources_load (_tmp0_, _tmp3_, _tmp4_, &_inner_error_);
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_free0 (_tmp3_);
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 279 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp2_ = g_dbus_message_new_method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_RESOURCES, TRACKER_DBUS_INTERFACE_RESOURCES, "Load");
+#line 279 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	message = _tmp2_;
+#line 280 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp3_ = message;
+#line 280 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp4_ = file;
+#line 280 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp5_ = g_file_get_uri (_tmp4_);
+#line 280 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp6_ = _tmp5_;
+#line 280 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp7_ = g_variant_new ("(s)", _tmp6_, NULL);
+#line 280 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp8_ = g_variant_ref_sink (_tmp7_);
+#line 280 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_dbus_message_set_body (_tmp3_, _tmp8_);
+#line 280 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_variant_unref0 (_tmp8_);
+#line 280 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_free0 (_tmp6_);
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp9_ = connection;
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp10_ = message;
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp11_ = G_MAXINT;
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp12_ = cancellable;
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp13_ = g_dbus_connection_send_message_with_reply_sync (_tmp9_, _tmp10_, G_DBUS_SEND_MESSAGE_FLAGS_NONE, _tmp11_, NULL, _tmp12_, &_inner_error_);
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	reply = _tmp13_;
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_inner_error_ != NULL) {
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_propagate_error (error, _inner_error_);
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (connection);
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return;
-#line 5298 "tracker-bus.c"
+#line 4739 "tracker-bus.c"
 		} else {
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (connection);
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_inner_error_);
-#line 312 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 282 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return;
-#line 5306 "tracker-bus.c"
+#line 4751 "tracker-bus.c"
 		}
 	}
-#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp6_ = cancellable;
-#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_tmp6_ != NULL) {
-#line 5313 "tracker-bus.c"
-		GCancellable* _tmp7_;
-		gboolean _tmp8_ = FALSE;
-#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp7_ = cancellable;
-#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp8_ = g_cancellable_is_cancelled (_tmp7_);
-#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp5_ = _tmp8_;
-#line 5322 "tracker-bus.c"
-	} else {
-#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp5_ = FALSE;
-#line 5326 "tracker-bus.c"
-	}
-#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp9_ = _tmp5_;
-#line 314 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_tmp9_) {
-#line 5332 "tracker-bus.c"
-		GError* _tmp10_;
-#line 315 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_tmp10_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
-#line 315 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_inner_error_ = _tmp10_;
-#line 315 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp14_ = reply;
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_handle_error_reply (self, _tmp14_, &_inner_error_);
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_inner_error_ != NULL) {
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 315 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_propagate_error (error, _inner_error_);
-#line 315 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (reply);
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (connection);
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return;
-#line 5344 "tracker-bus.c"
+#line 4772 "tracker-bus.c"
 		} else {
-#line 315 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (reply);
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (connection);
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 315 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_inner_error_);
-#line 315 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 283 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return;
-#line 5352 "tracker-bus.c"
+#line 4786 "tracker-bus.c"
 		}
 	}
+#line 276 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (reply);
+#line 276 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (message);
+#line 276 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (connection);
+#line 4795 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_real_load_async_data_free (gpointer _data) {
 	TrackerBusConnectionLoadAsyncData* _data_;
 	_data_ = _data;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->file);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_slice_free (TrackerBusConnectionLoadAsyncData, _data_);
-#line 5369 "tracker-bus.c"
+#line 4810 "tracker-bus.c"
 }
 
 
@@ -5377,468 +4818,654 @@ static void tracker_bus_connection_real_load_async (TrackerSparqlConnection* bas
 	GFile* _tmp2_;
 	GCancellable* _tmp3_;
 	GCancellable* _tmp4_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_slice_new0 (TrackerBusConnectionLoadAsyncData);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_bus_connection_real_load_async);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_bus_connection_real_load_async_data_free);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->self = _tmp0_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = file;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = _g_object_ref0 (_tmp1_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->file = _tmp2_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp3_ = cancellable;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp4_ = _g_object_ref0 (_tmp3_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->cancellable = _tmp4_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_real_load_async_co (_data_);
-#line 5407 "tracker-bus.c"
+#line 4848 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_real_load_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerBusConnectionLoadAsyncData* _data_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		return;
-#line 5417 "tracker-bus.c"
+#line 4858 "tracker-bus.c"
 	}
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 5421 "tracker-bus.c"
+#line 4862 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_load_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerBusConnectionLoadAsyncData* _data_;
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = _user_data_;
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_source_object_ = source_object;
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_res_ = _res_;
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_real_load_async_co (_data_);
-#line 5435 "tracker-bus.c"
+#line 4876 "tracker-bus.c"
 }
 
 
 static gboolean tracker_bus_connection_real_load_async_co (TrackerBusConnectionLoadAsyncData* _data_) {
-#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	switch (_data_->_state_) {
-#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 0:
-#line 5444 "tracker-bus.c"
+#line 4885 "tracker-bus.c"
 		goto _state_0;
-#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 1:
-#line 5448 "tracker-bus.c"
+#line 4889 "tracker-bus.c"
 		goto _state_1;
 		default:
-#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_assert_not_reached ();
-#line 5453 "tracker-bus.c"
+#line 4894 "tracker-bus.c"
 	}
 	_state_0:
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_connection_ensure_resources_object (_data_->self, &_data_->_inner_error_);
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp0_ = _data_->cancellable;
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp1_ = NULL;
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp1_ = g_bus_get_sync (G_BUS_TYPE_SESSION, _data_->_tmp0_, &_data_->_inner_error_);
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->connection = _data_->_tmp1_;
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 5470 "tracker-bus.c"
+#line 4917 "tracker-bus.c"
 			} else {
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 5474 "tracker-bus.c"
+#line 4921 "tracker-bus.c"
 			}
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5480 "tracker-bus.c"
+#line 4927 "tracker-bus.c"
 		} else {
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 319 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 287 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5488 "tracker-bus.c"
+#line 4935 "tracker-bus.c"
 		}
 	}
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp0_ = _data_->self->priv->resources_object;
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp1_ = _data_->file;
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp2_ = NULL;
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp2_ = g_file_get_uri (_data_->_tmp1_);
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp3_ = _data_->_tmp2_;
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp4_ = _data_->cancellable;
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 289 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp2_ = g_dbus_message_new_method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_RESOURCES, TRACKER_DBUS_INTERFACE_RESOURCES, "Load");
+#line 289 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->message = _data_->_tmp2_;
+#line 290 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp3_ = _data_->message;
+#line 290 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp4_ = _data_->file;
+#line 290 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp5_ = NULL;
+#line 290 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp5_ = g_file_get_uri (_data_->_tmp4_);
+#line 290 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp6_ = _data_->_tmp5_;
+#line 290 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp7_ = g_variant_new ("(s)", _data_->_tmp6_, NULL);
+#line 290 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp8_ = g_variant_ref_sink (_data_->_tmp7_);
+#line 290 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_dbus_message_set_body (_data_->_tmp3_, _data_->_tmp8_);
+#line 290 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_variant_unref0 (_data_->_tmp8_);
+#line 290 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_free0 (_data_->_tmp6_);
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp9_ = _data_->connection;
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp10_ = _data_->message;
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp11_ = G_MAXINT;
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp12_ = _data_->cancellable;
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_state_ = 1;
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_resources_load_async (_data_->_tmp0_, _data_->_tmp3_, _data_->_tmp4_, tracker_bus_connection_load_async_ready, _data_);
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_dbus_connection_send_message_with_reply (_data_->_tmp9_, _data_->_tmp10_, G_DBUS_SEND_MESSAGE_FLAGS_NONE, _data_->_tmp11_, NULL, _data_->_tmp12_, tracker_bus_connection_load_async_ready, _data_);
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return FALSE;
-#line 5509 "tracker-bus.c"
+#line 4976 "tracker-bus.c"
 	_state_1:
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_resources_load_finish (_data_->_tmp0_, _data_->_res_, &_data_->_inner_error_);
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_free0 (_data_->_tmp3_);
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp13_ = NULL;
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp13_ = g_dbus_connection_send_message_with_reply_finish (_data_->_tmp9_, _data_->_res_, &_data_->_inner_error_);
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->reply = _data_->_tmp13_;
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->message);
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 5527 "tracker-bus.c"
+#line 5000 "tracker-bus.c"
 			} else {
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 5531 "tracker-bus.c"
+#line 5004 "tracker-bus.c"
 			}
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5537 "tracker-bus.c"
+#line 5010 "tracker-bus.c"
 		} else {
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->message);
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 321 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 292 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5545 "tracker-bus.c"
+#line 5022 "tracker-bus.c"
 		}
 	}
-#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp6_ = _data_->cancellable;
-#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_tmp6_ != NULL) {
-#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp7_ = _data_->cancellable;
-#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp8_ = FALSE;
-#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp8_ = g_cancellable_is_cancelled (_data_->_tmp7_);
-#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp5_ = _data_->_tmp8_;
-#line 5560 "tracker-bus.c"
-	} else {
-#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp5_ = FALSE;
-#line 5564 "tracker-bus.c"
-	}
-#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp9_ = _data_->_tmp5_;
-#line 323 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	if (_data_->_tmp9_) {
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_tmp10_ = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_CANCELLED, "Operation was cancelled");
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-		_data_->_inner_error_ = _data_->_tmp10_;
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp14_ = _data_->reply;
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_handle_error_reply (_data_->self, _data_->_tmp14_, &_data_->_inner_error_);
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->message);
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 5584 "tracker-bus.c"
+#line 5047 "tracker-bus.c"
 			} else {
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 5588 "tracker-bus.c"
+#line 5051 "tracker-bus.c"
 			}
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5594 "tracker-bus.c"
+#line 5057 "tracker-bus.c"
 		} else {
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->message);
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 324 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 293 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5602 "tracker-bus.c"
+#line 5071 "tracker-bus.c"
 		}
 	}
-#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->reply);
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->message);
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->connection);
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_state_ == 0) {
-#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 5609 "tracker-bus.c"
+#line 5084 "tracker-bus.c"
 	} else {
-#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 5613 "tracker-bus.c"
+#line 5088 "tracker-bus.c"
 	}
-#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_object_unref (_data_->_async_result);
-#line 318 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 286 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return FALSE;
-#line 5619 "tracker-bus.c"
+#line 5094 "tracker-bus.c"
+}
+
+
+static gchar** _variant_get2 (GVariant* value, int* result_length1, int* result_length2) {
+	gchar** _tmp14_;
+	int _tmp14__length;
+	int _tmp14__size;
+	int _tmp14__length1;
+	GVariantIter _tmp15_;
+	GVariant* _tmp16_;
+	_tmp14_ = g_new (gchar*, 5);
+	_tmp14__length = 0;
+	_tmp14__size = 4;
+	_tmp14__length1 = 0;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_variant_iter_init (&_tmp15_, value);
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	for (; (_tmp16_ = g_variant_iter_next_value (&_tmp15_)) != NULL; _tmp14__length1++) {
+#line 5113 "tracker-bus.c"
+		int _tmp14__length2;
+		GVariantIter _tmp17_;
+		GVariant* _tmp18_;
+		_tmp14__length2 = 0;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		g_variant_iter_init (&_tmp17_, _tmp16_);
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		for (; (_tmp18_ = g_variant_iter_next_value (&_tmp17_)) != NULL; _tmp14__length2++) {
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_tmp14__size == _tmp14__length) {
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_tmp14__size = 2 * _tmp14__size;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_tmp14_ = g_renew (gchar*, _tmp14_, _tmp14__size + 1);
+#line 5128 "tracker-bus.c"
+			}
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_tmp14_[_tmp14__length++] = g_variant_dup_string (_tmp18_, NULL);
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_variant_unref (_tmp18_);
+#line 5134 "tracker-bus.c"
+		}
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		*result_length2 = _tmp14__length2;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		g_variant_unref (_tmp16_);
+#line 5140 "tracker-bus.c"
+	}
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	*result_length1 = _tmp14__length1;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp14_[_tmp14__length] = NULL;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	return _tmp14_;
+#line 5148 "tracker-bus.c"
 }
 
 
 static TrackerSparqlCursor* tracker_bus_connection_real_statistics (TrackerSparqlConnection* base, GCancellable* cancellable, GError** error) {
 	TrackerBusConnection * self;
 	TrackerSparqlCursor* result = NULL;
-	TrackerBusStatistics* _tmp0_;
-	GCancellable* _tmp1_;
-	gint _tmp2_ = 0;
-	gint _tmp3_ = 0;
-	gchar** _tmp4_ = NULL;
+	GCancellable* _tmp0_;
+	GDBusConnection* _tmp1_ = NULL;
+	GDBusConnection* connection;
+	GDBusMessage* _tmp2_;
+	GDBusMessage* message;
+	GDBusConnection* _tmp3_;
+	GDBusMessage* _tmp4_;
+	gint _tmp5_;
+	GCancellable* _tmp6_;
+	GDBusMessage* _tmp7_ = NULL;
+	GDBusMessage* reply;
+	GDBusMessage* _tmp8_;
+	GDBusMessage* _tmp9_;
+	GVariant* _tmp10_ = NULL;
+	GVariant* _tmp11_ = NULL;
+	GVariant* _tmp12_;
+	gchar** _tmp13_;
+	gint _tmp13__length1;
+	gint _tmp13__length2;
+	gchar** _tmp19_;
+	gint _tmp19__length1;
+	gint _tmp19__length2;
 	gchar** results;
 	gint results_length1;
 	gint results_length2;
-	TrackerSparqlValueType* _tmp5_ = NULL;
+	TrackerSparqlValueType* _tmp20_ = NULL;
 	TrackerSparqlValueType* types;
 	gint types_length1;
 	gint _types_size_;
-	gchar** _tmp6_ = NULL;
+	gchar** _tmp21_ = NULL;
 	gchar** var_names;
 	gint var_names_length1;
 	gint _var_names_size_;
-	gchar** _tmp7_;
-	gint _tmp7__length1;
-	gchar* _tmp8_;
-	gchar* _tmp9_;
-	gchar** _tmp10_;
-	gint _tmp10__length1;
-	gchar* _tmp11_;
-	gchar* _tmp12_;
-	TrackerSparqlValueType* _tmp13_;
-	gint _tmp13__length1;
-	TrackerSparqlValueType _tmp14_;
-	TrackerSparqlValueType* _tmp15_;
-	gint _tmp15__length1;
-	TrackerSparqlValueType _tmp16_;
-	gchar** _tmp17_;
-	gint _tmp17__length1;
-	gint _tmp17__length2;
-	gchar** _tmp18_;
-	gint _tmp18__length1;
-	gint _tmp18__length2;
-	gint _tmp19_;
-	gchar** _tmp20_;
-	gint _tmp20__length1;
-	gint _tmp20__length2;
-	gint _tmp21_;
 	gchar** _tmp22_;
 	gint _tmp22__length1;
-	TrackerSparqlValueType* _tmp23_;
-	gint _tmp23__length1;
-	TrackerBusArrayCursor* _tmp24_;
+	gchar* _tmp23_;
+	gchar* _tmp24_;
+	gchar** _tmp25_;
+	gint _tmp25__length1;
+	gchar* _tmp26_;
+	gchar* _tmp27_;
+	TrackerSparqlValueType* _tmp28_;
+	gint _tmp28__length1;
+	TrackerSparqlValueType _tmp29_;
+	TrackerSparqlValueType* _tmp30_;
+	gint _tmp30__length1;
+	TrackerSparqlValueType _tmp31_;
+	gchar** _tmp32_;
+	gint _tmp32__length1;
+	gint _tmp32__length2;
+	gchar** _tmp33_;
+	gint _tmp33__length1;
+	gint _tmp33__length2;
+	gint _tmp34_;
+	gchar** _tmp35_;
+	gint _tmp35__length1;
+	gint _tmp35__length2;
+	gint _tmp36_;
+	gchar** _tmp37_;
+	gint _tmp37__length1;
+	TrackerSparqlValueType* _tmp38_;
+	gint _tmp38__length1;
+	TrackerBusArrayCursor* _tmp39_;
 	GError * _inner_error_ = NULL;
-#line 328 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 296 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 329 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_connection_ensure_statistics_object (self, &_inner_error_);
-#line 329 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 297 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp0_ = cancellable;
+#line 297 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp1_ = g_bus_get_sync (G_BUS_TYPE_SESSION, _tmp0_, &_inner_error_);
+#line 297 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	connection = _tmp1_;
+#line 297 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_inner_error_ != NULL) {
-#line 329 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 297 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 329 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 297 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_propagate_error (error, _inner_error_);
-#line 329 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 297 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return NULL;
-#line 5685 "tracker-bus.c"
+#line 5235 "tracker-bus.c"
 		} else {
-#line 329 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 297 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 329 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 297 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_inner_error_);
-#line 329 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 297 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return NULL;
-#line 5693 "tracker-bus.c"
+#line 5243 "tracker-bus.c"
 		}
 	}
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp0_ = self->priv->statistics_object;
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp1_ = cancellable;
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp4_ = tracker_bus_statistics_Get (_tmp0_, _tmp1_, &_tmp2_, &_tmp3_, &_inner_error_);
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	results = _tmp4_;
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	results_length1 = _tmp2_;
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	results_length2 = _tmp3_;
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 299 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp2_ = g_dbus_message_new_method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_STATISTICS, TRACKER_DBUS_INTERFACE_STATISTICS, "Get");
+#line 299 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	message = _tmp2_;
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp3_ = connection;
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp4_ = message;
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp5_ = G_MAXINT;
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp6_ = cancellable;
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp7_ = g_dbus_connection_send_message_with_reply_sync (_tmp3_, _tmp4_, G_DBUS_SEND_MESSAGE_FLAGS_NONE, _tmp5_, NULL, _tmp6_, &_inner_error_);
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	reply = _tmp7_;
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_inner_error_ != NULL) {
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_propagate_error (error, _inner_error_);
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (connection);
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return NULL;
-#line 5716 "tracker-bus.c"
+#line 5274 "tracker-bus.c"
 		} else {
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (connection);
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_inner_error_);
-#line 331 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 301 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return NULL;
-#line 5724 "tracker-bus.c"
+#line 5286 "tracker-bus.c"
 		}
 	}
-#line 332 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp5_ = g_new0 (TrackerSparqlValueType, 2);
-#line 332 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	types = _tmp5_;
-#line 332 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp8_ = reply;
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_handle_error_reply (self, _tmp8_, &_inner_error_);
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_inner_error_ != NULL) {
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_inner_error_->domain == G_IO_ERROR)) || (_inner_error_->domain == G_DBUS_ERROR)) {
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_propagate_error (error, _inner_error_);
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (reply);
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (connection);
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return NULL;
+#line 5307 "tracker-bus.c"
+		} else {
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (reply);
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (message);
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (connection);
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_inner_error_);
+#line 302 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return NULL;
+#line 5321 "tracker-bus.c"
+		}
+	}
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp9_ = reply;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp10_ = g_dbus_message_get_body (_tmp9_);
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp11_ = g_variant_get_child_value (_tmp10_, (gsize) 0);
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp12_ = _tmp11_;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp13_ = _variant_get2 (_tmp12_, &_tmp13__length1, &_tmp13__length2);
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp19_ = _tmp13_;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp19__length1 = _tmp13__length1;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp19__length2 = _tmp13__length2;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_variant_unref0 (_tmp12_);
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	results = _tmp19_;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	results_length1 = _tmp19__length1;
+#line 304 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	results_length2 = _tmp19__length2;
+#line 305 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp20_ = g_new0 (TrackerSparqlValueType, 2);
+#line 305 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	types = _tmp20_;
+#line 305 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	types_length1 = 2;
-#line 332 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 305 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_types_size_ = types_length1;
-#line 333 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp6_ = g_new0 (gchar*, 2 + 1);
-#line 333 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	var_names = _tmp6_;
-#line 333 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 306 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp21_ = g_new0 (gchar*, 2 + 1);
+#line 306 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	var_names = _tmp21_;
+#line 306 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	var_names_length1 = 2;
-#line 333 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 306 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_var_names_size_ = var_names_length1;
-#line 335 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp7_ = var_names;
-#line 335 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp7__length1 = var_names_length1;
-#line 335 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp8_ = g_strdup ("class");
-#line 335 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_free0 (_tmp7_[0]);
-#line 335 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp7_[0] = _tmp8_;
-#line 335 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp9_ = _tmp7_[0];
-#line 336 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp10_ = var_names;
-#line 336 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp10__length1 = var_names_length1;
-#line 336 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp11_ = g_strdup ("count");
-#line 336 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_free0 (_tmp10_[1]);
-#line 336 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp10_[1] = _tmp11_;
-#line 336 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp12_ = _tmp10_[1];
-#line 337 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp13_ = types;
-#line 337 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp13__length1 = types_length1;
-#line 337 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp13_[0] = TRACKER_SPARQL_VALUE_TYPE_STRING;
-#line 337 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp14_ = _tmp13_[0];
-#line 338 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp15_ = types;
-#line 338 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp15__length1 = types_length1;
-#line 338 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp15_[1] = TRACKER_SPARQL_VALUE_TYPE_INTEGER;
-#line 338 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp16_ = _tmp15_[1];
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp17_ = results;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp17__length1 = results_length1;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp17__length2 = results_length2;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	results = NULL;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp18_ = results;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp18__length1 = results_length1;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp18__length2 = results_length2;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp19_ = _tmp18__length1;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp20_ = results;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp20__length1 = results_length1;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp20__length2 = results_length2;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp21_ = _tmp20__length2;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 308 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp22_ = var_names;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 308 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp22__length1 = var_names_length1;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp23_ = types;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp23__length1 = types_length1;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_tmp24_ = tracker_bus_array_cursor_new (_tmp17_, _tmp17__length1, _tmp17__length2, _tmp19_, _tmp21_, _tmp22_, _tmp22__length1, _tmp23_, _tmp23__length1);
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	result = (TrackerSparqlCursor*) _tmp24_;
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 308 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp23_ = g_strdup ("class");
+#line 308 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_free0 (_tmp22_[0]);
+#line 308 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp22_[0] = _tmp23_;
+#line 308 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp24_ = _tmp22_[0];
+#line 309 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp25_ = var_names;
+#line 309 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp25__length1 = var_names_length1;
+#line 309 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp26_ = g_strdup ("count");
+#line 309 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_free0 (_tmp25_[1]);
+#line 309 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp25_[1] = _tmp26_;
+#line 309 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp27_ = _tmp25_[1];
+#line 310 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp28_ = types;
+#line 310 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp28__length1 = types_length1;
+#line 310 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp28_[0] = TRACKER_SPARQL_VALUE_TYPE_STRING;
+#line 310 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp29_ = _tmp28_[0];
+#line 311 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp30_ = types;
+#line 311 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp30__length1 = types_length1;
+#line 311 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp30_[1] = TRACKER_SPARQL_VALUE_TYPE_INTEGER;
+#line 311 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp31_ = _tmp30_[1];
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp32_ = results;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp32__length1 = results_length1;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp32__length2 = results_length2;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	results = NULL;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp33_ = results;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp33__length1 = results_length1;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp33__length2 = results_length2;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp34_ = _tmp33__length1;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp35_ = results;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp35__length1 = results_length1;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp35__length2 = results_length2;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp36_ = _tmp35__length2;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp37_ = var_names;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp37__length1 = var_names_length1;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp38_ = types;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp38__length1 = types_length1;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp39_ = tracker_bus_array_cursor_new (_tmp32_, _tmp32__length1, _tmp32__length2, _tmp34_, _tmp36_, _tmp37_, _tmp37__length1, _tmp38_, _tmp38__length1);
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	result = (TrackerSparqlCursor*) _tmp39_;
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	var_names = (_vala_array_free (var_names, var_names_length1, (GDestroyNotify) g_free), NULL);
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	types = (g_free (types), NULL);
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	results = (_vala_array_free (results, results_length1 * results_length2, (GDestroyNotify) g_free), NULL);
-#line 340 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (reply);
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (message);
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (connection);
+#line 313 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return result;
-#line 5827 "tracker-bus.c"
+#line 5454 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_real_statistics_async_data_free (gpointer _data) {
 	TrackerBusConnectionStatisticsAsyncData* _data_;
 	_data_ = _data;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->cancellable);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->result);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_g_object_unref0 (_data_->self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_slice_free (TrackerBusConnectionStatisticsAsyncData, _data_);
-#line 5842 "tracker-bus.c"
+#line 5469 "tracker-bus.c"
 }
 
 
@@ -5848,381 +5475,515 @@ static void tracker_bus_connection_real_statistics_async (TrackerSparqlConnectio
 	TrackerBusConnection* _tmp0_;
 	GCancellable* _tmp1_;
 	GCancellable* _tmp2_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	self = (TrackerBusConnection*) base;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_slice_new0 (TrackerBusConnectionStatisticsAsyncData);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_async_result = g_simple_async_result_new (G_OBJECT (self), _callback_, _user_data_, tracker_bus_connection_real_statistics_async);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_simple_async_result_set_op_res_gpointer (_data_->_async_result, _data_, tracker_bus_connection_real_statistics_async_data_free);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp0_ = _g_object_ref0 (self);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->self = _tmp0_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp1_ = cancellable;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_tmp2_ = _g_object_ref0 (_tmp1_);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->cancellable = _tmp2_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_real_statistics_async_co (_data_);
-#line 5872 "tracker-bus.c"
+#line 5499 "tracker-bus.c"
 }
 
 
 static TrackerSparqlCursor* tracker_bus_connection_real_statistics_finish (TrackerSparqlConnection* base, GAsyncResult* _res_, GError** error) {
 	TrackerSparqlCursor* result;
 	TrackerBusConnectionStatisticsAsyncData* _data_;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (_res_), error)) {
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		return NULL;
-#line 5883 "tracker-bus.c"
+#line 5510 "tracker-bus.c"
 	}
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (_res_));
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	result = _data_->result;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->result = NULL;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return result;
-#line 5893 "tracker-bus.c"
+#line 5520 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_statistics_async_ready (GObject* source_object, GAsyncResult* _res_, gpointer _user_data_) {
 	TrackerBusConnectionStatisticsAsyncData* _data_;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_ = _user_data_;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_source_object_ = source_object;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_res_ = _res_;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_real_statistics_async_co (_data_);
-#line 5907 "tracker-bus.c"
+#line 5534 "tracker-bus.c"
+}
+
+
+static gchar** _variant_get3 (GVariant* value, int* result_length1, int* result_length2) {
+	gchar** _tmp14_;
+	int _tmp14__length;
+	int _tmp14__size;
+	int _tmp14__length1;
+	GVariantIter _tmp15_;
+	GVariant* _tmp16_;
+	_tmp14_ = g_new (gchar*, 5);
+	_tmp14__length = 0;
+	_tmp14__size = 4;
+	_tmp14__length1 = 0;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_variant_iter_init (&_tmp15_, value);
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	for (; (_tmp16_ = g_variant_iter_next_value (&_tmp15_)) != NULL; _tmp14__length1++) {
+#line 5553 "tracker-bus.c"
+		int _tmp14__length2;
+		GVariantIter _tmp17_;
+		GVariant* _tmp18_;
+		_tmp14__length2 = 0;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		g_variant_iter_init (&_tmp17_, _tmp16_);
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		for (; (_tmp18_ = g_variant_iter_next_value (&_tmp17_)) != NULL; _tmp14__length2++) {
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_tmp14__size == _tmp14__length) {
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_tmp14__size = 2 * _tmp14__size;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				_tmp14_ = g_renew (gchar*, _tmp14_, _tmp14__size + 1);
+#line 5568 "tracker-bus.c"
+			}
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_tmp14_[_tmp14__length++] = g_variant_dup_string (_tmp18_, NULL);
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_variant_unref (_tmp18_);
+#line 5574 "tracker-bus.c"
+		}
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		*result_length2 = _tmp14__length2;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		g_variant_unref (_tmp16_);
+#line 5580 "tracker-bus.c"
+	}
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	*result_length1 = _tmp14__length1;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_tmp14_[_tmp14__length] = NULL;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	return _tmp14_;
+#line 5588 "tracker-bus.c"
 }
 
 
 static gboolean tracker_bus_connection_real_statistics_async_co (TrackerBusConnectionStatisticsAsyncData* _data_) {
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	switch (_data_->_state_) {
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 0:
-#line 5916 "tracker-bus.c"
+#line 5597 "tracker-bus.c"
 		goto _state_0;
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		case 1:
-#line 5920 "tracker-bus.c"
+#line 5601 "tracker-bus.c"
 		goto _state_1;
 		default:
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_assert_not_reached ();
-#line 5925 "tracker-bus.c"
+#line 5606 "tracker-bus.c"
 	}
 	_state_0:
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_connection_ensure_statistics_object (_data_->self, &_data_->_inner_error_);
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp0_ = _data_->cancellable;
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp1_ = NULL;
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp1_ = g_bus_get_sync (G_BUS_TYPE_SESSION, _data_->_tmp0_, &_data_->_inner_error_);
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->connection = _data_->_tmp1_;
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 5942 "tracker-bus.c"
+#line 5629 "tracker-bus.c"
 			} else {
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 5946 "tracker-bus.c"
+#line 5633 "tracker-bus.c"
 			}
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5952 "tracker-bus.c"
+#line 5639 "tracker-bus.c"
 		} else {
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 348 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 321 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 5960 "tracker-bus.c"
+#line 5647 "tracker-bus.c"
 		}
 	}
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp0_ = _data_->self->priv->statistics_object;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp1_ = _data_->cancellable;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp2_ = 0;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp3_ = 0;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 323 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp2_ = g_dbus_message_new_method_call (TRACKER_DBUS_SERVICE, TRACKER_DBUS_OBJECT_STATISTICS, TRACKER_DBUS_INTERFACE_STATISTICS, "Get");
+#line 323 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->message = _data_->_tmp2_;
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp3_ = _data_->connection;
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp4_ = _data_->message;
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp5_ = G_MAXINT;
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp6_ = _data_->cancellable;
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_state_ = 1;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	tracker_bus_statistics_Get_async (_data_->_tmp0_, _data_->_tmp1_, tracker_bus_connection_statistics_async_ready, _data_);
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	g_dbus_connection_send_message_with_reply (_data_->_tmp3_, _data_->_tmp4_, G_DBUS_SEND_MESSAGE_FLAGS_NONE, _data_->_tmp5_, NULL, _data_->_tmp6_, tracker_bus_connection_statistics_async_ready, _data_);
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return FALSE;
-#line 5977 "tracker-bus.c"
+#line 5668 "tracker-bus.c"
 	_state_1:
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp4_ = NULL;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp4_ = tracker_bus_statistics_Get_finish (_data_->_tmp0_, _data_->_res_, &_data_->_tmp2_, &_data_->_tmp3_, &_data_->_inner_error_);
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->results = _data_->_tmp4_;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->results_length1 = _data_->_tmp2_;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->results_length2 = _data_->_tmp3_;
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp7_ = NULL;
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp7_ = g_dbus_connection_send_message_with_reply_finish (_data_->_tmp3_, _data_->_res_, &_data_->_inner_error_);
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->reply = _data_->_tmp7_;
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_inner_error_ != NULL) {
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_error_free (_data_->_inner_error_);
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->message);
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			if (_data_->_state_ == 0) {
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 6001 "tracker-bus.c"
+#line 5692 "tracker-bus.c"
 			} else {
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 				g_simple_async_result_complete (_data_->_async_result);
-#line 6005 "tracker-bus.c"
+#line 5696 "tracker-bus.c"
 			}
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_object_unref (_data_->_async_result);
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 6011 "tracker-bus.c"
+#line 5702 "tracker-bus.c"
 		} else {
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->message);
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			g_clear_error (&_data_->_inner_error_);
-#line 350 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 325 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 			return FALSE;
-#line 6019 "tracker-bus.c"
+#line 5714 "tracker-bus.c"
 		}
 	}
-#line 351 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp5_ = NULL;
-#line 351 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp5_ = g_new0 (TrackerSparqlValueType, 2);
-#line 351 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->types = _data_->_tmp5_;
-#line 351 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp8_ = _data_->reply;
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	tracker_bus_connection_handle_error_reply (_data_->self, _data_->_tmp8_, &_data_->_inner_error_);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	if (_data_->_inner_error_ != NULL) {
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+		if (((_data_->_inner_error_->domain == TRACKER_SPARQL_ERROR) || (_data_->_inner_error_->domain == G_IO_ERROR)) || (_data_->_inner_error_->domain == G_DBUS_ERROR)) {
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_simple_async_result_set_from_error (_data_->_async_result, _data_->_inner_error_);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_error_free (_data_->_inner_error_);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->message);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			if (_data_->_state_ == 0) {
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete_in_idle (_data_->_async_result);
+#line 5739 "tracker-bus.c"
+			} else {
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+				g_simple_async_result_complete (_data_->_async_result);
+#line 5743 "tracker-bus.c"
+			}
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_object_unref (_data_->_async_result);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 5749 "tracker-bus.c"
+		} else {
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->reply);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->message);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			_g_object_unref0 (_data_->connection);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			g_clear_error (&_data_->_inner_error_);
+#line 326 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+			return FALSE;
+#line 5763 "tracker-bus.c"
+		}
+	}
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp9_ = _data_->reply;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp10_ = NULL;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp10_ = g_dbus_message_get_body (_data_->_tmp9_);
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp11_ = NULL;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp11_ = g_variant_get_child_value (_data_->_tmp10_, (gsize) 0);
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp12_ = _data_->_tmp11_;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp13_ = _variant_get3 (_data_->_tmp12_, &_data_->_tmp13__length1, &_data_->_tmp13__length2);
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp19_ = _data_->_tmp13_;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp19__length1 = _data_->_tmp13__length1;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp19__length2 = _data_->_tmp13__length2;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_variant_unref0 (_data_->_tmp12_);
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->results = _data_->_tmp19_;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->results_length1 = _data_->_tmp19__length1;
+#line 328 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->results_length2 = _data_->_tmp19__length2;
+#line 329 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp20_ = NULL;
+#line 329 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp20_ = g_new0 (TrackerSparqlValueType, 2);
+#line 329 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->types = _data_->_tmp20_;
+#line 329 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->types_length1 = 2;
-#line 351 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 329 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_types_size_ = _data_->types_length1;
-#line 352 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp6_ = NULL;
-#line 352 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp6_ = g_new0 (gchar*, 2 + 1);
-#line 352 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->var_names = _data_->_tmp6_;
-#line 352 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 330 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp21_ = NULL;
+#line 330 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp21_ = g_new0 (gchar*, 2 + 1);
+#line 330 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->var_names = _data_->_tmp21_;
+#line 330 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->var_names_length1 = 2;
-#line 352 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 330 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_var_names_size_ = _data_->var_names_length1;
-#line 354 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp7_ = _data_->var_names;
-#line 354 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp7__length1 = _data_->var_names_length1;
-#line 354 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp8_ = g_strdup ("class");
-#line 354 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_free0 (_data_->_tmp7_[0]);
-#line 354 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp7_[0] = _data_->_tmp8_;
-#line 354 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp9_ = _data_->_tmp7_[0];
-#line 355 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp10_ = _data_->var_names;
-#line 355 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp10__length1 = _data_->var_names_length1;
-#line 355 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp11_ = g_strdup ("count");
-#line 355 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_free0 (_data_->_tmp10_[1]);
-#line 355 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp10_[1] = _data_->_tmp11_;
-#line 355 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp12_ = _data_->_tmp10_[1];
-#line 356 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp13_ = _data_->types;
-#line 356 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp13__length1 = _data_->types_length1;
-#line 356 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp13_[0] = TRACKER_SPARQL_VALUE_TYPE_STRING;
-#line 356 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp14_ = _data_->_tmp13_[0];
-#line 357 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp15_ = _data_->types;
-#line 357 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp15__length1 = _data_->types_length1;
-#line 357 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp15_[1] = TRACKER_SPARQL_VALUE_TYPE_INTEGER;
-#line 357 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp16_ = _data_->_tmp15_[1];
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp17_ = _data_->results;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp17__length1 = _data_->results_length1;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp17__length2 = _data_->results_length2;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->results = NULL;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp18_ = _data_->results;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp18__length1 = _data_->results_length1;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp18__length2 = _data_->results_length2;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp19_ = _data_->_tmp18__length1;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp20_ = _data_->results;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp20__length1 = _data_->results_length1;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp20__length2 = _data_->results_length2;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp21_ = _data_->_tmp20__length2;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 332 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp22_ = _data_->var_names;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 332 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->_tmp22__length1 = _data_->var_names_length1;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp23_ = _data_->types;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp23__length1 = _data_->types_length1;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->_tmp24_ = tracker_bus_array_cursor_new (_data_->_tmp17_, _data_->_tmp17__length1, _data_->_tmp17__length2, _data_->_tmp19_, _data_->_tmp21_, _data_->_tmp22_, _data_->_tmp22__length1, _data_->_tmp23_, _data_->_tmp23__length1);
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_data_->result = (TrackerSparqlCursor*) _data_->_tmp24_;
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 332 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp23_ = g_strdup ("class");
+#line 332 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_free0 (_data_->_tmp22_[0]);
+#line 332 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp22_[0] = _data_->_tmp23_;
+#line 332 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp24_ = _data_->_tmp22_[0];
+#line 333 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp25_ = _data_->var_names;
+#line 333 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp25__length1 = _data_->var_names_length1;
+#line 333 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp26_ = g_strdup ("count");
+#line 333 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_free0 (_data_->_tmp25_[1]);
+#line 333 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp25_[1] = _data_->_tmp26_;
+#line 333 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp27_ = _data_->_tmp25_[1];
+#line 334 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp28_ = _data_->types;
+#line 334 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp28__length1 = _data_->types_length1;
+#line 334 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp28_[0] = TRACKER_SPARQL_VALUE_TYPE_STRING;
+#line 334 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp29_ = _data_->_tmp28_[0];
+#line 335 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp30_ = _data_->types;
+#line 335 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp30__length1 = _data_->types_length1;
+#line 335 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp30_[1] = TRACKER_SPARQL_VALUE_TYPE_INTEGER;
+#line 335 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp31_ = _data_->_tmp30_[1];
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp32_ = _data_->results;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp32__length1 = _data_->results_length1;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp32__length2 = _data_->results_length2;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->results = NULL;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp33_ = _data_->results;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp33__length1 = _data_->results_length1;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp33__length2 = _data_->results_length2;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp34_ = _data_->_tmp33__length1;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp35_ = _data_->results;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp35__length1 = _data_->results_length1;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp35__length2 = _data_->results_length2;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp36_ = _data_->_tmp35__length2;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp37_ = _data_->var_names;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp37__length1 = _data_->var_names_length1;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp38_ = _data_->types;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp38__length1 = _data_->types_length1;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->_tmp39_ = tracker_bus_array_cursor_new (_data_->_tmp32_, _data_->_tmp32__length1, _data_->_tmp32__length2, _data_->_tmp34_, _data_->_tmp36_, _data_->_tmp37_, _data_->_tmp37__length1, _data_->_tmp38_, _data_->_tmp38__length1);
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_data_->result = (TrackerSparqlCursor*) _data_->_tmp39_;
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->var_names = (_vala_array_free (_data_->var_names, _data_->var_names_length1, (GDestroyNotify) g_free), NULL);
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->types = (g_free (_data_->types), NULL);
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->results = (_vala_array_free (_data_->results, _data_->results_length1 * _data_->results_length2, (GDestroyNotify) g_free), NULL);
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->reply);
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->message);
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->connection);
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_state_ == 0) {
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 6128 "tracker-bus.c"
+#line 5906 "tracker-bus.c"
 	} else {
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 6132 "tracker-bus.c"
+#line 5910 "tracker-bus.c"
 	}
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_object_unref (_data_->_async_result);
-#line 359 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 337 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return FALSE;
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->var_names = (_vala_array_free (_data_->var_names, _data_->var_names_length1, (GDestroyNotify) g_free), NULL);
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->types = (g_free (_data_->types), NULL);
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	_data_->results = (_vala_array_free (_data_->results, _data_->results_length1 * _data_->results_length2, (GDestroyNotify) g_free), NULL);
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->reply);
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->message);
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
+	_g_object_unref0 (_data_->connection);
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	if (_data_->_state_ == 0) {
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete_in_idle (_data_->_async_result);
-#line 6148 "tracker-bus.c"
+#line 5932 "tracker-bus.c"
 	} else {
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 		g_simple_async_result_complete (_data_->_async_result);
-#line 6152 "tracker-bus.c"
+#line 5936 "tracker-bus.c"
 	}
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	g_object_unref (_data_->_async_result);
-#line 347 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 320 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	return FALSE;
-#line 6158 "tracker-bus.c"
+#line 5942 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_class_init (TrackerBusConnectionClass * klass) {
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	tracker_bus_connection_parent_class = g_type_class_peek_parent (klass);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	g_type_class_add_private (klass, sizeof (TrackerBusConnectionPrivate));
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query = tracker_bus_connection_real_query;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_async = tracker_bus_connection_real_query_async;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->query_finish = tracker_bus_connection_real_query_finish;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update = tracker_bus_connection_real_update;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_async = tracker_bus_connection_real_update_async;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_finish = tracker_bus_connection_real_update_finish;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_array_async = tracker_bus_connection_real_update_array_async;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_array_finish = tracker_bus_connection_real_update_array_finish;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_blank = tracker_bus_connection_real_update_blank;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_blank_async = tracker_bus_connection_real_update_blank_async;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->update_blank_finish = tracker_bus_connection_real_update_blank_finish;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->load = tracker_bus_connection_real_load;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->load_async = tracker_bus_connection_real_load_async;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->load_finish = tracker_bus_connection_real_load_finish;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->statistics = tracker_bus_connection_real_statistics;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->statistics_async = tracker_bus_connection_real_statistics_async;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
+#line 20 "/home/martyn/Source/tracker/src/libtracker-bus/tracker-bus.vala"
 	TRACKER_SPARQL_CONNECTION_CLASS (klass)->statistics_finish = tracker_bus_connection_real_statistics_finish;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	G_OBJECT_CLASS (klass)->finalize = tracker_bus_connection_finalize;
-#line 6203 "tracker-bus.c"
+#line 5983 "tracker-bus.c"
 }
 
 
 static void tracker_bus_connection_instance_init (TrackerBusConnection * self) {
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	self->priv = TRACKER_BUS_CONNECTION_GET_PRIVATE (self);
-#line 6210 "tracker-bus.c"
-}
-
-
-static void tracker_bus_connection_finalize (GObject* obj) {
-	TrackerBusConnection * self;
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	self = TRACKER_BUS_CONNECTION (obj);
-#line 55 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (self->priv->resources_object);
-#line 56 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (self->priv->steroids_object);
-#line 57 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	_g_object_unref0 (self->priv->statistics_object);
-#line 54 "/home/juerg/Code/tracker/tracker/src/libtracker-bus/tracker-bus.vala"
-	G_OBJECT_CLASS (tracker_bus_connection_parent_class)->finalize (obj);
-#line 6226 "tracker-bus.c"
 }
 
 

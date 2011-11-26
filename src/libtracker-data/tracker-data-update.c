@@ -22,6 +22,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 #include <time.h>
 
 #include <libtracker-common/tracker-date-time.h>
@@ -699,7 +700,7 @@ statement_bind_gvalue (TrackerDBStatement *stmt,
 		break;
 	default:
 		if (type == TRACKER_TYPE_DATE_TIME) {
-			tracker_db_statement_bind_int (stmt, (*idx)++, tracker_date_time_get_time (value));
+			tracker_db_statement_bind_double (stmt, (*idx)++, tracker_date_time_get_time (value));
 			tracker_db_statement_bind_int (stmt, (*idx)++, tracker_date_time_get_local_date (value));
 			tracker_db_statement_bind_int (stmt, (*idx)++, tracker_date_time_get_local_time (value));
 		} else {
@@ -1287,8 +1288,9 @@ value_equal (GValue *value1,
 		if (type == TRACKER_TYPE_DATE_TIME) {
 			/* ignore UTC offset for comparison, irrelevant for comparison according to xsd:dateTime spec
 			 * http://www.w3.org/TR/xmlschema-2/#dateTime
+			 * also ignore sub-millisecond as this is a floating point comparison
 			 */
-			return tracker_date_time_get_time (value1) == tracker_date_time_get_time (value2);
+			return fabs (tracker_date_time_get_time (value1) - tracker_date_time_get_time (value2)) < 0.001;
 		}
 		g_assert_not_reached ();
 	}
@@ -1394,9 +1396,13 @@ get_property_values (TrackerProperty *property)
 				tracker_db_cursor_get_value (cursor, 0, &gvalue);
 				if (G_VALUE_TYPE (&gvalue)) {
 					if (tracker_property_get_data_type (property) == TRACKER_PROPERTY_TYPE_DATETIME) {
-						gint time;
+						gdouble time;
 
-						time = g_value_get_int64 (&gvalue);
+						if (G_VALUE_TYPE (&gvalue) == G_TYPE_INT64) {
+							time = g_value_get_int64 (&gvalue);
+						} else {
+							time = g_value_get_double (&gvalue);
+						}
 						g_value_unset (&gvalue);
 						g_value_init (&gvalue, TRACKER_TYPE_DATE_TIME);
 						/* UTC offset is irrelevant for comparison */
@@ -2577,6 +2583,7 @@ handle_blank_node (const gchar  *subject,
                    const gchar  *predicate,
                    const gchar  *object,
                    const gchar  *graph,
+                   gboolean      update,
                    GError      **error)
 {
 	GError *actual_error = NULL;
@@ -2599,7 +2606,11 @@ handle_blank_node (const gchar  *subject,
 
 	if (blank_uri != NULL) {
 		/* now insert statement referring to blank node */
-		tracker_data_update_statement (graph, subject, predicate, blank_uri, &actual_error);
+		if (update) {
+			tracker_data_update_statement (graph, subject, predicate, blank_uri, &actual_error);
+		} else {
+			tracker_data_insert_statement (graph, subject, predicate, blank_uri, &actual_error);
+		}
 
 		g_hash_table_remove (blank_buffer.table, object);
 
@@ -2655,7 +2666,7 @@ tracker_data_insert_statement_with_uri (const gchar            *graph,
 
 	/* subjects and objects starting with `:' are anonymous blank nodes */
 	if (g_str_has_prefix (object, ":")) {
-		if (handle_blank_node (subject, predicate, object, graph, &actual_error)) {
+		if (handle_blank_node (subject, predicate, object, graph, FALSE, &actual_error)) {
 			return;
 		}
 
@@ -2873,7 +2884,7 @@ tracker_data_update_statement_with_uri (const gchar            *graph,
 
 	/* subjects and objects starting with `:' are anonymous blank nodes */
 	if (g_str_has_prefix (object, ":")) {
-		if (handle_blank_node (subject, predicate, object, graph, &actual_error)) {
+		if (handle_blank_node (subject, predicate, object, graph, TRUE, &actual_error)) {
 			return;
 		}
 

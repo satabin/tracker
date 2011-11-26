@@ -13,8 +13,8 @@ AC_PREREQ([2.64])
 # set TRACKER_BINARY_AGE and TRACKER_INTERFACE_AGE to 0.
 m4_define([tracker_major_version], [0])
 m4_define([tracker_minor_version], [12])
-m4_define([tracker_micro_version], [7])
-m4_define([tracker_interface_age], [0])
+m4_define([tracker_micro_version], [8])
+m4_define([tracker_interface_age], [8])
 m4_define([tracker_binary_age],
           [m4_eval(100 * tracker_minor_version + tracker_micro_version)])
 m4_define([tracker_version],
@@ -1523,6 +1523,13 @@ AC_ARG_ENABLE(libxml2,
               AS_HELP_STRING([--disable-libxml2],
                              [disable HTML/XML extractors [[default=yes]]]),,
               [enable_libxml2=yes])
+
+# Force libxml requirement for HAVE_MAEMO,
+# given the miner-fs needs it for the userguide extraction.
+if test "x$enable_maemo" = "xyes" ; then
+  enable_libxml2="yes"
+fi
+
 
 if test "x$enable_libxml2" != "xno"; then
    PKG_CHECK_MODULES(LIBXML2,

@@ -47,7 +47,7 @@ Build-Depends: debhelper (>= 8),
 Standards-Version: 3.9.2
 Vcs-Git: git://git.debian.org/git/users/biebl/tracker.git
 Vcs-Browser: http://git.debian.org/?p=users/biebl/tracker.git;a=summary
-Homepage: http://www.tracker-project.org/
+Homepage: http://projects.gnome.org/tracker/
 
 Package: tracker
 Architecture: any

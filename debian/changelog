@@ -1,6 +1,7 @@
 tracker (0.12.8-2) UNRELEASED; urgency=low
 
   * Change section of gir1.2-tracker-0.12 to introspection.
+  * Update homepage URL. Closes: #652141
 
  -- Michael Biebl <biebl@debian.org>  Sat, 10 Dec 2011 20:04:11 +0100
 
